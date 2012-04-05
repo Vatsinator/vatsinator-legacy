@@ -14,9 +14,9 @@
 #define AIRPORTS_DB			PREFIX "/share/vatsinator/WorldAirports.db"
 
 // where icons are stored
-#define AIRPORT_OUT_ICON	PREFIX "/share/vatsinator/airport_onmouseout.png"
-#define AIRPORT_HOVER_ICON	PREFIX "/share/vatsinator/airport_onhover.png"
+#define AIRPORT_ICON		PREFIX "/share/vatsinator/airport.png"
 #define PILOT_ICON			PREFIX "/share/vatsinator/plane.png"
+#define TOWER_ICON			PREFIX "/share/vatsinator/tower.png"
 
 // below/above these values user can't zoom the map
 #define ZOOM_MINIMUM		3
@@ -40,6 +40,6 @@
 #define PILOT_LABEL_COLOR	0.0, 0.0, 0.0, 1.0
 #define AP_LABEL_COLOR		0.5, 0.5, 0.5, 1.0
 
-#define LINES_COLOR			0.7, 0.7, 0.7, 0.8
+#define LINES_COLOR			0.0, 0.192, 0.337, 0.8
 
 #endif // DEFINES_H

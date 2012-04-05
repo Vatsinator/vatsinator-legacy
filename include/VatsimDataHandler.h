@@ -43,6 +43,8 @@ class VatsimDataHandler :
 public:
 	VatsimDataHandler();
 	
+	~VatsimDataHandler();
+	
 	void parseStatusFile(const QString&);
 	
 	void parseDataFile(const QString&);
@@ -51,10 +53,10 @@ public:
 	
 	const QString & getMetarUrl() { return __metarURL; }
 	
-	const QVector< Pilot > & getPilots() { return __pilots; }
-	const QVector< Controller > & getATCs() { return __atcs; }
+	const QVector< Pilot* > & getPilots() { return __pilots; }
+	const QVector< Controller* > & getATCs() { return __atcs; }
 	
-	const QMap< QString, AirportObject > & getActiveAirports() { return __activeAirports; }
+	const QMap< QString, AirportObject* > & getActiveAirports() { return __activeAirports; }
 	
 	const Pilot * findPilot(const QString&);
 	
@@ -65,14 +67,14 @@ private:
 	QString __obtainIcao(const QString&);
 	
 	/* These are vectors of connected clients */
-	QVector< Pilot >		__pilots;
-	QVector< Controller >	__atcs;
+	QVector< Pilot* >		__pilots;
+	QVector< Controller* >	__atcs;
 	
 	/* This is vector of data servers, obtained from status file */
 	QVector< QString > __servers;
 	
 	/* This set contains list of active airports, used later by AirportDatabase */
-	QMap< QString, AirportObject > __activeAirports;
+	QMap< QString, AirportObject* > __activeAirports;
 	
 	/* This is URL that we can obtain METAR from */
 	QString	__metarURL;
@@ -85,6 +87,6 @@ private:
 	
 };
 
-typedef QMap< QString, AirportObject > AirportsMap;
+typedef QMap< QString, AirportObject* > AirportsMap;
 
 #endif // VATSIMDATAHANDLER_H

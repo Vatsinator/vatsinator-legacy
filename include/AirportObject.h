@@ -25,6 +25,7 @@
 #include "AirportsDatabase.h"
 #include "Clickable.h"
 #include "Controller.h"
+#include "Pilot.h"
 
 class AirportObject : public Clickable {
 	
@@ -32,9 +33,16 @@ public:
 	
 	AirportObject(const QString& = "");
 	
-	void addStuff(Controller);
+	void addStuff(const Controller*);
 	
-	const QVector< Controller > getStuff() const { return __staff; }
+	void addInbound(const Pilot*);
+	
+	void addOutbound(const Pilot*);
+	
+	const QVector< const Controller* > getStuff() const { return __staff; }
+	
+	const QVector< const Pilot* > getInbounds() const { return __inbounds; }
+	const QVector< const Pilot* > getOutbounds() const { return __outbounds; }
 	
 	const Airport * getData() const { return __data; }
 	
@@ -45,7 +53,10 @@ private:
 	
 	const Airport *	__data;
 	
-	QVector< Controller > __staff;
+	QVector< const Controller* > __staff;
+	
+	QVector< const Pilot* > __inbounds;
+	QVector< const Pilot* > __outbounds;
 	
 	
 };

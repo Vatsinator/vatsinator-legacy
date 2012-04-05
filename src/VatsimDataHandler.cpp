@@ -34,6 +34,15 @@ VatsimDataHandler::VatsimDataHandler() :
 		__airports(AirportsDatabase::GetSingleton()),
 		__mother(VatsinatorApplication::GetSingleton()) {}
 
+VatsimDataHandler::~VatsimDataHandler() {
+	while (!__pilots.empty())
+		delete __pilots.back(), __pilots.pop_back();
+	while (!__atcs.empty())
+		delete __atcs.back(), __atcs.pop_back();
+	for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
+		delete it.value();
+}
+
 void
 VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 	QStringList tempList = _statusFile.split('\n', QString::SkipEmptyParts);
@@ -59,8 +68,14 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 
 void
 VatsimDataHandler::parseDataFile(const QString& _data) {
+	while (!__pilots.empty())
+		delete __pilots.back(), __pilots.pop_back();
 	__pilots.clear();
+	while (!__atcs.empty())
+		delete __atcs.back(), __atcs.pop_back();
 	__atcs.clear();
+	for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
+		delete it.value();
 	__activeAirports.clear();
 	
 	qDebug() << "Data length: " << _data.length();
@@ -88,54 +103,57 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 			QStringList clientData = temp.split(':');
 			
 			if (clientData[3] == "ATC") {
-				Controller client;
+				Controller* client = new Controller;
 				
-				client.callsign = clientData[0];
-				client.pid = clientData[1].toUInt();
-				client.realName = clientData[2];
+				client->callsign = clientData[0];
+				client->pid = clientData[1].toUInt();
+				client->realName = clientData[2];
 				
-				client.frequency = clientData[4];
-				client.onlineFrom = QDateTime::fromString(clientData[37], "yyyyMMddhhmmss");
+				client->frequency = clientData[4];
+				client->onlineFrom = QDateTime::fromString(clientData[37], "yyyyMMddhhmmss");
 				
 				__atcs.push_back(client);
 				
-				QString icao = __obtainIcao(client.callsign);
+				QString icao = __obtainIcao(client->callsign);
 				if (icao != "") {
 					if (!__activeAirports.contains(icao))
-						__activeAirports.insert(icao, AirportObject(icao));
+						__activeAirports.insert(icao, new AirportObject(icao));
 					
-					__activeAirports[icao].addStuff(client);
+					__activeAirports[icao]->addStuff(client);
 				}
 				
 			} else {
-				Pilot client;
+				Pilot* client = new Pilot;
 				
-				client.callsign = clientData[0];
-				client.pid = clientData[1].toUInt();
-				client.realName = clientData[2];
-				client.position.latitude = clientData[5].toDouble();
-				client.position.longitude = clientData[6].toDouble();
-				client.altitude = clientData[7].toInt();
-				client.groundSpeed = clientData[8].toInt();
-				client.aircraft = clientData[9];
-				client.tas = clientData[10].toInt();
-				client.route.origin = clientData[11];
-				client.route.altitude = clientData[12];
-				client.route.destination = clientData[13];
-				client.server = clientData[14];
-				client.flightRules = (clientData[21] == "I") ? IFR : VFR;
-				client.remarks = clientData[29];
-				client.route.route = clientData[30];
-				client.onlineFrom = QDateTime::fromString(clientData[37], "yyyyMMddhhmmss");
-				client.heading = clientData[38].toUInt();
+				client->callsign = clientData[0];
+				client->pid = clientData[1].toUInt();
+				client->realName = clientData[2];
+				client->position.latitude = clientData[5].toDouble();
+				client->position.longitude = clientData[6].toDouble();
+				client->altitude = clientData[7].toInt();
+				client->groundSpeed = clientData[8].toInt();
+				client->aircraft = clientData[9];
+				client->tas = clientData[10].toInt();
+				client->route.origin = clientData[11];
+				client->route.altitude = clientData[12];
+				client->route.destination = clientData[13];
+				client->server = clientData[14];
+				client->squawk = clientData[17].toShort();
+				client->flightRules = (clientData[21] == "I") ? IFR : VFR;
+				client->remarks = clientData[29];
+				client->route.route = clientData[30];
+				client->onlineFrom = QDateTime::fromString(clientData[37], "yyyyMMddhhmmss");
+				client->heading = clientData[38].toUInt();
 				
 				__pilots.push_back(client);
 				
-				if (!__activeAirports.contains(client.route.origin))
-					__activeAirports.insert(client.route.origin, AirportObject(client.route.origin));
+				if (!__activeAirports.contains(client->route.origin))
+					__activeAirports.insert(client->route.origin, new AirportObject(client->route.origin));
+				__activeAirports[client->route.origin]->addOutbound(client);
 				
-				if (!__activeAirports.contains(client.route.destination))
-					__activeAirports.insert(client.route.destination, AirportObject(client.route.destination));		
+				if (!__activeAirports.contains(client->route.destination))
+					__activeAirports.insert(client->route.destination, new AirportObject(client->route.destination));
+				__activeAirports[client->route.destination]->addInbound(client);
 			}
 		}
 		
@@ -151,9 +169,9 @@ VatsimDataHandler::getDataUrl() {
 
 const Pilot *
 VatsimDataHandler::findPilot(const QString& _callsign) {
-	for (Pilot& p: __pilots)
-		if (p.callsign == _callsign)
-			return &p;
+	for (const Pilot* p: __pilots)
+		if (p->callsign == _callsign)
+			return p;
 	return NULL;
 }
 

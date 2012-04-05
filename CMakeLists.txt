@@ -79,9 +79,9 @@ target_link_libraries(vatsinator ${QT_LIBRARIES})
 target_link_libraries(vatsinator ${OPENGL_LIBRARY})
 
 install(FILES
-	resources/airport_onhover.png
-	resources/airport_onmouseout.png
+	resources/airport.png
 	resources/plane.png
+	resources/tower.png
 	resources/WorldAirports.db
 	DESTINATION share/vatsinator)
 

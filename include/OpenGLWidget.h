@@ -86,6 +86,9 @@ private:
 	
 	void __drawLines();
 	
+	void __openContextMenu(const Pilot*);
+	void __openContextMenu(const AirportObject*);
+	
 	/**
 	 * Loads necessary icons.
 	 */
@@ -105,9 +108,9 @@ private:
 	}
 	
 	/* OpenGL's textures. */
-	GLuint	__apOnMouseOutIcon;
-	GLuint	__apOnHoverIcon;
+	GLuint	__apIcon;
 	GLuint	__pilotIcon;
+	GLuint	__towerIcon;
 	
 	/* These variables are needed to render our textures. */
 	GLdouble	__vertices[8];

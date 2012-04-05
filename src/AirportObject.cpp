@@ -23,8 +23,18 @@ AirportObject::AirportObject(const QString& _icao) :
 		__data(AirportsDatabase::GetSingleton().find(_icao)) {}
 
 void
-AirportObject::addStuff(Controller _c) {
+AirportObject::addStuff(const Controller* _c) {
 	__staff.push_back(_c);
+}
+
+void
+AirportObject::addInbound(const Pilot* _p) {
+	__inbounds.push_back(_p);
+}
+
+void
+AirportObject::addOutbound(const Pilot* _p) {
+	__outbounds.push_back(_p);
 }
 
 

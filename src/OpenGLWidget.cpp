@@ -67,9 +67,9 @@ OpenGLWidget::init() {
 	glEnable(GL_ALPHA_TEST);
 	glEnable(GL_BLEND);
 	
-	__loadIcon(AIRPORT_OUT_ICON, __apOnMouseOutIcon);
-	__loadIcon(AIRPORT_HOVER_ICON, __apOnHoverIcon);
+	__loadIcon(AIRPORT_ICON, __apIcon);
 	__loadIcon(PILOT_ICON, __pilotIcon);
+	__loadIcon(TOWER_ICON, __towerIcon);
 	
 	__metars = MetarsWindow::GetSingletonPtr();
 	__flightDetails = FlightDetailsWindow::GetSingletonPtr();
@@ -111,6 +111,7 @@ OpenGLWidget::paintGL() {
 	if (!__toolTipWasShown) {
 		QToolTip::hideText();
 		__underMouse = NULL;
+		setCursor(QCursor(Qt::ArrowCursor));
 	}
 	
 	__toolTipWasShown = false;
@@ -150,41 +151,15 @@ OpenGLWidget::mousePressEvent(QMouseEvent* _event) {
 	__lastMousePos = _event->pos();
 	
 	if (_event->buttons() & Qt::RightButton) {
-		if (__underMouse && __underMouse->objectType() == PLANE) {
-			const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
-			QMenu* dMenu = new QMenu(pilot->callsign, this);
-			
-			FlightDetailsAction* showDetails = new FlightDetailsAction(pilot, this);
-			TrackAction* trackThisFlight = new TrackAction(pilot, this);
-			MetarAction* showDepMetar = new MetarAction(pilot->route.origin, this);
-			MetarAction* showArrMetar = new MetarAction(pilot->route.destination, this);
-			
-			dMenu->addAction(showDetails);
-			dMenu->addAction(trackThisFlight);
-			dMenu->addSeparator();
-			dMenu->addAction(showDepMetar);
-			dMenu->addAction(showArrMetar);
-			
-			connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
-			connect(trackThisFlight, SIGNAL(clicked(const Pilot*)), this, SLOT(trackFlight(const Pilot*)));
-			connect(showDepMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
-			connect(showArrMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
-			
-			dMenu->exec(mapToGlobal(__lastMousePos));
-			delete dMenu;
-		} else if (__underMouse && __underMouse->objectType() == AIRPORT) {
-			const AirportObject* ap = static_cast< const AirportObject* >(__underMouse);
-			QMenu* dMenu = new QMenu(ap->getData()->icao, this);
-			
-			MetarAction* showMetar = new MetarAction(ap->getData()->icao, this);
-			
-			dMenu->addAction(showMetar);
-			
-			connect(showMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
-			
-			dMenu->exec(mapToGlobal(__lastMousePos));
-			delete dMenu;
-		}
+		if (__underMouse && __underMouse->objectType() == PLANE)
+			__openContextMenu(static_cast< const Pilot* >(__underMouse));
+		else if (__underMouse && __underMouse->objectType() == AIRPORT)
+			__openContextMenu(static_cast< const AirportObject* >(__underMouse));
+	} else if (_event->buttons() & Qt::LeftButton) {
+		if (__underMouse && __underMouse->objectType() == PLANE)
+			__flightDetails->showWindow(static_cast< const Pilot* >(__underMouse));
+		else if (__underMouse && __underMouse->objectType() == AIRPORT)
+			__metars->showWindow(static_cast< const AirportObject* >(__underMouse)->getData()->icao);
 	}
 	
 	//paintGL();
@@ -288,20 +263,21 @@ OpenGLWidget::__drawAirports() {
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
+	glBindTexture(GL_TEXTURE_2D, __apIcon);
 	
 	for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 		
-		if (!it.value().getData())
+		if (!it.value()->getData())
 			continue;
 		
-		GLdouble x = it.value().getData()->longitude / 180;
+		GLdouble x = it.value()->getData()->longitude / 180;
 		x -= __position.x();
 		x *= __zoom;
 		
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
-		GLdouble y = it.value().getData()->latitude / 90;
+		GLdouble y = it.value()->getData()->latitude / 90;
 		y -= __position.y();
 		y *= __zoom;
 		
@@ -311,9 +287,7 @@ OpenGLWidget::__drawAirports() {
 		bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 		
 		if (inRange)
-			glBindTexture(GL_TEXTURE_2D, __apOnHoverIcon);
-		else
-			glBindTexture(GL_TEXTURE_2D, __apOnMouseOutIcon);
+			setCursor(QCursor(Qt::PointingHandCursor));
 		
 		glPushMatrix();
 		
@@ -327,17 +301,17 @@ OpenGLWidget::__drawAirports() {
 			
 			if (inRange) {
 				__toolTipWasShown = true;
-				__underMouse = &(it.value());
+				__underMouse = it.value();
 				
 				QString tooltipText = QString("<center>") + it.key() + "<br><nobr>";
-				tooltipText.append(it.value().getData()->name);
+				tooltipText.append(it.value()->getData()->name);
 				tooltipText.append(", ");
-				tooltipText.append(it.value().getData()->city);
+				tooltipText.append(it.value()->getData()->city);
 				tooltipText.append("</nobr>");
 				
-				for (const Controller& c: it.value().getStuff()) {
+				for (const Controller* c: it.value()->getStuff()) {
 					tooltipText.append("<br><nobr>");
-					tooltipText.append(c.callsign + " " + c.frequency + " " + c.realName);
+					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
 					tooltipText.append("</nobr>");
 				}
 				
@@ -350,6 +324,16 @@ OpenGLWidget::__drawAirports() {
 						);
 				}
 			}
+			
+			if (!it.value()->getStuff().isEmpty()) {
+				glBindTexture(GL_TEXTURE_2D, __towerIcon);
+				glColor4f(1.0, 1.0, 1.0, 1.0);
+				glTranslated(0.03, -0.03, 0);
+				glScaled(0.7, 0.9, 1);
+				glDrawArrays(GL_QUADS, 0, 4);
+				glBindTexture(GL_TEXTURE_2D, __apIcon);
+			}
+			
 		glPopMatrix();
 	}
 	
@@ -361,7 +345,7 @@ OpenGLWidget::__drawAirports() {
 
 void
 OpenGLWidget::__drawPilots() {
-	const QVector< Pilot > & pilots = VatsimDataHandler::GetSingleton().getPilots();
+	const QVector< Pilot* > & pilots = VatsimDataHandler::GetSingleton().getPilots();
 	
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glBindTexture(GL_TEXTURE_2D, __pilotIcon);
@@ -373,15 +357,15 @@ OpenGLWidget::__drawPilots() {
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
 	
-	for (const Pilot& client: pilots) {
-		GLdouble x = client.position.longitude / 180;
+	for (const Pilot* client: pilots) {
+		GLdouble x = client->position.longitude / 180;
 		x -= __position.x();
 		x *= __zoom;
 		
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
-		GLdouble y = client.position.latitude / 90;
+		GLdouble y = client->position.latitude / 90;
 		y -= __position.y();
 		y *= __zoom;
 		
@@ -396,7 +380,7 @@ OpenGLWidget::__drawPilots() {
 			glTranslated(x, y, 0);
 			
 			glPushMatrix();
-				glRotatef((GLfloat)client.heading, 0, 0, -1);
+				glRotatef((GLfloat)client->heading, 0, 0, -1);
 				
 				if (inRange)
 					glScalef(1.3, 1.3, 1.0);
@@ -405,28 +389,29 @@ OpenGLWidget::__drawPilots() {
 			glPopMatrix();
 			
 			glColor4f(PILOT_LABEL_COLOR);
-			renderText(0.03, -0.01, 0.5, client.callsign, __pilotsFont, 64);
+			renderText(0.03, -0.01, 0.5, client->callsign, __pilotsFont, 64);
 			
 			if (inRange && !__toolTipWasShown) {
 				__toolTipWasShown = true;
-				__underMouse = &client;
+				__underMouse = client;
+				setCursor(QCursor(Qt::PointingHandCursor));
 				
-				QString origin = (__airports[client.route.origin].getData()) ?
-						client.route.origin + " " + __airports[client.route.origin].getData()->city :
-						client.route.origin;
+				QString origin = (__airports[client->route.origin]->getData()) ?
+						client->route.origin + " " + __airports[client->route.origin]->getData()->city :
+						client->route.origin;
 				
-				QString destination = (__airports[client.route.destination].getData()) ?
-						client.route.destination + " " + __airports[client.route.destination].getData()->city :
-						client.route.destination;
+				QString destination = (__airports[client->route.destination]->getData()) ?
+						client->route.destination + " " + __airports[client->route.destination]->getData()->city :
+						client->route.destination;
 				
 				if (!QToolTip::isVisible())
 					QToolTip::showText(mapToGlobal(__lastMousePos),
-									   "<center>" + client.callsign + "<br><nobr>" +
-									   client.realName + " (" + client.aircraft +
+									   "<center>" + client->callsign + "<br><nobr>" +
+									   client->realName + " (" + client->aircraft +
 									   ")</nobr><br><nobr>" + origin +
 									   " > " + destination + "</nobr><br>" +
-									   "Ground speed: " + QString::number(client.groundSpeed) +
-									   " kts<br>Altitude: " + QString::number(client.altitude) +
+									   "Ground speed: " + QString::number(client->groundSpeed) +
+									   " kts<br>Altitude: " + QString::number(client->altitude) +
 									   " ft</center>",
 						this
 					);
@@ -446,10 +431,9 @@ OpenGLWidget::__drawLines() {
 		return;
 	
 	glColor4f(LINES_COLOR);
-	glLineWidth(1.3);
 	if (__underMouse->objectType() == PLANE) {
 		const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
-		const Airport* ap = __airports[pilot->route.origin].getData();
+		const Airport* ap = __airports[pilot->route.origin]->getData();
 		
 		if (ap) {
 			glBegin(GL_LINES);
@@ -466,7 +450,7 @@ OpenGLWidget::__drawLines() {
 			glEnd();
 		}
 		
-		ap = __airports[pilot->route.destination].getData();
+		ap = __airports[pilot->route.destination]->getData();
 		if (ap) {
 			glLineStipple(1, 0xF0F0);
 			glBegin(GL_LINES);
@@ -484,7 +468,81 @@ OpenGLWidget::__drawLines() {
 			glLineStipple(1, 0xFFFF);
 			
 		}
+	} else if (__underMouse->objectType() == AIRPORT) {
+		const AirportObject* ap = static_cast< const AirportObject* >(__underMouse);
+		if (!ap->getData())
+			return;
+		
+		for (const Pilot* p: ap->getOutbounds()) {
+			glBegin(GL_LINES);
+				glVertex3d(
+						(p->position.longitude / 180 - __position.x()) * __zoom,
+						(p->position.latitude / 90 - __position.y()) * __zoom,
+						-0.9
+					);
+				glVertex3d(
+						(ap->getData()->longitude / 180 - __position.x()) * __zoom,
+						(ap->getData()->latitude / 90 - __position.y()) * __zoom,
+						-0.9
+					);
+			glEnd();
+		}
+		
+		glLineStipple(1, 0xF0F0);
+		for (const Pilot* p: ap->getInbounds()) {
+			glBegin(GL_LINES);
+				glVertex3d(
+						(p->position.longitude / 180 - __position.x()) * __zoom,
+						(p->position.latitude / 90 - __position.y()) * __zoom,
+						-0.9
+					);
+				glVertex3d(
+						(ap->getData()->longitude / 180 - __position.x()) * __zoom,
+						(ap->getData()->latitude / 90 - __position.y()) * __zoom,
+						-0.9
+					);
+			glEnd();
+		}
+		glLineStipple(1, 0xFFFF);
 	}
+}
+
+void
+OpenGLWidget::__openContextMenu(const Pilot* _pilot) {
+	QMenu* dMenu = new QMenu(_pilot->callsign, this);
+	
+	FlightDetailsAction* showDetails = new FlightDetailsAction(_pilot, this);
+	TrackAction* trackThisFlight = new TrackAction(_pilot, this);
+	MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
+	MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
+	
+	dMenu->addAction(showDetails);
+	dMenu->addAction(trackThisFlight);
+	dMenu->addSeparator();
+	dMenu->addAction(showDepMetar);
+	dMenu->addAction(showArrMetar);
+	
+	connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
+	connect(trackThisFlight, SIGNAL(clicked(const Pilot*)), this, SLOT(trackFlight(const Pilot*)));
+	connect(showDepMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
+	connect(showArrMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
+	
+	dMenu->exec(mapToGlobal(__lastMousePos));
+	delete dMenu;
+}
+
+void
+OpenGLWidget::__openContextMenu(const AirportObject* _ap) {
+	QMenu* dMenu = new QMenu(_ap->getData()->icao, this);
+	
+	MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
+	
+	dMenu->addAction(showMetar);
+	
+	connect(showMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
+	
+	dMenu->exec(mapToGlobal(__lastMousePos));
+	delete dMenu;
 }
 
 void

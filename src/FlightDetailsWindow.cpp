@@ -53,6 +53,7 @@ FlightDetailsWindow::showWindow(const Client* _client) {
 	CurrentStatusLabel->setText("airborne");
 	ServerLabel->setText(pilot->server);
 	TimeOnlineLabel->setText(pilot->onlineFrom.toString("dd MMM yyyy, hh:mm"));
+	SquawkLabel->setText(QString::number(pilot->squawk));
 	
 	FlightRulesLabel->setText((pilot->flightRules == IFR) ? "IFR" : "VFR");
 	
