@@ -1,0 +1,9 @@
+ --Vatsinator --
+
+Vatsinator is simple Vatsim monitor - it shows logged-in pilots, controllers and provides flights information, airports METARs, etc etc. It is written in C++ (11 standard) with QT in order to be able to run under all platforms. It uses OpenGL as map rendering engine. To build it under Linux, download the tarball, unpack it and run:
+
+cmake .
+make
+sudo make install
+
+The present version is not a stable release yet. Vatsinator, although it runs fine, does not offer enough features yet.
