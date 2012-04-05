@@ -69,7 +69,7 @@ OpenGLWidget::init() {
 	
 	__loadIcon(AIRPORT_ICON, __apIcon);
 	__loadIcon(PILOT_ICON, __pilotIcon);
-	__loadIcon(TOWER_ICON, __towerIcon);
+	__loadIcon(AIRPORT_STAFFED_ICON, __apStaffedIcon);
 	
 	__metars = MetarsWindow::GetSingletonPtr();
 	__flightDetails = FlightDetailsWindow::GetSingletonPtr();
@@ -111,7 +111,8 @@ OpenGLWidget::paintGL() {
 	if (!__toolTipWasShown) {
 		QToolTip::hideText();
 		__underMouse = NULL;
-		setCursor(QCursor(Qt::ArrowCursor));
+		if (cursor().shape() != Qt::SizeAllCursor)
+			setCursor(QCursor(Qt::ArrowCursor));
 	}
 	
 	__toolTipWasShown = false;
@@ -166,11 +167,17 @@ OpenGLWidget::mousePressEvent(QMouseEvent* _event) {
 }
 
 void
+OpenGLWidget::mouseReleaseEvent(QMouseEvent*) {
+	setCursor(QCursor(Qt::ArrowCursor));
+}
+
+void
 OpenGLWidget::mouseMoveEvent(QMouseEvent* _event) {
 	int dx = _event->x() - __lastMousePos.x();
 	int dy = _event->y() - __lastMousePos.y();
 	
 	if (_event->buttons() & Qt::LeftButton) {
+		setCursor(QCursor(Qt::SizeAllCursor));
 		__tracked = NULL;
 		
 		// count the new position
@@ -263,7 +270,6 @@ OpenGLWidget::__drawAirports() {
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
-	glBindTexture(GL_TEXTURE_2D, __apIcon);
 	
 	for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 		
@@ -288,6 +294,8 @@ OpenGLWidget::__drawAirports() {
 		
 		if (inRange)
 			setCursor(QCursor(Qt::PointingHandCursor));
+		
+		glBindTexture(GL_TEXTURE_2D, (it.value()->getStuff().isEmpty()) ? __apIcon : __apStaffedIcon );
 		
 		glPushMatrix();
 		
@@ -315,6 +323,12 @@ OpenGLWidget::__drawAirports() {
 					tooltipText.append("</nobr>");
 				}
 				
+				tooltipText.append("<br>Departures: ");
+				tooltipText.append(QString::number(it.value()->countDepartures()));
+				
+				tooltipText.append("<br>Arrivals: ");
+				tooltipText.append(QString::number(it.value()->countArrivals()));
+				
 				tooltipText.append("</center>");
 				
 				if (!QToolTip::isVisible()) {
@@ -323,15 +337,6 @@ OpenGLWidget::__drawAirports() {
 							this
 						);
 				}
-			}
-			
-			if (!it.value()->getStuff().isEmpty()) {
-				glBindTexture(GL_TEXTURE_2D, __towerIcon);
-				glColor4f(1.0, 1.0, 1.0, 1.0);
-				glTranslated(0.03, -0.03, 0);
-				glScaled(0.7, 0.9, 1);
-				glDrawArrays(GL_QUADS, 0, 4);
-				glBindTexture(GL_TEXTURE_2D, __apIcon);
 			}
 			
 		glPopMatrix();
@@ -358,6 +363,9 @@ OpenGLWidget::__drawPilots() {
 	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
 	
 	for (const Pilot* client: pilots) {
+		if (client->flightStatus != AIRBORNE)
+			continue;
+		
 		GLdouble x = client->position.longitude / 180;
 		x -= __position.x();
 		x *= __zoom;
@@ -538,8 +546,37 @@ OpenGLWidget::__openContextMenu(const AirportObject* _ap) {
 	MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
 	
 	dMenu->addAction(showMetar);
-	
 	connect(showMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
+	
+	if (!_ap->getOutbounds().isEmpty() && _ap->countDepartures()) {
+		dMenu->addSeparator();
+		QAction* desc = new QAction("Departures", this);
+		desc->setEnabled(false);
+		dMenu->addAction(desc);
+	}
+	
+	for (const Pilot* p: _ap->getOutbounds()) {
+		if (p->flightStatus != DEPARTING)
+			continue;
+		FlightDetailsAction* showDetails = new FlightDetailsAction(p->callsign, p, this);
+		dMenu->addAction(showDetails);
+		connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
+	}
+	
+	if (!_ap->getInbounds().isEmpty() && _ap->countArrivals()) {
+		dMenu->addSeparator();
+		QAction* desc = new QAction("Arrivals", this);
+		desc->setEnabled(false);
+		dMenu->addAction(desc);
+	}
+	
+	for (const Pilot* p: _ap->getInbounds()) {
+		if (p->flightStatus != ARRIVED)
+			continue;
+		FlightDetailsAction* showDetails = new FlightDetailsAction(p->callsign, p, this);
+		dMenu->addAction(showDetails);
+		connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
+	}
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
 	delete dMenu;

@@ -64,6 +64,8 @@ private:
 	
 	void __clearFlags(QMap< QString, bool >&);
 	
+	void __setStatus(Pilot*);
+	
 	QString __obtainIcao(const QString&);
 	
 	/* These are vectors of connected clients */
@@ -84,6 +86,14 @@ private:
 	AirportsDatabase & __airports;
 	
 	VatsinatorApplication &	__mother;
+	
+	inline double __calcDistance(const double& _ax, const double& _ay,
+								 const double& _bx, const double& _by) {
+		return sqrt(
+			pow(_ax - _bx, 2) +
+			pow(_ay - _by, 2)
+		);
+	}
 	
 };
 

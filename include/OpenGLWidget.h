@@ -64,6 +64,7 @@ protected:
 	void resizeGL(int, int);
 	void wheelEvent(QWheelEvent*);
 	void mousePressEvent(QMouseEvent*);
+	void mouseReleaseEvent(QMouseEvent*);
 	void mouseMoveEvent(QMouseEvent*);
 	void keyPressEvent(QKeyEvent*);
 	
@@ -109,8 +110,8 @@ private:
 	
 	/* OpenGL's textures. */
 	GLuint	__apIcon;
+	GLuint	__apStaffedIcon;
 	GLuint	__pilotIcon;
-	GLuint	__towerIcon;
 	
 	/* These variables are needed to render our textures. */
 	GLdouble	__vertices[8];

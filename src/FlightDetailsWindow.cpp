@@ -50,7 +50,14 @@ FlightDetailsWindow::showWindow(const Client* _client) {
 	AltitudeLabel->setText(QString::number(pilot->altitude) + " feet");
 	GroundSpeedLabel->setText(QString::number(pilot->groundSpeed) + " kts");
 	HeadingLabel->setText(QString::number(pilot->heading));
-	CurrentStatusLabel->setText("airborne");
+	
+	if (pilot->flightStatus == AIRBORNE)
+		CurrentStatusLabel->setText("airborne");
+	else if (pilot->flightStatus == DEPARTING)
+		CurrentStatusLabel->setText("departing");
+	else
+		CurrentStatusLabel->setText("arrived");
+	
 	ServerLabel->setText(pilot->server);
 	TimeOnlineLabel->setText(pilot->onlineFrom.toString("dd MMM yyyy, hh:mm"));
 	SquawkLabel->setText(QString::number(pilot->squawk));

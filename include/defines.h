@@ -10,13 +10,13 @@
 #define VATSINATOR_VERSION	"0.1_beta1"
 
 // where to get all the data from
-#define VATSIM_STATUS_URL	"http://status.vatsim.net/status.txt"
-#define AIRPORTS_DB			PREFIX "/share/vatsinator/WorldAirports.db"
+#define VATSIM_STATUS_URL		"http://status.vatsim.net/status.txt"
+#define AIRPORTS_DB				PREFIX "/share/vatsinator/WorldAirports.db"
 
 // where icons are stored
-#define AIRPORT_ICON		PREFIX "/share/vatsinator/airport.png"
-#define PILOT_ICON			PREFIX "/share/vatsinator/plane.png"
-#define TOWER_ICON			PREFIX "/share/vatsinator/tower.png"
+#define AIRPORT_ICON			PREFIX "/share/vatsinator/airport.png"
+#define AIRPORT_STAFFED_ICON	PREFIX "/share/vatsinator/airport_staffed.png"
+#define PILOT_ICON				PREFIX "/share/vatsinator/plane.png"
 
 // below/above these values user can't zoom the map
 #define ZOOM_MINIMUM		3

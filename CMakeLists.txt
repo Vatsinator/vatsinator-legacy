@@ -80,8 +80,8 @@ target_link_libraries(vatsinator ${OPENGL_LIBRARY})
 
 install(FILES
 	resources/airport.png
+	resources/airport_staffed.png
 	resources/plane.png
-	resources/tower.png
 	resources/WorldAirports.db
 	DESTINATION share/vatsinator)
 

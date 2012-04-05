@@ -30,6 +30,12 @@ enum FlightRules {
 	IFR, VFR
 };
 
+enum Status {
+	DEPARTING,
+	AIRBORNE,
+	ARRIVED
+};
+
 struct Position {
 	double	longitude;
 	double	latitude;
@@ -77,6 +83,8 @@ public:
 	
 	QDateTime	onlineFrom;
 	unsigned	heading;
+	
+	Status		flightStatus;
 	
 };
 

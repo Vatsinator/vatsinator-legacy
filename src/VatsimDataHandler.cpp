@@ -102,6 +102,51 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 		if (flags["CLIENTS"]) {
 			QStringList clientData = temp.split(':');
 			
+			/*
+			 * Ok, this is out important parsing section. Let's set things up:
+			 * 0 callsign
+			 * 1 cid
+			 * 2 realname
+			 * 3 clienttype
+			 * 4 frequency
+			 * 5 latitude
+			 * 6 longitude
+			 * 7 altitude
+			 * 8 groundspeed
+			 * 9 planned_aircraft
+			 * 10 planned_tascruise
+			 * 11 planned_depairport
+			 * 12 planned_altitude
+			 * 13 planned_destairport
+			 * 14 server
+			 * 15 protrevision
+			 * 16 rating
+			 * 17 transponder
+			 * 18 facilitytype
+			 * 19 visualrange
+			 * 20 planned_revision
+			 * 21 planned_flighttype
+			 * 22 planned_deptime
+			 * 23 planned_actdeptime
+			 * 24 planned_hrsenroute
+			 * 25 planned_minenroute
+			 * 26 planned_hrsfuel
+			 * 27 planned_minfuel
+			 * 28 planned_altairport
+			 * 29 planned_remarks
+			 * 30 planned_route
+			 * 31 planned_depairport_lat
+			 * 32 planned_depairport_lon
+			 * 33 planned_destairport_lat
+			 * 34 planned_destairport_lon
+			 * 35 atis_message
+			 * 36 time_last_atis_received
+			 * 37 time_logon
+			 * 38 heading
+			 * 39 QNH_iHg
+			 * 40 QNH_Mb
+			 */
+			
 			if (clientData[3] == "ATC") {
 				Controller* client = new Controller;
 				
@@ -154,6 +199,8 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 				if (!__activeAirports.contains(client->route.destination))
 					__activeAirports.insert(client->route.destination, new AirportObject(client->route.destination));
 				__activeAirports[client->route.destination]->addInbound(client);
+				
+				__setStatus(client);
 			}
 		}
 		
@@ -179,6 +226,64 @@ void
 VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
 	for (auto it = _flags.begin(); it != _flags.end(); ++it)
 		it.value() = false;
+}
+
+void
+VatsimDataHandler::__setStatus(Pilot* _pilot) {
+	if (!_pilot->route.origin.isEmpty()) { // we have flight plan, ok
+		const Airport* ap_origin = __activeAirports[_pilot->route.origin]->getData();
+		const Airport* ap_arrival = __activeAirports[_pilot->route.destination]->getData();
+	
+		if ((ap_origin == ap_arrival) && (ap_origin != NULL)) // traffic pattern?
+			if (_pilot->groundSpeed < 25) {
+				_pilot->flightStatus = DEPARTING;
+				return;
+			}
+	
+		if (ap_origin)
+			// check if origin airport is in range
+			if ((__calcDistance(ap_origin->longitude, ap_origin->latitude,
+					_pilot->position.longitude, _pilot->position.latitude) < 0.1) && (_pilot->groundSpeed < 50)) {
+				_pilot->flightStatus = DEPARTING;
+				return;
+			}
+	
+		if (ap_arrival)
+			// or maybe arrival?
+			if ((__calcDistance(ap_arrival->longitude, ap_arrival->latitude,
+				_pilot->position.longitude, _pilot->position.latitude) < 0.1) && (_pilot->groundSpeed < 50)) {
+				_pilot->flightStatus = ARRIVED;
+				return;
+			}
+	} else { // no flight plan, we have to check where exactly the pilot is
+		if (_pilot->groundSpeed > 30) {
+			_pilot->flightStatus = AIRBORNE;
+			return;
+		}
+		
+		const Airport* closest = NULL;
+		double distance = 0.0;
+		for (const Airport& ap: __airports.getAirports()) { // yeah, this is messy
+			double temp = __calcDistance(ap.longitude, ap.latitude,
+										 _pilot->position.longitude, _pilot->position.latitude);
+			if (((temp < distance) && closest) || !closest) {
+				closest = &ap;
+				distance = temp;
+			}
+		}
+		
+		if (closest) { // we found something really close
+			_pilot->route.origin = closest->icao;
+			if (!__activeAirports.contains(_pilot->route.origin))
+				__activeAirports.insert(_pilot->route.origin, new AirportObject(_pilot->route.origin));
+			__activeAirports[_pilot->route.origin]->addOutbound(_pilot);
+			__setStatus(_pilot);
+			return;
+		}
+	}
+	
+	// finally:
+	_pilot->flightStatus = AIRBORNE;
 }
 
 QString

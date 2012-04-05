@@ -29,6 +29,13 @@ FlightDetailsAction::FlightDetailsAction(const Client* _client, QObject* _parent
 	connect(this, SIGNAL(triggered()), this, SLOT(handleTriggered()));
 }
 
+FlightDetailsAction::FlightDetailsAction(const QString& _text, const Client* _client, QObject* _parent) :
+		QAction(_text, _parent),
+		__current(_client) {
+	
+	connect(this, SIGNAL(triggered()), this, SLOT(handleTriggered()));
+}
+
 void
 FlightDetailsAction::handleTriggered() {
 	emit clicked(__current);

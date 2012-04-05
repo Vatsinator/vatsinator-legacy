@@ -39,11 +39,14 @@ public:
 	
 	void addOutbound(const Pilot*);
 	
+	unsigned countDepartures() const;
+	unsigned countArrivals() const;
+	
 	const QVector< const Controller* > getStuff() const { return __staff; }
 	
 	const QVector< const Pilot* > getInbounds() const { return __inbounds; }
 	const QVector< const Pilot* > getOutbounds() const { return __outbounds; }
-	
+
 	const Airport * getData() const { return __data; }
 	
 	ObjectType objectType() const { return AIRPORT; }

@@ -31,6 +31,7 @@ class FlightDetailsAction :
 	
 public:
 	FlightDetailsAction(const Client*, QObject*);
+	FlightDetailsAction(const QString&, const Client*, QObject*);
 	
 signals:
 	void clicked(const Client*);

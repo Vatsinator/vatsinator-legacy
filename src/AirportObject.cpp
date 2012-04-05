@@ -37,5 +37,23 @@ AirportObject::addOutbound(const Pilot* _p) {
 	__outbounds.push_back(_p);
 }
 
+unsigned
+AirportObject::countDepartures() const {
+	unsigned i = 0;
+	for (const Pilot* p: __outbounds)
+		if (p->flightStatus == DEPARTING)
+			++i;
+	
+	return i;
+}
 
+unsigned
+AirportObject::countArrivals() const {
+	unsigned i = 0;
+	for (const Pilot* p: __inbounds)
+		if (p->flightStatus == ARRIVED)
+			++i;
+	
+	return i;
+}
 
