@@ -33,7 +33,7 @@ public:
 	
 	AirportObject(const QString& = "");
 	
-	void addStuff(const Controller*);
+	void addStaff(const Controller*);
 	
 	void addInbound(const Pilot*);
 	
@@ -42,13 +42,21 @@ public:
 	unsigned countDepartures() const;
 	unsigned countArrivals() const;
 	
-	const QVector< const Controller* > getStuff() const { return __staff; }
+	bool hasApproach() const;
 	
-	const QVector< const Pilot* > getInbounds() const { return __inbounds; }
-	const QVector< const Pilot* > getOutbounds() const { return __outbounds; }
+	inline
+	const QVector< const Controller* > & getStaff() const { return __staff; }
+	
+	inline
+	const QVector< const Pilot* > & getInbounds() const { return __inbounds; }
+	
+	inline
+	const QVector< const Pilot* > & getOutbounds() const { return __outbounds; }
 
+	inline
 	const Airport * getData() const { return __data; }
 	
+	inline
 	ObjectType objectType() const { return AIRPORT; }
 	
 	

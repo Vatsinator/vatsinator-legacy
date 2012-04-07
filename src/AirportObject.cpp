@@ -23,7 +23,7 @@ AirportObject::AirportObject(const QString& _icao) :
 		__data(AirportsDatabase::GetSingleton().find(_icao)) {}
 
 void
-AirportObject::addStuff(const Controller* _c) {
+AirportObject::addStaff(const Controller* _c) {
 	__staff.push_back(_c);
 }
 
@@ -55,5 +55,14 @@ AirportObject::countArrivals() const {
 			++i;
 	
 	return i;
+}
+
+bool
+AirportObject::hasApproach() const {
+	for (const Controller* c: __staff)
+		if (c->facility == APP)
+			return true;
+	
+	return false;
 }
 

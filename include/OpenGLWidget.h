@@ -24,7 +24,10 @@
 #include <QLabel>
 
 #include "VatsimDataHandler.h"
+#include "Singleton.h"
 
+class AirportDetailsWindow;
+class ATCDetailsWindow;
 class Clickable;
 class VatsinatorApplication;
 class MetarsWindow;
@@ -35,7 +38,8 @@ enum PMMatrixMode {
 };
 
 class OpenGLWidget :
-		public QGLWidget {
+		public QGLWidget,
+		public Singleton< OpenGLWidget >{
 	
 	/*
 	 * We need this class to build our QGLWidget for UserInterface class.
@@ -56,6 +60,7 @@ public:
 	
 public slots:
 	void trackFlight(const Pilot* _p) { __tracked = _p; }
+	void showPilot(const Pilot*);
 	
 protected:
 	/* Here we reimplement some functions that are needed for
@@ -101,11 +106,21 @@ private:
 	void __storeSettings();
 	void __restoreSettings();
 	
-	inline double __distanceFromCamera(const double& _x, const double& _y) {
+	void __produceCircle();
+	
+	inline
+	double __distanceFromCamera(const double& _x, const double& _y) {
 		return sqrt(
 			pow(_x - __lastMousePosInterpolated.x(), 2) +
 			pow(_y - __lastMousePosInterpolated.y(), 2)
 		);
+	}
+	
+	inline
+	void __mapCoordinates(const double& _xFrom, const double& _yFrom,
+						  double& _xTo, double& _yTo) {
+		_xTo = (_xFrom / 180 - __position.x()) * __zoom;
+		_yTo = (_yFrom / 90 - __position.y()) * __zoom;
 	}
 	
 	/* OpenGL's textures. */
@@ -116,6 +131,8 @@ private:
 	/* These variables are needed to render our textures. */
 	GLdouble	__vertices[8];
 	GLdouble	__texCoords[8];
+	GLdouble*	__circle;
+	unsigned	__circleCount;
 	
 	/* Camera position x, y */
 	QPointF		__position;
@@ -155,8 +172,10 @@ private:
 	
 	const AirportsMap & __airports;
 	
-	MetarsWindow * __metars;
-	FlightDetailsWindow * __flightDetails;
+	AirportDetailsWindow *	__airportDetails;
+	ATCDetailsWindow *		__atcDetails;
+	FlightDetailsWindow *	__flightDetails;
+	MetarsWindow *			__metars;
 	
 	
 	

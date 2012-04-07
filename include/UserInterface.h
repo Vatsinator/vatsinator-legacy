@@ -24,6 +24,8 @@
 #include "OpenGLWidget.h"
 #include "Singleton.h"
 
+class AirportDetailsWindow;
+class ATCDetailsWindow;
 class FlightDetailsWindow;
 class MetarsWindow;
 class VatsinatorApplication;
@@ -66,8 +68,10 @@ private:
 	void __storeWindowGeometry();
 	void __restoreWindowGeometry();
 	
+	ATCDetailsWindow * __atcDetailsWindow;
 	FlightDetailsWindow * __flightDetailsWindow;
 	MetarsWindow *	__metarsWindow;
+	AirportDetailsWindow * __airportDetailsWindow;
 	
 	VatsinatorApplication &	__mother;
 	

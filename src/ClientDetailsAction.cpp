@@ -1,5 +1,5 @@
 /*
-    Client.h
+    ClientDetailsAction.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,16 @@
 */
 
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#include "../include/ClientDetailsAction.h"
 
-// types
-enum ClientType {
-	PILOT, ATC
-};
+ClientDetailsAction::ClientDetailsAction(const Client* _client, const QString& _label, QObject* _parent) :
+		QAction(_label, _parent),
+		__current(_client) {
+	connect(this, SIGNAL(triggered()), this, SLOT(handleTriggered()));
+}
 
-class Client {
-	
-public:
-	
-	virtual ClientType type() const = 0;
-	
-	
-};
+void
+ClientDetailsAction::handleTriggered() {
+	emit clicked(__current);
+}
 
-#endif // CLIENT_H

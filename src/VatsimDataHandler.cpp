@@ -102,106 +102,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 		if (flags["CLIENTS"]) {
 			QStringList clientData = temp.split(':');
 			
-			/*
-			 * Ok, this is out important parsing section. Let's set things up:
-			 * 0 callsign
-			 * 1 cid
-			 * 2 realname
-			 * 3 clienttype
-			 * 4 frequency
-			 * 5 latitude
-			 * 6 longitude
-			 * 7 altitude
-			 * 8 groundspeed
-			 * 9 planned_aircraft
-			 * 10 planned_tascruise
-			 * 11 planned_depairport
-			 * 12 planned_altitude
-			 * 13 planned_destairport
-			 * 14 server
-			 * 15 protrevision
-			 * 16 rating
-			 * 17 transponder
-			 * 18 facilitytype
-			 * 19 visualrange
-			 * 20 planned_revision
-			 * 21 planned_flighttype
-			 * 22 planned_deptime
-			 * 23 planned_actdeptime
-			 * 24 planned_hrsenroute
-			 * 25 planned_minenroute
-			 * 26 planned_hrsfuel
-			 * 27 planned_minfuel
-			 * 28 planned_altairport
-			 * 29 planned_remarks
-			 * 30 planned_route
-			 * 31 planned_depairport_lat
-			 * 32 planned_depairport_lon
-			 * 33 planned_destairport_lat
-			 * 34 planned_destairport_lon
-			 * 35 atis_message
-			 * 36 time_last_atis_received
-			 * 37 time_logon
-			 * 38 heading
-			 * 39 QNH_iHg
-			 * 40 QNH_Mb
-			 */
-			
-			if (clientData[3] == "ATC") {
-				Controller* client = new Controller;
-				
-				client->callsign = clientData[0];
-				client->pid = clientData[1].toUInt();
-				client->realName = clientData[2];
-				
-				client->frequency = clientData[4];
-				client->onlineFrom = QDateTime::fromString(clientData[37], "yyyyMMddhhmmss");
-				
-				__atcs.push_back(client);
-				
-				QString icao = __obtainIcao(client->callsign);
-				if (icao != "") {
-					if (!__activeAirports.contains(icao))
-						__activeAirports.insert(icao, new AirportObject(icao));
-					
-					__activeAirports[icao]->addStuff(client);
-				}
-				
-			} else {
-				Pilot* client = new Pilot;
-				
-				client->callsign = clientData[0];
-				client->pid = clientData[1].toUInt();
-				client->realName = clientData[2];
-				client->position.latitude = clientData[5].toDouble();
-				client->position.longitude = clientData[6].toDouble();
-				client->altitude = clientData[7].toInt();
-				client->groundSpeed = clientData[8].toInt();
-				client->aircraft = clientData[9];
-				client->tas = clientData[10].toInt();
-				client->route.origin = clientData[11];
-				client->route.altitude = clientData[12];
-				client->route.destination = clientData[13];
-				client->server = clientData[14];
-				client->squawk = clientData[17].toShort();
-				client->flightRules = (clientData[21] == "I") ? IFR : VFR;
-				client->remarks = clientData[29];
-				client->route.route = clientData[30];
-				client->onlineFrom = QDateTime::fromString(clientData[37], "yyyyMMddhhmmss");
-				client->heading = clientData[38].toUInt();
-				
-				__pilots.push_back(client);
-				
-				if (!__activeAirports.contains(client->route.origin))
-					__activeAirports.insert(client->route.origin, new AirportObject(client->route.origin));
-				__activeAirports[client->route.origin]->addOutbound(client);
-				
-				if (!__activeAirports.contains(client->route.destination))
-					__activeAirports.insert(client->route.destination, new AirportObject(client->route.destination));
-				__activeAirports[client->route.destination]->addInbound(client);
-				
-				__setStatus(client);
-			}
+			if (clientData[3] == "ATC")
+				__parseATC(clientData);
+			else if (clientData[3] == "PILOT")
+				__parsePilot(clientData);
 		}
 		
 	}
@@ -222,10 +126,114 @@ VatsimDataHandler::findPilot(const QString& _callsign) {
 	return NULL;
 }
 
+
+/*
+ * Ok, this is out important parsing section. Let's set things up:
+ * 0 callsign
+ * 1 cid
+ * 2 realname
+ * 3 clienttype
+ * 4 frequency
+ * 5 latitude
+ * 6 longitude
+ * 7 altitude
+ * 8 groundspeed
+ * 9 planned_aircraft
+ * 10 planned_tascruise
+ * 11 planned_depairport
+ * 12 planned_altitude
+ * 13 planned_destairport
+ * 14 server
+ * 15 protrevision
+ * 16 rating
+ * 17 transponder
+ * 18 facilitytype
+ * 19 visualrange
+ * 20 planned_revision
+ * 21 planned_flighttype
+ * 22 planned_deptime
+ * 23 planned_actdeptime
+ * 24 planned_hrsenroute
+ * 25 planned_minenroute
+ * 26 planned_hrsfuel
+ * 27 planned_minfuel
+ * 28 planned_altairport
+ * 29 planned_remarks
+ * 30 planned_route
+ * 31 planned_depairport_lat
+ * 32 planned_depairport_lon
+ * 33 planned_destairport_lat
+ * 34 planned_destairport_lon
+ * 35 atis_message
+ * 36 time_last_atis_received
+ * 37 time_logon
+ * 38 heading
+ * 39 QNH_iHg
+ * 40 QNH_Mb
+ */
 void
-VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
-	for (auto it = _flags.begin(); it != _flags.end(); ++it)
-		it.value() = false;
+VatsimDataHandler::__parseATC(const QStringList& _clientData) {
+	Controller* client = new Controller;
+	
+	client->callsign = _clientData[0];
+	client->pid = _clientData[1].toUInt();
+	client->realName = _clientData[2];
+	
+	client->frequency = _clientData[4];
+	client->server = _clientData[14];
+	client->rating = _clientData[16].toInt();
+	client->atis = _clientData[35];
+	
+	client->onlineFrom = QDateTime::fromString(_clientData[37], "yyyyMMddhhmmss");
+	
+	if (client->atis[0] == '$') {
+		auto index = client->atis.indexOf('^');
+		client->atis.remove(0, index + 2);
+	}
+	client->atis.replace((QString)'^' + (char)167, "\n");
+	
+	__atcs.push_back(client);
+	
+	__setIcaoAndFacility(client);
+}
+
+void
+VatsimDataHandler::__parsePilot(const QStringList& _clientData) {
+	Pilot* client = new Pilot;
+	
+	client->callsign = _clientData[0];
+	client->pid = _clientData[1].toUInt();
+	client->realName = _clientData[2];
+	client->position.latitude = _clientData[5].toDouble();
+	client->position.longitude = _clientData[6].toDouble();
+	client->altitude = _clientData[7].toInt();
+	client->groundSpeed = _clientData[8].toInt();
+	client->aircraft = _clientData[9];
+	client->tas = _clientData[10].toInt();
+	client->route.origin = _clientData[11];
+	client->route.altitude = _clientData[12];
+	client->route.destination = _clientData[13];
+	client->server = _clientData[14];
+	client->squawk = _clientData[17].toShort();
+	client->flightRules = (_clientData[21] == "I") ? IFR : VFR;
+	client->remarks = _clientData[29];
+	client->route.route = _clientData[30];
+	client->onlineFrom = QDateTime::fromString(_clientData[37], "yyyyMMddhhmmss");
+	client->heading = _clientData[38].toUInt();
+	
+	__pilots.push_back(client);
+	
+	if (!__activeAirports.contains(client->route.origin))
+		__activeAirports.insert(client->route.origin,
+								new AirportObject(client->route.origin));
+		__activeAirports[client->route.origin]->addOutbound(client);
+	
+	if (!__activeAirports.contains(client->route.destination))
+		__activeAirports.insert(client->route.destination,
+								new AirportObject(client->route.destination));
+		__activeAirports[client->route.destination]->addInbound(client);
+	
+	__setStatus(client);
 }
 
 void
@@ -243,7 +251,8 @@ VatsimDataHandler::__setStatus(Pilot* _pilot) {
 		if (ap_origin)
 			// check if origin airport is in range
 			if ((__calcDistance(ap_origin->longitude, ap_origin->latitude,
-					_pilot->position.longitude, _pilot->position.latitude) < 0.1) && (_pilot->groundSpeed < 50)) {
+						_pilot->position.longitude, _pilot->position.latitude) < PILOT_TO_AIRPORT)
+						&& (_pilot->groundSpeed < 50)) {
 				_pilot->flightStatus = DEPARTING;
 				return;
 			}
@@ -251,7 +260,8 @@ VatsimDataHandler::__setStatus(Pilot* _pilot) {
 		if (ap_arrival)
 			// or maybe arrival?
 			if ((__calcDistance(ap_arrival->longitude, ap_arrival->latitude,
-				_pilot->position.longitude, _pilot->position.latitude) < 0.1) && (_pilot->groundSpeed < 50)) {
+						_pilot->position.longitude, _pilot->position.latitude) < PILOT_TO_AIRPORT)
+						&& (_pilot->groundSpeed < 50)) {
 				_pilot->flightStatus = ARRIVED;
 				return;
 			}
@@ -273,6 +283,12 @@ VatsimDataHandler::__setStatus(Pilot* _pilot) {
 		}
 		
 		if (closest) { // we found something really close
+			if (__calcDistance(closest->longitude, closest->latitude,
+						_pilot->position.longitude, _pilot->position.latitude) > PILOT_TO_AIRPORT) {
+				_pilot->flightStatus = AIRBORNE;
+				return;
+			}
+
 			_pilot->route.origin = closest->icao;
 			if (!__activeAirports.contains(_pilot->route.origin))
 				__activeAirports.insert(_pilot->route.origin, new AirportObject(_pilot->route.origin));
@@ -286,11 +302,47 @@ VatsimDataHandler::__setStatus(Pilot* _pilot) {
 	_pilot->flightStatus = AIRBORNE;
 }
 
-QString
-VatsimDataHandler::__obtainIcao(const QString& _atcCallsign) {
-	QString icao = _atcCallsign.section('_', 0, 0);
-	if (icao.length() == 4)
-		return icao;
-	else
-		return "";
+void
+VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
+	QStringList sections = _atc->callsign.split('_');
+	if (sections.back() == "CTR") {
+		_atc->facility = CTR;
+		_atc->airport = NULL;
+		return;
+	} else if (
+			sections.back() == "APP" ||
+			sections.back() == "TWR" ||
+			sections.back() == "GND" ||
+			sections.back() == "DEL" ||
+			sections.back() == "ATIS") {
+		
+		if (sections.back() == "APP")
+			_atc->facility = APP;
+		else if (sections.back() == "TWR")
+			_atc->facility = TWR;
+		else if (sections.back() == "GND")
+			_atc->facility = GND;
+		else if (sections.back() == "DEL")
+			_atc->facility = DEL;
+		else if (sections.back() == "ATIS")
+			_atc->facility = ATIS;
+		
+		if (sections[0].length() == 4 && !sections[0].isEmpty()) {
+			if (!__activeAirports.contains(sections[0]))
+				__activeAirports.insert(sections[0], new AirportObject(sections[0]));
+			__activeAirports[sections[0]]->addStaff(_atc);
+			_atc->airport = __activeAirports[sections[0]]->getData();
+		}
+		return;
+	} else if (sections.back() == "OBS") {
+		_atc->facility = OBS;
+		_atc->airport = NULL;
+		return;
+	}
+}
+
+void
+VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
+	for (auto it = _flags.begin(); it != _flags.end(); ++it)
+		it.value() = false;
 }

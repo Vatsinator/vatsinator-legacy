@@ -25,10 +25,11 @@
 #include <QStack>
 
 #include "Metar.h"
+#include "Singleton.h"
 
 class HttpHandler;
 
-class MetarsHandler : public QObject {
+class MetarsHandler : public QObject, public Singleton< MetarsHandler > {
 	
 	/*
 	 * This class manages our METARs. It receives any metar requests,

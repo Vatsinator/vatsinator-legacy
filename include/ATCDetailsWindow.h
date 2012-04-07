@@ -1,5 +1,5 @@
 /*
-    Client.h
+    ATCDetailsWindow.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,33 @@
 */
 
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef ATCDETAILSWINDOW_H
+#define ATCDETAILSWINDOW_H
 
-// types
-enum ClientType {
-	PILOT, ATC
-};
+#include "ui_ATCDetailsWindow.h"
+#include "Singleton.h"
 
-class Client {
+class Client;
+
+class ATCDetailsWindow :
+		public QWidget,
+		public Singleton< ATCDetailsWindow >,
+		private Ui::ATCDetailsWindow {
+	
+	Q_OBJECT
 	
 public:
+	ATCDetailsWindow(QWidget* = 0);
 	
-	virtual ClientType type() const = 0;
+public slots:
+	void showWindow(const Client*);
+	
+private:
+	void __setWindowPosition();
+	
+	QMap< int, QString> __ratings;
 	
 	
 };
 
-#endif // CLIENT_H
+#endif // ATCDETAILSWINDOW_H

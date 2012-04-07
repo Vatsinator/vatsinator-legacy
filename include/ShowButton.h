@@ -1,5 +1,5 @@
 /*
-    Client.h
+    ShowButton.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,30 @@
 */
 
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef SHOWBUTTON_H
+#define SHOWBUTTON_H
 
-// types
-enum ClientType {
-	PILOT, ATC
-};
+#include <QPushButton>
 
-class Client {
+class Pilot;
+
+class ShowButton : public QPushButton {
+	
+	Q_OBJECT
 	
 public:
+	ShowButton(const Pilot*, QWidget* = 0);
 	
-	virtual ClientType type() const = 0;
+signals:
+	void buttonClicked(const Pilot*);
+	
+public slots:
+	void handleClicked();
+	
+private:
+	const Pilot* __current;
 	
 	
 };
 
-#endif // CLIENT_H
+#endif // SHOWBUTTON_H

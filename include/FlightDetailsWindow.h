@@ -34,12 +34,10 @@ class FlightDetailsWindow :
 	Q_OBJECT
 	
 public:
-	
 	FlightDetailsWindow(QWidget* = 0);
 	
 public slots:
 	void showWindow(const Client*);
-	
 	void stateHandle(int);
 	
 private:

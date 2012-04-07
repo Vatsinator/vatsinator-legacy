@@ -12,16 +12,19 @@ set(CMAKE_CXX_FLAGS "-g -Wall -std=c++0x")
 
 set(vatsinator_SOURCES
 	main.cpp
-	src/AirportsDatabase.cpp
+	src/AirportDetailsWindow.cpp
 	src/AirportObject.cpp
+	src/AirportsDatabase.cpp
+	src/ATCDetailsWindow.cpp
+	src/ClientDetailsAction.cpp
 	src/FlightDetailsWindow.cpp
-	src/FlightDetailsAction.cpp
 	src/HttpHandler.cpp
 	src/Metar.cpp
 	src/MetarAction.cpp
 	src/MetarsHandler.cpp
 	src/MetarsWindow.cpp
 	src/OpenGLWidget.cpp
+	src/ShowButton.cpp
 	src/TrackAction.cpp
 	src/UserInterface.cpp
 	src/VatsimDataHandler.cpp
@@ -29,19 +32,24 @@ set(vatsinator_SOURCES
 )
 
 set(vatsinator_QT_HEADERS
+	include/AirportDetailsWindow.h
+	include/ATCDetailsWindow.h
+	include/ClientDetailsAction.h
 	include/FlightDetailsWindow.h
-	include/FlightDetailsAction.h
 	include/HttpHandler.h
 	include/MetarAction.h
 	include/MetarsHandler.h
 	include/MetarsWindow.h
 	include/OpenGLWidget.h
+	include/ShowButton.h
 	include/TrackAction.h
 	include/UserInterface.h
 	include/VatsinatorApplication.h
 )
 
 set(vatsinator_FORMS
+	resources/AirportDetailsWindow.ui
+	resources/ATCDetailsWindow.ui
 	resources/FlightDetailsWindow.ui
 	resources/MetarsWindow.ui
 	resources/UserInterface.ui

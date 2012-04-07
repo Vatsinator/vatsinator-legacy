@@ -1,5 +1,5 @@
 /*
-    Client.h
+    ClientDetailsAction.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,30 @@
 */
 
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef CLIENTDETAILSACTION_H
+#define CLIENTDETAILSACTION_H
 
-// types
-enum ClientType {
-	PILOT, ATC
-};
+#include <QAction>
 
-class Client {
+#include "Client.h"
+
+class ClientDetailsAction : public QAction {
+	
+	Q_OBJECT
 	
 public:
+	ClientDetailsAction(const Client*, const QString&, QObject*);
+
+signals:
+	void clicked(const Client*);
 	
-	virtual ClientType type() const = 0;
+public slots:
+	void handleTriggered();
+	
+private:
+	const Client* __current;
 	
 	
 };
 
-#endif // CLIENT_H
+#endif // CLIENTDETAILSACTION_H

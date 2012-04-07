@@ -24,6 +24,10 @@
 // the range below which the mouse is in the object's
 #define OBJECT_TO_MOUSE		0.03
 
+// how far from the airport the pilot must be to be recognized as "departing"
+// or "arrived"
+#define PILOT_TO_AIRPORT	0.1
+
 // how to recognize unavailable metars
 #define METAR_NO_AVAIL		"No METAR available"
 
@@ -40,6 +44,11 @@
 #define PILOT_LABEL_COLOR	0.0, 0.0, 0.0, 1.0
 #define AP_LABEL_COLOR		0.5, 0.5, 0.5, 1.0
 
+// lines color
 #define LINES_COLOR			0.0, 0.192, 0.337, 0.8
+
+// approach circle parameters
+#define CIRCLE_RADIUS		1
+#define CIRCLE_COLOR		0.5, 0.0, 0.0, 1.0
 
 #endif // DEFINES_H

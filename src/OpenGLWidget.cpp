@@ -20,6 +20,8 @@
 
 #include "../include/OpenGLWidget.h"
 
+#include "../include/AirportDetailsWindow.h"
+#include "../include/ATCDetailsWindow.h"
 #include "../include/VatsinatorApplication.h"
 #include "../include/MetarAction.h"
 #include "../include/MetarsWindow.h"
@@ -27,9 +29,11 @@
 #include "../include/TrackAction.h"
 #include "../include/UserInterface.h"
 #include "../include/FlightDetailsWindow.h"
-#include "../include/FlightDetailsAction.h"
+#include "../include/ClientDetailsAction.h"
 
 #include "../include/defines.h"
+
+const double PI = 3.1415926535897;
 
 template< typename T >
 inline T absHelper(const T& _v) {
@@ -52,10 +56,12 @@ OpenGLWidget::OpenGLWidget(QWidget* _parent) :
 		__data(VatsimDataHandler::GetSingleton()),
 		__airports(__data.getActiveAirports()) {
 	__apsFont.setPointSize(__apsFont.pointSize() - 1);
+	__produceCircle();
 }
 
 OpenGLWidget::~OpenGLWidget() {
 	__storeSettings();
+	delete [] __circle;
 }
 
 void
@@ -71,6 +77,8 @@ OpenGLWidget::init() {
 	__loadIcon(PILOT_ICON, __pilotIcon);
 	__loadIcon(AIRPORT_STAFFED_ICON, __apStaffedIcon);
 	
+	__airportDetails = AirportDetailsWindow::GetSingletonPtr();
+	__atcDetails = ATCDetailsWindow::GetSingletonPtr();
 	__metars = MetarsWindow::GetSingletonPtr();
 	__flightDetails = FlightDetailsWindow::GetSingletonPtr();
 	
@@ -103,8 +111,19 @@ OpenGLWidget::paintGL() {
 	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_DOUBLE, 0, __vertices);
+	
+	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
+	
 	__drawAirports();
 	__drawPilots();
+	
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
 	
 	__drawLines();
 	
@@ -118,6 +137,13 @@ OpenGLWidget::paintGL() {
 	__toolTipWasShown = false;
 	
 	swapBuffers();
+}
+
+void
+OpenGLWidget::showPilot(const Pilot* _p) {
+	__position.rx() = _p->position.longitude / 180;
+	__position.ry() = _p->position.latitude / 90;
+	paintGL();
 }
 
 void
@@ -160,7 +186,7 @@ OpenGLWidget::mousePressEvent(QMouseEvent* _event) {
 		if (__underMouse && __underMouse->objectType() == PLANE)
 			__flightDetails->showWindow(static_cast< const Pilot* >(__underMouse));
 		else if (__underMouse && __underMouse->objectType() == AIRPORT)
-			__metars->showWindow(static_cast< const AirportObject* >(__underMouse)->getData()->icao);
+			__airportDetails->showWindow(static_cast< const AirportObject* >(__underMouse));
 	}
 	
 	//paintGL();
@@ -263,13 +289,7 @@ void
 OpenGLWidget::__drawAirports() {
 	
 	glColor4f(COLOR_BACKGROUND);
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(2, GL_DOUBLE, 0, __vertices);
-	
-	glEnable(GL_TEXTURE_2D);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
+
 	
 	for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 		
@@ -295,7 +315,7 @@ OpenGLWidget::__drawAirports() {
 		if (inRange)
 			setCursor(QCursor(Qt::PointingHandCursor));
 		
-		glBindTexture(GL_TEXTURE_2D, (it.value()->getStuff().isEmpty()) ? __apIcon : __apStaffedIcon );
+		glBindTexture(GL_TEXTURE_2D, (it.value()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon );
 		
 		glPushMatrix();
 		
@@ -303,7 +323,7 @@ OpenGLWidget::__drawAirports() {
 			
 			glTranslated(x, y, 0);
 			glDrawArrays(GL_QUADS, 0, 4);
-			
+	
 			glColor4f(AP_LABEL_COLOR);
 			renderText(-0.03, 0.04, 0.3, it.key(), __apsFont, 64);
 			
@@ -317,33 +337,54 @@ OpenGLWidget::__drawAirports() {
 				tooltipText.append(it.value()->getData()->city);
 				tooltipText.append("</nobr>");
 				
-				for (const Controller* c: it.value()->getStuff()) {
+				for (const Controller* c: it.value()->getStaff()) {
 					tooltipText.append("<br><nobr>");
 					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
 					tooltipText.append("</nobr>");
 				}
 				
-				tooltipText.append("<br>Departures: ");
-				tooltipText.append(QString::number(it.value()->countDepartures()));
+				unsigned k = it.value()->countDepartures();
+				if (k) {
+					tooltipText.append("<br>Departures: ");
+					tooltipText.append(QString::number(k));
+				}
 				
-				tooltipText.append("<br>Arrivals: ");
-				tooltipText.append(QString::number(it.value()->countArrivals()));
+				k = it.value()->countArrivals();
+				if (k) {
+					tooltipText.append("<br>Arrivals: ");
+					tooltipText.append(QString::number(k));
+				}
 				
 				tooltipText.append("</center>");
 				
-				if (!QToolTip::isVisible()) {
-					QToolTip::showText(mapToGlobal(__lastMousePos),
-							tooltipText,
-							this
-						);
-				}
+				QToolTip::showText(mapToGlobal(__lastMousePos),
+						tooltipText,
+						this
+					);
+			}
+			
+			if (it.value()->hasApproach()) {
+				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+				glBindTexture(GL_TEXTURE_2D, 0);
+				
+				glColor4f(CIRCLE_COLOR);
+				glVertexPointer(2, GL_DOUBLE, 0, __circle);
+				
+				glLineWidth(1.5);
+				glLineStipple(1, 0xF0F0);
+				glPushMatrix();
+					glScaled(0.005 * __zoom, 0.005 * __zoom, 0);
+					glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
+				glPopMatrix();
+				glLineWidth(1.0);
+				glLineStipple(1, 0xFFFF);
+				
+				glVertexPointer(2, GL_DOUBLE, 0, __vertices);
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			}
 			
 		glPopMatrix();
 	}
-	
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -355,12 +396,6 @@ OpenGLWidget::__drawPilots() {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glBindTexture(GL_TEXTURE_2D, __pilotIcon);
 	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(2, GL_DOUBLE, 0, __vertices);
-	
-	glEnable(GL_TEXTURE_2D);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
 	
 	for (const Pilot* client: pilots) {
 		if (client->flightStatus != AIRBORNE)
@@ -390,10 +425,11 @@ OpenGLWidget::__drawPilots() {
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1);
 				
-				if (inRange)
+				if (inRange && !__toolTipWasShown)
 					glScalef(1.3, 1.3, 1.0);
 				
 				glDrawArrays(GL_QUADS, 0, 4);
+				
 			glPopMatrix();
 			
 			glColor4f(PILOT_LABEL_COLOR);
@@ -427,9 +463,6 @@ OpenGLWidget::__drawPilots() {
 		glPopMatrix();
 	}
 	
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -438,41 +471,36 @@ OpenGLWidget::__drawLines() {
 	if (!__underMouse)
 		return;
 	
+	glEnableClientState(GL_VERTEX_ARRAY);
 	glColor4f(LINES_COLOR);
 	if (__underMouse->objectType() == PLANE) {
 		const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
 		const Airport* ap = __airports[pilot->route.origin]->getData();
 		
 		if (ap) {
-			glBegin(GL_LINES);
-				glVertex3d(
-						(ap->longitude / 180 - __position.x()) * __zoom,
-						(ap->latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-				glVertex3d(
-						(pilot->position.longitude / 180 - __position.x()) * __zoom,
-						(pilot->position.latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-			glEnd();
+			GLdouble vertices[] = {
+					(ap->longitude / 180 - __position.x()) * __zoom,
+					(ap->latitude / 90 - __position.y()) * __zoom,
+					(pilot->position.longitude / 180 - __position.x()) * __zoom,
+					(pilot->position.latitude / 90 - __position.y()) * __zoom
+				};
+			
+			glVertexPointer(2, GL_DOUBLE, 0, vertices);
+			glDrawArrays(GL_LINES, 0, 4);
 		}
 		
 		ap = __airports[pilot->route.destination]->getData();
 		if (ap) {
+			GLdouble vertices[] = {
+					(ap->longitude / 180 - __position.x()) * __zoom,
+					(ap->latitude / 90 - __position.y()) * __zoom,
+					(pilot->position.longitude / 180 - __position.x()) * __zoom,
+					(pilot->position.latitude / 90 - __position.y()) * __zoom
+				};
+				
+			glVertexPointer(2, GL_DOUBLE, 0, vertices);
 			glLineStipple(1, 0xF0F0);
-			glBegin(GL_LINES);
-				glVertex3d(
-						(ap->longitude / 180 - __position.x()) * __zoom,
-						(ap->latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-				glVertex3d(
-						(pilot->position.longitude / 180 - __position.x()) * __zoom,
-						(pilot->position.latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-			glEnd();
+			glDrawArrays(GL_LINES, 0, 4);
 			glLineStipple(1, 0xFFFF);
 			
 		}
@@ -481,45 +509,58 @@ OpenGLWidget::__drawLines() {
 		if (!ap->getData())
 			return;
 		
+		unsigned linesOut = ap->getOutbounds().size() - ap->countDepartures();
+		unsigned linesIn = ap->getInbounds().size() - ap->countArrivals();
+		
+		GLdouble* vertices = new GLdouble[(linesOut + linesIn) * 4];
+		unsigned i = 0;
 		for (const Pilot* p: ap->getOutbounds()) {
-			glBegin(GL_LINES);
-				glVertex3d(
-						(p->position.longitude / 180 - __position.x()) * __zoom,
-						(p->position.latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-				glVertex3d(
-						(ap->getData()->longitude / 180 - __position.x()) * __zoom,
-						(ap->getData()->latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-			glEnd();
+			if (p->flightStatus == DEPARTING)
+				continue;
+			
+			/* We cannot use vertices[i++], vertices[i++], as the result of such
+			 * called function is undefined (according to C++ standard) */
+			__mapCoordinates(p->position.longitude, p->position.latitude,
+							 vertices[i], vertices[i+1]);
+			i += 2;
+			
+			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
+							 vertices[i], vertices[i+1]);
+			
+			i += 2;
+		}
+		for (const Pilot* p: ap->getInbounds()) {
+			if (p->flightStatus == ARRIVED)
+				continue;
+			
+			__mapCoordinates(p->position.longitude, p->position.latitude,
+							 vertices[i], vertices[i+1]);
+			i += 2;
+			
+			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
+							 vertices[i], vertices[i+1]);
+			
+			i += 2;
 		}
 		
+		glVertexPointer(2, GL_DOUBLE, 0, vertices);
+		
+		glDrawArrays(GL_LINES, 0, linesOut * 2);
+		
 		glLineStipple(1, 0xF0F0);
-		for (const Pilot* p: ap->getInbounds()) {
-			glBegin(GL_LINES);
-				glVertex3d(
-						(p->position.longitude / 180 - __position.x()) * __zoom,
-						(p->position.latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-				glVertex3d(
-						(ap->getData()->longitude / 180 - __position.x()) * __zoom,
-						(ap->getData()->latitude / 90 - __position.y()) * __zoom,
-						-0.9
-					);
-			glEnd();
-		}
+		glDrawArrays(GL_LINES, linesOut * 2, linesIn * 2);
 		glLineStipple(1, 0xFFFF);
+		
+		delete [] vertices;
 	}
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void
 OpenGLWidget::__openContextMenu(const Pilot* _pilot) {
 	QMenu* dMenu = new QMenu(_pilot->callsign, this);
 	
-	FlightDetailsAction* showDetails = new FlightDetailsAction(_pilot, this);
+	ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, "Flight details", this);
 	TrackAction* trackThisFlight = new TrackAction(_pilot, this);
 	MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
 	MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
@@ -548,19 +589,32 @@ OpenGLWidget::__openContextMenu(const AirportObject* _ap) {
 	dMenu->addAction(showMetar);
 	connect(showMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
 	
+	if (!_ap->getStaff().isEmpty()) {
+		dMenu->addSeparator();
+		QAction* desc = new QAction("Controllers", this);
+		desc->setEnabled(false);
+		dMenu->addAction(desc);
+		
+		for (const Controller* c: _ap->getStaff()) {
+			ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
+			dMenu->addAction(showDetails);
+			connect(showDetails, SIGNAL(clicked(const Client*)), __atcDetails, SLOT(showWindow(const Client*)));
+		}
+	}
+	
 	if (!_ap->getOutbounds().isEmpty() && _ap->countDepartures()) {
 		dMenu->addSeparator();
 		QAction* desc = new QAction("Departures", this);
 		desc->setEnabled(false);
 		dMenu->addAction(desc);
-	}
-	
-	for (const Pilot* p: _ap->getOutbounds()) {
-		if (p->flightStatus != DEPARTING)
-			continue;
-		FlightDetailsAction* showDetails = new FlightDetailsAction(p->callsign, p, this);
-		dMenu->addAction(showDetails);
-		connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
+		
+		for (const Pilot* p: _ap->getOutbounds()) {
+			if (p->flightStatus != DEPARTING)
+				continue;
+			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
+			dMenu->addAction(showDetails);
+			connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
+		}
 	}
 	
 	if (!_ap->getInbounds().isEmpty() && _ap->countArrivals()) {
@@ -568,14 +622,14 @@ OpenGLWidget::__openContextMenu(const AirportObject* _ap) {
 		QAction* desc = new QAction("Arrivals", this);
 		desc->setEnabled(false);
 		dMenu->addAction(desc);
-	}
-	
-	for (const Pilot* p: _ap->getInbounds()) {
-		if (p->flightStatus != ARRIVED)
-			continue;
-		FlightDetailsAction* showDetails = new FlightDetailsAction(p->callsign, p, this);
-		dMenu->addAction(showDetails);
-		connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
+		
+		for (const Pilot* p: _ap->getInbounds()) {
+			if (p->flightStatus != ARRIVED)
+				continue;
+			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
+			dMenu->addAction(showDetails);
+			connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
+		}
 	}
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
@@ -627,4 +681,22 @@ OpenGLWidget::__restoreSettings() {
 	__position = settings.value("cameraPosition", QPointF(0.0, 0.0)).toPointF();
 
 	settings.endGroup();
+}
+
+void
+OpenGLWidget::__produceCircle() {
+	__circleCount = 0;
+	for (double angle = 0.0; angle <= (2 * PI); angle += 0.1, ++__circleCount)
+		{} // count how many vertices we will have
+	
+	__circle = new GLdouble[__circleCount * 2 + 2];
+	unsigned i = 0;
+	
+	double x, y;
+	for (double angle = 0.0; angle <= (2 * PI); angle += 0.1) {
+		x = cos(angle);
+		y = sin(angle);
+		__circle[i++] = x;
+		__circle[i++] = y;
+	}
 }

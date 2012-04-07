@@ -1,5 +1,5 @@
 /*
-    Client.h
+    AirportDetailsWindow.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,42 @@
 */
 
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef AIRPORTDETAILSWINDOW_H
+#define AIRPORTDETAILSWINDOW_H
 
-// types
-enum ClientType {
-	PILOT, ATC
-};
+#include "ui_AirportDetailsWindow.h"
+#include "Metar.h"
+#include "Singleton.h"
 
-class Client {
+class AirportObject;
+class OpenGLWidget;
+class Pilot;
+
+class AirportDetailsWindow :
+		public QWidget,
+		public Singleton< AirportDetailsWindow >,
+		private Ui::AirportDetailsWindow {
+	
+	Q_OBJECT
 	
 public:
+	AirportDetailsWindow(QWidget* = 0);
 	
-	virtual ClientType type() const = 0;
+public slots:
+	void showWindow(const AirportObject*);
+	void updateMetar(const QVector< Metar >&);
+	void handleShowClicked(const Pilot*);
+	
+private:
+	void __setWindowPosition();
+	
+	const AirportObject* __current;
+	
+	QMap< int, QString > __ratings;
+	
+	OpenGLWidget*	__openGLWidget;
 	
 	
 };
 
-#endif // CLIENT_H
+#endif // AIRPORTDETAILSWINDOW_H

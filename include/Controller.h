@@ -25,6 +25,18 @@
 
 #include "Client.h"
 
+struct Airport;
+
+enum Facility {
+	ATIS,
+	DEL,
+	GND,
+	TWR,
+	APP,
+	CTR,
+	OBS
+};
+
 class Controller : public Client {
 
 public:
@@ -37,8 +49,16 @@ public:
 	QString		realName;
 	
 	QString		frequency;
+	QString		server;
+	int			rating;
+	
+	QString		atis;
 	
 	QDateTime	onlineFrom;
+	
+	const Airport*	airport;
+	
+	Facility	facility;
 	
 };
 

@@ -22,6 +22,8 @@
 
 #include "../include/UserInterface.h"
 
+#include "../include/AirportDetailsWindow.h"
+#include "../include/ATCDetailsWindow.h"
 #include "../include/MetarsWindow.h"
 #include "../include/VatsinatorApplication.h"
 #include "../include/VatsimDataHandler.h"
@@ -31,8 +33,10 @@
 
 UserInterface::UserInterface(QWidget* _parent) :
 		QMainWindow(_parent),
+		__atcDetailsWindow(new ATCDetailsWindow()),
 		__flightDetailsWindow(new FlightDetailsWindow()),
 		__metarsWindow(new MetarsWindow()),
+		__airportDetailsWindow(new AirportDetailsWindow()),
 		__mother(VatsinatorApplication::GetSingleton()) {
 	__setupWindow();
 	__setWindowPosition();
