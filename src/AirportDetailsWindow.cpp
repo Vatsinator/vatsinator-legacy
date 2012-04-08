@@ -191,6 +191,9 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 
 void
 AirportDetailsWindow::updateMetar(const QVector< Metar >& _metars) {
+	if (!__current)
+		return;
+	
 	for (const Metar& m: _metars) {
 		if (m.icao == __current->getData()->icao) {
 			MetarLabel->setText(m.metar);

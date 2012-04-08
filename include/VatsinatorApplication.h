@@ -26,6 +26,7 @@
 #include "Singleton.h"
 
 class AirportsDatabase;
+class FirsDatabase;
 class UserInterface;
 class VatsimDataHandler;
 class HttpHandler;
@@ -69,6 +70,8 @@ private:
 	HttpHandler *		__httpHandler;
 	
 	AirportsDatabase *	__airportsData;
+	
+	FirsDatabase * 		__firsData;
 	
 	VatsimDataHandler *	__vatsimData;
 	

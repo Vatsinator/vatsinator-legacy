@@ -22,6 +22,7 @@
 #include "../include/VatsinatorApplication.h"
 
 #include "../include/AirportsDatabase.h"
+#include "../include/FirsDatabase.h"
 #include "../include/HttpHandler.h"
 #include "../include/UserInterface.h"
 #include "../include/VatsimDataHandler.h"
@@ -31,12 +32,14 @@
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		QApplication(_argc, _argv),
 		__airportsData(new AirportsDatabase),
+		__firsData(new FirsDatabase),
 		__vatsimData(new VatsimDataHandler),
 		__userInterface(new UserInterface) {
 	
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
 	
 	__airportsData->init();
+	__firsData->init();
 	
 	__userInterface->show();
 	__httpHandler = new HttpHandler(__userInterface->getProgressBar());

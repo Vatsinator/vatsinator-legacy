@@ -7,11 +7,12 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define VATSINATOR_VERSION	"0.1_beta1"
+#define VATSINATOR_VERSION	"0.1_alpha1"
 
 // where to get all the data from
 #define VATSIM_STATUS_URL		"http://status.vatsim.net/status.txt"
 #define AIRPORTS_DB				PREFIX "/share/vatsinator/WorldAirports.db"
+#define FIRS_DB					PREFIX "/share/vatsinator/WorldFirs.dat"
 
 // where icons are stored
 #define AIRPORT_ICON			PREFIX "/share/vatsinator/airport.png"
@@ -43,6 +44,7 @@
 #define COLOR_BACKGROUND	1.0, 1.0, 1.0, 1.0
 #define PILOT_LABEL_COLOR	0.0, 0.0, 0.0, 1.0
 #define AP_LABEL_COLOR		0.5, 0.5, 0.5, 1.0
+#define FIR_ACTIVE_COLOR	0.69, 0.125, 0.125, 1.0
 
 // lines color
 #define LINES_COLOR			0.0, 0.192, 0.337, 0.8

@@ -22,7 +22,7 @@
 
 #include <QObject>
 #include <QVector>
-#include <QStack>
+#include <QQueue>
 
 #include "Metar.h"
 #include "Singleton.h"
@@ -78,12 +78,13 @@ private:
 	 * This formula tells us if the parsed word (in metar's contents) is
 	 * a requested airport's ICAO code.
 	 */
-	inline bool __matches(const QString& _word) {
+	inline
+	bool __matches(const QString& _word) {
 		return (_word.length() == 4) &&
-				(_word.startsWith(__requests.top(), Qt::CaseInsensitive));
+				(_word.startsWith(__requests.head(), Qt::CaseInsensitive));
 	}
 	
-	QStack< QString > __requests;
+	QQueue< QString > __requests;
 	
 	QVector< Metar > __metars;
 	

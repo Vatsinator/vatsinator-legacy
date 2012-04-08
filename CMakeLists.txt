@@ -17,6 +17,7 @@ set(vatsinator_SOURCES
 	src/AirportsDatabase.cpp
 	src/ATCDetailsWindow.cpp
 	src/ClientDetailsAction.cpp
+	src/FirsDatabase.cpp
 	src/FlightDetailsWindow.cpp
 	src/HttpHandler.cpp
 	src/Metar.cpp
@@ -91,6 +92,7 @@ install(FILES
 	resources/airport_staffed.png
 	resources/plane.png
 	resources/WorldAirports.db
+	resources/WorldFirs.dat
 	DESTINATION share/vatsinator)
 
 install(PROGRAMS

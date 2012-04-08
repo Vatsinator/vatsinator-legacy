@@ -22,6 +22,7 @@
 
 #include "../include/AirportDetailsWindow.h"
 #include "../include/ATCDetailsWindow.h"
+#include "../include/FirsDatabase.h"
 #include "../include/VatsinatorApplication.h"
 #include "../include/MetarAction.h"
 #include "../include/MetarsWindow.h"
@@ -72,11 +73,13 @@ OpenGLWidget::init() {
 	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_ALPHA_TEST);
 	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 	
 	__loadIcon(AIRPORT_ICON, __apIcon);
 	__loadIcon(PILOT_ICON, __pilotIcon);
 	__loadIcon(AIRPORT_STAFFED_ICON, __apStaffedIcon);
 	
+	__firs = FirsDatabase::GetSingletonPtr();
 	__airportDetails = AirportDetailsWindow::GetSingletonPtr();
 	__atcDetails = ATCDetailsWindow::GetSingletonPtr();
 	__metars = MetarsWindow::GetSingletonPtr();
@@ -109,10 +112,13 @@ OpenGLWidget::paintGL() {
 		__position.ry() = __tracked->position.latitude / 90;
 	}
 	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	
+	__prepareMatrix(WORLD);
+	__drawFirs();
+	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_DOUBLE, 0, __vertices);
 	
 	glEnable(GL_TEXTURE_2D);
@@ -254,34 +260,52 @@ OpenGLWidget::__prepareMatrix(PMMatrixMode _mode) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
+	glOrtho(
+		-__orthoRangeX,
+		 __orthoRangeX,
+		 -__orthoRangeY,
+		 __orthoRangeY,
+		 2.0, -2.0
+	);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
 	switch(_mode) {
-		case AIRPORTS_PILOTS:
-			glOrtho(
-					-__orthoRangeX,
-		 			__orthoRangeX,
-		 			-__orthoRangeY,
-		 			__orthoRangeY,
-		 			1.0, -1.0
-				);
-			
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			
-			break;
 		case WORLD:
-			glOrtho(
-					-180, 180,
-					-90, 90,
-					1.0, -1.0
-				);
-			
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			
-			glScalef(__zoom, __zoom, 0.0);
-			glTranslated(-__position.x(), __position.y(), 0.0);
+			glScaled((double)1/(double)180, (double)1/(double)90, 0.0);
+			glScaled(__zoom, __zoom, 0.0);
+			glTranslated(-__position.x() * 180, -__position.y() * 90, 0.0);
 			
 			break;
+		case AIRPORTS_PILOTS:
+			break;
+	}
+}
+
+void
+OpenGLWidget::__drawFirs() {
+	for (const Fir& fir: __firs->getFirs()) {
+		if (fir.staffed) {
+			glColor4f(FIR_ACTIVE_COLOR);
+			glLineWidth(4.0);
+		} else {
+			glColor4f(0.5, 0.5, 0.5, 1.0);
+		}
+		
+		glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
+		glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
+		
+		double x, y;
+		__mapCoordinates(fir.text.x, fir.text.y, x, y);
+		if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
+				(x >= -__orthoRangeX) && (y >= -__orthoRangeY))
+			renderText(fir.text.x, fir.text.y, 0.0, fir.icao, __apsFont, 64);
+		
+		glLineWidth(1.0);
 	}
 }
 
@@ -325,7 +349,7 @@ OpenGLWidget::__drawAirports() {
 			glDrawArrays(GL_QUADS, 0, 4);
 	
 			glColor4f(AP_LABEL_COLOR);
-			renderText(-0.03, 0.04, 0.3, it.key(), __apsFont, 64);
+			renderText(-0.03, 0.04, -1.5, it.key(), __apsFont, 64);
 			
 			if (inRange) {
 				__toolTipWasShown = true;
@@ -420,7 +444,7 @@ OpenGLWidget::__drawPilots() {
 			
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
-			glTranslated(x, y, 0);
+			glTranslated(x, y, -0.1);
 			
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1);
@@ -433,7 +457,7 @@ OpenGLWidget::__drawPilots() {
 			glPopMatrix();
 			
 			glColor4f(PILOT_LABEL_COLOR);
-			renderText(0.03, -0.01, 0.5, client->callsign, __pilotsFont, 64);
+			renderText(0.03, -0.01, -1.5, client->callsign, __pilotsFont, 64);
 			
 			if (inRange && !__toolTipWasShown) {
 				__toolTipWasShown = true;

@@ -29,6 +29,7 @@
 class AirportDetailsWindow;
 class ATCDetailsWindow;
 class Clickable;
+class FirsDatabase;
 class VatsinatorApplication;
 class MetarsWindow;
 class FlightDetailsWindow;
@@ -79,6 +80,8 @@ private:
 	 * Prepares the proper matrix.
 	 */
 	void __prepareMatrix(PMMatrixMode);
+	
+	void __drawFirs();
 	
 	/**
 	 * Draws all aiports on the map.
@@ -172,6 +175,7 @@ private:
 	
 	const AirportsMap & __airports;
 	
+	FirsDatabase *			__firs;
 	AirportDetailsWindow *	__airportDetails;
 	ATCDetailsWindow *		__atcDetails;
 	FlightDetailsWindow *	__flightDetails;

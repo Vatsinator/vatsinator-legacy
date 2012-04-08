@@ -25,6 +25,7 @@
 
 #include "../include/VatsimDataHandler.h"
 
+#include "../include/FirsDatabase.h"
 #include "../include/VatsinatorApplication.h"
 
 #include "../include/defines.h"
@@ -308,6 +309,15 @@ VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
 	if (sections.back() == "CTR") {
 		_atc->facility = CTR;
 		_atc->airport = NULL;
+		
+		QString icao = sections.front();
+		if (icao.length() != 4)
+			return;
+		
+		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao);
+		if (fir)
+			fir->staffed = true;
+		
 		return;
 	} else if (
 			sections.back() == "APP" ||

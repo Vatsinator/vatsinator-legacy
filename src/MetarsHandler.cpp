@@ -34,7 +34,7 @@ MetarsHandler::MetarsHandler(HttpHandler* _hh, QObject* _parent) :
 void
 MetarsHandler::fetchMetar(const QString& _icao) {
 	__httpHandler->fetchData(VatsimDataHandler::GetSingleton().getMetarUrl() + "?id=" + _icao.toLower());
-	__requests.push(_icao.simplified());
+	__requests.enqueue(_icao.simplified());
 }
 
 void
@@ -70,6 +70,8 @@ MetarsHandler::gotMetar(QString _metar) {
 	
 	if (!oneMetar.isEmpty())
 		__addMetar(oneMetar);
+	
+	__requests.dequeue();
 
 	emit newMetarsAvailable(__metars);
 }
