@@ -29,6 +29,7 @@
 class AirportDetailsWindow;
 class ATCDetailsWindow;
 class Clickable;
+class Fir;
 class FirsDatabase;
 class VatsinatorApplication;
 class MetarsWindow;
@@ -97,6 +98,7 @@ private:
 	
 	void __openContextMenu(const Pilot*);
 	void __openContextMenu(const AirportObject*);
+	void __openContextMenu(const Fir*);
 	
 	/**
 	 * Loads necessary icons.

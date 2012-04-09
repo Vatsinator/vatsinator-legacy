@@ -75,9 +75,9 @@ OpenGLWidget::init() {
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	
-	__loadIcon(AIRPORT_ICON, __apIcon);
-	__loadIcon(PILOT_ICON, __pilotIcon);
-	__loadIcon(AIRPORT_STAFFED_ICON, __apStaffedIcon);
+	__loadIcon(":/pixmaps/airport.png", __apIcon);
+	__loadIcon(":/pixmaps/airport_staffed.png", __apStaffedIcon);
+	__loadIcon(":/pixmaps/plane.png", __pilotIcon);
 	
 	__firs = FirsDatabase::GetSingletonPtr();
 	__airportDetails = AirportDetailsWindow::GetSingletonPtr();
@@ -183,16 +183,30 @@ void
 OpenGLWidget::mousePressEvent(QMouseEvent* _event) {
 	__lastMousePos = _event->pos();
 	
-	if (_event->buttons() & Qt::RightButton) {
-		if (__underMouse && __underMouse->objectType() == PLANE)
-			__openContextMenu(static_cast< const Pilot* >(__underMouse));
-		else if (__underMouse && __underMouse->objectType() == AIRPORT)
-			__openContextMenu(static_cast< const AirportObject* >(__underMouse));
-	} else if (_event->buttons() & Qt::LeftButton) {
-		if (__underMouse && __underMouse->objectType() == PLANE)
-			__flightDetails->showWindow(static_cast< const Pilot* >(__underMouse));
-		else if (__underMouse && __underMouse->objectType() == AIRPORT)
-			__airportDetails->showWindow(static_cast< const AirportObject* >(__underMouse));
+	if ((_event->buttons() & Qt::RightButton) && __underMouse) {
+		switch (__underMouse->objectType()) {
+			case PLANE:
+				__openContextMenu(static_cast< const Pilot* >(__underMouse));
+				break;
+			case AIRPORT:
+				__openContextMenu(static_cast< const AirportObject* >(__underMouse));
+				break;
+			case FIR:
+				__openContextMenu(static_cast< const Fir* >(__underMouse));
+				break;
+		}
+	} else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
+		switch (__underMouse->objectType()) {
+			case PLANE:
+				__flightDetails->showWindow(static_cast< const Pilot* >(__underMouse));
+				break;
+			case AIRPORT:
+				__airportDetails->showWindow(static_cast< const AirportObject* >(__underMouse));
+				break;
+			case FIR:
+				//__atcDetails->showWindow(static_cast< const Fir* >(__underMouse));
+				break;
+		}
 	}
 	
 	//paintGL();
@@ -289,9 +303,11 @@ OpenGLWidget::__prepareMatrix(PMMatrixMode _mode) {
 void
 OpenGLWidget::__drawFirs() {
 	for (const Fir& fir: __firs->getFirs()) {
-		if (fir.staffed) {
+		glPushMatrix();
+		if (!fir.getStaff().isEmpty()) {
 			glColor4f(FIR_ACTIVE_COLOR);
 			glLineWidth(4.0);
+			glTranslated(0.0, 0.0, -0.1);
 		} else {
 			glColor4f(0.5, 0.5, 0.5, 1.0);
 		}
@@ -300,12 +316,32 @@ OpenGLWidget::__drawFirs() {
 		glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
 		
 		double x, y;
-		__mapCoordinates(fir.text.x, fir.text.y, x, y);
+		__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
 		if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
-				(x >= -__orthoRangeX) && (y >= -__orthoRangeY))
-			renderText(fir.text.x, fir.text.y, 0.0, fir.icao, __apsFont, 64);
+				(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
+			renderText(fir.header.textPosition.x, fir.header.textPosition.y, 0.0,
+					   fir.header.icao, __apsFont, 64);
+			if (__distanceFromCamera(x + 0.03, y) < OBJECT_TO_MOUSE && !__toolTipWasShown) {
+				__toolTipWasShown = true;
+				setCursor(QCursor(Qt::PointingHandCursor));
+				__underMouse = &fir;
+				
+				QString tooltipText = QString("<center>") + (QString)fir.header.icao;
+				for (const Controller* c: fir.getStaff()) {
+					tooltipText.append("<br><nobr>");
+					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
+					tooltipText.append("</nobr>");
+				}
+				
+				QToolTip::showText(mapToGlobal(__lastMousePos),
+						tooltipText,
+						this
+					);
+			}
+		}
 		
 		glLineWidth(1.0);
+		glPopMatrix();
 	}
 }
 
@@ -654,6 +690,23 @@ OpenGLWidget::__openContextMenu(const AirportObject* _ap) {
 			dMenu->addAction(showDetails);
 			connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
 		}
+	}
+	
+	dMenu->exec(mapToGlobal(__lastMousePos));
+	delete dMenu;
+}
+
+void
+OpenGLWidget::__openContextMenu(const Fir* _fir) {
+	if (_fir->getStaff().isEmpty())
+		return;
+	
+	QMenu* dMenu = new QMenu(_fir->header.icao, this);
+	
+	for (const Controller* c: _fir->getStaff()) {
+		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
+		dMenu->addAction(showDetails);
+		connect(showDetails, SIGNAL(clicked(const Client*)), __atcDetails, SLOT(showWindow(const Client*)));
 	}
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));

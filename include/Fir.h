@@ -1,5 +1,5 @@
 /*
-    Clickable.h
+    Fir.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,20 +17,49 @@
 */
 
 
-#ifndef CLICKABLE_H
-#define CLICKABLE_H
+#ifndef FIR_H
+#define FIR_H
 
-enum ObjectType {
-	PLANE, AIRPORT, FIR
+#include <QVector>
+
+#include <GL/gl.h>
+
+#include "Clickable.h"
+#include "Controller.h"
+
+#pragma pack(1)
+struct Point {
+	GLdouble x;
+	GLdouble y;
 };
 
-class Clickable {
+struct FirHeader {
+	char	icao[8];
+	Point	externities[2];
+	Point	textPosition;
+};
+#pragma pack()
+
+class Fir : public Clickable {
 	
 public:
+	ObjectType objectType() const { return FIR; }
 	
-	virtual ObjectType objectType() const = 0;
-
+	void addStaff(const Controller*);
+	
+	inline
+	const QVector< const Controller* > & getStaff() const { return __staff; }
+	
+	inline
+	void clear() { __staff.clear(); }
+	
+	FirHeader	header;
+	QVector< Point >	coords;
+	
+private:
+	QVector< const Controller* > __staff;
+	
 	
 };
 
-#endif // CLICKABLE_H
+#endif // FIR_H

@@ -23,25 +23,10 @@
 #include <QVector>
 #include <QString>
 
-#include <GL/gl.h>
-
+#include "Fir.h"
 #include "Singleton.h"
 
-struct Point {
-	GLdouble x;
-	GLdouble y;
-};
 
-struct Fir {
-	QString	icao;
-	
-	Point	externites[2];
-	Point	text;
-	
-	QVector< Point >	coords;
-	
-	bool	staffed;
-};
 
 class FirsDatabase : public Singleton< FirsDatabase > {
 	
@@ -52,6 +37,8 @@ public:
 	const QVector< Fir > & getFirs() { return __firs; }
 	
 	Fir *	findFirByIcao(const QString&);
+	
+	void	clearAll();
 	
 private:
 	

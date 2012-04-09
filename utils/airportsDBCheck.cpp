@@ -76,6 +76,8 @@ main(int argc, char** argv) {
 	}
 
 	delete [] aps;
+	
+	cout << "Airports database ok." << endl;
 
 	return 0;
 }

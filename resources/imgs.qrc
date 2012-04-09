@@ -2,4 +2,9 @@
   <qresource prefix="mainIcon">
     <file>icon.png</file>
   </qresource>
+  <qresource prefix="pixmaps">
+    <file>airport.png</file>
+    <file>airport_staffed.png</file>
+    <file>plane.png</file>
+  </qresource>
 </RCC>

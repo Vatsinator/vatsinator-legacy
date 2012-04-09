@@ -1,5 +1,5 @@
 /*
-    Clickable.h
+    Fir.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,20 +17,9 @@
 */
 
 
-#ifndef CLICKABLE_H
-#define CLICKABLE_H
+#include "../include/Fir.h"
 
-enum ObjectType {
-	PLANE, AIRPORT, FIR
-};
-
-class Clickable {
-	
-public:
-	
-	virtual ObjectType objectType() const = 0;
-
-	
-};
-
-#endif // CLICKABLE_H
+void
+Fir::addStaff(const Controller* _c) {
+	__staff.push_back(_c);
+}

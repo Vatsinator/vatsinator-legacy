@@ -17,6 +17,7 @@ set(vatsinator_SOURCES
 	src/AirportsDatabase.cpp
 	src/ATCDetailsWindow.cpp
 	src/ClientDetailsAction.cpp
+	src/Fir.cpp
 	src/FirsDatabase.cpp
 	src/FlightDetailsWindow.cpp
 	src/HttpHandler.cpp
@@ -88,11 +89,8 @@ target_link_libraries(vatsinator ${QT_LIBRARIES})
 target_link_libraries(vatsinator ${OPENGL_LIBRARY})
 
 install(FILES
-	resources/airport.png
-	resources/airport_staffed.png
-	resources/plane.png
 	resources/WorldAirports.db
-	resources/WorldFirs.dat
+	resources/WorldFirs.db
 	DESTINATION share/vatsinator)
 
 install(PROGRAMS

@@ -33,45 +33,39 @@ void
 FirsDatabase::init() {
 	__firs.clear();
 	
-	fstream db(FIRS_DB, ios::in);
+	fstream db(FIRS_DB, ios::in | ios::binary);
+
+	int size;
+	db.read((char*)&size, 4);
 	
-	unsigned coordsCount = 0;
-	bool readingFir = false;
-	string buffer, foo;
-	qDebug() << "Reading...";
-	while (!db.eof()) {
-		getline(db, buffer);
-		
-		istringstream line(buffer);
-		if (!readingFir) {
-			Fir temp;
-			string icao;
-			line >> icao >> foo >> foo >> coordsCount >> temp.externites[0].y >>
-					temp.externites[0].x >> temp.externites[1].y >>
-					temp.externites[1].x >> temp.text.y >>
-					temp.text.x;
-			temp.icao = icao.c_str();
-			temp.staffed = false;
-			readingFir = true;
-			__firs.push_back(temp);
-		} else {
-			Point temp;
-			line >> temp.y >> temp.x;
-			__firs.last().coords.push_back(temp);
-			--coordsCount;
-			if (!coordsCount)
-				readingFir = false;
-			//qDebug() << "Read: " << coordsCount;
-		}
+	db.seekg(4);
+	
+	__firs.resize(size);
+	for (int i = 0; i < size; ++i) {
+		db.read((char*)&__firs[i].header, sizeof(FirHeader));
+		int counting;
+		db.read((char*)&counting, sizeof(int));
+		__firs[i].coords.resize(counting);
+		db.read((char*)&__firs[i].coords[0], sizeof(Point) * counting);
 	}
 	
 	db.close();
+	
+	cout << "Firs read: " << size << endl;
+	
+	clearAll();
 }
 
 Fir *
 FirsDatabase::findFirByIcao(const QString& _icao) {
 	for (Fir& f: __firs)
-		if (f.icao == _icao)
+		if (f.header.icao == _icao)
 			return &f;
 	return NULL;
+}
+
+void
+FirsDatabase::clearAll() {
+	for (Fir& f: __firs)
+		f.clear();
 }

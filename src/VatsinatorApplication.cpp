@@ -66,6 +66,9 @@ VatsinatorApplication::~VatsinatorApplication() {
 	if (__airportsData)
 		delete __airportsData;
 	
+	if (__firsData)
+		delete __firsData;
+	
 	qDebug() << "VatsinatorApplication deleted.";
 }
 
@@ -85,7 +88,6 @@ void
 VatsinatorApplication::refreshData() {
 	__userInterface->statusBarUpdate("Fetching data...");
 	__httpHandler->fetchData(__vatsimData->getDataUrl());
-	__timer.stop();
 	__timer.start(REFRESH_RATE);
 }
 
@@ -98,6 +100,8 @@ VatsinatorApplication::__statusFileUpdated(QString _data) {
 		QPushButton* againButton = decision.addButton(tr("Try again"), QMessageBox::ActionRole);
 		decision.addButton(tr("Cancel"), QMessageBox::RejectRole);
 		decision.setIcon(QMessageBox::Warning);
+		
+		__timer.stop();
 		
 		decision.exec();
 		
@@ -130,6 +134,8 @@ VatsinatorApplication::__dataFileUpdated(QString _data) {
 		decision.addButton(tr("Keep current data"), QMessageBox::RejectRole);
 		decision.setIcon(QMessageBox::Warning);
 		
+		__timer.stop();
+		
 		decision.exec();
 		
 		if (decision.clickedButton() == againButton) {
@@ -142,6 +148,8 @@ VatsinatorApplication::__dataFileUpdated(QString _data) {
 	QString temp;
 	if (__userInterface->getGLContext()->getTrackedPilot())
 		temp = __userInterface->getGLContext()->getTrackedPilot()->callsign;
+	
+	__firsData->clearAll();
 	
 	__vatsimData->parseDataFile(_data);
 	__userInterface->getClientsBox()->setText("Clients: " + QString::number(

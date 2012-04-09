@@ -316,7 +316,7 @@ VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
 		
 		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao);
 		if (fir)
-			fir->staffed = true;
+			fir->addStaff(_atc);
 		
 		return;
 	} else if (
