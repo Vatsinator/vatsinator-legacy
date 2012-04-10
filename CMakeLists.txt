@@ -28,6 +28,7 @@ set(vatsinator_SOURCES
 	src/OpenGLWidget.cpp
 	src/ShowButton.cpp
 	src/TrackAction.cpp
+	src/Uir.cpp
 	src/UserInterface.cpp
 	src/VatsimDataHandler.cpp
 	src/VatsinatorApplication.cpp
@@ -91,6 +92,7 @@ target_link_libraries(vatsinator ${OPENGL_LIBRARY})
 install(FILES
 	resources/WorldAirports.db
 	resources/WorldFirs.db
+	resources/vatsinator.dat
 	DESTINATION share/vatsinator)
 
 install(PROGRAMS

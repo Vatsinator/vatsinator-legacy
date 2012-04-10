@@ -26,10 +26,12 @@
 
 #include "AirportsDatabase.h"
 #include "AirportObject.h"
+#include "FirsDatabase.h"
 #include "Metar.h"
 #include "Controller.h"
 #include "Pilot.h"
 #include "Singleton.h"
+#include "Uir.h"
 
 class VatsinatorApplication;
 
@@ -51,6 +53,12 @@ public:
 	 * Destructor deletes all pointers.
 	 */
 	~VatsimDataHandler();
+	
+	/**
+	 * Parses the vatsinator.dat file. Must be called after AirportsDatabase::init()
+	 * and FirsDatabase::init().
+	 */
+	void init();
 	
 	/**
 	 * This function parses the raw "status.txt" file. That file is fetched
@@ -91,6 +99,8 @@ public:
 	inline
 	const QVector< Controller* > & getATCs() { return __atcs; }
 	inline
+	const QVector< Uir* > & getUIRs() { return __uirs; }
+	inline
 	const QMap< QString, AirportObject* > & getActiveAirports() { return __activeAirports; }
 	
 private:
@@ -116,9 +126,15 @@ private:
 	 */
 	void __clearFlags(QMap< QString, bool >&);
 	
+	/**
+	 * Finds UIR by ICAO.
+	 */
+	Uir * __findUIR(const QString&);
+	
 	/* These are vectors of connected clients */
 	QVector< Pilot* >		__pilots;
 	QVector< Controller* >	__atcs;
+	QVector< Uir* >			__uirs;
 	
 	/* This is vector of data servers, obtained from status file */
 	QVector< QString >		__servers;
@@ -126,12 +142,16 @@ private:
 	/* This set contains list of active airports, used later by OpenGLWidget */
 	QMap< QString, AirportObject* > __activeAirports;
 	
+	/* This set contains list of aliases. Filled in by init() method. */
+	QMultiMap< QString, QString > __aliases;
+	
 	/* This is URL that we can obtain METAR from */
 	QString		__metarURL;
 	
 	unsigned	__clientsConnected;
 	
 	AirportsDatabase & __airports;
+	FirsDatabase & __firs;
 	
 	VatsinatorApplication &	__mother;
 	

@@ -53,7 +53,10 @@ public:
 	inline
 	void clear() { __staff.clear(); }
 	
-	FirHeader	header;
+	
+	
+	FirHeader			header;
+	QString				name;
 	QVector< Point >	coords;
 	
 private:

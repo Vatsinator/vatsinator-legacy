@@ -1,5 +1,5 @@
 /*
-    Clickable.h
+    Uir.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,20 +17,14 @@
 */
 
 
-#ifndef CLICKABLE_H
-#define CLICKABLE_H
+#include "../include/Uir.h"
 
-enum ObjectType {
-	PLANE, AIRPORT, FIR, UIR
-};
+void
+Uir::addFir(const Fir* _f) {
+	__range.push_back(_f);
+}
 
-class Clickable {
-	
-public:
-	
-	virtual ObjectType objectType() const = 0;
-
-	
-};
-
-#endif // CLICKABLE_H
+void
+Uir::addStaff(const Controller* _c) {
+	__staff.push_back(_c);
+}

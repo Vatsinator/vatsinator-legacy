@@ -74,6 +74,7 @@ protected:
 	void mouseReleaseEvent(QMouseEvent*);
 	void mouseMoveEvent(QMouseEvent*);
 	void keyPressEvent(QKeyEvent*);
+	void keyReleaseEvent(QKeyEvent*);
 	
 private:
 	
@@ -134,8 +135,6 @@ private:
 	GLuint	__pilotIcon;
 	
 	/* These variables are needed to render our textures. */
-	GLdouble	__vertices[8];
-	GLdouble	__texCoords[8];
 	GLdouble*	__circle;
 	unsigned	__circleCount;
 	
@@ -147,6 +146,9 @@ private:
 	
 	/* Last mouse position */
 	QPoint	__lastMousePos;
+	
+	/* Showing pilots' labels or not? */
+	bool	__keyPressed;
 	
 	/* And last mouse position interpolated to ortho range */
 	QPointF __lastMousePosInterpolated;

@@ -41,6 +41,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 	__airportsData->init();
 	__firsData->init();
 	
+	__vatsimData->init();
+	
 	__userInterface->show();
 	__httpHandler = new HttpHandler(__userInterface->getProgressBar());
 	
@@ -52,8 +54,6 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
-	qDebug() << "Deleting VatsinatorApplication...";
-	
 	if (__httpHandler)
 		delete __httpHandler;
 	
@@ -68,8 +68,6 @@ VatsinatorApplication::~VatsinatorApplication() {
 	
 	if (__firsData)
 		delete __firsData;
-	
-	qDebug() << "VatsinatorApplication deleted.";
 }
 
 void

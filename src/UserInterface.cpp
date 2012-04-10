@@ -49,10 +49,8 @@ UserInterface::UserInterface(QWidget* _parent) :
 }
 
 UserInterface::~UserInterface() {
-	qDebug() << "Deleting UserInterface...";
 	__storeWindowGeometry();
 	delete __metarsWindow;
-	qDebug() << "UserInterface deleted.";
 }
 
 void

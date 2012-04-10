@@ -56,6 +56,8 @@ ATCDetailsWindow::showWindow(const Client* _client) {
 	RatingLabel->setText(__ratings[atc->rating]);
 	if (atc->airport)
 		AirportLabel->setText((QString)atc->airport->icao + " " + atc->airport->name + ", " + atc->airport->city);
+	else
+		AirportLabel->setText("N/A");
 	ServerLabel->setText(atc->server);
 	TimeOnlineLabel->setText(atc->onlineFrom.toString("dd MMM yyyy, hh:mm"));
 	

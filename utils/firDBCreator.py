@@ -28,7 +28,11 @@ for line in dbin:
 		counting = int(firData[3])
 		firParsing = True
 		
-		dbout.write(pack('8sddddddi', firData[0], float(firData[5]), float(firData[4]),\
+		icao = firData[0]
+		if firData[1] == '1':
+			icao += 'F'
+		
+		dbout.write(pack('8sddddddi', icao, float(firData[5]), float(firData[4]),\
 			float(firData[7]), float(firData[6]), float(firData[9]), float(firData[8]),\
 			counting))
 	else:

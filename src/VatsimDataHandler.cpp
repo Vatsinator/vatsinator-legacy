@@ -20,12 +20,10 @@
 #include <cstdlib>
 #include <ctime>
 
-#include <QStringList>
-#include <QDebug>
+#include <QtGui>
 
 #include "../include/VatsimDataHandler.h"
 
-#include "../include/FirsDatabase.h"
 #include "../include/VatsinatorApplication.h"
 
 #include "../include/defines.h"
@@ -33,6 +31,7 @@
 
 VatsimDataHandler::VatsimDataHandler() :
 		__airports(AirportsDatabase::GetSingleton()),
+		__firs(FirsDatabase::GetSingleton()),
 		__mother(VatsinatorApplication::GetSingleton()) {}
 
 VatsimDataHandler::~VatsimDataHandler() {
@@ -40,8 +39,98 @@ VatsimDataHandler::~VatsimDataHandler() {
 		delete __pilots.back(), __pilots.pop_back();
 	while (!__atcs.empty())
 		delete __atcs.back(), __atcs.pop_back();
+	while (!__uirs.empty())
+		delete __uirs.back(), __uirs.pop_back();
 	for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
 		delete it.value();
+}
+
+void
+VatsimDataHandler::init() {
+	QFile datFile(VATSINATOR_DAT);
+	if (!datFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "File " << VATSINATOR_DAT << " could not be opened!";
+		return;
+	}
+	
+	QMap< QString, bool > flags;
+	flags["[FIR]"] = false;
+	flags["[ALIAS]"] = false;
+	flags["[UIR]"] = false;
+	
+	while (!datFile.atEnd()) {
+		QString line(datFile.readLine());
+		
+		line = line.simplified();
+		
+		if (line[0] == '#' || line.isEmpty())
+			continue;
+		
+		if (line[0] == '[') {
+			if (!flags.contains(line)) {
+				qDebug() << "Flag " << line << " could not be recognized! Check your vatsinator.dat file.";
+				continue;
+			}
+			__clearFlags(flags);
+			flags[line] = true;
+			continue;
+		}
+		
+		if (flags["[FIR]"]) {
+			QString icao = line.section(' ', 0, 0);
+			if (icao.length() != 4) {
+				qDebug() << "Word " << icao << " is not an ICAO code and could not be parsed." <<
+					"For aliases see [ALIAS] section.";
+				continue;
+			}
+			
+			Fir* currentFir = __firs.findFirByIcao(icao);
+			if (!currentFir) {
+				qDebug() << "Fir " << icao << " could not be found. Try [ALIAS] section!";
+				continue;
+			}
+			if (!currentFir->name.isEmpty() && !currentFir->name.isNull())
+				qDebug() << "Found duplicate for " << icao << "!";
+			
+			// finally:
+			currentFir->name = line.section(' ', 1);
+		} else if (flags["[ALIAS]"]) {
+			QStringList data = line.split(' ');
+			QString icao = data[0];
+			if (icao.length() != 4) {
+				qDebug() << "Word " << icao << " is not an ICAO code and could not be parsed." <<
+									"For aliases see [ALIAS] section.";
+				continue;
+			}
+			
+			for (int i = 1; i < data.length(); ++i) {
+				if (data[i][0] == '{') {
+					__aliases.insert(data[i].mid(1), icao);
+				} else if (data[i].toUpper() == data[i]) {
+					__aliases.insert(data[i], icao);
+					//qDebug() << "I: " << data[i] << " = " << icao;
+				}
+			}
+		} else if (flags["[UIR]"]) {
+			QStringList data = line.split(' ');
+			Uir* uir = new Uir;
+			uir->icao = data[0];
+			for (int i = 1; i < data.length(); ++i) {
+				if (data[i].toUpper() == data[i]) {
+					Fir* fir = __firs.findFirByIcao(data[i]);
+					if (fir)
+						uir->addFir(fir);
+					else
+						qDebug() << "FIR " << data[i] << " could not be found!";
+				} else {
+					uir->name.append(data[i] + " ");
+				}
+			}
+			__uirs.push_back(uir);
+		}
+	}
+	
+	datFile.close();
 }
 
 void
@@ -311,12 +400,55 @@ VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
 		_atc->airport = NULL;
 		
 		QString icao = sections.front();
-		if (icao.length() != 4)
-			return;
 		
-		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao);
+		Fir* fir = __firs.findFirByIcao(icao);
 		if (fir)
 			fir->addStaff(_atc);
+		else {
+			for (QString& alias: __aliases.values(icao)) {
+				fir = __firs.findFirByIcao(alias);
+				if (fir) {
+					fir->addStaff(_atc);
+					return;
+				}
+			}
+			
+			Uir* uir = __findUIR(icao);
+			if (uir) {
+				uir->addStaff(_atc);
+				return;
+			}
+			
+			qDebug() << "FIR not found: " << icao << "(" << _atc->callsign << ")";
+		}
+		
+		return;
+	} else if (sections.back() == "FSS") {
+		_atc->facility = FSS;
+		_atc->airport = NULL;
+		
+		QString icao = sections.front();
+		
+		Fir* fir = __firs.findFirByIcao(icao + "F");
+		if (fir)
+			fir->addStaff(_atc);
+		else {
+			Uir* uir = __findUIR(icao);
+			if (uir) {
+				uir->addStaff(_atc);
+				return;
+			}
+			
+			for (QString& alias: __aliases.values(icao)) {
+				fir = __firs.findFirByIcao(alias + "F");
+				if (fir) {
+					fir->addStaff(_atc);
+					return;
+				}
+			}
+			
+			qDebug() << "FIR not found: " << icao << "(" << _atc->callsign << ")";
+		}
 		
 		return;
 	} else if (
@@ -337,12 +469,28 @@ VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
 		else if (sections.back() == "ATIS")
 			_atc->facility = ATIS;
 		
-		if (sections[0].length() == 4 && !sections[0].isEmpty()) {
+		Airport* apShot = __airports.find(sections[0]);
+		if (apShot) {
 			if (!__activeAirports.contains(sections[0]))
 				__activeAirports.insert(sections[0], new AirportObject(sections[0]));
 			__activeAirports[sections[0]]->addStaff(_atc);
 			_atc->airport = __activeAirports[sections[0]]->getData();
+			return;
+		} else {
+			for (QString& alias: __aliases.values(sections[0])) {
+				apShot = __airports.find(alias);
+				if (apShot) {
+					if (!__activeAirports.contains(alias))
+						__activeAirports.insert(alias, new AirportObject(alias));
+					__activeAirports[alias]->addStaff(_atc);
+					_atc->airport = __activeAirports[alias]->getData();
+					return;
+				}
+			}
+		
+			qDebug() << "Airport not found: " << sections[0] << "(" << _atc->callsign << ")";
 		}
+		
 		return;
 	} else if (sections.back() == "OBS") {
 		_atc->facility = OBS;
@@ -355,4 +503,13 @@ void
 VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
 	for (auto it = _flags.begin(); it != _flags.end(); ++it)
 		it.value() = false;
+}
+
+Uir *
+VatsimDataHandler::__findUIR(const QString& _icao) {
+	for (Uir* u: __uirs)
+		if (u->icao == _icao)
+			return u;
+		
+	return NULL;
 }

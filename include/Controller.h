@@ -34,6 +34,7 @@ enum Facility {
 	TWR,
 	APP,
 	CTR,
+	FSS,
 	OBS
 };
 

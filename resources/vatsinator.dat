@@ -1,0 +1,468 @@
+# Some additional data for Vatsinator
+
+# This section informs Vatsinator about FIRs names. It reads four first letters
+# as ICAO and then until the end of the line as the FIR's name.
+[FIR]
+AGGG Honiara
+ANAU Nauru
+AYPM Port Moresby
+BGGL Sondrestrom
+BIRD Reykjavik
+CZEG Edmonton
+CZQM Moncton
+CZQX Gander
+CZUL Montreal
+CZVR Vancouver
+CZWG Winnipeg
+CZYZ Toronto
+DAAA Algier
+DGAC Accra
+DIII Abidjan
+DNKK Kano
+DRRR Niamey
+DTTC Tunis
+EBBU Brussels
+EDGG Langen
+EDMM Muenchen
+EDWW Bremen
+EETT Tallinn
+EFES Tampere
+EGGX Shanwick Oceanic
+EGPX Scottish
+EGTT London
+EHAA Amsterdam
+EISN Shannon
+EKDK Kobenhavn
+ENBD Bodo
+ENOB Bodo Oceanic
+ENOR Norway
+ENOS Oslo
+ENSV Stavanger
+EPWW Warszawa Radar
+ESAA Sweden
+ESMM Malmo
+EVRR Riga
+EYVL Vilnius
+FACT Cape Town
+FAJO Johannesburg Oceanic
+FAJS Johannesburg
+FBGR Gaborone
+FCCC Brazzaville
+FIMM Mauritius
+FLFI Lusaka
+FMMM Antananarivo
+FNAN Luanda
+FQBE Beira
+FSSS Seychelles
+FTTT N'Djamena
+FVHA Harare
+FWLL Lilongwe
+FYWH Windhoek
+FZZA Kinshasa
+GCCC Canarias
+GLRB Roberts
+GMMM Casablanca
+GOOO Dakar
+GVSC SAL Oceanic
+HAAA Addis Ababa
+HBBA Bujumbura
+HCSM Mogadishu
+HECC Cairo
+HHAA Asmara
+HKNA Nairobi
+HLLL Tripol
+HRYR Kigali
+HSSS Khartoum
+HTDC Dar-Es-salaam
+HUEC Entebbe
+KZAB Albuquerque
+KZAU Chicago
+KZBW Boston
+KZDC Washington
+KZDV Denver
+KZFW Fort Worth
+KZHU Houston
+KZID Indianapolis
+KZJX Jacksonville
+KZKC Kansas City
+KZLA Los Angeles
+KZLC Salt Lake City
+KZMA Miami
+KZMO Miami Oceanic
+KZME Memphis
+KZMP Minneapolis
+KZNY New York
+KZOA Oakland
+KZAK Oakland Oceanic
+KZOB Cleveland
+KZSE Seattle
+KZTL Atlanta
+LAAA Tirana
+LBSR Sofia
+LBWR Varna
+LCCC Nicosia
+LDZO Zagreb
+LECB Barcelona
+LECM Madrid
+LFBB Bordeaux
+LFEE Reims
+LFFF Paris
+LFMM Marseille
+LFRR Brest
+LGGG Athens
+LHCC Budapest
+LIBB Brindisi
+LIMM Milano
+LIRR Roma
+LJLA Ljubljana
+LKAA Praha
+LLLL Tel Aviv
+LMMM Malta
+LOVV Wien
+LPPC Lisboa
+LPPO Santa Maria
+LQSB Sarajevo
+LRBB Bucharest
+LSAS Geneva
+LTAA Ankara
+LTBB Istanbul
+LUKK Chisinau
+LWSS Skopje
+LYBA Beograd
+LZBB Bratislava
+MDCS Santo Domingo
+MHTG Central America
+MKJK Kingston
+MMEX Mexico
+MMID Merida
+MMTY Monterrey
+MMZT Mazatlan
+MPZL Panama
+MTEG Port AU Prince
+MUFH Havana
+MYNN Nassau
+NFFF Nadi Oceanic
+NTTT Tahiti Oceanic
+NZZO Auckland Oceanic
+NZCR Christchurch (Raglan)
+NZCB Christchurch (Bay)
+NZCT Christchurch (Taranaki)
+NZCK Christchurch (Kaikoura)
+NZCS Christchurch (South)
+NZOH Ohakea
+NZCM McMurdo
+OAKX Kabul
+OBBB Bahrain
+OEJD Jeddah
+OIIX Tehran
+OJAC Amman
+OKAC Kuwait
+OLBA Beirut
+OMAE Emirates
+OOMM Muscat
+OPKR Karachi
+OPLR Lahore
+ORBS Baghdad
+OSTT Damascus
+OYSC Sanaa
+PAZA Anchorage
+PGZU Guam
+PHZH Honolulu
+RCAA Taipei
+RJTG Tokyo
+RKRR Incheon
+RORG Naha
+RPHI Manila
+SACF Cordoba
+SAEF Ezeiza
+SAMF Mendoza
+SARR Resistencia
+SAVF Comodoro Rivadavia
+SBBL Belem
+SBBS Brasilia
+SBCW Curitiba
+SBMU Manaus
+SBAO Atlantico
+SBPH Porto Velho
+SBRE Recife
+SCCZ Punta Arenas
+SCEZ Santiago
+SCFZ Antofagosta
+SCIZ Easter
+SCTZ Puerto Mont
+SEGU Guayaquil
+SGFA Asuncion
+SKEC Barranquilla
+SKED Bogota
+SLLF La Paz
+SMPM Paramaribo
+SOOO Rochambeau SOCC
+SPIM Lima
+SUEO Montevideo
+SVZM Maiquetia
+SYGC Georgetown
+TJZS San Juan
+TNCF Curacao
+TTZP Piarco
+UAAA Almaty
+UACC Astana
+UAFM Bishkek
+UAFO Osh
+UAII Shymkent
+UAOO Kyzylorda
+UASS Semipalatinsk
+UATE Aktau
+UATT Aktyubinsk
+UBBA Baku
+UDDD Yerevan
+UEEE Yakutsk
+UELL Chulman
+UEMO Olekminsk Auxiliary
+UENN Nyurba Auxiliary
+UERP Polyarny Auxiliary
+UERR Mirny
+UESS Chersky
+UEST Tiksi
+UESU Zyryanka
+UGGG Tbilisi
+UHHH Khabarovsk
+UHMM Magadan
+UHPP Petropavlovsk-Kamchatsky
+UHSS Yuzhno-Sakhalinsk
+UHWW Vladivostok
+UIAA Chita
+UIII Irkutsk
+UIKB Bodaybo Auxiliary
+UIKK Kirensk
+UKBV Kyiv
+UKFV Simferopol
+UKDV Dnipropetrovsk
+UKLV Lviv
+UKOV Odesa
+ULAA Arkhangelsk
+ULAM Naryan-Mar Auxiliary
+ULDD Amderma
+ULKK Kotlas
+ULLL Sankt-Peterburg
+ULMM Murmansk
+ULOL Velikiye Luki
+ULPH Petrozavodsk
+ULWW Vologda
+UMKK Kaliningrad
+UMMV Minsk
+UNBB Barnaul
+UNIP Podkamennaya Tunguska Auxiliary
+UNIT Tura Auxiliary
+UNIW Vanavara Auxiliary
+UNKL Krasnoyarsk
+UNLL Kolpashevo
+UNNT Novosibirsk
+UNOO Omsk
+UNWW Novokuznetsk Auxiliary
+UOOO Norilsk
+UOTT Turukhansk
+URRV Rostov
+USCC Chelyabinsk
+USCM Magnitogorsk Auxiliary
+USDD Salekhard
+USDK Kamenny Mys
+USDS Tarko-Sale
+USHB Beryozovo
+USHH Khanty-Mansiysk
+USKK Kirov
+USPP Perm
+USRR Surgut
+USSE Severouralsk Auxiliary
+USSS Yekaterinburg
+USTR Tyumen
+USUU Kurgan
+UTAA Ashkhabad
+UTAK Turkmenbashy
+UTAT Dashkhovuz
+UTAV Turkmenabat
+UTDD Dushanbe
+UTNR Nukus
+UTSD Samarkand
+UTTR Tashkent
+UUWV Moscow
+UUYP Pechora
+UUYW Vorkuta
+UUYY Syktyvkar
+UWKD Kazan
+UWOO Orenburg
+UWUU Ufa
+UWWW Samara
+VABF Mumbai
+VCCC Colombo
+VDPP Phnom Penh
+VECF Calcutta
+VEGF Guwahati
+VGHR Dhaka
+VHHK Hong Kong
+VIDF Delhi
+VLVT Vientiane
+VNSM Kathmandu
+VOMF Chennai
+VRMF Male
+VTBB Bangkok
+VVGL Hanoi
+VVTS Ho-Chi-Minh
+VYYF Rangoon
+WAAF Ujung Pandang
+WBFC Kota Kinabalu
+WIIF Jakarta
+WMFC Kuala Lumpur
+WSJC Singapore
+YTSN Brisbane Oceanic-Tasman
+YIND Melbourne Oceanic-Indian
+YBIK Melbourne (Bindook)
+YSNO Melbourne (Snowy)
+YTAS Melbourne (Tasmania)
+YCAN Melbourne (Canty)
+YDAT Brisbane (Daintree)
+YNUL Melbourne (Nulabor)
+YKLG Melbourne (Kalgoorlie)
+YPIL Melbourne (Pilbara)
+YARL Brisbane (Armidale)
+YDOS Brisbane (Downs)
+YKPL Brisbane (Keppel)
+YTRT Brisbane (Territory)
+ZBPE Beijing
+ZGZU Guangzhou
+ZHWH Wuhan
+ZJSA Sanya
+ZKKP Pyongyang
+ZLHW Lanzhou
+ZMBZ Ulaan Baatar
+ZPKM Kunming
+ZSHA Shanghai
+ZWUQ Urumqi
+ZYSH Shenyang
+
+# This section contains aliases for various FIRs. For example, LON is alias for EGTT FIR.
+[ALIAS]
+ANAU ANYN INU
+BGGL SFJ BGG1 GREN
+CYUL MTL
+CZEG EDM ZEG
+CZQM MON
+CZQX GAND YQX GAN
+CZUL MTL
+CZVR VAN CYVR ZVR
+CZWG YWG ZWG
+CZYZ TOR
+EBBU EBBR EBUR
+EDMM EDDM
+EDWW EDDW
+EETT EETN
+EFES {EFPS Rovaniemi}
+EGLC THAMES
+EGTT {EGCC MAN Manchester} {PEN EGNV Pennine Radar} {EGJJ JER Jersey Zone} LON LTC LON-SM LON-CM LON-DM LON-EM
+EGGX EGX GX EG E G X SH SR SHW SHAN SWICK SHWICK SAWICK SNWICK {EGG1 Shanwick} {SC-D EGG2 Shanwick Clearance Delivery} {EGG3 S-ORCA SORCA S Shanwick Oceanic Routing Clearance Authority} {EGG2 EGG4 EGGX-D EGX-D EG-D GX-D E-D G-D X-D SH-D SH-D SR-D SHW-D SHAN-D Shanwick Oceanic Clearance Delivery}
+EGPX SCO
+EGSS ESSEX
+EHAA {EHMC Dutch Mil (Military)}
+ESAA SWEH SWEL ESSA ESOS {ESMM ESMS Malmo} {ESUN Sundsvall}
+HLLL TIP HLLT {HLLB BEN Benina}
+KZAB ABQ
+KZAK ZAK
+KZAU CHI ORD
+KZBW BOS
+KZDC DC WAS
+KZDV DEN
+KZFW FTW
+KZHU HOU
+KZID IND
+KZJX JAX
+KZKC KC
+KZLA LAX
+KZLC SLC
+KZMA MIA
+KZME MEM
+KZMP MSP
+KZNY NY
+KZOA OAK
+KZOB CLE
+KZSE SEA
+KSEA SEA
+KZTL ATL
+LECB LEBL {LECL LEVC Valencia} {LEVC Valencia}
+LECM LEMD {LECS LEZL Sevilla}
+LFFF LFPG LFUB
+LFBB LFUB
+LFEE LFUE
+LFMM LFUM LFRR LFUR
+LGGG {LGMD Makedonia}
+LIMM {LIMG Albenga} {LIPP Padova}
+LLLL LLTA {LLSC South Control}
+LOVV LOWW
+LUKK LUUU
+LPPC {LPAM Lisboa Military}
+LQSB LQSA
+LSAS LSAG {LSAZ LSZH Zurich}
+LTBB LTBA
+MMZT MZT MMMZ
+OLBA BEY OLBB
+OSTT OSDI
+OJAI AMM
+PAZA ANC
+PANC ANC
+PHZH HNL
+RCTP TPE
+RJTG {RJCG SPO RJCO Sapporo} {RJDG RJFF FKO Fukuoka} TOKYO TOKYOE TOKYOS TOKYOW TYO TYOE TYOS TYOW
+SBBS SBBR
+YTAS ML-TAS
+
+# USA codes
+KACY ACY
+KBGR BGR
+KCLE CLE
+KDEN DEN
+KDCA DCA
+KIAD IAD
+KJFK JFK NY
+KMCO MCO
+KMDW MDW
+KMHT MHT
+KPHL PHL
+KPDX PDX
+KLAX LAX
+KSAN SAN
+KMSP MSP
+KDFW DFW REG
+KSLC SLC
+KCLT CLT
+KIND IND
+KEWR EWR
+KDTW DTW
+KMEM MEM
+KORD ORD
+KMSY MSY
+KWRI WRI
+
+[UIR]
+ASEA South East Asia Control VYYF VTBB VVTS VVGL VDPP VLVT WAAF WIIF WSJC WMFC WBFC RPHI
+AFRN North Africa GMMM DAAA DTTC HLLL HECC GVSC GCCC GOOO DRRR FTTT HSSS HHAA HAAA
+AFRC Central Africa GLRB DIII DGAC DNKK FCCC FZZA HUEC HRYR HBBA HKNA HCSM FSSS HTDC FLFI FNAN
+AFRS South Africa FYWH FBGR FVHA FWLL FMMM FIMM FQBE FAJS FACT FAJO
+BALT Baltic Control UMKK EYVL EVRR EETT
+BICC Iceland Radio BGGL
+EURN Eurocontrol North EKDK EETT EFES EVRR EYVL ENOR ENBD ENSV ENOS ESAA ESMM
+EURM Maastricht Eurocontrol LOVV EBBU EDGG EDMM EDWW LSAS EHAA
+EURW Eurocontrol West LFBB LFEE LFMM LFRR LFFF LPPC LECM LECB
+EURE Eurocontrol East LAAA LQSB LBSR LBWR LDZO LKAA LWSS LHCC LUKK EPWW LRBB LYBA LZBB LJLA
+EURS Eurocontrol South LCCC LGGG LIMM LIRR LIBB LMMM LTBB
+EURI Eurocontrol Islands EISN EGTT EGPX BIRD
+GULF Gulf Area OIIX ORBS OSTT OEJD OKAC OBBB OMAE OYSC OOMM OJAC HECC
+LFUP France Control LFMM LFFF LFEE LFBB LFRR
+LFFM France Military LFMM LFFF LFEE LFBB LFRR
+LIUP Italy Radar LIMM LIBB LIRR
+RU-ERC Eastern Russia Control UEEE UELL UEMO UESS UEST UESU UHHH UHMM UHPP UHSS UHWW
+RU-WRC Western Russia Control UMMV UUWV URRV UWWW UWOO UWUU UWKD
+RU-ESC Eastern Siberia Control UOOO UOTT UNIP UNKL UNIW UNIT UERP UENN UERR UIKK UIII UIAA UIKB
+RU-WSC Western Siberia Control USDK USDD USDS USHB USSE USHH USRR UNLL USTR USSS USCC USCM USUU UNOO UNNT UNWW UNBB
+RU-CEN Central Asia Control UATT UACC UASS UAAA UAOO UATE UTAK UTAA UTAT UTNR UTAV UTSD UTTR UAII UAFO UTDD UAFM
+UKR Ukraine Control UKDV UKFV UKOV UKBV UKLV
+VZUP India Upper Radar VABF VEGF VECF VIDF VOMF
+RU-NWC North West Control ULLL ULMM ULAA UMKK UUYY
+

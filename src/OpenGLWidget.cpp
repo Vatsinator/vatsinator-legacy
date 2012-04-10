@@ -36,6 +36,9 @@
 
 const double PI = 3.1415926535897;
 
+const GLdouble VERTICES[] = {-0.025, -0.025, -0.025, 0.025, 0.025, 0.025, 0.025, -0.025};
+const GLdouble TEXCOORDS[] = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0};
+
 template< typename T >
 inline T absHelper(const T& _v) {
 	if (_v < 0)
@@ -45,10 +48,9 @@ inline T absHelper(const T& _v) {
 
 OpenGLWidget::OpenGLWidget(QWidget* _parent) :
 		QGLWidget(_parent),
-		__vertices({-0.025, -0.025, -0.025, 0.025, 0.025, 0.025, 0.025, -0.025}),
-		__texCoords({0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0}),
 		__position(0.0, 0.0),
 		__zoom(ZOOM_MINIMUM),
+		__keyPressed(false),
 		__underMouse(NULL),
 		__tracked(NULL),
 		__label(NULL),
@@ -119,11 +121,11 @@ OpenGLWidget::paintGL() {
 	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
-	glVertexPointer(2, GL_DOUBLE, 0, __vertices);
+	glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
 	
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_DOUBLE, 0, __texCoords);
+	glTexCoordPointer(2, GL_DOUBLE, 0, TEXCOORDS);
 	
 	__drawAirports();
 	__drawPilots();
@@ -149,7 +151,7 @@ void
 OpenGLWidget::showPilot(const Pilot* _p) {
 	__position.rx() = _p->position.longitude / 180;
 	__position.ry() = _p->position.latitude / 90;
-	paintGL();
+	updateGL();
 }
 
 void
@@ -176,7 +178,7 @@ OpenGLWidget::wheelEvent(QWheelEvent* _event) {
 	
 	_event->accept();
 	
-	paintGL();
+	updateGL();
 }
 
 void
@@ -194,6 +196,8 @@ OpenGLWidget::mousePressEvent(QMouseEvent* _event) {
 			case FIR:
 				__openContextMenu(static_cast< const Fir* >(__underMouse));
 				break;
+			case UIR:
+				break;
 		}
 	} else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
 		switch (__underMouse->objectType()) {
@@ -206,10 +210,10 @@ OpenGLWidget::mousePressEvent(QMouseEvent* _event) {
 			case FIR:
 				//__atcDetails->showWindow(static_cast< const Fir* >(__underMouse));
 				break;
+			case UIR:
+				break;
 		}
 	}
-	
-	//paintGL();
 }
 
 void
@@ -251,7 +255,7 @@ OpenGLWidget::mouseMoveEvent(QMouseEvent* _event) {
 			QString::number(absHelper(longitude), 'g', 6) + " "
 		);
 	
-	paintGL();
+	updateGL();
 }
 
 void
@@ -264,9 +268,22 @@ OpenGLWidget::keyPressEvent(QKeyEvent* _event) {
 			if (__zoom > ZOOM_MINIMUM)
 				__zoom -= 1;
 			break;
+		case Qt::Key_Control:
+			__keyPressed = true;
 	}
 	
-	paintGL();
+	updateGL();
+}
+
+void
+OpenGLWidget::keyReleaseEvent(QKeyEvent* _event) {
+	switch (_event->key()) {
+		case Qt::Key_Control:
+			__keyPressed = false;
+			break;
+	}
+	
+	updateGL();
 }
 
 void
@@ -306,7 +323,7 @@ OpenGLWidget::__drawFirs() {
 		glPushMatrix();
 		if (!fir.getStaff().isEmpty()) {
 			glColor4f(FIR_ACTIVE_COLOR);
-			glLineWidth(4.0);
+			glLineWidth(3.0);
 			glTranslated(0.0, 0.0, -0.1);
 		} else {
 			glColor4f(0.5, 0.5, 0.5, 1.0);
@@ -319,14 +336,26 @@ OpenGLWidget::__drawFirs() {
 		__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
 		if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
 				(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
+			QString icao(fir.header.icao);
+			if (icao.length() > 4) {
+				icao = icao.left(4);
+				icao += " Oceanic";
+			}
+		
 			renderText(fir.header.textPosition.x, fir.header.textPosition.y, 0.0,
-					   fir.header.icao, __apsFont, 64);
+					   icao, __apsFont, 64);
 			if (__distanceFromCamera(x + 0.03, y) < OBJECT_TO_MOUSE && !__toolTipWasShown) {
 				__toolTipWasShown = true;
 				setCursor(QCursor(Qt::PointingHandCursor));
 				__underMouse = &fir;
 				
-				QString tooltipText = QString("<center>") + (QString)fir.header.icao;
+				QString tooltipText = QString("<center>") + icao;
+				if (!fir.name.isEmpty()) {
+					tooltipText.append("<br><nobr>");
+					tooltipText.append(fir.name);
+					tooltipText.append("</nobr>");
+				}
+				
 				for (const Controller* c: fir.getStaff()) {
 					tooltipText.append("<br><nobr>");
 					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
@@ -339,9 +368,23 @@ OpenGLWidget::__drawFirs() {
 					);
 			}
 		}
-		
 		glLineWidth(1.0);
 		glPopMatrix();
+	}
+	
+	for (const Uir* uir: __data.getUIRs()) {
+		if (!uir->getStaff().isEmpty()) {
+			glPushMatrix();
+				glTranslatef(0.0, 0.0, 1.9);
+				glColor4f(UIR_ACTIVE_COLOR);
+				glLineWidth(3.0);
+				for (const Fir* fir: uir->getRange()) {
+					glVertexPointer(2, GL_DOUBLE, 0, &fir->coords[0].x);
+					glDrawArrays(GL_LINE_LOOP, 0, fir->coords.size());
+				}
+				glLineWidth(1.0);
+			glPopMatrix();
+		}
 	}
 }
 
@@ -385,7 +428,10 @@ OpenGLWidget::__drawAirports() {
 			glDrawArrays(GL_QUADS, 0, 4);
 	
 			glColor4f(AP_LABEL_COLOR);
-			renderText(-0.03, 0.04, -1.5, it.key(), __apsFont, 64);
+			renderText(-0.03, 0.04, -1.0, it.key(), __apsFont, 64);
+			
+			unsigned deps = it.value()->countDepartures();
+			unsigned arrs = it.value()->countArrivals();
 			
 			if (inRange) {
 				__toolTipWasShown = true;
@@ -403,16 +449,14 @@ OpenGLWidget::__drawAirports() {
 					tooltipText.append("</nobr>");
 				}
 				
-				unsigned k = it.value()->countDepartures();
-				if (k) {
+				if (deps) {
 					tooltipText.append("<br>Departures: ");
-					tooltipText.append(QString::number(k));
+					tooltipText.append(QString::number(deps));
 				}
 				
-				k = it.value()->countArrivals();
-				if (k) {
+				if (arrs) {
 					tooltipText.append("<br>Arrivals: ");
-					tooltipText.append(QString::number(k));
+					tooltipText.append(QString::number(arrs));
 				}
 				
 				tooltipText.append("</center>");
@@ -439,7 +483,7 @@ OpenGLWidget::__drawAirports() {
 				glLineWidth(1.0);
 				glLineStipple(1, 0xFFFF);
 				
-				glVertexPointer(2, GL_DOUBLE, 0, __vertices);
+				glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
 				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			}
 			
@@ -493,7 +537,9 @@ OpenGLWidget::__drawPilots() {
 			glPopMatrix();
 			
 			glColor4f(PILOT_LABEL_COLOR);
-			renderText(0.03, -0.01, -1.5, client->callsign, __pilotsFont, 64);
+			
+			if (__keyPressed || inRange)
+				renderText(0.03, -0.01, -1.5, client->callsign, __pilotsFont, 64);
 			
 			if (inRange && !__toolTipWasShown) {
 				__toolTipWasShown = true;
@@ -532,8 +578,8 @@ OpenGLWidget::__drawLines() {
 		return;
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glColor4f(LINES_COLOR);
 	if (__underMouse->objectType() == PLANE) {
+		glColor4f(LINES_COLOR);
 		const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
 		const Airport* ap = __airports[pilot->route.origin]->getData();
 		
@@ -582,6 +628,8 @@ OpenGLWidget::__drawLines() {
 			 * called function is undefined (according to C++ standard) */
 			__mapCoordinates(p->position.longitude, p->position.latitude,
 							 vertices[i], vertices[i+1]);
+			if (p->flightStatus != ARRIVED && !__keyPressed)
+				renderText(vertices[i] + 0.03, vertices[i+1] - 0.01, -1.5, p->callsign, __pilotsFont, 64);
 			i += 2;
 			
 			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
@@ -595,6 +643,9 @@ OpenGLWidget::__drawLines() {
 			
 			__mapCoordinates(p->position.longitude, p->position.latitude,
 							 vertices[i], vertices[i+1]);
+			
+			if (p->flightStatus != DEPARTING && !__keyPressed)
+				renderText(vertices[i] + 0.03, vertices[i+1] - 0.01, -1.5, p->callsign, __pilotsFont, 64);
 			i += 2;
 			
 			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
@@ -604,6 +655,7 @@ OpenGLWidget::__drawLines() {
 		}
 		
 		glVertexPointer(2, GL_DOUBLE, 0, vertices);
+		glColor4f(LINES_COLOR);
 		
 		glDrawArrays(GL_LINES, 0, linesOut * 2);
 		
