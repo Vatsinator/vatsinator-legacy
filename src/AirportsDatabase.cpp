@@ -50,7 +50,9 @@ AirportsDatabase::init() {
 	
 	db.close();
 	
+#ifndef NO_DEBUG
 	qDebug() << "Airports read: " << size;
+#endif
 
 }
 

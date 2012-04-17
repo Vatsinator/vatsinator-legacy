@@ -24,13 +24,14 @@
 #include "../include/AirportsDatabase.h"
 #include "../include/AirportObject.h"
 #include "../include/MetarsHandler.h"
-#include "../include/OpenGLWidget.h"
+#include "../include/MapWidget.h"
 #include "../include/ShowButton.h"
+#include "../include/defines.h"
 
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 		QWidget(_parent),
 		__current(NULL),
-		__openGLWidget(OpenGLWidget::GetSingletonPtr()) {
+		__openGLWidget(MapWidget::GetSingletonPtr()) {
 	setupUi(this);
 	__setWindowPosition();
 	
@@ -62,9 +63,6 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	ATCTable->setColumnWidth(2, 100);
 	ATCTable->setColumnWidth(3, 80);
 	
-	connect(MetarsHandler::GetSingletonPtr(), SIGNAL(newMetarsAvailable(const QVector< Metar >&)),
-			this, SLOT(updateMetar(const QVector< Metar >&)));
-	
 	__ratings[1] = "OBS";
 	__ratings[2] = "S1";
 	__ratings[3] = "S2";
@@ -76,13 +74,16 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	__ratings[11] = "SUP";
 	__ratings[12] = "ADM";
 	
+	connect(MetarsHandler::GetSingletonPtr(), SIGNAL(newMetarsAvailable()),
+		this, SLOT(updateMetar()));
+	
 }
 
 void
 AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 	AirportsDatabase& apdb = AirportsDatabase::GetSingleton();
 	if (!__openGLWidget)
-		__openGLWidget = OpenGLWidget::GetSingletonPtr();
+		__openGLWidget = MapWidget::GetSingletonPtr();
 	
 	setWindowTitle((QString)_ap->getData()->icao + " - airport details");
 	
@@ -181,27 +182,27 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		++row;
 	}
 	
-	MetarsHandler::GetSingleton().fetchMetar(_ap->getData()->icao);
-	MetarLabel->setText("Fetching...");
-	
 	__current = _ap;
+	
+	const Metar* m = MetarsHandler::GetSingleton().find(__current->getData()->icao);
+	if (m)
+		MetarLabel->setText(m->metar);
+	else {
+		MetarLabel->setText("Fetching...");
+		MetarsHandler::GetSingleton().fetchMetar(__current->getData()->icao);
+	}
 	
 	show();
 }
 
 void
-AirportDetailsWindow::updateMetar(const QVector< Metar >& _metars) {
+AirportDetailsWindow::updateMetar() {
 	if (!__current)
 		return;
 	
-	for (const Metar& m: _metars) {
-		if (m.icao == __current->getData()->icao) {
-			MetarLabel->setText(m.metar);
-			return;
-		}
-	}
-	
-	MetarsHandler::GetSingleton().fetchMetar(__current->getData()->icao);
+	const Metar* m = MetarsHandler::GetSingleton().find(__current->getData()->icao);
+	if (m)
+		MetarLabel->setText(m->metar);
 }
 
 void

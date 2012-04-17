@@ -263,6 +263,11 @@ VatsimDataHandler::findPilot(const QString& _callsign) {
  */
 void
 VatsimDataHandler::__parseATC(const QStringList& _clientData) {
+	if (_clientData.size() < 41) {
+		emit dataCorrupted();
+		return;
+	}
+	
 	Controller* client = new Controller;
 	
 	client->callsign = _clientData[0];
@@ -289,6 +294,11 @@ VatsimDataHandler::__parseATC(const QStringList& _clientData) {
 
 void
 VatsimDataHandler::__parsePilot(const QStringList& _clientData) {
+	if (_clientData.size() < 41) {
+		emit dataCorrupted();
+		return;
+	}
+	
 	Pilot* client = new Pilot;
 	
 	client->callsign = _clientData[0];
@@ -315,12 +325,12 @@ VatsimDataHandler::__parsePilot(const QStringList& _clientData) {
 	
 	if (!__activeAirports.contains(client->route.origin))
 		__activeAirports.insert(client->route.origin,
-								new AirportObject(client->route.origin));
+				new AirportObject(client->route.origin));
 		__activeAirports[client->route.origin]->addOutbound(client);
 	
 	if (!__activeAirports.contains(client->route.destination))
 		__activeAirports.insert(client->route.destination,
-								new AirportObject(client->route.destination));
+				new AirportObject(client->route.destination));
 		__activeAirports[client->route.destination]->addInbound(client);
 	
 	__setStatus(client);
@@ -405,6 +415,16 @@ VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
 		if (fir)
 			fir->addStaff(_atc);
 		else {
+			// many of USA controllers use just three last letters of position
+			// ICAO
+			if (icao.length() == 3) {
+				fir = __firs.findFirByIcao("K" + icao); 
+				if (fir) {
+					fir->addStaff(_atc);
+					return;
+				}
+			}
+			
 			for (QString& alias: __aliases.values(icao)) {
 				fir = __firs.findFirByIcao(alias);
 				if (fir) {
@@ -477,6 +497,18 @@ VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
 			_atc->airport = __activeAirports[sections[0]]->getData();
 			return;
 		} else {
+			if (sections[0].length() == 3) {
+				QString alias = "K" + sections[0];
+				apShot = __airports.find(alias);
+				if (apShot) {
+					if (!__activeAirports.contains(alias))
+						__activeAirports.insert(alias, new AirportObject(alias));
+					__activeAirports[alias]->addStaff(_atc);
+					_atc->airport = __activeAirports[alias]->getData();
+					return;
+				}
+			}
+			
 			for (QString& alias: __aliases.values(sections[0])) {
 				apShot = __airports.find(alias);
 				if (apShot) {

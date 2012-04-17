@@ -21,13 +21,14 @@
 #define USERINTERFACE_H
 
 #include "ui_UserInterface.h"
-#include "OpenGLWidget.h"
+#include "MapWidget.h"
 #include "Singleton.h"
 
 class AirportDetailsWindow;
 class ATCDetailsWindow;
 class FlightDetailsWindow;
 class MetarsWindow;
+class SettingsWindow;
 class VatsinatorApplication;
 
 class UserInterface :
@@ -49,7 +50,7 @@ public:
 	
 	void statusBarUpdate(const char* = "Ready.");
 	
-	OpenGLWidget * getGLContext() { return GLContext; }
+	MapWidget * getGLContext() { return MapDisplay; }
 	
 	QProgressBar * getProgressBar() { return ProgressBar; }
 	
@@ -64,13 +65,13 @@ public slots:
 private:
 	void __setupWindow();
 	void __setWindowPosition();
-	void __connectSlots();
 	void __storeWindowGeometry();
 	void __restoreWindowGeometry();
 	
 	ATCDetailsWindow * __atcDetailsWindow;
 	FlightDetailsWindow * __flightDetailsWindow;
 	MetarsWindow *	__metarsWindow;
+	SettingsWindow * __settingsWindow;
 	AirportDetailsWindow * __airportDetailsWindow;
 	
 	VatsinatorApplication &	__mother;

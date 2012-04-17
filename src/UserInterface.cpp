@@ -25,6 +25,7 @@
 #include "../include/AirportDetailsWindow.h"
 #include "../include/ATCDetailsWindow.h"
 #include "../include/MetarsWindow.h"
+#include "../include/SettingsWindow.h"
 #include "../include/VatsinatorApplication.h"
 #include "../include/VatsimDataHandler.h"
 #include "../include/FlightDetailsWindow.h"
@@ -36,12 +37,23 @@ UserInterface::UserInterface(QWidget* _parent) :
 		__atcDetailsWindow(new ATCDetailsWindow()),
 		__flightDetailsWindow(new FlightDetailsWindow()),
 		__metarsWindow(new MetarsWindow()),
+		__settingsWindow(new SettingsWindow()),
 		__airportDetailsWindow(new AirportDetailsWindow()),
 		__mother(VatsinatorApplication::GetSingleton()) {
 	__setupWindow();
 	__setWindowPosition();
 	__restoreWindowGeometry();
-	__connectSlots();
+	
+	connect(ActionExit,	SIGNAL(triggered()),
+		this,		SLOT(quit()));
+	connect(ActionAbout,	SIGNAL(triggered()),
+		this,		SLOT(about()));
+	connect(ActionMetar,	SIGNAL(triggered()),
+		__metarsWindow,	SLOT(showWindow()));
+	connect(ActionRefresh,	SIGNAL(triggered()),
+		&__mother,	SLOT(refreshData()));
+	connect(ActionPreferences,	SIGNAL(triggered()),
+		SettingsWindow::GetSingletonPtr(),	SLOT(showWindow()));
 	
 	statusBarUpdate();
 	
@@ -50,6 +62,10 @@ UserInterface::UserInterface(QWidget* _parent) :
 
 UserInterface::~UserInterface() {
 	__storeWindowGeometry();
+	delete __airportDetailsWindow;
+	delete __flightDetailsWindow;
+	delete __atcDetailsWindow;
+	delete __settingsWindow;
 	delete __metarsWindow;
 }
 
@@ -109,14 +125,6 @@ UserInterface::__setWindowPosition() {
 	y -= 50;
 	
 	move(x, y);
-}
-
-void
-UserInterface::__connectSlots() {
-	connect(ActionExit, SIGNAL(activated()), this, SLOT(quit()));
-	connect(ActionAbout, SIGNAL(activated()), this, SLOT(about()));
-	connect(ActionMetar, SIGNAL(activated()), __metarsWindow, SLOT(showWindow()));
-	connect(ActionRefresh, SIGNAL(activated()), &__mother, SLOT(refreshData()));
 }
 
 void

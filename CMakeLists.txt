@@ -8,7 +8,8 @@ project(vatsinator)
 find_package(Qt4 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-set(CMAKE_CXX_FLAGS "-g -Wall -std=c++0x")
+set(CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x -fpermissive")
 
 set(vatsinator_SOURCES
 	main.cpp
@@ -17,15 +18,17 @@ set(vatsinator_SOURCES
 	src/AirportsDatabase.cpp
 	src/ATCDetailsWindow.cpp
 	src/ClientDetailsAction.cpp
+	src/ColorButton.cpp
 	src/Fir.cpp
 	src/FirsDatabase.cpp
 	src/FlightDetailsWindow.cpp
 	src/HttpHandler.cpp
+	src/MapWidget.cpp
 	src/Metar.cpp
 	src/MetarAction.cpp
 	src/MetarsHandler.cpp
 	src/MetarsWindow.cpp
-	src/OpenGLWidget.cpp
+	src/SettingsWindow.cpp
 	src/ShowButton.cpp
 	src/TrackAction.cpp
 	src/Uir.cpp
@@ -34,19 +37,29 @@ set(vatsinator_SOURCES
 	src/VatsinatorApplication.cpp
 )
 
+
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+	set(vatsinator_SOURCES
+		${vatsinator_SOURCES} src/MemoryTracker.cpp
+	)
+endif (CMAKE_BUILD_TYPE MATCHES Debug)
+
 set(vatsinator_QT_HEADERS
 	include/AirportDetailsWindow.h
 	include/ATCDetailsWindow.h
 	include/ClientDetailsAction.h
+	include/ColorButton.h
 	include/FlightDetailsWindow.h
 	include/HttpHandler.h
+	include/MapWidget.h
 	include/MetarAction.h
 	include/MetarsHandler.h
 	include/MetarsWindow.h
-	include/OpenGLWidget.h
+	include/SettingsWindow.h
 	include/ShowButton.h
 	include/TrackAction.h
 	include/UserInterface.h
+	include/VatsimDataHandler.h
 	include/VatsinatorApplication.h
 )
 
@@ -55,6 +68,7 @@ set(vatsinator_FORMS
 	resources/ATCDetailsWindow.ui
 	resources/FlightDetailsWindow.ui
 	resources/MetarsWindow.ui
+	resources/SettingsWindow.ui
 	resources/UserInterface.ui
 )
 
@@ -81,13 +95,28 @@ add_executable(vatsinator
 	${vatsinator_RESOURCES_RCC}
 )
 
-set_property(
-	TARGET vatsinator
-	PROPERTY COMPILE_DEFINITIONS PREFIX="${CMAKE_INSTALL_PREFIX}"
-)
+if (MINGW)
+	set(vatsinator_LIBS
+		mingw32
+		${OPENGL_gl_LIBRARY}
+		${QT_QTCORE_LIBRARY}
+		${QT_QTGUI_LIBRARY}
+		${QT_QTOPENGL_LIBRARY}
+		${QT_QTNETWORK_LIBRARY}
+	)
+else (MINGW)
+	set_property(
+		TARGET vatsinator
+		PROPERTY COMPILE_DEFINITIONS PREFIX="${CMAKE_INSTALL_PREFIX}"
+	)
+	
+	set(vatsinator_LIBS
+		${QT_LIBRARIES}
+		${OPENGL_LIBRARY}
+	)
+endif (MINGW)
 
-target_link_libraries(vatsinator ${QT_LIBRARIES})
-target_link_libraries(vatsinator ${OPENGL_LIBRARY})
+target_link_libraries(vatsinator ${vatsinator_LIBS})
 
 install(FILES
 	resources/WorldAirports.db

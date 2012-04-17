@@ -18,12 +18,15 @@
 
 #include <cstdlib>
 
+#include <iostream>
+
 #include <QtGui>
 #include "../include/VatsinatorApplication.h"
 
 #include "../include/AirportsDatabase.h"
 #include "../include/FirsDatabase.h"
 #include "../include/HttpHandler.h"
+#include "../include/SettingsWindow.h"
 #include "../include/UserInterface.h"
 #include "../include/VatsimDataHandler.h"
 
@@ -36,12 +39,19 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		__vatsimData(new VatsimDataHandler),
 		__userInterface(new UserInterface) {
 	
+#ifndef NO_DEBUG
+	std::cout << "AIRPORTS_DB: " << AIRPORTS_DB << std::endl <<
+		"FIRS_DB: " << FIRS_DB << std::endl <<
+		"VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl;
+#endif
+	
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
 	
 	__airportsData->init();
 	__firsData->init();
 	
 	__vatsimData->init();
+	connect(__vatsimData, SIGNAL(dataCorrupted()), this, SLOT(__showDataAlert()));
 	
 	__userInterface->show();
 	__httpHandler = new HttpHandler(__userInterface->getProgressBar());
@@ -50,24 +60,19 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 	
 	__fetchStatusFile();
 	
-	__timer.start(REFRESH_RATE);
+	__timer.start(SettingsWindow::GetSingleton().getRefreshRate() * 60000);
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
-	if (__httpHandler)
-		delete __httpHandler;
+	delete __httpHandler;
+	delete __userInterface;
+	delete __vatsimData;
+	delete __airportsData;
+	delete __firsData;
 	
-	if (__userInterface)
-		delete __userInterface;
-	
-	if (__vatsimData)
-		delete __vatsimData;
-	
-	if (__airportsData)
-		delete __airportsData;
-	
-	if (__firsData)
-		delete __firsData;
+#ifndef NO_DEBUG
+	DumpUnfreed();
+#endif
 }
 
 void
@@ -86,11 +91,11 @@ void
 VatsinatorApplication::refreshData() {
 	__userInterface->statusBarUpdate("Fetching data...");
 	__httpHandler->fetchData(__vatsimData->getDataUrl());
-	__timer.start(REFRESH_RATE);
+	__timer.start(SettingsWindow::GetSingleton().getRefreshRate() * 60000);
 }
 
 void
-VatsinatorApplication::__statusFileUpdated(QString _data) {
+VatsinatorApplication::__statusFileUpdated(const QString& _data) {
 	if (_data.isEmpty()) {
 		QMessageBox decision;
 		decision.setText(tr("Vatsinator was unable to fetch Vatsim's status file."));
@@ -122,7 +127,7 @@ VatsinatorApplication::__statusFileUpdated(QString _data) {
 }
 
 void
-VatsinatorApplication::__dataFileUpdated(QString _data) {
+VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 	__userInterface->statusBarUpdate();
 	if (_data.isEmpty()) {
 		QMessageBox decision;
@@ -156,7 +161,25 @@ VatsinatorApplication::__dataFileUpdated(QString _data) {
 	
 	if (__userInterface->getGLContext()->getTrackedPilot())
 		__userInterface->getGLContext()->getTrackedPilot() = __vatsimData->findPilot(temp);
-	__userInterface->getGLContext()->paintGL();
+	
+	emit glRepaintNeeded();
+}
+
+void
+VatsinatorApplication::__showDataAlert() {
+	QMessageBox decision;
+	decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
+	decision.setInformativeText(tr("What do you want to do with that?"));
+	QPushButton* againButton = decision.addButton(tr("Try again"), QMessageBox::ActionRole);
+	decision.addButton(tr("Keep current data"), QMessageBox::RejectRole);
+	decision.setIcon(QMessageBox::Warning);
+	
+	__timer.stop();
+	
+	decision.exec();
+	
+	if (decision.clickedButton() == againButton)
+		refreshData();
 }
 
 void

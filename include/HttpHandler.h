@@ -33,12 +33,12 @@ class HttpHandler :
 	
 public:
 	
-	HttpHandler(QProgressBar*, QObject* = 0);
+	HttpHandler(QProgressBar* = 0, QObject* = 0);
 	
 	void fetchData(const QString&);
 	
 signals:
-	void finished(QString);
+	void finished(const QString&);
 	
 private slots:
 	void __readyRead();
@@ -52,6 +52,7 @@ private:
 	
 	QQueue< QUrl >	__urls;
 	
+	QString	__temp;
 	QString __data;
 	
 	QNetworkAccessManager	__nam;

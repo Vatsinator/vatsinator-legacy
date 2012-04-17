@@ -18,6 +18,7 @@
 
 
 #include "../include/Uir.h"
+#include "../include/defines.h"
 
 void
 Uir::addFir(const Fir* _f) {

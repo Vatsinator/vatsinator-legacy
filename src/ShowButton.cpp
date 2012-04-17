@@ -18,6 +18,7 @@
 
 
 #include "../include/ShowButton.h"
+#include "../include/defines.h"
 
 ShowButton::ShowButton(const Pilot* _p, QWidget* _parent) :
 		QPushButton("Show", _parent),

@@ -19,6 +19,7 @@
 #include <QtGui>
 
 #include "../include/TrackAction.h"
+#include "../include/defines.h"
 
 TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
 		QAction("Track this flight", _parent),

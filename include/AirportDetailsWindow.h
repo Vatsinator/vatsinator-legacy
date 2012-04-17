@@ -25,7 +25,7 @@
 #include "Singleton.h"
 
 class AirportObject;
-class OpenGLWidget;
+class MapWidget;
 class Pilot;
 
 class AirportDetailsWindow :
@@ -40,7 +40,7 @@ public:
 	
 public slots:
 	void showWindow(const AirportObject*);
-	void updateMetar(const QVector< Metar >&);
+ 	void updateMetar();
 	void handleShowClicked(const Pilot*);
 	
 private:
@@ -50,7 +50,7 @@ private:
 	
 	QMap< int, QString > __ratings;
 	
-	OpenGLWidget*	__openGLWidget;
+	MapWidget*	__openGLWidget;
 	
 	
 };

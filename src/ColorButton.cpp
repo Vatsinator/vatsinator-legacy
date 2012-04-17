@@ -1,5 +1,5 @@
 /*
-    MetarAction.cpp
+    ColorButton.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -18,18 +18,31 @@
 
 #include <QtGui>
 
-#include "../include/MetarAction.h"
-#include "../include/defines.h"
+#include "../include/ColorButton.h"
 
-MetarAction::MetarAction(const QString& _icao, QObject* _parent) :
-		QAction(_icao + " metar", _parent),
-		__icao(_icao) {
-	connect(this, SIGNAL(triggered()), this, SLOT(handleTriggered()));
+ColorButton::ColorButton(QWidget* _parent) :
+		QPushButton("", _parent),
+		__current(NULL) {
+	connect(this,	SIGNAL(clicked()),
+		this,	SLOT(__handleClicked()));
 }
 
 void
-MetarAction::handleTriggered() {
-	emit clicked(__icao);
+ColorButton::setColor(QColor* _color) {
+	__current = _color;
+	updateColor();
 }
 
+void
+ColorButton::updateColor() {
+	setStyleSheet("background: rgb(" +
+		QString::number(__current->red()) + "," +
+		QString::number(__current->green()) + "," +
+		QString::number(__current->blue()) + ");");
+}
+
+void
+ColorButton::__handleClicked() {
+	emit clicked(__current);
+}
 

@@ -20,6 +20,7 @@
 #include <QtNetwork>
 
 #include "../include/HttpHandler.h"
+#include "../include/defines.h"
 
 HttpHandler::HttpHandler(QProgressBar* _pb, QObject* _parent) : 
 		QObject(_parent),
@@ -44,11 +45,15 @@ HttpHandler::__startRequest() {
 	
 	connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
 	connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
-	connect(__reply, SIGNAL(downloadProgress(qint64,qint64)), this,
-			SLOT(__updateProgress(qint64, qint64)));
 	
-	__data.clear();
-	__progressBar->setEnabled(true);
+	if (__progressBar)
+		connect(__reply, SIGNAL(downloadProgress(qint64,qint64)), this,
+				SLOT(__updateProgress(qint64, qint64)));
+	
+	__temp.clear();
+	
+	if (__progressBar)
+		__progressBar->setEnabled(true);
 }
 
 void
@@ -61,9 +66,12 @@ HttpHandler::__finished() {
 	__reply->deleteLater();
 	__reply = 0;
 	
-	__progressBar->reset();
-	__progressBar->setEnabled(false);
+	if (__progressBar) {
+		__progressBar->reset();
+		__progressBar->setEnabled(false);
+	}
 	
+	__data = __temp;
 	emit finished(__data);
 	
 	if (!__urls.isEmpty())
@@ -72,7 +80,7 @@ HttpHandler::__finished() {
 
 void
 HttpHandler::__readyRead() {
-	__data.append(__reply->readAll());
+	__temp.append(__reply->readAll());
 }
 
 void

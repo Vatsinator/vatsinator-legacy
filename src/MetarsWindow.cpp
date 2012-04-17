@@ -22,6 +22,7 @@
 
 #include "../include/HttpHandler.h"
 #include "../include/MetarsHandler.h"
+#include "../include/defines.h"
 
 MetarsWindow::MetarsWindow(QWidget* _parent) :
 		QWidget(_parent) {
@@ -30,17 +31,22 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
 	
 	__setWindowPosition();
 	
-	__httpHandler = new HttpHandler(ProgressBar);
+	__httpHandler = new HttpHandler();
 	
 	__metarsHandler = new MetarsHandler(__httpHandler);
 	
 	connect(FetchButton,		SIGNAL(clicked()), this, SLOT(fetchMetar()));
 	connect(RefreshAllButton,	SIGNAL(clicked()), this, SLOT(refreshAll()));
 	connect(ClearButton,		SIGNAL(clicked()), this, SLOT(clear()));
-	connect(__metarsHandler,	SIGNAL(newMetarsAvailable(const QVector<Metar>&)),
-			this, SLOT(metarReceived(const QVector<Metar>&)));
+	connect(__metarsHandler,	SIGNAL(newMetarsAvailable()),
+			this, SLOT(metarReceived()));
 	
 	MetarICAO->setFocus();
+}
+
+MetarsWindow::~MetarsWindow() {
+	delete __metarsHandler;
+	delete __httpHandler;
 }
 
 void
@@ -61,10 +67,10 @@ MetarsWindow::fetchMetar() {
 }
 
 void
-MetarsWindow::metarReceived(const QVector< Metar >& _metars) {
+MetarsWindow::metarReceived() {
 	MetarsDisplay->clear();
 	
-	for (const Metar& m: _metars) {
+	for (const Metar& m: __metarsHandler->getMetars()) {
 		if (!m.metar.isEmpty())
 			MetarsDisplay->addItem(m.metar);
 	}

@@ -40,7 +40,7 @@
     <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" colspan="6">
-       <widget class="OpenGLWidget" name="GLContext" native="true">
+       <widget class="MapWidget" name="MapDisplay" native="true">
         <property name="mouseTracking">
          <bool>true</bool>
         </property>
@@ -173,8 +173,8 @@
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>223</x>
-      <y>115</y>
+      <x>244</x>
+      <y>214</y>
       <width>150</width>
       <height>134</height>
      </rect>
@@ -205,7 +205,14 @@
     </property>
     <addaction name="ActionAbout"/>
    </widget>
+   <widget class="QMenu" name="MenuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="ActionPreferences"/>
+   </widget>
    <addaction name="MenuVatsinator"/>
+   <addaction name="MenuSettings"/>
    <addaction name="MenuHelp"/>
   </widget>
   <action name="ActionExit">
@@ -237,12 +244,17 @@
     <string>F5</string>
    </property>
   </action>
+  <action name="ActionPreferences">
+   <property name="text">
+    <string>Preferences: Vatsinator</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OpenGLWidget</class>
+   <class>MapWidget</class>
    <extends>QWidget</extends>
-   <header>OpenGLWidget.h</header>
+   <header>MapWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

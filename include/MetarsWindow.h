@@ -44,19 +44,18 @@ class MetarsWindow :
 	
 public:
 	MetarsWindow(QWidget* = 0);
+	virtual ~MetarsWindow();
 	
 public slots:
 	void showWindow();
 	void showWindow(QString);
 	void fetchMetar();
-	void metarReceived(const QVector< Metar >&); 
+	void metarReceived(); 
 	void refreshAll();
 	void clear();
 	void close();
 	
 private:
-	
-	void __updateDisplay(const QVector< Metar >&);
 	
 	void __setWindowPosition();
 	

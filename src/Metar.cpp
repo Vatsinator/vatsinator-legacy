@@ -19,6 +19,7 @@
 #include "../include/Metar.h"
 
 #include "../include/VatsimDataHandler.h"
+#include "../include/defines.h"
 
 Metar::Metar() : icao("ZZZZ") {}
 

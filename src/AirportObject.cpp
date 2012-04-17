@@ -18,6 +18,7 @@
 
 
 #include "../include/AirportObject.h"
+#include "../include/defines.h"
 
 AirportObject::AirportObject(const QString& _icao) :
 		__data(AirportsDatabase::GetSingleton().find(_icao)) {}

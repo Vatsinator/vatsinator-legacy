@@ -20,6 +20,7 @@
 #ifndef VATSIMDATAHANDLER_H
 #define VATSIMDATAHANDLER_H
 
+#include <QObject>
 #include <QString>
 #include <QVector>
 #include <QMap>
@@ -35,13 +36,15 @@
 
 class VatsinatorApplication;
 
-class VatsimDataHandler :
+class VatsimDataHandler : public QObject,
 		public Singleton< VatsimDataHandler > {
 	
 	/*
 	 * This class contains data about all connected clients, needed URLs and
 	 * active airports.
 	 */
+	
+	Q_OBJECT
 	
 public:
 	/**
@@ -102,6 +105,9 @@ public:
 	const QVector< Uir* > & getUIRs() { return __uirs; }
 	inline
 	const QMap< QString, AirportObject* > & getActiveAirports() { return __activeAirports; }
+	
+signals:
+	void dataCorrupted();
 	
 private:
 	

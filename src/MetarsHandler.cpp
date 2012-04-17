@@ -46,20 +46,31 @@ MetarsHandler::updateAllMetars() {
 void
 MetarsHandler::clear() {
 	__metars.clear();
-	emit newMetarsAvailable(__metars);
+	emit newMetarsAvailable();
+}
+
+const Metar *
+MetarsHandler::find(const QString& _key) const {
+	for (const Metar& m: __metars)
+		if (m.icao == _key)
+			return &m;
+	
+	return NULL;
 }
 
 void
-MetarsHandler::gotMetar(QString _metar) {
-	_metar = _metar.simplified();
-	if (_metar.isEmpty())
+MetarsHandler::gotMetar(const QString& _metar) {
+	QString metar = _metar.simplified();
+	if (metar.isEmpty())
 		return;
 	
-	if (_metar.contains(METAR_NO_AVAIL))
+	if (metar.contains(METAR_NO_AVAIL)) {
+		emit noMetar();
 		return;
+	}
 	
 	QString oneMetar;
-	for (QString& word: _metar.split(' ')) {
+	for (QString& word: metar.split(' ')) {
 		if (__matches(word)) {
 			if (!oneMetar.isEmpty())
 				__addMetar(oneMetar);
@@ -73,7 +84,7 @@ MetarsHandler::gotMetar(QString _metar) {
 	
 	__requests.dequeue();
 
-	emit newMetarsAvailable(__metars);
+	emit newMetarsAvailable();
 }
 
 void

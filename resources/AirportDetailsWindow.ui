@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>AirportDetailsWindow</class>
  <widget class="QWidget" name="AirportDetailsWindow">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -291,14 +294,14 @@
        </font>
       </property>
       <property name="text">
-       <string>EPWA/WAW</string>
+       <string/>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="NameLabel">
       <property name="text">
-       <string>Okecie, Warsaw</string>
+       <string/>
       </property>
      </widget>
     </item>

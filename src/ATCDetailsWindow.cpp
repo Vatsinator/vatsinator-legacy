@@ -22,6 +22,7 @@
 
 #include "../include/AirportsDatabase.h"
 #include "../include/Controller.h"
+#include "../include/defines.h"
 
 ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
 		QWidget(_parent) {

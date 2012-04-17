@@ -51,7 +51,9 @@ FirsDatabase::init() {
 	
 	db.close();
 	
-	cout << "Firs read: " << size << endl;
+#ifndef NO_DEBUG
+	qDebug() << "Firs read: " << size;
+#endif
 	
 	clearAll();
 }

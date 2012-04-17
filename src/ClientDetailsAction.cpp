@@ -18,6 +18,7 @@
 
 
 #include "../include/ClientDetailsAction.h"
+#include "../include/defines.h"
 
 ClientDetailsAction::ClientDetailsAction(const Client* _client, const QString& _label, QObject* _parent) :
 		QAction(_label, _parent),

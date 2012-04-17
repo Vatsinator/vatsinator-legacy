@@ -51,7 +51,7 @@ public:
 	
 	QString		frequency;
 	QString		server;
-	int			rating;
+	int		rating;
 	
 	QString		atis;
 	

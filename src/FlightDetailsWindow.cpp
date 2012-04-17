@@ -22,8 +22,9 @@
 
 #include "../include/AirportsDatabase.h"
 #include "../include/Pilot.h"
-#include "../include/OpenGLWidget.h"
+#include "../include/MapWidget.h"
 #include "../include/UserInterface.h"
+#include "../include/defines.h"
 
 FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 		QWidget(_parent) {

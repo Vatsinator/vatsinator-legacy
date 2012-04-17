@@ -18,6 +18,7 @@
 
 
 #include "../include/Fir.h"
+#include "../include/defines.h"
 
 void
 Fir::addStaff(const Controller* _c) {

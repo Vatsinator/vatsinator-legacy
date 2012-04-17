@@ -61,11 +61,19 @@ public:
 	 */
 	void clear();
 	
+	/**
+	 * Looks for the METAR.
+	 */
+	const Metar * find(const QString&) const;
+	
+	inline const QVector< Metar > &	getMetars() const { return __metars; }
+	
 signals:
-	void newMetarsAvailable(const QVector< Metar >&);
+	void newMetarsAvailable();
+	void noMetar();
 	
 private slots:
-	void gotMetar(QString);
+	void gotMetar(const QString&);
 	
 private:
 	

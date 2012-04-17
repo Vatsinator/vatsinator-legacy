@@ -55,29 +55,27 @@ public:
 	void alert(const char*);
 	
 	VatsimDataHandler& getData() { return *__vatsimData; }
+	
+signals:
+	void glRepaintNeeded();
 
 public slots:
 	void refreshData();
 	
 private slots:
-	void __statusFileUpdated(QString);
-	void __dataFileUpdated(QString);
-	
+	void __statusFileUpdated(const QString&);
+	void __dataFileUpdated(const QString&);
+	void __showDataAlert();
 	
 private:
 	void		__fetchStatusFile();
 	
 	HttpHandler *		__httpHandler;
-	
 	AirportsDatabase *	__airportsData;
-	
 	FirsDatabase * 		__firsData;
-	
 	VatsimDataHandler *	__vatsimData;
-	
 	UserInterface *		__userInterface;
-	
-	QTimer 				__timer;
+	QTimer 			__timer;
 	
 };
 
