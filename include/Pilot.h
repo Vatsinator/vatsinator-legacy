@@ -20,7 +20,7 @@
 #ifndef PILOT_H
 #define PILOT_H
 
-#include <QDateTime>
+#include <QStringList>
 #include <QString>
 
 #include "Clickable.h"
@@ -36,18 +36,6 @@ enum Status {
 	ARRIVED
 };
 
-struct Position {
-	double	longitude;
-	double	latitude;
-};
-
-struct Route {
-	QString	origin;
-	QString	destination;
-	QString	route;
-	QString	altitude;
-};
-
 class Pilot : public Client, public Clickable {
 	
 	/*
@@ -56,35 +44,41 @@ class Pilot : public Client, public Clickable {
 	 */
 	
 public:
+	Pilot(const QStringList&);
 	
 	ClientType type() const { return PILOT; }
 	ObjectType objectType() const { return PLANE; }
 	
-	unsigned	pid;
+	int		altitude;
+	int		groundSpeed;
+	QString		squawk;
 	
-	Position	position;
-	int			altitude;
-	int			groundSpeed;
-	short		squawk;
-	
-	QString 	callsign;
-	QString		realName;
 	QString		aircraft;
 	
-	int			tas;
-	
-	Route		route;
-	
-	QString		server;
+	int		tas;
 	
 	FlightRules	flightRules;
 	
 	QString		remarks;
 	
-	QDateTime	onlineFrom;
 	unsigned	heading;
 	
 	Status		flightStatus;
+	
+	struct {
+		qreal	longitude;
+		qreal	latitude;
+	} position;
+	
+	struct {
+		QString origin;
+		QString destination;
+		QString route;
+		QString altitude;
+	} route;
+	
+private:
+	void __setMyStatus();
 	
 };
 

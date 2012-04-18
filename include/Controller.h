@@ -20,7 +20,6 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include <QDateTime>
 #include <QString>
 
 #include "Client.h"
@@ -41,25 +40,21 @@ enum Facility {
 class Controller : public Client {
 
 public:
+	Controller(const QStringList&);
 	
 	ClientType type() const { return ATC; }
 	
-	unsigned	pid;
-	
-	QString 	callsign;
-	QString		realName;
-	
 	QString		frequency;
-	QString		server;
 	int		rating;
 	
 	QString		atis;
 	
-	QDateTime	onlineFrom;
-	
 	const AirportRecord*	airport;
 	
 	Facility	facility;
+	
+private:
+	void __setMyIcaoAndFacility();
 	
 };
 

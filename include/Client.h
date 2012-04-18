@@ -20,6 +20,9 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <QDateTime>
+#include <QString>
+
 // types
 enum ClientType {
 	PILOT, ATC
@@ -30,6 +33,13 @@ class Client {
 public:
 	
 	virtual ClientType type() const = 0;
+	
+	unsigned	pid;
+	QString 	callsign;
+	QString		realName;
+	
+	QString		server;
+	QDateTime	onlineFrom;
 	
 	
 };

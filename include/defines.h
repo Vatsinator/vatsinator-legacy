@@ -7,7 +7,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define VATSINATOR_VERSION	"0.1_alpha1"
+#define VATSINATOR_VERSION	"0.1_alpha2"
 
 // where to get all the data from
 #define VATSIM_STATUS_URL	"http://status.vatsim.net/status.txt"

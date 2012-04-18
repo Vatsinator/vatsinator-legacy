@@ -373,9 +373,9 @@ MapWidget::__drawFirs() {
 				icao += " Oceanic";
 			}
 		
-			renderText(fir.header.textPosition.x - 0.5, fir.header.textPosition.y, 0.0,
+			renderText(fir.header.textPosition.x - (0.5 / __zoom), fir.header.textPosition.y, 0.0,
 					   icao, __apsFont, 64);
-			if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE && !__toolTipWasShown) {
+			if (__distanceFromCamera(x + 0.03, y) < OBJECT_TO_MOUSE && !__toolTipWasShown) {
 				__toolTipWasShown = true;
 				setCursor(QCursor(Qt::PointingHandCursor));
 				__underMouse = &fir;

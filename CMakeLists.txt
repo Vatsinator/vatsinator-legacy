@@ -27,6 +27,7 @@ set(vatsinator_SOURCES
 	src/ATCDetailsWindow.cpp
 	src/ClientDetailsAction.cpp
 	src/ColorButton.cpp
+	src/Controller.cpp
 	src/DetailsButton.cpp
 	src/Fir.cpp
 	src/FirsDatabase.cpp
@@ -37,6 +38,7 @@ set(vatsinator_SOURCES
 	src/MetarAction.cpp
 	src/MetarsHandler.cpp
 	src/MetarsWindow.cpp
+	src/Pilot.cpp
 	src/SettingsWindow.cpp
 	src/ShowButton.cpp
 	src/TrackAction.cpp

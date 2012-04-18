@@ -80,31 +80,52 @@ public:
 	/**
 	 * Chooses randomly one of URLs and returns it.
 	 */
-	const QString& getDataUrl();
+	const QString& getDataUrl() const;
 	
 	/**
 	 * Finds pilot by callsign and returns pointer. If not found, returns
 	 * NULL.
 	 */
-	const Pilot * findPilot(const QString&);
+	const Pilot * findPilot(const QString&) const;
+	
+	/**
+	 * Finds UIR by ICAO.
+	 */
+	Uir * findUIR(const QString&);
+	
+	/**
+	 * Adds an airport to the ActiveAirports map.
+	 */
+	AirportObject * addActiveAirport(const QString&);
 	
 	/**
 	 * Returns an URL to where METARs can be fetched from.
 	 */
 	inline
-	const QString & getMetarUrl() { return __metarURL; }
+	const QString & getMetarUrl() const { return __metarURL; }
 	
 	/**
 	 * The following functions return const references to vectors of clients.
 	 */
 	inline
-	const QVector< Pilot* > & getPilots() { return __pilots; }
+	const QVector< Pilot* > & getPilots() const { return __pilots; }
 	inline
-	const QVector< Controller* > & getATCs() { return __atcs; }
+	const QVector< Controller* > & getATCs() const { return __atcs; }
 	inline
-	const QVector< Uir* > & getUIRs() { return __uirs; }
+	const QVector< Uir* > & getUIRs() const { return __uirs; }
 	inline
-	const QMap< QString, AirportObject* > & getActiveAirports() { return __activeAirports; }
+	const QMap< QString, AirportObject* > & getActiveAirports() const { return __activeAirports; }
+	inline
+	const QMultiMap< QString, QString > & getAliases() const { return __aliases; }
+	
+	inline static
+	double calcDistance(const double& _ax, const double& _ay,
+			    const double& _bx, const double& _by) {
+		return sqrt(
+			pow(_ax - _bx, 2) +
+			pow(_ay - _by, 2)
+		);
+	}
 	
 signals:
 	void dataCorrupted();
@@ -112,38 +133,17 @@ signals:
 private:
 	
 	/**
-	 * Parses one line from the data file.
-	 */
-	void __parseATC(const QStringList&);
-	void __parsePilot(const QStringList&);
-	
-	/**
-	 * Chooses if the pilot is departing, airborne or has just arrived.
-	 */
-	void __setStatus(Pilot*);
-	
-	/**
-	 * Checks the ATC's position and airport.
-	 */
-	void __setIcaoAndFacility(Controller*);
-	
-	/**
 	 * Clears the flags used during parsing the data file.
 	 */
 	void __clearFlags(QMap< QString, bool >&);
 	
-	/**
-	 * Finds UIR by ICAO.
-	 */
-	Uir * __findUIR(const QString&);
-	
 	/* These are vectors of connected clients */
-	QVector< Pilot* >		__pilots;
+	QVector< Pilot* >	__pilots;
 	QVector< Controller* >	__atcs;
-	QVector< Uir* >			__uirs;
+	QVector< Uir* >		__uirs;
 	
 	/* This is vector of data servers, obtained from status file */
-	QVector< QString >		__servers;
+	QVector< QString >	__servers;
 	
 	/* This set contains list of active airports, used later by OpenGLWidget */
 	QMap< QString, AirportObject* > __activeAirports;
@@ -156,22 +156,10 @@ private:
 	
 	unsigned	__clientsConnected;
 	
-	AirportsDatabase & __airports;
-	FirsDatabase & __firs;
+	AirportsDatabase &	__airports;
+	FirsDatabase &		__firs;
 	
 	VatsinatorApplication &	__mother;
-	
-	/**
-	 * Calculates the distance between two points.
-	 */
-	inline
-	double __calcDistance(const double& _ax, const double& _ay,
-								 const double& _bx, const double& _by) {
-		return sqrt(
-			pow(_ax - _bx, 2) +
-			pow(_ay - _by, 2)
-		);
-	}
 	
 };
 
