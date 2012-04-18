@@ -20,6 +20,7 @@
 #ifndef VATSIMDATAHANDLER_H
 #define VATSIMDATAHANDLER_H
 
+#include <QDateTime>
 #include <QObject>
 #include <QString>
 #include <QVector>
@@ -117,6 +118,8 @@ public:
 	const QMap< QString, AirportObject* > & getActiveAirports() const { return __activeAirports; }
 	inline
 	const QMultiMap< QString, QString > & getAliases() const { return __aliases; }
+	inline
+	const QDateTime & getDateDataUpdated() const { return __dateDataUpdated; }
 	
 	inline static
 	double calcDistance(const double& _ax, const double& _ay,
@@ -154,7 +157,7 @@ private:
 	/* This is URL that we can obtain METAR from */
 	QString		__metarURL;
 	
-	unsigned	__clientsConnected;
+	QDateTime	__dateDataUpdated;
 	
 	AirportsDatabase &	__airports;
 	FirsDatabase &		__firs;

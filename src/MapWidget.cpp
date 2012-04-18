@@ -82,7 +82,6 @@ MapWidget::init() {
 	setEnabled(true);
 	
 	glEnable(GL_TEXTURE_2D);
-	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_ALPHA_TEST);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -114,11 +113,7 @@ MapWidget::initializeGL() {
 
 void
 MapWidget::paintGL() {
-	glClearColor(
-		__settings->getBackgroundColor().redF(),
-		__settings->getBackgroundColor().greenF(),
-		__settings->getBackgroundColor().blueF(),
-		__settings->getBackgroundColor().alphaF());
+	qglColor(__settings->getBackgroundColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	
@@ -255,7 +250,10 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
 		
 		// count the new position
 		__position.rx() -= (double)dx / 400.0 / (double)__zoom;
-		__position.ry() += (double)dy / 300.0 / (double)__zoom;
+		
+		double newY = __position.y() + ((double)dy / 300.0 / (double)__zoom);
+		if ((newY < RANGE_Y) && (newY > -RANGE_Y))
+			__position.setY(newY);
 	}
 	
 	__lastMousePos = _event->pos();
@@ -345,19 +343,11 @@ MapWidget::__drawFirs() {
 	for (const Fir& fir: __firs->getFirs()) {
 		glPushMatrix();
 		if (!fir.getStaff().isEmpty()) {
-			glColor4f(
-				__settings->getStaffedFirBordersColor().redF(),
-				__settings->getStaffedFirBordersColor().greenF(),
-				__settings->getStaffedFirBordersColor().blueF(),
-				__settings->getStaffedFirBordersColor().alphaF());
+			qglColor(__settings->getStaffedFirBordersColor());
 			glLineWidth(3.0);
 			glTranslated(0.0, 0.0, 0.1);
 		} else {
-			glColor4f(
-				__settings->getUnstaffedFirBordersColor().redF(),
-				__settings->getUnstaffedFirBordersColor().greenF(),
-				__settings->getUnstaffedFirBordersColor().blueF(),
-				__settings->getUnstaffedFirBordersColor().alphaF());
+			qglColor(__settings->getUnstaffedFirBordersColor());
 		}
 		
 		glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
@@ -372,7 +362,7 @@ MapWidget::__drawFirs() {
 				icao = icao.left(4);
 				icao += " Oceanic";
 			}
-		
+			
 			renderText(fir.header.textPosition.x - (0.5 / __zoom), fir.header.textPosition.y, 0.0,
 					   icao, __apsFont, 64);
 			if (__distanceFromCamera(x + 0.03, y) < OBJECT_TO_MOUSE && !__toolTipWasShown) {
@@ -410,11 +400,7 @@ MapWidget::__drawUirs() {
 		if (!uir->getStaff().isEmpty()) {
 			glPushMatrix();
 				glTranslatef(0.0, 0.0, 0.1);
-				glColor4f(
-					__settings->getStaffedUirBordersColor().redF(),
-					__settings->getStaffedUirBordersColor().greenF(),
-					__settings->getStaffedUirBordersColor().blueF(),
-					__settings->getStaffedUirBordersColor().alphaF());
+				qglColor(__settings->getStaffedUirBordersColor());
 				glLineWidth(3.0);
 				for (const Fir* fir: uir->getRange()) {
 					glVertexPointer(2, GL_DOUBLE, 0, &fir->coords[0].x);
@@ -433,17 +419,11 @@ MapWidget::__drawAirports() {
 		if (!it.value()->getData())
 			continue;
 		
-		GLdouble x = it.value()->getData()->longitude / 180;
-		x -= __position.x();
-		x *= __zoom;
-		
+		GLdouble x = ((it.value()->getData()->longitude / 180) - __position.x()) * __zoom;
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
-		GLdouble y = it.value()->getData()->latitude / 90;
-		y -= __position.y();
-		y *= __zoom;
-		
+		GLdouble y = ((it.value()->getData()->latitude / 90) - __position.y()) * __zoom;
 		if (y < -__orthoRangeY || y > __orthoRangeY)
 			continue;
 		
@@ -460,12 +440,8 @@ MapWidget::__drawAirports() {
 			
 			glTranslated(x, y, 0);
 			glDrawArrays(GL_QUADS, 0, 4);
-	
-			glColor4f(
-				__settings->getAirportsLabelsColor().redF(),
-				__settings->getAirportsLabelsColor().greenF(),
-				__settings->getAirportsLabelsColor().blueF(),
-				__settings->getAirportsLabelsColor().alphaF());
+			
+			qglColor(__settings->getAirportsLabelsColor());
 			renderText(-0.03, 0.04, -1.0, it.key(), __apsFont, 64);
 			
 			unsigned deps = it.value()->countDepartures();
@@ -509,11 +485,7 @@ MapWidget::__drawAirports() {
 				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 				glBindTexture(GL_TEXTURE_2D, 0);
 				
-				glColor4f(
-					__settings->getApproachCircleColor().redF(),
-					__settings->getApproachCircleColor().greenF(),
-					__settings->getApproachCircleColor().blueF(),
-					__settings->getApproachCircleColor().alphaF());
+				qglColor(__settings->getApproachCircleColor());
 				glVertexPointer(2, GL_DOUBLE, 0, __circle);
 				
 				glLineWidth(1.5);
@@ -578,11 +550,7 @@ MapWidget::__drawPilots() {
 				
 			glPopMatrix();
 			
-			glColor4f(
-				__settings->getPilotsLabelsColor().redF(),
-				__settings->getPilotsLabelsColor().greenF(),
-				__settings->getPilotsLabelsColor().blueF(),
-				__settings->getPilotsLabelsColor().alphaF());
+			qglColor(__settings->getPilotsLabelsColor());
 			
 			if (((__settings->getPilotsLabelsSettings() & WHEN_HOVERED)
 					&& (__keyPressed || inRange))
@@ -594,23 +562,31 @@ MapWidget::__drawPilots() {
 				__underMouse = client;
 				setCursor(QCursor(Qt::PointingHandCursor));
 				
-				QString origin = (__airports[client->route.origin]->getData()) ?
+				QString origin;
+				if (!client->route.origin.isEmpty())
+					origin = (__airports[client->route.origin]->getData()) ?
 						client->route.origin + " " + __airports[client->route.origin]->getData()->city :
 						client->route.origin;
+				else
+					origin = "(unknown)";
 				
-				QString destination = (__airports[client->route.destination]->getData()) ?
+				QString destination;
+				if (!client->route.destination.isEmpty())
+					destination = (__airports[client->route.destination]->getData()) ?
 						client->route.destination + " " + __airports[client->route.destination]->getData()->city :
 						client->route.destination;
+				else
+					destination = "(unknown)";
 				
 				if (!QToolTip::isVisible())
 					QToolTip::showText(mapToGlobal(__lastMousePos),
-							"<center>" + client->callsign + "<br><nobr>" +
-							client->realName + " (" + client->aircraft +
-							")</nobr><br><nobr>" + origin +
-							" > " + destination + "</nobr><br>" +
-							"Ground speed: " + QString::number(client->groundSpeed) +
-							" kts<br>Altitude: " + QString::number(client->altitude) +
-							" ft</center>",
+						"<center>" + client->callsign + "<br><nobr>" +
+						client->realName + " (" + client->aircraft +
+						")</nobr><br><nobr>" + origin +
+						" > " + destination + "</nobr><br>" +
+						"Ground speed: " + QString::number(client->groundSpeed) +
+						" kts<br>Altitude: " + QString::number(client->altitude) +
+						" ft</center>",
 						this
 					);
 			}
@@ -629,7 +605,11 @@ MapWidget::__drawLines() {
 	if (__underMouse->objectType() == PLANE) {
 		glColor4f(LINES_COLOR);
 		const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
-		const AirportRecord* ap = __airports[pilot->route.origin]->getData();
+		const AirportRecord* ap;
+		if (!pilot->route.origin.isEmpty())
+			ap = __airports[pilot->route.origin]->getData();
+		else
+			ap = NULL;
 		
 		if (ap) {
 			GLdouble vertices[] = {
@@ -643,7 +623,11 @@ MapWidget::__drawLines() {
 			glDrawArrays(GL_LINES, 0, 4);
 		}
 		
-		ap = __airports[pilot->route.destination]->getData();
+		if (!pilot->route.destination.isEmpty())
+			ap = __airports[pilot->route.destination]->getData();
+		else
+			ap = NULL;
+		
 		if (ap) {
 			GLdouble vertices[] = {
 					(ap->longitude / 180 - __position.x()) * __zoom,
@@ -675,14 +659,14 @@ MapWidget::__drawLines() {
 			/* We cannot use vertices[i++], vertices[i++], as the result of such
 			 * called function is undefined (according to C++ standard) */
 			__mapCoordinates(p->position.longitude, p->position.latitude,
-							 vertices[i], vertices[i+1]);
+					 vertices[i], vertices[i+1]);
 			if ((__settings->getPilotsLabelsSettings() & AIRPORT_RELATED)
 					&& (p->flightStatus != ARRIVED && !__keyPressed))
 				renderText(vertices[i] + 0.03, vertices[i+1] - 0.01, -1.5, p->callsign, __pilotsFont, 64);
 			i += 2;
 			
 			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
-							 vertices[i], vertices[i+1]);
+					 vertices[i], vertices[i+1]);
 			
 			i += 2;
 		}
@@ -691,7 +675,7 @@ MapWidget::__drawLines() {
 				continue;
 			
 			__mapCoordinates(p->position.longitude, p->position.latitude,
-							 vertices[i], vertices[i+1]);
+					 vertices[i], vertices[i+1]);
 			
 			if ((__settings->getPilotsLabelsSettings() & AIRPORT_RELATED)
 				&& (p->flightStatus != DEPARTING && !__keyPressed))
@@ -724,19 +708,28 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 	
 	ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, "Flight details", this);
 	TrackAction* trackThisFlight = new TrackAction(_pilot, this);
-	MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
-	MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
-	
 	dMenu->addAction(showDetails);
 	dMenu->addAction(trackThisFlight);
-	dMenu->addSeparator();
-	dMenu->addAction(showDepMetar);
-	dMenu->addAction(showArrMetar);
 	
-	connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
-	connect(trackThisFlight, SIGNAL(clicked(const Pilot*)), this, SLOT(trackFlight(const Pilot*)));
-	connect(showDepMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
-	connect(showArrMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
+	connect(showDetails,		SIGNAL(clicked(const Client*)),
+		__flightDetails,	SLOT(showWindow(const Client*)));
+	connect(trackThisFlight,	SIGNAL(clicked(const Pilot*)),
+		this,			SLOT(trackFlight(const Pilot*)));
+	
+	dMenu->addSeparator();
+	
+	if (!_pilot->route.origin.isEmpty()) {
+		MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
+		dMenu->addAction(showDepMetar);
+		connect(showDepMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
+	}
+	
+	if (!_pilot->route.destination.isEmpty()) {
+		MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
+		dMenu->addAction(showArrMetar);
+		connect(showArrMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
+	}
+	
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
 	delete dMenu;

@@ -191,6 +191,15 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 			continue;
 		}
 		
+		if (flags["GENERAL"]) {
+			if (temp.startsWith("UPDATE")) {
+				__dateDataUpdated = QDateTime::fromString(
+					temp.split(' ').back().simplified(),
+					"yyyyMMddhhmmss"
+				);
+			}
+		}
+		
 		if (flags["CLIENTS"]) {
 			QStringList clientData = temp.split(':');
 			if (clientData.size() < 40) {
@@ -206,7 +215,6 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 				__pilots.push_back(pilot);
 			}
 		}
-		
 	}
 }
 

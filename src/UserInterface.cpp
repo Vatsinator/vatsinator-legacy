@@ -70,8 +70,8 @@ UserInterface::~UserInterface() {
 }
 
 void
-UserInterface::statusBarUpdate(const char* _message) {
-	StatusBox->setText(tr(_message));
+UserInterface::statusBarUpdate(const QString& _message) {
+	StatusBox->setText(_message);
 }
 
 void

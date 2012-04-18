@@ -128,7 +128,6 @@ VatsinatorApplication::__statusFileUpdated(const QString& _data) {
 
 void
 VatsinatorApplication::__dataFileUpdated(const QString& _data) {
-	__userInterface->statusBarUpdate();
 	if (_data.isEmpty()) {
 		QMessageBox decision;
 		decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
@@ -161,6 +160,10 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 	
 	if (__userInterface->getGLContext()->getTrackedPilot())
 		__userInterface->getGLContext()->getTrackedPilot() = __vatsimData->findPilot(temp);
+	
+	__userInterface->statusBarUpdate(
+		"Last update: " + __vatsimData->getDateDataUpdated().toString("dd MMM yyyy, hh:mm") + " UTC"
+	);
 	
 	emit glRepaintNeeded();
 }
