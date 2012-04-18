@@ -18,20 +18,18 @@
 
 #include <QtGui>
 
-
 #include "../include/AirportDetailsWindow.h"
 
 #include "../include/AirportsDatabase.h"
 #include "../include/AirportObject.h"
+#include "../include/DetailsButton.h"
 #include "../include/MetarsHandler.h"
-#include "../include/MapWidget.h"
 #include "../include/ShowButton.h"
 #include "../include/defines.h"
 
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 		QWidget(_parent),
-		__current(NULL),
-		__openGLWidget(MapWidget::GetSingletonPtr()) {
+		__currentICAO("") {
 	setupUi(this);
 	__setWindowPosition();
 	
@@ -56,23 +54,12 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	
 	labels[1] = "Name";
 	labels[2] = "Freq";
-	labels[3] = "Rating";
+	labels[3] = "";
 	ATCTable->setHorizontalHeaderLabels(labels);
 	ATCTable->setColumnWidth(0, 100);
 	ATCTable->setColumnWidth(1, 280);
 	ATCTable->setColumnWidth(2, 100);
 	ATCTable->setColumnWidth(3, 80);
-	
-	__ratings[1] = "OBS";
-	__ratings[2] = "S1";
-	__ratings[3] = "S2";
-	__ratings[4] = "S3";
-	__ratings[5] = "C1";
-	__ratings[7] = "C3";
-	__ratings[8] = "I1";
-	__ratings[10] = "I3";
-	__ratings[11] = "SUP";
-	__ratings[12] = "ADM";
 	
 	connect(MetarsHandler::GetSingletonPtr(), SIGNAL(newMetarsAvailable()),
 		this, SLOT(updateMetar()));
@@ -82,8 +69,6 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 void
 AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 	AirportsDatabase& apdb = AirportsDatabase::GetSingleton();
-	if (!__openGLWidget)
-		__openGLWidget = MapWidget::GetSingletonPtr();
 	
 	setWindowTitle((QString)_ap->getData()->icao + " - airport details");
 	
@@ -102,7 +87,7 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		pCallsign->setTextAlignment(Qt::AlignCenter);
 		
 		QTableWidgetItem* pFrom;
-		Airport* origap = apdb.find(p->route.origin);
+		AirportRecord* origap = apdb.find(p->route.origin);
 		if (origap)
 			pFrom = new QTableWidgetItem(p->route.origin + " " +
 					apdb.find(p->route.origin)->city);
@@ -115,8 +100,8 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		if (p->flightStatus == ARRIVED)
 			showButton->setEnabled(false);
 		else
-			connect(showButton, SIGNAL(buttonClicked(const Pilot*)),
-					this, SLOT(handleShowClicked(const Pilot*)));
+			connect(showButton,	SIGNAL(clicked(const Pilot*)),
+				this,		SLOT(handleShowClicked(const Pilot*)));
 		
 		InboundTable->setItem(row, 0, pCallsign);
 		InboundTable->setItem(row, 1, pFrom);
@@ -134,7 +119,7 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		pCallsign->setTextAlignment(Qt::AlignCenter);
 		
 		QTableWidgetItem* pTo;
-		Airport* destap = apdb.find(p->route.destination);
+		AirportRecord* destap = apdb.find(p->route.destination);
 		if (destap)
 			pTo = new QTableWidgetItem(p->route.destination + " " +
 					apdb.find(p->route.destination)->city);
@@ -147,8 +132,8 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		if (p->flightStatus == DEPARTING)
 			showButton->setEnabled(false);
 		else
-			connect(showButton, SIGNAL(buttonClicked(const Pilot*)),
-					this, SLOT(handleShowClicked(const Pilot*)));
+			connect(showButton,	SIGNAL(clicked(const Pilot*)),
+				this,		SLOT(handleShowClicked(const Pilot*)));
 		
 		OutboundTable->setItem(row, 0, pCallsign);
 		OutboundTable->setItem(row, 1, pTo);
@@ -171,25 +156,29 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		QTableWidgetItem* cFreq = new QTableWidgetItem(c->frequency);
 		cFreq->setTextAlignment(Qt::AlignCenter);
 		
-		QTableWidgetItem* cRating = new QTableWidgetItem(__ratings[c->rating]);
-		cRating->setTextAlignment(Qt::AlignCenter);
+		DetailsButton* detailsButton = new DetailsButton(c);
+		connect(detailsButton,	SIGNAL(clicked(const Controller*)),
+			this,		SLOT(handleDetailsClicked(const Controller*)));
 		
 		ATCTable->setItem(row, 0, cCallsign);
 		ATCTable->setItem(row, 1, cName);
 		ATCTable->setItem(row, 2, cFreq);
-		ATCTable->setItem(row, 3, cRating);
-		
+		ATCTable->setCellWidget(row, 3, detailsButton);
+			
 		++row;
 	}
 	
-	__current = _ap;
+	if (_ap->getData())
+		__currentICAO = _ap->getData()->icao;
+	else
+		__currentICAO = "";
 	
-	const Metar* m = MetarsHandler::GetSingleton().find(__current->getData()->icao);
+	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
 	if (m)
 		MetarLabel->setText(m->metar);
 	else {
 		MetarLabel->setText("Fetching...");
-		MetarsHandler::GetSingleton().fetchMetar(__current->getData()->icao);
+		MetarsHandler::GetSingleton().fetchMetar(__currentICAO);
 	}
 	
 	show();
@@ -197,10 +186,10 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 
 void
 AirportDetailsWindow::updateMetar() {
-	if (!__current)
+	if (__currentICAO.isEmpty())
 		return;
 	
-	const Metar* m = MetarsHandler::GetSingleton().find(__current->getData()->icao);
+	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
 	if (m)
 		MetarLabel->setText(m->metar);
 }
@@ -208,7 +197,13 @@ AirportDetailsWindow::updateMetar() {
 void
 AirportDetailsWindow::handleShowClicked(const Pilot* _p) {
 	hide();
-	__openGLWidget->showPilot(_p);
+	emit showPilotRequest(_p);
+}
+
+void
+AirportDetailsWindow::handleDetailsClicked(const Controller* _c) {
+	hide();
+	emit showATCDetailsRequest(_c);
 }
 
 void

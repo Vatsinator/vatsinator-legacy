@@ -56,11 +56,13 @@ public slots:
 	void close();
 	
 private:
-	
 	void __setWindowPosition();
 	
 	HttpHandler *	__httpHandler;
 	MetarsHandler *	__metarsHandler;
+	
+private slots:
+	void __handleTextChange(const QString&);
 	
 	
 	

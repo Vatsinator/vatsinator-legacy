@@ -1,6 +1,6 @@
 /*
-    ShowButton.h
-    Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
+    <one line to give the program's name and a brief idea of what it does.>
+    Copyright (C) 2012  <copyright holder> <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,31 +16,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtGui>
 
-#ifndef SHOWBUTTON_H
-#define SHOWBUTTON_H
+#include "../include/DetailsButton.h"
 
-#include <QPushButton>
+#include "../include/Controller.h"
+#include "../include/defines.h"
 
-class Pilot;
+DetailsButton::DetailsButton(const Controller* _c, QWidget* _parent) :
+		QPushButton("Details", _parent),
+		__current(_c) {
+	connect(this, SIGNAL(clicked()), this, SLOT(handleClicked()));
+}
 
-class ShowButton : public QPushButton {
-	
-	Q_OBJECT
-	
-public:
-	ShowButton(const Pilot*, QWidget* = 0);
-	
-signals:
-	void clicked(const Pilot*);
-	
-public slots:
-	void handleClicked();
-	
-private:
-	const Pilot * __current;
-	
-	
-};
-
-#endif // SHOWBUTTON_H
+void
+DetailsButton::handleClicked() {
+	emit clicked(__current);
+}

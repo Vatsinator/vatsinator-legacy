@@ -1,5 +1,5 @@
 /*
-    ShowButton.h
+    DetailsButton.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,30 +17,30 @@
 */
 
 
-#ifndef SHOWBUTTON_H
-#define SHOWBUTTON_H
+#ifndef DETAILSBUTTON_H
+#define DETAILSBUTTON_H
 
 #include <QPushButton>
 
-class Pilot;
+class Controller;
 
-class ShowButton : public QPushButton {
+class DetailsButton : public QPushButton {
 	
 	Q_OBJECT
 	
 public:
-	ShowButton(const Pilot*, QWidget* = 0);
+	DetailsButton(const Controller*, QWidget* parent = 0);
 	
 signals:
-	void clicked(const Pilot*);
+	void clicked(const Controller*);
 	
 public slots:
 	void handleClicked();
 	
 private:
-	const Pilot * __current;
+	const Controller * __current;
 	
 	
 };
 
-#endif // SHOWBUTTON_H
+#endif // DETAILSBUTTON_H

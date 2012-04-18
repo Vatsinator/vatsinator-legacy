@@ -28,6 +28,9 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
 	
 	__restoreSettings();
 	
+	connect(OKCancelButtonBox,		SIGNAL(clicked(QAbstractButton*)),
+		this,				SLOT(__handleButton(QAbstractButton*)));
+	
 	connect(OKCancelButtonBox,		SIGNAL(accepted()),
 		this,				SLOT(__hideWindow()));
 	
@@ -130,13 +133,17 @@ SettingsWindow::__restoreSettings() {
 	
 	settings.beginGroup("Settings");
 	
-	RefreshRateBox->setValue(settings.value("refreshRate", 3).toInt());
-	PilotsCheckBox->setCheckState(static_cast< Qt::CheckState >(settings.value("pilotsLayer", Qt::Checked).toInt()));
-	AirportsCheckBox->setCheckState(static_cast< Qt::CheckState >(settings.value("airportsLayer", Qt::Checked).toInt()));
-	FirsCheckBox->setCheckState(static_cast< Qt::CheckState >(settings.value("firsLayer", Qt::Checked).toInt()));
-	UirsCheckBox->setCheckState(static_cast< Qt::CheckState >(settings.value("uirsLayer", Qt::Checked).toInt()));
+	RefreshRateBox->setValue(settings.value("refreshRate", REFRESH_RATE).toInt());
+	PilotsCheckBox->setCheckState(static_cast< Qt::CheckState >(
+		settings.value("pilotsLayer", PILOTS_CHECKBOX).toInt()));
+	AirportsCheckBox->setCheckState(static_cast< Qt::CheckState >(
+		settings.value("airportsLayer", AIRPORTS_CHECKBOX).toInt()));
+	FirsCheckBox->setCheckState(static_cast< Qt::CheckState >(
+		settings.value("firsLayer", FIRS_CHECKBOX).toInt()));
+	UirsCheckBox->setCheckState(static_cast< Qt::CheckState >(
+		settings.value("uirsLayer", UIRS_CHECKBOX).toInt()));
 	
-	unsigned temp = settings.value("pilotsLabels", (WHEN_HOVERED | AIRPORT_RELATED)).toUInt();
+	unsigned temp = settings.value("pilotsLabels", PILOTS_LABELS).toUInt();
 	if (temp & ALWAYS)
 		__handleAlwaysCheckBox(Qt::Checked);
 	else {
@@ -153,15 +160,22 @@ SettingsWindow::__restoreSettings() {
 			ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Unchecked);
 	}
 	
-	DisplayAirportsBox->setCurrentIndex(settings.value("displayAirports", 1).toInt());
+	DisplayAirportsBox->setCurrentIndex(settings.value("displayAirports", DISPLAY_AIRPORT_BOX).toInt());
 	
-	__pilotsLabelsColor = settings.value("pilotsLabelsColor", QColor(0, 0, 0)).value< QColor >();
-	__airportsLabelsColor = settings.value("airportsLabelsColor", QColor(127, 127, 127)).value< QColor >();
-	__unstaffedFirBordersColor = settings.value("unstaffedFirColor", QColor(127, 127, 127)).value< QColor >();
-	__staffedFirBordersColor = settings.value("staffedFirColor", QColor(176, 32, 32)).value< QColor >();
-	__staffedUirBordersColor = settings.value("staffedUirColor", QColor(140, 219, 255)).value< QColor >();
-	__approachCircleColor = settings.value("approachCircleColor", QColor(127, 0, 0)).value< QColor >();
-	__backgroundColor = settings.value("backgroundColor", QColor(255, 255, 255)).value< QColor >();
+	__pilotsLabelsColor = settings.value("pilotsLabelsColor",
+			QColor(PILOTS_LABELS_COLOR)).value< QColor >();
+	__airportsLabelsColor = settings.value("airportsLabelsColor",
+			QColor(AIRPORTS_LABELS_COLOR)).value< QColor >();
+	__unstaffedFirBordersColor = settings.value("unstaffedFirColor",
+			QColor(UNSTAFFED_FIR_BORDERS_COLOR)).value< QColor >();
+	__staffedFirBordersColor = settings.value("staffedFirColor",
+			QColor(STAFFED_FIR_BORDERS_COLOR)).value< QColor >();
+	__staffedUirBordersColor = settings.value("staffedUirColor",
+			QColor(STAFFED_UIR_BORDERS_COLOR)).value< QColor >();
+	__approachCircleColor = settings.value("approachCircleColor",
+			QColor(APPROACH_CIRCLE_COLOR)).value< QColor >();
+	__backgroundColor = settings.value("backgroundColor",
+			QColor(BACKGROUND_COLOR)).value< QColor >();
 	
 	settings.endGroup();
 }
@@ -192,6 +206,31 @@ SettingsWindow::__setWindowPosition() {
 }
 
 void
+SettingsWindow::__restoreDefaults() {
+	RefreshRateBox->setValue(REFRESH_RATE);
+	PilotsCheckBox->setCheckState(PILOTS_CHECKBOX);
+	AirportsCheckBox->setCheckState(AIRPORTS_CHECKBOX);
+	FirsCheckBox->setCheckState(FIRS_CHECKBOX);
+	UirsCheckBox->setCheckState(UIRS_CHECKBOX);
+	
+	ShowPilotsLabelsAlwaysCheckBox->setCheckState(Qt::Unchecked);
+	ShowPilotsLabelsWhenHoveredCheckBox->setCheckState(Qt::Checked);
+	ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Checked);
+	
+	DisplayAirportsBox->setCurrentIndex(DISPLAY_AIRPORT_BOX);
+	
+	__pilotsLabelsColor = QColor(PILOTS_LABELS_COLOR);
+	__airportsLabelsColor = QColor(AIRPORTS_LABELS_COLOR);
+	__unstaffedFirBordersColor = QColor(UNSTAFFED_FIR_BORDERS_COLOR);
+	__staffedFirBordersColor = QColor(STAFFED_FIR_BORDERS_COLOR);
+	__staffedUirBordersColor = QColor(STAFFED_UIR_BORDERS_COLOR);
+	__approachCircleColor = QColor(APPROACH_CIRCLE_COLOR);
+	__backgroundColor = QColor(BACKGROUND_COLOR);
+	
+	__setButtonsColors();
+}
+
+void
 SettingsWindow::__pickColor(QColor* _color) {
 	QColorDialog* dialog = new QColorDialog(*_color);
 	dialog->setWindowTitle("Select color");
@@ -218,6 +257,12 @@ SettingsWindow::__handleAlwaysCheckBox(int _state) {
 		ShowPilotsLabelsWhenHoveredCheckBox->setEnabled(true);
 		ShowPilotsLabelsAirportRelatedCheckBox->setEnabled(true);
 	}
+}
+
+void
+SettingsWindow::__handleButton(QAbstractButton* _button) {
+	if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == _button)
+		__restoreDefaults();
 }
 
 void

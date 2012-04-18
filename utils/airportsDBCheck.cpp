@@ -28,7 +28,7 @@
 using namespace std;
 
 #pragma pack(1)
-struct Airport {
+struct AirportRecord {
 	char	name[128];
 	char	city[128];
 	char	country[128];
@@ -57,8 +57,8 @@ main(int argc, char** argv) {
 
 	db.seekg(4);
 
-	Airport *aps = new Airport[size];
-	db.read((char*)aps, sizeof(Airport)*size);
+	AirportRecord *aps = new AirportRecord[size];
+	db.read((char*)aps, sizeof(AirportRecord)*size);
 
 	db.close();
 

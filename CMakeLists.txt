@@ -8,6 +8,14 @@ project(vatsinator)
 find_package(Qt4 REQUIRED)
 find_package(OpenGL REQUIRED)
 
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+	set(CMAKE_BUILD_TYPE Debug)
+else (CMAKE_BUILD_TYPE MATCHES Debug)
+	set(CMAKE_BUILD_TYPE Release)
+endif (CMAKE_BUILD_TYPE MATCHES Debug)
+
+
+
 set(CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x -fpermissive")
 
@@ -19,6 +27,7 @@ set(vatsinator_SOURCES
 	src/ATCDetailsWindow.cpp
 	src/ClientDetailsAction.cpp
 	src/ColorButton.cpp
+	src/DetailsButton.cpp
 	src/Fir.cpp
 	src/FirsDatabase.cpp
 	src/FlightDetailsWindow.cpp
@@ -49,6 +58,7 @@ set(vatsinator_QT_HEADERS
 	include/ATCDetailsWindow.h
 	include/ClientDetailsAction.h
 	include/ColorButton.h
+	include/DetailsButton.h
 	include/FlightDetailsWindow.h
 	include/HttpHandler.h
 	include/MapWidget.h

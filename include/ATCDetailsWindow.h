@@ -24,6 +24,7 @@
 #include "Singleton.h"
 
 class Client;
+class Controller;
 
 class ATCDetailsWindow :
 		public QWidget,
@@ -37,8 +38,10 @@ public:
 	
 public slots:
 	void showWindow(const Client*);
+	void showWindow(const Controller*);
 	
 private:
+	void __showMe(const Controller*);
 	void __setWindowPosition();
 	
 	QMap< int, QString> __ratings;

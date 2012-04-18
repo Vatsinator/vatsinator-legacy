@@ -34,11 +34,11 @@
 
 UserInterface::UserInterface(QWidget* _parent) :
 		QMainWindow(_parent),
+		__metarsWindow(new MetarsWindow()),
+		__airportDetailsWindow(new AirportDetailsWindow()),
 		__atcDetailsWindow(new ATCDetailsWindow()),
 		__flightDetailsWindow(new FlightDetailsWindow()),
-		__metarsWindow(new MetarsWindow()),
 		__settingsWindow(new SettingsWindow()),
-		__airportDetailsWindow(new AirportDetailsWindow()),
 		__mother(VatsinatorApplication::GetSingleton()) {
 	__setupWindow();
 	__setWindowPosition();

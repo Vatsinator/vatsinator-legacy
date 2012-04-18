@@ -3,7 +3,7 @@
  <class>AirportDetailsWindow</class>
  <widget class="QWidget" name="AirportDetailsWindow">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -33,6 +33,10 @@
   </property>
   <property name="windowTitle">
    <string>- airport details</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="imgs.qrc">
+    <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <widget class="QTabWidget" name="InboundsOutboundsTab">
    <property name="geometry">
@@ -260,7 +264,7 @@
     </font>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="CloseButton">
@@ -308,7 +312,9 @@
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="imgs.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>CloseButton</sender>

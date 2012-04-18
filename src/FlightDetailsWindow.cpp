@@ -65,7 +65,7 @@ FlightDetailsWindow::showWindow(const Client* _client) {
 	
 	FlightRulesLabel->setText((pilot->flightRules == IFR) ? "IFR" : "VFR");
 	
-	Airport* ap = AirportsDatabase::GetSingleton().find(pilot->route.origin);
+	AirportRecord* ap = AirportsDatabase::GetSingleton().find(pilot->route.origin);
 	QString text = pilot->route.origin;
 	if (ap)
 		text.append(QString(" ") + QString::fromAscii(ap->name) + " - " + QString::fromUtf8(ap->city));

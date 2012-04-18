@@ -25,7 +25,7 @@
 
 #include "Client.h"
 
-struct Airport;
+struct AirportRecord;
 
 enum Facility {
 	ATIS,
@@ -57,7 +57,7 @@ public:
 	
 	QDateTime	onlineFrom;
 	
-	const Airport*	airport;
+	const AirportRecord*	airport;
 	
 	Facility	facility;
 	

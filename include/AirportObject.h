@@ -54,7 +54,7 @@ public:
 	const QVector< const Pilot* > & getOutbounds() const { return __outbounds; }
 
 	inline
-	const Airport * getData() const { return __data; }
+	const AirportRecord * getData() const { return __data; }
 	
 	inline
 	ObjectType objectType() const { return AIRPORT; }
@@ -62,7 +62,7 @@ public:
 	
 private:
 	
-	const Airport *	__data;
+	const AirportRecord *	__data;
 	
 	QVector< const Controller* > __staff;
 	

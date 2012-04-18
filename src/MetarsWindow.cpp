@@ -35,13 +35,19 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
 	
 	__metarsHandler = new MetarsHandler(__httpHandler);
 	
-	connect(FetchButton,		SIGNAL(clicked()), this, SLOT(fetchMetar()));
-	connect(RefreshAllButton,	SIGNAL(clicked()), this, SLOT(refreshAll()));
-	connect(ClearButton,		SIGNAL(clicked()), this, SLOT(clear()));
+	connect(FetchButton,		SIGNAL(clicked()),
+		this,			SLOT(fetchMetar()));
+	connect(RefreshAllButton,	SIGNAL(clicked()),
+		this,			SLOT(refreshAll()));
+	connect(ClearButton,		SIGNAL(clicked()),
+		this,			SLOT(clear()));
 	connect(__metarsHandler,	SIGNAL(newMetarsAvailable()),
-			this, SLOT(metarReceived()));
+		this,			SLOT(metarReceived()));
+	connect(MetarICAO,		SIGNAL(textChanged(const QString&)),
+		this,			SLOT(__handleTextChange(const QString&)));
 	
 	MetarICAO->setFocus();
+	FetchButton->setEnabled(false);
 }
 
 MetarsWindow::~MetarsWindow() {
@@ -115,3 +121,12 @@ MetarsWindow::__setWindowPosition() {
 	
 	move(x, y);
 }
+
+void
+MetarsWindow::__handleTextChange(const QString& _text) {
+	if (_text.length() == 0)
+		FetchButton->setEnabled(false);
+	else
+		FetchButton->setEnabled(true);
+}
+

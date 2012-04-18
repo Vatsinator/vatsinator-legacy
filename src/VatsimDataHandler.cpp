@@ -339,8 +339,8 @@ VatsimDataHandler::__parsePilot(const QStringList& _clientData) {
 void
 VatsimDataHandler::__setStatus(Pilot* _pilot) {
 	if (!_pilot->route.origin.isEmpty()) { // we have flight plan, ok
-		const Airport* ap_origin = __activeAirports[_pilot->route.origin]->getData();
-		const Airport* ap_arrival = __activeAirports[_pilot->route.destination]->getData();
+		const AirportRecord* ap_origin = __activeAirports[_pilot->route.origin]->getData();
+		const AirportRecord* ap_arrival = __activeAirports[_pilot->route.destination]->getData();
 	
 		if ((ap_origin == ap_arrival) && (ap_origin != NULL)) // traffic pattern?
 			if (_pilot->groundSpeed < 25) {
@@ -371,9 +371,9 @@ VatsimDataHandler::__setStatus(Pilot* _pilot) {
 			return;
 		}
 		
-		const Airport* closest = NULL;
+		const AirportRecord* closest = NULL;
 		double distance = 0.0;
-		for (const Airport& ap: __airports.getAirports()) { // yeah, this is messy
+		for (const AirportRecord& ap: __airports.getAirports()) { // yeah, this is messy
 			double temp = __calcDistance(ap.longitude, ap.latitude,
 										 _pilot->position.longitude, _pilot->position.latitude);
 			if (((temp < distance) && closest) || !closest) {
@@ -489,7 +489,7 @@ VatsimDataHandler::__setIcaoAndFacility(Controller* _atc) {
 		else if (sections.back() == "ATIS")
 			_atc->facility = ATIS;
 		
-		Airport* apShot = __airports.find(sections[0]);
+		AirportRecord* apShot = __airports.find(sections[0]);
 		if (apShot) {
 			if (!__activeAirports.contains(sections[0]))
 				__activeAirports.insert(sections[0], new AirportObject(sections[0]));

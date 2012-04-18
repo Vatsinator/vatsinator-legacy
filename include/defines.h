@@ -40,22 +40,31 @@
 #define BASE_SIZE_WIDTH		800
 #define BASE_SIZE_HEIGHT	600
 
+/* Default values */
+
 // Vatsim data refresh rate in minutes
 #define REFRESH_RATE		3
 
-// colors
-#define COLOR_BACKGROUND	1.0, 1.0, 1.0, 1.0
-#define PILOT_LABEL_COLOR	0.0, 0.0, 0.0, 1.0
-#define AP_LABEL_COLOR		0.5, 0.5, 0.5, 1.0
-#define FIR_ACTIVE_COLOR	0.69, 0.125, 0.125, 1.0
-#define UIR_ACTIVE_COLOR	0.55, 0.86, 1.0, 1.0
+// view opts
+#define PILOTS_CHECKBOX		Qt::Checked
+#define AIRPORTS_CHECKBOX	Qt::Checked
+#define FIRS_CHECKBOX		Qt::Checked
+#define UIRS_CHECKBOX		Qt::Checked
+#define PILOTS_LABELS		(WHEN_HOVERED | AIRPORT_RELATED)
+#define DISPLAY_AIRPORT_BOX	1
 
-// lines color
+// colors
+#define PILOTS_LABELS_COLOR		0, 0, 0
+#define AIRPORTS_LABELS_COLOR		127, 127, 127
+#define UNSTAFFED_FIR_BORDERS_COLOR	127, 127, 127
+#define STAFFED_FIR_BORDERS_COLOR	176, 32, 32
+#define STAFFED_UIR_BORDERS_COLOR	140, 219, 255
+#define APPROACH_CIRCLE_COLOR		127, 0, 0
+#define BACKGROUND_COLOR		255, 255, 255
+
 #define LINES_COLOR		0.0, 0.192, 0.337, 0.8
 
-// approach circle parameters
-#define CIRCLE_RADIUS		1
-#define CIRCLE_COLOR		0.5, 0.0, 0.0, 1.0
+
 
 #ifndef NO_DEBUG
 #define DEBUG_NEW new(__FILE__, __LINE__)

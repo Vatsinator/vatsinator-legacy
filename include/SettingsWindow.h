@@ -63,6 +63,7 @@ private:
 	void __restoreSettings();
 	
 	void __setWindowPosition();
+	void __restoreDefaults();
 	
 	QColor __pilotsLabelsColor;
 	QColor __airportsLabelsColor;
@@ -75,6 +76,7 @@ private:
 private slots:
 	void __pickColor(QColor*);
 	void __handleAlwaysCheckBox(int);
+	void __handleButton(QAbstractButton*);
 	void __hideWindow();
 	
 	

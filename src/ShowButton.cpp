@@ -28,5 +28,5 @@ ShowButton::ShowButton(const Pilot* _p, QWidget* _parent) :
 
 void
 ShowButton::handleClicked() {
-	emit buttonClicked(__current);
+	emit clicked(__current);
 }

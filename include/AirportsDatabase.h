@@ -25,7 +25,7 @@
 #include "Singleton.h"
 
 #pragma pack(1)
-struct Airport {
+struct AirportRecord {
 	
 	/*
 	 * This struct is compatible with utils/airportDBCreator.py script that
@@ -68,13 +68,13 @@ public:
 	/**
 	 * Gives access to the vector of airports.
 	 */
-	QVector< Airport > & getAirports() { return __airports; }
+	QVector< AirportRecord > & getAirports() { return __airports; }
 	
-	Airport * find(const QString&);
+	AirportRecord * find(const QString&);
 	
 private:
 	
-	QVector< Airport > __airports;
+	QVector< AirportRecord > __airports;
 	
 	VatsinatorApplication &	__mother;
 	

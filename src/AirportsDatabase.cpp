@@ -34,7 +34,7 @@ AirportsDatabase::AirportsDatabase() :
 void
 AirportsDatabase::init() {
 	
-	static_assert(sizeof(Airport) == 420, "Sizeof Airport class is not 420 bytes! The WorldAirports database will be incompatible!");
+	static_assert(sizeof(AirportRecord) == 420, "Sizeof Airport class is not 420 bytes! The WorldAirports database will be incompatible!");
 	
 	__airports.clear();
 	
@@ -46,7 +46,7 @@ AirportsDatabase::init() {
 	db.seekg(4);
 	
 	__airports.resize(size);
-	db.read((char*)&__airports[0], sizeof(Airport) * size);
+	db.read((char*)&__airports[0], sizeof(AirportRecord) * size);
 	
 	db.close();
 	
@@ -56,9 +56,9 @@ AirportsDatabase::init() {
 
 }
 
-Airport *
+AirportRecord *
 AirportsDatabase::find(const QString& _key) {
-	for (Airport& a: __airports)
+	for (AirportRecord& a: __airports)
 		if (a.icao == _key)
 			return &a;
 	

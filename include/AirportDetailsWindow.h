@@ -25,7 +25,7 @@
 #include "Singleton.h"
 
 class AirportObject;
-class MapWidget;
+class Controller;
 class Pilot;
 
 class AirportDetailsWindow :
@@ -38,19 +38,20 @@ class AirportDetailsWindow :
 public:
 	AirportDetailsWindow(QWidget* = 0);
 	
+signals:
+	void showPilotRequest(const Pilot*);
+	void showATCDetailsRequest(const Controller*);
+	
 public slots:
 	void showWindow(const AirportObject*);
  	void updateMetar();
 	void handleShowClicked(const Pilot*);
+	void handleDetailsClicked(const Controller*);
 	
 private:
 	void __setWindowPosition();
 	
-	const AirportObject* __current;
-	
-	QMap< int, QString > __ratings;
-	
-	MapWidget*	__openGLWidget;
+	QString __currentICAO;
 	
 	
 };

@@ -1,5 +1,5 @@
 /*
-    OpenGLWidget.cpp
+    MapWidget.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -65,6 +65,9 @@ MapWidget::MapWidget(QWidget* _parent) :
 	
 	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(glRepaintNeeded()),
 		this,						SLOT(updateGL()));
+	
+	connect(AirportDetailsWindow::GetSingletonPtr(),	SIGNAL(showPilotRequest(const Pilot*)),
+		this,						SLOT(showPilot(const Pilot*)));
 	
 	setAutoBufferSwap(true);
 }
@@ -626,7 +629,7 @@ MapWidget::__drawLines() {
 	if (__underMouse->objectType() == PLANE) {
 		glColor4f(LINES_COLOR);
 		const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
-		const Airport* ap = __airports[pilot->route.origin]->getData();
+		const AirportRecord* ap = __airports[pilot->route.origin]->getData();
 		
 		if (ap) {
 			GLdouble vertices[] = {

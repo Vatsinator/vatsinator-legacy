@@ -20,6 +20,7 @@
 
 #include "../include/ATCDetailsWindow.h"
 
+#include "../include/AirportDetailsWindow.h"
 #include "../include/AirportsDatabase.h"
 #include "../include/Controller.h"
 #include "../include/defines.h"
@@ -40,29 +41,44 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
 	__ratings[10] = "Senior Instructor (I3)";
 	__ratings[11] = "Supervisor";
 	__ratings[12] = "Administrator";
+	
+	connect(AirportDetailsWindow::GetSingletonPtr(),SIGNAL(showATCDetailsRequest(const Controller*)),
+		this,					SLOT(showWindow(const Controller*)));
 }
 
 void
 ATCDetailsWindow::showWindow(const Client* _client) {
-	if (_client->type() != ATC)
+	if (_client->type() != ATC) {
+#ifndef NO_DEBUG
+		qDebug() << "ATCDetailsWindow: passing incompatible argument! Client type must be ATC.";
+#endif
 		return;
+	}
 	
-	const Controller* atc = static_cast< const Controller* >(_client);
+	__showMe(static_cast< const Controller* >(_client));
+}
+
+void
+ATCDetailsWindow::showWindow(const Controller* _c) {
+	__showMe(_c);
+}
+
+void
+ATCDetailsWindow::__showMe(const Controller* _c) {
+	setWindowTitle(QString(_c->callsign + " - ATC details"));
 	
-	setWindowTitle(QString(atc->callsign + " - ATC details"));
-	
-	CallsignLabel->setText(atc->callsign);
-	NameLabel->setText(atc->realName);
-	FrequencyLabel->setText(atc->frequency);
-	RatingLabel->setText(__ratings[atc->rating]);
-	if (atc->airport)
-		AirportLabel->setText((QString)atc->airport->icao + " " + atc->airport->name + ", " + atc->airport->city);
+	CallsignLabel->setText(_c->callsign);
+	NameLabel->setText(_c->realName);
+	FrequencyLabel->setText(_c->frequency);
+	RatingLabel->setText(__ratings[_c->rating]);
+	if (_c->airport)
+		AirportLabel->setText((QString)_c->airport->icao + " " + _c->airport->name + ", " + _c->airport->city);
 	else
 		AirportLabel->setText("N/A");
-	ServerLabel->setText(atc->server);
-	TimeOnlineLabel->setText(atc->onlineFrom.toString("dd MMM yyyy, hh:mm"));
+	ServerLabel->setText(_c->server);
+	TimeOnlineLabel->setText(_c->onlineFrom.toString("dd MMM yyyy, hh:mm"));
 	
-	AtisMessageField->setPlainText(atc->atis);
+	AtisMessageField->setPlainText(_c->atis);
 	
 	show();
 }

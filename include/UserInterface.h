@@ -68,11 +68,11 @@ private:
 	void __storeWindowGeometry();
 	void __restoreWindowGeometry();
 	
+	MetarsWindow *	__metarsWindow;
+	AirportDetailsWindow * __airportDetailsWindow;
 	ATCDetailsWindow * __atcDetailsWindow;
 	FlightDetailsWindow * __flightDetailsWindow;
-	MetarsWindow *	__metarsWindow;
 	SettingsWindow * __settingsWindow;
-	AirportDetailsWindow * __airportDetailsWindow;
 	
 	VatsinatorApplication &	__mother;
 	
