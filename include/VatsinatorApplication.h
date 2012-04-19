@@ -50,9 +50,9 @@ public:
 	
 	virtual ~VatsinatorApplication();
 	
-	void quit();
+	static void quit();
 	
-	void alert(const char*);
+	static void alert(const char*);
 	
 	VatsimDataHandler& getData() { return *__vatsimData; }
 	

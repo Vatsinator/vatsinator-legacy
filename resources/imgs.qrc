@@ -6,5 +6,7 @@
     <file>airport.png</file>
     <file>airport_staffed.png</file>
     <file>plane.png</file>
+    <file>pilot_tooltip.png</file>
+    <file>airport_tooltip.png</file>
   </qresource>
 </RCC>

@@ -23,6 +23,8 @@
 #include <QStringList>
 #include <QString>
 
+#include <GL/gl.h>
+
 #include "Clickable.h"
 #include "Client.h"
 
@@ -45,6 +47,7 @@ class Pilot : public Client, public Clickable {
 	
 public:
 	Pilot(const QStringList&);
+	virtual ~Pilot();
 	
 	ClientType type() const { return PILOT; }
 	ObjectType objectType() const { return PLANE; }
@@ -77,8 +80,11 @@ public:
 		QString altitude;
 	} route;
 	
+	GLuint	callsignTip;
+	
 private:
 	void __setMyStatus();
+	void __generateTip();
 	
 };
 

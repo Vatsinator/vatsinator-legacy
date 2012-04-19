@@ -45,8 +45,6 @@ public:
 	inline bool uirsLayerOn() { return UirsCheckBox->checkState(); }
 	inline int getDisplayAirportParam() { return DisplayAirportsBox->currentIndex(); }
 	
-	inline const QColor & getPilotsLabelsColor() { return __pilotsLabelsColor; }
-	inline const QColor & getAirportsLabelsColor() { return __airportsLabelsColor; }
 	inline const QColor & getUnstaffedFirBordersColor() { return __unstaffedFirBordersColor; }
 	inline const QColor & getStaffedFirBordersColor() { return __staffedFirBordersColor; }
 	inline const QColor & getStaffedUirBordersColor() { return __staffedUirBordersColor; }
@@ -65,8 +63,6 @@ private:
 	void __setWindowPosition();
 	void __restoreDefaults();
 	
-	QColor __pilotsLabelsColor;
-	QColor __airportsLabelsColor;
 	QColor __unstaffedFirBordersColor;
 	QColor __staffedFirBordersColor;
 	QColor __staffedUirBordersColor;

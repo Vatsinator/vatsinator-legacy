@@ -54,8 +54,6 @@
 #define DISPLAY_AIRPORT_BOX	1
 
 // colors
-#define PILOTS_LABELS_COLOR		0, 0, 0
-#define AIRPORTS_LABELS_COLOR		127, 127, 127
 #define UNSTAFFED_FIR_BORDERS_COLOR	193, 193, 193
 #define STAFFED_FIR_BORDERS_COLOR	176, 32, 32
 #define STAFFED_UIR_BORDERS_COLOR	140, 219, 255
@@ -64,7 +62,17 @@
 
 #define LINES_COLOR		0.0, 0.192, 0.337, 0.8
 
+#define PILOTS_LABELS_FONT_COLOR	0, 0, 0
+#define AIRPORTS_LABELS_FONT_COLOR	250, 250, 250
+
+// camera position won't go further
 #define RANGE_Y		1.0
+
+// fonts properties
+#define PILOT_FONT_POINT_SIZE	7.3
+#define PILOT_FONT_WEIGHT	QFont::Light
+#define AIRPORT_FONT_POINT_SIZE	7.3
+#define AIRPORT_FONT_WEIGHT	QFont::Light
 
 
 

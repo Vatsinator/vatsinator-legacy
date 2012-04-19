@@ -61,6 +61,15 @@ public:
 	
 	const Pilot *& getTrackedPilot() { return __tracked; }
 	
+	const QImage & getPilotToolTipBackground() { return __pilotToolTip; }
+	const QImage & getAirportToolTipBackground() { return __airportToolTip; }
+	const QFont & getPilotFont() { return __pilotFont; }
+	const QFont & getAirportFont() { return __airportFont; }
+	
+	static GLuint loadImage(const QImage&);
+	static GLuint loadImage(const QString&);
+	static void deleteImage(GLuint);
+	
 public slots:
 	void trackFlight(const Pilot* _p) { __tracked = _p; }
 	void showPilot(const Pilot*);
@@ -101,12 +110,7 @@ private:
 	
 	void __openContextMenu(const Pilot*);
 	void __openContextMenu(const AirportObject*);
-	void __openContextMenu(const Fir*);
-	
-	/**
-	 * Loads necessary icons.
-	 */
-	void __loadIcon(const QString&, GLuint&);
+	void __openContextMenu(const Fir*);;
 	
 	/**
 	 * Saves/reads settings (zoom, camera Position, colors, etc etc).
@@ -136,15 +140,21 @@ private:
 	GLuint	__apStaffedIcon;
 	GLuint	__pilotIcon;
 	
+	QImage	__pilotToolTip;
+	QFont	__pilotFont;
+	
+	QImage	__airportToolTip;
+	QFont	__airportFont;
+	
 	/* These variables are needed to render our textures. */
-	GLdouble*	__circle;
+	GLdouble *	__circle;
 	unsigned	__circleCount;
 	
 	/* Camera position x, y */
 	QPointF		__position;
 	
 	/* Zoom factor */
-	int			__zoom;
+	int		__zoom;
 	
 	/* Last mouse position */
 	QPoint	__lastMousePos;
@@ -168,7 +178,7 @@ private:
 	GLdouble	__orthoRangeY;
 	
 	const Clickable * __underMouse;
-	const Pilot *		__tracked;
+	const Pilot *	__tracked;
 	
 	/* Where to display latitude and longitude of mouse position */
 	QLabel *	__label;

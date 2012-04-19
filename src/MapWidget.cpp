@@ -38,9 +38,29 @@
 
 const double PI = 3.1415926535897;
 
-const GLdouble VERTICES[] = {-0.025, -0.025, -0.025, 0.025, 0.025, 0.025, 0.025, -0.025};
-const GLdouble TEXCOORDS[] = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0};
+const GLdouble VERTICES[] = {
+	-0.025, -0.025,
+	-0.025,  0.025,
+	 0.025,  0.025,
+	 0.025, -0.025 };
+const GLdouble PILOT_TOOLTIP_VERTICES[] = {
+	-0.09375,  0.02,
+	-0.09375,  0.10333,
+	 0.09375,  0.10333,
+	 0.09375,  0.02 };
+const GLdouble AIRPORT_TOOLTIP_VERTICES[] = {
+	-0.075, -0.08,
+	-0.075, -0.03,
+	 0.075, -0.03,
+	 0.075, -0.08 };
+const GLdouble TEXCOORDS[] = {
+	 0.0, 0.0,
+	 0.0, 1.0,
+	 1.0, 1.0,
+	 1.0, 0.0 };
 
+	 /* Some helpful functions */
+	 
 template< typename T >
 inline T absHelper(const T& _v) {
 	if (_v < 0)
@@ -48,8 +68,40 @@ inline T absHelper(const T& _v) {
 	return _v;
 }
 
+inline void drawCallsign(const Pilot* _p) {
+	glPushMatrix();
+		glTranslatef(0.0f, 0.0f, -1.0f);
+		glBindTexture(GL_TEXTURE_2D, _p->callsignTip);
+		glVertexPointer(2, GL_DOUBLE, 0, PILOT_TOOLTIP_VERTICES);
+		glDrawArrays(GL_QUADS, 0, 4);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	glPopMatrix();
+}
+
+inline void drawCallsign(GLdouble _x, GLdouble _y, const Pilot* _p) {
+	glPushMatrix();
+		glTranslated(_x, _y, -1.0);
+		glBindTexture(GL_TEXTURE_2D, _p->callsignTip);
+		glVertexPointer(2, GL_DOUBLE, 0, PILOT_TOOLTIP_VERTICES);
+		glDrawArrays(GL_QUADS, 0, 4);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	glPopMatrix();
+}
+
+inline void drawIcaoLabel(const AirportObject* _ap) {
+	glPushMatrix();
+		glTranslatef(0.0f, 0.0f, -0.9f);
+		glBindTexture(GL_TEXTURE_2D, _ap->labelTip);
+		glVertexPointer(2, GL_DOUBLE, 0, AIRPORT_TOOLTIP_VERTICES);
+		glDrawArrays(GL_QUADS, 0, 4);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	glPopMatrix();
+}
+
 MapWidget::MapWidget(QWidget* _parent) :
 		QGLWidget(_parent),
+		__pilotToolTip(":/pixmaps/pilot_tooltip.png"),
+		__airportToolTip(":/pixmaps/airport_tooltip.png"),
 		__position(0.0, 0.0),
 		__zoom(ZOOM_MINIMUM),
 		__keyPressed(false),
@@ -73,6 +125,10 @@ MapWidget::MapWidget(QWidget* _parent) :
 }
 
 MapWidget::~MapWidget() {
+	deleteImage(__apIcon);
+	deleteImage(__apStaffedIcon);
+	deleteImage(__pilotIcon);
+	
 	__storeSettings();
 	delete [] __circle;
 }
@@ -83,12 +139,13 @@ MapWidget::init() {
 	
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	
-	__loadIcon(":/pixmaps/airport.png", __apIcon);
-	__loadIcon(":/pixmaps/airport_staffed.png", __apStaffedIcon);
-	__loadIcon(":/pixmaps/plane.png", __pilotIcon);
+	__apIcon = loadImage(":/pixmaps/airport.png");
+	__apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
+	__pilotIcon = loadImage(":/pixmaps/plane.png");
 	
 	__firs = FirsDatabase::GetSingletonPtr();
 	__airportDetails = AirportDetailsWindow::GetSingletonPtr();
@@ -96,6 +153,12 @@ MapWidget::init() {
 	__metars = MetarsWindow::GetSingletonPtr();
 	__flightDetails = FlightDetailsWindow::GetSingletonPtr();
 	__settings = SettingsWindow::GetSingletonPtr();
+	
+	__pilotFont.setPointSizeF(PILOT_FONT_POINT_SIZE);
+	__pilotFont.setWeight(PILOT_FONT_WEIGHT);
+	
+	__airportFont.setPointSizeF(AIRPORT_FONT_POINT_SIZE);
+	__airportFont.setWeight(AIRPORT_FONT_WEIGHT);
 	
 	__restoreSettings();
 }
@@ -115,6 +178,7 @@ void
 MapWidget::paintGL() {
 	qglColor(__settings->getBackgroundColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	qglClearColor(__settings->getBackgroundColor());
 	glLoadIdentity();
 	
 	glEnable(GL_BLEND);
@@ -138,8 +202,6 @@ MapWidget::paintGL() {
 	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
-	glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
-	
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_DOUBLE, 0, TEXCOORDS);
@@ -150,10 +212,10 @@ MapWidget::paintGL() {
 	if (__settings->pilotsLayerOn())
 		__drawPilots();
 	
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
 	
 	__drawLines();
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
 	
 	if (!__toolTipWasShown) {
 		QToolTip::hideText();
@@ -163,6 +225,54 @@ MapWidget::paintGL() {
 	}
 	
 	__toolTipWasShown = false;
+}
+
+GLuint
+MapWidget::loadImage(const QImage& _img) {
+	GLuint pix;
+	QImage final = QGLWidget::convertToGLFormat(_img);
+	
+	glGenTextures(1, &pix);
+	
+	glBindTexture(GL_TEXTURE_2D, pix);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits());
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+	return pix;
+}
+
+GLuint
+MapWidget::loadImage(const QString& _fName) {
+	GLuint pix;
+	QImage final, temp;
+	
+	if (!temp.load(_fName)) {
+		VatsinatorApplication::alert("Image could not be loaded!");
+		VatsinatorApplication::quit();
+	}
+	
+	final = QGLWidget::convertToGLFormat(temp);
+	
+	glEnable(GL_TEXTURE_2D);
+	
+	glGenTextures(1, &pix);
+	
+	glBindTexture(GL_TEXTURE_2D, pix);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits());
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+	return pix;
+}
+
+void
+MapWidget::deleteImage(GLuint _tex) {
+	glDeleteTextures(1, &_tex);
 }
 
 void
@@ -363,8 +473,8 @@ MapWidget::__drawFirs() {
 				icao += " Oceanic";
 			}
 			
-			renderText(fir.header.textPosition.x - (0.5 / __zoom), fir.header.textPosition.y, 0.0,
-					   icao, __apsFont, 64);
+			//,renderText(fir.header.textPosition.x - (0.5 / __zoom), fir.header.textPosition.y, 0.0,
+			//		   icao, __apsFont, 64);
 			if (__distanceFromCamera(x + 0.03, y) < OBJECT_TO_MOUSE && !__toolTipWasShown) {
 				__toolTipWasShown = true;
 				setCursor(QCursor(Qt::PointingHandCursor));
@@ -427,6 +537,8 @@ MapWidget::__drawAirports() {
 		if (y < -__orthoRangeY || y > __orthoRangeY)
 			continue;
 		
+		glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
+		
 		bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 		
 		if (inRange)
@@ -441,8 +553,7 @@ MapWidget::__drawAirports() {
 			glTranslated(x, y, 0);
 			glDrawArrays(GL_QUADS, 0, 4);
 			
-			qglColor(__settings->getAirportsLabelsColor());
-			renderText(-0.03, 0.04, -1.0, it.key(), __apsFont, 64);
+			drawIcaoLabel(it.value());
 			
 			unsigned deps = it.value()->countDepartures();
 			unsigned arrs = it.value()->countArrivals();
@@ -482,7 +593,6 @@ MapWidget::__drawAirports() {
 			}
 			
 			if (it.value()->hasApproach()) {
-				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 				glBindTexture(GL_TEXTURE_2D, 0);
 				
 				qglColor(__settings->getApproachCircleColor());
@@ -498,7 +608,6 @@ MapWidget::__drawAirports() {
 				glLineStipple(1, 0xFFFF);
 				
 				glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
-				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			}
 			
 		glPopMatrix();
@@ -512,7 +621,6 @@ MapWidget::__drawPilots() {
 	const QVector< Pilot* > & pilots = VatsimDataHandler::GetSingleton().getPilots();
 	
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-	glBindTexture(GL_TEXTURE_2D, __pilotIcon);
 	
 	
 	for (const Pilot* client: pilots) {
@@ -533,6 +641,9 @@ MapWidget::__drawPilots() {
 		if (y < -__orthoRangeY || y > __orthoRangeY)
 			continue;
 		
+		glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
+		glBindTexture(GL_TEXTURE_2D, __pilotIcon);
+		
 		glPushMatrix();
 			bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 			
@@ -550,12 +661,10 @@ MapWidget::__drawPilots() {
 				
 			glPopMatrix();
 			
-			qglColor(__settings->getPilotsLabelsColor());
-			
 			if (((__settings->getPilotsLabelsSettings() & WHEN_HOVERED)
 					&& (__keyPressed || inRange))
 					|| (__settings->getPilotsLabelsSettings() & ALWAYS))
-				renderText(0.03, -0.01, -1.5, client->callsign, __pilotsFont, 64);
+				drawCallsign(client);
 			
 			if (inRange && !__toolTipWasShown) {
 				__toolTipWasShown = true;
@@ -600,8 +709,7 @@ void
 MapWidget::__drawLines() {
 	if (!__underMouse)
 		return;
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
+
 	if (__underMouse->objectType() == PLANE) {
 		glColor4f(LINES_COLOR);
 		const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
@@ -662,7 +770,7 @@ MapWidget::__drawLines() {
 					 vertices[i], vertices[i+1]);
 			if ((__settings->getPilotsLabelsSettings() & AIRPORT_RELATED)
 					&& (p->flightStatus != ARRIVED && !__keyPressed))
-				renderText(vertices[i] + 0.03, vertices[i+1] - 0.01, -1.5, p->callsign, __pilotsFont, 64);
+				drawCallsign(vertices[i], vertices[i+1], p);
 			i += 2;
 			
 			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
@@ -679,7 +787,7 @@ MapWidget::__drawLines() {
 			
 			if ((__settings->getPilotsLabelsSettings() & AIRPORT_RELATED)
 				&& (p->flightStatus != DEPARTING && !__keyPressed))
-				renderText(vertices[i] + 0.03, vertices[i+1] - 0.01, -1.5, p->callsign, __pilotsFont, 64);
+				drawCallsign(vertices[i], vertices[i+1], p);
 			i += 2;
 			
 			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
@@ -699,7 +807,6 @@ MapWidget::__drawLines() {
 		
 		delete [] vertices;
 	}
-	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void
@@ -806,29 +913,6 @@ MapWidget::__openContextMenu(const Fir* _fir) {
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
 	delete dMenu;
-}
-
-void
-MapWidget::__loadIcon(const QString& _fName, GLuint& _pix) {
-	QImage final, temp;
-	
-	if (!temp.load(_fName)) {
-		__mother.alert("Image could not be loaded!");
-		__mother.quit();
-	}
-	
-	final = QGLWidget::convertToGLFormat(temp);
-	
-	glEnable(GL_TEXTURE_2D);
-	
-	glGenTextures(1, &_pix);
-	
-	glBindTexture(GL_TEXTURE_2D, _pix);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits());
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void

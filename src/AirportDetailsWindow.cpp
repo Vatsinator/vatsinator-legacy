@@ -43,14 +43,12 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	InboundTable->setColumnWidth(0, 100);
 	InboundTable->setColumnWidth(1, 280);
 	InboundTable->setColumnWidth(2, 80);
-	//InboundTable->setColumnWidth(4, 70);
 	
 	labels[1] = "To";
 	OutboundTable->setHorizontalHeaderLabels(labels);
 	OutboundTable->setColumnWidth(0, 100);
 	OutboundTable->setColumnWidth(1, 280);
 	OutboundTable->setColumnWidth(2, 80);
-	//OutboundTable->setColumnWidth(4, 70);
 	
 	labels[1] = "Name";
 	labels[2] = "Freq";
@@ -58,8 +56,7 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	ATCTable->setHorizontalHeaderLabels(labels);
 	ATCTable->setColumnWidth(0, 100);
 	ATCTable->setColumnWidth(1, 280);
-	ATCTable->setColumnWidth(2, 100);
-	ATCTable->setColumnWidth(3, 80);
+	ATCTable->setColumnWidth(2, 80);
 	
 	connect(MetarsHandler::GetSingletonPtr(), SIGNAL(newMetarsAvailable()),
 		this, SLOT(updateMetar()));
@@ -96,17 +93,20 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		QTableWidgetItem *pAircraft = new QTableWidgetItem(p->aircraft);
 		pAircraft->setTextAlignment(Qt::AlignCenter);
 		
-		ShowButton* showButton = new ShowButton(p);
-		if (p->flightStatus == ARRIVED)
-			showButton->setEnabled(false);
-		else
-			connect(showButton,	SIGNAL(clicked(const Pilot*)),
-				this,		SLOT(handleShowClicked(const Pilot*)));
-		
 		InboundTable->setItem(row, 0, pCallsign);
 		InboundTable->setItem(row, 1, pFrom);
 		InboundTable->setItem(row, 2, pAircraft);
-		InboundTable->setCellWidget(row, 3, showButton);
+		
+		if (p->flightStatus == ARRIVED) {
+			QTableWidgetItem* pArrived = new QTableWidgetItem("Arrived");
+			pArrived->setTextAlignment(Qt::AlignCenter);
+			InboundTable->setItem(row, 3, pArrived);
+		} else {
+			ShowButton* showButton = new ShowButton(p);
+			connect(showButton,	SIGNAL(clicked(const Pilot*)),
+				this,		SLOT(handleShowClicked(const Pilot*)));
+			InboundTable->setCellWidget(row, 3, showButton);
+		}
 		
 		++row;
 	}
@@ -128,17 +128,20 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		QTableWidgetItem *pAircraft = new QTableWidgetItem(p->aircraft);
 		pAircraft->setTextAlignment(Qt::AlignCenter);
 		
-		ShowButton* showButton = new ShowButton(p);
-		if (p->flightStatus == DEPARTING)
-			showButton->setEnabled(false);
-		else
-			connect(showButton,	SIGNAL(clicked(const Pilot*)),
-				this,		SLOT(handleShowClicked(const Pilot*)));
-		
 		OutboundTable->setItem(row, 0, pCallsign);
 		OutboundTable->setItem(row, 1, pTo);
 		OutboundTable->setItem(row, 2, pAircraft);
-		OutboundTable->setCellWidget(row, 3, showButton);
+		
+		if (p->flightStatus == DEPARTING) {
+			QTableWidgetItem* pDeparting = new QTableWidgetItem("Departing");
+			pDeparting->setTextAlignment(Qt::AlignCenter);
+			OutboundTable->setItem(row, 3, pDeparting);
+		} else {
+			ShowButton* showButton = new ShowButton(p);
+			connect(showButton,	SIGNAL(clicked(const Pilot*)),
+				this,		SLOT(handleShowClicked(const Pilot*)));
+			OutboundTable->setCellWidget(row, 3, showButton);
+		}
 		
 		++row;
 	}
@@ -163,6 +166,8 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 		ATCTable->setItem(row, 0, cCallsign);
 		ATCTable->setItem(row, 1, cName);
 		ATCTable->setItem(row, 2, cFreq);
+		
+		
 		ATCTable->setCellWidget(row, 3, detailsButton);
 			
 		++row;

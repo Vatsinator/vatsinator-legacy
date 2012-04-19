@@ -55,8 +55,8 @@ public:
 	
 	
 	
-	FirHeader			header;
-	QString				name;
+	FirHeader		header;
+	QString			name;
 	QVector< Point >	coords;
 	
 private:

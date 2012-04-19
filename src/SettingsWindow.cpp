@@ -34,14 +34,6 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
 	connect(OKCancelButtonBox,		SIGNAL(accepted()),
 		this,				SLOT(__hideWindow()));
 	
-	PilotLabelsColorButton->setColor(&__pilotsLabelsColor);
-	connect(PilotLabelsColorButton,		SIGNAL(clicked(QColor*)),
-		this,				SLOT(__pickColor(QColor*)));
-	
-	AirportLabelsColorButton->setColor(&__airportsLabelsColor);
-	connect(AirportLabelsColorButton,	SIGNAL(clicked(QColor*)),
-		this,				SLOT(__pickColor(QColor*)));
-	
 	UnstaffedFirColorButton->setColor(&__unstaffedFirBordersColor);
 	connect(UnstaffedFirColorButton,	SIGNAL(clicked(QColor*)),
 		this,				SLOT(__pickColor(QColor*)));
@@ -92,8 +84,6 @@ SettingsWindow::showWindow() {
 
 void
 SettingsWindow::__setButtonsColors() {
-	PilotLabelsColorButton->updateColor();
-	AirportLabelsColorButton->updateColor();
 	UnstaffedFirColorButton->updateColor();
 	StaffedFirColorButton->updateColor();
 	StaffedUirColorButton->updateColor();
@@ -116,8 +106,6 @@ SettingsWindow::__saveSettings() {
 	settings.setValue("displayAirports", DisplayAirportsBox->currentIndex());
 
 	// colors
-	settings.setValue("pilotsLabelsColor", __pilotsLabelsColor);
-	settings.setValue("airportsLabelsColor", __airportsLabelsColor);
 	settings.setValue("unstaffedFirColor", __unstaffedFirBordersColor);
 	settings.setValue("staffedFirColor", __staffedFirBordersColor);
 	settings.setValue("staffedUirColor", __staffedUirBordersColor);
@@ -162,10 +150,6 @@ SettingsWindow::__restoreSettings() {
 	
 	DisplayAirportsBox->setCurrentIndex(settings.value("displayAirports", DISPLAY_AIRPORT_BOX).toInt());
 	
-	__pilotsLabelsColor = settings.value("pilotsLabelsColor",
-			QColor(PILOTS_LABELS_COLOR)).value< QColor >();
-	__airportsLabelsColor = settings.value("airportsLabelsColor",
-			QColor(AIRPORTS_LABELS_COLOR)).value< QColor >();
 	__unstaffedFirBordersColor = settings.value("unstaffedFirColor",
 			QColor(UNSTAFFED_FIR_BORDERS_COLOR)).value< QColor >();
 	__staffedFirBordersColor = settings.value("staffedFirColor",
@@ -219,8 +203,6 @@ SettingsWindow::__restoreDefaults() {
 	
 	DisplayAirportsBox->setCurrentIndex(DISPLAY_AIRPORT_BOX);
 	
-	__pilotsLabelsColor = QColor(PILOTS_LABELS_COLOR);
-	__airportsLabelsColor = QColor(AIRPORTS_LABELS_COLOR);
 	__unstaffedFirBordersColor = QColor(UNSTAFFED_FIR_BORDERS_COLOR);
 	__staffedFirBordersColor = QColor(STAFFED_FIR_BORDERS_COLOR);
 	__staffedUirBordersColor = QColor(STAFFED_UIR_BORDERS_COLOR);

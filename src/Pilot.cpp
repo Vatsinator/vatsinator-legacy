@@ -21,6 +21,8 @@
 #include "../include/Pilot.h"
 
 #include "../include/AirportsDatabase.h"
+#include "../include/MapWidget.h"
+#include "../include/SettingsWindow.h"
 #include "../include/VatsimDataHandler.h"
 #include "../include/defines.h"
 
@@ -99,11 +101,16 @@ Pilot::Pilot(const QStringList& _data) {
 	}
 	
 	__setMyStatus();
+	__generateTip();
+}
+
+Pilot::~Pilot() {
+	MapWidget::deleteImage(callsignTip);
 }
 
 void
 Pilot::__setMyStatus() {
-	if (!route.origin.isEmpty()) {
+	if (!route.origin.isEmpty() && !route.destination.isEmpty()) {
 		const AirportRecord* ap_origin =
 			VatsimDataHandler::GetSingleton().getActiveAirports()[route.origin]->getData();
 		const AirportRecord* ap_arrival =
@@ -160,5 +167,16 @@ Pilot::__setMyStatus() {
 	}
 	
 	flightStatus = AIRBORNE;
+}
+
+void
+Pilot::__generateTip() {
+	QImage temp(MapWidget::GetSingleton().getPilotToolTipBackground());
+	QPainter painter(&temp);
+	painter.setFont(MapWidget::GetSingleton().getPilotFont());
+	painter.setPen(QColor(PILOTS_LABELS_FONT_COLOR));
+	QRect rectangle(1, 1, 73, 15); // size of the tooltip.png
+	painter.drawText(rectangle, Qt::AlignCenter, callsign);
+	callsignTip = MapWidget::loadImage(temp);
 }
 

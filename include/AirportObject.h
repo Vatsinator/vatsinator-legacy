@@ -22,6 +22,8 @@
 
 #include <QVector>
 
+#include <GL/gl.h>
+
 #include "AirportsDatabase.h"
 #include "Clickable.h"
 #include "Controller.h"
@@ -32,6 +34,7 @@ class AirportObject : public Clickable {
 public:
 	
 	AirportObject(const QString& = "");
+	virtual ~AirportObject();
 	
 	void addStaff(const Controller*);
 	
@@ -59,8 +62,11 @@ public:
 	inline
 	ObjectType objectType() const { return AIRPORT; }
 	
+	GLuint labelTip;
+	
 	
 private:
+	void __generateTip();
 	
 	const AirportRecord *	__data;
 	

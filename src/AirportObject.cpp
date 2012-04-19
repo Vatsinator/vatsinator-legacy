@@ -16,12 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtGui>
 
 #include "../include/AirportObject.h"
+#include "../include/MapWidget.h"
+
 #include "../include/defines.h"
 
 AirportObject::AirportObject(const QString& _icao) :
-		__data(AirportsDatabase::GetSingleton().find(_icao)) {}
+		__data(AirportsDatabase::GetSingleton().find(_icao)) {
+	__generateTip();
+}
+
+AirportObject::~AirportObject() {
+	MapWidget::deleteImage(labelTip);
+}
 
 void
 AirportObject::addStaff(const Controller* _c) {
@@ -65,5 +74,21 @@ AirportObject::hasApproach() const {
 			return true;
 	
 	return false;
+}
+
+void
+AirportObject::__generateTip() {
+	if (!__data) {
+		labelTip = 0;
+		return;
+	}
+	
+	QImage temp(MapWidget::GetSingleton().getAirportToolTipBackground());
+	QPainter painter(&temp);
+	painter.setFont(MapWidget::GetSingleton().getAirportFont());
+	painter.setPen(QColor(AIRPORTS_LABELS_FONT_COLOR));
+	QRect rectangle(1, 1, 58, 13); // size of the tooltip.png
+	painter.drawText(rectangle, Qt::AlignCenter, __data->icao);
+	labelTip = MapWidget::loadImage(temp);
 }
 
