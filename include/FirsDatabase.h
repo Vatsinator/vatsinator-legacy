@@ -36,13 +36,17 @@ public:
 	inline
 	const QVector< Fir > & getFirs() { return __firs; }
 	
-	Fir *	findFirByIcao(const QString&);
+	Fir *	findFirByIcao(const QString&, bool = false);
 	
 	void	clearAll();
+	
+	void	prepareTooltips();
 	
 private:
 	
 	QVector< Fir >	__firs;
+	
+	bool __toolTipsPrepared;
 	
 	
 };

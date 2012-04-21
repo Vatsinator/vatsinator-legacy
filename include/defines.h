@@ -7,7 +7,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define VATSINATOR_VERSION	"0.1_alpha2"
+#define VATSINATOR_VERSION	"0.1_alpha3"
 
 // where to get all the data from
 #define VATSIM_STATUS_URL	"http://status.vatsim.net/status.txt"
@@ -23,7 +23,7 @@
 #endif
 
 // below/above these values user can't zoom the map
-#define ZOOM_MINIMUM		3
+#define ZOOM_MINIMUM		1
 
 // the range below which the mouse is in the object's
 #define OBJECT_TO_MOUSE		0.03
@@ -44,6 +44,7 @@
 
 // Vatsim data refresh rate in minutes
 #define REFRESH_RATE		3
+#define SECONDS_DATA_OUTDATED	600
 
 // view opts
 #define PILOTS_CHECKBOX		Qt::Checked
@@ -60,19 +61,22 @@
 #define APPROACH_CIRCLE_COLOR		127, 0, 0
 #define BACKGROUND_COLOR		255, 255, 255
 
-#define LINES_COLOR		0.0, 0.192, 0.337, 0.8
+#define LINES_COLOR			0.0, 0.192, 0.337, 0.8
 
 #define PILOTS_LABELS_FONT_COLOR	0, 0, 0
 #define AIRPORTS_LABELS_FONT_COLOR	250, 250, 250
+#define FIRS_LABELS_FONT_COLOR		173, 173, 173
 
 // camera position won't go further
 #define RANGE_Y		1.0
 
 // fonts properties
-#define PILOT_FONT_POINT_SIZE	7.3
-#define PILOT_FONT_WEIGHT	QFont::Light
-#define AIRPORT_FONT_POINT_SIZE	7.3
-#define AIRPORT_FONT_WEIGHT	QFont::Light
+#define PILOT_FONT_PIXEL_SIZE	10
+#define PILOT_FONT_WEIGHT	QFont::Normal
+#define AIRPORT_FONT_PIXEL_SIZE	8
+#define AIRPORT_FONT_WEIGHT	QFont::Bold
+#define FIR_FONT_PIXEL_SIZE	10
+#define FIR_FONT_WEIGHT		QFont::Bold
 
 
 

@@ -85,15 +85,15 @@ VatsimDataHandler::init() {
 			}
 			
 			Fir* currentFir = __firs.findFirByIcao(icao);
-			if (!currentFir) {
-				qDebug() << "Fir " << icao << " could not be found. Try [ALIAS] section!";
-				continue;
-			}
-			if (!currentFir->name.isEmpty() && !currentFir->name.isNull())
-				qDebug() << "Found duplicate for " << icao << "!";
+			if (currentFir)
+				currentFir->name = line.section(' ', 1);
 			
-			// finally:
-			currentFir->name = line.section(' ', 1);
+			// look for same oceanic firs
+			currentFir = __firs.findFirByIcao(icao, true);
+			if (currentFir)
+				currentFir->name = line.section(' ', 1);
+			
+			
 		} else if (flags["[ALIAS]"]) {
 			QStringList data = line.split(' ');
 			QString icao = data[0];

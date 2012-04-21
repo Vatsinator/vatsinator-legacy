@@ -34,6 +34,9 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
 	connect(OKCancelButtonBox,		SIGNAL(accepted()),
 		this,				SLOT(__hideWindow()));
 	
+	connect(OKCancelButtonBox,		SIGNAL(rejected()),
+		this,				SLOT(__settingsRejected()));
+	
 	UnstaffedFirColorButton->setColor(&__unstaffedFirBordersColor);
 	connect(UnstaffedFirColorButton,	SIGNAL(clicked(QColor*)),
 		this,				SLOT(__pickColor(QColor*)));
@@ -103,7 +106,6 @@ SettingsWindow::__saveSettings() {
 	settings.setValue("firsLayer", FirsCheckBox->checkState());
 	settings.setValue("uirsLayer", UirsCheckBox->checkState());
 	settings.setValue("pilotsLabels", getPilotsLabelsSettings());
-	settings.setValue("displayAirports", DisplayAirportsBox->currentIndex());
 
 	// colors
 	settings.setValue("unstaffedFirColor", __unstaffedFirBordersColor);
@@ -147,8 +149,6 @@ SettingsWindow::__restoreSettings() {
 		else
 			ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Unchecked);
 	}
-	
-	DisplayAirportsBox->setCurrentIndex(settings.value("displayAirports", DISPLAY_AIRPORT_BOX).toInt());
 	
 	__unstaffedFirBordersColor = settings.value("unstaffedFirColor",
 			QColor(UNSTAFFED_FIR_BORDERS_COLOR)).value< QColor >();
@@ -201,8 +201,6 @@ SettingsWindow::__restoreDefaults() {
 	ShowPilotsLabelsWhenHoveredCheckBox->setCheckState(Qt::Checked);
 	ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Checked);
 	
-	DisplayAirportsBox->setCurrentIndex(DISPLAY_AIRPORT_BOX);
-	
 	__unstaffedFirBordersColor = QColor(UNSTAFFED_FIR_BORDERS_COLOR);
 	__staffedFirBordersColor = QColor(STAFFED_FIR_BORDERS_COLOR);
 	__staffedUirBordersColor = QColor(STAFFED_UIR_BORDERS_COLOR);
@@ -249,7 +247,14 @@ SettingsWindow::__handleButton(QAbstractButton* _button) {
 
 void
 SettingsWindow::__hideWindow() {
-	__saveSettings();
 	hide();
+	__saveSettings();
+}
+
+void
+SettingsWindow::__settingsRejected() {
+	hide();
+	__restoreSettings();
+	__setButtonsColors();
 }
 

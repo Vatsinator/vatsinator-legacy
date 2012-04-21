@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>682</width>
+    <width>683</width>
     <height>420</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <string>Vatsinator settings</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -294,13 +294,6 @@
       <string>View options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="5" column="1">
-       <widget class="QLabel" name="DisplayAirportsLabel">
-        <property name="text">
-         <string>Display airport:</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QCheckBox" name="AirportsCheckBox">
         <property name="text">
@@ -364,56 +357,6 @@
         </property>
        </spacer>
       </item>
-      <item row="5" column="2">
-       <widget class="QComboBox" name="DisplayAirportsBox">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="editable">
-         <bool>false</bool>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <property name="maxVisibleItems">
-         <number>3</number>
-        </property>
-        <property name="maxCount">
-         <number>3</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>Always</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>If active</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Never</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="5" column="3">
-       <spacer name="horizontalSpacer_7">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="2">
        <widget class="QLabel" name="ShowPilotsLabelsLabel">
         <property name="text">
@@ -454,6 +397,22 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="3">
+       <spacer name="horizontalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
@@ -479,22 +438,5 @@
  <resources>
   <include location="imgs.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>OKCancelButtonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>SettingsWindow</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>517</x>
-     <y>403</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>340</x>
-     <y>209</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

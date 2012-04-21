@@ -15,9 +15,16 @@ else (CMAKE_BUILD_TYPE MATCHES Debug)
 endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 
-
 set(CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x -fpermissive")
+
+set(vatsinator_TARGET
+	vatsinator)
+
+if (MINGW)
+	set(vatsinator_TARGET
+		${vatsinator_TARGET}.exe)
+endif (MINGW)
 
 set(vatsinator_SOURCES
 	main.cpp
@@ -100,7 +107,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(include)
 add_definitions(${QT_DEFINITIONS})
 
-add_executable(vatsinator
+add_executable(${vatsinator_TARGET}
 	${vatsinator_SOURCES}
 	${vatsinator_HEADERS_MOC}
 	${vatsinator_FORMS_HEADERS}
@@ -128,7 +135,7 @@ else (MINGW)
 	)
 endif (MINGW)
 
-target_link_libraries(vatsinator ${vatsinator_LIBS})
+target_link_libraries(${vatsinator_TARGET} ${vatsinator_LIBS})
 
 install(FILES
 	resources/WorldAirports.db

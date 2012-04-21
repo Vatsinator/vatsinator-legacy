@@ -45,14 +45,19 @@ const GLdouble VERTICES[] = {
 	 0.025, -0.025 };
 const GLdouble PILOT_TOOLTIP_VERTICES[] = {
 	-0.09375,  0.02,
-	-0.09375,  0.10333,
-	 0.09375,  0.10333,
+	-0.09375,  0.1,
+	 0.09375,  0.1,
 	 0.09375,  0.02 };
 const GLdouble AIRPORT_TOOLTIP_VERTICES[] = {
-	-0.075, -0.08,
-	-0.075, -0.03,
-	 0.075, -0.03,
-	 0.075, -0.08 };
+	-0.06, -0.065,
+	-0.06, -0.025,
+	 0.06, -0.025,
+	 0.06, -0.065 };
+const GLdouble FIR_TOOLTIP_VERTICES[] = {
+	-0.08, -0.04,
+	-0.08,  0.04,
+	 0.08,  0.04,
+	 0.08, -0.04 };
 const GLdouble TEXCOORDS[] = {
 	 0.0, 0.0,
 	 0.0, 1.0,
@@ -98,10 +103,30 @@ inline void drawIcaoLabel(const AirportObject* _ap) {
 	glPopMatrix();
 }
 
+inline void drawFirLabel(GLdouble _x, GLdouble _y, const Fir& _f) {
+	if (_f.icaoTip) {
+		glPushMatrix();
+			glTranslated(_x, _y, -0.8);
+			glBindTexture(GL_TEXTURE_2D, _f.icaoTip);
+			glVertexPointer(2, GL_DOUBLE, 0, FIR_TOOLTIP_VERTICES);
+			glDrawArrays(GL_QUADS, 0, 4);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		glPopMatrix();
+	}
+}
+
+
+
+
+
 MapWidget::MapWidget(QWidget* _parent) :
 		QGLWidget(_parent),
 		__pilotToolTip(":/pixmaps/pilot_tooltip.png"),
+		__pilotFont("Verdana"),
 		__airportToolTip(":/pixmaps/airport_tooltip.png"),
+		__airportFont("Verdana"),
+		__firToolTip(64, 24, QImage::Format_ARGB32_Premultiplied),
+		__firFont("Verdana"),
 		__position(0.0, 0.0),
 		__zoom(ZOOM_MINIMUM),
 		__keyPressed(false),
@@ -109,19 +134,32 @@ MapWidget::MapWidget(QWidget* _parent) :
 		__tracked(NULL),
 		__label(NULL),
 		__toolTipWasShown(false),
+		__contextMenuActive(false),
+		__refreshLaterFlag(false),
 		__mother(VatsinatorApplication::GetSingleton()),
 		__data(VatsimDataHandler::GetSingleton()),
 		__airports(__data.getActiveAirports()) {
-	__apsFont.setPointSize(__apsFont.pointSize() - 1);
 	__produceCircle();
 	
 	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(glRepaintNeeded()),
-		this,						SLOT(updateGL()));
+		this,						SLOT(redraw()));
 	
 	connect(AirportDetailsWindow::GetSingletonPtr(),	SIGNAL(showPilotRequest(const Pilot*)),
 		this,						SLOT(showPilot(const Pilot*)));
 	
+	connect(this,	SIGNAL(contextMenuRequested(const Pilot*)),
+		this,	SLOT(__openContextMenu(const Pilot*)));
+	connect(this,	SIGNAL(contextMenuRequested(const AirportObject*)),
+		this,	SLOT(__openContextMenu(const AirportObject*)));
+	connect(this,	SIGNAL(contextMenuRequested(const Fir*)),
+		this,	SLOT(__openContextMenu(const Fir*)));
+	
 	setAutoBufferSwap(true);
+	
+	__firFont.setPixelSize(FIR_FONT_PIXEL_SIZE);
+	__firFont.setWeight(FIR_FONT_WEIGHT);
+	
+	__firToolTip.fill(0);
 }
 
 MapWidget::~MapWidget() {
@@ -137,28 +175,29 @@ void
 MapWidget::init() {
 	setEnabled(true);
 	
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.1f);
-	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	
 	__apIcon = loadImage(":/pixmaps/airport.png");
 	__apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
 	__pilotIcon = loadImage(":/pixmaps/plane.png");
 	
 	__firs = FirsDatabase::GetSingletonPtr();
-	__airportDetails = AirportDetailsWindow::GetSingletonPtr();
-	__atcDetails = ATCDetailsWindow::GetSingletonPtr();
-	__metars = MetarsWindow::GetSingletonPtr();
-	__flightDetails = FlightDetailsWindow::GetSingletonPtr();
+	__airportDetailsWindow = AirportDetailsWindow::GetSingletonPtr();
+	__atcDetailsWindow = ATCDetailsWindow::GetSingletonPtr();
+	__metarsWindow = MetarsWindow::GetSingletonPtr();
+	__flightDetailsWindow = FlightDetailsWindow::GetSingletonPtr();
 	__settings = SettingsWindow::GetSingletonPtr();
 	
-	__pilotFont.setPointSizeF(PILOT_FONT_POINT_SIZE);
+	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
+		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+	connect(this,			SIGNAL(airportDetailsWindowRequested(const AirportObject*)),
+		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
+	
+	__pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);
 	__pilotFont.setWeight(PILOT_FONT_WEIGHT);
 	
-	__airportFont.setPointSizeF(AIRPORT_FONT_POINT_SIZE);
+	__airportFont.setPixelSize(AIRPORT_FONT_PIXEL_SIZE);
 	__airportFont.setWeight(AIRPORT_FONT_WEIGHT);
+	
+	__firs->prepareTooltips();
 	
 	__restoreSettings();
 }
@@ -170,12 +209,16 @@ MapWidget::initializeGL() {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	
 	glEnable(GL_LINE_STIPPLE);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1f);
+	glEnable(GL_DEPTH_TEST);
 	
 	init();
 }
 
 void
 MapWidget::paintGL() {
+	
 	qglColor(__settings->getBackgroundColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	qglClearColor(__settings->getBackgroundColor());
@@ -192,19 +235,19 @@ MapWidget::paintGL() {
 	}
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
-	
-	__prepareMatrix(WORLD);
-	if (__settings->firsLayerOn())
-		__drawFirs();
-	
-	if (__settings->uirsLayerOn())
-		__drawUirs();
-	
-	__prepareMatrix(AIRPORTS_PILOTS);
-	
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_DOUBLE, 0, TEXCOORDS);
+	
+	__prepareMatrix(WORLD);
+	
+	if (__settings->firsLayerOn())
+		__drawFirs();
+	
+	__prepareMatrix(AIRPORTS_PILOTS);
+	
+	if (__settings->firsLayerOn())
+		__drawFirsLabels();
 	
 	if (__settings->airportsLayerOn())
 		__drawAirports();
@@ -235,9 +278,11 @@ MapWidget::loadImage(const QImage& _img) {
 	glGenTextures(1, &pix);
 	
 	glBindTexture(GL_TEXTURE_2D, pix);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(),
+			0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits());
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // GL_LINEAR causes the text
+									// on the tooltip is blurred
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
@@ -283,6 +328,17 @@ MapWidget::showPilot(const Pilot* _p) {
 }
 
 void
+MapWidget::redraw() {
+	__underMouse = NULL;
+	__toolTipWasShown = false;
+	QToolTip::hideText();
+	if (cursor().shape() != Qt::SizeAllCursor)
+		setCursor(QCursor(Qt::ArrowCursor));
+	
+	updateGL();
+}
+
+void
 MapWidget::resizeGL(int width, int height) {
 	glViewport(0, 0, width, height);
 	
@@ -312,36 +368,43 @@ MapWidget::wheelEvent(QWheelEvent* _event) {
 void
 MapWidget::mousePressEvent(QMouseEvent* _event) {
 	__lastMousePos = _event->pos();
+	QToolTip::hideText();
 	
 	if ((_event->buttons() & Qt::RightButton) && __underMouse) {
+		__contextMenuActive = true;
 		switch (__underMouse->objectType()) {
 			case PLANE:
-				__openContextMenu(static_cast< const Pilot* >(__underMouse));
+				emit contextMenuRequested(static_cast< const Pilot* >(__underMouse));
 				break;
 			case AIRPORT:
-				__openContextMenu(static_cast< const AirportObject* >(__underMouse));
+				emit contextMenuRequested(static_cast< const AirportObject* >(__underMouse));
 				break;
 			case FIR:
-				__openContextMenu(static_cast< const Fir* >(__underMouse));
+				emit contextMenuRequested(static_cast< const Fir* >(__underMouse));
 				break;
 			case UIR:
 				break;
 		}
+		__underMouse = NULL;
 	} else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
+		__refreshLaterFlag = true;
+		__contextMenuActive = true;
 		switch (__underMouse->objectType()) {
 			case PLANE:
-				__flightDetails->showWindow(static_cast< const Pilot* >(__underMouse));
+				emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
 				break;
 			case AIRPORT:
-				__airportDetails->showWindow(static_cast< const AirportObject* >(__underMouse));
+				emit airportDetailsWindowRequested(static_cast< const AirportObject* >(__underMouse));
 				break;
 			case FIR:
-				//__atcDetails->showWindow(static_cast< const Fir* >(__underMouse));
+				//TODO: FIR details window
 				break;
 			case UIR:
 				break;
 		}
+		__underMouse = NULL;
 	}
+	
 }
 
 void
@@ -351,6 +414,11 @@ MapWidget::mouseReleaseEvent(QMouseEvent*) {
 
 void
 MapWidget::mouseMoveEvent(QMouseEvent* _event) {
+	if (__refreshLaterFlag) {
+		__refreshLaterFlag = false;
+		__contextMenuActive = false;
+	}
+	
 	int dx = _event->x() - __lastMousePos.x();
 	int dy = _event->y() - __lastMousePos.y();
 	
@@ -377,6 +445,10 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
 	// count the mouse position global coordinates
 	double longitude = (__lastMousePosInterpolated.x() / (double)__zoom + __position.x()) * 180;
 	double latitude = (__lastMousePosInterpolated.y() / (double)__zoom + __position.y()) * 90;
+	if (latitude < -90)
+		latitude = -90;
+	else if (latitude > 90)
+		latitude = 90;
 	
 	// update the label on the very bottom of the main window
 	UserInterface::GetSingleton().getPositionBox()->setText(
@@ -418,6 +490,127 @@ MapWidget::keyReleaseEvent(QKeyEvent* _event) {
 }
 
 void
+MapWidget::__openContextMenu(const Pilot* _pilot) {
+	QMenu* dMenu = new QMenu(_pilot->callsign, this);
+	
+	ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, "Flight details", this);
+	TrackAction* trackThisFlight = new TrackAction(_pilot, this);
+	dMenu->addAction(showDetails);
+	dMenu->addAction(trackThisFlight);
+	
+	connect(showDetails,		SIGNAL(clicked(const Client*)),
+		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+	connect(trackThisFlight,	SIGNAL(clicked(const Pilot*)),
+		this,			SLOT(trackFlight(const Pilot*)));
+	
+	dMenu->addSeparator();
+	
+	if (!_pilot->route.origin.isEmpty()) {
+		MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
+		dMenu->addAction(showDepMetar);
+		connect(showDepMetar,	SIGNAL(clicked(QString)),
+			__metarsWindow,	SLOT(showWindow(QString)));
+	}
+	
+	if (!_pilot->route.destination.isEmpty()) {
+		MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
+		dMenu->addAction(showArrMetar);
+		connect(showArrMetar,	SIGNAL(clicked(QString)),
+			__metarsWindow,	SLOT(showWindow(QString)));
+	}
+	
+	
+	dMenu->exec(mapToGlobal(__lastMousePos));
+	delete dMenu;
+	
+	__contextMenuActive = false;
+}
+
+void
+MapWidget::__openContextMenu(const AirportObject* _ap) {
+	QMenu* dMenu = new QMenu(_ap->getData()->icao, this);
+	
+	MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
+	
+	dMenu->addAction(showMetar);
+	connect(showMetar,	SIGNAL(clicked(QString)),
+		__metarsWindow,	SLOT(showWindow(QString)));
+	
+	if (!_ap->getStaff().isEmpty()) {
+		dMenu->addSeparator();
+		QAction* desc = new QAction("Controllers", this);
+		desc->setEnabled(false);
+		dMenu->addAction(desc);
+		
+		for (const Controller* c: _ap->getStaff()) {
+			ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
+			dMenu->addAction(showDetails);
+			connect(showDetails,		SIGNAL(clicked(const Client*)),
+				__atcDetailsWindow,	SLOT(showWindow(const Client*)));
+		}
+	}
+	
+	if (!_ap->getOutbounds().isEmpty() && _ap->countDepartures()) {
+		dMenu->addSeparator();
+		QAction* desc = new QAction("Departures", this);
+		desc->setEnabled(false);
+		dMenu->addAction(desc);
+		
+		for (const Pilot* p: _ap->getOutbounds()) {
+			if (p->flightStatus != DEPARTING)
+				continue;
+			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
+			dMenu->addAction(showDetails);
+			connect(showDetails,		SIGNAL(clicked(const Client*)),
+				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+		}
+	}
+	
+	if (!_ap->getInbounds().isEmpty() && _ap->countArrivals()) {
+		dMenu->addSeparator();
+		QAction* desc = new QAction("Arrivals", this);
+		desc->setEnabled(false);
+		dMenu->addAction(desc);
+		
+		for (const Pilot* p: _ap->getInbounds()) {
+			if (p->flightStatus != ARRIVED)
+				continue;
+			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
+			dMenu->addAction(showDetails);
+			connect(showDetails,		SIGNAL(clicked(const Client*)),
+				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+		}
+	}
+	
+	dMenu->exec(mapToGlobal(__lastMousePos));
+	delete dMenu;
+	
+	__contextMenuActive = false;
+}
+
+void
+MapWidget::__openContextMenu(const Fir* _fir) {
+	if (_fir->getStaff().isEmpty()) {
+		__contextMenuActive = false;
+		return;
+	}
+	
+	QMenu* dMenu = new QMenu(_fir->header.icao, this);
+	
+	for (const Controller* c: _fir->getStaff()) {
+		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
+		dMenu->addAction(showDetails);
+		connect(showDetails,		SIGNAL(clicked(const Client*)),
+			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
+	}
+	
+	dMenu->exec(mapToGlobal(__lastMousePos));
+	delete dMenu;
+	
+	__contextMenuActive = false;
+}
+
+void
 MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -450,56 +643,37 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 
 void
 MapWidget::__drawFirs() {
+	glLineWidth(3.0);
 	for (const Fir& fir: __firs->getFirs()) {
+		if (fir.getStaff().isEmpty())
+			continue;
+		
 		glPushMatrix();
-		if (!fir.getStaff().isEmpty()) {
+		
 			qglColor(__settings->getStaffedFirBordersColor());
-			glLineWidth(3.0);
 			glTranslated(0.0, 0.0, 0.1);
-		} else {
-			qglColor(__settings->getUnstaffedFirBordersColor());
-		}
 		
-		glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
-		glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
-		
-		double x, y;
-		__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
-		if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
-				(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
-			QString icao(fir.header.icao);
-			if (icao.length() > 4) {
-				icao = icao.left(4);
-				icao += " Oceanic";
-			}
+			glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
+			glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
 			
-			//,renderText(fir.header.textPosition.x - (0.5 / __zoom), fir.header.textPosition.y, 0.0,
-			//		   icao, __apsFont, 64);
-			if (__distanceFromCamera(x + 0.03, y) < OBJECT_TO_MOUSE && !__toolTipWasShown) {
-				__toolTipWasShown = true;
-				setCursor(QCursor(Qt::PointingHandCursor));
-				__underMouse = &fir;
-				
-				QString tooltipText = QString("<center>") + icao;
-				if (!fir.name.isEmpty()) {
-					tooltipText.append("<br><nobr>");
-					tooltipText.append(fir.name);
-					tooltipText.append("</nobr>");
-				}
-				
-				for (const Controller* c: fir.getStaff()) {
-					tooltipText.append("<br><nobr>");
-					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
-					tooltipText.append("</nobr>");
-				}
-				
-				QToolTip::showText(mapToGlobal(__lastMousePos),
-						tooltipText,
-						this
-					);
-			}
+		glPopMatrix();
+	}
+	glLineWidth(1.0);
+	
+	if (__settings->uirsLayerOn())
+		__drawUirs();
+	
+	for (const Fir& fir: __firs->getFirs()) {
+		if (!fir.getStaff().isEmpty()) {
+			continue;
 		}
-		glLineWidth(1.0);
+		
+		glPushMatrix();
+		
+			qglColor(__settings->getUnstaffedFirBordersColor());		
+			glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
+			glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
+		
 		glPopMatrix();
 	}
 }
@@ -523,6 +697,45 @@ MapWidget::__drawUirs() {
 }
 
 void
+MapWidget::__drawFirsLabels() {
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	for (const Fir& fir: __firs->getFirs()) {
+		double x, y;
+		__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
+		if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
+				(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
+			
+			drawFirLabel(x, y, fir);
+			
+			if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE &&
+					!__toolTipWasShown &&
+					!__contextMenuActive) {
+				__toolTipWasShown = true;
+				setCursor(QCursor(Qt::PointingHandCursor));
+				__underMouse = &fir;
+				
+				QString tooltipText = QString("<center>");
+				if (!fir.name.isEmpty()) {
+					tooltipText.append("<nobr>");
+					tooltipText.append(fir.name);
+					tooltipText.append("</nobr>");
+				}
+				
+					for (const Controller* c: fir.getStaff()) {
+					tooltipText.append("<br><nobr>");
+					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
+					tooltipText.append("</nobr>");
+				}
+				
+				QToolTip::showText(mapToGlobal(__lastMousePos),
+						tooltipText
+					);
+			}
+		}
+	}
+}
+
+void
 MapWidget::__drawAirports() {
 	for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 		
@@ -541,7 +754,7 @@ MapWidget::__drawAirports() {
 		
 		bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 		
-		if (inRange)
+		if (inRange && !__contextMenuActive)
 			setCursor(QCursor(Qt::PointingHandCursor));
 		
 		glBindTexture(GL_TEXTURE_2D, (it.value()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon );
@@ -558,7 +771,7 @@ MapWidget::__drawAirports() {
 			unsigned deps = it.value()->countDepartures();
 			unsigned arrs = it.value()->countArrivals();
 			
-			if (inRange) {
+			if (inRange && !__contextMenuActive) {
 				__toolTipWasShown = true;
 				__underMouse = it.value();
 				
@@ -587,8 +800,7 @@ MapWidget::__drawAirports() {
 				tooltipText.append("</center>");
 				
 				QToolTip::showText(mapToGlobal(__lastMousePos),
-						tooltipText,
-						this
+						tooltipText
 					);
 			}
 			
@@ -654,7 +866,7 @@ MapWidget::__drawPilots() {
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1);
 				
-				if (inRange && !__toolTipWasShown)
+				if (inRange && !__toolTipWasShown && !__contextMenuActive)
 					glScalef(1.3, 1.3, 1.0);
 				
 				glDrawArrays(GL_QUADS, 0, 4);
@@ -666,7 +878,7 @@ MapWidget::__drawPilots() {
 					|| (__settings->getPilotsLabelsSettings() & ALWAYS))
 				drawCallsign(client);
 			
-			if (inRange && !__toolTipWasShown) {
+			if (inRange && !__toolTipWasShown && !__contextMenuActive) {
 				__toolTipWasShown = true;
 				__underMouse = client;
 				setCursor(QCursor(Qt::PointingHandCursor));
@@ -695,8 +907,7 @@ MapWidget::__drawPilots() {
 						" > " + destination + "</nobr><br>" +
 						"Ground speed: " + QString::number(client->groundSpeed) +
 						" kts<br>Altitude: " + QString::number(client->altitude) +
-						" ft</center>",
-						this
+						" ft</center>"
 					);
 			}
 		glPopMatrix();
@@ -728,7 +939,7 @@ MapWidget::__drawLines() {
 				};
 			
 			glVertexPointer(2, GL_DOUBLE, 0, vertices);
-			glDrawArrays(GL_LINES, 0, 4);
+			glDrawArrays(GL_LINES, 0, 2);
 		}
 		
 		if (!pilot->route.destination.isEmpty())
@@ -746,7 +957,7 @@ MapWidget::__drawLines() {
 				
 			glVertexPointer(2, GL_DOUBLE, 0, vertices);
 			glLineStipple(1, 0xF0F0);
-			glDrawArrays(GL_LINES, 0, 4);
+			glDrawArrays(GL_LINES, 0, 2);
 			glLineStipple(1, 0xFFFF);
 			
 		}
@@ -807,112 +1018,6 @@ MapWidget::__drawLines() {
 		
 		delete [] vertices;
 	}
-}
-
-void
-MapWidget::__openContextMenu(const Pilot* _pilot) {
-	QMenu* dMenu = new QMenu(_pilot->callsign, this);
-	
-	ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, "Flight details", this);
-	TrackAction* trackThisFlight = new TrackAction(_pilot, this);
-	dMenu->addAction(showDetails);
-	dMenu->addAction(trackThisFlight);
-	
-	connect(showDetails,		SIGNAL(clicked(const Client*)),
-		__flightDetails,	SLOT(showWindow(const Client*)));
-	connect(trackThisFlight,	SIGNAL(clicked(const Pilot*)),
-		this,			SLOT(trackFlight(const Pilot*)));
-	
-	dMenu->addSeparator();
-	
-	if (!_pilot->route.origin.isEmpty()) {
-		MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
-		dMenu->addAction(showDepMetar);
-		connect(showDepMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
-	}
-	
-	if (!_pilot->route.destination.isEmpty()) {
-		MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
-		dMenu->addAction(showArrMetar);
-		connect(showArrMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
-	}
-	
-	
-	dMenu->exec(mapToGlobal(__lastMousePos));
-	delete dMenu;
-}
-
-void
-MapWidget::__openContextMenu(const AirportObject* _ap) {
-	QMenu* dMenu = new QMenu(_ap->getData()->icao, this);
-	
-	MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
-	
-	dMenu->addAction(showMetar);
-	connect(showMetar, SIGNAL(clicked(QString)), __metars, SLOT(showWindow(QString)));
-	
-	if (!_ap->getStaff().isEmpty()) {
-		dMenu->addSeparator();
-		QAction* desc = new QAction("Controllers", this);
-		desc->setEnabled(false);
-		dMenu->addAction(desc);
-		
-		for (const Controller* c: _ap->getStaff()) {
-			ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
-			dMenu->addAction(showDetails);
-			connect(showDetails, SIGNAL(clicked(const Client*)), __atcDetails, SLOT(showWindow(const Client*)));
-		}
-	}
-	
-	if (!_ap->getOutbounds().isEmpty() && _ap->countDepartures()) {
-		dMenu->addSeparator();
-		QAction* desc = new QAction("Departures", this);
-		desc->setEnabled(false);
-		dMenu->addAction(desc);
-		
-		for (const Pilot* p: _ap->getOutbounds()) {
-			if (p->flightStatus != DEPARTING)
-				continue;
-			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
-			dMenu->addAction(showDetails);
-			connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
-		}
-	}
-	
-	if (!_ap->getInbounds().isEmpty() && _ap->countArrivals()) {
-		dMenu->addSeparator();
-		QAction* desc = new QAction("Arrivals", this);
-		desc->setEnabled(false);
-		dMenu->addAction(desc);
-		
-		for (const Pilot* p: _ap->getInbounds()) {
-			if (p->flightStatus != ARRIVED)
-				continue;
-			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
-			dMenu->addAction(showDetails);
-			connect(showDetails, SIGNAL(clicked(const Client*)), __flightDetails, SLOT(showWindow(const Client*)));
-		}
-	}
-	
-	dMenu->exec(mapToGlobal(__lastMousePos));
-	delete dMenu;
-}
-
-void
-MapWidget::__openContextMenu(const Fir* _fir) {
-	if (_fir->getStaff().isEmpty())
-		return;
-	
-	QMenu* dMenu = new QMenu(_fir->header.icao, this);
-	
-	for (const Controller* c: _fir->getStaff()) {
-		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
-		dMenu->addAction(showDetails);
-		connect(showDetails, SIGNAL(clicked(const Client*)), __atcDetails, SLOT(showWindow(const Client*)));
-	}
-	
-	dMenu->exec(mapToGlobal(__lastMousePos));
-	delete dMenu;
 }
 
 void

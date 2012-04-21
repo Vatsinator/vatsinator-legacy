@@ -173,9 +173,12 @@ void
 Pilot::__generateTip() {
 	QImage temp(MapWidget::GetSingleton().getPilotToolTipBackground());
 	QPainter painter(&temp);
+	painter.setRenderHint(QPainter::TextAntialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+	painter.setRenderHint(QPainter::HighQualityAntialiasing);
 	painter.setFont(MapWidget::GetSingleton().getPilotFont());
 	painter.setPen(QColor(PILOTS_LABELS_FONT_COLOR));
-	QRect rectangle(1, 1, 73, 15); // size of the tooltip.png
+	QRect rectangle(0, 1, 75, 14); // size of the tooltip.png
 	painter.drawText(rectangle, Qt::AlignCenter, callsign);
 	callsignTip = MapWidget::loadImage(temp);
 }

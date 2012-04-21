@@ -57,27 +57,41 @@ public:
 	
 	void init();
 	
-	void paintGL();
+	inline const Pilot *& getTrackedPilot() { return __tracked; }
 	
-	const Pilot *& getTrackedPilot() { return __tracked; }
+	/* For Pilot class */
+	inline const QImage & getPilotToolTipBackground() { return __pilotToolTip; }
+	inline const QFont & getPilotFont() { return __pilotFont; }
 	
-	const QImage & getPilotToolTipBackground() { return __pilotToolTip; }
-	const QImage & getAirportToolTipBackground() { return __airportToolTip; }
-	const QFont & getPilotFont() { return __pilotFont; }
-	const QFont & getAirportFont() { return __airportFont; }
+	/* For AirportObject class */
+	inline const QImage & getAirportToolTipBackground() { return __airportToolTip; }
+	inline const QFont & getAirportFont() { return __airportFont; }
+	
+	/* For Fir class */
+	inline const QImage & getFirToolTipBackground() { return __firToolTip; }
+	inline const QFont & getFirFont() { return __firFont; }
 	
 	static GLuint loadImage(const QImage&);
 	static GLuint loadImage(const QString&);
 	static void deleteImage(GLuint);
 	
+signals:
+	void contextMenuRequested(const Pilot*);
+	void contextMenuRequested(const AirportObject*);
+	void contextMenuRequested(const Fir*);
+	void flightDetailsWindowRequested(const Client*);
+	void airportDetailsWindowRequested(const AirportObject*);
+	
 public slots:
 	void trackFlight(const Pilot* _p) { __tracked = _p; }
 	void showPilot(const Pilot*);
+	void redraw();
 	
 protected:
 	/* Here we reimplement some functions that are needed for
 	 * OpenGL to work properly. */
 	void initializeGL();
+	void paintGL();
 	void resizeGL(int, int);
 	void wheelEvent(QWheelEvent*);
 	void mousePressEvent(QMouseEvent*);
@@ -86,35 +100,21 @@ protected:
 	void keyPressEvent(QKeyEvent*);
 	void keyReleaseEvent(QKeyEvent*);
 	
-private:
+private slots:
+	void __openContextMenu(const Pilot*);
+	void __openContextMenu(const AirportObject*);
+	void __openContextMenu(const Fir*);
 	
-	/**
-	 * Prepares the proper matrix.
-	 */
+private:
 	void __prepareMatrix(PMMatrixMode);
 	
 	void __drawFirs();
 	void __drawUirs();
-	
-	/**
-	 * Draws all aiports on the map.
-	 */
+	void __drawFirsLabels();
 	void __drawAirports();
-	
-	/**
-	 * Draws all pilots on the map.
-	 */
 	void __drawPilots();
+	void __drawLines(); // lines when airport/pilot on hover
 	
-	void __drawLines();
-	
-	void __openContextMenu(const Pilot*);
-	void __openContextMenu(const AirportObject*);
-	void __openContextMenu(const Fir*);;
-	
-	/**
-	 * Saves/reads settings (zoom, camera Position, colors, etc etc).
-	 */
 	void __storeSettings();
 	void __restoreSettings();
 	
@@ -140,13 +140,19 @@ private:
 	GLuint	__apStaffedIcon;
 	GLuint	__pilotIcon;
 	
+	/* Used by Pilot class */
 	QImage	__pilotToolTip;
 	QFont	__pilotFont;
 	
+	/* For AirportObject class */
 	QImage	__airportToolTip;
 	QFont	__airportFont;
 	
-	/* These variables are needed to render our textures. */
+	/* For Fir class */
+	QImage	__firToolTip;
+	QFont	__firFont;
+	
+	/* Approach circle array and vertices count */
 	GLdouble *	__circle;
 	unsigned	__circleCount;
 	
@@ -159,31 +165,31 @@ private:
 	/* Last mouse position */
 	QPoint	__lastMousePos;
 	
-	/* Showing pilots' labels or not? */
-	bool	__keyPressed;
-	
 	/* And last mouse position interpolated to ortho range */
 	QPointF __lastMousePosInterpolated;
 	
-	/* Font being used to display labels */
-	QFont	__pilotsFont;
-	QFont	__apsFont;
+	/* Showing pilots' labels or not? */
+	bool	__keyPressed;
 	
 	/* Stores window geometry */
-	int		__winWidth;
-	int		__winHeight;
+	int	__winWidth;
+	int	__winHeight;
 	
 	/* Stores glOrtho ranges */
 	GLdouble	__orthoRangeX;
 	GLdouble	__orthoRangeY;
 	
-	const Clickable * __underMouse;
-	const Pilot *	__tracked;
+	/* Clickable object under mouse and tracked pilot pointers */
+	const Clickable *	__underMouse;
+	const Pilot *		__tracked;
 	
 	/* Where to display latitude and longitude of mouse position */
 	QLabel *	__label;
 	
-	bool		__toolTipWasShown;
+	/* To prevent from showing tooltip when it is not recommended */
+	bool		__toolTipWasShown; // during current frame render
+	bool		__contextMenuActive;
+	bool		__refreshLaterFlag;
 	
 	VatsinatorApplication &	__mother;
 	
@@ -192,13 +198,11 @@ private:
 	const AirportsMap & __airports;
 	
 	FirsDatabase *		__firs;
-	AirportDetailsWindow *	__airportDetails;
-	ATCDetailsWindow *	__atcDetails;
-	FlightDetailsWindow *	__flightDetails;
-	MetarsWindow *		__metars;
+	AirportDetailsWindow *	__airportDetailsWindow;
+	ATCDetailsWindow *	__atcDetailsWindow;
+	FlightDetailsWindow *	__flightDetailsWindow;
+	MetarsWindow *		__metarsWindow;
 	SettingsWindow *	__settings;
-	
-	
 };
 
 #endif // MAPWIDGET_H

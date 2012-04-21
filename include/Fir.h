@@ -34,7 +34,8 @@ struct Point {
 };
 
 struct FirHeader {
-	char	icao[8];
+	char	icao[4];
+	int	oceanic; // 0 or 1
 	Point	externities[2];
 	Point	textPosition;
 };
@@ -43,9 +44,14 @@ struct FirHeader {
 class Fir : public Clickable {
 	
 public:
+	Fir();
+	virtual ~Fir();
+	
 	ObjectType objectType() const { return FIR; }
 	
 	void addStaff(const Controller*);
+	
+	void generateTip();
 	
 	inline
 	const QVector< const Controller* > & getStaff() const { return __staff; }
@@ -59,7 +65,10 @@ public:
 	QString			name;
 	QVector< Point >	coords;
 	
+	GLuint	icaoTip;
+	
 private:
+	
 	QVector< const Controller* > __staff;
 	
 	

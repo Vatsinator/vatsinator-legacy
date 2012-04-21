@@ -27,13 +27,21 @@ for line in dbin:
 	if not firParsing:
 		counting = int(firData[3])
 		firParsing = True
+		oceanic = int(0)
 		
 		icao = firData[0]
 		if firData[1] == '1':
-			icao += 'F'
+			oceanic = int(1)
+
+		textX = float(firData[9])
+		textY = float(firData[8])
+
+		if firData[2] == '1':
+			textX = 0.0
+			textY = 0.0
 		
-		dbout.write(pack('8sddddddi', icao, float(firData[5]), float(firData[4]),\
-			float(firData[7]), float(firData[6]), float(firData[9]), float(firData[8]),\
+		dbout.write(pack('4siddddddi', icao, oceanic, float(firData[5]), float(firData[4]),\
+			float(firData[7]), float(firData[6]), textX, textY,\
 			counting))
 	else:
 		dbout.write(pack('dd', float(firData[1]), float(firData[0])))

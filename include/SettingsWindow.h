@@ -43,7 +43,6 @@ public:
 	inline bool airportsLayerOn() { return AirportsCheckBox->checkState(); }
 	inline bool firsLayerOn() { return FirsCheckBox->checkState(); }
 	inline bool uirsLayerOn() { return UirsCheckBox->checkState(); }
-	inline int getDisplayAirportParam() { return DisplayAirportsBox->currentIndex(); }
 	
 	inline const QColor & getUnstaffedFirBordersColor() { return __unstaffedFirBordersColor; }
 	inline const QColor & getStaffedFirBordersColor() { return __staffedFirBordersColor; }
@@ -74,6 +73,7 @@ private slots:
 	void __handleAlwaysCheckBox(int);
 	void __handleButton(QAbstractButton*);
 	void __hideWindow();
+	void __settingsRejected();
 	
 	
 };

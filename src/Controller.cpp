@@ -138,7 +138,7 @@ Controller::__setMyIcaoAndFacility() {
 		
 		QString& icao = sections.front();
 		
-		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao + "F");
+		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao, true);
 		if (fir)
 			fir->addStaff(this);
 		else {

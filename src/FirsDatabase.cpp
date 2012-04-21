@@ -31,6 +31,7 @@ using namespace std;
 
 void
 FirsDatabase::init() {
+	__toolTipsPrepared = false;
 	__firs.clear();
 	
 	fstream db(FIRS_DB, ios::in | ios::binary);
@@ -59,10 +60,18 @@ FirsDatabase::init() {
 }
 
 Fir *
-FirsDatabase::findFirByIcao(const QString& _icao) {
+FirsDatabase::findFirByIcao(const QString& _icao, bool _fss) {
 	for (Fir& f: __firs)
-		if (f.header.icao == _icao)
-			return &f;
+		if ((f.header.icao == _icao) || (QString(f.header.icao).left(4) == _icao)) {
+			if (!f.header.oceanic && _fss)
+				continue;
+			if (f.header.oceanic && !_fss)
+				continue;
+			if (f.header.textPosition.x != 0 && f.header.textPosition.y != 0)
+				return &f;
+			else
+				continue;
+		}
 	return NULL;
 }
 
@@ -70,4 +79,15 @@ void
 FirsDatabase::clearAll() {
 	for (Fir& f: __firs)
 		f.clear();
+}
+
+void
+FirsDatabase::prepareTooltips() {
+	if (__toolTipsPrepared)
+		return;
+	
+	for (Fir& f: __firs)
+		f.generateTip();
+	
+	__toolTipsPrepared = true;
 }

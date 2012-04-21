@@ -23,6 +23,7 @@
 #include "../include/AirportsDatabase.h"
 #include "../include/AirportObject.h"
 #include "../include/DetailsButton.h"
+#include "../include/MapWidget.h"
 #include "../include/MetarsHandler.h"
 #include "../include/ShowButton.h"
 #include "../include/defines.h"
@@ -58,8 +59,8 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	ATCTable->setColumnWidth(1, 280);
 	ATCTable->setColumnWidth(2, 80);
 	
-	connect(MetarsHandler::GetSingletonPtr(), SIGNAL(newMetarsAvailable()),
-		this, SLOT(updateMetar()));
+	connect(MetarsHandler::GetSingletonPtr(),	SIGNAL(newMetarsAvailable()),
+		this,					SLOT(updateMetar()));
 	
 }
 
