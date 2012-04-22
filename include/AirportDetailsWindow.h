@@ -49,10 +49,13 @@ public slots:
 	void handleDetailsClicked(const Controller*);
 	
 private:
+	void __updateContents(const AirportObject*);
 	void __setWindowPosition();
 	
 	QString __currentICAO;
 	
+private slots:
+	void __updateContents();
 	
 };
 

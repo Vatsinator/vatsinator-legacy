@@ -168,6 +168,9 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 		delete it.value();
 	__activeAirports.clear();
 	
+	for (Uir* uir: __uirs)
+		uir->clear();
+	
 #ifndef NO_DEBUG
 	qDebug() << "Data length: " << _data.length();
 #endif

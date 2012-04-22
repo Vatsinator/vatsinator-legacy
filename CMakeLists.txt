@@ -55,6 +55,18 @@ set(vatsinator_SOURCES
 	src/VatsinatorApplication.cpp
 )
 
+if (MINGW)
+	#resource compilation
+	add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/vatsinatorico.o
+			COMMAND i686-pc-mingw32-windres -I${CMAKE_CURRENT_SOURCE_DIR}
+			-i${CMAKE_CURRENT_SOURCE_DIR}/resources/vatsinator.rc
+			-o ${CMAKE_CURRENT_BINARY_DIR}/vatsinatorico.o
+	)
+	set(vatsinator_SOURCES
+		${vatsinator_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/vatsinatorico.o
+	)
+endif (MINGW)
+
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	set(vatsinator_SOURCES
@@ -107,7 +119,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(include)
 add_definitions(${QT_DEFINITIONS})
 
-add_executable(${vatsinator_TARGET}
+add_executable(${vatsinator_TARGET} WIN32
 	${vatsinator_SOURCES}
 	${vatsinator_HEADERS_MOC}
 	${vatsinator_FORMS_HEADERS}

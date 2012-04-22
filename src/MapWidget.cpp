@@ -132,16 +132,14 @@ MapWidget::MapWidget(QWidget* _parent) :
 		__keyPressed(false),
 		__underMouse(NULL),
 		__tracked(NULL),
+		__dontDisplayTooltip(false),
 		__label(NULL),
-		__toolTipWasShown(false),
-		__contextMenuActive(false),
-		__refreshLaterFlag(false),
 		__mother(VatsinatorApplication::GetSingleton()),
 		__data(VatsimDataHandler::GetSingleton()),
 		__airports(__data.getActiveAirports()) {
 	__produceCircle();
 	
-	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(glRepaintNeeded()),
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
 		this,						SLOT(redraw()));
 	
 	connect(AirportDetailsWindow::GetSingletonPtr(),	SIGNAL(showPilotRequest(const Pilot*)),
@@ -218,6 +216,7 @@ MapWidget::initializeGL() {
 
 void
 MapWidget::paintGL() {
+	__underMouse = NULL;
 	
 	qglColor(__settings->getBackgroundColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -260,14 +259,12 @@ MapWidget::paintGL() {
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
-	if (!__toolTipWasShown) {
+	if (!__underMouse || __dontDisplayTooltip) {
 		QToolTip::hideText();
-		__underMouse = NULL;
 		if (cursor().shape() != Qt::SizeAllCursor)
 			setCursor(QCursor(Qt::ArrowCursor));
-	}
-	
-	__toolTipWasShown = false;
+	} else
+		__drawToolTip();
 }
 
 GLuint
@@ -330,7 +327,6 @@ MapWidget::showPilot(const Pilot* _p) {
 void
 MapWidget::redraw() {
 	__underMouse = NULL;
-	__toolTipWasShown = false;
 	QToolTip::hideText();
 	if (cursor().shape() != Qt::SizeAllCursor)
 		setCursor(QCursor(Qt::ArrowCursor));
@@ -370,8 +366,8 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 	__lastMousePos = _event->pos();
 	QToolTip::hideText();
 	
+	__dontDisplayTooltip = true;
 	if ((_event->buttons() & Qt::RightButton) && __underMouse) {
-		__contextMenuActive = true;
 		switch (__underMouse->objectType()) {
 			case PLANE:
 				emit contextMenuRequested(static_cast< const Pilot* >(__underMouse));
@@ -387,8 +383,6 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 		}
 		__underMouse = NULL;
 	} else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
-		__refreshLaterFlag = true;
-		__contextMenuActive = true;
 		switch (__underMouse->objectType()) {
 			case PLANE:
 				emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
@@ -414,11 +408,6 @@ MapWidget::mouseReleaseEvent(QMouseEvent*) {
 
 void
 MapWidget::mouseMoveEvent(QMouseEvent* _event) {
-	if (__refreshLaterFlag) {
-		__refreshLaterFlag = false;
-		__contextMenuActive = false;
-	}
-	
 	int dx = _event->x() - __lastMousePos.x();
 	int dy = _event->y() - __lastMousePos.y();
 	
@@ -457,6 +446,8 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
 			QString((longitude < 0) ? "W" : "E") + " " +
 			QString::number(absHelper(longitude), 'g', 6) + " "
 		);
+	
+	__dontDisplayTooltip = false;
 	
 	updateGL();
 }
@@ -522,8 +513,6 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
 	delete dMenu;
-	
-	__contextMenuActive = false;
 }
 
 void
@@ -584,14 +573,11 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
 	delete dMenu;
-	
-	__contextMenuActive = false;
 }
 
 void
 MapWidget::__openContextMenu(const Fir* _fir) {
 	if (_fir->getStaff().isEmpty()) {
-		__contextMenuActive = false;
 		return;
 	}
 	
@@ -606,8 +592,6 @@ MapWidget::__openContextMenu(const Fir* _fir) {
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
 	delete dMenu;
-	
-	__contextMenuActive = false;
 }
 
 void
@@ -708,28 +692,8 @@ MapWidget::__drawFirsLabels() {
 			drawFirLabel(x, y, fir);
 			
 			if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE &&
-					!__toolTipWasShown &&
-					!__contextMenuActive) {
-				__toolTipWasShown = true;
-				setCursor(QCursor(Qt::PointingHandCursor));
+					!__underMouse) {
 				__underMouse = &fir;
-				
-				QString tooltipText = QString("<center>");
-				if (!fir.name.isEmpty()) {
-					tooltipText.append("<nobr>");
-					tooltipText.append(fir.name);
-					tooltipText.append("</nobr>");
-				}
-				
-					for (const Controller* c: fir.getStaff()) {
-					tooltipText.append("<br><nobr>");
-					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
-					tooltipText.append("</nobr>");
-				}
-				
-				QToolTip::showText(mapToGlobal(__lastMousePos),
-						tooltipText
-					);
 			}
 		}
 	}
@@ -754,9 +718,6 @@ MapWidget::__drawAirports() {
 		
 		bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 		
-		if (inRange && !__contextMenuActive)
-			setCursor(QCursor(Qt::PointingHandCursor));
-		
 		glBindTexture(GL_TEXTURE_2D, (it.value()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon );
 		
 		glPushMatrix();
@@ -768,40 +729,8 @@ MapWidget::__drawAirports() {
 			
 			drawIcaoLabel(it.value());
 			
-			unsigned deps = it.value()->countDepartures();
-			unsigned arrs = it.value()->countArrivals();
-			
-			if (inRange && !__contextMenuActive) {
-				__toolTipWasShown = true;
+			if (inRange && !__underMouse) {
 				__underMouse = it.value();
-				
-				QString tooltipText = QString("<center>") + it.key() + "<br><nobr>";
-				tooltipText.append(it.value()->getData()->name);
-				tooltipText.append(", ");
-				tooltipText.append(it.value()->getData()->city);
-				tooltipText.append("</nobr>");
-				
-				for (const Controller* c: it.value()->getStaff()) {
-					tooltipText.append("<br><nobr>");
-					tooltipText.append(c->callsign + " " + c->frequency + " " + c->realName);
-					tooltipText.append("</nobr>");
-				}
-				
-				if (deps) {
-					tooltipText.append("<br>Departures: ");
-					tooltipText.append(QString::number(deps));
-				}
-				
-				if (arrs) {
-					tooltipText.append("<br>Arrivals: ");
-					tooltipText.append(QString::number(arrs));
-				}
-				
-				tooltipText.append("</center>");
-				
-				QToolTip::showText(mapToGlobal(__lastMousePos),
-						tooltipText
-					);
 			}
 			
 			if (it.value()->hasApproach()) {
@@ -866,7 +795,7 @@ MapWidget::__drawPilots() {
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1);
 				
-				if (inRange && !__toolTipWasShown && !__contextMenuActive)
+				if (inRange && !__underMouse)
 					glScalef(1.3, 1.3, 1.0);
 				
 				glDrawArrays(GL_QUADS, 0, 4);
@@ -878,37 +807,9 @@ MapWidget::__drawPilots() {
 					|| (__settings->getPilotsLabelsSettings() & ALWAYS))
 				drawCallsign(client);
 			
-			if (inRange && !__toolTipWasShown && !__contextMenuActive) {
-				__toolTipWasShown = true;
+			if (inRange && !__underMouse) {
 				__underMouse = client;
-				setCursor(QCursor(Qt::PointingHandCursor));
 				
-				QString origin;
-				if (!client->route.origin.isEmpty())
-					origin = (__airports[client->route.origin]->getData()) ?
-						client->route.origin + " " + __airports[client->route.origin]->getData()->city :
-						client->route.origin;
-				else
-					origin = "(unknown)";
-				
-				QString destination;
-				if (!client->route.destination.isEmpty())
-					destination = (__airports[client->route.destination]->getData()) ?
-						client->route.destination + " " + __airports[client->route.destination]->getData()->city :
-						client->route.destination;
-				else
-					destination = "(unknown)";
-				
-				if (!QToolTip::isVisible())
-					QToolTip::showText(mapToGlobal(__lastMousePos),
-						"<center>" + client->callsign + "<br><nobr>" +
-						client->realName + " (" + client->aircraft +
-						")</nobr><br><nobr>" + origin +
-						" > " + destination + "</nobr><br>" +
-						"Ground speed: " + QString::number(client->groundSpeed) +
-						" kts<br>Altitude: " + QString::number(client->altitude) +
-						" ft</center>"
-					);
 			}
 		glPopMatrix();
 	}
@@ -1018,6 +919,29 @@ MapWidget::__drawLines() {
 		
 		delete [] vertices;
 	}
+}
+
+void
+MapWidget::__drawToolTip() {
+	setCursor(QCursor(Qt::PointingHandCursor));
+	
+	QString text;
+	switch (__underMouse->objectType()) {
+		case PILOT:
+			text = __producePilotToolTip(static_cast< const Pilot* >(__underMouse));
+			break;
+		case AIRPORT:
+			text = __produceAirportToolTip(static_cast< const AirportObject* >(__underMouse));
+			break;
+		case FIR:
+			text = __produceFirToolTip(static_cast< const Fir* >(__underMouse));
+			break;
+		case UIR:
+			break;
+	}
+	
+	QToolTip::showText(mapToGlobal(__lastMousePos), text, this);
+	
 }
 
 void

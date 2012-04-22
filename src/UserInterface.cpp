@@ -62,6 +62,19 @@ UserInterface::UserInterface(QWidget* _parent) :
 
 UserInterface::~UserInterface() {
 	__storeWindowGeometry();
+	
+	if (__airportDetailsWindow->isVisible())
+		__airportDetailsWindow->hide();
+	
+	if (__flightDetailsWindow->isVisible())
+		__flightDetailsWindow->hide();
+	
+	if (__atcDetailsWindow->isVisible())
+		__atcDetailsWindow->hide();
+	
+	if (__metarsWindow->isVisible())
+		__metarsWindow->hide();
+	
 	delete __airportDetailsWindow;
 	delete __flightDetailsWindow;
 	delete __atcDetailsWindow;
@@ -71,7 +84,7 @@ UserInterface::~UserInterface() {
 
 void
 UserInterface::statusBarUpdate(const QString& _message) {
-	StatusBox->setText(_message);
+	StatusBox->setText(" " + _message);
 }
 
 void
@@ -95,6 +108,21 @@ UserInterface::about() {
 void
 UserInterface::showMetarsWindow() {
 	__metarsWindow->show();
+}
+
+void
+UserInterface::hideAllWindows() {
+	if (__airportDetailsWindow->isVisible())
+		__airportDetailsWindow->hide();
+	
+	if (__flightDetailsWindow->isVisible())
+		__flightDetailsWindow->hide();
+	
+	if (__atcDetailsWindow->isVisible())
+		__atcDetailsWindow->hide();
+	
+	if (__metarsWindow->isVisible())
+		__metarsWindow->hide();
 }
 
 void

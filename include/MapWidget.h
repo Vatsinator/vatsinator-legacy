@@ -21,8 +21,11 @@
 #define MAPWIDGET_H
 
 #include <QGLWidget>
+#include <QStringBuilder>
 #include <QLabel>
 
+#include "AirportsDatabase.h"
+#include "Pilot.h"
 #include "VatsimDataHandler.h"
 #include "Singleton.h"
 
@@ -114,6 +117,7 @@ private:
 	void __drawAirports();
 	void __drawPilots();
 	void __drawLines(); // lines when airport/pilot on hover
+	void __drawToolTip();
 	
 	void __storeSettings();
 	void __restoreSettings();
@@ -133,6 +137,64 @@ private:
 						  double& _xTo, double& _yTo) {
 		_xTo = (_xFrom / 180 - __position.x()) * __zoom;
 		_yTo = (_yFrom / 90 - __position.y()) * __zoom;
+	}
+	
+	
+	inline QString __producePilotToolTip(const Pilot* _p) {
+		return (QString)
+			"<center>" %
+			_p->callsign % "<br><nobr>" %
+			_p->realName % " (" % _p->aircraft % ")</nobr><br><nobr>" %
+			(_p->route.origin.isEmpty() ? "(unknown)" : (__airports[_p->route.origin]->getData() ?
+					_p->route.origin % " " % (QString)__airports[_p->route.origin]->getData()->city :
+					_p->route.origin)) %
+			" > " %
+			(_p->route.destination.isEmpty() ? "(unknown)" : (__airports[_p->route.destination]->getData() ?
+					_p->route.destination % " " % (QString)__airports[_p->route.destination]->getData()->city :
+					_p->route.destination)) %
+			"</nobr><br>" %
+			"Ground speed: " % QString::number(_p->groundSpeed) % " kts<br>Altitude: " %
+			QString::number(_p->altitude) % " ft</center>";
+	}
+	
+	inline QString __produceAirportToolTip(const AirportObject* _ap) {
+		QString text = (QString)"<center>" % (QString)_ap->getData()->icao % "<br><nobr>" %
+			(QString)_ap->getData()->name % ", " %
+			(QString)_ap->getData()->city % "</nobr>";
+		
+		for (const Controller* c: _ap->getStaff())
+			text.append((QString)"<br><nobr>" %
+				c->callsign % " " % c->frequency % " " % c->realName %
+				"</nobr>"
+			);
+		
+		int deps = _ap->countDepartures();
+		if (deps)
+			text.append((QString)"<br>Departures: " % QString::number(deps));
+		
+		int arrs = _ap->countArrivals();
+		if (arrs)
+			text.append((QString)"<br>Arrivals: " % QString::number(arrs));
+		
+		text.append("</center>");
+		return text;
+	}
+	
+	inline QString __produceFirToolTip(const Fir* _f) {
+		if (_f->name.isEmpty() && _f->getStaff().isEmpty())
+			return "";
+		
+		QString text = (QString)"<center>";
+		if (!_f->name.isEmpty())
+			text.append((QString)"<nobr>" % _f->name % "</nobr>");
+		
+		for (const Controller* c: _f->getStaff())
+			text.append((QString)"<br><nobr>" %
+				c->callsign % " " % c->frequency % " " % c->realName %
+				"</nobr>"
+			);
+		text.append("</center>");
+		return text;
 	}
 	
 	/* OpenGL's textures. */
@@ -183,13 +245,11 @@ private:
 	const Clickable *	__underMouse;
 	const Pilot *		__tracked;
 	
+	/* To prevent the tooltip from being displayed in wrong moment */
+	bool	__dontDisplayTooltip;
+	
 	/* Where to display latitude and longitude of mouse position */
 	QLabel *	__label;
-	
-	/* To prevent from showing tooltip when it is not recommended */
-	bool		__toolTipWasShown; // during current frame render
-	bool		__contextMenuActive;
-	bool		__refreshLaterFlag;
 	
 	VatsinatorApplication &	__mother;
 	

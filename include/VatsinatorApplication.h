@@ -57,7 +57,7 @@ public:
 	VatsimDataHandler& getData() { return *__vatsimData; }
 	
 signals:
-	void glRepaintNeeded();
+	void dataUpdated();
 
 public slots:
 	void refreshData();

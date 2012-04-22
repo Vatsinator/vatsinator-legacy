@@ -44,6 +44,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		"FIRS_DB: " << FIRS_DB << std::endl <<
 		"VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl;
 #endif
+	connect(this,			SIGNAL(destroyed()),
+		__userInterface,	SLOT(hideAllWindows()));
 	
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
 	
@@ -147,6 +149,8 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 			return;
 	}
 	
+	__userInterface->statusBarUpdate("Standby...");
+	
 	QString temp;
 	if (__userInterface->getGLContext()->getTrackedPilot())
 		temp = __userInterface->getGLContext()->getTrackedPilot()->callsign;
@@ -165,7 +169,7 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 		"Last update: " + __vatsimData->getDateDataUpdated().toString("dd MMM yyyy, hh:mm") + " UTC"
 	);
 	
-	emit glRepaintNeeded();
+	emit dataUpdated();
 }
 
 void

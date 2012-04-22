@@ -26,6 +26,8 @@
 #include "../include/MapWidget.h"
 #include "../include/MetarsHandler.h"
 #include "../include/ShowButton.h"
+#include "../include/VatsimDataHandler.h"
+#include "../include/VatsinatorApplication.h"
 #include "../include/defines.h"
 
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
@@ -61,11 +63,55 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	
 	connect(MetarsHandler::GetSingletonPtr(),	SIGNAL(newMetarsAvailable()),
 		this,					SLOT(updateMetar()));
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
+		this,						SLOT(__updateContents()));
 	
 }
 
 void
 AirportDetailsWindow::showWindow(const AirportObject* _ap) {
+	__updateContents(_ap);
+	
+	if (_ap->getData())
+		__currentICAO = _ap->getData()->icao;
+	else
+		__currentICAO = "";
+	
+	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
+	if (m)
+		MetarLabel->setText(m->metar);
+	else {
+		MetarLabel->setText("Fetching...");
+		MetarsHandler::GetSingleton().fetchMetar(__currentICAO);
+	}
+	
+	show();
+}
+
+void
+AirportDetailsWindow::updateMetar() {
+	if (__currentICAO.isEmpty())
+		return;
+	
+	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
+	if (m)
+		MetarLabel->setText(m->metar);
+}
+
+void
+AirportDetailsWindow::handleShowClicked(const Pilot* _p) {
+	hide();
+	emit showPilotRequest(_p);
+}
+
+void
+AirportDetailsWindow::handleDetailsClicked(const Controller* _c) {
+	hide();
+	emit showATCDetailsRequest(_c);
+}
+
+void
+AirportDetailsWindow::__updateContents(const AirportObject* _ap) {
 	AirportsDatabase& apdb = AirportsDatabase::GetSingleton();
 	
 	setWindowTitle((QString)_ap->getData()->icao + " - airport details");
@@ -173,43 +219,6 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 			
 		++row;
 	}
-	
-	if (_ap->getData())
-		__currentICAO = _ap->getData()->icao;
-	else
-		__currentICAO = "";
-	
-	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
-	if (m)
-		MetarLabel->setText(m->metar);
-	else {
-		MetarLabel->setText("Fetching...");
-		MetarsHandler::GetSingleton().fetchMetar(__currentICAO);
-	}
-	
-	show();
-}
-
-void
-AirportDetailsWindow::updateMetar() {
-	if (__currentICAO.isEmpty())
-		return;
-	
-	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
-	if (m)
-		MetarLabel->setText(m->metar);
-}
-
-void
-AirportDetailsWindow::handleShowClicked(const Pilot* _p) {
-	hide();
-	emit showPilotRequest(_p);
-}
-
-void
-AirportDetailsWindow::handleDetailsClicked(const Controller* _c) {
-	hide();
-	emit showATCDetailsRequest(_c);
 }
 
 void
@@ -235,5 +244,17 @@ AirportDetailsWindow::__setWindowPosition() {
 	y -= 50;
 	
 	move(x, y);
+}
+
+void
+AirportDetailsWindow::__updateContents() {
+	if (!isVisible())
+		return;
+	
+	AirportObject* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__currentICAO];
+	if (!ap)
+		hide();
+	
+	__updateContents(ap);
 }
 

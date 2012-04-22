@@ -61,6 +61,7 @@ public slots:
 	void quit();
 	void about();
 	void showMetarsWindow();
+	void hideAllWindows();
 	
 private:
 	void __setupWindow();
