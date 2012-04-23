@@ -21,7 +21,6 @@
 #include "db/AirportsDatabase.h"
 
 #include "ui/mapwidget/MapWidget.h"
-#include "ui/SettingsWindow.h"
 
 #include "vatsimdata/VatsimDataHandler.h"
 

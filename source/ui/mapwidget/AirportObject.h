@@ -25,6 +25,7 @@
 #include <GL/gl.h>
 
 #include "db/AirportsDatabase.h"
+
 #include "ui/mapwidget/Clickable.h"
 #include "ui/mapwidget/Controller.h"
 #include "ui/mapwidget/Pilot.h"

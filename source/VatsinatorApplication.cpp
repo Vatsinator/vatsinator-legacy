@@ -27,8 +27,8 @@
 
 #include "network/HttpHandler.h"
 
-#include "ui/SettingsWindow.h"
 #include "ui/UserInterface.h"
+#include "ui/windows/SettingsWindow.h"
 
 #include "vatsimdata/VatsimDataHandler.h"
 

@@ -1,17 +1,14 @@
 set (ui_SRCS
-	AirportDetailsAction.cpp
-	AirportDetailsWindow.cpp
-	ATCDetailsWindow.cpp
-	ClientDetailsAction.cpp
-	ColorButton.cpp
-	DetailsButton.cpp
-	FlightDetailsWindow.cpp
-	MetarAction.cpp
-	MetarsWindow.cpp
-	SettingsWindow.cpp
-	ShowButton.cpp
-	TrackAction.cpp
 	UserInterface.cpp
+	
+	actions/AirportDetailsAction.cpp
+	actions/ClientDetailsAction.cpp
+	actions/MetarAction.cpp
+	actions/TrackAction.cpp
+	
+	buttons/ColorButton.cpp
+	buttons/DetailsButton.cpp
+	buttons/ShowButton.cpp
 	
 	mapwidget/AirportObject.cpp
 	mapwidget/Controller.cpp
@@ -19,24 +16,33 @@ set (ui_SRCS
 	mapwidget/MapWidget.cpp
 	mapwidget/Pilot.cpp
 	mapwidget/Uir.cpp
+	
+	windows/AirportDetailsWindow.cpp
+	windows/ATCDetailsWindow.cpp
+	windows/FlightDetailsWindow.cpp
+	windows/MetarsWindow.cpp
+	windows/SettingsWindow.cpp
 )
 
 set (ui_MOC_SRCS
-	AirportDetailsAction.h
-	AirportDetailsWindow.h
-	ATCDetailsWindow.h
-	ClientDetailsAction.h
-	ColorButton.h
-	DetailsButton.h
-	FlightDetailsWindow.h
-	MetarAction.h
-	MetarsWindow.h
-	SettingsWindow.h
-	ShowButton.h
-	TrackAction.h
 	UserInterface.h
 	
+	actions/AirportDetailsAction.h
+	actions/ClientDetailsAction.h
+	actions/MetarAction.h
+	actions/TrackAction.h
+	
+	buttons/ColorButton.h
+	buttons/DetailsButton.h
+	buttons/ShowButton.h
+	
 	mapwidget/MapWidget.h
+	
+	windows/AirportDetailsWindow.h
+	windows/ATCDetailsWindow.h
+	windows/FlightDetailsWindow.h
+	windows/MetarsWindow.h
+	windows/SettingsWindow.h
 )
 
 set (ui_FORMS
@@ -66,4 +72,3 @@ if (MINGW)
 endif (MINGW)
 
 vatsinator_subdirectory (ui "${ui_SRCS}" "${ui_MOC_SRCS}" "${ui_FORMS}" "${ui_QRCS}")
-

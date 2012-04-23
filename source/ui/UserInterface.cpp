@@ -18,11 +18,11 @@
 
 #include <QtGui>
 
-#include "ui/AirportDetailsWindow.h"
-#include "ui/ATCDetailsWindow.h"
-#include "ui/MetarsWindow.h"
-#include "ui/SettingsWindow.h"
-#include "ui/FlightDetailsWindow.h"
+#include "ui/windows/AirportDetailsWindow.h"
+#include "ui/windows/ATCDetailsWindow.h"
+#include "ui/windows/MetarsWindow.h"
+#include "ui/windows/SettingsWindow.h"
+#include "ui/windows/FlightDetailsWindow.h"
 
 #include "vatsimdata/VatsimDataHandler.h"
 
