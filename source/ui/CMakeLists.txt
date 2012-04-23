@@ -1,4 +1,5 @@
 set (ui_SRCS
+	AirportDetailsAction.cpp
 	AirportDetailsWindow.cpp
 	ATCDetailsWindow.cpp
 	ClientDetailsAction.cpp
@@ -21,6 +22,7 @@ set (ui_SRCS
 )
 
 set (ui_MOC_SRCS
+	AirportDetailsAction.h
 	AirportDetailsWindow.h
 	ATCDetailsWindow.h
 	ClientDetailsAction.h

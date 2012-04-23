@@ -1,5 +1,5 @@
 /*
-    ClientDetailsAction.h
+    AirportDetailsAction.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,30 +17,30 @@
 */
 
 
-#ifndef CLIENTDETAILSACTION_H
-#define CLIENTDETAILSACTION_H
+#ifndef AIRPORTDETAILSACTION_H
+#define AIRPORTDETAILSACTION_H
 
 #include <QAction>
 
-#include "ui/mapwidget/Client.h"
+#include "ui/mapwidget/AirportObject.h"
 
-class ClientDetailsAction : public QAction {
+class AirportDetailsAction : public QAction {
 	
 	Q_OBJECT
 	
 public:
-	ClientDetailsAction(const Client*, const QString&, QObject*);
-
+	AirportDetailsAction(const AirportObject*, const QString&, QObject*);
+	
 signals:
-	void clicked(const Client*);
+	void clicked(const AirportObject*);
 	
 public slots:
 	void handleTriggered();
 	
 private:
-	const Client * __current;
+	const AirportObject * __current;
 	
 	
 };
 
-#endif // CLIENTDETAILSACTION_H
+#endif // AIRPORTDETAILSACTION_H

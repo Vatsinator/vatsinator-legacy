@@ -22,6 +22,7 @@
 #include "db/AirportsDatabase.h"
 #include "db/FirsDatabase.h"
 
+#include "ui/AirportDetailsAction.h"
 #include "ui/AirportDetailsWindow.h"
 #include "ui/ATCDetailsWindow.h"
 #include "ui/ClientDetailsAction.h"
@@ -77,7 +78,7 @@ inline T absHelper(const T& _v) {
 
 inline void drawCallsign(const Pilot* _p) {
 	glPushMatrix();
-		glTranslatef(0.0f, 0.0f, -0.4f);
+		glTranslatef(0.0f, 0.0f, -0.1f);
 		glBindTexture(GL_TEXTURE_2D, _p->callsignTip);
 		glVertexPointer(2, GL_DOUBLE, 0, PILOT_TOOLTIP_VERTICES);
 		glDrawArrays(GL_QUADS, 0, 4);
@@ -87,7 +88,7 @@ inline void drawCallsign(const Pilot* _p) {
 
 inline void drawCallsign(GLdouble _x, GLdouble _y, const Pilot* _p) {
 	glPushMatrix();
-		glTranslated(_x, _y, -0.4);
+		glTranslated(_x, _y, -0.1);
 		glBindTexture(GL_TEXTURE_2D, _p->callsignTip);
 		glVertexPointer(2, GL_DOUBLE, 0, PILOT_TOOLTIP_VERTICES);
 		glDrawArrays(GL_QUADS, 0, 4);
@@ -97,7 +98,7 @@ inline void drawCallsign(GLdouble _x, GLdouble _y, const Pilot* _p) {
 
 inline void drawIcaoLabel(const AirportObject* _ap) {
 	glPushMatrix();
-		glTranslatef(0.0f, 0.0f, 0.1f);
+		glTranslatef(0.0f, 0.0f, -0.1f);
 		glBindTexture(GL_TEXTURE_2D, _ap->labelTip);
 		glVertexPointer(2, GL_DOUBLE, 0, AIRPORT_TOOLTIP_VERTICES);
 		glDrawArrays(GL_QUADS, 0, 4);
@@ -108,7 +109,7 @@ inline void drawIcaoLabel(const AirportObject* _ap) {
 inline void drawFirLabel(GLdouble _x, GLdouble _y, const Fir& _f) {
 	if (_f.icaoTip) {
 		glPushMatrix();
-			glTranslated(_x, _y, -0.7);
+			glTranslated(_x, _y, 0.0);
 			glBindTexture(GL_TEXTURE_2D, _f.icaoTip);
 			glVertexPointer(2, GL_DOUBLE, 0, FIR_TOOLTIP_VERTICES);
 			glDrawArrays(GL_QUADS, 0, 4);
@@ -523,11 +524,17 @@ void
 MapWidget::__openContextMenu(const AirportObject* _ap) {
 	QMenu* dMenu = new QMenu(_ap->getData()->icao, this);
 	
+	AirportDetailsAction* showAp = new AirportDetailsAction(_ap, "Airport details", this);
 	MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
 	
+	dMenu->addAction(showAp);
 	dMenu->addAction(showMetar);
-	connect(showMetar,	SIGNAL(clicked(QString)),
-		__metarsWindow,	SLOT(showWindow(QString)));
+	
+	connect(showAp,			SIGNAL(clicked(const AirportObject*)),
+		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
+	
+	connect(showMetar,		SIGNAL(clicked(QString)),
+		__metarsWindow,		SLOT(showWindow(QString)));
 	
 	if (!_ap->getStaff().isEmpty()) {
 		dMenu->addSeparator();
@@ -581,13 +588,20 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 
 void
 MapWidget::__openContextMenu(const Fir* _fir) {
-	if (_fir->getStaff().isEmpty()) {
+	if (_fir->getStaff().isEmpty() && _fir->getUirStaff().isEmpty()) {
 		return;
 	}
 	
 	QMenu* dMenu = new QMenu(_fir->header.icao, this);
 	
 	for (const Controller* c: _fir->getStaff()) {
+		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
+		dMenu->addAction(showDetails);
+		connect(showDetails,		SIGNAL(clicked(const Client*)),
+			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
+	}
+	
+	for (const Controller* c: _fir->getUirStaff()) {
 		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
 		dMenu->addAction(showDetails);
 		connect(showDetails,		SIGNAL(clicked(const Client*)),
@@ -619,9 +633,9 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			
-			glScaled((double)1/(double)180, (double)1/(double)90, 0.0);
-			glScaled(__zoom, __zoom, 0.0);
-			glTranslated(-__position.x() * 180, -__position.y() * 90, -0.9);
+			glScaled((double)1/(double)180, (double)1/(double)90, 1.0);
+			glScaled(__zoom, __zoom, 1.0);
+ 			glTranslated(-__position.x() * 180, -__position.y() * 90, 0.9);
 			
 			break;
 		case AIRPORTS_PILOTS:
@@ -636,14 +650,10 @@ MapWidget::__drawFirs() {
 		if (fir.getStaff().isEmpty())
 			continue;
 		
-		glPushMatrix();
+		qglColor(__settings->getStaffedFirBordersColor());
+		glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
+		glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
 		
-			qglColor(__settings->getStaffedFirBordersColor());
-		
-			glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
-			glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
-			
-		glPopMatrix();
 	}
 	glLineWidth(1.0);
 	
@@ -655,13 +665,9 @@ MapWidget::__drawFirs() {
 			continue;
 		}
 		
-		glPushMatrix();
-		
-			qglColor(__settings->getUnstaffedFirBordersColor());		
-			glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
-			glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
-		
-		glPopMatrix();
+		qglColor(__settings->getUnstaffedFirBordersColor());		
+		glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
+		glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
 	}
 }
 
@@ -670,7 +676,7 @@ MapWidget::__drawUirs() {
 	for (const Uir* uir: __data.getUIRs()) {
 		if (!uir->getStaff().isEmpty()) {
 			glPushMatrix();
-				glTranslatef(0.0, 0.0, -0.8);
+ 				glTranslatef(0.0, 0.0, -0.1);
 				qglColor(__settings->getStaffedUirBordersColor());
 				glLineWidth(3.0);
 				for (const Fir* fir: uir->getRange()) {
@@ -686,20 +692,23 @@ MapWidget::__drawUirs() {
 void
 MapWidget::__drawFirsLabels() {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-	for (const Fir& fir: __firs->getFirs()) {
-		double x, y;
-		__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
-		if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
-				(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
+	glPushMatrix();
+		glTranslatef(0.0, 0.0, 0.8);
+		for (const Fir& fir: __firs->getFirs()) {
+			double x, y;
+			__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
+			if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
+					(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
 			
-			drawFirLabel(x, y, fir);
-			
-			if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE &&
-					!__underMouse) {
-				__underMouse = &fir;
+				drawFirLabel(x, y, fir);
+				
+				if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE &&
+						!__underMouse) {
+					__underMouse = &fir;
+				}
 			}
 		}
-	}
+	glPopMatrix();
 }
 
 void
@@ -727,7 +736,7 @@ MapWidget::__drawAirports() {
 		
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
- 			glTranslated(x, y, -0.6);
+ 			glTranslated(x, y, 0.7);
 			glDrawArrays(GL_QUADS, 0, 4);
 			
 			drawIcaoLabel(it.value());
@@ -793,7 +802,7 @@ MapWidget::__drawPilots() {
 			
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
-			glTranslated(x, y, -0.5);
+			glTranslated(x, y, 0.5);
 			
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1);
