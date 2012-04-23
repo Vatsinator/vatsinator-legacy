@@ -27,6 +27,7 @@ DetailsButton::DetailsButton(const Controller* _c, QWidget* _parent) :
 		QPushButton("Details", _parent),
 		__current(_c) {
 	connect(this, SIGNAL(clicked()), this, SLOT(handleClicked()));
+	
 }
 
 void

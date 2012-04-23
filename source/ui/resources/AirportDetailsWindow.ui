@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>465</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,21 +21,21 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>621</width>
-    <height>465</height>
+    <width>800</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>621</width>
-    <height>465</height>
+    <width>800</width>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>- airport details</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <widget class="QTabWidget" name="InboundsOutboundsTab">
@@ -43,8 +43,8 @@
     <rect>
      <x>10</x>
      <y>60</y>
-     <width>601</width>
-     <height>321</height>
+     <width>781</width>
+     <height>471</height>
     </rect>
    </property>
    <property name="layoutDirection">
@@ -65,8 +65,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>591</width>
-       <height>291</height>
+       <width>771</width>
+       <height>441</height>
       </rect>
      </property>
      <property name="verticalScrollBarPolicy">
@@ -129,8 +129,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>591</width>
-       <height>291</height>
+       <width>771</width>
+       <height>441</height>
       </rect>
      </property>
      <property name="verticalScrollBarPolicy">
@@ -193,8 +193,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>591</width>
-       <height>291</height>
+       <width>771</width>
+       <height>441</height>
       </rect>
      </property>
      <property name="verticalScrollBarPolicy">
@@ -252,9 +252,9 @@
   <widget class="QLabel" name="MetarLabel">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>390</y>
-     <width>581</width>
+     <x>10</x>
+     <y>540</y>
+     <width>781</width>
      <height>31</height>
     </rect>
    </property>
@@ -266,12 +266,18 @@
    <property name="text">
     <string/>
    </property>
+   <property name="textFormat">
+    <enum>Qt::PlainText</enum>
+   </property>
+   <property name="indent">
+    <number>10</number>
+   </property>
   </widget>
   <widget class="QPushButton" name="CloseButton">
    <property name="geometry">
     <rect>
-     <x>372</x>
-     <y>430</y>
+     <x>560</x>
+     <y>570</y>
      <width>231</width>
      <height>24</height>
     </rect>
@@ -285,7 +291,7 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>581</width>
+     <width>761</width>
      <height>45</height>
     </rect>
    </property>

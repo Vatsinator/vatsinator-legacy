@@ -646,15 +646,18 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 void
 MapWidget::__drawFirs() {
 	glLineWidth(3.0);
-	for (const Fir& fir: __firs->getFirs()) {
-		if (fir.getStaff().isEmpty())
+	glPushMatrix();
+		glTranslatef(0.0, 0.0, -0.2);
+		
+		for (const Fir& fir: __firs->getFirs()) {
+			if (fir.getStaff().isEmpty())
 			continue;
-		
-		qglColor(__settings->getStaffedFirBordersColor());
-		glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
-		glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
-		
-	}
+			
+			qglColor(__settings->getStaffedFirBordersColor());
+			glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
+			glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
+		}
+	glPopMatrix();
 	glLineWidth(1.0);
 	
 	if (__settings->uirsLayerOn())

@@ -33,6 +33,11 @@
 #include "AirportDetailsWindow.h"
 #include "defines.h"
 
+// in-tabs columns sizes
+const int COLUMN_WIDTHS [] = {
+	150, 320, 150, 120
+};
+
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 		QWidget(_parent),
 		__currentICAO("") {
@@ -46,23 +51,26 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 		"" };
 	
 	InboundTable->setHorizontalHeaderLabels(labels);
-	InboundTable->setColumnWidth(0, 100);
-	InboundTable->setColumnWidth(1, 280);
-	InboundTable->setColumnWidth(2, 80);
+	InboundTable->setColumnWidth(0, COLUMN_WIDTHS[0]);
+	InboundTable->setColumnWidth(1, COLUMN_WIDTHS[1]);
+	InboundTable->setColumnWidth(2, COLUMN_WIDTHS[2]);
+	InboundTable->setColumnWidth(3, COLUMN_WIDTHS[3]);
 	
 	labels[1] = "To";
 	OutboundTable->setHorizontalHeaderLabels(labels);
-	OutboundTable->setColumnWidth(0, 100);
-	OutboundTable->setColumnWidth(1, 280);
-	OutboundTable->setColumnWidth(2, 80);
+	OutboundTable->setColumnWidth(0, COLUMN_WIDTHS[0]);
+	OutboundTable->setColumnWidth(1, COLUMN_WIDTHS[1]);
+	OutboundTable->setColumnWidth(2, COLUMN_WIDTHS[2]);
+	OutboundTable->setColumnWidth(3, COLUMN_WIDTHS[3]);
 	
 	labels[1] = "Name";
 	labels[2] = "Freq";
 	labels[3] = "";
 	ATCTable->setHorizontalHeaderLabels(labels);
-	ATCTable->setColumnWidth(0, 100);
-	ATCTable->setColumnWidth(1, 280);
-	ATCTable->setColumnWidth(2, 80);
+	ATCTable->setColumnWidth(0, COLUMN_WIDTHS[0]);
+	ATCTable->setColumnWidth(1, COLUMN_WIDTHS[1]);
+	ATCTable->setColumnWidth(2, COLUMN_WIDTHS[2]);
+	ATCTable->setColumnWidth(3, COLUMN_WIDTHS[3]);
 	
 	connect(MetarsHandler::GetSingletonPtr(),	SIGNAL(newMetarsAvailable()),
 		this,					SLOT(updateMetar()));
