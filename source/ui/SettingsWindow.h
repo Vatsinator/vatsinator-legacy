@@ -29,7 +29,10 @@ enum {
 	ALWAYS = 4
 };
 
-class SettingsWindow : public QWidget, public Singleton< SettingsWindow >, private Ui::SettingsWindow {
+class SettingsWindow :
+		public QWidget,
+		public Singleton< SettingsWindow >,
+		private Ui::SettingsWindow {
 	
 	Q_OBJECT
 	
