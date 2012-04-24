@@ -21,7 +21,6 @@
 #define AIRPORTDETAILSWINDOW_H
 
 #include "ui/ui_AirportDetailsWindow.h"
-#include "vatsimdata/Metar.h"
 #include "Singleton.h"
 
 class AirportObject;

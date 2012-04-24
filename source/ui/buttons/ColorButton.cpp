@@ -22,14 +22,13 @@
 #include "defines.h"
 
 ColorButton::ColorButton(QWidget* _parent) :
-		QPushButton("", _parent),
-		__current(NULL) {
+		QPushButton("", _parent) {
 	connect(this,	SIGNAL(clicked()),
-		this,	SLOT(__handleClicked()));
+		this,	SLOT(__pickColor()));
 }
 
 void
-ColorButton::setColor(QColor* _color) {
+ColorButton::setColor(const QColor& _color) {
 	__current = _color;
 	updateColor();
 }
@@ -37,13 +36,22 @@ ColorButton::setColor(QColor* _color) {
 void
 ColorButton::updateColor() {
 	setStyleSheet("background: rgb(" +
-		QString::number(__current->red()) + "," +
-		QString::number(__current->green()) + "," +
-		QString::number(__current->blue()) + ");");
+		QString::number(__current.red()) + "," +
+		QString::number(__current.green()) + "," +
+		QString::number(__current.blue()) + ");");
 }
 
 void
-ColorButton::__handleClicked() {
-	emit clicked(__current);
+ColorButton::__pickColor() {
+	QColorDialog* dialog = new QColorDialog(__current);
+	dialog->setWindowTitle("Select color");
+	dialog->setOption(QColorDialog::ShowAlphaChannel);
+	
+	if (dialog->exec() == QDialog::Accepted)
+		__current = dialog->currentColor();
+	
+	delete dialog;
+	
+	updateColor();
 }
 

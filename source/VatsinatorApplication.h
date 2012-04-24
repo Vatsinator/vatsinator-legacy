@@ -29,6 +29,7 @@ class AirportsDatabase;
 class FirsDatabase;
 class UserInterface;
 class VatsimDataHandler;
+class SettingsManager;
 class HttpHandler;
 
 class VatsinatorApplication :
@@ -75,6 +76,7 @@ private:
 	FirsDatabase * 		__firsData;
 	VatsimDataHandler *	__vatsimData;
 	UserInterface *		__userInterface;
+	SettingsManager *	__settingsManager;
 	QTimer 			__timer;
 	
 };

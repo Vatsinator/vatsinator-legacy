@@ -27,19 +27,20 @@ class ColorButton : public QPushButton {
 	Q_OBJECT
 	
 public:
-	explicit ColorButton(QWidget* = 0);
+	ColorButton(QWidget* = 0);
 	
-	void setColor(QColor*);
+	void setColor(const QColor&);
 	void updateColor();
 	
-signals:
-	void clicked(QColor*);
+	inline const QColor &
+	getColor() { return __current; }
 	
 private:
-	QColor*	__current;
+	QColor	__current;
 	
 private slots:
-	void	__handleClicked();
+	/* Opens the color dialog in order to let the user pick the color */
+	void __pickColor();
 	
 };
 

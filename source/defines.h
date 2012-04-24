@@ -40,27 +40,6 @@
 #define BASE_SIZE_WIDTH		800
 #define BASE_SIZE_HEIGHT	600
 
-/* Default values */
-
-// Vatsim data refresh rate in minutes
-#define REFRESH_RATE		3
-#define SECONDS_DATA_OUTDATED	600
-
-// view opts
-#define PILOTS_CHECKBOX		Qt::Checked
-#define AIRPORTS_CHECKBOX	Qt::Checked
-#define FIRS_CHECKBOX		Qt::Checked
-#define UIRS_CHECKBOX		Qt::Checked
-#define PILOTS_LABELS		(WHEN_HOVERED | AIRPORT_RELATED)
-#define DISPLAY_AIRPORT_BOX	1
-
-// colors
-#define UNSTAFFED_FIR_BORDERS_COLOR	193, 193, 193
-#define STAFFED_FIR_BORDERS_COLOR	176, 32, 32
-#define STAFFED_UIR_BORDERS_COLOR	140, 219, 255
-#define APPROACH_CIRCLE_COLOR		127, 0, 0
-#define BACKGROUND_COLOR		255, 255, 255
-
 #define LINES_COLOR			0.0, 0.192, 0.337, 0.8
 
 #define PILOTS_LABELS_FONT_COLOR	0, 0, 0

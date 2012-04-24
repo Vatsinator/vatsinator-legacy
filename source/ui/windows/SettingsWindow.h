@@ -23,11 +23,7 @@
 #include "ui/ui_SettingsWindow.h"
 #include "Singleton.h"
 
-enum {
-	WHEN_HOVERED = 1,
-	AIRPORT_RELATED = 2,
-	ALWAYS = 4
-};
+class SettingsManager;
 
 class SettingsWindow :
 		public QWidget,
@@ -36,48 +32,36 @@ class SettingsWindow :
 	
 	Q_OBJECT
 	
+	friend class SettingsManager;
+	
 public:
 	SettingsWindow(QWidget* = 0);
 	
-	unsigned getPilotsLabelsSettings();
+	void init();
 	
-	inline int getRefreshRate() { return RefreshRateBox->value(); }
-	inline bool pilotsLayerOn() { return PilotsCheckBox->checkState(); }
-	inline bool airportsLayerOn() { return AirportsCheckBox->checkState(); }
-	inline bool firsLayerOn() { return FirsCheckBox->checkState(); }
-	inline bool uirsLayerOn() { return UirsCheckBox->checkState(); }
-	
-	inline const QColor & getUnstaffedFirBordersColor() { return __unstaffedFirBordersColor; }
-	inline const QColor & getStaffedFirBordersColor() { return __staffedFirBordersColor; }
-	inline const QColor & getStaffedUirBordersColor() { return __staffedUirBordersColor; }
-	inline const QColor & getApproachCircleColor() { return __approachCircleColor; }
-	inline const QColor & getBackgroundColor() { return __backgroundColor; }
+signals:
+	void restoreDefaults();
 	
 public slots:
-	void showWindow();
+	void show();
 	
 private:
-	void __setButtonsColors();
 	
-	void __saveSettings();
-	void __restoreSettings();
-	
+	/* There is nothing to explain */
 	void __setWindowPosition();
-	void __restoreDefaults();
 	
-	QColor __unstaffedFirBordersColor;
-	QColor __staffedFirBordersColor;
-	QColor __staffedUirBordersColor;
-	QColor __approachCircleColor;
-	QColor __backgroundColor;
-
+	SettingsManager * __mySettingsManager;
+	
 private slots:
-	void __pickColor(QColor*);
-	void __handleAlwaysCheckBox(int);
-	void __handleButton(QAbstractButton*);
-	void __hideWindow();
-	void __settingsRejected();
+	/* Reads settings from the SettingsManager instance
+	 * and updated the window */
+	void __updateWindow();
 	
+	/* For "Restore defaults" button */
+	void __handleButton(QAbstractButton*);
+	
+	/* Disables checkboxes */
+	void __handleAlwaysCheckBox(int);
 	
 };
 

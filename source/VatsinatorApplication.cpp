@@ -27,6 +27,8 @@
 
 #include "network/HttpHandler.h"
 
+#include "settings/SettingsManager.h"
+
 #include "ui/UserInterface.h"
 #include "ui/windows/SettingsWindow.h"
 
@@ -40,7 +42,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		__airportsData(new AirportsDatabase),
 		__firsData(new FirsDatabase),
 		__vatsimData(new VatsimDataHandler),
-		__userInterface(new UserInterface) {
+		__userInterface(new UserInterface),
+		__settingsManager(new SettingsManager) {
 	
 #ifndef NO_DEBUG
 	std::cout << "AIRPORTS_DB: " << AIRPORTS_DB << std::endl <<
@@ -65,10 +68,11 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 	
 	__fetchStatusFile();
 	
-	__timer.start(SettingsWindow::GetSingleton().getRefreshRate() * 60000);
+	__timer.start(__settingsManager->getRefreshRate() * 60000);
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
+	delete __settingsManager;
 	delete __httpHandler;
 	delete __userInterface;
 	delete __vatsimData;
@@ -96,7 +100,7 @@ void
 VatsinatorApplication::refreshData() {
 	__userInterface->statusBarUpdate("Fetching data...");
 	__httpHandler->fetchData(__vatsimData->getDataUrl());
-	__timer.start(SettingsWindow::GetSingleton().getRefreshRate() * 60000);
+	__timer.start(__settingsManager->getRefreshRate() * 60000);
 }
 
 void

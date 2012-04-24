@@ -22,6 +22,8 @@
 #include "db/AirportsDatabase.h"
 #include "db/FirsDatabase.h"
 
+#include "settings/SettingsManager.h"
+
 #include "ui/UserInterface.h"
 #include "ui/actions/AirportDetailsAction.h"
 #include "ui/actions/ClientDetailsAction.h"
@@ -31,7 +33,6 @@
 #include "ui/windows/ATCDetailsWindow.h"
 #include "ui/windows/FlightDetailsWindow.h"
 #include "ui/windows/MetarsWindow.h"
-#include "ui/windows/SettingsWindow.h"
 
 #include "VatsinatorApplication.h"
 
@@ -185,7 +186,7 @@ MapWidget::init() {
 	__atcDetailsWindow = ATCDetailsWindow::GetSingletonPtr();
 	__metarsWindow = MetarsWindow::GetSingletonPtr();
 	__flightDetailsWindow = FlightDetailsWindow::GetSingletonPtr();
-	__settings = SettingsWindow::GetSingletonPtr();
+	__settings = SettingsManager::GetSingletonPtr();
 	
 	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
 		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
@@ -243,19 +244,19 @@ MapWidget::paintGL() {
 	
 	__prepareMatrix(WORLD);
 	
-	if (__settings->firsLayerOn())
+	if (__settings->getDisplayLayersPolicy().firs)
 		__drawFirs();
 	
 	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
-	if (__settings->firsLayerOn())
+	if (__settings->getDisplayLayersPolicy().firs)
 		__drawFirsLabels();
 	
-	if (__settings->airportsLayerOn())
+	if (__settings->getDisplayLayersPolicy().airports)
 		__drawAirports();
 	
-	if (__settings->pilotsLayerOn())
+	if (__settings->getDisplayLayersPolicy().pilots)
 		__drawPilots();
 	
 	
@@ -399,6 +400,7 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 				//TODO: FIR details window
 				break;
 			case UIR:
+				// have no idea what to do here
 				break;
 		}
 		__underMouse = NULL;
@@ -660,7 +662,7 @@ MapWidget::__drawFirs() {
 	glPopMatrix();
 	glLineWidth(1.0);
 	
-	if (__settings->uirsLayerOn())
+	if (__settings->getDisplayLayersPolicy().uirs)
 		__drawUirs();
 	
 	for (const Fir& fir: __firs->getFirs()) {
@@ -817,9 +819,9 @@ MapWidget::__drawPilots() {
 				
 			glPopMatrix();
 			
-			if (((__settings->getPilotsLabelsSettings() & WHEN_HOVERED)
+			if (((__settings->displayPilotsLabelsWhenHovered())
 					&& (__keyPressed || inRange))
-					|| (__settings->getPilotsLabelsSettings() & ALWAYS))
+					|| (__settings->displayPilotsLabelsAlways()))
 				drawCallsign(client);
 			
 			if (inRange && !__underMouse) {
@@ -895,7 +897,7 @@ MapWidget::__drawLines() {
 			 * called function is undefined (according to C++ standard) */
 			__mapCoordinates(p->position.longitude, p->position.latitude,
 					 vertices[i], vertices[i+1]);
-			if ((__settings->getPilotsLabelsSettings() & AIRPORT_RELATED)
+			if ((__settings->displayPilotsLabelsAirportRelated())
 					&& (p->flightStatus != ARRIVED && !__keyPressed))
 				drawCallsign(vertices[i], vertices[i+1], p);
 			i += 2;
@@ -912,7 +914,7 @@ MapWidget::__drawLines() {
 			__mapCoordinates(p->position.longitude, p->position.latitude,
 					 vertices[i], vertices[i+1]);
 			
-			if ((__settings->getPilotsLabelsSettings() & AIRPORT_RELATED)
+			if ((__settings->displayPilotsLabelsAirportRelated())
 				&& (p->flightStatus != DEPARTING && !__keyPressed))
 				drawCallsign(vertices[i], vertices[i+1], p);
 			i += 2;

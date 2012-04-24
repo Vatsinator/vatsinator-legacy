@@ -52,7 +52,7 @@ UserInterface::UserInterface(QWidget* _parent) :
 	connect(ActionRefresh,	SIGNAL(triggered()),
 		&__mother,	SLOT(refreshData()));
 	connect(ActionPreferences,	SIGNAL(triggered()),
-		SettingsWindow::GetSingletonPtr(),	SLOT(showWindow()));
+		__settingsWindow,	SLOT(show()));
 	
 	statusBarUpdate();
 	
@@ -123,6 +123,13 @@ UserInterface::hideAllWindows() {
 	if (__metarsWindow->isVisible())
 		__metarsWindow->hide();
 }
+
+void
+UserInterface::show() {
+	__settingsWindow->init();
+	QMainWindow::show();
+}
+
 
 void
 UserInterface::closeEvent(QCloseEvent* _event) {

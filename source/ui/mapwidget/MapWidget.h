@@ -34,7 +34,7 @@ class ATCDetailsWindow;
 class Clickable;
 class Fir;
 class FirsDatabase;
-class SettingsWindow;
+class SettingsManager;
 class VatsinatorApplication;
 class MetarsWindow;
 class FlightDetailsWindow;
@@ -282,7 +282,7 @@ private:
 	ATCDetailsWindow *	__atcDetailsWindow;
 	FlightDetailsWindow *	__flightDetailsWindow;
 	MetarsWindow *		__metarsWindow;
-	SettingsWindow *	__settings;
+	SettingsManager *	__settings;
 };
 
 #endif // MAPWIDGET_H

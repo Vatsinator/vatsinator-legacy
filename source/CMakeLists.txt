@@ -26,6 +26,7 @@ set (vatsinator_MOC_SRCS
 set (vatsinator_SUBDIRS
 	db
 	network
+	settings
 	ui
 	vatsimdata
 )
