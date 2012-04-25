@@ -41,7 +41,7 @@
      <x>20</x>
      <y>5</y>
      <width>761</width>
-     <height>41</height>
+     <height>45</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -122,11 +122,12 @@
       <bool>false</bool>
      </property>
      <property name="columnCount">
-      <number>4</number>
+      <number>5</number>
      </property>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
+     <column/>
      <column/>
      <column/>
      <column/>
@@ -177,11 +178,12 @@
       <bool>false</bool>
      </property>
      <property name="columnCount">
-      <number>4</number>
+      <number>5</number>
      </property>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
+     <column/>
      <column/>
      <column/>
      <column/>

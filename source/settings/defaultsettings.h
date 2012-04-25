@@ -22,7 +22,7 @@ static const bool AIRPORT_RELATED_CHECKBOX	= true;
 static const QColor UNSTAFFED_FIR_BORDERS_COLOR	= { 193, 193, 193 };
 
 // default staffed FIRs border color
-static const QColor STAFFED_FIR_BORDERS_COLOR	= { 176, 32, 32 };
+static const QColor STAFFED_FIR_BORDERS_COLOR	= { 117, 183, 213 };
 
 // default staffed UIRs (i.e. Eurocontrol) border color
 static const QColor STAFFED_UIR_BORDERS_COLOR	= { 140, 219, 255 };

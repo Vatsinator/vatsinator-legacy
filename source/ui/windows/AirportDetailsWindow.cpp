@@ -127,7 +127,7 @@ AirportDetailsWindow::__updateContents(const AirportObject* _ap) {
 	
 	setWindowTitle((QString)_ap->getData()->icao + " - airport details");
 	
-	if (_ap->getData()->iata)
+	if (!static_cast< QString >(_ap->getData()->iata).isEmpty())
 		CodesLabel->setText((QString)_ap->getData()->icao + "/" + _ap->getData()->iata);
 	else
 		CodesLabel->setText((QString)_ap->getData()->icao);
@@ -145,7 +145,7 @@ AirportDetailsWindow::__updateContents(const AirportObject* _ap) {
 		AirportRecord* origap = apdb.find(p->route.origin);
 		if (origap)
 			pFrom = new QTableWidgetItem(p->route.origin + " " +
-					apdb.find(p->route.origin)->city);
+					origap->city);
 		else
 			pFrom = new QTableWidgetItem(p->route.origin);
 		QTableWidgetItem *pAircraft = new QTableWidgetItem(p->aircraft);
@@ -180,7 +180,7 @@ AirportDetailsWindow::__updateContents(const AirportObject* _ap) {
 		AirportRecord* destap = apdb.find(p->route.destination);
 		if (destap)
 			pTo = new QTableWidgetItem(p->route.destination + " " +
-					apdb.find(p->route.destination)->city);
+					destap->city);
 		else
 			pTo = new QTableWidgetItem(p->route.destination);
 		QTableWidgetItem *pAircraft = new QTableWidgetItem(p->aircraft);

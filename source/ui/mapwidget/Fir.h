@@ -26,6 +26,7 @@
 
 #include "ui/mapwidget/Clickable.h"
 #include "ui/mapwidget/Controller.h"
+#include "ui/mapwidget/Pilot.h"
 
 #pragma pack(1)
 struct Point {
@@ -52,6 +53,9 @@ public:
 	void addStaff(const Controller*);
 	void addUirStaff(const Controller*);
 	
+	void addInbound(const Pilot*);
+	void addOutbound(const Pilot*);
+	
 	void generateTip();
 	
 	inline const QVector< const Controller* > &
@@ -59,6 +63,12 @@ public:
 	
 	inline const QVector< const Controller* > &
 	getUirStaff() const { return __uirStaff; }
+	
+	inline const QVector< const Pilot* > &
+	getInbounds() const { return __inbounds; }
+	
+	inline const QVector< const Pilot* > &
+	getOutbounds() const { return __outbounds; }
 	
 	inline void
 	clear() { __staff.clear(); __uirStaff.clear(); }
@@ -76,6 +86,8 @@ private:
 	
 	QVector< const Controller* > __staff;
 	QVector< const Controller* > __uirStaff;
+	QVector< const Pilot* >	__inbounds;
+	QVector< const Pilot* > __outbounds;
 	
 	
 };

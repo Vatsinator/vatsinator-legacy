@@ -27,10 +27,12 @@
 #include "ui/UserInterface.h"
 #include "ui/actions/AirportDetailsAction.h"
 #include "ui/actions/ClientDetailsAction.h"
+#include "ui/actions/FirDetailsAction.h"
 #include "ui/actions/MetarAction.h"
 #include "ui/actions/TrackAction.h"
 #include "ui/windows/AirportDetailsWindow.h"
 #include "ui/windows/ATCDetailsWindow.h"
+#include "ui/windows/FirDetailsWindow.h"
 #include "ui/windows/FlightDetailsWindow.h"
 #include "ui/windows/MetarsWindow.h"
 
@@ -149,6 +151,9 @@ MapWidget::MapWidget(QWidget* _parent) :
 	connect(AirportDetailsWindow::GetSingletonPtr(),	SIGNAL(showPilotRequest(const Pilot*)),
 		this,						SLOT(showPilot(const Pilot*)));
 	
+	connect(FirDetailsWindow::GetSingletonPtr(),		SIGNAL(showPilotRequest(const Pilot*)),
+		this,						SLOT(showPilot(const Pilot*)));
+	
 	connect(this,	SIGNAL(contextMenuRequested(const Pilot*)),
 		this,	SLOT(__openContextMenu(const Pilot*)));
 	connect(this,	SIGNAL(contextMenuRequested(const AirportObject*)),
@@ -185,9 +190,12 @@ MapWidget::init() {
 	__airportDetailsWindow = AirportDetailsWindow::GetSingletonPtr();
 	__atcDetailsWindow = ATCDetailsWindow::GetSingletonPtr();
 	__metarsWindow = MetarsWindow::GetSingletonPtr();
+	__firDetailsWindow = FirDetailsWindow::GetSingletonPtr();
 	__flightDetailsWindow = FlightDetailsWindow::GetSingletonPtr();
 	__settings = SettingsManager::GetSingletonPtr();
 	
+	connect(this,			SIGNAL(firDetailsWindowRequested(const Fir*)),
+		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
 	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
 		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 	connect(this,			SIGNAL(airportDetailsWindowRequested(const AirportObject*)),
@@ -406,7 +414,7 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
 				emit airportDetailsWindowRequested(static_cast< const AirportObject* >(__underMouse));
 				break;
 			case FIR:
-				//TODO: FIR details window
+				emit firDetailsWindowRequested(static_cast< const Fir* >(__underMouse));
 				break;
 			case UIR:
 				// have no idea what to do here
@@ -593,11 +601,16 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 
 void
 MapWidget::__openContextMenu(const Fir* _fir) {
-	if (_fir->getStaff().isEmpty() && _fir->getUirStaff().isEmpty()) {
-		return;
-	}
-	
 	QMenu* dMenu = new QMenu(_fir->header.icao, this);
+	
+	FirDetailsAction* showFir = new FirDetailsAction(_fir,
+		static_cast< QString >(_fir->header.icao).simplified() % " details", this);
+	
+	dMenu->addAction(showFir);
+	
+	connect(showFir,		SIGNAL(clicked(const Fir*)),
+		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
+	
 	
 	for (const Controller* c: _fir->getStaff()) {
 		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);

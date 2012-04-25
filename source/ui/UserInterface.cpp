@@ -20,9 +20,10 @@
 
 #include "ui/windows/AirportDetailsWindow.h"
 #include "ui/windows/ATCDetailsWindow.h"
+#include "ui/windows/FirDetailsWindow.h"
+#include "ui/windows/FlightDetailsWindow.h"
 #include "ui/windows/MetarsWindow.h"
 #include "ui/windows/SettingsWindow.h"
-#include "ui/windows/FlightDetailsWindow.h"
 
 #include "vatsimdata/VatsimDataHandler.h"
 
@@ -35,6 +36,7 @@ UserInterface::UserInterface(QWidget* _parent) :
 		QMainWindow(_parent),
 		__metarsWindow(new MetarsWindow()),
 		__airportDetailsWindow(new AirportDetailsWindow()),
+		__firDetailsWindow(new FirDetailsWindow()),
 		__atcDetailsWindow(new ATCDetailsWindow()),
 		__flightDetailsWindow(new FlightDetailsWindow()),
 		__settingsWindow(new SettingsWindow()),
@@ -65,6 +67,9 @@ UserInterface::~UserInterface() {
 	if (__airportDetailsWindow->isVisible())
 		__airportDetailsWindow->hide();
 	
+	if (__firDetailsWindow->isVisible())
+		__firDetailsWindow->hide();
+	
 	if (__flightDetailsWindow->isVisible())
 		__flightDetailsWindow->hide();
 	
@@ -75,6 +80,7 @@ UserInterface::~UserInterface() {
 		__metarsWindow->hide();
 	
 	delete __airportDetailsWindow;
+	delete __firDetailsWindow;
 	delete __flightDetailsWindow;
 	delete __atcDetailsWindow;
 	delete __settingsWindow;
@@ -113,6 +119,9 @@ void
 UserInterface::hideAllWindows() {
 	if (__airportDetailsWindow->isVisible())
 		__airportDetailsWindow->hide();
+	
+	if (__firDetailsWindow->isVisible())
+		__firDetailsWindow->hide();
 	
 	if (__flightDetailsWindow->isVisible())
 		__flightDetailsWindow->hide();

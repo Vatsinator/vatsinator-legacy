@@ -62,7 +62,7 @@ FirsDatabase::init() {
 Fir *
 FirsDatabase::findFirByIcao(const QString& _icao, bool _fss) {
 	for (Fir& f: __firs)
-		if ((f.header.icao == _icao) || (QString(f.header.icao).left(4) == _icao)) {
+		if (static_cast< QString >(f.header.icao).startsWith(_icao)) {
 			if (!f.header.oceanic && _fss)
 				continue;
 			if (f.header.oceanic && !_fss)

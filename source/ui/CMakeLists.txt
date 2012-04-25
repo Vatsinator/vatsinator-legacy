@@ -3,6 +3,7 @@ set (ui_SRCS
 	
 	actions/AirportDetailsAction.cpp
 	actions/ClientDetailsAction.cpp
+	actions/FirDetailsAction.cpp
 	actions/MetarAction.cpp
 	actions/TrackAction.cpp
 	
@@ -19,7 +20,7 @@ set (ui_SRCS
 	
 	windows/AirportDetailsWindow.cpp
 	windows/ATCDetailsWindow.cpp
-	#windows/FirDetailsWindow.cpp
+	windows/FirDetailsWindow.cpp
 	windows/FlightDetailsWindow.cpp
 	windows/MetarsWindow.cpp
 	windows/SettingsWindow.cpp
@@ -30,6 +31,7 @@ set (ui_MOC_SRCS
 	
 	actions/AirportDetailsAction.h
 	actions/ClientDetailsAction.h
+	actions/FirDetailsAction.h
 	actions/MetarAction.h
 	actions/TrackAction.h
 	
@@ -41,7 +43,7 @@ set (ui_MOC_SRCS
 	
 	windows/AirportDetailsWindow.h
 	windows/ATCDetailsWindow.h
-	#windows/FirDetailsWindow.h
+	windows/FirDetailsWindow.h
 	windows/FlightDetailsWindow.h
 	windows/MetarsWindow.h
 	windows/SettingsWindow.h
@@ -50,7 +52,7 @@ set (ui_MOC_SRCS
 set (ui_FORMS
 	resources/AirportDetailsWindow.ui
 	resources/ATCDetailsWindow.ui
-	#resources/FirDetailsWindow.ui
+	resources/FirDetailsWindow.ui
 	resources/FlightDetailsWindow.ui
 	resources/MetarsWindow.ui
 	resources/SettingsWindow.ui

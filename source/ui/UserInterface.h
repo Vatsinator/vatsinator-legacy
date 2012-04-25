@@ -26,6 +26,7 @@
 
 class AirportDetailsWindow;
 class ATCDetailsWindow;
+class FirDetailsWindow;
 class FlightDetailsWindow;
 class MetarsWindow;
 class SettingsWindow;
@@ -75,6 +76,7 @@ private:
 	
 	MetarsWindow *	__metarsWindow;
 	AirportDetailsWindow * __airportDetailsWindow;
+	FirDetailsWindow * __firDetailsWindow;
 	ATCDetailsWindow * __atcDetailsWindow;
 	FlightDetailsWindow * __flightDetailsWindow;
 	SettingsWindow * __settingsWindow;

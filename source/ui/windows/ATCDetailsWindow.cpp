@@ -22,6 +22,7 @@
 
 #include "ui/mapwidget/Controller.h"
 #include "ui/windows/AirportDetailsWindow.h"
+#include "ui/windows/FirDetailsWindow.h"
 
 #include "ATCDetailsWindow.h"
 #include "defines.h"
@@ -44,6 +45,9 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
 	__ratings[12] = "Administrator";
 	
 	connect(AirportDetailsWindow::GetSingletonPtr(),SIGNAL(showATCDetailsRequest(const Controller*)),
+		this,					SLOT(showWindow(const Controller*)));
+	
+	connect(FirDetailsWindow::GetSingletonPtr(),	SIGNAL(showATCDetailsRequest(const Controller*)),
 		this,					SLOT(showWindow(const Controller*)));
 }
 

@@ -42,6 +42,16 @@ Fir::addUirStaff(const Controller* _c) {
 }
 
 void
+Fir::addInbound(const Pilot* _p) {
+	__inbounds.push_back(_p);
+}
+
+void
+Fir::addOutbound(const Pilot* _p) {
+	__outbounds.push_back(_p);
+}
+
+void
 Fir::generateTip() {
 	QString icao(header.icao);
 	if (header.oceanic) {

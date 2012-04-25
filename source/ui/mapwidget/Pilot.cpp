@@ -19,6 +19,7 @@
 #include <QtGui>
 
 #include "db/AirportsDatabase.h"
+#include "db/FirsDatabase.h"
 
 #include "ui/mapwidget/MapWidget.h"
 
@@ -99,6 +100,18 @@ Pilot::Pilot(const QStringList& _data) {
 	if (!route.destination.isEmpty()) {
 		AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.destination);
 		ap->addInbound(this);
+	}
+	
+	if (!route.origin.isEmpty()) {
+		Fir* f = FirsDatabase::GetSingleton().findFirByIcao(route.origin.left(2));
+		if (f)
+			f->addOutbound(this);
+	}
+	
+	if (!route.destination.isEmpty()) {
+		Fir* f = FirsDatabase::GetSingleton().findFirByIcao(route.destination.left(2));
+		if (f)
+			f->addInbound(this);
 	}
 	
 	__setMyStatus();

@@ -34,6 +34,7 @@ class ATCDetailsWindow;
 class Clickable;
 class Fir;
 class FirsDatabase;
+class FirDetailsWindow;
 class SettingsManager;
 class VatsinatorApplication;
 class MetarsWindow;
@@ -94,6 +95,7 @@ signals:
 	void contextMenuRequested(const Fir*);
 	void flightDetailsWindowRequested(const Client*);
 	void airportDetailsWindowRequested(const AirportObject*);
+	void firDetailsWindowRequested(const Fir*);
 	
 public slots:
 	void trackFlight(const Pilot* _p) { __tracked = _p; }
@@ -284,6 +286,7 @@ private:
 	FirsDatabase *		__firs;
 	AirportDetailsWindow *	__airportDetailsWindow;
 	ATCDetailsWindow *	__atcDetailsWindow;
+	FirDetailsWindow *	__firDetailsWindow;
 	FlightDetailsWindow *	__flightDetailsWindow;
 	MetarsWindow *		__metarsWindow;
 	SettingsManager *	__settings;
