@@ -388,7 +388,16 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 				break;
 		}
 		__underMouse = NULL;
-	} else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
+	}
+}
+
+void
+MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
+	setCursor(QCursor(Qt::ArrowCursor));
+	__lastMousePos = _event->pos();
+	if (__underMouse) {
+		QToolTip::hideText();
+		__dontDisplayTooltip = true;
 		switch (__underMouse->objectType()) {
 			case PLANE:
 				emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
@@ -403,14 +412,8 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 				// have no idea what to do here
 				break;
 		}
-		__underMouse = NULL;
 	}
-	
-}
-
-void
-MapWidget::mouseReleaseEvent(QMouseEvent*) {
-	setCursor(QCursor(Qt::ArrowCursor));
+	__underMouse = NULL;
 }
 
 void

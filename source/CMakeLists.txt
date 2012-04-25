@@ -59,6 +59,9 @@ macro (vatsinator_subdirectory SUBDIR SRCS MOC_SRCS FORMS QRCS)
 	)
 endmacro (vatsinator_subdirectory)
 
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-version.h.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/version.h
+)
 
 set(QT_USE_QTOPENGL TRUE)
 set(QT_USE_QTNETWORK TRUE)

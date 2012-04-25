@@ -47,6 +47,7 @@ Fir::generateTip() {
 	if (header.oceanic) {
 		icao = icao.left(4) + " Oceanic";
 	}
+	
 	icao = icao.simplified();
 	
 	if (header.textPosition.x == 0.0 && header.textPosition.y == 0.0) {

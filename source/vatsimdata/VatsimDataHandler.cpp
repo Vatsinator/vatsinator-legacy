@@ -53,9 +53,12 @@ VatsimDataHandler::init() {
 	}
 	
 	QMap< QString, bool > flags;
+	flags["[COUNTRY]"] = false;
 	flags["[FIR]"] = false;
 	flags["[ALIAS]"] = false;
 	flags["[UIR]"] = false;
+	
+	QMap< QString, QString > countries;
 	
 	while (!datFile.atEnd()) {
 		QString line(datFile.readLine());
@@ -75,7 +78,12 @@ VatsimDataHandler::init() {
 			continue;
 		}
 		
-		if (flags["[FIR]"]) {
+		if (flags["[COUNTRY]"]) {
+			countries.insert(
+				line.section(' ', -1),
+				line.section(' ', 0, -2)
+			);
+		} else if (flags["[FIR]"]) {
 			QString icao = line.section(' ', 0, 0);
 			if (icao.length() != 4) {
 				qDebug() << "Word " << icao << " is not an ICAO code and could not be parsed." <<
@@ -84,13 +92,17 @@ VatsimDataHandler::init() {
 			}
 			
 			Fir* currentFir = __firs.findFirByIcao(icao);
-			if (currentFir)
+			if (currentFir) {
 				currentFir->name = line.section(' ', 1);
+				currentFir->country = countries[icao.left(2)];
+			}
 			
 			// look for same oceanic firs
 			currentFir = __firs.findFirByIcao(icao, true);
-			if (currentFir)
+			if (currentFir) {
 				currentFir->name = line.section(' ', 1);
+				currentFir->country = countries[icao.left(2)];
+			}
 			
 			
 		} else if (flags["[ALIAS]"]) {

@@ -1,5 +1,332 @@
 # Some additional data for Vatsinator
 
+# This section contains list of countries and first two letters of its FIR ICAO code.
+[COUNTRY]
+Afghanistan OA 
+Albania LA
+Algeria DA 
+Angola FN 
+Antigua and Barbuda TA 
+Anguilla TQ 
+Argentina SA 
+Argentina SA 
+Armenia UD 
+Australia YA
+Australia YB
+Australia YC
+Australia YD
+Australia YE
+Australia YF
+Australia YG
+Australia YH
+Australia YI
+Australia YJ
+Australia YK
+Australia YL
+Australia YM
+Australia YN
+Australia YO
+Australia YP
+Australia YQ
+Australia YR
+Australia YS
+Australia YT
+Australia YU
+Australia YV
+Australia YW
+Australia YX
+Australia YY
+Australia YZ
+Austria LO
+Azerbaijan UB 
+Bahamas MY 
+Bahrain OB 
+Bangladesh VG 
+Barbados TB 
+Belarus UM 
+Belgium EB
+Belize MZ 
+Benin DB 
+Bermuda TX 
+Bolivia SL
+Bosnia-Herzegovina LQ 
+Botswana FB 
+Brazil SB 
+Brazil SB 
+Brazil SS 
+Brazil SW 
+Brazil SI 
+Brazil SD 
+Brazil SB 
+Brazil SB 
+Brazil SS 
+Brazil SS 
+Brazil SW 
+Brazil SW 
+Brazil SI 
+Brazil SI 
+Brazil SD 
+Brazil SD 
+Bulgaria LB
+Burkina Faso DF 
+Burundi HB 
+Cambodia VD 
+Cameroon FK 
+Canada CW 
+Canada CY 
+Canada CZ 
+Canada CZ 
+Cape Verde GV 
+Cayman Islands MW 
+Central African Republic FE 
+Chad FT 
+Chile SC 
+China ZB 
+China ZG 
+China ZH 
+China ZJ 
+China ZL 
+China ZP 
+China ZS 
+China ZU 
+China ZW 
+China ZY 
+Colombia SK 
+Congo FC 
+Cook Islands NC 
+Cook Islands NI 
+Costa Rica MR 
+Cote D'Ivoire DI 
+Croatia LD
+Cuba MU 
+Cyprus LC
+Czech Republic LK
+Denmark EK
+Djibouti HD 
+Djibouti HF 
+Dominica TD 
+Dominican Republic MD 
+East Timor WP 
+Ecuador SE 
+Egypt HE
+El Salvador MS 
+Eritrea HH 
+Estonia EE 
+Ethiopia HA 
+Falkland Islands SF 
+Fiji-Tonga NF 
+Finland EF
+France LF
+French Guyana SO 
+French Polynesia NT 
+FYROM LW
+Gabon FO 
+Gambia GB 
+Georgia UG 
+Germany ED
+Germany ET
+Ghana DG 
+Gibraltar LX 
+Greece LG Control
+Greenland BG 
+Grenada TG 
+Guadeloupe-Martinique TF 
+Guatemala MG 
+Guinea GU 
+Guinea-Bissau GG 
+Guyana SY 
+Haiti CT 
+Haiti MT 
+Honduras MH 
+Hong Kong SAR VH 
+Hungary LH
+Iceland BI
+India VA 
+India VE 
+India VI 
+India VO 
+Indonesia WA 
+Indonesia WI 
+Indonesia WR 
+Iran OI 
+Iraq OR 
+Ireland EI
+Israel LL 
+Italy LI
+Jamaica MK 
+Japan RJ
+Japan RO 
+Jordan OJ
+Kazakstan-Kyrgyzstan UA 
+Kenya HK 
+Kiribati-Tuvalu NG 
+Kuwait OK 
+Laos VL 
+Latvia EV 
+Lebanon OL 
+Lesotho FX 
+Liberia GL 
+Libya HL
+Lithuania EY 
+Luxembourg EL
+Macau VM 
+Madagascar FM 
+Malawi FW 
+Malaysia WB 
+Malaysia WM 
+Maldives VR 
+Mali GA 
+Malta LM
+Marshall Islands PK 
+Mauritania GQ 
+Mauritius FI 
+Mexico MM 
+Mexico MM 
+Mexico MM 
+Moldova LU
+Mongolia ZM 
+Montserrat TR 
+Morocco GM 
+Mozambique FQ 
+Myanmar VB 
+Myanmar VY 
+Namibia FY 
+Nauru AN 
+Nepal VN 
+Netherlands EH
+New Caledonia NW 
+New Zealand NZ
+New Zealand NZ
+Nicaragua MN 
+Niger DR 
+Nigeria DN 
+Netherland Antilles and Aruba TN 
+North Korea ZK 
+Norway EN
+Oman OO 
+Pakistan OP 
+Panama MP 
+Papua New Guinea AY 
+Paraguay SG 
+Peru SP
+Philippines RP 
+Poland EP
+Portugal LP
+Puerto Rico, USA TJ 
+Qatar OT 
+Romania LR
+Russia UE 
+Russia UH 
+Russia UI 
+Russia UL 
+Russia UN 
+Russia UO 
+Russia UR 
+Russia US 
+Russia UU 
+Russia UW 
+Russia XE 
+Russia XH 
+Russia XI 
+Russia XL 
+Russia XN 
+Russia XO 
+Russia XR 
+Russia XS 
+Russia XU 
+Russia XW 
+Russia Z2 
+Rwanda HR 
+Saint Kitts and Nevis TK 
+Saint Vincent and the Grenadines TV 
+Samoa NS 
+Santa Lucia TL 
+Saudi Arabia OE 
+Senegal GO 
+Seychelles FS 
+Sierra Leone GF 
+Singapore WS 
+Slovakia LZ
+Slovenia LJ
+Solomon Islands AG 
+Somalia HC 
+South Africa FA 
+South Africa FA 
+South Africa FA 
+South Korea RK 
+Spain GC
+Spain LE
+Sri Lanka VC 
+Sudan HS 
+Surinam SM 
+Swaziland FD 
+Sweden ES
+Switzerland LS
+Syria OS 
+Taiwan RC
+Tanzania HT 
+Thailand VT 
+Togo DX 
+Trinidad and Tobago TT 
+Tunisia DT 
+Turkey LT 
+Turkmenistan-Uzbekistan UT 
+Uganda HU 
+Ukraine UK 
+United Arab Emirates OM 
+United Kingdom EG
+Uruguay SU 
+USA KA 
+USA KB 
+USA KC 
+USA KD 
+USA KE 
+USA KF 
+USA KG 
+USA KH 
+USA KI 
+USA KJ 
+USA KK 
+USA KL 
+USA KM 
+USA KN 
+USA KO 
+USA KP 
+USA KQ 
+USA KR 
+USA KS 
+USA KT 
+USA KU 
+USA KV 
+USA KW 
+USA KX 
+USA KY 
+USA KZ 
+USA PA 
+USA PF 
+USA PG 
+USA PH 
+USA PJ 
+USA PK 
+USA PL 
+USA PM 
+USA PO 
+USA PP 
+USA PT 
+USA PW 
+Uzbekistan-Turkmenistan UT 
+Vanuatu NV 
+Venezuela SV 
+Vietnam VV 
+Virgin Islands (British) TU 
+Virgin Islands (US) TI 
+Western Sahara GS 
+Yemen OY 
+Serbia & Montenegro LY
+Zaire FZ 
+Zambia FL 
+Zimbabwe FV 
+
 # This section informs Vatsinator about FIRs names. It reads four first letters
 # as ICAO and then until the end of the line as the FIR's name.
 [FIR]
@@ -38,7 +365,7 @@ ENOB Bodo Oceanic
 ENOR Norway
 ENOS Oslo
 ENSV Stavanger
-EPWW Warszawa Radar
+EPWW Warszawa
 ESAA Sweden
 ESMM Malmo
 EVRR Riga
@@ -419,6 +746,7 @@ UUWV MSK
 YBBN BN
 YMML ML
 YTAS ML-TAS
+YBIK ML-BIK
 
 # USA codes
 KJFK NY

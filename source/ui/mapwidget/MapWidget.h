@@ -198,8 +198,12 @@ private:
 			return "";
 		
 		QString text = (QString)"<center>";
-		if (!_f->name.isEmpty())
-			text.append((QString)"<nobr>" % _f->name % "</nobr>");
+		if (!_f->name.isEmpty()) {
+			text.append((QString)"<nobr>" % _f->name);
+			if (!_f->country.isEmpty())
+				text.append((QString)", " % _f->country);
+			text.append((QString)"</nobr>");
+		}
 		
 		for (const Controller* c: _f->getStaff())
 			text.append((QString)"<br><nobr>" %

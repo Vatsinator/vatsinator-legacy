@@ -20,9 +20,15 @@ set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x -fpermissive")
 # set windres command
 set (WINDRES_COMMAND i686-pc-mingw32-windres)
 
+# find version
+if (NOT vatsinator_VERSION)
+	file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION vatsinator_VERSION)
+	string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
+endif (NOT vatsinator_VERSION)
+
 add_subdirectory (source)
 
-message (STATUS "Vatsinator will be built with the following options:")
+message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
@@ -42,7 +48,7 @@ if (UNIX AND NOT APPLE)
 		DEPENDS ${DESKTOP_SH_FILE}
 		COMMENT "Generating desktop entry file"
 	)
-	add_custom_target (DESKTOP_ENTRY_FILE ALL
+	add_custom_target (DesktopEntryFile ALL
 		DEPENDS ${DESKTOP_ENTRY}
 	)
 	

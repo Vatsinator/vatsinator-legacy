@@ -7,7 +7,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#define VATSINATOR_VERSION	"0.1_alpha3"
+#include "version.h"
 
 // where to get all the data from
 #define VATSIM_STATUS_URL	"http://status.vatsim.net/status.txt"
@@ -58,7 +58,7 @@
 #define FIR_FONT_WEIGHT		QFont::Bold
 
 
-
+// if debug, add MemoryTracker to the buildset
 #ifndef NO_DEBUG
 #define DEBUG_NEW new(__FILE__, __LINE__)
 #include "MemoryTracker.h"
