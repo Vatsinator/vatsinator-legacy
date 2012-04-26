@@ -42,32 +42,47 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		__airportsData(new AirportsDatabase),
 		__firsData(new FirsDatabase),
 		__vatsimData(new VatsimDataHandler),
-		__userInterface(new UserInterface),
-		__settingsManager(new SettingsManager) {
+		__settingsManager(new SettingsManager),
+		__userInterface(new UserInterface) {
 	
 #ifndef NO_DEBUG
 	std::cout << "AIRPORTS_DB: " << AIRPORTS_DB << std::endl <<
 		"FIRS_DB: " << FIRS_DB << std::endl <<
 		"VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl;
 #endif
+	// destroy all children windows before the program exits
 	connect(this,			SIGNAL(destroyed()),
 		__userInterface,	SLOT(hideAllWindows()));
 	
+	// SettingsManager instance is now created, let him get the pointer & connect his slots
+	__settingsManager->init();
+	
+	// connect data refresher with the timer
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
 	
+	// read databases
 	__airportsData->init();
 	__firsData->init();
 	
+	// read .dat file
 	__vatsimData->init();
+	
+	// if fetch goes wrong, show the alert
 	connect(__vatsimData, SIGNAL(dataCorrupted()), this, SLOT(__showDataAlert()));
 	
+	// show main window
 	__userInterface->show();
+	
+	// create something that will handle our http requests
 	__httpHandler = new HttpHandler(__userInterface->getProgressBar());
 	
+	// connect first finished signal to statusFileUpdate
 	connect(__httpHandler, SIGNAL(finished(QString)), this, SLOT(__statusFileUpdated(QString)));
 	
+	// fetch the status file
 	__fetchStatusFile();
 	
+	// start the timer
 	__timer.start(__settingsManager->getRefreshRate() * 60000);
 }
 

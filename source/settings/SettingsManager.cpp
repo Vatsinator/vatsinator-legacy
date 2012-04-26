@@ -26,16 +26,19 @@
 #include "defaultsettings.h" // for restoring defaults
 
 SettingsManager::SettingsManager(QObject* _parent) :
-		QObject(_parent),
-		__mySettingsWindow(SettingsWindow::GetSingletonPtr()) {
-	
+		QObject(_parent) {
+	__restoreSettings();
+}
+
+void
+SettingsManager::init() {
+	__mySettingsWindow = SettingsWindow::GetSingletonPtr();
 	connect(__mySettingsWindow->OKCancelButtonBox,	SIGNAL(accepted()),
 		this,					SLOT(__updateSettings()));
 	connect(__mySettingsWindow,			SIGNAL(restoreDefaults()),
 		this,					SLOT(__restoreDefaults()));
-	
-	__restoreSettings();
 }
+
 
 void
 SettingsManager::__saveSettings() {
@@ -44,6 +47,7 @@ SettingsManager::__saveSettings() {
 	settings.beginGroup("Settings");
 	
 	settings.setValue("refreshRate",	__refreshRate);
+	settings.setValue("antyaliasing",	__antyaliasing);
 	settings.setValue("pilotsLayer",	__displayLayers.pilots);
 	settings.setValue("airportsLayer",	__displayLayers.airports);
 	settings.setValue("firsLayer",		__displayLayers.firs);
@@ -67,6 +71,7 @@ SettingsManager::__restoreSettings() {
 	settings.beginGroup("Settings");
 	
 	__refreshRate = settings.value("refreshRate", DefaultSettings::REFRESH_RATE).toInt();
+	__antyaliasing = settings.value("antyaliasing", DefaultSettings::ANTYALIASING).toBool();
 	__displayLayers.pilots = settings.value("pilotsLayer", DefaultSettings::PILOTS_CHECKBOX).toBool();
 	__displayLayers.airports = settings.value("airportsLayer", DefaultSettings::AIRPORTS_CHECKBOX).toBool();
 	__displayLayers.firs = settings.value("firsLayer", DefaultSettings::FIRS_CHECKBOX).toBool();
@@ -74,12 +79,12 @@ SettingsManager::__restoreSettings() {
 	
 	/* Determine the default pilots' labels display policy settings */
 	unsigned temp = 0;
-	if (__mySettingsWindow->ShowPilotsLabelsAlwaysCheckBox->checkState() == Qt::Checked)
+	if (DefaultSettings::ALWAYS_CHECKBOX)
 		temp = ALWAYS;
 	else {
-		if (__mySettingsWindow->ShowPilotsLabelsWhenHoveredCheckBox->checkState() == Qt::Checked)
+		if (DefaultSettings::WHEN_HOVERED_CHECKBOX)
 			temp |= WHEN_HOVERED;
-		if (__mySettingsWindow->ShowPilotsLabelsAirportRelatedCheckBox->checkState() == Qt::Checked)
+		if (DefaultSettings::AIRPORT_RELATED_CHECKBOX)
 			temp |= AIRPORT_RELATED;
 	}
 	__pilotsLabelsDisplayPolicy = settings.value("pilotsLabelsDisplayPolicy", temp).toUInt();
@@ -94,8 +99,14 @@ SettingsManager::__restoreSettings() {
 					       DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>();
 	__backgroundColor = settings.value("backgroundColor",
 					   DefaultSettings::BACKGROUND_COLOR).value<QColor>();
+	   
+#ifndef NO_DEBUG
+	qDebug() << "Antyaliasing " << (__antyaliasing ? "on" : "off");
+#endif
 	
 	settings.endGroup();
+	
+	emit settingsChanged();
 }
 
 void
@@ -111,6 +122,7 @@ void
 SettingsManager::__updateSettings() {
 	/* Get settings state from SettingsWindow */
 	__refreshRate = __mySettingsWindow->RefreshRateBox->value();
+	__antyaliasing = static_cast< bool >(__mySettingsWindow->AntyaliasingCheckBox->checkState());
 	__displayLayers.pilots = static_cast< bool >(__mySettingsWindow->PilotsCheckBox->checkState());
 	__displayLayers.airports = static_cast< bool >(__mySettingsWindow->AirportsCheckBox->checkState());
 	__displayLayers.firs = static_cast< bool >(__mySettingsWindow->FirsCheckBox->checkState());
@@ -134,6 +146,8 @@ SettingsManager::__updateSettings() {
 	__backgroundColor = __mySettingsWindow->BackgroundColorButton->getColor();
 	
 	__saveSettings();
+	
+	emit settingsChanged();
 }
 
 void
@@ -164,6 +178,7 @@ SettingsManager::__restoreDefaults() {
 	__saveSettings();
 	
 	emit settingsRestored();
+	emit settingsChanged();
 }
 
 

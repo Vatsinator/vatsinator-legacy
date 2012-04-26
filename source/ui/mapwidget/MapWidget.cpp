@@ -200,6 +200,8 @@ MapWidget::init() {
 		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 	connect(this,			SIGNAL(airportDetailsWindowRequested(const AirportObject*)),
 		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
+	connect(__settings,		SIGNAL(settingsChanged()),
+		this,			SLOT(__loadNewSettings()));
 	
 	__pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);
 	__pilotFont.setWeight(PILOT_FONT_WEIGHT);
@@ -210,6 +212,7 @@ MapWidget::init() {
 	__firs->prepareTooltips();
 	
 	__restoreSettings();
+	__loadNewSettings();
 }
 
 void
@@ -223,18 +226,12 @@ MapWidget::initializeGL() {
 	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_DEPTH_TEST);
 	
-	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-	glEnable(GL_LINE_SMOOTH);
-	
 	init();
 }
 
 void
 MapWidget::paintGL() {
 	__underMouse = NULL;
-	
-	if (!__settings)
-		__settings = SettingsManager::GetSingletonPtr();
 	
 	qglColor(__settings->getBackgroundColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -503,6 +500,15 @@ MapWidget::keyReleaseEvent(QKeyEvent* _event) {
 	
 	updateGL();
 }
+
+void
+MapWidget::__loadNewSettings() {
+	if (__settings->hasAntyaliasing())
+		__setAntyaliasing(true);
+	else
+		__setAntyaliasing(false);
+}
+
 
 void
 MapWidget::__openContextMenu(const Pilot* _pilot) {
@@ -982,6 +988,18 @@ MapWidget::__drawToolTip() {
 	QToolTip::showText(mapToGlobal(__lastMousePos), text, this);
 	
 }
+
+void
+MapWidget::__setAntyaliasing(bool _on) {
+	if (_on) {
+		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+		glEnable(GL_LINE_SMOOTH);
+	} else {
+		glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST);
+		glDisable(GL_LINE_SMOOTH);
+	}
+}
+
 
 void
 MapWidget::__storeSettings() {

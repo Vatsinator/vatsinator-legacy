@@ -116,6 +116,7 @@ protected:
 	void keyReleaseEvent(QKeyEvent*);
 	
 private slots:
+	void __loadNewSettings();
 	void __openContextMenu(const Pilot*);
 	void __openContextMenu(const AirportObject*);
 	void __openContextMenu(const Fir*);
@@ -130,6 +131,8 @@ private:
 	void __drawPilots();
 	void __drawLines(); // lines when airport/pilot on hover
 	void __drawToolTip();
+	
+	void __setAntyaliasing(bool);
 	
 	void __storeSettings();
 	void __restoreSettings();

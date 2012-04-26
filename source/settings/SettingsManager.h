@@ -47,8 +47,13 @@ public:
 	
 	SettingsManager(QObject* = 0);
 	
+	void init();
+	
 	inline int
 	getRefreshRate() { return __refreshRate; }
+	
+	inline bool
+	hasAntyaliasing() { return __antyaliasing; }
 	
 	inline const DisplayLayersPolicy &
 	getDisplayLayersPolicy() { return __displayLayers; }
@@ -79,6 +84,7 @@ public:
 	
 signals:
 	void settingsRestored();
+	void settingsChanged();
 	
 private:
 	/* Saves all settings in the system, using QSettings */
@@ -94,6 +100,7 @@ private:
 	
 	/* Miscallaneous */
 	int			__refreshRate;
+	bool			__antyaliasing;
 	DisplayLayersPolicy	__displayLayers;
 	unsigned		__pilotsLabelsDisplayPolicy;
 	

@@ -75,8 +75,8 @@ private:
 	AirportsDatabase *	__airportsData;
 	FirsDatabase * 		__firsData;
 	VatsimDataHandler *	__vatsimData;
-	UserInterface *		__userInterface;
 	SettingsManager *	__settingsManager;
+	UserInterface *		__userInterface;
 	QTimer 			__timer;
 	
 };
