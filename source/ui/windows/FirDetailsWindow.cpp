@@ -50,13 +50,9 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
 		"Aircraft",
 		"" };
 	
-	InboundTable->setHorizontalHeaderLabels(labels);
-	for (int i = 0; i < InboundTable->columnCount(); ++i)
-		InboundTable->setColumnWidth(i, COLUMNS_WIDTHS[i]);
-	
-	OutboundTable->setHorizontalHeaderLabels(labels);
-	for (int i = 0; i < OutboundTable->columnCount(); ++i)
-		OutboundTable->setColumnWidth(i, COLUMNS_WIDTHS[i]);
+	FlightsTable->setHorizontalHeaderLabels(labels);
+	for (int i = 0; i < FlightsTable->columnCount(); ++i)
+		FlightsTable->setColumnWidth(i, COLUMNS_WIDTHS[i]);
 	
 	labels[1] = "Name";
 	labels[2] = "Freq";
@@ -103,9 +99,9 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 	NameLabel->setText(_f->name);
 	
 	int row = 0;
-	InboundTable->clearContents();
-	InboundTable->setRowCount(_f->getInbounds().size());
-	for (const Pilot* p: _f->getInbounds()) {
+	FlightsTable->clearContents();
+	FlightsTable->setRowCount(_f->getFlights().size());
+	for (const Pilot* p: _f->getFlights()) {
 		QTableWidgetItem* pCallsign = new QTableWidgetItem(p->callsign);
 		pCallsign->setTextAlignment(Qt::AlignCenter);
 		
@@ -129,55 +125,15 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 		QTableWidgetItem* pAircraft = new QTableWidgetItem(p->aircraft);
 		pAircraft->setTextAlignment(Qt::AlignCenter);
 		
-		InboundTable->setItem(row, 0, pCallsign);
-		InboundTable->setItem(row, 1, pFrom);
-		InboundTable->setItem(row, 2, pTo);
-		InboundTable->setItem(row, 3, pAircraft);
+		FlightsTable->setItem(row, 0, pCallsign);
+		FlightsTable->setItem(row, 1, pFrom);
+		FlightsTable->setItem(row, 2, pTo);
+		FlightsTable->setItem(row, 3, pAircraft);
 		
 		ShowButton* showButton = new ShowButton(p);
 		connect(showButton,	SIGNAL(clicked(const Pilot*)),
 			this,		SLOT(handleShowClicked(const Pilot*)));
-		InboundTable->setCellWidget(row, 4, showButton);
-		
-		row += 1;
-	}
-	
-	row = 0;
-	OutboundTable->clearContents();
-	OutboundTable->setRowCount(_f->getOutbounds().size());
-	for (const Pilot* p: _f->getOutbounds()) {
-		QTableWidgetItem* pCallsign = new QTableWidgetItem(p->callsign);
-		pCallsign->setTextAlignment(Qt::AlignCenter);
-		
-		QTableWidgetItem* pFrom;
-		AirportRecord* origAp = apdb.find(p->route.origin);
-		if (origAp)
-			pFrom = new QTableWidgetItem(p->route.origin + " " +
-			origAp->city);
-		else
-			pFrom = new QTableWidgetItem(p->route.origin);
-		
-		QTableWidgetItem* pTo;
-		AirportRecord* destAp = apdb.find(p->route.destination);
-		if (destAp)
-			pTo = new QTableWidgetItem(p->route.destination + " " +
-			destAp->city);
-		else
-			pTo = new QTableWidgetItem(p->route.destination);
-		
-		
-		QTableWidgetItem* pAircraft = new QTableWidgetItem(p->aircraft);
-		pAircraft->setTextAlignment(Qt::AlignCenter);
-		
-		OutboundTable->setItem(row, 0, pCallsign);
-		OutboundTable->setItem(row, 1, pFrom);
-		OutboundTable->setItem(row, 2, pTo);
-		OutboundTable->setItem(row, 3, pAircraft);
-		
-		ShowButton* showButton = new ShowButton(p);
-		connect(showButton,	SIGNAL(clicked(const Pilot*)),
-			this,		SLOT(handleShowClicked(const Pilot*)));
-		OutboundTable->setCellWidget(row, 4, showButton);
+		FlightsTable->setCellWidget(row, 4, showButton);
 		
 		row += 1;
 	}
@@ -239,7 +195,7 @@ FirDetailsWindow::__updateContents() {
 	if (!isVisible())
 		return;
 	
-	Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(__currentICAO.left(2));
+	Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(__currentICAO);
 	if (!fir) // that should never happen
 		hide();
 	

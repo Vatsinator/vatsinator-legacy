@@ -25,7 +25,7 @@
 
 SettingsWindow::SettingsWindow(QWidget* _parent) :
 		QWidget(_parent),
-		__mySettingsManager(NULL) {
+		__mySettingsManager(SettingsManager::GetSingletonPtr()) {
 	setupUi(this);
 	__setWindowPosition();
 	
@@ -35,11 +35,6 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
 		this,			SLOT(hide()));
 	connect(ShowPilotsLabelsAlwaysCheckBox,	SIGNAL(stateChanged(int)),
 		this,			SLOT(__handleAlwaysCheckBox(int)));
-}
-
-void
-SettingsWindow::init() {
-	__mySettingsManager = SettingsManager::GetSingletonPtr();
 	connect(__mySettingsManager,	SIGNAL(settingsRestored()),
 		this,			SLOT(__updateWindow()));
 }
@@ -87,7 +82,7 @@ SettingsWindow::__updateWindow() {
 	if (__mySettingsManager->displayPilotsLabelsAlways())
 		__handleAlwaysCheckBox(Qt::Checked);
 	else {
-		ShowPilotsLabelsAlwaysCheckBox->setCheckState(Qt::Unchecked);
+		__handleAlwaysCheckBox(Qt::Unchecked);
 		
 		if (__mySettingsManager->displayPilotsLabelsWhenHovered())
 			ShowPilotsLabelsWhenHoveredCheckBox->setCheckState(Qt::Checked);

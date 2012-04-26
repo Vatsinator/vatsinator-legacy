@@ -95,13 +95,15 @@ VatsimDataHandler::init() {
 			if (currentFir) {
 				currentFir->name = line.section(' ', 1);
 				currentFir->country = countries[icao.left(2)];
+				currentFir->correctName();
 			}
 			
-			// look for same oceanic firs
+			// look for same oceanic fir
 			currentFir = __firs.findFirByIcao(icao, true);
 			if (currentFir) {
 				currentFir->name = line.section(' ', 1);
 				currentFir->country = countries[icao.left(2)];
+				currentFir->correctName();
 			}
 			
 			

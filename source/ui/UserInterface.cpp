@@ -134,13 +134,6 @@ UserInterface::hideAllWindows() {
 }
 
 void
-UserInterface::show() {
-	__settingsWindow->init();
-	QMainWindow::show();
-}
-
-
-void
 UserInterface::closeEvent(QCloseEvent* _event) {
 	hideAllWindows();
 	_event->accept();

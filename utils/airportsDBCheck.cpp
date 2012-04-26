@@ -34,9 +34,10 @@ struct AirportRecord {
 	char	country[128];
 	char	iata[8];
 	char	icao[8];
+	char	fir[8];
 	double	latitude;
 	double	longitude;
-	int		altitude;
+	int	altitude;
 };
 #pragma pack()
 

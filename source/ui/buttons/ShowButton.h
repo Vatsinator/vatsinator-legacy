@@ -26,6 +26,11 @@ class Pilot;
 
 class ShowButton : public QPushButton {
 	
+	/*
+	 * This is the "Show" button for Airport Details Window.
+	 * It centres the MapWidget's map on the particular pilot if clicked. 
+	 */
+	
 	Q_OBJECT
 	
 public:

@@ -37,8 +37,6 @@ class SettingsWindow :
 public:
 	SettingsWindow(QWidget* = 0);
 	
-	void init();
-	
 signals:
 	void restoreDefaults();
 	

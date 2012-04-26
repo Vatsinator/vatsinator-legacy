@@ -125,14 +125,22 @@ void
 AirportDetailsWindow::__updateContents(const AirportObject* _ap) {
 	AirportsDatabase& apdb = AirportsDatabase::GetSingleton();
 	
-	setWindowTitle((QString)_ap->getData()->icao + " - airport details");
+	setWindowTitle(static_cast< QString >(_ap->getData()->icao) + " - airport details");
 	
 	if (!static_cast< QString >(_ap->getData()->iata).isEmpty())
-		CodesLabel->setText((QString)_ap->getData()->icao + "/" + _ap->getData()->iata);
+		CodesLabel->setText(static_cast< QString >(_ap->getData()->icao) + "/" +
+			static_cast< QString >(_ap->getData()->iata));
 	else
-		CodesLabel->setText((QString)_ap->getData()->icao);
+		CodesLabel->setText(static_cast< QString >(_ap->getData()->icao));
 	
-	NameLabel->setText((QString)_ap->getData()->name + ", " + _ap->getData()->city);
+	NameLabel->setText(static_cast< QString >(_ap->getData()->name) + ", " +
+			static_cast< QString >(_ap->getData()->city)
+#ifndef NO_DEBUG
+			// display FIR info only in debug builds
+			+ " (" + 
+			static_cast< QString >(_ap->getData()->fir) + " FIR)"
+#endif
+		);
 	
 	int row = 0;
 	InboundTable->clearContents();

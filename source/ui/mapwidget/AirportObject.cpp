@@ -27,6 +27,10 @@
 
 AirportObject::AirportObject(const QString& _icao) :
 		__data(AirportsDatabase::GetSingleton().find(_icao)) {
+#ifndef NO_DEBUG
+	if (!__data)
+		qDebug() << "Airport " << _icao << " not found.";
+#endif
 	__generateTip();
 }
 
@@ -93,7 +97,7 @@ AirportObject::__generateTip() {
 	painter.setFont(MapWidget::GetSingleton().getAirportFont());
 	painter.setPen(QColor(AIRPORTS_LABELS_FONT_COLOR));
 	QRect rectangle(0, 0, 48, 12); // size of the tooltip.png
-	painter.drawText(rectangle, Qt::AlignCenter, __data->icao);
+	painter.drawText(rectangle, Qt::AlignCenter, static_cast< QString >(__data->icao));
 	labelTip = MapWidget::loadImage(temp);
 }
 

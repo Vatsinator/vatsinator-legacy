@@ -26,6 +26,10 @@ class Controller;
 
 class DetailsButton : public QPushButton {
 	
+	/*
+	 * This button represents an ATC "Details" button in Airport Details Window.
+	 */
+	
 	Q_OBJECT
 	
 public:

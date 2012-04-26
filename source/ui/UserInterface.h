@@ -63,7 +63,6 @@ public slots:
 	void about();
 	void showMetarsWindow();
 	void hideAllWindows();
-	void show();
 	
 protected:
 	void closeEvent(QCloseEvent*);

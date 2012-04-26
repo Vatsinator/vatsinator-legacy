@@ -95,23 +95,23 @@ Pilot::Pilot(const QStringList& _data) {
 	if (!route.origin.isEmpty()) {
 		AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
 		ap->addOutbound(this);
+		
+		if (ap->getData()) {
+			Fir* f = FirsDatabase::GetSingleton().findFirByIcao(ap->getData()->fir);
+			if (f)
+				f->addFlight(this);
+		}
 	}
 	
 	if (!route.destination.isEmpty()) {
 		AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.destination);
 		ap->addInbound(this);
-	}
-	
-	if (!route.origin.isEmpty()) {
-		Fir* f = FirsDatabase::GetSingleton().findFirByIcao(route.origin.left(2));
-		if (f)
-			f->addOutbound(this);
-	}
-	
-	if (!route.destination.isEmpty()) {
-		Fir* f = FirsDatabase::GetSingleton().findFirByIcao(route.destination.left(2));
-		if (f)
-			f->addInbound(this);
+		
+		if (ap->getData()) {
+			Fir* f = FirsDatabase::GetSingleton().findFirByIcao(ap->getData()->fir);
+			if (f)
+				f->addFlight(this);
+		}
 	}
 	
 	__setMyStatus();

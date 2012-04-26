@@ -53,8 +53,9 @@ public:
 	void addStaff(const Controller*);
 	void addUirStaff(const Controller*);
 	
-	void addInbound(const Pilot*);
-	void addOutbound(const Pilot*);
+	void addFlight(const Pilot*);
+	
+	void correctName();
 	
 	void generateTip();
 	
@@ -65,13 +66,10 @@ public:
 	getUirStaff() const { return __uirStaff; }
 	
 	inline const QVector< const Pilot* > &
-	getInbounds() const { return __inbounds; }
-	
-	inline const QVector< const Pilot* > &
-	getOutbounds() const { return __outbounds; }
+	getFlights() const { return __flights; }
 	
 	inline void
-	clear() { __staff.clear(); __uirStaff.clear(); }
+	clear() { __staff.clear(); __uirStaff.clear(); __flights.clear(); }
 	
 	
 	
@@ -86,8 +84,7 @@ private:
 	
 	QVector< const Controller* > __staff;
 	QVector< const Controller* > __uirStaff;
-	QVector< const Pilot* >	__inbounds;
-	QVector< const Pilot* > __outbounds;
+	QVector< const Pilot* >	__flights;
 	
 	
 };

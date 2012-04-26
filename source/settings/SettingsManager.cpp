@@ -153,6 +153,7 @@ SettingsManager::__updateSettings() {
 void
 SettingsManager::__restoreDefaults() {
 	__refreshRate = DefaultSettings::REFRESH_RATE;
+	__antyaliasing = DefaultSettings::ANTYALIASING;
 	__displayLayers.pilots = DefaultSettings::PILOTS_CHECKBOX;
 	__displayLayers.airports = DefaultSettings::AIRPORTS_CHECKBOX;
 	__displayLayers.firs = DefaultSettings::FIRS_CHECKBOX;
@@ -176,6 +177,10 @@ SettingsManager::__restoreDefaults() {
 	__clearEntries();
 	
 	__saveSettings();
+	
+#ifndef NO_DEBUG
+	qDebug() << "Defaults restored.";
+#endif
 	
 	emit settingsRestored();
 	emit settingsChanged();

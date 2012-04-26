@@ -334,7 +334,7 @@ AGGG Honiara
 ANAU Nauru
 AYPM Port Moresby
 BGGL Sondrestrom
-BIRD Reykjavik
+BIRD Reykjavik Control
 CZEG Edmonton
 CZQM Moncton
 CZQX Gander
@@ -348,26 +348,26 @@ DIII Abidjan
 DNKK Kano
 DRRR Niamey
 DTTC Tunis
-EBBU Brussels
-EDGG Langen
-EDMM Muenchen
-EDWW Bremen
+EBBU Brussels Control
+EDGG Langen Radar
+EDMM Muenchen Radar
+EDWW Bremen Radar
 EETT Tallinn
-EFES Tampere
+EFES Tampere Radar
 EGGX Shanwick Oceanic
-EGPX Scottish
-EGTT London
-EHAA Amsterdam
-EISN Shannon
-EKDK Kobenhavn
-ENBD Bodo
+EGPX Scottish Control
+EGTT London Control
+EHAA Amsterdam Radar
+EISN Shannon Control
+EKDK Kobenhavn Control
+ENBD Bodo Control
 ENOB Bodo Oceanic
-ENOR Norway
-ENOS Oslo
-ENSV Stavanger
-EPWW Warszawa
-ESAA Sweden
-ESMM Malmo
+ENOR Norway Control
+ENOS Oslo Control
+ENSV Stavanger Control
+EPWW Warszawa Radar
+ESAA Sweden Control
+ESMM Malmo Control
 EVRR Riga
 EYVL Vilnius
 FACT Cape Town
@@ -386,7 +386,7 @@ FVHA Harare
 FWLL Lilongwe
 FYWH Windhoek
 FZZA Kinshasa
-GCCC Canarias
+GCCC Canarias Radar
 GLRB Roberts
 GMMM Casablanca
 GOOO Dakar
@@ -394,10 +394,10 @@ GVSC SAL Oceanic
 HAAA Addis Ababa
 HBBA Bujumbura
 HCSM Mogadishu
-HECC Cairo
+HECC Cairo Control
 HHAA Asmara
 HKNA Nairobi
-HLLL Tripol
+HLLL Tripol Control
 HRYR Kigali
 HSSS Khartoum
 HTDC Dar-Es-salaam
@@ -424,39 +424,39 @@ KZAK Oakland Oceanic
 KZOB Cleveland
 KZSE Seattle
 KZTL Atlanta
-LAAA Tirana
-LBSR Sofia
+LAAA Tirana Control
+LBSR Sofia Control
 LBWR Varna
-LCCC Nicosia
-LDZO Zagreb
-LECB Barcelona
-LECM Madrid
-LFBB Bordeaux
-LFEE Reims
-LFFF Paris
-LFMM Marseille
-LFRR Brest
-LGGG Athens
-LHCC Budapest
-LIBB Brindisi
-LIMM Milano
-LIRR Roma
-LJLA Ljubljana
-LKAA Praha
+LCCC Nicosia Control
+LDZO Zagreb Control
+LECB Barcelona Radar
+LECM Madrid Radar
+LFBB Bordeaux Control
+LFEE Reims Control
+LFFF Paris Control
+LFMM Marseille Control
+LFRR Brest Control
+LGGG Athens Control
+LHCC Budapest Control
+LIBB Brindisi Radar
+LIMM Milano Radar
+LIRR Roma Radar
+LJLA Ljubljana Control
+LKAA Praha Radar
 LLLL Tel Aviv
-LMMM Malta
-LOVV Wien
-LPPC Lisboa
-LPPO Santa Maria
+LMMM Malta Control
+LOVV Wien Radar
+LPPC Lisboa Control
+LPPO Santa Maria Control
 LQSB Sarajevo
-LRBB Bucharest
-LSAS Geneva
+LRBB Bucharest Control
+LSAS Geneva Radar
 LTAA Ankara
 LTBB Istanbul
-LUKK Chisinau
-LWSS Skopje
-LYBA Beograd
-LZBB Bratislava
+LUKK Chisinau Control
+LWSS Skopje Radar
+LYBA Beograd Radar
+LZBB Bratislava Radar
 MDCS Santo Domingo
 MHTG Central America
 MKJK Kingston
@@ -471,18 +471,18 @@ MYNN Nassau
 NFFF Nadi Oceanic
 NTTT Tahiti Oceanic
 NZZO Auckland Oceanic
-NZCR Christchurch (Raglan)
-NZCB Christchurch (Bay)
-NZCT Christchurch (Taranaki)
-NZCK Christchurch (Kaikoura)
-NZCS Christchurch (South)
-NZOH Ohakea
-NZCM McMurdo
+NZCR Christchurch (Raglan) Control
+NZCB Christchurch (Bay) Control
+NZCT Christchurch (Taranaki) Control
+NZCK Christchurch (Kaikoura) Control
+NZCS Christchurch (South) Control
+NZOH Ohakea Control
+NZCM McMurdo Control
 OAKX Kabul
 OBBB Bahrain
 OEJD Jeddah
 OIIX Tehran
-OJAC Amman
+OJAC Amman Control
 OKAC Kuwait
 OLBA Beirut
 OMAE Emirates
@@ -495,8 +495,8 @@ OYSC Sanaa
 PAZA Anchorage
 PGZU Guam
 PHZH Honolulu
-RCAA Taipei
-RJTG Tokyo
+RCAA Taipei Control
+RJTG Tokyo Control
 RKRR Incheon
 RORG Naha
 RPHI Manila
@@ -521,10 +521,10 @@ SEGU Guayaquil
 SGFA Asuncion
 SKEC Barranquilla
 SKED Bogota
-SLLF La Paz
+SLLF La Paz Control
 SMPM Paramaribo
-SOOO Rochambeau SOCC
-SPIM Lima
+SOOO Rochambeau
+SPIM Lima Control
 SUEO Montevideo
 SVZM Maiquetia
 SYGC Georgetown

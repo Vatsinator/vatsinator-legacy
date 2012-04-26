@@ -24,6 +24,11 @@
 
 class ColorButton : public QPushButton {
 	
+	/*
+	 * We need to subclass the QPushButton in order to make a nice
+	 * colorful button for Settings Window.
+	 */
+	
 	Q_OBJECT
 	
 public:

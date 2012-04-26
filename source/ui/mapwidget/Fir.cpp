@@ -42,14 +42,18 @@ Fir::addUirStaff(const Controller* _c) {
 }
 
 void
-Fir::addInbound(const Pilot* _p) {
-	__inbounds.push_back(_p);
+Fir::addFlight(const Pilot* _p) {
+	__flights.push_back(_p);
 }
 
 void
-Fir::addOutbound(const Pilot* _p) {
-	__outbounds.push_back(_p);
+Fir::correctName() {
+	if (!name.endsWith("Radar") &&
+			!name.endsWith("Control") &&
+			!name.endsWith("Oceanic"))
+		name += " Center";
 }
+
 
 void
 Fir::generateTip() {
