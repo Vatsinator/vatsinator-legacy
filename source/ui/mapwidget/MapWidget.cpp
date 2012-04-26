@@ -223,12 +223,18 @@ MapWidget::initializeGL() {
 	glAlphaFunc(GL_GREATER, 0.1f);
 	glEnable(GL_DEPTH_TEST);
 	
+	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glEnable(GL_LINE_SMOOTH);
+	
 	init();
 }
 
 void
 MapWidget::paintGL() {
 	__underMouse = NULL;
+	
+	if (!__settings)
+		__settings = SettingsManager::GetSingletonPtr();
 	
 	qglColor(__settings->getBackgroundColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
