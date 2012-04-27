@@ -78,5 +78,3 @@ if (UNIX AND NOT APPLE)
 	endforeach (ICON)
 	
 endif (UNIX AND NOT APPLE)
-
-

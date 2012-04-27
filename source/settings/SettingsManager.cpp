@@ -159,6 +159,7 @@ SettingsManager::__restoreDefaults() {
 	__displayLayers.firs = DefaultSettings::FIRS_CHECKBOX;
 	__displayLayers.uirs = DefaultSettings::UIRS_CHECKBOX;
 	
+	__pilotsLabelsDisplayPolicy = 0;
 	if (DefaultSettings::ALWAYS_CHECKBOX)
 		__pilotsLabelsDisplayPolicy = ALWAYS;
 	else {

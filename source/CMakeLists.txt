@@ -33,31 +33,8 @@ set (vatsinator_SUBDIRS
 
 qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
+include (cmake/macros.cmake)
 
-
-macro (vatsinator_subdirectory SUBDIR SRCS MOC_SRCS FORMS QRCS)
-	set (${SUBDIR}_MOC_FILES "")
-	if (NOT "${MOC_SRCS}" STREQUAL "")
-		qt4_wrap_cpp (${SUBDIR}_MOC_FILES ${MOC_SRCS})
-	endif (NOT "${MOC_SRCS}" STREQUAL "")
-	
-	set (${SUBDIR}_FORMS_FILES "")
-	if (NOT "${FORMS}" STREQUAL "")
-		qt4_wrap_ui (${SUBDIR}_FORMS_FILES ${FORMS})
-	endif (NOT "${FORMS}" STREQUAL "")
-	
-	set (${SUBDIR}_RESOURCES "")
-	if (NOT "${QRCS}" STREQUAL "")
-		qt4_add_resources (${SUBDIR}_RESOURCES ${QRCS})
-	endif (NOT "${QRCS}" STREQUAL "")
-	
-	add_library (${SUBDIR} STATIC
-		${SRCS}
-		${${SUBDIR}_MOC_FILES}
-		${${SUBDIR}_FORMS_FILES}
-		${${SUBDIR}_RESOURCES}
-	)
-endmacro (vatsinator_subdirectory)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-version.h.cmake
 	${CMAKE_CURRENT_BINARY_DIR}/version.h
@@ -118,4 +95,3 @@ target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 install(PROGRAMS
 	${CMAKE_CURRENT_BINARY_DIR}/vatsinator
 	DESTINATION bin)
-
