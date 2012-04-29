@@ -180,9 +180,11 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 	__firsData->clearAll();
 	
 	__vatsimData->parseDataFile(_data);
-	__userInterface->getClientsBox()->setText("Clients: " + QString::number(
+	__userInterface->getClientsBox()->setText(static_cast< QString >("Clients: ") % QString::number(
 			__vatsimData->getPilots().size() + __vatsimData->getATCs().size()
-		));
+		) % " (" % QString::number(__vatsimData->getPilots().size()) % " pilots, " %
+			QString::number(__vatsimData->getATCs().size()) % " ATCs)"
+		);
 	
 	if (__userInterface->getGLContext()->getTrackedPilot())
 		__userInterface->getGLContext()->getTrackedPilot() = __vatsimData->findPilot(temp);

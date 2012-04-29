@@ -140,8 +140,31 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 	
 	row = 0;
 	ATCTable->clearContents();
-	ATCTable->setRowCount(_f->getStaff().size());
+	ATCTable->setRowCount(_f->getStaff().size() + _f->getUirStaff().size());
 	for (const Controller* c: _f->getStaff()) {
+		QTableWidgetItem* cCallsign = new QTableWidgetItem(c->callsign);
+		cCallsign->setTextAlignment(Qt::AlignCenter);
+		
+		QTableWidgetItem* cName = new QTableWidgetItem(c->realName);
+		cName->setTextAlignment(Qt::AlignCenter);
+		
+		QTableWidgetItem* cFreq = new QTableWidgetItem(c->frequency);
+		cFreq->setTextAlignment(Qt::AlignCenter);
+		
+		DetailsButton* detailsButton = new DetailsButton(c);
+		connect(detailsButton,	SIGNAL(clicked(const Controller*)),
+			this,		SLOT(handleDetailsClicked(const Controller*)));
+		
+		ATCTable->setItem(row, 0, cCallsign);
+		ATCTable->setItem(row, 1, cName);
+		ATCTable->setItem(row, 2, cFreq);
+		
+		ATCTable->setCellWidget(row, 3, detailsButton);
+		
+		row += 1;
+	}
+	
+	for (const Controller* c: _f->getUirStaff()) {
 		QTableWidgetItem* cCallsign = new QTableWidgetItem(c->callsign);
 		cCallsign->setTextAlignment(Qt::AlignCenter);
 		

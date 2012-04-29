@@ -81,8 +81,8 @@ Pilot::Pilot(const QStringList& _data) {
 	groundSpeed = _data[8].toInt();
 	aircraft = _data[9];
 	tas = _data[10].toInt();
-	route.origin = _data[11];
-	route.altitude = _data[12];
+	route.origin = _data[11].toUpper();
+	route.altitude = _data[12].toUpper();
 	route.destination = _data[13];
 	server = _data[14];
 	squawk = _data[17];

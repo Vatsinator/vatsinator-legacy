@@ -224,6 +224,10 @@ MapWidget::initializeGL() {
 	glEnable(GL_LINE_STIPPLE);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.1f);
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 	glEnable(GL_DEPTH_TEST);
 	
 	init();
@@ -237,11 +241,6 @@ MapWidget::paintGL() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	qglClearColor(__settings->getBackgroundColor());
 	glLoadIdentity();
-	
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glEnable(GL_DEPTH_TEST);
 	
 	if (__tracked) {
 		__position.rx() = __tracked->position.longitude / 180;
@@ -719,10 +718,12 @@ MapWidget::__drawUirs() {
 				qglColor(__settings->getStaffedUirBordersColor());
 				glLineWidth(3.0);
 				for (const Fir* fir: uir->getRange()) {
+					qglColor(__settings->getStaffedUirBordersColor());
 					glVertexPointer(2, GL_DOUBLE, 0, &fir->borders[0].x);
 					glDrawArrays(GL_LINE_LOOP, 0, fir->borders.size());
 					
 					if (fir->getStaff().isEmpty() && !fir->triangles.isEmpty()) {
+						//glTranslatef(0.0, 0.0, 0.1);
 						qglColor(__settings->getStaffedUirBackgroundColor());
 						glVertexPointer(2, GL_DOUBLE, 0, &fir->triangles[0].x);
 						glDrawArrays(GL_TRIANGLES, 0, fir->triangles.size());

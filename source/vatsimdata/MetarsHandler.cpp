@@ -67,6 +67,7 @@ MetarsHandler::gotMetar(const QString& _metar) {
 		return;
 	
 	if (metar.contains(METAR_NO_AVAIL)) {
+		__requests.dequeue();
 		emit noMetar();
 		return;
 	}
