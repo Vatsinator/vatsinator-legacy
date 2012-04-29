@@ -43,6 +43,7 @@ struct FirHeader {
 struct Fir {
 	FirHeader header;
 	vector< Point > coords;
+	vector< Point > triangles;
 };
 #pragma pack()
 
@@ -57,7 +58,7 @@ main(int argc, char** argv) {
 	fstream db(fName.c_str(), ios::in | ios::binary);
 
 	int size;
-	db.read((char*)&size, 4);
+	db.read(reinterpret_cast< char * >(&size), 4);
 	
 	cout << "Firs in database: " << size << endl;
 	
@@ -65,11 +66,16 @@ main(int argc, char** argv) {
 	
 	Fir* firs = new Fir[size];
 	for (int i = 0; i < size; ++i) {
-		db.read((char*)&firs[i].header, sizeof(FirHeader));
+		db.read(reinterpret_cast< char * >(&firs[i].header), sizeof(FirHeader));
 		int counting;
-		db.read((char*)&counting, sizeof(int));
+		db.read(reinterpret_cast< char * >(&counting), sizeof(int));
 		firs[i].coords.resize(counting);
-		db.read((char*)&firs[i].coords[0], sizeof(Point) * counting);
+		db.read(reinterpret_cast< char * >(&firs[i].coords[0]), sizeof(Point) * counting);
+		
+		db.read(reinterpret_cast< char * >(&counting), sizeof(int));
+		firs[i].triangles.resize(counting * 3);
+		db.read(reinterpret_cast< char * >(&firs[i].triangles[0]), sizeof(Point) * counting * 3);
+		
 	}
 	
 	db.close();

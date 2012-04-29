@@ -97,7 +97,9 @@ SettingsWindow::__updateWindow() {
 	
 	UnstaffedFirColorButton->setColor(__mySettingsManager->getUnstaffedFirBordersColor());
 	StaffedFirColorButton->setColor(__mySettingsManager->getStaffedFirBordersColor());
+	StaffedFirBackgroundColorButton->setColor(__mySettingsManager->getStaffedFirBackgroundColor());
 	StaffedUirColorButton->setColor(__mySettingsManager->getStaffedUirBordersColor());
+	StaffedUirBackgroundColorButton->setColor(__mySettingsManager->getStaffedUirBackgroundColor());
 	ApproachCircleColorButton->setColor(__mySettingsManager->getApproachCircleColor());
 	BackgroundColorButton->setColor(__mySettingsManager->getBackgroundColor());
 }

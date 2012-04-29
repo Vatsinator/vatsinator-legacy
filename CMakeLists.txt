@@ -77,4 +77,9 @@ if (UNIX AND NOT APPLE)
 		install_icon(${ICON})
 	endforeach (ICON)
 	
+	if (CMAKE_BUILD_TYPE MATCHES Release AND BUILD_PACKAGES)
+		include (cpack/cpack.cmake)
+	endif (CMAKE_BUILD_TYPE MATCHES Release AND BUILD_PACKAGES)
+	
 endif (UNIX AND NOT APPLE)
+

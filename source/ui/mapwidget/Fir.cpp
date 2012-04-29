@@ -80,3 +80,4 @@ Fir::generateTip() {
 	painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
 	icaoTip = MapWidget::loadImage(temp);
 }
+

@@ -9,5 +9,5 @@ Comment=A simple Vatsim monitor
 TryExec=$1/bin/vatsinator
 Exec=$1/bin/vatsinator &
 Categories=Application;Network;Qt;
-Icon=vatsinator-128
+Icon=vatsinator
 EOF

@@ -6,7 +6,7 @@ This python script is used to generate the WorldAirports database. The right inp
 can be obtained from http://openflights.org/data.html and its file format is being used
 here. The WorldAiports.db is a binary file, which contains as follows:
 4-bytes integer that tells us how many airports we have;
-size * 420 bytes of aiports data. 420 byte-struct contains:
+size * 428 bytes of aiports data. 428 byte-struct contains:
 	128 bytes of name (string);
 	128 bytes of city (string);
 	128 bytes of country (string);

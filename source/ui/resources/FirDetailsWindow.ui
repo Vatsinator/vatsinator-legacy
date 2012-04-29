@@ -193,9 +193,9 @@
   <widget class="QPushButton" name="CloseButton">
    <property name="geometry">
     <rect>
-     <x>640</x>
+     <x>560</x>
      <y>470</y>
-     <width>150</width>
+     <width>231</width>
      <height>24</height>
     </rect>
    </property>

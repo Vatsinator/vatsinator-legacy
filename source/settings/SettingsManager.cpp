@@ -57,7 +57,9 @@ SettingsManager::__saveSettings() {
 	
 	settings.setValue("unstaffedFirBordersColor",	__unstaffedFirBordersColor);
 	settings.setValue("staffedFirBordersColor",	__staffedFirBordersColor);
+	settings.setValue("staffedFirBackgroundColor",	__staffedFirBackgroundColor);
 	settings.setValue("staffedUirBordersColor",	__staffedUirBordersColor);
+	settings.setValue("staffedUirBackgroundColor",	__staffedUirBackgroundColor);
 	settings.setValue("approachCircleColor",	__approachCircleColor);
 	settings.setValue("backgroundColor",		__backgroundColor);
 	
@@ -93,8 +95,12 @@ SettingsManager::__restoreSettings() {
 						    DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR).value<QColor>();
 	__staffedFirBordersColor = settings.value("staffedFirBordersColor",
 						  DefaultSettings::STAFFED_FIR_BORDERS_COLOR).value<QColor>();
+	__staffedFirBackgroundColor = settings.value("staffedFirBackgroundColor",
+						     DefaultSettings::STAFFED_FIR_BACKGROUND_COLOR).value<QColor>();
 	__staffedUirBordersColor = settings.value("staffedUirBordersColor",
 						  DefaultSettings::STAFFED_UIR_BORDERS_COLOR).value<QColor>();
+	__staffedUirBackgroundColor = settings.value("staffedUirBackgroundColor",
+						     DefaultSettings::STAFFED_UIR_BACKGROUND_COLOR).value<QColor>();
 	__approachCircleColor = settings.value("approachCircleColor",
 					       DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>();
 	__backgroundColor = settings.value("backgroundColor",
@@ -141,7 +147,9 @@ SettingsManager::__updateSettings() {
 	
 	__unstaffedFirBordersColor = __mySettingsWindow->UnstaffedFirColorButton->getColor();
 	__staffedFirBordersColor = __mySettingsWindow->StaffedFirColorButton->getColor();
+	__staffedFirBackgroundColor = __mySettingsWindow->StaffedFirBackgroundColorButton->getColor();
 	__staffedUirBordersColor = __mySettingsWindow->StaffedUirColorButton->getColor();
+	__staffedUirBackgroundColor = __mySettingsWindow->StaffedUirBackgroundColorButton->getColor();
 	__approachCircleColor = __mySettingsWindow->ApproachCircleColorButton->getColor();
 	__backgroundColor = __mySettingsWindow->BackgroundColorButton->getColor();
 	
@@ -171,7 +179,9 @@ SettingsManager::__restoreDefaults() {
 	
 	__unstaffedFirBordersColor = DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR;
 	__staffedFirBordersColor = DefaultSettings::STAFFED_FIR_BORDERS_COLOR;
+	__staffedFirBackgroundColor = DefaultSettings::STAFFED_FIR_BACKGROUND_COLOR;
 	__staffedUirBordersColor = DefaultSettings::STAFFED_UIR_BORDERS_COLOR;
+	__staffedUirBackgroundColor = DefaultSettings::STAFFED_UIR_BACKGROUND_COLOR;
 	__approachCircleColor = DefaultSettings::APPROACH_CIRCLE_COLOR;
 	__backgroundColor = DefaultSettings::BACKGROUND_COLOR;
 	

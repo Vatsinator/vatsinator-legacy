@@ -76,7 +76,8 @@ public:
 	FirHeader		header;
 	QString			name;	// FIR name
 	QString			country; // country the FIR belongs to
-	QVector< Point >	coords;
+	QVector< Point >	borders;
+	QVector< Point >	triangles;
 	
 	GLuint	icaoTip;
 	

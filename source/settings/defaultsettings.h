@@ -22,19 +22,25 @@ static const bool WHEN_HOVERED_CHECKBOX		= true;
 static const bool AIRPORT_RELATED_CHECKBOX	= true;
 
 // default unstaffed FIRs borders color
-static const QColor UNSTAFFED_FIR_BORDERS_COLOR	= { 193, 193, 193 };
+static const QColor UNSTAFFED_FIR_BORDERS_COLOR		= { 193, 193, 193 };
 
 // default staffed FIRs border color
-static const QColor STAFFED_FIR_BORDERS_COLOR	= { 176, 32, 32 };
+static const QColor STAFFED_FIR_BORDERS_COLOR		= { 176, 32, 32 };
+
+// default staffed FIRs background color
+static const QColor STAFFED_FIR_BACKGROUND_COLOR	= { 255, 235, 235 };
 
 // default staffed UIRs (i.e. Eurocontrol) border color
-static const QColor STAFFED_UIR_BORDERS_COLOR	= { 117, 183, 213 };
+static const QColor STAFFED_UIR_BORDERS_COLOR		= { 117, 183, 213 };
+
+// default staffed UIRs background color
+static const QColor STAFFED_UIR_BACKGROUND_COLOR	= { 224, 254, 255 };
 
 // default approach circle color (*_APP)
-static const QColor APPROACH_CIRCLE_COLOR	= { 127, 0, 0 };
+static const QColor APPROACH_CIRCLE_COLOR		= { 127, 0, 0 };
 
 // default background color
-static const QColor BACKGROUND_COLOR		= { 255, 255, 255 };
+static const QColor BACKGROUND_COLOR			= { 255, 255, 255 };
 
-}
+} // namespace DefaultSettings
 

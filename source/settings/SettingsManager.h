@@ -74,7 +74,13 @@ public:
 	getStaffedFirBordersColor() { return __staffedFirBordersColor; }
 	
 	inline const QColor &
+	getStaffedFirBackgroundColor() { return __staffedFirBackgroundColor; }
+	
+	inline const QColor &
 	getStaffedUirBordersColor() { return __staffedUirBordersColor; }
+	
+	inline const QColor &
+	getStaffedUirBackgroundColor() { return __staffedUirBackgroundColor; }
 	
 	inline const QColor &
 	getApproachCircleColor() { return __approachCircleColor; }
@@ -107,7 +113,9 @@ private:
 	/* Various map colors */
 	QColor	__unstaffedFirBordersColor;
 	QColor	__staffedFirBordersColor;
+	QColor	__staffedFirBackgroundColor;
 	QColor	__staffedUirBordersColor;
+	QColor	__staffedUirBackgroundColor;
 	QColor	__approachCircleColor;
 	QColor	__backgroundColor;
 	

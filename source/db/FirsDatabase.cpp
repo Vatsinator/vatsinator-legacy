@@ -37,7 +37,7 @@ FirsDatabase::init() {
 	fstream db(FIRS_DB, ios::in | ios::binary);
 
 	int size;
-	db.read((char*)&size, 4);
+	db.read(reinterpret_cast< char* >(&size), 4);
 	
 #ifndef NO_DEBUG
 	qDebug() << "Firs to be read: " << size;
@@ -47,11 +47,17 @@ FirsDatabase::init() {
 	
 	__firs.resize(size);
 	for (int i = 0; i < size; ++i) {
-		db.read((char*)&__firs[i].header, sizeof(FirHeader));
+		db.read(reinterpret_cast< char* >(&__firs[i].header), sizeof(FirHeader));
 		int counting;
-		db.read((char*)&counting, sizeof(int));
-		__firs[i].coords.resize(counting);
-		db.read((char*)&__firs[i].coords[0], sizeof(Point) * counting);
+		db.read(reinterpret_cast< char* >(&counting), sizeof(int));
+		__firs[i].borders.resize(counting);
+		db.read(reinterpret_cast< char* >(&__firs[i].borders[0]), sizeof(Point) * counting);
+		
+		db.read(reinterpret_cast< char* >(&counting), sizeof(int));
+		if (counting) {
+			__firs[i].triangles.resize(counting * 3);
+			db.read(reinterpret_cast< char* >(&__firs[i].triangles[0]), sizeof(Point) * counting * 3);
+		}
 	}
 	
 	db.close();
@@ -62,7 +68,7 @@ FirsDatabase::init() {
 Fir *
 FirsDatabase::findFirByIcao(const QString& _icao, bool _fss) {
 	for (Fir& f: __firs)
-		if (static_cast< QString >(f.header.icao).startsWith(_icao)) {
+		if (static_cast< QString >(f.header.icao) == _icao) {
 			if (!f.header.oceanic && _fss)
 				continue;
 			if (f.header.oceanic && !_fss)

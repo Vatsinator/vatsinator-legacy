@@ -677,15 +677,21 @@ void
 MapWidget::__drawFirs() {
 	glLineWidth(3.0);
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, -0.2);
+		glTranslatef(0.0, 0.0, -0.1);
 		
 		for (const Fir& fir: __firs->getFirs()) {
 			if (fir.getStaff().isEmpty())
 			continue;
 			
 			qglColor(__settings->getStaffedFirBordersColor());
-			glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
-			glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
+			glVertexPointer(2, GL_DOUBLE, 0, &fir.borders[0].x);
+			glDrawArrays(GL_LINE_LOOP, 0, fir.borders.size());
+			
+			if (!fir.triangles.isEmpty()) {
+				qglColor(__settings->getStaffedFirBackgroundColor());
+				glVertexPointer(2, GL_DOUBLE, 0, &fir.triangles[0].x);
+				glDrawArrays(GL_TRIANGLES, 0, fir.triangles.size());
+			}
 		}
 	glPopMatrix();
 	glLineWidth(1.0);
@@ -699,8 +705,8 @@ MapWidget::__drawFirs() {
 		}
 		
 		qglColor(__settings->getUnstaffedFirBordersColor());		
-		glVertexPointer(2, GL_DOUBLE, 0, &fir.coords[0].x);
-		glDrawArrays(GL_LINE_LOOP, 0, fir.coords.size());
+		glVertexPointer(2, GL_DOUBLE, 0, &fir.borders[0].x);
+		glDrawArrays(GL_LINE_LOOP, 0, fir.borders.size());
 	}
 }
 
@@ -713,8 +719,14 @@ MapWidget::__drawUirs() {
 				qglColor(__settings->getStaffedUirBordersColor());
 				glLineWidth(3.0);
 				for (const Fir* fir: uir->getRange()) {
-					glVertexPointer(2, GL_DOUBLE, 0, &fir->coords[0].x);
-					glDrawArrays(GL_LINE_LOOP, 0, fir->coords.size());
+					glVertexPointer(2, GL_DOUBLE, 0, &fir->borders[0].x);
+					glDrawArrays(GL_LINE_LOOP, 0, fir->borders.size());
+					
+					if (fir->getStaff().isEmpty() && !fir->triangles.isEmpty()) {
+						qglColor(__settings->getStaffedUirBackgroundColor());
+						glVertexPointer(2, GL_DOUBLE, 0, &fir->triangles[0].x);
+						glDrawArrays(GL_TRIANGLES, 0, fir->triangles.size());
+					}
 				}
 				glLineWidth(1.0);
 			glPopMatrix();
@@ -726,7 +738,7 @@ void
 MapWidget::__drawFirsLabels() {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, 0.8);
+		glTranslatef(0.0, 0.0, 0.6);
 		for (const Fir& fir: __firs->getFirs()) {
 			double x, y;
 			__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
