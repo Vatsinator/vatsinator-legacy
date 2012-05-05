@@ -46,7 +46,7 @@ enum PMMatrixMode {
 
 class MapWidget :
 		public QGLWidget,
-		public Singleton< MapWidget >{
+		public Singleton< MapWidget > {
 	
 	/*
 	 * We need this class to build our QGLWidget for UserInterface class.
@@ -124,6 +124,11 @@ private slots:
 private:
 	void __prepareMatrix(PMMatrixMode);
 	
+#ifndef NO_DEBUG
+	void __drawMarks();
+#endif
+	
+	void __drawWorld();
 	void __drawFirs();
 	void __drawUirs();
 	void __drawFirsLabels();
@@ -139,8 +144,8 @@ private:
 	
 	void __produceCircle();
 	
-	inline double
-	__distanceFromCamera(const double& _x, const double& _y) {
+	inline float
+	__distanceFromCamera(float _x, float _y) {
 		return sqrt(
 			pow(_x - __lastMousePosInterpolated.x(), 2) +
 			pow(_y - __lastMousePosInterpolated.y(), 2)
@@ -148,8 +153,8 @@ private:
 	}
 	
 	inline void
-	__mapCoordinates(const double& _xFrom, const double& _yFrom,
-						  double& _xTo, double& _yTo) {
+	__mapCoordinates(float _xFrom, float _yFrom,
+						  float& _xTo, float& _yTo) {
 		_xTo = (_xFrom / 180 - __position.x()) * __zoom;
 		_yTo = (_yFrom / 90 - __position.y()) * __zoom;
 	}
@@ -244,7 +249,7 @@ private:
 	QFont	__firFont;
 	
 	/* Approach circle array and vertices count */
-	GLdouble *	__circle;
+	GLfloat *	__circle;
 	unsigned	__circleCount;
 	
 	/* Camera position x, y */
@@ -266,7 +271,7 @@ private:
 	int	__winWidth;
 	int	__winHeight;
 	
-	/* Stores glOrtho ranges */
+	/* Store glOrtho ranges */
 	GLdouble	__orthoRangeX;
 	GLdouble	__orthoRangeY;
 	

@@ -1,5 +1,5 @@
 /*
-    FirsDatabase.h
+    VertexBufferObject.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,37 +17,29 @@
 */
 
 
-#ifndef FIRSDATABASE_H
-#define FIRSDATABASE_H
+#ifndef VAOOBJECT_H
+#define VAOOBJECT_H
 
 #include <QVector>
-#include <QString>
+#include <GL/gl.h>
 
-#include "ui/mapwidget/Fir.h"
-#include "Singleton.h"
+#include "db/Point.h"
 
-class FirsDatabase : public Singleton< FirsDatabase > {
+class VertexBufferObject {
 	
 public:
-	FirsDatabase();
+	VertexBufferObject(GLenum);
+	virtual ~VertexBufferObject();
 	
-	void init();
+	void sendData(unsigned, const void*);
 	
-	Fir *	findFirByIcao(const QString&, bool = false);
-	
-	void	clearAll();
-	
-	inline const QVector< Fir > &
-	getFirs() { return __firs; }
+	void bind() const;
+	void unbind() const;
 	
 private:
-	void __readDatabase();
-	
-	QVector< Fir >	__firs;
-	
-	bool __toolTipsPrepared;
-	
+	GLuint __vboID;
+	GLenum __type;
 	
 };
 
-#endif // FIRSDATABASE_H
+#endif // VAOOBJECT_H

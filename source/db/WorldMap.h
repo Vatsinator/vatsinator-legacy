@@ -1,5 +1,5 @@
 /*
-    FirsDatabase.h
+    WorldMap.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,37 +17,51 @@
 */
 
 
-#ifndef FIRSDATABASE_H
-#define FIRSDATABASE_H
+#ifndef WORLDMAP_H
+#define WORLDMAP_H
 
 #include <QVector>
-#include <QString>
 
-#include "ui/mapwidget/Fir.h"
+#include "db/Point.h"
+
 #include "Singleton.h"
 
-class FirsDatabase : public Singleton< FirsDatabase > {
+class VertexBufferObject;
+
+class WorldMap : public Singleton< WorldMap > {
+	
+	struct WorldMapVBO {
+		VertexBufferObject *	border;
+		unsigned		borderSize;
+		VertexBufferObject *	triangles;
+		unsigned		trianglesSize;
+	};
+	
+	struct Polygon {
+		int				sea;
+		
+		QVector< Point >		borders;
+		
+		QVector< unsigned short >	triangles;
+		
+		WorldMapVBO			vbo;
+	};
 	
 public:
-	FirsDatabase();
+	WorldMap();
+	virtual ~WorldMap();
 	
 	void init();
 	
-	Fir *	findFirByIcao(const QString&, bool = false);
-	
-	void	clearAll();
-	
-	inline const QVector< Fir > &
-	getFirs() { return __firs; }
+	void drawLands() const;
+	void drawSeas() const;
 	
 private:
 	void __readDatabase();
 	
-	QVector< Fir >	__firs;
-	
-	bool __toolTipsPrepared;
+	QVector< Polygon > __polygons;
 	
 	
 };
 
-#endif // FIRSDATABASE_H
+#endif // WORLDMAP_H

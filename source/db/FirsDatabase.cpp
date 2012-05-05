@@ -17,20 +17,34 @@
 */
 
 #include <iostream>
-#include <sstream>
 #include <fstream>
-#include <string>
 
 #include <QtGui>
 
-#include "FirsDatabase.h"
+#include "VatsinatorApplication.h"
 
+#include "FirsDatabase.h"
 #include "defines.h"
 
 using namespace std;
 
+FirsDatabase::FirsDatabase() {
+	__readDatabase();
+}
+
 void
 FirsDatabase::init() {
+	if (__toolTipsPrepared)
+		return;
+	
+	for (Fir& f: __firs)
+		f.init();
+	
+	__toolTipsPrepared = true;
+}
+
+void
+FirsDatabase::__readDatabase() {
 	__toolTipsPrepared = false;
 	__firs.clear();
 	
@@ -56,7 +70,7 @@ FirsDatabase::init() {
 		db.read(reinterpret_cast< char* >(&counting), sizeof(int));
 		if (counting) {
 			__firs[i].triangles.resize(counting * 3);
-			db.read(reinterpret_cast< char* >(&__firs[i].triangles[0]), sizeof(Point) * counting * 3);
+			db.read(reinterpret_cast< char* >(&__firs[i].triangles[0]), 2 * counting * 3);
 		}
 	}
 	
@@ -85,15 +99,4 @@ void
 FirsDatabase::clearAll() {
 	for (Fir& f: __firs)
 		f.clear();
-}
-
-void
-FirsDatabase::prepareTooltips() {
-	if (__toolTipsPrepared)
-		return;
-	
-	for (Fir& f: __firs)
-		f.generateTip();
-	
-	__toolTipsPrepared = true;
 }

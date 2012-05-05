@@ -25,6 +25,7 @@ set (vatsinator_MOC_SRCS
 
 set (vatsinator_SUBDIRS
 	db
+	glutils
 	network
 	settings
 	ui
@@ -36,17 +37,26 @@ qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 include (cmake/macros.cmake)
 
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-version.h.cmake
-	${CMAKE_CURRENT_BINARY_DIR}/version.h
+if (MINGW)
+	set (VATSINATOR_PLATFORM_WIN32 TRUE)
+endif (MINGW)
+
+if (UNIX AND NOT APPLE AND NOT MINGW)
+	set (VATSINATOR_PLATFORM_LINUX TRUE)
+endif (UNIX AND NOT APPLE AND NOT MINGW)
+
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/config.h
 )
 
 set(QT_USE_QTOPENGL TRUE)
 set(QT_USE_QTNETWORK TRUE)
 
 include(${QT_USE_FILE})
+
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_definitions(${QT_DEFINITIONS})
+#add_definitions(${QT_DEFINITIONS})
 
 add_executable (${vatsinator_TARGET} WIN32
 	main.cpp
@@ -66,7 +76,7 @@ if (MINGW)
 else (MINGW)
 	# set -DPREFIX for defines.h
 	set (CMAKE_CXX_FLAGS
-		${CMAKE_CXX_FLAGS} -DPREFIX=\\"${CMAKE_INSTALL_PREFIX}\\"
+		"${CMAKE_CXX_FLAGS} -DPREFIX=\\\"${CMAKE_INSTALL_PREFIX}\\\""
 	)
 
 	set (vatsinator_LIBS

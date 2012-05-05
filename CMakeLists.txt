@@ -6,6 +6,7 @@ cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 find_package (Qt4	REQUIRED)
 find_package (OpenGL	REQUIRED)
 
+
 # set CMAKE_BUILD_TYPE
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	set (CMAKE_BUILD_TYPE Debug)
@@ -44,7 +45,7 @@ if (UNIX AND NOT APPLE)
 	
 	add_custom_command (OUTPUT ${DESKTOP_ENTRY}
 		COMMAND touch ${DESKTOP_ENTRY}
-		COMMAND sh ${DESKTOP_SH_FILE} ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
+		COMMAND sh ${DESKTOP_SH_FILE} ${vatsinator_VERSION} ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
 		DEPENDS ${DESKTOP_SH_FILE}
 		COMMENT "Generating desktop entry file"
 	)
@@ -57,6 +58,7 @@ if (UNIX AND NOT APPLE)
 		resources/vatsinator.dat
 		resources/WorldAirports.db
 		resources/WorldFirs.db
+		resources/WorldMap.db
 		DESTINATION share/vatsinator
 	)
 	
@@ -77,9 +79,9 @@ if (UNIX AND NOT APPLE)
 		install_icon(${ICON})
 	endforeach (ICON)
 	
-	if (CMAKE_BUILD_TYPE MATCHES Release AND BUILD_PACKAGES)
+	if (BUILD_PACKAGES)
 		include (cpack/cpack.cmake)
-	endif (CMAKE_BUILD_TYPE MATCHES Release AND BUILD_PACKAGES)
+	endif (BUILD_PACKAGES)
 	
 endif (UNIX AND NOT APPLE)
 

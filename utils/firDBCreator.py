@@ -6,10 +6,10 @@ from struct import *
 from math import sqrt
 
 class Point(object):
-	def __init__(self, x, y):
+	def __init__(self, x, y, index = -1):
 		self.x = x
 		self.y = y
-
+		self.index = index
 
 class Vector(object):
 	def __init__(self, x, y):
@@ -18,7 +18,6 @@ class Vector(object):
 	
 	def length(self):
 		return sqrt(self.x * self.x + self.y * self.y)
-
 
 class Triangle(object):
 	def __init__(self, a, b, c):
@@ -63,8 +62,7 @@ class Triangle(object):
 		v = (dot00 * dot12 - dot01 * dot02) * invDenom
 		
 		return u >= 0 and v >= 0 and u + v < 1
-		
-		
+
 def dotProduct(v1, v2):
 	if not isinstance(v1, Vector) or not isinstance(v2, Vector):
 		raise TypeError('The argument must be an instance of class Vector!')
@@ -93,11 +91,12 @@ def pointInPolygon(coords, point):
 	
 	return result
 
-
 def cosOfAngle(a, b):
 	if not isinstance(a, Vector) or not isinstance(b, Vector):
 		raise TypeError('The argument must be an instance of class Vector!')
 	
+	if a.length() * b.length() == 0:
+		return 1
 	return dotProduct(a, b)/(a.length() * b.length())
 
 
@@ -147,7 +146,6 @@ def triangulate(coords):
 	
 	return triangles
 
-
 if len(sys.argv) <2:
 	sys.exit('Usage: %s [file]' % sys.argv[0])
 
@@ -186,16 +184,17 @@ for line in dbin:
 			textX = 0.0
 			textY = 0.0
 		
-		dbout.write(pack('4siddddddi', icao, oceanic, float(firData[5]), float(firData[4]),\
+		dbout.write(pack('4siffffffi', icao, oceanic, float(firData[5]), float(firData[4]),\
 			float(firData[7]), float(firData[6]), textX, textY,\
 			counting))
 		
 		print ('Processing ' + icao + '...')
 	else:
-		dbout.write(pack('dd', float(firData[1]), float(firData[0])))
+		dbout.write(pack('ff', float(firData[1]), float(firData[0])))
 		counting -= 1
 		
-		coords.append(Point(float(firData[1]), float(firData[0])))
+		index = len(coords)
+		coords.append(Point(float(firData[1]), float(firData[0]), index))
 		
 		if counting == 0:
 			firParsing = False
@@ -206,7 +205,7 @@ for line in dbin:
 			
 			dbout.write(pack('i', len(triangulated)))
 			for t in triangulated:
-				dbout.write(pack('dddddd', t.a.x, t.a.y, t.b.x, t.b.y, t.c.x, t.c.y))
+				dbout.write(pack('HHH', t.a.index, t.b.index, t.c.index))
 			
 
 dbout.seek(0)
@@ -217,4 +216,6 @@ print('Firs read: ' + str(i))
 
 dbout.close()
 dbin.close()
+
+
 

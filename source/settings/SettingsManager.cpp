@@ -57,11 +57,10 @@ SettingsManager::__saveSettings() {
 	
 	settings.setValue("unstaffedFirBordersColor",	__unstaffedFirBordersColor);
 	settings.setValue("staffedFirBordersColor",	__staffedFirBordersColor);
-	settings.setValue("staffedFirBackgroundColor",	__staffedFirBackgroundColor);
 	settings.setValue("staffedUirBordersColor",	__staffedUirBordersColor);
-	settings.setValue("staffedUirBackgroundColor",	__staffedUirBackgroundColor);
 	settings.setValue("approachCircleColor",	__approachCircleColor);
-	settings.setValue("backgroundColor",		__backgroundColor);
+	settings.setValue("seasColor",			__seasColor);
+	settings.setValue("landsColor",			__landsColor);
 	
 	settings.endGroup();
 }
@@ -95,16 +94,20 @@ SettingsManager::__restoreSettings() {
 						    DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR).value<QColor>();
 	__staffedFirBordersColor = settings.value("staffedFirBordersColor",
 						  DefaultSettings::STAFFED_FIR_BORDERS_COLOR).value<QColor>();
-	__staffedFirBackgroundColor = settings.value("staffedFirBackgroundColor",
-						     DefaultSettings::STAFFED_FIR_BACKGROUND_COLOR).value<QColor>();
+	__staffedFirBackgroundColor = __staffedFirBordersColor;
+	__staffedFirBackgroundColor.setAlpha(30);
+	
 	__staffedUirBordersColor = settings.value("staffedUirBordersColor",
 						  DefaultSettings::STAFFED_UIR_BORDERS_COLOR).value<QColor>();
-	__staffedUirBackgroundColor = settings.value("staffedUirBackgroundColor",
-						     DefaultSettings::STAFFED_UIR_BACKGROUND_COLOR).value<QColor>();
+	__staffedUirBackgroundColor = __staffedUirBordersColor;
+	__staffedUirBackgroundColor.setAlpha(30);
+	
 	__approachCircleColor = settings.value("approachCircleColor",
 					       DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>();
-	__backgroundColor = settings.value("backgroundColor",
-					   DefaultSettings::BACKGROUND_COLOR).value<QColor>();
+	__seasColor = settings.value("seasColor",
+				     DefaultSettings::SEAS_COLOR).value<QColor>();
+	__landsColor = settings.value("landsColor",
+				      DefaultSettings::LANDS_COLOR).value<QColor>();
 	   
 #ifndef NO_DEBUG
 	qDebug() << "Antyaliasing " << (__antyaliasing ? "on" : "off");
@@ -147,11 +150,18 @@ SettingsManager::__updateSettings() {
 	
 	__unstaffedFirBordersColor = __mySettingsWindow->UnstaffedFirColorButton->getColor();
 	__staffedFirBordersColor = __mySettingsWindow->StaffedFirColorButton->getColor();
-	__staffedFirBackgroundColor = __mySettingsWindow->StaffedFirBackgroundColorButton->getColor();
+	
+	__staffedFirBackgroundColor = __staffedFirBordersColor;
+	__staffedFirBackgroundColor.setAlpha(30);
+	
 	__staffedUirBordersColor = __mySettingsWindow->StaffedUirColorButton->getColor();
-	__staffedUirBackgroundColor = __mySettingsWindow->StaffedUirBackgroundColorButton->getColor();
+	
+	__staffedUirBackgroundColor = __staffedUirBordersColor;
+	__staffedUirBackgroundColor.setAlpha(30);
+	
 	__approachCircleColor = __mySettingsWindow->ApproachCircleColorButton->getColor();
-	__backgroundColor = __mySettingsWindow->BackgroundColorButton->getColor();
+	__seasColor = __mySettingsWindow->SeasColorButton->getColor();
+	__landsColor = __mySettingsWindow->LandsColorButton->getColor();
 	
 	__saveSettings();
 	
@@ -179,11 +189,18 @@ SettingsManager::__restoreDefaults() {
 	
 	__unstaffedFirBordersColor = DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR;
 	__staffedFirBordersColor = DefaultSettings::STAFFED_FIR_BORDERS_COLOR;
-	__staffedFirBackgroundColor = DefaultSettings::STAFFED_FIR_BACKGROUND_COLOR;
+	
+	__staffedFirBackgroundColor = __staffedFirBordersColor;
+	__staffedFirBackgroundColor.setAlpha(30);
+	
 	__staffedUirBordersColor = DefaultSettings::STAFFED_UIR_BORDERS_COLOR;
-	__staffedUirBackgroundColor = DefaultSettings::STAFFED_UIR_BACKGROUND_COLOR;
+	
+	__staffedUirBackgroundColor = __staffedUirBordersColor;
+	__staffedUirBackgroundColor.setAlpha(30);
+	
 	__approachCircleColor = DefaultSettings::APPROACH_CIRCLE_COLOR;
-	__backgroundColor = DefaultSettings::BACKGROUND_COLOR;
+	__seasColor = DefaultSettings::SEAS_COLOR;
+	__landsColor = DefaultSettings::LANDS_COLOR;
 	
 	__clearEntries();
 	

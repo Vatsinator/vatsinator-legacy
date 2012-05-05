@@ -17,6 +17,11 @@
 */
 
 #include <QtGui>
+#include <qgl.h>
+#include <GL/glext.h>
+
+#include "glutils/VertexBufferObject.h"
+#include "glutils/glExtensions.h"
 
 #include "ui/mapwidget/MapWidget.h"
 
@@ -29,6 +34,11 @@ Fir::Fir() {
 
 Fir::~Fir() {
 	MapWidget::deleteImage(icaoTip);
+	
+	if (__trianglesVAO)
+		delete __trianglesVAO;
+	
+	delete __bordersVAO;
 }
 
 void
@@ -54,9 +64,38 @@ Fir::correctName() {
 		name += " Center";
 }
 
+void
+Fir::init() {
+	__generateTip();
+	__prepareVAO();
+}
 
 void
-Fir::generateTip() {
+Fir::drawBorders() const {
+	__bordersVAO->bind();
+	
+	glVertexPointer(2, GL_FLOAT, 0, 0);
+	glDrawArrays(GL_LINE_LOOP, 0, __bordersSize);
+	
+	__bordersVAO->unbind();
+}
+
+void
+Fir::drawTriangles() const {
+	if (__trianglesSize) {
+		__bordersVAO->bind();
+		__trianglesVAO->bind();
+		
+		glVertexPointer(2, GL_FLOAT, 0, 0);
+		glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0);
+		
+		__trianglesVAO->unbind();
+		__bordersVAO->unbind();
+	}
+}
+
+void
+Fir::__generateTip() {
 	QString icao(header.icao);
 	if (header.oceanic) {
 		icao = icao.left(4) + " Oceanic";
@@ -80,4 +119,23 @@ Fir::generateTip() {
 	painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
 	icaoTip = MapWidget::loadImage(temp);
 }
+
+void
+Fir::__prepareVAO() {
+	__bordersVAO = new VertexBufferObject(GL_ARRAY_BUFFER);
+	__bordersVAO->sendData(sizeof(Point) * borders.size(), &borders[0].x);
+	
+	__bordersSize = borders.size();
+	borders.clear();
+	
+	if (!triangles.isEmpty()) {
+		__trianglesVAO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
+		__trianglesVAO->sendData(sizeof(unsigned short) * triangles.size(), &triangles[0]);
+		
+		__trianglesSize = triangles.size();
+		triangles.clear();
+	} else
+		__trianglesVAO = NULL;
+}
+
 

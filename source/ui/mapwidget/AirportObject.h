@@ -22,7 +22,7 @@
 
 #include <QVector>
 
-#include <GL/gl.h>
+#include <qgl.h>
 
 #include "db/AirportsDatabase.h"
 

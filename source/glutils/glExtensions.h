@@ -1,5 +1,5 @@
 /*
-    FirsDatabase.h
+    glExtensions.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,37 +17,27 @@
 */
 
 
-#ifndef FIRSDATABASE_H
-#define FIRSDATABASE_H
+#ifndef GLEXTENSIONS_H
+#define GLEXTENSIONS_H
 
-#include <QVector>
-#include <QString>
+#include <cstddef>
+#include <GL/gl.h>
 
-#include "ui/mapwidget/Fir.h"
-#include "Singleton.h"
+#define GL_STATIC_DRAW 0x88E4
+#define GL_ARRAY_BUFFER 0x8892
+#define GL_ELEMENT_ARRAY_BUFFER 0x8893
 
-class FirsDatabase : public Singleton< FirsDatabase > {
-	
-public:
-	FirsDatabase();
-	
-	void init();
-	
-	Fir *	findFirByIcao(const QString&, bool = false);
-	
-	void	clearAll();
-	
-	inline const QVector< Fir > &
-	getFirs() { return __firs; }
-	
-private:
-	void __readDatabase();
-	
-	QVector< Fir >	__firs;
-	
-	bool __toolTipsPrepared;
-	
-	
-};
+typedef ptrdiff_t GLsizeiptr;
+typedef ptrdiff_t GLintptr;
 
-#endif // FIRSDATABASE_H
+extern void (* glBindBuffer)    (GLenum, GLuint);
+extern void (* glBufferData)    (GLenum, int, const GLvoid*, GLenum);
+extern void (* glBufferSubData) (GLenum, GLintptr, GLsizeiptr, const GLvoid*);
+extern void (* glDeleteBuffers) (GLsizei, const GLuint*);
+extern void (* glGenBuffers)    (GLsizei, GLuint*);
+
+void initGLExtensionsPointers();
+
+
+
+#endif // GLEXTENSIONS_H

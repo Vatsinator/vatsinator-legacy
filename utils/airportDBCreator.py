@@ -54,7 +54,7 @@ class Airport(object):
 		self.fir = findFir(self)
 
 	def data(self):
-		return pack('128s128s128s8s8s8sddi', self.name, self.city, self.country,\
+		return pack('128s128s128s8s8s8sffi', self.name, self.city, self.country,\
 			self.iata, self.icao, self.fir, self.latitude, self.longitude, self.altitude)
 
 def airportInFir(airport, fir):
@@ -113,16 +113,23 @@ contents = firdb.read()
 offset += 4
 for i in range(size):
 	(icao,oceanic,extern1x,extern1y,extern2x,extern2y,tpx,tpy,counting) = \
-		unpack_from('4siddddddi', contents, offset)
+		unpack_from('4siffffffi', contents, offset)
 	
 	current_fir = Fir(icao, oceanic, Point(tpx, tpy))
 	
-	offset += calcsize('4siddddddi')
+	offset += calcsize('4siffffffi')
 	
 	for k in range(counting):
-		(pointX, pointY) = unpack_from('dd', contents, offset)
+		(pointX, pointY) = unpack_from('ff', contents, offset)
 		current_fir.coords.append(Point(pointX, pointY))
-		offset += calcsize('dd')
+		offset += calcsize('ff')
+	
+	(counting2,) = unpack_from('i', contents, offset)
+	offset += 4
+
+	for k in range(counting2):
+		(fooIndex1,fooIndex2,fooIndex3) = unpack_from('HHH', contents, offset)
+		offset += calcsize('HHH')
 	
 	firs.append(current_fir)
 

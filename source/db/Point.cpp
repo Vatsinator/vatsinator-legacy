@@ -1,5 +1,5 @@
 /*
-    FirsDatabase.h
+    Point.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,37 +17,6 @@
 */
 
 
-#ifndef FIRSDATABASE_H
-#define FIRSDATABASE_H
+#include "Point.h"
 
-#include <QVector>
-#include <QString>
 
-#include "ui/mapwidget/Fir.h"
-#include "Singleton.h"
-
-class FirsDatabase : public Singleton< FirsDatabase > {
-	
-public:
-	FirsDatabase();
-	
-	void init();
-	
-	Fir *	findFirByIcao(const QString&, bool = false);
-	
-	void	clearAll();
-	
-	inline const QVector< Fir > &
-	getFirs() { return __firs; }
-	
-private:
-	void __readDatabase();
-	
-	QVector< Fir >	__firs;
-	
-	bool __toolTipsPrepared;
-	
-	
-};
-
-#endif // FIRSDATABASE_H

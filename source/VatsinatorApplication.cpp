@@ -24,6 +24,7 @@
 
 #include "db/AirportsDatabase.h"
 #include "db/FirsDatabase.h"
+#include "db/WorldMap.h"
 
 #include "network/HttpHandler.h"
 
@@ -41,6 +42,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		QApplication(_argc, _argv),
 		__airportsData(new AirportsDatabase),
 		__firsData(new FirsDatabase),
+		__worldMap(new WorldMap),
 		__vatsimData(new VatsimDataHandler),
 		__settingsManager(new SettingsManager),
 		__userInterface(new UserInterface) {
@@ -48,7 +50,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 #ifndef NO_DEBUG
 	std::cout << "AIRPORTS_DB: " << AIRPORTS_DB << std::endl <<
 		"FIRS_DB: " << FIRS_DB << std::endl <<
-		"VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl;
+		"VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl <<
+		"WORLD_MAP: " << WORLD_MAP << std::endl;
 #endif
 	// destroy all children windows before the program exits
 	connect(this,			SIGNAL(destroyed()),
@@ -60,9 +63,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 	// connect data refresher with the timer
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
 	
-	// read databases
+	// read database
 	__airportsData->init();
-	__firsData->init();
 	
 	// read .dat file
 	__vatsimData->init();
@@ -89,10 +91,11 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 VatsinatorApplication::~VatsinatorApplication() {
 	delete __settingsManager;
 	delete __httpHandler;
-	delete __userInterface;
 	delete __vatsimData;
 	delete __airportsData;
 	delete __firsData;
+	delete __worldMap;
+	delete __userInterface;
 	
 #ifndef NO_DEBUG
 	DumpUnfreed();

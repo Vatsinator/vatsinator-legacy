@@ -1,0 +1,6 @@
+#define VATSINATOR_VERSION "${vatsinator_VERSION}"
+
+#cmakedefine VATSINATOR_PLATFORM_WIN32
+#cmakedefine VATSINATOR_PLATFORM_LINUX
+
+

@@ -33,7 +33,7 @@ AirportsDatabase::AirportsDatabase() {}
 void
 AirportsDatabase::init() {
 	
-	static_assert(sizeof(AirportRecord) == 428, "Sizeof Airport class is not 420 bytes! The WorldAirports database will be incompatible!");
+	static_assert(sizeof(AirportRecord) == 420, "Sizeof Airport class is not 420 bytes! The WorldAirports database will be incompatible!");
 	
 	__airports.clear();
 	

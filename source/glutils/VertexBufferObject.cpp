@@ -1,5 +1,5 @@
 /*
-    ColorButton.cpp
+    VertexBufferObject.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -18,39 +18,38 @@
 
 #include <QtGui>
 
-#include "ColorButton.h"
+#include "glutils/glExtensions.h"
+
+#include "VertexBufferObject.h"
 #include "defines.h"
 
-ColorButton::ColorButton(QWidget* _parent) :
-		QPushButton("", _parent) {
-	connect(this,	SIGNAL(clicked()),
-		this,	SLOT(__pickColor()));
+VertexBufferObject::VertexBufferObject(GLenum _type):
+		__type(_type) {
+	glGenBuffers(1, &__vboID);
+		
+}
+
+VertexBufferObject::~VertexBufferObject() {
+	glDeleteBuffers(1, &__vboID);
 }
 
 void
-ColorButton::setColor(const QColor& _color) {
-	__current = _color;
-	updateColor();
+VertexBufferObject::sendData(unsigned _size, const void* _data) {
+	bind();
+	
+	glBufferData(__type, _size, NULL, GL_STATIC_DRAW);
+	glBufferSubData(__type, 0, _size, _data);
+	
+	unbind();
 }
 
 void
-ColorButton::updateColor() {
-	setStyleSheet("background: rgb(" +
-		QString::number(__current.red()) + "," +
-		QString::number(__current.green()) + "," +
-		QString::number(__current.blue()) + ");");
+VertexBufferObject::bind() const {
+	glBindBuffer(__type, __vboID);
 }
 
 void
-ColorButton::__pickColor() {
-	QColorDialog* dialog = new QColorDialog(__current);
-	dialog->setWindowTitle("Select color");
-	
-	if (dialog->exec() == QDialog::Accepted)
-		__current = dialog->currentColor();
-	
-	delete dialog;
-	
-	updateColor();
+VertexBufferObject::unbind() const {
+	glBindBuffer(__type, 0);
 }
 

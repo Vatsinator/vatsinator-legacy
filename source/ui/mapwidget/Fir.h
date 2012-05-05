@@ -22,18 +22,17 @@
 
 #include <QVector>
 
-#include <GL/gl.h>
+#include <qgl.h>
+
+#include "db/Point.h"
 
 #include "ui/mapwidget/Clickable.h"
 #include "ui/mapwidget/Controller.h"
 #include "ui/mapwidget/Pilot.h"
 
-#pragma pack(1)
-struct Point {
-	GLdouble x;
-	GLdouble y;
-};
+class VertexBufferObject;
 
+#pragma pack(1)
 struct FirHeader {
 	char	icao[4];
 	int	oceanic; // 0 or 1
@@ -57,7 +56,10 @@ public:
 	
 	void correctName();
 	
-	void generateTip();
+	void init();
+	
+	void drawBorders() const;
+	void drawTriangles() const;
 	
 	inline const QVector< const Controller* > &
 	getStaff() const { return __staff; }
@@ -71,23 +73,34 @@ public:
 	inline void
 	clear() { __staff.clear(); __uirStaff.clear(); __flights.clear(); }
 	
+	inline bool
+	isStaffed() const { return !__staff.isEmpty(); }
 	
 	
-	FirHeader		header;
-	QString			name;	// FIR name
-	QString			country; // country the FIR belongs to
-	QVector< Point >	borders;
-	QVector< Point >	triangles;
+	
+	
+	FirHeader			header;
+	QString				name;	// FIR name
+	QString				country; // country the FIR belongs to
+	QVector< Point >		borders;
+	QVector< unsigned short >	triangles;
 	
 	GLuint	icaoTip;
 	
 private:
 	
+	void __generateTip();
+	void __prepareVAO();
+	
 	QVector< const Controller* > __staff;
 	QVector< const Controller* > __uirStaff;
 	QVector< const Pilot* >	__flights;
 	
+	VertexBufferObject * __bordersVAO;
+	VertexBufferObject * __trianglesVAO;
 	
+	unsigned	__bordersSize;
+	unsigned	__trianglesSize;
 };
 
 #endif // FIR_H

@@ -7,7 +7,7 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include "version.h"
+#include "config.h"
 
 // where to get all the data from
 #define VATSIM_STATUS_URL	"http://status.vatsim.net/status.txt"
@@ -16,10 +16,12 @@
 #define AIRPORTS_DB		PREFIX "/share/vatsinator/WorldAirports.db"
 #define FIRS_DB			PREFIX "/share/vatsinator/WorldFirs.db"
 #define VATSINATOR_DAT		PREFIX "/share/vatsinator/vatsinator.dat"
+#define WORLD_MAP		PREFIX "/share/vatsinator/WorldMap.db"
 #else
 #define AIRPORTS_DB		"WorldAirports.db"
 #define FIRS_DB			"WorldFirs.db"
 #define VATSINATOR_DAT		"vatsinator.dat"
+#define WORLD_MAP		"WorldMap.db"
 #endif
 
 // below/above these values user can't zoom the map

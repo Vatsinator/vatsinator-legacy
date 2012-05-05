@@ -86,7 +86,10 @@ public:
 	getApproachCircleColor() { return __approachCircleColor; }
 	
 	inline const QColor &
-	getBackgroundColor() { return __backgroundColor; }
+	getSeasColor() { return __seasColor; }
+	
+	inline const QColor &
+	getLandsColor() { return __landsColor; }
 	
 signals:
 	void settingsRestored();
@@ -117,7 +120,8 @@ private:
 	QColor	__staffedUirBordersColor;
 	QColor	__staffedUirBackgroundColor;
 	QColor	__approachCircleColor;
-	QColor	__backgroundColor;
+	QColor	__seasColor;
+	QColor	__landsColor;
 	
 private slots:
 	void __updateSettings();

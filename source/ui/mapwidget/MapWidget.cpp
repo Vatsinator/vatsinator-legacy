@@ -21,6 +21,9 @@
 
 #include "db/AirportsDatabase.h"
 #include "db/FirsDatabase.h"
+#include "db/WorldMap.h"
+
+#include "glutils/glExtensions.h"
 
 #include "settings/SettingsManager.h"
 
@@ -44,27 +47,27 @@
 
 const double PI = 3.1415926535897;
 
-const GLdouble VERTICES[] = {
+const GLfloat VERTICES[] = {
 	-0.025, -0.025,
 	-0.025,  0.025,
 	 0.025,  0.025,
 	 0.025, -0.025 };
-const GLdouble PILOT_TOOLTIP_VERTICES[] = {
+const GLfloat PILOT_TOOLTIP_VERTICES[] = {
 	-0.09375,  0.02,
 	-0.09375,  0.1,
 	 0.09375,  0.1,
 	 0.09375,  0.02 };
-const GLdouble AIRPORT_TOOLTIP_VERTICES[] = {
+const GLfloat AIRPORT_TOOLTIP_VERTICES[] = {
 	-0.06, -0.065,
 	-0.06, -0.025,
 	 0.06, -0.025,
 	 0.06, -0.065 };
-const GLdouble FIR_TOOLTIP_VERTICES[] = {
+const GLfloat FIR_TOOLTIP_VERTICES[] = {
 	-0.08, -0.04,
 	-0.08,  0.04,
 	 0.08,  0.04,
 	 0.08, -0.04 };
-const GLdouble TEXCOORDS[] = {
+const GLfloat TEXCOORDS[] = {
 	 0.0, 0.0,
 	 0.0, 1.0,
 	 1.0, 1.0,
@@ -83,17 +86,17 @@ inline void drawCallsign(const Pilot* _p) {
 	glPushMatrix();
 		glTranslatef(0.0f, 0.0f, -0.1f);
 		glBindTexture(GL_TEXTURE_2D, _p->callsignTip);
-		glVertexPointer(2, GL_DOUBLE, 0, PILOT_TOOLTIP_VERTICES);
+		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES);
 		glDrawArrays(GL_QUADS, 0, 4);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
 
-inline void drawCallsign(GLdouble _x, GLdouble _y, const Pilot* _p) {
+inline void drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
 	glPushMatrix();
-		glTranslated(_x, _y, -0.1);
+		glTranslatef(_x, _y, -0.1);
 		glBindTexture(GL_TEXTURE_2D, _p->callsignTip);
-		glVertexPointer(2, GL_DOUBLE, 0, PILOT_TOOLTIP_VERTICES);
+		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES);
 		glDrawArrays(GL_QUADS, 0, 4);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
@@ -103,18 +106,18 @@ inline void drawIcaoLabel(const AirportObject* _ap) {
 	glPushMatrix();
 		glTranslatef(0.0f, 0.0f, -0.1f);
 		glBindTexture(GL_TEXTURE_2D, _ap->labelTip);
-		glVertexPointer(2, GL_DOUBLE, 0, AIRPORT_TOOLTIP_VERTICES);
+		glVertexPointer(2, GL_FLOAT, 0, AIRPORT_TOOLTIP_VERTICES);
 		glDrawArrays(GL_QUADS, 0, 4);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
 }
 
-inline void drawFirLabel(GLdouble _x, GLdouble _y, const Fir& _f) {
+inline void drawFirLabel(GLfloat _x, GLfloat _y, const Fir& _f) {
 	if (_f.icaoTip) {
 		glPushMatrix();
-			glTranslated(_x, _y, 0.0);
+			glTranslatef(_x, _y, 0.0);
 			glBindTexture(GL_TEXTURE_2D, _f.icaoTip);
-			glVertexPointer(2, GL_DOUBLE, 0, FIR_TOOLTIP_VERTICES);
+			glVertexPointer(2, GL_FLOAT, 0, FIR_TOOLTIP_VERTICES);
 			glDrawArrays(GL_QUADS, 0, 4);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		glPopMatrix();
@@ -209,14 +212,17 @@ MapWidget::init() {
 	__airportFont.setPixelSize(AIRPORT_FONT_PIXEL_SIZE);
 	__airportFont.setWeight(AIRPORT_FONT_WEIGHT);
 	
-	__firs->prepareTooltips();
-	
 	__restoreSettings();
 	__loadNewSettings();
+	
+	__firs->init();
+	WorldMap::GetSingleton().init();
 }
 
 void
 MapWidget::initializeGL() {
+	this->makeCurrent();
+	
 	glShadeModel(GL_SMOOTH);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -230,6 +236,7 @@ MapWidget::initializeGL() {
 	
 	glEnable(GL_DEPTH_TEST);
 	
+	initGLExtensionsPointers();
 	init();
 }
 
@@ -237,9 +244,9 @@ void
 MapWidget::paintGL() {
 	__underMouse = NULL;
 	
-	qglColor(__settings->getBackgroundColor());
+	qglColor(__settings->getSeasColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	qglClearColor(__settings->getBackgroundColor());
+	qglClearColor(__settings->getSeasColor());
 	glLoadIdentity();
 	
 	if (__tracked) {
@@ -250,9 +257,15 @@ MapWidget::paintGL() {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_DOUBLE, 0, TEXCOORDS);
+	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
 	
 	__prepareMatrix(WORLD);
+	
+#ifndef NO_DEBUG
+	__drawMarks();
+#endif
+	
+	__drawWorld();
 	
 	if (__settings->getDisplayLayersPolicy().firs)
 		__drawFirs();
@@ -651,7 +664,7 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 		 __orthoRangeX,
 		 -__orthoRangeY,
 		 __orthoRangeY,
-		 1.0, -1.0
+		 1.0, -2.0
 	);
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -662,14 +675,67 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			
-			glScaled((double)1/(double)180, (double)1/(double)90, 1.0);
-			glScaled(__zoom, __zoom, 1.0);
+			glScalef(1.0f/180.0f, 1.0f/90.0f, 1.0f);
+			glScalef(__zoom, __zoom, 1.0);
  			glTranslated(-__position.x() * 180, -__position.y() * 90, 0.9);
 			
 			break;
 		case AIRPORTS_PILOTS:
 			break;
 	}
+}
+
+#ifndef NO_DEBUG
+void
+MapWidget::__drawMarks() {
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glTexCoordPointer(2, GL_DOUBLE, 0, TEXCOORDS);
+	
+	glColor4f(0.0, 0.0, 0.0, 1.0);
+	glPointSize(5.0);
+	glBegin(GL_POINTS);
+		// Lopp Lagoon, Alaska, USA
+		glVertex2f(-168.010255,65.658275);
+		
+		// Jastrzębia Góra, Poland
+		glVertex2f(18.316498, 54.830754);
+		
+		// the most eastern coast of Russia :)
+		glVertex2f(-169.764405,66.10717);
+		
+		// Tierra del Fuego, Argentina
+		glVertex2f(-65.166321,-54.664301);
+		
+		// Aghulas National Park, Republic of South Africa
+		glVertex2f(20.000153,-34.827332);
+		
+		// Steward Island, New Zealand
+		glVertex2f(167.705383,-47.118738);
+	
+	glEnd();
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
+}
+#endif
+
+
+void
+MapWidget::__drawWorld() {
+	glPushMatrix();
+		glTranslatef(0.0, 0.0, 0.9);
+		
+		qglColor(__settings->getLandsColor());
+		WorldMap::GetSingleton().drawLands();
+		
+		glTranslatef(0.0, 0.0, -0.1);
+		qglColor(__settings->getSeasColor());
+		WorldMap::GetSingleton().drawSeas();
+	glPopMatrix();
 }
 
 void
@@ -679,18 +745,14 @@ MapWidget::__drawFirs() {
 		glTranslatef(0.0, 0.0, -0.1);
 		
 		for (const Fir& fir: __firs->getFirs()) {
-			if (fir.getStaff().isEmpty())
-			continue;
+			if (!fir.isStaffed())
+				continue;
 			
 			qglColor(__settings->getStaffedFirBordersColor());
-			glVertexPointer(2, GL_DOUBLE, 0, &fir.borders[0].x);
-			glDrawArrays(GL_LINE_LOOP, 0, fir.borders.size());
+			fir.drawBorders();
 			
-			if (!fir.triangles.isEmpty()) {
-				qglColor(__settings->getStaffedFirBackgroundColor());
-				glVertexPointer(2, GL_DOUBLE, 0, &fir.triangles[0].x);
-				glDrawArrays(GL_TRIANGLES, 0, fir.triangles.size());
-			}
+			qglColor(__settings->getStaffedFirBackgroundColor());
+			fir.drawTriangles();
 		}
 	glPopMatrix();
 	glLineWidth(1.0);
@@ -699,13 +761,12 @@ MapWidget::__drawFirs() {
 		__drawUirs();
 	
 	for (const Fir& fir: __firs->getFirs()) {
-		if (!fir.getStaff().isEmpty()) {
+		if (fir.isStaffed()) {
 			continue;
 		}
 		
 		qglColor(__settings->getUnstaffedFirBordersColor());		
-		glVertexPointer(2, GL_DOUBLE, 0, &fir.borders[0].x);
-		glDrawArrays(GL_LINE_LOOP, 0, fir.borders.size());
+		fir.drawBorders();
 	}
 }
 
@@ -719,20 +780,16 @@ MapWidget::__drawUirs() {
 				glLineWidth(3.0);
 				for (const Fir* fir: uir->getRange()) {
 					qglColor(__settings->getStaffedUirBordersColor());
-					glVertexPointer(2, GL_DOUBLE, 0, &fir->borders[0].x);
-					glDrawArrays(GL_LINE_LOOP, 0, fir->borders.size());
+					fir->drawBorders();
 					
-					if (fir->getStaff().isEmpty() && !fir->triangles.isEmpty()) {
-						//glTranslatef(0.0, 0.0, 0.1);
-						qglColor(__settings->getStaffedUirBackgroundColor());
-						glVertexPointer(2, GL_DOUBLE, 0, &fir->triangles[0].x);
-						glDrawArrays(GL_TRIANGLES, 0, fir->triangles.size());
-					}
+					qglColor(__settings->getStaffedUirBackgroundColor());
+					fir->drawTriangles();
 				}
 				glLineWidth(1.0);
 			glPopMatrix();
 		}
 	}
+	qglColor(__settings->getSeasColor());
 }
 
 void
@@ -741,7 +798,7 @@ MapWidget::__drawFirsLabels() {
 	glPushMatrix();
 		glTranslatef(0.0, 0.0, 0.6);
 		for (const Fir& fir: __firs->getFirs()) {
-			double x, y;
+			float x, y;
 			__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
 			if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
 					(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
@@ -764,15 +821,15 @@ MapWidget::__drawAirports() {
 		if (!it.value()->getData())
 			continue;
 		
-		GLdouble x = ((it.value()->getData()->longitude / 180) - __position.x()) * __zoom;
+		GLfloat x = ((it.value()->getData()->longitude / 180) - __position.x()) * __zoom;
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
-		GLdouble y = ((it.value()->getData()->latitude / 90) - __position.y()) * __zoom;
+		GLfloat y = ((it.value()->getData()->latitude / 90) - __position.y()) * __zoom;
 		if (y < -__orthoRangeY || y > __orthoRangeY)
 			continue;
 		
-		glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
+		glVertexPointer(2, GL_FLOAT, 0, VERTICES);
 		
 		bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 		
@@ -782,7 +839,7 @@ MapWidget::__drawAirports() {
 		
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
- 			glTranslated(x, y, 0.7);
+ 			glTranslatef(x, y, 0.7);
 			glDrawArrays(GL_QUADS, 0, 4);
 			
 			drawIcaoLabel(it.value());
@@ -795,18 +852,18 @@ MapWidget::__drawAirports() {
 				glBindTexture(GL_TEXTURE_2D, 0);
 				
 				qglColor(__settings->getApproachCircleColor());
-				glVertexPointer(2, GL_DOUBLE, 0, __circle);
+				glVertexPointer(2, GL_FLOAT, 0, __circle);
 				
 				glLineWidth(1.5);
 				glLineStipple(1, 0xF0F0);
 				glPushMatrix();
-					glScaled(0.005 * __zoom, 0.005 * __zoom, 0);
+					glScalef(0.005f * __zoom, 0.005f * __zoom, 0);
 					glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
 				glPopMatrix();
 				glLineWidth(1.0);
 				glLineStipple(1, 0xFFFF);
 				
-				glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
+				glVertexPointer(2, GL_FLOAT, 0, VERTICES);
 			}
 			
 		glPopMatrix();
@@ -826,21 +883,21 @@ MapWidget::__drawPilots() {
 		if (client->flightStatus != AIRBORNE)
 			continue;
 		
-		GLdouble x = client->position.longitude / 180;
+		GLfloat x = client->position.longitude / 180;
 		x -= __position.x();
 		x *= __zoom;
 		
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
-		GLdouble y = client->position.latitude / 90;
+		GLfloat y = client->position.latitude / 90;
 		y -= __position.y();
 		y *= __zoom;
 		
 		if (y < -__orthoRangeY || y > __orthoRangeY)
 			continue;
 		
-		glVertexPointer(2, GL_DOUBLE, 0, VERTICES);
+		glVertexPointer(2, GL_FLOAT, 0, VERTICES);
 		glBindTexture(GL_TEXTURE_2D, __pilotIcon);
 		
 		glPushMatrix();
@@ -848,7 +905,7 @@ MapWidget::__drawPilots() {
 			
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
-			glTranslated(x, y, 0.5);
+			glTranslatef(x, y, 0.5);
 			
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1);
@@ -890,14 +947,14 @@ MapWidget::__drawLines() {
 			ap = NULL;
 		
 		if (ap) {
-			GLdouble vertices[] = {
-					(ap->longitude / 180 - __position.x()) * __zoom,
-					(ap->latitude / 90 - __position.y()) * __zoom,
-					(pilot->position.longitude / 180 - __position.x()) * __zoom,
-					(pilot->position.latitude / 90 - __position.y()) * __zoom
+			GLfloat vertices[] = {
+					((GLfloat)(ap->longitude / 180 - __position.x()) * __zoom),
+					((GLfloat)(ap->latitude / 90 - __position.y()) * __zoom),
+					((GLfloat)(pilot->position.longitude / 180 - __position.x()) * __zoom),
+					((GLfloat)(pilot->position.latitude / 90 - __position.y()) * __zoom)
 				};
 			
-			glVertexPointer(2, GL_DOUBLE, 0, vertices);
+			glVertexPointer(2, GL_FLOAT, 0, vertices);
 			glDrawArrays(GL_LINES, 0, 2);
 		}
 		
@@ -907,14 +964,14 @@ MapWidget::__drawLines() {
 			ap = NULL;
 		
 		if (ap) {
-			GLdouble vertices[] = {
-					(ap->longitude / 180 - __position.x()) * __zoom,
-					(ap->latitude / 90 - __position.y()) * __zoom,
-					(pilot->position.longitude / 180 - __position.x()) * __zoom,
-					(pilot->position.latitude / 90 - __position.y()) * __zoom
+			GLfloat vertices[] = {
+					((GLfloat)(ap->longitude / 180 - __position.x()) * __zoom),
+					((GLfloat)(ap->latitude / 90 - __position.y()) * __zoom),
+					((GLfloat)(pilot->position.longitude / 180 - __position.x()) * __zoom),
+					((GLfloat)(pilot->position.latitude / 90 - __position.y()) * __zoom)
 				};
 				
-			glVertexPointer(2, GL_DOUBLE, 0, vertices);
+			glVertexPointer(2, GL_FLOAT, 0, vertices);
 			glLineStipple(1, 0xF0F0);
 			glDrawArrays(GL_LINES, 0, 2);
 			glLineStipple(1, 0xFFFF);
@@ -928,7 +985,7 @@ MapWidget::__drawLines() {
 		unsigned linesOut = ap->getOutbounds().size() - ap->countDepartures();
 		unsigned linesIn = ap->getInbounds().size() - ap->countArrivals();
 		
-		GLdouble* vertices = new GLdouble[(linesOut + linesIn) * 4];
+		GLfloat* vertices = new GLfloat[(linesOut + linesIn) * 4];
 		unsigned i = 0;
 		for (const Pilot* p: ap->getOutbounds()) {
 			if (p->flightStatus == DEPARTING)
@@ -966,7 +1023,7 @@ MapWidget::__drawLines() {
 			i += 2;
 		}
 		
-		glVertexPointer(2, GL_DOUBLE, 0, vertices);
+		glVertexPointer(2, GL_FLOAT, 0, vertices);
 		glColor4f(LINES_COLOR);
 		
 		glDrawArrays(GL_LINES, 0, linesOut * 2);
@@ -1044,10 +1101,10 @@ MapWidget::__produceCircle() {
 	for (double angle = 0.0; angle <= (2 * PI); angle += 0.1, ++__circleCount)
 		{} // count how many vertices we will have
 	
-	__circle = new GLdouble[__circleCount * 2 + 2];
+	__circle = new GLfloat[__circleCount * 2 + 2];
 	unsigned i = 0;
 	
-	double x, y;
+	float x, y;
 	for (double angle = 0.0; angle <= (2 * PI); angle += 0.1) {
 		x = cos(angle);
 		y = sin(angle);

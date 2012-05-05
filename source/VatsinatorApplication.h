@@ -30,6 +30,7 @@ class FirsDatabase;
 class UserInterface;
 class VatsimDataHandler;
 class SettingsManager;
+class WorldMap;
 class HttpHandler;
 
 class VatsinatorApplication :
@@ -74,6 +75,7 @@ private:
 	HttpHandler *		__httpHandler;
 	AirportsDatabase *	__airportsData;
 	FirsDatabase * 		__firsData;
+	WorldMap *		__worldMap;
 	VatsimDataHandler *	__vatsimData;
 	SettingsManager *	__settingsManager;
 	UserInterface *		__userInterface;
