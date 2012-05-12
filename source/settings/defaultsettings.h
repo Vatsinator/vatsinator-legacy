@@ -28,13 +28,13 @@ static const QColor UNSTAFFED_FIR_BORDERS_COLOR		= { 193, 193, 193 };
 static const QColor STAFFED_FIR_BORDERS_COLOR		= { 176, 32, 32 };
 
 // default staffed UIRs (i.e. Eurocontrol) border color
-static const QColor STAFFED_UIR_BORDERS_COLOR		= { 128, 128, 0 };
+static const QColor STAFFED_UIR_BORDERS_COLOR		= { 0, 118, 148 };
 
 // default approach circle color (*_APP)
 static const QColor APPROACH_CIRCLE_COLOR		= { 127, 0, 0 };
 
 // default seas color
-static const QColor SEAS_COLOR				= { 207, 244, 248 };
+static const QColor SEAS_COLOR				= { 188, 222, 225 };
 
 // default lands color
 static const QColor LANDS_COLOR				= { 255, 255, 255 };

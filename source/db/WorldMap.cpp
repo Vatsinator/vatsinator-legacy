@@ -77,41 +77,20 @@ WorldMap::init() {
 }
 
 void
-WorldMap::drawLands() const {
+WorldMap::draw() const {
 	for (const Polygon& polygon: __polygons) {
-		if (!polygon.sea) {
-			if (polygon.vbo.triangles && polygon.vbo.border) {
-				polygon.vbo.border->bind();
-				polygon.vbo.triangles->bind();
-				
-				glVertexPointer(2, GL_FLOAT, 0, 0);
-				glDrawElements(GL_TRIANGLES, polygon.vbo.trianglesSize, GL_UNSIGNED_SHORT, 0);
-				
-				polygon.vbo.triangles->unbind();
-				polygon.vbo.border->unbind();
-			}
+		if (polygon.vbo.triangles && polygon.vbo.border) {
+			polygon.vbo.border->bind();
+			polygon.vbo.triangles->bind();
+			
+			glVertexPointer(2, GL_FLOAT, 0, 0);
+			glDrawElements(GL_TRIANGLES, polygon.vbo.trianglesSize, GL_UNSIGNED_SHORT, 0);
+			
+			polygon.vbo.triangles->unbind();
+			polygon.vbo.border->unbind();
 		}
 	}
 }
-
-void
-WorldMap::drawSeas() const {
-	for (const Polygon& polygon: __polygons) {
-		if (polygon.sea) {
-			if (polygon.vbo.triangles && polygon.vbo.border) {
-				polygon.vbo.border->bind();
-				polygon.vbo.triangles->bind();
-				
-				glVertexPointer(2, GL_FLOAT, 0, 0);
-				glDrawElements(GL_TRIANGLES, polygon.vbo.trianglesSize, GL_UNSIGNED_SHORT, 0);
-				
-				polygon.vbo.triangles->unbind();
-				polygon.vbo.border->unbind();
-			}
-		}
-	}
-}
-
 
 void WorldMap::__readDatabase() {
 	fstream db(WORLD_MAP, ios::in | ios::binary);
@@ -129,7 +108,6 @@ void WorldMap::__readDatabase() {
 	for (int i = 0; i < size; ++i) {
 		int counting;
 		db.read(reinterpret_cast< char* >(&counting), 4);
-		db.read(reinterpret_cast< char* >(&__polygons[i].sea), 4);
 		//qDebug() << "First counting: " << counting;
 		if (counting) {
 			__polygons[i].borders.resize(counting);
@@ -149,6 +127,7 @@ void WorldMap::__readDatabase() {
 #ifndef NO_DEBUG
 	qDebug() << "WorldMap coords: " << allTogether;
 #endif
+	
 	db.close();
 }
 

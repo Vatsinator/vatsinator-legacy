@@ -236,6 +236,8 @@ MapWidget::initializeGL() {
 	
 	glEnable(GL_DEPTH_TEST);
 	
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	
 	initGLExtensionsPointers();
 	init();
 }
@@ -730,11 +732,7 @@ MapWidget::__drawWorld() {
 		glTranslatef(0.0, 0.0, 0.9);
 		
 		qglColor(__settings->getLandsColor());
-		WorldMap::GetSingleton().drawLands();
-		
-		glTranslatef(0.0, 0.0, -0.1);
-		qglColor(__settings->getSeasColor());
-		WorldMap::GetSingleton().drawSeas();
+		WorldMap::GetSingleton().draw();
 	glPopMatrix();
 }
 

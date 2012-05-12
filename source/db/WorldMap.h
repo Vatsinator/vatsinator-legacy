@@ -38,8 +38,6 @@ class WorldMap : public Singleton< WorldMap > {
 	};
 	
 	struct Polygon {
-		int				sea;
-		
 		QVector< Point >		borders;
 		
 		QVector< unsigned short >	triangles;
@@ -52,9 +50,8 @@ public:
 	virtual ~WorldMap();
 	
 	void init();
-	
-	void drawLands() const;
-	void drawSeas() const;
+
+	void draw() const;
 	
 private:
 	void __readDatabase();
