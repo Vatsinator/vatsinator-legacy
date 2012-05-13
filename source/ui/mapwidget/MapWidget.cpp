@@ -28,6 +28,7 @@
 #include "settings/SettingsManager.h"
 
 #include "ui/UserInterface.h"
+#include "ui/actions/ActionMenuSeparator.h"
 #include "ui/actions/AirportDetailsAction.h"
 #include "ui/actions/ClientDetailsAction.h"
 #include "ui/actions/FirDetailsAction.h"
@@ -154,6 +155,9 @@ MapWidget::MapWidget(QWidget* _parent) :
 	connect(AirportDetailsWindow::GetSingletonPtr(),	SIGNAL(showPilotRequest(const Pilot*)),
 		this,						SLOT(showPilot(const Pilot*)));
 	
+	connect(FirDetailsWindow::GetSingletonPtr(),		SIGNAL(showAirportRequest(const AirportObject*)),
+		this,						SLOT(showAirport(const AirportObject*)));
+	
 	connect(FirDetailsWindow::GetSingletonPtr(),		SIGNAL(showPilotRequest(const Pilot*)),
 		this,						SLOT(showPilot(const Pilot*)));
 	
@@ -179,123 +183,6 @@ MapWidget::~MapWidget() {
 	
 	__storeSettings();
 	delete [] __circle;
-}
-
-void
-MapWidget::init() {
-	setEnabled(true);
-	
-	__apIcon = loadImage(":/pixmaps/airport.png");
-	__apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
-	__pilotIcon = loadImage(":/pixmaps/plane.png");
-	
-	__firs = FirsDatabase::GetSingletonPtr();
-	__airportDetailsWindow = AirportDetailsWindow::GetSingletonPtr();
-	__atcDetailsWindow = ATCDetailsWindow::GetSingletonPtr();
-	__metarsWindow = MetarsWindow::GetSingletonPtr();
-	__firDetailsWindow = FirDetailsWindow::GetSingletonPtr();
-	__flightDetailsWindow = FlightDetailsWindow::GetSingletonPtr();
-	__settings = SettingsManager::GetSingletonPtr();
-	
-	connect(this,			SIGNAL(firDetailsWindowRequested(const Fir*)),
-		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
-	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
-		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
-	connect(this,			SIGNAL(airportDetailsWindowRequested(const AirportObject*)),
-		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
-	connect(__settings,		SIGNAL(settingsChanged()),
-		this,			SLOT(__loadNewSettings()));
-	
-	__pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);
-	__pilotFont.setWeight(PILOT_FONT_WEIGHT);
-	
-	__airportFont.setPixelSize(AIRPORT_FONT_PIXEL_SIZE);
-	__airportFont.setWeight(AIRPORT_FONT_WEIGHT);
-	
-	__restoreSettings();
-	__loadNewSettings();
-	
-	__firs->init();
-	WorldMap::GetSingleton().init();
-}
-
-void
-MapWidget::initializeGL() {
-	this->makeCurrent();
-	
-	glShadeModel(GL_SMOOTH);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	
-	glEnable(GL_LINE_STIPPLE);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.1f);
-	
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	glEnable(GL_DEPTH_TEST);
-	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	
-	initGLExtensionsPointers();
-	init();
-}
-
-void
-MapWidget::paintGL() {
-	__underMouse = NULL;
-	
-	qglColor(__settings->getSeasColor());
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	qglClearColor(__settings->getSeasColor());
-	glLoadIdentity();
-	
-	if (__tracked) {
-		__position.rx() = __tracked->position.longitude / 180;
-		__position.ry() = __tracked->position.latitude / 90;
-	}
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
-	
-	__prepareMatrix(WORLD);
-	
-#ifndef NO_DEBUG
-	__drawMarks();
-#endif
-	
-	__drawWorld();
-	
-	if (__settings->getDisplayLayersPolicy().firs)
-		__drawFirs();
-	
-	
-	__prepareMatrix(AIRPORTS_PILOTS);
-	
-	if (__settings->getDisplayLayersPolicy().firs)
-		__drawFirsLabels();
-	
-	if (__settings->getDisplayLayersPolicy().airports)
-		__drawAirports();
-	
-	if (__settings->getDisplayLayersPolicy().pilots)
-		__drawPilots();
-	
-	
-	__drawLines();
-	
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	
-	if (!__underMouse || __dontDisplayTooltip) {
-		QToolTip::hideText();
-		if (cursor().shape() != Qt::SizeAllCursor)
-			setCursor(QCursor(Qt::ArrowCursor));
-	} else
-		__drawToolTip();
 }
 
 GLuint
@@ -356,6 +243,13 @@ MapWidget::showPilot(const Pilot* _p) {
 }
 
 void
+MapWidget::showAirport(const AirportObject* _ap) {
+	__position.rx() = _ap->getData()->longitude / 180;
+	__position.ry() = _ap->getData()->latitude / 90;
+	updateGL();
+}
+
+void
 MapWidget::redraw() {
 	__underMouse = NULL;
 	QToolTip::hideText();
@@ -363,6 +257,85 @@ MapWidget::redraw() {
 		setCursor(QCursor(Qt::ArrowCursor));
 	
 	updateGL();
+}
+
+void
+MapWidget::initializeGL() {
+	this->makeCurrent();
+	
+	glShadeModel(GL_SMOOTH);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	
+	glEnable(GL_LINE_STIPPLE);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1f);
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glEnable(GL_DEPTH_TEST);
+	
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	
+	initGLExtensionsPointers();
+	__init();
+}
+
+void
+MapWidget::paintGL() {
+	__underMouse = NULL;
+	
+	qglColor(__settings->getSeasColor());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	qglClearColor(__settings->getSeasColor());
+	glLoadIdentity();
+	
+	if (__tracked) {
+		__position.rx() = __tracked->position.longitude / 180;
+		__position.ry() = __tracked->position.latitude / 90;
+	}
+	
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnable(GL_TEXTURE_2D);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
+	
+	__prepareMatrix(WORLD);
+	
+#ifndef NO_DEBUG
+	__drawMarks();
+#endif
+	
+	__drawWorld();
+	
+	if (__settings->getDisplayLayersPolicy().firs)
+		__drawFirs();
+	
+	
+	__prepareMatrix(AIRPORTS_PILOTS);
+	
+	if (__settings->getDisplayLayersPolicy().firs)
+		__drawFirsLabels();
+	
+	if (__settings->getDisplayLayersPolicy().airports)
+		__drawAirports();
+	
+	if (__settings->getDisplayLayersPolicy().pilots)
+		__drawPilots();
+	
+	
+	__drawLines();
+	
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	
+	if (!__underMouse || __dontDisplayTooltip) {
+		QToolTip::hideText();
+		if (cursor().shape() != Qt::SizeAllCursor)
+			setCursor(QCursor(Qt::ArrowCursor));
+	} else
+		__drawToolTip();
 }
 
 void
@@ -413,6 +386,8 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 				break;
 		}
 		__underMouse = NULL;
+	} else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
+		__recentlyClickedMousePos = _event->pos();
 	}
 }
 
@@ -423,19 +398,21 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
 	if (__underMouse) {
 		QToolTip::hideText();
 		__dontDisplayTooltip = true;
-		switch (__underMouse->objectType()) {
-			case PLANE:
-				emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
-				break;
-			case AIRPORT:
-				emit airportDetailsWindowRequested(static_cast< const AirportObject* >(__underMouse));
-				break;
-			case FIR:
-				emit firDetailsWindowRequested(static_cast< const Fir* >(__underMouse));
-				break;
-			case UIR:
-				// have no idea what to do here
-				break;
+		if (__recentlyClickedMousePos == __lastMousePos) {
+			switch (__underMouse->objectType()) {
+				case PLANE:
+					emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
+					break;
+				case AIRPORT:
+					emit airportDetailsWindowRequested(static_cast< const AirportObject* >(__underMouse));
+					break;
+				case FIR:
+					emit firDetailsWindowRequested(static_cast< const Fir* >(__underMouse));
+					break;
+				case UIR:
+					// have no idea what to do here
+					break;
+			}
 		}
 	}
 	__underMouse = NULL;
@@ -577,9 +554,7 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 	
 	if (!_ap->getStaff().isEmpty()) {
 		dMenu->addSeparator();
-		QAction* desc = new QAction("Controllers", this);
-		desc->setEnabled(false);
-		dMenu->addAction(desc);
+		dMenu->addAction(new ActionMenuSeparator("Controllers", this));
 		
 		for (const Controller* c: _ap->getStaff()) {
 			ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
@@ -591,9 +566,7 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 	
 	if (!_ap->getOutbounds().isEmpty() && _ap->countDepartures()) {
 		dMenu->addSeparator();
-		QAction* desc = new QAction("Departures", this);
-		desc->setEnabled(false);
-		dMenu->addAction(desc);
+		dMenu->addAction(new ActionMenuSeparator("Departures", this));
 		
 		for (const Pilot* p: _ap->getOutbounds()) {
 			if (p->flightStatus != DEPARTING)
@@ -607,9 +580,7 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 	
 	if (!_ap->getInbounds().isEmpty() && _ap->countArrivals()) {
 		dMenu->addSeparator();
-		QAction* desc = new QAction("Arrivals", this);
-		desc->setEnabled(false);
-		dMenu->addAction(desc);
+		dMenu->addAction(new ActionMenuSeparator("Arrivals", this));
 		
 		for (const Pilot* p: _ap->getInbounds()) {
 			if (p->flightStatus != ARRIVED)
@@ -654,6 +625,44 @@ MapWidget::__openContextMenu(const Fir* _fir) {
 	
 	dMenu->exec(mapToGlobal(__lastMousePos));
 	delete dMenu;
+}
+
+void
+MapWidget::__init() {
+	setEnabled(true);
+	
+	__apIcon = loadImage(":/pixmaps/airport.png");
+	__apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
+	__pilotIcon = loadImage(":/pixmaps/plane.png");
+	
+	__firs = FirsDatabase::GetSingletonPtr();
+	__airportDetailsWindow = AirportDetailsWindow::GetSingletonPtr();
+	__atcDetailsWindow = ATCDetailsWindow::GetSingletonPtr();
+	__metarsWindow = MetarsWindow::GetSingletonPtr();
+	__firDetailsWindow = FirDetailsWindow::GetSingletonPtr();
+	__flightDetailsWindow = FlightDetailsWindow::GetSingletonPtr();
+	__settings = SettingsManager::GetSingletonPtr();
+	
+	connect(this,			SIGNAL(firDetailsWindowRequested(const Fir*)),
+		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
+	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
+		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+	connect(this,			SIGNAL(airportDetailsWindowRequested(const AirportObject*)),
+		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
+	connect(__settings,		SIGNAL(settingsChanged()),
+		this,			SLOT(__loadNewSettings()));
+	
+	__pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);
+	__pilotFont.setWeight(PILOT_FONT_WEIGHT);
+	
+	__airportFont.setPixelSize(AIRPORT_FONT_PIXEL_SIZE);
+	__airportFont.setWeight(AIRPORT_FONT_WEIGHT);
+	
+	__restoreSettings();
+	__loadNewSettings();
+	
+	__firs->init();
+	WorldMap::GetSingleton().init();
 }
 
 void

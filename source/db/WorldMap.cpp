@@ -33,6 +33,9 @@
 using namespace std;
 
 WorldMap::WorldMap() {
+#ifndef NO_DEBUG
+	std::cout << "WORLD_MAP: " << WORLD_MAP << std::endl;
+#endif
 	__readDatabase();
 	
 }

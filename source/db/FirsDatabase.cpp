@@ -29,6 +29,9 @@
 using namespace std;
 
 FirsDatabase::FirsDatabase() {
+#ifndef NO_DEBUG
+	std::cout << "FIRS_DB: " << FIRS_DB << std::endl;
+#endif
 	__readDatabase();
 }
 

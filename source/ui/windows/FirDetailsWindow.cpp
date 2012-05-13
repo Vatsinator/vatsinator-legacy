@@ -22,7 +22,8 @@
 #include "db/FirsDatabase.h"
 
 #include "ui/buttons/DetailsButton.h"
-#include "ui/buttons/ShowButton.h"
+#include "ui/buttons/ShowAirportButton.h"
+#include "ui/buttons/ShowPilotButton.h"
 #include "ui/mapwidget/AirportObject.h"
 #include "ui/mapwidget/MapWidget.h"
 
@@ -63,6 +64,18 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
 	ATCTable->setColumnWidth(2, COLUMNS_WIDTHS[3]);
 	ATCTable->setColumnWidth(3, COLUMNS_WIDTHS[4]);
 	
+	labels[0] = "ICAO";
+	labels[1] = "City";
+	labels[2] = "Departures";
+	labels[3] = "Arrivals";
+	labels[4] = "";
+	AirportsTable->setHorizontalHeaderLabels(labels);
+	AirportsTable->setColumnWidth(0, 100);
+	AirportsTable->setColumnWidth(1, 320);
+	AirportsTable->setColumnWidth(2, 100);
+	AirportsTable->setColumnWidth(3, 100);
+	AirportsTable->setColumnWidth(4, 120);
+	
 	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
 		this,						SLOT(__updateContents()));
 }
@@ -75,7 +88,13 @@ FirDetailsWindow::showWindow(const Fir* _f) {
 }
 
 void
-FirDetailsWindow::handleShowClicked(const Pilot* _p) {
+FirDetailsWindow::handleShowAirportClicked(const AirportObject* _ap) {
+	hide();
+	emit showAirportRequest(_ap);
+}
+
+void
+FirDetailsWindow::handleShowPilotClicked(const Pilot* _p) {
 	hide();
 	emit showPilotRequest(_p);
 }
@@ -130,9 +149,9 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 		FlightsTable->setItem(row, 2, pTo);
 		FlightsTable->setItem(row, 3, pAircraft);
 		
-		ShowButton* showButton = new ShowButton(p);
+		ShowPilotButton* showButton = new ShowPilotButton(p);
 		connect(showButton,	SIGNAL(clicked(const Pilot*)),
-			this,		SLOT(handleShowClicked(const Pilot*)));
+			this,		SLOT(handleShowPilotClicked(const Pilot*)));
 		FlightsTable->setCellWidget(row, 4, showButton);
 		
 		row += 1;
@@ -183,6 +202,36 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 		ATCTable->setItem(row, 2, cFreq);
 		
 		ATCTable->setCellWidget(row, 3, detailsButton);
+		
+		row += 1;
+	}
+	
+	row = 0;
+	AirportsTable->clearContents();
+	AirportsTable->setRowCount(_f->getAirports().size());
+	for (const AirportObject* ap: _f->getAirports()) {
+		QTableWidgetItem* apIcao = new QTableWidgetItem(static_cast< QString >(ap->getData()->icao));
+		apIcao->setTextAlignment(Qt::AlignCenter);
+		
+		QTableWidgetItem* apCity = new QTableWidgetItem(static_cast< QString >(ap->getData()->city));
+		apCity->setTextAlignment(Qt::AlignCenter);
+		
+		QTableWidgetItem* apDepartures = new QTableWidgetItem(QString::number(ap->countDepartures()));
+		apDepartures->setTextAlignment(Qt::AlignCenter);
+		
+		QTableWidgetItem* apArrivals = new QTableWidgetItem(QString::number(ap->countArrivals()));
+		apArrivals->setTextAlignment(Qt::AlignCenter);
+		
+		ShowAirportButton* apShow = new ShowAirportButton(ap);
+		connect(apShow,		SIGNAL(clicked(const AirportObject*)),
+			this,		SLOT(handleShowAirportClicked(const AirportObject*)));
+		
+		AirportsTable->setItem(row, 0, apIcao);
+		AirportsTable->setItem(row, 1, apCity);
+		AirportsTable->setItem(row, 2, apDepartures);
+		AirportsTable->setItem(row, 3, apArrivals);
+		
+		AirportsTable->setCellWidget(row, 4, apShow);
 		
 		row += 1;
 	}

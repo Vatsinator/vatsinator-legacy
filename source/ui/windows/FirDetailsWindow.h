@@ -23,6 +23,7 @@
 #include "ui/ui_FirDetailsWindow.h"
 #include "Singleton.h"
 
+class AirportObject;
 class Controller;
 class Fir;
 class Pilot;
@@ -35,13 +36,16 @@ public:
 	FirDetailsWindow(QWidget* = 0);
 	
 signals:
+	void showAirportRequest(const AirportObject*);
 	void showPilotRequest(const Pilot*);
 	void showATCDetailsRequest(const Controller*);
 	
 public slots:
 	void showWindow(const Fir*);
-	void handleShowClicked(const Pilot*);
+	void handleShowAirportClicked(const AirportObject*);
+	void handleShowPilotClicked(const Pilot*);
 	void handleDetailsClicked(const Controller*);
+	
 	
 private:
 	void __updateContents(const Fir*);

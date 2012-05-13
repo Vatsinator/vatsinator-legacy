@@ -26,6 +26,7 @@
 
 #include "db/Point.h"
 
+#include "ui/mapwidget/AirportObject.h"
 #include "ui/mapwidget/Clickable.h"
 #include "ui/mapwidget/Controller.h"
 #include "ui/mapwidget/Pilot.h"
@@ -54,6 +55,8 @@ public:
 	
 	void addFlight(const Pilot*);
 	
+	void addAirport(const AirportObject*);
+	
 	void correctName();
 	
 	void init();
@@ -70,8 +73,11 @@ public:
 	inline const QVector< const Pilot* > &
 	getFlights() const { return __flights; }
 	
+	inline const QVector< const AirportObject* > &
+	getAirports() const { return __airports; }
+	
 	inline void
-	clear() { __staff.clear(); __uirStaff.clear(); __flights.clear(); }
+	clear() { __staff.clear(); __uirStaff.clear(); __flights.clear(); __airports.clear(); }
 	
 	inline bool
 	isStaffed() const { return !__staff.isEmpty(); }
@@ -90,14 +96,15 @@ public:
 private:
 	
 	void __generateTip();
-	void __prepareVAO();
+	void __prepareVBO();
 	
 	QVector< const Controller* > __staff;
 	QVector< const Controller* > __uirStaff;
 	QVector< const Pilot* >	__flights;
+	QVector< const AirportObject* > __airports;
 	
-	VertexBufferObject * __bordersVAO;
-	VertexBufferObject * __trianglesVAO;
+	VertexBufferObject * __bordersVBO;
+	VertexBufferObject * __trianglesVBO;
 	
 	unsigned	__bordersSize;
 	unsigned	__trianglesSize;

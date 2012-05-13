@@ -56,7 +56,7 @@ include(${QT_USE_FILE})
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-#add_definitions(${QT_DEFINITIONS})
+add_definitions(${QT_DEFINITIONS})
 
 add_executable (${vatsinator_TARGET} WIN32
 	main.cpp

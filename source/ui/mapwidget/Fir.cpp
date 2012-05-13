@@ -35,10 +35,10 @@ Fir::Fir() {
 Fir::~Fir() {
 	MapWidget::deleteImage(icaoTip);
 	
-	if (__trianglesVAO)
-		delete __trianglesVAO;
+	if (__trianglesVBO)
+		delete __trianglesVBO;
 	
-	delete __bordersVAO;
+	delete __bordersVBO;
 }
 
 void
@@ -57,6 +57,11 @@ Fir::addFlight(const Pilot* _p) {
 }
 
 void
+Fir::addAirport(const AirportObject* _ap) {
+	__airports.push_back(_ap);
+}
+
+void
 Fir::correctName() {
 	if (!name.endsWith("Radar") &&
 			!name.endsWith("Control") &&
@@ -67,30 +72,30 @@ Fir::correctName() {
 void
 Fir::init() {
 	__generateTip();
-	__prepareVAO();
+	__prepareVBO();
 }
 
 void
 Fir::drawBorders() const {
-	__bordersVAO->bind();
+	__bordersVBO->bind();
 	
 	glVertexPointer(2, GL_FLOAT, 0, 0);
 	glDrawArrays(GL_LINE_LOOP, 0, __bordersSize);
 	
-	__bordersVAO->unbind();
+	__bordersVBO->unbind();
 }
 
 void
 Fir::drawTriangles() const {
 	if (__trianglesSize) {
-		__bordersVAO->bind();
-		__trianglesVAO->bind();
+		__bordersVBO->bind();
+		__trianglesVBO->bind();
 		
 		glVertexPointer(2, GL_FLOAT, 0, 0);
 		glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0);
 		
-		__trianglesVAO->unbind();
-		__bordersVAO->unbind();
+		__trianglesVBO->unbind();
+		__bordersVBO->unbind();
 	}
 }
 
@@ -121,21 +126,21 @@ Fir::__generateTip() {
 }
 
 void
-Fir::__prepareVAO() {
-	__bordersVAO = new VertexBufferObject(GL_ARRAY_BUFFER);
-	__bordersVAO->sendData(sizeof(Point) * borders.size(), &borders[0].x);
+Fir::__prepareVBO() {
+	__bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
+	__bordersVBO->sendData(sizeof(Point) * borders.size(), &borders[0].x);
 	
 	__bordersSize = borders.size();
 	borders.clear();
 	
 	if (!triangles.isEmpty()) {
-		__trianglesVAO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-		__trianglesVAO->sendData(sizeof(unsigned short) * triangles.size(), &triangles[0]);
+		__trianglesVBO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
+		__trianglesVBO->sendData(sizeof(unsigned short) * triangles.size(), &triangles[0]);
 		
 		__trianglesSize = triangles.size();
 		triangles.clear();
 	} else
-		__trianglesVAO = NULL;
+		__trianglesVBO = NULL;
 }
 
 

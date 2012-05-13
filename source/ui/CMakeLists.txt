@@ -3,6 +3,7 @@ vatsinator_start_subdirectory (ui)
 set (ui_SRCS
 	UserInterface.cpp
 	
+	actions/ActionMenuSeparator.cpp
 	actions/AirportDetailsAction.cpp
 	actions/ClientDetailsAction.cpp
 	actions/FirDetailsAction.cpp
@@ -11,7 +12,8 @@ set (ui_SRCS
 	
 	buttons/ColorButton.cpp
 	buttons/DetailsButton.cpp
-	buttons/ShowButton.cpp
+	buttons/ShowAirportButton.cpp
+	buttons/ShowPilotButton.cpp
 	
 	mapwidget/AirportObject.cpp
 	mapwidget/Controller.cpp
@@ -33,15 +35,17 @@ vatsinator_subdirectory_sources (ui "${ui_SRCS}")
 set (ui_MOC_SRCS
 	UserInterface.h
 	
+	actions/ActionMenuSeparator.h
 	actions/AirportDetailsAction.h
 	actions/ClientDetailsAction.h
 	actions/FirDetailsAction.h
 	actions/MetarAction.h
 	actions/TrackAction.h
 	
+	buttons/ShowAirportButton.h
 	buttons/ColorButton.h
 	buttons/DetailsButton.h
-	buttons/ShowButton.h
+	buttons/ShowPilotButton.h
 	
 	mapwidget/MapWidget.h
 	

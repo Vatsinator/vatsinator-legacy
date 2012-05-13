@@ -21,7 +21,7 @@
 #include "db/AirportsDatabase.h"
 
 #include "ui/buttons/DetailsButton.h"
-#include "ui/buttons/ShowButton.h"
+#include "ui/buttons/ShowPilotButton.h"
 #include "ui/mapwidget/AirportObject.h"
 #include "ui/mapwidget/MapWidget.h"
 
@@ -168,7 +168,7 @@ AirportDetailsWindow::__updateContents(const AirportObject* _ap) {
 			pArrived->setTextAlignment(Qt::AlignCenter);
 			InboundTable->setItem(row, 3, pArrived);
 		} else {
-			ShowButton* showButton = new ShowButton(p);
+			ShowPilotButton* showButton = new ShowPilotButton(p);
 			connect(showButton,	SIGNAL(clicked(const Pilot*)),
 				this,		SLOT(handleShowClicked(const Pilot*)));
 			InboundTable->setCellWidget(row, 3, showButton);
@@ -203,7 +203,7 @@ AirportDetailsWindow::__updateContents(const AirportObject* _ap) {
 			pDeparting->setTextAlignment(Qt::AlignCenter);
 			OutboundTable->setItem(row, 3, pDeparting);
 		} else {
-			ShowButton* showButton = new ShowButton(p);
+			ShowPilotButton* showButton = new ShowPilotButton(p);
 			connect(showButton,	SIGNAL(clicked(const Pilot*)),
 				this,		SLOT(handleShowClicked(const Pilot*)));
 			OutboundTable->setCellWidget(row, 3, showButton);

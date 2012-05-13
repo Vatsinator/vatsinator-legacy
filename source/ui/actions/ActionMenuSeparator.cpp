@@ -1,5 +1,5 @@
 /*
-    ShowButton.h
+    ActionMenuSeparator.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,35 +17,9 @@
 */
 
 
-#ifndef SHOWBUTTON_H
-#define SHOWBUTTON_H
+#include "ActionMenuSeparator.h"
 
-#include <QPushButton>
-
-class Pilot;
-
-class ShowButton : public QPushButton {
-	
-	/*
-	 * This is the "Show" button for Airport Details Window.
-	 * It centres the MapWidget's map on the particular pilot if clicked. 
-	 */
-	
-	Q_OBJECT
-	
-public:
-	ShowButton(const Pilot*, QWidget* = 0);
-	
-signals:
-	void clicked(const Pilot*);
-	
-public slots:
-	void handleClicked();
-	
-private:
-	const Pilot * __current;
-	
-	
-};
-
-#endif // SHOWBUTTON_H
+ActionMenuSeparator::ActionMenuSeparator(const QString& _label, QObject* _parent) :
+		QAction(_label, _parent) {
+	setEnabled(false);
+}

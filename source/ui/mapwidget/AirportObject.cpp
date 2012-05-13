@@ -19,6 +19,8 @@
 #include <QtGui>
 
 
+#include "db/FirsDatabase.h"
+
 #include "ui/mapwidget/MapWidget.h"
 
 #include "AirportObject.h"
@@ -31,6 +33,12 @@ AirportObject::AirportObject(const QString& _icao) :
 	if (!__data)
 		qDebug() << "Airport " << _icao << " not found.";
 #endif
+	if (__data) {
+		Fir* f = FirsDatabase::GetSingleton().findFirByIcao(__data->fir);
+		if (f)
+			f->addAirport(this);
+	}
+	
 	__generateTip();
 }
 

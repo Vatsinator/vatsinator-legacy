@@ -48,11 +48,18 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		__userInterface(new UserInterface) {
 	
 #ifndef NO_DEBUG
-	std::cout << "AIRPORTS_DB: " << AIRPORTS_DB << std::endl <<
-		"FIRS_DB: " << FIRS_DB << std::endl <<
-		"VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl <<
-		"WORLD_MAP: " << WORLD_MAP << std::endl;
+	std::cout << "VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl;
+	
+#ifdef VATSINATOR_PLATFORM_LINUX
+#pragma message("Platform: Linux")
+#elif defined VATSINATOR_PLATFORM_WIN32
+#pragma message("Platform: Win32")
+#else
+#pragma message("Platform: undefined")
 #endif
+
+#endif
+	
 	// destroy all children windows before the program exits
 	connect(this,			SIGNAL(destroyed()),
 		__userInterface,	SLOT(hideAllWindows()));

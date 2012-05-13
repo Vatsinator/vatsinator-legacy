@@ -1,5 +1,5 @@
 /*
-    ShowButton.cpp
+    ShowAirportButton.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ShowButton.h"
-#include "defines.h"
 
-ShowButton::ShowButton(const Pilot* _p, QWidget* _parent) :
-		QPushButton("Show", _parent),
-		__current(_p) {
-	connect(this, SIGNAL(clicked()), this, SLOT(handleClicked()));
-}
+#ifndef SHOWAIRPORTBUTTON_H
+#define SHOWAIRPORTBUTTON_H
 
-void
-ShowButton::handleClicked() {
-	emit clicked(__current);
-}
+#include <QPushButton>
+
+class AirportObject;
+
+class ShowAirportButton : public QPushButton {
+	
+	Q_OBJECT
+	
+public:
+	ShowAirportButton(const AirportObject*, QWidget* = 0);
+	
+signals:
+	void clicked(const AirportObject*);
+	
+private slots:
+	void __handleClicked();
+	
+private:
+	const AirportObject* __current;
+	
+};
+
+#endif // SHOWAIRPORTBUTTON_H

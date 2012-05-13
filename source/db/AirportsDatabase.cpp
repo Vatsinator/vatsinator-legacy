@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <fstream>
 
 #include <QtGui>
@@ -28,7 +29,11 @@
 
 using namespace std;
 
-AirportsDatabase::AirportsDatabase() {}
+AirportsDatabase::AirportsDatabase() {
+#ifndef NO_DEBUG
+	std::cout << "AIRPORTS_DB: " << AIRPORTS_DB << std::endl;
+#endif
+}
 
 void
 AirportsDatabase::init() {

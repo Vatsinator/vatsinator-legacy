@@ -59,8 +59,6 @@ public:
 	
 	virtual ~MapWidget();
 	
-	void init();
-	
 	inline const Pilot *&
 	getTrackedPilot() { return __tracked; }
 	
@@ -100,6 +98,7 @@ signals:
 public slots:
 	void trackFlight(const Pilot* _p) { __tracked = _p; }
 	void showPilot(const Pilot*);
+	void showAirport(const AirportObject*);
 	void redraw();
 	
 protected:
@@ -122,6 +121,7 @@ private slots:
 	void __openContextMenu(const Fir*);
 	
 private:
+	void __init();
 	void __prepareMatrix(PMMatrixMode);
 	
 #ifndef NO_DEBUG
@@ -260,6 +260,7 @@ private:
 	
 	/* Last mouse position */
 	QPoint	__lastMousePos;
+	QPoint	__recentlyClickedMousePos;
 	
 	/* And last mouse position interpolated to ortho range */
 	QPointF __lastMousePosInterpolated;

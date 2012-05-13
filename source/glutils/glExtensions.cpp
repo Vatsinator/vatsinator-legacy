@@ -49,7 +49,9 @@ inline T getProcAddress(const char* _procName) {
 #elif defined VATSINATOR_PLATFORM_WIN32
 	T temp = (T)wglGetProcAddress(_procName);
 #endif
-	Q_ASSERT(temp != (T)NULL);
+	//Q_ASSERT(temp != (T)NULL);
+	if (temp == (T)NULL)
+		qDebug() << "Failed fetching extension pointer: " << _procName << "!";
 	return temp;
 }
 
