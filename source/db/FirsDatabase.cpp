@@ -40,10 +40,18 @@ FirsDatabase::init() {
 	if (__toolTipsPrepared)
 		return;
 	
+#ifndef NO_DEBUG
+	qDebug() << "Preparing VBOs for FIRs...";
+#endif
+	
 	for (Fir& f: __firs)
 		f.init();
 	
 	__toolTipsPrepared = true;
+
+#ifndef NO_DEBUG
+	qDebug() << "FIRs' VBOs prepared.";
+#endif
 }
 
 void

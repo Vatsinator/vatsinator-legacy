@@ -48,6 +48,8 @@ public:
 	
 	bool hasApproach() const;
 	
+	unsigned getFacilities() const;
+	
 	inline const QVector< const Controller* > &
 	getStaff() const { return __staff; }
 	

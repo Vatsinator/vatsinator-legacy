@@ -27,14 +27,14 @@
 struct AirportRecord;
 
 enum Facility {
-	ATIS,
-	DEL,
-	GND,
-	TWR,
-	APP,
-	CTR,
-	FSS,
-	OBS
+	ATIS = 1,
+	DEL = 2,
+	GND = 4,
+	TWR = 8,
+	APP = 16,
+	CTR = 32,
+	FSS = 64,
+	OBS = 128
 };
 
 class Controller : public Client {

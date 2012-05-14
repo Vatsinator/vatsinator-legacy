@@ -57,6 +57,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 #else
 #pragma message("Platform: undefined")
 #endif
+	
+	std::cout << "sizeof(unsigned short) = " << sizeof(unsigned short) << std::endl;
 
 #endif
 	

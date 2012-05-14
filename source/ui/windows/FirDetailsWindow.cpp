@@ -64,14 +64,14 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
 	ATCTable->setColumnWidth(2, COLUMNS_WIDTHS[3]);
 	ATCTable->setColumnWidth(3, COLUMNS_WIDTHS[4]);
 	
-	labels[0] = "ICAO";
-	labels[1] = "City";
-	labels[2] = "Departures";
-	labels[3] = "Arrivals";
+	labels[0] = "Airport";
+	labels[1] = "ATC";
+	labels[2] = "Outbound";
+	labels[3] = "Inbound";
 	labels[4] = "";
 	AirportsTable->setHorizontalHeaderLabels(labels);
-	AirportsTable->setColumnWidth(0, 100);
-	AirportsTable->setColumnWidth(1, 320);
+	AirportsTable->setColumnWidth(0, 250);
+	AirportsTable->setColumnWidth(1, 170);
 	AirportsTable->setColumnWidth(2, 100);
 	AirportsTable->setColumnWidth(3, 100);
 	AirportsTable->setColumnWidth(4, 120);
@@ -210,16 +210,38 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 	AirportsTable->clearContents();
 	AirportsTable->setRowCount(_f->getAirports().size());
 	for (const AirportObject* ap: _f->getAirports()) {
-		QTableWidgetItem* apIcao = new QTableWidgetItem(static_cast< QString >(ap->getData()->icao));
-		apIcao->setTextAlignment(Qt::AlignCenter);
+		QTableWidgetItem* apIcao = new QTableWidgetItem(" " %
+				static_cast< QString >(ap->getData()->icao) %
+				" " %
+				static_cast< QString >(ap->getData()->city)
+			);
+		//apIcao->setTextAlignment(Qt::AlignCenter);
 		
-		QTableWidgetItem* apCity = new QTableWidgetItem(static_cast< QString >(ap->getData()->city));
-		apCity->setTextAlignment(Qt::AlignCenter);
+		QString atcText;
+		unsigned apFacilities = ap->getFacilities();
+		if (!apFacilities)
+			atcText = "Unstaffed";
+		else {
+			if (apFacilities & APP)
+				atcText += "APP ";
+			if (apFacilities & TWR)
+				atcText += "TWR ";
+			if (apFacilities & GND)
+				atcText += "GND ";
+			if (apFacilities & DEL)
+				atcText += "DEL ";
+			if (apFacilities & ATIS)
+				atcText += "ATIS ";
+			atcText = atcText.simplified();
+		}
 		
-		QTableWidgetItem* apDepartures = new QTableWidgetItem(QString::number(ap->countDepartures()));
+		QTableWidgetItem* apATC = new QTableWidgetItem(atcText);	
+		apATC->setTextAlignment(Qt::AlignCenter);
+		
+		QTableWidgetItem* apDepartures = new QTableWidgetItem(QString::number(ap->getOutbounds().size()));
 		apDepartures->setTextAlignment(Qt::AlignCenter);
 		
-		QTableWidgetItem* apArrivals = new QTableWidgetItem(QString::number(ap->countArrivals()));
+		QTableWidgetItem* apArrivals = new QTableWidgetItem(QString::number(ap->getInbounds().size()));
 		apArrivals->setTextAlignment(Qt::AlignCenter);
 		
 		ShowAirportButton* apShow = new ShowAirportButton(ap);
@@ -227,7 +249,7 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 			this,		SLOT(handleShowAirportClicked(const AirportObject*)));
 		
 		AirportsTable->setItem(row, 0, apIcao);
-		AirportsTable->setItem(row, 1, apCity);
+		AirportsTable->setItem(row, 1, apATC);
 		AirportsTable->setItem(row, 2, apDepartures);
 		AirportsTable->setItem(row, 3, apArrivals);
 		

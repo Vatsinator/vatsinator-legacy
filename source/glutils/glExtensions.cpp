@@ -45,13 +45,11 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
 template < typename T >
 inline T getProcAddress(const char* _procName) {
 #ifdef VATSINATOR_PLATFORM_LINUX
-	T temp = (T)glXGetProcAddress((GLubyte*)_procName);
+	T temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName));
 #elif defined VATSINATOR_PLATFORM_WIN32
-	T temp = (T)wglGetProcAddress(_procName);
+	T temp = reinterpret_cast< T >(wglGetProcAddress(_procName));
 #endif
-	//Q_ASSERT(temp != (T)NULL);
-	if (temp == (T)NULL)
-		qDebug() << "Failed fetching extension pointer: " << _procName << "!";
+	Q_ASSERT(temp != (T)NULL);
 	return temp;
 }
 
@@ -63,7 +61,4 @@ initGLExtensionsPointers() {
 	glDeleteBuffers = getProcAddress< decltype(glDeleteBuffers) >("glDeleteBuffers");
 	glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
 }
-
-
-
 

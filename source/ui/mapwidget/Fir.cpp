@@ -35,10 +35,12 @@ Fir::Fir() {
 Fir::~Fir() {
 	MapWidget::deleteImage(icaoTip);
 	
+#ifdef VATSINATOR_PLATFORM_LINUX
 	if (__trianglesVBO)
 		delete __trianglesVBO;
 	
 	delete __bordersVBO;
+#endif
 }
 
 void
@@ -77,16 +79,22 @@ Fir::init() {
 
 void
 Fir::drawBorders() const {
+#ifdef VATSINATOR_PLATFORM_LINUX
 	__bordersVBO->bind();
 	
 	glVertexPointer(2, GL_FLOAT, 0, 0);
 	glDrawArrays(GL_LINE_LOOP, 0, __bordersSize);
 	
 	__bordersVBO->unbind();
+#else
+	glVertexPointer(2, GL_FLOAT, 0, &borders[0].x);
+	glDrawArrays(GL_LINE_LOOP, 0, borders.size());
+#endif
 }
 
 void
 Fir::drawTriangles() const {
+#ifdef VATSINATOR_PLATFORM_LINUX
 	if (__trianglesSize) {
 		__bordersVBO->bind();
 		__trianglesVBO->bind();
@@ -97,6 +105,12 @@ Fir::drawTriangles() const {
 		__trianglesVBO->unbind();
 		__bordersVBO->unbind();
 	}
+#else
+	if (!triangles.isEmpty()) {
+		glVertexPointer(2, GL_FLOAT, 0, &borders[0].x);
+		glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, &triangles[0]);
+	}
+#endif
 }
 
 void
@@ -127,6 +141,7 @@ Fir::__generateTip() {
 
 void
 Fir::__prepareVBO() {
+#ifdef VATSINATOR_PLATFORM_LINUX
 	__bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
 	__bordersVBO->sendData(sizeof(Point) * borders.size(), &borders[0].x);
 	
@@ -141,6 +156,7 @@ Fir::__prepareVBO() {
 		triangles.clear();
 	} else
 		__trianglesVBO = NULL;
+#endif
 }
 
 

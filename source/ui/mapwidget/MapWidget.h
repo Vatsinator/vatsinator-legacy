@@ -35,10 +35,11 @@ class Clickable;
 class Fir;
 class FirsDatabase;
 class FirDetailsWindow;
+class FlightDetailsWindow;
+class MetarsWindow;
 class SettingsManager;
 class VatsinatorApplication;
-class MetarsWindow;
-class FlightDetailsWindow;
+class WorldMap;
 
 enum PMMatrixMode {
 	AIRPORTS_PILOTS, WORLD
@@ -299,6 +300,7 @@ private:
 	FlightDetailsWindow *	__flightDetailsWindow;
 	MetarsWindow *		__metarsWindow;
 	SettingsManager *	__settings;
+	WorldMap *		__myWorldMap;
 };
 
 #endif // MAPWIDGET_H

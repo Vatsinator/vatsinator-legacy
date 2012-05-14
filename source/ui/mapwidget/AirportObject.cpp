@@ -90,6 +90,16 @@ AirportObject::hasApproach() const {
 	return false;
 }
 
+unsigned
+AirportObject::getFacilities() const {
+	unsigned facilities = 0;
+	for (const Controller* c: __staff) {
+		facilities |= c->facility;
+	}
+	
+	return facilities;
+}
+
 void
 AirportObject::__generateTip() {
 	if (!__data) {

@@ -26,7 +26,6 @@
 VertexBufferObject::VertexBufferObject(GLenum _type):
 		__type(_type) {
 	glGenBuffers(1, &__vboID);
-		
 }
 
 VertexBufferObject::~VertexBufferObject() {

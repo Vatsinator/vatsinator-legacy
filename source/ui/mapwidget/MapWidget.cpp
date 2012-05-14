@@ -261,6 +261,9 @@ MapWidget::redraw() {
 
 void
 MapWidget::initializeGL() {
+#ifndef NO_DEBUG
+	qDebug() << "Initializing OpenGL...";
+#endif
 	this->makeCurrent();
 	
 	glShadeModel(GL_SMOOTH);
@@ -278,8 +281,22 @@ MapWidget::initializeGL() {
 	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
+#ifndef NO_DEBUG
+	QGLFormat::OpenGLVersionFlags ogvf = QGLFormat::openGLVersionFlags();
+	qDebug() << "OpenGL version: " << ogvf;
+#endif
+	
 	initGLExtensionsPointers();
+	
+#ifndef NO_DEBUG
+	qDebug() << "OpenGL ready.";
+#endif
+	
 	__init();
+	
+#ifndef NO_DEBUG
+	qDebug() << "Ready to render.";
+#endif
 }
 
 void
@@ -631,10 +648,16 @@ void
 MapWidget::__init() {
 	setEnabled(true);
 	
+#ifndef NO_DEBUG
+	qDebug() << "Loading images...";
+#endif
 	__apIcon = loadImage(":/pixmaps/airport.png");
 	__apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
 	__pilotIcon = loadImage(":/pixmaps/plane.png");
-	
+
+#ifndef NO_DEBUG
+	qDebug() << "Getting pointers...";
+#endif
 	__firs = FirsDatabase::GetSingletonPtr();
 	__airportDetailsWindow = AirportDetailsWindow::GetSingletonPtr();
 	__atcDetailsWindow = ATCDetailsWindow::GetSingletonPtr();
@@ -642,7 +665,11 @@ MapWidget::__init() {
 	__firDetailsWindow = FirDetailsWindow::GetSingletonPtr();
 	__flightDetailsWindow = FlightDetailsWindow::GetSingletonPtr();
 	__settings = SettingsManager::GetSingletonPtr();
+	__myWorldMap = WorldMap::GetSingletonPtr();
 	
+#ifndef NO_DEBUG
+	qDebug() << "Preparing slots...";
+#endif
 	connect(this,			SIGNAL(firDetailsWindowRequested(const Fir*)),
 		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
 	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
@@ -652,15 +679,24 @@ MapWidget::__init() {
 	connect(__settings,		SIGNAL(settingsChanged()),
 		this,			SLOT(__loadNewSettings()));
 	
+#ifndef NO_DEBUG
+	qDebug() << "Setting fonts...";
+#endif
 	__pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);
 	__pilotFont.setWeight(PILOT_FONT_WEIGHT);
 	
 	__airportFont.setPixelSize(AIRPORT_FONT_PIXEL_SIZE);
 	__airportFont.setWeight(AIRPORT_FONT_WEIGHT);
 	
+#ifndef NO_DEBUG
+	qDebug() << "Restoring settings...";
+#endif
 	__restoreSettings();
 	__loadNewSettings();
 	
+#ifndef NO_DEBUG
+	qDebug() << "Generating pixmaps...";
+#endif
 	__firs->init();
 	WorldMap::GetSingleton().init();
 }
@@ -741,7 +777,7 @@ MapWidget::__drawWorld() {
 		glTranslatef(0.0, 0.0, 0.9);
 		
 		qglColor(__settings->getLandsColor());
-		WorldMap::GetSingleton().draw();
+		__myWorldMap->draw();
 	glPopMatrix();
 }
 

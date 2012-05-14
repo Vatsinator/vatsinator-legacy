@@ -41,6 +41,7 @@ WorldMap::WorldMap() {
 }
 
 WorldMap::~WorldMap() {
+#ifdef VATSINATOR_PLATFORM_LINUX
 	for (Polygon& p: __polygons) {
 		if (p.vbo.border)
 			delete p.vbo.border;
@@ -48,10 +49,15 @@ WorldMap::~WorldMap() {
 		if (p.vbo.triangles)
 			delete p.vbo.triangles;
 	}
+#endif
 }
 
 void
 WorldMap::init() {
+#ifdef VATSINATOR_PLATFORM_LINUX
+#ifndef NO_DEBUG
+	qDebug() << "Preparing VBOs for WorldMap...";
+#endif
 	for (Polygon& p: __polygons) {
 		if (p.borders.isEmpty()) {
 			p.vbo.border = NULL;
@@ -76,11 +82,15 @@ WorldMap::init() {
 		p.vbo.trianglesSize = p.triangles.size();
 		p.triangles.clear();
 	}
-	
+#ifndef NO_DEBUG
+	qDebug() << "WorldMap VBOs ready.";
+#endif
+#endif
 }
 
 void
 WorldMap::draw() const {
+#ifdef VATSINATOR_PLATFORM_LINUX
 	for (const Polygon& polygon: __polygons) {
 		if (polygon.vbo.triangles && polygon.vbo.border) {
 			polygon.vbo.border->bind();
@@ -93,6 +103,14 @@ WorldMap::draw() const {
 			polygon.vbo.border->unbind();
 		}
 	}
+#else
+	for (const Polygon& p: __polygons) {
+		if (!p.borders.isEmpty()) {
+			glVertexPointer(2, GL_FLOAT, 0, &p.borders[0].x);
+			glDrawElements(GL_TRIANGLES, p.triangles.size(), GL_UNSIGNED_SHORT, &p.triangles[0]);
+		}
+	}
+#endif
 }
 
 void WorldMap::__readDatabase() {
