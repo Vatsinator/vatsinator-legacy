@@ -25,6 +25,8 @@
 
 #include "ui/mapwidget/MapWidget.h"
 
+#include "vdebug/glErrors.h"
+
 #include "Fir.h"
 
 #include "defines.h"
@@ -82,13 +84,13 @@ Fir::drawBorders() const {
 #ifdef VATSINATOR_PLATFORM_LINUX
 	__bordersVBO->bind();
 	
-	glVertexPointer(2, GL_FLOAT, 0, 0);
-	glDrawArrays(GL_LINE_LOOP, 0, __bordersSize);
+	glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
+	glDrawArrays(GL_LINE_LOOP, 0, __bordersSize); checkGLErrors(HERE);
 	
 	__bordersVBO->unbind();
 #else
-	glVertexPointer(2, GL_FLOAT, 0, &borders[0].x);
-	glDrawArrays(GL_LINE_LOOP, 0, borders.size());
+	glVertexPointer(2, GL_FLOAT, 0, &borders[0].x); checkGLErrors(HERE);
+	glDrawArrays(GL_LINE_LOOP, 0, borders.size()); checkGLErrors(HERE);
 #endif
 }
 
@@ -99,16 +101,16 @@ Fir::drawTriangles() const {
 		__bordersVBO->bind();
 		__trianglesVBO->bind();
 		
-		glVertexPointer(2, GL_FLOAT, 0, 0);
-		glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0);
+		glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
+		glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0); checkGLErrors(HERE);
 		
 		__trianglesVBO->unbind();
 		__bordersVBO->unbind();
 	}
 #else
 	if (!triangles.isEmpty()) {
-		glVertexPointer(2, GL_FLOAT, 0, &borders[0].x);
-		glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, &triangles[0]);
+		glVertexPointer(2, GL_FLOAT, 0, &borders[0].x); checkGLErrors(HERE);
+		glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, &triangles[0]); checkGLErrors(HERE);
 	}
 #endif
 }

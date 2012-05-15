@@ -24,6 +24,10 @@
 #include "ui/mapwidget/MapWidget.h"
 #include "Singleton.h"
 
+#ifndef NO_DEBUG
+class DebugWindow;
+#endif
+
 class AirportDetailsWindow;
 class ATCDetailsWindow;
 class FirDetailsWindow;
@@ -72,6 +76,11 @@ private:
 	void __setWindowPosition();
 	void __storeWindowGeometry();
 	void __restoreWindowGeometry();
+	
+	
+#ifndef NO_DEBUG
+	DebugWindow *	__debugWindow;
+#endif
 	
 	MetarsWindow *	__metarsWindow;
 	AirportDetailsWindow * __airportDetailsWindow;

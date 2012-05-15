@@ -26,6 +26,8 @@
 #include "glutils/VertexBufferObject.h"
 #include "glutils/glExtensions.h"
 
+#include "vdebug/glErrors.h"
+
 #include "WorldMap.h"
 #include "defines.h"
 
@@ -96,8 +98,8 @@ WorldMap::draw() const {
 			polygon.vbo.border->bind();
 			polygon.vbo.triangles->bind();
 			
-			glVertexPointer(2, GL_FLOAT, 0, 0);
-			glDrawElements(GL_TRIANGLES, polygon.vbo.trianglesSize, GL_UNSIGNED_SHORT, 0);
+			glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
+			glDrawElements(GL_TRIANGLES, polygon.vbo.trianglesSize, GL_UNSIGNED_SHORT, 0); checkGLErrors(HERE);
 			
 			polygon.vbo.triangles->unbind();
 			polygon.vbo.border->unbind();
@@ -106,8 +108,8 @@ WorldMap::draw() const {
 #else
 	for (const Polygon& p: __polygons) {
 		if (!p.borders.isEmpty()) {
-			glVertexPointer(2, GL_FLOAT, 0, &p.borders[0].x);
-			glDrawElements(GL_TRIANGLES, p.triangles.size(), GL_UNSIGNED_SHORT, &p.triangles[0]);
+			glVertexPointer(2, GL_FLOAT, 0, &p.borders[0].x); checkGLErrors(HERE);
+			glDrawElements(GL_TRIANGLES, p.triangles.size(), GL_UNSIGNED_SHORT, &p.triangles[0]); checkGLErrors(HERE);
 		}
 	}
 #endif

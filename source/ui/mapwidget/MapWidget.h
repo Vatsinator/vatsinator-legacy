@@ -88,6 +88,10 @@ public:
 	static GLuint loadImage(const QString&);
 	static void deleteImage(GLuint);
 	
+#ifndef NO_DEBUG
+	static unsigned texturesCount;
+#endif
+	
 signals:
 	void contextMenuRequested(const Pilot*);
 	void contextMenuRequested(const AirportObject*);
@@ -301,6 +305,11 @@ private:
 	MetarsWindow *		__metarsWindow;
 	SettingsManager *	__settings;
 	WorldMap *		__myWorldMap;
+	
+#ifndef NO_DEBUG
+	/* For memory tracking */
+	QMap< GLuint, unsigned > __imagesMemory;
+#endif
 };
 
 #endif // MAPWIDGET_H

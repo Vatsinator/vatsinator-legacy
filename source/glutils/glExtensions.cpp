@@ -30,6 +30,8 @@
 #include <wingdi.h>
 #endif
 
+#include "vdebug/glErrors.h"
+
 typedef ptrdiff_t GLsizeiptr;
 typedef ptrdiff_t GLintptr;
 
@@ -49,6 +51,7 @@ inline T getProcAddress(const char* _procName) {
 #elif defined VATSINATOR_PLATFORM_WIN32
 	T temp = reinterpret_cast< T >(wglGetProcAddress(_procName));
 #endif
+	checkGLErrors(HERE);
 	Q_ASSERT(temp != (T)NULL);
 	return temp;
 }
@@ -60,5 +63,13 @@ initGLExtensionsPointers() {
 	glBufferSubData = getProcAddress< decltype(glBufferSubData) >("glBufferSubData");
 	glDeleteBuffers = getProcAddress< decltype(glDeleteBuffers) >("glDeleteBuffers");
 	glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
+	
+#ifndef NO_DEBUG
+	registerExtensionPointer("glBindBuffer", reinterpret_cast< long long unsigned >(glBindBuffer));
+	registerExtensionPointer("glBufferData", reinterpret_cast< long long unsigned >(glBufferData));
+	registerExtensionPointer("glBufferSubData", reinterpret_cast< long long unsigned >(glBufferSubData));
+	registerExtensionPointer("glDeleteBuffers", reinterpret_cast< long long unsigned >(glDeleteBuffers));
+	registerExtensionPointer("glGenBuffers", reinterpret_cast< long long unsigned >(glGenBuffers));
+#endif // NO_DEBUG
 }
 

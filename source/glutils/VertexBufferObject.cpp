@@ -20,35 +20,53 @@
 
 #include "glutils/glExtensions.h"
 
+#include "vdebug/glErrors.h"
+
 #include "VertexBufferObject.h"
 #include "defines.h"
 
+#ifndef NO_DEBUG
+unsigned VertexBufferObject::vboCount = 0;
+#endif
+
 VertexBufferObject::VertexBufferObject(GLenum _type):
 		__type(_type) {
-	glGenBuffers(1, &__vboID);
+	glGenBuffers(1, &__vboID); checkGLErrors(HERE);
+#ifndef NO_DEBUG
+	vboCount += 1;
+#endif
 }
 
 VertexBufferObject::~VertexBufferObject() {
-	glDeleteBuffers(1, &__vboID);
+	glDeleteBuffers(1, &__vboID); checkGLErrors(HERE);
+#ifndef NO_DEBUG
+	unregisterGPUMemoryAllocFunc(__size);
+	vboCount -= 1;
+#endif
 }
 
 void
 VertexBufferObject::sendData(unsigned _size, const void* _data) {
 	bind();
 	
-	glBufferData(__type, _size, NULL, GL_STATIC_DRAW);
-	glBufferSubData(__type, 0, _size, _data);
+	glBufferData(__type, _size, NULL, GL_STATIC_DRAW); checkGLErrors(HERE);
+	glBufferSubData(__type, 0, _size, _data); checkGLErrors(HERE);
+	
+#ifndef NO_DEBUG
+	registerGPUMemoryAllocFunc(_size);
+	__size = _size;
+#endif
 	
 	unbind();
 }
 
 void
 VertexBufferObject::bind() const {
-	glBindBuffer(__type, __vboID);
+	glBindBuffer(__type, __vboID); checkGLErrors(HERE);
 }
 
 void
 VertexBufferObject::unbind() const {
-	glBindBuffer(__type, 0);
+	glBindBuffer(__type, 0); checkGLErrors(HERE);
 }
 

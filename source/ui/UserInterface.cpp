@@ -18,6 +18,10 @@
 
 #include <QtGui>
 
+#ifndef NO_DEBUG
+#include "vdebug/DebugWindow.h"
+#endif
+
 #include "ui/windows/AirportDetailsWindow.h"
 #include "ui/windows/ATCDetailsWindow.h"
 #include "ui/windows/FirDetailsWindow.h"
@@ -34,6 +38,9 @@
 
 UserInterface::UserInterface(QWidget* _parent) :
 		QMainWindow(_parent),
+#ifndef NO_DEBUG
+		__debugWindow(new DebugWindow()),
+#endif
 		__metarsWindow(new MetarsWindow()),
 		__airportDetailsWindow(new AirportDetailsWindow()),
 		__firDetailsWindow(new FirDetailsWindow()),
@@ -85,6 +92,10 @@ UserInterface::~UserInterface() {
 	delete __atcDetailsWindow;
 	delete __settingsWindow;
 	delete __metarsWindow;
+	
+#ifndef NO_DEBUG
+	delete __debugWindow;
+#endif
 }
 
 void
@@ -131,6 +142,11 @@ UserInterface::hideAllWindows() {
 	
 	if (__metarsWindow->isVisible())
 		__metarsWindow->hide();
+	
+#ifndef NO_DEBUG
+	if (__debugWindow->isVisible())
+		__debugWindow->hide();
+#endif
 }
 
 void
@@ -142,6 +158,17 @@ UserInterface::closeEvent(QCloseEvent* _event) {
 void
 UserInterface::__setupWindow() {
 	setupUi(this);
+	
+#ifndef NO_DEBUG
+	MenuHelp->addSeparator();
+	
+	QAction* debugAction = new QAction("Debug...", this);
+	
+	connect(debugAction,		SIGNAL(triggered()),
+		__debugWindow,		SLOT(show()));
+	
+	MenuHelp->addAction(debugAction);
+#endif
 }
 
 void

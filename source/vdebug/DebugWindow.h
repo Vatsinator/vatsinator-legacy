@@ -1,5 +1,5 @@
 /*
-    VertexBufferObject.h
+    DebugWindow.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -16,38 +16,36 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef NO_DEBUG
 
-#ifndef VAOOBJECT_H
-#define VAOOBJECT_H
+#ifndef DEBUGWINDOW_H
+#define DEBUGWINDOW_H
 
-#include <QVector>
-#include <GL/gl.h>
+#include "vdebug/ui_DebugWindow.h"
+#include "Singleton.h"
 
-#include "db/Point.h"
-
-class VertexBufferObject {
+class DebugWindow :
+		public QWidget,
+		public Singleton< DebugWindow >,
+		private Ui::DebugWindow {
+	
+	Q_OBJECT
 	
 public:
-	VertexBufferObject(GLenum);
-	virtual ~VertexBufferObject();
+	DebugWindow(QWidget* = 0);
 	
-	void sendData(unsigned, const void*);
-	
-	void bind() const;
-	void unbind() const;
-	
-#ifndef NO_DEBUG
-	static unsigned vboCount;
-#endif
+public slots:
+	void show();
 	
 private:
-	GLuint __vboID;
-	GLenum __type;
+	void __setWindowPosition();
+	QString __getGLVersion();
 	
-#ifndef NO_DEBUG
-	unsigned __size;
-#endif
+private slots:
+	void __updateContents();
 	
 };
 
-#endif // VAOOBJECT_H
+#endif // DEBUGWINDOW_H
+
+#endif // NO_DEBUG

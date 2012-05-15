@@ -32,6 +32,13 @@ set (vatsinator_SUBDIRS
 	vatsimdata
 )
 
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+	set (vatsinator_SUBDIRS
+		vdebug
+		${vatsinator_SUBDIRS}
+	)
+endif (CMAKE_BUILD_TYPE MATCHES Debug)
+
 qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
 include (cmake/macros.cmake)
