@@ -220,7 +220,7 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 		QString atcText;
 		unsigned apFacilities = ap->getFacilities();
 		if (!apFacilities)
-			atcText = "Unstaffed";
+			atcText = "-";
 		else {
 			if (apFacilities & APP)
 				atcText += "APP ";

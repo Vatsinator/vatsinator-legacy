@@ -315,6 +315,11 @@ MapWidget::initializeGL() {
 	QGLFormat::OpenGLVersionFlags ogvf = QGLFormat::openGLVersionFlags();
 	qDebug() << "OpenGL version: " << ogvf;
 #endif
+	int maxElementsIndices, maxElementsVertices;
+	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &maxElementsIndices);
+	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &maxElementsVertices);
+	qDebug() << "Max elements vertices: " << maxElementsVertices;
+	qDebug() << "Max elements indices: " << maxElementsIndices;
 	
 	initGLExtensionsPointers();
 	

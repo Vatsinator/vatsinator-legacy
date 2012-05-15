@@ -152,6 +152,27 @@ void WorldMap::__readDatabase() {
 #endif
 	
 	db.close();
+	
+	/*
+	 * Now we put some small polygons into one VBO in order not to create
+	 * so many of them. This value is ok, as bigger would cause segfaults
+	 * (bug on some ATI cards).
+	 */
+	int i = 0, offset = 0;
+	Polygon temp;
+	while (i < __polygons.size()) {
+		if (__polygons[i].triangles.size() < 512) {
+			for (const Point& p: __polygons[i].borders)
+				temp.borders.push_back(p);
+			for (const unsigned short c: __polygons[i].triangles)
+				temp.triangles.push_back(c + offset);
+			offset += __polygons[i].borders.size();
+			__polygons.remove(i);
+		} else {
+			i += 1;
+		}
+	}
+	__polygons.push_back(temp);
 }
 
 

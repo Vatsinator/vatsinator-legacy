@@ -34,6 +34,7 @@ QString getErrorString(GLenum _err) {
 		case 0x0502:
 			return "GL_INVALID_OPERATION";
 		case 0x0503:
+			qFatal("Running out of memory!");
 			return "GL_OUT_OF_MEMORY";
 		case 0x0506:
 			return "GL_INVALID_FRAMEBUFFER_OPERATION​";
