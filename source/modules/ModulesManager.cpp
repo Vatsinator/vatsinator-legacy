@@ -1,5 +1,5 @@
 /*
-    TrackAction.h
+    ModulesManager.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -16,30 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "modules/FlightTracker.h"
 
-#ifndef TRACKACTION_H
-#define TRACKACTION_H
+#include "ModulesManager.h"
+#include "defines.h"
 
-#include <QAction>
+ModulesManager::ModulesManager() :
+		__flightTracker(new FlightTracker()) {}
 
-class Pilot;
-
-class TrackAction : public QAction {
-	
-	Q_OBJECT
-	
-public:
-	TrackAction(const Pilot*, QObject*);
-	
-signals:
-	void triggered(const Pilot*);
-	
-public slots:
-	void handleTriggered();
-	
-private:
-	const Pilot* __current;
-	
-};
-
-#endif // TRACKACTION_H
+ModulesManager::~ModulesManager() {
+	delete __flightTracker;
+}

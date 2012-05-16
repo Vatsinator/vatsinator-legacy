@@ -30,5 +30,5 @@ TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
 
 void
 TrackAction::handleTriggered() {
-	emit clicked(__current);
+	emit triggered(__current);
 }

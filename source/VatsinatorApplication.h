@@ -32,6 +32,7 @@ class VatsimDataHandler;
 class SettingsManager;
 class WorldMap;
 class HttpHandler;
+class ModulesManager;
 
 class VatsinatorApplication :
 		public QApplication,
@@ -80,6 +81,8 @@ private:
 	SettingsManager *	__settingsManager;
 	UserInterface *		__userInterface;
 	QTimer 			__timer;
+	
+	ModulesManager *	__modulesManager;
 	
 };
 

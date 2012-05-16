@@ -34,6 +34,8 @@ public:
 	
 	virtual ClientType type() const = 0;
 	
+	virtual ~Client() {}
+	
 	unsigned	pid;
 	QString 	callsign;
 	QString		realName;

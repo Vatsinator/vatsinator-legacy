@@ -20,6 +20,8 @@
 
 #include "db/AirportsDatabase.h"
 
+#include "modules/FlightTracker.h"
+
 #include "ui/mapwidget/Pilot.h"
 #include "ui/mapwidget/MapWidget.h"
 #include "ui/UserInterface.h"
@@ -42,6 +44,7 @@ FlightDetailsWindow::showWindow(const Client* _client) {
 		return;
 	
 	const Pilot* pilot = static_cast< const Pilot* >(_client);
+	__current = pilot;
 	
 	setWindowTitle(QString(pilot->callsign + " - flight details"));
 	
@@ -85,25 +88,17 @@ FlightDetailsWindow::showWindow(const Client* _client) {
 	RouteField->setPlainText(pilot->route.route);
 	RemarksField->setPlainText(pilot->remarks);
 	
-	if (UserInterface::GetSingleton().getGLContext()->getTrackedPilot() == pilot)
+	if (FlightTracker::GetSingleton().getTracked() == pilot)
 		TrackFlightBox->setCheckState(Qt::Checked);
 	else
 		TrackFlightBox->setCheckState(Qt::Unchecked);
-	
-	__current = pilot;
 	
 	show();
 }
 
 void
 FlightDetailsWindow::stateHandle(int _state) {
-	switch(_state) {
-		case Qt::Checked:
-			UserInterface::GetSingleton().getGLContext()->getTrackedPilot() = __current;
-			break;
-		case Qt::Unchecked:
-			UserInterface::GetSingleton().getGLContext()->getTrackedPilot() = NULL;
-	}
+	emit flightTrackingStateChanged(__current, _state);
 }
 
 

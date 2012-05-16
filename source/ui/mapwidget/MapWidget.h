@@ -36,6 +36,7 @@ class Fir;
 class FirsDatabase;
 class FirDetailsWindow;
 class FlightDetailsWindow;
+class FlightTracker;
 class MetarsWindow;
 class SettingsManager;
 class VatsinatorApplication;
@@ -59,9 +60,6 @@ public:
 	MapWidget(QWidget* = 0);
 	
 	virtual ~MapWidget();
-	
-	inline const Pilot *&
-	getTrackedPilot() { return __tracked; }
 	
 	/* For Pilot class */
 	inline const QImage &
@@ -99,9 +97,10 @@ signals:
 	void flightDetailsWindowRequested(const Client*);
 	void airportDetailsWindowRequested(const AirportObject*);
 	void firDetailsWindowRequested(const Fir*);
+	void flightTrackingRequested(const Pilot*);
+	void flightTrackingCanceled();
 	
 public slots:
-	void trackFlight(const Pilot* _p) { __tracked = _p; }
 	void showPilot(const Pilot*);
 	void showAirport(const AirportObject*);
 	void redraw();
@@ -281,9 +280,8 @@ private:
 	GLdouble	__orthoRangeX;
 	GLdouble	__orthoRangeY;
 	
-	/* Clickable object under mouse and tracked pilot pointers */
+	/* Clickable object under mouse pointer */
 	const Clickable *	__underMouse;
-	const Pilot *		__tracked;
 	
 	/* To prevent the tooltip from being displayed in wrong moment */
 	bool	__dontDisplayTooltip;
@@ -305,6 +303,9 @@ private:
 	MetarsWindow *		__metarsWindow;
 	SettingsManager *	__settings;
 	WorldMap *		__myWorldMap;
+	
+	/* Modules */
+	FlightTracker *		__myFlightTracker;
 	
 #ifndef NO_DEBUG
 	/* For memory tracking */

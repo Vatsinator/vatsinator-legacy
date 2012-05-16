@@ -36,6 +36,9 @@ class FlightDetailsWindow :
 public:
 	FlightDetailsWindow(QWidget* = 0);
 	
+signals:
+	void flightTrackingStateChanged(const Pilot*, int);
+	
 public slots:
 	void showWindow(const Client*);
 	void stateHandle(int);

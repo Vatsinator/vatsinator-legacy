@@ -25,6 +25,8 @@
 
 #include "glutils/glExtensions.h"
 
+#include "modules/FlightTracker.h"
+
 #include "settings/SettingsManager.h"
 
 #include "ui/UserInterface.h"
@@ -153,7 +155,6 @@ MapWidget::MapWidget(QWidget* _parent) :
 		__zoom(ZOOM_MINIMUM),
 		__keyPressed(false),
 		__underMouse(NULL),
-		__tracked(NULL),
 		__dontDisplayTooltip(false),
 		__label(NULL),
 		__mother(VatsinatorApplication::GetSingleton()),
@@ -315,11 +316,6 @@ MapWidget::initializeGL() {
 	QGLFormat::OpenGLVersionFlags ogvf = QGLFormat::openGLVersionFlags();
 	qDebug() << "OpenGL version: " << ogvf;
 #endif
-	int maxElementsIndices, maxElementsVertices;
-	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &maxElementsIndices);
-	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &maxElementsVertices);
-	qDebug() << "Max elements vertices: " << maxElementsVertices;
-	qDebug() << "Max elements indices: " << maxElementsIndices;
 	
 	initGLExtensionsPointers();
 	
@@ -343,9 +339,9 @@ MapWidget::paintGL() {
 	qglClearColor(__settings->getSeasColor());
 	glLoadIdentity();
 	
-	if (__tracked) {
-		__position.rx() = __tracked->position.longitude / 180;
-		__position.ry() = __tracked->position.latitude / 90;
+	if (__myFlightTracker->getTracked()) {
+		__position.rx() = __myFlightTracker->getTracked()->position.longitude / 180;
+		__position.ry() = __myFlightTracker->getTracked()->position.latitude / 90;
 	}
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -477,7 +473,6 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
 	
 	if (_event->buttons() & Qt::LeftButton) {
 		setCursor(QCursor(Qt::SizeAllCursor));
-		__tracked = NULL;
 		
 		// count the new position
 		__position.rx() -= (double)dx / 400.0 / (double)__zoom;
@@ -485,6 +480,9 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
 		double newY = __position.y() + ((double)dy / 300.0 / (double)__zoom);
 		if ((newY < RANGE_Y) && (newY > -RANGE_Y))
 			__position.setY(newY);
+		
+		if (__myFlightTracker->getTracked() && (dx != 0 || dy != 0))
+			emit flightTrackingCanceled();
 	}
 	
 	__lastMousePos = _event->pos();
@@ -564,8 +562,8 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 	
 	connect(showDetails,		SIGNAL(clicked(const Client*)),
 		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
-	connect(trackThisFlight,	SIGNAL(clicked(const Pilot*)),
-		this,			SLOT(trackFlight(const Pilot*)));
+	connect(trackThisFlight,	SIGNAL(triggered(const Pilot*)),
+		this,			SIGNAL(flightTrackingRequested(const Pilot*)));
 	
 	dMenu->addSeparator();
 	
@@ -623,7 +621,11 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 		for (const Pilot* p: _ap->getOutbounds()) {
 			if (p->flightStatus != DEPARTING)
 				continue;
-			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
+			ClientDetailsAction* showDetails = new ClientDetailsAction(
+					p,
+					p->callsign + " to " + p->route.destination,
+					this
+				);
 			dMenu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(clicked(const Client*)),
 				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
@@ -637,7 +639,11 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 		for (const Pilot* p: _ap->getInbounds()) {
 			if (p->flightStatus != ARRIVED)
 				continue;
-			ClientDetailsAction* showDetails = new ClientDetailsAction(p, p->callsign, this);
+			ClientDetailsAction* showDetails = new ClientDetailsAction(
+					p,
+					p->callsign + " from " + p->route.origin,
+					this
+				);
 			dMenu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(clicked(const Client*)),
 				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
@@ -701,6 +707,8 @@ MapWidget::__init() {
 	__flightDetailsWindow = FlightDetailsWindow::GetSingletonPtr();
 	__settings = SettingsManager::GetSingletonPtr();
 	__myWorldMap = WorldMap::GetSingletonPtr();
+	
+	__myFlightTracker = FlightTracker::GetSingletonPtr();
 	
 #ifndef NO_DEBUG
 	qDebug() << "Preparing slots...";

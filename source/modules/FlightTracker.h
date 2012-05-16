@@ -1,5 +1,5 @@
 /*
-    TrackAction.h
+    FlightTracker.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,38 @@
 */
 
 
-#ifndef TRACKACTION_H
-#define TRACKACTION_H
+#ifndef FLIGHTTRACKER_H
+#define FLIGHTTRACKER_H
 
-#include <QAction>
+#include <QObject>
+#include <QString>
 
+#include "Singleton.h"
+
+class MapWidget;
 class Pilot;
 
-class TrackAction : public QAction {
+class FlightTracker : public QObject, public Singleton< FlightTracker > {
 	
 	Q_OBJECT
 	
 public:
-	TrackAction(const Pilot*, QObject*);
+	FlightTracker(QObject* = 0);
 	
-signals:
-	void triggered(const Pilot*);
+	void updateData();
 	
-public slots:
-	void handleTriggered();
+	inline const Pilot *
+	getTracked() { return __currentPointer; }
 	
 private:
-	const Pilot* __current;
+	QString		__currentCallsign;
+	const Pilot*	__currentPointer;
+	MapWidget *	__myMapWidget;
 	
+private slots:
+	void __trackFlight(const Pilot*);
+	void __trackFlight(const Pilot*, int);
+	void __cancelFlight();
 };
 
-#endif // TRACKACTION_H
+#endif // FLIGHTTRACKER_H

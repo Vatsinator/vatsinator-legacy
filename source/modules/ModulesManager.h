@@ -1,5 +1,5 @@
 /*
-    TrackAction.h
+    ModulesManager.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,21 @@
 */
 
 
-#ifndef TRACKACTION_H
-#define TRACKACTION_H
+#ifndef MODULESMANAGER_H
+#define MODULESMANAGER_H
 
-#include <QAction>
+#include "Singleton.h"
 
-class Pilot;
+class FlightTracker;
 
-class TrackAction : public QAction {
-	
-	Q_OBJECT
+class ModulesManager : public Singleton< ModulesManager > {
 	
 public:
-	TrackAction(const Pilot*, QObject*);
-	
-signals:
-	void triggered(const Pilot*);
-	
-public slots:
-	void handleTriggered();
+	ModulesManager();
+	virtual ~ModulesManager();
 	
 private:
-	const Pilot* __current;
-	
+	FlightTracker * __flightTracker;
 };
 
-#endif // TRACKACTION_H
+#endif // MODULESMANAGER_H

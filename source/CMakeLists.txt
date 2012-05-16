@@ -26,6 +26,7 @@ set (vatsinator_MOC_SRCS
 set (vatsinator_SUBDIRS
 	db
 	glutils
+	modules
 	network
 	settings
 	ui

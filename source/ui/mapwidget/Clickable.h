@@ -29,6 +29,8 @@ class Clickable {
 public:
 	
 	virtual ObjectType objectType() const = 0;
+	
+	virtual ~Clickable() {}
 
 	
 };

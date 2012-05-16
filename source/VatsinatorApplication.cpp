@@ -26,6 +26,9 @@
 #include "db/FirsDatabase.h"
 #include "db/WorldMap.h"
 
+#include "modules/FlightTracker.h"
+#include "modules/ModulesManager.h"
+
 #include "network/HttpHandler.h"
 
 #include "settings/SettingsManager.h"
@@ -45,7 +48,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		__worldMap(new WorldMap),
 		__vatsimData(new VatsimDataHandler),
 		__settingsManager(new SettingsManager),
-		__userInterface(new UserInterface) {
+		__userInterface(new UserInterface),
+		__modulesManager(new ModulesManager) {
 	
 #ifndef NO_DEBUG
 	std::cout << "VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl;
@@ -105,6 +109,7 @@ VatsinatorApplication::~VatsinatorApplication() {
 	delete __firsData;
 	delete __worldMap;
 	delete __userInterface;
+	delete __modulesManager;
 	
 #ifndef NO_DEBUG
 	DumpUnfreed();
@@ -185,10 +190,6 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 	
 	__userInterface->statusBarUpdate("Standby...");
 	
-	QString temp;
-	if (__userInterface->getGLContext()->getTrackedPilot())
-		temp = __userInterface->getGLContext()->getTrackedPilot()->callsign;
-	
 	__firsData->clearAll();
 	
 	__vatsimData->parseDataFile(_data);
@@ -198,12 +199,13 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 			QString::number(__vatsimData->getATCs().size()) % " ATCs)"
 		);
 	
-	if (__userInterface->getGLContext()->getTrackedPilot())
-		__userInterface->getGLContext()->getTrackedPilot() = __vatsimData->findPilot(temp);
-	
 	__userInterface->statusBarUpdate(
 		"Last update: " + __vatsimData->getDateDataUpdated().toString("dd MMM yyyy, hh:mm") + " UTC"
 	);
+	
+	// we cannot depend on signals & slots system here, as GLrepaint() would be called
+	// earlier, causing segfault
+	FlightTracker::GetSingleton().updateData();
 	
 	emit dataUpdated();
 }
