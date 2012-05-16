@@ -30,6 +30,8 @@ public:
 	ModulesManager();
 	virtual ~ModulesManager();
 	
+	void init();
+	
 private:
 	FlightTracker * __flightTracker;
 };

@@ -79,10 +79,9 @@ private:
 	WorldMap *		__worldMap;
 	VatsimDataHandler *	__vatsimData;
 	SettingsManager *	__settingsManager;
+	ModulesManager *	__modulesManager;
 	UserInterface *		__userInterface;
 	QTimer 			__timer;
-	
-	ModulesManager *	__modulesManager;
 	
 };
 

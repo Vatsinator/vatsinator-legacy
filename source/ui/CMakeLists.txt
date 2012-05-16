@@ -89,3 +89,5 @@ if (MINGW)
 endif (MINGW)
 
 vatsinator_end_subdirectory (ui)
+
+add_dependencies (ui vdebug)

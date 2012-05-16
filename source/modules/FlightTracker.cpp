@@ -30,7 +30,11 @@ FlightTracker::FlightTracker(QObject* _parent) :
 		QObject(_parent),
 		__currentCallsign(""),
 		__currentPointer(NULL),
-		__myMapWidget(MapWidget::GetSingletonPtr()) {
+		__myMapWidget(NULL) {}
+
+void
+FlightTracker::init() {
+	__myMapWidget = MapWidget::GetSingletonPtr();
 	connect(__myMapWidget,	SIGNAL(flightTrackingRequested(const Pilot*)),
 		this,		SLOT(__trackFlight(const Pilot*)));
 	connect(__myMapWidget,	SIGNAL(flightTrackingCanceled()),

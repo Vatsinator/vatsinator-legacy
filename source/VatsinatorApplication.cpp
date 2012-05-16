@@ -48,8 +48,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 		__worldMap(new WorldMap),
 		__vatsimData(new VatsimDataHandler),
 		__settingsManager(new SettingsManager),
-		__userInterface(new UserInterface),
-		__modulesManager(new ModulesManager) {
+		__modulesManager(new ModulesManager),
+		__userInterface(new UserInterface) {
 	
 #ifndef NO_DEBUG
 	std::cout << "VATSINATOR_DAT: " << VATSINATOR_DAT << std::endl;
@@ -72,6 +72,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 	
 	// SettingsManager instance is now created, let him get the pointer & connect his slots
 	__settingsManager->init();
+	__modulesManager->init();
 	
 	// connect data refresher with the timer
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));

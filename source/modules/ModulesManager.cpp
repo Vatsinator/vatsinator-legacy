@@ -27,3 +27,8 @@ ModulesManager::ModulesManager() :
 ModulesManager::~ModulesManager() {
 	delete __flightTracker;
 }
+
+void
+ModulesManager::init() {
+	__flightTracker->init();
+}

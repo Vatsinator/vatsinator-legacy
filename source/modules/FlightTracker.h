@@ -35,6 +35,8 @@ class FlightTracker : public QObject, public Singleton< FlightTracker > {
 public:
 	FlightTracker(QObject* = 0);
 	
+	void init();
+	
 	void updateData();
 	
 	inline const Pilot *
