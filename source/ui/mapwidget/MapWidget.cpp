@@ -89,7 +89,7 @@ inline T absHelper(const T& _v) {
 
 inline void drawCallsign(const Pilot* _p) {
 	glPushMatrix();
-		glTranslatef(0.0f, 0.0f, -0.1f);
+		glTranslatef(0.0f, 0.0f, 0.1f);
 		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
 		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
 		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
@@ -99,7 +99,7 @@ inline void drawCallsign(const Pilot* _p) {
 
 inline void drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
 	glPushMatrix();
-		glTranslatef(_x, _y, -0.1);
+		glTranslatef(_x, _y, 0.1f);
 		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
 		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
 		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
@@ -109,7 +109,7 @@ inline void drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
 
 inline void drawIcaoLabel(const AirportObject* _ap) {
 	glPushMatrix();
-		glTranslatef(0.0f, 0.0f, -0.1f);
+		glTranslatef(0.0f, 0.0f, 0.1f);
 		glBindTexture(GL_TEXTURE_2D, _ap->labelTip); checkGLErrors(HERE);
 		glVertexPointer(2, GL_FLOAT, 0, AIRPORT_TOOLTIP_VERTICES); checkGLErrors(HERE);
 		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
@@ -120,7 +120,7 @@ inline void drawIcaoLabel(const AirportObject* _ap) {
 inline void drawFirLabel(GLfloat _x, GLfloat _y, const Fir& _f) {
 	if (_f.icaoTip) {
 		glPushMatrix();
-			glTranslatef(_x, _y, 0.0);
+			glTranslatef(_x, _y, 0.0f);
 			glBindTexture(GL_TEXTURE_2D, _f.icaoTip); checkGLErrors(HERE);
 			glVertexPointer(2, GL_FLOAT, 0, FIR_TOOLTIP_VERTICES); checkGLErrors(HERE);
 			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
@@ -203,6 +203,7 @@ MapWidget::loadImage(const QImage& _img) {
 	GLuint pix;
 	QImage final = QGLWidget::convertToGLFormat(_img);
 	
+	glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
 	glGenTextures(1, &pix); checkGLErrors(HERE);
 	
 	glBindTexture(GL_TEXTURE_2D, pix); checkGLErrors(HERE);
@@ -236,7 +237,6 @@ MapWidget::loadImage(const QString& _fName) {
 	final = QGLWidget::convertToGLFormat(temp);
 	
 	glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
-	
 	glGenTextures(1, &pix); checkGLErrors(HERE);
 	
 	glBindTexture(GL_TEXTURE_2D, pix); checkGLErrors(HERE);
@@ -309,6 +309,7 @@ MapWidget::initializeGL() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	glEnable(GL_DEPTH_TEST); checkGLErrors(HERE);
+	glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
 	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
@@ -330,6 +331,8 @@ MapWidget::initializeGL() {
 #endif
 }
 
+
+
 void
 MapWidget::paintGL() {
 	__underMouse = NULL;
@@ -345,7 +348,6 @@ MapWidget::paintGL() {
 	}
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
 	checkGLErrors(HERE);
@@ -754,7 +756,7 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 		 __orthoRangeX,
 		 -__orthoRangeY,
 		 __orthoRangeY,
-		 1.0, -2.0
+		 -1.0, 1.0
 	);
 	
 	glMatrixMode(GL_MODELVIEW);
@@ -767,7 +769,7 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 			
 			glScalef(1.0f/180.0f, 1.0f/90.0f, 1.0f);
 			glScalef(__zoom, __zoom, 1.0);
- 			glTranslated(-__position.x() * 180, -__position.y() * 90, 0.9);
+ 			glTranslated(-__position.x() * 180, -__position.y() * 90, 0.0);
 			checkGLErrors(HERE);
 			break;
 		case AIRPORTS_PILOTS:
@@ -818,7 +820,7 @@ MapWidget::__drawMarks() {
 void
 MapWidget::__drawWorld() {
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, 0.9);
+		glTranslatef(0.0, 0.0, -0.9);
 		
 		qglColor(__settings->getLandsColor());
 		__myWorldMap->draw();
@@ -828,9 +830,24 @@ MapWidget::__drawWorld() {
 
 void
 MapWidget::__drawFirs() {
+	glPushMatrix();
+		glTranslatef(0.0, 0.0, -0.8);
+		for (const Fir& fir: __firs->getFirs()) {
+			if (fir.isStaffed()) {
+				continue;
+			}
+			
+			qglColor(__settings->getUnstaffedFirBordersColor());		
+			fir.drawBorders(); checkGLErrors(HERE);
+		}
+	glPopMatrix();
+	
+	if (__settings->getDisplayLayersPolicy().uirs)
+		__drawUirs();
+	
 	glLineWidth(3.0);
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, -0.1);
+		glTranslatef(0.0, 0.0, -0.6);
 		
 		for (const Fir& fir: __firs->getFirs()) {
 			if (!fir.isStaffed())
@@ -844,28 +861,16 @@ MapWidget::__drawFirs() {
 		}
 	glPopMatrix();
 	glLineWidth(1.0);
-	
-	if (__settings->getDisplayLayersPolicy().uirs)
-		__drawUirs();
-	
-	for (const Fir& fir: __firs->getFirs()) {
-		if (fir.isStaffed()) {
-			continue;
-		}
-		
-		qglColor(__settings->getUnstaffedFirBordersColor());		
-		fir.drawBorders(); checkGLErrors(HERE);
-	}
 }
 
 void
 MapWidget::__drawUirs() {
-	for (const Uir* uir: __data.getUIRs()) {
-		if (!uir->getStaff().isEmpty()) {
-			glPushMatrix();
- 				glTranslatef(0.0, 0.0, -0.1);
-				qglColor(__settings->getStaffedUirBordersColor());
-				glLineWidth(3.0);
+	glLineWidth(3.0);
+	
+	glPushMatrix();
+		glTranslatef(0.0, 0.0, -0.7);
+		for (const Uir* uir: __data.getUIRs()) {
+			if (!uir->getStaff().isEmpty()) {
 				for (const Fir* fir: uir->getRange()) {
 					qglColor(__settings->getStaffedUirBordersColor());
 					fir->drawBorders(); checkGLErrors(HERE);
@@ -873,12 +878,14 @@ MapWidget::__drawUirs() {
 					qglColor(__settings->getStaffedUirBackgroundColor());
 					fir->drawTriangles(); checkGLErrors(HERE);
 				}
-				glLineWidth(1.0);
-			glPopMatrix();
+			}
 			checkGLErrors(HERE);
 		}
-	}
+	
+	glPopMatrix();
+	
 	qglColor(__settings->getSeasColor());
+	glLineWidth(1.0);
 	checkGLErrors(HERE);
 }
 
@@ -886,7 +893,7 @@ void
 MapWidget::__drawFirsLabels() {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, 0.6);
+		glTranslatef(0.0, 0.0, -0.5);
 		for (const Fir& fir: __firs->getFirs()) {
 			float x, y;
 			__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
@@ -932,7 +939,7 @@ MapWidget::__drawAirports() {
 		
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
-			glTranslatef(x, y, 0.7); checkGLErrors(HERE);
+			glTranslatef(x, y, -0.4); checkGLErrors(HERE);
 			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 			
 			drawIcaoLabel(it.value()); checkGLErrors(HERE);
@@ -950,7 +957,7 @@ MapWidget::__drawAirports() {
 				glLineWidth(1.5);
 				glLineStipple(1, 0xF0F0);
 				glPushMatrix();
-				glScalef(0.005f * __zoom, 0.005f * __zoom, 0); checkGLErrors(HERE);
+					glScalef(0.005f * __zoom, 0.005f * __zoom, 0); checkGLErrors(HERE);
 					glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
 				glPopMatrix();
 				glLineWidth(1.0);
@@ -998,7 +1005,7 @@ MapWidget::__drawPilots() {
 			
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
-			glTranslatef(x, y, 0.5); checkGLErrors(HERE);
+			glTranslatef(x, y, -0.2); checkGLErrors(HERE);
 			
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1); checkGLErrors(HERE);
@@ -1132,6 +1139,9 @@ MapWidget::__drawLines() {
 void
 MapWidget::__drawToolTip() {
 	setCursor(QCursor(Qt::PointingHandCursor));
+	
+	if (!hasFocus())
+		return;
 	
 	QString text;
 	switch (__underMouse->objectType()) {

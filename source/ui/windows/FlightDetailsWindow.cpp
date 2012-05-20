@@ -43,52 +43,51 @@ FlightDetailsWindow::showWindow(const Client* _client) {
 	if (_client->type() != PILOT)
 		return;
 	
-	const Pilot* pilot = static_cast< const Pilot* >(_client);
-	__current = pilot;
+	__current = static_cast< const Pilot* >(_client);
 	
-	setWindowTitle(QString(pilot->callsign + " - flight details"));
+	setWindowTitle(QString(__current->callsign + " - flight details"));
 	
-	CallsignLabel->setText(pilot->callsign);
-	RouteLabel->setText(pilot->route.origin + " -> " + pilot->route.destination);
+	CallsignLabel->setText(__current->callsign);
+	RouteLabel->setText(__current->route.origin + " -> " + __current->route.destination);
 	
-	PilotLabel->setText(pilot->realName + " (" + QString::number(pilot->pid) + ")");
-	AltitudeLabel->setText(QString::number(pilot->altitude) + " feet");
-	GroundSpeedLabel->setText(QString::number(pilot->groundSpeed) + " kts");
-	HeadingLabel->setText(QString::number(pilot->heading));
+	PilotLabel->setText(__current->realName + " (" + QString::number(__current->pid) + ")");
+	AltitudeLabel->setText(QString::number(__current->altitude) + " feet");
+	GroundSpeedLabel->setText(QString::number(__current->groundSpeed) + " kts");
+	HeadingLabel->setText(QString::number(__current->heading));
 	
-	if (pilot->flightStatus == AIRBORNE)
+	if (__current->flightStatus == AIRBORNE)
 		CurrentStatusLabel->setText("airborne");
-	else if (pilot->flightStatus == DEPARTING)
+	else if (__current->flightStatus == DEPARTING)
 		CurrentStatusLabel->setText("departing");
 	else
 		CurrentStatusLabel->setText("arrived");
 	
-	ServerLabel->setText(pilot->server);
-	TimeOnlineLabel->setText(pilot->onlineFrom.toString("dd MMM yyyy, hh:mm"));
-	SquawkLabel->setText(pilot->squawk);
+	ServerLabel->setText(__current->server);
+	TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
+	SquawkLabel->setText(__current->squawk);
 	
-	FlightRulesLabel->setText((pilot->flightRules == IFR) ? "IFR" : "VFR");
+	FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
 	
-	AirportRecord* ap = AirportsDatabase::GetSingleton().find(pilot->route.origin);
-	QString text = pilot->route.origin;
+	AirportRecord* ap = AirportsDatabase::GetSingleton().find(__current->route.origin);
+	QString text = __current->route.origin;
 	if (ap)
 		text.append(QString(" ") + QString::fromAscii(ap->name) + " - " + QString::fromUtf8(ap->city));
 	OriginLabel->setText(text);
 	
-	ap = AirportsDatabase::GetSingleton().find(pilot->route.destination);
-	text = pilot->route.destination;
+	ap = AirportsDatabase::GetSingleton().find(__current->route.destination);
+	text = __current->route.destination;
 	if (ap)
 		text.append(QString(" ") + ap->name + " - " + ap->city);
 
 	ArrivalLabel->setText(text);
-	AircraftLabel->setText(pilot->aircraft);
-	TrueAirSpeedLabel->setText(QString::number(pilot->tas) + " kts");
-	CruiseAltitude->setText(pilot->route.altitude);
+	AircraftLabel->setText(__current->aircraft);
+	TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
+	CruiseAltitude->setText(__current->route.altitude);
 	
-	RouteField->setPlainText(pilot->route.route);
-	RemarksField->setPlainText(pilot->remarks);
+	RouteField->setPlainText(__current->route.route);
+	RemarksField->setPlainText(__current->remarks);
 	
-	if (FlightTracker::GetSingleton().getTracked() == pilot)
+	if (FlightTracker::GetSingleton().getTracked() == __current)
 		TrackFlightBox->setCheckState(Qt::Checked);
 	else
 		TrackFlightBox->setCheckState(Qt::Unchecked);
