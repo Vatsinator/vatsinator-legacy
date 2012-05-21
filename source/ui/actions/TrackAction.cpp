@@ -25,10 +25,10 @@ TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
 		QAction("Track this flight", _parent),
 		__current(_pilot) {
 	
-	connect(this, SIGNAL(triggered()), this, SLOT(handleTriggered()));
+	connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
 }
 
 void
-TrackAction::handleTriggered() {
+TrackAction::__handleTriggered() {
 	emit triggered(__current);
 }

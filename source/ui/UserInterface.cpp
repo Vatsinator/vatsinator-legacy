@@ -26,6 +26,7 @@
 #include "ui/windows/ATCDetailsWindow.h"
 #include "ui/windows/FirDetailsWindow.h"
 #include "ui/windows/FlightDetailsWindow.h"
+#include "ui/windows/FlightsListWindow.h"
 #include "ui/windows/MetarsWindow.h"
 #include "ui/windows/SettingsWindow.h"
 
@@ -46,6 +47,7 @@ UserInterface::UserInterface(QWidget* _parent) :
 		__firDetailsWindow(new FirDetailsWindow()),
 		__atcDetailsWindow(new ATCDetailsWindow()),
 		__flightDetailsWindow(new FlightDetailsWindow()),
+		__flightsListWindow(new FlightsListWindow()),
 		__settingsWindow(new SettingsWindow()),
 		__mother(VatsinatorApplication::GetSingleton()) {
 	__setupWindow();
@@ -62,6 +64,8 @@ UserInterface::UserInterface(QWidget* _parent) :
 		&__mother,	SLOT(refreshData()));
 	connect(ActionPreferences,	SIGNAL(triggered()),
 		__settingsWindow,	SLOT(show()));
+	//connect(ActionFlightsList,	SIGNAL(triggered()),
+	//	__flightsListWindow,	SLOT(show()));
 	
 	statusBarUpdate();
 	
@@ -69,26 +73,13 @@ UserInterface::UserInterface(QWidget* _parent) :
 }
 
 UserInterface::~UserInterface() {
+	hideAllWindows();
 	__storeWindowGeometry();
-	
-	if (__airportDetailsWindow->isVisible())
-		__airportDetailsWindow->hide();
-	
-	if (__firDetailsWindow->isVisible())
-		__firDetailsWindow->hide();
-	
-	if (__flightDetailsWindow->isVisible())
-		__flightDetailsWindow->hide();
-	
-	if (__atcDetailsWindow->isVisible())
-		__atcDetailsWindow->hide();
-	
-	if (__metarsWindow->isVisible())
-		__metarsWindow->hide();
 	
 	delete __airportDetailsWindow;
 	delete __firDetailsWindow;
 	delete __flightDetailsWindow;
+	delete __flightsListWindow;
 	delete __atcDetailsWindow;
 	delete __settingsWindow;
 	delete __metarsWindow;
@@ -136,6 +127,9 @@ UserInterface::hideAllWindows() {
 	
 	if (__flightDetailsWindow->isVisible())
 		__flightDetailsWindow->hide();
+	
+	if (__flightsListWindow->isVisible())
+		__flightsListWindow->hide();
 	
 	if (__atcDetailsWindow->isVisible())
 		__atcDetailsWindow->hide();

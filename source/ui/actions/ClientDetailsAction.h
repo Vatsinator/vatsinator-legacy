@@ -32,10 +32,10 @@ public:
 	ClientDetailsAction(const Client*, const QString&, QObject*);
 
 signals:
-	void clicked(const Client*);
+	void triggered(const Client*);
 	
-public slots:
-	void handleTriggered();
+private slots:
+	void __handleTriggered();
 	
 private:
 	const Client * __current;

@@ -23,12 +23,12 @@
 AirportDetailsAction::AirportDetailsAction(const AirportObject* _ap, const QString& _label, QObject* _parent) :
 		QAction(_label, _parent),
 		__current(_ap) {
-	connect(this, SIGNAL(triggered()), this, SLOT(handleTriggered()));
+	connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
 }
 
 void
-AirportDetailsAction::handleTriggered() {
-	emit clicked(__current);
+AirportDetailsAction::__handleTriggered() {
+	emit triggered(__current);
 }
 
 

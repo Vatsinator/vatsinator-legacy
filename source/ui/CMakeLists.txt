@@ -26,6 +26,7 @@ set (ui_SRCS
 	windows/ATCDetailsWindow.cpp
 	windows/FirDetailsWindow.cpp
 	windows/FlightDetailsWindow.cpp
+	windows/FlightsListWindow.cpp
 	windows/MetarsWindow.cpp
 	windows/SettingsWindow.cpp
 )
@@ -53,6 +54,7 @@ set (ui_MOC_SRCS
 	windows/ATCDetailsWindow.h
 	windows/FirDetailsWindow.h
 	windows/FlightDetailsWindow.h
+	windows/FlightsListWindow.h
 	windows/MetarsWindow.h
 	windows/SettingsWindow.h
 )
@@ -64,6 +66,7 @@ set (ui_FORMS
 	resources/ATCDetailsWindow.ui
 	resources/FirDetailsWindow.ui
 	resources/FlightDetailsWindow.ui
+	resources/FlightsListWindow.ui
 	resources/MetarsWindow.ui
 	resources/SettingsWindow.ui
 	resources/UserInterface.ui

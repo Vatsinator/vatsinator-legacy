@@ -98,7 +98,8 @@ Controller::__setMyIcaoAndFacility() {
 		facility = CTR;
 		airport = NULL;
 		
-		QString& icao = sections.front();
+		icao = sections.front();
+		
 		
 		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao);
 		if (fir)

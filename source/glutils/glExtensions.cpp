@@ -16,11 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+#include <string>
 #include <cstddef>
 #include <GL/gl.h>
 
 #include <QDebug>
+#include <QGLContext>
+
+#include "vdebug/glErrors.h"
 
 #include "config.h"
 #ifdef VATSINATOR_PLATFORM_LINUX
@@ -30,7 +33,7 @@
 #include <wingdi.h>
 #endif
 
-#include "vdebug/glErrors.h"
+using std::string;
 
 typedef ptrdiff_t GLsizeiptr;
 typedef ptrdiff_t GLintptr;
@@ -45,31 +48,31 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
  * Get extension pointer.
  */
 template < typename T >
-inline T getProcAddress(const char* _procName) {
+inline T getProcAddress(const string& _procName) {
 #ifdef VATSINATOR_PLATFORM_LINUX
-	T temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName));
+	T temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
 #elif defined VATSINATOR_PLATFORM_WIN32
-	T temp = reinterpret_cast< T >(wglGetProcAddress(_procName));
+	T temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
 #endif
-	checkGLErrors(HERE);
+	
 	Q_ASSERT(temp != (T)NULL);
+	
+#ifndef NO_DEBUG
+	registerExtensionPointer(_procName.c_str(), reinterpret_cast< long long unsigned >(temp));
+#endif
+	
 	return temp;
 }
 
 void
 initGLExtensionsPointers() {
+	const QGLContext* context = QGLContext::currentContext();
+	Q_ASSERT(context->isValid());
+	
 	glBindBuffer = getProcAddress< decltype(glBindBuffer) >("glBindBuffer");
 	glBufferData = getProcAddress< decltype(glBufferData) >("glBufferData");
 	glBufferSubData = getProcAddress< decltype(glBufferSubData) >("glBufferSubData");
 	glDeleteBuffers = getProcAddress< decltype(glDeleteBuffers) >("glDeleteBuffers");
 	glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
-	
-#ifndef NO_DEBUG
-	registerExtensionPointer("glBindBuffer", reinterpret_cast< long long unsigned >(glBindBuffer));
-	registerExtensionPointer("glBufferData", reinterpret_cast< long long unsigned >(glBufferData));
-	registerExtensionPointer("glBufferSubData", reinterpret_cast< long long unsigned >(glBufferSubData));
-	registerExtensionPointer("glDeleteBuffers", reinterpret_cast< long long unsigned >(glDeleteBuffers));
-	registerExtensionPointer("glGenBuffers", reinterpret_cast< long long unsigned >(glGenBuffers));
-#endif // NO_DEBUG
 }
 

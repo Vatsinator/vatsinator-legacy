@@ -32,10 +32,10 @@ public:
 	FirDetailsAction(const Fir*, const QString&, QObject*);
 	
 signals:
-	void clicked(const Fir*);
+	void triggered(const Fir*);
 	
-public slots:
-	void handleTriggered();
+private slots:
+	void __handleTriggered();
 	
 private:
 	const Fir * __current;

@@ -19,6 +19,7 @@
 #include <QtGui>
 
 #include "db/AirportsDatabase.h"
+#include "db/FirsDatabase.h"
 
 #include "ui/mapwidget/Controller.h"
 #include "ui/windows/AirportDetailsWindow.h"
@@ -53,7 +54,7 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
 
 void
 ATCDetailsWindow::showWindow(const Client* _client) {
-	if (_client->type() != ATC) {
+	if (_client->type() != ATC || !dynamic_cast< const Controller* >(_client)) {
 #ifndef NO_DEBUG
 		qDebug() << "ATCDetailsWindow: passing incompatible argument! Client type must be ATC.";
 #endif
@@ -68,16 +69,78 @@ ATCDetailsWindow::showWindow(const Controller* _c) {
 	__showMe(_c);
 }
 
+QString
+ATCDetailsWindow::__produceFacility(const Controller* _c) {
+	if (_c->facility == CTR) {
+		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, false);
+		if (!fir)
+			fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, true);
+		if (fir)
+			return fir->name;
+	}
+	
+	if (_c->facility == FSS) {
+		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, true);
+		if (!fir)
+			fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, false);
+		if (fir)
+			return fir->name;
+	}
+	
+	QString airport, facility;
+	
+	if (!_c->airport) {
+		airport = "Unknown";
+	} else {
+		if (static_cast< QString >(_c->airport->name) == static_cast< QString >(_c->airport->city))
+			airport = static_cast< QString >(_c->airport->name);
+		else
+			airport =
+				static_cast< QString >(_c->airport->city) %
+				"/" %
+				static_cast< QString >(_c->airport->name);
+	}
+	
+	switch (_c->facility) {
+		case ATIS:
+			facility = "ATIS";
+			break;
+		case DEL:
+			facility = "Delivery";
+			break;
+		case GND:
+			facility = "Ground";
+			break;
+		case TWR:
+			facility = "Tower";
+			break;
+		case APP:
+			facility = "Approach";
+			break;
+		case FSS:
+		case CTR:
+		case OBS:
+			break;
+	}
+	
+	return airport % " " % facility;
+}
+
 void
 ATCDetailsWindow::__showMe(const Controller* _c) {
 	setWindowTitle(QString(_c->callsign + " - ATC details"));
 	
 	CallsignLabel->setText(_c->callsign);
+	FacilityLabel->setText(__produceFacility(_c));
 	NameLabel->setText(_c->realName);
 	FrequencyLabel->setText(_c->frequency);
 	RatingLabel->setText(__ratings[_c->rating]);
 	if (_c->airport)
-		AirportLabel->setText((QString)_c->airport->icao + " " + _c->airport->name + ", " + _c->airport->city);
+		AirportLabel->setText(static_cast< QString >(_c->airport->icao) %
+				" " %
+				static_cast< QString >(_c->airport->name) %
+				", " %
+				static_cast< QString >(_c->airport->city));
 	else
 		AirportLabel->setText("N/A");
 	ServerLabel->setText(_c->server);

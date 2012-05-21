@@ -1,5 +1,5 @@
 /*
-    ATCDetailsWindow.h
+    FlightsListWindow.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,37 +17,17 @@
 */
 
 
-#ifndef ATCDETAILSWINDOW_H
-#define ATCDETAILSWINDOW_H
+#ifndef FLIGHTSLISTWINDOW_H
+#define FLIGHTSLISTWINDOW_H
 
-#include "ui/ui_ATCDetailsWindow.h"
+#include "ui/ui_FlightsListWindow.h"
 #include "Singleton.h"
 
-class Client;
-class Controller;
-
-class ATCDetailsWindow :
-		public QWidget,
-		public Singleton< ATCDetailsWindow >,
-		private Ui::ATCDetailsWindow {
+class FlightsListWindow : public QWidget, public Singleton< FlightsListWindow >, private Ui::FlightsListWindow {
 	
 	Q_OBJECT
-	
-public:
-	ATCDetailsWindow(QWidget* = 0);
-	
-public slots:
-	void showWindow(const Client*);
-	void showWindow(const Controller*);
-	
-private:
-	QString __produceFacility(const Controller*);
-	void __showMe(const Controller*);
-	void __setWindowPosition();
-	
-	QMap< int, QString> __ratings;
 	
 	
 };
 
-#endif // ATCDETAILSWINDOW_H
+#endif // FLIGHTSLISTWINDOW_H

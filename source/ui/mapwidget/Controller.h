@@ -46,6 +46,7 @@ public:
 	
 	QString		frequency;
 	int		rating;
+	QString		icao;
 	
 	QString		atis;
 	

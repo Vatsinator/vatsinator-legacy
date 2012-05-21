@@ -24,12 +24,12 @@ FirDetailsAction::FirDetailsAction(const Fir* _f, const QString& _label, QObject
 		QAction(_label, _parent),
 		__current(_f) {
 	connect(this,	SIGNAL(triggered()),
-		this,	SLOT(handleTriggered()));
+		this,	SLOT(__handleTriggered()));
 }
 
 void
-FirDetailsAction::handleTriggered() {
-	emit clicked(__current);
+FirDetailsAction::__handleTriggered() {
+	emit triggered(__current);
 }
 
 

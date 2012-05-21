@@ -17,7 +17,6 @@
 */
 
 #include <QtGui>
-#include <cstdlib>
 
 #include "db/AirportsDatabase.h"
 #include "db/FirsDatabase.h"
@@ -295,11 +294,10 @@ MapWidget::initializeGL() {
 #ifndef NO_DEBUG
 	qDebug() << "Initializing OpenGL...";
 #endif
-	this->makeCurrent();
+	makeCurrent();
 	
 	glShadeModel(GL_SMOOTH);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); checkGLErrors(HERE);
 	
 	glEnable(GL_LINE_STIPPLE);
 	glEnable(GL_ALPHA_TEST);
@@ -310,12 +308,13 @@ MapWidget::initializeGL() {
 	
 	glEnable(GL_DEPTH_TEST); checkGLErrors(HERE);
 	glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
+	glEnableClientState(GL_VERTEX_ARRAY);
 	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
 #ifndef NO_DEBUG
 	QGLFormat::OpenGLVersionFlags ogvf = QGLFormat::openGLVersionFlags();
-	qDebug() << "OpenGL version: " << ogvf;
+	qDebug() << "OpenGL version flags: " << ogvf;
 #endif
 	
 	initGLExtensionsPointers();
@@ -324,6 +323,7 @@ MapWidget::initializeGL() {
 	qDebug() << "OpenGL ready.";
 #endif
 	
+	QCoreApplication::flush();
 	__init();
 	
 #ifndef NO_DEBUG
@@ -562,7 +562,7 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 	dMenu->addAction(showDetails);
 	dMenu->addAction(trackThisFlight);
 	
-	connect(showDetails,		SIGNAL(clicked(const Client*)),
+	connect(showDetails,		SIGNAL(triggered(const Client*)),
 		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 	connect(trackThisFlight,	SIGNAL(triggered(const Pilot*)),
 		this,			SIGNAL(flightTrackingRequested(const Pilot*)));
@@ -572,14 +572,14 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 	if (!_pilot->route.origin.isEmpty()) {
 		MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
 		dMenu->addAction(showDepMetar);
-		connect(showDepMetar,	SIGNAL(clicked(QString)),
+		connect(showDepMetar,	SIGNAL(triggered(QString)),
 			__metarsWindow,	SLOT(showWindow(QString)));
 	}
 	
 	if (!_pilot->route.destination.isEmpty()) {
 		MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
 		dMenu->addAction(showArrMetar);
-		connect(showArrMetar,	SIGNAL(clicked(QString)),
+		connect(showArrMetar,	SIGNAL(triggered(QString)),
 			__metarsWindow,	SLOT(showWindow(QString)));
 	}
 	
@@ -598,10 +598,10 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 	dMenu->addAction(showAp);
 	dMenu->addAction(showMetar);
 	
-	connect(showAp,			SIGNAL(clicked(const AirportObject*)),
+	connect(showAp,			SIGNAL(triggered(const AirportObject*)),
 		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
 	
-	connect(showMetar,		SIGNAL(clicked(QString)),
+	connect(showMetar,		SIGNAL(triggered(QString)),
 		__metarsWindow,		SLOT(showWindow(QString)));
 	
 	if (!_ap->getStaff().isEmpty()) {
@@ -611,7 +611,7 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 		for (const Controller* c: _ap->getStaff()) {
 			ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
 			dMenu->addAction(showDetails);
-			connect(showDetails,		SIGNAL(clicked(const Client*)),
+			connect(showDetails,		SIGNAL(triggered(const Client*)),
 				__atcDetailsWindow,	SLOT(showWindow(const Client*)));
 		}
 	}
@@ -625,11 +625,11 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 				continue;
 			ClientDetailsAction* showDetails = new ClientDetailsAction(
 					p,
-					p->callsign + " to " + p->route.destination,
+					p->callsign % " to " % p->route.destination,
 					this
 				);
 			dMenu->addAction(showDetails);
-			connect(showDetails,		SIGNAL(clicked(const Client*)),
+			connect(showDetails,		SIGNAL(triggered(const Client*)),
 				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 		}
 	}
@@ -643,11 +643,11 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 				continue;
 			ClientDetailsAction* showDetails = new ClientDetailsAction(
 					p,
-					p->callsign + " from " + p->route.origin,
+					p->callsign % " from " % p->route.origin,
 					this
 				);
 			dMenu->addAction(showDetails);
-			connect(showDetails,		SIGNAL(clicked(const Client*)),
+			connect(showDetails,		SIGNAL(triggered(const Client*)),
 				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 		}
 	}
@@ -665,21 +665,21 @@ MapWidget::__openContextMenu(const Fir* _fir) {
 	
 	dMenu->addAction(showFir);
 	
-	connect(showFir,		SIGNAL(clicked(const Fir*)),
+	connect(showFir,		SIGNAL(triggered(const Fir*)),
 		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
 	
 	
 	for (const Controller* c: _fir->getStaff()) {
 		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
 		dMenu->addAction(showDetails);
-		connect(showDetails,		SIGNAL(clicked(const Client*)),
+		connect(showDetails,		SIGNAL(triggered(const Client*)),
 			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
 	}
 	
 	for (const Controller* c: _fir->getUirStaff()) {
 		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
 		dMenu->addAction(showDetails);
-		connect(showDetails,		SIGNAL(clicked(const Client*)),
+		connect(showDetails,		SIGNAL(triggered(const Client*)),
 			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
 	}
 	
@@ -742,6 +742,7 @@ MapWidget::__init() {
 #ifndef NO_DEBUG
 	qDebug() << "Generating pixmaps...";
 #endif
+	
 	__firs->init();
 	WorldMap::GetSingleton().init();
 }
@@ -1140,9 +1141,6 @@ void
 MapWidget::__drawToolTip() {
 	setCursor(QCursor(Qt::PointingHandCursor));
 	
-	if (!hasFocus())
-		return;
-	
 	QString text;
 	switch (__underMouse->objectType()) {
 		case PILOT:
@@ -1213,4 +1211,90 @@ MapWidget::__produceCircle() {
 		__circle[i++] = x;
 		__circle[i++] = y;
 	}
+}
+
+inline float
+MapWidget::__distanceFromCamera(float _x, float _y) {
+	return sqrt(
+		pow(_x - __lastMousePosInterpolated.x(), 2) +
+		pow(_y - __lastMousePosInterpolated.y(), 2)
+	);
+}
+
+inline void
+MapWidget::__mapCoordinates(float _xFrom, float _yFrom,
+		 float& _xTo, float& _yTo) {
+	_xTo = (_xFrom / 180 - __position.x()) * __zoom;
+	_yTo = (_yFrom / 90 - __position.y()) * __zoom;
+}
+
+inline QString
+MapWidget::__producePilotToolTip(const Pilot* _p) {
+	return (QString)
+		"<center>" %
+		_p->callsign % "<br><nobr>" %
+		_p->realName % " (" % _p->aircraft % ")</nobr><br><nobr>" %
+		(_p->route.origin.isEmpty() ? "(unknown)" : (__airports[_p->route.origin]->getData() ?
+				_p->route.origin % " " % (QString)__airports[_p->route.origin]->getData()->city :
+				_p->route.origin)) %
+		" > " %
+		(_p->route.destination.isEmpty() ? "(unknown)" : (__airports[_p->route.destination]->getData() ?
+				_p->route.destination % " " % (QString)__airports[_p->route.destination]->getData()->city :
+				_p->route.destination)) %
+		"</nobr><br>" %
+		"Ground speed: " % QString::number(_p->groundSpeed) % " kts<br>Altitude: " %
+		QString::number(_p->altitude) % " ft</center>";
+}
+
+inline QString
+MapWidget::__produceAirportToolTip(const AirportObject* _ap) {
+	QString text = (QString)"<center>" % (QString)_ap->getData()->icao % "<br><nobr>" %
+		(QString)_ap->getData()->name % ", " %
+		(QString)_ap->getData()->city % "</nobr>";
+	
+	for (const Controller* c: _ap->getStaff())
+		text.append((QString)"<br><nobr>" %
+			c->callsign % " " % c->frequency % " " % c->realName %
+			"</nobr>"
+		);
+	
+	int deps = _ap->countDepartures();
+	if (deps)
+		text.append((QString)"<br>Departures: " % QString::number(deps));
+	
+	int arrs = _ap->countArrivals();
+	if (arrs)
+		text.append((QString)"<br>Arrivals: " % QString::number(arrs));
+	
+	text.append("</center>");
+	return text;
+}
+
+inline QString
+MapWidget::__produceFirToolTip(const Fir* _f) {
+	if (_f->name.isEmpty() && _f->getStaff().isEmpty() && _f->getUirStaff().isEmpty())
+		return "";
+	
+	QString text = (QString)"<center>";
+	if (!_f->name.isEmpty()) {
+		text.append((QString)"<nobr>" % _f->name);
+		if (!_f->country.isEmpty())
+			text.append((QString)", " % _f->country);
+		text.append((QString)"</nobr>");
+	}
+	
+	for (const Controller* c: _f->getStaff())
+		text.append((QString)"<br><nobr>" %
+			c->callsign % " " % c->frequency % " " % c->realName %
+			"</nobr>"
+		);
+	
+	for (const Controller* c: _f->getUirStaff())
+		text.append((QString)"<br><nobr>" %
+			c->callsign % " " % c->frequency % " " % c->realName %
+			"</nobr>"
+		);
+	
+	text.append("</center>");
+	return text;
 }

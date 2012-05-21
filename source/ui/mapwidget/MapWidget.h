@@ -42,10 +42,6 @@ class SettingsManager;
 class VatsinatorApplication;
 class WorldMap;
 
-enum PMMatrixMode {
-	AIRPORTS_PILOTS, WORLD
-};
-
 class MapWidget :
 		public QGLWidget,
 		public Singleton< MapWidget > {
@@ -125,6 +121,10 @@ private slots:
 	void __openContextMenu(const Fir*);
 	
 private:
+	enum PMMatrixMode {
+		AIRPORTS_PILOTS, WORLD
+	};
+	
 	void __init();
 	void __prepareMatrix(PMMatrixMode);
 	
@@ -148,92 +148,12 @@ private:
 	
 	void __produceCircle();
 	
-	inline float
-	__distanceFromCamera(float _x, float _y) {
-		return sqrt(
-			pow(_x - __lastMousePosInterpolated.x(), 2) +
-			pow(_y - __lastMousePosInterpolated.y(), 2)
-		);
-	}
-	
-	inline void
-	__mapCoordinates(float _xFrom, float _yFrom,
-						  float& _xTo, float& _yTo) {
-		_xTo = (_xFrom / 180 - __position.x()) * __zoom;
-		_yTo = (_yFrom / 90 - __position.y()) * __zoom;
-	}
-	
-	
-	inline QString
-	__producePilotToolTip(const Pilot* _p) {
-		return (QString)
-			"<center>" %
-			_p->callsign % "<br><nobr>" %
-			_p->realName % " (" % _p->aircraft % ")</nobr><br><nobr>" %
-			(_p->route.origin.isEmpty() ? "(unknown)" : (__airports[_p->route.origin]->getData() ?
-					_p->route.origin % " " % (QString)__airports[_p->route.origin]->getData()->city :
-					_p->route.origin)) %
-			" > " %
-			(_p->route.destination.isEmpty() ? "(unknown)" : (__airports[_p->route.destination]->getData() ?
-					_p->route.destination % " " % (QString)__airports[_p->route.destination]->getData()->city :
-					_p->route.destination)) %
-			"</nobr><br>" %
-			"Ground speed: " % QString::number(_p->groundSpeed) % " kts<br>Altitude: " %
-			QString::number(_p->altitude) % " ft</center>";
-	}
-	
-	inline QString
-	__produceAirportToolTip(const AirportObject* _ap) {
-		QString text = (QString)"<center>" % (QString)_ap->getData()->icao % "<br><nobr>" %
-			(QString)_ap->getData()->name % ", " %
-			(QString)_ap->getData()->city % "</nobr>";
-		
-		for (const Controller* c: _ap->getStaff())
-			text.append((QString)"<br><nobr>" %
-				c->callsign % " " % c->frequency % " " % c->realName %
-				"</nobr>"
-			);
-		
-		int deps = _ap->countDepartures();
-		if (deps)
-			text.append((QString)"<br>Departures: " % QString::number(deps));
-		
-		int arrs = _ap->countArrivals();
-		if (arrs)
-			text.append((QString)"<br>Arrivals: " % QString::number(arrs));
-		
-		text.append("</center>");
-		return text;
-	}
-	
-	inline QString
-	__produceFirToolTip(const Fir* _f) {
-		if (_f->name.isEmpty() && _f->getStaff().isEmpty() && _f->getUirStaff().isEmpty())
-			return "";
-		
-		QString text = (QString)"<center>";
-		if (!_f->name.isEmpty()) {
-			text.append((QString)"<nobr>" % _f->name);
-			if (!_f->country.isEmpty())
-				text.append((QString)", " % _f->country);
-			text.append((QString)"</nobr>");
-		}
-		
-		for (const Controller* c: _f->getStaff())
-			text.append((QString)"<br><nobr>" %
-				c->callsign % " " % c->frequency % " " % c->realName %
-				"</nobr>"
-			);
-		
-		for (const Controller* c: _f->getUirStaff())
-			text.append((QString)"<br><nobr>" %
-				c->callsign % " " % c->frequency % " " % c->realName %
-				"</nobr>"
-			);
-		
-		text.append("</center>");
-		return text;
-	}
+	/* Some inlined helpful functions */
+	float	__distanceFromCamera(float, float);
+	void	__mapCoordinates(float, float, float&, float&);
+	QString	__producePilotToolTip(const Pilot*);
+	QString	__produceAirportToolTip(const AirportObject*);
+	QString	__produceFirToolTip(const Fir*);
 	
 	/* OpenGL's textures. */
 	GLuint	__apIcon;

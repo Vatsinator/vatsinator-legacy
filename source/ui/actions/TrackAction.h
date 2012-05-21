@@ -34,8 +34,8 @@ public:
 signals:
 	void triggered(const Pilot*);
 	
-public slots:
-	void handleTriggered();
+private slots:
+	void __handleTriggered();
 	
 private:
 	const Pilot* __current;

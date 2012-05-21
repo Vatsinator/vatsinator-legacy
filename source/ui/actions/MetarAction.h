@@ -37,10 +37,10 @@ public:
 	MetarAction(const QString&, QObject*);
 	
 signals:
-	void clicked(QString);
+	void triggered(QString);
 
-public slots:
-	void handleTriggered();
+private slots:
+	void __handleTriggered();
 
 private:
 	QString __icao;

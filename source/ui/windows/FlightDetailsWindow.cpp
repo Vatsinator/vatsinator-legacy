@@ -40,7 +40,7 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 
 void
 FlightDetailsWindow::showWindow(const Client* _client) {
-	if (_client->type() != PILOT)
+	if (!dynamic_cast< const Pilot* >(_client))
 		return;
 	
 	__current = static_cast< const Pilot* >(_client);

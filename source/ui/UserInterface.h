@@ -32,6 +32,7 @@ class AirportDetailsWindow;
 class ATCDetailsWindow;
 class FirDetailsWindow;
 class FlightDetailsWindow;
+class FlightsListWindow;
 class MetarsWindow;
 class SettingsWindow;
 class VatsinatorApplication;
@@ -87,6 +88,7 @@ private:
 	FirDetailsWindow * __firDetailsWindow;
 	ATCDetailsWindow * __atcDetailsWindow;
 	FlightDetailsWindow * __flightDetailsWindow;
+	FlightsListWindow * __flightsListWindow;
 	SettingsWindow * __settingsWindow;
 	
 	VatsinatorApplication &	__mother;

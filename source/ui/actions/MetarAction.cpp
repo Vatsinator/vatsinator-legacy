@@ -24,12 +24,12 @@
 MetarAction::MetarAction(const QString& _icao, QObject* _parent) :
 		QAction(_icao + " metar", _parent),
 		__icao(_icao) {
-	connect(this, SIGNAL(triggered()), this, SLOT(handleTriggered()));
+	connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
 }
 
 void
-MetarAction::handleTriggered() {
-	emit clicked(__icao);
+MetarAction::__handleTriggered() {
+	emit triggered(__icao);
 }
 
 

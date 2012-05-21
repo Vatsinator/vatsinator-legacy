@@ -32,10 +32,10 @@ public:
 	AirportDetailsAction(const AirportObject*, const QString&, QObject*);
 	
 signals:
-	void clicked(const AirportObject*);
+	void triggered(const AirportObject*);
 	
-public slots:
-	void handleTriggered();
+private slots:
+	void __handleTriggered();
 	
 private:
 	const AirportObject * __current;

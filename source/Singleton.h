@@ -19,7 +19,7 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
-#include <assert.h>
+#include <QtGlobal>
 
 template < typename T >
 class Singleton {
@@ -29,23 +29,23 @@ private:
 
 public:
 	Singleton() {
-		assert(!__ms_Singleton);
+		Q_ASSERT(!__ms_Singleton);
 		
 		intptr_t offset = (intptr_t)(T*)1 - (intptr_t)(Singleton *)(T*)1;
 		__ms_Singleton = (T*)((intptr_t)this + offset);
 	}
 
 	~Singleton() {
-		assert(__ms_Singleton);
+		Q_ASSERT(__ms_Singleton);
 		__ms_Singleton = 0;
 	}
 
-	static T& GetSingleton() {
-		assert(__ms_Singleton);
+	inline static T& GetSingleton() {
+		Q_ASSERT(__ms_Singleton);
 		return *__ms_Singleton;
 	}
 
-	static T* GetSingletonPtr() {
+	inline static T* GetSingletonPtr() {
 		return __ms_Singleton;
 	}
 };

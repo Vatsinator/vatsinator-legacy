@@ -26,7 +26,7 @@
    <string notr="true">Vatsinator</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <widget class="QWidget" name="MainWidget">
@@ -176,10 +176,10 @@
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>244</x>
-      <y>214</y>
+      <x>239</x>
+      <y>217</y>
       <width>150</width>
-      <height>134</height>
+      <height>162</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -193,6 +193,8 @@
     </property>
     <addaction name="ActionMetar"/>
     <addaction name="ActionRefresh"/>
+    <addaction name="separator"/>
+    <addaction name="ActionFlightsList"/>
     <addaction name="separator"/>
     <addaction name="ActionExit"/>
    </widget>
@@ -233,7 +235,7 @@
   </action>
   <action name="ActionMetar">
    <property name="text">
-    <string>Metar</string>
+    <string>METARs...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+M</string>
@@ -250,6 +252,14 @@
   <action name="ActionPreferences">
    <property name="text">
     <string>Preferences: Vatsinator</string>
+   </property>
+  </action>
+  <action name="ActionFlightsList">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Flights list...</string>
    </property>
   </action>
  </widget>
