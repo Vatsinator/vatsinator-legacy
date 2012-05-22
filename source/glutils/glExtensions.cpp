@@ -49,10 +49,11 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
  */
 template < typename T >
 inline T getProcAddress(const string& _procName) {
+	T temp = NULL;
 #ifdef VATSINATOR_PLATFORM_LINUX
-	T temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
+	temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
 #elif defined VATSINATOR_PLATFORM_WIN32
-	T temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
+	temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
 #endif
 	
 	Q_ASSERT(temp != (T)NULL);

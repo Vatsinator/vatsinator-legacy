@@ -293,6 +293,7 @@ void
 MapWidget::initializeGL() {
 #ifndef NO_DEBUG
 	qDebug() << "Initializing OpenGL...";
+	
 #endif
 	makeCurrent();
 	
@@ -348,7 +349,6 @@ MapWidget::paintGL() {
 	}
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
 	checkGLErrors(HERE);
 	__prepareMatrix(WORLD);
@@ -362,6 +362,7 @@ MapWidget::paintGL() {
 	if (__settings->getDisplayLayersPolicy().firs)
 		__drawFirs();
 	
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
@@ -784,7 +785,6 @@ MapWidget::__drawMarks() {
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	//glTexCoordPointer(2, GL_DOUBLE, 0, TEXCOORDS);
 	
 	glColor4f(0.0, 0.0, 0.0, 1.0);
 	glPointSize(5.0);

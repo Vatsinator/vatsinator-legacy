@@ -35,6 +35,7 @@
 #include "VatsinatorApplication.h"
 
 #include "UserInterface.h"
+#include "ui/about.h"
 #include "defines.h"
 
 UserInterface::UserInterface(QWidget* _parent) :
@@ -102,12 +103,7 @@ UserInterface::quit() {
 void
 UserInterface::about() {
 	QMessageBox::about(this, "About Vatsinator",
-			"<center>"
-			"Vatsinator<br />"
-			"The simple Vatsim monitor<br />"
-			"Version " VATSINATOR_VERSION "<br />"
-			"Copyright 2012"
-			"</center>"
+			trUtf8(ABOUT_TEXT)
 	);
 	statusBarUpdate();
 }

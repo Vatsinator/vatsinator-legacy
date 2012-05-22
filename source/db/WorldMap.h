@@ -32,9 +32,9 @@ class WorldMap : public Singleton< WorldMap > {
 	
 	struct WorldMapVBO {
 		VertexBufferObject *	border;
-		unsigned		borderSize;
+		int			borderSize;
 		VertexBufferObject *	triangles;
-		unsigned		trianglesSize;
+		int			trianglesSize;
 	};
 	
 	struct Polygon {
@@ -56,7 +56,7 @@ public:
 private:
 	void __readDatabase();
 	
-	QVector< Polygon > __polygons;
+	Polygon __worldPolygon;
 	
 	
 };

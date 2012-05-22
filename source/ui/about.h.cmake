@@ -1,0 +1,1 @@
+#define ABOUT_TEXT "${vatsinator_ABOUT}"

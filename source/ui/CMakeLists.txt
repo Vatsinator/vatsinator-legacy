@@ -1,5 +1,16 @@
 vatsinator_start_subdirectory (ui)
 
+if (NOT vatsinator_ABOUT)
+	file (READ ${CMAKE_CURRENT_SOURCE_DIR}/resources/about vatsinator_ABOUT)
+	string (REPLACE "\n" "" vatsinator_ABOUT ${vatsinator_ABOUT})
+	string (REPLACE "\"" "\\\"" vatsinator_ABOUT ${vatsinator_ABOUT})
+	string (REPLACE "VATSINATOR_VERSION" "${vatsinator_VERSION}" vatsinator_ABOUT ${vatsinator_ABOUT})
+endif (NOT vatsinator_ABOUT)
+
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/about.h
+)
+
 set (ui_SRCS
 	UserInterface.cpp
 	

@@ -176,8 +176,8 @@
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>239</x>
-      <y>217</y>
+      <x>223</x>
+      <y>115</y>
       <width>150</width>
       <height>162</height>
      </rect>
@@ -221,6 +221,9 @@
    <addaction name="MenuHelp"/>
   </widget>
   <action name="ActionExit">
+   <property name="icon">
+    <iconset theme="application-exit"/>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -229,11 +232,21 @@
    </property>
   </action>
   <action name="ActionAbout">
+   <property name="icon">
+    <iconset resource="imgs.qrc">
+     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
   </action>
   <action name="ActionMetar">
+   <property name="icon">
+    <iconset theme="weather-few-clouds"/>
+   </property>
    <property name="text">
     <string>METARs...</string>
    </property>
@@ -242,6 +255,9 @@
    </property>
   </action>
   <action name="ActionRefresh">
+   <property name="icon">
+    <iconset theme="view-refresh"/>
+   </property>
    <property name="text">
     <string>Refresh</string>
    </property>
@@ -250,6 +266,9 @@
    </property>
   </action>
   <action name="ActionPreferences">
+   <property name="icon">
+    <iconset theme="preferences-system"/>
+   </property>
    <property name="text">
     <string>Preferences: Vatsinator</string>
    </property>
