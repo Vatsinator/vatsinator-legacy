@@ -2,6 +2,12 @@
   <qresource prefix="mainIcon">
     <file>icon.png</file>
   </qresource>
+  <qresource prefix="uiIcons">
+    <file>configure.png</file>
+    <file>view-refresh.png</file>
+    <file>weather-clouds.png</file>
+    <file>application-exit.png</file>
+  </qresource>
   <qresource prefix="pixmaps">
     <file>airport.png</file>
     <file>airport_staffed.png</file>

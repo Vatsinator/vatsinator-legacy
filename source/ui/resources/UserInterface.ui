@@ -222,7 +222,8 @@
   </widget>
   <action name="ActionExit">
    <property name="icon">
-    <iconset theme="application-exit"/>
+    <iconset theme="application-exit" resource="imgs.qrc">
+     <normaloff>:/uiIcons/application-exit.png</normaloff>:/uiIcons/application-exit.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -245,7 +246,8 @@
   </action>
   <action name="ActionMetar">
    <property name="icon">
-    <iconset theme="weather-few-clouds"/>
+    <iconset theme="weather-few-clouds" resource="imgs.qrc">
+     <normaloff>:/uiIcons/weather-clouds.png</normaloff>:/uiIcons/weather-clouds.png</iconset>
    </property>
    <property name="text">
     <string>METARs...</string>
@@ -256,7 +258,8 @@
   </action>
   <action name="ActionRefresh">
    <property name="icon">
-    <iconset theme="view-refresh"/>
+    <iconset theme="view-refresh" resource="imgs.qrc">
+     <normaloff>:/uiIcons/view-refresh.png</normaloff>:/uiIcons/view-refresh.png</iconset>
    </property>
    <property name="text">
     <string>Refresh</string>
@@ -267,7 +270,8 @@
   </action>
   <action name="ActionPreferences">
    <property name="icon">
-    <iconset theme="preferences-system"/>
+    <iconset theme="preferences-system" resource="imgs.qrc">
+     <normaloff>:/uiIcons/configure.png</normaloff>:/uiIcons/configure.png</iconset>
    </property>
    <property name="text">
     <string>Preferences: Vatsinator</string>
