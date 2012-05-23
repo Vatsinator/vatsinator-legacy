@@ -53,6 +53,14 @@ public:
 	void fetchMetar(const QString&);
 	
 	/**
+	 * Looks for the METAR.
+	 */
+	const Metar * find(const QString&) const;
+	
+	inline const QVector< Metar > &	getMetars() const { return __metars; }
+
+public slots:
+	/**
 	 * This is called by MetarsWindow when user clicks "Refresh all".
 	 */
 	void updateAllMetars();
@@ -61,13 +69,6 @@ public:
 	 * Clears metars' vector.
 	 */
 	void clear();
-	
-	/**
-	 * Looks for the METAR.
-	 */
-	const Metar * find(const QString&) const;
-	
-	inline const QVector< Metar > &	getMetars() const { return __metars; }
 	
 signals:
 	void newMetarsAvailable();
@@ -87,11 +88,7 @@ private:
 	 * This formula tells us if the parsed word (in metar's contents) is
 	 * a requested airport's ICAO code.
 	 */
-	inline
-	bool __matches(const QString& _word) {
-		return (_word.length() == 4) &&
-				(_word.startsWith(__requests.head(), Qt::CaseInsensitive));
-	}
+	bool __matches(const QString&);
 	
 	QQueue< QString > __requests;
 	

@@ -61,6 +61,7 @@ public:
 	
 signals:
 	void dataUpdated();
+	void metarsRefreshRequested();
 
 public slots:
 	void refreshData();

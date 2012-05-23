@@ -39,9 +39,9 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
 	connect(FetchButton,		SIGNAL(clicked()),
 		this,			SLOT(fetchMetar()));
 	connect(RefreshAllButton,	SIGNAL(clicked()),
-		this,			SLOT(refreshAll()));
+		__metarsHandler,	SLOT(updateAllMetars()));
 	connect(ClearButton,		SIGNAL(clicked()),
-		this,			SLOT(clear()));
+		__metarsHandler,	SLOT(clear()));
 	connect(__metarsHandler,	SIGNAL(newMetarsAvailable()),
 		this,			SLOT(metarReceived()));
 	connect(MetarICAO,		SIGNAL(textChanged(const QString&)),
@@ -58,12 +58,12 @@ MetarsWindow::~MetarsWindow() {
 
 void
 MetarsWindow::showWindow() {
-	this->show();
+	show();
 }
 
 void
 MetarsWindow::showWindow(QString _icao) {
-	this->show();
+	show();
 	__metarsHandler->fetchMetar(_icao);
 }
 
@@ -81,21 +81,6 @@ MetarsWindow::metarReceived() {
 		if (!m.metar.isEmpty())
 			MetarsDisplay->addItem(m.metar);
 	}
-}
-
-void
-MetarsWindow::refreshAll() {
-	__metarsHandler->updateAllMetars();
-}
-
-void
-MetarsWindow::clear() {
-	__metarsHandler->clear();
-}
-
-void
-MetarsWindow::close() {
-	hide();
 }
 
 void

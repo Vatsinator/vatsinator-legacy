@@ -73,6 +73,7 @@ SettingsWindow::__setWindowPosition() {
 void
 SettingsWindow::__updateWindow() {	
 	RefreshRateBox->setValue(__mySettingsManager->getRefreshRate());
+	RefreshMetarsCheckBox->setChecked(__mySettingsManager->refreshMetars());
 	AntyaliasingCheckBox->setChecked(__mySettingsManager->hasAntyaliasing());
 	PilotsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().pilots);
 	AirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().airports);

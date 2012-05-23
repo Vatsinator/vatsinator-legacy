@@ -51,10 +51,7 @@ public slots:
 	void showWindow(QString);
 	void fetchMetar();
 	void metarReceived(); 
-	void refreshAll();
-	void clear();
-	void close();
-	
+
 private:
 	void __setWindowPosition();
 	

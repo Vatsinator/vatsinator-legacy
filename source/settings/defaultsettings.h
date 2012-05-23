@@ -7,6 +7,9 @@ namespace DefaultSettings {
 // default refresh rate (in minutes)
 static const int REFRESH_RATE			= 3;
 
+// refresh also METARs
+static const bool METARS_REFRESH		= true;
+
 // antyaliasing option
 static const bool ANTYALIASING			= false;
 

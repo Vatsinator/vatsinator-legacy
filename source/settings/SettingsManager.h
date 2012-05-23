@@ -50,46 +50,49 @@ public:
 	void init();
 	
 	inline int
-	getRefreshRate() { return __refreshRate; }
+	getRefreshRate() const { return __refreshRate; }
 	
 	inline bool
-	hasAntyaliasing() { return __antyaliasing; }
+	refreshMetars() const { return __metarsRefresh; }
+	
+	inline bool
+	hasAntyaliasing() const { return __antyaliasing; }
 	
 	inline const DisplayLayersPolicy &
-	getDisplayLayersPolicy() { return __displayLayers; }
+	getDisplayLayersPolicy() const { return __displayLayers; }
 	
 	inline bool
-	displayPilotsLabelsWhenHovered() { return __pilotsLabelsDisplayPolicy & WHEN_HOVERED; }
+	displayPilotsLabelsWhenHovered() const { return __pilotsLabelsDisplayPolicy & WHEN_HOVERED; }
 	
 	inline bool
-	displayPilotsLabelsAirportRelated() { return __pilotsLabelsDisplayPolicy & AIRPORT_RELATED; }
+	displayPilotsLabelsAirportRelated() const { return __pilotsLabelsDisplayPolicy & AIRPORT_RELATED; }
 	
 	inline bool
-	displayPilotsLabelsAlways() { return __pilotsLabelsDisplayPolicy & ALWAYS; }
+	displayPilotsLabelsAlways() const { return __pilotsLabelsDisplayPolicy & ALWAYS; }
 	
 	inline const QColor &
-	getUnstaffedFirBordersColor() { return __unstaffedFirBordersColor; }
+	getUnstaffedFirBordersColor() const { return __unstaffedFirBordersColor; }
 	
 	inline const QColor &
-	getStaffedFirBordersColor() { return __staffedFirBordersColor; }
+	getStaffedFirBordersColor() const { return __staffedFirBordersColor; }
 	
 	inline const QColor &
-	getStaffedFirBackgroundColor() { return __staffedFirBackgroundColor; }
+	getStaffedFirBackgroundColor() const { return __staffedFirBackgroundColor; }
 	
 	inline const QColor &
-	getStaffedUirBordersColor() { return __staffedUirBordersColor; }
+	getStaffedUirBordersColor() const { return __staffedUirBordersColor; }
 	
 	inline const QColor &
-	getStaffedUirBackgroundColor() { return __staffedUirBackgroundColor; }
+	getStaffedUirBackgroundColor() const { return __staffedUirBackgroundColor; }
 	
 	inline const QColor &
-	getApproachCircleColor() { return __approachCircleColor; }
+	getApproachCircleColor() const { return __approachCircleColor; }
 	
 	inline const QColor &
-	getSeasColor() { return __seasColor; }
+	getSeasColor() const { return __seasColor; }
 	
 	inline const QColor &
-	getLandsColor() { return __landsColor; }
+	getLandsColor() const { return __landsColor; }
 	
 signals:
 	void settingsRestored();
@@ -109,6 +112,7 @@ private:
 	
 	/* Miscallaneous */
 	int			__refreshRate;
+	bool			__metarsRefresh;
 	bool			__antyaliasing;
 	DisplayLayersPolicy	__displayLayers;
 	unsigned		__pilotsLabelsDisplayPolicy;

@@ -23,20 +23,33 @@
 
 #include "vatsimdata/VatsimDataHandler.h"
 
+#include "VatsinatorApplication.h"
+
 #include "MetarsHandler.h"
 #include "defines.h"
 
 MetarsHandler::MetarsHandler(HttpHandler* _hh, QObject* _parent) :
 		QObject(_parent),
 		__httpHandler(_hh) {
-	
-	connect(__httpHandler, SIGNAL(finished(QString)), this, SLOT(gotMetar(QString)));
+	connect(__httpHandler,	SIGNAL(finished(QString)),
+		this,		SLOT(gotMetar(QString)));
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(metarsRefreshRequested()),
+		this,		SLOT(updateAllMetars()));
 }
 
 void
 MetarsHandler::fetchMetar(const QString& _icao) {
 	__httpHandler->fetchData(VatsimDataHandler::GetSingleton().getMetarUrl() + "?id=" + _icao.toLower());
 	__requests.enqueue(_icao.simplified());
+}
+
+const Metar *
+MetarsHandler::find(const QString& _key) const {
+	for (const Metar& m: __metars)
+		if (m.icao == _key)
+			return &m;
+	
+	return NULL;
 }
 
 void
@@ -49,15 +62,6 @@ void
 MetarsHandler::clear() {
 	__metars.clear();
 	emit newMetarsAvailable();
-}
-
-const Metar *
-MetarsHandler::find(const QString& _key) const {
-	for (const Metar& m: __metars)
-		if (m.icao == _key)
-			return &m;
-	
-	return NULL;
 }
 
 void
@@ -100,4 +104,10 @@ MetarsHandler::__addMetar(const QString& _metar) {
 	}
 	
 	__metars.push_back(Metar(_metar.left(4), _metar));
+}
+
+inline bool
+MetarsHandler::__matches(const QString& _word) {
+	return (_word.length() == 4) &&
+		(_word.startsWith(__requests.head(), Qt::CaseInsensitive));
 }

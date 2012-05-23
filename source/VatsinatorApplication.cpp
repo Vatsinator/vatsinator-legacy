@@ -208,6 +208,9 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 	// earlier, causing segfault
 	FlightTracker::GetSingleton().updateData();
 	
+	if (__settingsManager->refreshMetars())
+		emit metarsRefreshRequested();
+	
 	emit dataUpdated();
 }
 

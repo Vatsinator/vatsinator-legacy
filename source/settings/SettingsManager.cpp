@@ -47,6 +47,7 @@ SettingsManager::__saveSettings() {
 	settings.beginGroup("Settings");
 	
 	settings.setValue("refreshRate",	__refreshRate);
+	settings.setValue("metarsRefresh",	__metarsRefresh);
 	settings.setValue("antyaliasing",	__antyaliasing);
 	settings.setValue("pilotsLayer",	__displayLayers.pilots);
 	settings.setValue("airportsLayer",	__displayLayers.airports);
@@ -72,6 +73,7 @@ SettingsManager::__restoreSettings() {
 	settings.beginGroup("Settings");
 	
 	__refreshRate = settings.value("refreshRate", DefaultSettings::REFRESH_RATE).toInt();
+	__metarsRefresh = settings.value("metarsRefresh", DefaultSettings::METARS_REFRESH).toBool();
 	__antyaliasing = settings.value("antyaliasing", DefaultSettings::ANTYALIASING).toBool();
 	__displayLayers.pilots = settings.value("pilotsLayer", DefaultSettings::PILOTS_CHECKBOX).toBool();
 	__displayLayers.airports = settings.value("airportsLayer", DefaultSettings::AIRPORTS_CHECKBOX).toBool();
@@ -131,6 +133,7 @@ void
 SettingsManager::__updateSettings() {
 	/* Get settings state from SettingsWindow */
 	__refreshRate = __mySettingsWindow->RefreshRateBox->value();
+	__metarsRefresh = static_cast< bool >(__mySettingsWindow->RefreshMetarsCheckBox->checkState());
 	__antyaliasing = static_cast< bool >(__mySettingsWindow->AntyaliasingCheckBox->checkState());
 	__displayLayers.pilots = static_cast< bool >(__mySettingsWindow->PilotsCheckBox->checkState());
 	__displayLayers.airports = static_cast< bool >(__mySettingsWindow->AirportsCheckBox->checkState());
@@ -171,6 +174,7 @@ SettingsManager::__updateSettings() {
 void
 SettingsManager::__restoreDefaults() {
 	__refreshRate = DefaultSettings::REFRESH_RATE;
+	__metarsRefresh = DefaultSettings::METARS_REFRESH;
 	__antyaliasing = DefaultSettings::ANTYALIASING;
 	__displayLayers.pilots = DefaultSettings::PILOTS_CHECKBOX;
 	__displayLayers.airports = DefaultSettings::AIRPORTS_CHECKBOX;
