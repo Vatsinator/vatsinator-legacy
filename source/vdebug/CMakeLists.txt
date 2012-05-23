@@ -1,21 +1,21 @@
 vatsinator_start_subdirectory (vdebug)
 
 set (debug_SRCS
-	DebugWindow.cpp
+	debugwindow.cpp
 	
-	glErrors.cpp
+	glerrors.cpp
 )
 
 vatsinator_subdirectory_sources (vdebug "${debug_SRCS}")
 
 set (debug_MOC_SRCS
-	DebugWindow.h
+	debugwindow.h
 )
 
 vatsinator_subdirectory_mocs (vdebug "${debug_MOC_SRCS}")
 
 set (debug_FORMS
-	resources/DebugWindow.ui
+	resources/debugwindow.ui
 )
 
 vatsinator_subdirectory_forms (vdebug "${debug_FORMS}")

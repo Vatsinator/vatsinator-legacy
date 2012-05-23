@@ -12,75 +12,75 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.cmake
 )
 
 set (ui_SRCS
-	UserInterface.cpp
+	userinterface.cpp
 	
-	actions/ActionMenuSeparator.cpp
-	actions/AirportDetailsAction.cpp
-	actions/ClientDetailsAction.cpp
-	actions/FirDetailsAction.cpp
-	actions/MetarAction.cpp
-	actions/TrackAction.cpp
+	actions/actionmenuseparator.cpp
+	actions/airportdetailsaction.cpp
+	actions/clientdetailsaction.cpp
+	actions/firdetailsaction.cpp
+	actions/metaraction.cpp
+	actions/trackaction.cpp
 	
-	buttons/ColorButton.cpp
-	buttons/DetailsButton.cpp
-	buttons/ShowAirportButton.cpp
-	buttons/ShowPilotButton.cpp
+	buttons/colorbutton.cpp
+	buttons/detailsbutton.cpp
+	buttons/showairportbutton.cpp
+	buttons/showpilotbutton.cpp
 	
-	mapwidget/AirportObject.cpp
-	mapwidget/Controller.cpp
-	mapwidget/Fir.cpp
-	mapwidget/MapWidget.cpp
-	mapwidget/Pilot.cpp
-	mapwidget/Uir.cpp
+	mapwidget/airportobject.cpp
+	mapwidget/controller.cpp
+	mapwidget/fir.cpp
+	mapwidget/mapwidget.cpp
+	mapwidget/pilot.cpp
+	mapwidget/uir.cpp
 	
-	windows/AirportDetailsWindow.cpp
-	windows/ATCDetailsWindow.cpp
-	windows/FirDetailsWindow.cpp
-	windows/FlightDetailsWindow.cpp
-	windows/FlightsListWindow.cpp
-	windows/MetarsWindow.cpp
-	windows/SettingsWindow.cpp
+	windows/airportdetailswindow.cpp
+	windows/atcdetailswindow.cpp
+	windows/firdetailswindow.cpp
+	windows/flightdetailswindow.cpp
+	windows/flightslistwindow.cpp
+	windows/metarswindow.cpp
+	windows/settingswindow.cpp
 )
 
 vatsinator_subdirectory_sources (ui "${ui_SRCS}")
 
 set (ui_MOC_SRCS
-	UserInterface.h
+	userinterface.h
 	
-	actions/ActionMenuSeparator.h
-	actions/AirportDetailsAction.h
-	actions/ClientDetailsAction.h
-	actions/FirDetailsAction.h
-	actions/MetarAction.h
-	actions/TrackAction.h
+	actions/actionmenuseparator.h
+	actions/airportdetailsaction.h
+	actions/clientdetailsaction.h
+	actions/firdetailsaction.h
+	actions/metaraction.h
+	actions/trackaction.h
 	
-	buttons/ShowAirportButton.h
-	buttons/ColorButton.h
-	buttons/DetailsButton.h
-	buttons/ShowPilotButton.h
+	buttons/showairportbutton.h
+	buttons/colorbutton.h
+	buttons/detailsbutton.h
+	buttons/showpilotbutton.h
 	
-	mapwidget/MapWidget.h
+	mapwidget/mapwidget.h
 	
-	windows/AirportDetailsWindow.h
-	windows/ATCDetailsWindow.h
-	windows/FirDetailsWindow.h
-	windows/FlightDetailsWindow.h
-	windows/FlightsListWindow.h
-	windows/MetarsWindow.h
-	windows/SettingsWindow.h
+	windows/airportdetailswindow.h
+	windows/atcdetailswindow.h
+	windows/firdetailswindow.h
+	windows/flightdetailswindow.h
+	windows/flightslistwindow.h
+	windows/metarswindow.h
+	windows/settingswindow.h
 )
 
 vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
 
 set (ui_FORMS
-	resources/AirportDetailsWindow.ui
-	resources/ATCDetailsWindow.ui
-	resources/FirDetailsWindow.ui
-	resources/FlightDetailsWindow.ui
-	resources/FlightsListWindow.ui
-	resources/MetarsWindow.ui
-	resources/SettingsWindow.ui
-	resources/UserInterface.ui
+	resources/airportdetailswindow.ui
+	resources/atcdetailswindow.ui
+	resources/firdetailswindow.ui
+	resources/flightdetailswindow.ui
+	resources/flightslistwindow.ui
+	resources/metarswindow.ui
+	resources/settingswindow.ui
+	resources/userinterface.ui
 )
 
 vatsinator_subdirectory_forms (ui "${ui_FORMS}")

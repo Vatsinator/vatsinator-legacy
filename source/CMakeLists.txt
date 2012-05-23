@@ -8,19 +8,19 @@ if (MINGW)
 endif (MINGW)
 
 set (vatsinator_SRCS
-	VatsinatorApplication.cpp
+	vatsinatorapplication.cpp
 )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	set (vatsinator_SRCS
-		${vatsinator_SRCS} MemoryTracker.cpp
+		${vatsinator_SRCS} memorytracker.cpp
 	)
 endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 
 
 set (vatsinator_MOC_SRCS
-	VatsinatorApplication.h
+	vatsinatorapplication.h
 )
 
 set (vatsinator_SUBDIRS

@@ -63,7 +63,7 @@
 // if debug, add MemoryTracker to the buildset
 #ifndef NO_DEBUG
 #define DEBUG_NEW new(__FILE__, __LINE__)
-#include "MemoryTracker.h"
+#include "memorytracker.h"
 #else
 #define DEBUG_NEW new
 #endif

@@ -1,9 +1,9 @@
 vatsinator_start_subdirectory (glutils)
 
 set (glutils_SRCS
-	VertexBufferObject.cpp
+	vertexbufferobject.cpp
 	
-	glExtensions.cpp
+	glextensions.cpp
 )
 
 vatsinator_subdirectory_sources (glutils "${glutils_SRCS}")

@@ -1,0 +1,137 @@
+/*
+    SettingsManager.h
+    Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+#ifndef SETTINGSMANAGER_H
+#define SETTINGSMANAGER_H
+
+#include <QObject>
+#include <QColor>
+
+#include "singleton.h"
+
+class SettingsWindow;
+
+class SettingsManager : public QObject, public Singleton< SettingsManager > {
+	
+	Q_OBJECT
+	
+	enum {
+		WHEN_HOVERED = 1,
+		AIRPORT_RELATED = 2,
+		ALWAYS = 4
+	};
+	
+public:
+	struct DisplayLayersPolicy {
+		bool	pilots;
+		bool	airports;
+		bool	firs;
+		bool	uirs;
+	};
+	
+	SettingsManager(QObject* = 0);
+	
+	void init();
+	
+	inline int
+	getRefreshRate() const { return __refreshRate; }
+	
+	inline bool
+	refreshMetars() const { return __metarsRefresh; }
+	
+	inline bool
+	hasAntyaliasing() const { return __antyaliasing; }
+	
+	inline const DisplayLayersPolicy &
+	getDisplayLayersPolicy() const { return __displayLayers; }
+	
+	inline bool
+	displayPilotsLabelsWhenHovered() const { return __pilotsLabelsDisplayPolicy & WHEN_HOVERED; }
+	
+	inline bool
+	displayPilotsLabelsAirportRelated() const { return __pilotsLabelsDisplayPolicy & AIRPORT_RELATED; }
+	
+	inline bool
+	displayPilotsLabelsAlways() const { return __pilotsLabelsDisplayPolicy & ALWAYS; }
+	
+	inline const QColor &
+	getUnstaffedFirBordersColor() const { return __unstaffedFirBordersColor; }
+	
+	inline const QColor &
+	getStaffedFirBordersColor() const { return __staffedFirBordersColor; }
+	
+	inline const QColor &
+	getStaffedFirBackgroundColor() const { return __staffedFirBackgroundColor; }
+	
+	inline const QColor &
+	getStaffedUirBordersColor() const { return __staffedUirBordersColor; }
+	
+	inline const QColor &
+	getStaffedUirBackgroundColor() const { return __staffedUirBackgroundColor; }
+	
+	inline const QColor &
+	getApproachCircleColor() const { return __approachCircleColor; }
+	
+	inline const QColor &
+	getSeasColor() const { return __seasColor; }
+	
+	inline const QColor &
+	getLandsColor() const { return __landsColor; }
+	
+signals:
+	void settingsRestored();
+	void settingsChanged();
+	
+private:
+	/* Saves all settings in the system, using QSettings */
+	void __saveSettings();
+	
+	/* Restores settings from the registry/config files */
+	void __restoreSettings();
+	
+	/* Clears all config entries from the registry/config files */
+	void __clearEntries();
+	
+	SettingsWindow *	__mySettingsWindow;
+	
+	/* Miscallaneous */
+	int			__refreshRate;
+	bool			__metarsRefresh;
+	bool			__antyaliasing;
+	DisplayLayersPolicy	__displayLayers;
+	unsigned		__pilotsLabelsDisplayPolicy;
+	
+	/* Various map colors */
+	QColor	__unstaffedFirBordersColor;
+	QColor	__staffedFirBordersColor;
+	QColor	__staffedFirBackgroundColor;
+	QColor	__staffedUirBordersColor;
+	QColor	__staffedUirBackgroundColor;
+	QColor	__approachCircleColor;
+	QColor	__seasColor;
+	QColor	__landsColor;
+	
+private slots:
+	void __updateSettings();
+	void __restoreDefaults();
+	
+	
+};
+
+#endif // SETTINGSMANAGER_H

@@ -1,16 +1,16 @@
 vatsinator_start_subdirectory (vatsimdata)
 
 set (vatsimdata_SRCS
-	Metar.cpp
-	MetarsHandler.cpp
-	VatsimDataHandler.cpp
+	metar.cpp
+	metarshandler.cpp
+	vatsimdatahandler.cpp
 )
 
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
 set (vatsimdata_MOC_SRCS
-	MetarsHandler.h
-	VatsimDataHandler.h
+	metarshandler.h
+	vatsimdatahandler.h
 )
 
 vatsinator_subdirectory_mocs (vatsimdata "${vatsimdata_MOC_SRCS}")
