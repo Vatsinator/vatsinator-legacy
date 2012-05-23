@@ -23,10 +23,32 @@
 #include "ui/ui_FlightsListWindow.h"
 #include "Singleton.h"
 
+class Pilot;
+
 class FlightsListWindow : public QWidget, public Singleton< FlightsListWindow >, private Ui::FlightsListWindow {
 	
 	Q_OBJECT
 	
+public:
+	FlightsListWindow(QWidget* = 0);
+	virtual ~FlightsListWindow();
+	
+signals:
+	void showPilotRequested(const Pilot*);
+	
+public slots:
+	void handleShowClicked(const Pilot*);
+	
+protected:
+	void resizeEvent(QResizeEvent*);
+	
+private:
+	void __setColumnsWidths();
+	void __setWindowPosition();
+	
+private slots:
+	void __updateContents();
+	void __handleCellClicked(int, int);
 	
 };
 

@@ -39,6 +39,7 @@
 #include "ui/windows/ATCDetailsWindow.h"
 #include "ui/windows/FirDetailsWindow.h"
 #include "ui/windows/FlightDetailsWindow.h"
+#include "ui/windows/FlightsListWindow.h"
 #include "ui/windows/MetarsWindow.h"
 
 #include "vdebug/glErrors.h"
@@ -171,6 +172,9 @@ MapWidget::MapWidget(QWidget* _parent) :
 		this,						SLOT(showAirport(const AirportObject*)));
 	
 	connect(FirDetailsWindow::GetSingletonPtr(),		SIGNAL(showPilotRequest(const Pilot*)),
+		this,						SLOT(showPilot(const Pilot*)));
+	
+	connect(FlightsListWindow::GetSingletonPtr(),		SIGNAL(showPilotRequested(const Pilot*)),
 		this,						SLOT(showPilot(const Pilot*)));
 	
 	connect(this,	SIGNAL(contextMenuRequested(const Pilot*)),
@@ -1140,6 +1144,9 @@ MapWidget::__drawLines() {
 void
 MapWidget::__drawToolTip() {
 	setCursor(QCursor(Qt::PointingHandCursor));
+	
+	if (!underMouse())
+		return;
 	
 	QString text;
 	switch (__underMouse->objectType()) {

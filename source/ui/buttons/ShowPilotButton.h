@@ -36,6 +36,9 @@ class ShowPilotButton : public QPushButton {
 public:
 	ShowPilotButton(const Pilot*, QWidget* = 0);
 	
+	inline const Pilot *
+	getPilot() const { return __current; }
+	
 signals:
 	void clicked(const Pilot*);
 	

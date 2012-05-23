@@ -74,7 +74,7 @@
 Pilot::Pilot(const QStringList& _data) {
 	callsign = _data[0];
 	pid = _data[1].toUInt();
-	realName = _data[2];
+	realName = _data[2].simplified();
 	position.latitude = _data[5].toDouble();
 	position.longitude = _data[6].toDouble();
 	altitude = _data[7].toInt();

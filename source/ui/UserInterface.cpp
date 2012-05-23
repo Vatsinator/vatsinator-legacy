@@ -65,8 +65,8 @@ UserInterface::UserInterface(QWidget* _parent) :
 		&__mother,	SLOT(refreshData()));
 	connect(ActionPreferences,	SIGNAL(triggered()),
 		__settingsWindow,	SLOT(show()));
-	//connect(ActionFlightsList,	SIGNAL(triggered()),
-	//	__flightsListWindow,	SLOT(show()));
+	connect(ActionFlightsList,	SIGNAL(triggered()),
+		__flightsListWindow,	SLOT(show()));
 	
 	statusBarUpdate();
 	
