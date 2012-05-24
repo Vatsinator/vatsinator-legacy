@@ -1,5 +1,5 @@
 /*
-    VatsimDataHandler.h
+    vatsimdatahandler.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -111,22 +111,27 @@ public:
 	/**
 	 * The following functions return const references to vectors of clients.
 	 */
-	inline
-	const QVector< Pilot* > & getPilots() const { return __pilots; }
-	inline
-	const QVector< Controller* > & getATCs() const { return __atcs; }
-	inline
-	const QVector< Uir* > & getUIRs() const { return __uirs; }
-	inline
-	const QMap< QString, AirportObject* > & getActiveAirports() const { return __activeAirports; }
-	inline
-	const QMultiMap< QString, QString > & getAliases() const { return __aliases; }
-	inline
-	const QDateTime & getDateDataUpdated() const { return __dateDataUpdated; }
+	inline const QVector< Pilot* > &
+	getPilots() const { return __pilots; }
 	
-	inline static
-	double calcDistance(const double& _ax, const double& _ay,
-			    const double& _bx, const double& _by) {
+	inline const QVector< Controller* > &
+	getATCs() const { return __atcs; }
+	
+	inline const QVector< Uir* > &
+	getUIRs() const { return __uirs; }
+	
+	inline const QMap< QString, AirportObject* > &
+	getActiveAirports() const { return __activeAirports; }
+	
+	inline const QMultiMap< QString, QString > &
+	getAliases() const { return __aliases; }
+	
+	inline const QDateTime &
+	getDateDataUpdated() const { return __dateDataUpdated; }
+	
+	inline static double
+	calcDistance(const double& _ax, const double& _ay,
+		     const double& _bx, const double& _by) {
 		return sqrt(
 			pow(_ax - _bx, 2) +
 			pow(_ay - _by, 2)

@@ -1,5 +1,5 @@
 /*
-    FlightDetailsWindow.cpp
+    flightdetailswindow.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,7 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 
 void
 FlightDetailsWindow::showWindow(const Client* _client) {
-	if (!dynamic_cast< const Pilot* >(_client))
-		return;
+	Q_ASSERT(dynamic_cast< const Pilot* >(_client));
 	
 	__current = static_cast< const Pilot* >(_client);
 	
