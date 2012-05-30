@@ -25,7 +25,7 @@
 #include "ui/mapwidget/airportobject.h"
 #include "ui/mapwidget/mapwidget.h"
 
-#include "vatsimdata/metarshandler.h"
+#include "vatsimdata/metarlistmodel.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "vatsinatorapplication.h"
@@ -72,7 +72,7 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	ATCTable->setColumnWidth(2, COLUMN_WIDTHS[2]);
 	ATCTable->setColumnWidth(3, COLUMN_WIDTHS[3]);
 	
-	connect(MetarsHandler::GetSingletonPtr(),	SIGNAL(newMetarsAvailable()),
+	connect(MetarListModel::GetSingletonPtr(),	SIGNAL(newMetarsAvailable()),
 		this,					SLOT(updateMetar()));
 	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
 		this,						SLOT(__updateContents()));
@@ -88,12 +88,12 @@ AirportDetailsWindow::showWindow(const AirportObject* _ap) {
 	else
 		__currentICAO = "";
 	
-	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
+	const Metar* m = MetarListModel::GetSingleton().find(__currentICAO);
 	if (m)
-		MetarLabel->setText(m->metar);
+		MetarLabel->setText(m->getMetar());
 	else {
 		MetarLabel->setText("Fetching...");
-		MetarsHandler::GetSingleton().fetchMetar(__currentICAO);
+		MetarListModel::GetSingleton().fetchMetar(__currentICAO);
 	}
 	
 	show();
@@ -104,9 +104,9 @@ AirportDetailsWindow::updateMetar() {
 	if (__currentICAO.isEmpty())
 		return;
 	
-	const Metar* m = MetarsHandler::GetSingleton().find(__currentICAO);
+	const Metar* m = MetarListModel::GetSingleton().find(__currentICAO);
 	if (m)
-		MetarLabel->setText(m->metar);
+		MetarLabel->setText(m->getMetar());
 }
 
 void

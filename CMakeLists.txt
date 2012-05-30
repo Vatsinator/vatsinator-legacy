@@ -15,7 +15,7 @@ else (CMAKE_BUILD_TYPE MATCHES Debug)
 endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 # set CXX_FLAGS
-set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -O3 -DNO_DEBUG -g")
+set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
 set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x -fpermissive")
 
 # set windres command

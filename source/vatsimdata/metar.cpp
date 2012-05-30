@@ -21,8 +21,8 @@
 #include "metar.h"
 #include "defines.h"
 
-Metar::Metar() : icao("ZZZZ") {}
+Metar::Metar() : __icao("ZZZZ") {}
 
 Metar::Metar(const QString& _icao, const QString& _metar) :
-		icao(_icao), metar(_metar) {}
+		__icao(_icao), __metar(_metar) {}
 

@@ -1,5 +1,5 @@
 /*
-    metar.h
+    modelsmatcher.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,36 +17,10 @@
 */
 
 
-#ifndef METAR_H
-#define METAR_H
+#ifndef MODELSMATCHER_H
+#define MODELSMATCHER_H
 
-#include <QString>
-#include <QDate>
-#include <QTime>
-
-class Metar {
-	
-public:
-	
-	Metar();
-	Metar(const QString&, const QString& = "");
-	
-	inline void
-	setMetar(const QString& _m) { __metar = _m; }
-	
-	inline const QString &
-	getIcao() const { return __icao; }
-	
-	inline const QString &
-	getMetar() const { return __metar; }
-	
-private:
-	
-	QString	__icao;
-	QString	__metar;
-	QDate	__lastFetchedDate;
-	QTime	__lastFetchedTime;
-	
+class ModelsMatcher {
 };
 
-#endif // METAR_H
+#endif // MODELSMATCHER_H

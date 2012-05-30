@@ -92,7 +92,14 @@ UserInterface::~UserInterface() {
 
 void
 UserInterface::statusBarUpdate(const QString& _message) {
-	StatusBox->setText(" " + _message);
+	if (_message.isEmpty()) {
+		StatusBox->setText("Last update: " %
+			VatsimDataHandler::GetSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
+			" UTC"
+		);
+	} else {
+		StatusBox->setText(" " + _message);
+	}
 }
 
 void
@@ -105,7 +112,6 @@ UserInterface::about() {
 	QMessageBox::about(this, "About Vatsinator",
 			trUtf8(ABOUT_TEXT)
 	);
-	statusBarUpdate();
 }
 
 void

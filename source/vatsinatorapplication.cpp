@@ -200,9 +200,7 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 			QString::number(__vatsimData->getATCs().size()) % " ATCs)"
 		);
 	
-	__userInterface->statusBarUpdate(
-		"Last update: " + __vatsimData->getDateDataUpdated().toString("dd MMM yyyy, hh:mm") + " UTC"
-	);
+	__userInterface->statusBarUpdate();
 	
 	// we cannot depend on signals & slots system here, as GLrepaint() would be called
 	// earlier, causing segfault

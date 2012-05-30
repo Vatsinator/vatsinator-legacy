@@ -1,5 +1,5 @@
 /*
-    metarswindow.h
+    metarlistmodel.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,52 +17,55 @@
 */
 
 
-#ifndef METARSWINDOW_H
-#define METARSWINDOW_H
+#ifndef METARLISTMODEL_H
+#define METARLISTMODEL_H
 
-#include <QVector>
-
-#include "ui/ui_metarswindow.h"
+#include <QAbstractListModel>
+#include <QQueue>
 #include "singleton.h"
+
 #include "vatsimdata/metar.h"
 
-class VatsimDataHandler;
 class HttpHandler;
-class MetarListModel;
 
-class MetarsWindow :
-		public QWidget,
-		public Singleton< MetarsWindow >,
-		private Ui::MetarsWindow {
-	
-	/*
-	 * This class handles our "METARs" window. Shown when Vatsinator->
-	 * ->Metar is activated.
-	 */
+class MetarListModel : public QAbstractListModel, public Singleton< MetarListModel > {
 	
 	Q_OBJECT
 	
 public:
-	MetarsWindow(QWidget* = 0);
-	virtual ~MetarsWindow();
+	MetarListModel(HttpHandler*, QObject* = 0);
+	
+	void fetchMetar(const QString&);
+	
+	const Metar * find(const QString&) const;
+	
+	int rowCount(const QModelIndex& = QModelIndex()) const;
+	
+	QVariant data(const QModelIndex&, int) const;
 	
 public slots:
-	void showWindow();
-	void showWindow(QString);
-	void fetchMetar();
+	void updateAllMetars();
 
-private:
-	void __setWindowPosition();
+	void clear();
 	
-	HttpHandler *	__httpHandler;
-	MetarListModel *	__metarsHandler;
+signals:
+	void newMetarsAvailable();
+	void noMetar();
+	
+private:
+	void __addMetar(const QString&);
+	
+	bool __matches(const QString&);
+	
+	QQueue< QString > __requests;
+	
+	QList< Metar > __metarList;
+	
+	HttpHandler* __myHttpHandler;
 	
 private slots:
-	void __handleTextChange(const QString&);
-	
-	
-	
+	void __gotMetar(const QString&);
 	
 };
 
-#endif // METARSWINDOW_H
+#endif // METARLISTMODEL_H

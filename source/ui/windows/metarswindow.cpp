@@ -20,7 +20,7 @@
 
 #include "network/httphandler.h"
 
-#include "vatsimdata/metarshandler.h"
+#include "vatsimdata/metarlistmodel.h"
 
 #include "metarswindow.h"
 #include "defines.h"
@@ -34,7 +34,7 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
 	
 	__httpHandler = new HttpHandler();
 	
-	__metarsHandler = new MetarsHandler(__httpHandler);
+	__metarsHandler = new MetarListModel(__httpHandler);
 	
 	connect(FetchButton,		SIGNAL(clicked()),
 		this,			SLOT(fetchMetar()));
@@ -42,13 +42,12 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
 		__metarsHandler,	SLOT(updateAllMetars()));
 	connect(ClearButton,		SIGNAL(clicked()),
 		__metarsHandler,	SLOT(clear()));
-	connect(__metarsHandler,	SIGNAL(newMetarsAvailable()),
-		this,			SLOT(metarReceived()));
 	connect(MetarICAO,		SIGNAL(textChanged(const QString&)),
 		this,			SLOT(__handleTextChange(const QString&)));
 	
 	MetarICAO->setFocus();
 	FetchButton->setEnabled(false);
+	MetarsDisplay->setModel(__metarsHandler);
 }
 
 MetarsWindow::~MetarsWindow() {
@@ -71,16 +70,6 @@ void
 MetarsWindow::fetchMetar() {
 	__metarsHandler->fetchMetar(MetarICAO->text());
 	MetarICAO->setText("");
-}
-
-void
-MetarsWindow::metarReceived() {
-	MetarsDisplay->clear();
-	
-	for (const Metar& m: __metarsHandler->getMetars()) {
-		if (!m.metar.isEmpty())
-			MetarsDisplay->addItem(m.metar);
-	}
 }
 
 void

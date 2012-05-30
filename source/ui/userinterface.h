@@ -54,7 +54,7 @@ public:
 	
 	virtual ~UserInterface();
 	
-	void statusBarUpdate(const QString& = "Ready");
+	void statusBarUpdate(const QString& = "");
 	
 	MapWidget * getGLContext() { return MapDisplay; }
 	
