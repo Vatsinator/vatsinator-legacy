@@ -23,6 +23,7 @@
 #include "singleton.h"
 
 class FlightTracker;
+class ModelsMatcher;
 
 class ModulesManager : public Singleton< ModulesManager > {
 	
@@ -30,10 +31,12 @@ public:
 	ModulesManager();
 	virtual ~ModulesManager();
 	
-	void init();
+	void initBeforeGL();
+	void initAfterGL();
 	
 private:
 	FlightTracker * __flightTracker;
+	ModelsMatcher *	__modelsMatcher;
 };
 
 #endif // MODULESMANAGER_H

@@ -25,6 +25,7 @@
 #include "glutils/glextensions.h"
 
 #include "modules/flighttracker.h"
+#include "modules/modulesmanager.h"
 
 #include "settings/settingsmanager.h"
 
@@ -71,6 +72,11 @@ const GLfloat FIR_TOOLTIP_VERTICES[] = {
 	-0.08,  0.04,
 	 0.08,  0.04,
 	 0.08, -0.04 };
+const GLfloat MODEL_VERTICES[] = {
+	-0.03, -0.03,
+	-0.03,  0.03,
+	 0.03,  0.03,
+	 0.03, -0.03 };
 const GLfloat TEXCOORDS[] = {
 	 0.0, 0.0,
 	 0.0, 1.0,
@@ -233,7 +239,7 @@ MapWidget::loadImage(const QString& _fName) {
 	QImage final, temp;
 	
 	if (!temp.load(_fName)) {
-		VatsinatorApplication::alert("Image could not be loaded!");
+		VatsinatorApplication::alert("Image " + _fName + " could not be loaded!");
 		VatsinatorApplication::quit();
 	}
 	
@@ -297,7 +303,6 @@ void
 MapWidget::initializeGL() {
 #ifndef NO_DEBUG
 	qDebug() << "Initializing OpenGL...";
-	
 #endif
 	makeCurrent();
 	
@@ -749,6 +754,7 @@ MapWidget::__init() {
 #endif
 	
 	__firs->init();
+	ModulesManager::GetSingleton().initAfterGL();
 	WorldMap::GetSingleton().init();
 }
 
@@ -999,9 +1005,6 @@ MapWidget::__drawPilots() {
 		if (y < -__orthoRangeY || y > __orthoRangeY)
 			continue;
 		
-		glVertexPointer(2, GL_FLOAT, 0, VERTICES); checkGLErrors(HERE);
-		glBindTexture(GL_TEXTURE_2D, __pilotIcon); checkGLErrors(HERE);
-		
 		glPushMatrix();
 			bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 			
@@ -1012,11 +1015,10 @@ MapWidget::__drawPilots() {
 			glPushMatrix();
 				glRotatef((GLfloat)client->heading, 0, 0, -1); checkGLErrors(HERE);
 				
-				if (inRange && !__underMouse)
-					glScalef(1.3, 1.3, 1.0); checkGLErrors(HERE);
-				
+				glVertexPointer(2, GL_FLOAT, 0, MODEL_VERTICES); checkGLErrors(HERE);
+				glBindTexture(GL_TEXTURE_2D, client->modelTexture); checkGLErrors(HERE);
+			
 				glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-				
 			glPopMatrix();
 			
 			if (((__settings->displayPilotsLabelsWhenHovered())

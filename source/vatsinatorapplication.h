@@ -55,7 +55,7 @@ public:
 	
 	static void quit();
 	
-	static void alert(const char*);
+	static void alert(const QString&);
 	
 	VatsimDataHandler& getData() { return *__vatsimData; }
 	

@@ -17,18 +17,26 @@
 */
 
 #include "modules/flighttracker.h"
+#include "modules/modelsmatcher.h"
 
 #include "modulesmanager.h"
 #include "defines.h"
 
 ModulesManager::ModulesManager() :
-		__flightTracker(new FlightTracker()) {}
+		__flightTracker(new FlightTracker()),
+		__modelsMatcher(new ModelsMatcher()) {}
 
 ModulesManager::~ModulesManager() {
 	delete __flightTracker;
+	delete __modelsMatcher;
 }
 
 void
-ModulesManager::init() {
+ModulesManager::initBeforeGL() {
 	__flightTracker->init();
+}
+
+void
+ModulesManager::initAfterGL() {
+	__modelsMatcher->init();
 }

@@ -20,7 +20,28 @@
 #ifndef MODELSMATCHER_H
 #define MODELSMATCHER_H
 
-class ModelsMatcher {
+#include <QString>
+#include <QMap>
+#include <GL/gl.h>
+
+#include "singleton.h"
+
+class ModelsMatcher : public Singleton< ModelsMatcher > {
+	
+public:
+	ModelsMatcher();
+	
+	void init();
+	
+	GLuint matchMyModel(const QString&);
+	
+private:
+	void __readDatFile();
+	
+	QMap< QString, QString > __modelsFiles;
+	QMap< QString, GLuint >  __modelsPixmaps;
+	
+	
 };
 
 #endif // MODELSMATCHER_H

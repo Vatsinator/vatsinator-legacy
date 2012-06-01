@@ -2,6 +2,7 @@ vatsinator_start_subdirectory (modules)
 
 set (modules_SRCS
 	flighttracker.cpp
+	modelsmatcher.cpp
 	modulesmanager.cpp
 )
 

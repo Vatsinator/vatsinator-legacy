@@ -21,6 +21,8 @@
 #include "db/airportsdatabase.h"
 #include "db/firsdatabase.h"
 
+#include "modules/modelsmatcher.h"
+
 #include "ui/mapwidget/mapwidget.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
@@ -116,6 +118,8 @@ Pilot::Pilot(const QStringList& _data) {
 	
 	__setMyStatus();
 	__generateTip();
+	
+	modelTexture = ModelsMatcher::GetSingleton().matchMyModel(aircraft);
 }
 
 Pilot::~Pilot() {

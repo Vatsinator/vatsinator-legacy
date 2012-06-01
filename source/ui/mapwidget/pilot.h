@@ -42,7 +42,7 @@ class Pilot : public Client, public Clickable {
 	
 	/*
 	 * This class contains info about one particular pilot - his
-	 * flight plan, actual position, etc etc
+	 * flight plan, actual position, plane, etc etc
 	 */
 	
 public:
@@ -81,6 +81,7 @@ public:
 	} route;
 	
 	GLuint	callsignTip;
+	GLuint	modelTexture;
 	
 private:
 	void __setMyStatus();

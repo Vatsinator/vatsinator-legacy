@@ -1,0 +1,121 @@
+# Available models are:
+# 1p - one-engine propeller
+# 2p - two-engine propeller
+# 4p - four-engine propeller
+# 2j - two-engine jet
+# 3j - three-engine jet
+# 4j - four-engine jet
+
+C172 1p
+
+A140 2p
+AC68 2p
+AC90 2p
+AN24 2p
+AN26 2p
+AN28 2p
+AN30 2p
+AT43 2p
+AT45 2p
+AT72 2p
+B190 2p
+DC3  2p
+DHC6 2p
+F50  2p
+F70  2p
+
+AN12 4p
+DC6  4p
+
+A30B 2j
+A306 2j
+A3ST 2j
+A310 2j
+A318 2j
+A319 2j
+A320 2j
+A321 2j
+A330 2j
+A332 2j
+A333 2j
+AN72 2j
+B712 2j
+B731 2j
+B732 2j
+B733 2j
+B734 2j
+B735 2j
+B736 2j
+B737 2j
+B738 2j
+B739 2j
+B752 2j
+B753 2j
+B762 2j
+B763 2j
+B764 2j
+B772 2j
+B773 2j
+BA11 2j
+CRJ1 2j
+CRJ2 2j
+CRJ7 2j
+E170 2j
+E190 2j
+E120 2j
+E110 2j
+E135 2j
+E145 2j
+F100 2j
+F28  2j
+F27  2j
+MD80 2j
+MD81 2j
+MD82 2j
+MD83 2j
+MD87 2j
+MD88 2j
+MD90 2j
+T134 2j
+
+B721 3j
+B722 3j
+MD11 3j
+DC10 3j
+T154 3j
+
+A124 4j
+A340 4j
+A342 4j
+A343 4j
+A345 4j
+A346 4j
+B461 4j
+B462 4j
+B463 4j
+B703 4j
+B741 4j
+B742 4j
+B743 4j
+B744 4j
+B748 4j
+B74S 4j
+B74R 4j
+CONC 4j
+RJ1H 4j
+RJ70 4j
+RJ85 4j
+RX1H 4j
+RX85 4j
+
+# some rarely wrong-used codes
+731 2j
+732 2j
+733 2j
+734 2j
+735 2j
+736 2j
+737 2j
+738 2j
+739 2j
+

@@ -55,6 +55,7 @@ if (UNIX AND NOT APPLE)
 	
 	# install files
 	install (FILES
+		resources/models.dat
 		resources/vatsinator.dat
 		resources/WorldAirports.db
 		resources/WorldFirs.db

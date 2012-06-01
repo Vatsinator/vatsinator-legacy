@@ -72,7 +72,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 	
 	// SettingsManager instance is now created, let him get the pointer & connect his slots
 	__settingsManager->init();
-	__modulesManager->init();
+	__modulesManager->initBeforeGL();
 	
 	// connect data refresher with the timer
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
@@ -123,9 +123,9 @@ VatsinatorApplication::quit() {
 }
 
 void
-VatsinatorApplication::alert(const char* _msg) {
+VatsinatorApplication::alert(const QString& _msg) {
 	QMessageBox msgBox;
-	msgBox.setText(tr(_msg));
+	msgBox.setText(_msg);
 	msgBox.exec();
 }
 
