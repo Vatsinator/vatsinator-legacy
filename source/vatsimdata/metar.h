@@ -21,8 +21,8 @@
 #define METAR_H
 
 #include <QString>
-#include <QDate>
-#include <QTime>
+#include <QStringBuilder>
+#include <QDateTime>
 
 class Metar {
 	
@@ -31,8 +31,7 @@ public:
 	Metar();
 	Metar(const QString&, const QString& = "");
 	
-	inline void
-	setMetar(const QString& _m) { __metar = _m; }
+	void setMetar(const QString&);
 	
 	inline const QString &
 	getIcao() const { return __icao; }
@@ -40,12 +39,13 @@ public:
 	inline const QString &
 	getMetar() const { return __metar; }
 	
-private:
+	inline const QString
+	getLastFetchedTime() const { return __lastFetchedTime.toString("dd MMM yyyy, hh:mm") % " UTC"; }
 	
-	QString	__icao;
-	QString	__metar;
-	QDate	__lastFetchedDate;
-	QTime	__lastFetchedTime;
+private:
+	QString   __icao;
+	QString   __metar;
+	QDateTime __lastFetchedTime;
 	
 };
 

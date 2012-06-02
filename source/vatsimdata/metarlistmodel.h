@@ -35,17 +35,26 @@ class MetarListModel : public QAbstractListModel, public Singleton< MetarListMod
 public:
 	MetarListModel(HttpHandler*, QObject* = 0);
 	
+	/**
+	 * Starts fetching the METAR.
+	 * After done, emits newMetarsAvailable().
+	 * @param icao Airport ICAO code.
+	 */
 	void fetchMetar(const QString&);
 	
+	/**
+	 * Looks for the METAR.
+	 * @param icao Airport ICAO code.
+	 * @return Const ptr to found METAR or NULL.
+	 */
 	const Metar * find(const QString&) const;
 	
+	/* Two QAbstractListModel-reimplemented functions */
 	int rowCount(const QModelIndex& = QModelIndex()) const;
-	
 	QVariant data(const QModelIndex&, int) const;
 	
 public slots:
 	void updateAllMetars();
-
 	void clear();
 	
 signals:

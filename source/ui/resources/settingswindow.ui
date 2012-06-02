@@ -297,7 +297,7 @@
       <item row="1" column="1" colspan="2">
        <widget class="QCheckBox" name="RefreshMetarsCheckBox">
         <property name="text">
-         <string>Refresh also METARs</string>
+         <string>Refresh METARs as well</string>
         </property>
         <property name="checked">
          <bool>true</bool>

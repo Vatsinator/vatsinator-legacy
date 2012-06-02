@@ -57,7 +57,8 @@ Fir::addUirStaff(const Controller* _c) {
 
 void
 Fir::addFlight(const Pilot* _p) {
-	__flights.push_back(_p);
+	if (!__flights.contains(_p))
+		__flights.push_back(_p);
 }
 
 void

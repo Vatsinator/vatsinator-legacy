@@ -52,7 +52,7 @@ MetarListModel::find(const QString& _key) const {
 }
 
 int
-MetarListModel::rowCount(const QModelIndex& _parent) const {
+MetarListModel::rowCount(const QModelIndex&) const {
 	return __metarList.count();
 }
 
@@ -61,10 +61,14 @@ MetarListModel::data(const QModelIndex& _index, int _role) const {
 	if (!_index.isValid() || _index.row() >= __metarList.size())
 		return QVariant();
 	
-	if (_role == Qt::DisplayRole)
-		return __metarList.at(_index.row()).getMetar();
-	else
-		return QVariant();
+	switch (_role) {
+		case Qt::DisplayRole:
+			return __metarList.at(_index.row()).getMetar();
+		case Qt::ToolTipRole:
+			return __metarList.at(_index.row()).getLastFetchedTime();
+		default:
+			return QVariant();
+	}
 }
 
 void

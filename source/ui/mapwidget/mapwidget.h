@@ -154,6 +154,10 @@ private:
 	QString	__producePilotToolTip(const Pilot*);
 	QString	__produceAirportToolTip(const AirportObject*);
 	QString	__produceFirToolTip(const Fir*);
+	void	__drawCallsign(const Pilot*);
+	void	__drawCallsign(GLfloat, GLfloat, const Pilot*);
+	void	__drawIcaoLabel(const AirportObject*);
+	void	__drawFirLabel(GLfloat, GLfloat, const Fir&);
 	
 	/* OpenGL's textures. */
 	GLuint	__apIcon;

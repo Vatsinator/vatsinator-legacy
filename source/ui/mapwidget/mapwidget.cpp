@@ -43,6 +43,8 @@
 #include "ui/windows/flightslistwindow.h"
 #include "ui/windows/metarswindow.h"
 
+#include "vatsimdata/vatsimdatahandler.h"
+
 #include "vdebug/glerrors.h"
 
 #include "vatsinatorapplication.h"
@@ -89,55 +91,13 @@ unsigned MapWidget::texturesCount = 0;
 #endif
 
 
-/* Some helpful functions */
+/* Just one helpful function */
 
 template< typename T >
 inline T absHelper(const T& _v) {
 	if (_v < 0)
 		return -_v;
 	return _v;
-}
-
-inline void drawCallsign(const Pilot* _p) {
-	glPushMatrix();
-		glTranslatef(0.0f, 0.0f, 0.1f);
-		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
-		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
-		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	glPopMatrix(); checkGLErrors(HERE);
-}
-
-inline void drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
-	glPushMatrix();
-		glTranslatef(_x, _y, 0.1f);
-		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
-		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
-		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	glPopMatrix(); checkGLErrors(HERE);
-}
-
-inline void drawIcaoLabel(const AirportObject* _ap) {
-	glPushMatrix();
-		glTranslatef(0.0f, 0.0f, 0.1f);
-		glBindTexture(GL_TEXTURE_2D, _ap->labelTip); checkGLErrors(HERE);
-		glVertexPointer(2, GL_FLOAT, 0, AIRPORT_TOOLTIP_VERTICES); checkGLErrors(HERE);
-		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	glPopMatrix(); checkGLErrors(HERE);
-}
-
-inline void drawFirLabel(GLfloat _x, GLfloat _y, const Fir& _f) {
-	if (_f.icaoTip) {
-		glPushMatrix();
-			glTranslatef(_x, _y, 0.0f);
-			glBindTexture(GL_TEXTURE_2D, _f.icaoTip); checkGLErrors(HERE);
-			glVertexPointer(2, GL_FLOAT, 0, FIR_TOOLTIP_VERTICES); checkGLErrors(HERE);
-			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-			glBindTexture(GL_TEXTURE_2D, 0);
-		glPopMatrix();checkGLErrors(HERE);
-	}
 }
 
 
@@ -883,11 +843,13 @@ MapWidget::__drawUirs() {
 		for (const Uir* uir: __data.getUIRs()) {
 			if (!uir->getStaff().isEmpty()) {
 				for (const Fir* fir: uir->getRange()) {
-					qglColor(__settings->getStaffedUirBordersColor());
-					fir->drawBorders(); checkGLErrors(HERE);
-					
-					qglColor(__settings->getStaffedUirBackgroundColor());
-					fir->drawTriangles(); checkGLErrors(HERE);
+					if (fir->getStaff().isEmpty()) {					
+						qglColor(__settings->getStaffedUirBordersColor());
+						fir->drawBorders(); checkGLErrors(HERE);
+						
+						qglColor(__settings->getStaffedUirBackgroundColor());
+						fir->drawTriangles(); checkGLErrors(HERE);
+					}
 				}
 			}
 			checkGLErrors(HERE);
@@ -911,7 +873,7 @@ MapWidget::__drawFirsLabels() {
 			if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
 					(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
 			
-				drawFirLabel(x, y, fir);
+				__drawFirLabel(x, y, fir);
 				checkGLErrors(HERE);
 				
 				if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE &&
@@ -953,7 +915,7 @@ MapWidget::__drawAirports() {
 			glTranslatef(x, y, -0.4); checkGLErrors(HERE);
 			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 			
-			drawIcaoLabel(it.value()); checkGLErrors(HERE);
+			__drawIcaoLabel(it.value()); checkGLErrors(HERE);
 			
 			if (inRange && !__underMouse) {
 				__underMouse = it.value();
@@ -1021,15 +983,13 @@ MapWidget::__drawPilots() {
 				glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 			glPopMatrix();
 			
+			if (inRange && !__underMouse)
+				__underMouse = client;
+			
 			if (((__settings->displayPilotsLabelsWhenHovered())
 					&& (__keyPressed || inRange))
 					|| (__settings->displayPilotsLabelsAlways()))
-				drawCallsign(client);
-			
-			if (inRange && !__underMouse) {
-				__underMouse = client;
-				
-			}
+				__drawCallsign(client);
 		glPopMatrix(); checkGLErrors(HERE);
 	}
 	
@@ -1101,7 +1061,7 @@ MapWidget::__drawLines() {
 					 vertices[i], vertices[i+1]);
 			if ((__settings->displayPilotsLabelsAirportRelated())
 					&& (p->flightStatus != ARRIVED && !__keyPressed))
-				drawCallsign(vertices[i], vertices[i+1], p); checkGLErrors(HERE);
+				__drawCallsign(vertices[i], vertices[i+1], p); checkGLErrors(HERE);
 			i += 2;
 			
 			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
@@ -1118,7 +1078,7 @@ MapWidget::__drawLines() {
 			
 			if ((__settings->displayPilotsLabelsAirportRelated())
 				&& (p->flightStatus != DEPARTING && !__keyPressed))
-				drawCallsign(vertices[i], vertices[i+1], p); checkGLErrors(HERE);
+				__drawCallsign(vertices[i], vertices[i+1], p); checkGLErrors(HERE);
 			i += 2;
 			
 			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
@@ -1163,7 +1123,6 @@ MapWidget::__drawToolTip() {
 	}
 	
 	QToolTip::showText(mapToGlobal(__lastMousePos), text, this);
-	
 }
 
 void
@@ -1303,4 +1262,53 @@ MapWidget::__produceFirToolTip(const Fir* _f) {
 	
 	text.append("</center>");
 	return text;
+}
+
+inline void
+MapWidget::__drawCallsign(const Pilot* _p) {
+	glPushMatrix();
+		if (__underMouse == _p)
+			glTranslatef(0.0f, 0.0f, 0.2f);
+		else
+			glTranslatef(0.0f, 0.0f, 0.1f);
+		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
+		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
+		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	glPopMatrix(); checkGLErrors(HERE);
+}
+
+inline void
+MapWidget::__drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
+	glPushMatrix();
+		glTranslatef(_x, _y, 0.1f);
+		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
+		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
+		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	glPopMatrix(); checkGLErrors(HERE);
+}
+
+inline void
+MapWidget::__drawIcaoLabel(const AirportObject* _ap) {
+	glPushMatrix();
+		glTranslatef(0.0f, 0.0f, 0.1f);
+		glBindTexture(GL_TEXTURE_2D, _ap->labelTip); checkGLErrors(HERE);
+		glVertexPointer(2, GL_FLOAT, 0, AIRPORT_TOOLTIP_VERTICES); checkGLErrors(HERE);
+		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	glPopMatrix(); checkGLErrors(HERE);
+}
+
+inline void
+MapWidget::__drawFirLabel(GLfloat _x, GLfloat _y, const Fir& _f) {
+	if (_f.icaoTip) {
+		glPushMatrix();
+			glTranslatef(_x, _y, 0.0f);
+			glBindTexture(GL_TEXTURE_2D, _f.icaoTip); checkGLErrors(HERE);
+			glVertexPointer(2, GL_FLOAT, 0, FIR_TOOLTIP_VERTICES); checkGLErrors(HERE);
+			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		glPopMatrix();checkGLErrors(HERE);
+	}
 }
