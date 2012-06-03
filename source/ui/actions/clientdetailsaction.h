@@ -22,7 +22,7 @@
 
 #include <QAction>
 
-#include "ui/mapwidget/client.h"
+#include "vatsimdata/client.h"
 
 class ClientDetailsAction : public QAction {
 	

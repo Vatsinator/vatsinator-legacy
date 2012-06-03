@@ -26,7 +26,7 @@
 #include <GL/gl.h>
 
 #include "ui/mapwidget/clickable.h"
-#include "ui/mapwidget/client.h"
+#include "vatsimdata/client.h"
 
 enum FlightRules {
 	IFR, VFR

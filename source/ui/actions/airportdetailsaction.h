@@ -22,7 +22,7 @@
 
 #include <QAction>
 
-#include "ui/mapwidget/airportobject.h"
+#include "vatsimdata/airportobject.h"
 
 class AirportDetailsAction : public QAction {
 	

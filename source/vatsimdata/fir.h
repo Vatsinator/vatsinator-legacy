@@ -26,10 +26,10 @@
 
 #include "db/point.h"
 
-#include "ui/mapwidget/airportobject.h"
+#include "vatsimdata/airportobject.h"
 #include "ui/mapwidget/clickable.h"
-#include "ui/mapwidget/controller.h"
-#include "ui/mapwidget/pilot.h"
+#include "vatsimdata/controller.h"
+#include "vatsimdata/pilot.h"
 
 class VertexBufferObject;
 

@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "ui/mapwidget/controller.h"
+#include "vatsimdata/controller.h"
 
 #include "detailsbutton.h"
 #include "defines.h"

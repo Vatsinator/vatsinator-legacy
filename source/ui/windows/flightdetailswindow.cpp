@@ -22,7 +22,7 @@
 
 #include "modules/flighttracker.h"
 
-#include "ui/mapwidget/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "ui/mapwidget/mapwidget.h"
 #include "ui/userinterface.h"
 

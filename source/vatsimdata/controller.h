@@ -1,5 +1,5 @@
 /*
-    uir.h
+    controller.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,42 +17,46 @@
 */
 
 
-#ifndef UIR_H
-#define UIR_H
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 
 #include <QString>
-#include <QVector>
 
-#include "ui/mapwidget/controller.h"
-#include "ui/mapwidget/clickable.h"
-#include "ui/mapwidget/fir.h"
+#include "vatsimdata/client.h"
 
-class Uir : public Clickable {
-	
+struct AirportRecord;
+
+enum Facility {
+	ATIS = 1,
+	DEL = 2,
+	GND = 4,
+	TWR = 8,
+	APP = 16,
+	CTR = 32,
+	FSS = 64,
+	OBS = 128
+};
+
+class Controller : public Client {
+
 public:
+	Controller(const QStringList&);
 	
-	ObjectType objectType() const { return UIR; }
+	ClientType type() const { return ATC; }
 	
-	void addFir(Fir*);
+	QString		frequency;
+	int		rating;
+	QString		icao;
 	
-	void addStaff(const Controller*);
+	QString		atis;
 	
-	inline const QVector< Fir* > &
-	getRange() const { return __range; }
+	const AirportRecord*	airport;
 	
-	inline const QVector< const Controller* > &
-	getStaff() const { return __staff; }
-	
-	inline void
-	clear() { __staff.clear(); }
-	
-	QString icao;
-	QString name;
+	Facility	facility;
 	
 private:
-	QVector< Fir* >	__range;
-	QVector< const Controller* >	__staff;
+	void __setMyIcaoAndFacility();
 	
 };
 
-#endif // UIR_H
+#endif // CONTROLLER_H

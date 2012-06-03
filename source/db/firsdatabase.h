@@ -23,7 +23,7 @@
 #include <QVector>
 #include <QString>
 
-#include "ui/mapwidget/fir.h"
+#include "vatsimdata/fir.h"
 #include "singleton.h"
 
 class FirsDatabase : public Singleton< FirsDatabase > {

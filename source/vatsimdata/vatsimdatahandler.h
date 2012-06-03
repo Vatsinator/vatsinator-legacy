@@ -29,10 +29,10 @@
 #include "db/airportsdatabase.h"
 #include "db/firsdatabase.h"
 
-#include "ui/mapwidget/airportobject.h"
-#include "ui/mapwidget/controller.h"
-#include "ui/mapwidget/pilot.h"
-#include "ui/mapwidget/uir.h"
+#include "vatsimdata/airportobject.h"
+#include "vatsimdata/controller.h"
+#include "vatsimdata/pilot.h"
+#include "vatsimdata/uir.h"
 
 #include "vatsimdata/metar.h"
 

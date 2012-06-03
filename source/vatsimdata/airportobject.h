@@ -27,8 +27,8 @@
 #include "db/airportsdatabase.h"
 
 #include "ui/mapwidget/clickable.h"
-#include "ui/mapwidget/controller.h"
-#include "ui/mapwidget/pilot.h"
+#include "vatsimdata/controller.h"
+#include "vatsimdata/pilot.h"
 
 class AirportObject : public Clickable {
 	

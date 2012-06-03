@@ -26,12 +26,7 @@ set (ui_SRCS
 	buttons/showairportbutton.cpp
 	buttons/showpilotbutton.cpp
 	
-	mapwidget/airportobject.cpp
-	mapwidget/controller.cpp
-	mapwidget/fir.cpp
 	mapwidget/mapwidget.cpp
-	mapwidget/pilot.cpp
-	mapwidget/uir.cpp
 	
 	windows/airportdetailswindow.cpp
 	windows/atcdetailswindow.cpp

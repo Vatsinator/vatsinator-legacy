@@ -21,7 +21,7 @@
 #include "db/airportsdatabase.h"
 
 #include "ui/buttons/showpilotbutton.h"
-#include "ui/mapwidget/pilot.h"
+#include "vatsimdata/pilot.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
 

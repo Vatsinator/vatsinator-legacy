@@ -21,11 +21,11 @@
 #define MAPWIDGET_H
 
 #include <QGLWidget>
-#include <QStringBuilder>
+#include <QMenu>
 #include <QLabel>
 
 #include "db/airportsdatabase.h"
-#include "ui/mapwidget/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "singleton.h"
 
@@ -212,6 +212,9 @@ private:
 	
 	/* Where to display latitude and longitude of mouse position */
 	QLabel *	__label;
+	
+	/* Current context menu */
+	QMenu *		__menu;
 	
 	VatsinatorApplication &	__mother;
 	

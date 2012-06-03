@@ -123,6 +123,7 @@ MapWidget::MapWidget(QWidget* _parent) :
 		__underMouse(NULL),
 		__dontDisplayTooltip(false),
 		__label(NULL),
+		__menu(NULL),
 		__mother(VatsinatorApplication::GetSingleton()),
 		__data(VatsimDataHandler::GetSingleton()),
 		__airports(__data.getActiveAirports()) {
@@ -255,6 +256,12 @@ MapWidget::redraw() {
 	QToolTip::hideText();
 	if (cursor().shape() != Qt::SizeAllCursor)
 		setCursor(QCursor(Qt::ArrowCursor));
+	
+	if (__menu) {
+		__menu->close();
+		delete __menu;
+		__menu = NULL;
+	}
 	
 	updateGL();
 }
@@ -525,48 +532,49 @@ MapWidget::__loadNewSettings() {
 
 void
 MapWidget::__openContextMenu(const Pilot* _pilot) {
-	QMenu* dMenu = new QMenu(_pilot->callsign, this);
+	__menu = new QMenu(_pilot->callsign, this);
 	
 	ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, "Flight details", this);
 	TrackAction* trackThisFlight = new TrackAction(_pilot, this);
-	dMenu->addAction(showDetails);
-	dMenu->addAction(trackThisFlight);
+	__menu->addAction(showDetails);
+	__menu->addAction(trackThisFlight);
 	
 	connect(showDetails,		SIGNAL(triggered(const Client*)),
 		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 	connect(trackThisFlight,	SIGNAL(triggered(const Pilot*)),
 		this,			SIGNAL(flightTrackingRequested(const Pilot*)));
 	
-	dMenu->addSeparator();
+	__menu->addSeparator();
 	
 	if (!_pilot->route.origin.isEmpty()) {
 		MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
-		dMenu->addAction(showDepMetar);
+		__menu->addAction(showDepMetar);
 		connect(showDepMetar,	SIGNAL(triggered(QString)),
 			__metarsWindow,	SLOT(showWindow(QString)));
 	}
 	
 	if (!_pilot->route.destination.isEmpty()) {
 		MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
-		dMenu->addAction(showArrMetar);
+		__menu->addAction(showArrMetar);
 		connect(showArrMetar,	SIGNAL(triggered(QString)),
 			__metarsWindow,	SLOT(showWindow(QString)));
 	}
 	
 	
-	dMenu->exec(mapToGlobal(__lastMousePos));
-	delete dMenu;
+	__menu->exec(mapToGlobal(__lastMousePos));
+	delete __menu;
+	__menu = NULL;
 }
 
 void
 MapWidget::__openContextMenu(const AirportObject* _ap) {
-	QMenu* dMenu = new QMenu(_ap->getData()->icao, this);
+	__menu = new QMenu(_ap->getData()->icao, this);
 	
 	AirportDetailsAction* showAp = new AirportDetailsAction(_ap, "Airport details", this);
 	MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
 	
-	dMenu->addAction(showAp);
-	dMenu->addAction(showMetar);
+	__menu->addAction(showAp);
+	__menu->addAction(showMetar);
 	
 	connect(showAp,			SIGNAL(triggered(const AirportObject*)),
 		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
@@ -575,20 +583,20 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 		__metarsWindow,		SLOT(showWindow(QString)));
 	
 	if (!_ap->getStaff().isEmpty()) {
-		dMenu->addSeparator();
-		dMenu->addAction(new ActionMenuSeparator("Controllers", this));
+		__menu->addSeparator();
+		__menu->addAction(new ActionMenuSeparator("Controllers", this));
 		
 		for (const Controller* c: _ap->getStaff()) {
 			ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
-			dMenu->addAction(showDetails);
+			__menu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(triggered(const Client*)),
 				__atcDetailsWindow,	SLOT(showWindow(const Client*)));
 		}
 	}
 	
 	if (!_ap->getOutbounds().isEmpty() && _ap->countDepartures()) {
-		dMenu->addSeparator();
-		dMenu->addAction(new ActionMenuSeparator("Departures", this));
+		__menu->addSeparator();
+		__menu->addAction(new ActionMenuSeparator("Departures", this));
 		
 		for (const Pilot* p: _ap->getOutbounds()) {
 			if (p->flightStatus != DEPARTING)
@@ -598,15 +606,15 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 					p->callsign % " to " % p->route.destination,
 					this
 				);
-			dMenu->addAction(showDetails);
+			__menu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(triggered(const Client*)),
 				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 		}
 	}
 	
 	if (!_ap->getInbounds().isEmpty() && _ap->countArrivals()) {
-		dMenu->addSeparator();
-		dMenu->addAction(new ActionMenuSeparator("Arrivals", this));
+		__menu->addSeparator();
+		__menu->addAction(new ActionMenuSeparator("Arrivals", this));
 		
 		for (const Pilot* p: _ap->getInbounds()) {
 			if (p->flightStatus != ARRIVED)
@@ -616,24 +624,25 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 					p->callsign % " from " % p->route.origin,
 					this
 				);
-			dMenu->addAction(showDetails);
+			__menu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(triggered(const Client*)),
 				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
 		}
 	}
 	
-	dMenu->exec(mapToGlobal(__lastMousePos));
-	delete dMenu;
+	__menu->exec(mapToGlobal(__lastMousePos));
+	delete __menu;
+	__menu = NULL;
 }
 
 void
 MapWidget::__openContextMenu(const Fir* _fir) {
-	QMenu* dMenu = new QMenu(_fir->header.icao, this);
+	__menu = new QMenu(_fir->header.icao, this);
 	
 	FirDetailsAction* showFir = new FirDetailsAction(_fir,
 		static_cast< QString >(_fir->header.icao).simplified() % " details", this);
 	
-	dMenu->addAction(showFir);
+	__menu->addAction(showFir);
 	
 	connect(showFir,		SIGNAL(triggered(const Fir*)),
 		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
@@ -641,20 +650,21 @@ MapWidget::__openContextMenu(const Fir* _fir) {
 	
 	for (const Controller* c: _fir->getStaff()) {
 		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
-		dMenu->addAction(showDetails);
+		__menu->addAction(showDetails);
 		connect(showDetails,		SIGNAL(triggered(const Client*)),
 			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
 	}
 	
 	for (const Controller* c: _fir->getUirStaff()) {
 		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
-		dMenu->addAction(showDetails);
+		__menu->addAction(showDetails);
 		connect(showDetails,		SIGNAL(triggered(const Client*)),
 			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
 	}
 	
-	dMenu->exec(mapToGlobal(__lastMousePos));
-	delete dMenu;
+	__menu->exec(mapToGlobal(__lastMousePos));
+	delete __menu;
+	__menu = NULL;
 }
 
 void

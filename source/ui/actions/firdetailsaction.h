@@ -22,7 +22,7 @@
 
 #include <QAction>
 
-#include "ui/mapwidget/fir.h"
+#include "vatsimdata/fir.h"
 
 class FirDetailsAction : public QAction {
 	

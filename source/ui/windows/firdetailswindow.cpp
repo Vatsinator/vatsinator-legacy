@@ -24,7 +24,7 @@
 #include "ui/buttons/detailsbutton.h"
 #include "ui/buttons/showairportbutton.h"
 #include "ui/buttons/showpilotbutton.h"
-#include "ui/mapwidget/airportobject.h"
+#include "vatsimdata/airportobject.h"
 #include "ui/mapwidget/mapwidget.h"
 
 #include "vatsimdata/vatsimdatahandler.h"

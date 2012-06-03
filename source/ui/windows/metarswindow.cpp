@@ -20,7 +20,7 @@
 
 #include "network/httphandler.h"
 
-#include "vatsimdata/metarlistmodel.h"
+#include "vatsimdata/models/metarlistmodel.h"
 
 #include "metarswindow.h"
 #include "defines.h"
