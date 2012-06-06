@@ -9,6 +9,9 @@ set (vatsimdata_SRCS
 	uir.cpp
 	vatsimdatahandler.cpp
 	
+	models/airporttablemodel.cpp
+	models/controllertablemodel.cpp
+	models/flighttablemodel.cpp
 	models/metarlistmodel.cpp
 )
 
@@ -17,6 +20,9 @@ vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 set (vatsimdata_MOC_SRCS
 	vatsimdatahandler.h
 	
+	models/airporttablemodel.h
+	models/controllertablemodel.h
+	models/flighttablemodel.h
 	models/metarlistmodel.h
 )
 

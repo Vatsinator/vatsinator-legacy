@@ -94,7 +94,7 @@ MetarListModel::__addMetar(const QString& _metar) {
 		}
 	}
 	
-	beginInsertRows(QModelIndex(), __metarList.size(), __metarList.size() + 1);
+	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	__metarList.push_back(Metar(_metar.left(4), _metar));
 	endInsertRows();
 }

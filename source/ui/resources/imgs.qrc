@@ -9,15 +9,8 @@
     <file>application-exit.png</file>
   </qresource>
   <qresource prefix="pixmaps">
-    <file>2j32.png</file>
-    <file>2p32.png</file>
-    <file>3j32.png</file>
-    <file>4j32.png</file>
-    <file>4p32.png</file>
-    <file>1p32.png</file>
     <file>airport.png</file>
     <file>airport_staffed.png</file>
-    <file>plane.png</file>
     <file>pilot_tooltip.png</file>
     <file>airport_tooltip.png</file>
   </qresource>

@@ -37,8 +37,8 @@ public:
 	ATCDetailsWindow(QWidget* = 0);
 	
 public slots:
-	void showWindow(const Client*);
-	void showWindow(const Controller*);
+	void show(const Client*);
+	void show(const Controller*);
 	
 private:
 	QString __produceFacility(const Controller*);

@@ -54,7 +54,6 @@ public:
 	virtual ~VatsinatorApplication();
 	
 	static void quit();
-	
 	static void alert(const QString&);
 	
 	VatsimDataHandler& getData() { return *__vatsimData; }

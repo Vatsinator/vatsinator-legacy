@@ -63,6 +63,17 @@ if (UNIX AND NOT APPLE)
 		DESTINATION share/vatsinator
 	)
 	
+	install (FILES
+		resources/pixmaps/1p32.png
+		resources/pixmaps/2p32.png
+		resources/pixmaps/4p32.png
+		resources/pixmaps/2j32.png
+		resources/pixmaps/3j32.png
+		resources/pixmaps/4j32.png
+		resources/pixmaps/conc32.png
+		DESTINATION share/vatsinator/pixmaps
+	)
+	
 	install (FILES ${DESKTOP_ENTRY}
 		DESTINATION share/applications
 	)

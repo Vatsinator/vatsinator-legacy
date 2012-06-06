@@ -1,5 +1,5 @@
 /*
-    showpilotbutton.cpp
+    clientdetailsbutton.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,31 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "showpilotbutton.h"
-#include "defines.h"
 
-ShowPilotButton::ShowPilotButton(const Pilot* _p, QWidget* _parent) :
-		QPushButton("Show", _parent),
-		__current(_p) {
-	connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
-}
+#ifndef CLIENTDETAILSBUTTON_H
+#define CLIENTDETAILSBUTTON_H
 
-void
-ShowPilotButton::__handleClicked() {
-	emit clicked(__current);
-}
+#include <QPushButton>
+
+class Client;
+
+class ClientDetailsButton : public QPushButton {
+	
+	Q_OBJECT
+	
+public:
+	explicit ClientDetailsButton(const Client* = NULL, const QString& = "Details", QWidget* = 0);
+	void setClientPointer(const Client*);
+	
+signals:
+	void clicked(const Client*);
+	
+private:
+	const Client * __current;
+	
+private slots:
+	void __handleClicked();
+	
+};
+
+#endif // CLIENTDETAILSBUTTON_H

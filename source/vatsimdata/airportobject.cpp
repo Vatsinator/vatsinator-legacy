@@ -18,16 +18,22 @@
 
 #include <QtGui>
 
-
+#include "db/airportsdatabase.h"
 #include "db/firsdatabase.h"
 
 #include "ui/mapwidget/mapwidget.h"
+
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
 
 #include "airportobject.h"
 #include "defines.h"
 
 AirportObject::AirportObject(const QString& _icao) :
-		__data(AirportsDatabase::GetSingleton().find(_icao)) {
+		__data(AirportsDatabase::GetSingleton().find(_icao)),
+		__staff(new ControllerTableModel()),
+		__inbounds(new FlightTableModel()),
+		__outbounds(new FlightTableModel()) {
 #ifndef NO_DEBUG
 	if (!__data)
 		qDebug() << "Airport " << _icao << " not found.";
@@ -43,27 +49,30 @@ AirportObject::AirportObject(const QString& _icao) :
 
 AirportObject::~AirportObject() {
 	MapWidget::deleteImage(labelTip);
+	delete __staff;
+	delete __inbounds;
+	delete __outbounds;
 }
 
 void
 AirportObject::addStaff(const Controller* _c) {
-	__staff.push_back(_c);
+	__staff->addStaff(_c);
 }
 
 void
 AirportObject::addInbound(const Pilot* _p) {
-	__inbounds.push_back(_p);
+	__inbounds->addFlight(_p);
 }
 
 void
 AirportObject::addOutbound(const Pilot* _p) {
-	__outbounds.push_back(_p);
+	__outbounds->addFlight(_p);
 }
 
 unsigned
 AirportObject::countDepartures() const {
 	unsigned i = 0;
-	for (const Pilot* p: __outbounds)
+	for (const Pilot* p: __outbounds->getFlights())
 		if (p->flightStatus == DEPARTING)
 			++i;
 	
@@ -71,18 +80,28 @@ AirportObject::countDepartures() const {
 }
 
 unsigned
+AirportObject::countOutbounds() const {
+	return __outbounds->rowCount();
+}
+
+unsigned
 AirportObject::countArrivals() const {
 	unsigned i = 0;
-	for (const Pilot* p: __inbounds)
+	for (const Pilot* p: __inbounds->getFlights())
 		if (p->flightStatus == ARRIVED)
 			++i;
 	
 	return i;
 }
 
+unsigned
+AirportObject::countInbounds() const {
+	return __inbounds->rowCount();
+}
+
 bool
 AirportObject::hasApproach() const {
-	for (const Controller* c: __staff)
+	for (const Controller* c: __staff->getStaff())
 		if (c->facility == APP)
 			return true;
 	
@@ -92,7 +111,7 @@ AirportObject::hasApproach() const {
 unsigned
 AirportObject::getFacilities() const {
 	unsigned facilities = 0;
-	for (const Controller* c: __staff) {
+	for (const Controller* c: __staff->getStaff()) {
 		facilities |= c->facility;
 	}
 	

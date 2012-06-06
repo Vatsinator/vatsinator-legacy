@@ -35,20 +35,12 @@ class FirDetailsWindow : public QWidget, public Singleton< FirDetailsWindow >, p
 public:
 	FirDetailsWindow(QWidget* = 0);
 	
-signals:
-	void showAirportRequest(const AirportObject*);
-	void showPilotRequest(const Pilot*);
-	void showATCDetailsRequest(const Controller*);
-	
 public slots:
-	void showWindow(const Fir*);
-	void handleShowAirportClicked(const AirportObject*);
-	void handleShowPilotClicked(const Pilot*);
-	void handleDetailsClicked(const Controller*);
-	
+	void show(const Fir*);
 	
 private:
 	void __updateContents(const Fir*);
+	void __adjustTables();
 	void __setWindowPosition();
 	
 	QString	__currentICAO;

@@ -34,13 +34,6 @@ class FlightsListWindow :
 	
 public:
 	FlightsListWindow(QWidget* = 0);
-	virtual ~FlightsListWindow();
-	
-signals:
-	void showPilotRequested(const Pilot*);
-	
-public slots:
-	void handleShowClicked(const Pilot*);
 	
 protected:
 	void resizeEvent(QResizeEvent*);
@@ -50,8 +43,7 @@ private:
 	void __setWindowPosition();
 	
 private slots:
-	void __updateContents();
-	void __handleCellClicked(int, int);
+	void __handleDoubleClicked(const QModelIndex&);
 	
 };
 

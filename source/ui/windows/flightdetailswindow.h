@@ -40,7 +40,8 @@ signals:
 	void flightTrackingStateChanged(const Pilot*, int);
 	
 public slots:
-	void showWindow(const Client*);
+	void show(const Client*);
+	void show(const Pilot*);
 	void stateHandle(int);
 	
 private:

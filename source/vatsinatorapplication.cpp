@@ -37,6 +37,8 @@
 #include "ui/windows/settingswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
 
 #include "vatsinatorapplication.h"
 #include "defines.h"
@@ -147,6 +149,7 @@ VatsinatorApplication::__statusFileUpdated(const QString& _data) {
 		decision.setIcon(QMessageBox::Warning);
 		
 		__timer.stop();
+		__userInterface->statusBarUpdate();
 		
 		decision.exec();
 		
@@ -154,7 +157,6 @@ VatsinatorApplication::__statusFileUpdated(const QString& _data) {
 			__fetchStatusFile();
 			return;
 		} else {
-			__userInterface->statusBarUpdate();
 			return;
 		}
 	}
@@ -195,9 +197,9 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 	
 	__vatsimData->parseDataFile(_data);
 	__userInterface->getClientsBox()->setText(static_cast< QString >("Clients: ") % QString::number(
-			__vatsimData->getPilots().size() + __vatsimData->getATCs().size()
-		) % " (" % QString::number(__vatsimData->getPilots().size()) % " pilots, " %
-			QString::number(__vatsimData->getATCs().size()) % " ATCs)"
+			__vatsimData->getFlightsModel()->rowCount() + __vatsimData->getATCsModel()->rowCount()
+	) % " (" % QString::number(__vatsimData->getFlightsModel()->rowCount()) % " pilots, " %
+				QString::number(__vatsimData->getATCsModel()->rowCount()) % " ATCs)"
 		);
 	
 	__userInterface->statusBarUpdate();

@@ -78,6 +78,9 @@ public:
 	inline const QFont &
 	getFirFont() { return __firFont; }
 	
+	inline bool
+	isInitialized() const { return __isInitialized; }
+	
 	static GLuint loadImage(const QImage&);
 	static GLuint loadImage(const QString&);
 	static void deleteImage(GLuint);
@@ -159,10 +162,11 @@ private:
 	void	__drawIcaoLabel(const AirportObject*);
 	void	__drawFirLabel(GLfloat, GLfloat, const Fir&);
 	
+	bool	__isInitialized;
+	
 	/* OpenGL's textures. */
 	GLuint	__apIcon;
 	GLuint	__apStaffedIcon;
-	GLuint	__pilotIcon;
 	
 	/* Used by Pilot class */
 	QImage	__pilotToolTip;

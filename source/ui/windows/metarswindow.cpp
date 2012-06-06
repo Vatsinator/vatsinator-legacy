@@ -56,13 +56,8 @@ MetarsWindow::~MetarsWindow() {
 }
 
 void
-MetarsWindow::showWindow() {
-	show();
-}
-
-void
-MetarsWindow::showWindow(QString _icao) {
-	show();
+MetarsWindow::show(QString _icao) {
+	QWidget::show();
 	__metarsHandler->fetchMetar(_icao);
 }
 

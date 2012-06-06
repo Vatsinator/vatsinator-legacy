@@ -1,5 +1,5 @@
 /*
-    detailsbutton.cpp
+    clientdetailsbutton.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -18,19 +18,26 @@
 
 #include <QtGui>
 
-#include "vatsimdata/controller.h"
+#include "vatsimdata/client.h"
 
-#include "detailsbutton.h"
+#include "clientdetailsbutton.h"
 #include "defines.h"
 
-DetailsButton::DetailsButton(const Controller* _c, QWidget* _parent) :
-		QPushButton("Details", _parent),
-		__current(_c) {
-	connect(this, SIGNAL(clicked()), this, SLOT(handleClicked()));
-	
+ClientDetailsButton::ClientDetailsButton(const Client* _client, const QString& _text, QWidget* _parent) :
+		QPushButton(_text, _parent),
+		__current(_client) {
+	connect(this,	SIGNAL(clicked()),
+		this,	SLOT(__handleClicked()));
 }
 
 void
-DetailsButton::handleClicked() {
+ClientDetailsButton::setClientPointer(const Client* _client) {
+	__current = _client;
+}
+
+void
+ClientDetailsButton::__handleClicked() {
 	emit clicked(__current);
 }
+
+

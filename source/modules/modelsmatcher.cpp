@@ -54,12 +54,13 @@ void
 ModelsMatcher::init() {
 	QMap< QString, GLuint > pixmapsLoaded;
 	
-	pixmapsLoaded.insert("1p", MapWidget::loadImage(":/pixmaps/1p32.png"));
-	pixmapsLoaded.insert("2p", MapWidget::loadImage(":/pixmaps/2p32.png"));
-	pixmapsLoaded.insert("4p", MapWidget::loadImage(":/pixmaps/4p32.png"));
-	pixmapsLoaded.insert("2j", MapWidget::loadImage(":/pixmaps/2j32.png"));
-	pixmapsLoaded.insert("3j", MapWidget::loadImage(":/pixmaps/3j32.png"));
-	pixmapsLoaded.insert("4j", MapWidget::loadImage(":/pixmaps/4j32.png"));
+	pixmapsLoaded.insert("1p", MapWidget::loadImage(PIXMAPS_DIR "/1p32.png"));
+	pixmapsLoaded.insert("2p", MapWidget::loadImage(PIXMAPS_DIR "/2p32.png"));
+	pixmapsLoaded.insert("4p", MapWidget::loadImage(PIXMAPS_DIR "/4p32.png"));
+	pixmapsLoaded.insert("2j", MapWidget::loadImage(PIXMAPS_DIR "/2j32.png"));
+	pixmapsLoaded.insert("3j", MapWidget::loadImage(PIXMAPS_DIR "/3j32.png"));
+	pixmapsLoaded.insert("4j", MapWidget::loadImage(PIXMAPS_DIR "/4j32.png"));
+	pixmapsLoaded.insert("conc", MapWidget::loadImage(PIXMAPS_DIR "/conc32.png"));
 	
 	for (auto it = __modelsFiles.begin(); it != __modelsFiles.end(); ++it) {
 		Q_ASSERT(pixmapsLoaded.find(it.value()) != pixmapsLoaded.end());

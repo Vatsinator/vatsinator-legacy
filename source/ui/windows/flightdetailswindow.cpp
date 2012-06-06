@@ -39,10 +39,14 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 }
 
 void
-FlightDetailsWindow::showWindow(const Client* _client) {
+FlightDetailsWindow::show(const Client* _client) {
 	Q_ASSERT(dynamic_cast< const Pilot* >(_client));
-	
-	__current = static_cast< const Pilot* >(_client);
+	show(static_cast< const Pilot* >(_client));
+}
+
+void
+FlightDetailsWindow::show(const Pilot* _client) {
+	__current = _client;
 	
 	setWindowTitle(QString(__current->callsign + " - flight details"));
 	
@@ -91,7 +95,7 @@ FlightDetailsWindow::showWindow(const Client* _client) {
 	else
 		TrackFlightBox->setCheckState(Qt::Unchecked);
 	
-	show();
+	QWidget::show();
 }
 
 void

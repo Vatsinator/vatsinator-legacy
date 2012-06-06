@@ -24,11 +24,13 @@
 
 #include <qgl.h>
 
-#include "db/airportsdatabase.h"
-
 #include "ui/mapwidget/clickable.h"
-#include "vatsimdata/controller.h"
-#include "vatsimdata/pilot.h"
+
+struct AirportRecord;
+class Controller;
+class ControllerTableModel;
+class FlightTableModel;
+class Pilot;
 
 class AirportObject : public Clickable {
 	
@@ -44,20 +46,22 @@ public:
 	void addOutbound(const Pilot*);
 	
 	unsigned countDepartures() const;
+	unsigned countOutbounds() const;
 	unsigned countArrivals() const;
+	unsigned countInbounds() const;
 	
 	bool hasApproach() const;
 	
 	unsigned getFacilities() const;
 	
-	inline const QVector< const Controller* > &
-	getStaff() const { return __staff; }
+	inline ControllerTableModel *
+	getStaffModel() const { return __staff; }
 	
-	inline const QVector< const Pilot* > &
-	getInbounds() const { return __inbounds; }
+	inline FlightTableModel *
+	getInboundsModel() const { return __inbounds; }
 	
-	inline const QVector< const Pilot* > &
-	getOutbounds() const { return __outbounds; }
+	inline FlightTableModel *
+	getOutboundsModel() const { return __outbounds; }
 
 	inline const AirportRecord *
 	getData() const { return __data; }
@@ -73,10 +77,10 @@ private:
 	
 	const AirportRecord *	__data;
 	
-	QVector< const Controller* > __staff;
+	ControllerTableModel * __staff;
 	
-	QVector< const Pilot* > __inbounds;
-	QVector< const Pilot* > __outbounds;
+	FlightTableModel * __inbounds;
+	FlightTableModel * __outbounds;
 	
 	
 };

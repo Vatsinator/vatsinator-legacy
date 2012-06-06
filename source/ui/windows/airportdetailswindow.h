@@ -37,25 +37,16 @@ class AirportDetailsWindow :
 public:
 	AirportDetailsWindow(QWidget* = 0);
 	
-signals:
-	void showPilotRequest(const Pilot*);
-	void showATCDetailsRequest(const Controller*);
-	
 public slots:
-	void showWindow(const AirportObject*);
+	void show(const AirportObject*);
  	void updateMetar();
-	void handleShowClicked(const Pilot*);
-	void handleDetailsClicked(const Controller*);
 	
 private:
-	void __updateContents(const AirportObject*);
+	void __fillLabels(const AirportObject*);
+	void __adjustTable();
 	void __setWindowPosition();
 	
 	QString __currentICAO;
-	
-private slots:
-	void __updateContents();
-	
 };
 
 #endif // AIRPORTDETAILSWINDOW_H

@@ -47,8 +47,7 @@ public:
 	virtual ~MetarsWindow();
 	
 public slots:
-	void showWindow();
-	void showWindow(QString);
+	void show(QString);
 	void fetchMetar();
 
 private:

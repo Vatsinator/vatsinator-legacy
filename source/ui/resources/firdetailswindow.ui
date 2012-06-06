@@ -82,7 +82,7 @@
     <attribute name="title">
      <string>Flights</string>
     </attribute>
-    <widget class="QTableWidget" name="FlightsTable">
+    <widget class="QTableView" name="FlightsTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -98,7 +98,7 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -118,27 +118,25 @@
      <property name="gridStyle">
       <enum>Qt::NoPen</enum>
      </property>
-     <property name="wordWrap">
+     <property name="sortingEnabled">
       <bool>false</bool>
      </property>
-     <property name="columnCount">
-      <number>5</number>
+     <property name="wordWrap">
+      <bool>false</bool>
      </property>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>25</number>
+     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="ATCTab">
     <attribute name="title">
      <string>ATC</string>
     </attribute>
-    <widget class="QTableWidget" name="ATCTable">
+    <widget class="QTableView" name="ATCTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -154,7 +152,7 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -174,26 +172,25 @@
      <property name="gridStyle">
       <enum>Qt::NoPen</enum>
      </property>
-     <property name="wordWrap">
+     <property name="sortingEnabled">
       <bool>false</bool>
      </property>
-     <property name="columnCount">
-      <number>4</number>
+     <property name="wordWrap">
+      <bool>false</bool>
      </property>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>25</number>
+     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="ActiveAirportsTab">
     <attribute name="title">
      <string>Active airports</string>
     </attribute>
-    <widget class="QTableWidget" name="AirportsTable">
+    <widget class="QTableView" name="AirportsTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -209,7 +206,7 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -232,17 +229,12 @@
      <property name="wordWrap">
       <bool>false</bool>
      </property>
-     <property name="columnCount">
-      <number>5</number>
-     </property>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>25</number>
+     </attribute>
     </widget>
    </widget>
   </widget>

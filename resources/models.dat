@@ -25,8 +25,10 @@ F50  2p
 F70  2p
 
 AN12 4p
+C130 4p
 DC6  4p
 
+A300 2j
 A30B 2j
 A306 2j
 A3ST 2j
@@ -103,12 +105,13 @@ B744 4j
 B748 4j
 B74S 4j
 B74R 4j
-CONC 4j
 RJ1H 4j
 RJ70 4j
 RJ85 4j
 RX1H 4j
 RX85 4j
+
+CONC conc
 
 # some rarely wrong-used codes
 731 2j

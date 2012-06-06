@@ -31,6 +31,9 @@
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
 
+class AirportTableModel;
+class ControllerTableModel;
+class FlightTableModel;
 class VertexBufferObject;
 
 #pragma pack(1)
@@ -60,28 +63,23 @@ public:
 	void correctName();
 	
 	void init();
+	void clear();
+	bool isStaffed() const;
 	
 	void drawBorders() const;
 	void drawTriangles() const;
 	
-	inline const QVector< const Controller* > &
-	getStaff() const { return __staff; }
+	inline ControllerTableModel *
+	getStaffModel() const { return __staff; }
 	
-	inline const QVector< const Controller* > &
-	getUirStaff() const { return __uirStaff; }
+	inline FlightTableModel *
+	getFlightsModel() const { return __flights; }
 	
-	inline const QVector< const Pilot* > &
-	getFlights() const { return __flights; }
-	
-	inline const QVector< const AirportObject* > &
-	getAirports() const { return __airports; }
-	
-	inline void
-	clear() { __staff.clear(); __uirStaff.clear(); __flights.clear(); __airports.clear(); }
+	inline AirportTableModel *
+	getAirportsModel() const { return __airports; }
 	
 	inline bool
-	isStaffed() const { return !__staff.isEmpty(); }
-	
+	hasUirStaff() const { return __hasUirStaff; }
 	
 	
 	
@@ -98,10 +96,11 @@ private:
 	void __generateTip();
 	void __prepareVBO();
 	
-	QVector< const Controller* > __staff;
-	QVector< const Controller* > __uirStaff;
-	QVector< const Pilot* >	__flights;
-	QVector< const AirportObject* > __airports;
+	ControllerTableModel *	__staff;
+	FlightTableModel *	__flights;
+	AirportTableModel *	__airports;
+	
+	bool __hasUirStaff;
 	
 	VertexBufferObject * __bordersVBO;
 	VertexBufferObject * __trianglesVBO;

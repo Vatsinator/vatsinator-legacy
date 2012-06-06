@@ -56,17 +56,21 @@ public:
 	
 	void statusBarUpdate(const QString& = "");
 	
-	MapWidget * getGLContext() { return MapDisplay; }
+	inline MapWidget *
+	getMapWidget() { return MapDisplay; }
 	
-	QProgressBar * getProgressBar() { return ProgressBar; }
+	inline QProgressBar *
+	getProgressBar() { return ProgressBar; }
 	
-	QLabel *	getPositionBox() { return PositionBox; }
-	QLabel *	getClientsBox() { return ClientsBox; }
+	inline QLabel *
+	getPositionBox() { return PositionBox; }
+	
+	inline QLabel *
+	getClientsBox() { return ClientsBox; }
 	
 public slots:
 	void quit();
 	void about();
-	void showMetarsWindow();
 	void hideAllWindows();
 	
 protected:

@@ -60,7 +60,7 @@
     <attribute name="title">
      <string>Inbound</string>
     </attribute>
-    <widget class="QTableWidget" name="InboundTable">
+    <widget class="QTableView" name="InboundTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -76,7 +76,7 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -96,35 +96,25 @@
      <property name="gridStyle">
       <enum>Qt::NoPen</enum>
      </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
      <property name="wordWrap">
       <bool>false</bool>
      </property>
-     <property name="columnCount">
-      <number>4</number>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="horizontalHeaderCascadingSectionResizes">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>100</number>
-     </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>25</number>
+     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
      <string>Outbound</string>
     </attribute>
-    <widget class="QTableWidget" name="OutboundTable">
+    <widget class="QTableView" name="OutboundTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -140,7 +130,7 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -160,35 +150,25 @@
      <property name="gridStyle">
       <enum>Qt::NoPen</enum>
      </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
      <property name="wordWrap">
       <bool>false</bool>
      </property>
-     <property name="columnCount">
-      <number>4</number>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="horizontalHeaderCascadingSectionResizes">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>100</number>
-     </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>25</number>
+     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
      <string>ATC</string>
     </attribute>
-    <widget class="QTableWidget" name="ATCTable">
+    <widget class="QTableView" name="ATCTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -204,7 +184,7 @@
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="showDropIndicator" stdset="0">
       <bool>false</bool>
@@ -224,28 +204,18 @@
      <property name="gridStyle">
       <enum>Qt::NoPen</enum>
      </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
      <property name="wordWrap">
       <bool>false</bool>
      </property>
-     <property name="columnCount">
-      <number>4</number>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="horizontalHeaderCascadingSectionResizes">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>100</number>
-     </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>25</number>
+     </attribute>
     </widget>
    </widget>
   </widget>

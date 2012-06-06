@@ -18,12 +18,14 @@
 #define VATSINATOR_DAT		PREFIX "/share/vatsinator/vatsinator.dat"
 #define MODELS_DAT		PREFIX "/share/vatsinator/models.dat"
 #define WORLD_MAP		PREFIX "/share/vatsinator/WorldMap.db"
+#define PIXMAPS_DIR		PREFIX "/share/vatsinator/pixmaps"
 #else
 #define AIRPORTS_DB		"WorldAirports.db"
 #define FIRS_DB			"WorldFirs.db"
 #define VATSINATOR_DAT		"vatsinator.dat"
 #define MODELS_DAT		"models.dat"
 #define WORLD_MAP		"WorldMap.db"
+#define PIXMAPS_DIR		"pixmaps"
 #endif
 
 // below/above these values user can't zoom the map

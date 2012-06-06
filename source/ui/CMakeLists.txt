@@ -22,9 +22,8 @@ set (ui_SRCS
 	actions/trackaction.cpp
 	
 	buttons/colorbutton.cpp
-	buttons/detailsbutton.cpp
+	buttons/clientdetailsbutton.cpp
 	buttons/showairportbutton.cpp
-	buttons/showpilotbutton.cpp
 	
 	mapwidget/mapwidget.cpp
 	
@@ -49,10 +48,9 @@ set (ui_MOC_SRCS
 	actions/metaraction.h
 	actions/trackaction.h
 	
-	buttons/showairportbutton.h
 	buttons/colorbutton.h
-	buttons/detailsbutton.h
-	buttons/showpilotbutton.h
+	buttons/clientdetailsbutton.h
+	buttons/showairportbutton.h
 	
 	mapwidget/mapwidget.h
 	

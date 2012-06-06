@@ -60,7 +60,7 @@ UserInterface::UserInterface(QWidget* _parent) :
 	connect(ActionAbout,	SIGNAL(triggered()),
 		this,		SLOT(about()));
 	connect(ActionMetar,	SIGNAL(triggered()),
-		__metarsWindow,	SLOT(showWindow()));
+		__metarsWindow,	SLOT(show()));
 	connect(ActionRefresh,	SIGNAL(triggered()),
 		&__mother,	SLOT(refreshData()));
 	connect(ActionPreferences,	SIGNAL(triggered()),
@@ -112,11 +112,6 @@ UserInterface::about() {
 	QMessageBox::about(this, "About Vatsinator",
 			trUtf8(ABOUT_TEXT)
 	);
-}
-
-void
-UserInterface::showMetarsWindow() {
-	__metarsWindow->show();
 }
 
 void

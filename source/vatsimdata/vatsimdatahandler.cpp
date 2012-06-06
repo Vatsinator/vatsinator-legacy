@@ -22,6 +22,9 @@
 
 #include <QtGui>
 
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
+
 #include "vatsinatorapplication.h"
 
 #include "vatsimdatahandler.h"
@@ -29,19 +32,19 @@
 
 
 VatsimDataHandler::VatsimDataHandler() :
+		__flights(new FlightTableModel()),
+		__atcs(new ControllerTableModel()),
 		__airports(AirportsDatabase::GetSingleton()),
 		__firs(FirsDatabase::GetSingleton()),
 		__mother(VatsinatorApplication::GetSingleton()) {}
 
 VatsimDataHandler::~VatsimDataHandler() {
-	while (!__pilots.empty())
-		delete __pilots.back(), __pilots.pop_back();
-	while (!__atcs.empty())
-		delete __atcs.back(), __atcs.pop_back();
+	__clearData();
 	while (!__uirs.empty())
 		delete __uirs.back(), __uirs.pop_back();
-	for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
-		delete it.value();
+	
+	delete __atcs;
+	delete __flights;
 }
 
 void
@@ -175,18 +178,7 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 
 void
 VatsimDataHandler::parseDataFile(const QString& _data) {
-	while (!__pilots.empty())
-		delete __pilots.back(), __pilots.pop_back();
-	__pilots.clear();
-	while (!__atcs.empty())
-		delete __atcs.back(), __atcs.pop_back();
-	__atcs.clear();
-	for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
-		delete it.value();
-	__activeAirports.clear();
-	
-	for (Uir* uir: __uirs)
-		uir->clear();
+	__clearData();
 	
 #ifndef NO_DEBUG
 	qDebug() << "Data length: " << _data.length();
@@ -229,10 +221,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 			
 			if (clientData[3] == "ATC") {
 				Controller* atc = new Controller(clientData);
-				__atcs.push_back(atc);
+				__atcs->addStaff(atc);
 			} else if (clientData[3] == "PILOT") {
 				Pilot* pilot = new Pilot(clientData);
-				__pilots.push_back(pilot);
+				__flights->addFlight(pilot);
 			}
 		}
 	}
@@ -241,16 +233,12 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 const QString &
 VatsimDataHandler::getDataUrl() const {
 	srand(time(NULL));
-	
 	return __servers[rand() % __servers.size()];
 }
 
 const Pilot *
 VatsimDataHandler::findPilot(const QString& _callsign) const {
-	for (const Pilot* p: __pilots)
-		if (p->callsign == _callsign)
-			return p;
-	return NULL;
+	return __flights->findFlightByCallsign(_callsign);
 }
 
 Uir *
@@ -276,3 +264,20 @@ VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
 		it.value() = false;
 }
 
+void
+VatsimDataHandler::__clearData() {
+	for (const Pilot* p: __flights->getFlights())
+		delete p;
+	__flights->clear();
+	
+	for (const Controller* c: __atcs->getStaff())
+		delete c;
+	__atcs->clear();
+	
+	for (Uir* u: __uirs)
+		u->clear();
+	
+	for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
+		delete it.value();
+	__activeAirports.clear();
+}

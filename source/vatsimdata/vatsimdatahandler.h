@@ -111,11 +111,11 @@ public:
 	/**
 	 * The following functions return const references to vectors of clients.
 	 */
-	inline const QVector< Pilot* > &
-	getPilots() const { return __pilots; }
+	inline FlightTableModel *
+	getFlightsModel() { return __flights; }
 	
-	inline const QVector< Controller* > &
-	getATCs() const { return __atcs; }
+	inline ControllerTableModel *
+	getATCsModel() { return __atcs; }
 	
 	inline const QVector< Uir* > &
 	getUIRs() const { return __uirs; }
@@ -148,9 +148,15 @@ private:
 	 */
 	void __clearFlags(QMap< QString, bool >&);
 	
+	/**
+	 * Removes all data, frees pointers
+	 */
+	void __clearData();
+	
 	/* These are vectors of connected clients */
-	QVector< Pilot* >	__pilots;
-	QVector< Controller* >	__atcs;
+	FlightTableModel *	__flights;
+	ControllerTableModel *	__atcs;
+	
 	QVector< Uir* >		__uirs;
 	
 	/* This is vector of data servers, obtained from status file */

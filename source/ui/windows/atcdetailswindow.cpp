@@ -23,7 +23,6 @@
 
 #include "vatsimdata/controller.h"
 #include "ui/windows/airportdetailswindow.h"
-#include "ui/windows/firdetailswindow.h"
 
 #include "atcdetailswindow.h"
 #include "defines.h"
@@ -44,28 +43,16 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
 	__ratings[10] = "Senior Instructor (I3)";
 	__ratings[11] = "Supervisor";
 	__ratings[12] = "Administrator";
-	
-	connect(AirportDetailsWindow::GetSingletonPtr(),SIGNAL(showATCDetailsRequest(const Controller*)),
-		this,					SLOT(showWindow(const Controller*)));
-	
-	connect(FirDetailsWindow::GetSingletonPtr(),	SIGNAL(showATCDetailsRequest(const Controller*)),
-		this,					SLOT(showWindow(const Controller*)));
 }
 
 void
-ATCDetailsWindow::showWindow(const Client* _client) {
-	if (_client->type() != ATC || !dynamic_cast< const Controller* >(_client)) {
-#ifndef NO_DEBUG
-		qDebug() << "ATCDetailsWindow: passing incompatible argument! Client type must be ATC.";
-#endif
-		return;
-	}
-	
+ATCDetailsWindow::show(const Client* _client) {
+	Q_ASSERT(dynamic_cast< const Controller* >(_client));
 	__showMe(static_cast< const Controller* >(_client));
 }
 
 void
-ATCDetailsWindow::showWindow(const Controller* _c) {
+ATCDetailsWindow::show(const Controller* _c) {
 	__showMe(_c);
 }
 
@@ -117,9 +104,7 @@ ATCDetailsWindow::__produceFacility(const Controller* _c) {
 		case APP:
 			facility = "Approach";
 			break;
-		case FSS:
-		case CTR:
-		case OBS:
+		default:
 			break;
 	}
 	
@@ -148,7 +133,7 @@ ATCDetailsWindow::__showMe(const Controller* _c) {
 	
 	AtisMessageField->setPlainText(_c->atis);
 	
-	show();
+	QWidget::show();
 }
 
 void

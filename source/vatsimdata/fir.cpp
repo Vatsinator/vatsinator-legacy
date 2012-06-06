@@ -17,25 +17,33 @@
 */
 
 #include <QtGui>
-#include <qgl.h>
-#include <GL/glext.h>
 
 #include "glutils/vertexbufferobject.h"
 #include "glutils/glextensions.h"
 
 #include "ui/mapwidget/mapwidget.h"
 
+#include "vatsimdata/models/airporttablemodel.h"
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
+
 #include "vdebug/glerrors.h"
 
 #include "fir.h"
-
 #include "defines.h"
 
-Fir::Fir() {
+Fir::Fir() :
+	__staff(new ControllerTableModel()),
+	__flights(new FlightTableModel()),
+	__airports(new AirportTableModel()),
+	__hasUirStaff(false) {
 }
 
 Fir::~Fir() {
 	MapWidget::deleteImage(icaoTip);
+	delete __staff;
+	delete __flights;
+	delete __airports;
 	
 #ifdef VATSINATOR_PLATFORM_LINUX
 	if (__trianglesVBO)
@@ -47,23 +55,23 @@ Fir::~Fir() {
 
 void
 Fir::addStaff(const Controller* _c) {
-	__staff.push_back(_c);
+	__staff->addStaff(_c);
 }
 
 void
 Fir::addUirStaff(const Controller* _c) {
-	__uirStaff.push_back(_c);
+	__staff->addStaff(_c);
+	__hasUirStaff = true;
 }
 
 void
 Fir::addFlight(const Pilot* _p) {
-	if (!__flights.contains(_p))
-		__flights.push_back(_p);
+	__flights->addFlight(_p);
 }
 
 void
 Fir::addAirport(const AirportObject* _ap) {
-	__airports.push_back(_ap);
+	__airports->addAirport(_ap);
 }
 
 void
@@ -78,6 +86,19 @@ void
 Fir::init() {
 	__generateTip();
 	__prepareVBO();
+}
+
+void
+Fir::clear() {
+	__staff->clear();
+	__flights->clear();
+	__airports->clear();
+	__hasUirStaff = false;
+}
+
+bool
+Fir::isStaffed() const {
+	return !__staff->getStaff().isEmpty() && !__hasUirStaff;
 }
 
 void

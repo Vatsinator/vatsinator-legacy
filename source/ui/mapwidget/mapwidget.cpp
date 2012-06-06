@@ -44,6 +44,8 @@
 #include "ui/windows/metarswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
 
 #include "vdebug/glerrors.h"
 
@@ -111,6 +113,7 @@ QGL::FormatOptions myFormat =
 
 MapWidget::MapWidget(QWidget* _parent) :
 		QGLWidget(QGLFormat(myFormat), _parent),
+		__isInitialized(false),
 		__pilotToolTip(":/pixmaps/pilot_tooltip.png"),
 		__pilotFont("Verdana"),
 		__airportToolTip(":/pixmaps/airport_tooltip.png"),
@@ -132,18 +135,6 @@ MapWidget::MapWidget(QWidget* _parent) :
 	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
 		this,						SLOT(redraw()));
 	
-	connect(AirportDetailsWindow::GetSingletonPtr(),	SIGNAL(showPilotRequest(const Pilot*)),
-		this,						SLOT(showPilot(const Pilot*)));
-	
-	connect(FirDetailsWindow::GetSingletonPtr(),		SIGNAL(showAirportRequest(const AirportObject*)),
-		this,						SLOT(showAirport(const AirportObject*)));
-	
-	connect(FirDetailsWindow::GetSingletonPtr(),		SIGNAL(showPilotRequest(const Pilot*)),
-		this,						SLOT(showPilot(const Pilot*)));
-	
-	connect(FlightsListWindow::GetSingletonPtr(),		SIGNAL(showPilotRequested(const Pilot*)),
-		this,						SLOT(showPilot(const Pilot*)));
-	
 	connect(this,	SIGNAL(contextMenuRequested(const Pilot*)),
 		this,	SLOT(__openContextMenu(const Pilot*)));
 	connect(this,	SIGNAL(contextMenuRequested(const AirportObject*)),
@@ -162,7 +153,6 @@ MapWidget::MapWidget(QWidget* _parent) :
 MapWidget::~MapWidget() {
 	deleteImage(__apIcon);
 	deleteImage(__apStaffedIcon);
-	deleteImage(__pilotIcon);
 	
 	__storeSettings();
 	delete [] __circle;
@@ -302,6 +292,8 @@ MapWidget::initializeGL() {
 	
 	QCoreApplication::flush();
 	__init();
+	
+	__isInitialized = true;
 	
 #ifndef NO_DEBUG
 	qDebug() << "Ready to render.";
@@ -540,7 +532,7 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 	__menu->addAction(trackThisFlight);
 	
 	connect(showDetails,		SIGNAL(triggered(const Client*)),
-		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+		__flightDetailsWindow,	SLOT(show(const Client*)));
 	connect(trackThisFlight,	SIGNAL(triggered(const Pilot*)),
 		this,			SIGNAL(flightTrackingRequested(const Pilot*)));
 	
@@ -550,14 +542,14 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 		MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
 		__menu->addAction(showDepMetar);
 		connect(showDepMetar,	SIGNAL(triggered(QString)),
-			__metarsWindow,	SLOT(showWindow(QString)));
+			__metarsWindow,	SLOT(show(QString)));
 	}
 	
 	if (!_pilot->route.destination.isEmpty()) {
 		MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
 		__menu->addAction(showArrMetar);
 		connect(showArrMetar,	SIGNAL(triggered(QString)),
-			__metarsWindow,	SLOT(showWindow(QString)));
+			__metarsWindow,	SLOT(show(QString)));
 	}
 	
 	
@@ -577,28 +569,28 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 	__menu->addAction(showMetar);
 	
 	connect(showAp,			SIGNAL(triggered(const AirportObject*)),
-		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
+		__airportDetailsWindow,	SLOT(show(const AirportObject*)));
 	
 	connect(showMetar,		SIGNAL(triggered(QString)),
-		__metarsWindow,		SLOT(showWindow(QString)));
+		__metarsWindow,		SLOT(show(QString)));
 	
-	if (!_ap->getStaff().isEmpty()) {
+	if (!_ap->getStaffModel()->getStaff().isEmpty()) {
 		__menu->addSeparator();
 		__menu->addAction(new ActionMenuSeparator("Controllers", this));
 		
-		for (const Controller* c: _ap->getStaff()) {
+		for (const Controller* c: _ap->getStaffModel()->getStaff()) {
 			ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
 			__menu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(triggered(const Client*)),
-				__atcDetailsWindow,	SLOT(showWindow(const Client*)));
+				__atcDetailsWindow,	SLOT(show(const Client*)));
 		}
 	}
 	
-	if (!_ap->getOutbounds().isEmpty() && _ap->countDepartures()) {
+	if (!_ap->getOutboundsModel()->getFlights().isEmpty() && _ap->countDepartures()) {
 		__menu->addSeparator();
 		__menu->addAction(new ActionMenuSeparator("Departures", this));
 		
-		for (const Pilot* p: _ap->getOutbounds()) {
+		for (const Pilot* p: _ap->getOutboundsModel()->getFlights()) {
 			if (p->flightStatus != DEPARTING)
 				continue;
 			ClientDetailsAction* showDetails = new ClientDetailsAction(
@@ -608,15 +600,15 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 				);
 			__menu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(triggered(const Client*)),
-				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+				__flightDetailsWindow,	SLOT(show(const Client*)));
 		}
 	}
 	
-	if (!_ap->getInbounds().isEmpty() && _ap->countArrivals()) {
+	if (!_ap->getInboundsModel()->getFlights().isEmpty() && _ap->countArrivals()) {
 		__menu->addSeparator();
 		__menu->addAction(new ActionMenuSeparator("Arrivals", this));
 		
-		for (const Pilot* p: _ap->getInbounds()) {
+		for (const Pilot* p: _ap->getInboundsModel()->getFlights()) {
 			if (p->flightStatus != ARRIVED)
 				continue;
 			ClientDetailsAction* showDetails = new ClientDetailsAction(
@@ -626,7 +618,7 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 				);
 			__menu->addAction(showDetails);
 			connect(showDetails,		SIGNAL(triggered(const Client*)),
-				__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+				__flightDetailsWindow,	SLOT(show(const Client*)));
 		}
 	}
 	
@@ -645,21 +637,14 @@ MapWidget::__openContextMenu(const Fir* _fir) {
 	__menu->addAction(showFir);
 	
 	connect(showFir,		SIGNAL(triggered(const Fir*)),
-		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
+		__firDetailsWindow,	SLOT(show(const Fir*)));
 	
 	
-	for (const Controller* c: _fir->getStaff()) {
+	for (const Controller* c: _fir->getStaffModel()->getStaff()) {
 		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
 		__menu->addAction(showDetails);
 		connect(showDetails,		SIGNAL(triggered(const Client*)),
-			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
-	}
-	
-	for (const Controller* c: _fir->getUirStaff()) {
-		ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
-		__menu->addAction(showDetails);
-		connect(showDetails,		SIGNAL(triggered(const Client*)),
-			__atcDetailsWindow,	SLOT(showWindow(const Client*)));
+			__atcDetailsWindow,	SLOT(show(const Client*)));
 	}
 	
 	__menu->exec(mapToGlobal(__lastMousePos));
@@ -676,7 +661,6 @@ MapWidget::__init() {
 #endif
 	__apIcon = loadImage(":/pixmaps/airport.png");
 	__apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
-	__pilotIcon = loadImage(":/pixmaps/plane.png");
 
 #ifndef NO_DEBUG
 	qDebug() << "Getting pointers...";
@@ -696,11 +680,11 @@ MapWidget::__init() {
 	qDebug() << "Preparing slots...";
 #endif
 	connect(this,			SIGNAL(firDetailsWindowRequested(const Fir*)),
-		__firDetailsWindow,	SLOT(showWindow(const Fir*)));
+		__firDetailsWindow,	SLOT(show(const Fir*)));
 	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
-		__flightDetailsWindow,	SLOT(showWindow(const Client*)));
+		__flightDetailsWindow,	SLOT(show(const Client*)));
 	connect(this,			SIGNAL(airportDetailsWindowRequested(const AirportObject*)),
-		__airportDetailsWindow,	SLOT(showWindow(const AirportObject*)));
+		__airportDetailsWindow,	SLOT(show(const AirportObject*)));
 	connect(__settings,		SIGNAL(settingsChanged()),
 		this,			SLOT(__loadNewSettings()));
 	
@@ -853,7 +837,7 @@ MapWidget::__drawUirs() {
 		for (const Uir* uir: __data.getUIRs()) {
 			if (!uir->getStaff().isEmpty()) {
 				for (const Fir* fir: uir->getRange()) {
-					if (fir->getStaff().isEmpty()) {					
+					if (!fir->isStaffed()) {					
 						qglColor(__settings->getStaffedUirBordersColor());
 						fir->drawBorders(); checkGLErrors(HERE);
 						
@@ -915,7 +899,7 @@ MapWidget::__drawAirports() {
 		
 		bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 		
-		glBindTexture(GL_TEXTURE_2D, (it.value()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon );
+		glBindTexture(GL_TEXTURE_2D, (it.value()->getStaffModel()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon );
 		checkGLErrors(HERE);
 		
 		glPushMatrix();
@@ -959,7 +943,7 @@ void
 MapWidget::__drawPilots() {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	
-	for (const Pilot* client: VatsimDataHandler::GetSingleton().getPilots()) {
+	for (const Pilot* client: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
 		if (client->flightStatus != AIRBORNE)
 			continue;
 		
@@ -989,7 +973,7 @@ MapWidget::__drawPilots() {
 				
 				glVertexPointer(2, GL_FLOAT, 0, MODEL_VERTICES); checkGLErrors(HERE);
 				glBindTexture(GL_TEXTURE_2D, client->modelTexture); checkGLErrors(HERE);
-			
+				
 				glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 			glPopMatrix();
 			
@@ -1056,12 +1040,12 @@ MapWidget::__drawLines() {
 		if (!ap->getData())
 			return;
 		
-		unsigned linesOut = ap->getOutbounds().size() - ap->countDepartures();
-		unsigned linesIn = ap->getInbounds().size() - ap->countArrivals();
+		unsigned linesOut = ap->getOutboundsModel()->getFlights().size() - ap->countDepartures();
+		unsigned linesIn = ap->getInboundsModel()->getFlights().size() - ap->countArrivals();
 		
 		GLfloat* vertices = new GLfloat[(linesOut + linesIn) * 4];
 		unsigned i = 0;
-		for (const Pilot* p: ap->getOutbounds()) {
+		for (const Pilot* p: ap->getOutboundsModel()->getFlights()) {
 			if (p->flightStatus == DEPARTING)
 				continue;
 			
@@ -1079,7 +1063,7 @@ MapWidget::__drawLines() {
 			
 			i += 2;
 		}
-		for (const Pilot* p: ap->getInbounds()) {
+		for (const Pilot* p: ap->getInboundsModel()->getFlights()) {
 			if (p->flightStatus == ARRIVED)
 				continue;
 			
@@ -1227,7 +1211,7 @@ MapWidget::__produceAirportToolTip(const AirportObject* _ap) {
 		(QString)_ap->getData()->name % ", " %
 		(QString)_ap->getData()->city % "</nobr>";
 	
-	for (const Controller* c: _ap->getStaff())
+	for (const Controller* c: _ap->getStaffModel()->getStaff())
 		text.append((QString)"<br><nobr>" %
 			c->callsign % " " % c->frequency % " " % c->realName %
 			"</nobr>"
@@ -1247,7 +1231,7 @@ MapWidget::__produceAirportToolTip(const AirportObject* _ap) {
 
 inline QString
 MapWidget::__produceFirToolTip(const Fir* _f) {
-	if (_f->name.isEmpty() && _f->getStaff().isEmpty() && _f->getUirStaff().isEmpty())
+	if (_f->name.isEmpty() && !_f->isStaffed())
 		return "";
 	
 	QString text = (QString)"<center>";
@@ -1258,13 +1242,7 @@ MapWidget::__produceFirToolTip(const Fir* _f) {
 		text.append((QString)"</nobr>");
 	}
 	
-	for (const Controller* c: _f->getStaff())
-		text.append((QString)"<br><nobr>" %
-			c->callsign % " " % c->frequency % " " % c->realName %
-			"</nobr>"
-		);
-	
-	for (const Controller* c: _f->getUirStaff())
+	for (const Controller* c: _f->getStaffModel()->getStaff())
 		text.append((QString)"<br><nobr>" %
 			c->callsign % " " % c->frequency % " " % c->realName %
 			"</nobr>"

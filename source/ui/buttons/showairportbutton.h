@@ -29,7 +29,7 @@ class ShowAirportButton : public QPushButton {
 	Q_OBJECT
 	
 public:
-	ShowAirportButton(const AirportObject*, QWidget* = 0);
+	ShowAirportButton(const AirportObject*, const QString& = "Details", QWidget* = 0);
 	
 signals:
 	void clicked(const AirportObject*);
