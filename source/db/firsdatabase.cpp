@@ -33,25 +33,32 @@ FirsDatabase::FirsDatabase() {
 	std::cout << "FIRS_DB: " << FIRS_DB << std::endl;
 #endif
 	__readDatabase();
+	
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(glInitialized()),
+		this,		SLOT(__init()),			Qt::DirectConnection);
+}
+
+
+Fir *
+FirsDatabase::findFirByIcao(const QString& _icao, bool _fss) {
+	for (Fir& f: __firs)
+		if (static_cast< QString >(f.header.icao) == _icao) {
+			if (!f.header.oceanic && _fss)
+				continue;
+			if (f.header.oceanic && !_fss)
+				continue;
+			if (f.header.textPosition.x != 0 && f.header.textPosition.y != 0)
+				return &f;
+			else
+				continue;
+		}
+	return NULL;
 }
 
 void
-FirsDatabase::init() {
-	if (__toolTipsPrepared)
-		return;
-	
-#ifndef NO_DEBUG
-	qDebug() << "Preparing VBOs for FIRs...";
-#endif
-	
+FirsDatabase::clearAll() {
 	for (Fir& f: __firs)
-		f.init();
-	
-	__toolTipsPrepared = true;
-
-#ifndef NO_DEBUG
-	qDebug() << "FIRs' VBOs prepared.";
-#endif
+		f.clear();
 }
 
 void
@@ -90,24 +97,21 @@ FirsDatabase::__readDatabase() {
 	clearAll();
 }
 
-Fir *
-FirsDatabase::findFirByIcao(const QString& _icao, bool _fss) {
-	for (Fir& f: __firs)
-		if (static_cast< QString >(f.header.icao) == _icao) {
-			if (!f.header.oceanic && _fss)
-				continue;
-			if (f.header.oceanic && !_fss)
-				continue;
-			if (f.header.textPosition.x != 0 && f.header.textPosition.y != 0)
-				return &f;
-			else
-				continue;
-		}
-	return NULL;
-}
-
 void
-FirsDatabase::clearAll() {
+FirsDatabase::__init() {
+	if (__toolTipsPrepared)
+		return;
+	
+#ifndef NO_DEBUG
+	qDebug() << "Preparing VBOs for FIRs...";
+#endif
+	
 	for (Fir& f: __firs)
-		f.clear();
+		f.init();
+	
+	__toolTipsPrepared = true;
+
+#ifndef NO_DEBUG
+	qDebug() << "FIRs' VBOs prepared.";
+#endif
 }

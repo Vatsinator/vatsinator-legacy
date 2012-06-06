@@ -74,7 +74,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 	
 	// SettingsManager instance is now created, let him get the pointer & connect his slots
 	__settingsManager->init();
-	__modulesManager->initBeforeGL();
+	__modulesManager->init();
 	
 	// connect data refresher with the timer
 	connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
@@ -129,6 +129,11 @@ VatsinatorApplication::alert(const QString& _msg) {
 	QMessageBox msgBox;
 	msgBox.setText(_msg);
 	msgBox.exec();
+}
+
+void
+VatsinatorApplication::emitGLInitialized() {
+	VatsinatorApplication::GetSingleton().__emitGLInitialized();
 }
 
 void
@@ -229,6 +234,11 @@ VatsinatorApplication::__showDataAlert() {
 	
 	if (decision.clickedButton() == againButton)
 		refreshData();
+}
+
+void
+VatsinatorApplication::__emitGLInitialized() {
+	emit glInitialized();
 }
 
 void

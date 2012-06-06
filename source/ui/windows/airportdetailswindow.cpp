@@ -21,6 +21,7 @@
 #include "db/airportsdatabase.h"
 
 #include "ui/buttons/clientdetailsbutton.h"
+
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 
@@ -28,9 +29,13 @@
 #include "vatsimdata/client.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
+#include "vatsimdata/vatsimdatahandler.h"
+
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/metarlistmodel.h"
+
+#include "vatsinatorapplication.h"
 
 #include "airportdetailswindow.h"
 #include "defines.h"
@@ -43,6 +48,9 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	
 	connect(MetarListModel::GetSingletonPtr(),	SIGNAL(newMetarsAvailable()),
 		this,					SLOT(updateMetar()));
+	
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
+		this,					SLOT(__updateData()));
 }
 
 void
@@ -50,7 +58,11 @@ AirportDetailsWindow::show(const AirportObject* _ap) {
 	Q_ASSERT(_ap->getData());
 	
 	__currentICAO = _ap->getData()->icao;
+	
 	__fillLabels(_ap);
+	__updateModels(_ap);
+	__setButtons();
+	__adjustTables();
 	
 	const Metar* m = MetarListModel::GetSingleton().find(__currentICAO);
 	if (m)
@@ -59,32 +71,6 @@ AirportDetailsWindow::show(const AirportObject* _ap) {
 		MetarLabel->setText("Fetching...");
 		MetarListModel::GetSingleton().fetchMetar(__currentICAO);
 	}
-	
-	InboundTable->setModel(_ap->getInboundsModel());
-	for (int i = 0; i < _ap->getInboundsModel()->rowCount(); ++i) {
-		ClientDetailsButton* pButton = new ClientDetailsButton(_ap->getInboundsModel()->getFlights()[i]);
-		connect(pButton,				SIGNAL(clicked(const Client*)),
-			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
-		InboundTable->setIndexWidget(_ap->getInboundsModel()->index(i, FlightTableModel::Button), pButton);
-	}
-	
-	OutboundTable->setModel(_ap->getOutboundsModel());
-	for (int i = 0; i < _ap->getOutboundsModel()->rowCount(); ++i) {
-		ClientDetailsButton* pButton = new ClientDetailsButton(_ap->getOutboundsModel()->getFlights()[i]);
-		connect(pButton,				SIGNAL(clicked(const Client*)),
-			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
-		OutboundTable->setIndexWidget(_ap->getOutboundsModel()->index(i, FlightTableModel::Button), pButton);
-	}
-	
-	ATCTable->setModel(_ap->getStaffModel());
-	for (int i = 0; i < _ap->getStaffModel()->rowCount(); ++i) {
-		ClientDetailsButton* pButton = new ClientDetailsButton(_ap->getStaffModel()->getStaff()[i]);
-		connect(pButton,				SIGNAL(clicked(const Client*)),
-			ATCDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
-		ATCTable->setIndexWidget(_ap->getStaffModel()->index(i, ControllerTableModel::Button), pButton);
-	}
-	
-	__adjustTable();
 	
 	QWidget::show();
 }
@@ -97,6 +83,25 @@ AirportDetailsWindow::updateMetar() {
 	const Metar* m = MetarListModel::GetSingleton().find(__currentICAO);
 	if (m)
 		MetarLabel->setText(m->getMetar());
+}
+
+
+void
+AirportDetailsWindow::__updateModels(const AirportObject* _ap) {
+	const AirportObject* ap;
+	if (!_ap)
+		ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__currentICAO];
+	else
+		ap = _ap;
+	
+	if (!ap) {
+		hide();
+		return;
+	}
+	
+	InboundTable->setModel(ap->getInboundsModel());
+	OutboundTable->setModel(ap->getOutboundsModel());
+	ATCTable->setModel(ap->getStaffModel());
 }
 
 void
@@ -126,7 +131,7 @@ AirportDetailsWindow::__fillLabels(const AirportObject* _ap) {
 }
 
 void
-AirportDetailsWindow::__adjustTable() {
+AirportDetailsWindow::__adjustTables() {
 	// make the table nice
 	InboundTable->hideColumn(FlightTableModel::Name);
 	InboundTable->hideColumn(FlightTableModel::To);
@@ -134,7 +139,6 @@ AirportDetailsWindow::__adjustTable() {
 	InboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
 	InboundTable->setColumnWidth(FlightTableModel::From, 320);
 	InboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-	InboundTable->setColumnWidth(FlightTableModel::Button, 120);
 	
 	OutboundTable->hideColumn(FlightTableModel::Name);
 	OutboundTable->hideColumn(FlightTableModel::From);
@@ -142,12 +146,40 @@ AirportDetailsWindow::__adjustTable() {
 	OutboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
 	OutboundTable->setColumnWidth(FlightTableModel::To, 320);
 	OutboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-	OutboundTable->setColumnWidth(FlightTableModel::Button, 120);
 	
 	ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
 	ATCTable->setColumnWidth(ControllerTableModel::Name, 320);
 	ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
-	ATCTable->setColumnWidth(ControllerTableModel::Button, 120);
+}
+
+void
+AirportDetailsWindow::__setButtons() {
+	const FlightTableModel* inboundModel = qobject_cast< const FlightTableModel* >(InboundTable->model());
+	Q_ASSERT(inboundModel);
+	for (int i = 0; i < inboundModel->rowCount(); ++i) {
+		ClientDetailsButton* pButton = new ClientDetailsButton(inboundModel->getFlights()[i]);
+		connect(pButton,				SIGNAL(clicked(const Client*)),
+			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
+		InboundTable->setIndexWidget(inboundModel->index(i, FlightTableModel::Button), pButton);
+	}
+	
+	const FlightTableModel* outboundModel = qobject_cast< const FlightTableModel* >(OutboundTable->model());
+	Q_ASSERT(outboundModel);
+	for (int i = 0; i < outboundModel->rowCount(); ++i) {
+		ClientDetailsButton* pButton = new ClientDetailsButton(outboundModel->getFlights()[i]);
+		connect(pButton,				SIGNAL(clicked(const Client*)),
+			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
+		OutboundTable->setIndexWidget(outboundModel->index(i, FlightTableModel::Button), pButton);
+	}
+	
+	const ControllerTableModel* atcModel = qobject_cast< const ControllerTableModel* >(ATCTable->model());
+	Q_ASSERT(atcModel);
+	for (int i = 0; i < atcModel->rowCount(); ++i) {
+		ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
+		connect(pButton,				SIGNAL(clicked(const Client*)),
+			ATCDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
+		ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
+	}
 }
 
 void
@@ -175,3 +207,12 @@ AirportDetailsWindow::__setWindowPosition() {
 	move(x, y);
 }
 
+void
+AirportDetailsWindow::__updateData() {
+	if (__currentICAO.isEmpty() || !isVisible())
+		return;
+	
+	__updateModels();
+	__setButtons();
+	__adjustTables();
+}

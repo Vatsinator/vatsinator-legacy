@@ -10,6 +10,7 @@ vatsinator_subdirectory_sources (modules "${modules_SRCS}")
 
 set (modules_MOC_SRCS
 	flighttracker.h
+	modulesmanager.h
 )
 
 vatsinator_subdirectory_mocs (modules "${modules_MOC_SRCS}")

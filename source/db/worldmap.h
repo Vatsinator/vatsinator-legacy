@@ -20,6 +20,7 @@
 #ifndef WORLDMAP_H
 #define WORLDMAP_H
 
+#include <QObject>
 #include <QVector>
 
 #include "db/point.h"
@@ -28,7 +29,9 @@
 
 class VertexBufferObject;
 
-class WorldMap : public Singleton< WorldMap > {
+class WorldMap : public QObject, public Singleton< WorldMap > {
+	
+	Q_OBJECT
 	
 	struct WorldMapVBO {
 		VertexBufferObject *	border;
@@ -48,8 +51,6 @@ class WorldMap : public Singleton< WorldMap > {
 public:
 	WorldMap();
 	virtual ~WorldMap();
-	
-	void init();
 
 	void draw() const;
 	
@@ -57,6 +58,9 @@ private:
 	void __readDatabase();
 	
 	Polygon __worldPolygon;
+	
+private slots:
+	void __init();
 	
 	
 };

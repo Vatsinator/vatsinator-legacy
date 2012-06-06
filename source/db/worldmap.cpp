@@ -40,39 +40,14 @@ WorldMap::WorldMap() {
 #endif
 	__readDatabase();
 	
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(glInitialized()),
+		this,	SLOT(__init()),	Qt::DirectConnection);
 }
 
 WorldMap::~WorldMap() {
 #ifdef VATSINATOR_PLATFORM_LINUX
 	delete __worldPolygon.vbo.border;
 	delete __worldPolygon.vbo.triangles;
-#endif
-}
-
-void
-WorldMap::init() {
-#ifdef VATSINATOR_PLATFORM_LINUX
-#ifndef NO_DEBUG
-	qDebug() << "Preparing VBOs for WorldMap...";
-#endif
-	
-	__worldPolygon.vbo.border = new VertexBufferObject(GL_ARRAY_BUFFER);
-	__worldPolygon.vbo.border->sendData(sizeof(Point) * __worldPolygon.borders.size(),
-					    &__worldPolygon.borders[0].x);
-	
-	__worldPolygon.vbo.borderSize = __worldPolygon.borders.size();
-	__worldPolygon.borders.clear();
-	
-	__worldPolygon.vbo.triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-	__worldPolygon.vbo.triangles->sendData(sizeof(unsigned short) * __worldPolygon.triangles.size(),
-					       &__worldPolygon.triangles[0]);
-	
-	__worldPolygon.vbo.trianglesSize = __worldPolygon.triangles.size();
-	__worldPolygon.triangles.clear();
-	
-#ifndef NO_DEBUG
-	qDebug() << "WorldMap VBOs ready.";
-#endif
 #endif
 }
 
@@ -144,6 +119,33 @@ void WorldMap::__readDatabase() {
 		offset += p.borders.size();
 	}
 	
+}
+
+void
+WorldMap::__init() {
+#ifdef VATSINATOR_PLATFORM_LINUX
+#ifndef NO_DEBUG
+	qDebug() << "Preparing VBOs for WorldMap...";
+#endif
+	
+	__worldPolygon.vbo.border = new VertexBufferObject(GL_ARRAY_BUFFER);
+	__worldPolygon.vbo.border->sendData(sizeof(Point) * __worldPolygon.borders.size(),
+					    &__worldPolygon.borders[0].x);
+	
+	__worldPolygon.vbo.borderSize = __worldPolygon.borders.size();
+	__worldPolygon.borders.clear();
+	
+	__worldPolygon.vbo.triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
+	__worldPolygon.vbo.triangles->sendData(sizeof(unsigned short) * __worldPolygon.triangles.size(),
+					       &__worldPolygon.triangles[0]);
+	
+	__worldPolygon.vbo.trianglesSize = __worldPolygon.triangles.size();
+	__worldPolygon.triangles.clear();
+	
+#ifndef NO_DEBUG
+	qDebug() << "WorldMap VBOs ready.";
+#endif
+#endif
 }
 
 

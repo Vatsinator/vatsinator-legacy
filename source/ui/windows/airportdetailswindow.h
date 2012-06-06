@@ -42,11 +42,17 @@ public slots:
  	void updateMetar();
 	
 private:
+	void __updateModels(const AirportObject* = NULL);
 	void __fillLabels(const AirportObject*);
-	void __adjustTable();
+	void __adjustTables();
+	void __setButtons();
 	void __setWindowPosition();
 	
 	QString __currentICAO;
+	
+private slots:
+	void __updateData();
+	
 };
 
 #endif // AIRPORTDETAILSWINDOW_H

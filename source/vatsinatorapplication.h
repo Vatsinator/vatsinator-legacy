@@ -56,9 +56,12 @@ public:
 	static void quit();
 	static void alert(const QString&);
 	
+	static void emitGLInitialized();
+	
 	VatsimDataHandler& getData() { return *__vatsimData; }
 	
 signals:
+	void glInitialized();
 	void dataUpdated();
 	void metarsRefreshRequested();
 
@@ -71,7 +74,8 @@ private slots:
 	void __showDataAlert();
 	
 private:
-	void		__fetchStatusFile();
+	void __emitGLInitialized();
+	void __fetchStatusFile();
 	
 	HttpHandler *		__httpHandler;
 	AirportsDatabase *	__airportsData;

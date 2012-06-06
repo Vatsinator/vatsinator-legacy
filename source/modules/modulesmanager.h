@@ -22,17 +22,23 @@
 
 #include "singleton.h"
 
+#include <QObject>
+
 class FlightTracker;
 class ModelsMatcher;
 
-class ModulesManager : public Singleton< ModulesManager > {
+class ModulesManager : public QObject, public Singleton< ModulesManager > {
+	
+	Q_OBJECT
 	
 public:
 	ModulesManager();
 	virtual ~ModulesManager();
 	
-	void initBeforeGL();
-	void initAfterGL();
+	void init();
+	
+private slots:
+	void __initAfterGL();
 	
 private:
 	FlightTracker * __flightTracker;

@@ -26,12 +26,12 @@
 #include "vatsimdata/fir.h"
 #include "singleton.h"
 
-class FirsDatabase : public Singleton< FirsDatabase > {
+class FirsDatabase : public QObject, public Singleton< FirsDatabase > {
+	
+	Q_OBJECT
 	
 public:
 	FirsDatabase();
-	
-	void init();
 	
 	Fir *	findFirByIcao(const QString&, bool = false);
 	
@@ -46,6 +46,9 @@ private:
 	QVector< Fir >	__firs;
 	
 	bool __toolTipsPrepared;
+	
+private slots:
+	void __init();
 	
 	
 };

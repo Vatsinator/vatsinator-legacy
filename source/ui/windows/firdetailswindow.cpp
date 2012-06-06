@@ -45,18 +45,38 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
 	__setWindowPosition();
 	
 	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
-		this,						SLOT(__updateContents()));
+		this,						SLOT(__updateData()));
 }
 
 void
 FirDetailsWindow::show(const Fir* _f) {
 	__currentICAO = _f->header.icao;
-	__updateContents(_f);
+	
+	__fillLabels(_f);
+	__updateModels(_f);
+	__setButtons();
+	__adjustTables();
+	
 	QWidget::show();
 }
 
 void
-FirDetailsWindow::__updateContents(const Fir* _f) {
+FirDetailsWindow::__updateModels(const Fir* _f) {
+	const Fir* f;
+	if (!_f)
+		f = FirsDatabase::GetSingleton().findFirByIcao(__currentICAO);
+	else
+		f = _f;
+	
+	Q_ASSERT(f);
+	
+	FlightsTable->setModel(_f->getFlightsModel());
+	ATCTable->setModel(_f->getStaffModel());
+	AirportsTable->setModel(_f->getAirportsModel());
+}
+
+void
+FirDetailsWindow::__fillLabels(const Fir* _f) {
 	if (_f->country != "USA")
 		setWindowTitle(static_cast< QString >(_f->header.icao) + " - FIR details");
 	else
@@ -64,32 +84,6 @@ FirDetailsWindow::__updateContents(const Fir* _f) {
 	
 	ICAOLabel->setText(static_cast< QString >(_f->header.icao));
 	NameLabel->setText(_f->name);
-	
-	FlightsTable->setModel(_f->getFlightsModel());
-	for (int i = 0; i < _f->getFlightsModel()->rowCount(); ++i) {
-		ClientDetailsButton* pButton = new ClientDetailsButton(_f->getFlightsModel()->getFlights()[i]);
-		connect(pButton,				SIGNAL(clicked(const Client*)),
-			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
-		FlightsTable->setIndexWidget(_f->getFlightsModel()->index(i, FlightTableModel::Button), pButton);
-	}
-	
-	ATCTable->setModel(_f->getStaffModel());
-	for (int i = 0; i < _f->getStaffModel()->rowCount(); ++i) {
-		ClientDetailsButton* pButton = new ClientDetailsButton(_f->getStaffModel()->getStaff()[i]);
-		connect(pButton,				SIGNAL(clicked(const Client*)),
-			ATCDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
-		ATCTable->setIndexWidget(_f->getStaffModel()->index(i, ControllerTableModel::Button), pButton);
-	}
-	
-	AirportsTable->setModel(_f->getAirportsModel());
-	for (int i = 0; i < _f->getAirportsModel()->rowCount(); ++i) {
-		ShowAirportButton* pButton = new ShowAirportButton(_f->getAirportsModel()->getAirports()[i]);
-		connect(pButton,				SIGNAL(clicked(const AirportObject*)),
-			AirportDetailsWindow::GetSingletonPtr(),SLOT(show(const AirportObject*)));
-		AirportsTable->setIndexWidget(_f->getAirportsModel()->index(i, AirportTableModel::Button), pButton);
-	}
-	
-	__adjustTables();
 }
 
 void
@@ -100,18 +94,43 @@ FirDetailsWindow::__adjustTables() {
 	FlightsTable->setColumnWidth(FlightTableModel::From, 160);
 	FlightsTable->setColumnWidth(FlightTableModel::To, 160);
 	FlightsTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-	FlightsTable->setColumnWidth(FlightTableModel::Button, 120);
 	
 	ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
 	ATCTable->setColumnWidth(ControllerTableModel::Name, 320);
 	ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
-	ATCTable->setColumnWidth(ControllerTableModel::Button, 120);
 	
 	AirportsTable->setColumnWidth(AirportTableModel::Label, 250);
 	AirportsTable->setColumnWidth(AirportTableModel::Facilities, 170);
 	AirportsTable->setColumnWidth(AirportTableModel::Outbounds, 100);
 	AirportsTable->setColumnWidth(AirportTableModel::Inbounds, 100);
-	AirportsTable->setColumnWidth(AirportTableModel::Button, 120);
+}
+
+void
+FirDetailsWindow::__setButtons() {
+	const FlightTableModel* flightsModel = qobject_cast< const FlightTableModel* >(FlightsTable->model());
+	Q_ASSERT(flightsModel);
+	for (int i = 0; i < flightsModel->rowCount(); ++i) {
+		ClientDetailsButton* pButton = new ClientDetailsButton(flightsModel->getFlights()[i]);
+		connect(pButton,				SIGNAL(clicked(const Client*)),
+			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
+		FlightsTable->setIndexWidget(flightsModel->index(i, FlightTableModel::Button), pButton);
+	}
+	
+	const ControllerTableModel* atcModel = qobject_cast< const ControllerTableModel* >(ATCTable->model());
+	for (int i = 0; i < atcModel->rowCount(); ++i) {
+		ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
+		connect(pButton,				SIGNAL(clicked(const Client*)),
+			ATCDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
+		ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
+	}
+	
+	const AirportTableModel* apModel = qobject_cast< const AirportTableModel* >(AirportsTable->model());
+	for (int i = 0; i < apModel->rowCount(); ++i) {
+		ShowAirportButton* pButton = new ShowAirportButton(apModel->getAirports()[i]);
+		connect(pButton,				SIGNAL(clicked(const AirportObject*)),
+			AirportDetailsWindow::GetSingletonPtr(),SLOT(show(const AirportObject*)));
+		AirportsTable->setIndexWidget(apModel->index(i, AirportTableModel::Button), pButton);
+	}
 }
 
 void
@@ -140,14 +159,13 @@ FirDetailsWindow::__setWindowPosition() {
 }
 
 void
-FirDetailsWindow::__updateContents() {
-	if (!isVisible())
+FirDetailsWindow::__updateData() {
+	if (__currentICAO.isEmpty() || !isVisible())
 		return;
 	
-	Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(__currentICAO);
-	Q_ASSERT(fir);
-	
-	__updateContents(fir);
+	//__updateModels();
+	__setButtons();
+	//__adjustTables();
 }
 
 

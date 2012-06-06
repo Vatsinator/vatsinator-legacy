@@ -25,17 +25,18 @@
 #include "glutils/glextensions.h"
 
 #include "modules/flighttracker.h"
-#include "modules/modulesmanager.h"
 
 #include "settings/settingsmanager.h"
 
 #include "ui/userinterface.h"
+
 #include "ui/actions/actionmenuseparator.h"
 #include "ui/actions/airportdetailsaction.h"
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/firdetailsaction.h"
 #include "ui/actions/metaraction.h"
 #include "ui/actions/trackaction.h"
+
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/firdetailswindow.h"
@@ -44,6 +45,7 @@
 #include "ui/windows/metarswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
+
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
@@ -707,9 +709,7 @@ MapWidget::__init() {
 	qDebug() << "Generating pixmaps...";
 #endif
 	
-	__firs->init();
-	ModulesManager::GetSingleton().initAfterGL();
-	WorldMap::GetSingleton().init();
+	VatsinatorApplication::emitGLInitialized();
 }
 
 void

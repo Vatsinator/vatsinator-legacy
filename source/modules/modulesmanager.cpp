@@ -19,12 +19,17 @@
 #include "modules/flighttracker.h"
 #include "modules/modelsmatcher.h"
 
+#include "vatsinatorapplication.h"
+
 #include "modulesmanager.h"
 #include "defines.h"
 
 ModulesManager::ModulesManager() :
 		__flightTracker(new FlightTracker()),
-		__modelsMatcher(new ModelsMatcher()) {}
+		__modelsMatcher(new ModelsMatcher()) {
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(glInitialized()),
+		this,		SLOT(__initAfterGL()),	Qt::DirectConnection);
+}
 
 ModulesManager::~ModulesManager() {
 	delete __flightTracker;
@@ -32,11 +37,11 @@ ModulesManager::~ModulesManager() {
 }
 
 void
-ModulesManager::initBeforeGL() {
+ModulesManager::init() {
 	__flightTracker->init();
 }
 
 void
-ModulesManager::initAfterGL() {
+ModulesManager::__initAfterGL() {
 	__modelsMatcher->init();
 }
