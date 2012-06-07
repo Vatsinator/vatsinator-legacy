@@ -28,6 +28,9 @@ class Controller;
 class ControllerTableModel : public QAbstractTableModel {
 	
 	/* http://qt-project.org/doc/qt-4.8/qabstracttablemodel.html */
+	/*
+	 * This model holds vector of logged-in controllers.
+	 */
 	
 	Q_OBJECT
 	
@@ -35,14 +38,13 @@ public:
 	explicit ControllerTableModel(QObject* = 0);
 	
 	void addStaff(const Controller*);
+	void clear();
 	
 	int rowCount(const QModelIndex& = QModelIndex()) const;
 	int columnCount(const QModelIndex& = QModelIndex()) const;
 	QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
 	QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
-	
-	inline void
-	clear() { __staff.clear(); }
+	void sort(int, Qt::SortOrder = Qt::AscendingOrder);
 	
 	inline const QVector< const Controller* > &
 	getStaff() const { return __staff; }

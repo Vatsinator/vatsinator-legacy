@@ -17,6 +17,7 @@
 */
 
 #include <QtGui>
+#include <algorithm>
 
 #include "vatsimdata/controller.h"
 
@@ -28,7 +29,16 @@ ControllerTableModel::ControllerTableModel(QObject* _parent) :
 
 void
 ControllerTableModel::addStaff(const Controller* _c) {
+	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	__staff.push_back(_c);
+	endInsertRows();
+}
+
+void
+ControllerTableModel::clear() {
+	beginResetModel();
+	__staff.clear();
+	endResetModel();
 }
 
 int
@@ -87,3 +97,21 @@ ControllerTableModel::headerData(int _section, Qt::Orientation _orientation, int
 	}
 }
 
+void
+ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
+	beginResetModel();
+	
+	if (_column == Callsign) {
+		auto comparator = [_order](const Controller* _a, const Controller* _b) -> bool {
+			return _order == Qt::AscendingOrder ? _a->callsign < _b->callsign : _a->callsign > _b->callsign;
+		};
+		std::sort(__staff.begin(), __staff.end(), comparator);
+	} else if (_column == Name) {
+		auto comparator = [_order](const Controller* _a, const Controller* _b) -> bool {
+			return _order == Qt::AscendingOrder ? _a->realName < _b->realName : _a->realName > _b->realName;
+		};
+		std::sort(__staff.begin(), __staff.end(), comparator);
+	}
+	
+	endResetModel();
+}

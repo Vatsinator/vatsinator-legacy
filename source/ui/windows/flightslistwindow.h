@@ -23,8 +23,6 @@
 #include "ui/ui_flightslistwindow.h"
 #include "singleton.h"
 
-class Pilot;
-
 class FlightsListWindow :
 		public QWidget,
 		public Singleton< FlightsListWindow >,

@@ -179,7 +179,7 @@
       <x>223</x>
       <y>115</y>
       <width>150</width>
-      <height>162</height>
+      <height>186</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -195,6 +195,7 @@
     <addaction name="ActionRefresh"/>
     <addaction name="separator"/>
     <addaction name="ActionFlightsList"/>
+    <addaction name="ActionATCList"/>
     <addaction name="separator"/>
     <addaction name="ActionExit"/>
    </widget>
@@ -283,6 +284,11 @@
    </property>
    <property name="text">
     <string>Flights list...</string>
+   </property>
+  </action>
+  <action name="ActionATCList">
+   <property name="text">
+    <string>ATC list...</string>
    </property>
   </action>
  </widget>

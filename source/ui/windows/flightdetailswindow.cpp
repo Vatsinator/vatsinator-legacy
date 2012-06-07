@@ -22,9 +22,9 @@
 
 #include "modules/flighttracker.h"
 
-#include "vatsimdata/pilot.h"
 #include "ui/mapwidget/mapwidget.h"
-#include "ui/userinterface.h"
+
+#include "vatsimdata/pilot.h"
 
 #include "flightdetailswindow.h"
 #include "defines.h"
@@ -34,6 +34,7 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 	setupUi(this);
 	
 	connect(TrackFlightBox, SIGNAL(stateChanged(int)), this, SLOT(stateHandle(int)));
+	connect(ShowButton,	SIGNAL(clicked()),	this,	SLOT(__handleShowClicked()));
 	
 	__setWindowPosition();
 }
@@ -41,12 +42,7 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 void
 FlightDetailsWindow::show(const Client* _client) {
 	Q_ASSERT(dynamic_cast< const Pilot* >(_client));
-	show(static_cast< const Pilot* >(_client));
-}
-
-void
-FlightDetailsWindow::show(const Pilot* _client) {
-	__current = _client;
+	__current = dynamic_cast< const Pilot* >(_client);
 	
 	setWindowTitle(QString(__current->callsign + " - flight details"));
 	
@@ -80,8 +76,8 @@ FlightDetailsWindow::show(const Pilot* _client) {
 	ap = AirportsDatabase::GetSingleton().find(__current->route.destination);
 	text = __current->route.destination;
 	if (ap)
-		text.append(QString(" ") + ap->name + " - " + ap->city);
-
+		text.append(QString(" ") + QString::fromUtf8(ap->name) + " - " + QString::fromUtf8(ap->city));
+	
 	ArrivalLabel->setText(text);
 	AircraftLabel->setText(__current->aircraft);
 	TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
@@ -127,6 +123,11 @@ FlightDetailsWindow::__setWindowPosition() {
 	y -= 50;
 	
 	move(x, y);
+}
+
+void
+FlightDetailsWindow::__handleShowClicked() {
+	MapWidget::GetSingleton().showPilot(__current);
 }
 
 

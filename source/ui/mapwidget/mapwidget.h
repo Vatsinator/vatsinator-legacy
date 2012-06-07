@@ -102,6 +102,7 @@ signals:
 public slots:
 	void showPilot(const Pilot*);
 	void showAirport(const AirportObject*);
+	void showPoint(qreal, qreal);
 	void redraw();
 	
 protected:

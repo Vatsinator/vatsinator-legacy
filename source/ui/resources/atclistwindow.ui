@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FlightsListWindow</class>
- <widget class="QWidget" name="FlightsListWindow">
+ <class>ATCListWindow</class>
+ <widget class="QWidget" name="ATCListWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Flights list</string>
+   <string>ATC list</string>
   </property>
   <property name="windowIcon">
    <iconset resource="imgs.qrc">
@@ -19,7 +19,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QTableView" name="FlightsTable">
+    <widget class="QTableView" name="ATCTable">
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOn</enum>
      </property>

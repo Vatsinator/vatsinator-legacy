@@ -69,7 +69,7 @@
  * 39 QNH_iHg
  * 40 QNH_Mb
  */
-Controller::Controller(const QStringList& _data) {
+Controller::Controller(const QStringList& _data) : airport(NULL) {
 	callsign = _data[0];
 	pid = _data[1].toUInt();
 	realName = _data[2];

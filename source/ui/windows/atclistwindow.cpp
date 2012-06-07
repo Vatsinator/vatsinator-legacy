@@ -1,5 +1,5 @@
 /*
-    flightslistwindow.cpp
+    atclistwindow.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -18,49 +18,47 @@
 
 #include <QtGui>
 
-#include "ui/windows/flightdetailswindow.h"
+#include "ui/windows/atcdetailswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/models/flighttablemodel.h"
 
-#include "flightslistwindow.h"
+#include "vatsimdata/models/controllertablemodel.h"
+
+#include "atclistwindow.h"
 #include "defines.h"
 
-FlightsListWindow::FlightsListWindow(QWidget* _parent) :
+ATCListWindow::ATCListWindow(QWidget* _parent) :
 		QWidget(_parent) {
 	setupUi(this);
 	__setWindowPosition();
-	FlightsTable->setModel(VatsimDataHandler::GetSingleton().getFlightsModel());
-	FlightsTable->hideColumn(FlightTableModel::Button);
+	ATCTable->setModel(VatsimDataHandler::GetSingleton().getATCsModel());
+	ATCTable->hideColumn(ControllerTableModel::Button);
 	__setColumnsWidths();
 	
-	connect(FlightsTable,	SIGNAL(doubleClicked(const QModelIndex&)),
+	connect(ATCTable,	SIGNAL(doubleClicked(const QModelIndex&)),
 		this,		SLOT(__handleDoubleClicked(const QModelIndex&)));
 }
 
 void
-FlightsListWindow::resizeEvent(QResizeEvent* _event) {
+ATCListWindow::resizeEvent(QResizeEvent* _event) {
 	QWidget::resizeEvent(_event);
 	__setColumnsWidths();
 }
 
 void
-FlightsListWindow::__setColumnsWidths() {
+ATCListWindow::__setColumnsWidths() {
 	const int CALLSIGN_SIZE = 100;
-	const int ACFT_SIZE = 120;
+	const int FREQUENCY_SIZE = 120;
 	const int SCROLLBAR_SIZE = 30;
 	
-	int spaceLeft = FlightsTable->width() - CALLSIGN_SIZE - ACFT_SIZE - SCROLLBAR_SIZE;
-	spaceLeft /= 3;
+	int spaceLeft = ATCTable->width() - CALLSIGN_SIZE - FREQUENCY_SIZE - SCROLLBAR_SIZE;
 	
-	FlightsTable->setColumnWidth(FlightTableModel::Callsign, CALLSIGN_SIZE);
-	FlightsTable->setColumnWidth(FlightTableModel::Name, spaceLeft);
-	FlightsTable->setColumnWidth(FlightTableModel::From, spaceLeft);
-	FlightsTable->setColumnWidth(FlightTableModel::To, spaceLeft);
+	ATCTable->setColumnWidth(ControllerTableModel::Callsign, CALLSIGN_SIZE);
+	ATCTable->setColumnWidth(ControllerTableModel::Name, spaceLeft);
 }
 
 void
-FlightsListWindow::__setWindowPosition() {
+ATCListWindow::__setWindowPosition() {
 	QDesktopWidget* desktop = QApplication::desktop();
 	
 	int screenWidth, width;
@@ -85,10 +83,11 @@ FlightsListWindow::__setWindowPosition() {
 }
 
 void
-FlightsListWindow::__handleDoubleClicked(const QModelIndex& _index) {
-	Q_ASSERT(qobject_cast< const FlightTableModel* >(_index.model()));
+ATCListWindow::__handleDoubleClicked(const QModelIndex& _index) {
+	Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 	
-	FlightDetailsWindow::GetSingleton().show(
-		(qobject_cast< const FlightTableModel* >(_index.model()))->getFlights()[_index.row()]
-	);
+	ATCDetailsWindow::GetSingleton().show(
+		(qobject_cast< const ControllerTableModel* >(_index.model()))->getStaff()[_index.row()]
+	);	
 }
+

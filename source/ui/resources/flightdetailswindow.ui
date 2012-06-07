@@ -762,6 +762,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="ShowButton">
+      <property name="text">
+       <string>Show</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QPushButton" name="CloseButton">
       <property name="text">
        <string>Close</string>

@@ -230,6 +230,9 @@ MapWidget::deleteImage(GLuint _tex) {
 
 void
 MapWidget::showPilot(const Pilot* _p) {
+	if (__myFlightTracker->getTracked() != _p)
+		emit flightTrackingCanceled();
+	
 	__position.rx() = _p->position.longitude / 180;
 	__position.ry() = _p->position.latitude / 90;
 	updateGL();
@@ -237,8 +240,21 @@ MapWidget::showPilot(const Pilot* _p) {
 
 void
 MapWidget::showAirport(const AirportObject* _ap) {
+	if (__myFlightTracker->getTracked())
+		emit flightTrackingCanceled();
+	
 	__position.rx() = _ap->getData()->longitude / 180;
 	__position.ry() = _ap->getData()->latitude / 90;
+	updateGL();
+}
+
+void
+MapWidget::showPoint(qreal _longitude, qreal _latitude) {
+	if (__myFlightTracker->getTracked())
+		emit flightTrackingCanceled();
+	
+	__position.rx() = _longitude / 180;
+	__position.ry() = _latitude / 90;
 	updateGL();
 }
 

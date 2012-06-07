@@ -21,8 +21,9 @@
 #include "db/airportsdatabase.h"
 #include "db/firsdatabase.h"
 
+#include "ui/mapwidget/mapwidget.h"
+
 #include "vatsimdata/controller.h"
-#include "ui/windows/airportdetailswindow.h"
 
 #include "atcdetailswindow.h"
 #include "defines.h"
@@ -43,17 +44,36 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
 	__ratings[10] = "Senior Instructor (I3)";
 	__ratings[11] = "Supervisor";
 	__ratings[12] = "Administrator";
+	
+	connect(ShowButton,	SIGNAL(clicked()), this, SLOT(__handleShowClicked()));
 }
 
 void
 ATCDetailsWindow::show(const Client* _client) {
 	Q_ASSERT(dynamic_cast< const Controller* >(_client));
-	__showMe(static_cast< const Controller* >(_client));
-}
-
-void
-ATCDetailsWindow::show(const Controller* _c) {
-	__showMe(_c);
+	__current = dynamic_cast< const Controller* >(_client);
+	
+	setWindowTitle(QString(__current->callsign + " - ATC details"));
+	
+	CallsignLabel->setText(__current->callsign);
+	FacilityLabel->setText(__produceFacility(__current));
+	NameLabel->setText(__current->realName);
+	FrequencyLabel->setText(__current->frequency);
+	RatingLabel->setText(__ratings[__current->rating]);
+	if (__current->airport)
+		AirportLabel->setText(static_cast< QString >(__current->airport->icao) %
+				" " %
+				static_cast< QString >(__current->airport->name) %
+				", " %
+				static_cast< QString >(__current->airport->city));
+		else
+			AirportLabel->setText("N/A");
+		ServerLabel->setText(__current->server);
+	TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
+	
+	AtisMessageField->setPlainText(__current->atis);
+	
+	QWidget::show();
 }
 
 QString
@@ -112,31 +132,6 @@ ATCDetailsWindow::__produceFacility(const Controller* _c) {
 }
 
 void
-ATCDetailsWindow::__showMe(const Controller* _c) {
-	setWindowTitle(QString(_c->callsign + " - ATC details"));
-	
-	CallsignLabel->setText(_c->callsign);
-	FacilityLabel->setText(__produceFacility(_c));
-	NameLabel->setText(_c->realName);
-	FrequencyLabel->setText(_c->frequency);
-	RatingLabel->setText(__ratings[_c->rating]);
-	if (_c->airport)
-		AirportLabel->setText(static_cast< QString >(_c->airport->icao) %
-				" " %
-				static_cast< QString >(_c->airport->name) %
-				", " %
-				static_cast< QString >(_c->airport->city));
-	else
-		AirportLabel->setText("N/A");
-	ServerLabel->setText(_c->server);
-	TimeOnlineLabel->setText(_c->onlineFrom.toString("dd MMM yyyy, hh:mm"));
-	
-	AtisMessageField->setPlainText(_c->atis);
-	
-	QWidget::show();
-}
-
-void
 ATCDetailsWindow::__setWindowPosition() {
 	QDesktopWidget* desktop = QApplication::desktop();
 	
@@ -159,5 +154,33 @@ ATCDetailsWindow::__setWindowPosition() {
 	y -= 50;
 	
 	move(x, y);
+}
+
+void
+ATCDetailsWindow::__handleShowClicked() {
+	if (__current->airport) {
+		MapWidget::GetSingleton().showPoint(__current->airport->longitude, __current->airport->latitude);
+		return;
+	}
+	
+	if (__current->facility == CTR) {
+		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, false);
+		if (!fir)
+			fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, true);
+		if (fir) {
+			MapWidget::GetSingleton().showPoint(fir->header.textPosition.x, fir->header.textPosition.y);
+			return;
+		}
+	}
+	
+	if (__current->facility == FSS) {
+		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, true);
+		if (!fir)
+			fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, false);
+		if (fir) {
+			MapWidget::GetSingleton().showPoint(fir->header.textPosition.x, fir->header.textPosition.y);
+			return;
+		}
+	}
 }
 

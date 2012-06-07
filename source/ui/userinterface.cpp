@@ -24,6 +24,7 @@
 
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
+#include "ui/windows/atclistwindow.h"
 #include "ui/windows/firdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/windows/flightslistwindow.h"
@@ -47,6 +48,7 @@ UserInterface::UserInterface(QWidget* _parent) :
 		__airportDetailsWindow(new AirportDetailsWindow()),
 		__firDetailsWindow(new FirDetailsWindow()),
 		__atcDetailsWindow(new ATCDetailsWindow()),
+		__atcListWindow(new ATCListWindow()),
 		__flightDetailsWindow(new FlightDetailsWindow()),
 		__flightsListWindow(new FlightsListWindow()),
 		__settingsWindow(new SettingsWindow()),
@@ -67,6 +69,8 @@ UserInterface::UserInterface(QWidget* _parent) :
 		__settingsWindow,	SLOT(show()));
 	connect(ActionFlightsList,	SIGNAL(triggered()),
 		__flightsListWindow,	SLOT(show()));
+	connect(ActionATCList,		SIGNAL(triggered()),
+		__atcListWindow,	SLOT(show()));
 	
 	statusBarUpdate();
 	
@@ -82,6 +86,7 @@ UserInterface::~UserInterface() {
 	delete __flightDetailsWindow;
 	delete __flightsListWindow;
 	delete __atcDetailsWindow;
+	delete __atcListWindow;
 	delete __settingsWindow;
 	delete __metarsWindow;
 	
@@ -130,6 +135,9 @@ UserInterface::hideAllWindows() {
 	
 	if (__atcDetailsWindow->isVisible())
 		__atcDetailsWindow->hide();
+	
+	if (__atcListWindow->isVisible())
+		__atcListWindow->hide();
 	
 	if (__metarsWindow->isVisible())
 		__metarsWindow->hide();

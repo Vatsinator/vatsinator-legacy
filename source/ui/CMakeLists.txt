@@ -29,6 +29,7 @@ set (ui_SRCS
 	
 	windows/airportdetailswindow.cpp
 	windows/atcdetailswindow.cpp
+	windows/atclistwindow.cpp
 	windows/firdetailswindow.cpp
 	windows/flightdetailswindow.cpp
 	windows/flightslistwindow.cpp
@@ -56,6 +57,7 @@ set (ui_MOC_SRCS
 	
 	windows/airportdetailswindow.h
 	windows/atcdetailswindow.h
+	windows/atclistwindow.h
 	windows/firdetailswindow.h
 	windows/flightdetailswindow.h
 	windows/flightslistwindow.h
@@ -68,6 +70,7 @@ vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
 set (ui_FORMS
 	resources/airportdetailswindow.ui
 	resources/atcdetailswindow.ui
+	resources/atclistwindow.ui
 	resources/firdetailswindow.ui
 	resources/flightdetailswindow.ui
 	resources/flightslistwindow.ui

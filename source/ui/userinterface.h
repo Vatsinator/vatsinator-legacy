@@ -30,6 +30,7 @@ class DebugWindow;
 
 class AirportDetailsWindow;
 class ATCDetailsWindow;
+class ATCListWindow;
 class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightsListWindow;
@@ -91,6 +92,7 @@ private:
 	AirportDetailsWindow * __airportDetailsWindow;
 	FirDetailsWindow * __firDetailsWindow;
 	ATCDetailsWindow * __atcDetailsWindow;
+	ATCListWindow * __atcListWindow;
 	FlightDetailsWindow * __flightDetailsWindow;
 	FlightsListWindow * __flightsListWindow;
 	SettingsWindow * __settingsWindow;

@@ -28,6 +28,9 @@ class Pilot;
 class FlightTableModel : public QAbstractTableModel {
 	
 	/* http://qt-project.org/doc/qt-4.8/qabstracttablemodel.html */
+	/*
+	 * This model holds vector of pilots.
+	 */
 	
 	Q_OBJECT
 	

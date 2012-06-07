@@ -38,14 +38,16 @@ public:
 	
 public slots:
 	void show(const Client*);
-	void show(const Controller*);
 	
 private:
 	QString __produceFacility(const Controller*);
-	void __showMe(const Controller*);
 	void __setWindowPosition();
 	
+	const Controller * __current;
 	QMap< int, QString> __ratings;
+	
+private slots:
+	void __handleShowClicked();
 	
 	
 };

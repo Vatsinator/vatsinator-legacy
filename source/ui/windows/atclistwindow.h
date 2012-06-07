@@ -1,5 +1,5 @@
 /*
-    flightdetailswindow.h
+    atclistwindow.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,41 +17,33 @@
 */
 
 
-#ifndef FLIGHTDETAILSWINDOW_H
-#define FLIGHTDETAILSWINDOW_H
+#ifndef ATCLISTWINDOW_H
+#define ATCLISTWINDOW_H
 
-#include "ui/ui_flightdetailswindow.h"
+#include "ui/ui_atclistwindow.h"
 #include "singleton.h"
 
-class Client;
-class Pilot;
-
-class FlightDetailsWindow :
+class ATCListWindow :
 		public QWidget,
-		public Singleton< FlightDetailsWindow >,
-		private Ui::FlightDetailsWindow {
+		public Singleton< ATCListWindow >,
+		private Ui::ATCListWindow {
 	
 	Q_OBJECT
 	
 public:
-	FlightDetailsWindow(QWidget* = 0);
-	
-signals:
-	void flightTrackingStateChanged(const Pilot*, int);
-	
-public slots:
-	void show(const Client*);
-	void stateHandle(int);
+	ATCListWindow(QWidget* = 0);
+
+protected:
+	void resizeEvent(QResizeEvent*);
 	
 private:
+	void __setColumnsWidths();
 	void __setWindowPosition();
 	
-	const Pilot *	__current;
-	
 private slots:
-	void __handleShowClicked();
+	void __handleDoubleClicked(const QModelIndex&);
 	
 	
 };
 
-#endif // FLIGHTDETAILSWINDOW_H
+#endif // ATCLISTWINDOW_H
