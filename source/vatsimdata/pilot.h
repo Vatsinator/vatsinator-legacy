@@ -52,6 +52,9 @@ public:
 	ClientType type() const { return PILOT; }
 	ObjectType objectType() const { return PLANE; }
 	
+	inline GLuint
+	getCallsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
+	
 	int		altitude;
 	int		groundSpeed;
 	QString		squawk;
@@ -80,12 +83,13 @@ public:
 		QString altitude;
 	} route;
 	
-	GLuint	callsignTip;
 	GLuint	modelTexture;
 	
 private:
 	void __setMyStatus();
-	void __generateTip();
+	GLuint __generateTip() const;
+	
+	mutable GLuint __callsignTip;
 	
 };
 

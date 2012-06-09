@@ -73,7 +73,7 @@
  * 39 QNH_iHg
  * 40 QNH_Mb
  */
-Pilot::Pilot(const QStringList& _data) {
+Pilot::Pilot(const QStringList& _data) : __callsignTip(0) {
 	callsign = _data[0];
 	pid = _data[1].toUInt();
 	realName = _data[2].simplified();
@@ -117,13 +117,14 @@ Pilot::Pilot(const QStringList& _data) {
 	}
 	
 	__setMyStatus();
-	__generateTip();
+	//__generateTip();
 	
 	modelTexture = ModelsMatcher::GetSingleton().matchMyModel(aircraft);
 }
 
 Pilot::~Pilot() {
-	MapWidget::deleteImage(callsignTip);
+	if (__callsignTip)
+		MapWidget::deleteImage(__callsignTip);
 }
 
 void
@@ -187,8 +188,8 @@ Pilot::__setMyStatus() {
 	flightStatus = AIRBORNE;
 }
 
-void
-Pilot::__generateTip() {
+GLuint
+Pilot::__generateTip() const {
 	QImage temp(MapWidget::GetSingleton().getPilotToolTipBackground());
 	QPainter painter(&temp);
 	painter.setRenderHint(QPainter::TextAntialiasing);
@@ -198,6 +199,7 @@ Pilot::__generateTip() {
 	painter.setPen(QColor(PILOTS_LABELS_FONT_COLOR));
 	QRect rectangle(0, 1, 75, 14); // size of the tooltip.png
 	painter.drawText(rectangle, Qt::AlignCenter, callsign);
-	callsignTip = MapWidget::loadImage(temp);
+	__callsignTip = MapWidget::loadImage(temp);
+	return __callsignTip;
 }
 

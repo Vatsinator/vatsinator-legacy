@@ -361,7 +361,6 @@ MapWidget::paintGL() {
 	if (__settings->getDisplayLayersPolicy().pilots)
 		__drawPilots();
 	
-	
 	__drawLines();
 	
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -464,7 +463,11 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
 		setCursor(QCursor(Qt::SizeAllCursor));
 		
 		// count the new position
-		__position.rx() -= (double)dx / 400.0 / (double)__zoom;
+		__position.rx() -= (double)dx / (BASE_SIZE_WIDTH / 2) / (double)__zoom;
+		if (__position.x() < -1)
+			__position.rx() += 2;
+		else if (__position.x() > 1)
+			__position.rx() -= 2;
 		
 		double newY = __position.y() + ((double)dy / 300.0 / (double)__zoom);
 		if ((newY < RANGE_Y) && (newY > -RANGE_Y))
@@ -728,7 +731,7 @@ MapWidget::__init() {
 	VatsinatorApplication::emitGLInitialized();
 }
 
-void
+inline void
 MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -963,17 +966,11 @@ MapWidget::__drawPilots() {
 		if (client->flightStatus != AIRBORNE)
 			continue;
 		
-		GLfloat x = client->position.longitude / 180;
-		x -= __position.x();
-		x *= __zoom;
-		
+		GLfloat x = (client->position.longitude / 180 - __position.x()) * __zoom;
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
-		GLfloat y = client->position.latitude / 90;
-		y -= __position.y();
-		y *= __zoom;
-		
+		GLfloat y = (client->position.latitude / 90 - __position.y()) * __zoom;
 		if (y < -__orthoRangeY || y > __orthoRangeY)
 			continue;
 		
@@ -1275,7 +1272,7 @@ MapWidget::__drawCallsign(const Pilot* _p) {
 			glTranslatef(0.0f, 0.0f, 0.2f);
 		else
 			glTranslatef(0.0f, 0.0f, 0.1f);
-		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
+		glBindTexture(GL_TEXTURE_2D, _p->getCallsignTip()); checkGLErrors(HERE);
 		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
 		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -1286,7 +1283,7 @@ inline void
 MapWidget::__drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
 	glPushMatrix();
 		glTranslatef(_x, _y, 0.1f);
-		glBindTexture(GL_TEXTURE_2D, _p->callsignTip); checkGLErrors(HERE);
+		glBindTexture(GL_TEXTURE_2D, _p->getCallsignTip()); checkGLErrors(HERE);
 		glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
 		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -1297,7 +1294,7 @@ inline void
 MapWidget::__drawIcaoLabel(const AirportObject* _ap) {
 	glPushMatrix();
 		glTranslatef(0.0f, 0.0f, 0.1f);
-		glBindTexture(GL_TEXTURE_2D, _ap->labelTip); checkGLErrors(HERE);
+		glBindTexture(GL_TEXTURE_2D, _ap->getLabelTip()); checkGLErrors(HERE);
 		glVertexPointer(2, GL_FLOAT, 0, AIRPORT_TOOLTIP_VERTICES); checkGLErrors(HERE);
 		glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 		glBindTexture(GL_TEXTURE_2D, 0);

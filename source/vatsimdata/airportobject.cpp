@@ -33,7 +33,8 @@ AirportObject::AirportObject(const QString& _icao) :
 		__data(AirportsDatabase::GetSingleton().find(_icao)),
 		__staff(new ControllerTableModel()),
 		__inbounds(new FlightTableModel()),
-		__outbounds(new FlightTableModel()) {
+		__outbounds(new FlightTableModel()),
+		__labelTip(0) {
 #ifndef NO_DEBUG
 	if (!__data)
 		qDebug() << "Airport " << _icao << " not found.";
@@ -44,11 +45,12 @@ AirportObject::AirportObject(const QString& _icao) :
 			f->addAirport(this);
 	}
 	
-	__generateTip();
+	//__generateTip();
 }
 
 AirportObject::~AirportObject() {
-	MapWidget::deleteImage(labelTip);
+	if (__labelTip)
+		MapWidget::deleteImage(__labelTip);
 	delete __staff;
 	delete __inbounds;
 	delete __outbounds;
@@ -118,12 +120,9 @@ AirportObject::getFacilities() const {
 	return facilities;
 }
 
-void
-AirportObject::__generateTip() {
-	if (!__data) {
-		labelTip = 0;
-		return;
-	}
+GLuint
+AirportObject::__generateTip() const {
+	Q_ASSERT(__data);
 	
 	QImage temp(MapWidget::GetSingleton().getAirportToolTipBackground());
 	QPainter painter(&temp);
@@ -134,6 +133,7 @@ AirportObject::__generateTip() {
 	painter.setPen(QColor(AIRPORTS_LABELS_FONT_COLOR));
 	QRect rectangle(0, 0, 48, 12); // size of the tooltip.png
 	painter.drawText(rectangle, Qt::AlignCenter, static_cast< QString >(__data->icao));
-	labelTip = MapWidget::loadImage(temp);
+	__labelTip = MapWidget::loadImage(temp);
+	return __labelTip;
 }
 

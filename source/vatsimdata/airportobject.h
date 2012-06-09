@@ -69,11 +69,12 @@ public:
 	inline ObjectType
 	objectType() const { return AIRPORT; }
 	
-	GLuint labelTip;
+	inline GLuint
+	getLabelTip() const { return __labelTip ? __labelTip : __generateTip(); }
 	
 	
 private:
-	void __generateTip();
+	GLuint __generateTip() const;
 	
 	const AirportRecord *	__data;
 	
@@ -81,6 +82,8 @@ private:
 	
 	FlightTableModel * __inbounds;
 	FlightTableModel * __outbounds;
+	
+	mutable GLuint __labelTip;
 	
 	
 };
