@@ -2,13 +2,25 @@ vatsinator_start_subdirectory (ui)
 
 if (NOT vatsinator_ABOUT)
 	file (READ ${CMAKE_CURRENT_SOURCE_DIR}/resources/about vatsinator_ABOUT)
-	string (REPLACE "\n" "" vatsinator_ABOUT ${vatsinator_ABOUT})
-	string (REPLACE "\"" "\\\"" vatsinator_ABOUT ${vatsinator_ABOUT})
-	string (REPLACE "VATSINATOR_VERSION" "${vatsinator_VERSION}" vatsinator_ABOUT ${vatsinator_ABOUT})
+	string (REPLACE "\n" "" vatsinator_ABOUT "${vatsinator_ABOUT}")
+	string (REPLACE "\"" "\\\"" vatsinator_ABOUT "${vatsinator_ABOUT}")
+	string (REPLACE "VATSINATOR_VERSION" "${vatsinator_VERSION}" vatsinator_ABOUT "${vatsinator_ABOUT}")
 endif (NOT vatsinator_ABOUT)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.cmake
 	${CMAKE_CURRENT_BINARY_DIR}/about.h
+)
+
+if (NOT vatsinator_LICENSE)
+	file (READ ${CMAKE_SOURCE_DIR}/COPYING vatsinator_LICENSE)
+	string (REPLACE "<" "&lt;" vatsinator_LICENSE "${vatsinator_LICENSE}")
+	string (REPLACE ">" "&gt;" vatsinator_LICENSE "${vatsinator_LICENSE}")
+	string (REPLACE "\n" "<br>" vatsinator_LICENSE "${vatsinator_LICENSE}")
+	string (REPLACE "\"" "\\\"" vatsinator_LICENSE "${vatsinator_LICENSE}")
+endif (NOT vatsinator_LICENSE)
+
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.cmake
+	${CMAKE_CURRENT_BINARY_DIR}/license.h
 )
 
 set (ui_SRCS
@@ -27,6 +39,7 @@ set (ui_SRCS
 	
 	mapwidget/mapwidget.cpp
 	
+	windows/aboutwindow.cpp
 	windows/airportdetailswindow.cpp
 	windows/atcdetailswindow.cpp
 	windows/atclistwindow.cpp
@@ -55,6 +68,7 @@ set (ui_MOC_SRCS
 	
 	mapwidget/mapwidget.h
 	
+	windows/aboutwindow.h
 	windows/airportdetailswindow.h
 	windows/atcdetailswindow.h
 	windows/atclistwindow.h
@@ -68,6 +82,7 @@ set (ui_MOC_SRCS
 vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
 
 set (ui_FORMS
+	resources/aboutwindow.ui
 	resources/airportdetailswindow.ui
 	resources/atcdetailswindow.ui
 	resources/atclistwindow.ui

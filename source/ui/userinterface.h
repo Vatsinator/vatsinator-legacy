@@ -28,6 +28,7 @@
 class DebugWindow;
 #endif
 
+class AboutWindow;
 class AirportDetailsWindow;
 class ATCDetailsWindow;
 class ATCListWindow;
@@ -71,7 +72,6 @@ public:
 	
 public slots:
 	void quit();
-	void about();
 	void hideAllWindows();
 	
 protected:
@@ -88,6 +88,7 @@ private:
 	DebugWindow *	__debugWindow;
 #endif
 	
+	AboutWindow * __aboutWindow;
 	MetarsWindow *	__metarsWindow;
 	AirportDetailsWindow * __airportDetailsWindow;
 	FirDetailsWindow * __firDetailsWindow;

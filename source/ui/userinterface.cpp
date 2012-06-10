@@ -22,6 +22,7 @@
 #include "vdebug/debugwindow.h"
 #endif
 
+#include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/atclistwindow.h"
@@ -36,7 +37,6 @@
 #include "vatsinatorapplication.h"
 
 #include "userinterface.h"
-#include "ui/about.h"
 #include "defines.h"
 
 UserInterface::UserInterface(QWidget* _parent) :
@@ -44,6 +44,7 @@ UserInterface::UserInterface(QWidget* _parent) :
 #ifndef NO_DEBUG
 		__debugWindow(new DebugWindow()),
 #endif
+		__aboutWindow(new AboutWindow()),
 		__metarsWindow(new MetarsWindow()),
 		__airportDetailsWindow(new AirportDetailsWindow()),
 		__firDetailsWindow(new FirDetailsWindow()),
@@ -60,7 +61,7 @@ UserInterface::UserInterface(QWidget* _parent) :
 	connect(ActionExit,	SIGNAL(triggered()),
 		this,		SLOT(quit()));
 	connect(ActionAbout,	SIGNAL(triggered()),
-		this,		SLOT(about()));
+		__aboutWindow,	SLOT(show()));
 	connect(ActionMetar,	SIGNAL(triggered()),
 		__metarsWindow,	SLOT(show()));
 	connect(ActionRefresh,	SIGNAL(triggered()),
@@ -81,6 +82,7 @@ UserInterface::~UserInterface() {
 	hideAllWindows();
 	__storeWindowGeometry();
 	
+	delete __aboutWindow;
 	delete __airportDetailsWindow;
 	delete __firDetailsWindow;
 	delete __flightDetailsWindow;
@@ -113,14 +115,10 @@ UserInterface::quit() {
 }
 
 void
-UserInterface::about() {
-	QMessageBox::about(this, "About Vatsinator",
-			trUtf8(ABOUT_TEXT)
-	);
-}
-
-void
 UserInterface::hideAllWindows() {
+	if (__aboutWindow->isVisible())
+		__aboutWindow->hide();
+	
 	if (__airportDetailsWindow->isVisible())
 		__airportDetailsWindow->hide();
 	

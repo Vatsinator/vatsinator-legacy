@@ -1,0 +1,1 @@
+#define LICENSE_TEXT "${vatsinator_LICENSE}"
