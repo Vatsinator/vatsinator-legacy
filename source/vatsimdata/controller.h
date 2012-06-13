@@ -32,9 +32,10 @@ enum Facility {
 	GND = 4,
 	TWR = 8,
 	APP = 16,
-	CTR = 32,
-	FSS = 64,
-	OBS = 128
+	DEP = 32,
+	CTR = 64,
+	FSS = 128,
+	OBS = 256
 };
 
 class Controller : public Client {

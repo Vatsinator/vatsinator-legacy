@@ -83,7 +83,7 @@ ATCDetailsWindow::__produceFacility(const Controller* _c) {
 		if (!fir)
 			fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, true);
 		if (fir)
-			return fir->name;
+			return fir->getName();
 	}
 	
 	if (_c->facility == FSS) {
@@ -91,7 +91,7 @@ ATCDetailsWindow::__produceFacility(const Controller* _c) {
 		if (!fir)
 			fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, false);
 		if (fir)
-			return fir->name;
+			return fir->getName();
 	}
 	
 	QString airport, facility;
@@ -100,12 +100,12 @@ ATCDetailsWindow::__produceFacility(const Controller* _c) {
 		airport = "Unknown";
 	} else {
 		if (static_cast< QString >(_c->airport->name) == static_cast< QString >(_c->airport->city))
-			airport = static_cast< QString >(_c->airport->name);
+			airport = QString::fromUtf8(_c->airport->name);
 		else
 			airport =
-				static_cast< QString >(_c->airport->city) %
+				QString::fromUtf8(_c->airport->city) %
 				"/" %
-				static_cast< QString >(_c->airport->name);
+				QString::fromUtf8(_c->airport->name);
 	}
 	
 	switch (_c->facility) {
@@ -123,6 +123,9 @@ ATCDetailsWindow::__produceFacility(const Controller* _c) {
 			break;
 		case APP:
 			facility = "Approach";
+			break;
+		case DEP:
+			facility = "Departure";
 			break;
 		default:
 			break;
@@ -168,7 +171,7 @@ ATCDetailsWindow::__handleShowClicked() {
 		if (!fir)
 			fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, true);
 		if (fir) {
-			MapWidget::GetSingleton().showPoint(fir->header.textPosition.x, fir->header.textPosition.y);
+			MapWidget::GetSingleton().showPoint(fir->getTextPosition().x, fir->getTextPosition().y);
 			return;
 		}
 	}
@@ -178,7 +181,7 @@ ATCDetailsWindow::__handleShowClicked() {
 		if (!fir)
 			fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, false);
 		if (fir) {
-			MapWidget::GetSingleton().showPoint(fir->header.textPosition.x, fir->header.textPosition.y);
+			MapWidget::GetSingleton().showPoint(fir->getTextPosition().x, fir->getTextPosition().y);
 			return;
 		}
 	}

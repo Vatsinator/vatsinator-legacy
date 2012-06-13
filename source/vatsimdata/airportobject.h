@@ -30,6 +30,7 @@ struct AirportRecord;
 class Controller;
 class ControllerTableModel;
 class FlightTableModel;
+class Fir;
 class Pilot;
 
 class AirportObject : public Clickable {
@@ -72,6 +73,9 @@ public:
 	inline GLuint
 	getLabelTip() const { return __labelTip ? __labelTip : __generateTip(); }
 	
+	inline Fir **
+	getFirs() { return __firs; }
+	
 	
 private:
 	GLuint __generateTip() const;
@@ -84,6 +88,8 @@ private:
 	FlightTableModel * __outbounds;
 	
 	mutable GLuint __labelTip;
+	
+	Fir* __firs[2];
 	
 	
 };

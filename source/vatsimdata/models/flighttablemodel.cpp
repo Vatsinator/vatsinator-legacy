@@ -91,9 +91,9 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 					ap = AirportsDatabase::GetSingleton().find(__flights[_index.row()]->route.origin);
 					if (ap)
 						return QString(
-								static_cast< QString >(ap->icao) %
+								QString::fromUtf8(ap->icao) %
 								" " %
-								static_cast< QString >(ap->city)
+								QString::fromUtf8(ap->city)
 						       );
 					else
 						return __flights[_index.row()]->route.origin;
@@ -101,9 +101,9 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 					ap = AirportsDatabase::GetSingleton().find(__flights[_index.row()]->route.destination);
 					if (ap)
 						return QString(
-								static_cast< QString >(ap->icao) %
+								QString::fromUtf8(ap->icao) %
 								" " %
-								static_cast< QString >(ap->city)
+								QString::fromUtf8(ap->city)
 						       );
 					else
 						return __flights[_index.row()]->route.destination;

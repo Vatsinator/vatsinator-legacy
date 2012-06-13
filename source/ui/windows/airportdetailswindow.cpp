@@ -118,14 +118,15 @@ AirportDetailsWindow::__fillLabels(const AirportObject* _ap) {
 		CodesLabel->setText(static_cast< QString >(_ap->getData()->icao));
 	
 	NameLabel->setText(
-			static_cast< QString >(_ap->getData()->name) %
+			QString::fromUtf8(_ap->getData()->name) %
 			", " %
-			static_cast< QString >(_ap->getData()->city)
+			QString::fromUtf8(_ap->getData()->city)
 			
 #ifndef NO_DEBUG
 			//display FIR info only in debug mode
 			% " (" %
-			static_cast< QString >(_ap->getData()->fir) % " FIR)"
+			static_cast< QString >(_ap->getData()->fir_a) % " & " %
+			static_cast< QString >(_ap->getData()->fir_b) % " FIR)"
 #endif
 		);
 }

@@ -361,6 +361,7 @@ EHAA Amsterdam Radar
 EISN Shannon Control
 EKDK Kobenhavn Control
 ENBD Bodo Control
+ENBD-S Bodo Control (South)
 ENOB Bodo Oceanic
 ENOR Norway Control
 ENOS Oslo Control
@@ -749,6 +750,7 @@ YPAD AD
 YMML ML
 YTAS ML-TAS
 YBIK ML-BIK
+YSSY SY
 
 # USA codes
 KJFK NY

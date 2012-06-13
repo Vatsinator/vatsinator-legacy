@@ -16,10 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstring>
-#include <cstdlib>
-#include <ctime>
-
 #include <QtGui>
 
 #include "vatsimdata/models/controllertablemodel.h"
@@ -92,24 +88,19 @@ VatsimDataHandler::init() {
 			);
 		} else if (flags["[FIR]"]) {
 			QString icao = line.section(' ', 0, 0);
-			if (icao.length() != 4) {
-				qDebug() << "Word " << icao << " is not an ICAO code and could not be parsed." <<
-					"For aliases see [ALIAS] section.";
-				continue;
-			}
 			
 			Fir* currentFir = __firs.findFirByIcao(icao);
 			if (currentFir) {
-				currentFir->name = line.section(' ', 1);
-				currentFir->country = countries[icao.left(2)];
+				currentFir->setName(line.section(' ', 1));
+				currentFir->setCountry(countries[icao.left(2)]);
 				currentFir->correctName();
 			}
 			
 			// look for same oceanic fir
 			currentFir = __firs.findFirByIcao(icao, true);
 			if (currentFir) {
-				currentFir->name = line.section(' ', 1);
-				currentFir->country = countries[icao.left(2)];
+				currentFir->setName(line.section(' ', 1));
+				currentFir->setCountry(countries[icao.left(2)]);
 				currentFir->correctName();
 			}
 			
@@ -119,7 +110,7 @@ VatsimDataHandler::init() {
 			QString icao = data[0];
 			if (icao.length() != 4) {
 				qDebug() << "Word " << icao << " is not an ICAO code and could not be parsed." <<
-									"For aliases see [ALIAS] section.";
+								"For aliases see [ALIAS] section.";
 				continue;
 			}
 			
@@ -232,8 +223,8 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
 const QString &
 VatsimDataHandler::getDataUrl() const {
-	srand(time(NULL));
-	return __servers[rand() % __servers.size()];
+	qsrand(QTime::currentTime().msec());
+	return __servers[qrand() % __servers.size()];
 }
 
 const Pilot *

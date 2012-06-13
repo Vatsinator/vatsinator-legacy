@@ -26,6 +26,15 @@
 #include "vatsimdata/fir.h"
 #include "singleton.h"
 
+#pragma pack(1)
+struct FirHeader {
+	char	icao[8];
+	int	oceanic; // 0 or 1
+	Point	externities[2];
+	Point	textPosition;
+};
+#pragma pack()
+
 class FirsDatabase : public QObject, public Singleton< FirsDatabase > {
 	
 	Q_OBJECT

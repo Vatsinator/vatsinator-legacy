@@ -34,15 +34,24 @@ AirportObject::AirportObject(const QString& _icao) :
 		__staff(new ControllerTableModel()),
 		__inbounds(new FlightTableModel()),
 		__outbounds(new FlightTableModel()),
-		__labelTip(0) {
+		__labelTip(0),
+		__firs({NULL, NULL}) {
 #ifndef NO_DEBUG
 	if (!__data)
 		qDebug() << "Airport " << _icao << " not found.";
 #endif
 	if (__data) {
-		Fir* f = FirsDatabase::GetSingleton().findFirByIcao(__data->fir);
+		Fir* f = FirsDatabase::GetSingleton().findFirByIcao(QString(__data->fir_a), __data->is_fir_a_oceanic);
+		if (f) {
+			f->addAirport(this);
+		}
+		__firs[0] = f;
+		
+		f = FirsDatabase::GetSingleton().findFirByIcao(QString(__data->fir_b), __data->is_fir_b_oceanic);
 		if (f)
 			f->addAirport(this);
+		__firs[1] = f;
+		
 	}
 	
 	//__generateTip();

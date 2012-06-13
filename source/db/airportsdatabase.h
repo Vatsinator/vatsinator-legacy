@@ -37,7 +37,10 @@ struct AirportRecord {
 	char	country[128];
 	char	iata[8];
 	char	icao[8];
-	char	fir[8];
+	int	is_fir_a_oceanic;
+	char	fir_a[8];
+	int	is_fir_b_oceanic;
+	char	fir_b[8];
 	float	latitude;
 	float	longitude;
 	int	altitude;

@@ -165,12 +165,15 @@ Controller::__setMyIcaoAndFacility() {
 		return;
 	} else if (
 			sections.back() == "APP" ||
+			sections.back() == "DEP" ||
 			sections.back() == "TWR" ||
 			sections.back() == "GND" ||
 			sections.back() == "DEL" ||
 			sections.back() == "ATIS") {
 		if (sections.back() == "APP")
 			facility = APP;
+		else if (sections.back() == "DEP")
+			facility = DEP;
 		else if (sections.back() == "TWR")
 			facility = TWR;
 		else if (sections.back() == "GND")
@@ -188,6 +191,7 @@ Controller::__setMyIcaoAndFacility() {
 			return;
 		} else {
 			if (sections.front().length() == 3) {
+				// USA callsigns often are just three last letters of full airport ICAO code
 				QString alias = "K" + sections.front();
 				apShot = AirportsDatabase::GetSingleton().find(alias);
 				if (apShot) {

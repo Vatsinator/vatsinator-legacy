@@ -35,15 +35,8 @@ class AirportTableModel;
 class ControllerTableModel;
 class FlightTableModel;
 class VertexBufferObject;
-
-#pragma pack(1)
-struct FirHeader {
-	char	icao[4];
-	int	oceanic; // 0 or 1
-	Point	externities[2];
-	Point	textPosition;
-};
-#pragma pack()
+class FirsDatabase;
+struct FirHeader;
 
 class Fir : public Clickable {
 	
@@ -63,6 +56,7 @@ public:
 	void correctName();
 	
 	void init();
+	void loadHeader(const FirHeader&);
 	void clear();
 	bool isStaffed() const;
 	
@@ -81,20 +75,52 @@ public:
 	inline bool
 	hasUirStaff() const { return __hasUirStaff; }
 	
+	inline const QString &
+	getIcao() const { return __icao; }
 	
+	inline bool
+	isOceanic() const { return __oceanic; }
 	
-	FirHeader			header;
-	QString				name;	// FIR name
-	QString				country; // country the FIR belongs to
-	QVector< Point >		borders;
-	QVector< unsigned short >	triangles;
+	inline const Point &
+	getTextPosition() const { return __textPosition; }
 	
-	GLuint	icaoTip;
+	inline const QString &
+	getName() const { return __name; }
+	
+	inline void
+	setName(const QString& _n) { __name = _n; }
+	
+	inline const QString &
+	getCountry() const { return __country; }
+	
+	inline void
+	setCountry(const QString &_c) { __country = _c; }
+	
+	inline GLuint
+	getIcaoTip() const { return __icaoTip ? __icaoTip : __generateTip(); }
+	
+	inline QVector< Point > &
+	getBorders() { return __borders; }
+	
+	inline QVector< unsigned short > &
+	getTriangles() { return __triangles; }
 	
 private:
 	
-	void __generateTip();
+	GLuint __generateTip() const;
 	void __prepareVBO();
+	
+	QString __icao;
+	bool __oceanic;
+	Point __externities[2];
+	Point __textPosition;
+	
+	QString __name;
+	QString __country;
+	QVector< Point > __borders;
+	QVector< unsigned short > __triangles;
+	
+	mutable GLuint __icaoTip;
 	
 	ControllerTableModel *	__staff;
 	FlightTableModel *	__flights;

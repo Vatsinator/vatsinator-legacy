@@ -184,7 +184,7 @@ for line in dbin:
 			textX = 0.0
 			textY = 0.0
 		
-		dbout.write(pack('4siffffffi', icao, oceanic, float(firData[5]), float(firData[4]),\
+		dbout.write(pack('8siffffffi', icao, oceanic, float(firData[5]), float(firData[4]),\
 			float(firData[7]), float(firData[6]), textX, textY,\
 			counting))
 		

@@ -50,7 +50,7 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
 
 void
 FirDetailsWindow::show(const Fir* _f) {
-	__currentICAO = _f->header.icao;
+	__currentICAO = _f->getIcao();
 	
 	__fillLabels(_f);
 	__updateModels(_f);
@@ -77,13 +77,13 @@ FirDetailsWindow::__updateModels(const Fir* _f) {
 
 void
 FirDetailsWindow::__fillLabels(const Fir* _f) {
-	if (_f->country != "USA")
-		setWindowTitle(static_cast< QString >(_f->header.icao) + " - FIR details");
+	if (_f->getCountry() != "USA")
+		setWindowTitle(_f->getIcao() + " - FIR details");
 	else
-		setWindowTitle(static_cast< QString >(_f->header.icao) + " - ARTCC details");
+		setWindowTitle(_f->getIcao() + " - ARTCC details");
 	
-	ICAOLabel->setText(static_cast< QString >(_f->header.icao));
-	NameLabel->setText(_f->name);
+	ICAOLabel->setText(_f->getIcao());
+	NameLabel->setText(_f->getName());
 }
 
 void

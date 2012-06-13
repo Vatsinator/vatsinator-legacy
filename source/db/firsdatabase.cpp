@@ -41,13 +41,16 @@ FirsDatabase::FirsDatabase() {
 
 Fir *
 FirsDatabase::findFirByIcao(const QString& _icao, bool _fss) {
+	if (_icao == "ZZZZ")
+		return NULL;
+	
 	for (Fir& f: __firs)
-		if (static_cast< QString >(f.header.icao) == _icao) {
-			if (!f.header.oceanic && _fss)
+		if (static_cast< QString >(f.getIcao()) == _icao) {
+			if (!f.isOceanic() && _fss)
 				continue;
-			if (f.header.oceanic && !_fss)
+			if (f.isOceanic() && !_fss)
 				continue;
-			if (f.header.textPosition.x != 0 && f.header.textPosition.y != 0)
+			if (f.getTextPosition().x != 0 && f.getTextPosition().y != 0)
 				return &f;
 			else
 				continue;
@@ -76,19 +79,21 @@ FirsDatabase::__readDatabase() {
 #endif
 	
 	db.seekg(4);
+	FirHeader tempHeader;
 	
 	__firs.resize(size);
 	for (int i = 0; i < size; ++i) {
-		db.read(reinterpret_cast< char* >(&__firs[i].header), sizeof(FirHeader));
+		db.read(reinterpret_cast< char* >(&tempHeader), sizeof(FirHeader));
+		__firs[i].loadHeader(tempHeader);
 		int counting;
 		db.read(reinterpret_cast< char* >(&counting), sizeof(int));
-		__firs[i].borders.resize(counting);
-		db.read(reinterpret_cast< char* >(&__firs[i].borders[0]), sizeof(Point) * counting);
+		__firs[i].getBorders().resize(counting);
+		db.read(reinterpret_cast< char* >(&__firs[i].getBorders()[0]), sizeof(Point) * counting);
 		
 		db.read(reinterpret_cast< char* >(&counting), sizeof(int));
 		if (counting) {
-			__firs[i].triangles.resize(counting * 3);
-			db.read(reinterpret_cast< char* >(&__firs[i].triangles[0]), 2 * counting * 3);
+			__firs[i].getTriangles().resize(counting * 3);
+			db.read(reinterpret_cast< char* >(&__firs[i].getTriangles()[0]), 2 * counting * 3);
 		}
 	}
 	

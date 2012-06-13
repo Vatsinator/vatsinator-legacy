@@ -650,10 +650,10 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 
 void
 MapWidget::__openContextMenu(const Fir* _fir) {
-	__menu = new QMenu(_fir->header.icao, this);
+	__menu = new QMenu(_fir->getIcao(), this);
 	
 	FirDetailsAction* showFir = new FirDetailsAction(_fir,
-		static_cast< QString >(_fir->header.icao).simplified() % " details", this);
+		static_cast< QString >(_fir->getIcao()).simplified() % " details", this);
 	
 	__menu->addAction(showFir);
 	
@@ -882,7 +882,7 @@ MapWidget::__drawFirsLabels() {
 		glTranslatef(0.0, 0.0, -0.5);
 		for (const Fir& fir: __firs->getFirs()) {
 			float x, y;
-			__mapCoordinates(fir.header.textPosition.x, fir.header.textPosition.y, x, y);
+			__mapCoordinates(fir.getTextPosition().x, fir.getTextPosition().y, x, y);
 			if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
 					(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
 			
@@ -1170,8 +1170,8 @@ MapWidget::__restoreSettings() {
 void
 MapWidget::__produceCircle() {
 	__circleCount = 0;
-	for (double angle = 0.0; angle <= (2 * PI); angle += 0.1, ++__circleCount)
-		{} // count how many vertices we will have
+	// count how many vertices we will have
+	for (double angle = 0.0; angle <= (2 * PI); angle += 0.1, ++__circleCount);
 	
 	__circle = new GLfloat[__circleCount * 2 + 2];
 	unsigned i = 0;
@@ -1202,16 +1202,16 @@ MapWidget::__mapCoordinates(float _xFrom, float _yFrom,
 
 inline QString
 MapWidget::__producePilotToolTip(const Pilot* _p) {
-	return (QString)
-		"<center>" %
+	return
+		static_cast< QString >("<center>") %
 		_p->callsign % "<br><nobr>" %
 		_p->realName % " (" % _p->aircraft % ")</nobr><br><nobr>" %
 		(_p->route.origin.isEmpty() ? "(unknown)" : (__airports[_p->route.origin]->getData() ?
-				_p->route.origin % " " % (QString)__airports[_p->route.origin]->getData()->city :
+				_p->route.origin % " " % QString::fromUtf8(__airports[_p->route.origin]->getData()->city) :
 				_p->route.origin)) %
 		" > " %
 		(_p->route.destination.isEmpty() ? "(unknown)" : (__airports[_p->route.destination]->getData() ?
-				_p->route.destination % " " % (QString)__airports[_p->route.destination]->getData()->city :
+				_p->route.destination % " " % QString::fromUtf8(__airports[_p->route.destination]->getData()->city) :
 				_p->route.destination)) %
 		"</nobr><br>" %
 		"Ground speed: " % QString::number(_p->groundSpeed) % " kts<br>Altitude: " %
@@ -1220,9 +1220,13 @@ MapWidget::__producePilotToolTip(const Pilot* _p) {
 
 inline QString
 MapWidget::__produceAirportToolTip(const AirportObject* _ap) {
-	QString text = (QString)"<center>" % (QString)_ap->getData()->icao % "<br><nobr>" %
-		(QString)_ap->getData()->name % ", " %
-		(QString)_ap->getData()->city % "</nobr>";
+	QString text = static_cast< QString >("<center>") %
+		static_cast< QString >(_ap->getData()->icao) %
+		static_cast< QString >("<br><nobr>") %
+		QString::fromUtf8(_ap->getData()->name) %
+		static_cast< QString >(", ") %
+		QString::fromUtf8(_ap->getData()->city) %
+		static_cast< QString >("</nobr>");
 	
 	for (const Controller* c: _ap->getStaffModel()->getStaff())
 		text.append((QString)"<br><nobr>" %
@@ -1244,21 +1248,21 @@ MapWidget::__produceAirportToolTip(const AirportObject* _ap) {
 
 inline QString
 MapWidget::__produceFirToolTip(const Fir* _f) {
-	if (_f->name.isEmpty() && !_f->isStaffed())
+	if (_f->getName().isEmpty() && !_f->isStaffed())
 		return "";
 	
 	QString text = (QString)"<center>";
-	if (!_f->name.isEmpty()) {
-		text.append((QString)"<nobr>" % _f->name);
-		if (!_f->country.isEmpty())
-			text.append((QString)", " % _f->country);
-		text.append((QString)"</nobr>");
+	if (!_f->getName().isEmpty()) {
+		text.append(static_cast< QString >("<nobr>") % _f->getName());
+		if (!_f->getCountry().isEmpty())
+			text.append(static_cast< QString >(", ") % _f->getCountry());
+		text.append(static_cast< QString >("</nobr>"));
 	}
 	
 	for (const Controller* c: _f->getStaffModel()->getStaff())
-		text.append((QString)"<br><nobr>" %
+		text.append(static_cast< QString >("<br><nobr>") %
 			c->callsign % " " % c->frequency % " " % c->realName %
-			"</nobr>"
+			static_cast< QString >("</nobr>")
 		);
 	
 	text.append("</center>");
@@ -1303,10 +1307,10 @@ MapWidget::__drawIcaoLabel(const AirportObject* _ap) {
 
 inline void
 MapWidget::__drawFirLabel(GLfloat _x, GLfloat _y, const Fir& _f) {
-	if (_f.icaoTip) {
+	if (_f.getIcaoTip()) {
 		glPushMatrix();
 			glTranslatef(_x, _y, 0.0f);
-			glBindTexture(GL_TEXTURE_2D, _f.icaoTip); checkGLErrors(HERE);
+			glBindTexture(GL_TEXTURE_2D, _f.getIcaoTip()); checkGLErrors(HERE);
 			glVertexPointer(2, GL_FLOAT, 0, FIR_TOOLTIP_VERTICES); checkGLErrors(HERE);
 			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 			glBindTexture(GL_TEXTURE_2D, 0);

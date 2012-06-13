@@ -33,6 +33,7 @@
 #include "defines.h"
 
 Fir::Fir() :
+	__icaoTip(0),
 	__staff(new ControllerTableModel()),
 	__flights(new FlightTableModel()),
 	__airports(new AirportTableModel()),
@@ -40,7 +41,8 @@ Fir::Fir() :
 }
 
 Fir::~Fir() {
-	MapWidget::deleteImage(icaoTip);
+	if (__icaoTip)
+		MapWidget::deleteImage(__icaoTip);
 	delete __staff;
 	delete __flights;
 	delete __airports;
@@ -76,16 +78,28 @@ Fir::addAirport(const AirportObject* _ap) {
 
 void
 Fir::correctName() {
-	if (!name.endsWith("Radar") &&
-			!name.endsWith("Control") &&
-			!name.endsWith("Oceanic"))
-		name += " Center";
+	if (!__name.endsWith("Radar") &&
+			!__name.endsWith("Control") &&
+			!__name.endsWith("Oceanic")) {
+		if (__oceanic)
+			__name += " Oceanic";
+		else
+			__name += " Center";
+	}
 }
 
 void
 Fir::init() {
 	__generateTip();
 	__prepareVBO();
+}
+
+void
+Fir::loadHeader(const FirHeader& _header) {
+	__icao = _header.icao;
+	__oceanic = static_cast< bool >(_header.oceanic);
+	memcpy(__externities, _header.externities, sizeof(Point) * 2);
+	__textPosition = _header.textPosition;
 }
 
 void
@@ -111,8 +125,8 @@ Fir::drawBorders() const {
 	
 	__bordersVBO->unbind();
 #else
-	glVertexPointer(2, GL_FLOAT, 0, &borders[0].x); checkGLErrors(HERE);
-	glDrawArrays(GL_LINE_LOOP, 0, borders.size()); checkGLErrors(HERE);
+	glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
+	glDrawArrays(GL_LINE_LOOP, 0, __borders.size()); checkGLErrors(HERE);
 #endif
 }
 
@@ -131,24 +145,24 @@ Fir::drawTriangles() const {
 	}
 #else
 	if (!triangles.isEmpty()) {
-		glVertexPointer(2, GL_FLOAT, 0, &borders[0].x); checkGLErrors(HERE);
-		glDrawElements(GL_TRIANGLES, triangles.size(), GL_UNSIGNED_SHORT, &triangles[0]); checkGLErrors(HERE);
+		glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
+		glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]); checkGLErrors(HERE);
 	}
 #endif
 }
 
-void
-Fir::__generateTip() {
-	QString icao(header.icao);
-	if (header.oceanic) {
+GLuint
+Fir::__generateTip() const {
+	QString icao(__icao);
+	if (__oceanic) {
 		icao = icao.left(4) + " Oceanic";
 	}
 	
 	icao = icao.simplified();
 	
-	if (header.textPosition.x == 0.0 && header.textPosition.y == 0.0) {
-		icaoTip = 0;
-		return;
+	if (__textPosition.x == 0.0 && __textPosition.y == 0.0) {
+		__icaoTip = 0;
+		return __icaoTip;
 	}
 	
 	QImage temp(MapWidget::GetSingleton().getFirToolTipBackground());
@@ -160,24 +174,25 @@ Fir::__generateTip() {
 	painter.setPen(QColor(FIRS_LABELS_FONT_COLOR));
 	QRect rectangle(0, 0, 64, 24);
 	painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
-	icaoTip = MapWidget::loadImage(temp);
+	__icaoTip = MapWidget::loadImage(temp);
+	return __icaoTip;
 }
 
 void
 Fir::__prepareVBO() {
 #ifdef VATSINATOR_PLATFORM_LINUX
 	__bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
-	__bordersVBO->sendData(sizeof(Point) * borders.size(), &borders[0].x);
+	__bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
 	
-	__bordersSize = borders.size();
-	borders.clear();
+	__bordersSize = __borders.size();
+	__borders.clear();
 	
-	if (!triangles.isEmpty()) {
+	if (!__triangles.isEmpty()) {
 		__trianglesVBO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-		__trianglesVBO->sendData(sizeof(unsigned short) * triangles.size(), &triangles[0]);
+		__trianglesVBO->sendData(sizeof(unsigned short) * __triangles.size(), &__triangles[0]);
 		
-		__trianglesSize = triangles.size();
-		triangles.clear();
+		__trianglesSize = __triangles.size();
+		__triangles.clear();
 	} else
 		__trianglesVBO = NULL;
 #endif
