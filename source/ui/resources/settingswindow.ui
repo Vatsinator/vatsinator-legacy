@@ -313,6 +313,48 @@
       <string>View options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="ShowPilotsLabelsAirportRelatedCheckBox">
+        <property name="whatsThis">
+         <string extracomment="Display pilots' labels when departure/destination airport are hovered"/>
+        </property>
+        <property name="text">
+         <string>Airport-related</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <spacer name="horizontalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="ShowPilotsLabelsWhenHoveredCheckBox">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>When hovered</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="QCheckBox" name="AirportsCheckBox">
         <property name="text">
@@ -323,23 +365,10 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QCheckBox" name="UirsCheckBox">
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="ShowPilotsLabelsAlwaysCheckBox">
         <property name="text">
-         <string>UIRs</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="PilotsCheckBox">
-        <property name="text">
-         <string>Pilots</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Always</string>
         </property>
        </widget>
       </item>
@@ -350,6 +379,13 @@
         </property>
         <property name="checked">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="ShowPilotsLabelsLabel">
+        <property name="text">
+         <string>Show pilot labels:</string>
         </property>
        </widget>
       </item>
@@ -376,58 +412,52 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="ShowPilotsLabelsLabel">
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="PilotsCheckBox">
         <property name="text">
-         <string>Show pilots labels:</string>
+         <string>Pilots</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QCheckBox" name="ShowPilotsLabelsAlwaysCheckBox">
+      <item row="5" column="2">
+       <widget class="QLabel" name="ShowAirportsLabelsLabel">
+        <property name="text">
+         <string>Show aiport labels:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QRadioButton" name="AlwaysRadioButton">
         <property name="text">
          <string>Always</string>
         </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QCheckBox" name="ShowPilotsLabelsWhenHoveredCheckBox">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>When hovered</string>
-        </property>
         <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QCheckBox" name="ShowPilotsLabelsAirportRelatedCheckBox">
-        <property name="whatsThis">
-         <string extracomment="Display pilots' labels when departure/destination airport are hovered"/>
-        </property>
+      <item row="8" column="2">
+       <widget class="QRadioButton" name="NeverRadioButton">
         <property name="text">
-         <string>Airport-related</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Never</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="3">
-       <spacer name="horizontalSpacer_7">
+      <item row="4" column="2">
+       <spacer name="verticalSpacer">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Vertical</enum>
         </property>
         <property name="sizeType">
          <enum>QSizePolicy::Fixed</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
-          <height>20</height>
+          <width>20</width>
+          <height>40</height>
          </size>
         </property>
        </spacer>

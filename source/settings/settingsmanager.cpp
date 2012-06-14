@@ -52,7 +52,7 @@ SettingsManager::__saveSettings() {
 	settings.setValue("pilotsLayer",	__displayLayers.pilots);
 	settings.setValue("airportsLayer",	__displayLayers.airports);
 	settings.setValue("firsLayer",		__displayLayers.firs);
-	settings.setValue("uirsLayer",		__displayLayers.uirs);
+	settings.setValue("displayApLabels",	__displayAirportLabels);
 	
 	settings.setValue("pilotsLabelsDisplayPolicy",	__pilotsLabelsDisplayPolicy);
 	
@@ -78,7 +78,7 @@ SettingsManager::__restoreSettings() {
 	__displayLayers.pilots = settings.value("pilotsLayer", DefaultSettings::PILOTS_CHECKBOX).toBool();
 	__displayLayers.airports = settings.value("airportsLayer", DefaultSettings::AIRPORTS_CHECKBOX).toBool();
 	__displayLayers.firs = settings.value("firsLayer", DefaultSettings::FIRS_CHECKBOX).toBool();
-	__displayLayers.uirs = settings.value("uirsLayer", DefaultSettings::UIRS_CHECKBOX).toBool();
+	__displayAirportLabels = settings.value("displayApLabels", DefaultSettings::DISPLAY_AIRPORT_LABELS).toBool();
 	
 	/* Determine the default pilots' labels display policy settings */
 	unsigned temp = 0;
@@ -138,7 +138,10 @@ SettingsManager::__updateSettings() {
 	__displayLayers.pilots = static_cast< bool >(__mySettingsWindow->PilotsCheckBox->checkState());
 	__displayLayers.airports = static_cast< bool >(__mySettingsWindow->AirportsCheckBox->checkState());
 	__displayLayers.firs = static_cast< bool >(__mySettingsWindow->FirsCheckBox->checkState());
-	__displayLayers.uirs = static_cast< bool >(__mySettingsWindow->UirsCheckBox->checkState());
+	if (__mySettingsWindow->AlwaysRadioButton->isChecked())
+		__displayAirportLabels = true;
+	else
+		__displayAirportLabels = false;
 	
 	/* Obtain pilots labels display policy */
 	__pilotsLabelsDisplayPolicy = 0;
@@ -179,7 +182,7 @@ SettingsManager::__restoreDefaults() {
 	__displayLayers.pilots = DefaultSettings::PILOTS_CHECKBOX;
 	__displayLayers.airports = DefaultSettings::AIRPORTS_CHECKBOX;
 	__displayLayers.firs = DefaultSettings::FIRS_CHECKBOX;
-	__displayLayers.uirs = DefaultSettings::UIRS_CHECKBOX;
+	__displayAirportLabels = DefaultSettings::DISPLAY_AIRPORT_LABELS;
 	
 	__pilotsLabelsDisplayPolicy = 0;
 	if (DefaultSettings::ALWAYS_CHECKBOX)

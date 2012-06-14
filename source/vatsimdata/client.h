@@ -22,6 +22,7 @@
 
 #include <QDateTime>
 #include <QString>
+#include <QStringList>
 
 // types
 enum ClientType {
@@ -31,6 +32,8 @@ enum ClientType {
 class Client {
 	
 public:
+	Client() = delete;
+	Client(const QStringList&);
 	
 	virtual ClientType type() const = 0;
 	
@@ -42,7 +45,6 @@ public:
 	
 	QString		server;
 	QDateTime	onlineFrom;
-	
 	
 };
 

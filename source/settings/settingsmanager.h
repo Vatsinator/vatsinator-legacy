@@ -42,7 +42,6 @@ public:
 		bool	pilots;
 		bool	airports;
 		bool	firs;
-		bool	uirs;
 	};
 	
 	SettingsManager(QObject* = 0);
@@ -60,6 +59,9 @@ public:
 	
 	inline const DisplayLayersPolicy &
 	getDisplayLayersPolicy() const { return __displayLayers; }
+	
+	inline bool
+	displayAirportLabels() const { return __displayAirportLabels; }
 	
 	inline bool
 	displayPilotsLabelsWhenHovered() const { return __pilotsLabelsDisplayPolicy & WHEN_HOVERED; }
@@ -116,6 +118,7 @@ private:
 	bool			__antyaliasing;
 	DisplayLayersPolicy	__displayLayers;
 	unsigned		__pilotsLabelsDisplayPolicy;
+	bool			__displayAirportLabels;
 	
 	/* Various map colors */
 	QColor	__unstaffedFirBordersColor;

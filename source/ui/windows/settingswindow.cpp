@@ -78,7 +78,13 @@ SettingsWindow::__updateWindow() {
 	PilotsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().pilots);
 	AirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().airports);
 	FirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().firs);
-	UirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().uirs);
+	if (__mySettingsManager->displayAirportLabels()) {
+		AlwaysRadioButton->setChecked(true);
+		NeverRadioButton->setChecked(false);
+	} else {
+		AlwaysRadioButton->setChecked(false);
+		NeverRadioButton->setChecked(true);
+	}
 	
 	if (__mySettingsManager->displayPilotsLabelsAlways())
 		__handleAlwaysCheckBox(Qt::Checked);

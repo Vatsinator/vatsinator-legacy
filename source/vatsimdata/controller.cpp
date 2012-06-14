@@ -69,23 +69,18 @@
  * 39 QNH_iHg
  * 40 QNH_Mb
  */
-Controller::Controller(const QStringList& _data) : airport(NULL) {
-	callsign = _data[0];
-	pid = _data[1].toUInt();
-	realName = _data[2];
-	
-	frequency = _data[4];
-	server = _data[14];
-	rating = _data[16].toInt();
-	atis = _data[35];
+Controller::Controller(const QStringList& _data) : 
+		Client(_data),
+		frequency(_data[4]),
+		rating(_data[16].toInt()),
+		atis(_data[35]),
+		airport(NULL) {
 	
 	if (atis[0] == '$') {
 		auto index = atis.indexOf('^');
 		atis.remove(0, index + 2);
 	}
 	atis.replace((QString)'^' + (char)167, "\n");
-	
-	onlineFrom = QDateTime::fromString(_data[37], "yyyyMMddhhmmss");
 	
 	__setMyIcaoAndFacility();
 }
@@ -141,26 +136,33 @@ Controller::__setMyIcaoAndFacility() {
 		QString& icao = sections.front();
 		
 		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao, true);
-		if (fir)
+		if (fir) {
 			fir->addStaff(this);
-		else {
-			Uir* uir = VatsimDataHandler::GetSingleton().findUIR(icao);
-			if (uir) {
-				uir->addStaff(this);
+			return;
+		}
+		
+		Uir* uir = VatsimDataHandler::GetSingleton().findUIR(icao);
+		if (uir) {
+			uir->addStaff(this);
+			return;
+		}
+		
+		fir = FirsDatabase::GetSingleton().findFirByIcao(icao);
+		if (fir) {
+			fir->addStaff(this);
+			return;
+		}
+					
+		for (QString& alias: VatsimDataHandler::GetSingleton().getAliases().values(icao)) {
+			fir = FirsDatabase::GetSingleton().findFirByIcao(alias, true);
+			if (fir) {
+				fir->addStaff(this);
 				return;
 			}
-			
-			for (QString& alias: VatsimDataHandler::GetSingleton().getAliases().values(icao)) {
-				fir = FirsDatabase::GetSingleton().findFirByIcao(alias + "F");
-				if (fir) {
-					fir->addStaff(this);
-					return;
-				}
-			}
-#ifndef NO_DEBUG
-			qDebug() << "FIR not found: " << callsign;
-#endif
 		}
+#ifndef NO_DEBUG
+		qDebug() << "FIR not found: " << callsign;
+#endif
 		
 		return;
 	} else if (

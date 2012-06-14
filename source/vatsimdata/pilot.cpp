@@ -74,6 +74,7 @@
  * 40 QNH_Mb
  */
 Pilot::Pilot(const QStringList& _data, bool _prefiled) :
+		Client(_data),
 		altitude(_data[7].toInt()),
 		groundSpeed(_data[8].toInt()),
 		squawk(_data[17]),
@@ -86,11 +87,8 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 		route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
 		prefiledOnly(_prefiled),
 		__callsignTip(0) {
-	callsign = _data[0];
-	pid = _data[1].toUInt();
-	realName = _data[2].simplified();
-	server = _data[14];
-	onlineFrom = QDateTime::fromString(_data[37], "yyyyMMddhhmmss");
+	if (squawk.length() == 3)
+		squawk = "0" + squawk;
 	
 	if (!route.origin.isEmpty()) {
 		AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);

@@ -37,7 +37,7 @@ Fir::Fir() :
 	__staff(new ControllerTableModel()),
 	__flights(new FlightTableModel()),
 	__airports(new AirportTableModel()),
-	__hasUirStaff(false) {
+	__uirStaffCount(0) {
 }
 
 Fir::~Fir() {
@@ -63,7 +63,7 @@ Fir::addStaff(const Controller* _c) {
 void
 Fir::addUirStaff(const Controller* _c) {
 	__staff->addStaff(_c);
-	__hasUirStaff = true;
+	__uirStaffCount += 1;
 }
 
 void
@@ -107,12 +107,12 @@ Fir::clear() {
 	__staff->clear();
 	__flights->clear();
 	__airports->clear();
-	__hasUirStaff = false;
+	__uirStaffCount = 0;
 }
 
 bool
 Fir::isStaffed() const {
-	return !__staff->getStaff().isEmpty() && !__hasUirStaff;
+	return !__staff->getStaff().isEmpty() && __uirStaffCount < static_cast< unsigned >(__staff->rowCount());
 }
 
 void

@@ -99,9 +99,7 @@ unsigned MapWidget::texturesCount = 0;
 
 template< typename T >
 inline T absHelper(const T& _v) {
-	if (_v < 0)
-		return -_v;
-	return _v;
+	return _v < 0 ? -_v : _v;
 }
 
 
@@ -801,7 +799,7 @@ MapWidget::__drawMarks() {
 #endif
 
 
-void
+inline void
 MapWidget::__drawWorld() {
 	glPushMatrix();
 		glTranslatef(0.0, 0.0, -0.9);
@@ -826,8 +824,7 @@ MapWidget::__drawFirs() {
 		}
 	glPopMatrix();
 	
-	if (__settings->getDisplayLayersPolicy().uirs)
-		__drawUirs();
+	__drawUirs();
 	
 	glLineWidth(3.0);
 	glPushMatrix();
@@ -847,7 +844,7 @@ MapWidget::__drawFirs() {
 	glLineWidth(1.0);
 }
 
-void
+inline void
 MapWidget::__drawUirs() {
 	glLineWidth(3.0);
 	
@@ -856,7 +853,7 @@ MapWidget::__drawUirs() {
 		for (const Uir* uir: __data.getUIRs()) {
 			if (!uir->getStaff().isEmpty()) {
 				for (const Fir* fir: uir->getRange()) {
-					if (!fir->isStaffed()) {					
+					if (!fir->isStaffed()) {
 						qglColor(__settings->getStaffedUirBordersColor());
 						fir->drawBorders(); checkGLErrors(HERE);
 						
@@ -931,7 +928,8 @@ MapWidget::__drawAirports() {
 			glTranslatef(x, y, -0.4); checkGLErrors(HERE);
 			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
 			
-			__drawIcaoLabel(it.value()); checkGLErrors(HERE);
+			if (__settings->displayAirportLabels() || __keyPressed)
+				__drawIcaoLabel(it.value()); checkGLErrors(HERE);
 			
 			if (inRange && !__underMouse) {
 				__underMouse = it.value();

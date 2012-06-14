@@ -73,7 +73,7 @@ public:
 	getAirportsModel() const { return __airports; }
 	
 	inline bool
-	hasUirStaff() const { return __hasUirStaff; }
+	hasUirStaff() const { return __uirStaffCount; }
 	
 	inline const QString &
 	getIcao() const { return __icao; }
@@ -126,7 +126,7 @@ private:
 	FlightTableModel *	__flights;
 	AirportTableModel *	__airports;
 	
-	bool __hasUirStaff;
+	unsigned __uirStaffCount;
 	
 	VertexBufferObject * __bordersVBO;
 	VertexBufferObject * __trianglesVBO;
