@@ -80,6 +80,11 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 			return Qt::AlignCenter;
 		case Qt::ToolTipRole:
 			return __flights[_index.row()]->realName;
+		case Qt::ForegroundRole:
+			if (__flights[_index.row()]->prefiledOnly)
+				return QBrush(QColor(Qt::gray));
+			else
+				return QVariant();
 		case Qt::DisplayRole:
 			const AirportRecord* ap;
 			switch (_index.column()) {
@@ -109,6 +114,8 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 						return __flights[_index.row()]->route.destination;
 				case Aircraft:
 					return __flights[_index.row()]->aircraft;
+				case Button: // for non-prefiled-only this will be overriden by QPushButton widget
+					return "Prefiled";
 				default:
 					return QVariant();
 			}

@@ -46,7 +46,11 @@ class Pilot : public Client, public Clickable {
 	 */
 	
 public:
-	Pilot(const QStringList&);
+	/**
+	 * @param list Data.
+	 * @param prefiled Indicates whether the flight is only prefiled.
+	 */
+	Pilot(const QStringList&, bool = false);
 	virtual ~Pilot();
 	
 	ClientType type() const { return PILOT; }
@@ -72,8 +76,8 @@ public:
 	Status		flightStatus;
 	
 	struct {
-		qreal	longitude;
 		qreal	latitude;
+		qreal	longitude;
 	} position;
 	
 	struct {
@@ -84,6 +88,8 @@ public:
 	} route;
 	
 	GLuint	modelTexture;
+	
+	bool prefiledOnly;
 	
 private:
 	void __setMyStatus();

@@ -110,6 +110,8 @@ FirDetailsWindow::__setButtons() {
 	const FlightTableModel* flightsModel = qobject_cast< const FlightTableModel* >(FlightsTable->model());
 	Q_ASSERT(flightsModel);
 	for (int i = 0; i < flightsModel->rowCount(); ++i) {
+		if (flightsModel->getFlights()[i]->prefiledOnly)
+			continue;
 		ClientDetailsButton* pButton = new ClientDetailsButton(flightsModel->getFlights()[i]);
 		connect(pButton,				SIGNAL(clicked(const Client*)),
 			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));

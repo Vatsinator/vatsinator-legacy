@@ -881,6 +881,9 @@ MapWidget::__drawFirsLabels() {
 	glPushMatrix();
 		glTranslatef(0.0, 0.0, -0.5);
 		for (const Fir& fir: __firs->getFirs()) {
+			if (fir.getTextPosition().x == 0.0 && fir.getTextPosition().y == 0.0)
+				continue;
+			
 			float x, y;
 			__mapCoordinates(fir.getTextPosition().x, fir.getTextPosition().y, x, y);
 			if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
@@ -963,7 +966,7 @@ MapWidget::__drawPilots() {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	
 	for (const Pilot* client: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
-		if (client->flightStatus != AIRBORNE)
+		if (client->flightStatus != AIRBORNE || client->prefiledOnly)
 			continue;
 		
 		GLfloat x = (client->position.longitude / 180 - __position.x()) * __zoom;

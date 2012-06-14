@@ -92,7 +92,10 @@ VatsimDataHandler::init() {
 			Fir* currentFir = __firs.findFirByIcao(icao);
 			if (currentFir) {
 				currentFir->setName(line.section(' ', 1));
-				currentFir->setCountry(countries[icao.left(2)]);
+				if (currentFir->getIcao() == "UMKK") // fix for Kaliningrad Center
+					currentFir->setCountry("Russia");
+				else
+					currentFir->setCountry(countries[icao.left(2)]);
 				currentFir->correctName();
 			}
 			
@@ -179,6 +182,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 	QMap< QString, bool > flags;
 	flags["GENERAL"] = false;
 	flags["CLIENTS"] = false;
+	flags["PREFILE"] = false;
 	
 	for (QString& temp: tempList) {
 		if (temp.startsWith(';'))
@@ -188,8 +192,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 			__clearFlags(flags);
 			if (temp.simplified() == "!GENERAL:")
 				flags["GENERAL"] = true;
-			if (temp.simplified() == "!CLIENTS:")
+			else if (temp.simplified() == "!CLIENTS:")
 				flags["CLIENTS"] = true;
+			else if (temp.simplified() == "!PREFILE:")
+				flags["PREFILE"] = true;
 			
 			continue;
 		}
@@ -201,9 +207,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 					"yyyyMMddhhmmss"
 				);
 			}
-		}
-		
-		if (flags["CLIENTS"]) {
+		} else if (flags["CLIENTS"]) {
 			QStringList clientData = temp.split(':');
 			if (clientData.size() < 40) {
 				emit dataCorrupted();
@@ -217,6 +221,15 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 				Pilot* pilot = new Pilot(clientData);
 				__flights->addFlight(pilot);
 			}
+		} else if (flags["PREFILE"]) {
+			QStringList clientData = temp.split(':');
+			if (clientData.size() < 40) {
+				emit dataCorrupted();
+				return;
+			}
+			
+			Pilot* pilot = new Pilot(clientData, true);
+			__flights->addFlight(pilot);
 		}
 	}
 }

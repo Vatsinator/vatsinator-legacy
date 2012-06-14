@@ -158,6 +158,8 @@ AirportDetailsWindow::__setButtons() {
 	const FlightTableModel* inboundModel = qobject_cast< const FlightTableModel* >(InboundTable->model());
 	Q_ASSERT(inboundModel);
 	for (int i = 0; i < inboundModel->rowCount(); ++i) {
+		if (inboundModel->getFlights()[i]->prefiledOnly)
+			continue;
 		ClientDetailsButton* pButton = new ClientDetailsButton(inboundModel->getFlights()[i]);
 		connect(pButton,				SIGNAL(clicked(const Client*)),
 			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));
@@ -167,6 +169,8 @@ AirportDetailsWindow::__setButtons() {
 	const FlightTableModel* outboundModel = qobject_cast< const FlightTableModel* >(OutboundTable->model());
 	Q_ASSERT(outboundModel);
 	for (int i = 0; i < outboundModel->rowCount(); ++i) {
+		if (outboundModel->getFlights()[i]->prefiledOnly)
+			continue;
 		ClientDetailsButton* pButton = new ClientDetailsButton(outboundModel->getFlights()[i]);
 		connect(pButton,				SIGNAL(clicked(const Client*)),
 			FlightDetailsWindow::GetSingletonPtr(),	SLOT(show(const Client*)));

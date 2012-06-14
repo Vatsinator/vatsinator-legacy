@@ -73,30 +73,33 @@
  * 39 QNH_iHg
  * 40 QNH_Mb
  */
-Pilot::Pilot(const QStringList& _data) : __callsignTip(0) {
+Pilot::Pilot(const QStringList& _data, bool _prefiled) :
+		altitude(_data[7].toInt()),
+		groundSpeed(_data[8].toInt()),
+		squawk(_data[17]),
+		aircraft(_data[9]),
+		tas(_data[10].toInt()),
+		flightRules(_data[21] == "I" ? IFR : VFR),
+		remarks(_data[29]),
+		heading(_data[38].toUInt()),
+		position({_data[5].toDouble(), _data[6].toDouble()}),
+		route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
+		prefiledOnly(_prefiled),
+		__callsignTip(0) {
 	callsign = _data[0];
 	pid = _data[1].toUInt();
 	realName = _data[2].simplified();
-	position.latitude = _data[5].toDouble();
-	position.longitude = _data[6].toDouble();
-	altitude = _data[7].toInt();
-	groundSpeed = _data[8].toInt();
-	aircraft = _data[9];
-	tas = _data[10].toInt();
-	route.origin = _data[11].toUpper();
-	route.altitude = _data[12].toUpper();
-	route.destination = _data[13];
 	server = _data[14];
-	squawk = _data[17];
-	flightRules = (_data[21] == "I") ? IFR : VFR;
-	remarks = _data[29];
-	route.route = _data[30];
 	onlineFrom = QDateTime::fromString(_data[37], "yyyyMMddhhmmss");
-	heading = _data[38].toUInt();
 	
 	if (!route.origin.isEmpty()) {
 		AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
 		ap->addOutbound(this);
+		
+		if (prefiledOnly && ap->getData()) {
+			position.latitude = ap->getData()->latitude;
+			position.longitude = ap->getData()->longitude;
+		}
 		
 		if (ap->getFirs()[0])
 			ap->getFirs()[0]->addFlight(this);

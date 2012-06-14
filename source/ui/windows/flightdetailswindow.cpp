@@ -44,6 +44,9 @@ FlightDetailsWindow::show(const Client* _client) {
 	Q_ASSERT(dynamic_cast< const Pilot* >(_client));
 	__current = dynamic_cast< const Pilot* >(_client);
 	
+	if (__current->prefiledOnly)
+		return;
+	
 	setWindowTitle(QString(__current->callsign + " - flight details"));
 	
 	CallsignLabel->setText(__current->callsign);
