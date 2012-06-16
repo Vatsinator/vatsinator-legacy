@@ -24,5 +24,6 @@ Client::Client(const QStringList& _data) :
 		callsign(_data[0]),
 		realName(_data[2].simplified()),
 		server(_data[14]),
-		onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")) {}
+		onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
+		position({_data[5].toFloat(), _data[6].toFloat()}) {}
 

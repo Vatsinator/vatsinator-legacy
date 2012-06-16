@@ -86,7 +86,6 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 		flightRules(_data[21] == "I" ? IFR : VFR),
 		remarks(_data[29]),
 		heading(_data[38].toUInt()),
-		position({_data[5].toFloat(), _data[6].toFloat()}),
 		route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
 		prefiledOnly(_prefiled),
 		__lineFrom(NULL),

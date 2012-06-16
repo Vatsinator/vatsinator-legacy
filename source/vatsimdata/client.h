@@ -46,6 +46,11 @@ public:
 	QString		server;
 	QDateTime	onlineFrom;
 	
+	struct {
+		float	latitude;
+		float	longitude;
+	} position;
+	
 };
 
 #endif // CLIENT_H

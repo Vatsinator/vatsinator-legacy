@@ -379,13 +379,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="OriginLabel">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="0">
        <widget class="QLabel" name="TrueAirSpeedLabelDesc">
         <property name="text">
@@ -413,7 +406,7 @@
        </spacer>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="OriginLabelDesc">
+       <widget class="QLabel" name="OriginLabel">
         <property name="text">
          <string>Origin:</string>
         </property>
@@ -537,7 +530,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="ArrivalLabelDesc">
+       <widget class="QLabel" name="ArrivalLabel">
         <property name="text">
          <string>Arrival:</string>
         </property>
@@ -562,8 +555,18 @@
         </property>
        </spacer>
       </item>
+      <item row="1" column="2">
+       <widget class="ShowAirportButton" name="OriginButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="2">
-       <widget class="QLabel" name="ArrivalLabel">
+       <widget class="ShowAirportButton" name="ArrivalButton">
         <property name="text">
          <string/>
         </property>
@@ -773,11 +776,21 @@
       <property name="text">
        <string>Close</string>
       </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ShowAirportButton</class>
+   <extends>QPushButton</extends>
+   <header>ui/buttons/showairportbutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="imgs.qrc"/>
  </resources>

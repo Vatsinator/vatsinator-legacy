@@ -161,29 +161,7 @@ ATCDetailsWindow::__setWindowPosition() {
 
 void
 ATCDetailsWindow::__handleShowClicked() {
-	if (__current->airport) {
-		MapWidget::GetSingleton().showPoint(__current->airport->longitude, __current->airport->latitude);
-		return;
-	}
-	
-	if (__current->facility == CTR) {
-		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, false);
-		if (!fir)
-			fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, true);
-		if (fir) {
-			MapWidget::GetSingleton().showPoint(fir->getTextPosition().x, fir->getTextPosition().y);
-			return;
-		}
-	}
-	
-	if (__current->facility == FSS) {
-		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, true);
-		if (!fir)
-			fir = FirsDatabase::GetSingleton().findFirByIcao(__current->icao, false);
-		if (fir) {
-			MapWidget::GetSingleton().showPoint(fir->getTextPosition().x, fir->getTextPosition().y);
-			return;
-		}
-	}
+	Q_ASSERT(__current);
+	MapWidget::GetSingleton().showClient(__current);
 }
 

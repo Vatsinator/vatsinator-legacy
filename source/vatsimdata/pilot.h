@@ -82,11 +82,6 @@ public:
 	Status		flightStatus;
 	
 	struct {
-		float	latitude;
-		float	longitude;
-	} position;
-	
-	struct {
 		QString origin;
 		QString destination;
 		QString route;

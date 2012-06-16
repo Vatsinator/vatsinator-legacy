@@ -23,8 +23,10 @@
 #include "modules/flighttracker.h"
 
 #include "ui/mapwidget/mapwidget.h"
+#include "ui/windows/airportdetailswindow.h"
 
 #include "vatsimdata/pilot.h"
+#include "vatsimdata/vatsimdatahandler.h"
 
 #include "flightdetailswindow.h"
 #include "defines.h"
@@ -70,18 +72,36 @@ FlightDetailsWindow::show(const Client* _client) {
 	
 	FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
 	
-	AirportRecord* ap = AirportsDatabase::GetSingleton().find(__current->route.origin);
-	QString text = __current->route.origin;
-	if (ap)
-		text.append(QString(" ") + QString::fromAscii(ap->name) + " - " + QString::fromUtf8(ap->city));
-	OriginLabel->setText(text);
+	if (!__current->route.origin.isEmpty()) {
+		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.origin];
+		QString text = __current->route.origin;
+		if (ap->getData())
+			text.append(QString(" ") %
+					QString::fromUtf8(ap->getData()->name) %
+					" - " %
+					QString::fromUtf8(ap->getData()->city));
+		OriginButton->setText(text);
+		OriginButton->setAirportPointer(ap);
+	} else {
+		OriginButton->setText("(unknown)");
+		OriginButton->setAirportPointer(NULL);
+	}
 	
-	ap = AirportsDatabase::GetSingleton().find(__current->route.destination);
-	text = __current->route.destination;
-	if (ap)
-		text.append(QString(" ") + QString::fromUtf8(ap->name) + " - " + QString::fromUtf8(ap->city));
+	if (!__current->route.destination.isEmpty()) {
+		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.destination];
+		QString text = __current->route.destination;
+		if (ap->getData())
+			text.append(QString(" ") %
+					QString::fromUtf8(ap->getData()->name) %
+					" - " %
+					QString::fromUtf8(ap->getData()->city));
+		ArrivalButton->setText(text);
+		ArrivalButton->setAirportPointer(ap);
+	} else {
+		ArrivalButton->setText("(unknown)");
+		ArrivalButton->setAirportPointer(NULL);
+	}
 	
-	ArrivalLabel->setText(text);
 	AircraftLabel->setText(__current->aircraft);
 	TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
 	CruiseAltitude->setText(__current->route.altitude);
@@ -130,7 +150,7 @@ FlightDetailsWindow::__setWindowPosition() {
 
 void
 FlightDetailsWindow::__handleShowClicked() {
-	MapWidget::GetSingleton().showPilot(__current);
+	MapWidget::GetSingleton().showClient(__current);
 }
 
 

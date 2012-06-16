@@ -100,9 +100,8 @@ signals:
 	void flightTrackingCanceled();
 	
 public slots:
-	void showPilot(const Pilot*);
+	void showClient(const Client*);
 	void showAirport(const Airport*);
-	void showPoint(qreal, qreal);
 	void redraw();
 	
 protected:
