@@ -96,6 +96,12 @@ public:
 	inline const QColor &
 	getLandsColor() const { return __landsColor; }
 	
+	inline const QColor &
+	getOriginToPilotLineColor() const { return __originToPilotLineColor; }
+	
+	inline const QColor &
+	getPilotToDestinationLineColor() const { return __pilotToDestinationLineColor; }
+	
 signals:
 	void settingsRestored();
 	void settingsChanged();
@@ -123,12 +129,16 @@ private:
 	/* Various map colors */
 	QColor	__unstaffedFirBordersColor;
 	QColor	__staffedFirBordersColor;
+	int	__staffedFirBackgroundAlpha;
 	QColor	__staffedFirBackgroundColor;
 	QColor	__staffedUirBordersColor;
+	int	__staffedUirBackgroundAlpha;
 	QColor	__staffedUirBackgroundColor;
 	QColor	__approachCircleColor;
 	QColor	__seasColor;
 	QColor	__landsColor;
+	QColor	__originToPilotLineColor;
+	QColor	__pilotToDestinationLineColor;
 	
 private slots:
 	void __updateSettings();

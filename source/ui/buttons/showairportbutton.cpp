@@ -16,12 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "vatsimdata/airportobject.h"
+#include "vatsimdata/airport.h"
 
 #include "showairportbutton.h"
 #include "defines.h"
 
-ShowAirportButton::ShowAirportButton(const AirportObject* _ap, const QString& _text, QWidget* _parent) :
+ShowAirportButton::ShowAirportButton(const Airport* _ap, const QString& _text, QWidget* _parent) :
 		QPushButton(_text, _parent),
 		__current(_ap) {
 	connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));

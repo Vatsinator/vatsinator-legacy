@@ -26,7 +26,7 @@
 
 #include "db/point.h"
 
-#include "vatsimdata/airportobject.h"
+#include "vatsimdata/airport.h"
 #include "ui/mapwidget/clickable.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
@@ -51,7 +51,7 @@ public:
 	
 	void addFlight(const Pilot*);
 	
-	void addAirport(const AirportObject*);
+	void addAirport(const Airport*);
 	
 	void correctName();
 	

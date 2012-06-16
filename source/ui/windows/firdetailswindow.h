@@ -23,7 +23,7 @@
 #include "ui/ui_firdetailswindow.h"
 #include "singleton.h"
 
-class AirportObject;
+class Airport;
 class Controller;
 class Fir;
 class Pilot;

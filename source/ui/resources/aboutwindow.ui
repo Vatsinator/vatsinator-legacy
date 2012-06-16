@@ -122,7 +122,7 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Vatsinator is simpel Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</string>
+            <string>Vatsinator is simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

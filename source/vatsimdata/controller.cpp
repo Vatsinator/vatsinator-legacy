@@ -187,7 +187,7 @@ Controller::__setMyIcaoAndFacility() {
 		
 		AirportRecord* apShot = AirportsDatabase::GetSingleton().find(sections.front());
 		if (apShot) {
-			AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(sections.front());
+			Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(sections.front());
 			ap->addStaff(this);
 			airport = ap->getData();
 			return;
@@ -197,7 +197,7 @@ Controller::__setMyIcaoAndFacility() {
 				QString alias = "K" + sections.front();
 				apShot = AirportsDatabase::GetSingleton().find(alias);
 				if (apShot) {
-					AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
+					Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
 					ap->addStaff(this);
 					airport = ap->getData();
 					return;
@@ -207,7 +207,7 @@ Controller::__setMyIcaoAndFacility() {
 			for (QString& alias: VatsimDataHandler::GetSingleton().getAliases().values(sections.front())) {
 				apShot = AirportsDatabase::GetSingleton().find(alias);
 				if (apShot) {
-					AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
+					Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
 					ap->addStaff(this);
 					airport = ap->getData();
 					return;

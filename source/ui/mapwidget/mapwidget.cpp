@@ -137,8 +137,8 @@ MapWidget::MapWidget(QWidget* _parent) :
 	
 	connect(this,	SIGNAL(contextMenuRequested(const Pilot*)),
 		this,	SLOT(__openContextMenu(const Pilot*)));
-	connect(this,	SIGNAL(contextMenuRequested(const AirportObject*)),
-		this,	SLOT(__openContextMenu(const AirportObject*)));
+	connect(this,	SIGNAL(contextMenuRequested(const Airport*)),
+		this,	SLOT(__openContextMenu(const Airport*)));
 	connect(this,	SIGNAL(contextMenuRequested(const Fir*)),
 		this,	SLOT(__openContextMenu(const Fir*)));
 	
@@ -237,7 +237,7 @@ MapWidget::showPilot(const Pilot* _p) {
 }
 
 void
-MapWidget::showAirport(const AirportObject* _ap) {
+MapWidget::showAirport(const Airport* _ap) {
 	if (__myFlightTracker->getTracked())
 		emit flightTrackingCanceled();
 	
@@ -411,7 +411,7 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 				emit contextMenuRequested(static_cast< const Pilot* >(__underMouse));
 				break;
 			case AIRPORT:
-				emit contextMenuRequested(static_cast< const AirportObject* >(__underMouse));
+				emit contextMenuRequested(static_cast< const Airport* >(__underMouse));
 				break;
 			case FIR:
 				emit contextMenuRequested(static_cast< const Fir* >(__underMouse));
@@ -438,7 +438,7 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
 					emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
 					break;
 				case AIRPORT:
-					emit airportDetailsWindowRequested(static_cast< const AirportObject* >(__underMouse));
+					emit airportDetailsWindowRequested(static_cast< const Airport* >(__underMouse));
 					break;
 				case FIR:
 					emit firDetailsWindowRequested(static_cast< const Fir* >(__underMouse));
@@ -514,7 +514,7 @@ MapWidget::keyPressEvent(QKeyEvent* _event) {
 			if (__zoom > ZOOM_MINIMUM)
 				__zoom -= 1;
 			break;
-		case Qt::Key_Control:
+		case Qt::Key_Shift:
 			__keyPressed = true;
 	}
 	
@@ -524,7 +524,7 @@ MapWidget::keyPressEvent(QKeyEvent* _event) {
 void
 MapWidget::keyReleaseEvent(QKeyEvent* _event) {
 	switch (_event->key()) {
-		case Qt::Key_Control:
+		case Qt::Key_Shift:
 			__keyPressed = false;
 			break;
 	}
@@ -578,7 +578,7 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 }
 
 void
-MapWidget::__openContextMenu(const AirportObject* _ap) {
+MapWidget::__openContextMenu(const Airport* _ap) {
 	__menu = new QMenu(_ap->getData()->icao, this);
 	
 	AirportDetailsAction* showAp = new AirportDetailsAction(_ap, "Airport details", this);
@@ -587,8 +587,8 @@ MapWidget::__openContextMenu(const AirportObject* _ap) {
 	__menu->addAction(showAp);
 	__menu->addAction(showMetar);
 	
-	connect(showAp,			SIGNAL(triggered(const AirportObject*)),
-		__airportDetailsWindow,	SLOT(show(const AirportObject*)));
+	connect(showAp,			SIGNAL(triggered(const Airport*)),
+		__airportDetailsWindow,	SLOT(show(const Airport*)));
 	
 	connect(showMetar,		SIGNAL(triggered(QString)),
 		__metarsWindow,		SLOT(show(QString)));
@@ -702,8 +702,8 @@ MapWidget::__init() {
 		__firDetailsWindow,	SLOT(show(const Fir*)));
 	connect(this,			SIGNAL(flightDetailsWindowRequested(const Client*)),
 		__flightDetailsWindow,	SLOT(show(const Client*)));
-	connect(this,			SIGNAL(airportDetailsWindowRequested(const AirportObject*)),
-		__airportDetailsWindow,	SLOT(show(const AirportObject*)));
+	connect(this,			SIGNAL(airportDetailsWindowRequested(const Airport*)),
+		__airportDetailsWindow,	SLOT(show(const Airport*)));
 	connect(__settings,		SIGNAL(settingsChanged()),
 		this,			SLOT(__loadNewSettings()));
 	
@@ -901,6 +901,7 @@ MapWidget::__drawFirsLabels() {
 
 void
 MapWidget::__drawAirports() {
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 	for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 		
 		if (!it.value()->getData())
@@ -922,8 +923,6 @@ MapWidget::__drawAirports() {
 		checkGLErrors(HERE);
 		
 		glPushMatrix();
-		
-			glColor4f(1.0, 1.0, 1.0, 1.0);
 			
 			glTranslatef(x, y, -0.4); checkGLErrors(HERE);
 			glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
@@ -931,9 +930,8 @@ MapWidget::__drawAirports() {
 			if (__settings->displayAirportLabels() || __keyPressed)
 				__drawIcaoLabel(it.value()); checkGLErrors(HERE);
 			
-			if (inRange && !__underMouse) {
+			if (inRange && !__underMouse)
 				__underMouse = it.value();
-			}
 			
 			if (it.value()->hasApproach()) {
 				glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
@@ -950,10 +948,34 @@ MapWidget::__drawAirports() {
 				glLineWidth(1.0);
 				glLineStipple(1, 0xFFFF); checkGLErrors(HERE);
 				
+				glColor4f(1.0, 1.0, 1.0, 1.0);
 				glVertexPointer(2, GL_FLOAT, 0, VERTICES);
 			}
 			
 		glPopMatrix();
+		
+		if (inRange && __underMouse == it.value() &&
+				!__settings->displayPilotsLabelsAlways() &&
+				__settings->displayPilotsLabelsAirportRelated() &&
+				!__keyPressed) {
+			float tipX, tipY;
+			
+			for (const Pilot* p: it.value()->getOutboundsModel()->getFlights()) {
+				if (p->flightStatus == AIRBORNE) {
+					__mapCoordinates(p->position.longitude, p->position.latitude,
+							 tipX, tipY);
+					__drawCallsign(tipX, tipY, p);
+				}
+			}
+			
+			for (const Pilot* p: it.value()->getInboundsModel()->getFlights()) {
+				if (p->flightStatus == AIRBORNE) {
+					__mapCoordinates(p->position.longitude, p->position.latitude,
+							 tipX, tipY);
+					__drawCallsign(tipX, tipY, p);
+				}
+			}
+		}
 	}
 	
 	glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
@@ -1006,106 +1028,31 @@ MapWidget::__drawPilots() {
 
 void
 MapWidget::__drawLines() {
+	if (__keyPressed) {
+		__prepareMatrix(WORLD);
+		for (const Pilot* p: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
+			if (p->flightStatus == AIRBORNE)
+				p->drawLines();
+		}
+		return;
+	}
+	
 	if (!__underMouse)
 		return;
-
-	if (__underMouse->objectType() == PLANE) {
-		glColor4f(LINES_COLOR);
-		const Pilot* pilot = static_cast< const Pilot* >(__underMouse);
-		const AirportRecord* ap;
-		if (!pilot->route.origin.isEmpty())
-			ap = __airports[pilot->route.origin]->getData();
-		else
-			ap = NULL;
-		
-		if (ap) {
-			GLfloat vertices[] = {
-					((GLfloat)(ap->longitude / 180 - __position.x()) * __zoom),
-					((GLfloat)(ap->latitude / 90 - __position.y()) * __zoom),
-					((GLfloat)(pilot->position.longitude / 180 - __position.x()) * __zoom),
-					((GLfloat)(pilot->position.latitude / 90 - __position.y()) * __zoom)
-				};
-			
-			glVertexPointer(2, GL_FLOAT, 0, vertices); checkGLErrors(HERE);
-			glDrawArrays(GL_LINES, 0, 2); checkGLErrors(HERE);
-		}
-		
-		if (!pilot->route.destination.isEmpty())
-			ap = __airports[pilot->route.destination]->getData();
-		else
-			ap = NULL;
-		
-		if (ap) {
-			GLfloat vertices[] = {
-					((GLfloat)(ap->longitude / 180 - __position.x()) * __zoom),
-					((GLfloat)(ap->latitude / 90 - __position.y()) * __zoom),
-					((GLfloat)(pilot->position.longitude / 180 - __position.x()) * __zoom),
-					((GLfloat)(pilot->position.latitude / 90 - __position.y()) * __zoom)
-				};
-				
-			glVertexPointer(2, GL_FLOAT, 0, vertices); checkGLErrors(HERE);
-			glLineStipple(1, 0xF0F0);
-			glDrawArrays(GL_LINES, 0, 2); checkGLErrors(HERE);
-			glLineStipple(1, 0xFFFF);
-			
-		}
-	} else if (__underMouse->objectType() == AIRPORT) {
-		const AirportObject* ap = static_cast< const AirportObject* >(__underMouse);
-		if (!ap->getData())
-			return;
-		
-		unsigned linesOut = ap->getOutboundsModel()->getFlights().size() - ap->countDepartures();
-		unsigned linesIn = ap->getInboundsModel()->getFlights().size() - ap->countArrivals();
-		
-		GLfloat* vertices = new GLfloat[(linesOut + linesIn) * 4];
-		unsigned i = 0;
-		for (const Pilot* p: ap->getOutboundsModel()->getFlights()) {
-			if (p->flightStatus == DEPARTING)
-				continue;
-			
-			/* We cannot use vertices[i++], vertices[i++], as the result of such
-			 * called function is undefined (according to C++ standard) */
-			__mapCoordinates(p->position.longitude, p->position.latitude,
-					 vertices[i], vertices[i+1]);
-			if ((__settings->displayPilotsLabelsAirportRelated())
-					&& (p->flightStatus != ARRIVED && !__keyPressed))
-				__drawCallsign(vertices[i], vertices[i+1], p); checkGLErrors(HERE);
-			i += 2;
-			
-			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
-					 vertices[i], vertices[i+1]);
-			
-			i += 2;
-		}
-		for (const Pilot* p: ap->getInboundsModel()->getFlights()) {
-			if (p->flightStatus == ARRIVED)
-				continue;
-			
-			__mapCoordinates(p->position.longitude, p->position.latitude,
-					 vertices[i], vertices[i+1]);
-			
-			if ((__settings->displayPilotsLabelsAirportRelated())
-				&& (p->flightStatus != DEPARTING && !__keyPressed))
-				__drawCallsign(vertices[i], vertices[i+1], p); checkGLErrors(HERE);
-			i += 2;
-			
-			__mapCoordinates(ap->getData()->longitude, ap->getData()->latitude,
-							 vertices[i], vertices[i+1]);
-			
-			i += 2;
-		}
-		
-		glVertexPointer(2, GL_FLOAT, 0, vertices); checkGLErrors(HERE);
-		glColor4f(LINES_COLOR);
-		
-		glDrawArrays(GL_LINES, 0, linesOut * 2); checkGLErrors(HERE);
-		
-		glLineStipple(1, 0xF0F0);
-		glDrawArrays(GL_LINES, linesOut * 2, linesIn * 2); checkGLErrors(HERE);
-		glLineStipple(1, 0xFFFF);
-		
-		delete [] vertices;
+	
+	switch (__underMouse->objectType()) {
+		case PILOT:
+			__prepareMatrix(WORLD);
+			static_cast< const Pilot* >(__underMouse)->drawLines();
+			break;
+		case AIRPORT:
+			__prepareMatrix(WORLD);
+			static_cast< const Airport* >(__underMouse)->drawLines();
+			break;
+		default:
+			break;
 	}
+	 
 }
 
 void
@@ -1121,7 +1068,7 @@ MapWidget::__drawToolTip() {
 			text = __producePilotToolTip(static_cast< const Pilot* >(__underMouse));
 			break;
 		case AIRPORT:
-			text = __produceAirportToolTip(static_cast< const AirportObject* >(__underMouse));
+			text = __produceAirportToolTip(static_cast< const Airport* >(__underMouse));
 			break;
 		case FIR:
 			text = __produceFirToolTip(static_cast< const Fir* >(__underMouse));
@@ -1220,7 +1167,7 @@ MapWidget::__producePilotToolTip(const Pilot* _p) {
 }
 
 inline QString
-MapWidget::__produceAirportToolTip(const AirportObject* _ap) {
+MapWidget::__produceAirportToolTip(const Airport* _ap) {
 	QString text = static_cast< QString >("<center>") %
 		static_cast< QString >(_ap->getData()->icao) %
 		static_cast< QString >("<br><nobr>") %
@@ -1296,7 +1243,7 @@ MapWidget::__drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
 }
 
 inline void
-MapWidget::__drawIcaoLabel(const AirportObject* _ap) {
+MapWidget::__drawIcaoLabel(const Airport* _ap) {
 	glPushMatrix();
 		glTranslatef(0.0f, 0.0f, 0.1f);
 		glBindTexture(GL_TEXTURE_2D, _ap->getLabelTip()); checkGLErrors(HERE);

@@ -22,23 +22,23 @@
 
 #include <QPushButton>
 
-class AirportObject;
+class Airport;
 
 class ShowAirportButton : public QPushButton {
 	
 	Q_OBJECT
 	
 public:
-	ShowAirportButton(const AirportObject*, const QString& = "Details", QWidget* = 0);
+	ShowAirportButton(const Airport*, const QString& = "Details", QWidget* = 0);
 	
 signals:
-	void clicked(const AirportObject*);
+	void clicked(const Airport*);
 	
 private slots:
 	void __handleClicked();
 	
 private:
-	const AirportObject* __current;
+	const Airport* __current;
 	
 };
 

@@ -29,7 +29,7 @@
 #include "db/airportsdatabase.h"
 #include "db/firsdatabase.h"
 
-#include "vatsimdata/airportobject.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/uir.h"
@@ -76,7 +76,7 @@ public:
 	/**
 	 * This function parses data file. Its URL can be obtained by getDataUrl()
 	 * function and is choosen randomly from servers list.
-	 * During parsing new Pilots, Controllers and AirportObjects instances are
+	 * During parsing new Pilots, Controllers and Airports instances are
 	 * created.
 	 */
 	void parseDataFile(const QString&);
@@ -100,7 +100,7 @@ public:
 	/**
 	 * Adds an airport to the ActiveAirports map.
 	 */
-	AirportObject * addActiveAirport(const QString&);
+	Airport * addActiveAirport(const QString&);
 	
 	/**
 	 * Returns an URL to where METARs can be fetched from.
@@ -120,7 +120,7 @@ public:
 	inline const QVector< Uir* > &
 	getUIRs() const { return __uirs; }
 	
-	inline const QMap< QString, AirportObject* > &
+	inline const QMap< QString, Airport* > &
 	getActiveAirports() const { return __activeAirports; }
 	
 	inline const QMultiMap< QString, QString > &
@@ -163,7 +163,7 @@ private:
 	QVector< QString >	__servers;
 	
 	/* This set contains list of active airports, used later by OpenGLWidget */
-	QMap< QString, AirportObject* > __activeAirports;
+	QMap< QString, Airport* > __activeAirports;
 	
 	/* This set contains list of aliases. Filled in by init() method. */
 	QMultiMap< QString, QString > __aliases;
@@ -180,6 +180,6 @@ private:
 	
 };
 
-typedef QMap< QString, AirportObject* > AirportsMap;
+typedef QMap< QString, Airport* > AirportsMap;
 
 #endif // VATSIMDATAHANDLER_H

@@ -255,10 +255,10 @@ VatsimDataHandler::findUIR(const QString& _icao) {
 }
 
 
-AirportObject *
+Airport *
 VatsimDataHandler::addActiveAirport(const QString& _icao) {
 	if (!__activeAirports.contains(_icao))
-		__activeAirports.insert(_icao, new AirportObject(_icao));
+		__activeAirports.insert(_icao, new Airport(_icao));
 	return __activeAirports[_icao];
 }
 

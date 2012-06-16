@@ -64,7 +64,7 @@ public:
 	inline const QFont &
 	getPilotFont() { return __pilotFont; }
 	
-	/* For AirportObject class */
+	/* For Airport class */
 	inline const QImage &
 	getAirportToolTipBackground() { return __airportToolTip; }
 	
@@ -91,17 +91,17 @@ public:
 	
 signals:
 	void contextMenuRequested(const Pilot*);
-	void contextMenuRequested(const AirportObject*);
+	void contextMenuRequested(const Airport*);
 	void contextMenuRequested(const Fir*);
 	void flightDetailsWindowRequested(const Client*);
-	void airportDetailsWindowRequested(const AirportObject*);
+	void airportDetailsWindowRequested(const Airport*);
 	void firDetailsWindowRequested(const Fir*);
 	void flightTrackingRequested(const Pilot*);
 	void flightTrackingCanceled();
 	
 public slots:
 	void showPilot(const Pilot*);
-	void showAirport(const AirportObject*);
+	void showAirport(const Airport*);
 	void showPoint(qreal, qreal);
 	void redraw();
 	
@@ -121,7 +121,7 @@ protected:
 private slots:
 	void __loadNewSettings();
 	void __openContextMenu(const Pilot*);
-	void __openContextMenu(const AirportObject*);
+	void __openContextMenu(const Airport*);
 	void __openContextMenu(const Fir*);
 	
 private:
@@ -156,11 +156,11 @@ private:
 	float	__distanceFromCamera(float, float);
 	void	__mapCoordinates(float, float, float&, float&);
 	QString	__producePilotToolTip(const Pilot*);
-	QString	__produceAirportToolTip(const AirportObject*);
+	QString	__produceAirportToolTip(const Airport*);
 	QString	__produceFirToolTip(const Fir*);
 	void	__drawCallsign(const Pilot*);
 	void	__drawCallsign(GLfloat, GLfloat, const Pilot*);
-	void	__drawIcaoLabel(const AirportObject*);
+	void	__drawIcaoLabel(const Airport*);
 	void	__drawFirLabel(GLfloat, GLfloat, const Fir&);
 	
 	bool	__isInitialized;
@@ -173,7 +173,7 @@ private:
 	QImage	__pilotToolTip;
 	QFont	__pilotFont;
 	
-	/* For AirportObject class */
+	/* For Airport class */
 	QImage	__airportToolTip;
 	QFont	__airportFont;
 	

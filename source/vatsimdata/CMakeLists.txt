@@ -1,7 +1,7 @@
 vatsinator_start_subdirectory (vatsimdata)
 
 set (vatsimdata_SRCS
-	airportobject.cpp
+	airport.cpp
 	client.cpp
 	controller.cpp
 	fir.cpp

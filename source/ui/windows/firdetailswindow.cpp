@@ -28,7 +28,7 @@
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 
-#include "vatsimdata/airportobject.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -82,7 +82,10 @@ FirDetailsWindow::__fillLabels(const Fir* _f) {
 	else
 		setWindowTitle(_f->getIcao() + " - ARTCC details");
 	
-	ICAOLabel->setText(_f->getIcao());
+	if (!_f->isOceanic())
+		ICAOLabel->setText(_f->getIcao());
+	else
+		ICAOLabel->setText(_f->getIcao() + " Oceanic");
 	NameLabel->setText(_f->getName());
 }
 
@@ -129,8 +132,8 @@ FirDetailsWindow::__setButtons() {
 	const AirportTableModel* apModel = qobject_cast< const AirportTableModel* >(AirportsTable->model());
 	for (int i = 0; i < apModel->rowCount(); ++i) {
 		ShowAirportButton* pButton = new ShowAirportButton(apModel->getAirports()[i]);
-		connect(pButton,				SIGNAL(clicked(const AirportObject*)),
-			AirportDetailsWindow::GetSingletonPtr(),SLOT(show(const AirportObject*)));
+		connect(pButton,				SIGNAL(clicked(const Airport*)),
+			AirportDetailsWindow::GetSingletonPtr(),SLOT(show(const Airport*)));
 		AirportsTable->setIndexWidget(apModel->index(i, AirportTableModel::Button), pButton);
 	}
 }

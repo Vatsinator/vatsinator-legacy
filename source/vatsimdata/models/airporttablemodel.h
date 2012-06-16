@@ -23,7 +23,7 @@
 #include <QAbstractTableModel>
 #include <QVector>
 
-class AirportObject;
+class Airport;
 
 class AirportTableModel : public QAbstractTableModel {
 	
@@ -36,7 +36,7 @@ class AirportTableModel : public QAbstractTableModel {
 public:
 	explicit AirportTableModel(QObject* = 0);
 	
-	void addAirport(const AirportObject*);
+	void addAirport(const Airport*);
 	
 	int rowCount(const QModelIndex& = QModelIndex()) const;
 	int columnCount(const QModelIndex& = QModelIndex()) const;
@@ -46,7 +46,7 @@ public:
 	inline void
 	clear() { __airports.clear(); }
 	
-	inline const QVector< const AirportObject* > &
+	inline const QVector< const Airport* > &
 	getAirports() const { return __airports; }
 	
 	enum Column {
@@ -62,7 +62,7 @@ private:
 	QString __produceLabel(int) const;
 	QString __produceFacilities(int) const;
 	
-	QVector< const AirportObject* > __airports;
+	QVector< const Airport* > __airports;
 	
 	
 };

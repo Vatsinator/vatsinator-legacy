@@ -23,7 +23,7 @@
 #include "ui/ui_airportdetailswindow.h"
 #include "singleton.h"
 
-class AirportObject;
+class Airport;
 class Controller;
 class Pilot;
 
@@ -38,12 +38,12 @@ public:
 	AirportDetailsWindow(QWidget* = 0);
 	
 public slots:
-	void show(const AirportObject*);
+	void show(const Airport*);
  	void updateMetar();
 	
 private:
-	void __updateModels(const AirportObject* = NULL);
-	void __fillLabels(const AirportObject*);
+	void __updateModels(const Airport* = NULL);
+	void __fillLabels(const Airport*);
 	void __adjustTables();
 	void __setButtons();
 	void __setWindowPosition();

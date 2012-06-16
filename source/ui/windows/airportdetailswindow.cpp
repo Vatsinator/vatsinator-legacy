@@ -25,7 +25,7 @@
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 
-#include "vatsimdata/airportobject.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
@@ -54,7 +54,7 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 }
 
 void
-AirportDetailsWindow::show(const AirportObject* _ap) {
+AirportDetailsWindow::show(const Airport* _ap) {
 	Q_ASSERT(_ap->getData());
 	
 	__currentICAO = _ap->getData()->icao;
@@ -87,8 +87,8 @@ AirportDetailsWindow::updateMetar() {
 
 
 void
-AirportDetailsWindow::__updateModels(const AirportObject* _ap) {
-	const AirportObject* ap;
+AirportDetailsWindow::__updateModels(const Airport* _ap) {
+	const Airport* ap;
 	if (!_ap)
 		ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__currentICAO];
 	else
@@ -105,7 +105,7 @@ AirportDetailsWindow::__updateModels(const AirportObject* _ap) {
 }
 
 void
-AirportDetailsWindow::__fillLabels(const AirportObject* _ap) {
+AirportDetailsWindow::__fillLabels(const Airport* _ap) {
 	setWindowTitle(static_cast< QString >(_ap->getData()->icao) + " - airports details");
 	
 	if (!static_cast< QString >(_ap->getData()->iata).isEmpty())

@@ -53,6 +53,12 @@ public:
 	Pilot(const QStringList&, bool = false);
 	virtual ~Pilot();
 	
+	void drawLineFrom() const;
+	void drawLineTo() const;
+	
+	inline void
+	drawLines() const { drawLineFrom(); drawLineTo(); }
+	
 	ClientType type() const { return PILOT; }
 	ObjectType objectType() const { return PLANE; }
 	
@@ -76,8 +82,8 @@ public:
 	Status		flightStatus;
 	
 	struct {
-		qreal	latitude;
-		qreal	longitude;
+		float	latitude;
+		float	longitude;
 	} position;
 	
 	struct {
@@ -92,8 +98,23 @@ public:
 	bool prefiledOnly;
 	
 private:
+	/**
+	 * Checks whether pilot is departing, airborn or has just arrived.
+	 */
 	void __setMyStatus();
+	
+	/**
+	 * Generates in/out lines.
+	 */
+	void __generateLines();
+	
+	/**
+	 * Generates the callsign label.
+	 */
 	GLuint __generateTip() const;
+	
+	GLfloat *__lineFrom;
+	GLfloat *__lineTo;
 	
 	mutable GLuint __callsignTip;
 	

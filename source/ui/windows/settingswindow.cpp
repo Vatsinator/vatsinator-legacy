@@ -104,10 +104,14 @@ SettingsWindow::__updateWindow() {
 	
 	UnstaffedFirColorButton->setColor(__mySettingsManager->getUnstaffedFirBordersColor());
 	StaffedFirColorButton->setColor(__mySettingsManager->getStaffedFirBordersColor());
+	StaffedFirColorAlphaBox->setValue(__mySettingsManager->getStaffedFirBackgroundColor().alpha());
 	StaffedUirColorButton->setColor(__mySettingsManager->getStaffedUirBordersColor());
+	StaffedUirColorAlphaBox->setValue(__mySettingsManager->getStaffedUirBackgroundColor().alpha());
 	ApproachCircleColorButton->setColor(__mySettingsManager->getApproachCircleColor());
 	SeasColorButton->setColor(__mySettingsManager->getSeasColor());
 	LandsColorButton->setColor(__mySettingsManager->getLandsColor());
+	OriginToPilotLineColorButton->setColor(__mySettingsManager->getOriginToPilotLineColor());
+	PilotToDestinationLineColorButton->setColor(__mySettingsManager->getPilotToDestinationLineColor());
 }
 
 

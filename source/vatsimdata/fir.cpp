@@ -72,7 +72,7 @@ Fir::addFlight(const Pilot* _p) {
 }
 
 void
-Fir::addAirport(const AirportObject* _ap) {
+Fir::addAirport(const Airport* _ap) {
 	__airports->addAirport(_ap);
 }
 

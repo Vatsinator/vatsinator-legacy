@@ -17,11 +17,14 @@
 */
 
 #include <QtGui>
+#include <QtOpenGL>
 
 #include "db/airportsdatabase.h"
 #include "db/firsdatabase.h"
 
 #include "modules/modelsmatcher.h"
+
+#include "settings/settingsmanager.h"
 
 #include "ui/mapwidget/mapwidget.h"
 
@@ -83,15 +86,18 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 		flightRules(_data[21] == "I" ? IFR : VFR),
 		remarks(_data[29]),
 		heading(_data[38].toUInt()),
-		position({_data[5].toDouble(), _data[6].toDouble()}),
+		position({_data[5].toFloat(), _data[6].toFloat()}),
 		route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
 		prefiledOnly(_prefiled),
+		__lineFrom(NULL),
+		__lineTo(NULL),
 		__callsignTip(0) {
+	// vatsim sometimes skips the 0 on the beginning
 	if (squawk.length() == 3)
 		squawk = "0" + squawk;
 	
 	if (!route.origin.isEmpty()) {
-		AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
+		Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
 		ap->addOutbound(this);
 		
 		if (prefiledOnly && ap->getData()) {
@@ -106,7 +112,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 	}
 	
 	if (!route.destination.isEmpty()) {
-		AirportObject* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.destination);
+		Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.destination);
 		ap->addInbound(this);
 		
 		if (ap->getFirs()[0])
@@ -116,7 +122,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 	}
 	
 	__setMyStatus();
-	//__generateTip();
+	__generateLines();
 	
 	modelTexture = ModelsMatcher::GetSingleton().matchMyModel(aircraft);
 }
@@ -124,6 +130,38 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 Pilot::~Pilot() {
 	if (__callsignTip)
 		MapWidget::deleteImage(__callsignTip);
+	if (__lineFrom)
+		delete [] __lineFrom;
+	if (__lineTo)
+		delete [] __lineTo;
+}
+
+void
+Pilot::drawLineFrom() const {
+	if (__lineFrom) {
+		glColor4d(SettingsManager::GetSingleton().getOriginToPilotLineColor().redF(),
+			  SettingsManager::GetSingleton().getOriginToPilotLineColor().greenF(),
+			  SettingsManager::GetSingleton().getOriginToPilotLineColor().blueF(),
+			  1.0
+ 			);
+		glVertexPointer(2, GL_FLOAT, 0, __lineFrom);
+		glDrawArrays(GL_LINES, 0, 2);
+	}
+}
+
+void
+Pilot::drawLineTo() const {
+	if (__lineTo) {
+		glColor4d(SettingsManager::GetSingleton().getPilotToDestinationLineColor().redF(),
+			  SettingsManager::GetSingleton().getPilotToDestinationLineColor().greenF(),
+			  SettingsManager::GetSingleton().getPilotToDestinationLineColor().blueF(),
+			  1.0
+ 			);
+		glVertexPointer(2, GL_FLOAT, 0, __lineTo);
+		glLineStipple(3, 0xF0F0);
+		glDrawArrays(GL_LINES, 0, 2);
+		glLineStipple(1, 0xFFFF);
+	}
 }
 
 void
@@ -185,6 +223,33 @@ Pilot::__setMyStatus() {
 	}
 	
 	flightStatus = AIRBORNE;
+}
+
+void
+Pilot::__generateLines() {
+	const Airport* ap = NULL;
+	if (!route.origin.isEmpty())
+		ap = VatsimDataHandler::GetSingleton().getActiveAirports()[route.origin];
+	
+	if (ap && ap->getData()) {
+		__lineFrom = new GLfloat[4];
+		__lineFrom[0] = ap->getData()->longitude;
+		__lineFrom[1] = ap->getData()->latitude;
+		__lineFrom[2] = position.longitude;
+		__lineFrom[3] = position.latitude;
+	}
+	
+	ap = NULL;
+	if (!route.destination.isEmpty())
+		ap = VatsimDataHandler::GetSingleton().getActiveAirports()[route.destination];
+	
+	if (ap && ap->getData()) {
+		__lineTo = new GLfloat[4];
+		__lineTo[0] = ap->getData()->longitude;
+		__lineTo[1] = ap->getData()->latitude;
+		__lineTo[2] = position.longitude;
+		__lineTo[3] = position.latitude;
+	}
 }
 
 GLuint

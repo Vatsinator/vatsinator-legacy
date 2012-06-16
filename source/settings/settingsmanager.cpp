@@ -58,10 +58,14 @@ SettingsManager::__saveSettings() {
 	
 	settings.setValue("unstaffedFirBordersColor",	__unstaffedFirBordersColor);
 	settings.setValue("staffedFirBordersColor",	__staffedFirBordersColor);
+	settings.setValue("staffedFirBackgroundAlpha",	__staffedFirBackgroundAlpha);
 	settings.setValue("staffedUirBordersColor",	__staffedUirBordersColor);
+	settings.setValue("staffedUirBackgroundAlpha",	__staffedUirBackgroundAlpha);
 	settings.setValue("approachCircleColor",	__approachCircleColor);
 	settings.setValue("seasColor",			__seasColor);
 	settings.setValue("landsColor",			__landsColor);
+	settings.setValue("originToPilotLineColor",	__originToPilotLineColor);
+	settings.setValue("pilotToDestinationLineColor",__pilotToDestinationLineColor);
 	
 	settings.endGroup();
 }
@@ -96,13 +100,17 @@ SettingsManager::__restoreSettings() {
 						    DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR).value<QColor>();
 	__staffedFirBordersColor = settings.value("staffedFirBordersColor",
 						  DefaultSettings::STAFFED_FIR_BORDERS_COLOR).value<QColor>();
+	__staffedFirBackgroundAlpha = settings.value("staffedFirBackgroundAlpha",
+						     DefaultSettings::STAFFED_FIR_BACKGROUND_ALPHA).toInt();
 	__staffedFirBackgroundColor = __staffedFirBordersColor;
-	__staffedFirBackgroundColor.setAlpha(30);
+	__staffedFirBackgroundColor.setAlpha(__staffedFirBackgroundAlpha);
 	
 	__staffedUirBordersColor = settings.value("staffedUirBordersColor",
 						  DefaultSettings::STAFFED_UIR_BORDERS_COLOR).value<QColor>();
+	__staffedUirBackgroundAlpha = settings.value("staffedUirBackgroundAlpha",
+						     DefaultSettings::STAFFED_UIR_BACKGROUND_ALPHA).toInt();
 	__staffedUirBackgroundColor = __staffedUirBordersColor;
-	__staffedUirBackgroundColor.setAlpha(30);
+	__staffedUirBackgroundColor.setAlpha(__staffedUirBackgroundAlpha);
 	
 	__approachCircleColor = settings.value("approachCircleColor",
 					       DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>();
@@ -110,6 +118,10 @@ SettingsManager::__restoreSettings() {
 				     DefaultSettings::SEAS_COLOR).value<QColor>();
 	__landsColor = settings.value("landsColor",
 				      DefaultSettings::LANDS_COLOR).value<QColor>();
+	__originToPilotLineColor = settings.value("originToPilotLineColor",
+						  DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR).value<QColor>();
+	__pilotToDestinationLineColor = settings.value("pilotToDestinationLineColor",
+						       DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR).value<QColor>();
 	   
 #ifndef NO_DEBUG
 	qDebug() << "Antyaliasing " << (__antyaliasing ? "on" : "off");
@@ -156,18 +168,20 @@ SettingsManager::__updateSettings() {
 	
 	__unstaffedFirBordersColor = __mySettingsWindow->UnstaffedFirColorButton->getColor();
 	__staffedFirBordersColor = __mySettingsWindow->StaffedFirColorButton->getColor();
-	
+	__staffedFirBackgroundAlpha = __mySettingsWindow->StaffedFirColorAlphaBox->value();
 	__staffedFirBackgroundColor = __staffedFirBordersColor;
-	__staffedFirBackgroundColor.setAlpha(30);
+	__staffedFirBackgroundColor.setAlpha(__staffedFirBackgroundAlpha);
 	
 	__staffedUirBordersColor = __mySettingsWindow->StaffedUirColorButton->getColor();
-	
+	__staffedUirBackgroundAlpha = __mySettingsWindow->StaffedUirColorAlphaBox->value();
 	__staffedUirBackgroundColor = __staffedUirBordersColor;
-	__staffedUirBackgroundColor.setAlpha(30);
+	__staffedUirBackgroundColor.setAlpha(__staffedUirBackgroundAlpha);
 	
 	__approachCircleColor = __mySettingsWindow->ApproachCircleColorButton->getColor();
 	__seasColor = __mySettingsWindow->SeasColorButton->getColor();
 	__landsColor = __mySettingsWindow->LandsColorButton->getColor();
+	__originToPilotLineColor = __mySettingsWindow->OriginToPilotLineColorButton->getColor();
+	__pilotToDestinationLineColor = __mySettingsWindow->PilotToDestinationLineColorButton->getColor();
 	
 	__saveSettings();
 	
@@ -196,18 +210,20 @@ SettingsManager::__restoreDefaults() {
 	
 	__unstaffedFirBordersColor = DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR;
 	__staffedFirBordersColor = DefaultSettings::STAFFED_FIR_BORDERS_COLOR;
-	
+	__staffedFirBackgroundAlpha = DefaultSettings::STAFFED_FIR_BACKGROUND_ALPHA;
 	__staffedFirBackgroundColor = __staffedFirBordersColor;
-	__staffedFirBackgroundColor.setAlpha(30);
+	__staffedFirBackgroundColor.setAlpha(__staffedFirBackgroundAlpha);
 	
 	__staffedUirBordersColor = DefaultSettings::STAFFED_UIR_BORDERS_COLOR;
-	
+	__staffedUirBackgroundAlpha = DefaultSettings::STAFFED_UIR_BACKGROUND_ALPHA;
 	__staffedUirBackgroundColor = __staffedUirBordersColor;
-	__staffedUirBackgroundColor.setAlpha(30);
+	__staffedUirBackgroundColor.setAlpha(__staffedUirBackgroundAlpha);
 	
 	__approachCircleColor = DefaultSettings::APPROACH_CIRCLE_COLOR;
 	__seasColor = DefaultSettings::SEAS_COLOR;
 	__landsColor = DefaultSettings::LANDS_COLOR;
+	__originToPilotLineColor = DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR;
+	__pilotToDestinationLineColor = DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR;
 	
 	__clearEntries();
 	

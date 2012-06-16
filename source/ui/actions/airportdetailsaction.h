@@ -22,23 +22,23 @@
 
 #include <QAction>
 
-#include "vatsimdata/airportobject.h"
+#include "vatsimdata/airport.h"
 
 class AirportDetailsAction : public QAction {
 	
 	Q_OBJECT
 	
 public:
-	AirportDetailsAction(const AirportObject*, const QString&, QObject*);
+	AirportDetailsAction(const Airport*, const QString&, QObject*);
 	
 signals:
-	void triggered(const AirportObject*);
+	void triggered(const Airport*);
 	
 private slots:
 	void __handleTriggered();
 	
 private:
-	const AirportObject * __current;
+	const Airport * __current;
 	
 	
 };

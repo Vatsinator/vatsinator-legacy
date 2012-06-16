@@ -20,7 +20,7 @@
 
 #include "db/airportsdatabase.h"
 
-#include "vatsimdata/airportobject.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/controller.h"
 
 #include "airporttablemodel.h"
@@ -30,7 +30,7 @@ AirportTableModel::AirportTableModel(QObject* _parent) :
 	QAbstractTableModel(_parent) {}
 
 void
-AirportTableModel::addAirport(const AirportObject* _ap) {
+AirportTableModel::addAirport(const Airport* _ap) {
 	__airports.push_back(_ap);
 }
 
