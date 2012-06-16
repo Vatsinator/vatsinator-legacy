@@ -72,7 +72,10 @@ AirportDetailsWindow::show(const Airport* _ap) {
 		MetarListModel::GetSingleton().fetchMetar(__currentICAO);
 	}
 	
-	QWidget::show();
+	if (!isVisible())
+		QWidget::show();
+	else
+		activateWindow();
 }
 
 void

@@ -154,7 +154,6 @@ VatsinatorApplication::__statusFileUpdated(const QString& _data) {
 		decision.setIcon(QMessageBox::Warning);
 		
 		__timer.stop();
-		__userInterface->statusBarUpdate();
 		
 		decision.exec();
 		
@@ -162,6 +161,7 @@ VatsinatorApplication::__statusFileUpdated(const QString& _data) {
 			__fetchStatusFile();
 			return;
 		} else {
+			__userInterface->statusBarUpdate();
 			return;
 		}
 	}

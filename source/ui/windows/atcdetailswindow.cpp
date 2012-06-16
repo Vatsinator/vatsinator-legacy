@@ -73,7 +73,10 @@ ATCDetailsWindow::show(const Client* _client) {
 	
 	AtisMessageField->setPlainText(__current->atis);
 	
-	QWidget::show();
+	if (!isVisible())
+		QWidget::show();
+	else
+		activateWindow();
 }
 
 QString

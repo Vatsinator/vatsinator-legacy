@@ -75,13 +75,15 @@ FlightDetailsWindow::show(const Client* _client) {
 	if (!__current->route.origin.isEmpty()) {
 		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.origin];
 		QString text = __current->route.origin;
-		if (ap->getData())
+		if (ap->getData()) {
 			text.append(QString(" ") %
 					QString::fromUtf8(ap->getData()->name) %
 					" - " %
 					QString::fromUtf8(ap->getData()->city));
+			OriginButton->setAirportPointer(ap);
+		} else
+			OriginButton->setAirportPointer(NULL);
 		OriginButton->setText(text);
-		OriginButton->setAirportPointer(ap);
 	} else {
 		OriginButton->setText("(unknown)");
 		OriginButton->setAirportPointer(NULL);
@@ -114,7 +116,10 @@ FlightDetailsWindow::show(const Client* _client) {
 	else
 		TrackFlightBox->setCheckState(Qt::Unchecked);
 	
-	QWidget::show();
+	if (!isVisible())
+		QWidget::show();
+	else
+		activateWindow();
 }
 
 void
