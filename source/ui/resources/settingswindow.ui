@@ -288,65 +288,13 @@
       <string>Miscellaneous</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="4">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="3">
-       <widget class="QSpinBox" name="RefreshRateBox">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>60</number>
-        </property>
-        <property name="value">
-         <number>3</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="RefreshRateLabel">
+      <item row="1" column="1" colspan="2">
+       <widget class="QCheckBox" name="RefreshMetarsCheckBox">
         <property name="text">
-         <string>Refresh rate (in minutes):</string>
+         <string>Refresh METARs as well</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="AntyaliasingCheckBox">
-        <property name="text">
-         <string>Antyaliasing</string>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -366,40 +314,8 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QCheckBox" name="RefreshMetarsCheckBox">
-        <property name="text">
-         <string>Refresh METARs as well</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="ViewOptionsGroup">
-     <property name="title">
-      <string>View options</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="3" column="2">
-       <widget class="QCheckBox" name="ShowPilotsLabelsAirportRelatedCheckBox">
-        <property name="whatsThis">
-         <string extracomment="Display pilots' labels when departure/destination airport are hovered"/>
-        </property>
-        <property name="text">
-         <string>Airport-related</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <spacer name="horizontalSpacer_7">
+      <item row="0" column="4">
+       <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -414,62 +330,15 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="2">
-       <widget class="QCheckBox" name="ShowPilotsLabelsWhenHoveredCheckBox">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>When hovered</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="AirportsCheckBox">
+       <widget class="QCheckBox" name="AntyaliasingCheckBox">
         <property name="text">
-         <string>Airports</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QCheckBox" name="ShowPilotsLabelsAlwaysCheckBox">
-        <property name="text">
-         <string>Always</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QCheckBox" name="FirsCheckBox">
-        <property name="text">
-         <string>FIRs</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Antyaliasing</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="ShowPilotsLabelsLabel">
-        <property name="text">
-         <string>Show pilot labels:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="LayersLabel">
-        <property name="text">
-         <string>Display layers:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <spacer name="horizontalSpacer_4">
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -484,55 +353,28 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="PilotsCheckBox">
+      <item row="0" column="1">
+       <widget class="QLabel" name="RefreshRateLabel">
         <property name="text">
-         <string>Pilots</string>
+         <string>Refresh rate (in minutes):</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
-      <item row="5" column="2">
-       <widget class="QLabel" name="ShowAirportsLabelsLabel">
-        <property name="text">
-         <string>Show aiport labels:</string>
+      <item row="0" column="3">
+       <widget class="QSpinBox" name="RefreshRateBox">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+        <property name="value">
+         <number>3</number>
         </property>
        </widget>
-      </item>
-      <item row="7" column="2">
-       <widget class="QRadioButton" name="AlwaysRadioButton">
-        <property name="text">
-         <string>Always</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="2">
-       <widget class="QRadioButton" name="NeverRadioButton">
-        <property name="text">
-         <string>Never</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
@@ -545,6 +387,196 @@
      <property name="centerButtons">
       <bool>false</bool>
      </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="ViewOptionsGroup">
+     <property name="title">
+      <string>View options</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0" rowspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="LayersLabel">
+            <property name="text">
+             <string>Display layers:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="PilotsCheckBox">
+            <property name="text">
+             <string>Pilots</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="AirportsCheckBox">
+            <property name="text">
+             <string>Airports</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="StaffedFirsCheckBox">
+            <property name="text">
+             <string>Staffed FIRs</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="UnstaffedFirsCheckBox">
+            <property name="text">
+             <string>Unstaffed FIRs</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="ShowPilotsLabelsLabel">
+            <property name="text">
+             <string>Show pilot labels:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="ShowPilotsLabelsAlwaysCheckBox">
+            <property name="text">
+             <string>Always</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="ShowPilotsLabelsWhenHoveredCheckBox">
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="text">
+             <string>When hovered</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="ShowPilotsLabelsAirportRelatedCheckBox">
+            <property name="whatsThis">
+             <string extracomment="Display pilots' labels when departure/destination airport are hovered"/>
+            </property>
+            <property name="text">
+             <string>Airport-related</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="ShowAirportsLabelsLabel">
+            <property name="text">
+             <string>Show aiport labels:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="AlwaysRadioButton">
+            <property name="text">
+             <string>Always</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="NeverRadioButton">
+            <property name="text">
+             <string>Never</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

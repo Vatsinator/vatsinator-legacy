@@ -51,7 +51,8 @@ SettingsManager::__saveSettings() {
 	settings.setValue("antyaliasing",	__antyaliasing);
 	settings.setValue("pilotsLayer",	__displayLayers.pilots);
 	settings.setValue("airportsLayer",	__displayLayers.airports);
-	settings.setValue("firsLayer",		__displayLayers.firs);
+	settings.setValue("staffedFirsLayer",	__displayLayers.staffedFirs);
+	settings.setValue("unstaffedFirsLayer",	__displayLayers.unstaffedFirs);
 	settings.setValue("displayApLabels",	__displayAirportLabels);
 	
 	settings.setValue("pilotsLabelsDisplayPolicy",	__pilotsLabelsDisplayPolicy);
@@ -81,7 +82,8 @@ SettingsManager::__restoreSettings() {
 	__antyaliasing = settings.value("antyaliasing", DefaultSettings::ANTYALIASING).toBool();
 	__displayLayers.pilots = settings.value("pilotsLayer", DefaultSettings::PILOTS_CHECKBOX).toBool();
 	__displayLayers.airports = settings.value("airportsLayer", DefaultSettings::AIRPORTS_CHECKBOX).toBool();
-	__displayLayers.firs = settings.value("firsLayer", DefaultSettings::FIRS_CHECKBOX).toBool();
+	__displayLayers.staffedFirs = settings.value("staffedFirsLayer", DefaultSettings::STAFFED_FIRS_CHECKBOX).toBool();
+	__displayLayers.unstaffedFirs = settings.value("unstaffedFirsLayer", DefaultSettings::UNSTAFFED_FIRS_CHECKBOX).toBool();
 	__displayAirportLabels = settings.value("displayApLabels", DefaultSettings::DISPLAY_AIRPORT_LABELS).toBool();
 	
 	/* Determine the default pilots' labels display policy settings */
@@ -149,7 +151,8 @@ SettingsManager::__updateSettings() {
 	__antyaliasing = static_cast< bool >(__mySettingsWindow->AntyaliasingCheckBox->checkState());
 	__displayLayers.pilots = static_cast< bool >(__mySettingsWindow->PilotsCheckBox->checkState());
 	__displayLayers.airports = static_cast< bool >(__mySettingsWindow->AirportsCheckBox->checkState());
-	__displayLayers.firs = static_cast< bool >(__mySettingsWindow->FirsCheckBox->checkState());
+	__displayLayers.staffedFirs = static_cast< bool >(__mySettingsWindow->StaffedFirsCheckBox->checkState());
+	__displayLayers.unstaffedFirs = static_cast< bool >(__mySettingsWindow->UnstaffedFirsCheckBox->checkState());
 	if (__mySettingsWindow->AlwaysRadioButton->isChecked())
 		__displayAirportLabels = true;
 	else
@@ -195,7 +198,8 @@ SettingsManager::__restoreDefaults() {
 	__antyaliasing = DefaultSettings::ANTYALIASING;
 	__displayLayers.pilots = DefaultSettings::PILOTS_CHECKBOX;
 	__displayLayers.airports = DefaultSettings::AIRPORTS_CHECKBOX;
-	__displayLayers.firs = DefaultSettings::FIRS_CHECKBOX;
+	__displayLayers.staffedFirs = DefaultSettings::STAFFED_FIRS_CHECKBOX;
+	__displayLayers.unstaffedFirs = DefaultSettings::UNSTAFFED_FIRS_CHECKBOX;
 	__displayAirportLabels = DefaultSettings::DISPLAY_AIRPORT_LABELS;
 	
 	__pilotsLabelsDisplayPolicy = 0;

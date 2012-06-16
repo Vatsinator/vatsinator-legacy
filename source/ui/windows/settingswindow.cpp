@@ -77,7 +77,8 @@ SettingsWindow::__updateWindow() {
 	AntyaliasingCheckBox->setChecked(__mySettingsManager->hasAntyaliasing());
 	PilotsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().pilots);
 	AirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().airports);
-	FirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().firs);
+	StaffedFirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().staffedFirs);
+	UnstaffedFirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().unstaffedFirs);
 	if (__mySettingsManager->displayAirportLabels()) {
 		AlwaysRadioButton->setChecked(true);
 		NeverRadioButton->setChecked(false);

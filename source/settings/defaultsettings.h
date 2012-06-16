@@ -17,7 +17,8 @@ static const bool ANTYALIASING			= false;
 // "Display layers"
 static const bool PILOTS_CHECKBOX		= true;
 static const bool AIRPORTS_CHECKBOX		= true;
-static const bool FIRS_CHECKBOX			= true;
+static const bool STAFFED_FIRS_CHECKBOX		= true;
+static const bool UNSTAFFED_FIRS_CHECKBOX	= true;
 static const bool DISPLAY_AIRPORT_LABELS	= true;
 // "Show pilots labels"
 static const bool ALWAYS_CHECKBOX		= true;

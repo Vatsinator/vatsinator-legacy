@@ -342,16 +342,13 @@ MapWidget::paintGL() {
 #endif
 	
 	__drawWorld();
-	
-	if (__settings->getDisplayLayersPolicy().firs)
-		__drawFirs();
+	__drawFirs();
 	
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
-	if (__settings->getDisplayLayersPolicy().firs)
-		__drawFirsLabels();
+	__drawFirsLabels();
 	
 	if (__settings->getDisplayLayersPolicy().airports)
 		__drawAirports();
@@ -812,36 +809,40 @@ MapWidget::__drawWorld() {
 
 void
 MapWidget::__drawFirs() {
-	glPushMatrix();
-		glTranslatef(0.0, 0.0, -0.8);
-		for (const Fir& fir: __firs->getFirs()) {
-			if (fir.isStaffed()) {
-				continue;
+	if (__settings->getDisplayLayersPolicy().unstaffedFirs) {
+		glPushMatrix();
+			glTranslatef(0.0, 0.0, -0.8);
+			for (const Fir& fir: __firs->getFirs()) {
+				if (fir.isStaffed()) {
+					continue;
+				}
+				
+				qglColor(__settings->getUnstaffedFirBordersColor());		
+				fir.drawBorders(); checkGLErrors(HERE);
 			}
-			
-			qglColor(__settings->getUnstaffedFirBordersColor());		
-			fir.drawBorders(); checkGLErrors(HERE);
-		}
-	glPopMatrix();
+		glPopMatrix();
+	}
 	
-	__drawUirs();
-	
-	glLineWidth(3.0);
-	glPushMatrix();
-		glTranslatef(0.0, 0.0, -0.6);
+	if (__settings->getDisplayLayersPolicy().staffedFirs) {
+		__drawUirs();
 		
-		for (const Fir& fir: __firs->getFirs()) {
-			if (!fir.isStaffed())
-				continue;
+		glLineWidth(3.0);
+		glPushMatrix();
+			glTranslatef(0.0, 0.0, -0.6);
 			
-			qglColor(__settings->getStaffedFirBordersColor());
-			fir.drawBorders(); checkGLErrors(HERE);
-			
-			qglColor(__settings->getStaffedFirBackgroundColor());
-			fir.drawTriangles(); checkGLErrors(HERE);
-		}
-	glPopMatrix();
-	glLineWidth(1.0);
+			for (const Fir& fir: __firs->getFirs()) {
+				if (!fir.isStaffed())
+					continue;
+				
+				qglColor(__settings->getStaffedFirBordersColor());
+				fir.drawBorders(); checkGLErrors(HERE);
+				
+				qglColor(__settings->getStaffedFirBackgroundColor());
+				fir.drawTriangles(); checkGLErrors(HERE);
+			}
+		glPopMatrix();
+		glLineWidth(1.0);
+	}
 }
 
 inline void

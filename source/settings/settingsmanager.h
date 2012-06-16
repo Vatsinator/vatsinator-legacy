@@ -41,7 +41,8 @@ public:
 	struct DisplayLayersPolicy {
 		bool	pilots;
 		bool	airports;
-		bool	firs;
+		bool	staffedFirs;
+		bool	unstaffedFirs;
 	};
 	
 	SettingsManager(QObject* = 0);
