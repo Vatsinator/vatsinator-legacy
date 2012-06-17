@@ -605,8 +605,12 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 					this
 				);
 			__menu->addAction(showDetails);
-			connect(showDetails,		SIGNAL(triggered(const Client*)),
-				__flightDetailsWindow,	SLOT(show(const Client*)));
+			
+			if (p->prefiledOnly)
+				showDetails->setEnabled(false);
+			else
+				connect(showDetails,		SIGNAL(triggered(const Client*)),
+					__flightDetailsWindow,	SLOT(show(const Client*)));
 		}
 	}
 	
@@ -623,8 +627,12 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 					this
 				);
 			__menu->addAction(showDetails);
-			connect(showDetails,		SIGNAL(triggered(const Client*)),
-				__flightDetailsWindow,	SLOT(show(const Client*)));
+			
+			if (p->prefiledOnly)
+				showDetails->setEnabled(false);
+			else
+				connect(showDetails,		SIGNAL(triggered(const Client*)),
+					__flightDetailsWindow,	SLOT(show(const Client*)));
 		}
 	}
 	

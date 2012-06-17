@@ -580,7 +580,7 @@
        <x>10</x>
        <y>161</y>
        <width>371</width>
-       <height>151</height>
+       <height>161</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -681,13 +681,13 @@
         <property name="minimumSize">
          <size>
           <width>240</width>
-          <height>50</height>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>240</width>
-          <height>50</height>
+          <height>60</height>
          </size>
         </property>
         <property name="horizontalScrollBarPolicy">

@@ -76,13 +76,16 @@ FlightDetailsWindow::show(const Client* _client) {
 		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.origin];
 		QString text = __current->route.origin;
 		if (ap->getData()) {
-			text.append(QString(" ") %
-					QString::fromUtf8(ap->getData()->name) %
-					" - " %
+			text.append(static_cast< QString >(" ") %
+								QString::fromUtf8(ap->getData()->name));
+			if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
+				text.append(
+					static_cast< QString >(" - ") %
 					QString::fromUtf8(ap->getData()->city));
 			OriginButton->setAirportPointer(ap);
-		} else
+		} else {
 			OriginButton->setAirportPointer(NULL);
+		}
 		OriginButton->setText(text);
 	} else {
 		OriginButton->setText("(unknown)");
@@ -92,13 +95,18 @@ FlightDetailsWindow::show(const Client* _client) {
 	if (!__current->route.destination.isEmpty()) {
 		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.destination];
 		QString text = __current->route.destination;
-		if (ap->getData())
-			text.append(QString(" ") %
-					QString::fromUtf8(ap->getData()->name) %
-					" - " %
+		if (ap->getData()) {
+			text.append(static_cast< QString >(" ") %
+					QString::fromUtf8(ap->getData()->name));
+			if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
+				text.append(
+					static_cast< QString >(" - ") %
 					QString::fromUtf8(ap->getData()->city));
+				ArrivalButton->setAirportPointer(ap);
+		} else {
+			ArrivalButton->setAirportPointer(NULL);
+		}
 		ArrivalButton->setText(text);
-		ArrivalButton->setAirportPointer(ap);
 	} else {
 		ArrivalButton->setText("(unknown)");
 		ArrivalButton->setAirportPointer(NULL);
