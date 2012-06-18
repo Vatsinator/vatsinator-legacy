@@ -232,8 +232,18 @@ Pilot::__generateLines() {
 	
 	if (ap && ap->getData()) {
 		__lineFrom = new GLfloat[4];
-		__lineFrom[0] = ap->getData()->longitude;
-		__lineFrom[1] = ap->getData()->latitude;
+		
+		double myLon = ap->getData()->longitude;
+		double myLat = ap->getData()->latitude;
+		if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
+			VatsimDataHandler::calcDistance(myLon + 360, myLat, position.longitude, position.latitude))
+			myLon += 360;
+		else if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
+ 			VatsimDataHandler::calcDistance(myLon - 360, myLat, position.longitude, position.latitude))
+			myLon -= 360;
+		
+		__lineFrom[0] = myLon;
+		__lineFrom[1] = myLat;
 		__lineFrom[2] = position.longitude;
 		__lineFrom[3] = position.latitude;
 	}
@@ -244,8 +254,18 @@ Pilot::__generateLines() {
 	
 	if (ap && ap->getData()) {
 		__lineTo = new GLfloat[4];
-		__lineTo[0] = ap->getData()->longitude;
-		__lineTo[1] = ap->getData()->latitude;
+		
+		double myLon = ap->getData()->longitude;
+		double myLat = ap->getData()->latitude;
+		if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
+			VatsimDataHandler::calcDistance(myLon + 360, myLat, position.longitude, position.latitude))
+			myLon += 360;
+		else if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
+			VatsimDataHandler::calcDistance(myLon - 360, myLat, position.longitude, position.latitude))
+			myLon -= 360;
+		
+		__lineTo[0] = myLon;
+		__lineTo[1] = myLat;
 		__lineTo[2] = position.longitude;
 		__lineTo[3] = position.latitude;
 	}

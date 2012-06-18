@@ -144,7 +144,7 @@ Fir::drawTriangles() const {
 		__bordersVBO->unbind();
 	}
 #else
-	if (!triangles.isEmpty()) {
+	if (!__triangles.isEmpty()) {
 		glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
 		glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]); checkGLErrors(HERE);
 	}

@@ -129,19 +129,19 @@ private:
 	};
 	
 	void __init();
-	void __prepareMatrix(PMMatrixMode);
+	void __prepareMatrix(PMMatrixMode, double = 0.0);
 	
 #ifndef NO_DEBUG
 	void __drawMarks();
 #endif
 	
-	void __drawWorld();
-	void __drawFirs();
-	void __drawUirs();
-	void __drawFirsLabels();
-	void __drawAirports();
-	void __drawPilots();
-	void __drawLines(); // lines when airport/pilot on hover
+	void __drawWorld(double = 0.0);
+	void __drawFirs(double = 0.0);
+	void __drawUirs(double);
+	void __drawFirsLabels(float = 0.0);
+	void __drawAirports(float = 0.0);
+	void __drawPilots(float = 0.0);
+	void __drawLines(double = 0.0); // lines when airport/pilot on hover
 	void __drawToolTip();
 	
 	void __setAntyaliasing(bool);
@@ -219,6 +219,11 @@ private:
 	
 	/* Current context menu */
 	QMenu *		__menu;
+	
+	/* Draw the map copy on the left or right */
+	bool	__drawLeft;
+	bool	__drawRight;
+	double	__360degreesMapped;
 	
 	VatsinatorApplication &	__mother;
 	

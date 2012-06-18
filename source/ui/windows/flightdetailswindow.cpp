@@ -28,6 +28,8 @@
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
+#include "vatsinatorapplication.h"
+
 #include "flightdetailswindow.h"
 #include "defines.h"
 
@@ -37,6 +39,8 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 	
 	connect(TrackFlightBox, SIGNAL(stateChanged(int)), this, SLOT(stateHandle(int)));
 	connect(ShowButton,	SIGNAL(clicked()),	this,	SLOT(__handleShowClicked()));
+	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
+		this,						SLOT(__updateData()));
 	
 	__setWindowPosition();
 }
@@ -45,6 +49,7 @@ void
 FlightDetailsWindow::show(const Client* _client) {
 	Q_ASSERT(dynamic_cast< const Pilot* >(_client));
 	__current = dynamic_cast< const Pilot* >(_client);
+	__currentCallsign = __current->callsign;
 	
 	if (__current->prefiledOnly)
 		return;
@@ -72,6 +77,33 @@ FlightDetailsWindow::show(const Client* _client) {
 	
 	FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
 	
+	__updateToFromButtons();
+	
+	AircraftLabel->setText(__current->aircraft);
+	TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
+	CruiseAltitude->setText(__current->route.altitude);
+	
+	RouteField->setPlainText(__current->route.route);
+	RemarksField->setPlainText(__current->remarks);
+	
+	if (FlightTracker::GetSingleton().getTracked() == __current)
+		TrackFlightBox->setCheckState(Qt::Checked);
+	else
+		TrackFlightBox->setCheckState(Qt::Unchecked);
+	
+	if (!isVisible())
+		QWidget::show();
+	else
+		activateWindow();
+}
+
+void
+FlightDetailsWindow::stateHandle(int _state) {
+	emit flightTrackingStateChanged(__current, _state);
+}
+
+void
+FlightDetailsWindow::__updateToFromButtons() {
 	if (!__current->route.origin.isEmpty()) {
 		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.origin];
 		QString text = __current->route.origin;
@@ -111,30 +143,7 @@ FlightDetailsWindow::show(const Client* _client) {
 		ArrivalButton->setText("(unknown)");
 		ArrivalButton->setAirportPointer(NULL);
 	}
-	
-	AircraftLabel->setText(__current->aircraft);
-	TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
-	CruiseAltitude->setText(__current->route.altitude);
-	
-	RouteField->setPlainText(__current->route.route);
-	RemarksField->setPlainText(__current->remarks);
-	
-	if (FlightTracker::GetSingleton().getTracked() == __current)
-		TrackFlightBox->setCheckState(Qt::Checked);
-	else
-		TrackFlightBox->setCheckState(Qt::Unchecked);
-	
-	if (!isVisible())
-		QWidget::show();
-	else
-		activateWindow();
 }
-
-void
-FlightDetailsWindow::stateHandle(int _state) {
-	emit flightTrackingStateChanged(__current, _state);
-}
-
 
 void
 FlightDetailsWindow::__setWindowPosition() {
@@ -159,6 +168,18 @@ FlightDetailsWindow::__setWindowPosition() {
 	y -= 50;
 	
 	move(x, y);
+}
+
+void
+FlightDetailsWindow::__updateData() {
+	__current = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
+	if (!__current) {
+		__currentCallsign = "";
+		hide();
+		return;
+	}
+	
+	__updateToFromButtons();
 }
 
 void

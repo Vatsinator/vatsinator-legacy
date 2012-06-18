@@ -44,11 +44,14 @@ public slots:
 	void stateHandle(int);
 	
 private:
+	void __updateToFromButtons();
 	void __setWindowPosition();
 	
 	const Pilot *	__current;
+	QString		__currentCallsign;
 	
 private slots:
+	void __updateData();
 	void __handleShowClicked();
 	
 	

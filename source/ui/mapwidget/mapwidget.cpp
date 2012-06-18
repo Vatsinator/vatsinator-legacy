@@ -127,6 +127,8 @@ MapWidget::MapWidget(QWidget* _parent) :
 		__dontDisplayTooltip(false),
 		__label(NULL),
 		__menu(NULL),
+		__drawLeft(false),
+		__drawRight(false),
 		__mother(VatsinatorApplication::GetSingleton()),
 		__data(VatsimDataHandler::GetSingleton()),
 		__airports(__data.getActiveAirports()) {
@@ -306,11 +308,13 @@ MapWidget::initializeGL() {
 #endif
 }
 
-
-
 void
 MapWidget::paintGL() {
 	__underMouse = NULL;
+	
+	__drawLeft = (-1 - __position.x()) * __zoom > -__orthoRangeX;
+	__drawRight = (1 - __position.x()) * __zoom < __orthoRangeX;
+	__360degreesMapped = -__position.x() * __zoom;
 	
 	qglColor(__settings->getSeasColor());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -323,7 +327,6 @@ MapWidget::paintGL() {
 	}
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
 	checkGLErrors(HERE);
 	__prepareMatrix(WORLD);
 	
@@ -332,21 +335,50 @@ MapWidget::paintGL() {
 #endif
 	
 	__drawWorld();
+	if (__drawLeft)
+		__drawWorld(-360.0);
+	if (__drawRight)
+		__drawWorld(360.0);
+	
+	
 	__drawFirs();
+	if (__drawLeft)
+		__drawFirs(-360.0);
+	if (__drawRight)
+		__drawFirs(360.0);
 	
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
 	
 	__prepareMatrix(AIRPORTS_PILOTS);
 	
 	__drawFirsLabels();
+	if (__drawLeft)
+		__drawFirsLabels(-360.0);
+	if (__drawRight)
+		__drawFirsLabels(360.0);
 	
-	if (__settings->getDisplayLayersPolicy().airports)
+	if (__settings->getDisplayLayersPolicy().airports) {
 		__drawAirports();
+		if (__drawLeft)
+			__drawAirports(-360.0);
+		if (__drawRight)
+			__drawAirports(360.0);
+	}
 	
-	if (__settings->getDisplayLayersPolicy().pilots)
+	if (__settings->getDisplayLayersPolicy().pilots) {
 		__drawPilots();
+		if (__drawLeft)
+			__drawPilots(-360.0);
+		if (__drawRight)
+			__drawPilots(360.0);
+	}
 	
 	__drawLines();
+	if (__drawLeft)
+		__drawLines(-360.0);
+	if (__drawRight)
+		__drawLines(360.0);
 	
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -473,10 +505,16 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
 	// count the mouse position global coordinates
 	double longitude = (__lastMousePosInterpolated.x() / (double)__zoom + __position.x()) * 180;
 	double latitude = (__lastMousePosInterpolated.y() / (double)__zoom + __position.y()) * 90;
+	
 	if (latitude < -90)
 		latitude = -90;
 	else if (latitude > 90)
 		latitude = 90;
+	
+	if (longitude < -180)
+		longitude += 360;
+	else if (longitude > 180)
+		longitude -= 360;
 	
 	// update the label on the very bottom of the main window
 	UserInterface::GetSingleton().getPositionBox()->setText(
@@ -725,7 +763,7 @@ MapWidget::__init() {
 }
 
 inline void
-MapWidget::__prepareMatrix(PMMatrixMode _mode) {
+MapWidget::__prepareMatrix(PMMatrixMode _mode, double _moveX) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
@@ -748,6 +786,9 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode) {
 			glScalef(1.0f/180.0f, 1.0f/90.0f, 1.0f);
 			glScalef(__zoom, __zoom, 1.0);
  			glTranslated(-__position.x() * 180, -__position.y() * 90, 0.0);
+			
+			if (_moveX)
+				glTranslated(_moveX, 0.0, 0.0);
 			checkGLErrors(HERE);
 			break;
 		case AIRPORTS_PILOTS:
@@ -795,9 +836,9 @@ MapWidget::__drawMarks() {
 
 
 inline void
-MapWidget::__drawWorld() {
+MapWidget::__drawWorld(double _moveX) {
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, -0.9);
+		glTranslatef(_moveX, 0.0, -0.9);
 		
 		qglColor(__settings->getLandsColor());
 		__myWorldMap->draw();
@@ -806,10 +847,10 @@ MapWidget::__drawWorld() {
 }
 
 void
-MapWidget::__drawFirs() {
+MapWidget::__drawFirs(double _moveX) {
 	if (__settings->getDisplayLayersPolicy().unstaffedFirs) {
 		glPushMatrix();
-			glTranslatef(0.0, 0.0, -0.8);
+			glTranslatef(_moveX, 0.0, -0.8);
 			for (const Fir& fir: __firs->getFirs()) {
 				if (fir.isStaffed()) {
 					continue;
@@ -822,11 +863,11 @@ MapWidget::__drawFirs() {
 	}
 	
 	if (__settings->getDisplayLayersPolicy().staffedFirs) {
-		__drawUirs();
+		__drawUirs(_moveX);
 		
 		glLineWidth(3.0);
 		glPushMatrix();
-			glTranslatef(0.0, 0.0, -0.6);
+			glTranslatef(_moveX, 0.0, -0.6);
 			
 			for (const Fir& fir: __firs->getFirs()) {
 				if (!fir.isStaffed())
@@ -844,11 +885,11 @@ MapWidget::__drawFirs() {
 }
 
 inline void
-MapWidget::__drawUirs() {
+MapWidget::__drawUirs(double _moveX) {
 	glLineWidth(3.0);
 	
 	glPushMatrix();
-		glTranslatef(0.0, 0.0, -0.7);
+		glTranslatef(_moveX, 0.0, -0.7);
 		for (const Uir* uir: __data.getUIRs()) {
 			if (!uir->getStaff().isEmpty()) {
 				for (const Fir* fir: uir->getRange()) {
@@ -872,7 +913,7 @@ MapWidget::__drawUirs() {
 }
 
 void
-MapWidget::__drawFirsLabels() {
+MapWidget::__drawFirsLabels(float _moveX) {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glPushMatrix();
 		glTranslatef(0.0, 0.0, -0.5);
@@ -881,10 +922,10 @@ MapWidget::__drawFirsLabels() {
 				continue;
 			
 			float x, y;
-			__mapCoordinates(fir.getTextPosition().x, fir.getTextPosition().y, x, y);
+			__mapCoordinates(fir.getTextPosition().x + _moveX, fir.getTextPosition().y, x, y);
 			if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
 					(x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
-			
+				
 				__drawFirLabel(x, y, fir);
 				checkGLErrors(HERE);
 				
@@ -899,14 +940,14 @@ MapWidget::__drawFirsLabels() {
 }
 
 void
-MapWidget::__drawAirports() {
+MapWidget::__drawAirports(float _moveX) {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 		
 		if (!it.value()->getData())
 			continue;
 		
-		GLfloat x = ((it.value()->getData()->longitude / 180) - __position.x()) * __zoom;
+		GLfloat x = (((it.value()->getData()->longitude + _moveX) / 180) - __position.x()) * __zoom;
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
@@ -956,7 +997,7 @@ MapWidget::__drawAirports() {
 		if (inRange && __underMouse == it.value() &&
 				!__settings->displayPilotsLabelsAlways() &&
 				__settings->displayPilotsLabelsAirportRelated() &&
-				!__keyPressed) {
+				!__keyPressed) { // draw callsign labels if not drawn already
 			float tipX, tipY;
 			
 			for (const Pilot* p: it.value()->getOutboundsModel()->getFlights()) {
@@ -981,14 +1022,14 @@ MapWidget::__drawAirports() {
 }
 
 void
-MapWidget::__drawPilots() {
+MapWidget::__drawPilots(float _moveX) {
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	
 	for (const Pilot* client: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
 		if (client->flightStatus != AIRBORNE || client->prefiledOnly)
 			continue;
 		
-		GLfloat x = (client->position.longitude / 180 - __position.x()) * __zoom;
+		GLfloat x = ((client->position.longitude + _moveX) / 180 - __position.x()) * __zoom;
 		if (x < -__orthoRangeX || x > __orthoRangeX)
 			continue;
 		
@@ -1026,9 +1067,9 @@ MapWidget::__drawPilots() {
 }
 
 void
-MapWidget::__drawLines() {
+MapWidget::__drawLines(double _moveX) {
 	if (__keyPressed) {
-		__prepareMatrix(WORLD);
+		__prepareMatrix(WORLD, _moveX);
 		for (const Pilot* p: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
 			if (p->flightStatus == AIRBORNE)
 				p->drawLines();
@@ -1041,11 +1082,11 @@ MapWidget::__drawLines() {
 	
 	switch (__underMouse->objectType()) {
 		case PILOT:
-			__prepareMatrix(WORLD);
+			__prepareMatrix(WORLD, _moveX);
 			static_cast< const Pilot* >(__underMouse)->drawLines();
 			break;
 		case AIRPORT:
-			__prepareMatrix(WORLD);
+			__prepareMatrix(WORLD, _moveX);
 			static_cast< const Airport* >(__underMouse)->drawLines();
 			break;
 		default:
