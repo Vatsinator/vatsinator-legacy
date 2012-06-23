@@ -22,6 +22,8 @@
 
 #include "ui/buttons/clientdetailsbutton.h"
 
+#include "ui/mapwidget/mapwidget.h"
+
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 
@@ -51,6 +53,9 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 	
 	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
 		this,					SLOT(__updateData()));
+	
+	connect(ShowButton,				SIGNAL(clicked()),
+		this,					SLOT(__handleShowClicked()));
 }
 
 void
@@ -58,6 +63,7 @@ AirportDetailsWindow::show(const Airport* _ap) {
 	Q_ASSERT(_ap->getData());
 	
 	__currentICAO = _ap->getData()->icao;
+	__current = _ap;
 	
 	__fillLabels(_ap);
 	__updateModels(_ap);
@@ -132,6 +138,13 @@ AirportDetailsWindow::__fillLabels(const Airport* _ap) {
 			static_cast< QString >(_ap->getData()->fir_b) % " FIR)"
 #endif
 		);
+	
+	// fill "Airport info" tab
+	const AirportRecord* apData = _ap->getData();
+	FullNameLabel->setText(QString::fromUtf8(apData->name));
+	CityLabel->setText(QString::fromUtf8(apData->city));
+	CountryLabel->setText(QString::fromUtf8(apData->country));
+	AltitudeLabel->setText(QString::number(apData->altitude) + static_cast< QString >(" ft"));
 }
 
 void
@@ -223,4 +236,10 @@ AirportDetailsWindow::__updateData() {
 	__updateModels();
 	__setButtons();
 	__adjustTables();
+}
+
+void
+AirportDetailsWindow::__handleShowClicked() {
+	Q_ASSERT(__current);
+	MapWidget::GetSingleton().showAirport(__current);
 }

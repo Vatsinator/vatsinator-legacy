@@ -56,7 +56,7 @@ ATCDetailsWindow::show(const Client* _client) {
 	setWindowTitle(QString(__current->callsign + " - ATC details"));
 	
 	CallsignLabel->setText(__current->callsign);
-	FacilityLabel->setText(__produceFacility(__current));
+	FacilityLabel->setText(__current->description);
 	NameLabel->setText(__current->realName);
 	FrequencyLabel->setText(__current->frequency);
 	RatingLabel->setText(__ratings[__current->rating]);
@@ -77,64 +77,6 @@ ATCDetailsWindow::show(const Client* _client) {
 		QWidget::show();
 	else
 		activateWindow();
-}
-
-QString
-ATCDetailsWindow::__produceFacility(const Controller* _c) {
-	if (_c->facility == CTR) {
-		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, false);
-		if (!fir)
-			fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, true);
-		if (fir)
-			return fir->getName();
-	}
-	
-	if (_c->facility == FSS) {
-		const Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, true);
-		if (!fir)
-			fir = FirsDatabase::GetSingleton().findFirByIcao(_c->icao, false);
-		if (fir)
-			return fir->getName();
-	}
-	
-	QString airport, facility;
-	
-	if (!_c->airport) {
-		airport = "Unknown";
-	} else {
-		if (static_cast< QString >(_c->airport->name) == static_cast< QString >(_c->airport->city))
-			airport = QString::fromUtf8(_c->airport->name);
-		else
-			airport =
-				QString::fromUtf8(_c->airport->city) %
-				"/" %
-				QString::fromUtf8(_c->airport->name);
-	}
-	
-	switch (_c->facility) {
-		case ATIS:
-			facility = "ATIS";
-			break;
-		case DEL:
-			facility = "Delivery";
-			break;
-		case GND:
-			facility = "Ground";
-			break;
-		case TWR:
-			facility = "Tower";
-			break;
-		case APP:
-			facility = "Approach";
-			break;
-		case DEP:
-			facility = "Departure";
-			break;
-		default:
-			break;
-	}
-	
-	return airport % " " % facility;
 }
 
 void

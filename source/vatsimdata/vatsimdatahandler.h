@@ -103,6 +103,26 @@ public:
 	Airport * addActiveAirport(const QString&);
 	
 	/**
+	 * @return Count of logged-in clients (pilots + controllers + observers).
+	 */
+	int clientCount() const;
+	
+	/**
+	 * @return Count of logged-in pilots.
+	 */
+	int pilotCount() const;
+	
+	/**
+	 * @return Count of logged-in controllers.
+	 */
+	int atcCount() const;
+	
+	/**
+	 * @return Count of logged-in observers.
+	 */
+	int obsCount() const;
+	
+	/**
 	 * Returns an URL to where METARs can be fetched from.
 	 */
 	inline
@@ -172,6 +192,8 @@ private:
 	QString		__metarURL;
 	
 	QDateTime	__dateDataUpdated;
+	
+	int		__observers;
 	
 	AirportsDatabase &	__airports;
 	FirsDatabase &		__firs;

@@ -201,10 +201,16 @@ VatsinatorApplication::__dataFileUpdated(const QString& _data) {
 	__firsData->clearAll();
 	
 	__vatsimData->parseDataFile(_data);
-	__userInterface->getClientsBox()->setText(static_cast< QString >("Clients: ") % QString::number(
-			__vatsimData->getFlightsModel()->rowCount() + __vatsimData->getATCsModel()->rowCount()
-	) % " (" % QString::number(__vatsimData->getFlightsModel()->rowCount()) % " pilots, " %
-				QString::number(__vatsimData->getATCsModel()->rowCount()) % " ATCs)"
+	__userInterface->getClientsBox()->setText(
+			static_cast< QString >("Clients: ") %
+			QString::number(__vatsimData->clientCount()) %
+			static_cast< QString >(" (") %
+			QString::number(__vatsimData->pilotCount()) %
+			static_cast< QString >(" pilots, ") %
+			QString::number(__vatsimData->atcCount()) %
+			static_cast< QString >(" ATCs, ") %
+			QString::number(__vatsimData->obsCount()) %
+			static_cast< QString >(" observers).")
 		);
 	
 	__userInterface->statusBarUpdate();

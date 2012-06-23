@@ -74,7 +74,8 @@ Controller::Controller(const QStringList& _data) :
 		frequency(_data[4]),
 		rating(_data[16].toInt()),
 		atis(_data[35]),
-		airport(NULL) {
+		airport(NULL),
+		isOK(true) {
 	
 	if (atis[0] == '$') {
 		auto index = atis.indexOf('^');
@@ -96,14 +97,16 @@ Controller::__setMyIcaoAndFacility() {
 		
 		
 		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao);
-		if (fir)
+		if (fir) {
 			fir->addStaff(this);
-		else {
+			__produceDescription(fir);
+		} else {
 			// handle USA three-letters callsigns
 			if (icao.length() == 3) {
 				fir = FirsDatabase::GetSingleton().findFirByIcao("K" + icao);
 				if (fir) {
 					fir->addStaff(this);
+					__produceDescription(fir);
 					return;
 				}
 			}
@@ -112,6 +115,7 @@ Controller::__setMyIcaoAndFacility() {
 				fir = FirsDatabase::GetSingleton().findFirByIcao(alias);
 				if (fir) {
 					fir->addStaff(this);
+					__produceDescription(fir);
 					return;
 				}
 			}
@@ -119,6 +123,7 @@ Controller::__setMyIcaoAndFacility() {
 			Uir* uir = VatsimDataHandler::GetSingleton().findUIR(icao);
 			if (uir) {
 				uir->addStaff(this);
+				__produceDescription(uir);
 				return;
 			}
 			
@@ -138,18 +143,21 @@ Controller::__setMyIcaoAndFacility() {
 		Fir* fir = FirsDatabase::GetSingleton().findFirByIcao(icao, true);
 		if (fir) {
 			fir->addStaff(this);
+			__produceDescription(fir);
 			return;
 		}
 		
 		Uir* uir = VatsimDataHandler::GetSingleton().findUIR(icao);
 		if (uir) {
 			uir->addStaff(this);
+			__produceDescription(uir);
 			return;
 		}
 		
 		fir = FirsDatabase::GetSingleton().findFirByIcao(icao);
 		if (fir) {
 			fir->addStaff(this);
+			__produceDescription(fir);
 			return;
 		}
 					
@@ -157,6 +165,7 @@ Controller::__setMyIcaoAndFacility() {
 			fir = FirsDatabase::GetSingleton().findFirByIcao(alias, true);
 			if (fir) {
 				fir->addStaff(this);
+				__produceDescription(fir);
 				return;
 			}
 		}
@@ -190,6 +199,7 @@ Controller::__setMyIcaoAndFacility() {
 			Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(sections.front());
 			ap->addStaff(this);
 			airport = ap->getData();
+			__produceDescription(airport);
 			return;
 		} else {
 			if (sections.front().length() == 3) {
@@ -200,6 +210,7 @@ Controller::__setMyIcaoAndFacility() {
 					Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
 					ap->addStaff(this);
 					airport = ap->getData();
+					__produceDescription(airport);
 					return;
 				}
 			}
@@ -210,6 +221,7 @@ Controller::__setMyIcaoAndFacility() {
 					Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
 					ap->addStaff(this);
 					airport = ap->getData();
+					__produceDescription(airport);
 					return;
 				}
 			}
@@ -221,5 +233,60 @@ Controller::__setMyIcaoAndFacility() {
 		return;
 		
 	}
+	
+	isOK = false;
 }
 
+void
+Controller::__produceDescription(const Fir* _f) {
+	Q_ASSERT(_f);
+	description = _f->getName();
+}
+
+void
+Controller::__produceDescription(const Uir* _u) {
+	Q_ASSERT(_u);
+	description = _u->name;
+}
+
+void
+Controller::__produceDescription(const AirportRecord* _ap) {
+	QString apName, fName; // airport name, facility name
+	
+	if (!_ap) {
+		apName = "Unknown";
+	} else {
+		if (static_cast< QString >(_ap->name) == static_cast< QString >(_ap->city))
+			apName = QString::fromUtf8(_ap->name);
+		else
+			apName =
+				QString::fromUtf8(_ap->city) %
+				"/" %
+				QString::fromUtf8(_ap->name);
+	}
+	
+	switch (facility) {
+		case ATIS:
+			fName = "ATIS";
+			break;
+		case DEL:
+			fName = "Delivery";
+			break;
+		case GND:
+			fName = "Ground";
+			break;
+		case TWR:
+			fName = "Tower";
+			break;
+		case APP:
+			fName = "Approach";
+			break;
+		case DEP:
+			fName = "Departure";
+			break;
+		default:
+			break;
+	}
+	
+	description = apName % " " % fName;
+}

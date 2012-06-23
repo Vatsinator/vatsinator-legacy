@@ -40,7 +40,6 @@ public slots:
 	void show(const Client*);
 	
 private:
-	QString __produceFacility(const Controller*);
 	void __setWindowPosition();
 	
 	const Controller * __current;

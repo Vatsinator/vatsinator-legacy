@@ -161,7 +161,7 @@
       <item row="1" column="1">
        <widget class="QLabel" name="StaffedFirColorLabel">
         <property name="text">
-         <string>Staffed FIR color:</string>
+         <string>Staffed FIR color&lt;br&gt;and alpha channel:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -200,7 +200,7 @@
       <item row="2" column="1">
        <widget class="QLabel" name="StaffedUirColorLabel">
         <property name="text">
-         <string>Staffed UIR color:</string>
+         <string>Staffed UIR color&lt;br&gt; and alpha channel:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

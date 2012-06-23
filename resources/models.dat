@@ -56,6 +56,7 @@ B753 2j
 B762 2j
 B763 2j
 B764 2j
+B767 2j
 B77L 2j
 B77W 2j
 B772 2j
@@ -64,6 +65,7 @@ BA11 2j
 CRJ1 2j
 CRJ2 2j
 CRJ7 2j
+DC92 2j
 E170 2j
 E190 2j
 E120 2j
@@ -115,6 +117,7 @@ RJ70 4j
 RJ85 4j
 RX1H 4j
 RX85 4j
+IL62 4j
 
 CONC conc
 
@@ -128,6 +131,7 @@ CONC conc
 737 2j
 738 2j
 739 2j
+772 2j
 741 4j
 742 4j
 743 4j

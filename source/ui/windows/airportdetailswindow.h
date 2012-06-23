@@ -49,9 +49,11 @@ private:
 	void __setWindowPosition();
 	
 	QString __currentICAO;
+	const Airport* __current;
 	
 private slots:
 	void __updateData();
+	void __handleShowClicked();
 	
 };
 

@@ -78,9 +78,9 @@ Fir::addAirport(const Airport* _ap) {
 
 void
 Fir::correctName() {
-	if (!__name.endsWith("Radar") &&
-			!__name.endsWith("Control") &&
-			!__name.endsWith("Oceanic")) {
+	if (!__name.contains("Radar") &&
+			!__name.contains("Control") &&
+			!__name.contains("Oceanic")) {
 		if (__oceanic)
 			__name += " Oceanic";
 		else

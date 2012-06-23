@@ -30,6 +30,7 @@
 VatsimDataHandler::VatsimDataHandler() :
 		__flights(new FlightTableModel()),
 		__atcs(new ControllerTableModel()),
+		__observers(0),
 		__airports(AirportsDatabase::GetSingleton()),
 		__firs(FirsDatabase::GetSingleton()),
 		__mother(VatsinatorApplication::GetSingleton()) {}
@@ -216,7 +217,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 			
 			if (clientData[3] == "ATC") {
 				Controller* atc = new Controller(clientData);
-				__atcs->addStaff(atc);
+				if (atc->isOK)
+					__atcs->addStaff(atc);
+				else
+					__observers += 1;
 			} else if (clientData[3] == "PILOT") {
 				Pilot* pilot = new Pilot(clientData);
 				__flights->addFlight(pilot);
@@ -262,6 +266,26 @@ VatsimDataHandler::addActiveAirport(const QString& _icao) {
 	return __activeAirports[_icao];
 }
 
+int
+VatsimDataHandler::clientCount() const {
+	return pilotCount() + atcCount() + obsCount();
+}
+
+int
+VatsimDataHandler::pilotCount() const {
+	return __flights->rowCount();
+}
+
+int
+VatsimDataHandler::atcCount() const {
+	return __atcs->rowCount();
+}
+
+int
+VatsimDataHandler::obsCount() const {
+	return __observers;
+}
+
 void
 VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
 	for (auto it = _flags.begin(); it != _flags.end(); ++it)
@@ -284,4 +308,6 @@ VatsimDataHandler::__clearData() {
 	for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
 		delete it.value();
 	__activeAirports.clear();
+	
+	__observers = 0;
 }

@@ -25,6 +25,8 @@
 #include "vatsimdata/client.h"
 
 struct AirportRecord;
+class Fir;
+class Uir;
 
 enum Facility {
 	ATIS = 1,
@@ -55,8 +57,15 @@ public:
 	
 	Facility	facility;
 	
+	QString		description;
+	
+	bool		isOK;
+	
 private:
 	void __setMyIcaoAndFacility();
+	void __produceDescription(const Fir*);
+	void __produceDescription(const Uir*);
+	void __produceDescription(const AirportRecord*);
 	
 };
 
