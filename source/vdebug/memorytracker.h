@@ -30,26 +30,26 @@ void AddTrack(myDword, myDword, const char*, myDword);
 void RemoveTrack(myDword);
 void DumpUnfreed();
 
-inline void * operator new(std::size_t size, const char* file, int line) throw() {
-	void* ptr = (void*)malloc(size);
-	AddTrack((myDword)ptr, size, file, line);
-	return ptr;
+inline void* operator new(std::size_t size, const char* file, int line) throw() {
+  void* ptr = (void*)malloc(size);
+  AddTrack((myDword)ptr, size, file, line);
+  return ptr;
 }
 
-inline void * operator new[](std::size_t size, const char* file, int line) throw() {
-	void* ptr = (void*)malloc(size);
-	AddTrack((myDword)ptr, size, file, line);
-	return ptr;
+inline void* operator new[](std::size_t size, const char* file, int line) throw() {
+  void* ptr = (void*)malloc(size);
+  AddTrack((myDword)ptr, size, file, line);
+  return ptr;
 }
 
 inline void operator delete(void* p) throw() {
-	RemoveTrack((myDword)p);
-	free(p);
+  RemoveTrack((myDword)p);
+  free(p);
 }
 
 inline void operator delete[](void* p) throw() {
-	RemoveTrack((myDword)p);
-	free(p);
+  RemoveTrack((myDword)p);
+  free(p);
 }
 
 

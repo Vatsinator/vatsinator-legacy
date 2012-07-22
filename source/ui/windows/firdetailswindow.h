@@ -29,31 +29,31 @@ class Fir;
 class Pilot;
 
 class FirDetailsWindow :
-		public QWidget,
-		public Singleton< FirDetailsWindow >,
-		private Ui::FirDetailsWindow {
-	
-	Q_OBJECT
-	
+    public QWidget,
+    public Singleton< FirDetailsWindow >,
+    private Ui::FirDetailsWindow {
+
+  Q_OBJECT
+
 public:
-	FirDetailsWindow(QWidget* = 0);
-	
+  FirDetailsWindow(QWidget* = 0);
+
 public slots:
-	void show(const Fir*);
-	
+  void show(const Fir*);
+
 private:
-	void __updateModels(const Fir* = NULL);
-	void __fillLabels(const Fir*);
-	void __adjustTables();
-	void __setButtons();
-	void __setWindowPosition();
-	
-	QString	__currentICAO;
-	
+  void __updateModels(const Fir* = NULL);
+  void __fillLabels(const Fir*);
+  void __adjustTables();
+  void __setButtons();
+  void __setWindowPosition();
+
+  QString __currentICAO;
+
 private slots:
-	void __updateData();
-	
-	
+  void __updateData();
+
+
 };
 
 #endif // FIRDETAILSWINDOW_H

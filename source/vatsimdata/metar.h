@@ -25,28 +25,33 @@
 #include <QDateTime>
 
 class Metar {
-	
+
+  /**
+   * Class that represents one METAR report.
+   * TODO; METAR parsing.
+   */
+
 public:
-	
-	Metar();
-	Metar(const QString&, const QString& = "");
-	
-	void setMetar(const QString&);
-	
-	inline const QString &
-	getIcao() const { return __icao; }
-	
-	inline const QString &
-	getMetar() const { return __metar; }
-	
-	inline const QString
-	getLastFetchedTime() const { return __lastFetchedTime.toString("dd MMM yyyy, hh:mm") % " UTC"; }
-	
+
+  Metar();
+  Metar(const QString&, const QString& = "");
+
+  void setMetar(const QString&);
+
+  inline const QString&
+  getIcao() const { return __icao; }
+
+  inline const QString&
+  getMetar() const { return __metar; }
+
+  inline const QString
+  getLastFetchedTime() const { return __lastFetchedTime.toString("dd MMM yyyy, hh:mm") % " UTC"; }
+
 private:
-	QString   __icao;
-	QString   __metar;
-	QDateTime __lastFetchedTime;
-	
+  QString   __icao;
+  QString   __metar;
+  QDateTime __lastFetchedTime;
+
 };
 
 #endif // METAR_H

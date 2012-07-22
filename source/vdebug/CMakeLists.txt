@@ -2,6 +2,7 @@ vatsinator_start_subdirectory (vdebug)
 
 set (debug_SRCS
 	debugwindow.cpp
+	memorytracker.cpp
 	
 	glerrors.cpp
 )

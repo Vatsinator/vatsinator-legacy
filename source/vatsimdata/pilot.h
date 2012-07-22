@@ -29,90 +29,91 @@
 #include "vatsimdata/client.h"
 
 enum FlightRules {
-	IFR, VFR
+  IFR, VFR
 };
 
 enum Status {
-	DEPARTING,
-	AIRBORNE,
-	ARRIVED
+  DEPARTING,
+  AIRBORNE,
+  ARRIVED
 };
 
 class Pilot : public Client, public Clickable {
-	
-	/*
-	 * This class contains info about one particular pilot - his
-	 * flight plan, actual position, plane, etc etc
-	 */
-	
+
+  /**
+   * This class contains info about one particular pilot - his
+   * flight plan, actual position, plane, etc etc.
+   * TODO: Flight plan parsing (starting by NATs, may even include the AIRAC later).
+   */
+
 public:
-	/**
-	 * @param list Data.
-	 * @param prefiled Indicates whether the flight is only prefiled.
-	 */
-	Pilot(const QStringList&, bool = false);
-	virtual ~Pilot();
-	
-	void drawLineFrom() const;
-	void drawLineTo() const;
-	
-	inline void
-	drawLines() const { drawLineFrom(); drawLineTo(); }
-	
-	ClientType type() const { return PILOT; }
-	ObjectType objectType() const { return PLANE; }
-	
-	inline GLuint
-	getCallsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
-	
-	int		altitude;
-	int		groundSpeed;
-	QString		squawk;
-	
-	QString		aircraft;
-	
-	int		tas;
-	
-	FlightRules	flightRules;
-	
-	QString		remarks;
-	
-	unsigned	heading;
-	
-	Status		flightStatus;
-	
-	struct {
-		QString origin;
-		QString destination;
-		QString route;
-		QString altitude;
-	} route;
-	
-	GLuint	modelTexture;
-	
-	bool prefiledOnly;
-	
+  /**
+   * @param list Data.
+   * @param prefiled Indicates whether the flight is only prefiled.
+   */
+  Pilot(const QStringList&, bool = false);
+  virtual ~Pilot();
+
+  void drawLineFrom() const;
+  void drawLineTo() const;
+
+  inline void
+  drawLines() const { drawLineFrom(); drawLineTo(); }
+
+  ClientType type() const { return PILOT; }
+  ObjectType objectType() const { return PLANE; }
+
+  inline GLuint
+  getCallsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
+
+  int   altitude;
+  int   groundSpeed;
+  QString   squawk;
+
+  QString   aircraft;
+
+  int   tas;
+
+  FlightRules flightRules;
+
+  QString   remarks;
+
+  unsigned  heading;
+
+  Status    flightStatus;
+
+  struct {
+    QString origin;
+    QString destination;
+    QString route;
+    QString altitude;
+  } route;
+
+  GLuint  modelTexture;
+
+  bool prefiledOnly;
+
 private:
-	/**
-	 * Checks whether pilot is departing, airborn or has just arrived.
-	 */
-	void __setMyStatus();
-	
-	/**
-	 * Generates in/out lines.
-	 */
-	void __generateLines();
-	
-	/**
-	 * Generates the callsign label.
-	 */
-	GLuint __generateTip() const;
-	
-	GLfloat *__lineFrom;
-	GLfloat *__lineTo;
-	
-	mutable GLuint __callsignTip;
-	
+  /**
+   * Checks whether pilot is departing, airborn or has just arrived.
+   */
+  void __setMyStatus();
+
+  /**
+   * Generates in/out lines.
+   */
+  void __generateLines();
+
+  /**
+   * Generates the callsign label.
+   */
+  GLuint __generateTip() const;
+
+  GLfloat* __lineFrom;
+  GLfloat* __lineTo;
+
+  mutable GLuint __callsignTip;
+
 };
 
 #endif // PILOT_H

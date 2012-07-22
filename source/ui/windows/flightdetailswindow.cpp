@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "db/airportsdatabase.h"
+#include "db/airportdatabase.h"
 
 #include "modules/flighttracker.h"
 
@@ -34,157 +34,166 @@
 #include "defines.h"
 
 FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
-		QWidget(_parent) {
-	setupUi(this);
-	
-	connect(TrackFlightBox, SIGNAL(stateChanged(int)), this, SLOT(stateHandle(int)));
-	connect(ShowButton,	SIGNAL(clicked()),	this,	SLOT(__handleShowClicked()));
-	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(dataUpdated()),
-		this,						SLOT(__updateData()));
-	
-	__setWindowPosition();
+    QWidget(_parent) {
+  setupUi(this);
+
+  connect(TrackFlightBox, SIGNAL(stateChanged(int)), this, SLOT(stateHandle(int)));
+  connect(ShowButton, SIGNAL(clicked()),  this, SLOT(__handleShowClicked()));
+  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+          this,           SLOT(__updateData()));
+
+  __setWindowPosition();
 }
 
 void
 FlightDetailsWindow::show(const Client* _client) {
-	Q_ASSERT(dynamic_cast< const Pilot* >(_client));
-	__current = dynamic_cast< const Pilot* >(_client);
-	__currentCallsign = __current->callsign;
-	
-	if (__current->prefiledOnly)
-		return;
-	
-	setWindowTitle(QString(__current->callsign + " - flight details"));
-	
-	CallsignLabel->setText(__current->callsign);
-	RouteLabel->setText(__current->route.origin + " -> " + __current->route.destination);
-	
-	PilotLabel->setText(__current->realName + " (" + QString::number(__current->pid) + ")");
-	AltitudeLabel->setText(QString::number(__current->altitude) + " feet");
-	GroundSpeedLabel->setText(QString::number(__current->groundSpeed) + " kts");
-	HeadingLabel->setText(QString::number(__current->heading));
-	
-	if (__current->flightStatus == AIRBORNE)
-		CurrentStatusLabel->setText("airborne");
-	else if (__current->flightStatus == DEPARTING)
-		CurrentStatusLabel->setText("departing");
-	else
-		CurrentStatusLabel->setText("arrived");
-	
-	ServerLabel->setText(__current->server);
-	TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
-	SquawkLabel->setText(__current->squawk);
-	
-	FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
-	
-	__updateToFromButtons();
-	
-	AircraftLabel->setText(__current->aircraft);
-	TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
-	CruiseAltitude->setText(__current->route.altitude);
-	
-	RouteField->setPlainText(__current->route.route);
-	RemarksField->setPlainText(__current->remarks);
-	
-	if (FlightTracker::GetSingleton().getTracked() == __current)
-		TrackFlightBox->setCheckState(Qt::Checked);
-	else
-		TrackFlightBox->setCheckState(Qt::Unchecked);
-	
-	if (!isVisible())
-		QWidget::show();
-	else
-		activateWindow();
+  Q_ASSERT(dynamic_cast< const Pilot* >(_client));
+  __current = dynamic_cast< const Pilot* >(_client);
+  __currentCallsign = __current->callsign;
+
+  if (__current->prefiledOnly)
+    return;
+
+  setWindowTitle(QString(__current->callsign + " - flight details"));
+
+  CallsignLabel->setText(__current->callsign);
+  RouteLabel->setText(__current->route.origin + " -> " + __current->route.destination);
+
+  PilotLabel->setText(__current->realName + " (" + QString::number(__current->pid) + ")");
+  AltitudeLabel->setText(QString::number(__current->altitude) + " feet");
+  GroundSpeedLabel->setText(QString::number(__current->groundSpeed) + " kts");
+  HeadingLabel->setText(QString::number(__current->heading));
+
+  if (__current->flightStatus == AIRBORNE)
+    CurrentStatusLabel->setText("airborne");
+  else if (__current->flightStatus == DEPARTING)
+    CurrentStatusLabel->setText("departing");
+  else
+    CurrentStatusLabel->setText("arrived");
+
+  ServerLabel->setText(__current->server);
+  TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
+  SquawkLabel->setText(__current->squawk);
+
+  FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
+
+  __updateToFromButtons();
+
+  AircraftLabel->setText(__current->aircraft);
+  TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
+  CruiseAltitude->setText(__current->route.altitude);
+
+  RouteField->setPlainText(__current->route.route);
+  RemarksField->setPlainText(__current->remarks);
+
+  if (FlightTracker::GetSingleton().getTracked() == __current)
+    TrackFlightBox->setCheckState(Qt::Checked);
+  else
+    TrackFlightBox->setCheckState(Qt::Unchecked);
+
+  if (!isVisible())
+    QWidget::show();
+  else
+    activateWindow();
 }
 
 void
 FlightDetailsWindow::stateHandle(int _state) {
-	emit flightTrackingStateChanged(__current, _state);
+  emit flightTrackingStateChanged(__current, _state);
 }
 
 void
 FlightDetailsWindow::__updateToFromButtons() {
-	if (!__current->route.origin.isEmpty()) {
-		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.origin];
-		QString text = __current->route.origin;
-		if (ap->getData()) {
-			text.append(static_cast< QString >(" ") %
-								QString::fromUtf8(ap->getData()->name));
-			if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
-				text.append(
-					static_cast< QString >(" - ") %
-					QString::fromUtf8(ap->getData()->city));
-			OriginButton->setAirportPointer(ap);
-		} else {
-			OriginButton->setAirportPointer(NULL);
-		}
-		OriginButton->setText(text);
-	} else {
-		OriginButton->setText("(unknown)");
-		OriginButton->setAirportPointer(NULL);
-	}
-	
-	if (!__current->route.destination.isEmpty()) {
-		Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.destination];
-		QString text = __current->route.destination;
-		if (ap->getData()) {
-			text.append(static_cast< QString >(" ") %
-					QString::fromUtf8(ap->getData()->name));
-			if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
-				text.append(
-					static_cast< QString >(" - ") %
-					QString::fromUtf8(ap->getData()->city));
-				ArrivalButton->setAirportPointer(ap);
-		} else {
-			ArrivalButton->setAirportPointer(NULL);
-		}
-		ArrivalButton->setText(text);
-	} else {
-		ArrivalButton->setText("(unknown)");
-		ArrivalButton->setAirportPointer(NULL);
-	}
+  if (!__current->route.origin.isEmpty()) {
+    Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.origin];
+    QString text = __current->route.origin;
+
+    if (ap->getData()) {
+      text.append(static_cast< QString >(" ") %
+                  QString::fromUtf8(ap->getData()->name));
+
+      if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
+        text.append(
+          static_cast< QString >(" - ") %
+          QString::fromUtf8(ap->getData()->city));
+
+      OriginButton->setAirportPointer(ap);
+    } else {
+      OriginButton->setAirportPointer(NULL);
+    }
+
+    OriginButton->setText(text);
+  } else {
+    OriginButton->setText("(unknown)");
+    OriginButton->setAirportPointer(NULL);
+  }
+
+  if (!__current->route.destination.isEmpty()) {
+    Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.destination];
+    QString text = __current->route.destination;
+
+    if (ap->getData()) {
+      text.append(static_cast< QString >(" ") %
+                  QString::fromUtf8(ap->getData()->name));
+
+      if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
+        text.append(
+          static_cast< QString >(" - ") %
+          QString::fromUtf8(ap->getData()->city));
+
+      ArrivalButton->setAirportPointer(ap);
+    } else {
+      ArrivalButton->setAirportPointer(NULL);
+    }
+
+    ArrivalButton->setText(text);
+  } else {
+    ArrivalButton->setText("(unknown)");
+    ArrivalButton->setAirportPointer(NULL);
+  }
 }
 
 void
 FlightDetailsWindow::__setWindowPosition() {
-	QDesktopWidget* desktop = QApplication::desktop();
-	
-	int screenWidth, width;
-	int screenHeight, height;
-	
-	int x, y;
-	
-	QSize windowSize;
-	
-	screenWidth = desktop -> width();
-	screenHeight = desktop -> height();
-	
-	windowSize = size();
-	width = windowSize.width();
-	height = windowSize.height();
-	
-	x = (screenWidth - width) / 2;
-	y = (screenHeight - height) / 2;
-	y -= 50;
-	
-	move(x, y);
+  QDesktopWidget* desktop = QApplication::desktop();
+
+  int screenWidth, width;
+  int screenHeight, height;
+
+  int x, y;
+
+  QSize windowSize;
+
+  screenWidth = desktop -> width();
+  screenHeight = desktop -> height();
+
+  windowSize = size();
+  width = windowSize.width();
+  height = windowSize.height();
+
+  x = (screenWidth - width) / 2;
+  y = (screenHeight - height) / 2;
+  y -= 50;
+
+  move(x, y);
 }
 
 void
 FlightDetailsWindow::__updateData() {
-	__current = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
-	if (!__current) {
-		__currentCallsign = "";
-		hide();
-		return;
-	}
-	
-	__updateToFromButtons();
+  __current = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
+
+  if (!__current) {
+    __currentCallsign = "";
+    hide();
+    return;
+  }
+
+  __updateToFromButtons();
 }
 
 void
 FlightDetailsWindow::__handleShowClicked() {
-	MapWidget::GetSingleton().showClient(__current);
+  MapWidget::GetSingleton().showClient(__current);
 }
 
 

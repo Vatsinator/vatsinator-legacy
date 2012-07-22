@@ -38,9 +38,9 @@ void registerGPUMemoryAllocFunc(long unsigned);
 void unregisterGPUMemoryAllocFunc(long unsigned);
 void registerExtensionPointer(const QString&, long long unsigned);
 
-extern QString		glErrors;
-extern long unsigned	gpuMemoryUsage;
-extern QMap< QString, long long unsigned >	extensions;
+extern QString    glErrors;
+extern long unsigned  gpuMemoryUsage;
+extern QMap< QString, long long unsigned >  extensions;
 
 #else
 #define checkGLErrors(WHERE)

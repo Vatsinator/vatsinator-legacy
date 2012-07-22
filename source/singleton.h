@@ -23,31 +23,31 @@
 
 template < typename T >
 class Singleton {
-	
+
 private:
-	static T* __ms_Singleton;
+  static T* __ms_Singleton;
 
 public:
-	Singleton() {
-		Q_ASSERT(!__ms_Singleton);
-		
-		intptr_t offset = (intptr_t)(T*)1 - (intptr_t)(Singleton *)(T*)1;
-		__ms_Singleton = (T*)((intptr_t)this + offset);
-	}
+  Singleton() {
+    Q_ASSERT(!__ms_Singleton);
 
-	~Singleton() {
-		Q_ASSERT(__ms_Singleton);
-		__ms_Singleton = 0;
-	}
+    intptr_t offset = (intptr_t)(T*)1 - (intptr_t)(Singleton*)(T*)1;
+    __ms_Singleton = (T*)((intptr_t)this + offset);
+  }
 
-	inline static T& GetSingleton() {
-		Q_ASSERT(__ms_Singleton);
-		return *__ms_Singleton;
-	}
+  ~Singleton() {
+    Q_ASSERT(__ms_Singleton);
+    __ms_Singleton = 0;
+  }
 
-	inline static T* GetSingletonPtr() {
-		return __ms_Singleton;
-	}
+  inline static T& GetSingleton() {
+    Q_ASSERT(__ms_Singleton);
+    return *__ms_Singleton;
+  }
+
+  inline static T* GetSingletonPtr() {
+    return __ms_Singleton;
+  }
 };
 
 template < typename T > T* Singleton <T>::__ms_Singleton = 0;

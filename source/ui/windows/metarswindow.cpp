@@ -26,77 +26,77 @@
 #include "defines.h"
 
 MetarsWindow::MetarsWindow(QWidget* _parent) :
-		QWidget(_parent) {
-	
-	setupUi(this);
-	
-	__setWindowPosition();
-	
-	__httpHandler = new HttpHandler();
-	
-	__metarsHandler = new MetarListModel(__httpHandler);
-	
-	connect(FetchButton,		SIGNAL(clicked()),
-		this,			SLOT(fetchMetar()));
-	connect(RefreshAllButton,	SIGNAL(clicked()),
-		__metarsHandler,	SLOT(updateAllMetars()));
-	connect(ClearButton,		SIGNAL(clicked()),
-		__metarsHandler,	SLOT(clear()));
-	connect(MetarICAO,		SIGNAL(textChanged(const QString&)),
-		this,			SLOT(__handleTextChange(const QString&)));
-	
-	MetarICAO->setFocus();
-	FetchButton->setEnabled(false);
-	MetarsDisplay->setModel(__metarsHandler);
+    QWidget(_parent) {
+
+  setupUi(this);
+
+  __setWindowPosition();
+
+  __httpHandler = new HttpHandler();
+
+  __metarsHandler = new MetarListModel(__httpHandler);
+
+  connect(FetchButton,    SIGNAL(clicked()),
+          this,     SLOT(fetchMetar()));
+  connect(RefreshAllButton, SIGNAL(clicked()),
+          __metarsHandler,  SLOT(updateAllMetars()));
+  connect(ClearButton,    SIGNAL(clicked()),
+          __metarsHandler,  SLOT(clear()));
+  connect(MetarICAO,    SIGNAL(textChanged(const QString&)),
+          this,     SLOT(__handleTextChange(const QString&)));
+
+  MetarICAO->setFocus();
+  FetchButton->setEnabled(false);
+  MetarsDisplay->setModel(__metarsHandler);
 }
 
 MetarsWindow::~MetarsWindow() {
-	delete __metarsHandler;
-	delete __httpHandler;
+  delete __metarsHandler;
+  delete __httpHandler;
 }
 
 void
 MetarsWindow::show(QString _icao) {
-	QWidget::show();
-	__metarsHandler->fetchMetar(_icao);
+  QWidget::show();
+  __metarsHandler->fetchMetar(_icao);
 }
 
 void
 MetarsWindow::fetchMetar() {
-	__metarsHandler->fetchMetar(MetarICAO->text());
-	MetarICAO->setText("");
+  __metarsHandler->fetchMetar(MetarICAO->text());
+  MetarICAO->setText("");
 }
 
 void
 MetarsWindow::__setWindowPosition() {
-	QDesktopWidget* desktop = QApplication::desktop();
-	
-	int screenWidth, width;
-	int screenHeight, height;
-	
-	int x, y;
-	
-	QSize windowSize;
-	
-	screenWidth = desktop -> width();
-	screenHeight = desktop -> height();
-	
-	windowSize = size();
-	width = windowSize.width();
-	height = windowSize.height();
-	
-	x = (screenWidth - width) / 2;
-	y = (screenHeight - height) / 2;
-	y -= 50;
-	
-	move(x, y);
+  QDesktopWidget* desktop = QApplication::desktop();
+
+  int screenWidth, width;
+  int screenHeight, height;
+
+  int x, y;
+
+  QSize windowSize;
+
+  screenWidth = desktop -> width();
+  screenHeight = desktop -> height();
+
+  windowSize = size();
+  width = windowSize.width();
+  height = windowSize.height();
+
+  x = (screenWidth - width) / 2;
+  y = (screenHeight - height) / 2;
+  y -= 50;
+
+  move(x, y);
 }
 
 void
 MetarsWindow::__handleTextChange(const QString& _text) {
-	if (_text.length() == 0)
-		FetchButton->setEnabled(false);
-	else
-		FetchButton->setEnabled(true);
+  if (_text.length() == 0)
+    FetchButton->setEnabled(false);
+  else
+    FetchButton->setEnabled(true);
 }
 

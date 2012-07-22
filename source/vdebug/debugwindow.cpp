@@ -28,110 +28,112 @@
 #include "defines.h"
 
 DebugWindow::DebugWindow(QWidget* _parent) :
-		QWidget(_parent) {
-	setupUi(this);
-	__setWindowPosition();
-	
-	connect(RefreshButton,	SIGNAL(clicked()),
-		this,		SLOT(__updateContents()));
-	
-	QStringList labels = {
-			"Extension",
-			"Pointer"
-		};
-	
-	ExtensionsTable->setHorizontalHeaderLabels(labels);
-	ExtensionsTable->setColumnWidth(0, 200);
-	ExtensionsTable->setColumnWidth(1, 130);
-	
+    QWidget(_parent) {
+  setupUi(this);
+  __setWindowPosition();
+
+  connect(RefreshButton,  SIGNAL(clicked()),
+          this,   SLOT(__updateContents()));
+
+  QStringList labels = {
+    "Extension",
+    "Pointer"
+  };
+
+  ExtensionsTable->setHorizontalHeaderLabels(labels);
+  ExtensionsTable->setColumnWidth(0, 200);
+  ExtensionsTable->setColumnWidth(1, 130);
+
 }
 
 void
 DebugWindow::show() {
-	OpenGLErrorsField->setPlainText(glErrors);
-	GPUMemoryUsageField->setText(QString::number(gpuMemoryUsage));
-	OpenGLVersionField->setText(__getGLVersion());
-	VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
-	TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
-	
-	ExtensionsTable->clearContents();
-	ExtensionsTable->setRowCount(extensions.size());
-	int row = 0;
-	for (auto it = extensions.begin(); it != extensions.end(); ++it) {
-		QTableWidgetItem* extensionName = new QTableWidgetItem(it.key());
-		QTableWidgetItem* extensionPtr = new QTableWidgetItem("0x" + QString::number(it.value(), 16));
-		
-		ExtensionsTable->setItem(row, 0, extensionName);
-		ExtensionsTable->setItem(row, 1, extensionPtr);
-		
-		row += 1;
-	}
-	
-	QWidget::show();
+  OpenGLErrorsField->setPlainText(glErrors);
+  GPUMemoryUsageField->setText(QString::number(gpuMemoryUsage));
+  OpenGLVersionField->setText(__getGLVersion());
+  VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
+  TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
+
+  ExtensionsTable->clearContents();
+  ExtensionsTable->setRowCount(extensions.size());
+  int row = 0;
+
+  for (auto it = extensions.begin(); it != extensions.end(); ++it) {
+    QTableWidgetItem* extensionName = new QTableWidgetItem(it.key());
+    QTableWidgetItem* extensionPtr = new QTableWidgetItem("0x" + QString::number(it.value(), 16));
+
+    ExtensionsTable->setItem(row, 0, extensionName);
+    ExtensionsTable->setItem(row, 1, extensionPtr);
+
+    row += 1;
+  }
+
+  QWidget::show();
 }
 
 void
 DebugWindow::__setWindowPosition() {
-	QDesktopWidget* desktop = QApplication::desktop();
-	
-	int screenWidth, width;
-	int screenHeight, height;
-	
-	int x, y;
-	
-	QSize windowSize;
-	
-	screenWidth = desktop -> width();
-	screenHeight = desktop -> height();
-	
-	windowSize = size();
-	width = windowSize.width();
-	height = windowSize.height();
-	
-	x = (screenWidth - width) / 2;
-	y = (screenHeight - height) / 2;
-	y -= 50;
-	
-	move(x, y);
+  QDesktopWidget* desktop = QApplication::desktop();
+
+  int screenWidth, width;
+  int screenHeight, height;
+
+  int x, y;
+
+  QSize windowSize;
+
+  screenWidth = desktop -> width();
+  screenHeight = desktop -> height();
+
+  windowSize = size();
+  width = windowSize.width();
+  height = windowSize.height();
+
+  x = (screenWidth - width) / 2;
+  y = (screenHeight - height) / 2;
+  y -= 50;
+
+  move(x, y);
 }
 
 QString
 DebugWindow::__getGLVersion() {
-	QGLFormat::OpenGLVersionFlags ogvf = QGLFormat::openGLVersionFlags();
-	
-	if (ogvf & QGLFormat::OpenGL_Version_4_0)
-		return "4.0";
-	else if (ogvf & QGLFormat::OpenGL_Version_3_3)
-		return "3.3";
-	else if (ogvf & QGLFormat::OpenGL_Version_3_2)
-		return "3.2";
-	else if (ogvf & QGLFormat::OpenGL_Version_3_1)
-		return "3.1";
-	else if (ogvf & QGLFormat::OpenGL_Version_3_0)
-		return "3.0";
-	else if (ogvf & QGLFormat::OpenGL_Version_2_1)
-		return "2.1";
-	else if (ogvf & QGLFormat::OpenGL_Version_2_0)
-		return "2.0";
-	else if (ogvf & QGLFormat::OpenGL_Version_1_5)
-		return "1.5";
-	else if (ogvf & QGLFormat::OpenGL_Version_1_4)
-		return "1.4";
-	else if (ogvf & QGLFormat::OpenGL_Version_1_3)
-		return "1.3";
-	else if (ogvf & QGLFormat::OpenGL_Version_1_2)
-		return "1.2";
-	else if (ogvf & QGLFormat::OpenGL_Version_1_1)
-		return "1.1";
-	else if (ogvf & QGLFormat::OpenGL_Version_None)
-		return "None";
-	return "None";
+  QGLFormat::OpenGLVersionFlags ogvf = QGLFormat::openGLVersionFlags();
+
+  if (ogvf & QGLFormat::OpenGL_Version_4_0)
+    return "4.0";
+  else if (ogvf & QGLFormat::OpenGL_Version_3_3)
+    return "3.3";
+  else if (ogvf & QGLFormat::OpenGL_Version_3_2)
+    return "3.2";
+  else if (ogvf & QGLFormat::OpenGL_Version_3_1)
+    return "3.1";
+  else if (ogvf & QGLFormat::OpenGL_Version_3_0)
+    return "3.0";
+  else if (ogvf & QGLFormat::OpenGL_Version_2_1)
+    return "2.1";
+  else if (ogvf & QGLFormat::OpenGL_Version_2_0)
+    return "2.0";
+  else if (ogvf & QGLFormat::OpenGL_Version_1_5)
+    return "1.5";
+  else if (ogvf & QGLFormat::OpenGL_Version_1_4)
+    return "1.4";
+  else if (ogvf & QGLFormat::OpenGL_Version_1_3)
+    return "1.3";
+  else if (ogvf & QGLFormat::OpenGL_Version_1_2)
+    return "1.2";
+  else if (ogvf & QGLFormat::OpenGL_Version_1_1)
+    return "1.1";
+  else if (ogvf & QGLFormat::OpenGL_Version_None)
+    return "None";
+
+  return "None";
 }
 
 void
 DebugWindow::__updateContents() {
-	OpenGLErrorsField->setPlainText(glErrors);
-	GPUMemoryUsageField->setText(QString::number(gpuMemoryUsage));
-	VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
-	TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
+  OpenGLErrorsField->setPlainText(glErrors);
+  GPUMemoryUsageField->setText(QString::number(gpuMemoryUsage));
+  VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
+  TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
 }

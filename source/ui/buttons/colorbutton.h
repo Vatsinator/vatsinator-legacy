@@ -23,30 +23,30 @@
 #include <QPushButton>
 
 class ColorButton : public QPushButton {
-	
-	/*
-	 * We need to subclass the QPushButton in order to make a nice
-	 * colorful button for Settings Window.
-	 */
-	
-	Q_OBJECT
-	
+
+  /*
+   * We need to subclass the QPushButton in order to make a nice
+   * colorful button for Settings Window.
+   */
+
+  Q_OBJECT
+
 public:
-	ColorButton(QWidget* = 0);
-	
-	void setColor(const QColor&);
-	void updateColor();
-	
-	inline const QColor &
-	getColor() { return __current; }
-	
+  ColorButton(QWidget* = 0);
+
+  void setColor(const QColor&);
+  void updateColor();
+
+  inline const QColor&
+  getColor() { return __current; }
+
 private:
-	QColor	__current;
-	
+  QColor  __current;
+
 private slots:
-	/* Opens the color dialog in order to let the user pick the color */
-	void __pickColor();
-	
+  /* Opens the color dialog in order to let the user pick the color */
+  void __pickColor();
+
 };
 
 #endif // COLORBUTTON_H

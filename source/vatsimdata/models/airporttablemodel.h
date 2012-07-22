@@ -26,45 +26,44 @@
 class Airport;
 
 class AirportTableModel : public QAbstractTableModel {
-	
-	/*
-	 * This model holds the vector of active airports.
-	 */
-	
-	Q_OBJECT
-	
+
+  /*
+   * This model holds the vector of active airports.
+   */
+
+  Q_OBJECT
+
 public:
-	explicit AirportTableModel(QObject* = 0);
-	
-	void addAirport(const Airport*);
-	
-	int rowCount(const QModelIndex& = QModelIndex()) const;
-	int columnCount(const QModelIndex& = QModelIndex()) const;
-	QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
-	QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
-	
-	inline void
-	clear() { __airports.clear(); }
-	
-	inline const QVector< const Airport* > &
-	getAirports() const { return __airports; }
-	
-	enum Column {
-		Label		= 0,
-		Facilities	= 1,
-		Outbounds	= 2,
-		Inbounds	= 3,
-		Button		= 4
-	};
-	
+  explicit AirportTableModel(QObject* = 0);
+
+  void addAirport(const Airport*);
+
+  int rowCount(const QModelIndex& = QModelIndex()) const;
+  int columnCount(const QModelIndex& = QModelIndex()) const;
+  QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
+  QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
+
+  void clear();
+
+  inline const QVector< const Airport* > &
+  getAirports() const { return __airports; }
+
+  enum Column {
+    Label   = 0,
+    Facilities  = 1,
+    Outbounds = 2,
+    Inbounds  = 3,
+    Button    = 4
+  };
+
 private:
-	QString __arrivalsAndDepartures(int) const;
-	QString __produceLabel(int) const;
-	QString __produceFacilities(int) const;
-	
-	QVector< const Airport* > __airports;
-	
-	
+  QString __arrivalsAndDepartures(int) const;
+  QString __produceLabel(int) const;
+  QString __produceFacilities(int) const;
+
+  QVector< const Airport* > __airports;
+
+
 };
 
 #endif // AIRPORTTABLEMODEL_H

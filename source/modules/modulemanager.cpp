@@ -1,5 +1,5 @@
 /*
-    point.cpp
+    modulemanager.cpp
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "modules/flighttracker.h"
+#include "modules/modelmatcher.h"
 
-#include "point.h"
+#include "vatsinatorapplication.h"
 
+#include "modulemanager.h"
+#include "defines.h"
 
+ModuleManager::ModuleManager() :
+    __flightTracker(new FlightTracker()),
+    __modelsMatcher(new ModelMatcher()) {
+  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(glInitialized()),
+          this,                                     SLOT(__initAfterGL()),
+          Qt::DirectConnection);
+}
+
+ModuleManager::~ModuleManager() {
+  delete __flightTracker;
+  delete __modelsMatcher;
+}
+
+void
+ModuleManager::init() {
+  __flightTracker->init();
+}
+
+void
+ModuleManager::__initAfterGL() {
+  __modelsMatcher->init();
+}

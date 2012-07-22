@@ -24,26 +24,26 @@
 #include "singleton.h"
 
 class ATCListWindow :
-		public QWidget,
-		public Singleton< ATCListWindow >,
-		private Ui::ATCListWindow {
-	
-	Q_OBJECT
-	
+    public QWidget,
+    public Singleton< ATCListWindow >,
+    private Ui::ATCListWindow {
+
+  Q_OBJECT
+
 public:
-	ATCListWindow(QWidget* = 0);
+  ATCListWindow(QWidget* = 0);
 
 protected:
-	void resizeEvent(QResizeEvent*);
-	
+  void resizeEvent(QResizeEvent*);
+
 private:
-	void __setColumnsWidths();
-	void __setWindowPosition();
-	
+  void __setColumnsWidths();
+  void __setWindowPosition();
+
 private slots:
-	void __handleDoubleClicked(const QModelIndex&);
-	
-	
+  void __handleDoubleClicked(const QModelIndex&);
+
+
 };
 
 #endif // ATCLISTWINDOW_H

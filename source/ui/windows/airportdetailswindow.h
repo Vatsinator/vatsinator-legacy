@@ -28,33 +28,33 @@ class Controller;
 class Pilot;
 
 class AirportDetailsWindow :
-		public QWidget,
-		public Singleton< AirportDetailsWindow >,
-		private Ui::AirportDetailsWindow {
-	
-	Q_OBJECT
-	
+    public QWidget,
+    public Singleton< AirportDetailsWindow >,
+    private Ui::AirportDetailsWindow {
+
+  Q_OBJECT
+
 public:
-	AirportDetailsWindow(QWidget* = 0);
-	
+  AirportDetailsWindow(QWidget* = 0);
+
 public slots:
-	void show(const Airport*);
- 	void updateMetar();
-	
+  void show(const Airport*);
+  void updateMetar();
+
 private:
-	void __updateModels(const Airport* = NULL);
-	void __fillLabels(const Airport*);
-	void __adjustTables();
-	void __setButtons();
-	void __setWindowPosition();
-	
-	QString __currentICAO;
-	const Airport* __current;
-	
+  void __updateModels(const Airport* = NULL);
+  void __fillLabels(const Airport*);
+  void __adjustTables();
+  void __setButtons();
+  void __setWindowPosition();
+
+  QString __currentICAO;
+  const Airport* __current;
+
 private slots:
-	void __updateData();
-	void __handleShowClicked();
-	
+  void __updateData();
+  void __handleShowClicked();
+
 };
 
 #endif // AIRPORTDETAILSWINDOW_H

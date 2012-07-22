@@ -31,37 +31,37 @@ class HttpHandler;
 class MetarListModel;
 
 class MetarsWindow :
-		public QWidget,
-		public Singleton< MetarsWindow >,
-		private Ui::MetarsWindow {
-	
-	/*
-	 * This class handles our "METARs" window. Shown when Vatsinator->
-	 * ->Metar is activated.
-	 */
-	
-	Q_OBJECT
-	
+    public QWidget,
+    public Singleton< MetarsWindow >,
+    private Ui::MetarsWindow {
+
+  /*
+   * This class handles our "METARs" window. Shown when Vatsinator->
+   * ->Metar is activated.
+   */
+
+  Q_OBJECT
+
 public:
-	MetarsWindow(QWidget* = 0);
-	virtual ~MetarsWindow();
-	
+  MetarsWindow(QWidget* = 0);
+  virtual ~MetarsWindow();
+
 public slots:
-	void show(QString);
-	void fetchMetar();
+  void show(QString);
+  void fetchMetar();
 
 private:
-	void __setWindowPosition();
-	
-	HttpHandler *	__httpHandler;
-	MetarListModel *	__metarsHandler;
-	
+  void __setWindowPosition();
+
+  HttpHandler*  __httpHandler;
+  MetarListModel*   __metarsHandler;
+
 private slots:
-	void __handleTextChange(const QString&);
-	
-	
-	
-	
+  void __handleTextChange(const QString&);
+
+
+
+
 };
 
 #endif // METARSWINDOW_H

@@ -22,35 +22,35 @@
 #include "defines.h"
 
 ColorButton::ColorButton(QWidget* _parent) :
-		QPushButton("", _parent) {
-	connect(this,	SIGNAL(clicked()),
-		this,	SLOT(__pickColor()));
+    QPushButton("", _parent) {
+  connect(this, SIGNAL(clicked()),
+          this, SLOT(__pickColor()));
 }
 
 void
 ColorButton::setColor(const QColor& _color) {
-	__current = _color;
-	updateColor();
+  __current = _color;
+  updateColor();
 }
 
 void
 ColorButton::updateColor() {
-	setStyleSheet("background: rgb(" +
-		QString::number(__current.red()) + "," +
-		QString::number(__current.green()) + "," +
-		QString::number(__current.blue()) + ");");
+  setStyleSheet("background: rgb(" +
+                QString::number(__current.red()) + "," +
+                QString::number(__current.green()) + "," +
+                QString::number(__current.blue()) + ");");
 }
 
 void
 ColorButton::__pickColor() {
-	QColorDialog* dialog = new QColorDialog(__current);
-	dialog->setWindowTitle("Select color");
-	
-	if (dialog->exec() == QDialog::Accepted)
-		__current = dialog->currentColor();
-	
-	delete dialog;
-	
-	updateColor();
+  QColorDialog* dialog = new QColorDialog(__current);
+  dialog->setWindowTitle("Select color");
+
+  if (dialog->exec() == QDialog::Accepted)
+    __current = dialog->currentColor();
+
+  delete dialog;
+
+  updateColor();
 }
 

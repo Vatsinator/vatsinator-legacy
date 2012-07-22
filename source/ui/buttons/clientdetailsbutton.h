@@ -25,22 +25,22 @@
 class Client;
 
 class ClientDetailsButton : public QPushButton {
-	
-	Q_OBJECT
-	
+
+  Q_OBJECT
+
 public:
-	explicit ClientDetailsButton(const Client* = NULL, const QString& = "Details", QWidget* = 0);
-	void setClientPointer(const Client*);
-	
+  explicit ClientDetailsButton(const Client* = NULL, const QString& = "Details", QWidget* = 0);
+  void setClientPointer(const Client*);
+
 signals:
-	void clicked(const Client*);
-	
+  void clicked(const Client*);
+
 private:
-	const Client * __current;
-	
+  const Client* __current;
+
 private slots:
-	void __handleClicked();
-	
+  void __handleClicked();
+
 };
 
 #endif // CLIENTDETAILSBUTTON_H

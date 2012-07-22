@@ -25,25 +25,25 @@
 #include "singleton.h"
 
 class DebugWindow :
-		public QWidget,
-		public Singleton< DebugWindow >,
-		private Ui::DebugWindow {
-	
-	Q_OBJECT
-	
+    public QWidget,
+    public Singleton< DebugWindow >,
+    private Ui::DebugWindow {
+
+  Q_OBJECT
+
 public:
-	DebugWindow(QWidget* = 0);
-	
+  DebugWindow(QWidget* = 0);
+
 public slots:
-	void show();
-	
+  void show();
+
 private:
-	void __setWindowPosition();
-	QString __getGLVersion();
-	
+  void __setWindowPosition();
+  QString __getGLVersion();
+
 private slots:
-	void __updateContents();
-	
+  void __updateContents();
+
 };
 
 #endif // DEBUGWINDOW_H

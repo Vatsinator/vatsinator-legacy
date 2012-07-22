@@ -29,52 +29,52 @@
 class HttpHandler;
 
 class MetarListModel : public QAbstractListModel, public Singleton< MetarListModel > {
-	
-	Q_OBJECT
-	
+
+  Q_OBJECT
+
 public:
-	MetarListModel(HttpHandler*, QObject* = 0);
-	
-	/**
-	 * Starts fetching the METAR.
-	 * After done, emits newMetarsAvailable().
-	 * @param icao Airport ICAO code.
-	 */
-	void fetchMetar(const QString&);
-	
-	/**
-	 * Looks for the METAR.
-	 * @param icao Airport ICAO code.
-	 * @return Const ptr to found METAR or NULL.
-	 */
-	const Metar * find(const QString&) const;
-	
-	/* Two QAbstractListModel-reimplemented functions */
-	int rowCount(const QModelIndex& = QModelIndex()) const;
-	QVariant data(const QModelIndex&, int) const;
-	
+  MetarListModel(HttpHandler*, QObject* = 0);
+
+  /**
+   * Starts fetching the METAR.
+   * After done, emits newMetarsAvailable().
+   * @param icao Airport ICAO code.
+   */
+  void fetchMetar(const QString&);
+
+  /**
+   * Looks for the METAR.
+   * @param icao Airport ICAO code.
+   * @return Const ptr to found METAR or NULL.
+   */
+  const Metar* find(const QString&) const;
+
+  /* Two QAbstractListModel-reimplemented functions */
+  int rowCount(const QModelIndex& = QModelIndex()) const;
+  QVariant data(const QModelIndex&, int) const;
+
 public slots:
-	void updateAllMetars();
-	void clear();
-	
+  void updateAllMetars();
+  void clear();
+
 signals:
-	void newMetarsAvailable();
-	void noMetar();
-	
+  void newMetarsAvailable();
+  void noMetar();
+
 private:
-	void __addMetar(const QString&);
-	
-	bool __matches(const QString&);
-	
-	QQueue< QString > __requests;
-	
-	QList< Metar > __metarList;
-	
-	HttpHandler* __myHttpHandler;
-	
+  void __addMetar(const QString&);
+
+  bool __matches(const QString&);
+
+  QQueue< QString > __requests;
+
+  QList< Metar > __metarList;
+
+  HttpHandler* __myHttpHandler;
+
 private slots:
-	void __gotMetar(const QString&);
-	
+  void __gotMetar(const QString&);
+
 };
 
 #endif // METARLISTMODEL_H

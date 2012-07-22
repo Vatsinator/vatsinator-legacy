@@ -49,31 +49,31 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
  */
 template < typename T >
 inline T getProcAddress(const string& _procName) {
-	T temp = NULL;
+  T temp = NULL;
 #ifdef VATSINATOR_PLATFORM_LINUX
-	temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
+  temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
 #elif defined VATSINATOR_PLATFORM_WIN32
-	temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
+  temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
 #endif
-	
-	Q_ASSERT(temp != (T)NULL);
-	
+
+  Q_ASSERT(temp != (T)NULL);
+
 #ifndef NO_DEBUG
-	registerExtensionPointer(_procName.c_str(), reinterpret_cast< long long unsigned >(temp));
+  registerExtensionPointer(_procName.c_str(), reinterpret_cast< long long unsigned >(temp));
 #endif
-	
-	return temp;
+
+  return temp;
 }
 
 void
 initGLExtensionsPointers() {
-	const QGLContext* context = QGLContext::currentContext();
-	Q_ASSERT(context->isValid());
-	
-	glBindBuffer = getProcAddress< decltype(glBindBuffer) >("glBindBuffer");
-	glBufferData = getProcAddress< decltype(glBufferData) >("glBufferData");
-	glBufferSubData = getProcAddress< decltype(glBufferSubData) >("glBufferSubData");
-	glDeleteBuffers = getProcAddress< decltype(glDeleteBuffers) >("glDeleteBuffers");
-	glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
+  const QGLContext* context = QGLContext::currentContext();
+  Q_ASSERT(context->isValid());
+
+  glBindBuffer = getProcAddress< decltype(glBindBuffer) >("glBindBuffer");
+  glBufferData = getProcAddress< decltype(glBufferData) >("glBufferData");
+  glBufferSubData = getProcAddress< decltype(glBufferSubData) >("glBufferSubData");
+  glDeleteBuffers = getProcAddress< decltype(glDeleteBuffers) >("glDeleteBuffers");
+  glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
 }
 

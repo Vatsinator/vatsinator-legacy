@@ -28,111 +28,115 @@
 #include "defines.h"
 
 MetarListModel::MetarListModel(HttpHandler* _hh, QObject* _parent) :
-		QAbstractListModel(_parent),
-		__myHttpHandler(_hh) {
-	connect(__myHttpHandler,	SIGNAL(finished(QString)),
-		this,			SLOT(__gotMetar(QString)));
-	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(metarsRefreshRequested()),
-		this,			SLOT(updateAllMetars()));
+    QAbstractListModel(_parent),
+    __myHttpHandler(_hh) {
+  connect(__myHttpHandler,  SIGNAL(finished(QString)),
+          this,     SLOT(__gotMetar(QString)));
+  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(metarsRefreshRequested()),
+          this,     SLOT(updateAllMetars()));
 }
 
 void
 MetarListModel::fetchMetar(const QString& _icao) {
-	__myHttpHandler->fetchData(VatsimDataHandler::GetSingleton().getMetarUrl() + "?id=" + _icao.toLower());
-	__requests.enqueue(_icao.simplified());
+  __myHttpHandler->fetchData(VatsimDataHandler::GetSingleton().getMetarUrl() + "?id=" + _icao.toLower());
+  __requests.enqueue(_icao.simplified());
 }
 
-const Metar *
+const Metar*
 MetarListModel::find(const QString& _key) const {
-	for (const Metar& m: __metarList)
-		if (m.getIcao() == _key)
-			return &m;
-	
-	return static_cast< const Metar* >(NULL);
+  for (const Metar & m: __metarList)
+    if (m.getIcao() == _key)
+      return &m;
+
+  return static_cast< const Metar* >(NULL);
 }
 
 int
 MetarListModel::rowCount(const QModelIndex&) const {
-	return __metarList.count();
+  return __metarList.count();
 }
 
 QVariant
 MetarListModel::data(const QModelIndex& _index, int _role) const {
-	if (!_index.isValid() || _index.row() >= __metarList.size())
-		return QVariant();
-	
-	switch (_role) {
-		case Qt::DisplayRole:
-			return __metarList.at(_index.row()).getMetar();
-		case Qt::ToolTipRole:
-			return __metarList.at(_index.row()).getLastFetchedTime();
-		default:
-			return QVariant();
-	}
+  if (!_index.isValid() || _index.row() >= __metarList.size())
+    return QVariant();
+
+  switch (_role) {
+    case Qt::DisplayRole:
+      return __metarList.at(_index.row()).getMetar();
+    case Qt::ToolTipRole:
+      return __metarList.at(_index.row()).getLastFetchedTime();
+    default:
+      return QVariant();
+  }
 }
 
 void
 MetarListModel::updateAllMetars() {
-	for (Metar& m: __metarList)
-		fetchMetar(m.getIcao());
+  for (Metar & m: __metarList)
+    fetchMetar(m.getIcao());
 }
 
 void
 MetarListModel::clear() {
-	beginRemoveRows(QModelIndex(), 0, __metarList.size() - 1);
-	__metarList.clear();
-	endRemoveRows();
-	emit newMetarsAvailable();
+  beginRemoveRows(QModelIndex(), 0, __metarList.size() - 1);
+  __metarList.clear();
+  endRemoveRows();
+  emit newMetarsAvailable();
 }
 
 void
 MetarListModel::__addMetar(const QString& _metar) {
-	for (Metar& m: __metarList) {
-		if (m.getIcao() == _metar.left(4)) {
-			m.setMetar(_metar);
-			return;
-		}
-	}
-	
-	beginInsertRows(QModelIndex(), rowCount(), rowCount());
-	__metarList.push_back(Metar(_metar.left(4), _metar));
-	endInsertRows();
+  for (Metar & m: __metarList) {
+    if (m.getIcao() == _metar.left(4)) {
+      m.setMetar(_metar);
+      return;
+    }
+  }
+
+  beginInsertRows(QModelIndex(), rowCount(), rowCount());
+  __metarList.push_back(Metar(_metar.left(4), _metar));
+  endInsertRows();
 }
 
 inline bool
 MetarListModel::__matches(const QString& _word) {
-	return (_word.length() == 4) &&
-		(_word.startsWith(__requests.head(), Qt::CaseInsensitive));
+  return (_word.length() == 4) &&
+         (_word.startsWith(__requests.head(), Qt::CaseInsensitive));
 }
 
 void
 MetarListModel::__gotMetar(const QString& _metar) {
-	QString metar = _metar.simplified();
-	if (metar.isEmpty())
-		return;
-	
-	if (metar.contains(METAR_NO_AVAIL)) {
-		__requests.dequeue();
-		emit noMetar();
-		return;
-	}
-	
-	QString oneMetar;
-	for (QString& word: metar.split(' ')) {
-		if (__matches(word)) {
-			if (!oneMetar.isEmpty())
-				__addMetar(oneMetar);
-			oneMetar.clear();
-		}
-		oneMetar.append(word + " ");
-	}
-	
-	if (!oneMetar.isEmpty())
-		__addMetar(oneMetar);
-	
-	__requests.dequeue();
+  QString metar = _metar.simplified();
 
-	emit newMetarsAvailable();
+  if (metar.isEmpty())
+    return;
+
+  if (metar.contains(METAR_NO_AVAIL)) {
+    __requests.dequeue();
+    emit noMetar();
+    return;
+  }
+
+  QString oneMetar;
+
+for (QString & word: metar.split(' ')) {
+    if (__matches(word)) {
+      if (!oneMetar.isEmpty())
+        __addMetar(oneMetar);
+
+      oneMetar.clear();
+    }
+
+    oneMetar.append(word + " ");
+  }
+
+  if (!oneMetar.isEmpty())
+    __addMetar(oneMetar);
+
+  __requests.dequeue();
+
+  emit newMetarsAvailable();
 }
 
 

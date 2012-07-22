@@ -22,14 +22,14 @@
 #include "defines.h"
 
 MetarAction::MetarAction(const QString& _icao, QObject* _parent) :
-		QAction(_icao + " metar", _parent),
-		__icao(_icao) {
-	connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
+    QAction(_icao + " metar", _parent),
+    __icao(_icao) {
+  connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
 }
 
 void
 MetarAction::__handleTriggered() {
-	emit triggered(__icao);
+  emit triggered(__icao);
 }
 
 

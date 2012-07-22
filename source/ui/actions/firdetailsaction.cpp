@@ -21,15 +21,15 @@
 #include "defines.h"
 
 FirDetailsAction::FirDetailsAction(const Fir* _f, const QString& _label, QObject* _parent) :
-		QAction(_label, _parent),
-		__current(_f) {
-	connect(this,	SIGNAL(triggered()),
-		this,	SLOT(__handleTriggered()));
+    QAction(_label, _parent),
+    __current(_f) {
+  connect(this, SIGNAL(triggered()),
+          this, SLOT(__handleTriggered()));
 }
 
 void
 FirDetailsAction::__handleTriggered() {
-	emit triggered(__current);
+  emit triggered(__current);
 }
 
 

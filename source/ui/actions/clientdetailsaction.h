@@ -25,22 +25,22 @@
 #include "vatsimdata/client.h"
 
 class ClientDetailsAction : public QAction {
-	
-	Q_OBJECT
-	
+
+  Q_OBJECT
+
 public:
-	ClientDetailsAction(const Client*, const QString&, QObject*);
+  ClientDetailsAction(const Client*, const QString&, QObject*);
 
 signals:
-	void triggered(const Client*);
-	
+  void triggered(const Client*);
+
 private slots:
-	void __handleTriggered();
-	
+  void __handleTriggered();
+
 private:
-	const Client * __current;
-	
-	
+  const Client* __current;
+
+
 };
 
 #endif // CLIENTDETAILSACTION_H

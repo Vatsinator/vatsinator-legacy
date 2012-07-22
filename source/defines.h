@@ -13,19 +13,19 @@
 #define VATSIM_STATUS_URL	"http://status.vatsim.net/status.txt"
 // if on mingw there is no PREFIX
 #ifdef PREFIX
-#define AIRPORTS_DB		PREFIX "/share/vatsinator/WorldAirports.db"
-#define FIRS_DB			PREFIX "/share/vatsinator/WorldFirs.db"
-#define VATSINATOR_DAT		PREFIX "/share/vatsinator/vatsinator.dat"
-#define MODELS_DAT		PREFIX "/share/vatsinator/models.dat"
-#define WORLD_MAP		PREFIX "/share/vatsinator/WorldMap.db"
-#define PIXMAPS_DIR		PREFIX "/share/vatsinator/pixmaps"
+#define AIRPORTS_DB		  PREFIX "/share/vatsinator/WorldAirports.db"
+#define FIRS_DB			    PREFIX "/share/vatsinator/WorldFirs.db"
+#define VATSINATOR_DAT	PREFIX "/share/vatsinator/vatsinator.dat"
+#define MODELS_DAT		  PREFIX "/share/vatsinator/models.dat"
+#define WORLD_MAP		    PREFIX "/share/vatsinator/WorldMap.db"
+#define PIXMAPS_DIR		  PREFIX "/share/vatsinator/pixmaps"
 #else
-#define AIRPORTS_DB		"WorldAirports.db"
-#define FIRS_DB			"WorldFirs.db"
-#define VATSINATOR_DAT		"vatsinator.dat"
-#define MODELS_DAT		"models.dat"
-#define WORLD_MAP		"WorldMap.db"
-#define PIXMAPS_DIR		"pixmaps"
+#define AIRPORTS_DB		  "WorldAirports.db"
+#define FIRS_DB			    "WorldFirs.db"
+#define VATSINATOR_DAT	"vatsinator.dat"
+#define MODELS_DAT		  "models.dat"
+#define WORLD_MAP		    "WorldMap.db"
+#define PIXMAPS_DIR		  "pixmaps"
 #endif
 
 // below/above these values user can't zoom the map
@@ -46,28 +46,28 @@
 #define BASE_SIZE_WIDTH		800
 #define BASE_SIZE_HEIGHT	600
 
-#define PILOTS_LABELS_FONT_COLOR	0, 0, 0
+#define PILOTS_LABELS_FONT_COLOR	  0, 0, 0
 #define AIRPORTS_LABELS_FONT_COLOR	250, 250, 250
-#define FIRS_LABELS_FONT_COLOR		173, 173, 173
+#define FIRS_LABELS_FONT_COLOR		  173, 173, 173
 
 // camera position won't go further
 #define RANGE_Y		1.0
 
 // fonts properties
-#define PILOT_FONT_PIXEL_SIZE	10
-#define PILOT_FONT_WEIGHT	QFont::Normal
+#define PILOT_FONT_PIXEL_SIZE	  10
+#define PILOT_FONT_WEIGHT	      QFont::Normal
 #define AIRPORT_FONT_PIXEL_SIZE	8
-#define AIRPORT_FONT_WEIGHT	QFont::Bold
-#define FIR_FONT_PIXEL_SIZE	10
-#define FIR_FONT_WEIGHT		QFont::Bold
+#define AIRPORT_FONT_WEIGHT	    QFont::Bold
+#define FIR_FONT_PIXEL_SIZE	    10
+#define FIR_FONT_WEIGHT		      QFont::Bold
 
 
 // if debug, add MemoryTracker to the buildset
 #ifndef NO_DEBUG
-#define DEBUG_NEW new(__FILE__, __LINE__)
-#include "memorytracker.h"
+# define DEBUG_NEW new(__FILE__, __LINE__)
+# include "vdebug/memorytracker.h"
 #else
-#define DEBUG_NEW new
+# define DEBUG_NEW new
 #endif
 #define new DEBUG_NEW
 

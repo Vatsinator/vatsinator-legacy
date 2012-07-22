@@ -25,21 +25,21 @@
 class Pilot;
 
 class TrackAction : public QAction {
-	
-	Q_OBJECT
-	
+
+  Q_OBJECT
+
 public:
-	TrackAction(const Pilot*, QObject*);
-	
+  TrackAction(const Pilot*, QObject*);
+
 signals:
-	void triggered(const Pilot*);
-	
+  void triggered(const Pilot*);
+
 private slots:
-	void __handleTriggered();
-	
+  void __handleTriggered();
+
 private:
-	const Pilot* __current;
-	
+  const Pilot* __current;
+
 };
 
 #endif // TRACKACTION_H

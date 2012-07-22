@@ -23,28 +23,27 @@
 #include <QAction>
 #include <QString>
 
-class MetarAction :
-		public QAction {
-	
-	/*
-	 * We need this class to reprezent one "ZZZZ metar" action in
-	 * OpenGLWidget submenu.
-	 */
-	
-	Q_OBJECT
-	
+class MetarAction : public QAction {
+
+  /*
+   * We need this class to reprezent one "ZZZZ metar" action in
+   * OpenGLWidget submenu.
+   */
+
+  Q_OBJECT
+
 public:
-	MetarAction(const QString&, QObject*);
-	
+  MetarAction(const QString&, QObject*);
+
 signals:
-	void triggered(QString);
+  void triggered(QString);
 
 private slots:
-	void __handleTriggered();
+  void __handleTriggered();
 
 private:
-	QString __icao;
-	
+  QString __icao;
+
 };
 
 #endif // METARACTION_H

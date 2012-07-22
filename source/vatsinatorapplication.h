@@ -1,7 +1,7 @@
 /*
     vatsinatorapplication.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
-    
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -22,71 +22,101 @@
 
 #include <QApplication>
 #include <QTimer>
+#include <iostream>
 
 #include "singleton.h"
 
-class AirportsDatabase;
-class FirsDatabase;
+class AirportDatabase;
+class FirDatabase;
 class UserInterface;
 class VatsimDataHandler;
 class SettingsManager;
 class WorldMap;
 class HttpHandler;
-class ModulesManager;
+class ModuleManager;
 
 class VatsinatorApplication :
-		public QApplication,
-		public Singleton< VatsinatorApplication > {
-	
-	/*
-	 * This class handles the whole Vatsinator application and has
-	 * only one instance.
-	 */
-	
-	Q_OBJECT
-	
+    public QApplication,
+    public Singleton< VatsinatorApplication > {
+
+  /*
+   * This class handles the whole Vatsinator application and has
+   * only one instance.
+   */
+
+  Q_OBJECT
+
 public:
-	/**
-	 * Constructor gives argc & argv to the QApplication.
-	 */
-	VatsinatorApplication(int&, char**);
-	
-	virtual ~VatsinatorApplication();
-	
-	static void quit();
-	static void alert(const QString&);
-	
-	static void emitGLInitialized();
-	
-	VatsimDataHandler& getData() { return *__vatsimData; }
-	
+  /**
+   * Constructor gives argc & argv to the QApplication.
+   */
+  VatsinatorApplication(int&, char**);
+
+  virtual ~VatsinatorApplication();
+
+  static void quit();
+  static void alert(const QString&);
+
+  static void emitGLInitialized();
+
+#ifdef NO_DEBUG
+
+  inline static void
+  log(const char*) {}
+
+  template< typename T, typename... Args >
+  inline static void
+  log(const char*, T, Args...) {}
+
+#else
+
+  static void log(const char*);
+
+  template< typename T, typename... Args >
+  static void log(const char* _s, T _value, Args... _args) {
+    while (*_s) {
+      if (*_s == '%' && *(++_s) != '%') {
+        std::cout << _value;
+        VatsinatorApplication::log(*_s ? ++_s : _s, _args...);
+        return;
+      }
+
+      std::cout << *_s++;
+    }
+
+    std::cout << std::endl;
+  }
+
+#endif
+
+  inline VatsimDataHandler &
+  getData() { return *__vatsimData; }
+
 signals:
-	void glInitialized();
-	void dataUpdated();
-	void metarsRefreshRequested();
+  void glInitialized();
+  void dataUpdated();
+  void metarsRefreshRequested();
 
 public slots:
-	void refreshData();
-	
-private slots:
-	void __statusFileUpdated(const QString&);
-	void __dataFileUpdated(const QString&);
-	void __showDataAlert();
-	
+  void refreshData();
+
 private:
-	void __emitGLInitialized();
-	void __fetchStatusFile();
-	
-	HttpHandler *		__httpHandler;
-	AirportsDatabase *	__airportsData;
-	FirsDatabase * 		__firsData;
-	WorldMap *		__worldMap;
-	VatsimDataHandler *	__vatsimData;
-	SettingsManager *	__settingsManager;
-	ModulesManager *	__modulesManager;
-	UserInterface *		__userInterface;
-	QTimer 			__timer;
-	
+  void __emitGLInitialized();
+
+  HttpHandler*       __httpHandler;
+  AirportDatabase*   __airportsData;
+  FirDatabase*       __firsData;
+  WorldMap*          __worldMap;
+  VatsimDataHandler* __vatsimData;
+  SettingsManager*   __settingsManager;
+  ModuleManager*     __modulesManager;
+  UserInterface*     __userInterface;
+  QTimer             __timer;
+
+private slots:
+  void __dataUpdated(const QString&);
+  void __showDataAlert();
+
 };
 
 #endif // VATSINATORAPPLICATION_H

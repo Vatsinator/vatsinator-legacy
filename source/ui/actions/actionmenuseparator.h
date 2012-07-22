@@ -23,12 +23,12 @@
 #include <QAction>
 
 class ActionMenuSeparator : public QAction {
-	
-	Q_OBJECT
-	
+
+  Q_OBJECT
+
 public:
-	ActionMenuSeparator(const QString&, QObject*);
-	
+  ActionMenuSeparator(const QString&, QObject*);
+
 };
 
 #endif // ACTIONMENUSEPARATOR_H

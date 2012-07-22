@@ -28,7 +28,7 @@
 #include "ui/windows/atclistwindow.h"
 #include "ui/windows/firdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
-#include "ui/windows/flightslistwindow.h"
+#include "ui/windows/flightlistwindow.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/windows/settingswindow.h"
 
@@ -40,187 +40,192 @@
 #include "defines.h"
 
 UserInterface::UserInterface(QWidget* _parent) :
-		QMainWindow(_parent),
+    QMainWindow(_parent),
 #ifndef NO_DEBUG
-		__debugWindow(new DebugWindow()),
+    __debugWindow(new DebugWindow()),
 #endif
-		__aboutWindow(new AboutWindow()),
-		__metarsWindow(new MetarsWindow()),
-		__airportDetailsWindow(new AirportDetailsWindow()),
-		__firDetailsWindow(new FirDetailsWindow()),
-		__atcDetailsWindow(new ATCDetailsWindow()),
-		__atcListWindow(new ATCListWindow()),
-		__flightDetailsWindow(new FlightDetailsWindow()),
-		__flightsListWindow(new FlightsListWindow()),
-		__settingsWindow(new SettingsWindow()),
-		__mother(VatsinatorApplication::GetSingleton()) {
-	__setupWindow();
-	__setWindowPosition();
-	__restoreWindowGeometry();
-	
-	connect(ActionExit,	SIGNAL(triggered()),
-		this,		SLOT(quit()));
-	connect(ActionAbout,	SIGNAL(triggered()),
-		__aboutWindow,	SLOT(show()));
-	connect(ActionMetar,	SIGNAL(triggered()),
-		__metarsWindow,	SLOT(show()));
-	connect(ActionRefresh,	SIGNAL(triggered()),
-		&__mother,	SLOT(refreshData()));
-	connect(ActionPreferences,	SIGNAL(triggered()),
-		__settingsWindow,	SLOT(show()));
-	connect(ActionFlightsList,	SIGNAL(triggered()),
-		__flightsListWindow,	SLOT(show()));
-	connect(ActionATCList,		SIGNAL(triggered()),
-		__atcListWindow,	SLOT(show()));
-	
-	statusBarUpdate();
-	
-	ProgressBar->reset();	
+    __aboutWindow(new AboutWindow()),
+    __metarsWindow(new MetarsWindow()),
+    __airportDetailsWindow(new AirportDetailsWindow()),
+    __firDetailsWindow(new FirDetailsWindow()),
+    __atcDetailsWindow(new ATCDetailsWindow()),
+    __atcListWindow(new ATCListWindow()),
+    __flightDetailsWindow(new FlightDetailsWindow()),
+    __flightsListWindow(new FlightListWindow()),
+    __settingsWindow(new SettingsWindow()),
+    __mother(VatsinatorApplication::GetSingleton()) {
+  __setupWindow();
+  __setWindowPosition();
+  __restoreWindowGeometry();
+
+  connect(ActionExit,          SIGNAL(triggered()),
+          this,                SLOT(quit()));
+  connect(ActionAbout,         SIGNAL(triggered()),
+          __aboutWindow,       SLOT(show()));
+  connect(ActionMetar,         SIGNAL(triggered()),
+          __metarsWindow,      SLOT(show()));
+  connect(ActionRefresh,       SIGNAL(triggered()),
+          &__mother,           SLOT(refreshData()));
+  connect(ActionPreferences,   SIGNAL(triggered()),
+          __settingsWindow,    SLOT(show()));
+  connect(ActionFlightList,    SIGNAL(triggered()),
+          __flightsListWindow, SLOT(show()));
+  connect(ActionATCList,       SIGNAL(triggered()),
+          __atcListWindow,     SLOT(show()));
+
+  statusBarUpdate();
+
+  ProgressBar->reset();
 }
 
 UserInterface::~UserInterface() {
-	hideAllWindows();
-	__storeWindowGeometry();
-	
-	delete __aboutWindow;
-	delete __airportDetailsWindow;
-	delete __firDetailsWindow;
-	delete __flightDetailsWindow;
-	delete __flightsListWindow;
-	delete __atcDetailsWindow;
-	delete __atcListWindow;
-	delete __settingsWindow;
-	delete __metarsWindow;
-	
+  hideAllWindows();
+  __storeWindowGeometry();
+
+  delete __aboutWindow;
+  delete __airportDetailsWindow;
+  delete __firDetailsWindow;
+  delete __flightDetailsWindow;
+  delete __flightsListWindow;
+  delete __atcDetailsWindow;
+  delete __atcListWindow;
+  delete __settingsWindow;
+  delete __metarsWindow;
+
 #ifndef NO_DEBUG
-	delete __debugWindow;
+  delete __debugWindow;
 #endif
 }
 
 void
 UserInterface::statusBarUpdate(const QString& _message) {
-	if (_message.isEmpty()) {
-		StatusBox->setText("Last update: " %
-			VatsimDataHandler::GetSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
-			" UTC"
-		);
-	} else {
-		StatusBox->setText(" " + _message);
-	}
+  if (_message.isEmpty()) {
+    StatusBox->setText("Last update: " %
+                       VatsimDataHandler::GetSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
+                       " UTC"
+                      );
+  } else {
+    StatusBox->setText(_message);
+  }
 }
 
 void
 UserInterface::quit() {
-	VatsinatorApplication::GetSingleton().quit();
+  VatsinatorApplication::GetSingleton().quit();
 }
 
 void
 UserInterface::hideAllWindows() {
-	if (__aboutWindow->isVisible())
-		__aboutWindow->hide();
-	
-	if (__airportDetailsWindow->isVisible())
-		__airportDetailsWindow->hide();
-	
-	if (__firDetailsWindow->isVisible())
-		__firDetailsWindow->hide();
-	
-	if (__flightDetailsWindow->isVisible())
-		__flightDetailsWindow->hide();
-	
-	if (__flightsListWindow->isVisible())
-		__flightsListWindow->hide();
-	
-	if (__atcDetailsWindow->isVisible())
-		__atcDetailsWindow->hide();
-	
-	if (__atcListWindow->isVisible())
-		__atcListWindow->hide();
-	
-	if (__metarsWindow->isVisible())
-		__metarsWindow->hide();
-	
+  if (__aboutWindow->isVisible())
+    __aboutWindow->hide();
+
+  if (__airportDetailsWindow->isVisible())
+    __airportDetailsWindow->hide();
+
+  if (__firDetailsWindow->isVisible())
+    __firDetailsWindow->hide();
+
+  if (__flightDetailsWindow->isVisible())
+    __flightDetailsWindow->hide();
+
+  if (__flightsListWindow->isVisible())
+    __flightsListWindow->hide();
+
+  if (__atcDetailsWindow->isVisible())
+    __atcDetailsWindow->hide();
+
+  if (__atcListWindow->isVisible())
+    __atcListWindow->hide();
+
+  if (__metarsWindow->isVisible())
+    __metarsWindow->hide();
+
 #ifndef NO_DEBUG
-	if (__debugWindow->isVisible())
-		__debugWindow->hide();
+
+  if (__debugWindow->isVisible())
+    __debugWindow->hide();
+
 #endif
 }
 
 void
 UserInterface::closeEvent(QCloseEvent* _event) {
-	hideAllWindows();
-	_event->accept();
+  hideAllWindows();
+  _event->accept();
 }
 
 void
 UserInterface::__setupWindow() {
-	setupUi(this);
-	
+  setupUi(this);
+
 #ifndef NO_DEBUG
-	MenuHelp->addSeparator();
-	
-	QAction* debugAction = new QAction("Debug...", this);
-	
-	connect(debugAction,		SIGNAL(triggered()),
-		__debugWindow,		SLOT(show()));
-	
-	MenuHelp->addAction(debugAction);
+  MenuHelp->addSeparator();
+
+  QAction* debugAction = new QAction("Debug...", this);
+
+  connect(debugAction,    SIGNAL(triggered()),
+          __debugWindow,  SLOT(show()));
+
+  MenuHelp->addAction(debugAction);
 #endif
 }
 
 void
 UserInterface::__setWindowPosition() {
-	QDesktopWidget* desktop = QApplication::desktop();
-	
-	int screenWidth, width;
-	int screenHeight, height;
-	
-	int x, y;
-	
-	QSize windowSize;
-	
-	screenWidth = desktop -> width();
-	screenHeight = desktop -> height();
-	
-	windowSize = size();
-	width = windowSize.width();
-	height = windowSize.height();
-	
-	x = (screenWidth - width) / 2;
-	y = (screenHeight - height) / 2;
-	y -= 50;
-	
-	move(x, y);
+  QDesktopWidget* desktop = QApplication::desktop();
+
+  int screenWidth, width;
+  int screenHeight, height;
+
+  int x, y;
+
+  QSize windowSize;
+
+  screenWidth = desktop -> width();
+  screenHeight = desktop -> height();
+
+  windowSize = size();
+  width = windowSize.width();
+  height = windowSize.height();
+
+  x = (screenWidth - width) / 2;
+  y = (screenHeight - height) / 2;
+  y -= 50;
+
+  move(x, y);
 }
 
 void
 UserInterface::__storeWindowGeometry() {
-	QSettings settings("Vatsinator", "Vatsinator");
-	
-	settings.beginGroup("MainWindow");
-	
-	settings.setValue("geometry", saveGeometry());
-	settings.setValue("savestate", saveState());
-	settings.setValue("maximized", isMaximized());
-	if (!isMaximized()) {
-		settings.setValue("position", pos());
-		settings.setValue("size", size());
-	}
-	
-	settings.endGroup();
+  QSettings settings("Vatsinator", "Vatsinator");
+
+  settings.beginGroup("MainWindow");
+
+  settings.setValue("geometry", saveGeometry());
+  settings.setValue("savestate", saveState());
+  settings.setValue("maximized", isMaximized());
+
+  if (!isMaximized()) {
+    settings.setValue("position", pos());
+    settings.setValue("size", size());
+  }
+
+  settings.endGroup();
 }
 
 void
 UserInterface::__restoreWindowGeometry() {
-	QSettings settings("Vatsinator", "Vatsinator");
-	
-	settings.beginGroup("MainWindow");
-	restoreGeometry(settings.value( "geometry", saveGeometry() ).toByteArray());
-	restoreState(settings.value( "savestate", saveState() ).toByteArray());
-	move(settings.value( "position", pos() ).toPoint());
-	resize(settings.value( "size", size() ).toSize());
-	if ( settings.value( "maximized", isMaximized() ).toBool() )
-		showMaximized();
-	settings.endGroup();
+  QSettings settings("Vatsinator", "Vatsinator");
+
+  settings.beginGroup("MainWindow");
+  restoreGeometry(settings.value( "geometry", saveGeometry() ).toByteArray());
+  restoreState(settings.value( "savestate", saveState() ).toByteArray());
+  move(settings.value( "position", pos() ).toPoint());
+  resize(settings.value( "size", size() ).toSize());
+
+  if ( settings.value( "maximized", isMaximized() ).toBool() )
+    showMaximized();
+
+  settings.endGroup();
 }
 

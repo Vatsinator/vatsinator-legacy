@@ -27,28 +27,27 @@ class Client;
 class Controller;
 
 class ATCDetailsWindow :
-		public QWidget,
-		public Singleton< ATCDetailsWindow >,
-		private Ui::ATCDetailsWindow {
-	
-	Q_OBJECT
-	
+    public QWidget,
+    public Singleton< ATCDetailsWindow >,
+    private Ui::ATCDetailsWindow {
+
+  Q_OBJECT
+
 public:
-	ATCDetailsWindow(QWidget* = 0);
-	
+  ATCDetailsWindow(QWidget* = 0);
+
 public slots:
-	void show(const Client*);
-	
+  void show(const Client*);
+
 private:
-	void __setWindowPosition();
-	
-	const Controller * __current;
-	QMap< int, QString> __ratings;
-	
+  void __setWindowPosition();
+
+  const Controller* __current;
+
 private slots:
-	void __handleShowClicked();
-	
-	
+  void __handleShowClicked();
+
+
 };
 
 #endif // ATCDETAILSWINDOW_H

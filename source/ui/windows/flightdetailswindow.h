@@ -27,34 +27,34 @@ class Client;
 class Pilot;
 
 class FlightDetailsWindow :
-		public QWidget,
-		public Singleton< FlightDetailsWindow >,
-		private Ui::FlightDetailsWindow {
-	
-	Q_OBJECT
-	
+    public QWidget,
+    public Singleton< FlightDetailsWindow >,
+    private Ui::FlightDetailsWindow {
+
+  Q_OBJECT
+
 public:
-	FlightDetailsWindow(QWidget* = 0);
-	
+  FlightDetailsWindow(QWidget* = 0);
+
 signals:
-	void flightTrackingStateChanged(const Pilot*, int);
-	
+  void flightTrackingStateChanged(const Pilot*, int);
+
 public slots:
-	void show(const Client*);
-	void stateHandle(int);
-	
+  void show(const Client*);
+  void stateHandle(int);
+
 private:
-	void __updateToFromButtons();
-	void __setWindowPosition();
-	
-	const Pilot *	__current;
-	QString		__currentCallsign;
-	
+  void __updateToFromButtons();
+  void __setWindowPosition();
+
+  const Pilot*  __current;
+  QString   __currentCallsign;
+
 private slots:
-	void __updateData();
-	void __handleShowClicked();
-	
-	
+  void __updateData();
+  void __handleShowClicked();
+
+
 };
 
 #endif // FLIGHTDETAILSWINDOW_H

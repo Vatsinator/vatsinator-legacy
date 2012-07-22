@@ -20,13 +20,13 @@
 #include "defines.h"
 
 ClientDetailsAction::ClientDetailsAction(const Client* _client, const QString& _label, QObject* _parent) :
-		QAction(_label, _parent),
-		__current(_client) {
-	connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
+    QAction(_label, _parent),
+    __current(_client) {
+  connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
 }
 
 void
 ClientDetailsAction::__handleTriggered() {
-	emit triggered(__current);
+  emit triggered(__current);
 }
 

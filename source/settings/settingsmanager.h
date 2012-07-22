@@ -28,124 +28,124 @@
 class SettingsWindow;
 
 class SettingsManager : public QObject, public Singleton< SettingsManager > {
-	
-	Q_OBJECT
-	
-	enum {
-		WHEN_HOVERED = 1,
-		AIRPORT_RELATED = 2,
-		ALWAYS = 4
-	};
-	
+
+  Q_OBJECT
+
+  enum {
+    WHEN_HOVERED = 1,
+    AIRPORT_RELATED = 2,
+    ALWAYS = 4
+  };
+
 public:
-	struct DisplayLayersPolicy {
-		bool	pilots;
-		bool	airports;
-		bool	staffedFirs;
-		bool	unstaffedFirs;
-	};
-	
-	SettingsManager(QObject* = 0);
-	
-	void init();
-	
-	inline int
-	getRefreshRate() const { return __refreshRate; }
-	
-	inline bool
-	refreshMetars() const { return __metarsRefresh; }
-	
-	inline bool
-	hasAntyaliasing() const { return __antyaliasing; }
-	
-	inline const DisplayLayersPolicy &
-	getDisplayLayersPolicy() const { return __displayLayers; }
-	
-	inline bool
-	displayAirportLabels() const { return __displayAirportLabels; }
-	
-	inline bool
-	displayPilotsLabelsWhenHovered() const { return __pilotsLabelsDisplayPolicy & WHEN_HOVERED; }
-	
-	inline bool
-	displayPilotsLabelsAirportRelated() const { return __pilotsLabelsDisplayPolicy & AIRPORT_RELATED; }
-	
-	inline bool
-	displayPilotsLabelsAlways() const { return __pilotsLabelsDisplayPolicy & ALWAYS; }
-	
-	inline const QColor &
-	getUnstaffedFirBordersColor() const { return __unstaffedFirBordersColor; }
-	
-	inline const QColor &
-	getStaffedFirBordersColor() const { return __staffedFirBordersColor; }
-	
-	inline const QColor &
-	getStaffedFirBackgroundColor() const { return __staffedFirBackgroundColor; }
-	
-	inline const QColor &
-	getStaffedUirBordersColor() const { return __staffedUirBordersColor; }
-	
-	inline const QColor &
-	getStaffedUirBackgroundColor() const { return __staffedUirBackgroundColor; }
-	
-	inline const QColor &
-	getApproachCircleColor() const { return __approachCircleColor; }
-	
-	inline const QColor &
-	getSeasColor() const { return __seasColor; }
-	
-	inline const QColor &
-	getLandsColor() const { return __landsColor; }
-	
-	inline const QColor &
-	getOriginToPilotLineColor() const { return __originToPilotLineColor; }
-	
-	inline const QColor &
-	getPilotToDestinationLineColor() const { return __pilotToDestinationLineColor; }
-	
+  struct DisplayLayersPolicy {
+    bool  pilots;
+    bool  airports;
+    bool  staffedFirs;
+    bool  unstaffedFirs;
+  };
+
+  SettingsManager(QObject* = 0);
+
+  void init();
+
+  inline int
+  getRefreshRate() const { return __refreshRate; }
+
+  inline bool
+  refreshMetars() const { return __metarsRefresh; }
+
+  inline bool
+  hasAntyaliasing() const { return __antyaliasing; }
+
+  inline const DisplayLayersPolicy&
+  getDisplayLayersPolicy() const { return __displayLayers; }
+
+  inline bool
+  displayAirportLabels() const { return __displayAirportLabels; }
+
+  inline bool
+  displayPilotsLabelsWhenHovered() const { return __pilotsLabelsDisplayPolicy & WHEN_HOVERED; }
+
+  inline bool
+  displayPilotsLabelsAirportRelated() const { return __pilotsLabelsDisplayPolicy & AIRPORT_RELATED; }
+
+  inline bool
+  displayPilotsLabelsAlways() const { return __pilotsLabelsDisplayPolicy & ALWAYS; }
+
+  inline const QColor&
+  getUnstaffedFirBordersColor() const { return __unstaffedFirBordersColor; }
+
+  inline const QColor&
+  getStaffedFirBordersColor() const { return __staffedFirBordersColor; }
+
+  inline const QColor&
+  getStaffedFirBackgroundColor() const { return __staffedFirBackgroundColor; }
+
+  inline const QColor&
+  getStaffedUirBordersColor() const { return __staffedUirBordersColor; }
+
+  inline const QColor&
+  getStaffedUirBackgroundColor() const { return __staffedUirBackgroundColor; }
+
+  inline const QColor&
+  getApproachCircleColor() const { return __approachCircleColor; }
+
+  inline const QColor&
+  getSeasColor() const { return __seasColor; }
+
+  inline const QColor&
+  getLandsColor() const { return __landsColor; }
+
+  inline const QColor&
+  getOriginToPilotLineColor() const { return __originToPilotLineColor; }
+
+  inline const QColor&
+  getPilotToDestinationLineColor() const { return __pilotToDestinationLineColor; }
+
 signals:
-	void settingsRestored();
-	void settingsChanged();
-	
+  void settingsRestored();
+  void settingsChanged();
+
 private:
-	/* Saves all settings in the system, using QSettings */
-	void __saveSettings();
-	
-	/* Restores settings from the registry/config files */
-	void __restoreSettings();
-	
-	/* Clears all config entries from the registry/config files */
-	void __clearEntries();
-	
-	SettingsWindow *	__mySettingsWindow;
-	
-	/* Miscallaneous */
-	int			__refreshRate;
-	bool			__metarsRefresh;
-	bool			__antyaliasing;
-	DisplayLayersPolicy	__displayLayers;
-	unsigned		__pilotsLabelsDisplayPolicy;
-	bool			__displayAirportLabels;
-	
-	/* Various map colors */
-	QColor	__unstaffedFirBordersColor;
-	QColor	__staffedFirBordersColor;
-	int	__staffedFirBackgroundAlpha;
-	QColor	__staffedFirBackgroundColor;
-	QColor	__staffedUirBordersColor;
-	int	__staffedUirBackgroundAlpha;
-	QColor	__staffedUirBackgroundColor;
-	QColor	__approachCircleColor;
-	QColor	__seasColor;
-	QColor	__landsColor;
-	QColor	__originToPilotLineColor;
-	QColor	__pilotToDestinationLineColor;
-	
+  /* Saves all settings in the system, using QSettings */
+  void __saveSettings();
+
+  /* Restores settings from the registry/config files */
+  void __restoreSettings();
+
+  /* Clears all config entries from the registry/config files */
+  void __clearEntries();
+
+  SettingsWindow*   __mySettingsWindow;
+
+  /* Miscallaneous */
+  int                 __refreshRate;
+  bool                __metarsRefresh;
+  bool                __antyaliasing;
+  DisplayLayersPolicy __displayLayers;
+  unsigned            __pilotsLabelsDisplayPolicy;
+  bool                __displayAirportLabels;
+
+  /* Various map colors */
+  QColor __unstaffedFirBordersColor;
+  QColor __staffedFirBordersColor;
+  int    __staffedFirBackgroundAlpha;
+  QColor __staffedFirBackgroundColor;
+  QColor __staffedUirBordersColor;
+  int    __staffedUirBackgroundAlpha;
+  QColor __staffedUirBackgroundColor;
+  QColor __approachCircleColor;
+  QColor __seasColor;
+  QColor __landsColor;
+  QColor __originToPilotLineColor;
+  QColor __pilotToDestinationLineColor;
+
 private slots:
-	void __updateSettings();
-	void __restoreDefaults();
-	
-	
+  void __updateSettings();
+  void __restoreDefaults();
+
+
 };
 
 #endif // SETTINGSMANAGER_H

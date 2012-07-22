@@ -28,29 +28,36 @@
 class MapWidget;
 class Pilot;
 
-class FlightTracker : public QObject, public Singleton< FlightTracker > {
-	
-	Q_OBJECT
-	
+class FlightTracker :
+    public QObject,
+    public Singleton< FlightTracker > {
+
+  /**
+   * This class is for flight tracking - it centres the map on he
+   * tracked plane after every update.
+   */
+
+  Q_OBJECT
+
 public:
-	FlightTracker(QObject* = 0);
-	
-	void init();
-	
-	void updateData();
-	
-	inline const Pilot *
-	getTracked() { return __currentPointer; }
-	
+  FlightTracker(QObject* = 0);
+
+  void init();
+
+  void updateData();
+
+  inline const Pilot*
+  getTracked() { return __currentPointer; }
+
 private:
-	QString		__currentCallsign;
-	const Pilot*	__currentPointer;
-	MapWidget *	__myMapWidget;
-	
+  QString       __currentCallsign;
+  const Pilot*  __currentPointer;
+  MapWidget*    __myMapWidget;
+
 private slots:
-	void __trackFlight(const Pilot*);
-	void __trackFlight(const Pilot*, int);
-	void __cancelFlight();
+  void __trackFlight(const Pilot*);
+  void __trackFlight(const Pilot*, int);
+  void __cancelFlight();
 };
 
 #endif // FLIGHTTRACKER_H

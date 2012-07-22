@@ -26,31 +26,36 @@
 
 // types
 enum ClientType {
-	PILOT, ATC
+  PILOT, ATC
 };
 
 class Client {
-	
+
+  /**
+   * Abstract class for connected client.
+   * Inherited by Pilot and Controller classes.
+   */
+
 public:
-	Client() = delete;
-	Client(const QStringList&);
-	
-	virtual ClientType type() const = 0;
-	
-	virtual ~Client() {}
-	
-	unsigned	pid;
-	QString 	callsign;
-	QString		realName;
-	
-	QString		server;
-	QDateTime	onlineFrom;
-	
-	struct {
-		float	latitude;
-		float	longitude;
-	} position;
-	
+  Client() = delete;
+  Client(const QStringList&);
+
+  virtual ClientType type() const = 0;
+
+  virtual ~Client() {}
+
+  unsigned  pid;
+  QString   callsign;
+  QString   realName;
+
+  QString   server;
+  QDateTime onlineFrom;
+
+  struct {
+    float latitude;
+    float longitude;
+  } position;
+
 };
 
 #endif // CLIENT_H

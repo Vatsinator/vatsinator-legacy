@@ -21,12 +21,13 @@
 
 void
 Uir::addFir(Fir* _f) {
-	__range.push_back(_f);
+  __range.push_back(_f);
 }
 
 void
 Uir::addStaff(const Controller* _c) {
-	for (Fir* f: __range)
-		f->addUirStaff(_c);
-	__staff.push_back(_c);
+for (Fir * f: __range)
+    f->addUirStaff(_c);
+
+  __staff.push_back(_c);
 }

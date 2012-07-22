@@ -21,6 +21,7 @@
 #define CONTROLLER_H
 
 #include <QString>
+#include <QMap>
 
 #include "vatsimdata/client.h"
 
@@ -29,44 +30,52 @@ class Fir;
 class Uir;
 
 enum Facility {
-	ATIS = 1,
-	DEL = 2,
-	GND = 4,
-	TWR = 8,
-	APP = 16,
-	DEP = 32,
-	CTR = 64,
-	FSS = 128,
-	OBS = 256
+  ATIS = 1,
+  DEL = 2,
+  GND = 4,
+  TWR = 8,
+  APP = 16,
+  DEP = 32,
+  CTR = 64,
+  FSS = 128,
+  OBS = 256
 };
+
+
 
 class Controller : public Client {
 
 public:
-	Controller(const QStringList&);
-	
-	ClientType type() const { return ATC; }
-	
-	QString		frequency;
-	int		rating;
-	QString		icao;
-	
-	QString		atis;
-	
-	const AirportRecord*	airport;
-	
-	Facility	facility;
-	
-	QString		description;
-	
-	bool		isOK;
-	
+  Controller(const QStringList&);
+
+  ClientType type() const { return ATC; }
+
+  QString   frequency;
+  int   rating;
+  QString   icao;
+
+  QString   atis;
+
+  const AirportRecord*  airport;
+
+  Facility  facility;
+
+  QString   description;
+
+  bool    isOK;
+
+  static QMap< int, QString> ratings;
+
 private:
-	void __setMyIcaoAndFacility();
-	void __produceDescription(const Fir*);
-	void __produceDescription(const Uir*);
-	void __produceDescription(const AirportRecord*);
-	
+  void __setMyIcaoAndFacility();
+  void __produceDescription(const Fir*);
+  void __produceDescription(const Uir*);
+  void __produceDescription(const AirportRecord*);
+
+  static bool __initRatings();
+
+  static bool __ratingsInitialized;
+
 };
 
 #endif // CONTROLLER_H

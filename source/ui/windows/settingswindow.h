@@ -26,41 +26,41 @@
 class SettingsManager;
 
 class SettingsWindow :
-		public QWidget,
-		public Singleton< SettingsWindow >,
-		private Ui::SettingsWindow {
-	
-	Q_OBJECT
-	
-	friend class SettingsManager;
-	
+    public QWidget,
+    public Singleton< SettingsWindow >,
+    private Ui::SettingsWindow {
+
+  Q_OBJECT
+
+  friend class SettingsManager;
+
 public:
-	SettingsWindow(QWidget* = 0);
-	
+  SettingsWindow(QWidget* = 0);
+
 signals:
-	void restoreDefaults();
-	
+  void restoreDefaults();
+
 public slots:
-	void show();
-	
+  void show();
+
 private:
-	
-	/* There is nothing to explain */
-	void __setWindowPosition();
-	
-	SettingsManager * __mySettingsManager;
-	
+
+  /* There is nothing to explain */
+  void __setWindowPosition();
+
+  SettingsManager* __mySettingsManager;
+
 private slots:
-	/* Reads settings from the SettingsManager instance
-	 * and updated the window */
-	void __updateWindow();
-	
-	/* For "Restore defaults" button */
-	void __handleButton(QAbstractButton*);
-	
-	/* Disables checkboxes */
-	void __handleAlwaysCheckBox(int);
-	
+  /* Reads settings from the SettingsManager instance
+   * and updated the window */
+  void __updateWindow();
+
+  /* For "Restore defaults" button */
+  void __handleButton(QAbstractButton*);
+
+  /* Disables checkboxes */
+  void __handleAlwaysCheckBox(int);
+
 };
 
 #endif // SETTINGSWINDOW_H

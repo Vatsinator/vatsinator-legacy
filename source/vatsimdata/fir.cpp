@@ -33,168 +33,175 @@
 #include "defines.h"
 
 Fir::Fir() :
-	__icaoTip(0),
-	__staff(new ControllerTableModel()),
-	__flights(new FlightTableModel()),
-	__airports(new AirportTableModel()),
-	__uirStaffCount(0) {
-}
+    __icaoTip(0),
+    __staff(new ControllerTableModel()),
+    __flights(new FlightTableModel()),
+    __airports(new AirportTableModel()),
+    __uirStaffCount(0) {}
 
 Fir::~Fir() {
-	if (__icaoTip)
-		MapWidget::deleteImage(__icaoTip);
-	delete __staff;
-	delete __flights;
-	delete __airports;
-	
+  if (__icaoTip)
+    MapWidget::deleteImage(__icaoTip);
+
+  delete __staff;
+  delete __flights;
+  delete __airports;
+
 #ifdef VATSINATOR_PLATFORM_LINUX
-	if (__trianglesVBO)
-		delete __trianglesVBO;
-	
-	delete __bordersVBO;
+
+  if (__trianglesVBO)
+    delete __trianglesVBO;
+
+  delete __bordersVBO;
 #endif
 }
 
 void
 Fir::addStaff(const Controller* _c) {
-	__staff->addStaff(_c);
+  __staff->addStaff(_c);
 }
 
 void
 Fir::addUirStaff(const Controller* _c) {
-	__staff->addStaff(_c);
-	__uirStaffCount += 1;
+  __staff->addStaff(_c);
+  __uirStaffCount += 1;
 }
 
 void
 Fir::addFlight(const Pilot* _p) {
-	__flights->addFlight(_p);
+  __flights->addFlight(_p);
 }
 
 void
 Fir::addAirport(const Airport* _ap) {
-	__airports->addAirport(_ap);
+  __airports->addAirport(_ap);
 }
 
 void
 Fir::correctName() {
-	if (!__name.contains("Radar") &&
-			!__name.contains("Control") &&
-			!__name.contains("Oceanic")) {
-		if (__oceanic)
-			__name += " Oceanic";
-		else
-			__name += " Center";
-	}
+  if (!__name.contains("Radar") &&
+      !__name.contains("Control") &&
+      !__name.contains("Oceanic")) {
+    if (__oceanic)
+      __name += " Oceanic";
+    else
+      __name += " Center";
+  }
 }
 
 void
 Fir::init() {
-	__generateTip();
-	__prepareVBO();
+  __generateTip();
+  __prepareVBO();
 }
 
 void
 Fir::loadHeader(const FirHeader& _header) {
-	__icao = _header.icao;
-	__oceanic = static_cast< bool >(_header.oceanic);
-	memcpy(__externities, _header.externities, sizeof(Point) * 2);
-	__textPosition = _header.textPosition;
+  __icao = _header.icao;
+  __oceanic = static_cast< bool >(_header.oceanic);
+  memcpy(__externities, _header.externities, sizeof(Point) * 2);
+  __textPosition = _header.textPosition;
 }
 
 void
 Fir::clear() {
-	__staff->clear();
-	__flights->clear();
-	__airports->clear();
-	__uirStaffCount = 0;
+  __staff->clear();
+  __flights->clear();
+  __airports->clear();
+  __uirStaffCount = 0;
 }
 
 bool
 Fir::isStaffed() const {
-	return !__staff->getStaff().isEmpty() && __uirStaffCount < static_cast< unsigned >(__staff->rowCount());
+  return !__staff->getStaff().isEmpty() && __uirStaffCount < static_cast< unsigned >(__staff->rowCount());
 }
 
 void
 Fir::drawBorders() const {
 #ifdef VATSINATOR_PLATFORM_LINUX
-	__bordersVBO->bind();
-	
-	glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
-	glDrawArrays(GL_LINE_LOOP, 0, __bordersSize); checkGLErrors(HERE);
-	
-	__bordersVBO->unbind();
+  __bordersVBO->bind();
+
+  glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
+  glDrawArrays(GL_LINE_LOOP, 0, __bordersSize); checkGLErrors(HERE);
+
+  __bordersVBO->unbind();
 #else
-	glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
-	glDrawArrays(GL_LINE_LOOP, 0, __borders.size()); checkGLErrors(HERE);
+  glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
+  glDrawArrays(GL_LINE_LOOP, 0, __borders.size()); checkGLErrors(HERE);
 #endif
 }
 
 void
 Fir::drawTriangles() const {
 #ifdef VATSINATOR_PLATFORM_LINUX
-	if (__trianglesSize) {
-		__bordersVBO->bind();
-		__trianglesVBO->bind();
-		
-		glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
-		glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0); checkGLErrors(HERE);
-		
-		__trianglesVBO->unbind();
-		__bordersVBO->unbind();
-	}
+
+  if (__trianglesSize) {
+    __bordersVBO->bind();
+    __trianglesVBO->bind();
+
+    glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
+    glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0); checkGLErrors(HERE);
+
+    __trianglesVBO->unbind();
+    __bordersVBO->unbind();
+  }
+
 #else
-	if (!__triangles.isEmpty()) {
-		glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
-		glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]); checkGLErrors(HERE);
-	}
+
+  if (!__triangles.isEmpty()) {
+    glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
+    glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]); checkGLErrors(HERE);
+  }
+
 #endif
 }
 
 GLuint
 Fir::__generateTip() const {
-	QString icao(__icao);
-	if (__oceanic) {
-		icao = icao.left(4) + " Oceanic";
-	}
-	
-	icao = icao.simplified();
-	
-	if (__textPosition.x == 0.0 && __textPosition.y == 0.0) {
-		__icaoTip = 0;
-		return __icaoTip;
-	}
-	
-	QImage temp(MapWidget::GetSingleton().getFirToolTipBackground());
-	QPainter painter(&temp);
-	painter.setRenderHint(QPainter::TextAntialiasing);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform);
-	painter.setRenderHint(QPainter::HighQualityAntialiasing);
-	painter.setFont(MapWidget::GetSingleton().getFirFont());
-	painter.setPen(QColor(FIRS_LABELS_FONT_COLOR));
-	QRect rectangle(0, 0, 64, 24);
-	painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
-	__icaoTip = MapWidget::loadImage(temp);
-	return __icaoTip;
+  QString icao(__icao);
+
+  if (__oceanic) {
+    icao = icao.left(4) + " Oceanic";
+  }
+
+  icao = icao.simplified();
+
+  if (__textPosition.x == 0.0 && __textPosition.y == 0.0) {
+    __icaoTip = 0;
+    return __icaoTip;
+  }
+
+  QImage temp(MapWidget::GetSingleton().getFirToolTipBackground());
+  QPainter painter(&temp);
+  painter.setRenderHint(QPainter::TextAntialiasing);
+  painter.setRenderHint(QPainter::SmoothPixmapTransform);
+  painter.setRenderHint(QPainter::HighQualityAntialiasing);
+  painter.setFont(MapWidget::GetSingleton().getFirFont());
+  painter.setPen(QColor(FIRS_LABELS_FONT_COLOR));
+  QRect rectangle(0, 0, 64, 24);
+  painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
+  __icaoTip = MapWidget::loadImage(temp);
+  return __icaoTip;
 }
 
 void
 Fir::__prepareVBO() {
 #ifdef VATSINATOR_PLATFORM_LINUX
-	__bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
-	__bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
-	
-	__bordersSize = __borders.size();
-	__borders.clear();
-	
-	if (!__triangles.isEmpty()) {
-		__trianglesVBO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-		__trianglesVBO->sendData(sizeof(unsigned short) * __triangles.size(), &__triangles[0]);
-		
-		__trianglesSize = __triangles.size();
-		__triangles.clear();
-	} else
-		__trianglesVBO = NULL;
+  __bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
+  __bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
+
+  __bordersSize = __borders.size();
+  __borders.clear();
+
+  if (!__triangles.isEmpty()) {
+    __trianglesVBO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
+    __trianglesVBO->sendData(sizeof(unsigned short) * __triangles.size(), &__triangles[0]);
+
+    __trianglesSize = __triangles.size();
+    __triangles.clear();
+  } else
+    __trianglesVBO = NULL;
+
 #endif
 }
 

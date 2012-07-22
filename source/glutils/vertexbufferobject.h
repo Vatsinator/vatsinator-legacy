@@ -26,28 +26,28 @@
 #include "db/point.h"
 
 class VertexBufferObject {
-	
+
 public:
-	VertexBufferObject(GLenum);
-	virtual ~VertexBufferObject();
-	
-	void sendData(unsigned, const void*);
-	
-	void bind() const;
-	void unbind() const;
-	
+  VertexBufferObject(GLenum);
+  virtual ~VertexBufferObject();
+
+  void sendData(unsigned, const void*);
+
+  void bind() const;
+  void unbind() const;
+
 #ifndef NO_DEBUG
-	static unsigned vboCount;
+  static unsigned vboCount;
 #endif
-	
+
 private:
-	GLuint __vboID;
-	GLenum __type;
-	
+  GLuint __vboID;
+  GLenum __type;
+
 #ifndef NO_DEBUG
-	unsigned __size;
+  unsigned __size;
 #endif
-	
+
 };
 
 #endif // VAOOBJECT_H

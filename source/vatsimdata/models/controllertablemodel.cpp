@@ -25,93 +25,97 @@
 #include "defines.h"
 
 ControllerTableModel::ControllerTableModel(QObject* _parent) :
-		QAbstractTableModel(_parent) {}
+    QAbstractTableModel(_parent) {}
 
 void
 ControllerTableModel::addStaff(const Controller* _c) {
-	beginInsertRows(QModelIndex(), rowCount(), rowCount());
-	__staff.push_back(_c);
-	endInsertRows();
+  beginInsertRows(QModelIndex(), rowCount(), rowCount());
+  __staff.push_back(_c);
+  endInsertRows();
 }
 
 void
 ControllerTableModel::clear() {
-	beginResetModel();
-	__staff.clear();
-	endResetModel();
+  beginResetModel();
+  __staff.clear();
+  endResetModel();
 }
 
 int
 ControllerTableModel::rowCount(const QModelIndex& ) const {
-	return __staff.size();
+  return __staff.size();
 }
 
 int
 ControllerTableModel::columnCount(const QModelIndex& ) const {
-	/* 0 - callsign
-	 * 1 - name
-	 * 2 - freq
-	 * 3 - button
-	 */
-	return 4;
+  /* 0 - callsign
+   * 1 - name
+   * 2 - freq
+   * 3 - button
+   */
+  return 4;
 }
 
 QVariant
 ControllerTableModel::data(const QModelIndex& _index, int _role) const {
-	if (!_index.isValid() || _index.row() >= rowCount() || _index.column() >= columnCount())
-		return QVariant();
-	
-	switch (_role) {
-		case Qt::TextAlignmentRole:
-			return Qt::AlignCenter;
-		case Qt::DisplayRole:
-			switch (_index.column()) {
-				case Callsign:
-					return __staff[_index.row()]->callsign;
-				case Name:
-					return __staff[_index.row()]->realName;
-				case Frequency:
-					return __staff[_index.row()]->frequency;
-				default:
-					return QVariant();
-			}
-		default:
-			return QVariant();
-	}
+  if (!_index.isValid() || _index.row() >= rowCount() || _index.column() >= columnCount())
+    return QVariant();
+
+  switch (_role) {
+    case Qt::TextAlignmentRole:
+      return Qt::AlignCenter;
+    case Qt::ToolTipRole:
+      return Controller::ratings[__staff[_index.row()]->rating];
+    case Qt::DisplayRole:
+
+      switch (_index.column()) {
+        case Callsign:
+          return __staff[_index.row()]->callsign;
+        case Name:
+          return __staff[_index.row()]->realName;
+        case Frequency:
+          return __staff[_index.row()]->frequency;
+        default:
+          return QVariant();
+      }
+
+    default:
+      return QVariant();
+  }
 }
 
 QVariant
 ControllerTableModel::headerData(int _section, Qt::Orientation _orientation, int _role) const {
-	if (_section >= columnCount() || _orientation == Qt::Vertical || _role != Qt::DisplayRole)
-		return QVariant();
-	
-	switch (_section) {
-		case 0:
-			return "Callsign";
-		case 1:
-			return "Name";
-		case 2:
-			return "Frequency";
-		default:
-			return "";
-	}
+  if (_section >= columnCount() || _orientation == Qt::Vertical || _role != Qt::DisplayRole)
+    return QVariant();
+
+  switch (_section) {
+    case 0:
+      return "Callsign";
+    case 1:
+      return "Name";
+    case 2:
+      return "Frequency";
+    default:
+      return "";
+  }
 }
 
 void
 ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
-	beginResetModel();
-	
-	if (_column == Callsign) {
-		auto comparator = [_order](const Controller* _a, const Controller* _b) -> bool {
-			return _order == Qt::AscendingOrder ? _a->callsign < _b->callsign : _a->callsign > _b->callsign;
-		};
-		std::sort(__staff.begin(), __staff.end(), comparator);
-	} else if (_column == Name) {
-		auto comparator = [_order](const Controller* _a, const Controller* _b) -> bool {
-			return _order == Qt::AscendingOrder ? _a->realName < _b->realName : _a->realName > _b->realName;
-		};
-		std::sort(__staff.begin(), __staff.end(), comparator);
-	}
-	
-	endResetModel();
+  beginResetModel();
+
+  if (_column == Callsign) {
+    auto comparator = [_order](const Controller * _a, const Controller * _b) -> bool {
+      return _order == Qt::AscendingOrder ? _a->callsign < _b->callsign : _a->callsign > _b->callsign;
+    };
+    std::sort(__staff.begin(), __staff.end(), comparator);
+  } else if (_column == Name) {
+    auto comparator = [_order](const Controller * _a, const Controller * _b) -> bool {
+      return _order == Qt::AscendingOrder ? _a->realName < _b->realName : _a->realName > _b->realName;
+    };
+    std::sort(__staff.begin(), __staff.end(), comparator);
+  }
+
+  endResetModel();
 }

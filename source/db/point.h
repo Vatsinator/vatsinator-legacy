@@ -22,8 +22,8 @@
 
 #pragma pack(1)
 struct Point {
-	float x;
-	float y;
+  float x;
+  float y;
 };
 #pragma pack()
 

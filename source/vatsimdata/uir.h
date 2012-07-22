@@ -28,31 +28,31 @@
 #include "vatsimdata/fir.h"
 
 class Uir : public Clickable {
-	
+
 public:
-	
-	ObjectType objectType() const { return UIR; }
-	
-	void addFir(Fir*);
-	
-	void addStaff(const Controller*);
-	
-	inline const QVector< Fir* > &
-	getRange() const { return __range; }
-	
-	inline const QVector< const Controller* > &
-	getStaff() const { return __staff; }
-	
-	inline void
-	clear() { __staff.clear(); }
-	
-	QString icao;
-	QString name;
-	
+
+  ObjectType objectType() const { return UIR; }
+
+  void addFir(Fir*);
+
+  void addStaff(const Controller*);
+
+  inline const QVector< Fir* > &
+  getRange() const { return __range; }
+
+  inline const QVector< const Controller* > &
+  getStaff() const { return __staff; }
+
+  inline void
+  clear() { __staff.clear(); }
+
+  QString icao;
+  QString name;
+
 private:
-	QVector< Fir* >	__range;
-	QVector< const Controller* >	__staff;
-	
+  QVector< Fir* > __range;
+  QVector< const Controller* >  __staff;
+
 };
 
 #endif // UIR_H

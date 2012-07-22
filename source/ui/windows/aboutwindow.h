@@ -23,16 +23,19 @@
 #include "ui/ui_aboutwindow.h"
 #include "singleton.h"
 
-class AboutWindow : public QWidget, public Singleton< AboutWindow >, private Ui::AboutWindow {
-	
-	Q_OBJECT
-	
+class AboutWindow :
+    public QWidget,
+    public Singleton< AboutWindow >,
+    private Ui::AboutWindow {
+
+  Q_OBJECT
+
 public:
-	AboutWindow(QWidget* = 0);
-	
+  AboutWindow(QWidget* = 0);
+
 private:
-	void __setWindowPosition();
-	
+  void __setWindowPosition();
+
 };
 
 #endif // ABOUTWINDOW_H

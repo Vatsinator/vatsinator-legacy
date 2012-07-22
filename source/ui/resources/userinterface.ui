@@ -206,7 +206,7 @@
     <addaction name="ActionMetar"/>
     <addaction name="ActionRefresh"/>
     <addaction name="separator"/>
-    <addaction name="ActionFlightsList"/>
+    <addaction name="ActionFlightList"/>
     <addaction name="ActionATCList"/>
     <addaction name="separator"/>
     <addaction name="ActionExit"/>
@@ -290,12 +290,12 @@
     <string>Preferences: Vatsinator</string>
    </property>
   </action>
-  <action name="ActionFlightsList">
+  <action name="ActionFlightList">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Flights list...</string>
+    <string>Flight list...</string>
    </property>
   </action>
   <action name="ActionATCList">

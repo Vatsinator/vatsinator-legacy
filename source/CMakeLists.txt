@@ -11,13 +11,6 @@ set (vatsinator_SRCS
 	vatsinatorapplication.cpp
 )
 
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-	set (vatsinator_SRCS
-		${vatsinator_SRCS} memorytracker.cpp
-	)
-endif (CMAKE_BUILD_TYPE MATCHES Debug)
-
-
 
 set (vatsinator_MOC_SRCS
 	vatsinatorapplication.h

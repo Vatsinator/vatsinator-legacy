@@ -26,39 +26,38 @@
 #include <QQueue>
 #include <QUrl>
 
-class HttpHandler :
-		public QObject {
-	
-	Q_OBJECT
-	
-public:
-	
-	HttpHandler(QProgressBar* = 0, QObject* = 0);
-	
-	void fetchData(const QString&);
-	
-signals:
-	void finished(const QString&);
-	
-private slots:
-	void __readyRead();
-	void __finished();
-	void __updateProgress(qint64, qint64);
-	
-private:
-	void	__startRequest();
-	
-	QProgressBar *	__progressBar;
-	
-	QQueue< QUrl >	__urls;
-	
-	QString	__temp;
-	QString __data;
-	
-	QNetworkAccessManager	__nam;
+class HttpHandler : public QObject {
 
-	QNetworkReply*	__reply;
-	
+  Q_OBJECT
+
+public:
+
+  HttpHandler(QProgressBar* = 0, QObject* = 0);
+
+  void fetchData(const QString&);
+
+signals:
+  void finished(const QString&);
+
+private slots:
+  void __readyRead();
+  void __finished();
+  void __updateProgress(qint64, qint64);
+
+private:
+  void  __startRequest();
+
+  QProgressBar*   __progressBar;
+
+  QQueue< QUrl >  __urls;
+
+  QString __temp;
+  QString __data;
+
+  QNetworkAccessManager __nam;
+
+  QNetworkReply*  __reply;
+
 };
 
 #endif // HTTPHANDLER_H

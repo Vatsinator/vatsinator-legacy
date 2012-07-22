@@ -1,5 +1,5 @@
 /*
-    modulesmanager.cpp
+    firdatabase.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,53 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modules/flighttracker.h"
-#include "modules/modelsmatcher.h"
 
-#include "vatsinatorapplication.h"
+#ifndef FIRDATABASE_H
+#define FIRDATABASE_H
 
-#include "modulesmanager.h"
-#include "defines.h"
+#include <QVector>
+#include <QString>
 
-ModulesManager::ModulesManager() :
-		__flightTracker(new FlightTracker()),
-		__modelsMatcher(new ModelsMatcher()) {
-	connect(VatsinatorApplication::GetSingletonPtr(),	SIGNAL(glInitialized()),
-		this,		SLOT(__initAfterGL()),	Qt::DirectConnection);
-}
+#include "vatsimdata/fir.h"
+#include "singleton.h"
 
-ModulesManager::~ModulesManager() {
-	delete __flightTracker;
-	delete __modelsMatcher;
-}
+#pragma pack(1)
+struct FirHeader {
+  char  icao[8];
+  int   oceanic; // 0 or 1
+  Point externities[2];
+  Point textPosition;
+};
+#pragma pack()
 
-void
-ModulesManager::init() {
-	__flightTracker->init();
-}
 
-void
-ModulesManager::__initAfterGL() {
-	__modelsMatcher->init();
-}
+
+class FirDatabase :
+    public QObject,
+    public Singleton< FirDatabase > {
+
+  Q_OBJECT
+
+public:
+  FirDatabase();
+
+  Fir*  findFirByIcao(const QString&, bool = false);
+
+  void  clearAll();
+
+  inline const QVector< Fir > &
+  getFirs() { return __firs; }
+
+private:
+  void __readDatabase();
+
+  QVector< Fir >  __firs;
+
+  bool __toolTipsPrepared;
+
+private slots:
+  void __init();
+
+};
+
+#endif // FIRDATABASE_H

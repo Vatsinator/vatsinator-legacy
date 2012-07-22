@@ -23,66 +23,67 @@
 
 #include "vatsimdata/vatsimdatahandler.h"
 
+#include "vatsinatorapplication.h"
+
 #include "flighttracker.h"
 #include "defines.h"
 
 FlightTracker::FlightTracker(QObject* _parent) :
-		QObject(_parent),
-		__currentCallsign(""),
-		__currentPointer(NULL),
-		__myMapWidget(NULL) {}
+    QObject(_parent),
+    __currentCallsign(""),
+    __currentPointer(NULL),
+    __myMapWidget(NULL) {}
 
 void
 FlightTracker::init() {
-	__myMapWidget = MapWidget::GetSingletonPtr();
-	connect(__myMapWidget,	SIGNAL(flightTrackingRequested(const Pilot*)),
-		this,		SLOT(__trackFlight(const Pilot*)));
-	connect(__myMapWidget,	SIGNAL(flightTrackingCanceled()),
-		this,		SLOT(__cancelFlight()));
-	connect(FlightDetailsWindow::GetSingletonPtr(),	SIGNAL(flightTrackingStateChanged(const Pilot*,int)),
-		this,		SLOT(__trackFlight(const Pilot*, int)));
+  __myMapWidget = MapWidget::GetSingletonPtr();
+  connect(__myMapWidget,  SIGNAL(flightTrackingRequested(const Pilot*)),
+          this,           SLOT(__trackFlight(const Pilot*)));
+  connect(__myMapWidget,  SIGNAL(flightTrackingCanceled()),
+          this,           SLOT(__cancelFlight()));
+  
+  connect(FlightDetailsWindow::GetSingletonPtr(), SIGNAL(flightTrackingStateChanged(const Pilot*, int)),
+          this,                                   SLOT(__trackFlight(const Pilot*, int)));
 }
 
 void FlightTracker::updateData() {
-	if (!__currentCallsign.isEmpty()) {
-		__currentPointer = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
-		if (!__currentPointer)
-			__currentCallsign = "";
-	}
+  if (!__currentCallsign.isEmpty()) {
+    __currentPointer = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
+
+    if (!__currentPointer)
+      __currentCallsign = "";
+  }
 }
 
 void
 FlightTracker::__trackFlight(const Pilot* _p) {
-	Q_ASSERT(_p);
-	__currentPointer = _p;
-	__currentCallsign = _p->callsign;
-	
-#ifndef NO_DEBUG
-	qDebug() << "Tracking flight " << __currentCallsign;
-#endif
+  Q_ASSERT(_p);
+  __currentPointer = _p;
+  __currentCallsign = _p->callsign;
+
+  VatsinatorApplication::log("Tracking flight %s.", __currentCallsign.toStdString().c_str());
 }
 
 void
 FlightTracker::__trackFlight(const Pilot* _p, int _state) {
-	Q_ASSERT(_p);
-	if (_state == Qt::Checked) {
-		__trackFlight(_p);
-	} else {
-		if (_p == __currentPointer) {
-			__cancelFlight();
-		}
-	}
-#ifndef NO_DEBUG
-	qDebug() << "Tracking flight " << __currentCallsign;
-#endif
+  Q_ASSERT(_p);
+
+  if (_state == Qt::Checked) {
+    __trackFlight(_p);
+  } else {
+    if (_p == __currentPointer) {
+      __cancelFlight();
+    }
+  }
+
+  VatsinatorApplication::log("Tracking flight %s.", __currentCallsign.toStdString().c_str());
 }
 
 void
 FlightTracker::__cancelFlight() {
-#ifndef NO_DEBUG
-	qDebug() << "Stopped tracking flight " << __currentCallsign;
-#endif
-	__currentCallsign = "";
-	__currentPointer = NULL;
+  VatsinatorApplication::log("Stooped tracking flight %s.", __currentCallsign.toStdString().c_str());
+
+  __currentCallsign = "";
+  __currentPointer = NULL;
 }
 

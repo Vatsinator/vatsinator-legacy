@@ -1,5 +1,5 @@
 /*
-    firsdatabase.h
+    modelmatcher.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,49 +17,45 @@
 */
 
 
-#ifndef FIRSDATABASE_H
-#define FIRSDATABASE_H
+#ifndef MODELMATCHER_H
+#define MODELMATCHER_H
 
-#include <QVector>
 #include <QString>
+#include <QMap>
+#include <GL/gl.h>
 
-#include "vatsimdata/fir.h"
 #include "singleton.h"
 
-#pragma pack(1)
-struct FirHeader {
-	char	icao[8];
-	int	oceanic; // 0 or 1
-	Point	externities[2];
-	Point	textPosition;
-};
-#pragma pack()
+class ModelMatcher : public Singleton< ModelMatcher > {
 
-class FirsDatabase : public QObject, public Singleton< FirsDatabase > {
-	
-	Q_OBJECT
-	
+  /**
+   * This class matches the models to the planes.
+   */
+
 public:
-	FirsDatabase();
-	
-	Fir *	findFirByIcao(const QString&, bool = false);
-	
-	void	clearAll();
-	
-	inline const QVector< Fir > &
-	getFirs() { return __firs; }
-	
+  /**
+   * Reads the models.dat file.
+   */
+  ModelMatcher();
+
+  /**
+   * Loads the pixmaps.
+   */
+  void init();
+
+  /**
+   * @param acft Aircraft code that comes from the flight plan.
+   * @return Model's texture ID.
+   */
+  GLuint matchMyModel(const QString&);
+
 private:
-	void __readDatabase();
-	
-	QVector< Fir >	__firs;
-	
-	bool __toolTipsPrepared;
-	
-private slots:
-	void __init();
-	
-	
+  void __readDatFile();
+
+  QMap< QString, QString > __modelsFiles;
+  QMap< QString, GLuint >  __modelsPixmaps;
+
+
 };
 
-#endif // FIRSDATABASE_H
+#endif // MODELMATCHER_H

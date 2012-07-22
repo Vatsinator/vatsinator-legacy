@@ -18,8 +18,8 @@
 
 #include <QtGui>
 
-#include "db/airportsdatabase.h"
-#include "db/firsdatabase.h"
+#include "db/airportdatabase.h"
+#include "db/firdatabase.h"
 
 #include "ui/mapwidget/mapwidget.h"
 
@@ -29,84 +29,75 @@
 #include "defines.h"
 
 ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
-		QWidget(_parent) {
-	setupUi(this);
-	__setWindowPosition();
-	
-	// http://vateud.org/index.php?option=com_content&view=article&id=28&Itemid=133
-	__ratings[1] = "Observer";
-	__ratings[2] = "Student (S1)";
-	__ratings[3] = "Student 2 (S2)";
-	__ratings[4] = "Senior Student (S3)";
-	__ratings[5] = "Controller (C1)";
-	__ratings[7] = "Senior Controller (C3)";
-	__ratings[8] = "Instructor (I1)";
-	__ratings[10] = "Senior Instructor (I3)";
-	__ratings[11] = "Supervisor";
-	__ratings[12] = "Administrator";
-	
-	connect(ShowButton,	SIGNAL(clicked()), this, SLOT(__handleShowClicked()));
+    QWidget(_parent) {
+  setupUi(this);
+  __setWindowPosition();
+
+  connect(ShowButton, SIGNAL(clicked()), this, SLOT(__handleShowClicked()));
 }
 
 void
 ATCDetailsWindow::show(const Client* _client) {
-	Q_ASSERT(dynamic_cast< const Controller* >(_client));
-	__current = dynamic_cast< const Controller* >(_client);
-	
-	setWindowTitle(QString(__current->callsign + " - ATC details"));
-	
-	CallsignLabel->setText(__current->callsign);
-	FacilityLabel->setText(__current->description);
-	NameLabel->setText(__current->realName);
-	FrequencyLabel->setText(__current->frequency);
-	RatingLabel->setText(__ratings[__current->rating]);
-	if (__current->airport)
-		AirportLabel->setText(static_cast< QString >(__current->airport->icao) %
-				" " %
-				static_cast< QString >(__current->airport->name) %
-				", " %
-				static_cast< QString >(__current->airport->city));
-		else
-			AirportLabel->setText("N/A");
-		ServerLabel->setText(__current->server);
-	TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
-	
-	AtisMessageField->setPlainText(__current->atis);
-	
-	if (!isVisible())
-		QWidget::show();
-	else
-		activateWindow();
+  Q_ASSERT(dynamic_cast< const Controller* >(_client));
+  __current = dynamic_cast< const Controller* >(_client);
+
+  setWindowTitle(QString(__current->callsign + " - ATC details"));
+
+  CallsignLabel->setText(__current->callsign);
+  FacilityLabel->setText(__current->description);
+  NameLabel->setText(__current->realName);
+  FrequencyLabel->setText(__current->frequency);
+  RatingLabel->setText(Controller::ratings[__current->rating]);
+
+  if (__current->airport)
+    AirportLabel->setText(static_cast< QString >(__current->airport->icao) %
+                          " " %
+                          QString::fromUtf8(__current->airport->name) %
+                          ", " %
+                          QString::fromUtf8(__current->airport->city)
+                         );
+  else
+    AirportLabel->setText("N/A");
+
+  ServerLabel->setText(__current->server);
+  TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
+
+  AtisMessageField->setPlainText(__current->atis);
+
+  if (!isVisible())
+    QWidget::show();
+  else
+    activateWindow();
 }
 
 void
 ATCDetailsWindow::__setWindowPosition() {
-	QDesktopWidget* desktop = QApplication::desktop();
-	
-	int screenWidth, width;
-	int screenHeight, height;
-	
-	int x, y;
-	
-	QSize windowSize;
-	
-	screenWidth = desktop -> width();
-	screenHeight = desktop -> height();
-	
-	windowSize = size();
-	width = windowSize.width();
-	height = windowSize.height();
-	
-	x = (screenWidth - width) / 2;
-	y = (screenHeight - height) / 2;
-	y -= 50;
-	
-	move(x, y);
+  QDesktopWidget* desktop = QApplication::desktop();
+
+  int screenWidth, width;
+  int screenHeight, height;
+
+  int x, y;
+
+  QSize windowSize;
+
+  screenWidth = desktop -> width();
+  screenHeight = desktop -> height();
+
+  windowSize = size();
+  width = windowSize.width();
+  height = windowSize.height();
+
+  x = (screenWidth - width) / 2;
+  y = (screenHeight - height) / 2;
+  y -= 50;
+
+  move(x, y);
 }
 
 void
 ATCDetailsWindow::__handleShowClicked() {
-	Q_ASSERT(__current);
-	MapWidget::GetSingleton().showClient(__current);
+  Q_ASSERT(__current);
+  MapWidget::GetSingleton().showClient(__current);
 }
 

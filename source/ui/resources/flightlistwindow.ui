@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FlightsListWindow</class>
- <widget class="QWidget" name="FlightsListWindow">
+ <class>FlightListWindow</class>
+ <widget class="QWidget" name="FlightListWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Flights list</string>
+   <string>Flight list</string>
   </property>
   <property name="windowIcon">
    <iconset resource="imgs.qrc">

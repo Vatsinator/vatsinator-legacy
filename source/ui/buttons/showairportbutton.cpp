@@ -24,32 +24,33 @@
 #include "defines.h"
 
 ShowAirportButton::ShowAirportButton(QWidget* _parent) :
-		QPushButton("", _parent),
-		__current(NULL) {
-	connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
-	// we assume that autoconnect is on
-	connect(this,						SIGNAL(clicked(const Airport*)),
-		AirportDetailsWindow::GetSingletonPtr(),	SLOT(show(const Airport*)));
+    QPushButton("", _parent),
+    __current(NULL) {
+  connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
+  // we assume that autoconnect is on
+  connect(this,                                     SIGNAL(clicked(const Airport*)),
+          AirportDetailsWindow::GetSingletonPtr(),  SLOT(show(const Airport*)));
 }
 
 ShowAirportButton::ShowAirportButton(const Airport* _ap, const QString& _text, bool _autoconnect, QWidget* _parent) :
-		QPushButton(_text, _parent),
-		__current(_ap) {
-	connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
-	if (_autoconnect)
-		connect(this,						SIGNAL(clicked(const Airport*)),
-			AirportDetailsWindow::GetSingletonPtr(),	SLOT(show(const Airport*)));
+    QPushButton(_text, _parent),
+    __current(_ap) {
+  connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
+
+  if (_autoconnect)
+    connect(this,           SIGNAL(clicked(const Airport*)),
+            AirportDetailsWindow::GetSingletonPtr(),  SLOT(show(const Airport*)));
 }
 
 void
 ShowAirportButton::setAirportPointer(const Airport* _ap) {
-	__current = _ap;
-	setEnabled(_ap != NULL);
-	setFlat(_ap == NULL);
+  __current = _ap;
+  setEnabled(_ap != NULL);
+  setFlat(_ap == NULL);
 }
 
 void
 ShowAirportButton::__handleClicked() {
-	if (__current)
-		emit clicked(__current);
+  if (__current)
+    emit clicked(__current);
 }

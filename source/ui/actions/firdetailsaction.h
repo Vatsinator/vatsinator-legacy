@@ -25,21 +25,21 @@
 #include "vatsimdata/fir.h"
 
 class FirDetailsAction : public QAction {
-	
-	Q_OBJECT
-	
+
+  Q_OBJECT
+
 public:
-	FirDetailsAction(const Fir*, const QString&, QObject*);
-	
+  FirDetailsAction(const Fir*, const QString&, QObject*);
+
 signals:
-	void triggered(const Fir*);
-	
+  void triggered(const Fir*);
+
 private slots:
-	void __handleTriggered();
-	
+  void __handleTriggered();
+
 private:
-	const Fir * __current;
-	
+  const Fir* __current;
+
 };
 
 #endif // FIRDETAILSACTION_H

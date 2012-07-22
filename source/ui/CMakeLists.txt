@@ -45,7 +45,7 @@ set (ui_SRCS
 	windows/atclistwindow.cpp
 	windows/firdetailswindow.cpp
 	windows/flightdetailswindow.cpp
-	windows/flightslistwindow.cpp
+	windows/flightlistwindow.cpp
 	windows/metarswindow.cpp
 	windows/settingswindow.cpp
 )
@@ -74,7 +74,7 @@ set (ui_MOC_SRCS
 	windows/atclistwindow.h
 	windows/firdetailswindow.h
 	windows/flightdetailswindow.h
-	windows/flightslistwindow.h
+	windows/flightlistwindow.h
 	windows/metarswindow.h
 	windows/settingswindow.h
 )
@@ -88,7 +88,7 @@ set (ui_FORMS
 	resources/atclistwindow.ui
 	resources/firdetailswindow.ui
 	resources/flightdetailswindow.ui
-	resources/flightslistwindow.ui
+	resources/flightlistwindow.ui
 	resources/metarswindow.ui
 	resources/settingswindow.ui
 	resources/userinterface.ui

@@ -55,6 +55,9 @@
         <property name="text">
          <string/>
         </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="0" column="2">
@@ -381,11 +384,14 @@
    </item>
    <item row="2" column="1">
     <widget class="QDialogButtonBox" name="OKCancelButtonBox">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
      </property>
      <property name="centerButtons">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
    </item>

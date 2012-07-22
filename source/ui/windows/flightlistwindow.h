@@ -1,5 +1,5 @@
 /*
-    modulesmanager.h
+    flightlistwindow.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,32 @@
 */
 
 
-#ifndef MODULESMANAGER_H
-#define MODULESMANAGER_H
+#ifndef FLIGHTLISTWINDOW_H
+#define FLIGHTLISTWINDOW_H
 
+#include "ui/ui_flightlistwindow.h"
 #include "singleton.h"
 
-#include <QObject>
+class FlightListWindow :
+    public QWidget,
+    public Singleton< FlightListWindow >,
+    private Ui::FlightListWindow {
 
-class FlightTracker;
-class ModelsMatcher;
+  Q_OBJECT
 
-class ModulesManager : public QObject, public Singleton< ModulesManager > {
-	
-	Q_OBJECT
-	
 public:
-	ModulesManager();
-	virtual ~ModulesManager();
-	
-	void init();
-	
-private slots:
-	void __initAfterGL();
-	
+  FlightListWindow(QWidget* = 0);
+
+protected:
+  void resizeEvent(QResizeEvent*);
+
 private:
-	FlightTracker * __flightTracker;
-	ModelsMatcher *	__modelsMatcher;
+  void __setColumnsWidths();
+  void __setWindowPosition();
+
+private slots:
+  void __handleDoubleClicked(const QModelIndex&);
+
 };
 
-#endif // MODULESMANAGER_H
+#endif // FLIGHTLISTWINDOW_H

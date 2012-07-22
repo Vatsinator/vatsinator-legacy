@@ -24,20 +24,20 @@
 #include "defines.h"
 
 ClientDetailsButton::ClientDetailsButton(const Client* _client, const QString& _text, QWidget* _parent) :
-		QPushButton(_text, _parent),
-		__current(_client) {
-	connect(this,	SIGNAL(clicked()),
-		this,	SLOT(__handleClicked()));
+    QPushButton(_text, _parent),
+    __current(_client) {
+  connect(this, SIGNAL(clicked()),
+          this, SLOT(__handleClicked()));
 }
 
 void
 ClientDetailsButton::setClientPointer(const Client* _client) {
-	__current = _client;
+  __current = _client;
 }
 
 void
 ClientDetailsButton::__handleClicked() {
-	emit clicked(__current);
+  emit clicked(__current);
 }
 
 

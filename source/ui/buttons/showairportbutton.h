@@ -25,24 +25,24 @@
 class Airport;
 
 class ShowAirportButton : public QPushButton {
-	
-	Q_OBJECT
-	
+
+  Q_OBJECT
+
 public:
-	ShowAirportButton(QWidget* = 0);
-	ShowAirportButton(const Airport*, const QString& = "Details", bool = false, QWidget* = 0);
-	
-	void setAirportPointer(const Airport*);
-	
+  ShowAirportButton(QWidget* = 0);
+  ShowAirportButton(const Airport*, const QString& = "Details", bool = false, QWidget* = 0);
+
+  void setAirportPointer(const Airport*);
+
 signals:
-	void clicked(const Airport*);
-	
+  void clicked(const Airport*);
+
 private slots:
-	void __handleClicked();
-	
+  void __handleClicked();
+
 private:
-	const Airport* __current;
-	
+  const Airport* __current;
+
 };
 
 #endif // SHOWAIRPORTBUTTON_H

@@ -34,72 +34,72 @@ class ATCDetailsWindow;
 class ATCListWindow;
 class FirDetailsWindow;
 class FlightDetailsWindow;
-class FlightsListWindow;
+class FlightListWindow;
 class MetarsWindow;
 class SettingsWindow;
 class VatsinatorApplication;
 
 class UserInterface :
-		public QMainWindow,
-		public Singleton< UserInterface >,
-		private Ui::MainWindow {
-	
-	/*
-	 * This class handles the Vatsinator's QT GUI interface.
-	 */
-	
-	
-	Q_OBJECT
-	
+    public QMainWindow,
+    public Singleton< UserInterface >,
+    private Ui::MainWindow {
+
+  /*
+   * This class handles the Vatsinator's QT GUI interface.
+   */
+
+
+  Q_OBJECT
+
 public:
-	UserInterface(QWidget* = 0);
-	
-	virtual ~UserInterface();
-	
-	void statusBarUpdate(const QString& = "");
-	
-	inline MapWidget *
-	getMapWidget() { return MapDisplay; }
-	
-	inline QProgressBar *
-	getProgressBar() { return ProgressBar; }
-	
-	inline QLabel *
-	getPositionBox() { return PositionBox; }
-	
-	inline QLabel *
-	getClientsBox() { return ClientsBox; }
-	
+  UserInterface(QWidget* = 0);
+
+  virtual ~UserInterface();
+
+  void statusBarUpdate(const QString& = "");
+
+  inline MapWidget*
+  getMapWidget() { return MapDisplay; }
+
+  inline QProgressBar*
+  getProgressBar() { return ProgressBar; }
+
+  inline QLabel*
+  getPositionBox() { return PositionBox; }
+
+  inline QLabel*
+  getClientsBox() { return ClientsBox; }
+
 public slots:
-	void quit();
-	void hideAllWindows();
-	
+  void quit();
+  void hideAllWindows();
+
 protected:
-	void closeEvent(QCloseEvent*);
-	
+  void closeEvent(QCloseEvent*);
+
 private:
-	void __setupWindow();
-	void __setWindowPosition();
-	void __storeWindowGeometry();
-	void __restoreWindowGeometry();
-	
-	
+  void __setupWindow();
+  void __setWindowPosition();
+  void __storeWindowGeometry();
+  void __restoreWindowGeometry();
+
+
 #ifndef NO_DEBUG
-	DebugWindow *	__debugWindow;
+  DebugWindow*  __debugWindow;
 #endif
-	
-	AboutWindow * __aboutWindow;
-	MetarsWindow *	__metarsWindow;
-	AirportDetailsWindow * __airportDetailsWindow;
-	FirDetailsWindow * __firDetailsWindow;
-	ATCDetailsWindow * __atcDetailsWindow;
-	ATCListWindow * __atcListWindow;
-	FlightDetailsWindow * __flightDetailsWindow;
-	FlightsListWindow * __flightsListWindow;
-	SettingsWindow * __settingsWindow;
-	
-	VatsinatorApplication &	__mother;
-	
+
+  AboutWindow*          __aboutWindow;
+  MetarsWindow*         __metarsWindow;
+  AirportDetailsWindow* __airportDetailsWindow;
+  FirDetailsWindow*     __firDetailsWindow;
+  ATCDetailsWindow*     __atcDetailsWindow;
+  ATCListWindow*        __atcListWindow;
+  FlightDetailsWindow*  __flightDetailsWindow;
+  FlightListWindow*     __flightsListWindow;
+  SettingsWindow*       __settingsWindow;
+
+  VatsinatorApplication& __mother;
+
 };
 
 #endif // USERINTERFACE_H

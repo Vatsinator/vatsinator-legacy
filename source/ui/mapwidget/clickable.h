@@ -21,18 +21,18 @@
 #define CLICKABLE_H
 
 enum ObjectType {
-	PLANE, AIRPORT, FIR, UIR
+  PLANE, AIRPORT, FIR, UIR
 };
 
 class Clickable {
-	
-public:
-	
-	virtual ObjectType objectType() const = 0;
-	
-	virtual ~Clickable() {}
 
-	
+public:
+
+  virtual ObjectType objectType() const = 0;
+
+  virtual ~Clickable() {}
+
+
 };
 
 #endif // CLICKABLE_H

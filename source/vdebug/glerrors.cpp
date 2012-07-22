@@ -20,46 +20,47 @@
 #include <QtGui>
 #include <GL/gl.h>
 
-QString		glErrors;
-long unsigned	gpuMemoryUsage = 0;
-QMap< QString, long long unsigned >	extensions;
+QString   glErrors;
+long unsigned gpuMemoryUsage = 0;
+QMap< QString, long long unsigned > extensions;
 
 
 QString getErrorString(GLenum _err) {
-	switch (_err) {
-		case 0x0500:
-			return "GL_INVALID_ENUM";
-		case 0x0501:
-			return "GL_INVALID_VALUE";
-		case 0x0502:
-			return "GL_INVALID_OPERATION";
-		case 0x0503:
-			qFatal("Running out of memory!");
-			return "GL_OUT_OF_MEMORY";
-		case 0x0506:
-			return "GL_INVALID_FRAMEBUFFER_OPERATION​";
-		default:
-			return "unknown error code";
-	}
+  switch (_err) {
+    case 0x0500:
+      return "GL_INVALID_ENUM";
+    case 0x0501:
+      return "GL_INVALID_VALUE";
+    case 0x0502:
+      return "GL_INVALID_OPERATION";
+    case 0x0503:
+      qFatal("Running out of memory!");
+      return "GL_OUT_OF_MEMORY";
+    case 0x0506:
+      return "GL_INVALID_FRAMEBUFFER_OPERATION​";
+    default:
+      return "unknown error code";
+  }
 }
 
-void checkGLErrorsFunc(const QString &_at) {
-	GLenum err = glGetError(); // fetch errors
-	while (err != GL_NO_ERROR) {
-		glErrors += _at.section("/", -1, -1) + ": " + getErrorString(err) + "\n";
-		err = glGetError();
-		qDebug() << "OpenGL error at " << _at << ", code: " << getErrorString(err);
-	}
+void checkGLErrorsFunc(const QString& _at) {
+  GLenum err = glGetError(); // fetch errors
+
+  while (err != GL_NO_ERROR) {
+    glErrors += _at.section("/", -1, -1) + ": " + getErrorString(err) + "\n";
+    err = glGetError();
+    qDebug() << "OpenGL error at " << _at << ", code: " << getErrorString(err);
+  }
 }
 
 void registerGPUMemoryAllocFunc(long unsigned _howMuch) {
-	gpuMemoryUsage += _howMuch;
+  gpuMemoryUsage += _howMuch;
 }
 
 void unregisterGPUMemoryAllocFunc(long unsigned _howMuch) {
-	gpuMemoryUsage -= _howMuch;
+  gpuMemoryUsage -= _howMuch;
 }
 
 void registerExtensionPointer(const QString& _proc, long long unsigned _ptr) {
-	extensions[_proc] = _ptr;
+  extensions[_proc] = _ptr;
 }

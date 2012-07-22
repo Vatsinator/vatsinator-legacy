@@ -29,40 +29,41 @@
 
 class VertexBufferObject;
 
-class WorldMap : public QObject, public Singleton< WorldMap > {
-	
-	Q_OBJECT
-	
-	struct WorldMapVBO {
-		VertexBufferObject *	border;
-		int			borderSize;
-		VertexBufferObject *	triangles;
-		int			trianglesSize;
-	};
-	
-	struct Polygon {
-		QVector< Point >		borders;
-		
-		QVector< unsigned short >	triangles;
-		
-		WorldMapVBO			vbo;
-	};
-	
-public:
-	WorldMap();
-	virtual ~WorldMap();
+class WorldMap :
+    public QObject,
+    public Singleton< WorldMap > {
 
-	void draw() const;
-	
+  Q_OBJECT
+
+  struct WorldMapVBO {
+    VertexBufferObject* border;
+    int                 borderSize;
+    VertexBufferObject* triangles;
+    int                 trianglesSize;
+  };
+
+  struct Polygon {
+    QVector< Point >          borders;
+    QVector< unsigned short > triangles;
+    WorldMapVBO               vbo;
+  };
+  
+  
+public:
+  WorldMap();
+  virtual ~WorldMap();
+
+  void draw() const;
+
 private:
-	void __readDatabase();
-	
-	Polygon __worldPolygon;
-	
+  void __readDatabase();
+
+  Polygon __worldPolygon;
+
 private slots:
-	void __init();
-	
-	
+  void __init();
+
+
 };
 
 #endif // WORLDMAP_H

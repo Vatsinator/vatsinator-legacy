@@ -26,43 +26,43 @@
 class Pilot;
 
 class FlightTableModel : public QAbstractTableModel {
-	
-	/* http://qt-project.org/doc/qt-4.8/qabstracttablemodel.html */
-	/*
-	 * This model holds vector of pilots.
-	 */
-	
-	Q_OBJECT
-	
+
+  /* http://qt-project.org/doc/qt-4.8/qabstracttablemodel.html */
+  /*
+   * This model holds vector of pilots.
+   */
+
+  Q_OBJECT
+
 public:
-	explicit FlightTableModel(QObject* = 0);
-	
-	void addFlight(const Pilot*);
-	void clear();
-	const Pilot * findFlightByCallsign(const QString&) const;
-	
-	int rowCount(const QModelIndex& = QModelIndex()) const;
-	int columnCount(const QModelIndex& = QModelIndex()) const;
-	QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
-	QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
-	void sort(int, Qt::SortOrder = Qt::AscendingOrder);
-	
-	inline const QVector< const Pilot* > &
-	getFlights() const { return __flights; }
-	
-	/* Columns numbers */
-	enum Column {
-		Callsign	= 0,
-		Name		= 1,
-		From		= 2,
-		To		= 3,
-		Aircraft	= 4,
-		Button		= 5
-	};
-	
+  explicit FlightTableModel(QObject* = 0);
+
+  void addFlight(const Pilot*);
+  void clear();
+  const Pilot* findFlightByCallsign(const QString&) const;
+
+  int rowCount(const QModelIndex& = QModelIndex()) const;
+  int columnCount(const QModelIndex& = QModelIndex()) const;
+  QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
+  QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
+  void sort(int, Qt::SortOrder = Qt::AscendingOrder);
+
+  inline const QVector< const Pilot* > &
+  getFlights() const { return __flights; }
+
+  /* Columns numbers */
+  enum Column {
+    Callsign  = 0,
+    Name    = 1,
+    From    = 2,
+    To    = 3,
+    Aircraft  = 4,
+    Button    = 5
+  };
+
 private:
-	QVector< const Pilot* > __flights;
-	
+  QVector< const Pilot* > __flights;
+
 };
 
 #endif // FLIGHTTABLEMODEL_H

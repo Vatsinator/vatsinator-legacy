@@ -1,5 +1,5 @@
 /*
-    modelsmatcher.h
+    modulemanager.h
     Copyright (C) 2012  Michał Garapich garrappachc@gmail.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,31 +17,32 @@
 */
 
 
-#ifndef MODELSMATCHER_H
-#define MODELSMATCHER_H
-
-#include <QString>
-#include <QMap>
-#include <GL/gl.h>
+#ifndef MODULEMANAGER_H
+#define MODULEMANAGER_H
 
 #include "singleton.h"
 
-class ModelsMatcher : public Singleton< ModelsMatcher > {
-	
+#include <QObject>
+
+class FlightTracker;
+class ModelMatcher;
+
+class ModuleManager : public QObject, public Singleton< ModuleManager > {
+
+  Q_OBJECT
+
 public:
-	ModelsMatcher();
-	
-	void init();
-	
-	GLuint matchMyModel(const QString&);
-	
+  ModuleManager();
+  virtual ~ModuleManager();
+
+  void init();
+
+private slots:
+  void __initAfterGL();
+
 private:
-	void __readDatFile();
-	
-	QMap< QString, QString > __modelsFiles;
-	QMap< QString, GLuint >  __modelsPixmaps;
-	
-	
+  FlightTracker* __flightTracker;
+  ModelMatcher*   __modelsMatcher;
 };
 
-#endif // MODELSMATCHER_H
+#endif // MODULEMANAGER_H
