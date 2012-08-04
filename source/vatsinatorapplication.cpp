@@ -90,9 +90,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 
   // create something that will handle our http requests
   __httpHandler = new HttpHandler(__userInterface->getProgressBar());
-
-  // connect first finished signal to statusFileUpdate
   connect(__httpHandler, SIGNAL(finished(const QString&)), this, SLOT(__dataUpdated(const QString&)));
+  connect(__httpHandler, SIGNAL(fetchError()), this, SLOT(__showDataAlert()));
 
   // fetch the status file
   refreshData();

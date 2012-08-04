@@ -120,5 +120,3 @@ private slots:
 };
 
 #endif // VATSINATORAPPLICATION_H
-
-struct Metar;

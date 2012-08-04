@@ -21,6 +21,7 @@
 #define HTTPHANDLER_H
 
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QProgressBar>
 #include <QObject>
 #include <QQueue>
@@ -38,11 +39,13 @@ public:
 
 signals:
   void finished(const QString&);
+  void fetchError();
 
 private slots:
   void __readyRead();
   void __finished();
   void __updateProgress(qint64, qint64);
+  void __onError(QNetworkReply::NetworkError);
 
 private:
   void  __startRequest();

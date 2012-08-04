@@ -724,6 +724,8 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   __menu->exec(mapToGlobal(__lastMousePos));
   delete __menu;
   __menu = NULL;
+  
+  __dontDisplayTooltip = false;
 }
 
 void
@@ -1125,10 +1127,10 @@ MapWidget::__drawLines(double _moveX) {
 
 void
 MapWidget::__drawToolTip() {
-  setCursor(QCursor(Qt::PointingHandCursor));
-
   if (!underMouse())
     return;
+  
+  setCursor(QCursor(Qt::PointingHandCursor));
 
   QString text;
 

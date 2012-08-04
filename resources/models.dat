@@ -23,6 +23,7 @@ DC3  2p
 DHC6 2p
 F50  2p
 F70  2p
+JS41 2p
 
 AN12 4p
 C130 4p
@@ -61,6 +62,8 @@ B77L 2j
 B77W 2j
 B772 2j
 B773 2j
+B777 2j
+B787 2j
 BA11 2j
 CRJ1 2j
 CRJ2 2j
@@ -72,6 +75,7 @@ E120 2j
 E110 2j
 E135 2j
 E145 2j
+E175 2j
 F100 2j
 F28  2j
 F27  2j
