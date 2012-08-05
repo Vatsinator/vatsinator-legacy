@@ -130,7 +130,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __zoom(ZOOM_MINIMUM),
     __keyPressed(false),
     __underMouse(NULL),
-    __dontDisplayTooltip(false),
+    __contextMenuOpened(false),
     __label(NULL),
     __menu(NULL),
     __drawLeft(false),
@@ -395,7 +395,7 @@ MapWidget::paintGL() {
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
 
-  if (!__underMouse || __dontDisplayTooltip) {
+  if (!__underMouse || __contextMenuOpened) {
     QToolTip::hideText();
 
     if (cursor().shape() != Qt::SizeAllCursor)
@@ -436,8 +436,6 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
   __lastMousePos = _event->pos();
   QToolTip::hideText();
 
-  __dontDisplayTooltip = true;
-
   if ((_event->buttons() & Qt::RightButton) && __underMouse) {
     switch (__underMouse->objectType()) {
       case PLANE:
@@ -464,9 +462,8 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
   setCursor(QCursor(Qt::ArrowCursor));
   __lastMousePos = _event->pos();
 
-  if (__underMouse) {
+  if (__underMouse && !__contextMenuOpened) {
     QToolTip::hideText();
-    __dontDisplayTooltip = true;
 
     if (__recentlyClickedMousePos == __lastMousePos) {
       switch (__underMouse->objectType()) {
@@ -544,7 +541,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     QString::number(absHelper(longitude), 'g', 6) + " "
   );
 
-  __dontDisplayTooltip = false;
+  __contextMenuOpened = false;
 
   updateGL();
 }
@@ -590,6 +587,8 @@ MapWidget::__loadNewSettings() {
 
 void
 MapWidget::__openContextMenu(const Pilot* _pilot) {
+  __contextMenuOpened = true;
+  
   __menu = new QMenu(_pilot->callsign, this);
 
   ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, "Flight details", this);
@@ -621,10 +620,14 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
   __menu->exec(mapToGlobal(__lastMousePos));
   delete __menu;
   __menu = NULL;
+  
+  //__dontDisplayTooltip = false;
 }
 
 void
 MapWidget::__openContextMenu(const Airport* _ap) {
+  __contextMenuOpened = true;
+  
   __menu = new QMenu(_ap->getData()->icao, this);
 
   AirportDetailsAction* showAp = new AirportDetailsAction(_ap, "Airport details", this);
@@ -700,10 +703,14 @@ MapWidget::__openContextMenu(const Airport* _ap) {
   __menu->exec(mapToGlobal(__lastMousePos));
   delete __menu;
   __menu = NULL;
+  
+  //__dontDisplayTooltip = false;
 }
 
 void
 MapWidget::__openContextMenu(const Fir* _fir) {
+  __contextMenuOpened = true;
+  
   __menu = new QMenu(_fir->getIcao(), this);
 
   FirDetailsAction* showFir = new FirDetailsAction(_fir,
@@ -725,7 +732,7 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   delete __menu;
   __menu = NULL;
   
-  __dontDisplayTooltip = false;
+  //__dontDisplayTooltip = false;
 }
 
 void
@@ -1099,7 +1106,7 @@ MapWidget::__drawLines(double _moveX) {
   if (__keyPressed) {
     __prepareMatrix(WORLD, _moveX);
 
-  for (const Pilot * p: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
+    for (const Pilot * p: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
       if (p->flightStatus == AIRBORNE)
         p->drawLines();
     }
@@ -1127,8 +1134,8 @@ MapWidget::__drawLines(double _moveX) {
 
 void
 MapWidget::__drawToolTip() {
-  if (!underMouse())
-    return;
+  //if (!underMouse())
+    //return;
   
   setCursor(QCursor(Qt::PointingHandCursor));
 

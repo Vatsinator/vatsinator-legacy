@@ -212,7 +212,7 @@ private:
   const Clickable*  __underMouse;
 
   /* To prevent the tooltip from being displayed in wrong moment */
-  bool  __dontDisplayTooltip;
+  bool  __contextMenuOpened;
 
   /* Where to display latitude and longitude of mouse position */
   QLabel*   __label;
