@@ -27,6 +27,8 @@
 
 #include "vatsimdata/controller.h"
 
+#include "vatsinatorapplication.h"
+
 #include "atcdetailswindow.h"
 #include "defines.h"
 
@@ -36,12 +38,15 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
   UserInterface::setWindowPosition(this);
 
   connect(ShowButton, SIGNAL(clicked()), this, SLOT(__handleShowClicked()));
+  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+          this,       SLOT(__updateData()));
 }
 
 void
 ATCDetailsWindow::show(const Client* _client) {
   Q_ASSERT(dynamic_cast< const Controller* >(_client));
   __current = dynamic_cast< const Controller* >(_client);
+  __currentCallsign = __current->callsign;
 
   setWindowTitle(QString(__current->callsign + " - ATC details"));
 
@@ -70,6 +75,16 @@ ATCDetailsWindow::show(const Client* _client) {
     QWidget::show();
   else
     activateWindow();
+}
+
+void
+ATCDetailsWindow::__updateData() {
+  __current = VatsimDataHandler::GetSingleton().findATC(__currentCallsign);
+  
+  if (!__current) {
+    __currentCallsign = "";
+    hide();
+  }
 }
 
 void

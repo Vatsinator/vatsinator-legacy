@@ -41,6 +41,15 @@ ControllerTableModel::clear() {
   endResetModel();
 }
 
+const Controller *
+ControllerTableModel::findATCByCallsign(const QString& _callsign) const {
+  for (const Controller* c: __staff)
+    if (c->callsign == _callsign)
+      return c;
+  
+  return NULL;
+}
+
 int
 ControllerTableModel::rowCount(const QModelIndex& ) const {
   return __staff.size();

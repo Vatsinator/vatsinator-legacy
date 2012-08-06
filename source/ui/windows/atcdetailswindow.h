@@ -41,8 +41,10 @@ public slots:
 
 private:
   const Controller* __current;
+  QString __currentCallsign;
 
 private slots:
+  void __updateData();
   void __handleShowClicked();
 
 

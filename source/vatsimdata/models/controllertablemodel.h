@@ -39,6 +39,7 @@ public:
 
   void addStaff(const Controller*);
   void clear();
+  const Controller* findATCByCallsign(const QString&) const;
 
   int rowCount(const QModelIndex& = QModelIndex()) const;
   int columnCount(const QModelIndex& = QModelIndex()) const;

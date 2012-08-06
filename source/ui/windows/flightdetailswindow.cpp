@@ -162,14 +162,14 @@ FlightDetailsWindow::__updateData() {
   if (!__current) {
     __currentCallsign = "";
     hide();
-    return;
+  } else {
+    __updateToFromButtons();
   }
-
-  __updateToFromButtons();
 }
 
 void
 FlightDetailsWindow::__handleShowClicked() {
+  Q_ASSERT(__current);
   MapWidget::GetSingleton().showClient(__current);
 }
 

@@ -92,6 +92,12 @@ public:
    * NULL.
    */
   const Pilot* findPilot(const QString&) const;
+  
+  /**
+   * Finds Controller by callsign and returns pointer. If not found,
+   * returns NULL.
+   */
+  const Controller* findATC(const QString&) const;
 
   /**
    * Finds UIR by ICAO.

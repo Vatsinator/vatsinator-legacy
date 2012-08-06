@@ -269,9 +269,14 @@ VatsimDataHandler::getDataUrl() const {
   }
 }
 
-const Pilot*
+const Pilot *
 VatsimDataHandler::findPilot(const QString& _callsign) const {
   return __flights->findFlightByCallsign(_callsign);
+}
+
+const Controller *
+VatsimDataHandler::findATC(const QString& _callsign) const {
+  return __atcs->findATCByCallsign(_callsign);
 }
 
 Uir*
