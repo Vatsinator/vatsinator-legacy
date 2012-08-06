@@ -20,6 +20,8 @@
 
 #include "settings/settingsmanager.h"
 
+#include "ui/userinterface.h"
+
 #include "settingswindow.h"
 #include "defines.h"
 
@@ -27,7 +29,7 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
     QWidget(_parent),
     __mySettingsManager(SettingsManager::GetSingletonPtr()) {
   setupUi(this);
-  __setWindowPosition();
+  UserInterface::setWindowPosition(this);
 
   connect(OKCancelButtonBox,  SIGNAL(clicked(QAbstractButton*)),
           this,     SLOT(__handleButton(QAbstractButton*)));
@@ -43,31 +45,6 @@ void
 SettingsWindow::show() {
   __updateWindow();
   QWidget::show();
-}
-
-void
-SettingsWindow::__setWindowPosition() {
-  QDesktopWidget* desktop = QApplication::desktop();
-
-  int screenWidth, width;
-  int screenHeight, height;
-
-  int x, y;
-
-  QSize windowSize;
-
-  screenWidth = desktop -> width();
-  screenHeight = desktop -> height();
-
-  windowSize = size();
-  width = windowSize.width();
-  height = windowSize.height();
-
-  x = (screenWidth - width) / 2;
-  y = (screenHeight - height) / 2;
-  y -= 50;
-
-  move(x, y);
 }
 
 void

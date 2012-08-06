@@ -38,7 +38,6 @@ protected:
 
 private:
   void __setColumnsWidths();
-  void __setWindowPosition();
 
 private slots:
   void __handleDoubleClicked(const QModelIndex&);

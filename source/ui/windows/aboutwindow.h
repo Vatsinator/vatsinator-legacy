@@ -33,9 +33,6 @@ class AboutWindow :
 public:
   AboutWindow(QWidget* = 0);
 
-private:
-  void __setWindowPosition();
-
 };
 
 #endif // ABOUTWINDOW_H

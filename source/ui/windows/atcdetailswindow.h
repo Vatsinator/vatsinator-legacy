@@ -40,8 +40,6 @@ public slots:
   void show(const Client*);
 
 private:
-  void __setWindowPosition();
-
   const Controller* __current;
 
 private slots:

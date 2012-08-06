@@ -57,6 +57,8 @@ public:
   virtual ~UserInterface();
 
   void statusBarUpdate(const QString& = "");
+  
+  static void setWindowPosition(QWidget*);
 
   inline MapWidget*
   getMapWidget() { return MapDisplay; }
@@ -79,7 +81,6 @@ protected:
 
 private:
   void __setupWindow();
-  void __setWindowPosition();
   void __storeWindowGeometry();
   void __restoreWindowGeometry();
 

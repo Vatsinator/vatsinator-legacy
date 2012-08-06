@@ -45,9 +45,6 @@ public slots:
 
 private:
 
-  /* There is nothing to explain */
-  void __setWindowPosition();
-
   SettingsManager* __mySettingsManager;
 
 private slots:

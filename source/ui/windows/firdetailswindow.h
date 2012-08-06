@@ -46,7 +46,6 @@ private:
   void __fillLabels(const Fir*);
   void __adjustTables();
   void __setButtons();
-  void __setWindowPosition();
 
   QString __currentICAO;
 

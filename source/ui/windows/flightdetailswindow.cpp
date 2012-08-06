@@ -22,6 +22,8 @@
 
 #include "modules/flighttracker.h"
 
+#include "ui/userinterface.h"
+
 #include "ui/mapwidget/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
 
@@ -42,7 +44,7 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
   connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
           this,           SLOT(__updateData()));
 
-  __setWindowPosition();
+  UserInterface::setWindowPosition(this);
 }
 
 void
@@ -151,31 +153,6 @@ FlightDetailsWindow::__updateToFromButtons() {
     ArrivalButton->setText("(unknown)");
     ArrivalButton->setAirportPointer(NULL);
   }
-}
-
-void
-FlightDetailsWindow::__setWindowPosition() {
-  QDesktopWidget* desktop = QApplication::desktop();
-
-  int screenWidth, width;
-  int screenHeight, height;
-
-  int x, y;
-
-  QSize windowSize;
-
-  screenWidth = desktop -> width();
-  screenHeight = desktop -> height();
-
-  windowSize = size();
-  width = windowSize.width();
-  height = windowSize.height();
-
-  x = (screenWidth - width) / 2;
-  y = (screenHeight - height) / 2;
-  y -= 50;
-
-  move(x, y);
 }
 
 void

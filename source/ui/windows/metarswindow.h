@@ -51,8 +51,6 @@ public slots:
   void fetchMetar();
 
 private:
-  void __setWindowPosition();
-
   HttpHandler*  __httpHandler;
   MetarListModel*   __metarsHandler;
 

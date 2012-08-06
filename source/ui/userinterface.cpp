@@ -55,7 +55,7 @@ UserInterface::UserInterface(QWidget* _parent) :
     __settingsWindow(new SettingsWindow()),
     __mother(VatsinatorApplication::GetSingleton()) {
   __setupWindow();
-  __setWindowPosition();
+  setWindowPosition(this);
   __restoreWindowGeometry();
 
   connect(ActionExit,          SIGNAL(triggered()),
@@ -107,6 +107,31 @@ UserInterface::statusBarUpdate(const QString& _message) {
   } else {
     StatusBox->setText(_message);
   }
+}
+
+void
+UserInterface::setWindowPosition(QWidget* _window) {
+  QWidget* desktop = QApplication::desktop()->screen(QApplication::desktop()->primaryScreen());
+  
+  int screenWidth, width;
+  int screenHeight, height;
+  
+  int x, y;
+  
+  QSize windowSize;
+  
+  screenWidth = desktop->width();
+  screenHeight = desktop->height();
+  
+  windowSize = _window->size();
+  width = windowSize.width();
+  height = windowSize.height();
+  
+  x = (screenWidth - width) / 2;
+  y = (screenHeight - height) / 2;
+  y -= 50;
+  
+  _window->move(x, y);
 }
 
 void
@@ -168,31 +193,6 @@ UserInterface::__setupWindow() {
 
   MenuHelp->addAction(debugAction);
 #endif
-}
-
-void
-UserInterface::__setWindowPosition() {
-  QDesktopWidget* desktop = QApplication::desktop();
-
-  int screenWidth, width;
-  int screenHeight, height;
-
-  int x, y;
-
-  QSize windowSize;
-
-  screenWidth = desktop -> width();
-  screenHeight = desktop -> height();
-
-  windowSize = size();
-  width = windowSize.width();
-  height = windowSize.height();
-
-  x = (screenWidth - width) / 2;
-  y = (screenHeight - height) / 2;
-  y -= 50;
-
-  move(x, y);
 }
 
 void

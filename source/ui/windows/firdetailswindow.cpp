@@ -21,6 +21,8 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
+#include "ui/userinterface.h"
+
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/showairportbutton.h"
 
@@ -42,7 +44,7 @@
 FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
-  __setWindowPosition();
+  UserInterface::setWindowPosition(this);
 
   connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
           this,                                     SLOT(__updateData()));
@@ -142,31 +144,6 @@ FirDetailsWindow::__setButtons() {
             AirportDetailsWindow::GetSingletonPtr(), SLOT(show(const Airport*)));
     AirportsTable->setIndexWidget(apModel->index(i, AirportTableModel::Button), pButton);
   }
-}
-
-void
-FirDetailsWindow::__setWindowPosition() {
-  QDesktopWidget* desktop = QApplication::desktop();
-
-  int screenWidth, width;
-  int screenHeight, height;
-
-  int x, y;
-
-  QSize windowSize;
-
-  screenWidth = desktop -> width();
-  screenHeight = desktop -> height();
-
-  windowSize = size();
-  width = windowSize.width();
-  height = windowSize.height();
-
-  x = (screenWidth - width) / 2;
-  y = (screenHeight - height) / 2;
-  y -= 50;
-
-  move(x, y);
 }
 
 void

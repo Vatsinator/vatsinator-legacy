@@ -45,7 +45,6 @@ public slots:
 
 private:
   void __updateToFromButtons();
-  void __setWindowPosition();
 
   const Pilot*  __current;
   QString   __currentCallsign;
