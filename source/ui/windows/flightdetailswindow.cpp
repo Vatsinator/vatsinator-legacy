@@ -159,7 +159,7 @@ void
 FlightDetailsWindow::__updateData() {
   __current = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
 
-  if (!__current) {
+  if (!__current || __current->prefiledOnly) {
     __currentCallsign = "";
     hide();
   } else {

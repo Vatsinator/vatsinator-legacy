@@ -56,6 +56,9 @@ public:
     Frequency = 2,
     Button    = 3
   };
+  
+signals:
+  void sorted();
 
 private:
   QVector< const Controller* > __staff;

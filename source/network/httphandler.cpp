@@ -62,7 +62,7 @@ HttpHandler::__finished() {
     __data = __temp;
     emit finished(__data);
     
-    if (!__urls.isEmpty())
+    if (anyTasksLeft())
       __startRequest();
 }
 

@@ -52,6 +52,8 @@ public:
   /* Two QAbstractListModel-reimplemented functions */
   int rowCount(const QModelIndex& = QModelIndex()) const;
   QVariant data(const QModelIndex&, int) const;
+  
+  bool anyMetarsInQueue() const;
 
 public slots:
   void updateAllMetars();

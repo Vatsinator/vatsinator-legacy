@@ -36,6 +36,9 @@ public:
   HttpHandler(QProgressBar* = 0, QObject* = 0);
 
   void fetchData(const QString&);
+  
+  inline bool
+  anyTasksLeft() const { return !__urls.isEmpty(); }
 
 signals:
   void finished(const QString&);

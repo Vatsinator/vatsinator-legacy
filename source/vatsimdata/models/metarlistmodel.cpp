@@ -71,6 +71,11 @@ MetarListModel::data(const QModelIndex& _index, int _role) const {
   }
 }
 
+bool
+MetarListModel::anyMetarsInQueue() const {
+  return __myHttpHandler->anyTasksLeft();
+}
+
 void
 MetarListModel::updateAllMetars() {
   for (Metar & m: __metarList)

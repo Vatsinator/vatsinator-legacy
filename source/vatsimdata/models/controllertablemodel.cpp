@@ -127,4 +127,6 @@ ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
   }
 
   endResetModel();
+  
+  emit sorted();
 }

@@ -59,6 +59,9 @@ public:
     Aircraft  = 4,
     Button    = 5
   };
+  
+signals:
+  void sorted();
 
 private:
   QVector< const Pilot* > __flights;
