@@ -118,8 +118,7 @@ MetarListModel::__gotMetar(const QString& _metar) {
     return;
 
   if (metar.contains(METAR_NO_AVAIL)) {
-    __requests.dequeue();
-    emit noMetar();
+    emit noMetar(__requests.dequeue());
     return;
   }
 

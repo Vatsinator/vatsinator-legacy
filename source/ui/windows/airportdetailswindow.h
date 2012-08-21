@@ -40,6 +40,7 @@ public:
 public slots:
   void show(const Airport*);
   void updateMetar();
+  void updateMetar(QString);
 
 private:
   void __updateModels(const Airport* = NULL);

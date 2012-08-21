@@ -1103,9 +1103,9 @@ MapWidget::__drawPilots(float _moveX) {
 
 void
 MapWidget::__drawLines(double _moveX) {
+  __prepareMatrix(WORLD, _moveX);
+  
   if (__keyPressed) {
-    __prepareMatrix(WORLD, _moveX);
-
     for (const Pilot * p: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
       if (p->flightStatus == AIRBORNE)
         p->drawLines();
@@ -1113,22 +1113,22 @@ MapWidget::__drawLines(double _moveX) {
   
     return;
   }
-
-  if (!__underMouse)
-    return;
-
-  switch (__underMouse->objectType()) {
-    case PILOT:
-      __prepareMatrix(WORLD, _moveX);
-      static_cast< const Pilot* >(__underMouse)->drawLines();
-      break;
-    case AIRPORT:
-      __prepareMatrix(WORLD, _moveX);
-      static_cast< const Airport* >(__underMouse)->drawLines();
-      break;
-    default:
-      break;
+  
+  if (__underMouse) {
+    switch (__underMouse->objectType()) {
+      case PILOT:
+        static_cast< const Pilot* >(__underMouse)->drawLines();
+        break;
+      case AIRPORT:
+        static_cast< const Airport* >(__underMouse)->drawLines();
+        break;
+      default:
+        break;
+    }
   }
+  
+  if (__myFlightTracker->getTracked())
+    __myFlightTracker->getTracked()->drawLines();
 
 }
 

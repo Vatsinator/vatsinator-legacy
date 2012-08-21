@@ -52,6 +52,9 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 
   connect(MetarListModel::GetSingletonPtr(),  SIGNAL(newMetarsAvailable()),
           this,                               SLOT(updateMetar()));
+  
+  connect(MetarListModel::GetSingletonPtr(),  SIGNAL(noMetar(QString)),
+          this,                               SLOT(updateMetar(QString)));
 
   connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
           this,                                     SLOT(__updateData()));
@@ -98,7 +101,14 @@ AirportDetailsWindow::updateMetar() {
 
   if (m)
     MetarLabel->setText(m->getMetar());
-  else if (!MetarListModel::GetSingleton().anyMetarsInQueue())
+}
+
+void
+AirportDetailsWindow::updateMetar(QString _icao) {
+  if (__currentICAO.isEmpty() || !isVisible())
+    return;
+  
+  if (_icao == __currentICAO)
     MetarLabel->setText("Sorry, no weather report for " % __currentICAO % ".");
 }
 

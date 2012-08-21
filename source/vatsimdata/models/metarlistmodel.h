@@ -61,7 +61,7 @@ public slots:
 
 signals:
   void newMetarsAvailable();
-  void noMetar();
+  void noMetar(QString);
 
 private:
   void __addMetar(const QString&);
