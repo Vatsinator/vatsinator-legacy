@@ -6,6 +6,5 @@ cmake .
 make
 sudo make install
 
-There are also alpha builds for Windows, available in Download section.
+There are also beta builds for Windows, available in Download section.
 
-The present version is not a stable release yet. Vatsinator, although it runs fine, does not offer enough features yet.
