@@ -1,0 +1,12 @@
+# ignore build dir #
+build
+
+# ignore KDevelop files #
+*.kdev4
+
+# ignore desktop files #
+*.desktop
+
+# ignore directory prefs #
+*.directory
+
