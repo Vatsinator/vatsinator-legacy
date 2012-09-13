@@ -26,7 +26,7 @@ $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-$ make install
+# make install
 ```
 
 By default, cmake will install package in /usr/local. To set prefix to /usr, as most distributions prefers, you can append `-DCMAKE_INSTALL_PREFIX=/usr` to cmake.

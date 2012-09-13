@@ -1,5 +1,5 @@
 set (CPACK_GENERATOR "DEB;RPM")
-set (CPACK_PACKAGE_CONTACT "Michał Garapich garrappachc@gmail.com")
+set (CPACK_PACKAGE_CONTACT "Michał Garapich michal@garapich.pl")
 set (CPACK_PACKAGE_NAME "Vatsinator")
 
 string (REPLACE "_" "." CPACK_PACKAGE_VERSION ${vatsinator_VERSION})
