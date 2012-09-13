@@ -36,4 +36,4 @@ By default, cmake will install package in /usr/local. To set prefix to /usr, as 
 - Jan Macheta jan@macheta.net
 
 ## License
-Vatsinator is developed under GPL-3 license. See LICENSE file for more information.
+Vatsinator is developed under GPL-3 license. See COPYING file for more information.
