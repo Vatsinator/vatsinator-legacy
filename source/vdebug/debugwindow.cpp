@@ -53,6 +53,8 @@ DebugWindow::show() {
   OpenGLVersionField->setText(__getGLVersion());
   VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
   TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
+  NumberOfScreensField->setText(QString::number(QApplication::desktop()->screenCount()));
+  IsVirtualDesktopField->setText(QApplication::desktop()->isVirtualDesktop() ? "yes" : "no");
 
   ExtensionsTable->clearContents();
   ExtensionsTable->setRowCount(extensions.size());
