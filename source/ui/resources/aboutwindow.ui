@@ -138,13 +138,16 @@
          <item>
           <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>(C) 2012 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://garrappachc.github.com/Vatsinator/&quot;&gt;http://garrappachc.github.com/Vatsinator/&lt;/a&gt;</string>
+            <string>(C) 2012 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
            </property>
            <property name="margin">
             <number>5</number>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

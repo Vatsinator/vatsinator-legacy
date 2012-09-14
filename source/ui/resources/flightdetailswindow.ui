@@ -60,10 +60,10 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>0</x>
        <y>10</y>
-       <width>409</width>
-       <height>201</height>
+       <width>401</width>
+       <height>321</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
@@ -73,39 +73,10 @@
       <property name="rightMargin">
        <number>60</number>
       </property>
-      <item row="2" column="0">
-       <widget class="QLabel" name="GroundSpeedLabelDesc">
-        <property name="text">
-         <string>Ground speed:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="PilotLabel">
-        <property name="minimumSize">
-         <size>
-          <width>220</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>220</width>
-          <height>16777215</height>
-         </size>
-        </property>
+      <item row="6" column="2">
+       <widget class="QLabel" name="TimeOnlineLabel">
         <property name="text">
          <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="AltitudeLabel">
-        <property name="text">
-         <string>feet</string>
         </property>
        </widget>
       </item>
@@ -119,8 +90,44 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <spacer name="horizontalSpacer_6">
+      <item row="2" column="1">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>13</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="SquawkLabelDesc">
+        <property name="text">
+         <string>Squawk:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="AltitudeLabelDesc">
+        <property name="text">
+         <string>Altitude:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <spacer name="horizontalSpacer_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -142,34 +149,13 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="AltitudeLabelDesc">
+      <item row="3" column="0">
+       <widget class="QLabel" name="HeadingLabelDesc">
         <property name="text">
-         <string>Altitude:</string>
+         <string>Heading:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLabel" name="ServerLabel">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="2">
-       <widget class="QLabel" name="TimeOnlineLabel">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="HeadingLabel">
-        <property name="text">
-         <string/>
         </property>
        </widget>
       </item>
@@ -196,18 +182,18 @@
         </property>
        </spacer>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="HeadingLabelDesc">
+      <item row="2" column="0">
+       <widget class="QLabel" name="GroundSpeedLabelDesc">
         <property name="text">
-         <string>Heading:</string>
+         <string>Ground speed:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <spacer name="horizontalSpacer_5">
+      <item row="6" column="1">
+       <spacer name="horizontalSpacer_6">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -222,21 +208,45 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="1">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="3" column="2">
+       <widget class="QLabel" name="HeadingLabel">
+        <property name="text">
+         <string/>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="AltitudeLabel">
+        <property name="text">
+         <string>feet</string>
         </property>
-        <property name="sizeHint" stdset="0">
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="ServerLabel">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="PilotLabel">
+        <property name="minimumSize">
          <size>
-          <width>13</width>
-          <height>20</height>
+          <width>220</width>
+          <height>0</height>
          </size>
         </property>
-       </spacer>
+        <property name="maximumSize">
+         <size>
+          <width>220</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="ServerLabelDesc">
@@ -316,20 +326,73 @@
         </property>
        </spacer>
       </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="SquawkLabelDesc">
+      <item row="7" column="2">
+       <widget class="QLabel" name="SquawkLabel">
         <property name="text">
-         <string>Squawk:</string>
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>100</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="VatawareIcon">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="imgs.qrc">:/extra/vataware.png</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
-      <item row="7" column="2">
-       <widget class="QLabel" name="SquawkLabel">
+      <item row="9" column="2">
+       <widget class="QLabel" name="VatawareLink">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
-         <string/>
+         <string>&lt;a href=&quot;http://www.vataware.com/&quot;&gt;Vataware statistics for this pilot&lt;/a&gt;</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
         </property>
        </widget>
       </item>

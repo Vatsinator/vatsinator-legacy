@@ -76,6 +76,10 @@ FlightDetailsWindow::show(const Client* _client) {
   ServerLabel->setText(__current->server);
   TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
   SquawkLabel->setText(__current->squawk);
+  
+  VatawareLink->setText("<a href=\"http://www.vataware.com/pilot.cfm?cid=" %
+      QString::number(__current->pid) %
+      "\">Vataware statistics for this pilot</a>");
 
   FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
 
