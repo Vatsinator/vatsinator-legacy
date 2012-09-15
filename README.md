@@ -30,9 +30,11 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 		There are no packages for other distributions, I am afraid. However, you can compile the Source Code (see below).
 
 - Windows
+
 	[vatsinator-0.1_beta2-win32.zip](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta2-win32.zip)
 
 - Source Code
+
 	[vatsinator-0.1_beta2.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta2.tar.gz)
 
 
