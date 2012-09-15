@@ -175,6 +175,9 @@ AirportDetailsWindow::__fillLabels(const Airport* _ap) {
   CityLabel->setText(QString::fromUtf8(apData->city));
   CountryLabel->setText(QString::fromUtf8(apData->country));
   AltitudeLabel->setText(QString::number(apData->altitude) + static_cast< QString >(" ft"));
+  VatawareAirportLinkLabel->setText("<a href=\"http://www.vataware.com/airport.cfm?airport=" %
+      QString::fromUtf8(apData->icao) %
+      "\">Vataware statistics for this airport</a>");
 }
 
 void

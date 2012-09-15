@@ -6,12 +6,26 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 
 ---
 
-## Downloads
+## Installation
 
 **Vatsinator 0.1_beta2**
 
 - Linux
-	- [vatsinator-0.1_beta2-Linux-amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta2-Linux-x86_64.deb) DEB package (adm64 only)
+	- Ubuntu
+		To install Vatsinator using apt, just type in the terminal:
+		
+		```
+		$ sudo add-apt-repository ppa:michal-k93/vatsim
+		$ sudo apt-get update
+		$ sudo apt-get install vatsinator
+		```
+		
+	- Gentoo
+		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).
+	
+	- Other distributions
+		There are no packages for other distributions, I am afraid. However, you can compile the Source Code (see below).
+	
 - Windows
 	- [vatsinator-0.1_beta2-win32.zip](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta2-win32.zip)
 - Source Code
