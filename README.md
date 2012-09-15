@@ -12,6 +12,7 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 
 - Linux
 	- Ubuntu
+		
 		To install Vatsinator using apt, just type in the terminal:
 		
 		```
@@ -21,15 +22,19 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 		```
 		
 	- Gentoo
+		
 		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).
 	
 	- Other distributions
+		
 		There are no packages for other distributions, I am afraid. However, you can compile the Source Code (see below).
 	
 - Windows
 	- [vatsinator-0.1_beta2-win32.zip](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta2-win32.zip)
+	
 - Source Code
 	- [vatsinator-0.1_beta2.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta2.tar.gz)
+	
 
 ## Compiling
 
