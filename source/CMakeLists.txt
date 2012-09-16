@@ -1,3 +1,5 @@
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+
 set (vatsinator_TARGET
 	vatsinator
 )
@@ -35,7 +37,7 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
-include (cmake/macros.cmake)
+include (Macros)
 
 
 if (MINGW)

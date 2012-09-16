@@ -25,6 +25,14 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 		
 		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).
 	
+	- Arch
+		
+		Having AUR set up correctly, you may install Vatsinator really simply:
+		
+		```
+		$ yaourt -S vatsinator
+		```
+		
 	- Other distributions
 		
 		There are no packages for other distributions, I am afraid. However, you can compile the Source Code (see below).

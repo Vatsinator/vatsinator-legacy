@@ -6,9 +6,6 @@ cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 find_package (Qt4	REQUIRED)
 find_package (OpenGL	REQUIRED)
 
-
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
-
 # set CMAKE_BUILD_TYPE
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	set (CMAKE_BUILD_TYPE Debug)
@@ -92,10 +89,6 @@ if (UNIX AND NOT APPLE)
 	foreach (ICON ${SIZES})
 		install_icon(${ICON})
 	endforeach (ICON)
-	
-	if (BUILD_PACKAGES)
-		include (Packages)
-	endif (BUILD_PACKAGES)
 	
 endif (UNIX AND NOT APPLE)
 
