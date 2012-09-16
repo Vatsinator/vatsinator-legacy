@@ -6,6 +6,8 @@ cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 find_package (Qt4	REQUIRED)
 find_package (OpenGL	REQUIRED)
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+
 # set CMAKE_BUILD_TYPE
 if (CMAKE_BUILD_TYPE MATCHES Debug)
 	set (CMAKE_BUILD_TYPE Debug)
@@ -33,7 +35,7 @@ message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
 # only for Linux
-if (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE AND NOT MINGW)
 	
 	# create desktop entry file
 	if (NOT DESKTOP_ENTRY)
@@ -89,6 +91,47 @@ if (UNIX AND NOT APPLE)
 	foreach (ICON ${SIZES})
 		install_icon(${ICON})
 	endforeach (ICON)
+
+# builds for win32
+elseif (MINGW)
 	
-endif (UNIX AND NOT APPLE)
+	if (NOT MINGW_LIBS_PATH)
+		set (MINGW_LIBS_PATH ${CMAKE_CURRENT_BINARY_DIR})
+	endif (NOT MINGW_LIBS_PATH)
+	
+	install (FILES
+		${QT_QTGUI_LIBRARY}
+		${QT_QTCORE_LIBRARY}
+		${QT_QTNETWORK_LIBRARY}
+		${QT_QTOPENGL_LIBRARY}
+		${QT_QTSVG_LIBRARY}
+		${QT_QTXML_LIBRARY}
+		${MINGW_LIBS_PATH}/libgcc_s_dw2-1.dll
+		${MINGW_LIBS_PATH}/mingwm10.dll
+		DESTINATION .
+	)
+	
+	install (FILES
+		resources/models.dat
+		resources/vatsinator.dat
+		resources/WorldAirports.db
+		resources/WorldFirs.db
+		resources/WorldMap.db
+		DESTINATION .
+	)
+	
+	install (FILES
+		resources/pixmaps/1p32.png
+		resources/pixmaps/2p32.png
+		resources/pixmaps/4p32.png
+		resources/pixmaps/2j32.png
+		resources/pixmaps/3j32.png
+		resources/pixmaps/4j32.png
+		resources/pixmaps/conc32.png
+		DESTINATION ./pixmaps
+	)
+	
+	include (Packaging-win32)
+	
+endif (UNIX AND NOT APPLE AND NOT MINGW)
 

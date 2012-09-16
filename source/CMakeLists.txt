@@ -105,6 +105,14 @@ target_link_libraries (${vatsinator_TARGET}
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
-install(PROGRAMS
-	${CMAKE_CURRENT_BINARY_DIR}/vatsinator
-	DESTINATION bin)
+if (UNIX AND NOT APPLE AND NOT MINGW)
+	install (PROGRAMS
+		${CMAKE_CURRENT_BINARY_DIR}/vatsinator
+		DESTINATION bin
+	)
+elseif (MINGW)
+	install (PROGRAMS
+		${CMAKE_CURRENT_BINARY_DIR}/vatsinator.exe
+		DESTINATION .
+	)
+endif (UNIX AND NOT APPLE AND NOT MINGW)
