@@ -383,7 +383,7 @@
          </size>
         </property>
         <property name="text">
-         <string>&lt;a href=&quot;http://www.vataware.com/&quot;&gt;Vataware statistics for this pilot&lt;/a&gt;</string>
+         <string>Vataware statistics for this pilot</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

@@ -21,6 +21,7 @@
 #define VATSINATORAPPLICATION_H
 
 #include <QApplication>
+#include <QTranslator>
 #include <QTimer>
 #include <iostream>
 
@@ -112,6 +113,7 @@ private:
   ModuleManager*     __modulesManager;
   UserInterface*     __userInterface;
   QTimer             __timer;
+  QTranslator        __translator;
 
 private slots:
   void __dataUpdated(const QString&);

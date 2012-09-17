@@ -90,13 +90,13 @@ AirportTableModel::headerData(int _section, Qt::Orientation _orientation, int _r
 
   switch (_section) {
     case Label:
-      return "Airport";
+      return tr("Airport");
     case Facilities:
-      return "ATC";
+      return tr("ATC");
     case Inbounds:
-      return "Inbound";
+      return tr("Inbound");
     case Outbounds:
-      return "Outbound";
+      return tr("Outbound");
     default:
       return "";
   }
@@ -112,9 +112,9 @@ AirportTableModel::clear() {
 inline QString
 AirportTableModel::__arrivalsAndDepartures(int _row) const {
   return
-    static_cast< QString >("Arrivals: ") %
+    tr("Arrivals:") % " " %
     QString::number(__airports[_row]->countArrivals()) %
-    static_cast< QString >("<br>Departures: ") %
+    "<br>" % tr("Departures:") % " " %
     QString::number(__airports[_row]->countDepartures());
 }
 

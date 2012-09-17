@@ -82,7 +82,7 @@ AirportDetailsWindow::show(const Airport* _ap) {
   if (m) {
     MetarLabel->setText(m->getMetar());
   } else {
-    MetarLabel->setText("Fetching...");
+    MetarLabel->setText(tr("Fetching..."));
     MetarListModel::GetSingleton().fetchMetar(__currentICAO);
   }
 
@@ -109,7 +109,7 @@ AirportDetailsWindow::updateMetar(QString _icao) {
     return;
   
   if (_icao == __currentICAO)
-    MetarLabel->setText("Sorry, no weather report for " % __currentICAO % ".");
+    MetarLabel->setText(tr("Sorry, no weather report for") % " " % __currentICAO % ".");
 }
 
 void
@@ -145,7 +145,7 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
 
 void
 AirportDetailsWindow::__fillLabels(const Airport* _ap) {
-  setWindowTitle(static_cast< QString >(_ap->getData()->icao) + " - airports details");
+  setWindowTitle(static_cast< QString >(_ap->getData()->icao) + " - " + tr("airport details"));
 
   if (!static_cast< QString >(_ap->getData()->iata).isEmpty())
     CodesLabel->setText(
@@ -174,10 +174,13 @@ AirportDetailsWindow::__fillLabels(const Airport* _ap) {
   FullNameLabel->setText(QString::fromUtf8(apData->name));
   CityLabel->setText(QString::fromUtf8(apData->city));
   CountryLabel->setText(QString::fromUtf8(apData->country));
-  AltitudeLabel->setText(QString::number(apData->altitude) + static_cast< QString >(" ft"));
+  AltitudeLabel->setText(QString::number(apData->altitude) + " " + tr(" ft"));
   VatawareAirportLinkLabel->setText("<a href=\"http://www.vataware.com/airport.cfm?airport=" %
       QString::fromUtf8(apData->icao) %
-      "\">Vataware statistics for this airport</a>");
+      static_cast< QString >("\">") %
+      tr("Vataware statistics for this airport") %
+      static_cast< QString >("</a>")
+    );
 }
 
 void

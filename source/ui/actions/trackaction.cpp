@@ -22,7 +22,7 @@
 #include "defines.h"
 
 TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
-    QAction("Track this flight", _parent),
+    QAction(tr("Track this flight"), _parent),
     __current(_pilot) {
   connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
 }

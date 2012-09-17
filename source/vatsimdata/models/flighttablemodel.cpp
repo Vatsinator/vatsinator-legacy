@@ -123,7 +123,7 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
         case Aircraft:
           return __flights[_index.row()]->aircraft;
         case Button: // for non-prefiled-only this will be overriden by QPushButton widget
-          return "Prefiled";
+          return tr("Prefiled");
         default:
           return QVariant();
       }
@@ -140,15 +140,15 @@ FlightTableModel::headerData(int _section, Qt::Orientation _orientation, int _ro
 
   switch (_section) {
     case Callsign:
-      return "Callsign";
+      return tr("Callsign");
     case Name:
-      return "Name";
+      return tr("Name");
     case From:
-      return "From";
+      return tr("From");
     case To:
-      return "To";
+      return tr("To");
     case Aircraft:
-      return "Aircraft";
+      return tr("Aircraft");
     default:
       return "";
   }

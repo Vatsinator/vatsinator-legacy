@@ -100,11 +100,11 @@ ControllerTableModel::headerData(int _section, Qt::Orientation _orientation, int
 
   switch (_section) {
     case 0:
-      return "Callsign";
+      return tr("Callsign");
     case 1:
-      return "Name";
+      return tr("Name");
     case 2:
-      return "Frequency";
+      return tr("Frequency");
     default:
       return "";
   }

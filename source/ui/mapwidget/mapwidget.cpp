@@ -591,7 +591,7 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
   
   __menu = new QMenu(_pilot->callsign, this);
 
-  ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, "Flight details", this);
+  ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, tr("Flight details"), this);
   TrackAction* trackThisFlight = new TrackAction(_pilot, this);
   __menu->addAction(showDetails);
   __menu->addAction(trackThisFlight);
@@ -630,7 +630,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
   
   __menu = new QMenu(_ap->getData()->icao, this);
 
-  AirportDetailsAction* showAp = new AirportDetailsAction(_ap, "Airport details", this);
+  AirportDetailsAction* showAp = new AirportDetailsAction(_ap, tr("Airport details"), this);
   MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
 
   __menu->addAction(showAp);
@@ -644,7 +644,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 
   if (!_ap->getStaffModel()->getStaff().isEmpty()) {
     __menu->addSeparator();
-    __menu->addAction(new ActionMenuSeparator("Controllers", this));
+    __menu->addAction(new ActionMenuSeparator(tr("Controllers"), this));
 
   for (const Controller* c: _ap->getStaffModel()->getStaff()) {
       ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
@@ -656,7 +656,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 
   if (!_ap->getOutboundsModel()->getFlights().isEmpty() && _ap->countDepartures()) {
     __menu->addSeparator();
-    __menu->addAction(new ActionMenuSeparator("Departures", this));
+    __menu->addAction(new ActionMenuSeparator(tr("Departures"), this));
 
   for (const Pilot* p: _ap->getOutboundsModel()->getFlights()) {
       if (p->flightStatus != DEPARTING)
@@ -679,7 +679,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 
   if (!_ap->getInboundsModel()->getFlights().isEmpty() && _ap->countArrivals()) {
     __menu->addSeparator();
-    __menu->addAction(new ActionMenuSeparator("Arrivals", this));
+    __menu->addAction(new ActionMenuSeparator(tr("Arrivals"), this));
 
     for (const Pilot* p: _ap->getInboundsModel()->getFlights()) {
       if (p->flightStatus != ARRIVED)
@@ -714,7 +714,7 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   __menu = new QMenu(_fir->getIcao(), this);
 
   FirDetailsAction* showFir = new FirDetailsAction(_fir,
-      static_cast< QString >(_fir->getIcao()).simplified() % " details", this);
+      static_cast< QString >(_fir->getIcao()).simplified() % " " % tr("details"), this);
 
   __menu->addAction(showFir);
 
@@ -1234,16 +1234,17 @@ MapWidget::__producePilotToolTip(const Pilot* _p) {
     static_cast< QString >("<center>") %
     _p->callsign % "<br><nobr>" %
     _p->realName % " (" % _p->aircraft % ")</nobr><br><nobr>" %
-    (_p->route.origin.isEmpty() ? "(unknown)" : (__airports[_p->route.origin]->getData() ?
+    (_p->route.origin.isEmpty() ? tr("(unknown)") : (__airports[_p->route.origin]->getData() ?
         _p->route.origin % " " % QString::fromUtf8(__airports[_p->route.origin]->getData()->city) :
         _p->route.origin)) %
     " > " %
-    (_p->route.destination.isEmpty() ? "(unknown)" : (__airports[_p->route.destination]->getData() ?
+    (_p->route.destination.isEmpty() ? tr("(unknown)") : (__airports[_p->route.destination]->getData() ?
         _p->route.destination % " " % QString::fromUtf8(__airports[_p->route.destination]->getData()->city) :
         _p->route.destination)) %
     "</nobr><br>" %
-    "Ground speed: " % QString::number(_p->groundSpeed) % " kts<br>Altitude: " %
-    QString::number(_p->altitude) % " ft</center>";
+    tr("Ground speed:") % " " % QString::number(_p->groundSpeed) %
+    " " % tr("kts") % "<br>" % tr("Altitude: ") %
+    QString::number(_p->altitude) % " " % tr("ft") % "</center>";
 }
 
 inline QString
@@ -1265,12 +1266,12 @@ MapWidget::__produceAirportToolTip(const Airport* _ap) {
   int deps = _ap->countDepartures();
 
   if (deps)
-    text.append((QString)"<br>Departures: " % QString::number(deps));
+    text.append(static_cast< QString >("<br>") % tr("Departures:") % " " % QString::number(deps));
 
   int arrs = _ap->countArrivals();
 
   if (arrs)
-    text.append((QString)"<br>Arrivals: " % QString::number(arrs));
+    text.append(static_cast< QString >("<br>") % tr("Arrivals:") % " " % QString::number(arrs));
 
   text.append("</center>");
   return text;

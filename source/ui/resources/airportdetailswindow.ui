@@ -414,7 +414,7 @@
         <item>
          <widget class="QLabel" name="VatawareAirportLinkLabel">
           <property name="text">
-           <string>&lt;a href=&quot;http://www.vataware.com/&quot;&gt;Vataware statistics for this airport&lt;/a&gt;</string>
+           <string>Vataware statistics for this airport</string>
           </property>
           <property name="openExternalLinks">
            <bool>true</bool>

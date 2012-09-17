@@ -100,9 +100,9 @@ UserInterface::~UserInterface() {
 void
 UserInterface::statusBarUpdate(const QString& _message) {
   if (_message.isEmpty()) {
-    StatusBox->setText("Last update: " %
+    StatusBox->setText(tr("Last update:") % " " %
                        VatsimDataHandler::GetSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
-                       " UTC"
+                       tr(" UTC")
                       );
   } else {
     StatusBox->setText(_message);

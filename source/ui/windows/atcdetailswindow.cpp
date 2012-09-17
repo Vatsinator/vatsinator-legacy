@@ -48,7 +48,7 @@ ATCDetailsWindow::show(const Client* _client) {
   __current = dynamic_cast< const Controller* >(_client);
   __currentCallsign = __current->callsign;
 
-  setWindowTitle(QString(__current->callsign + " - ATC details"));
+  setWindowTitle(QString(__current->callsign + " - " + tr("ATC details")));
 
   CallsignLabel->setText(__current->callsign);
   FacilityLabel->setText(__current->description);
@@ -64,7 +64,7 @@ ATCDetailsWindow::show(const Client* _client) {
                           QString::fromUtf8(__current->airport->city)
                          );
   else
-    AirportLabel->setText("N/A");
+    AirportLabel->setText(tr("N/A"));
 
   ServerLabel->setText(__current->server);
   TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));

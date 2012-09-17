@@ -44,7 +44,7 @@ ColorButton::updateColor() {
 void
 ColorButton::__pickColor() {
   QColorDialog* dialog = new QColorDialog(__current);
-  dialog->setWindowTitle("Select color");
+  dialog->setWindowTitle(tr("Select color"));
 
   if (dialog->exec() == QDialog::Accepted)
     __current = dialog->currentColor();

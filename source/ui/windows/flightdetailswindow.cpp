@@ -56,22 +56,22 @@ FlightDetailsWindow::show(const Client* _client) {
   if (__current->prefiledOnly)
     return;
 
-  setWindowTitle(QString(__current->callsign + " - flight details"));
+  setWindowTitle(QString(__current->callsign + " - " + tr("flight details")));
 
   CallsignLabel->setText(__current->callsign);
   RouteLabel->setText(__current->route.origin + " -> " + __current->route.destination);
 
   PilotLabel->setText(__current->realName + " (" + QString::number(__current->pid) + ")");
-  AltitudeLabel->setText(QString::number(__current->altitude) + " feet");
-  GroundSpeedLabel->setText(QString::number(__current->groundSpeed) + " kts");
+  AltitudeLabel->setText(QString::number(__current->altitude) + " " + tr("feet"));
+  GroundSpeedLabel->setText(QString::number(__current->groundSpeed) + " " + tr("kts"));
   HeadingLabel->setText(QString::number(__current->heading));
 
   if (__current->flightStatus == AIRBORNE)
-    CurrentStatusLabel->setText("airborne");
+    CurrentStatusLabel->setText(tr("airborne"));
   else if (__current->flightStatus == DEPARTING)
-    CurrentStatusLabel->setText("departing");
+    CurrentStatusLabel->setText(tr("departing"));
   else
-    CurrentStatusLabel->setText("arrived");
+    CurrentStatusLabel->setText(tr("arrived"));
 
   ServerLabel->setText(__current->server);
   TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
@@ -79,14 +79,16 @@ FlightDetailsWindow::show(const Client* _client) {
   
   VatawareLink->setText("<a href=\"http://www.vataware.com/pilot.cfm?cid=" %
       QString::number(__current->pid) %
-      "\">Vataware statistics for this pilot</a>");
+      static_cast< QString >("\">") %
+      tr("Vataware statistics for this pilot") %
+      static_cast< QString >("</a>"));
 
   FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
 
   __updateToFromButtons();
 
   AircraftLabel->setText(__current->aircraft);
-  TrueAirSpeedLabel->setText(QString::number(__current->tas) + " kts");
+  TrueAirSpeedLabel->setText(QString::number(__current->tas) + " " + tr("kts"));
   CruiseAltitude->setText(__current->route.altitude);
 
   RouteField->setPlainText(__current->route.route);

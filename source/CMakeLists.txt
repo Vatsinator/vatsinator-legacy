@@ -38,7 +38,7 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
 include (Macros)
-
+include (Translations)
 
 if (MINGW)
 	set (VATSINATOR_PLATFORM_WIN32 TRUE)
@@ -65,6 +65,7 @@ add_executable (${vatsinator_TARGET} WIN32
 	main.cpp
 	${vatsinator_SRCS}
 	${vatsinator_MOC_FILES}
+	${vatsinator_TRANSLATIONS}
 )
 
 if (MINGW)
@@ -110,9 +111,19 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 		${CMAKE_CURRENT_BINARY_DIR}/vatsinator
 		DESTINATION bin
 	)
+	
+	install (FILES
+		${vatsinator_TRANSLATIONS}
+		DESTINATION share/vatsinator/translations
+	)
 elseif (MINGW)
 	install (PROGRAMS
 		${CMAKE_CURRENT_BINARY_DIR}/vatsinator.exe
 		DESTINATION .
+	)
+	
+	install (FILES
+		${vatsinator_TRANSLATIONS}
+		DESTINATION ./translations
 	)
 endif (UNIX AND NOT APPLE AND NOT MINGW)

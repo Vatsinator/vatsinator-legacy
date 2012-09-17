@@ -51,7 +51,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __vatsimData(new VatsimDataHandler),
     __settingsManager(new SettingsManager),
     __modulesManager(new ModuleManager),
-    __userInterface(new UserInterface) {
+    __userInterface(NULL) {
   
   log("vatsinator.dat location: " VATSINATOR_DAT);
   
@@ -64,6 +64,13 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 #  pragma message("Platform: undefined")
 # endif
 #endif
+  
+  QString lang = QLocale::system().name();
+  
+  __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + lang);
+  this->installTranslator(&__translator);
+  
+  __userInterface = new UserInterface;
 
   // destroy all children windows before the program exits
   connect(this,             SIGNAL(destroyed()),
@@ -148,7 +155,7 @@ VatsinatorApplication::log(const char* _s) {
 
 void
 VatsinatorApplication::refreshData() {
-  __userInterface->statusBarUpdate("Fetching data...");
+  __userInterface->statusBarUpdate(tr("Fetching data..."));
   __httpHandler->fetchData(__vatsimData->getDataUrl());
   __timer.start(__settingsManager->getRefreshRate() * 60000);
 }
@@ -193,7 +200,7 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
       refreshData();
       return;
     } else {
-      __userInterface->statusBarUpdate("Data outdated!");
+      __userInterface->statusBarUpdate(tr("Data outdated!"));
       return;
     }
   }
@@ -203,15 +210,15 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
 
     __vatsimData->parseDataFile(_data);
     __userInterface->getClientsBox()->setText(
-      static_cast< QString >("Clients: ") %
+      tr("Clients") % static_cast< QString >(": ") %
       QString::number(__vatsimData->clientCount()) %
       static_cast< QString >(" (") %
       QString::number(__vatsimData->pilotCount()) %
-      static_cast< QString >(" pilots, ") %
+      " " % tr("pilots") % static_cast< QString >(", ") %
       QString::number(__vatsimData->atcCount()) %
-      static_cast< QString >(" ATCs, ") %
+      " " % tr("ATCs") % static_cast< QString >(", ") %
       QString::number(__vatsimData->obsCount()) %
-      static_cast< QString >(" observers).")
+      " " % tr("observers") % static_cast< QString >(")")
     );
 
     __userInterface->statusBarUpdate();

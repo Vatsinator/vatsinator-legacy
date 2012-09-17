@@ -25,6 +25,7 @@ set (CPACK_NSIS_URL_INFO_ABOUT "https://github.com/Garrappachc/Vatsinator")
 set (CPACK_NSIS_CONTACT "michal@garapich.pl")
 set (CPACK_NSIS_MUI_FINISHPAGE_RUN "vatsinator.exe")
 set (CPACK_NSIS_INSTALLED_ICON_NAME "vatsinator.exe")
+set (CPACK_NSIS_MENU_LINKS "https://github.com/Garrappachc/Vatsinator" "Vatsinator Homepage")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
 	CreateShortCut \\\"$DESKTOP\\\\Vatsinator.lnk\\\" \\\"$INSTDIR\\\\vatsinator.exe\\\"
