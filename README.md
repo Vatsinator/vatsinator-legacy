@@ -27,11 +27,14 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 	
 	- Arch
 		
-		Having AUR set up correctly, you may install Vatsinator really simply:
+		Having AUR set up correctly, Vatsinator installing is as simpe as that:
 		
 		```
 		$ yaourt -S vatsinator
 		```
+		
+		All thanks to ~archtux.
+		
 		
 	- Other distributions
 		
@@ -47,22 +50,12 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 
 
 ## Compiling
+See [wiki](https://github.com/Garrappachc/Vatsinator/wiki/Building-Vatsinator).
 
-```
-$ git clone git://github.com/Garrappachc/Vatsinator.git
-$ cd Vatsinator
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make
-# make install
-```
-
-By default, cmake will install package in /usr/local. To set prefix to /usr, as most distributions prefers, you can append `-DCMAKE_INSTALL_PREFIX=/usr` to cmake.
 
 ## Contact
 - Michał Garapich michal@garapich.pl
-- Jan Macheta jan@macheta.net
+- Jan Macheta janmacheta@gmail.com
 
 ## License
-Vatsinator is developed under GPL-3 license. See COPYING file for more information.
+Vatsinator is developed under GPLv3 license. See COPYING file for more information.
