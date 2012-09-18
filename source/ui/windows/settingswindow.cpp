@@ -56,6 +56,7 @@ SettingsWindow::__updateWindow() {
   AirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().airports);
   StaffedFirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().staffedFirs);
   UnstaffedFirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().unstaffedFirs);
+  InactiveAirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().emptyAirports);
 
   if (__mySettingsManager->displayAirportLabels()) {
     AlwaysRadioButton->setChecked(true);

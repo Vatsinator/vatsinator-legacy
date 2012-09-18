@@ -10,6 +10,9 @@ set (vatsimdata_SRCS
 	uir.cpp
 	vatsimdatahandler.cpp
 	
+	airport/activeairport.cpp
+	airport/emptyairport.cpp
+	
 	models/airporttablemodel.cpp
 	models/controllertablemodel.cpp
 	models/flighttablemodel.cpp

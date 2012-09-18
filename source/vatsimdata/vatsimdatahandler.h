@@ -29,7 +29,9 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
-#include "vatsimdata/airport.h"
+#include "vatsimdata/airport/activeairport.h"
+#include "vatsimdata/airport/emptyairport.h"
+
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/uir.h"
@@ -107,7 +109,13 @@ public:
   /**
    * Adds an airport to the ActiveAirports map.
    */
-  Airport* addActiveAirport(const QString&);
+  ActiveAirport* addActiveAirport(const QString&);
+  
+  /**
+   * Adds an inactive airport to the EmptyAirport map.
+   */
+  EmptyAirport* addEmptyAirport(const QString&);
+  EmptyAirport* addEmptyAirport(const AirportRecord*);
 
   /**
    * @return Count of logged-in clients (pilots + controllers + observers).
@@ -147,8 +155,11 @@ public:
   inline const QVector< Uir* > &
   getUIRs() const { return __uirs; }
 
-  inline const QMap< QString, Airport* > &
+  inline const QMap< QString, ActiveAirport* > &
   getActiveAirports() const { return __activeAirports; }
+  
+  inline const QMap< QString, EmptyAirport* > &
+  getEmptyAirports() const { return __emptyAirports; }
 
   inline const QMultiMap< QString, QString > &
   getAliases() const { return __aliases; }
@@ -193,7 +204,10 @@ private:
   QVector< QString >  __servers;
 
   /* This set contains list of active airports, used later by OpenGLWidget */
-  QMap< QString, Airport* > __activeAirports;
+  QMap< QString, ActiveAirport* > __activeAirports;
+  
+  /* Inactive airports (no staff, no flights) */
+  QMap< QString, EmptyAirport* > __emptyAirports;
 
   /* This set contains list of aliases. Filled in by init() method */
   QMultiMap< QString, QString > __aliases;
@@ -218,6 +232,6 @@ private:
 
 };
 
-typedef QMap< QString, Airport* > AirportsMap;
+typedef QMap< QString, ActiveAirport* > AirportsMap;
 
 #endif // VATSIMDATAHANDLER_H

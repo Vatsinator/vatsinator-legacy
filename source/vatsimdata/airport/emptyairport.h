@@ -1,5 +1,5 @@
 /*
-    metaraction.cpp
+    emptyairport.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,43 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
 
-#include "metaraction.h"
-#include "defines.h"
+#ifndef EMPTYAIRPORT_H
+#define EMPTYAIRPORT_H
 
-MetarAction::MetarAction(const QString& _icao, QObject* _parent) :
-    QAction(_icao + "  " + tr("metar"), _parent),
-    __icao(_icao) {
-  connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
-}
+#include <QMap>
 
-void
-MetarAction::__handleTriggered() {
-  emit triggered(__icao);
-}
+#include "vatsimdata/airport.h"
 
+class EmptyAirport : public Airport {
+  
+public:
+  EmptyAirport(const QString&);
+  EmptyAirport(const AirportRecord*);
+  
+  virtual ~EmptyAirport();
+  
+  inline unsigned
+  countDepartures() const { return 0; }
+  
+  inline unsigned
+  countOutbounds() const { return 0; }
+  
+  inline unsigned
+  countArrivals() const { return 0; }
+  
+  inline unsigned
+  countInbounds() const { return 0; }
+  
+  inline bool
+  hasApproach() const { return false; }
+  
+  inline unsigned
+  getFacilities() const { return 0; }
+  
+  inline void
+  drawLines() const {}
+  
+};
 
+#endif // EMPTYAIRPORT_H

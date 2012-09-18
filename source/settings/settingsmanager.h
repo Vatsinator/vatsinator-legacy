@@ -43,6 +43,7 @@ public:
     bool  airports;
     bool  staffedFirs;
     bool  unstaffedFirs;
+    bool  emptyAirports;
   };
 
   SettingsManager(QObject* = 0);
@@ -58,7 +59,7 @@ public:
   inline bool
   hasAntyaliasing() const { return __antyaliasing; }
 
-  inline const DisplayLayersPolicy&
+  inline const DisplayLayersPolicy &
   getDisplayLayersPolicy() const { return __displayLayers; }
 
   inline bool

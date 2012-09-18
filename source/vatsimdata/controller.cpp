@@ -209,7 +209,7 @@ Controller::__setMyIcaoAndFacility() {
     const AirportRecord* apShot = AirportDatabase::GetSingleton().find(sections.front());
 
     if (apShot) {
-      Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(sections.front());
+      ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(sections.front());
       ap->addStaff(this);
       airport = ap->getData();
       __produceDescription(airport);
@@ -221,7 +221,7 @@ Controller::__setMyIcaoAndFacility() {
         apShot = AirportDatabase::GetSingleton().find(alias);
 
         if (apShot) {
-          Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
+          ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
           ap->addStaff(this);
           airport = ap->getData();
           __produceDescription(airport);
@@ -233,7 +233,7 @@ Controller::__setMyIcaoAndFacility() {
         apShot = AirportDatabase::GetSingleton().find(alias);
 
         if (apShot) {
-          Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
+          ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
           ap->addStaff(this);
           airport = ap->getData();
           __produceDescription(airport);

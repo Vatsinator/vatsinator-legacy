@@ -289,12 +289,30 @@ for (Uir * u: __uirs)
 }
 
 
-Airport*
+ActiveAirport*
 VatsimDataHandler::addActiveAirport(const QString& _icao) {
   if (!__activeAirports.contains(_icao))
-    __activeAirports.insert(_icao, new Airport(_icao));
+    __activeAirports.insert(_icao, new ActiveAirport(_icao));
 
   return __activeAirports[_icao];
+}
+
+EmptyAirport*
+VatsimDataHandler::addEmptyAirport(const QString& _icao) {
+  if (!__emptyAirports.contains(_icao))
+    __emptyAirports.insert(_icao, new EmptyAirport(_icao));
+
+  return __emptyAirports[_icao];
+}
+
+EmptyAirport*
+VatsimDataHandler::addEmptyAirport(const AirportRecord* _ap) {
+  QString icao(_ap->icao);
+  
+  if (!__emptyAirports.contains(icao))
+    __emptyAirports.insert(icao, new EmptyAirport(_ap));
+  
+  return __emptyAirports[icao];
 }
 
 int
@@ -342,6 +360,11 @@ for (Uir * u: __uirs)
     delete it.value();
 
   __activeAirports.clear();
+  
+  for (auto it = __emptyAirports.begin(); it != __emptyAirports.end(); ++it)
+    delete it.value();
+  
+  __emptyAirports.clear();
 
   __observers = 0;
 }

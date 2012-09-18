@@ -20,103 +20,53 @@
 #ifndef AIRPORT_H
 #define AIRPORT_H
 
-#include <QVector>
 #include <QString>
-
 #include <GL/gl.h>
 
 #include "ui/mapwidget/clickable.h"
 
 struct AirportRecord;
-class Controller;
-class ControllerTableModel;
-class FlightTableModel;
 class Fir;
-class Pilot;
 
 class Airport : public Clickable {
 
-  /**
-   * This class represents the active airport object.
-   */
-
 public:
-
-  /**
-   * Default ctor.
-   * @param icao Airport ICAO code.
-   */
-  Airport(const QString& = "");
-
-  /**
-   * Frees the memory.
-   */
+  Airport(const QString&);
+  Airport(const AirportRecord*);
+  
   virtual ~Airport();
-
-  /**
-   * Adds the ATC.
-   * @param c Pointer to ATC instance.
-   */
-  void addStaff(const Controller*);
-
-  /**
-   * Adds inbound/outbound flight.
-   * @param p Pointer to the pilot instance.
-   */
-  void addInbound(const Pilot*);
-  void addOutbound(const Pilot*);
-
-  /**
-   * Some info functions.
-   */
-  unsigned countDepartures() const;
-  unsigned countOutbounds() const;
-  unsigned countArrivals() const;
-  unsigned countInbounds() const;
-
-  bool hasApproach() const;
-
-  unsigned getFacilities() const;
-
-  void drawLines() const;
-
-  inline ControllerTableModel*
-  getStaffModel() const { return __staff; }
-
-  inline FlightTableModel*
-  getInboundsModel() const { return __inbounds; }
-
-  inline FlightTableModel*
-  getOutboundsModel() const { return __outbounds; }
-
-  inline const AirportRecord*
+  
+  virtual unsigned countDepartures() const = 0;
+  virtual unsigned countOutbounds() const = 0;
+  virtual unsigned countArrivals() const = 0;
+  virtual unsigned countInbounds() const = 0;
+  
+  virtual bool hasApproach() const = 0;
+  virtual unsigned getFacilities() const = 0;
+  
+  virtual void drawLines() const = 0;
+  
+  virtual inline const AirportRecord*
   getData() const { return __data; }
-
+  
   inline ObjectType
   objectType() const { return AIRPORT; }
-
+  
   inline GLuint
   getLabelTip() const { return __labelTip ? __labelTip : __generateTip(); }
-
+  
   inline Fir**
   getFirs() { return __firs; }
-
-
+  
+protected:
+  Fir* __firs[2];
+  
 private:
   GLuint __generateTip() const;
-
-  const AirportRecord*  __data;
-
-  ControllerTableModel* __staff;
-
-  FlightTableModel* __inbounds;
-  FlightTableModel* __outbounds;
-
-
+  
+  const AirportRecord* __data;
+  
   mutable GLuint __labelTip;
-
-  Fir* __firs[2];
-
 
 };
 

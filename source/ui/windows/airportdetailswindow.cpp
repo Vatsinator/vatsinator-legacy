@@ -72,9 +72,12 @@ AirportDetailsWindow::show(const Airport* _ap) {
 
   __fillLabels(_ap);
   __updateModels(_ap);
-  __setInboundTableButtons();
-  __setOutboundTableButtons();
-  __setATCTableButtons();
+  
+  if (dynamic_cast< const ActiveAirport* >(_ap)) {
+    __setInboundTableButtons();
+    __setOutboundTableButtons();
+    __setATCTableButtons();
+  }
   __adjustTables();
 
   const Metar* m = MetarListModel::GetSingleton().find(__currentICAO);
@@ -129,18 +132,21 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   disconnect(this, SLOT(__setInboundTableButtons()));
   disconnect(this, SLOT(__setOutboundTableButtons()));
   disconnect(this, SLOT(__setATCTableButtons()));
+  
+  const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(ap);
+  if (aa) {
+    connect(aa->getInboundsModel(), SIGNAL(sorted()),
+            this,                   SLOT(__setInboundTableButtons()));
+    InboundTable->setModel(aa->getInboundsModel());
     
-  connect(ap->getInboundsModel(), SIGNAL(sorted()),
-          this,                   SLOT(__setInboundTableButtons()));
-  InboundTable->setModel(ap->getInboundsModel());
-  
-  connect(ap->getOutboundsModel(),  SIGNAL(sorted()),
-          this,                     SLOT(__setOutboundTableButtons()));
-  OutboundTable->setModel(ap->getOutboundsModel());
-  
-  connect(ap->getStaffModel(),  SIGNAL(sorted()),
-          this,                 SLOT(__setATCTableButtons()));
-  ATCTable->setModel(ap->getStaffModel());
+    connect(aa->getOutboundsModel(),  SIGNAL(sorted()),
+            this,                     SLOT(__setOutboundTableButtons()));
+    OutboundTable->setModel(aa->getOutboundsModel());
+    
+    connect(aa->getStaffModel(),  SIGNAL(sorted()),
+            this,                 SLOT(__setATCTableButtons()));
+    ATCTable->setModel(aa->getStaffModel());
+  }
 }
 
 void

@@ -45,6 +45,8 @@
 
 #include "vatsimdata/vatsimdatahandler.h"
 
+#include "vatsimdata/airport/activeairport.h"
+
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
@@ -471,7 +473,7 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
           emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
           break;
         case AIRPORT:
-          emit airportDetailsWindowRequested(static_cast< const Airport* >(__underMouse));
+	  emit airportDetailsWindowRequested(static_cast< const Airport* >(__underMouse));
           break;
         case FIR:
           emit firDetailsWindowRequested(static_cast< const Fir* >(__underMouse));
@@ -642,69 +644,70 @@ MapWidget::__openContextMenu(const Airport* _ap) {
   connect(showMetar,        SIGNAL(triggered(QString)),
           __metarsWindow,   SLOT(show(QString)));
 
-  if (!_ap->getStaffModel()->getStaff().isEmpty()) {
-    __menu->addSeparator();
-    __menu->addAction(new ActionMenuSeparator(tr("Controllers"), this));
-
-  for (const Controller* c: _ap->getStaffModel()->getStaff()) {
-      ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
-      __menu->addAction(showDetails);
-      connect(showDetails,        SIGNAL(triggered(const Client*)),
-              __atcDetailsWindow, SLOT(show(const Client*)));
+  if (dynamic_cast< const ActiveAirport* >(_ap) != NULL) {
+    const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
+    if (!aa->getStaffModel()->getStaff().isEmpty()) {
+      __menu->addSeparator();
+      __menu->addAction(new ActionMenuSeparator(tr("Controllers"), this));
+  
+      for (const Controller* c: aa->getStaffModel()->getStaff()) {
+        ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
+        __menu->addAction(showDetails);
+        connect(showDetails,        SIGNAL(triggered(const Client*)),
+                __atcDetailsWindow, SLOT(show(const Client*)));
+      }
     }
-  }
-
-  if (!_ap->getOutboundsModel()->getFlights().isEmpty() && _ap->countDepartures()) {
-    __menu->addSeparator();
-    __menu->addAction(new ActionMenuSeparator(tr("Departures"), this));
-
-  for (const Pilot* p: _ap->getOutboundsModel()->getFlights()) {
-      if (p->flightStatus != DEPARTING)
-        continue;
-
-      ClientDetailsAction* showDetails = new ClientDetailsAction(
-          p,
-          p->callsign % " to " % p->route.destination,
-          this
-        );
-      __menu->addAction(showDetails);
-
-      if (p->prefiledOnly)
-        showDetails->setEnabled(false);
-      else
-        connect(showDetails,            SIGNAL(triggered(const Client*)),
-                __flightDetailsWindow,  SLOT(show(const Client*)));
+  
+    if (!aa->getOutboundsModel()->getFlights().isEmpty() && aa->countDepartures()) {
+      __menu->addSeparator();
+      __menu->addAction(new ActionMenuSeparator(tr("Departures"), this));
+      
+      for (const Pilot* p: aa->getOutboundsModel()->getFlights()) {
+        if (p->flightStatus != DEPARTING)
+          continue;
+      
+        ClientDetailsAction* showDetails = new ClientDetailsAction(
+            p,
+            p->callsign % " to " % p->route.destination,
+            this
+          );
+        __menu->addAction(showDetails);
+        
+        if (p->prefiledOnly)
+          showDetails->setEnabled(false);
+        else
+          connect(showDetails,            SIGNAL(triggered(const Client*)),
+                  __flightDetailsWindow,  SLOT(show(const Client*)));
+      }
     }
-  }
-
-  if (!_ap->getInboundsModel()->getFlights().isEmpty() && _ap->countArrivals()) {
-    __menu->addSeparator();
-    __menu->addAction(new ActionMenuSeparator(tr("Arrivals"), this));
-
-    for (const Pilot* p: _ap->getInboundsModel()->getFlights()) {
-      if (p->flightStatus != ARRIVED)
-        continue;
-
-      ClientDetailsAction* showDetails = new ClientDetailsAction(
-          p,
-          p->callsign % " from " % p->route.origin,
-          this
-        );
-      __menu->addAction(showDetails);
-
-      if (p->prefiledOnly)
-        showDetails->setEnabled(false);
-      else
-        connect(showDetails,            SIGNAL(triggered(const Client*)),
-                __flightDetailsWindow,  SLOT(show(const Client*)));
+  
+    if (!aa->getInboundsModel()->getFlights().isEmpty() && aa->countArrivals()) {
+      __menu->addSeparator();
+      __menu->addAction(new ActionMenuSeparator(tr("Arrivals"), this));
+    
+      for (const Pilot* p: aa->getInboundsModel()->getFlights()) {
+        if (p->flightStatus != ARRIVED)
+          continue;
+      
+        ClientDetailsAction* showDetails = new ClientDetailsAction(
+            p,
+            p->callsign % " from " % p->route.origin,
+            this
+          );
+        __menu->addAction(showDetails);
+        
+        if (p->prefiledOnly)
+          showDetails->setEnabled(false);
+        else
+          connect(showDetails,            SIGNAL(triggered(const Client*)),
+                  __flightDetailsWindow,  SLOT(show(const Client*)));
+      }
     }
   }
 
   __menu->exec(mapToGlobal(__lastMousePos));
   delete __menu;
   __menu = NULL;
-  
-  //__dontDisplayTooltip = false;
 }
 
 void
@@ -743,10 +746,12 @@ MapWidget::__init() {
 
   __apIcon = loadImage(":/pixmaps/airport.png");
   __apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
+  __apInactiveIcon = loadImage(":/pixmaps/airport_inactive.png");
 
   VatsinatorApplication::log("Getting pointers...");
 
   __firs = FirDatabase::GetSingletonPtr();
+  __airportDatabase = AirportDatabase::GetSingletonPtr();
   __airportDetailsWindow = AirportDetailsWindow::GetSingletonPtr();
   __atcDetailsWindow = ATCDetailsWindow::GetSingletonPtr();
   __metarsWindow = MetarsWindow::GetSingletonPtr();
@@ -971,7 +976,41 @@ MapWidget::__drawFirsLabels(float _moveX) {
 void
 MapWidget::__drawAirports(float _moveX) {
   glColor4f(1.0, 1.0, 1.0, 1.0);
+  
+//   Draw inactive airports 
+  if (__settings->getDisplayLayersPolicy().emptyAirports) {
+    for (AirportRecord& ap: __airportDatabase->getAirports()) {
+      if (__airports.contains(ap.icao))
+        continue;
+      
+      GLfloat x = (((ap.longitude + _moveX) / 180) - __position.x()) * __zoom;
+      
+      if (x < -__orthoRangeX || x > __orthoRangeX)
+        continue;
+      
+      GLfloat y = ((ap.latitude / 90) - __position.y()) * __zoom;
+      
+      if (y < -__orthoRangeY || y > __orthoRangeY)
+        continue;
+      
+      bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
+      if (inRange && !__underMouse)
+        __underMouse = __data.addEmptyAirport(&ap);
+      
+      glVertexPointer(2, GL_FLOAT, 0, VERTICES); checkGLErrors(HERE);
+      
+      glBindTexture(GL_TEXTURE_2D, __apInactiveIcon); checkGLErrors(HERE);
+      
+      glPushMatrix();
+      
+        glTranslatef(x, y, -0.5); checkGLErrors(HERE);
+        glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+      
+      glPopMatrix();
+    }
+  }
 
+//   And then draw active airports 
   for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 
     if (!it.value()->getData())
@@ -996,34 +1035,34 @@ MapWidget::__drawAirports(float _moveX) {
 
     glPushMatrix();
 
-    glTranslatef(x, y, -0.4); checkGLErrors(HERE);
-    glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-
-    if (__settings->displayAirportLabels() || __keyPressed)
-      __drawIcaoLabel(it.value()); checkGLErrors(HERE);
-
-    if (inRange && !__underMouse)
-      __underMouse = it.value();
-
-    if (it.value()->hasApproach()) {
-      glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
-
-      qglColor(__settings->getApproachCircleColor());
-      glVertexPointer(2, GL_FLOAT, 0, __circle); checkGLErrors(HERE);
-
-      glLineWidth(1.5);
-      glLineStipple(1, 0xF0F0);
-      glPushMatrix();
-      glScalef(0.005f * __zoom, 0.005f * __zoom, 0); checkGLErrors(HERE);
-      glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
-      glPopMatrix();
-      glLineWidth(1.0);
-      glLineStipple(1, 0xFFFF); checkGLErrors(HERE);
-
-      glColor4f(1.0, 1.0, 1.0, 1.0);
-      glVertexPointer(2, GL_FLOAT, 0, VERTICES);
-    }
-
+      glTranslatef(x, y, -0.4); checkGLErrors(HERE);
+      glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+      
+      if (__settings->displayAirportLabels() || __keyPressed)
+	__drawIcaoLabel(it.value()); checkGLErrors(HERE);
+      
+      if (inRange && !__underMouse)
+	__underMouse = it.value();
+      
+      if (it.value()->hasApproach()) {
+	glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
+  
+	qglColor(__settings->getApproachCircleColor());
+	glVertexPointer(2, GL_FLOAT, 0, __circle); checkGLErrors(HERE);
+  
+	glLineWidth(1.5);
+	glLineStipple(1, 0xF0F0);
+	glPushMatrix();
+	glScalef(0.005f * __zoom, 0.005f * __zoom, 0); checkGLErrors(HERE);
+	glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
+	glPopMatrix();
+	glLineWidth(1.0);
+	glLineStipple(1, 0xFFFF); checkGLErrors(HERE);
+	
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glVertexPointer(2, GL_FLOAT, 0, VERTICES);
+      }
+      
     glPopMatrix();
 
     if (inRange && __underMouse == it.value() &&
@@ -1134,11 +1173,8 @@ MapWidget::__drawLines(double _moveX) {
 
 void
 MapWidget::__drawToolTip() {
-  //if (!underMouse())
-    //return;
-  
   setCursor(QCursor(Qt::PointingHandCursor));
-
+  
   QString text;
 
   switch (__underMouse->objectType()) {
@@ -1256,13 +1292,15 @@ MapWidget::__produceAirportToolTip(const Airport* _ap) {
                  static_cast< QString >(", ") %
                  QString::fromUtf8(_ap->getData()->city) %
                  static_cast< QString >("</nobr>");
-
-  for (const Controller * c: _ap->getStaffModel()->getStaff())
-    text.append((QString)"<br><nobr>" %
-                c->callsign % " " % c->frequency % " " % c->realName %
-                "</nobr>"
-               );
-
+  if (dynamic_cast< const ActiveAirport* >(_ap) != NULL) {
+    const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
+    for (const Controller * c: aa->getStaffModel()->getStaff())
+      text.append((QString)"<br><nobr>" %
+                  c->callsign % " " % c->frequency % " " % c->realName %
+                  "</nobr>"
+                 );
+  }
+  
   int deps = _ap->countDepartures();
 
   if (deps)

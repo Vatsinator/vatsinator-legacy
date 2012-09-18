@@ -9,6 +9,7 @@
     <file>application-exit.png</file>
   </qresource>
   <qresource prefix="pixmaps">
+    <file>airport_inactive.png</file>
     <file>airport.png</file>
     <file>airport_staffed.png</file>
     <file>pilot_tooltip.png</file>

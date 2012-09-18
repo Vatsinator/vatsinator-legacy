@@ -96,7 +96,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     squawk = "0" + squawk;
 
   if (!route.origin.isEmpty()) {
-    Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
+    ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
     ap->addOutbound(this);
 
     if (prefiledOnly && ap->getData()) {
@@ -112,7 +112,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   }
 
   if (!route.destination.isEmpty()) {
-    Airport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.destination);
+    ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.destination);
     ap->addInbound(this);
 
     if (ap->getFirs()[0])

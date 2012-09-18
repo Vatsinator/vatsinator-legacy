@@ -20,6 +20,7 @@ static const bool AIRPORTS_CHECKBOX         = true;
 static const bool STAFFED_FIRS_CHECKBOX     = true;
 static const bool UNSTAFFED_FIRS_CHECKBOX   = true;
 static const bool DISPLAY_AIRPORT_LABELS    = true;
+static const bool EMPTY_AIRPORTS_CHECKBOX   = false;
 // "Show pilots labels"
 static const bool ALWAYS_CHECKBOX           = true;
 static const bool WHEN_HOVERED_CHECKBOX     = true;

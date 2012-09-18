@@ -54,6 +54,7 @@ SettingsManager::__saveSettings() {
   settings.setValue("airportsLayer",               __displayLayers.airports);
   settings.setValue("staffedFirsLayer",            __displayLayers.staffedFirs);
   settings.setValue("unstaffedFirsLayer",          __displayLayers.unstaffedFirs);
+  settings.setValue("emptyAirportsLayer",          __displayLayers.emptyAirports);
   settings.setValue("displayApLabels",             __displayAirportLabels);
 
   settings.setValue("pilotsLabelsDisplayPolicy",   __pilotsLabelsDisplayPolicy);
@@ -85,6 +86,7 @@ SettingsManager::__restoreSettings() {
   __displayLayers.airports = settings.value("airportsLayer", DefaultSettings::AIRPORTS_CHECKBOX).toBool();
   __displayLayers.staffedFirs = settings.value("staffedFirsLayer", DefaultSettings::STAFFED_FIRS_CHECKBOX).toBool();
   __displayLayers.unstaffedFirs = settings.value("unstaffedFirsLayer", DefaultSettings::UNSTAFFED_FIRS_CHECKBOX).toBool();
+  __displayLayers.emptyAirports = settings.value("emptyAirportsLayer", DefaultSettings::EMPTY_AIRPORTS_CHECKBOX).toBool();
   __displayAirportLabels = settings.value("displayApLabels", DefaultSettings::DISPLAY_AIRPORT_LABELS).toBool();
 
   /* Determine the default pilots' labels display policy settings */
@@ -153,6 +155,7 @@ SettingsManager::__updateSettings() {
   __displayLayers.airports = static_cast< bool >(__mySettingsWindow->AirportsCheckBox->checkState());
   __displayLayers.staffedFirs = static_cast< bool >(__mySettingsWindow->StaffedFirsCheckBox->checkState());
   __displayLayers.unstaffedFirs = static_cast< bool >(__mySettingsWindow->UnstaffedFirsCheckBox->checkState());
+  __displayLayers.emptyAirports = static_cast< bool >(__mySettingsWindow->InactiveAirportsCheckBox->checkState());
 
   if (__mySettingsWindow->AlwaysRadioButton->isChecked())
     __displayAirportLabels = true;
@@ -203,6 +206,7 @@ SettingsManager::__restoreDefaults() {
   __displayLayers.airports = DefaultSettings::AIRPORTS_CHECKBOX;
   __displayLayers.staffedFirs = DefaultSettings::STAFFED_FIRS_CHECKBOX;
   __displayLayers.unstaffedFirs = DefaultSettings::UNSTAFFED_FIRS_CHECKBOX;
+  __displayLayers.emptyAirports = DefaultSettings::EMPTY_AIRPORTS_CHECKBOX;
   __displayAirportLabels = DefaultSettings::DISPLAY_AIRPORT_LABELS;
 
   __pilotsLabelsDisplayPolicy = 0;

@@ -167,6 +167,7 @@ private:
   /* OpenGL's textures. */
   GLuint  __apIcon;
   GLuint  __apStaffedIcon;
+  GLuint  __apInactiveIcon;
 
   /* Used by Pilot class */
   QImage  __pilotToolTip;
@@ -232,6 +233,7 @@ private:
   const AirportsMap& __airports;
 
   FirDatabase*           __firs;
+  AirportDatabase*       __airportDatabase;
   AirportDetailsWindow*  __airportDetailsWindow;
   ATCDetailsWindow*      __atcDetailsWindow;
   FirDetailsWindow*      __firDetailsWindow;
