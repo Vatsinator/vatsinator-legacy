@@ -28,6 +28,8 @@ if (NOT vatsinator_VERSION)
 	string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
 endif (NOT vatsinator_VERSION)
 
+
+
 add_subdirectory (source)
 
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
@@ -56,6 +58,7 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 	
 	# install files
 	install (FILES
+		COPYING
 		resources/models.dat
 		resources/vatsinator.dat
 		resources/WorldAirports.db
@@ -112,6 +115,7 @@ elseif (MINGW)
 	)
 	
 	install (FILES
+		COPYING
 		resources/models.dat
 		resources/vatsinator.dat
 		resources/WorldAirports.db
