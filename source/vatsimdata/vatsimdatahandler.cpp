@@ -346,17 +346,17 @@ VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
 
 void
 VatsimDataHandler::__clearData() {
-for (const Pilot * p: __flights->getFlights())
+  for (const Pilot * p: __flights->getFlights())
     delete p;
 
   __flights->clear();
 
-for (const Controller * c: __atcs->getStaff())
+  for (const Controller * c: __atcs->getStaff())
     delete c;
 
   __atcs->clear();
 
-for (Uir * u: __uirs)
+  for (Uir * u: __uirs)
     u->clear();
 
   for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)

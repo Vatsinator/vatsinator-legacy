@@ -84,9 +84,6 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   // connect data refresher with the timer
   connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
 
-  // read database
-//   __airportsData->init();
-
   // read .dat file
   __vatsimData->init();
 
