@@ -28,10 +28,20 @@
 
 AirportDatabase::AirportDatabase() {
   VatsinatorApplication::log("Airport database location: " AIRPORTS_DB);
+  __readDatabase();
+}
+
+const AirportRecord*
+AirportDatabase::find(const QString& _key) {
+  for (const AirportRecord & a: __airports)
+    if (static_cast< QString >(a.icao) == _key)
+      return &a;
+  
+  return NULL;
 }
 
 void
-AirportDatabase::init() {
+AirportDatabase::__readDatabase() {
   
   static_assert(
     sizeof(AirportRecord) == 436,
@@ -54,14 +64,5 @@ AirportDatabase::init() {
 
   db.close();
 
-}
-
-const AirportRecord*
-AirportDatabase::find(const QString& _key) {
-  for (const AirportRecord & a: __airports)
-    if (static_cast< QString >(a.icao) == _key)
-      return &a;
-  
-  return NULL;
 }
 

@@ -978,7 +978,7 @@ MapWidget::__drawAirports(float _moveX) {
   glColor4f(1.0, 1.0, 1.0, 1.0);
   
 //   Draw inactive airports 
-  if (__settings->getDisplayLayersPolicy().emptyAirports) {
+  if (__settings->getDisplayLayersPolicy().emptyAirports || __keyPressed) {
     for (AirportRecord& ap: __airportDatabase->getAirports()) {
       if (__airports.contains(ap.icao))
         continue;

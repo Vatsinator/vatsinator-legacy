@@ -63,11 +63,6 @@ public:
   AirportDatabase();
 
   /**
-   * Reads the entire Airports database.
-   */
-  void init();
-
-  /**
    * Gives access to the vector of airports.
    */
   QVector< AirportRecord > & getAirports() { return __airports; }
@@ -75,6 +70,11 @@ public:
   const AirportRecord* find(const QString&);
 
 private:
+  
+  /**
+   * Reads the entire Airport database.
+   */
+  void __readDatabase();
 
   QVector< AirportRecord > __airports;
 

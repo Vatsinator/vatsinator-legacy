@@ -18,6 +18,9 @@
 
 #include <QtGui>
 
+#include "db/airportdatabase.h"
+#include "db/firdatabase.h"
+
 #include "ui/userinterface.h"
 
 #include "aboutwindow.h"
@@ -32,6 +35,8 @@ AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
   UserInterface::setWindowPosition(this);
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
   LicenseField->setHtml("<pre>" + trUtf8(LICENSE_TEXT) + "</pre>");
-  VersionLabel->setText("Version " VATSINATOR_VERSION);
+  VersionLabel->setText(tr("Version") + " " + VATSINATOR_VERSION);
+  AirportsInDatabaseLabel->setText(QString::number(AirportDatabase::GetSingleton().getAirports().size()));
+  FirsInDatabaseLabel->setText(QString::number(FirDatabase::GetSingleton().getFirs().size()));
 }
 

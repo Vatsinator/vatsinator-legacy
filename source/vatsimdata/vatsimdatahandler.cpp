@@ -243,7 +243,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         }
       } else if (clientData[3] == "PILOT") {
         Pilot* pilot = new Pilot(clientData);
-        __flights->addFlight(pilot);
+        if (pilot->position.latitude == 0 && pilot->position.longitude == 0)
+          delete pilot; // skip unknown flights
+        else
+          __flights->addFlight(pilot);
       }
     } else if (flags["PREFILE"]) {
       QStringList clientData = temp.split(':');

@@ -87,6 +87,7 @@
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="102"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="38"/>
         <source>Version</source>
         <translation>Wersja</translation>
     </message>
@@ -101,17 +102,27 @@
         <translation>Vatsinator to prosty i otwarty monitor sieci VATSIM. Pokazuje zalogowanych kontrolerów, pilotów oraz dostarcza przydatnych informacji (jak na przykład raporty pogodowe).</translation>
     </message>
     <message>
-        <location filename="../ui/resources/aboutwindow.ui" line="141"/>
+        <location filename="../ui/resources/aboutwindow.ui" line="151"/>
+        <source>Airports in database:</source>
+        <translation>Lotnisk w bazie danych:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/aboutwindow.ui" line="178"/>
+        <source>FIRs in database:</source>
+        <translation>FIRów w bazie danych:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/aboutwindow.ui" line="211"/>
         <source>(C) 2012 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</source>
         <translation>(C) 2012 Zespół Vatsinator&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/resources/aboutwindow.ui" line="160"/>
+        <location filename="../ui/resources/aboutwindow.ui" line="230"/>
         <source>Authors</source>
         <translation>Autorzy</translation>
     </message>
     <message>
-        <location filename="../ui/resources/aboutwindow.ui" line="183"/>
+        <location filename="../ui/resources/aboutwindow.ui" line="253"/>
         <source>License</source>
         <translation>Licencja</translation>
     </message>
@@ -345,12 +356,12 @@
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="84"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="95"/>
         <source>FIR details</source>
         <translation>szczegóły FIR-u</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="86"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="97"/>
         <source>ARTCC details</source>
         <translation>szczegóły ARTCC</translation>
     </message>
@@ -702,7 +713,7 @@
     <message>
         <location filename="../ui/actions/metaraction.cpp" line="25"/>
         <source>metar</source>
-        <translation>- raport pogodowy</translation>
+        <translation>- raport</translation>
     </message>
 </context>
 <context>
