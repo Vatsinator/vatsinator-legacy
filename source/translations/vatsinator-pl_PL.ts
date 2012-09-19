@@ -443,42 +443,42 @@
         <translation>Wysokość przelotowa:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="578"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="590"/>
         <source>Flight rules:</source>
         <translation>Zasady lotu:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="598"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="610"/>
         <source>Arrival:</source>
         <translation>Do:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="659"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="677"/>
         <source>Route:</source>
         <translation>Trasa:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="669"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="687"/>
         <source>Remarks:</source>
         <translation>Przypisy:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="804"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="822"/>
         <source>-&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="826"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="844"/>
         <source>Track this flight</source>
         <translation>Śledź ten lot</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="833"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="851"/>
         <source>Show</source>
         <translation>Pokaż</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="840"/>
+        <location filename="../ui/resources/flightdetailswindow.ui" line="858"/>
         <source>Close</source>
         <translation>Zamknij</translation>
     </message>
@@ -791,18 +791,18 @@
         <translation>Kolor tła obstawionego&lt;br&gt;UIR i przezroczystość:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="527"/>
+        <location filename="../ui/resources/settingswindow.ui" line="511"/>
         <source>Origin-to-pilot&lt;br&gt;line color:</source>
         <translation>Kolor linii&lt;br&gt;lotnisko startu - pilot:</translation>
     </message>
     <message>
         <location filename="../ui/resources/settingswindow.ui" line="352"/>
         <source>Pilot-to-destination&lt;br&gt;line color:</source>
-        <translation type="unfinished">Kolor linii&lt;br&gt;lotnisko docelowe - pilot:</translation>
+        <translation>Kolor linii&lt;br&gt;lotnisko docelowe - pilot:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="553"/>
-        <location filename="../ui/resources/settingswindow.ui" line="572"/>
+        <location filename="../ui/resources/settingswindow.ui" line="543"/>
+        <location filename="../ui/resources/settingswindow.ui" line="568"/>
         <source>Alpha channel</source>
         <translation>Przezroczystość</translation>
     </message>

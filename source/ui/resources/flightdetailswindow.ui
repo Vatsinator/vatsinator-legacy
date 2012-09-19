@@ -408,16 +408,16 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>423</width>
+       <width>371</width>
        <height>151</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,0">
       <property name="leftMargin">
-       <number>10</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>60</number>
+       <number>0</number>
       </property>
       <item row="0" column="1">
        <spacer name="horizontalSpacer_15">
@@ -555,6 +555,12 @@
       </item>
       <item row="0" column="2">
        <widget class="QLabel" name="FlightRulesLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>240</width>
@@ -574,6 +580,12 @@
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="FlightRulesLabelDesc">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Flight rules:</string>
         </property>
@@ -655,6 +667,12 @@
       </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Route:</string>
         </property>
