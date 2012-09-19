@@ -56,7 +56,9 @@ FirDetailsWindow::show(const Fir* _f) {
 
   __fillLabels(_f);
   __updateModels(_f);
-  __setButtons();
+  __setFlightTableButtons();
+  __setControllerTableButtons();
+  __setAirportTableButtons();
   __adjustTables();
 
   QWidget::show();
@@ -72,9 +74,18 @@ FirDetailsWindow::__updateModels(const Fir* _f) {
     f = _f;
 
   Q_ASSERT(f);
+  
+  disconnect(this, SLOT(__setFlightTableButtons()));
+  disconnect(this, SLOT(__setControllerTableButtons()));
 
+  connect(_f->getFlightsModel(), SIGNAL(sorted()),
+          this,                  SLOT(__setFlightTableButtons()));
   FlightsTable->setModel(_f->getFlightsModel());
+  
+  connect(_f->getStaffModel(),   SIGNAL(sorted()),
+          this,                  SLOT(__setControllerTableButtons()));
   ATCTable->setModel(_f->getStaffModel());
+  
   AirportsTable->setModel(_f->getAirportsModel());
 }
 
@@ -113,7 +124,7 @@ FirDetailsWindow::__adjustTables() {
 }
 
 void
-FirDetailsWindow::__setButtons() {
+FirDetailsWindow::__setFlightTableButtons() {
   const FlightTableModel* flightsModel = qobject_cast< const FlightTableModel* >(FlightsTable->model());
   Q_ASSERT(flightsModel);
 
@@ -126,8 +137,12 @@ FirDetailsWindow::__setButtons() {
             FlightDetailsWindow::GetSingletonPtr(), SLOT(show(const Client*)));
     FlightsTable->setIndexWidget(flightsModel->index(i, FlightTableModel::Button), pButton);
   }
+}
 
+void
+FirDetailsWindow::__setControllerTableButtons() {
   const ControllerTableModel* atcModel = qobject_cast< const ControllerTableModel* >(ATCTable->model());
+  Q_ASSERT(atcModel);
 
   for (int i = 0; i < atcModel->rowCount(); ++i) {
     ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
@@ -135,8 +150,12 @@ FirDetailsWindow::__setButtons() {
             ATCDetailsWindow::GetSingletonPtr(),  SLOT(show(const Client*)));
     ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
   }
+}
 
+void
+FirDetailsWindow::__setAirportTableButtons() {
   const AirportTableModel* apModel = qobject_cast< const AirportTableModel* >(AirportsTable->model());
+  Q_ASSERT(apModel);
 
   for (int i = 0; i < apModel->rowCount(); ++i) {
     ShowAirportButton* pButton = new ShowAirportButton(apModel->getAirports()[i]);
@@ -151,9 +170,8 @@ FirDetailsWindow::__updateData() {
   if (__currentICAO.isEmpty() || !isVisible())
     return;
 
-  //__updateModels();
-  __setButtons();
-  //__adjustTables();
+  __setFlightTableButtons();
+  __setControllerTableButtons();
 }
 
 

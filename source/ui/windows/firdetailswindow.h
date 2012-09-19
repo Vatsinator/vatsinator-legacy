@@ -45,11 +45,13 @@ private:
   void __updateModels(const Fir* = NULL);
   void __fillLabels(const Fir*);
   void __adjustTables();
-  void __setButtons();
 
   QString __currentICAO;
 
 private slots:
+  void __setFlightTableButtons();
+  void __setControllerTableButtons();
+  void __setAirportTableButtons();
   void __updateData();
 
 
