@@ -20,6 +20,8 @@
 
 #include "ui/windows/settingswindow.h"
 
+#include "settings/languagemanager.h"
+
 #include "vatsinatorapplication.h"
 
 #include "settingsmanager.h"
@@ -69,6 +71,8 @@ SettingsManager::__saveSettings() {
   settings.setValue("landsColor",                  __landsColor);
   settings.setValue("originToPilotLineColor",      __originToPilotLineColor);
   settings.setValue("pilotToDestinationLineColor", __pilotToDestinationLineColor);
+  
+  settings.setValue("language",                    __language);
 
   settings.endGroup();
 }
@@ -130,6 +134,8 @@ SettingsManager::__restoreSettings() {
                                             DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR).value<QColor>();
   __pilotToDestinationLineColor = settings.value("pilotToDestinationLineColor",
                                                  DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR).value<QColor>();
+  __language = settings.value("language",
+                              QLocale::system().name()).toString();
 
   settings.endGroup();
 
@@ -191,6 +197,7 @@ SettingsManager::__updateSettings() {
   __landsColor = __mySettingsWindow->LandsColorButton->getColor();
   __originToPilotLineColor = __mySettingsWindow->OriginToPilotLineColorButton->getColor();
   __pilotToDestinationLineColor = __mySettingsWindow->PilotToDestinationLineColorButton->getColor();
+  __language = LanguageManager::GetSingleton().getLocaleById(__mySettingsWindow->LanguageComboBox->currentIndex());
 
   __saveSettings();
 
@@ -237,6 +244,8 @@ SettingsManager::__restoreDefaults() {
   __landsColor = DefaultSettings::LANDS_COLOR;
   __originToPilotLineColor = DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR;
   __pilotToDestinationLineColor = DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR;
+  
+  __language = QLocale::system().name();
 
   __clearEntries();
 

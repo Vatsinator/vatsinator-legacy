@@ -31,6 +31,7 @@
 
 #include "network/httphandler.h"
 
+#include "settings/languagemanager.h"
 #include "settings/settingsmanager.h"
 
 #include "ui/userinterface.h"
@@ -49,6 +50,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __firsData(new FirDatabase),
     __worldMap(new WorldMap),
     __vatsimData(new VatsimDataHandler),
+    __languageManager(new LanguageManager),
     __settingsManager(new SettingsManager),
     __modulesManager(new ModuleManager),
     __userInterface(NULL) {
@@ -64,10 +66,9 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 #  pragma message("Platform: undefined")
 # endif
 #endif
+
   
-  QString lang = QLocale::system().name();
-  
-  __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + lang);
+  __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + __settingsManager->getLanguage());
   this->installTranslator(&__translator);
   
   __userInterface = new UserInterface;
@@ -109,6 +110,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 
 VatsinatorApplication::~VatsinatorApplication() {
   delete __settingsManager;
+  delete __languageManager;
   delete __httpHandler;
   delete __vatsimData;
   delete __airportsData;
@@ -238,4 +240,3 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
     refreshData();
   }
 }
-

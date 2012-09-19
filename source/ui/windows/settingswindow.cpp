@@ -18,6 +18,7 @@
 
 #include <QtGui>
 
+#include "settings/languagemanager.h"
 #include "settings/settingsmanager.h"
 
 #include "ui/userinterface.h"
@@ -30,6 +31,7 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
     __mySettingsManager(SettingsManager::GetSingletonPtr()) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
+  LanguageComboBox->addItems(LanguageManager::GetSingleton().getAllLanguages());
 
   connect(OKCancelButtonBox,  SIGNAL(clicked(QAbstractButton*)),
           this,     SLOT(__handleButton(QAbstractButton*)));
@@ -92,6 +94,10 @@ SettingsWindow::__updateWindow() {
   LandsColorButton->setColor(__mySettingsManager->getLandsColor());
   OriginToPilotLineColorButton->setColor(__mySettingsManager->getOriginToPilotLineColor());
   PilotToDestinationLineColorButton->setColor(__mySettingsManager->getPilotToDestinationLineColor());
+  
+  LanguageComboBox->setCurrentIndex(
+      LanguageManager::GetSingleton().getLanguageId(__mySettingsManager->getLanguage())
+    );
 }
 
 

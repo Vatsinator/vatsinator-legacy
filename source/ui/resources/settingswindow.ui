@@ -230,6 +230,16 @@
             </property>
            </spacer>
           </item>
+          <item>
+           <widget class="QLabel" name="LanguageLabel">
+            <property name="text">
+             <string>Language: *</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="LanguageComboBox"/>
+          </item>
          </layout>
         </item>
         <item>
@@ -579,6 +589,21 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Options marked with * require&lt;br&gt;Vatsinator to be restarted in order to take any effect.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
    </item>
   </layout>

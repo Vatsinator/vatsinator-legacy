@@ -114,6 +114,7 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 	
 	install (FILES
 		${vatsinator_TRANSLATIONS}
+		${LANGUAGE_FILES}
 		DESTINATION share/vatsinator/translations
 	)
 elseif (MINGW)
@@ -123,6 +124,7 @@ elseif (MINGW)
 	)
 	
 	install (FILES
+		${LANGUAGE_FILES}
 		${vatsinator_TRANSLATIONS}
 		DESTINATION ./translations
 	)

@@ -103,6 +103,9 @@ public:
 
   inline const QColor&
   getPilotToDestinationLineColor() const { return __pilotToDestinationLineColor; }
+  
+  inline const QString&
+  getLanguage() const { return __language; }
 
 signals:
   void settingsRestored();
@@ -141,6 +144,8 @@ private:
   QColor __landsColor;
   QColor __originToPilotLineColor;
   QColor __pilotToDestinationLineColor;
+  
+  QString __language;
 
 private slots:
   void __updateSettings();

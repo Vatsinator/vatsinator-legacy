@@ -31,6 +31,7 @@ class AirportDatabase;
 class FirDatabase;
 class UserInterface;
 class VatsimDataHandler;
+class LanguageManager;
 class SettingsManager;
 class WorldMap;
 class HttpHandler;
@@ -109,6 +110,7 @@ private:
   FirDatabase*       __firsData;
   WorldMap*          __worldMap;
   VatsimDataHandler* __vatsimData;
+  LanguageManager*   __languageManager;
   SettingsManager*   __settingsManager;
   ModuleManager*     __modulesManager;
   UserInterface*     __userInterface;

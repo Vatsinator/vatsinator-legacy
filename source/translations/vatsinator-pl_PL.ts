@@ -766,53 +766,58 @@
         <translation>minuty</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="343"/>
+        <location filename="../ui/resources/settingswindow.ui" line="236"/>
+        <source>Language: *</source>
+        <translation>Język: *</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/settingswindow.ui" line="353"/>
         <source>Colors adjustment</source>
         <translation>Ustawienia kolorów</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="415"/>
+        <location filename="../ui/resources/settingswindow.ui" line="425"/>
         <source>Lands color:</source>
         <translation>Kolor lądów:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="372"/>
+        <location filename="../ui/resources/settingswindow.ui" line="382"/>
         <source>Seas color:</source>
         <translation>Kolor mórz:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="445"/>
+        <location filename="../ui/resources/settingswindow.ui" line="455"/>
         <source>Approach circle&lt;br&gt;color:</source>
         <translation>Kolor kręgu&lt;br&gt;zbliżania:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="405"/>
+        <location filename="../ui/resources/settingswindow.ui" line="415"/>
         <source>Unstaffed FIR&lt;br&gt;borders color:</source>
         <translation>Kolor obramowania FIR&lt;br&gt;bez kontrolera:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="455"/>
+        <location filename="../ui/resources/settingswindow.ui" line="465"/>
         <source>Staffed FIR color&lt;br&gt;and alpha channel:</source>
         <translation>Kolor tła obstawionego&lt;br&gt;FIR i przezroczystość:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="395"/>
+        <location filename="../ui/resources/settingswindow.ui" line="405"/>
         <source>Staffed UIR color&lt;br&gt; and alpha channel:</source>
         <translation>Kolor tła obstawionego&lt;br&gt;UIR i przezroczystość:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="508"/>
+        <location filename="../ui/resources/settingswindow.ui" line="518"/>
         <source>Origin-to-pilot&lt;br&gt;line color:</source>
         <translation>Kolor linii&lt;br&gt;lotnisko startu - pilot:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="349"/>
+        <location filename="../ui/resources/settingswindow.ui" line="359"/>
         <source>Pilot-to-destination&lt;br&gt;line color:</source>
         <translation>Kolor linii&lt;br&gt;lotnisko docelowe - pilot:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="540"/>
-        <location filename="../ui/resources/settingswindow.ui" line="565"/>
+        <location filename="../ui/resources/settingswindow.ui" line="550"/>
+        <location filename="../ui/resources/settingswindow.ui" line="575"/>
         <source>Alpha channel</source>
         <translation>Przezroczystość</translation>
     </message>
@@ -871,35 +876,48 @@
         <translation>Puste lotniska</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="240"/>
+        <location filename="../ui/resources/settingswindow.ui" line="602"/>
+        <source>Options marked with * require&lt;br&gt;Vatsinator to be restarted in order to take any effect.</source>
+        <translation>Opcje oznaczone * wymagają&lt;br&gt;ponownego uruchomienia programu.</translation>
+    </message>
+    <message>
+        <source>Language*:</source>
+        <translation type="obsolete">Język: *</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/settingswindow.ui" line="250"/>
         <source>Show pilot labels:</source>
         <translation>Pokaż etykiety pilotów:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="247"/>
-        <location filename="../ui/resources/settingswindow.ui" line="303"/>
+        <location filename="../ui/resources/settingswindow.ui" line="257"/>
+        <location filename="../ui/resources/settingswindow.ui" line="313"/>
         <source>Always</source>
         <translation>Zawsze</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="257"/>
+        <location filename="../ui/resources/settingswindow.ui" line="267"/>
         <source>When hovered</source>
         <translation>Pod kursorem</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="270"/>
+        <location filename="../ui/resources/settingswindow.ui" line="280"/>
         <source>Airport-related</source>
         <translation>Lotnisko aktywuje</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="296"/>
+        <location filename="../ui/resources/settingswindow.ui" line="306"/>
         <source>Show aiport labels:</source>
         <translation>Pokaż etykiety lotnisk:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="313"/>
+        <location filename="../ui/resources/settingswindow.ui" line="323"/>
         <source>Never</source>
         <translation>Nigdy</translation>
+    </message>
+    <message>
+        <source>Options marked with * require restart to be applied.</source>
+        <translation type="obsolete">Opcje oznaczone * wymagają&lt;br&gt;ponownego uruchomienia programu.</translation>
     </message>
 </context>
 <context>
@@ -930,56 +948,56 @@
 <context>
     <name>VatsinatorApplication</name>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="158"/>
+        <location filename="../vatsinatorapplication.cpp" line="160"/>
         <source>Fetching data...</source>
         <translation>Pobieranie danych...</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="171"/>
-        <location filename="../vatsinatorapplication.cpp" line="189"/>
+        <location filename="../vatsinatorapplication.cpp" line="173"/>
+        <location filename="../vatsinatorapplication.cpp" line="191"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Nie udało mi się pobrać pliku z danymi.</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="172"/>
-        <location filename="../vatsinatorapplication.cpp" line="190"/>
+        <location filename="../vatsinatorapplication.cpp" line="174"/>
+        <location filename="../vatsinatorapplication.cpp" line="192"/>
         <source>What do you want to do with that?</source>
         <translation>Cóż więc uczynimy?</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="173"/>
-        <location filename="../vatsinatorapplication.cpp" line="191"/>
+        <location filename="../vatsinatorapplication.cpp" line="175"/>
+        <location filename="../vatsinatorapplication.cpp" line="193"/>
         <source>Try again</source>
         <translation>Próbuj jeszcze raz</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="174"/>
-        <location filename="../vatsinatorapplication.cpp" line="192"/>
+        <location filename="../vatsinatorapplication.cpp" line="176"/>
+        <location filename="../vatsinatorapplication.cpp" line="194"/>
         <source>Keep current data</source>
         <translation>Zachowaj aktualne dane</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="203"/>
+        <location filename="../vatsinatorapplication.cpp" line="205"/>
         <source>Data outdated!</source>
         <translation>Dane nieaktualne!</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="213"/>
+        <location filename="../vatsinatorapplication.cpp" line="215"/>
         <source>Clients</source>
         <translation>Klientów</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="217"/>
+        <location filename="../vatsinatorapplication.cpp" line="219"/>
         <source>pilots</source>
         <translation>pilotów</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="219"/>
+        <location filename="../vatsinatorapplication.cpp" line="221"/>
         <source>ATCs</source>
         <translation>kontrolerów</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="221"/>
+        <location filename="../vatsinatorapplication.cpp" line="223"/>
         <source>observers</source>
         <translation>obserwatorów</translation>
     </message>

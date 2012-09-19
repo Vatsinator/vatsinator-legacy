@@ -1,6 +1,7 @@
 vatsinator_start_subdirectory (settings)
 
 set (settings_SRCS
+	languagemanager.cpp
 	settingsmanager.cpp
 )
 
