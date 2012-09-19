@@ -111,31 +111,9 @@ UserInterface::statusBarUpdate(const QString& _message) {
 
 void
 UserInterface::setWindowPosition(QWidget* _window) {
-//   QWidget* desktop = QApplication::desktop()->screen(QApplication::desktop()->primaryScreen());
-  QDesktopWidget* screen = QApplication::desktop();
-  QWidget* desktop = screen->screen(screen->primaryScreen());
-  
-  
-  
-  int screenWidth, width;
-  int screenHeight, height;
-  
-  int x, y;
-  
-  QSize windowSize;
-  
-  screenWidth = desktop->width();
-  screenHeight = desktop->height();
-  
-  windowSize = _window->size();
-  width = windowSize.width();
-  height = windowSize.height();
-  
-  x = (screenWidth - width) / 2;
-  y = (screenHeight - height) / 2;
-  y -= 50;
-  
-  _window->move(x, y);
+  QRect frect = _window->frameGeometry();
+  frect.moveCenter(QDesktopWidget().availableGeometry().center());
+  _window->move(frect.topLeft());
 }
 
 void
