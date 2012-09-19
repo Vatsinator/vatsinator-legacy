@@ -756,53 +756,63 @@
         <translation>Vatsinator - ustawienia</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="346"/>
+        <location filename="../ui/resources/settingswindow.ui" line="101"/>
+        <source>Refresh every</source>
+        <translation>Odświeżaj co</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/settingswindow.ui" line="130"/>
+        <source>minutes</source>
+        <translation>minuty</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/settingswindow.ui" line="343"/>
         <source>Colors adjustment</source>
         <translation>Ustawienia kolorów</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="418"/>
+        <location filename="../ui/resources/settingswindow.ui" line="415"/>
         <source>Lands color:</source>
         <translation>Kolor lądów:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="375"/>
+        <location filename="../ui/resources/settingswindow.ui" line="372"/>
         <source>Seas color:</source>
         <translation>Kolor mórz:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="448"/>
+        <location filename="../ui/resources/settingswindow.ui" line="445"/>
         <source>Approach circle&lt;br&gt;color:</source>
         <translation>Kolor kręgu&lt;br&gt;zbliżania:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="408"/>
+        <location filename="../ui/resources/settingswindow.ui" line="405"/>
         <source>Unstaffed FIR&lt;br&gt;borders color:</source>
         <translation>Kolor obramowania FIR&lt;br&gt;bez kontrolera:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="458"/>
+        <location filename="../ui/resources/settingswindow.ui" line="455"/>
         <source>Staffed FIR color&lt;br&gt;and alpha channel:</source>
         <translation>Kolor tła obstawionego&lt;br&gt;FIR i przezroczystość:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="398"/>
+        <location filename="../ui/resources/settingswindow.ui" line="395"/>
         <source>Staffed UIR color&lt;br&gt; and alpha channel:</source>
         <translation>Kolor tła obstawionego&lt;br&gt;UIR i przezroczystość:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="511"/>
+        <location filename="../ui/resources/settingswindow.ui" line="508"/>
         <source>Origin-to-pilot&lt;br&gt;line color:</source>
         <translation>Kolor linii&lt;br&gt;lotnisko startu - pilot:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="352"/>
+        <location filename="../ui/resources/settingswindow.ui" line="349"/>
         <source>Pilot-to-destination&lt;br&gt;line color:</source>
         <translation>Kolor linii&lt;br&gt;lotnisko docelowe - pilot:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="543"/>
-        <location filename="../ui/resources/settingswindow.ui" line="568"/>
+        <location filename="../ui/resources/settingswindow.ui" line="540"/>
+        <location filename="../ui/resources/settingswindow.ui" line="565"/>
         <source>Alpha channel</source>
         <translation>Przezroczystość</translation>
     </message>
@@ -822,73 +832,72 @@
         <translation>Wygładzanie</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="117"/>
         <source>Refresh rate (in minutes):</source>
-        <translation>Odświeżaj co:</translation>
+        <translation type="obsolete">Odświeżaj co:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="149"/>
+        <location filename="../ui/resources/settingswindow.ui" line="146"/>
         <source>View options</source>
         <translation>Ustawienia widoku</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="175"/>
+        <location filename="../ui/resources/settingswindow.ui" line="172"/>
         <source>Display layers:</source>
         <translation>Warstwy:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="182"/>
+        <location filename="../ui/resources/settingswindow.ui" line="179"/>
         <source>Pilots</source>
         <translation>Piloci</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="192"/>
+        <location filename="../ui/resources/settingswindow.ui" line="189"/>
         <source>Airports</source>
         <translation>Lotniska</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="202"/>
+        <location filename="../ui/resources/settingswindow.ui" line="199"/>
         <source>Staffed FIRs</source>
         <translation>Obsadzone FIRy</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="212"/>
+        <location filename="../ui/resources/settingswindow.ui" line="209"/>
         <source>Unstaffed FIRs</source>
         <translation>FIRy bez ATC</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="219"/>
+        <location filename="../ui/resources/settingswindow.ui" line="216"/>
         <source>Inactive airports</source>
         <translation>Puste lotniska</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="243"/>
+        <location filename="../ui/resources/settingswindow.ui" line="240"/>
         <source>Show pilot labels:</source>
         <translation>Pokaż etykiety pilotów:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="250"/>
-        <location filename="../ui/resources/settingswindow.ui" line="306"/>
+        <location filename="../ui/resources/settingswindow.ui" line="247"/>
+        <location filename="../ui/resources/settingswindow.ui" line="303"/>
         <source>Always</source>
         <translation>Zawsze</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="260"/>
+        <location filename="../ui/resources/settingswindow.ui" line="257"/>
         <source>When hovered</source>
         <translation>Pod kursorem</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="273"/>
+        <location filename="../ui/resources/settingswindow.ui" line="270"/>
         <source>Airport-related</source>
         <translation>Lotnisko aktywuje</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="299"/>
+        <location filename="../ui/resources/settingswindow.ui" line="296"/>
         <source>Show aiport labels:</source>
         <translation>Pokaż etykiety lotnisk:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="316"/>
+        <location filename="../ui/resources/settingswindow.ui" line="313"/>
         <source>Never</source>
         <translation>Nigdy</translation>
     </message>
