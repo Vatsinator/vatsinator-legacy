@@ -52,7 +52,7 @@ ATCDetailsWindow::show(const Client* _client) {
 
   CallsignLabel->setText(__current->callsign);
   FacilityLabel->setText(__current->description);
-  NameLabel->setText(__current->realName);
+  NameLabel->setText(__current->realName + " (" + QString::number(__current->pid) + ")");
   FrequencyLabel->setText(__current->frequency);
   RatingLabel->setText(Controller::ratings[__current->rating]);
 
