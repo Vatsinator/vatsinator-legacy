@@ -21,7 +21,7 @@
 #define GLEXTENSIONS_H
 
 #include <cstddef>
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 #define GL_STATIC_DRAW 0x88E4
 #define GL_ARRAY_BUFFER 0x8892

@@ -42,7 +42,7 @@ WorldMap::WorldMap() {
 }
 
 WorldMap::~WorldMap() {
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
   delete __worldPolygon.vbo.border;
   delete __worldPolygon.vbo.triangles;
 #endif
@@ -50,7 +50,7 @@ WorldMap::~WorldMap() {
 
 void
 WorldMap::draw() const {
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
   __worldPolygon.vbo.border->bind();
   __worldPolygon.vbo.triangles->bind();
 
@@ -122,7 +122,7 @@ void WorldMap::__readDatabase() {
 
 void
 WorldMap::__init() {
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
   VatsinatorApplication::log("Preparing VBOs for WorldMap...");
 
   __worldPolygon.vbo.border = new VertexBufferObject(GL_ARRAY_BUFFER);

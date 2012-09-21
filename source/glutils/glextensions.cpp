@@ -18,7 +18,7 @@
 
 #include <string>
 #include <cstddef>
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 #include <QDebug>
 #include <QGLContext>
@@ -26,11 +26,13 @@
 #include "vdebug/glerrors.h"
 
 #include "config.h"
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX
 #include <GL/glx.h>
-#elif defined VATSINATOR_PLATFORM_WIN32
+#elif defined Q_OS_WIN32
 #include <windows.h>
 #include <wingdi.h>
+#elif defined Q_OS_DARWIN
+#include <OpenGL/glext.h>
 #endif
 
 using std::string;
@@ -50,9 +52,9 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
 template < typename T >
 inline T getProcAddress(const string& _procName) {
   T temp = NULL;
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
   temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
-#elif defined VATSINATOR_PLATFORM_WIN32
+#elif defined Q_OS_WIN32
   temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
 #endif
 

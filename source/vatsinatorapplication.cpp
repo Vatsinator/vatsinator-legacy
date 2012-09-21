@@ -58,10 +58,12 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   log("vatsinator.dat location: " VATSINATOR_DAT);
   
 #ifndef NO_DEBUG
-# ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX
 #  pragma message("Platform: Linux")
-# elif defined VATSINATOR_PLATFORM_WIN32
+# elif defined Q_OS_WIN32
 #  pragma message("Platform: Win32")
+# elif defined Q_OS_DARWIN
+#  pragma message("Platform: Darwin")
 # else
 #  pragma message("Platform: undefined")
 # endif

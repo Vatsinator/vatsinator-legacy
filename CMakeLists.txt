@@ -97,6 +97,28 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 	
 	include (Packaging-linux)
 
+elseif (APPLE)
+	install (FILES
+		COPYING
+		resources/models.dat
+		resources/vatsinator.dat
+		resources/WorldAirports.db
+		resources/WorldFirs.db
+		resources/WorldMap.db
+		DESTINATION share/vatsinator
+	)
+
+	install (FILES
+		resources/pixmaps/1p32.png
+		resources/pixmaps/2p32.png
+		resources/pixmaps/4p32.png
+		resources/pixmaps/2j32.png
+		resources/pixmaps/3j32.png
+		resources/pixmaps/4j32.png
+		resources/pixmaps/conc32.png
+		DESTINATION share/vatsinator/pixmaps
+	)
+
 # builds for win32
 elseif (MINGW)
 	

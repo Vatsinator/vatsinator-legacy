@@ -47,7 +47,7 @@ Fir::~Fir() {
   delete __flights;
   delete __airports;
 
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
 
   if (__trianglesVBO)
     delete __trianglesVBO;
@@ -118,7 +118,7 @@ Fir::isStaffed() const {
 
 void
 Fir::drawBorders() const {
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
   __bordersVBO->bind();
 
   glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
@@ -133,7 +133,7 @@ Fir::drawBorders() const {
 
 void
 Fir::drawTriangles() const {
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
 
   if (__trianglesSize) {
     __bordersVBO->bind();
@@ -186,7 +186,7 @@ Fir::__generateTip() const {
 
 void
 Fir::__prepareVBO() {
-#ifdef VATSINATOR_PLATFORM_LINUX
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
   __bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
   __bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
 

@@ -40,14 +40,6 @@ qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 include (Macros)
 include (Translations)
 
-if (MINGW)
-	set (VATSINATOR_PLATFORM_WIN32 TRUE)
-endif (MINGW)
-
-if (UNIX AND NOT APPLE AND NOT MINGW)
-	set (VATSINATOR_PLATFORM_LINUX TRUE)
-endif (UNIX AND NOT APPLE AND NOT MINGW)
-
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.cmake
 	${CMAKE_CURRENT_BINARY_DIR}/config.h
 )
@@ -106,7 +98,7 @@ target_link_libraries (${vatsinator_TARGET}
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
-if (UNIX AND NOT APPLE AND NOT MINGW)
+if (UNIX AND NOT MINGW)
 	install (PROGRAMS
 		${CMAKE_CURRENT_BINARY_DIR}/vatsinator
 		DESTINATION bin
@@ -128,4 +120,4 @@ elseif (MINGW)
 		${vatsinator_TRANSLATIONS}
 		DESTINATION ./translations
 	)
-endif (UNIX AND NOT APPLE AND NOT MINGW)
+endif (UNIX AND NOT MINGW)
