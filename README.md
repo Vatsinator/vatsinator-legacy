@@ -20,6 +20,12 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 		$ sudo apt-get update
 		$ sudo apt-get install vatsinator
 		```
+	
+	- Debian
+		
+		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.
+		[vatsinator-0.1-beta3_i386.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_i386.deb) for i386<br>
+		[vatsinator-0.1-beta3_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_amd64.deb) for amd64
 		
 	- Gentoo
 		
