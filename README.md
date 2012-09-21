@@ -11,8 +11,7 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 **Vatsinator 0.1_beta3**
 
 - Linux
-	- Ubuntu
-		
+	- Ubuntu<br>
 		To install Vatsinator using apt, just type in the terminal:
 		
 		```
@@ -21,37 +20,31 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 		$ sudo apt-get install vatsinator
 		```
 	
-	- Debian
-		
-		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.
+	- Debian<br>
+		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
 		[vatsinator-0.1-beta3_i386.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_i386.deb) for i386<br>
-		[vatsinator-0.1-beta3_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_amd64.deb) for amd64
+		[vatsinator-0.1-beta3_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_amd64.deb) for amd64<br>
 		
-	- Gentoo
-		
-		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).
+	- Gentoo<br>
+		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).<br>
 	
-	- Arch
-		
+	- Arch<br>
 		Having AUR set up correctly, Vatsinator installing is as simpe as that:
 		
 		```
 		$ yaourt -S vatsinator
 		```
 		
-		All thanks to ~archtux.
+		All thanks to ~archtux.<br>
 		
 		
-	- Other distributions
-		
+	- Other distributions<br>
 		There are no packages for other distributions, I am afraid. However, you can compile the Source Code (see below).
 
-- Windows
-
+- Windows<br>
 	[vatsinator-0.1_beta3.exe](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta3.exe)
 
-- Source Code
-
+- Source Code<br>
 	[vatsinator-0.1_beta3.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta3.tar.gz)
 
 
