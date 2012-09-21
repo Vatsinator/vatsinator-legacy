@@ -35,6 +35,7 @@
 #include <OpenGL/glext.h>
 #endif
 
+#ifndef Q_OS_DARWIN
 using std::string;
 
 typedef ptrdiff_t GLsizeiptr;
@@ -78,4 +79,6 @@ initGLExtensionsPointers() {
   glDeleteBuffers = getProcAddress< decltype(glDeleteBuffers) >("glDeleteBuffers");
   glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
 }
+
+#endif // Q_OS_DARWIN
 

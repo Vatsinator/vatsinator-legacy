@@ -298,7 +298,9 @@ MapWidget::initializeGL() {
   
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   
+#ifndef Q_OS_DARWIN
   initGLExtensionsPointers();
+#endif
   
   VatsinatorApplication::log("OpenGL set up.");
   

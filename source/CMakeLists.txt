@@ -87,14 +87,20 @@ foreach (DIR ${vatsinator_SUBDIRS})
 		${DIR}
 	)
 endforeach (DIR)
-	
-target_link_libraries (${vatsinator_TARGET}
-	-Wl,--start-group
-	-Wl,--whole-archive
-	${vatsinator_SUBDIRS}
-	-Wl,--no-whole-archive
-	-Wl,--end-group
-)
+
+if (APPLE)
+	target_link_libraries (${vatsinator_TARGET}
+		-Wl,-all_load ${vatsinator_SUBDIRS}
+	)
+else (APPLE)
+	target_link_libraries (${vatsinator_TARGET}
+		-Wl,--start-group
+		-Wl,--whole-archive
+		${vatsinator_SUBDIRS}
+		-Wl,--no-whole-archive
+		-Wl,--end-group
+	)
+endif (APPLE)
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
