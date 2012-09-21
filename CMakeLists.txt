@@ -94,6 +94,17 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
     include (Packaging-linux)
 
 elseif (APPLE)
+    install (DIRECTORY
+        ${QT_QTGUI_LIBRARY_RELEASE}/Versions/Current/Resources
+        ${QT_QTCORE_LIBRARY_RELEASE}/Versions/Current/Resources
+        ${QT_QTNETWORK_LIBRARY_RELEASE}/Versions/Current/Resources
+        ${QT_QTOPENGL_LIBRARY_RELEASE}/Versions/Current/Resources
+        ${QT_QTSVG_LIBRARY_RELEASE}/Versions/Current/Resources
+        ${QT_QTXML_LIBRARY_RELEASE}/Versions/Current/Resources
+        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources
+    )
+        
+    
     install (FILES
         COPYING
         resources/models.dat
@@ -101,7 +112,7 @@ elseif (APPLE)
         resources/WorldAirports.db
         resources/WorldFirs.db
         resources/WorldMap.db
-        DESTINATION share/vatsinator
+        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources
     )
 
     install (FILES
@@ -112,8 +123,10 @@ elseif (APPLE)
         resources/pixmaps/3j32.png
         resources/pixmaps/4j32.png
         resources/pixmaps/conc32.png
-        DESTINATION share/vatsinator/pixmaps
+        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources/pixmaps
     )
+    
+    include (Packaging-darwin)
 
 # builds for win32
 elseif (MINGW)
@@ -123,12 +136,12 @@ elseif (MINGW)
     endif (NOT MINGW_LIBS_PATH)
     
     install (FILES
-        ${QT_QTGUI_LIBRARY}
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTNETWORK_LIBRARY}
-        ${QT_QTOPENGL_LIBRARY}
-        ${QT_QTSVG_LIBRARY}
-        ${QT_QTXML_LIBRARY}
+        ${QT_QTGUI_LIBRARY_RELEASE}
+        ${QT_QTCORE_LIBRARY_RELEASE}
+        ${QT_QTNETWORK_LIBRARY_RELEASE}
+        ${QT_QTOPENGL_LIBRARY_RELEASE}
+        ${QT_QTSVG_LIBRARY_RELEASE}
+        ${QT_QTXML_LIBRARY_RELEASE}
         ${MINGW_LIBS_PATH}/libgcc_s_dw2-1.dll
         ${MINGW_LIBS_PATH}/mingwm10.dll
         DESTINATION .

@@ -69,12 +69,17 @@ if (MINGW)
         ${QT_QTOPENGL_LIBRARY}
         ${QT_QTNETWORK_LIBRARY}
     )
-else (MINGW)
+else (MINGW AND NOT APPLE)
     # set -DPREFIX for defines.h
     set (CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -DPREFIX=\\\"${CMAKE_INSTALL_PREFIX}\\\""
     )
 
+    set (vatsinator_LIBS
+        ${QT_LIBRARIES}
+        ${OPENGL_LIBRARY}
+    )
+else (APPLE)
     set (vatsinator_LIBS
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
@@ -115,19 +120,17 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
         ${LANGUAGE_FILES}
         DESTINATION share/vatsinator/translations
     )
-else (APPLE)
-    install (TARGETS ${vatsinator_TARGET}
-        BUNDLE DESTINATION "/Applications"
-        RUNTIME DESTINATION bin
+elseif (APPLE)
+    install (PROGRAMS
+        ${CMAKE_CURRENT_BINARY_DIR}/vatsinator
+        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/MacOS
     )
     
     install (FILES
         ${LANGUAGE_FILES}
         ${vatsinator_TRANSLATIONS}
-        DESTINATION share/vatsinator/translations
+        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources/translations
     )
-    
-
 elseif (MINGW)
     install (PROGRAMS
         ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.exe
