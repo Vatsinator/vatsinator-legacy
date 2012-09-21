@@ -94,6 +94,8 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 	foreach (ICON ${SIZES})
 		install_icon(${ICON})
 	endforeach (ICON)
+	
+	include (Packaging-linux)
 
 # builds for win32
 elseif (MINGW)
