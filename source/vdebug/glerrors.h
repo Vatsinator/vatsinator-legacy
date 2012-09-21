@@ -22,7 +22,7 @@
 
 #include <QMap>
 #include <QString>
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)

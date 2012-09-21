@@ -23,7 +23,7 @@
 #include <QStringList>
 #include <QString>
 
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 #include "ui/mapwidget/clickable.h"
 #include "vatsimdata/client.h"

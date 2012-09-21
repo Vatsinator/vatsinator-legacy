@@ -22,7 +22,7 @@
 
 #include <QString>
 #include <QMap>
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 #include "singleton.h"
 

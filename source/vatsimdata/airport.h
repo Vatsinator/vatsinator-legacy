@@ -21,7 +21,7 @@
 #define AIRPORT_H
 
 #include <QString>
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 #include "ui/mapwidget/clickable.h"
 

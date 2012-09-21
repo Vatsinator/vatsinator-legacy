@@ -18,7 +18,7 @@
 
 
 #include <QtGui>
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 QString   glErrors;
 long unsigned gpuMemoryUsage = 0;

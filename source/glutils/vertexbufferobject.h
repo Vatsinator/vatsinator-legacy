@@ -21,7 +21,7 @@
 #define VAOOBJECT_H
 
 #include <QVector>
-#include <GL/gl.h>
+#include <QtOpenGL>
 
 #include "db/point.h"
 
