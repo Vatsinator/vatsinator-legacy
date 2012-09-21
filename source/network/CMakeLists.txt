@@ -1,13 +1,13 @@
 vatsinator_start_subdirectory (network)
 
 set (network_SRCS
-	httphandler.cpp
+    httphandler.cpp
 )
 
 vatsinator_subdirectory_sources (network "${network_SRCS}")
 
 set (network_MOC_SRCS
-	httphandler.h
+    httphandler.h
 )
 
 vatsinator_subdirectory_mocs (network "${network_MOC_SRCS}")

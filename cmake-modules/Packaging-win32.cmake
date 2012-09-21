@@ -25,12 +25,12 @@ set (CPACK_NSIS_INSTALLED_ICON_NAME "vatsinator.exe")
 set (CPACK_NSIS_MENU_LINKS "https://github.com/Garrappachc/Vatsinator" "Vatsinator Homepage")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-	CreateShortCut \\\"$DESKTOP\\\\Vatsinator.lnk\\\" \\\"$INSTDIR\\\\vatsinator.exe\\\"
+    CreateShortCut \\\"$DESKTOP\\\\Vatsinator.lnk\\\" \\\"$INSTDIR\\\\vatsinator.exe\\\"
 ")
 
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-	Delete \\\"$DESKTOP\\\\Vatsinator.lnk\\\"
+    Delete \\\"$DESKTOP\\\\Vatsinator.lnk\\\"
 ")
 
 include (CPack)
