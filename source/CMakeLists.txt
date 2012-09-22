@@ -76,7 +76,7 @@ elseif (APPLE)
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
     )
-else
+else (UNIX AND NOT APPLE AND NOT MINGW)
   set (vatsinator_LIBS
         mingw32
         ${OPENGL_gl_LIBRARY}
