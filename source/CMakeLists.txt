@@ -70,7 +70,7 @@ if (MINGW)
         ${QT_QTOPENGL_LIBRARY}
         ${QT_QTNETWORK_LIBRARY}
     )
-else (MINGW AND NOT APPLE)
+elseif (UNIX AND NOT APPLE)
     # set -DPREFIX for defines.h
     set (CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -DPREFIX=\\\"${CMAKE_INSTALL_PREFIX}\\\""
@@ -80,7 +80,7 @@ else (MINGW AND NOT APPLE)
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
     )
-else (APPLE)
+elseif (APPLE)
     set (vatsinator_LIBS
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
