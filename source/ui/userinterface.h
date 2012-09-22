@@ -57,6 +57,7 @@ public:
   virtual ~UserInterface();
 
   void statusBarUpdate(const QString& = "");
+  void toggleStatusBar();
   void infoBarUpdate();
   
   static void setWindowPosition(QWidget*);
@@ -65,7 +66,7 @@ public:
   getMapWidget() { return MapDisplay; }
 
   inline QProgressBar*
-  getProgressBar() { return ProgressBar; }
+  getProgressBar() { return __progressBar; }
 
   inline QLabel*
   getPositionBox() { return PositionBox; }
@@ -81,6 +82,9 @@ private:
   void __setupWindow();
   void __storeWindowGeometry();
   void __restoreWindowGeometry();
+  
+  QLabel*       __statusBox;
+  QProgressBar* __progressBar;
 
 
 #ifndef NO_DEBUG

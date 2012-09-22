@@ -1200,9 +1200,16 @@ void
 MapWidget::__setAntyaliasing(bool _on) {
   if (_on) {
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); checkGLErrors(HERE);
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN // win32 doesn't know that
+    glHint(GL_TEXTURE_COMPRESSION_HINT, GL_NICEST); checkGLErrors(HERE);
+#endif
     glEnable(GL_LINE_SMOOTH); checkGLErrors(HERE);
+//     glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE);
   } else {
     glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST); checkGLErrors(HERE);
+#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+    glHint(GL_TEXTURE_COMPRESSION_HINT, GL_FASTEST); checkGLErrors(HERE);
+#endif
     glDisable(GL_LINE_SMOOTH); checkGLErrors(HERE);
   }
 }

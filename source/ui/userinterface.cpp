@@ -74,13 +74,14 @@ UserInterface::UserInterface(QWidget* _parent) :
           __atcListWindow,     SLOT(show()));
 
   statusBarUpdate();
-
-  ProgressBar->reset();
 }
 
 UserInterface::~UserInterface() {
   hideAllWindows();
   __storeWindowGeometry();
+  
+//   delete __statusBox;
+//   delete __progressBar;
 
   delete __aboutWindow;
   delete __airportDetailsWindow;
@@ -100,13 +101,18 @@ UserInterface::~UserInterface() {
 void
 UserInterface::statusBarUpdate(const QString& _message) {
   if (_message.isEmpty()) {
-    StatusBox->setText(tr("Last update:") % " " %
+    __statusBox->setText(tr("Last update:") % " " %
                        VatsimDataHandler::GetSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
                        tr(" UTC")
                       );
   } else {
-    StatusBox->setText(_message);
+    __statusBox->setText(_message);
   }
+}
+
+void
+UserInterface::toggleStatusBar() {
+  Replaceable->toggle();
 }
 
 void
@@ -181,6 +187,18 @@ UserInterface::closeEvent(QCloseEvent* _event) {
 void
 UserInterface::__setupWindow() {
   setupUi(this);
+  
+  __statusBox = new QLabel();
+  __statusBox->setMinimumSize(QSize(250, 13));
+  __statusBox->setMaximumSize(QSize(250, 13));
+  
+  __progressBar = new QProgressBar();
+  __progressBar->setMinimumSize(QSize(250, 13));
+  __progressBar->setMaximumSize(QSize(250, 13));
+  __progressBar->setValue(0);
+  __progressBar->setTextVisible(true);
+  
+  Replaceable->setWidgets(__statusBox, __progressBar);
 
 #ifndef NO_DEBUG
   MenuHelp->addSeparator();
