@@ -57,7 +57,7 @@ Available languages:
 - English
 - Polish
 
-If you want to translate Vatsinator on your own language, contact me on michal@garapich.pl.
+If you want to translate Vatsinator into your own language, contact me on michal@garapich.pl.
 
 
 ## Contact
