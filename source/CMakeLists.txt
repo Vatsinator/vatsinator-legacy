@@ -66,7 +66,7 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
         ${OPENGL_LIBRARY}
     )
 elseif (APPLE)
-    set (vatsinator_PREFIX "../Resources/")
+    set (vatsinator_PREFIX "")
 
     set (vatsinator_LIBS
         ${QT_LIBRARIES}
