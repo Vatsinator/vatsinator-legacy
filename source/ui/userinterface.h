@@ -57,6 +57,7 @@ public:
   virtual ~UserInterface();
 
   void statusBarUpdate(const QString& = "");
+  void infoBarUpdate();
   
   static void setWindowPosition(QWidget*);
 
@@ -68,9 +69,6 @@ public:
 
   inline QLabel*
   getPositionBox() { return PositionBox; }
-
-  inline QLabel*
-  getClientsBox() { return ClientsBox; }
 
 public slots:
   void quit();

@@ -28,6 +28,7 @@
 #include "singleton.h"
 
 class AirportDatabase;
+class CacheFile;
 class FirDatabase;
 class UserInterface;
 class VatsimDataHandler;
@@ -60,6 +61,8 @@ public:
   static void alert(const QString&);
 
   static void emitGLInitialized();
+  
+  static void dispatchDataUpdate(const QString&);
 
 #ifdef NO_DEBUG
 
@@ -94,11 +97,6 @@ public:
   inline VatsimDataHandler &
   getData() { return *__vatsimData; }
 
-signals:
-  void glInitialized();
-  void dataUpdated();
-  void metarsRefreshRequested();
-
 public slots:
   void refreshData();
 
@@ -118,8 +116,14 @@ private:
   QTranslator        __translator;
 
 private slots:
+  void __loadCachedData();
   void __dataUpdated(const QString&);
   void __showDataAlert();
+  
+signals:
+  void glInitialized();
+  void dataUpdated();
+  void metarsRefreshRequested();
 
 };
 

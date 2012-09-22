@@ -30,6 +30,9 @@
 #define TRANSLATIONS_DIR "translations"
 #endif
 
+// cache file name
+#define CACHE_FILE_NAME "lastdata"
+
 // below/above these values user can't zoom the map
 #define ZOOM_MINIMUM    1
 

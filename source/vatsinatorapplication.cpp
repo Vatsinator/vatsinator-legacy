@@ -22,6 +22,8 @@
 
 #include <QtGui>
 
+#include "cache/cachefile.h"
+
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
@@ -78,6 +80,9 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   // destroy all children windows before the program exits
   connect(this,             SIGNAL(destroyed()),
           __userInterface,  SLOT(hideAllWindows()));
+  
+  connect(this,             SIGNAL(glInitialized()),
+          this,             SLOT(__loadCachedData()));
 
   // SettingsManager instance is now created, let him get the pointer & connect his slots
   __settingsManager->init();
@@ -162,6 +167,24 @@ VatsinatorApplication::refreshData() {
 }
 
 void
+VatsinatorApplication::dispatchDataUpdate(const QString& _fileName) {
+  CacheFile file(_fileName);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    VatsinatorApplication::log("File %s is not readable.", _fileName.toStdString().c_str());
+    return;
+  }
+  
+  QString data;
+  
+  while (!file.atEnd())
+    data.append(file.readLine());
+  file.close();
+  
+  VatsinatorApplication::GetSingleton().getData().parseDataFile(data);
+  UserInterface::GetSingleton().infoBarUpdate();
+}
+
+void
 VatsinatorApplication::__emitGLInitialized() {
   emit glInitialized();
 }
@@ -181,6 +204,17 @@ VatsinatorApplication::__showDataAlert() {
 
   if (decision.clickedButton() == againButton)
     refreshData();
+}
+
+void
+VatsinatorApplication::__loadCachedData() {
+  CacheFile cache(CACHE_FILE_NAME);
+  if (!cache.exists())
+    return;
+  
+  QString fileName(CACHE_FILE_NAME);
+  
+  QtConcurrent::run(dispatchDataUpdate, fileName);
 }
 
 void
@@ -210,18 +244,7 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
     __firsData->clearAll();
 
     __vatsimData->parseDataFile(_data);
-    __userInterface->getClientsBox()->setText(
-      tr("Clients") % static_cast< QString >(": ") %
-      QString::number(__vatsimData->clientCount()) %
-      static_cast< QString >(" (") %
-      QString::number(__vatsimData->pilotCount()) %
-      " " % tr("pilots") % static_cast< QString >(", ") %
-      QString::number(__vatsimData->atcCount()) %
-      " " % tr("ATCs") % static_cast< QString >(", ") %
-      QString::number(__vatsimData->obsCount()) %
-      " " % tr("observers") % static_cast< QString >(")")
-    );
-
+    __userInterface->infoBarUpdate();
     __userInterface->statusBarUpdate();
 
     // we cannot depend on signals & slots system here, as GLrepaint() would be called
@@ -232,6 +255,11 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
       emit metarsRefreshRequested();
 
     emit dataUpdated();
+    
+    CacheFile cache(CACHE_FILE_NAME);
+    cache.open(QIODevice::WriteOnly | QIODevice::Truncate);
+    cache.write(_data.toUtf8());
+    cache.close();
   } else {
     __vatsimData->parseStatusFile(_data);
 

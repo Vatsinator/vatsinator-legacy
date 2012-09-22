@@ -110,6 +110,23 @@ UserInterface::statusBarUpdate(const QString& _message) {
 }
 
 void
+UserInterface::infoBarUpdate() {
+  VatsimDataHandler& data = VatsimDataHandler::GetSingleton();
+  
+  ClientsBox->setText(
+      tr("Clients") % static_cast< QString >(": ") %
+      QString::number(data.clientCount()) %
+      static_cast< QString >(" (") %
+      QString::number(data.pilotCount()) %
+      " " % tr("pilots") % static_cast< QString >(", ") %
+      QString::number(data.atcCount()) %
+      " " % tr("ATCs") % static_cast< QString >(", ") %
+      QString::number(data.obsCount()) %
+      " " % tr("observers") % static_cast< QString >(")")
+    );
+}
+
+void
 UserInterface::setWindowPosition(QWidget* _window) {
   QRect frect = _window->frameGeometry();
   frect.moveCenter(QDesktopWidget().availableGeometry().center());

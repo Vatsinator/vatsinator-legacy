@@ -19,6 +19,7 @@ set (vatsinator_MOC_SRCS
 )
 
 set (vatsinator_SUBDIRS
+    cache
     db
     glutils
     modules
