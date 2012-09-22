@@ -267,7 +267,7 @@
   <customwidget>
    <class>ReplaceableWidget</class>
    <extends>QWidget</extends>
-   <header>ui/widget/replaceablewidget.h</header>
+   <header>ui/widgets/replaceablewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
