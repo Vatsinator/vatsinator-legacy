@@ -94,7 +94,7 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
     include (Packaging-linux)
 
 elseif (APPLE)
-    install (DIRECTORY
+    install (FILES
 #         ${QT_QTGUI_LIBRARY_RELEASE}/Versions/Current/QtGui
         ${QT_QTCORE_LIBRARY_RELEASE}/Versions/Current/QtCore
 #         ${QT_QTNETWORK_LIBRARY_RELEASE}/Versions/Current/Resources
