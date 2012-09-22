@@ -8,7 +8,7 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 
 ## Installation
 
-**Vatsinator 0.1_beta3**
+Current release: **Vatsinator 0.1_beta3**
 
 - Linux
 	- Ubuntu<br>
@@ -48,13 +48,22 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 	[vatsinator-0.1_beta3.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta3.tar.gz)
 
 
-## Compiling
+## Bulding
 See [wiki](https://github.com/Garrappachc/Vatsinator/wiki/Building-Vatsinator).
+
+
+## Translations
+Available languages:
+- English
+- Polish
+
+If you want to translate Vatsinator on your own language, contact me on michal@garapich.pl.
 
 
 ## Contact
 - Michał Garapich michal@garapich.pl
 - Jan Macheta janmacheta@gmail.com
+
 
 ## License
 Vatsinator is developed under GPLv3 license. See COPYING file for more information.
