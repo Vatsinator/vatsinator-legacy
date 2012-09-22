@@ -57,8 +57,6 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __modulesManager(new ModuleManager),
     __userInterface(NULL) {
   
-  log("vatsinator.dat location: " VATSINATOR_DAT);
-  
 #ifndef NO_DEBUG
 #if defined Q_OS_LINUX
 #  pragma message("Platform: Linux")

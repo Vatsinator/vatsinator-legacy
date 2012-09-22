@@ -27,7 +27,6 @@
 #include "defines.h"
 
 AirportDatabase::AirportDatabase() {
-  VatsinatorApplication::log("Airport database location: " AIRPORTS_DB);
   __readDatabase();
 }
 
@@ -52,11 +51,11 @@ AirportDatabase::__readDatabase() {
   
   if (!QFile(AIRPORTS_DB).exists())
     VatsinatorApplication::alert(
-      "File " AIRPORTS_DB " does not exist! Please reinstsall the application. Application path: " +
+      static_cast< QString >("File ") + AIRPORTS_DB + " does not exist! Please reinstsall the application. Application path: " +
       VatsinatorApplication::GetSingleton().applicationDirPath(),
       true);
   
-  std::fstream db(AIRPORTS_DB, std::ios::in | std::ios::binary);
+  std::fstream db(QString(AIRPORTS_DB).toStdString().c_str(), std::ios::in | std::ios::binary);
 
   int size;
   db.read((char*)&size, 4);

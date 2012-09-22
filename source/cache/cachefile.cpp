@@ -25,8 +25,10 @@
 
 #ifdef Q_OS_WIN32
 static const QString CACHE_FILE_LOCATON(QDir::homePath() % "/Local Settings/Temporary Internet Files");
-#elif defined Q_OS_LINUX || defined Q_OS_DARWIN
+#elif defined Q_OS_LINUX
 static const QString CACHE_FILE_LOCATON(QDir::homePath() % "/.cache");
+#elif defined Q_OS_DARWIN
+static const QString CACHE_FILE_LOCATON(QDir::homePath() % "/Library/Caches");
 #endif
 
 static const QString CACHE_DIRECTORY(CACHE_FILE_LOCATON % "/Vatsinator");

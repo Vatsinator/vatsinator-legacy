@@ -31,7 +31,6 @@ ModelMatcher::ModelMatcher() {
   QFile modelsFile(MODELS_DAT);
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::log("File " MODELS_DAT " could not be opened!");
     VatsinatorApplication::alert(
       static_cast< QString >("File ") +
       static_cast< QString >(MODELS_DAT) +

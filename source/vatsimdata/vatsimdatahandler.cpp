@@ -52,7 +52,6 @@ VatsimDataHandler::init() {
   QFile datFile(VATSINATOR_DAT);
 
   if (!datFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::log("File " VATSINATOR_DAT " could not be opened!");
     VatsinatorApplication::alert(
       static_cast< QString >("File ") +
       static_cast< QString >(VATSINATOR_DAT) +

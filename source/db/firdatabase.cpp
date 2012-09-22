@@ -27,8 +27,6 @@
 #include "defines.h"
 
 FirDatabase::FirDatabase() {
-  VatsinatorApplication::log("Fir database location: " FIRS_DB);
-
   __readDatabase();
 
   connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(glInitialized()),
@@ -71,9 +69,10 @@ FirDatabase::__readDatabase() {
   __firs.clear();
   
   if (!QFile(FIRS_DB).exists())
-    VatsinatorApplication::alert("File " FIRS_DB " does not exist! Please reinstsall the application.", true);
+    VatsinatorApplication::alert(static_cast< QString >("File ") +
+        FIRS_DB + " does not exist! Please reinstsall the application.", true);
 
-  std::fstream db(FIRS_DB, std::ios::in | std::ios::binary);
+  std::fstream db(QString(FIRS_DB).toStdString().c_str(), std::ios::in | std::ios::binary);
 
   int size;
   db.read(reinterpret_cast< char* >(&size), 4);

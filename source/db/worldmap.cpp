@@ -32,8 +32,6 @@
 #include "defines.h"
 
 WorldMap::WorldMap() {
-  VatsinatorApplication::log("World map location: " WORLD_MAP);
-
   __readDatabase();
 
   connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(glInitialized()),
@@ -68,9 +66,10 @@ WorldMap::draw() const {
 
 void WorldMap::__readDatabase() {
   if (!QFile(WORLD_MAP).exists())
-    VatsinatorApplication::alert("File " WORLD_MAP " does not exist! Please reinstsall the application.", true);
+    VatsinatorApplication::alert(static_cast< QString >("File ") +
+        WORLD_MAP + " does not exist! Please reinstsall the application.", true);
   
-  std::fstream db(WORLD_MAP, std::ios::in | std::ios::binary);
+  std::fstream db(QString(WORLD_MAP).toStdString().c_str(), std::ios::in | std::ios::binary);
 
   int size;
   db.read(reinterpret_cast< char* >(&size), 4);
