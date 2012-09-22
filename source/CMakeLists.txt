@@ -41,10 +41,6 @@ qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 include (Macros)
 include (Translations)
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/config.h
-)
-
 set(QT_USE_QTOPENGL TRUE)
 set(QT_USE_QTNETWORK TRUE)
 
@@ -63,21 +59,23 @@ add_executable (${vatsinator_TARGET} WIN32
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
     # set -DPREFIX for defines.h
-    set (CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -DPREFIX=\\\"${CMAKE_INSTALL_PREFIX}\\\""
-    )
+    set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
 
     set (vatsinator_LIBS
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
     )
 elseif (APPLE)
+    set (vatsinator_PREFIX "Resources/")
+
     set (vatsinator_LIBS
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
     )
 else (UNIX AND NOT APPLE AND NOT MINGW)
-  set (vatsinator_LIBS
+    set (vatsinator_PREFIX "")
+
+    set (vatsinator_LIBS
         mingw32
         ${OPENGL_gl_LIBRARY}
         ${QT_QTCORE_LIBRARY}
@@ -86,6 +84,10 @@ else (UNIX AND NOT APPLE AND NOT MINGW)
         ${QT_QTNETWORK_LIBRARY}
   )
 endif (UNIX AND NOT APPLE AND NOT MINGW)
+
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/config.h
+)
 
 foreach (DIR ${vatsinator_SUBDIRS})
     add_subdirectory (${DIR})

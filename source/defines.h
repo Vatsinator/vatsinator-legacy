@@ -11,24 +11,15 @@
 
 // where to get all the data from
 #define VATSIM_STATUS_URL "http://status.vatsim.net/status.txt"
-// if on mingw there is no PREFIX
-#ifdef PREFIX
-#define AIRPORTS_DB      PREFIX "/share/vatsinator/WorldAirports.db"
-#define FIRS_DB          PREFIX "/share/vatsinator/WorldFirs.db"
-#define VATSINATOR_DAT   PREFIX "/share/vatsinator/vatsinator.dat"
-#define MODELS_DAT       PREFIX "/share/vatsinator/models.dat"
-#define WORLD_MAP        PREFIX "/share/vatsinator/WorldMap.db"
-#define PIXMAPS_DIR      PREFIX "/share/vatsinator/pixmaps"
-#define TRANSLATIONS_DIR PREFIX "/share/vatsinator/translations"
-#else
-#define AIRPORTS_DB      "WorldAirports.db"
-#define FIRS_DB          "WorldFirs.db"
-#define VATSINATOR_DAT   "vatsinator.dat"
-#define MODELS_DAT       "models.dat"
-#define WORLD_MAP        "WorldMap.db"
-#define PIXMAPS_DIR      "pixmaps"
-#define TRANSLATIONS_DIR "translations"
-#endif
+
+// set files location
+#define AIRPORTS_DB      VATSINATOR_PREFIX "WorldAirports.db"
+#define FIRS_DB          VATSINATOR_PREFIX "WorldFirs.db"
+#define VATSINATOR_DAT   VATSINATOR_PREFIX "vatsinator.dat"
+#define MODELS_DAT       VATSINATOR_PREFIX "models.dat"
+#define WORLD_MAP        VATSINATOR_PREFIX "WorldMap.db"
+#define PIXMAPS_DIR      VATSINATOR_PREFIX "pixmaps"
+#define TRANSLATIONS_DIR VATSINATOR_PREFIX "translations"
 
 // cache file name
 #define CACHE_FILE_NAME "lastdata"
