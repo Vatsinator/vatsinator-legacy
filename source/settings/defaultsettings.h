@@ -13,6 +13,9 @@ static const bool METARS_REFRESH            = true;
 // antyaliasing option
 static const bool ANTYALIASING              = false;
 
+// cache enabled option
+static const bool CACHE_ENABLED             = true;
+
 /* some checkboxes state */
 // "Display layers"
 static const bool PILOTS_CHECKBOX           = true;

@@ -81,8 +81,10 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   connect(this,             SIGNAL(destroyed()),
           __userInterface,  SLOT(hideAllWindows()));
   
-  connect(this,             SIGNAL(glInitialized()),
-          this,             SLOT(__loadCachedData()));
+  if (__settingsManager->cacheEnabled()) {
+    connect(this,             SIGNAL(glInitialized()),
+            this,             SLOT(__loadCachedData()));
+  }
 
   // SettingsManager instance is now created, let him get the pointer & connect his slots
   __settingsManager->init();
@@ -256,10 +258,12 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
 
     emit dataUpdated();
     
-    CacheFile cache(CACHE_FILE_NAME);
-    cache.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    cache.write(_data.toUtf8());
-    cache.close();
+    if (__settingsManager->cacheEnabled()) {
+      CacheFile cache(CACHE_FILE_NAME);
+      cache.open(QIODevice::WriteOnly | QIODevice::Truncate);
+      cache.write(_data.toUtf8());
+      cache.close();
+    }
   } else {
     __vatsimData->parseStatusFile(_data);
 

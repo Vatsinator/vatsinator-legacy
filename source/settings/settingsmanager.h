@@ -58,6 +58,9 @@ public:
 
   inline bool
   hasAntyaliasing() const { return __antyaliasing; }
+  
+  inline bool
+  cacheEnabled() const { return __cacheEnabled; }
 
   inline const DisplayLayersPolicy &
   getDisplayLayersPolicy() const { return __displayLayers; }
@@ -127,6 +130,7 @@ private:
   int                 __refreshRate;
   bool                __metarsRefresh;
   bool                __antyaliasing;
+  bool                __cacheEnabled;
   DisplayLayersPolicy __displayLayers;
   unsigned            __pilotsLabelsDisplayPolicy;
   bool                __displayAirportLabels;

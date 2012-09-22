@@ -54,6 +54,7 @@ SettingsWindow::__updateWindow() {
   RefreshRateBox->setValue(__mySettingsManager->getRefreshRate());
   RefreshMetarsCheckBox->setChecked(__mySettingsManager->refreshMetars());
   AntyaliasingCheckBox->setChecked(__mySettingsManager->hasAntyaliasing());
+  EnableCachingCheckBox->setChecked(__mySettingsManager->cacheEnabled());
   PilotsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().pilots);
   AirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().airports);
   StaffedFirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().staffedFirs);

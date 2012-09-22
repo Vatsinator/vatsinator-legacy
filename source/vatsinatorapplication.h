@@ -57,11 +57,24 @@ public:
 
   virtual ~VatsinatorApplication();
 
+  /**
+   * Quit application immediately.
+   */
   static void quit();
+  
+  /**
+   * Tell user that something went wrong.
+   * @param msg Message to be displayed.
+   */
   static void alert(const QString&);
 
   static void emitGLInitialized();
   
+  /**
+   * Use this function in QtConcurrent::run to read data
+   * stored in cache file in separated thread.
+   * @param fileName Name of the file in cache.
+   */
   static void dispatchDataUpdate(const QString&);
 
 #ifdef NO_DEBUG
