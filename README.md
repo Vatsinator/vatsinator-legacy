@@ -48,7 +48,7 @@ Current release: **Vatsinator 0.1_beta3**
 	[vatsinator-0.1_beta3.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta3.tar.gz)
 
 
-## Bulding
+## Building
 See [wiki](https://github.com/Garrappachc/Vatsinator/wiki/Building-Vatsinator).
 
 
