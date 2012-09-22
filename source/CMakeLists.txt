@@ -13,6 +13,13 @@ set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
 
+if (APPLE)
+    set (vatsinator_SRCS
+        ${vatsinator_SRCS}
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/vatsinator.icns
+    )
+endif (APPLE)
+
 
 set (vatsinator_MOC_SRCS
     vatsinatorapplication.h
@@ -50,7 +57,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(${QT_DEFINITIONS})
 
-add_executable (${vatsinator_TARGET} WIN32
+add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     main.cpp
     ${vatsinator_SRCS}
     ${vatsinator_MOC_FILES}
