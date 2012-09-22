@@ -131,15 +131,13 @@ VatsinatorApplication::~VatsinatorApplication() {
 }
 
 void
-VatsinatorApplication::quit() {
-  exit(0);
-}
-
-void
-VatsinatorApplication::alert(const QString& _msg) {
+VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
   QMessageBox msgBox;
   msgBox.setText(_msg);
   msgBox.exec();
+  
+  if (_fatal)
+    quit();
 }
 
 void

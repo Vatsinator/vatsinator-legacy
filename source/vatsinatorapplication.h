@@ -56,17 +56,12 @@ public:
   VatsinatorApplication(int&, char**);
 
   virtual ~VatsinatorApplication();
-
-  /**
-   * Quit application immediately.
-   */
-  static void quit();
   
   /**
    * Tell user that something went wrong.
    * @param msg Message to be displayed.
    */
-  static void alert(const QString&);
+  static void alert(const QString&, bool = false);
 
   static void emitGLInitialized();
   

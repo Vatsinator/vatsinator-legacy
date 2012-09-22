@@ -67,6 +67,9 @@ WorldMap::draw() const {
 }
 
 void WorldMap::__readDatabase() {
+  if (!QFile(WORLD_MAP).exists())
+    VatsinatorApplication::alert("File " WORLD_MAP " does not exist! Please reinstsall the application.", true);
+  
   std::fstream db(WORLD_MAP, std::ios::in | std::ios::binary);
 
   int size;

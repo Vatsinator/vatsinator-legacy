@@ -69,6 +69,9 @@ void
 FirDatabase::__readDatabase() {
   __toolTipsPrepared = false;
   __firs.clear();
+  
+  if (!QFile(FIRS_DB).exists())
+    VatsinatorApplication::alert("File " FIRS_DB " does not exist! Please reinstsall the application.", true);
 
   std::fstream db(FIRS_DB, std::ios::in | std::ios::binary);
 
