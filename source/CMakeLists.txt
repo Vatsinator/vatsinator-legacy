@@ -61,16 +61,7 @@ add_executable (${vatsinator_TARGET} WIN32
     ${vatsinator_TRANSLATIONS}
 )
 
-if (MINGW)
-    set (vatsinator_LIBS
-        mingw32
-        ${OPENGL_gl_LIBRARY}
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTGUI_LIBRARY}
-        ${QT_QTOPENGL_LIBRARY}
-        ${QT_QTNETWORK_LIBRARY}
-    )
-elseif (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE AND NOT MINGW)
     # set -DPREFIX for defines.h
     set (CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -DPREFIX=\\\"${CMAKE_INSTALL_PREFIX}\\\""
@@ -85,7 +76,16 @@ elseif (APPLE)
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
     )
-endif (MINGW)
+else
+  set (vatsinator_LIBS
+        mingw32
+        ${OPENGL_gl_LIBRARY}
+        ${QT_QTCORE_LIBRARY}
+        ${QT_QTGUI_LIBRARY}
+        ${QT_QTOPENGL_LIBRARY}
+        ${QT_QTNETWORK_LIBRARY}
+  )
+endif (UNIX AND NOT APPLE AND NOT MINGW)
 
 foreach (DIR ${vatsinator_SUBDIRS})
     add_subdirectory (${DIR})
