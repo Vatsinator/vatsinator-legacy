@@ -43,57 +43,9 @@
     <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="5">
-       <widget class="QLabel" name="PositionBox">
-        <property name="minimumSize">
-         <size>
-          <width>170</width>
-          <height>13</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>170</width>
-          <height>13</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>N E</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="6">
-       <widget class="MapWidget" name="MapDisplay" native="true">
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::StrongFocus</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
        <widget class="Line" name="line">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="3">
-       <widget class="QLabel" name="ClientsBox">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>13</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>13</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Clients:</string>
         </property>
        </widget>
       </item>
@@ -116,6 +68,61 @@
           <width>250</width>
           <height>13</height>
          </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" colspan="3">
+       <widget class="QLabel" name="ClientsBox">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>13</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>13</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Clients:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="QLabel" name="PositionBox">
+        <property name="minimumSize">
+         <size>
+          <width>170</width>
+          <height>13</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>170</width>
+          <height>13</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>N E</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="7">
+       <widget class="MapWidget" name="MapDisplay" native="true">
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
         </property>
        </widget>
       </item>
