@@ -95,12 +95,12 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 
 elseif (APPLE)
     install (DIRECTORY
-        ${QT_QTGUI_LIBRARY_RELEASE}/Versions/Current/Resources
-        ${QT_QTCORE_LIBRARY_RELEASE}/Versions/Current/Resources
-        ${QT_QTNETWORK_LIBRARY_RELEASE}/Versions/Current/Resources
-        ${QT_QTOPENGL_LIBRARY_RELEASE}/Versions/Current/Resources
-        ${QT_QTSVG_LIBRARY_RELEASE}/Versions/Current/Resources
-        ${QT_QTXML_LIBRARY_RELEASE}/Versions/Current/Resources
+#         ${QT_QTGUI_LIBRARY_RELEASE}/Versions/Current/QtGui
+        ${QT_QTCORE_LIBRARY_RELEASE}/Versions/Current/QtCore
+#         ${QT_QTNETWORK_LIBRARY_RELEASE}/Versions/Current/Resources
+#         ${QT_QTOPENGL_LIBRARY_RELEASE}/Versions/Current/Resources
+#         ${QT_QTSVG_LIBRARY_RELEASE}/Versions/Current/Resources
+#         ${QT_QTXML_LIBRARY_RELEASE}/Versions/Current/Resources
         DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources
     )
         
