@@ -30,7 +30,7 @@ class ShowAirportButton : public QPushButton {
 
 public:
   ShowAirportButton(QWidget* = 0);
-  ShowAirportButton(const Airport*, const QString& = "Details", bool = false, QWidget* = 0);
+  ShowAirportButton(const Airport*, const QString& = tr("Details"), bool = false, QWidget* = 0);
 
   void setAirportPointer(const Airport*);
 

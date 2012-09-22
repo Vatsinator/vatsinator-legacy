@@ -29,7 +29,7 @@ class ClientDetailsButton : public QPushButton {
   Q_OBJECT
 
 public:
-  explicit ClientDetailsButton(const Client* = NULL, const QString& = "Details", QWidget* = 0);
+  explicit ClientDetailsButton(const Client* = NULL, const QString& = tr("Details"), QWidget* = 0);
   void setClientPointer(const Client*);
 
 signals:

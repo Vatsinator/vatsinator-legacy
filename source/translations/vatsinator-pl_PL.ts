@@ -245,6 +245,14 @@
     </message>
 </context>
 <context>
+    <name>ClientDetailsButton</name>
+    <message>
+        <location filename="../ui/buttons/clientdetailsbutton.h" line="32"/>
+        <source>Details</source>
+        <translation>Szczegóły</translation>
+    </message>
+</context>
+<context>
     <name>ColorButton</name>
     <message>
         <location filename="../ui/buttons/colorbutton.cpp" line="47"/>
@@ -934,6 +942,14 @@
     <message>
         <source>Options marked with * require restart to be applied.</source>
         <translation type="obsolete">Opcje oznaczone * wymagają&lt;br&gt;ponownego uruchomienia programu.</translation>
+    </message>
+</context>
+<context>
+    <name>ShowAirportButton</name>
+    <message>
+        <location filename="../ui/buttons/showairportbutton.h" line="33"/>
+        <source>Details</source>
+        <translation>Szczegóły</translation>
     </message>
 </context>
 <context>
