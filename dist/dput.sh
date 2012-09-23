@@ -35,6 +35,11 @@ else
 	git clone $vatsinator_git -b $branch $builddir
 fi
 
+mkdir $builddir/bin
+cd $builddir/bin
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+
+
 echo "Cleaning up..."
 
 # cleanup
