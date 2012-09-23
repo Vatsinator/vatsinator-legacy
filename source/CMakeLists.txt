@@ -57,7 +57,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(${QT_DEFINITIONS})
 
-add_executable (${vatsinator_TARGET} WIN32
+add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     main.cpp
     ${vatsinator_SRCS}
     ${vatsinator_MOC_FILES}
@@ -131,9 +131,8 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
         DESTINATION share/vatsinator/translations
     )
 elseif (APPLE)
-    install (PROGRAMS
-        ${CMAKE_CURRENT_BINARY_DIR}/vatsinator
-        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/MacOS
+    install (TARGETS ${vatsinator_TARGET}
+        BUNDLE DESTINATION . COMPONENT Runtime
     )
     
     install (FILES

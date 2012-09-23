@@ -15,7 +15,7 @@ set (CPACK_BUNDLE_STARTUP_COMMAND "${CMAKE_CURRENT_BINARY_DIR}/vatsinator")
 
 set (CPACK_PACKAGE_EXECUTABLES "vatsinator")
 
-set (MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/vatsinator.icns)
+set (MACOSX_BUNDLE_ICON_FILE vatsinator.icns)
 set (CPACK_PACKAGE_ICON ${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/vatsinator.icns)
 set (CPACK_BUNDLE_NAME "Vatsinator")
 set (CPACK_BUNDLE_ICON ${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/vatsinator.icns)
