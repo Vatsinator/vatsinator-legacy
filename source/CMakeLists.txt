@@ -136,8 +136,12 @@ elseif (APPLE)
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
         COMMAND cp ${MACOSX_BUNDLE_ICON_FILE} ${vatsinator_BUNDLE_RESOURCES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
+        COMMAND mkdir
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
         COMMAND cp ${vatsinator_BUNDLE_PIXMAPS}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
+        COMMAND mkdir
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
         COMMAND cp ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
         COMMAND rm -rf
