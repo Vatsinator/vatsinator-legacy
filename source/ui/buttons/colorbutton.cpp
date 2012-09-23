@@ -29,16 +29,66 @@ ColorButton::ColorButton(QWidget* _parent) :
 
 void
 ColorButton::setColor(const QColor& _color) {
-  __current = _color;
-  updateColor();
+  if (__current != _color) {
+    __current = _color;
+    update();
+  }
+}
+
+QSize
+ColorButton::sizeHint() const {
+  QStyleOptionButton optBtn;
+  __initStyleOptionButton(&optBtn);
+  return style()->sizeFromContents(QStyle::CT_PushButton, &optBtn, QSize(40, 15), this).
+      expandedTo(QApplication::globalStrut());
+}
+
+QSize
+ColorButton::minimumSizeHint() const {
+  QStyleOptionButton optBtn;
+  __initStyleOptionButton(&optBtn);
+  return style()->sizeFromContents(QStyle::CT_PushButton, &optBtn, QSize(3, 3), this).
+      expandedTo(QApplication::globalStrut());
 }
 
 void
-ColorButton::updateColor() {
-  setStyleSheet("background: rgb(" +
-                QString::number(__current.red()) + "," +
-                QString::number(__current.green()) + "," +
-                QString::number(__current.blue()) + ");");
+ColorButton::paintEvent(QPaintEvent*) {
+  // init painter and style
+  QPainter painter(this);
+  QStyle* style = QWidget::style();
+  
+  // first we need to draw bevel
+  QStyleOptionButton optBtn;
+  __initStyleOptionButton(&optBtn);
+  style->drawControl(QStyle::CE_PushButtonBevel, &optBtn, &painter, this);
+  
+  // get coords of rectangle that we will fill with desired color
+  QRect labelRect = style->subElementRect(QStyle::SE_PushButtonContents, &optBtn, this);
+  int shift = style->pixelMetric(QStyle::PM_ButtonMargin, &optBtn, this) / 2;
+  labelRect.adjust(shift, shift, -shift, -shift);
+  
+  // put coords into variables
+  int x, y, w, h;
+  labelRect.getRect(&x, &y, &w, &h);
+  if (isChecked() || isDown()) {
+    x += style->pixelMetric( QStyle::PM_ButtonShiftHorizontal, &optBtn, this );
+    y += style->pixelMetric( QStyle::PM_ButtonShiftVertical, &optBtn, this );
+  }
+  
+  // fill with current color
+  QBrush brush(__current);
+  
+  // fill rectangle(x, y, w, h) with brush
+  qDrawShadePanel(&painter, x, y, w, h, palette(), true, 1, &brush);
+}
+
+void
+ColorButton::__initStyleOptionButton(QStyleOptionButton* _btn) const {
+  _btn->initFrom(this);
+  _btn->state = isDown() ? QStyle::State_Sunken : QStyle::State_Raised;
+  _btn->features = QStyleOptionButton::None;
+  _btn->text.clear();
+  _btn->icon = QIcon();
 }
 
 void
@@ -51,6 +101,6 @@ ColorButton::__pickColor() {
 
   delete dialog;
 
-  updateColor();
+  update();
 }
 

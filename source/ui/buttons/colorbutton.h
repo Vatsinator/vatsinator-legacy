@@ -27,6 +27,7 @@ class ColorButton : public QPushButton {
   /*
    * We need to subclass the QPushButton in order to make a nice
    * colorful button for Settings Window.
+   * The idea was taken from KColorButton of KDEui.
    */
 
   Q_OBJECT
@@ -35,12 +36,19 @@ public:
   ColorButton(QWidget* = 0);
 
   void setColor(const QColor&);
-  void updateColor();
+  
+  virtual QSize sizeHint() const;
+  virtual QSize minimumSizeHint() const;
 
   inline const QColor&
   getColor() { return __current; }
+  
+protected:
+  virtual void paintEvent(QPaintEvent*);
 
 private:
+  void __initStyleOptionButton(QStyleOptionButton*) const;
+  
   QColor  __current;
 
 private slots:

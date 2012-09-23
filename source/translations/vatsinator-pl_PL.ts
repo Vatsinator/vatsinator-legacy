@@ -255,7 +255,7 @@
 <context>
     <name>ColorButton</name>
     <message>
-        <location filename="../ui/buttons/colorbutton.cpp" line="47"/>
+        <location filename="../ui/buttons/colorbutton.cpp" line="97"/>
         <source>Select color</source>
         <translation>Wybierz kolor</translation>
     </message>
@@ -572,77 +572,77 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="132"/>
+        <location filename="../ui/resources/userinterface.ui" line="89"/>
         <source>Clients:</source>
         <translation>Klientów:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="151"/>
+        <location filename="../ui/resources/userinterface.ui" line="115"/>
         <source>N E</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="198"/>
+        <location filename="../ui/resources/userinterface.ui" line="158"/>
         <source>Vatsinator</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="216"/>
+        <location filename="../ui/resources/userinterface.ui" line="176"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="222"/>
+        <location filename="../ui/resources/userinterface.ui" line="182"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="236"/>
+        <location filename="../ui/resources/userinterface.ui" line="196"/>
         <source>Exit</source>
         <translation>Wyjście</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="239"/>
+        <location filename="../ui/resources/userinterface.ui" line="199"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="248"/>
+        <location filename="../ui/resources/userinterface.ui" line="208"/>
         <source>About</source>
         <translation>O programie</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="260"/>
+        <location filename="../ui/resources/userinterface.ui" line="220"/>
         <source>METARs...</source>
         <translation>Raporty pogodowe</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="263"/>
+        <location filename="../ui/resources/userinterface.ui" line="223"/>
         <source>Ctrl+M</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="272"/>
+        <location filename="../ui/resources/userinterface.ui" line="232"/>
         <source>Refresh</source>
         <translation>Odśwież</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="275"/>
+        <location filename="../ui/resources/userinterface.ui" line="235"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="284"/>
+        <location filename="../ui/resources/userinterface.ui" line="244"/>
         <source>Preferences: Vatsinator</source>
         <translation>Ustawienia programu</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="292"/>
+        <location filename="../ui/resources/userinterface.ui" line="252"/>
         <source>Flight list...</source>
         <translation>Lista lotów</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="297"/>
+        <location filename="../ui/resources/userinterface.ui" line="257"/>
         <source>ATC list...</source>
         <translation>Lista kontrolerów</translation>
     </message>
@@ -680,38 +680,38 @@
         <translation>- szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1275"/>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1279"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1282"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1286"/>
         <source>(unknown)</source>
         <translation>(brak)</translation>
     </message>
     <message>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1283"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1290"/>
         <source>Ground speed:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1284"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1291"/>
         <source>kts</source>
         <translation>węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1284"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1291"/>
         <source>Altitude: </source>
         <translation>Wysokość:</translation>
     </message>
     <message>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1285"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1292"/>
         <source>ft</source>
         <translation>stóp</translation>
     </message>
     <message>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1309"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1316"/>
         <source>Departures:</source>
         <translation>Odloty:</translation>
     </message>
     <message>
-        <location filename="../ui/mapwidget/mapwidget.cpp" line="1314"/>
+        <location filename="../ui/mapwidget/mapwidget.cpp" line="1321"/>
         <source>Arrivals:</source>
         <translation>Przyloty:</translation>
     </message>
@@ -967,32 +967,32 @@
         <translation type="obsolete">Aktualizacja:</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="103"/>
+        <location filename="../ui/userinterface.cpp" line="104"/>
         <source>Last update:</source>
         <translation>Aktualizacja:</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="105"/>
+        <location filename="../ui/userinterface.cpp" line="106"/>
         <source> UTC</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="117"/>
+        <location filename="../ui/userinterface.cpp" line="123"/>
         <source>Clients</source>
         <translation>Klientów</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="121"/>
+        <location filename="../ui/userinterface.cpp" line="127"/>
         <source>pilots</source>
         <translation>pilotów</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="123"/>
+        <location filename="../ui/userinterface.cpp" line="129"/>
         <source>ATCs</source>
         <translation>kontrolerów</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="125"/>
+        <location filename="../ui/userinterface.cpp" line="131"/>
         <source>observers</source>
         <translation>obserwatorów</translation>
     </message>
@@ -1000,36 +1000,35 @@
 <context>
     <name>VatsinatorApplication</name>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="166"/>
         <source>Fetching data...</source>
-        <translation>Pobieranie danych...</translation>
+        <translation type="obsolete">Pobieranie danych...</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="197"/>
-        <location filename="../vatsinatorapplication.cpp" line="226"/>
+        <location filename="../vatsinatorapplication.cpp" line="194"/>
+        <location filename="../vatsinatorapplication.cpp" line="225"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Nie udało mi się pobrać pliku z danymi.</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="198"/>
-        <location filename="../vatsinatorapplication.cpp" line="227"/>
+        <location filename="../vatsinatorapplication.cpp" line="195"/>
+        <location filename="../vatsinatorapplication.cpp" line="226"/>
         <source>What do you want to do with that?</source>
         <translation>Cóż więc uczynimy?</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="199"/>
-        <location filename="../vatsinatorapplication.cpp" line="228"/>
+        <location filename="../vatsinatorapplication.cpp" line="196"/>
+        <location filename="../vatsinatorapplication.cpp" line="227"/>
         <source>Try again</source>
         <translation>Próbuj jeszcze raz</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="200"/>
-        <location filename="../vatsinatorapplication.cpp" line="229"/>
+        <location filename="../vatsinatorapplication.cpp" line="197"/>
+        <location filename="../vatsinatorapplication.cpp" line="228"/>
         <source>Keep current data</source>
         <translation>Zachowaj aktualne dane</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="240"/>
+        <location filename="../vatsinatorapplication.cpp" line="239"/>
         <source>Data outdated!</source>
         <translation>Dane nieaktualne!</translation>
     </message>
