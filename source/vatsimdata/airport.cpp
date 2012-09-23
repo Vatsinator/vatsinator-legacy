@@ -21,7 +21,7 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 
 #include "vatsinatorapplication.h"
 

@@ -24,7 +24,7 @@
 
 #include "ui/buttons/clientdetailsbutton.h"
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"

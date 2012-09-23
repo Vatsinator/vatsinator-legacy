@@ -37,8 +37,7 @@ set (ui_SRCS
     buttons/clientdetailsbutton.cpp
     buttons/showairportbutton.cpp
     
-    mapwidget/mapwidget.cpp
-    
+    widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     
     windows/aboutwindow.cpp
@@ -68,8 +67,7 @@ set (ui_MOC_SRCS
     buttons/clientdetailsbutton.h
     buttons/showairportbutton.h
     
-    mapwidget/mapwidget.h
-    
+    widgets/mapwidget.h
     widgets/replaceablewidget.h
     
     windows/aboutwindow.h
@@ -110,7 +108,7 @@ vatsinator_subdirectory_resources (ui "${ui_QRCS}")
 if (MINGW)
     add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/vatsinatorico.o
         COMMAND ${WINDRES_COMMAND}
-        -i${CMAKE_CURRENT_SOURCE_DIR}/resources/vatsinator.rc
+        -i${PROJECT_SOURCE_DIR}/dist/vatsinator.rc
         -o ${CMAKE_CURRENT_BINARY_DIR}/vatsinatorico.o
     )
     

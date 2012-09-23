@@ -23,7 +23,7 @@
 #include <QString>
 #include <QtOpenGL>
 
-#include "ui/mapwidget/clickable.h"
+#include "vatsimdata/clickable.h"
 
 struct AirportRecord;
 class Fir;

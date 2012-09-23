@@ -144,10 +144,6 @@ elseif (APPLE)
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
         COMMAND cp ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
-#         COMMAND rm -rf
-#         ${CMAKE_CURRENT_BINARY_DIR}/${MACOSX_BUNDLE_BUNDLE_NAME}.app
-#         COMMAND mv ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app
-#         ${CMAKE_CURRENT_BINARY_DIR}/${MACOSX_BUNDLE_BUNDLE_NAME}.app
     )
 elseif (MINGW)
     install (PROGRAMS

@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 #include "ui/windows/flightdetailswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"

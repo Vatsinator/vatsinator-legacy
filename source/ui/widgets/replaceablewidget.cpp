@@ -26,12 +26,11 @@ ReplaceableWidget::ReplaceableWidget(QWidget* _parent) :
 
 void
 ReplaceableWidget::setWidgets(QWidget* _a, QWidget* _b) {
-  __a = addWidget(_a);
-  __b = addWidget(_b);
-  setCurrentIndex(0);
+  addWidget(_a);
+  addWidget(_b);
 }
 
 void
 ReplaceableWidget::toggle() {
-  setCurrentIndex(currentIndex() == __a ? __b : __a);
+  setCurrentIndex(count() - currentIndex() - 1);
 }

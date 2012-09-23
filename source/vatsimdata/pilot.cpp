@@ -26,7 +26,7 @@
 
 #include "settings/settingsmanager.h"
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
 

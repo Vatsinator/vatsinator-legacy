@@ -23,7 +23,7 @@
 
 #include "ui/userinterface.h"
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 
 #include "vatsimdata/controller.h"
 

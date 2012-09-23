@@ -1,5 +1,5 @@
 /*
-    uir.h
+    clickable.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,42 +17,22 @@
 */
 
 
-#ifndef UIR_H
-#define UIR_H
+#ifndef CLICKABLE_H
+#define CLICKABLE_H
 
-#include <QString>
-#include <QVector>
+enum ObjectType {
+  PLANE, AIRPORT, FIR, UIR
+};
 
-#include "vatsimdata/controller.h"
-#include "vatsimdata/clickable.h"
-#include "vatsimdata/fir.h"
-
-class Uir : public Clickable {
+class Clickable {
 
 public:
 
-  ObjectType objectType() const { return UIR; }
+  virtual ObjectType objectType() const = 0;
 
-  void addFir(Fir*);
+  virtual ~Clickable() {}
 
-  void addStaff(const Controller*);
-
-  inline const QVector< Fir* > &
-  getRange() const { return __range; }
-
-  inline const QVector< const Controller* > &
-  getStaff() const { return __staff; }
-
-  inline void
-  clear() { __staff.clear(); }
-
-  QString icao;
-  QString name;
-
-private:
-  QVector< Fir* > __range;
-  QVector< const Controller* >  __staff;
 
 };
 
-#endif // UIR_H
+#endif // CLICKABLE_H

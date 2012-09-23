@@ -1,7 +1,8 @@
-set (MACOSX_BUNDLE_ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/vatsinator.icns)
+set (MACOSX_BUNDLE_ICON_FILE "${PROJECT_SOURCE_DIR}/dist/vatsinator.icns")
 set (MACOSX_BUNDLE_VERSION "${vatsinator_VERSION}")
 set (MACOSX_BUNDLE_SHORT_VERSION_STRING "${vatsinator_VERSION}")
 set (MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${vatsinator_VERSION}")
 set (MACOSX_BUNDLE_GUI_IDENTIFIER "Vatsinator")
 set (MACOSX_BUNDLE_BUNDLE_NAME "Vatsinator")
+set (CMAKE_OSX_ARCHITECTURES ppc;i386)
 

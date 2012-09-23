@@ -24,7 +24,7 @@
 
 #include "ui/userinterface.h"
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
 
 #include "vatsimdata/pilot.h"

@@ -262,7 +262,7 @@
   <customwidget>
    <class>MapWidget</class>
    <extends>QWidget</extends>
-   <header>ui/mapwidget/mapwidget.h</header>
+   <header>ui/widgets/mapwidget.h</header>
   </customwidget>
   <customwidget>
    <class>ReplaceableWidget</class>

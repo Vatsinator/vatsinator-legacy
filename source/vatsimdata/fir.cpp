@@ -21,7 +21,7 @@
 #include "glutils/vertexbufferobject.h"
 #include "glutils/glextensions.h"
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"

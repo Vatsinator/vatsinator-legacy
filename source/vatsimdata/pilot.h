@@ -25,7 +25,7 @@
 
 #include <QtOpenGL>
 
-#include "ui/mapwidget/clickable.h"
+#include "vatsimdata/clickable.h"
 #include "vatsimdata/client.h"
 
 enum FlightRules {

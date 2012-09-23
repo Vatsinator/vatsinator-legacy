@@ -18,8 +18,8 @@
 
 #include <string>
 #include <cstddef>
-#include <QtOpenGL>
 
+#include <QtOpenGL>
 #include <QDebug>
 #include <QGLContext>
 
@@ -35,7 +35,7 @@
 #include <OpenGL/glext.h>
 #endif
 
-#ifndef Q_OS_DARWIN
+#ifndef Q_OS_DARWIN // apple's impelementation already knows these extensions
 using std::string;
 
 typedef ptrdiff_t GLsizeiptr;
@@ -53,7 +53,7 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
 template < typename T >
 inline T getProcAddress(const string& _procName) {
   T temp = NULL;
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#if defined Q_OS_LINUX
   temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
 #elif defined Q_OS_WIN32
   temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));

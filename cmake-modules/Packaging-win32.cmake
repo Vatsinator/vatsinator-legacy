@@ -7,15 +7,15 @@ include (CPackDefaultOptions)
 set (CPACK_PACKAGE_FILE_NAME "vatsinator-${vatsinator_VERSION}")
 set (CPACK_PACKAGE_EXECUTABLES "vatsinator;Vatsinator")
 set (CPACK_PACKAGE_INSTALL_DIRECTORY "Vatsinator")
-set (CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/vatsinator-24.png")
+set (CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/dist/icon.png")
 
 set (CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 
 set (CPACK_NSIS_PACKAGE_NAME "Vatsinator")
 set (CPACK_NSIS_DISPLAY_NAME "Vatsinator")
 
-set (CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/icon.ico")
-set (CPACK_NSIS_MUI_UNIICON "${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/uninstall.ico")
+set (CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/dist/icon.ico")
+set (CPACK_NSIS_MUI_UNIICON "${PROJECT_SOURCE_DIR}/dist/uninstall.ico")
 set (CPACK_NSIS_DISPLAY_NAME "Vatsinator")
 set (CPACK_NSIS_HELP_LINK "https://github.com/Garrappachc/Vatsinator")
 set (CPACK_NSIS_URL_INFO_ABOUT "https://github.com/Garrappachc/Vatsinator")

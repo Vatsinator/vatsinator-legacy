@@ -24,6 +24,12 @@
 
 class ReplaceableWidget : public QStackedWidget {
   
+  /*
+   * This widget is used prior to display label that
+   * changes to progress bar, which is visible at the
+   * bottom-left corner of the main window.
+   */
+  
   Q_OBJECT
   
 public:
@@ -32,10 +38,6 @@ public:
   void setWidgets(QWidget*, QWidget*);
   
   void toggle();
-  
-private:
-  int __a;
-  int __b;
   
 };
 

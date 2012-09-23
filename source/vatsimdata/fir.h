@@ -27,7 +27,7 @@
 #include "db/point.h"
 
 #include "vatsimdata/airport.h"
-#include "ui/mapwidget/clickable.h"
+#include "vatsimdata/clickable.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
 

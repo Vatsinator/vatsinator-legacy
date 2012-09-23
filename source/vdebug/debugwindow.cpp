@@ -20,7 +20,7 @@
 
 #include "glutils/vertexbufferobject.h"
 
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 
 #include "vdebug/glerrors.h"
 

@@ -21,7 +21,7 @@
 #define USERINTERFACE_H
 
 #include "ui/ui_userinterface.h"
-#include "ui/mapwidget/mapwidget.h"
+#include "ui/widgets/mapwidget.h"
 #include "singleton.h"
 
 #ifndef NO_DEBUG

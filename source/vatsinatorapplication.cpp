@@ -159,7 +159,6 @@ VatsinatorApplication::log(const char* _s) {
 
 void
 VatsinatorApplication::refreshData() {
-//   __userInterface->statusBarUpdate(tr("Fetching data..."));
   __userInterface->toggleStatusBar();
   __httpHandler->fetchData(__vatsimData->getDataUrl());
   __timer.start(__settingsManager->getRefreshRate() * 60000);
@@ -190,6 +189,8 @@ VatsinatorApplication::__emitGLInitialized() {
 
 void
 VatsinatorApplication::__showDataAlert() {
+  __userInterface->toggleStatusBar();
+  
   QMessageBox decision;
   decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
   decision.setInformativeText(tr("What do you want to do with that?"));
