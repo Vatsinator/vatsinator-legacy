@@ -80,6 +80,15 @@ ColorButton::paintEvent(QPaintEvent*) {
   
   // fill rectangle(x, y, w, h) with brush
   qDrawShadePanel(&painter, x, y, w, h, palette(), true, 1, &brush);
+  
+  if (hasFocus()) {
+    QRect focusRect = style->subElementRect(QStyle::SE_PushButtonFocusRect, &optBtn, this);
+    QStyleOptionFocusRect focusOpt;
+    focusOpt.init(this);
+    focusOpt.rect = focusRect;
+    focusOpt.backgroundColor = palette().background().color();
+    style->drawPrimitive(QStyle::PE_FrameFocusRect, &focusOpt, &painter, this);
+  }
 }
 
 void
