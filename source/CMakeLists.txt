@@ -57,7 +57,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(${QT_DEFINITIONS})
 
-add_executable (${vatsinator_TARGET} WIN32
+add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     main.cpp
     ${vatsinator_SRCS}
     ${vatsinator_MOC_FILES}
@@ -131,14 +131,19 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
         DESTINATION share/vatsinator/translations
     )
 elseif (APPLE)
-    install (TARGETS ${vatsinator_TARGET}
-        BUNDLE DESTINATION . COMPONENT Runtime
-    )
-    
-    install (FILES
-        ${LANGUAGE_FILES}
-        ${vatsinator_TRANSLATIONS}
-        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources/translations
+    add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
+        COMMAND mkdir -p
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
+        COMMAND cp ${MACOSX_BUNDLE_ICON_FILE} ${vatsinator_BUNDLE_RESOURCES}
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
+        COMMAND cp ${vatsinator_BUNDLE_PIXMAPS}
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
+        COMMAND cp ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
+        COMMAND rm -rf
+        ${CMAKE_CURRENT_BINARY_DIR}/${MACOSX_BUNDLE_BUNDLE_NAME}.app
+        COMMAND mv ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app
+        ${CMAKE_CURRENT_BINARY_DIR}/${MACOSX_BUNDLE_BUNDLE_NAME}.app
     )
 elseif (MINGW)
     install (PROGRAMS

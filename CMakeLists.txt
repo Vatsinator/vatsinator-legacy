@@ -94,39 +94,30 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
     include (Packaging-linux)
 
 elseif (APPLE)
-    install (FILES
-        ${QT_QTGUI_LIBRARY_RELEASE}/Versions/Current/QtGui
-        ${QT_QTCORE_LIBRARY_RELEASE}/Versions/Current/QtCore
-        ${QT_QTNETWORK_LIBRARY_RELEASE}/Versions/Current/QtNetwork
-        ${QT_QTOPENGL_LIBRARY_RELEASE}/Versions/Current/QtOpenGL
-        ${QT_QTSVG_LIBRARY_RELEASE}/Versions/Current/QtSvg
-        ${QT_QTXML_LIBRARY_RELEASE}/Versions/Current/QtXml
-        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Frameworks
-    )
-        
     
-    install (FILES
-        COPYING
-        resources/models.dat
-        resources/vatsinator.dat
-        resources/WorldAirports.db
-        resources/WorldFirs.db
-        resources/WorldMap.db
-        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources
-    )
-
-    install (FILES
-        resources/pixmaps/1p32.png
-        resources/pixmaps/2p32.png
-        resources/pixmaps/4p32.png
-        resources/pixmaps/2j32.png
-        resources/pixmaps/3j32.png
-        resources/pixmaps/4j32.png
-        resources/pixmaps/conc32.png
-        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources/pixmaps
-    )
-    
+    # This script actually does not pack the app, it just sets
+    # some neede variables. I put them in a separate file
+    # not to mess around here.
     include (Packaging-darwin)
+    
+    set (vatsinator_BUNDLE_RESOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/COPYING
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/models.dat
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/vatsinator.dat
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldAirports.db
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldFirs.db
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldMap.db
+    )
+    
+    set (vatsinator_BUNDLE_PIXMAPS
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/1p32.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/2p32.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/4p32.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/2j32.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/3j32.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/4j32.png
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/conc32.png
+    )
 
 # builds for win32
 elseif (MINGW)
