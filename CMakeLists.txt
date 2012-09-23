@@ -95,6 +95,17 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 
 elseif (APPLE)
     install (FILES
+        ${QT_QTGUI_LIBRARY_RELEASE}/Versions/Current/QtGui
+        ${QT_QTCORE_LIBRARY_RELEASE}/Versions/Current/QtCore
+        ${QT_QTNETWORK_LIBRARY_RELEASE}/Versions/Current/QtNetwork
+        ${QT_QTOPENGL_LIBRARY_RELEASE}/Versions/Current/QtOpenGL
+        ${QT_QTSVG_LIBRARY_RELEASE}/Versions/Current/QtSvg
+        ${QT_QTXML_LIBRARY_RELEASE}/Versions/Current/QtXml
+        DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Frameworks
+    )
+        
+    
+    install (FILES
         COPYING
         resources/models.dat
         resources/vatsinator.dat
@@ -113,18 +124,6 @@ elseif (APPLE)
         resources/pixmaps/4j32.png
         resources/pixmaps/conc32.png
         DESTINATION ${CMAKE_PROJECT_NAME}.app/Contents/Resources/pixmaps
-    )
-    
-    set (plugin_dest_dir ${CMAKE_PROJECT_NAME}.app/Contents/MacOS)
-    set (APPS "\${CMAKE_INSTALL_PREFIX}/${CMAKE_PROJECT_NAME}.app")
-    set (DIRS ${QT_LIBRARY_DIRS})
-    
-    install (CODE "
-        file(GLOB_RECURSE_QTPLUGINS
-          \"\${CMAKE_INSTALL_PREFIX}/${plugin_dest_dir}/plugins/*${CMAKE_SHARED_LIBRARY_SUFFIX}\")
-        include(BundleUtilities)
-        fixup_bundle(\"${APPS}\" \"\${QTPLUGINS}\" \"${DIRS}\")
-        " COMPONENT Runtime
     )
     
     include (Packaging-darwin)
