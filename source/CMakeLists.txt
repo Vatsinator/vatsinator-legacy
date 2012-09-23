@@ -16,7 +16,7 @@ set (vatsinator_SRCS
 if (APPLE)
     set (vatsinator_SRCS
         ${vatsinator_SRCS}
-        ${CMAKE_CURRENT_SOURCE_DIR}/source/ui/resources/vatsinator.icns
+        ${CMAKE_CURRENT_SOURCE_DIR}/ui/resources/vatsinator.icns
     )
 endif (APPLE)
 
