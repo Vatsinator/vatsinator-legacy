@@ -33,6 +33,8 @@ git clone $vatsinator_git $builddir
 cd $builddir
 git checkout $tag
 
+git clone -b debian $vatsinator_git debian
+
 mkdir bin
 cd bin
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
