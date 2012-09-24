@@ -131,19 +131,18 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
         DESTINATION share/vatsinator/translations
     )
 elseif (APPLE)
-    message (STATUS " * Bundle icon file: ${MACOSX_BUNDLE_ICON_FILE}")
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
-        COMMAND mkdir -p
+        COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
-        COMMAND cp ${MACOSX_BUNDLE_ICON_FILE} ${vatsinator_BUNDLE_RESOURCES}
+        COMMAND cp ARGS ${MACOSX_BUNDLE_ICON_FILE} ${vatsinator_BUNDLE_RESOURCES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
-        COMMAND mkdir -p
+        COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
-        COMMAND cp ${vatsinator_BUNDLE_PIXMAPS}
+        COMMAND cp ARGS ${vatsinator_BUNDLE_PIXMAPS}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
-        COMMAND mkdir -p
+        COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
-        COMMAND cp ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
+        COMMAND cp ARGS ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
     )
 elseif (MINGW)

@@ -4,12 +4,12 @@
 # This script is under construction.
 #
 
-dist=$1
-branch=$2
+tag=$1
+dist=$2
 
 if [ -z "$dist" ]; then
-	echo "Usage: $0 <dist> [branch]"
-	echo "Example: $0 precise master"
+	echo "Usage: $0 <tag> <dist>"
+	echo "Example: $0 0.1 precise"
 	exit 1
 fi
 
@@ -29,14 +29,12 @@ mkdir -p $tmpdir
 
 # clone source code
 cd $tmpdir
-if [ -z "$branch" ]; then
-	git clone $vatsinator_git $builddir
-else
-	git clone $vatsinator_git -b $branch $builddir
-fi
+git clone $vatsinator_git $builddir
+cd $builddir
+git checkout $tag
 
-mkdir $builddir/bin
-cd $builddir/bin
+mkdir bin
+cd bin
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
 
 
