@@ -131,7 +131,7 @@ elseif (APPLE)
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
-        COMMAND cp ARGS ${MACOSX_BUNDLE_ICON_FILE} ${vatsinator_BUNDLE_RESOURCES}
+        COMMAND cp ARGS ${MACOSX_BUNDLE_ICON} ${vatsinator_BUNDLE_RESOURCES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
@@ -141,9 +141,12 @@ elseif (APPLE)
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
         COMMAND cp ARGS ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
-        COMMAND ${PROJECT_SOURCE_DIR}/dist/macdeploy.sh ARGS
-        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app ${QT_LIBRARY_DIR}
     )
+    
+    install (TARGETS ${vatsinator_TARGET} DESTINATION .)
+    
+    include (DeployQt4)
+    install_qt4_executable ("${vatsinator_TARGET}.app")
 elseif (MINGW)
     install (PROGRAMS
         ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.exe

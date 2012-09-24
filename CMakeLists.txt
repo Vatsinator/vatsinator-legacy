@@ -10,6 +10,14 @@ cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 find_package (Qt4 4.7 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
 find_package (OpenGL REQUIRED)
 
+if (UNIX AND NOT APPLE AND NOT MINGW)
+    set (LINUX 1)
+endif (UNIX AND NOT APPLE AND NOT MINGW)
+
+if (MINGW OR WIN32)
+    set (WINDOWS 1)
+endif (MINGW OR WIN32)
+
 include(${QT_USE_FILE})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
@@ -26,7 +34,9 @@ set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
 set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
 
 # set windres command
-set (WINDRES_COMMAND i686-pc-mingw32-windres)
+if (MINGW)
+  set (WINDRES_COMMAND i686-pc-mingw32-windres)
+endif (MINGW)
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -35,7 +45,7 @@ if (NOT vatsinator_VERSION)
 endif (NOT vatsinator_VERSION)
 
 # only for Linux
-if (UNIX AND NOT APPLE AND NOT MINGW)
+if (LINUX)
     
     # create desktop entry file
     if (NOT DESKTOP_ENTRY)
@@ -97,9 +107,6 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 
 elseif (APPLE)
     
-    # This script actually does not pack the app, it just sets
-    # some neede variables. I put them in a separate file
-    # not to mess around here.
     include (Packaging-darwin)
     
     set (vatsinator_BUNDLE_RESOURCES
@@ -122,11 +129,11 @@ elseif (APPLE)
     )
 
 # builds for win32
-elseif (MINGW)
+elseif (WINDOWS)
     
-    if (NOT MINGW_LIBS_PATH)
+    if (MINGW AND NOT MINGW_LIBS_PATH)
         set (MINGW_LIBS_PATH ${CMAKE_CURRENT_BINARY_DIR})
-    endif (NOT MINGW_LIBS_PATH)
+    endif (MINGW AND NOT MINGW_LIBS_PATH)
     
     install (FILES
         ${QT_QTGUI_LIBRARY_RELEASE}
@@ -163,7 +170,7 @@ elseif (MINGW)
     
     include (Packaging-win32)
     
-endif (UNIX AND NOT APPLE AND NOT MINGW)
+endif (LINUX)
 
 add_subdirectory (source)
 
