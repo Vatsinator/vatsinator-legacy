@@ -7,8 +7,10 @@ project (vatsinator)
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
 # find necessary libs
-find_package (Qt4    REQUIRED)
+find_package (Qt4 4.7 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
 find_package (OpenGL REQUIRED)
+
+include(${QT_USE_FILE})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
