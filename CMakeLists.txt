@@ -104,6 +104,11 @@ if (LINUX)
     endforeach (ICON)
     
     include (Packaging-linux)
+    
+    option (WITH_DEBIAN OFF)
+    if (WITH_DEBIAN)
+        add_subdirectory (debian)
+    endif (WITH_DEBIAN)
 
 elseif (APPLE)
     

@@ -2,11 +2,16 @@ Source: vatsinator
 Section: web
 Priority: extra
 Maintainer: Michał Garapich <michal@garapich.pl>
-Build-Depends: debhelper (>= 8.0.0), cmake, libqt4-core (>=4.7), libqt4-gui (>=4.7), libqt4-opengl (>=4.7), libqt4-network (>=4.7), libqt4-opengl-dev (>=4.7), qt4-qmake (>=4.7)
+Build-Depends: debhelper (>= 8.0.0),
+               cmake,
+               libqt4-core (>=4.7),
+               libqt4-gui (>=4.7),
+               libqt4-opengl (>=4.7),
+               libqt4-network (>=4.7),
+               libqt4-opengl-dev (>=4.7),
+               qt4-qmake (>=4.7)
 Standards-Version: 3.9.3
 Homepage: https://github.com/Garrappachc/Vatsinator
-#Vcs-Git: git://git.debian.org/collab-maint/vatsinator.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/vatsinator.git;a=summary
 
 Package: vatsinator
 Architecture: any

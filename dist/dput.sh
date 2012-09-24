@@ -19,10 +19,12 @@ vatsinator_git=git://github.com/Garrappachc/Vatsinator.git
 tmpdir=`pwd`/work
 builddir=vatsinator
 
-echo "Temporary directory: $tmpdir"
-echo "Build directory: $tmpdir/$builddir"
+echo " * Temporary directory: $tmpdir"
+echo " * Build directory: $tmpdir/$builddir"
 
-echo "Downloading source..."
+echo
+echo " ==> Downloading source..."
+echo
 
 # prepare
 mkdir -p $tmpdir
@@ -33,18 +35,23 @@ git clone $vatsinator_git $builddir
 cd $builddir
 git checkout $tag
 
-git clone -b debian $vatsinator_git debian
+echo
+echo " ==> Preparing files..."
+echo
 
 mkdir bin
 cd bin
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+cmake .. -DDEB_DIST=$dist -DWITH_DEBIAN=ON
+rm -rf *
 
-
-echo "Cleaning up..."
+echo
+echo " ==> Cleaning up..."
+echo
 
 # cleanup
 cd $tmpdir/..
 rm -rf $tmpdir
 
-echo "Done."
+echo
+echo " ==> Done."
 

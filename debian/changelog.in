@@ -1,6 +1,6 @@
-vatsinator (${VATSINATOR_VERSION}~${DEB_DIST}) ${DEB_DIST}; urgency=low
+vatsinator (${vatsinator_VERSION}~${DEB_DIST}) ${DEB_DIST}; urgency=low
 
-  * Version ${VATSINATOR_VERSION}
+  * Version ${vatsinator_VERSION}
 
  -- Michał Garapich <michal@garapich.pl>  ${DEB_DATE}
 
