@@ -13,12 +13,12 @@ set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
 
-if (APPLE)
-    set (vatsinator_SRCS
-        ${vatsinator_SRCS}
-        ${CMAKE_CURRENT_SOURCE_DIR}/ui/resources/vatsinator.icns
-    )
-endif (APPLE)
+# if (APPLE)
+#     set (vatsinator_SRCS
+#         ${vatsinator_SRCS}
+#         ${CMAKE_CURRENT_SOURCE_DIR}/ui/resources/vatsinator.icns
+#     )
+# endif (APPLE)
 
 
 set (vatsinator_MOC_SRCS
