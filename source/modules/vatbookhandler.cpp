@@ -1,5 +1,5 @@
 /*
-    modulemanager.h
+    vatbookhandler.cpp
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -16,37 +16,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtGui>
 
-#ifndef MODULEMANAGER_H
-#define MODULEMANAGER_H
+#include "vatbookhandler.h"
+#include "defines.h"
 
-#include "singleton.h"
+static const QString VATBOOK_URL = "http://vatbook.euroutepro.com/servinfo.asp";
 
-#include <QObject>
+VatbookHandler::VatbookHandler(QObject* _parent) :
+    QObject(_parent) {
 
-class FlightTracker;
-class ModelMatcher;
-class VatbookHandler;
+}
 
-class ModuleManager :
-    public QObject,
-    public Singleton< ModuleManager > {
-
-  Q_OBJECT
-
-public:
-  ModuleManager();
-  virtual ~ModuleManager();
-
-  void init();
-
-private slots:
-  void __initAfterGL();
-
-private:
-  FlightTracker*  __flightTracker;
-  ModelMatcher*   __modelsMatcher;
-  VatbookHandler* __vatbookHandler;
-};
-
-#endif // MODULEMANAGER_H

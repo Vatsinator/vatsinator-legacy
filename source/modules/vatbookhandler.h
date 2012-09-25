@@ -1,5 +1,5 @@
 /*
-    modulemanager.h
+    vatbookhandler.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,36 +17,25 @@
 */
 
 
-#ifndef MODULEMANAGER_H
-#define MODULEMANAGER_H
-
-#include "singleton.h"
+#ifndef VATBOOKHANDLER_H
+#define VATBOOKHANDLER_H
 
 #include <QObject>
 
-class FlightTracker;
-class ModelMatcher;
-class VatbookHandler;
+#include "singleton.h"
 
-class ModuleManager :
+class VatbookHandler :
     public QObject,
-    public Singleton< ModuleManager > {
-
+    public Singleton< VatbookHandler > {
+  
   Q_OBJECT
-
+  
 public:
-  ModuleManager();
-  virtual ~ModuleManager();
-
-  void init();
-
-private slots:
-  void __initAfterGL();
-
-private:
-  FlightTracker*  __flightTracker;
-  ModelMatcher*   __modelsMatcher;
-  VatbookHandler* __vatbookHandler;
+  VatbookHandler(QObject* = 0);
+  
+  
+  
+  
 };
 
-#endif // MODULEMANAGER_H
+#endif // VATBOOKHANDLER_H

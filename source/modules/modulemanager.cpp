@@ -18,6 +18,7 @@
 
 #include "modules/flighttracker.h"
 #include "modules/modelmatcher.h"
+#include "modules/vatbookhandler.h"
 
 #include "vatsinatorapplication.h"
 
@@ -26,7 +27,8 @@
 
 ModuleManager::ModuleManager() :
     __flightTracker(new FlightTracker()),
-    __modelsMatcher(new ModelMatcher()) {
+    __modelsMatcher(new ModelMatcher()),
+    __vatbookHandler(new VatbookHandler()) {
   connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(glInitialized()),
           this,                                     SLOT(__initAfterGL()),
           Qt::DirectConnection);
@@ -35,6 +37,7 @@ ModuleManager::ModuleManager() :
 ModuleManager::~ModuleManager() {
   delete __flightTracker;
   delete __modelsMatcher;
+  delete __vatbookHandler;
 }
 
 void
