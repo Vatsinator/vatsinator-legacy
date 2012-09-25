@@ -1,9 +1,5 @@
 #!/bin/sh -e
 
-#
-# This script is under construction.
-#
-
 tag=$1
 dist=$2
 
@@ -57,7 +53,12 @@ rm -rf $tmpdir/$builddir/.git
 cd $tmpdir/$builddir
 dpkg-buildpackage -S -k63EA79F5
 
+echo
+echo " ==> Uploading package..."
+echo
+
 cd $tmpdir
+dput $vatsinator_ppa *_source.changes
 
 echo
 echo " ==> Cleaning up..."
