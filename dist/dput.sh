@@ -45,12 +45,27 @@ cmake .. -DDEB_DIST=$dist -DWITH_DEBIAN=ON
 rm -rf *
 
 echo
+echo " ==> Creating packages..."
+echo
+
+cd $tmpdir/$builddir/dist
+./maketarball.sh
+mv $tmpdir/$builddir/dist/*.orig.tar.gz $tmpdir/
+rm $tmpdir/$builddir/dist/*.tar.gz
+rm -rf $tmpdir/$builddir/.git
+
+cd $tmpdir/$builddir
+dpkg-buildpackage -S -k63EA79F5
+
+cd $tmpdir
+
+echo
 echo " ==> Cleaning up..."
 echo
 
 # cleanup
 cd $tmpdir/..
-rm -rf $tmpdir
+#rm -rf $tmpdir
 
 echo
 echo " ==> Done."

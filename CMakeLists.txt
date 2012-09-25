@@ -46,7 +46,6 @@ endif (NOT vatsinator_VERSION)
 
 # only for Linux
 if (LINUX)
-    
     # create desktop entry file
     if (NOT DESKTOP_ENTRY)
         set (DESKTOP_ENTRY ${CMAKE_SOURCE_DIR}/vatsinator.desktop)
@@ -108,6 +107,7 @@ if (LINUX)
     option (WITH_DEBIAN OFF)
     if (WITH_DEBIAN)
         add_subdirectory (debian)
+        add_subdirectory (dist)
     endif (WITH_DEBIAN)
 
 elseif (APPLE)
