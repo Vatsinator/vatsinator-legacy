@@ -14,9 +14,9 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)
 endif (UNIX AND NOT APPLE AND NOT MINGW)
 
-if (MINGW OR WIN32)
-    set (WINDOWS 1)
-endif (MINGW OR WIN32)
+if (MINGW)
+    set (WIN32 1)
+endif (MINGW)
 
 include(${QT_USE_FILE})
 
@@ -134,7 +134,7 @@ elseif (APPLE)
     )
 
 # builds for win32
-elseif (WINDOWS)
+elseif (WIN32)
     
     if (MINGW AND NOT MINGW_LIBS_PATH)
         set (MINGW_LIBS_PATH ${CMAKE_CURRENT_BINARY_DIR})
@@ -182,6 +182,15 @@ add_subdirectory (source)
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+if (LINUX)
+    message (STATUS " * platform: Linux")
+elseif (APPLE)
+    message (STATUS " * platform: Apple")
+elseif (WIN32)
+    message (STATUS " * platform: Win32")
+else (LINUX)
+    message (STATUS " * platform: Undefined")
+endif (LINUX)
 
 
 # uninstall target

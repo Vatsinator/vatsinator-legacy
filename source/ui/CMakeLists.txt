@@ -105,7 +105,7 @@ set (ui_QRCS
 vatsinator_subdirectory_resources (ui "${ui_QRCS}")
 
 # icon for Windows
-if (MINGW)
+if (WIN32)
     add_custom_command (OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/vatsinatorico.o
         COMMAND ${WINDRES_COMMAND}
         -i${PROJECT_SOURCE_DIR}/dist/vatsinator.rc
@@ -113,7 +113,7 @@ if (MINGW)
     )
     
     vatsinator_subdirectory_sources (ui "${CMAKE_CURRENT_BINARY_DIR}/vatsinatorico.o")
-endif (MINGW)
+endif (WIN32)
 
 vatsinator_end_subdirectory (ui)
 

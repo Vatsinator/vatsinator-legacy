@@ -4,10 +4,10 @@ set (vatsinator_TARGET
     vatsinator
 )
 
-if (MINGW)
+if (WIN32)
     set(vatsinator_TARGET
         ${vatsinator_TARGET}.exe)
-endif (MINGW)
+endif (WIN32)
 
 set (vatsinator_SRCS
     vatsinatorapplication.cpp
@@ -61,7 +61,7 @@ add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     ${vatsinator_TRANSLATIONS}
 )
 
-if (UNIX AND NOT APPLE AND NOT MINGW)
+if (LINUX)
     # set -DPREFIX for defines.h
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
 
@@ -76,7 +76,7 @@ elseif (APPLE)
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
     )
-else (UNIX AND NOT APPLE AND NOT MINGW)
+else (WIN32)
     set (vatsinator_PREFIX "")
 
     set (vatsinator_LIBS
@@ -87,7 +87,7 @@ else (UNIX AND NOT APPLE AND NOT MINGW)
         ${QT_QTOPENGL_LIBRARY}
         ${QT_QTNETWORK_LIBRARY}
   )
-endif (UNIX AND NOT APPLE AND NOT MINGW)
+endif (LINUX)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/config.h
@@ -116,7 +116,7 @@ endif (APPLE)
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
-if (UNIX AND NOT APPLE AND NOT MINGW)
+if (LINUX)
     install (PROGRAMS
         ${CMAKE_CURRENT_BINARY_DIR}/vatsinator
         DESTINATION bin
@@ -147,7 +147,7 @@ elseif (APPLE)
     
     include (DeployQt4)
     install_qt4_executable ("${vatsinator_TARGET}.app")
-elseif (MINGW)
+elseif (WIN32)
     install (PROGRAMS
         ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.exe
         DESTINATION .
@@ -158,4 +158,4 @@ elseif (MINGW)
         ${vatsinator_TRANSLATIONS}
         DESTINATION ./translations
     )
-endif (UNIX AND NOT APPLE AND NOT MINGW)
+endif (LINUX)
