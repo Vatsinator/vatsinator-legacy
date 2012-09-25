@@ -67,7 +67,6 @@ private slots:
   void __handleError();
   void __timeToUpdate();
   
-  
 };
 
 #endif // VATBOOKHANDLER_H
