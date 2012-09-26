@@ -31,6 +31,7 @@ class BookedAtcTableModel;
 class HttpHandler;
 
 class VatbookHandler :
+    public QObject,
     public Singleton< VatbookHandler > {
   
   /*
