@@ -20,20 +20,32 @@
 #ifndef VATBOOKHANDLER_H
 #define VATBOOKHANDLER_H
 
-#include <QObject>
+#include <QMap>
+#include <QString>
 
 #include "singleton.h"
 
+class BookedAtcTableModel;
+
 class VatbookHandler :
-    public QObject,
     public Singleton< VatbookHandler > {
   
-  Q_OBJECT
+  /*
+   * This class privides VATBOOK integration.
+   */
   
 public:
-  VatbookHandler(QObject* = 0);
+  VatbookHandler();
+  virtual ~VatbookHandler();
   
+  inline BookedAtcTableModel *
+  getModel(const QString& _icao) {
+    return __bookings.value(_icao, __bookings["ZZZZ"]); 
+  }
   
+private:
+  /* This map contains pairs airport/fir icao - atcs */
+  QMap< QString, BookedAtcTableModel* > __bookings;
   
   
 };

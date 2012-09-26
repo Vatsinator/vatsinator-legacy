@@ -20,6 +20,10 @@
 
 #include "db/airportdatabase.h"
 
+#include "modules/vatbookhandler.h"
+
+#include "modules/models/bookedatctablemodel.h"
+
 #include "ui/userinterface.h"
 
 #include "ui/buttons/clientdetailsbutton.h"
@@ -147,6 +151,10 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
             this,                 SLOT(__setATCTableButtons()));
     ATCTable->setModel(aa->getStaffModel());
   }
+  
+  BookedATCTable->setModel(
+      VatbookHandler::GetSingleton().getModel(QString::fromUtf8(aa->getData()->icao)));
+    
 }
 
 void

@@ -1,5 +1,5 @@
 /*
-    vatbookhandler.cpp
+    bookedcontroller.cpp
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -18,18 +18,32 @@
 
 #include <QtGui>
 
-#include "modules/models/bookedatctablemodel.h"
-
-#include "vatbookhandler.h"
+#include "bookedcontroller.h"
 #include "defines.h"
 
-static const QString VATBOOK_URL = "http://vatbook.euroutepro.com/servinfo.asp";
+/*
+ * 0 Callsign
+ * 1 Pid
+ * 2 Real name
+ * 3 Type
+ * 4 Session type
+ * 5 
+ * ...
+ * 13
+ * 14 Booked to
+ * 15
+ * 16 Date booked
+ * 17 
+ * ...
+ * 36
+ * 37 Booked from
+ */
 
-VatbookHandler::VatbookHandler() {
-  __bookings.insert("ZZZZ", new BookedAtcTableModel);
-}
-
-VatbookHandler::~VatbookHandler() {
-  delete __bookings["ZZZZ"];
-}
-
+BookedController::BookedController(const QStringList& _data) :
+    callsign(_data[0]),
+    realName(_data[2]),
+    trainingSession(_data[4][0] == '1'),
+    dateBooked(QDate::fromString(_data[16], "yyyyMMdd")),
+    bookedFrom(QTime::fromString(_data[37], "hhmm")),
+    bookedTo(QTime::fromString(_data[14], "hhmm")) {}
+    

@@ -60,9 +60,9 @@ public:
   getOutboundsModel() const { return __outbounds; }
   
 private:
-  ControllerTableModel*	__staff;
-  FlightTableModel*	__inbounds;
-  FlightTableModel*	__outbounds;
+  ControllerTableModel* __staff;
+  FlightTableModel*     __inbounds;
+  FlightTableModel*     __outbounds;
   
 };
 
