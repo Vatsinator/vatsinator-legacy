@@ -31,6 +31,8 @@ public:
   BookedController() = delete;
   BookedController(const QStringList&);
   
+  QString getIcao() const;
+  
   QString callsign;
   QString realName;
   

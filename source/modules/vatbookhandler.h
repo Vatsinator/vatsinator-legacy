@@ -21,21 +21,28 @@
 #define VATBOOKHANDLER_H
 
 #include <QMap>
+#include <QTimer>
+#include <QObject>
 #include <QString>
 
 #include "singleton.h"
 
 class BookedAtcTableModel;
+class HttpHandler;
 
 class VatbookHandler :
+    public QObject,
     public Singleton< VatbookHandler > {
   
   /*
    * This class privides VATBOOK integration.
    */
   
+  Q_OBJECT
+  
 public:
-  VatbookHandler();
+  
+  explicit VatbookHandler(QObject* = 0);
   virtual ~VatbookHandler();
   
   inline BookedAtcTableModel *
@@ -44,8 +51,21 @@ public:
   }
   
 private:
+  
+  void __clear();
+  void __parseData(const QString&);
+  
   /* This map contains pairs airport/fir icao - atcs */
   QMap< QString, BookedAtcTableModel* > __bookings;
+  
+  HttpHandler* __httpHandler;
+  QTimer       __timer;
+  
+private slots:
+  
+  void __dataFetched(const QString&);
+  void __handleError();
+  void __timeToUpdate();
   
   
 };

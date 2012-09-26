@@ -19,17 +19,97 @@
 #include <QtGui>
 
 #include "modules/models/bookedatctablemodel.h"
+#include "modules/vatbook/bookedcontroller.h"
+
+#include "network/httphandler.h"
 
 #include "vatbookhandler.h"
 #include "defines.h"
 
 static const QString VATBOOK_URL = "http://vatbook.euroutepro.com/servinfo.asp";
+static const int REFRESH_INTERVAL = 15 * 60000;
 
-VatbookHandler::VatbookHandler() {
+VatbookHandler::VatbookHandler(QObject* _parent) : 
+    QObject(_parent),
+    __httpHandler(new HttpHandler()) {
   __bookings.insert("ZZZZ", new BookedAtcTableModel);
+  
+  connect(__httpHandler,    SIGNAL(finished(const QString&)),
+          this,             SLOT(__dataFetched(const QString&)));
+  
+  connect(&__timer,         SIGNAL(timeout()),
+          this,             SLOT(__timeToUpdate()));
+  
+  __timeToUpdate();
 }
 
 VatbookHandler::~VatbookHandler() {
+  __clear();
   delete __bookings["ZZZZ"];
+  delete __httpHandler;
+}
+
+void
+VatbookHandler::__clear() {
+  for (auto it = __bookings.begin(); it != __bookings.end(); ++it) {
+    if (it.key() != "ZZZZ") {
+      delete it.value();
+      __bookings.remove(it.key());
+    }
+  }
+}
+
+void
+VatbookHandler::__parseData(const QString& _data) {
+  bool clientsSection = false;
+  
+  for (QString& line: _data.split('\n', QString::SkipEmptyParts)) {
+    if (line.startsWith(';'))
+      continue;
+    
+    if (line.startsWith('!')) {
+      if (line.simplified() == "!CLIENTS:")
+        clientsSection = true;
+      else
+        clientsSection = false;
+      
+      continue;
+    }
+    
+    if (!clientsSection)
+      continue;
+    
+    QStringList data = line.split(':');
+    if (data[3] == "ATC") {
+      BookedController* bc = new BookedController(data);
+      if (!__bookings.contains(bc->getIcao()))
+        __bookings.insert(bc->getIcao(), new BookedAtcTableModel);
+      __bookings[bc->getIcao()]->addStaff(bc);
+    }
+  }
+}
+
+void
+VatbookHandler::__dataFetched(const QString& _data) {
+  if (_data.isEmpty())
+    return;
+  
+  __clear();
+  __parseData(_data);
+  
+  __timer.start(REFRESH_INTERVAL);
+}
+
+void
+VatbookHandler::__handleError() {
+  /* We actually should do nothing here - vatbook data should be
+   * downloaded silently, without user interrupting.
+   */
+  __timer.start(REFRESH_INTERVAL);
+}
+
+void
+VatbookHandler::__timeToUpdate() {
+  __httpHandler->fetchData(VATBOOK_URL);
 }
 

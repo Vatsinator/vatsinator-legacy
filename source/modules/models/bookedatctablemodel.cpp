@@ -26,6 +26,11 @@
 BookedAtcTableModel::BookedAtcTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}
 
+BookedAtcTableModel::~BookedAtcTableModel() {
+  for (const BookedController* bc: __staff)
+    delete bc;
+}
+
 void
 BookedAtcTableModel::addStaff(const BookedController* _bc) {
   beginInsertRows(QModelIndex(), rowCount(), rowCount());

@@ -31,6 +31,7 @@ class BookedAtcTableModel : public QAbstractTableModel {
   
 public:
   explicit BookedAtcTableModel (QObject* = 0);
+  virtual ~BookedAtcTableModel();
   
   void addStaff(const BookedController*);
   void clear();

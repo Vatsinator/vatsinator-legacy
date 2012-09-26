@@ -21,6 +21,9 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
+#include "modules/vatbookhandler.h"
+#include "modules/models/bookedatctablemodel.h"
+
 #include "ui/userinterface.h"
 
 #include "ui/buttons/clientdetailsbutton.h"
@@ -87,6 +90,8 @@ FirDetailsWindow::__updateModels(const Fir* _f) {
   ATCTable->setModel(_f->getStaffModel());
   
   AirportsTable->setModel(_f->getAirportsModel());
+  
+  BookedATCTable->setModel(VatbookHandler::GetSingleton().getModel(_f->getIcao()));
 }
 
 void

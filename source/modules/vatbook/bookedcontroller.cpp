@@ -46,4 +46,9 @@ BookedController::BookedController(const QStringList& _data) :
     dateBooked(QDate::fromString(_data[16], "yyyyMMdd")),
     bookedFrom(QTime::fromString(_data[37], "hhmm")),
     bookedTo(QTime::fromString(_data[14], "hhmm")) {}
+
+QString
+BookedController::getIcao() const {
+  return callsign.split('_').first();
+}
     
