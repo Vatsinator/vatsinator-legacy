@@ -109,7 +109,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   refreshData();
 
   // start the timer
-  __timer.start(__settingsManager->getRefreshRate() * 60000);
+  if (__settingsManager->getRefreshRate())
+    __timer.start(__settingsManager->getRefreshRate() * 60000);
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
@@ -161,7 +162,8 @@ void
 VatsinatorApplication::refreshData() {
   __userInterface->toggleStatusBar();
   __httpHandler->fetchData(__vatsimData->getDataUrl());
-  __timer.start(__settingsManager->getRefreshRate() * 60000);
+  if (__settingsManager->getRefreshRate())
+    __timer.start(__settingsManager->getRefreshRate() * 60000);
 }
 
 void

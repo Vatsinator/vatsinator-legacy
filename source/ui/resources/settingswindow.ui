@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>691</width>
-    <height>420</height>
+    <height>433</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -518,48 +518,20 @@
       <string>Miscellaneous</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="4">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="RefreshRateLabel">
+      <item row="4" column="1" colspan="3">
+       <widget class="QCheckBox" name="EnableCachingCheckBox">
         <property name="text">
-         <string>Refresh every</string>
+         <string>Enable caching</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QSpinBox" name="RefreshRateBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>60</number>
-        </property>
-        <property name="value">
-         <number>3</number>
+      <item row="3" column="1" colspan="3">
+       <widget class="QCheckBox" name="AntyaliasingCheckBox">
+        <property name="text">
+         <string>Antyaliasing</string>
         </property>
        </widget>
       </item>
@@ -586,7 +558,7 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="1" colspan="3">
+      <item row="2" column="1" colspan="3">
        <widget class="QCheckBox" name="RefreshMetarsCheckBox">
         <property name="text">
          <string>Refresh METARs as well</string>
@@ -596,20 +568,64 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1" colspan="3">
-       <widget class="QCheckBox" name="AntyaliasingCheckBox">
-        <property name="text">
-         <string>Antyaliasing</string>
+      <item row="0" column="4">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="2">
+       <widget class="QSpinBox" name="RefreshRateBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+        <property name="value">
+         <number>3</number>
         </property>
        </widget>
       </item>
-      <item row="3" column="1" colspan="3">
-       <widget class="QCheckBox" name="EnableCachingCheckBox">
+      <item row="0" column="1">
+       <widget class="QLabel" name="RefreshRateLabel">
         <property name="text">
-         <string>Enable caching</string>
+         <string>Refresh every</string>
         </property>
-        <property name="checked">
-         <bool>true</bool>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="3">
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <italic>true</italic>
+         </font>
+        </property>
+        <property name="text">
+         <string>Set 0 to switch automatic updates off.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
