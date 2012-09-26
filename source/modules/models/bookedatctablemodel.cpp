@@ -71,6 +71,10 @@ BookedAtcTableModel::data(const QModelIndex& _index, int _role) const {
   switch (_role) {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
+    case Qt::ForegroundRole:
+      if (__staff[_index.row()]->trainingSession)
+        return QBrush(Qt::blue);
+      return QVariant();
     case Qt::DisplayRole:
       
       switch (_index.column()) {

@@ -217,6 +217,11 @@ AirportDetailsWindow::__adjustTables() {
   ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
   ATCTable->setColumnWidth(ControllerTableModel::Name, 320);
   ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
+  
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Callsign, 150);
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Name, 300);
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Date, 150);
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Hours, 150);
 }
 
 void

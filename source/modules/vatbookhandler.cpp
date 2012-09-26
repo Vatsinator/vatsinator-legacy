@@ -32,7 +32,6 @@ static const int REFRESH_INTERVAL = 15 * 60000;
 VatbookHandler::VatbookHandler(QObject* _parent) : 
     QObject(_parent),
     __httpHandler(new HttpHandler()) {
-  __bookings.insert("ZZZZ", new BookedAtcTableModel);
   
   connect(__httpHandler,    SIGNAL(finished(const QString&)),
           this,             SLOT(__dataFetched(const QString&)));
@@ -45,18 +44,15 @@ VatbookHandler::VatbookHandler(QObject* _parent) :
 
 VatbookHandler::~VatbookHandler() {
   __clear();
-  delete __bookings["ZZZZ"];
   delete __httpHandler;
 }
 
 void
 VatbookHandler::__clear() {
-  for (auto it = __bookings.begin(); it != __bookings.end(); ++it) {
-    if (it.key() != "ZZZZ") {
-      delete it.value();
-      __bookings.remove(it.key());
-    }
-  }
+  for (auto it = __bookings.begin(); it != __bookings.end(); ++it)
+    delete it.value();
+  
+  __bookings.clear();
 }
 
 void

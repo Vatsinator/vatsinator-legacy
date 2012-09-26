@@ -126,6 +126,11 @@ FirDetailsWindow::__adjustTables() {
   AirportsTable->setColumnWidth(AirportTableModel::Facilities, 170);
   AirportsTable->setColumnWidth(AirportTableModel::Outbounds, 100);
   AirportsTable->setColumnWidth(AirportTableModel::Inbounds, 100);
+  
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Callsign, 150);
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Name, 300);
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Date, 150);
+  BookedATCTable->setColumnWidth(BookedAtcTableModel::Hours, 150);
 }
 
 void

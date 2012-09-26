@@ -4,7 +4,7 @@
 
 Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Currently we can run this application on Linux and Windows. We are looking for MacOS package maintainers.
 
-**To avoid confusion** Vatsinator is NOT a real-life real-time air traffic monitor. It is only VATSIM (Virtual Air Traffic Simulation) network monitor.
+**To avoid confusion** Vatsinator does NOT show real-life traffic. It is only VATSIM (Virtual Air Traffic Simulation) network monitor. To find out what VATSIM is, see [http://www.vatsim.net](http://www.vatsim.net/).
 
 ---
 

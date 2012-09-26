@@ -1098,7 +1098,19 @@ void
 MapWidget::__drawPilots(float _moveX) {
   glColor4f(1.0, 1.0, 1.0, 1.0);
 
+#ifndef NO_DEBUG
+  int i = -1;
+#endif
   for (const Pilot * client: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
+#ifndef NO_DEBUG
+    /* There were some problems once */
+    i += 1;
+    if (!client) {
+      qDebug() << "Error: i=" << i << ", flights: " <<
+        VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights().size();
+    }
+#endif
+    Q_ASSERT(client);
     if (client->flightStatus != AIRBORNE || client->prefiledOnly)
       continue;
 

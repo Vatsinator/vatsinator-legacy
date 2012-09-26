@@ -20,7 +20,7 @@
 #ifndef VATBOOKHANDLER_H
 #define VATBOOKHANDLER_H
 
-#include <QMap>
+#include <QHash>
 #include <QTimer>
 #include <QObject>
 #include <QString>
@@ -47,7 +47,7 @@ public:
   
   inline BookedAtcTableModel *
   getModel(const QString& _icao) {
-    return __bookings.value(_icao, __bookings["ZZZZ"]); 
+    return __bookings.value(_icao, NULL); 
   }
   
 private:
@@ -56,7 +56,7 @@ private:
   void __parseData(const QString&);
   
   /* This map contains pairs airport/fir icao - atcs */
-  QMap< QString, BookedAtcTableModel* > __bookings;
+  QHash< QString, BookedAtcTableModel* > __bookings;
   
   HttpHandler* __httpHandler;
   QTimer       __timer;
