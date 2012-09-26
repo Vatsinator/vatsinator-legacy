@@ -66,7 +66,7 @@ echo
 
 # cleanup
 cd $tmpdir/..
-#rm -rf $tmpdir
+rm -rf $tmpdir
 
 echo
 echo " ==> Done."
