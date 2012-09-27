@@ -1,0 +1,13 @@
+-- v0.1_beta4 --
+
++[1] MacOS port
++[2] Caching
++[3] Vatbook integration
++[4] Allow disabling automatic updates
+ [5] Allow disabling Vatbook integration
+ [6] Fix subwindows positioning on multiple desktops
+ [7] Enable toggling airport inbound/outbound lines
+ [8] RPM packaging
+
+
+Tasks marked with + are already done.
