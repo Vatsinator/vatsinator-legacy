@@ -110,6 +110,8 @@ if (LINUX)
         add_subdirectory (dist)
     endif (WITH_DEBIAN)
 
+    option (WITH_RPM OFF)
+
 elseif (APPLE)
     
     include (Packaging-darwin)
