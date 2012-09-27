@@ -31,6 +31,7 @@ set (ui_SRCS
     actions/clientdetailsaction.cpp
     actions/firdetailsaction.cpp
     actions/metaraction.cpp
+    actions/toggleinboundoutboundlinesaction.cpp
     actions/trackaction.cpp
     
     buttons/colorbutton.cpp
@@ -61,6 +62,7 @@ set (ui_MOC_SRCS
     actions/clientdetailsaction.h
     actions/firdetailsaction.h
     actions/metaraction.h
+    actions/toggleinboundoutboundlinesaction.h
     actions/trackaction.h
     
     buttons/colorbutton.h
