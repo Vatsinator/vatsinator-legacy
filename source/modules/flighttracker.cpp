@@ -46,7 +46,8 @@ FlightTracker::init() {
           this,                                   SLOT(__trackFlight(const Pilot*, int)));
 }
 
-void FlightTracker::updateData() {
+void
+FlightTracker::updateData() {
   if (!__currentCallsign.isEmpty()) {
     __currentPointer = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
 

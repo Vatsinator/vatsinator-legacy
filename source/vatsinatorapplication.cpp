@@ -28,7 +28,6 @@
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
 
-#include "modules/flighttracker.h"
 #include "modules/modulemanager.h"
 
 #include "network/httphandler.h"
@@ -237,7 +236,7 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
 
     // we cannot depend on signals & slots system here, as GLrepaint() would be called
     // earlier, causing segfault
-    FlightTracker::GetSingleton().updateData();
+    ModuleManager::GetSingleton().updateData();
 
     if (__settingsManager->refreshMetars())
       emit metarsRefreshRequested();

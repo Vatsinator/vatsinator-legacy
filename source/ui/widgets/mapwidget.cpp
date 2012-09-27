@@ -24,6 +24,7 @@
 
 #include "glutils/glextensions.h"
 
+#include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
 
 #include "settings/settingsmanager.h"
@@ -650,6 +651,9 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 
   connect(showMetar,        SIGNAL(triggered(QString)),
           __metarsWindow,   SLOT(show(QString)));
+  
+  connect(toggleAction,     SIGNAL(triggered(const Airport*)),
+          this,             SIGNAL(airportLinesToggled(const Airport*)));
 
   if (dynamic_cast< const ActiveAirport* >(_ap) != NULL) {
     const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
@@ -1187,6 +1191,9 @@ MapWidget::__drawLines(double _moveX) {
   
   if (__myFlightTracker->getTracked())
     __myFlightTracker->getTracked()->drawLines();
+  
+  for (auto it: AirportTracker::GetSingleton().getTracked().values())
+    it->drawLines();
 
 }
 

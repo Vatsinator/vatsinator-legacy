@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
 #include "modules/modelmatcher.h"
 #include "modules/vatbookhandler.h"
@@ -26,6 +27,7 @@
 #include "defines.h"
 
 ModuleManager::ModuleManager() :
+    __airportTracker(new AirportTracker()),
     __flightTracker(new FlightTracker()),
     __modelsMatcher(new ModelMatcher()),
     __vatbookHandler(new VatbookHandler()) {
@@ -35,6 +37,7 @@ ModuleManager::ModuleManager() :
 }
 
 ModuleManager::~ModuleManager() {
+  delete __airportTracker;
   delete __flightTracker;
   delete __modelsMatcher;
   delete __vatbookHandler;
@@ -42,7 +45,14 @@ ModuleManager::~ModuleManager() {
 
 void
 ModuleManager::init() {
+  __airportTracker->init();
   __flightTracker->init();
+}
+
+void
+ModuleManager::updateData() {
+  __airportTracker->updateData();
+  __flightTracker->updateData();
 }
 
 void
