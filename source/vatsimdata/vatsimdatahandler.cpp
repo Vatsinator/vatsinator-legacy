@@ -317,6 +317,14 @@ VatsimDataHandler::addEmptyAirport(const AirportRecord* _ap) {
   return __emptyAirports[icao];
 }
 
+Airport*
+VatsimDataHandler::findAirport(const QString& _icao) {
+  if (__activeAirports.contains(_icao))
+    return __activeAirports[_icao];
+  
+  return addEmptyAirport(_icao);
+}
+
 int
 VatsimDataHandler::clientCount() const {
   return pilotCount() + atcCount() + obsCount();

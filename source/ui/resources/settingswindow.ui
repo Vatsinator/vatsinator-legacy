@@ -622,7 +622,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Set 0 to switch automatic updates off.</string>
+         <string>Set 0 to disable automatic updates.</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

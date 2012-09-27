@@ -121,23 +121,18 @@ AirportDetailsWindow::updateMetar(QString _icao) {
 
 void
 AirportDetailsWindow::__updateModels(const Airport* _ap) {
-  const Airport* ap;
-
   if (!_ap)
-    ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__currentICAO];
-  else
-    ap = _ap;
-
-  if (!ap) {
-    hide();
-    return;
-  }
+    _ap = VatsimDataHandler::GetSingleton().findAirport(__currentICAO);
+  
+  Q_ASSERT(_ap);
+  
+  __current = _ap;
   
   disconnect(this, SLOT(__setInboundTableButtons()));
   disconnect(this, SLOT(__setOutboundTableButtons()));
   disconnect(this, SLOT(__setATCTableButtons()));
   
-  const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(ap);
+  const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
   if (aa) {
     connect(aa->getInboundsModel(), SIGNAL(sorted()),
             this,                   SLOT(__setInboundTableButtons()));
@@ -153,8 +148,7 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   }
   
   BookedATCTable->setModel(
-      VatbookHandler::GetSingleton().getModel(QString::fromUtf8(aa->getData()->icao)));
-    
+      VatbookHandler::GetSingleton().getModel(QString::fromUtf8(_ap->getData()->icao)));
 }
 
 void
@@ -226,6 +220,9 @@ AirportDetailsWindow::__adjustTables() {
 
 void
 AirportDetailsWindow::__setInboundTableButtons() {
+  if (!InboundTable->model())
+    return;
+  
   const FlightTableModel* inboundModel = qobject_cast< const FlightTableModel* >(InboundTable->model());
   Q_ASSERT(inboundModel);
   
@@ -242,6 +239,9 @@ AirportDetailsWindow::__setInboundTableButtons() {
 
 void
 AirportDetailsWindow::__setOutboundTableButtons() {
+  if (!OutboundTable->model())
+    return;
+  
   const FlightTableModel* outboundModel = qobject_cast< const FlightTableModel* >(OutboundTable->model());
   
   Q_ASSERT(outboundModel);
@@ -259,6 +259,9 @@ AirportDetailsWindow::__setOutboundTableButtons() {
 
 void
 AirportDetailsWindow::__setATCTableButtons() {
+  if (!ATCTable->model())
+    return;
+  
   const ControllerTableModel* atcModel = qobject_cast< const ControllerTableModel* >(ATCTable->model());
   
   Q_ASSERT(atcModel);

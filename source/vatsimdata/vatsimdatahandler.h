@@ -116,6 +116,14 @@ public:
    */
   EmptyAirport* addEmptyAirport(const QString&);
   EmptyAirport* addEmptyAirport(const AirportRecord*);
+  
+  /**
+   * Finds airport with particular ICAO.
+   * @param icao Airport ICAO code.
+   * @return Pointer to the Airport instance (can be ActiveAirport
+   *         or EmptyAirport pointer).
+   */
+  Airport* findAirport(const QString&);
 
   /**
    * @return Count of logged-in clients (pilots + controllers + observers).

@@ -253,6 +253,8 @@ void
 MapWidget::showAirport(const Airport* _ap) {
   if (__myFlightTracker->getTracked())
     emit flightTrackingCanceled();
+  
+  Q_ASSERT(_ap->getData());
 
   __position.rx() = _ap->getData()->longitude / 180;
   __position.ry() = _ap->getData()->latitude / 90;
