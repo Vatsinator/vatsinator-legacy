@@ -127,6 +127,7 @@ private slots:
   void __loadCachedData();
   void __dataUpdated(const QString&);
   void __showDataAlert();
+  void __loadNewSettings();
   
 signals:
   void glInitialized();

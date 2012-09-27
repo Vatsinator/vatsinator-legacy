@@ -87,6 +87,9 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   // SettingsManager instance is now created, let him get the pointer & connect his slots
   __settingsManager->init();
   __modulesManager->init();
+  
+  // handle settings changes
+  connect(__settingsManager, SIGNAL(settingsChanged()), this, SLOT(__loadNewSettings()));
 
   // connect data refresher with the timer
   connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
@@ -105,12 +108,12 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   connect(__httpHandler, SIGNAL(finished(const QString&)), this, SLOT(__dataUpdated(const QString&)));
   connect(__httpHandler, SIGNAL(fetchError()), this, SLOT(__showDataAlert()));
 
-  // fetch the status file
-  refreshData();
-
-  // start the timer
-  if (__settingsManager->getRefreshRate())
-    __timer.start(__settingsManager->getRefreshRate() * 60000);
+  // start the timer and fetch data
+  __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
+  if (__settingsManager->getRefreshRate()) {
+    __timer.start();
+    refreshData();
+  }
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
@@ -163,7 +166,7 @@ VatsinatorApplication::refreshData() {
   __userInterface->toggleStatusBar();
   __httpHandler->fetchData(__vatsimData->getDataUrl());
   if (__settingsManager->getRefreshRate())
-    __timer.start(__settingsManager->getRefreshRate() * 60000);
+    __timer.start();
 }
 
 void
@@ -187,25 +190,6 @@ VatsinatorApplication::dispatchDataUpdate(const QString& _fileName) {
 void
 VatsinatorApplication::__emitGLInitialized() {
   emit glInitialized();
-}
-
-void
-VatsinatorApplication::__showDataAlert() {
-  __userInterface->toggleStatusBar();
-  
-  QMessageBox decision;
-  decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
-  decision.setInformativeText(tr("What do you want to do with that?"));
-  QPushButton* againButton = decision.addButton(tr("Try again"), QMessageBox::ActionRole);
-  decision.addButton(tr("Keep current data"), QMessageBox::RejectRole);
-  decision.setIcon(QMessageBox::Warning);
-
-  __timer.stop();
-
-  decision.exec();
-
-  if (decision.clickedButton() == againButton)
-    refreshData();
 }
 
 void
@@ -271,5 +255,38 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
 
     __userInterface->statusBarUpdate();
     refreshData();
+  }
+}
+
+
+void
+VatsinatorApplication::__showDataAlert() {
+  __userInterface->toggleStatusBar();
+  
+  QMessageBox decision;
+  decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
+  decision.setInformativeText(tr("What do you want to do with that?"));
+  QPushButton* againButton = decision.addButton(tr("Try again"), QMessageBox::ActionRole);
+  decision.addButton(tr("Keep current data"), QMessageBox::RejectRole);
+  decision.setIcon(QMessageBox::Warning);
+
+  __timer.stop();
+
+  decision.exec();
+
+  if (decision.clickedButton() == againButton)
+    refreshData();
+}
+
+void
+VatsinatorApplication::__loadNewSettings() {
+  if (__settingsManager->getRefreshRate() != 0) {
+    if (__timer.interval() != __settingsManager->getRefreshRate()) {
+      __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
+      refreshData();
+    }
+  } else {
+    __timer.setInterval(0);
+    __timer.stop();
   }
 }
