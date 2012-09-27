@@ -27,7 +27,19 @@
 #include "defines.h"
 
 AirportTracker::AirportTracker(QObject* _parent) :
-    QObject(_parent) {}
+    QObject(_parent),
+    __isInitialized(false) {}
+
+AirportTracker::~AirportTracker() {
+  QStringList trackedAirports(__trackedAirports.keys());
+  
+  QSettings settings("Vatsinator", "Vatsinator");
+  settings.beginGroup("Modules");
+  
+  settings.setValue("trackedAirports", trackedAirports.join(":"));
+  
+  settings.endGroup();
+}
 
 void
 AirportTracker::init() {
@@ -38,9 +50,29 @@ AirportTracker::init() {
 
 void
 AirportTracker::updateData() {
+  if (!__isInitialized)
+    __readSettings();
+  
   for (auto it = __trackedAirports.begin(); it != __trackedAirports.end(); ++it) {
     it.value() = VatsimDataHandler::GetSingleton().findAirport(it.key());
   }
+}
+
+void
+AirportTracker::__readSettings() {
+  QSettings settings("Vatsinator", "Vatsinator");
+  settings.beginGroup("Modules");
+  
+  QString trackedAirports = settings.value("trackedAirports").toString();
+  
+  settings.endGroup();
+  
+  for (QString& icao: trackedAirports.split(':')) {
+    if (!icao.isEmpty())
+      __trackedAirports.insert(icao, NULL);
+  }
+  
+  __isInitialized = true;
 }
 
 void

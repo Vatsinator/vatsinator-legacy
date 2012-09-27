@@ -36,6 +36,7 @@ class AirportTracker :
   
 public:
   AirportTracker(QObject* = 0);
+  virtual ~AirportTracker();
   
   void init();
   
@@ -45,7 +46,10 @@ public:
   getTracked() { return __trackedAirports; }
   
  private:
+   void __readSettings();
+   
    QMap< QString, const Airport* > __trackedAirports;
+   bool __isInitialized;
    
    MapWidget*    __myMapWidget;
    
