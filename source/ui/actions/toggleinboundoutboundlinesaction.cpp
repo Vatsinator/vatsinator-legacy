@@ -18,6 +18,10 @@
 
 #include <QtGui>
 
+#include "db/airportdatabase.h"
+
+#include "modules/airporttracker.h"
+
 #include "vatsimdata/airport.h"
 
 #include "toggleinboundoutboundlinesaction.h"
@@ -27,6 +31,10 @@ ToggleInboundOutboundLinesAction::ToggleInboundOutboundLinesAction(
   const Airport* _ap, QObject* _parent) :
     QAction(tr("Toggle inbound/outbound lines"), _parent),
     __current(_ap) {
+  setCheckable(true);
+  if (AirportTracker::GetSingleton().getTracked().contains(QString(_ap->getData()->icao)))
+    setChecked(true);
+  
   connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
 }
 

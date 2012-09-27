@@ -51,6 +51,8 @@ AirportTracker::__toggleAirport(const Airport* _ap) {
   else
     __trackedAirports.insert(icao, _ap);
   
+#ifndef NO_DEBUG
   qDebug() << "Toggled: " << icao;
+#endif
 }
 
