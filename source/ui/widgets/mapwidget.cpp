@@ -57,6 +57,10 @@
 #include "mapwidget.h"
 #include "defines.h"
 
+#ifndef GL_MULTISAMPLE
+#define GL_MULTISAMPLE 0x809D
+#endif
+
 const double PI = 3.1415926535897;
 
 const GLfloat VERTICES[] = {
