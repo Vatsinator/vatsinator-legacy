@@ -206,7 +206,8 @@ VatsinatorApplication::__loadCachedData() {
   
   QString fileName(CACHE_FILE_NAME);
   
-  QtConcurrent::run(dispatchDataUpdate, fileName);
+//   QtConcurrent::run(dispatchDataUpdate, fileName);
+  dispatchDataUpdate(fileName);
 }
 
 void

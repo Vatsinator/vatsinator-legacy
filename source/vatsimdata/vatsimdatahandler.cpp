@@ -290,7 +290,6 @@ for (Uir * u: __uirs)
   return NULL;
 }
 
-
 ActiveAirport*
 VatsimDataHandler::addActiveAirport(const QString& _icao) {
   if (!__activeAirports.contains(_icao))
