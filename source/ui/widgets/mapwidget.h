@@ -99,6 +99,7 @@ signals:
   void firDetailsWindowRequested(const Fir*);
   void flightTrackingRequested(const Pilot*);
   void flightTrackingCanceled();
+  void airportLinesToggled(const Airport*);
 
 public slots:
   void showClient(const Client*);

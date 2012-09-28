@@ -1,5 +1,5 @@
 /*
-    modulemanager.h
+    airporttracker.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,40 +17,48 @@
 */
 
 
-#ifndef MODULEMANAGER_H
-#define MODULEMANAGER_H
+#ifndef AIRPORTTRACKER_H
+#define AIRPORTTRACKER_H
+
+#include <QMap>
+#include <QObject>
 
 #include "singleton.h"
 
-#include <QObject>
+class Airport;
+class MapWidget;
 
-class AirportTracker;
-class FlightTracker;
-class ModelMatcher;
-class VatbookHandler;
-
-class ModuleManager :
-    public QObject,
-    public Singleton< ModuleManager > {
-
+class AirportTracker :
+     public QObject,
+     public Singleton< AirportTracker > {
+  
   Q_OBJECT
-
+  
 public:
-  ModuleManager();
-  virtual ~ModuleManager();
-
+  AirportTracker(QObject* = 0);
+  virtual ~AirportTracker();
+  
   void init();
   
   void updateData();
-
+  
+  inline const QMap< QString, const Airport* > &
+  getTracked() { return __trackedAirports; }
+  
+  inline bool
+  isInitialized() { return __isInitialized; }
+  
+ private:
+   void __readSettings();
+   
+   QMap< QString, const Airport* > __trackedAirports;
+   bool __isInitialized;
+   
+   MapWidget*    __myMapWidget;
+   
 private slots:
-  void __initAfterGL();
-
-private:
-  AirportTracker* __airportTracker;
-  FlightTracker*  __flightTracker;
-  ModelMatcher*   __modelsMatcher;
-  VatbookHandler* __vatbookHandler;
+  void __toggleAirport(const Airport*);
+  
 };
 
-#endif // MODULEMANAGER_H
+#endif // AIRPORTTRACKER_H

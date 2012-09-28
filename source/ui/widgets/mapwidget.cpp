@@ -24,6 +24,7 @@
 
 #include "glutils/glextensions.h"
 
+#include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
 
 #include "settings/settingsmanager.h"
@@ -35,6 +36,7 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/firdetailsaction.h"
 #include "ui/actions/metaraction.h"
+#include "ui/actions/toggleinboundoutboundlinesaction.h"
 #include "ui/actions/trackaction.h"
 
 #include "ui/windows/airportdetailswindow.h"
@@ -654,15 +656,20 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 
   AirportDetailsAction* showAp = new AirportDetailsAction(_ap, tr("Airport details"), this);
   MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
+  ToggleInboundOutboundLinesAction* toggleAction = new ToggleInboundOutboundLinesAction(_ap, this);
 
   __menu->addAction(showAp);
   __menu->addAction(showMetar);
+  __menu->addAction(toggleAction);
 
   connect(showAp,                 SIGNAL(triggered(const Airport*)),
           __airportDetailsWindow, SLOT(show(const Airport*)));
 
   connect(showMetar,        SIGNAL(triggered(QString)),
           __metarsWindow,   SLOT(show(QString)));
+  
+  connect(toggleAction,     SIGNAL(triggered(const Airport*)),
+          this,             SIGNAL(airportLinesToggled(const Airport*)));
 
   if (dynamic_cast< const ActiveAirport* >(_ap) != NULL) {
     const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
@@ -1200,7 +1207,13 @@ MapWidget::__drawLines(double _moveX) {
   
   if (__myFlightTracker->getTracked())
     __myFlightTracker->getTracked()->drawLines();
-
+  
+  if (AirportTracker::GetSingleton().isInitialized()) {
+    for (auto it: AirportTracker::GetSingleton().getTracked().values()) {
+      Q_ASSERT(it);
+      it->drawLines();
+    }
+  }
 }
 
 void

@@ -1,5 +1,5 @@
 /*
-    modulemanager.h
+    toggleinboundoutboundlinesaction.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,40 +17,30 @@
 */
 
 
-#ifndef MODULEMANAGER_H
-#define MODULEMANAGER_H
+#ifndef TOGGLEINBOUNDOUTBOUNDLINESACTION_H
+#define TOGGLEINBOUNDOUTBOUNDLINESACTION_H
 
-#include "singleton.h"
+#include <QAction>
 
-#include <QObject>
+class Airport;
 
-class AirportTracker;
-class FlightTracker;
-class ModelMatcher;
-class VatbookHandler;
-
-class ModuleManager :
-    public QObject,
-    public Singleton< ModuleManager > {
-
-  Q_OBJECT
-
-public:
-  ModuleManager();
-  virtual ~ModuleManager();
-
-  void init();
+class ToggleInboundOutboundLinesAction : public QAction {
   
-  void updateData();
-
+  Q_OBJECT
+  
+public:
+  ToggleInboundOutboundLinesAction(const Airport*, QObject*);
+  
 private slots:
-  void __initAfterGL();
-
+  void __handleTriggered();
+  
 private:
-  AirportTracker* __airportTracker;
-  FlightTracker*  __flightTracker;
-  ModelMatcher*   __modelsMatcher;
-  VatbookHandler* __vatbookHandler;
+  const Airport* __current;
+  
+signals:
+  void triggered(const Airport*);
+  
+  
 };
 
-#endif // MODULEMANAGER_H
+#endif // TOGGLEINBOUNDOUTBOUNDLINESACTION_H

@@ -28,7 +28,6 @@
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
 
-#include "modules/flighttracker.h"
 #include "modules/modulemanager.h"
 
 #include "network/httphandler.h"
@@ -72,6 +71,11 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   
   __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + __settingsManager->getLanguage());
   this->installTranslator(&__translator);
+   
+  if (__settingsManager->cacheEnabled()) {
+    connect(this,             SIGNAL(glInitialized()),
+            this,             SLOT(__loadCachedData()));
+  }
   
     
   if (__settingsManager->cacheEnabled()) {
@@ -185,6 +189,7 @@ VatsinatorApplication::dispatchDataUpdate(const QString& _fileName) {
   file.close();
   
   VatsinatorApplication::GetSingleton().getData().parseDataFile(data);
+  ModuleManager::GetSingleton().updateData();
   UserInterface::GetSingleton().infoBarUpdate();
 }
 
@@ -238,7 +243,7 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
 
     // we cannot depend on signals & slots system here, as GLrepaint() would be called
     // earlier, causing segfault
-    FlightTracker::GetSingleton().updateData();
+    ModuleManager::GetSingleton().updateData();
 
     if (__settingsManager->refreshMetars())
       emit metarsRefreshRequested();

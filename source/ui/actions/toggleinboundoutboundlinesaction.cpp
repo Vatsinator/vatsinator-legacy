@@ -1,5 +1,5 @@
 /*
-    modulemanager.h
+    toggleinboundoutboundlinesaction.cpp
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -16,41 +16,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtGui>
 
-#ifndef MODULEMANAGER_H
-#define MODULEMANAGER_H
+#include "db/airportdatabase.h"
 
-#include "singleton.h"
+#include "modules/airporttracker.h"
 
-#include <QObject>
+#include "vatsimdata/airport.h"
 
-class AirportTracker;
-class FlightTracker;
-class ModelMatcher;
-class VatbookHandler;
+#include "toggleinboundoutboundlinesaction.h"
+#include "defines.h"
 
-class ModuleManager :
-    public QObject,
-    public Singleton< ModuleManager > {
-
-  Q_OBJECT
-
-public:
-  ModuleManager();
-  virtual ~ModuleManager();
-
-  void init();
+ToggleInboundOutboundLinesAction::ToggleInboundOutboundLinesAction(
+  const Airport* _ap, QObject* _parent) :
+    QAction(tr("Toggle inbound/outbound lines"), _parent),
+    __current(_ap) {
+  setCheckable(true);
+  if (AirportTracker::GetSingleton().getTracked().contains(QString(_ap->getData()->icao)))
+    setChecked(true);
   
-  void updateData();
+  connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
+}
 
-private slots:
-  void __initAfterGL();
+void
+ToggleInboundOutboundLinesAction::__handleTriggered() {
+  emit triggered(__current);
+}
 
-private:
-  AirportTracker* __airportTracker;
-  FlightTracker*  __flightTracker;
-  ModelMatcher*   __modelsMatcher;
-  VatbookHandler* __vatbookHandler;
-};
-
-#endif // MODULEMANAGER_H
