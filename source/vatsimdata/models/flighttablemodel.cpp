@@ -31,6 +31,7 @@ FlightTableModel::FlightTableModel(QObject* _parent) :
 
 void
 FlightTableModel::addFlight(const Pilot* _p) {
+  Q_ASSERT(_p);
   if (!__flights.contains(_p)) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     __flights.push_back(_p);

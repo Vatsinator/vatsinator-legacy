@@ -59,6 +59,10 @@
 #include "mapwidget.h"
 #include "defines.h"
 
+#ifndef GL_MULTISAMPLE
+#define GL_MULTISAMPLE 0x809D
+#endif
+
 const double PI = 3.1415926535897;
 
 const GLfloat VERTICES[] = {
@@ -112,17 +116,11 @@ inline T absHelper(const T& _v) {
 }
 
 
-QGL::FormatOptions myFormat =
-    QGL::DoubleBuffer
-  | QGL::DepthBuffer
-  | QGL::Rgba
-  | QGL::AlphaChannel
-  | QGL::DeprecatedFunctions
-  ;
+QGLFormat myformat = MapWidget::getFormat();
 
   
 MapWidget::MapWidget(QWidget* _parent) :
-    QGLWidget(QGLFormat(myFormat), _parent),
+    QGLWidget(myformat, _parent),
     __isInitialized(false),
     __pilotToolTip(":/pixmaps/pilot_tooltip.png"),
     __pilotFont("Verdana"),
@@ -241,6 +239,14 @@ MapWidget::deleteImage(GLuint _tex) {
 #endif
 }
 
+QGLFormat
+MapWidget::getFormat() {
+  QGLFormat glf = QGLFormat::defaultFormat();
+  glf.setSampleBuffers(true);
+  glf.setSamples(4);
+  return glf;
+}
+
 void
 MapWidget::showClient(const Client* _c) {
   if (__myFlightTracker->getTracked() != _c)
@@ -285,6 +291,16 @@ MapWidget::initializeGL() {
   VatsinatorApplication::log("Initializing OpenGL...");
   
   makeCurrent();
+  
+  glEnable(GL_MULTISAMPLE);
+  
+#ifndef NO_DEBUG
+  GLint bufs;
+  GLint samples;
+  glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
+  glGetIntegerv(GL_SAMPLES, &samples);
+  qDebug("Have %d buffers and %d samples", bufs, samples);
+#endif
   
   glShadeModel(GL_SMOOTH);
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1226,16 +1242,9 @@ void
 MapWidget::__setAntyaliasing(bool _on) {
   if (_on) {
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); checkGLErrors(HERE);
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN // win32 doesn't know that
-    glHint(GL_TEXTURE_COMPRESSION_HINT, GL_NICEST); checkGLErrors(HERE);
-#endif
     glEnable(GL_LINE_SMOOTH); checkGLErrors(HERE);
-//     glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE);
   } else {
     glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST); checkGLErrors(HERE);
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
-    glHint(GL_TEXTURE_COMPRESSION_HINT, GL_FASTEST); checkGLErrors(HERE);
-#endif
     glDisable(GL_LINE_SMOOTH); checkGLErrors(HERE);
   }
 }

@@ -84,6 +84,7 @@ public:
   static GLuint loadImage(const QImage&);
   static GLuint loadImage(const QString&);
   static void deleteImage(GLuint);
+  static QGLFormat getFormat();
 
 #ifndef NO_DEBUG
   static unsigned texturesCount;
