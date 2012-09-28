@@ -183,8 +183,8 @@ VatsinatorApplication::dispatchDataUpdate(const QString& _fileName) {
   file.close();
   
   VatsinatorApplication::GetSingleton().getData().parseDataFile(data);
-  UserInterface::GetSingleton().infoBarUpdate();
   ModuleManager::GetSingleton().updateData();
+  UserInterface::GetSingleton().infoBarUpdate();
 }
 
 void

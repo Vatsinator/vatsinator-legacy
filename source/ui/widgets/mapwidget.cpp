@@ -1208,11 +1208,12 @@ MapWidget::__drawLines(double _moveX) {
   if (__myFlightTracker->getTracked())
     __myFlightTracker->getTracked()->drawLines();
   
-  for (auto it: AirportTracker::GetSingleton().getTracked().values()) {
-    Q_ASSERT(it);
-    it->drawLines();
+  if (AirportTracker::GetSingleton().isInitialized()) {
+    for (auto it: AirportTracker::GetSingleton().getTracked().values()) {
+      Q_ASSERT(it);
+      it->drawLines();
+    }
   }
-
 }
 
 void

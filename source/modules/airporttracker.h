@@ -45,6 +45,9 @@ public:
   inline const QMap< QString, const Airport* > &
   getTracked() { return __trackedAirports; }
   
+  inline bool
+  isInitialized() { return __isInitialized; }
+  
  private:
    void __readSettings();
    
