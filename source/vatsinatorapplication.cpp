@@ -73,16 +73,17 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + __settingsManager->getLanguage());
   this->installTranslator(&__translator);
   
+    
+  if (__settingsManager->cacheEnabled()) {
+    connect(this,             SIGNAL(glInitialized()),
+            this,             SLOT(__loadCachedData()));
+  }
+  
   __userInterface = new UserInterface;
 
   // destroy all children windows before the program exits
   connect(this,             SIGNAL(destroyed()),
           __userInterface,  SLOT(hideAllWindows()));
-  
-  if (__settingsManager->cacheEnabled()) {
-    connect(this,             SIGNAL(glInitialized()),
-            this,             SLOT(__loadCachedData()));
-  }
 
   // SettingsManager instance is now created, let him get the pointer & connect his slots
   __settingsManager->init();
