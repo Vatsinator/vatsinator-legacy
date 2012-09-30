@@ -49,6 +49,9 @@ public:
 public slots:
   void show(QString);
   void fetchMetar();
+  
+protected:
+  virtual void keyPressEvent(QKeyEvent*);
 
 private:
   HttpHandler*  __httpHandler;

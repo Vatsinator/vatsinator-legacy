@@ -46,8 +46,7 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
           __metarsHandler,  SLOT(clear()));
   connect(MetarICAO,    SIGNAL(textChanged(const QString&)),
           this,     SLOT(__handleTextChange(const QString&)));
-
-  MetarICAO->setFocus();
+  
   FetchButton->setEnabled(false);
   MetarsDisplay->setModel(__metarsHandler);
 }
@@ -67,6 +66,15 @@ void
 MetarsWindow::fetchMetar() {
   __metarsHandler->fetchMetar(MetarICAO->text());
   MetarICAO->setText("");
+}
+
+void
+MetarsWindow::keyPressEvent(QKeyEvent* _event) {
+  if (!MetarICAO->text().isEmpty() &&
+    (_event->key() == Qt::Key_Return || _event->key() == Qt::Key_Enter))
+    fetchMetar();
+  
+  QWidget::keyPressEvent(_event);
 }
 
 void
