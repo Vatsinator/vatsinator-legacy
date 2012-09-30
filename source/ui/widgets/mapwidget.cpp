@@ -130,7 +130,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __firFont("Verdana"),
     __position(0.0, 0.0),
     __zoom(ZOOM_MINIMUM),
-    __actualZoom(0),
+    __actualZoom(A_ZOOM_MINIMUM),
     __keyPressed(false),
     __underMouse(NULL),
     __contextMenuOpened(false),
@@ -446,15 +446,15 @@ void
 MapWidget::wheelEvent(QWheelEvent* _event) {
   int steps = _event->delta() / 120;
 
-  __actualZoom+=steps;
+  __actualZoom += steps;
 
-  if (__zoom + steps <= ZOOM_MINIMUM){
+  if (__zoom + steps <= ZOOM_MINIMUM) {
     __zoom = ZOOM_MINIMUM;
-    __actualZoom = 0;
+    __actualZoom = A_ZOOM_MINIMUM;
   }
 
   else
-    __zoom = ZOOM_MINIMUM + STEP_MINIMUM *pow(1.7,__actualZoom) ;
+    __zoom = ZOOM_MINIMUM + STEPS_MINIMUM * pow(1.6, (__actualZoom));
 
   _event->accept();
 
