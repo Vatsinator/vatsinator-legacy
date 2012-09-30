@@ -194,7 +194,7 @@ private:
   int   __zoom;
 
   /*Actual Zoom level*/
-  int   __actualZoom;
+  unsigned int   __actualZoom;
   
   /* Last mouse position */
   QPoint  __lastMousePos;

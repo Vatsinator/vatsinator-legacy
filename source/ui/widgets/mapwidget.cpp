@@ -454,7 +454,7 @@ MapWidget::wheelEvent(QWheelEvent* _event) {
   }
 
   else
-    __zoom = ZOOM_MINIMUM + STEP_MINIMUM * (pow(2,__actualZoom)-1) ;
+    __zoom = ZOOM_MINIMUM + STEP_MINIMUM *pow(1.7,__actualZoom) ;
 
   _event->accept();
 
