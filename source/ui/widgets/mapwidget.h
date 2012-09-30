@@ -193,6 +193,9 @@ private:
   /* Zoom factor */
   int   __zoom;
 
+  /*Actual Zoom level*/
+  int   __actualzoom;
+  
   /* Last mouse position */
   QPoint  __lastMousePos;
   QPoint  __recentlyClickedMousePos;
