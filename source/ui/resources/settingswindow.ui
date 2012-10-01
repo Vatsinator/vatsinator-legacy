@@ -893,5 +893,21 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>OKCancelButtonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SettingsWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>478</x>
+     <y>399</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>343</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
 </ui>

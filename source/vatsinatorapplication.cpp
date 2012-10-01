@@ -288,7 +288,7 @@ VatsinatorApplication::__showDataAlert() {
 void
 VatsinatorApplication::__loadNewSettings() {
   if (__settingsManager->getRefreshRate() != 0) {
-    if (__timer.interval() != __settingsManager->getRefreshRate()) {
+    if (__timer.interval() / 60000 != __settingsManager->getRefreshRate()) {
       __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
       refreshData();
     }

@@ -21,6 +21,8 @@
 #include "settings/languagemanager.h"
 #include "settings/settingsmanager.h"
 
+#include "ui/widgets/mapwidget.h"
+
 #include "ui/userinterface.h"
 
 #include "settingswindow.h"
@@ -106,7 +108,8 @@ void
 SettingsWindow::__handleButton(QAbstractButton* _button) {
   if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == _button) {
     emit restoreDefaults();
-    return;
+  } else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == _button) {
+    emit settingsApplied();
   }
 }
 
