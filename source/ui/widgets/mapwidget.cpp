@@ -1264,6 +1264,7 @@ MapWidget::__storeSettings() {
   settings.beginGroup("CameraSettings");
 
   settings.setValue("zoomFactor", __zoom);
+  settings.setValue("actualZoomCoefficient", __actualZoom);
   settings.setValue("cameraPosition", __position);
 
   settings.endGroup();
@@ -1275,7 +1276,8 @@ MapWidget::__restoreSettings() {
 
   settings.beginGroup("CameraSettings");
 
-  __zoom = settings.value("zoomFactor", ZOOM_MINIMUM).toInt();
+  __zoom = settings.value("zoomFactor", ZOOM_MINIMUM).toFloat();
+  __actualZoom = settings.value("actualZoomCoefficient", ACTUAL_ZOOM_MINIMUM).toFloat();
   __position = settings.value("cameraPosition", QPointF(0.0, 0.0)).toPointF();
 
   settings.endGroup();
