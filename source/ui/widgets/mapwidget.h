@@ -191,7 +191,7 @@ private:
   QPointF   __position;
 
   /* Zoom factor */
-  int   __zoom;
+  float   __zoom;
 
   /*Actual Zoom level*/
   unsigned int   __actualZoom;

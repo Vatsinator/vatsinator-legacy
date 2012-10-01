@@ -41,7 +41,7 @@
 // below/above these values user can't zoom the map
 #define ZOOM_MINIMUM    1
 #define STEPS_MINIMUM   0.5
-#define ACTUAL_ZOOM_MINIMUM  1
+#define ACTUAL_ZOOM_MINIMUM  0
 #define ACTUAL_ZOOM_MAXIMUM  17
 
 // the range below which the mouse is in the object's
