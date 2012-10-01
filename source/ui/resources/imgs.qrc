@@ -2,6 +2,11 @@
   <qresource prefix="mainIcon">
     <file>icon.png</file>
   </qresource>
+  <qresource prefix="settings">
+    <file>preferences-miscellaneous.png</file>
+    <file>preferences-view.png</file>
+    <file>preferences-colors.png</file>
+  </qresource>
   <qresource prefix="uiIcons">
     <file>configure.png</file>
     <file>view-refresh.png</file>
