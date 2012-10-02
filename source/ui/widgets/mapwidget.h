@@ -150,6 +150,7 @@ private:
 
   void __storeSettings();
   void __restoreSettings();
+  void __updateZoom(int);
 
   void __produceCircle();
 
