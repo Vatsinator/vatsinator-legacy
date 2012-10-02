@@ -799,6 +799,8 @@ MapWidget::__init() {
           __airportDetailsWindow, SLOT(show(const Airport*)));
   connect(__settings,             SIGNAL(settingsChanged()),
           this,                   SLOT(__loadNewSettings()));
+  connect(__settings,             SIGNAL(settingsChanged()),
+          this,                   SLOT(redraw()));
 
   VatsinatorApplication::log("Setting fonts...");
   __pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);

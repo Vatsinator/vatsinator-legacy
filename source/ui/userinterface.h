@@ -70,6 +70,9 @@ public:
 
   inline QLabel*
   getPositionBox() { return PositionBox; }
+  
+  inline bool
+  autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
 
 public slots:
   void quit();
@@ -102,6 +105,9 @@ private:
   SettingsWindow*       __settingsWindow;
 
   VatsinatorApplication& __mother;
+  
+signals:
+  void autoUpdatesEnabled(bool);
 
 };
 

@@ -37,9 +37,6 @@ class SettingsWindow :
 public:
   SettingsWindow(QWidget* = 0);
 
-signals:
-  void restoreDefaults();
-
 public slots:
   void show();
 
@@ -57,6 +54,10 @@ private slots:
 
   /* Disables checkboxes */
   void __handleAlwaysCheckBox(int);
+  
+signals:
+  void restoreDefaults();
+  void settingsApplied();
 
 };
 

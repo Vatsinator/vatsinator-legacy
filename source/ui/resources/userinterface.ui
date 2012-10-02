@@ -142,10 +142,10 @@
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>223</x>
-      <y>115</y>
-      <width>150</width>
-      <height>186</height>
+      <x>227</x>
+      <y>165</y>
+      <width>180</width>
+      <height>210</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -159,6 +159,7 @@
     </property>
     <addaction name="ActionMetar"/>
     <addaction name="ActionRefresh"/>
+    <addaction name="EnableAutoUpdatesAction"/>
     <addaction name="separator"/>
     <addaction name="ActionFlightList"/>
     <addaction name="ActionATCList"/>
@@ -255,6 +256,20 @@
   <action name="ActionATCList">
    <property name="text">
     <string>ATC list...</string>
+   </property>
+  </action>
+  <action name="EnableAutoUpdatesAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable auto-updates</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

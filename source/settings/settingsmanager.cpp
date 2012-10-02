@@ -39,6 +39,8 @@ SettingsManager::init() {
   __mySettingsWindow = SettingsWindow::GetSingletonPtr();
   connect(__mySettingsWindow->OKCancelButtonBox,  SIGNAL(accepted()),
           this,                                   SLOT(__updateSettings()));
+  connect(__mySettingsWindow,                     SIGNAL(settingsApplied()),
+          this,                                   SLOT(__updateSettings()));
   connect(__mySettingsWindow,                     SIGNAL(restoreDefaults()),
           this,                                   SLOT(__restoreDefaults()));
 }
