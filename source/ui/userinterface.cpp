@@ -72,6 +72,8 @@ UserInterface::UserInterface(QWidget* _parent) :
           __flightsListWindow, SLOT(show()));
   connect(ActionATCList,       SIGNAL(triggered()),
           __atcListWindow,     SLOT(show()));
+  connect(EnableAutoUpdatesAction, SIGNAL(toggled(bool)),
+          this,                    SIGNAL(autoUpdatesEnabled(bool)));
 
   statusBarUpdate();
 }
@@ -230,6 +232,8 @@ UserInterface::__storeWindowGeometry() {
     settings.setValue("position", pos());
     settings.setValue("size", size());
   }
+  
+  settings.setValue("autoUpdatesEnabled", autoUpdatesEnabled());
 
   settings.endGroup();
 }
@@ -246,6 +250,8 @@ UserInterface::__restoreWindowGeometry() {
 
   if ( settings.value( "maximized", isMaximized() ).toBool() )
     showMaximized();
+  
+  EnableAutoUpdatesAction->setChecked(settings.value("autoUpdatesEnabled", true).toBool());
 
   settings.endGroup();
 }

@@ -77,17 +77,15 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
             this,             SLOT(__loadCachedData()));
   }
   
-    
-  if (__settingsManager->cacheEnabled()) {
-    connect(this,             SIGNAL(glInitialized()),
-            this,             SLOT(__loadCachedData()));
-  }
-  
   __userInterface = new UserInterface;
 
   // destroy all children windows before the program exits
   connect(this,             SIGNAL(destroyed()),
           __userInterface,  SLOT(hideAllWindows()));
+  
+  // connect EnableAutoUpdatesAction toggle
+  connect(__userInterface,  SIGNAL(autoUpdatesEnabled(bool)),
+          this,             SLOT(__autoUpdatesToggled(bool)));
 
   // SettingsManager instance is now created, let him get the pointer & connect his slots
   __settingsManager->init();
@@ -115,7 +113,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 
   // start the timer and fetch data
   __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
-  if (__settingsManager->getRefreshRate()) {
+  if (__userInterface->autoUpdatesEnabled()) {
     __timer.start();
     refreshData();
   }
@@ -170,8 +168,8 @@ void
 VatsinatorApplication::refreshData() {
   __userInterface->toggleStatusBar();
   __httpHandler->fetchData(__vatsimData->getDataUrl());
-  if (__settingsManager->getRefreshRate())
-    __timer.start();
+  if (!__userInterface->autoUpdatesEnabled())
+    __timer.stop();
 }
 
 void
@@ -287,13 +285,20 @@ VatsinatorApplication::__showDataAlert() {
 
 void
 VatsinatorApplication::__loadNewSettings() {
-  if (__settingsManager->getRefreshRate() != 0) {
-    if (__timer.interval() / 60000 != __settingsManager->getRefreshRate()) {
-      __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
+  if (__timer.interval() / 60000 != __settingsManager->getRefreshRate()) {
+    __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
+    
+    if (__userInterface->autoUpdatesEnabled())
       refreshData();
-    }
-  } else {
-    __timer.setInterval(0);
+  }
+}
+
+void
+VatsinatorApplication::__autoUpdatesToggled(bool _state) {
+  if (!_state) {
     __timer.stop();
+  } else {
+    if (!__timer.isActive())
+      refreshData();
   }
 }
