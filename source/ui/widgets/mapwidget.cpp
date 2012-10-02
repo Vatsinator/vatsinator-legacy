@@ -1,6 +1,7 @@
 /*
     mapwidget.cpp
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Jan Macheta janmacheta@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -130,6 +131,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __firFont("Verdana"),
     __position(0.0, 0.0),
     __zoom(ZOOM_MINIMUM),
+    __actualZoom(ACTUAL_ZOOM_MINIMUM),
     __keyPressed(false),
     __underMouse(NULL),
     __contextMenuOpened(false),
@@ -444,12 +446,8 @@ MapWidget::resizeGL(int width, int height) {
 void
 MapWidget::wheelEvent(QWheelEvent* _event) {
   int steps = _event->delta() / 120;
-
-  if (__zoom + steps <= ZOOM_MINIMUM)
-    __zoom = ZOOM_MINIMUM;
-  else
-    __zoom += steps;
-
+  __updateZoom(steps);
+  
   _event->accept();
 
   updateGL();
@@ -574,13 +572,10 @@ void
 MapWidget::keyPressEvent(QKeyEvent* _event) {
   switch (_event->key()) {
     case Qt::Key_PageUp:
-      __zoom += 1;
+      __updateZoom(1);
       break;
     case Qt::Key_PageDown:
-
-      if (__zoom > ZOOM_MINIMUM)
-        __zoom -= 1;
-
+      __updateZoom(-1);
       break;
     case Qt::Key_Shift:
       __keyPressed = true;
@@ -1259,6 +1254,7 @@ MapWidget::__storeSettings() {
   settings.beginGroup("CameraSettings");
 
   settings.setValue("zoomFactor", __zoom);
+  settings.setValue("actualZoomCoefficient", __actualZoom);
   settings.setValue("cameraPosition", __position);
 
   settings.endGroup();
@@ -1270,10 +1266,23 @@ MapWidget::__restoreSettings() {
 
   settings.beginGroup("CameraSettings");
 
-  __zoom = settings.value("zoomFactor", ZOOM_MINIMUM).toInt();
+  __zoom = settings.value("zoomFactor", ZOOM_MINIMUM).toFloat();
+  __actualZoom = settings.value("actualZoomCoefficient", ACTUAL_ZOOM_MINIMUM).toFloat();
   __position = settings.value("cameraPosition", QPointF(0.0, 0.0)).toPointF();
 
   settings.endGroup();
+}
+
+void MapWidget::__updateZoom(int _steps) {
+  __actualZoom += _steps;
+
+  if (__zoom + _steps <= ZOOM_MINIMUM) {
+    __zoom = ZOOM_MINIMUM;
+    __actualZoom = ACTUAL_ZOOM_MINIMUM;
+  } else {
+    __actualZoom  = __actualZoom < ACTUAL_ZOOM_MAXIMUM ? __actualZoom : ACTUAL_ZOOM_MAXIMUM;
+    __zoom = ZOOM_MINIMUM + STEPS_MINIMUM * pow(1.6, (__actualZoom));
+  }
 }
 
 void

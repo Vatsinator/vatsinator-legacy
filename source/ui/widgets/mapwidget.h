@@ -1,6 +1,7 @@
 /*
     mapwidget.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Jan Macheta janmacheta@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -150,6 +151,7 @@ private:
 
   void __storeSettings();
   void __restoreSettings();
+  void __updateZoom(int);
 
   void __produceCircle();
 
@@ -191,8 +193,11 @@ private:
   QPointF   __position;
 
   /* Zoom factor */
-  int   __zoom;
+  float   __zoom;
 
+  /*Actual Zoom level*/
+  unsigned int   __actualZoom;
+  
   /* Last mouse position */
   QPoint  __lastMousePos;
   QPoint  __recentlyClickedMousePos;
