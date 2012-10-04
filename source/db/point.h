@@ -20,11 +20,15 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include <QtGlobal>
+
 #pragma pack(1)
 struct Point {
   float x;
   float y;
 };
 #pragma pack()
+
+Q_DECLARE_TYPEINFO(Point, Q_PRIMITIVE_TYPE);
 
 #endif // POINT_H
