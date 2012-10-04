@@ -206,7 +206,7 @@ Pilot::__setMyStatus() {
 
     qreal distance = 0.0;
 
-  for (const AirportRecord & ap: AirportDatabase::GetSingleton().getAirports()) {
+    for (const AirportRecord & ap: AirportDatabase::GetSingleton().getAirports()) {
       qreal temp = VatsimDataHandler::calcDistance(ap.longitude, ap.latitude,
                    position.longitude, position.latitude);
 
@@ -223,6 +223,8 @@ Pilot::__setMyStatus() {
       }
 
       route.origin = closest->icao;
+      ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
+      ap->addOutbound(this);
       flightStatus = DEPARTING;
       return;
     }

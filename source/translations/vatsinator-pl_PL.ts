@@ -693,68 +693,83 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="618"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="614"/>
         <source>Flight details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="657"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="653"/>
         <source>Airport details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="678"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="674"/>
         <source>Controllers</source>
         <translation>Kontrolerzy</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="690"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="686"/>
         <source>Departures</source>
         <translation>Odloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="713"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="694"/>
+        <source> to </source>
+        <translation> do </translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="695"/>
+        <source>nowhere</source>
+        <translation>nikąd</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="710"/>
         <source>Arrivals</source>
         <translation>Przyloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="747"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="718"/>
+        <source> from </source>
+        <translation> z </translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="744"/>
         <source>details</source>
         <translation>- szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1320"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1324"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1337"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1341"/>
         <source>(unknown)</source>
         <translation>(brak)</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1328"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1345"/>
         <source>Ground speed:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1329"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1346"/>
         <source>kts</source>
         <translation>węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1329"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1346"/>
         <source>Altitude: </source>
         <translation>Wysokość:</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1330"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1347"/>
         <source>ft</source>
         <translation>stóp</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1354"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1371"/>
         <source>Departures:</source>
         <translation>Odloty:</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1359"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1376"/>
         <source>Arrivals:</source>
         <translation>Przyloty:</translation>
     </message>
@@ -818,22 +833,22 @@
         <translation>Vatsinator - ustawienia</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="140"/>
+        <location filename="../ui/resources/settingswindow.ui" line="130"/>
         <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
         <translation>Aby zastosować zmiany języka,&lt;br&gt;Vatsinator musi zostać uruchomiony ponownie.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="92"/>
+        <location filename="../ui/resources/settingswindow.ui" line="225"/>
         <source>Language:</source>
         <translation>Język:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="152"/>
+        <location filename="../ui/resources/settingswindow.ui" line="142"/>
         <source>Refresh every</source>
         <translation>Odświeżaj co</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="178"/>
+        <location filename="../ui/resources/settingswindow.ui" line="168"/>
         <source>minutes</source>
         <translation>minuty</translation>
     </message>
@@ -846,12 +861,12 @@
         <translation type="obsolete">Ustawienia kolorów</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="728"/>
+        <location filename="../ui/resources/settingswindow.ui" line="776"/>
         <source>Lands color:</source>
         <translation>Kolor lądów:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="698"/>
+        <location filename="../ui/resources/settingswindow.ui" line="746"/>
         <source>Seas color:</source>
         <translation>Kolor mórz:</translation>
     </message>
@@ -885,17 +900,17 @@
     </message>
     <message>
         <location filename="../ui/resources/settingswindow.ui" line="42"/>
-        <location filename="../ui/resources/settingswindow.ui" line="859"/>
+        <location filename="../ui/resources/settingswindow.ui" line="920"/>
         <source>Miscellaneous</source>
         <translation>Różne</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="70"/>
+        <location filename="../ui/resources/settingswindow.ui" line="193"/>
         <source>Refresh METARs as well</source>
         <translation>Odśwież także raporty</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="127"/>
+        <location filename="../ui/resources/settingswindow.ui" line="216"/>
         <source>Antyaliasing</source>
         <translation>Wygładzanie</translation>
     </message>
@@ -908,100 +923,105 @@
         <translation type="obsolete">Ustawienia widoku</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="209"/>
+        <location filename="../ui/resources/settingswindow.ui" line="101"/>
         <source>Nicer but slower.</source>
         <translation>Ładniej lecz wolniej.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="225"/>
+        <location filename="../ui/resources/settingswindow.ui" line="63"/>
         <source>If checked, all METARs will be re-fetched just after data update.</source>
         <translation>Jeżeli opcja jest zaznaczona, razem z odświeżeniem statusu odświeżone zostaną także raporty pogodowe.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="241"/>
+        <location filename="../ui/resources/settingswindow.ui" line="82"/>
         <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
         <translation>Jeżeli zaznaczone, Vatsinator zapisze pobrane dane w pliku, by odtworzyć je przy następnym uruchomieniu.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="267"/>
-        <location filename="../ui/resources/settingswindow.ui" line="871"/>
+        <location filename="../ui/resources/settingswindow.ui" line="262"/>
+        <source>Zooming intensivity:</source>
+        <translation>Szybkość przybliżania:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/settingswindow.ui" line="315"/>
+        <location filename="../ui/resources/settingswindow.ui" line="932"/>
         <source>View</source>
         <translation>Widok</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="338"/>
+        <location filename="../ui/resources/settingswindow.ui" line="386"/>
         <source>Display layers:</source>
         <translation>Warstwy:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="345"/>
+        <location filename="../ui/resources/settingswindow.ui" line="393"/>
         <source>Pilots</source>
         <translation>Piloci</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="355"/>
+        <location filename="../ui/resources/settingswindow.ui" line="403"/>
         <source>Airports</source>
         <translation>Lotniska</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="365"/>
+        <location filename="../ui/resources/settingswindow.ui" line="413"/>
         <source>Staffed FIRs</source>
         <translation>Obsadzone FIRy</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="375"/>
+        <location filename="../ui/resources/settingswindow.ui" line="423"/>
         <source>Unstaffed FIRs</source>
         <translation>FIRy bez ATC</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="385"/>
+        <location filename="../ui/resources/settingswindow.ui" line="433"/>
         <source>Inactive airports</source>
         <translation>Puste lotniska</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="409"/>
+        <location filename="../ui/resources/settingswindow.ui" line="457"/>
         <source>Show airport labels:</source>
         <translation>Pokaż etykiety lotnisk:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="461"/>
-        <location filename="../ui/resources/settingswindow.ui" line="880"/>
+        <location filename="../ui/resources/settingswindow.ui" line="509"/>
+        <location filename="../ui/resources/settingswindow.ui" line="941"/>
         <source>Colors</source>
         <translation>Kolory</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="480"/>
+        <location filename="../ui/resources/settingswindow.ui" line="528"/>
         <source>Unstaffed FIR borders color:</source>
         <translation>Kolory obramowania FIR bez kontrolera:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="510"/>
+        <location filename="../ui/resources/settingswindow.ui" line="558"/>
         <source>Staffed FIR background color:</source>
         <translation>Kolor tła obstawionego FIR:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="556"/>
-        <location filename="../ui/resources/settingswindow.ui" line="635"/>
+        <location filename="../ui/resources/settingswindow.ui" line="604"/>
+        <location filename="../ui/resources/settingswindow.ui" line="683"/>
         <source>Alpha channel:</source>
         <translation>Przezroczystość:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="589"/>
+        <location filename="../ui/resources/settingswindow.ui" line="637"/>
         <source>Staffed UIR background color:</source>
         <translation>Kolor tła obstawionego UIR:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="668"/>
+        <location filename="../ui/resources/settingswindow.ui" line="716"/>
         <source>Approach circle color:</source>
         <translation>Kolor kręgu zbliżania:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="758"/>
+        <location filename="../ui/resources/settingswindow.ui" line="806"/>
         <source>Origin-to-pilot line color:</source>
         <translation>Kolor linii lotnisko startu-pilot:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="788"/>
+        <location filename="../ui/resources/settingswindow.ui" line="836"/>
         <source>Pilot-to-destination line color:</source>
         <translation>Kolor linii pilot-lotnisko docelowe:</translation>
     </message>
@@ -1010,7 +1030,7 @@
         <translation type="obsolete">Opcje oznaczone * wymagają&lt;br&gt;ponownego uruchomienia programu.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="80"/>
+        <location filename="../ui/resources/settingswindow.ui" line="114"/>
         <source>Enable caching</source>
         <translation>Zapisuj pobrane dane</translation>
     </message>
@@ -1023,23 +1043,23 @@
         <translation type="obsolete">Język: *</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="284"/>
+        <location filename="../ui/resources/settingswindow.ui" line="332"/>
         <source>Show pilot labels:</source>
         <translation>Pokaż etykiety pilotów:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="291"/>
-        <location filename="../ui/resources/settingswindow.ui" line="416"/>
+        <location filename="../ui/resources/settingswindow.ui" line="339"/>
+        <location filename="../ui/resources/settingswindow.ui" line="464"/>
         <source>Always</source>
         <translation>Zawsze</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="301"/>
+        <location filename="../ui/resources/settingswindow.ui" line="349"/>
         <source>When hovered</source>
         <translation>Pod kursorem</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="311"/>
+        <location filename="../ui/resources/settingswindow.ui" line="359"/>
         <source>Airport-related</source>
         <translation>Lotnisko aktywuje</translation>
     </message>
@@ -1048,7 +1068,7 @@
         <translation type="obsolete">Pokaż etykiety lotnisk:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="426"/>
+        <location filename="../ui/resources/settingswindow.ui" line="474"/>
         <source>Never</source>
         <translation>Nigdy</translation>
     </message>

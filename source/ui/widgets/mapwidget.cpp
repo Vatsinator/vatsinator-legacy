@@ -691,7 +691,8 @@ MapWidget::__openContextMenu(const Airport* _ap) {
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
-            p->callsign % " to " % p->route.destination,
+            p->callsign % tr(" to ") %
+                (p->route.destination.isEmpty() ? tr("nowhere") : p->route.destination),
             this
           );
         __menu->addAction(showDetails);
@@ -714,7 +715,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
-            p->callsign % " from " % p->route.origin,
+            p->callsign % tr(" from ") % p->route.origin,
             this
           );
         __menu->addAction(showDetails);
