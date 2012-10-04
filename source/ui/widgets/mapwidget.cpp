@@ -1284,10 +1284,9 @@ MapWidget::__updateZoom(int _steps) {
   
   //set the actual zoom level according to number of scroll wheel steps
   __actualZoom += _steps;
+  
   //limiting range of zoom
-//   __actualZoom = __actualZoom < 0 ? 0 : __actualZoom;
   __actualZoom = qMax(__actualZoom, 0);
-//   __actualZoom = __actualZoom >__actualZoomMaximum ? __actualZoomMaximum : __actualZoom;
   __actualZoom = qMin(__actualZoom, __actualZoomMaximum);
   
   // count value of closeup
