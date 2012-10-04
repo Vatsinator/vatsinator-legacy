@@ -199,8 +199,8 @@ private:
   /*Actual Zoom level*/
   int   __actualZoom;
 
-  /*Zoom Coefficient to let users customize their zooming speed */
-  float  __zoomCoefficient ;
+  /* Zoom Coefficient to let users customize their zooming speed */
+  /* Zoom Coefficient is defined in SettingsManager */
 
   /*Minimum for __actualZoom not to exceed ZOOM_MAXIMUM value*/
   int  __actualZoomMaximum;

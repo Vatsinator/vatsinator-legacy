@@ -61,6 +61,9 @@ public:
   
   inline bool
   cacheEnabled() const { return __cacheEnabled; }
+  
+  inline int
+  getZoomCoefficient() const { return __zoomCoefficient; }
 
   inline const DisplayLayersPolicy &
   getDisplayLayersPolicy() const { return __displayLayers; }
@@ -131,6 +134,7 @@ private:
   bool                __metarsRefresh;
   bool                __antyaliasing;
   bool                __cacheEnabled;
+  int                 __zoomCoefficient;
   DisplayLayersPolicy __displayLayers;
   unsigned            __pilotsLabelsDisplayPolicy;
   bool                __displayAirportLabels;

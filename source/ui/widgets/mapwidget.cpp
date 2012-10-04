@@ -132,7 +132,6 @@ MapWidget::MapWidget(QWidget* _parent) :
     __position(0.0, 0.0),
     __zoom(ZOOM_MINIMUM),
     __actualZoom(ACTUAL_ZOOM_MINIMUM),
-    __zoomCoefficient(50),
     __actualZoomMaximum(),
     __keyPressed(false),
     __underMouse(NULL),
@@ -1280,7 +1279,7 @@ MapWidget::__updateZoom(int _steps) {
   //count limiter for this function
   __actualZoomMaximum =
       qFloor(qLn((ZOOM_MAXIMUM - ZOOM_MINIMUM) / ZOOM_NORMALIZE_COEFFICIENT) /
-      qLn(ZOOM_BASE + (__zoomCoefficient * 0.009)));
+      qLn(ZOOM_BASE + (__settings->getZoomCoefficient() * 0.01)));
   
   //set the actual zoom level according to number of scroll wheel steps
   __actualZoom += _steps;
@@ -1291,7 +1290,7 @@ MapWidget::__updateZoom(int _steps) {
   
   // count value of closeup
   __zoom = ZOOM_MINIMUM + ZOOM_NORMALIZE_COEFFICIENT *
-      qPow(ZOOM_BASE + (__zoomCoefficient * 0.01), (__actualZoom));
+      qPow(ZOOM_BASE + (__settings->getZoomCoefficient() * 0.01), (__actualZoom));
 }
 
 void
