@@ -86,6 +86,9 @@ private:
   void __storeWindowGeometry();
   void __restoreWindowGeometry();
   
+  /* Returns main window initial position */
+  static QPoint __getInitialPoint();
+  
   QLabel*       __statusBox;
   QProgressBar* __progressBar;
 
