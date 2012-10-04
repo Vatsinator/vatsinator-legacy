@@ -1285,8 +1285,7 @@ MapWidget::__updateZoom(int _steps) {
   __actualZoom += _steps;
   
   //limiting range of zoom
-  __actualZoom = qMax(__actualZoom, 0);
-  __actualZoom = qMin(__actualZoom, __actualZoomMaximum);
+  __actualZoom = qBound(0, __actualZoom, __actualZoomMaximum);
   
   // count value of closeup
   __zoom = ZOOM_MINIMUM + ZOOM_NORMALIZE_COEFFICIENT *
