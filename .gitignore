@@ -1,6 +1,9 @@
 # ignore build dir #
 build
 
+# ignore old packages directory
+archives
+
 # ignore KDevelop files #
 *.kdev4
 
