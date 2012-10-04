@@ -140,7 +140,7 @@ UserInterface::infoBarUpdate() {
 void
 UserInterface::setWindowPosition(QWidget* _window) {
   QRect frect = _window->frameGeometry();
-  frect.moveCenter(QDesktopWidget().availableGeometry().center());
+  frect.moveCenter(QDesktopWidget().availableGeometry(UserInterface::__getInitialPoint()).center());
   _window->move(frect.topLeft());
 }
 
@@ -256,3 +256,14 @@ UserInterface::__restoreWindowGeometry() {
   settings.endGroup();
 }
 
+QPoint
+UserInterface::__getInitialPoint() {
+  QSettings settings("Vatsinator", "Vatsinator");
+
+  settings.beginGroup("MainWindow");
+  QPoint p = settings.value("position", QPoint(1, 1)).toPoint();
+
+  settings.endGroup();
+  
+  return p;
+}
