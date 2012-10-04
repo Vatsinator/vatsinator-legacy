@@ -196,10 +196,14 @@ private:
   float   __zoom;
 
   /*Actual Zoom level*/
-  unsigned int   __actualZoom;
+  int   __actualZoom;
 
   /*Zoom Coefficient to let users customize their zooming speed */
   float  __zoomCoefficient ;
+
+  /*Minimum for __actualZoom not to exceed ZOOM_MAXIMUM value*/
+  int  __actualZoomMaximum;
+  
   /*----------ZOOM HANDLING SECTION END---------*/
   
   /* Last mouse position */
