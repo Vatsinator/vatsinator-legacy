@@ -5,7 +5,7 @@
 +[3]  Vatbook integration
 +[4]  Allow disabling automatic updates
  [5]  Allow disabling Vatbook integration
- [6]  Fix subwindows positioning on multiple desktops
++[6]  Fix subwindows positioning on multiple desktops
 +[7]  Fix zoom factor <AxuBlade>
 +[8]  Enable toggling airport inbound/outbound lines
  [9]  RPM packaging
