@@ -191,12 +191,16 @@ private:
 
   /* Camera position x, y */
   QPointF   __position;
-
+  /*----------ZOOM HANDLING SECTION---------*/
   /* Zoom factor */
   float   __zoom;
 
   /*Actual Zoom level*/
   unsigned int   __actualZoom;
+
+  /*Zoom Coefficient to let users customize their zooming speed */
+  float  __zoomCoefficient ;
+  /*----------ZOOM HANDLING SECTION END---------*/
   
   /* Last mouse position */
   QPoint  __lastMousePos;
