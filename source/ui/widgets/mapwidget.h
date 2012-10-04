@@ -191,6 +191,7 @@ private:
 
   /* Camera position x, y */
   QPointF   __position;
+  
   /*----------ZOOM HANDLING SECTION---------*/
   /* Zoom factor */
   float   __zoom;

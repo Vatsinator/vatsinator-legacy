@@ -1275,16 +1275,24 @@ MapWidget::__restoreSettings() {
   settings.endGroup();
 }
 
-void MapWidget::__updateZoom(int _steps) {
+void
+MapWidget::__updateZoom(int _steps) {
   //count limiter for this function
-  __actualZoomMaximum=floor(log((ZOOM_MAXIMUM-ZOOM_MINIMUM) / ZOOM_NORMALIZE_COEFFICIENT) / log(ZOOM_BASE + (__zoomCoefficient * 0.009)));
-//set the actual zoom level according to number of scroll wheel steps
+  __actualZoomMaximum =
+      qFloor(qLn((ZOOM_MAXIMUM - ZOOM_MINIMUM) / ZOOM_NORMALIZE_COEFFICIENT) /
+      qLn(ZOOM_BASE + (__zoomCoefficient * 0.009)));
+  
+  //set the actual zoom level according to number of scroll wheel steps
   __actualZoom += _steps;
   //limiting range of zoom
-  __actualZoom = __actualZoom < 0 ? 0 : __actualZoom;
-  __actualZoom = __actualZoom >__actualZoomMaximum ? __actualZoomMaximum : __actualZoom;
-  //count value of closeup
-  __zoom = ZOOM_MINIMUM + ZOOM_NORMALIZE_COEFFICIENT * pow(ZOOM_BASE + (__zoomCoefficient * 0.01), (__actualZoom));
+//   __actualZoom = __actualZoom < 0 ? 0 : __actualZoom;
+  __actualZoom = qMax(__actualZoom, 0);
+//   __actualZoom = __actualZoom >__actualZoomMaximum ? __actualZoomMaximum : __actualZoom;
+  __actualZoom = qMin(__actualZoom, __actualZoomMaximum);
+  
+  // count value of closeup
+  __zoom = ZOOM_MINIMUM + ZOOM_NORMALIZE_COEFFICIENT *
+      qPow(ZOOM_BASE + (__zoomCoefficient * 0.01), (__actualZoom));
 }
 
 void
