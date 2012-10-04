@@ -132,7 +132,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __position(0.0, 0.0),
     __zoom(ZOOM_MINIMUM),
     __actualZoom(ACTUAL_ZOOM_MINIMUM),
-    __zoomCoefficient(1),
+    __zoomCoefficient(PI/2),
     __keyPressed(false),
     __underMouse(NULL),
     __contextMenuOpened(false),
@@ -1282,7 +1282,7 @@ void MapWidget::__updateZoom(int _steps) {
     __actualZoom = ACTUAL_ZOOM_MINIMUM;
   } else {
     __actualZoom  = __actualZoom < ACTUAL_ZOOM_MAXIMUM ? __actualZoom : ACTUAL_ZOOM_MAXIMUM;
-    __zoom = __zoomCoefficient * (ZOOM_MINIMUM + STEPS_MINIMUM * pow(PI/2, (__actualZoom)));
+    __zoom = ZOOM_MINIMUM + STEPS_MINIMUM * pow(__zoomCoefficient, (__actualZoom));
   }
 }
 
