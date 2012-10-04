@@ -132,6 +132,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __position(0.0, 0.0),
     __zoom(ZOOM_MINIMUM),
     __actualZoom(ACTUAL_ZOOM_MINIMUM),
+    __actualZoomMaximum(),
     __keyPressed(false),
     __underMouse(NULL),
     __contextMenuOpened(false),
@@ -1267,22 +1268,28 @@ MapWidget::__restoreSettings() {
   settings.beginGroup("CameraSettings");
 
   __zoom = settings.value("zoomFactor", ZOOM_MINIMUM).toFloat();
-  __actualZoom = settings.value("actualZoomCoefficient", ACTUAL_ZOOM_MINIMUM).toFloat();
+  __actualZoom = settings.value("actualZoomCoefficient", ACTUAL_ZOOM_MINIMUM).toInt();
   __position = settings.value("cameraPosition", QPointF(0.0, 0.0)).toPointF();
 
   settings.endGroup();
 }
 
-void MapWidget::__updateZoom(int _steps) {
+void
+MapWidget::__updateZoom(int _steps) {
+  //count limiter for this function
+  __actualZoomMaximum =
+      qFloor(qLn((ZOOM_MAXIMUM - ZOOM_MINIMUM) / ZOOM_NORMALIZE_COEFFICIENT) /
+      qLn(ZOOM_BASE + (__settings->getZoomCoefficient() * 0.01)));
+  
+  //set the actual zoom level according to number of scroll wheel steps
   __actualZoom += _steps;
-
-  if (__zoom + _steps <= ZOOM_MINIMUM) {
-    __zoom = ZOOM_MINIMUM;
-    __actualZoom = ACTUAL_ZOOM_MINIMUM;
-  } else {
-    __actualZoom  = __actualZoom < ACTUAL_ZOOM_MAXIMUM ? __actualZoom : ACTUAL_ZOOM_MAXIMUM;
-    __zoom = ZOOM_MINIMUM + STEPS_MINIMUM * pow(1.6, (__actualZoom));
-  }
+  
+  //limiting range of zoom
+  __actualZoom = qBound(0, __actualZoom, __actualZoomMaximum);
+  
+  // count value of closeup
+  __zoom = ZOOM_MINIMUM + ZOOM_NORMALIZE_COEFFICIENT *
+      qPow(ZOOM_BASE + (__settings->getZoomCoefficient() * 0.01), (__actualZoom));
 }
 
 void

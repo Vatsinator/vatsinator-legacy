@@ -16,6 +16,9 @@ static const bool ANTYALIASING              = false;
 // cache enabled option
 static const bool CACHE_ENABLED             = true;
 
+// zoom coefficient
+static const int ZOOM_COEFFICIENT           = 30;
+
 /* some checkboxes state */
 // "Display layers"
 static const bool PILOTS_CHECKBOX           = true;

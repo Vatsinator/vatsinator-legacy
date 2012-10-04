@@ -191,12 +191,21 @@ private:
 
   /* Camera position x, y */
   QPointF   __position;
-
+  
+  /*----------ZOOM HANDLING SECTION---------*/
   /* Zoom factor */
   float   __zoom;
 
   /*Actual Zoom level*/
-  unsigned int   __actualZoom;
+  int   __actualZoom;
+
+  /* Zoom Coefficient to let users customize their zooming speed */
+  /* Zoom Coefficient is defined in SettingsManager */
+
+  /*Minimum for __actualZoom not to exceed ZOOM_MAXIMUM value*/
+  int  __actualZoomMaximum;
+  
+  /*----------ZOOM HANDLING SECTION END---------*/
   
   /* Last mouse position */
   QPoint  __lastMousePos;

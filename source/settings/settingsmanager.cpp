@@ -55,6 +55,7 @@ SettingsManager::__saveSettings() {
   settings.setValue("metarsRefresh",               __metarsRefresh);
   settings.setValue("antyaliasing",                __antyaliasing);
   settings.setValue("cacheEnabled",                __cacheEnabled);
+  settings.setValue("zoomCoefficient",             __zoomCoefficient);
   settings.setValue("pilotsLayer",                 __displayLayers.pilots);
   settings.setValue("airportsLayer",               __displayLayers.airports);
   settings.setValue("staffedFirsLayer",            __displayLayers.staffedFirs);
@@ -90,6 +91,7 @@ SettingsManager::__restoreSettings() {
   __metarsRefresh = settings.value("metarsRefresh", DefaultSettings::METARS_REFRESH).toBool();
   __antyaliasing = settings.value("antyaliasing", DefaultSettings::ANTYALIASING).toBool();
   __cacheEnabled = settings.value("cacheEnabled", DefaultSettings::CACHE_ENABLED).toBool();
+  __zoomCoefficient = settings.value("zoomCoefficient", DefaultSettings::ZOOM_COEFFICIENT).toInt();
   __displayLayers.pilots = settings.value("pilotsLayer", DefaultSettings::PILOTS_CHECKBOX).toBool();
   __displayLayers.airports = settings.value("airportsLayer", DefaultSettings::AIRPORTS_CHECKBOX).toBool();
   __displayLayers.staffedFirs = settings.value("staffedFirsLayer", DefaultSettings::STAFFED_FIRS_CHECKBOX).toBool();
@@ -162,6 +164,7 @@ SettingsManager::__updateSettings() {
   __metarsRefresh = static_cast< bool >(__mySettingsWindow->RefreshMetarsCheckBox->checkState());
   __antyaliasing = static_cast< bool >(__mySettingsWindow->AntyaliasingCheckBox->checkState());
   __cacheEnabled = static_cast< bool >(__mySettingsWindow->EnableCachingCheckBox->checkState());
+  __zoomCoefficient = __mySettingsWindow->ZoomCoefficientSlider->value();
   __displayLayers.pilots = static_cast< bool >(__mySettingsWindow->PilotsCheckBox->checkState());
   __displayLayers.airports = static_cast< bool >(__mySettingsWindow->AirportsCheckBox->checkState());
   __displayLayers.staffedFirs = static_cast< bool >(__mySettingsWindow->StaffedFirsCheckBox->checkState());
@@ -215,6 +218,7 @@ SettingsManager::__restoreDefaults() {
   __metarsRefresh = DefaultSettings::METARS_REFRESH;
   __antyaliasing = DefaultSettings::ANTYALIASING;
   __cacheEnabled = DefaultSettings::CACHE_ENABLED;
+  __zoomCoefficient = DefaultSettings::ZOOM_COEFFICIENT;
   __displayLayers.pilots = DefaultSettings::PILOTS_CHECKBOX;
   __displayLayers.airports = DefaultSettings::AIRPORTS_CHECKBOX;
   __displayLayers.staffedFirs = DefaultSettings::STAFFED_FIRS_CHECKBOX;
