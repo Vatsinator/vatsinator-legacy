@@ -13,8 +13,7 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 Current release: **Vatsinator 0.1_beta3**
 
 - Linux
-	- ![Ubuntu](http://vatsim.garapich.pl/images/ubuntu.png) Ubuntu<br>
-		To install Vatsinator using apt, just type in the terminal:
+	- ![Ubuntu](http://vatsim.garapich.pl/images/ubuntu.png) To install Vatsinator using apt, just type in the terminal:
 		
 		```
 		$ sudo add-apt-repository ppa:michal-k93/vatsim
@@ -22,16 +21,13 @@ Current release: **Vatsinator 0.1_beta3**
 		$ sudo apt-get install vatsinator
 		```
 	
-	- ![Debian](http://vatsim.garapich.pl/images/debian.png) Debian<br>
-		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
+	- ![Debian](http://vatsim.garapich.pl/images/debian.png) There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
 		[vatsinator-0.1-beta3_i386.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_i386.deb) for i386<br>
 		[vatsinator-0.1-beta3_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_amd64.deb) for amd64<br>
 		
-	- ![Gentoo](http://vatsim.garapich.pl/images/gentoo.png) Gentoo<br>
-		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).<br>
+	- ![Gentoo](http://vatsim.garapich.pl/images/gentoo.png) You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).<br>
 	
-	- ![Arch](http://vatsim.garapich.pl/images/arch.png) Arch<br>
-		Having AUR set up correctly, Vatsinator installing is as simpe as that:
+	- ![Arch](http://vatsim.garapich.pl/images/arch.png) Having AUR set up correctly, Vatsinator installing is as simpe as that:
 		
 		```
 		$ yaourt -S vatsinator
@@ -47,7 +43,7 @@ Current release: **Vatsinator 0.1_beta3**
 	[vatsinator-0.1_beta3.exe](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta3.exe)
 
 - Source Code<br>
-	[vatsinator-0.1_beta3.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta3.tar.gz)
+	![Tarball](http://vatsim.garapich.pl/images/tarball.png) [vatsinator-0.1_beta3.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta3.tar.gz)
 
 
 ## Building
