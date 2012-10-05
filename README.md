@@ -13,7 +13,7 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 Current release: **Vatsinator 0.1_beta3**
 
 - Linux
-	- Ubuntu<br>
+	- ![Ubuntu](http://vatsim.garapich.pl/images/ubuntu.png) Ubuntu<br>
 		To install Vatsinator using apt, just type in the terminal:
 		
 		```
