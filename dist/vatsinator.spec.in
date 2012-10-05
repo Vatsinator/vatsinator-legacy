@@ -1,0 +1,65 @@
+Summary:        A simple Vatsim monitor
+Name:           vatsinator
+Version:        @vatsinator_VERSION@
+Release:        1
+License:        GPLv3
+Group:          Applications/Internet
+Source:         %{name}-@vatsinator_VERSION@.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:  libqt4-devel gcc-c++ cmake
+
+Requires:       libqt4-core >= 4.7, libqt4-gui >= 4.7, libqt4-network >= 4.7, libqt4-opengl >= 4.7
+
+%description
+Vatsinator is an open-source Vatsim network monitor. It shows
+logged-in pilots and controllers, provides weather and airport information.
+Vatsinator is designed to be quick and handy, in order to be useful
+on desktops (when not flying) and note/netbooks (during flight).
+
+%prep
+rm -rf $RPM_BUILD_DIR/%{name}-@vatsinator_VERSION@
+%setup -q -n %{name}-@vatsinator_VERSION@
+
+%build
+cd $RPM_BUILD_DIR/%{name}-@vatsinator_VERSION@
+%{cmake} . -DCMAKE_INSTALL_PREFIX=/usr
+make %{?_smp_mflags}
+
+%install
+cd $RPM_BUILD_DIR/%{name}-@vatsinator_VERSION@
+make install DESTDIR=$RPM_BUILD_ROOT
+
+%clean
+cd $RPM_BUILD_DIR/%{name}-@vatsinator_VERSION@
+make clean
+
+%files
+%{_bindir}/vatsinator
+%{_datadir}/icons/hicolor/48x48/apps/vatsinator.png
+%{_datadir}/icons/hicolor/16x16/apps/vatsinator.png
+%{_datadir}/icons/hicolor/128x128/apps/vatsinator.png
+%{_datadir}/icons/hicolor/32x32/apps/vatsinator.png
+%{_datadir}/icons/hicolor/22x22/apps/vatsinator.png
+%{_datadir}/icons/hicolor/24x24/apps/vatsinator.png
+%{_datadir}/applications/vatsinator.desktop
+%{_datadir}/vatsinator/pixmaps/1p32.png
+%{_datadir}/vatsinator/pixmaps/4p32.png
+%{_datadir}/vatsinator/pixmaps/2j32.png
+%{_datadir}/vatsinator/pixmaps/3j32.png
+%{_datadir}/vatsinator/pixmaps/conc32.png
+%{_datadir}/vatsinator/pixmaps/2p32.png
+%{_datadir}/vatsinator/pixmaps/4j32.png
+%{_datadir}/vatsinator/WorldAirports.db
+%{_datadir}/vatsinator/vatsinator.dat
+%{_datadir}/vatsinator/WorldMap.db
+%{_datadir}/vatsinator/COPYING
+%{_datadir}/vatsinator/translations/pl_PL.language
+%{_datadir}/vatsinator/translations/vatsinator-pl_PL.qm
+%{_datadir}/vatsinator/models.dat
+%{_datadir}/vatsinator/WorldFirs.db
+
+%changelog
+* @vatsinator_RPM_DATE@ Michał Garapich <michal@garapich.pl> - @vatsinator_VERSION@
+- Version @vatsinator_VERSION@
+

@@ -111,6 +111,9 @@ if (LINUX)
     endif (WITH_DEBIAN)
 
     option (WITH_RPM OFF)
+    if (WITH_RPM)
+        add_subdirectory (dist)
+    endif (WITH_RPM)
 
 elseif (APPLE)
     
