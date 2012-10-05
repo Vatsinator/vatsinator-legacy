@@ -22,15 +22,15 @@ Current release: **Vatsinator 0.1_beta3**
 		$ sudo apt-get install vatsinator
 		```
 	
-	- Debian<br>
+	- ![Debian](http://vatsim.garapich.pl/images/debian.png) Debian<br>
 		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
 		[vatsinator-0.1-beta3_i386.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_i386.deb) for i386<br>
 		[vatsinator-0.1-beta3_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta3_amd64.deb) for amd64<br>
 		
-	- Gentoo<br>
+	- ![Gentoo](http://vatsim.garapich.pl/images/gentoo.png) Gentoo<br>
 		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).<br>
 	
-	- Arch<br>
+	- ![Arch](http://vatsim.garapich.pl/images/arch.png) Arch<br>
 		Having AUR set up correctly, Vatsinator installing is as simpe as that:
 		
 		```
