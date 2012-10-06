@@ -46,23 +46,6 @@ endif (NOT vatsinator_VERSION)
 
 # only for Linux
 if (LINUX)
-    # create desktop entry file
-    if (NOT DESKTOP_ENTRY)
-        set (DESKTOP_ENTRY ${CMAKE_SOURCE_DIR}/vatsinator.desktop)
-    endif (NOT DESKTOP_ENTRY)
-    
-    set (DESKTOP_SH_FILE ${CMAKE_SOURCE_DIR}/resources/vatsinator-desktop.sh)
-    
-    add_custom_command (OUTPUT ${DESKTOP_ENTRY}
-        COMMAND touch ${DESKTOP_ENTRY}
-        COMMAND sh ${DESKTOP_SH_FILE} ${vatsinator_VERSION} ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
-        DEPENDS ${DESKTOP_SH_FILE}
-        COMMENT "Generating desktop entry file"
-    )
-    add_custom_target (DesktopEntryFile ALL
-        DEPENDS ${DESKTOP_ENTRY}
-    )
-    
     # install files
     install (FILES
         COPYING
@@ -85,10 +68,6 @@ if (LINUX)
         DESTINATION share/vatsinator/pixmaps
     )
     
-    install (FILES ${DESKTOP_ENTRY}
-        DESTINATION share/applications
-    )
-    
     macro (install_icon SIZE)
         install (FILES resources/vatsinator-${SIZE}.png
             DESTINATION "share/icons/hicolor/${SIZE}x${SIZE}/apps"
@@ -107,10 +86,11 @@ if (LINUX)
     option (WITH_DEBIAN OFF)
     if (WITH_DEBIAN)
         add_subdirectory (debian)
-        add_subdirectory (dist)
     endif (WITH_DEBIAN)
 
     option (WITH_RPM OFF)
+    
+    add_subdirectory (dist)
 
 elseif (APPLE)
     

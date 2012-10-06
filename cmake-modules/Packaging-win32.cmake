@@ -4,7 +4,7 @@ set (CPACK_GENERATOR "NSIS")
 
 include (CPackDefaultOptions)
 
-set (CPACK_PACKAGE_FILE_NAME "vatsinator-${vatsinator_VERSION}")
+set (CPACK_PACKAGE_FILE_NAME "VatsinatorSetup-${vatsinator_VERSION}")
 set (CPACK_PACKAGE_EXECUTABLES "vatsinator;Vatsinator")
 set (CPACK_PACKAGE_INSTALL_DIRECTORY "Vatsinator")
 set (CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/dist/icon.png")
