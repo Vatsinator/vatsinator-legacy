@@ -6,6 +6,8 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 
 **To avoid confusion** Vatsinator does NOT show real-life traffic. It is only VATSIM (Virtual Air Traffic Simulation) network monitor. To find out what VATSIM is, see [http://www.vatsim.net](http://www.vatsim.net/).
 
+[<img src="http://www.vatsim.garapich.pl/images/gplus.pg">](https://plus.google.com/100938719910263601185/posts?hl=pl)
+
 ---
 
 ## Installation
