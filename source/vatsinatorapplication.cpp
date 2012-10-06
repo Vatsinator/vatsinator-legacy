@@ -204,10 +204,9 @@ VatsinatorApplication::__loadCachedData() {
   if (!cache.exists())
     return;
   
-  QString fileName(CACHE_FILE_NAME);
   __firsData->clearAll();  
-//   QtConcurrent::run(dispatchDataUpdate, fileName);
-  dispatchDataUpdate(fileName);
+  
+  dispatchDataUpdate(CACHE_FILE_NAME);
 }
 
 void
@@ -240,11 +239,7 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
     __vatsimData->parseDataFile(_data);
     __userInterface->infoBarUpdate();
     __userInterface->statusBarUpdate();
-
-    // we cannot depend on signals & slots system here, as GLrepaint() would be called
-    // earlier, causing segfault
-//     ModuleManager::GetSingleton().updateData();
-
+    
     if (__settingsManager->refreshMetars())
       emit metarsRefreshRequested();
 
