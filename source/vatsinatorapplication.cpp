@@ -47,13 +47,13 @@
 
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
-    __airportsData(new AirportDatabase),
-    __firsData(new FirDatabase),
-    __worldMap(new WorldMap),
-    __vatsimData(new VatsimDataHandler),
-    __languageManager(new LanguageManager),
-    __settingsManager(new SettingsManager),
-    __modulesManager(new ModuleManager),
+    __airportsData(new AirportDatabase()),
+    __firsData(new FirDatabase()),
+    __worldMap(new WorldMap()),
+    __vatsimData(new VatsimDataHandler()),
+    __languageManager(new LanguageManager()),
+    __settingsManager(new SettingsManager()),
+    __modulesManager(new ModuleManager()),
     __userInterface(NULL) {
   
 #ifndef NO_DEBUG
@@ -68,16 +68,17 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 # endif
 #endif
 
-  
   __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + __settingsManager->getLanguage());
   this->installTranslator(&__translator);
-   
+
+  // if user enabled caching load data as soon as OpenGL context is initialized
   if (__settingsManager->cacheEnabled()) {
     connect(this,             SIGNAL(glInitialized()),
             this,             SLOT(__loadCachedData()));
   }
   
-  __userInterface = new UserInterface;
+  // slots set, crate User Interface
+  __userInterface = new UserInterface();
 
   // destroy all children windows before the program exits
   connect(this,             SIGNAL(destroyed()),
@@ -166,7 +167,7 @@ VatsinatorApplication::log(const char* _s) {
 
 void
 VatsinatorApplication::refreshData() {
-  __userInterface->toggleStatusBar();
+  emit dataDownloading();
   __httpHandler->fetchData(__vatsimData->getDataUrl());
   if (!__userInterface->autoUpdatesEnabled())
     __timer.stop();
@@ -174,6 +175,7 @@ VatsinatorApplication::refreshData() {
 
 void
 VatsinatorApplication::dispatchDataUpdate(const QString& _fileName) {
+  /* This was intended to be run on the separate thread, but some problems occured. */
   CacheFile file(_fileName);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     VatsinatorApplication::log("File %s is not readable.", _fileName.toStdString().c_str());
@@ -210,8 +212,6 @@ VatsinatorApplication::__loadCachedData() {
 
 void
 VatsinatorApplication::__dataUpdated(const QString& _data) {
-  __userInterface->toggleStatusBar();
-  
   if (_data.isEmpty()) {
     QMessageBox decision;
     decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
@@ -229,6 +229,7 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
       return;
     } else {
       __userInterface->statusBarUpdate(tr("Data outdated!"));
+      __userInterface->toggleStatusBar();
       return;
     }
   }
@@ -242,7 +243,7 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
 
     // we cannot depend on signals & slots system here, as GLrepaint() would be called
     // earlier, causing segfault
-    ModuleManager::GetSingleton().updateData();
+//     ModuleManager::GetSingleton().updateData();
 
     if (__settingsManager->refreshMetars())
       emit metarsRefreshRequested();
@@ -279,8 +280,13 @@ VatsinatorApplication::__showDataAlert() {
 
   decision.exec();
 
-  if (decision.clickedButton() == againButton)
+  if (decision.clickedButton() == againButton) {
     refreshData();
+  } else {
+    __userInterface->statusBarUpdate(tr("Data outdated!"));
+    __userInterface->toggleStatusBar();
+    return;
+  }
 }
 
 void

@@ -242,24 +242,10 @@ private:
   bool    __drawRight;
   double  __360degreesMapped;
 
-  VatsinatorApplication&  __mother;
-
-  VatsimDataHandler& __data;
-
-  const AirportsMap& __airports;
-
-  FirDatabase*           __firs;
-  AirportDatabase*       __airportDatabase;
-  AirportDetailsWindow*  __airportDetailsWindow;
-  ATCDetailsWindow*      __atcDetailsWindow;
-  FirDetailsWindow*      __firDetailsWindow;
-  FlightDetailsWindow*   __flightDetailsWindow;
-  MetarsWindow*          __metarsWindow;
-  SettingsManager*       __settings;
-  WorldMap*              __myWorldMap;
-
-  /* Modules */
-  FlightTracker*         __myFlightTracker;
+  /* We keep some singleton pointers to have the code clean */
+  VatsimDataHandler&        __data;
+  const AirportsMap&        __airports;
+  const SettingsManager&    __settings;
 
 #ifndef NO_DEBUG
   /* For memory tracking */

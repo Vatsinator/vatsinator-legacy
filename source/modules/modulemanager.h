@@ -41,10 +41,12 @@ public:
 
   void init();
   
+public slots:
   void updateData();
 
 private slots:
   void __initAfterGL();
+  
 
 private:
   AirportTracker* __airportTracker;

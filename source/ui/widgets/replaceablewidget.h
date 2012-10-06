@@ -35,9 +35,27 @@ class ReplaceableWidget : public QStackedWidget {
 public:
   ReplaceableWidget(QWidget* = 0);
   
+  /**
+   * Sets the two given widgets.
+   */
   void setWidgets(QWidget*, QWidget*);
   
+  /**
+   * Swaps one widget with another.
+   */
   void toggle();
+  
+  /**
+   * Sets the desired widget.
+   * @param num Widget number. Must be
+   *   ReplaceableWidget::FirstWidget or ::SecondWidget.
+   */
+  void setWidget(unsigned);
+  
+  enum {
+    FirstWidget      = 0,
+    SecondWidget     = 1
+  };
   
 };
 

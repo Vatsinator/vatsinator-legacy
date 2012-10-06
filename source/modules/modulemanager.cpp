@@ -34,6 +34,9 @@ ModuleManager::ModuleManager() :
   connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(glInitialized()),
           this,                                     SLOT(__initAfterGL()),
           Qt::DirectConnection);
+  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+          this,                                     SLOT(updateData()),
+          Qt::DirectConnection);
 }
 
 ModuleManager::~ModuleManager() {

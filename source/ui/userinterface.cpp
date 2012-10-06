@@ -52,28 +52,31 @@ UserInterface::UserInterface(QWidget* _parent) :
     __atcListWindow(new ATCListWindow()),
     __flightDetailsWindow(new FlightDetailsWindow()),
     __flightsListWindow(new FlightListWindow()),
-    __settingsWindow(new SettingsWindow()),
-    __mother(VatsinatorApplication::GetSingleton()) {
+    __settingsWindow(new SettingsWindow()) {
   __setupWindow();
   setWindowPosition(this);
   __restoreWindowGeometry();
 
-  connect(ActionExit,          SIGNAL(triggered()),
-          this,                SLOT(quit()));
-  connect(ActionAbout,         SIGNAL(triggered()),
-          __aboutWindow,       SLOT(show()));
-  connect(ActionMetar,         SIGNAL(triggered()),
-          __metarsWindow,      SLOT(show()));
-  connect(ActionRefresh,       SIGNAL(triggered()),
-          &__mother,           SLOT(refreshData()));
-  connect(ActionPreferences,   SIGNAL(triggered()),
-          __settingsWindow,    SLOT(show()));
-  connect(ActionFlightList,    SIGNAL(triggered()),
-          __flightsListWindow, SLOT(show()));
-  connect(ActionATCList,       SIGNAL(triggered()),
-          __atcListWindow,     SLOT(show()));
-  connect(EnableAutoUpdatesAction, SIGNAL(toggled(bool)),
-          this,                    SIGNAL(autoUpdatesEnabled(bool)));
+  connect(ActionExit,                                   SIGNAL(triggered()),
+          this,                                         SLOT(quit()));
+  connect(ActionAbout,                                  SIGNAL(triggered()),
+          __aboutWindow,                                SLOT(show()));
+  connect(ActionMetar,                                  SIGNAL(triggered()),
+          __metarsWindow,                               SLOT(show()));
+  connect(ActionRefresh,                                SIGNAL(triggered()),
+          VatsinatorApplication::GetSingletonPtr(),     SLOT(refreshData()));
+  connect(ActionPreferences,                            SIGNAL(triggered()),
+          __settingsWindow,                             SLOT(show()));
+  connect(ActionFlightList,                             SIGNAL(triggered()),
+          __flightsListWindow,                          SLOT(show()));
+  connect(ActionATCList,                                SIGNAL(triggered()),
+          __atcListWindow,                              SLOT(show()));
+  connect(EnableAutoUpdatesAction,                      SIGNAL(toggled(bool)),
+          this,                                         SIGNAL(autoUpdatesEnabled(bool)));
+  connect(VatsinatorApplication::GetSingletonPtr(),     SIGNAL(dataDownloading()),
+          this,                                         SLOT(__dataDownloading()));
+  connect(VatsinatorApplication::GetSingletonPtr(),     SIGNAL(dataUpdated()),
+          this,                                         SLOT(__dataUpdated()));
 
   statusBarUpdate();
 }
@@ -81,9 +84,6 @@ UserInterface::UserInterface(QWidget* _parent) :
 UserInterface::~UserInterface() {
   hideAllWindows();
   __storeWindowGeometry();
-  
-//   delete __statusBox;
-//   delete __progressBar;
 
   delete __aboutWindow;
   delete __airportDetailsWindow;
@@ -243,12 +243,12 @@ UserInterface::__restoreWindowGeometry() {
   QSettings settings("Vatsinator", "Vatsinator");
 
   settings.beginGroup("MainWindow");
-  restoreGeometry(settings.value( "geometry", saveGeometry() ).toByteArray());
-  restoreState(settings.value( "savestate", saveState() ).toByteArray());
-  move(settings.value( "position", pos() ).toPoint());
-  resize(settings.value( "size", size() ).toSize());
+  restoreGeometry(settings.value( "geometry", saveGeometry()).toByteArray());
+  restoreState(settings.value( "savestate", saveState()).toByteArray());
+  move(settings.value( "position", pos()).toPoint());
+  resize(settings.value( "size", size()).toSize());
 
-  if ( settings.value( "maximized", isMaximized() ).toBool() )
+  if ( settings.value( "maximized", isMaximized()).toBool() )
     showMaximized();
   
   EnableAutoUpdatesAction->setChecked(settings.value("autoUpdatesEnabled", true).toBool());
@@ -266,4 +266,14 @@ UserInterface::__getInitialPoint() {
   settings.endGroup();
   
   return p;
+}
+
+void
+UserInterface::__dataDownloading() {
+  Replaceable->setWidget(ReplaceableWidget::SecondWidget);
+}
+
+void
+UserInterface::__dataUpdated() {
+  Replaceable->setWidget(ReplaceableWidget::FirstWidget);
 }

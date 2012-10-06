@@ -693,83 +693,83 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="614"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="615"/>
         <source>Flight details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="653"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="652"/>
         <source>Airport details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="674"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="673"/>
         <source>Controllers</source>
         <translation>Kontrolerzy</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="686"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="685"/>
         <source>Departures</source>
         <translation>Odloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="694"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="693"/>
         <source> to </source>
         <translation> do </translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="695"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="694"/>
         <source>nowhere</source>
         <translation>nikąd</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="710"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="709"/>
         <source>Arrivals</source>
         <translation>Przyloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="718"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="717"/>
         <source> from </source>
         <translation> z </translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="744"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="743"/>
         <source>details</source>
         <translation>- szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1337"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1341"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1309"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1313"/>
         <source>(unknown)</source>
         <translation>(brak)</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1345"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1317"/>
         <source>Ground speed:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1346"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1318"/>
         <source>kts</source>
         <translation>węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1346"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1318"/>
         <source>Altitude: </source>
         <translation>Wysokość:</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1347"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1319"/>
         <source>ft</source>
         <translation>stóp</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1371"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1343"/>
         <source>Departures:</source>
         <translation>Odloty:</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1376"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1348"/>
         <source>Arrivals:</source>
         <translation>Przyloty:</translation>
     </message>
@@ -1152,30 +1152,31 @@
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="217"/>
-        <location filename="../vatsinatorapplication.cpp" line="272"/>
+        <location filename="../vatsinatorapplication.cpp" line="273"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Nie udało mi się pobrać pliku z danymi.</translation>
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="218"/>
-        <location filename="../vatsinatorapplication.cpp" line="273"/>
+        <location filename="../vatsinatorapplication.cpp" line="274"/>
         <source>What do you want to do with that?</source>
         <translation>Cóż więc uczynimy?</translation>
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="219"/>
-        <location filename="../vatsinatorapplication.cpp" line="274"/>
+        <location filename="../vatsinatorapplication.cpp" line="275"/>
         <source>Try again</source>
         <translation>Próbuj jeszcze raz</translation>
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="220"/>
-        <location filename="../vatsinatorapplication.cpp" line="275"/>
+        <location filename="../vatsinatorapplication.cpp" line="276"/>
         <source>Keep current data</source>
         <translation>Zachowaj aktualne dane</translation>
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="231"/>
+        <location filename="../vatsinatorapplication.cpp" line="286"/>
         <source>Data outdated!</source>
         <translation>Dane nieaktualne!</translation>
     </message>

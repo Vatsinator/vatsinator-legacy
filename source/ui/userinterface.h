@@ -106,8 +106,10 @@ private:
   FlightDetailsWindow*  __flightDetailsWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
-
-  VatsinatorApplication& __mother;
+  
+private slots:
+  void __dataDownloading();
+  void __dataUpdated();
   
 signals:
   void autoUpdatesEnabled(bool);

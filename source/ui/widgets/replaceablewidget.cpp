@@ -34,3 +34,8 @@ void
 ReplaceableWidget::toggle() {
   setCurrentIndex(count() - currentIndex() - 1);
 }
+
+void
+ReplaceableWidget::setWidget(unsigned _num) {
+  setCurrentIndex(_num);
+}

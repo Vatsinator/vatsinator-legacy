@@ -132,6 +132,7 @@ private slots:
   
 signals:
   void glInitialized();
+  void dataDownloading();
   void dataUpdated();
   void metarsRefreshRequested();
 
