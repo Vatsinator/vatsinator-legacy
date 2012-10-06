@@ -16,6 +16,10 @@ endif (UNIX AND NOT APPLE AND NOT MINGW)
 
 if (MINGW)
     set (WIN32 1)
+    
+    # Cmake adds -rdynamic to compiler flags.
+    # As mingw doesn't know rdynamic, we want to remove this.
+    string (REPLACE "-rdynamic" "" CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS})
 endif (MINGW)
 
 include(${QT_USE_FILE})
