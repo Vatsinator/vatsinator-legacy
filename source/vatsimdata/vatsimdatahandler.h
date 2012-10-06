@@ -26,29 +26,32 @@
 #include <QVector>
 #include <QMap>
 
-#include "db/airportdatabase.h"
-#include "db/firdatabase.h"
-
-#include "vatsimdata/airport/activeairport.h"
-#include "vatsimdata/airport/emptyairport.h"
-
-#include "vatsimdata/controller.h"
-#include "vatsimdata/pilot.h"
-#include "vatsimdata/uir.h"
-
-#include "vatsimdata/metar.h"
+#include <qmath.h>
 
 #include "singleton.h"
 
+class ActiveAirport;
+class Airport;
+class AirportDatabase;
+class Controller;
+class ControllerTableModel;
+class EmptyAirport;
+class FirDatabase;
+class FlightTableModel;
+class Pilot;
+class Uir;
 class VatsinatorApplication;
+
+struct AirportRecord;
 
 class VatsimDataHandler :
     public QObject,
     public Singleton< VatsimDataHandler > {
 
   /*
-   * This class contains data about all connected clients, needed URLs and
-   * active airports.
+   * This class contains data about all connected clients, needed URLs
+   * and airports.
+   * TODO: Divide the .dat file to several small files - one per each section.
    */
 
   Q_OBJECT
@@ -178,18 +181,15 @@ public:
   inline bool
   statusFileFetched() const { return __statusFileFetched; }
 
-  inline static double
-  calcDistance(const double& _ax, const double& _ay,
-               const double& _bx, const double& _by) {
-    return sqrt(
-             pow(_ax - _bx, 2) +
-             pow(_ay - _by, 2)
+  inline static qreal
+  calcDistance(const qreal& _ax, const qreal& _ay,
+               const qreal& _bx, const qreal& _by) {
+    return qSqrt(
+             qPow(_ax - _bx, 2) +
+             qPow(_ay - _by, 2)
            );
   }
-
-signals:
-  void dataCorrupted();
-
+  
 private:
 
   /**
@@ -233,10 +233,12 @@ private:
   /* Indicates whether the status.txt file was already read or not */
   bool    __statusFileFetched;
 
-  AirportDatabase&  __airports;
-  FirDatabase&    __firs;
-
-  VatsinatorApplication&  __mother;
+  AirportDatabase& __airports;
+  FirDatabase&     __firs;
+  
+  
+signals:
+  void dataCorrupted();
 
 };
 

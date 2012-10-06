@@ -23,9 +23,10 @@
 #include <QString>
 #include <QVector>
 
-#include "vatsimdata/controller.h"
 #include "vatsimdata/clickable.h"
-#include "vatsimdata/fir.h"
+
+class Controller;
+class Fir;
 
 class Uir : public Clickable {
 

@@ -29,6 +29,13 @@ struct AirportRecord;
 class Fir;
 
 class Airport : public Clickable {
+  
+  /*
+   * This is interface for airport object.
+   * It represents an airport on the map - can be clicked
+   * or constructed the sub-menu on.
+   * Inherited by ActiveAirport and EmptyAirport classes.
+   */
 
 public:
   Airport(const QString&);

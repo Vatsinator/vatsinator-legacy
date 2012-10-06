@@ -23,6 +23,9 @@
 #include "ui/windows/flightdetailswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
+
+#include "vatsimdata/client/pilot.h"
+
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "flightlistwindow.h"

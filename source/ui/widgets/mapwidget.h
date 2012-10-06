@@ -26,19 +26,20 @@
 #include <QLabel>
 
 #include "db/airportdatabase.h"
-#include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "singleton.h"
 
 class AirportDetailsWindow;
 class ATCDetailsWindow;
 class Clickable;
+class Client;
 class Fir;
 class FirDatabase;
 class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightTracker;
 class MetarsWindow;
+class Pilot;
 class SettingsManager;
 class VatsinatorApplication;
 class WorldMap;

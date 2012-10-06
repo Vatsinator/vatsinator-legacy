@@ -27,8 +27,11 @@
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
 
-#include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
+
+#include "vatsimdata/airport/activeairport.h"
+
+#include "vatsimdata/client/pilot.h"
 
 #include "vatsinatorapplication.h"
 

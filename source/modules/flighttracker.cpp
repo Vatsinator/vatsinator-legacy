@@ -23,6 +23,8 @@
 
 #include "vatsimdata/vatsimdatahandler.h"
 
+#include "vatsimdata/client/pilot.h"
+
 #include "vatsinatorapplication.h"
 
 #include "flighttracker.h"

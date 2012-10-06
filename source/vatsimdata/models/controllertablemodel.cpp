@@ -19,7 +19,7 @@
 #include <QtGui>
 #include <algorithm>
 
-#include "vatsimdata/controller.h"
+#include "vatsimdata/client/controller.h"
 
 #include "controllertablemodel.h"
 #include "defines.h"

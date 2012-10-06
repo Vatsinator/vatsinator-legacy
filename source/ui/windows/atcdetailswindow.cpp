@@ -25,7 +25,7 @@
 
 #include "ui/widgets/mapwidget.h"
 
-#include "vatsimdata/controller.h"
+#include "vatsimdata/client/controller.h"
 
 #include "vatsinatorapplication.h"
 

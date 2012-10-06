@@ -24,18 +24,19 @@
 
 #include <qgl.h>
 
+#include "db/firdatabase.h"
 #include "db/point.h"
 
 #include "vatsimdata/airport.h"
 #include "vatsimdata/clickable.h"
-#include "vatsimdata/controller.h"
-#include "vatsimdata/pilot.h"
 
 class AirportTableModel;
+class Controller;
 class ControllerTableModel;
-class FlightTableModel;
-class VertexBufferObject;
 class FirDatabase;
+class FlightTableModel;
+class Pilot;
+class VertexBufferObject;
 struct FirHeader;
 
 class Fir : public Clickable {

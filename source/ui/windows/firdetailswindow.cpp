@@ -35,6 +35,10 @@
 
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
+
+#include "vatsimdata/client/controller.h"
+#include "vatsimdata/client/pilot.h"
+
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"

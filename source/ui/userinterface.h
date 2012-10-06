@@ -37,6 +37,7 @@ class FlightDetailsWindow;
 class FlightListWindow;
 class MetarsWindow;
 class SettingsWindow;
+class QProgressBar;
 class VatsinatorApplication;
 
 class UserInterface :

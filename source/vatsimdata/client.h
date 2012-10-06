@@ -31,19 +31,33 @@ enum ClientType {
 
 class Client {
 
-  /**
+  /*
    * Abstract class for connected client.
    * Inherited by Pilot and Controller classes.
    */
 
 public:
+  /**
+   * Prevent from creating foo-clients.
+   */
   Client() = delete;
+  
+  /**
+   * The data list. This can be, for example, one line
+   * obtained from vatsim data servers, divided with ":".
+   * For more info see client.cpp file.
+   */
   Client(const QStringList&);
-
+  
+  /**
+   * Client can be pilot or ATC.
+   */
   virtual ClientType type() const = 0;
 
   virtual ~Client() {}
 
+  
+  /* Client data */
   unsigned  pid;
   QString   callsign;
   QString   realName;

@@ -16,6 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "vatsimdata/fir.h"
+
+#include "vatsimdata/client/controller.h"
+
 #include "uir.h"
 #include "defines.h"
 

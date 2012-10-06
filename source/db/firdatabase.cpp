@@ -21,6 +21,8 @@
 
 #include <QtGui>
 
+#include "vatsimdata/fir.h"
+
 #include "vatsinatorapplication.h"
 
 #include "firdatabase.h"

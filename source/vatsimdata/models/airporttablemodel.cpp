@@ -21,7 +21,8 @@
 #include "db/airportdatabase.h"
 
 #include "vatsimdata/airport.h"
-#include "vatsimdata/controller.h"
+
+#include "vatsimdata/client/controller.h"
 
 #include "airporttablemodel.h"
 #include "defines.h"

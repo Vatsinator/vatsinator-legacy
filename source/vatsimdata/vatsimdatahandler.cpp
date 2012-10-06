@@ -18,6 +18,17 @@
 
 #include <QtGui>
 
+#include "db/airportdatabase.h"
+#include "db/firdatabase.h"
+
+#include "vatsimdata/uir.h"
+
+#include "vatsimdata/airport/activeairport.h"
+#include "vatsimdata/airport/emptyairport.h"
+
+#include "vatsimdata/client/controller.h"
+#include "vatsimdata/client/pilot.h"
+
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
@@ -34,8 +45,7 @@ VatsimDataHandler::VatsimDataHandler() :
     __observers(0),
     __statusFileFetched(false),
     __airports(AirportDatabase::getSingleton()),
-    __firs(FirDatabase::getSingleton()),
-    __mother(VatsinatorApplication::getSingleton()) {}
+    __firs(FirDatabase::getSingleton()) {}
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();

@@ -21,7 +21,7 @@
 
 #include "db/airportdatabase.h"
 
-#include "vatsimdata/pilot.h"
+#include "vatsimdata/client/pilot.h"
 
 #include "flighttablemodel.h"
 #include "defines.h"

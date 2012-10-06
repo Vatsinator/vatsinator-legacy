@@ -23,8 +23,12 @@
 #include <QVector>
 #include <QString>
 
+#include "db/point.h"
+
 #include "vatsimdata/fir.h"
 #include "singleton.h"
+
+class Fir;
 
 #pragma pack(1)
 struct FirHeader {
