@@ -49,7 +49,7 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
   setupUi(this);
   UserInterface::setWindowPosition(this);
 
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
           this,                                     SLOT(__updateData()));
 }
 
@@ -72,7 +72,7 @@ FirDetailsWindow::__updateModels(const Fir* _f) {
   const Fir* f;
 
   if (!_f)
-    f = FirDatabase::GetSingleton().findFirByIcao(__currentICAO);
+    f = FirDatabase::getSingleton().findFirByIcao(__currentICAO);
   else
     f = _f;
 
@@ -91,7 +91,7 @@ FirDetailsWindow::__updateModels(const Fir* _f) {
   
   AirportsTable->setModel(_f->getAirportsModel());
   
-  BookedATCTable->setModel(VatbookHandler::GetSingleton().getModel(_f->getIcao()));
+  BookedATCTable->setModel(VatbookHandler::getSingleton().getModel(_f->getIcao()));
 }
 
 void
@@ -144,7 +144,7 @@ FirDetailsWindow::__setFlightTableButtons() {
 
     ClientDetailsButton* pButton = new ClientDetailsButton(flightsModel->getFlights()[i]);
     connect(pButton,        SIGNAL(clicked(const Client*)),
-            FlightDetailsWindow::GetSingletonPtr(), SLOT(show(const Client*)));
+            FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
     FlightsTable->setIndexWidget(flightsModel->index(i, FlightTableModel::Button), pButton);
   }
 }
@@ -157,7 +157,7 @@ FirDetailsWindow::__setControllerTableButtons() {
   for (int i = 0; i < atcModel->rowCount(); ++i) {
     ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
     connect(pButton,        SIGNAL(clicked(const Client*)),
-            ATCDetailsWindow::GetSingletonPtr(),  SLOT(show(const Client*)));
+            ATCDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
     ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
   }
 }
@@ -170,7 +170,7 @@ FirDetailsWindow::__setAirportTableButtons() {
   for (int i = 0; i < apModel->rowCount(); ++i) {
     ShowAirportButton* pButton = new ShowAirportButton(apModel->getAirports()[i]);
     connect(pButton,        SIGNAL(clicked(const Airport*)),
-            AirportDetailsWindow::GetSingletonPtr(), SLOT(show(const Airport*)));
+            AirportDetailsWindow::getSingletonPtr(), SLOT(show(const Airport*)));
     AirportsTable->setIndexWidget(apModel->index(i, AirportTableModel::Button), pButton);
   }
 }

@@ -30,10 +30,10 @@
 
 SettingsWindow::SettingsWindow(QWidget* _parent) :
     QWidget(_parent),
-    __mySettingsManager(SettingsManager::GetSingletonPtr()) {
+    __mySettingsManager(SettingsManager::getSingletonPtr()) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
-  LanguageComboBox->addItems(LanguageManager::GetSingleton().getAllLanguages());
+  LanguageComboBox->addItems(LanguageManager::getSingleton().getAllLanguages());
 
   connect(OKCancelButtonBox,  SIGNAL(clicked(QAbstractButton*)),
           this,     SLOT(__handleButton(QAbstractButton*)));
@@ -100,7 +100,7 @@ SettingsWindow::__updateWindow() {
   PilotToDestinationLineColorButton->setColor(__mySettingsManager->getPilotToDestinationLineColor());
   
   LanguageComboBox->setCurrentIndex(
-      LanguageManager::GetSingleton().getLanguageId(__mySettingsManager->getLanguage())
+      LanguageManager::getSingleton().getLanguageId(__mySettingsManager->getLanguage())
     );
 }
 

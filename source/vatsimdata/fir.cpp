@@ -171,12 +171,12 @@ Fir::__generateTip() const {
     return __icaoTip;
   }
 
-  QImage temp(MapWidget::GetSingleton().getFirToolTipBackground());
+  QImage temp(MapWidget::getSingleton().getFirToolTipBackground());
   QPainter painter(&temp);
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::GetSingleton().getFirFont());
+  painter.setFont(MapWidget::getSingleton().getFirFont());
   painter.setPen(QColor(FIRS_LABELS_FONT_COLOR));
   QRect rectangle(0, 0, 64, 24);
   painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);

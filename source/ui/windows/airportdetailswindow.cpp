@@ -54,13 +54,13 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   setupUi(this);
   UserInterface::setWindowPosition(this);
 
-  connect(MetarListModel::GetSingletonPtr(),  SIGNAL(newMetarsAvailable()),
+  connect(MetarListModel::getSingletonPtr(),  SIGNAL(newMetarsAvailable()),
           this,                               SLOT(updateMetar()));
   
-  connect(MetarListModel::GetSingletonPtr(),  SIGNAL(noMetar(QString)),
+  connect(MetarListModel::getSingletonPtr(),  SIGNAL(noMetar(QString)),
           this,                               SLOT(updateMetar(QString)));
 
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
           this,                                     SLOT(__updateData()));
 
   connect(ShowButton, SIGNAL(clicked()),
@@ -84,13 +84,13 @@ AirportDetailsWindow::show(const Airport* _ap) {
   }
   __adjustTables();
 
-  const Metar* m = MetarListModel::GetSingleton().find(__currentICAO);
+  const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
 
   if (m) {
     MetarLabel->setText(m->getMetar());
   } else {
     MetarLabel->setText(tr("Fetching..."));
-    MetarListModel::GetSingleton().fetchMetar(__currentICAO);
+    MetarListModel::getSingleton().fetchMetar(__currentICAO);
   }
 
   if (!isVisible())
@@ -104,7 +104,7 @@ AirportDetailsWindow::updateMetar() {
   if (__currentICAO.isEmpty())
     return;
 
-  const Metar* m = MetarListModel::GetSingleton().find(__currentICAO);
+  const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
 
   if (m)
     MetarLabel->setText(m->getMetar());
@@ -122,7 +122,7 @@ AirportDetailsWindow::updateMetar(QString _icao) {
 void
 AirportDetailsWindow::__updateModels(const Airport* _ap) {
   if (!_ap)
-    _ap = VatsimDataHandler::GetSingleton().findAirport(__currentICAO);
+    _ap = VatsimDataHandler::getSingleton().findAirport(__currentICAO);
   
   Q_ASSERT(_ap);
   
@@ -148,7 +148,7 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   }
   
   BookedATCTable->setModel(
-      VatbookHandler::GetSingleton().getModel(QString::fromUtf8(_ap->getData()->icao)));
+      VatbookHandler::getSingleton().getModel(QString::fromUtf8(_ap->getData()->icao)));
 }
 
 void
@@ -232,7 +232,7 @@ AirportDetailsWindow::__setInboundTableButtons() {
     
     ClientDetailsButton* pButton = new ClientDetailsButton(inboundModel->getFlights()[i]);
     connect(pButton,        SIGNAL(clicked(const Client*)),
-            FlightDetailsWindow::GetSingletonPtr(), SLOT(show(const Client*)));
+            FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
     InboundTable->setIndexWidget(inboundModel->index(i, FlightTableModel::Button), pButton);
   }
 }
@@ -252,7 +252,7 @@ AirportDetailsWindow::__setOutboundTableButtons() {
     
     ClientDetailsButton* pButton = new ClientDetailsButton(outboundModel->getFlights()[i]);
     connect(pButton,        SIGNAL(clicked(const Client*)),
-            FlightDetailsWindow::GetSingletonPtr(), SLOT(show(const Client*)));
+            FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
     OutboundTable->setIndexWidget(outboundModel->index(i, FlightTableModel::Button), pButton);
   }
 }
@@ -269,7 +269,7 @@ AirportDetailsWindow::__setATCTableButtons() {
   for (int i = 0; i < atcModel->rowCount(); ++i) {
     ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
     connect(pButton,        SIGNAL(clicked(const Client*)),
-            ATCDetailsWindow::GetSingletonPtr(),  SLOT(show(const Client*)));
+            ATCDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
     ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
   }
 }
@@ -289,5 +289,5 @@ AirportDetailsWindow::__updateData() {
 void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
-  MapWidget::GetSingleton().showAirport(__current);
+  MapWidget::getSingleton().showAirport(__current);
 }

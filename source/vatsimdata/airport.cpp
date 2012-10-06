@@ -30,14 +30,14 @@
 
 Airport::Airport(const QString& _icao) :
     __firs{NULL, NULL},
-    __data(AirportDatabase::GetSingleton().find(_icao)),
+    __data(AirportDatabase::getSingleton().find(_icao)),
     __labelTip(0) {
   if (!__data)
     VatsinatorApplication::log("Airport %s not found!", _icao.toStdString().c_str());
   
   if (__data) {
-    __firs[0] = FirDatabase::GetSingleton().findFirByIcao(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::GetSingleton().findFirByIcao(QString(__data->fir_b), __data->is_fir_b_oceanic);
+    __firs[0] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_a), __data->is_fir_a_oceanic);
+    __firs[1] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_b), __data->is_fir_b_oceanic);
   }
 }
 
@@ -46,8 +46,8 @@ Airport::Airport(const AirportRecord* _ap) :
      __data(_ap),
      __labelTip(0) {
   if (__data) {
-    __firs[0] = FirDatabase::GetSingleton().findFirByIcao(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::GetSingleton().findFirByIcao(QString(__data->fir_b), __data->is_fir_b_oceanic);
+    __firs[0] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_a), __data->is_fir_a_oceanic);
+    __firs[1] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_b), __data->is_fir_b_oceanic);
   }
 }
 
@@ -60,12 +60,12 @@ GLuint
 Airport::__generateTip() const {
   Q_ASSERT(__data);
   
-  QImage temp(MapWidget::GetSingleton().getAirportToolTipBackground());
+  QImage temp(MapWidget::getSingleton().getAirportToolTipBackground());
   QPainter painter(&temp);
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::GetSingleton().getAirportFont());
+  painter.setFont(MapWidget::getSingleton().getAirportFont());
   painter.setPen(QColor(AIRPORTS_LABELS_FONT_COLOR));
   QRect rectangle(0, 0, 48, 12); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, static_cast< QString >(__data->icao));

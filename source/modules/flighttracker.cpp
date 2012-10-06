@@ -36,20 +36,20 @@ FlightTracker::FlightTracker(QObject* _parent) :
 
 void
 FlightTracker::init() {
-  __myMapWidget = MapWidget::GetSingletonPtr();
+  __myMapWidget = MapWidget::getSingletonPtr();
   connect(__myMapWidget,  SIGNAL(flightTrackingRequested(const Pilot*)),
           this,           SLOT(__trackFlight(const Pilot*)));
   connect(__myMapWidget,  SIGNAL(flightTrackingCanceled()),
           this,           SLOT(__cancelFlight()));
   
-  connect(FlightDetailsWindow::GetSingletonPtr(), SIGNAL(flightTrackingStateChanged(const Pilot*, int)),
+  connect(FlightDetailsWindow::getSingletonPtr(), SIGNAL(flightTrackingStateChanged(const Pilot*, int)),
           this,                                   SLOT(__trackFlight(const Pilot*, int)));
 }
 
 void
 FlightTracker::updateData() {
   if (!__currentCallsign.isEmpty()) {
-    __currentPointer = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
+    __currentPointer = VatsimDataHandler::getSingleton().findPilot(__currentCallsign);
 
     if (!__currentPointer)
       __currentCallsign = "";

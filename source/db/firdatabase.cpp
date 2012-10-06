@@ -29,7 +29,7 @@
 FirDatabase::FirDatabase() {
   __readDatabase();
 
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(glInitialized()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
           this,                                      SLOT(__init()),
           Qt::DirectConnection);
 }

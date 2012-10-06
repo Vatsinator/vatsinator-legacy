@@ -64,7 +64,7 @@ UserInterface::UserInterface(QWidget* _parent) :
   connect(ActionMetar,                                  SIGNAL(triggered()),
           __metarsWindow,                               SLOT(show()));
   connect(ActionRefresh,                                SIGNAL(triggered()),
-          VatsinatorApplication::GetSingletonPtr(),     SLOT(refreshData()));
+          VatsinatorApplication::getSingletonPtr(),     SLOT(refreshData()));
   connect(ActionPreferences,                            SIGNAL(triggered()),
           __settingsWindow,                             SLOT(show()));
   connect(ActionFlightList,                             SIGNAL(triggered()),
@@ -73,9 +73,9 @@ UserInterface::UserInterface(QWidget* _parent) :
           __atcListWindow,                              SLOT(show()));
   connect(EnableAutoUpdatesAction,                      SIGNAL(toggled(bool)),
           this,                                         SIGNAL(autoUpdatesEnabled(bool)));
-  connect(VatsinatorApplication::GetSingletonPtr(),     SIGNAL(dataDownloading()),
+  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(dataDownloading()),
           this,                                         SLOT(__dataDownloading()));
-  connect(VatsinatorApplication::GetSingletonPtr(),     SIGNAL(dataUpdated()),
+  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(dataUpdated()),
           this,                                         SLOT(__dataUpdated()));
 
   statusBarUpdate();
@@ -103,11 +103,11 @@ UserInterface::~UserInterface() {
 void
 UserInterface::statusBarUpdate(const QString& _message) {
   if (_message.isEmpty()) {
-    if (VatsimDataHandler::GetSingleton().getDateDataUpdated().isNull())
+    if (VatsimDataHandler::getSingleton().getDateDataUpdated().isNull())
       __statusBox->setText(tr("Last update:") % " " % tr("never"));
     else
       __statusBox->setText(tr("Last update:") % " " %
-                       VatsimDataHandler::GetSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
+                       VatsimDataHandler::getSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
                        tr(" UTC")
                       );
   } else {
@@ -122,7 +122,7 @@ UserInterface::toggleStatusBar() {
 
 void
 UserInterface::infoBarUpdate() {
-  VatsimDataHandler& data = VatsimDataHandler::GetSingleton();
+  VatsimDataHandler& data = VatsimDataHandler::getSingleton();
   
   ClientsBox->setText(
       tr("Clients") % static_cast< QString >(": ") %
@@ -146,7 +146,7 @@ UserInterface::setWindowPosition(QWidget* _window) {
 
 void
 UserInterface::quit() {
-  VatsinatorApplication::GetSingleton().quit();
+  VatsinatorApplication::getSingleton().quit();
 }
 
 void

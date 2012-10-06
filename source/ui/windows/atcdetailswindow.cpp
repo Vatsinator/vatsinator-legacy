@@ -38,7 +38,7 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
   UserInterface::setWindowPosition(this);
 
   connect(ShowButton, SIGNAL(clicked()), this, SLOT(__handleShowClicked()));
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
           this,       SLOT(__updateData()));
 }
 
@@ -79,7 +79,7 @@ ATCDetailsWindow::show(const Client* _client) {
 
 void
 ATCDetailsWindow::__updateData() {
-  __current = VatsimDataHandler::GetSingleton().findATC(__currentCallsign);
+  __current = VatsimDataHandler::getSingleton().findATC(__currentCallsign);
   
   if (!__current) {
     __currentCallsign = "";
@@ -90,6 +90,6 @@ ATCDetailsWindow::__updateData() {
 void
 ATCDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
-  MapWidget::GetSingleton().showClient(__current);
+  MapWidget::getSingleton().showClient(__current);
 }
 

@@ -148,7 +148,7 @@ VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
 
 void
 VatsinatorApplication::emitGLInitialized() {
-  VatsinatorApplication::GetSingleton().__emitGLInitialized();
+  VatsinatorApplication::getSingleton().__emitGLInitialized();
 }
 
 #ifndef NO_DEBUG
@@ -188,9 +188,9 @@ VatsinatorApplication::dispatchDataUpdate(const QString& _fileName) {
     data.append(file.readLine());
   file.close();
   
-  VatsinatorApplication::GetSingleton().getData().parseDataFile(data);
-  ModuleManager::GetSingleton().updateData();
-  UserInterface::GetSingleton().infoBarUpdate();
+  VatsinatorApplication::getSingleton().getData().parseDataFile(data);
+  ModuleManager::getSingleton().updateData();
+  UserInterface::getSingleton().infoBarUpdate();
 }
 
 void

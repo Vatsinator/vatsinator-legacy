@@ -33,9 +33,9 @@ VatsimDataHandler::VatsimDataHandler() :
     __statusURL(VATSIM_STATUS_URL),
     __observers(0),
     __statusFileFetched(false),
-    __airports(AirportDatabase::GetSingleton()),
-    __firs(FirDatabase::GetSingleton()),
-    __mother(VatsinatorApplication::GetSingleton()) {}
+    __airports(AirportDatabase::getSingleton()),
+    __firs(FirDatabase::getSingleton()),
+    __mother(VatsinatorApplication::getSingleton()) {}
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();

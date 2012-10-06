@@ -31,10 +31,10 @@ ModuleManager::ModuleManager() :
     __flightTracker(new FlightTracker()),
     __modelsMatcher(new ModelMatcher()),
     __vatbookHandler(new VatbookHandler()) {
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(glInitialized()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
           this,                                     SLOT(__initAfterGL()),
           Qt::DirectConnection);
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
           this,                                     SLOT(updateData()),
           Qt::DirectConnection);
 }

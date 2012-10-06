@@ -40,15 +40,17 @@ public:
     __ms_Singleton = 0;
   }
 
-  inline static T& GetSingleton() {
+  inline static T& getSingleton() {
     Q_ASSERT(__ms_Singleton);
     return *__ms_Singleton;
   }
 
-  inline static T* GetSingletonPtr() {
+  inline static T* getSingletonPtr() {
     return __ms_Singleton;
   }
 };
 
-template < typename T > T* Singleton <T>::__ms_Singleton = 0;
+template < typename T >
+T* Singleton< T >::__ms_Singleton = 0;
+
 #endif  /* SINGLETON_H */

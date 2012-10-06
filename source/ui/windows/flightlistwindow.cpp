@@ -32,7 +32,7 @@ FlightListWindow::FlightListWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
-  FlightsTable->setModel(VatsimDataHandler::GetSingleton().getFlightsModel());
+  FlightsTable->setModel(VatsimDataHandler::getSingleton().getFlightsModel());
   FlightsTable->hideColumn(FlightTableModel::Button);
   __setColumnsWidths();
 
@@ -65,7 +65,7 @@ void
 FlightListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const FlightTableModel* >(_index.model()));
 
-  FlightDetailsWindow::GetSingleton().show(
+  FlightDetailsWindow::getSingleton().show(
     (qobject_cast< const FlightTableModel* >(_index.model()))->getFlights()[_index.row()]
   );
 }

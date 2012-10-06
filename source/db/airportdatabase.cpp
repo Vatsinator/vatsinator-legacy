@@ -52,7 +52,7 @@ AirportDatabase::__readDatabase() {
   if (!QFile(AIRPORTS_DB).exists())
     VatsinatorApplication::alert(
       static_cast< QString >("File ") + AIRPORTS_DB + " does not exist! Please reinstsall the application. Application path: " +
-      VatsinatorApplication::GetSingleton().applicationDirPath(),
+      VatsinatorApplication::getSingleton().applicationDirPath(),
       true);
   
   std::fstream db(QString(AIRPORTS_DB).toStdString().c_str(), std::ios::in | std::ios::binary);

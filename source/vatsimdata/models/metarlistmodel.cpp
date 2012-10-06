@@ -32,13 +32,13 @@ MetarListModel::MetarListModel(HttpHandler* _hh, QObject* _parent) :
     __myHttpHandler(_hh) {
   connect(__myHttpHandler,  SIGNAL(finished(QString)),
           this,     SLOT(__gotMetar(QString)));
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(metarsRefreshRequested()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(metarsRefreshRequested()),
           this,     SLOT(updateAllMetars()));
 }
 
 void
 MetarListModel::fetchMetar(const QString& _icao) {
-  __myHttpHandler->fetchData(VatsimDataHandler::GetSingleton().getMetarUrl() + "?id=" + _icao.toLower());
+  __myHttpHandler->fetchData(VatsimDataHandler::getSingleton().getMetarUrl() + "?id=" + _icao.toLower());
   __requests.enqueue(_icao.simplified());
 }
 

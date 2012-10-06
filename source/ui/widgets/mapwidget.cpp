@@ -140,13 +140,13 @@ MapWidget::MapWidget(QWidget* _parent) :
     __menu(NULL),
     __drawLeft(false),
     __drawRight(false),
-    __data(VatsimDataHandler::GetSingleton()),
+    __data(VatsimDataHandler::getSingleton()),
     __airports(__data.getActiveAirports()),
-    __settings(SettingsManager::GetSingleton()) {
+    __settings(SettingsManager::getSingleton()) {
   
   __produceCircle();
 
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
           this,                                     SLOT(redraw()));
 
   connect(this, SIGNAL(contextMenuRequested(const Pilot*)),
@@ -190,8 +190,8 @@ MapWidget::loadImage(const QImage& _img) {
   glBindTexture(GL_TEXTURE_2D, 0);
 
 #ifndef NO_DEBUG
-  MapWidget::GetSingleton().__imagesMemory[pix] = static_cast< unsigned >(final.byteCount());
-  registerGPUMemoryAllocFunc(MapWidget::GetSingleton().__imagesMemory[pix]);
+  MapWidget::getSingleton().__imagesMemory[pix] = static_cast< unsigned >(final.byteCount());
+  registerGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[pix]);
   texturesCount += 1;
 #endif
 
@@ -224,8 +224,8 @@ MapWidget::loadImage(const QString& _fName) {
   glBindTexture(GL_TEXTURE_2D, 0);
 
 #ifndef NO_DEBUG
-  MapWidget::GetSingleton().__imagesMemory[pix] = static_cast< unsigned >(final.byteCount());
-  registerGPUMemoryAllocFunc(MapWidget::GetSingleton().__imagesMemory[pix]);
+  MapWidget::getSingleton().__imagesMemory[pix] = static_cast< unsigned >(final.byteCount());
+  registerGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[pix]);
   texturesCount += 1;
 #endif
 
@@ -237,7 +237,7 @@ MapWidget::deleteImage(GLuint _tex) {
   glDeleteTextures(1, &_tex); checkGLErrors(HERE);
 
 #ifndef NO_DEBUG
-  unregisterGPUMemoryAllocFunc(MapWidget::GetSingleton().__imagesMemory[_tex]);
+  unregisterGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[_tex]);
   texturesCount -= 1;
 #endif
 }
@@ -252,7 +252,7 @@ MapWidget::getFormat() {
 
 void
 MapWidget::showClient(const Client* _c) {
-  if (FlightTracker::GetSingleton().getTracked() != _c)
+  if (FlightTracker::getSingleton().getTracked() != _c)
     emit flightTrackingCanceled();
 
   __position.rx() = _c->position.longitude / 180;
@@ -262,7 +262,7 @@ MapWidget::showClient(const Client* _c) {
 
 void
 MapWidget::showAirport(const Airport* _ap) {
-  if (FlightTracker::GetSingleton().getTracked())
+  if (FlightTracker::getSingleton().getTracked())
     emit flightTrackingCanceled();
   
   Q_ASSERT(_ap->getData());
@@ -348,9 +348,9 @@ MapWidget::paintGL() {
   qglClearColor(__settings.getSeasColor());
   glLoadIdentity();
 
-  if (FlightTracker::GetSingleton().getTracked()) {
-    __position.rx() = FlightTracker::GetSingleton().getTracked()->position.longitude / 180;
-    __position.ry() = FlightTracker::GetSingleton().getTracked()->position.latitude / 90;
+  if (FlightTracker::getSingleton().getTracked()) {
+    __position.rx() = FlightTracker::getSingleton().getTracked()->position.longitude / 180;
+    __position.ry() = FlightTracker::getSingleton().getTracked()->position.latitude / 90;
   }
 
   glEnableClientState(GL_VERTEX_ARRAY);
@@ -531,7 +531,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     if ((newY < RANGE_Y) && (newY > -RANGE_Y))
       __position.setY(newY);
 
-    if (FlightTracker::GetSingleton().getTracked() && (dx != 0 || dy != 0))
+    if (FlightTracker::getSingleton().getTracked() && (dx != 0 || dy != 0))
       emit flightTrackingCanceled();
   }
 
@@ -558,7 +558,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     longitude -= 360;
 
   // update the label on the very bottom of the main window
-  UserInterface::GetSingleton().getPositionBox()->setText(
+  UserInterface::getSingleton().getPositionBox()->setText(
     QString((latitude > 0) ? "N" : "S") + " " +
     QString::number(absHelper(latitude), 'g', 6) + " " +
     QString((longitude < 0) ? "W" : "E") + " " +
@@ -618,7 +618,7 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
   __menu->addAction(trackThisFlight);
 
   connect(showDetails,                             SIGNAL(triggered(const Client*)),
-          FlightDetailsWindow::GetSingletonPtr(),  SLOT(show(const Client*)));
+          FlightDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
   connect(trackThisFlight,                         SIGNAL(triggered(const Pilot*)),
           this,                                    SIGNAL(flightTrackingRequested(const Pilot*)));
 
@@ -628,14 +628,14 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
     MetarAction* showDepMetar = new MetarAction(_pilot->route.origin, this);
     __menu->addAction(showDepMetar);
     connect(showDepMetar,                    SIGNAL(triggered(QString)),
-            MetarsWindow::GetSingletonPtr(), SLOT(show(QString)));
+            MetarsWindow::getSingletonPtr(), SLOT(show(QString)));
   }
 
   if (!_pilot->route.destination.isEmpty()) {
     MetarAction* showArrMetar = new MetarAction(_pilot->route.destination, this);
     __menu->addAction(showArrMetar);
     connect(showArrMetar,                    SIGNAL(triggered(QString)),
-            MetarsWindow::GetSingletonPtr(), SLOT(show(QString)));
+            MetarsWindow::getSingletonPtr(), SLOT(show(QString)));
   }
 
   __menu->exec(mapToGlobal(__lastMousePos));
@@ -658,10 +658,10 @@ MapWidget::__openContextMenu(const Airport* _ap) {
   __menu->addAction(toggleAction);
 
   connect(showAp,                                    SIGNAL(triggered(const Airport*)),
-          AirportDetailsWindow::GetSingletonPtr(),   SLOT(show(const Airport*)));
+          AirportDetailsWindow::getSingletonPtr(),   SLOT(show(const Airport*)));
 
   connect(showMetar,                                 SIGNAL(triggered(QString)),
-          MetarsWindow::GetSingletonPtr(),           SLOT(show(QString)));
+          MetarsWindow::getSingletonPtr(),           SLOT(show(QString)));
   
   connect(toggleAction,                              SIGNAL(triggered(const Airport*)),
           this,                                      SIGNAL(airportLinesToggled(const Airport*)));
@@ -676,7 +676,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
         ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
         __menu->addAction(showDetails);
         connect(showDetails,                         SIGNAL(triggered(const Client*)),
-                ATCDetailsWindow::GetSingletonPtr(), SLOT(show(const Client*)));
+                ATCDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
       }
     }
   
@@ -700,7 +700,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
           showDetails->setEnabled(false);
         else
           connect(showDetails,                             SIGNAL(triggered(const Client*)),
-                  FlightDetailsWindow::GetSingletonPtr(),  SLOT(show(const Client*)));
+                  FlightDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
       }
     }
   
@@ -723,7 +723,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
           showDetails->setEnabled(false);
         else
           connect(showDetails,                             SIGNAL(triggered(const Client*)),
-                  FlightDetailsWindow::GetSingletonPtr(),  SLOT(show(const Client*)));
+                  FlightDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
       }
     }
   }
@@ -745,13 +745,13 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   __menu->addAction(showFir);
 
   connect(showFir,                             SIGNAL(triggered(const Fir*)),
-          FirDetailsWindow::GetSingletonPtr(), SLOT(show(const Fir*)));
+          FirDetailsWindow::getSingletonPtr(), SLOT(show(const Fir*)));
 
   for (const Controller* c: _fir->getStaffModel()->getStaff()) {
     ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign, this);
     __menu->addAction(showDetails);
     connect(showDetails,                         SIGNAL(triggered(const Client*)),
-            ATCDetailsWindow::GetSingletonPtr(), SLOT(show(const Client*)));
+            ATCDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
   }
 
   __menu->exec(mapToGlobal(__lastMousePos));
@@ -772,11 +772,11 @@ MapWidget::__init() {
   VatsinatorApplication::log("Preparing signals & slots...");
 
   connect(this,                                    SIGNAL(firDetailsWindowRequested(const Fir*)),
-          FirDetailsWindow::GetSingletonPtr(),     SLOT(show(const Fir*)));
+          FirDetailsWindow::getSingletonPtr(),     SLOT(show(const Fir*)));
   connect(this,                                    SIGNAL(flightDetailsWindowRequested(const Client*)),
-          FlightDetailsWindow::GetSingletonPtr(),  SLOT(show(const Client*)));
+          FlightDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
   connect(this,                                    SIGNAL(airportDetailsWindowRequested(const Airport*)),
-          AirportDetailsWindow::GetSingletonPtr(), SLOT(show(const Airport*)));
+          AirportDetailsWindow::getSingletonPtr(), SLOT(show(const Airport*)));
   connect(&__settings,                             SIGNAL(settingsChanged()),
           this,                                    SLOT(__loadNewSettings()));
   connect(&__settings,                             SIGNAL(settingsChanged()),
@@ -876,7 +876,7 @@ MapWidget::__drawWorld(double _moveX) {
   glTranslatef(_moveX, 0.0, -0.9);
 
   qglColor(__settings.getLandsColor());
-  WorldMap::GetSingleton().draw();
+  WorldMap::getSingleton().draw();
   checkGLErrors(HERE);
   glPopMatrix();
 }
@@ -887,7 +887,7 @@ MapWidget::__drawFirs(double _moveX) {
     glPushMatrix();
     glTranslatef(_moveX, 0.0, -0.8);
 
-    for (const Fir& fir: FirDatabase::GetSingleton().getFirs()) {
+    for (const Fir& fir: FirDatabase::getSingleton().getFirs()) {
       if (fir.isStaffed()) {
         continue;
       }
@@ -906,7 +906,7 @@ MapWidget::__drawFirs(double _moveX) {
     glPushMatrix();
     glTranslatef(_moveX, 0.0, -0.6);
 
-    for (const Fir& fir: FirDatabase::GetSingleton().getFirs()) {
+    for (const Fir& fir: FirDatabase::getSingleton().getFirs()) {
       if (!fir.isStaffed())
         continue;
 
@@ -958,7 +958,7 @@ MapWidget::__drawFirsLabels(float _moveX) {
   glPushMatrix();
   glTranslatef(0.0, 0.0, -0.5);
 
-  for (const Fir& fir: FirDatabase::GetSingleton().getFirs()) {
+  for (const Fir& fir: FirDatabase::getSingleton().getFirs()) {
     if (fir.getTextPosition().x == 0.0 && fir.getTextPosition().y == 0.0)
       continue;
 
@@ -988,7 +988,7 @@ MapWidget::__drawAirports(float _moveX) {
   
 //   Draw inactive airports 
   if (__settings.getDisplayLayersPolicy().emptyAirports || __keyPressed) {
-    for (AirportRecord& ap: AirportDatabase::GetSingleton().getAirports()) {
+    for (AirportRecord& ap: AirportDatabase::getSingleton().getAirports()) {
       if (__airports.contains(ap.icao))
         continue;
       
@@ -1105,7 +1105,7 @@ void
 MapWidget::__drawPilots(float _moveX) {
   glColor4f(1.0, 1.0, 1.0, 1.0);
   
-  for (const Pilot * client: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
+  for (const Pilot * client: VatsimDataHandler::getSingleton().getFlightsModel()->getFlights()) {
     Q_ASSERT(client);
     if (client->flightStatus != AIRBORNE || client->prefiledOnly)
       continue;
@@ -1155,7 +1155,7 @@ MapWidget::__drawLines(double _moveX) {
   __prepareMatrix(WORLD, _moveX);
   
   if (__keyPressed) {
-    for (const Pilot* p: VatsimDataHandler::GetSingleton().getFlightsModel()->getFlights()) {
+    for (const Pilot* p: VatsimDataHandler::getSingleton().getFlightsModel()->getFlights()) {
       if (p->flightStatus == AIRBORNE)
         p->drawLines();
     }
@@ -1176,11 +1176,11 @@ MapWidget::__drawLines(double _moveX) {
     }
   }
   
-  if (FlightTracker::GetSingleton().getTracked())
-    FlightTracker::GetSingleton().getTracked()->drawLines();
+  if (FlightTracker::getSingleton().getTracked())
+    FlightTracker::getSingleton().getTracked()->drawLines();
   
-  if (AirportTracker::GetSingleton().isInitialized()) {
-    for (auto it: AirportTracker::GetSingleton().getTracked().values()) {
+  if (AirportTracker::getSingleton().isInitialized()) {
+    for (auto it: AirportTracker::getSingleton().getTracked().values()) {
       Q_ASSERT(it);
       it->drawLines();
     }

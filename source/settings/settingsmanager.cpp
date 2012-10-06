@@ -36,7 +36,7 @@ SettingsManager::SettingsManager(QObject* _parent) :
 
 void
 SettingsManager::init() {
-  __mySettingsWindow = SettingsWindow::GetSingletonPtr();
+  __mySettingsWindow = SettingsWindow::getSingletonPtr();
   connect(__mySettingsWindow->OKCancelButtonBox,  SIGNAL(accepted()),
           this,                                   SLOT(__updateSettings()));
   connect(__mySettingsWindow,                     SIGNAL(settingsApplied()),
@@ -205,7 +205,7 @@ SettingsManager::__updateSettings() {
   __landsColor = __mySettingsWindow->LandsColorButton->getColor();
   __originToPilotLineColor = __mySettingsWindow->OriginToPilotLineColorButton->getColor();
   __pilotToDestinationLineColor = __mySettingsWindow->PilotToDestinationLineColorButton->getColor();
-  __language = LanguageManager::GetSingleton().getLocaleById(__mySettingsWindow->LanguageComboBox->currentIndex());
+  __language = LanguageManager::getSingleton().getLocaleById(__mySettingsWindow->LanguageComboBox->currentIndex());
 
   __saveSettings();
 

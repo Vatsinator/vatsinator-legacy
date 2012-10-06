@@ -103,7 +103,7 @@ Controller::__setMyIcaoAndFacility() {
 
     icao = sections.front();
 
-    Fir* fir = FirDatabase::GetSingleton().findFirByIcao(icao);
+    Fir* fir = FirDatabase::getSingleton().findFirByIcao(icao);
 
     if (fir) {
       fir->addStaff(this);
@@ -111,7 +111,7 @@ Controller::__setMyIcaoAndFacility() {
     } else {
       // handle USA three-letters callsigns
       if (icao.length() == 3) {
-        fir = FirDatabase::GetSingleton().findFirByIcao("K" + icao);
+        fir = FirDatabase::getSingleton().findFirByIcao("K" + icao);
 
         if (fir) {
           fir->addStaff(this);
@@ -120,8 +120,8 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      for (const QString & alias: VatsimDataHandler::GetSingleton().getAliases().values(icao)) {
-        fir = FirDatabase::GetSingleton().findFirByIcao(alias);
+      for (const QString & alias: VatsimDataHandler::getSingleton().getAliases().values(icao)) {
+        fir = FirDatabase::getSingleton().findFirByIcao(alias);
 
         if (fir) {
           fir->addStaff(this);
@@ -130,7 +130,7 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      Uir* uir = VatsimDataHandler::GetSingleton().findUIR(icao);
+      Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
 
       if (uir) {
         uir->addStaff(this);
@@ -149,7 +149,7 @@ Controller::__setMyIcaoAndFacility() {
 
     QString& icao = sections.front();
 
-    Fir* fir = FirDatabase::GetSingleton().findFirByIcao(icao, true);
+    Fir* fir = FirDatabase::getSingleton().findFirByIcao(icao, true);
 
     if (fir) {
       fir->addStaff(this);
@@ -157,7 +157,7 @@ Controller::__setMyIcaoAndFacility() {
       return;
     }
 
-    Uir* uir = VatsimDataHandler::GetSingleton().findUIR(icao);
+    Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
 
     if (uir) {
       uir->addStaff(this);
@@ -165,7 +165,7 @@ Controller::__setMyIcaoAndFacility() {
       return;
     }
 
-    fir = FirDatabase::GetSingleton().findFirByIcao(icao);
+    fir = FirDatabase::getSingleton().findFirByIcao(icao);
 
     if (fir) {
       fir->addStaff(this);
@@ -173,8 +173,8 @@ Controller::__setMyIcaoAndFacility() {
       return;
     }
 
-    for (QString & alias: VatsimDataHandler::GetSingleton().getAliases().values(icao)) {
-      fir = FirDatabase::GetSingleton().findFirByIcao(alias, true);
+    for (QString & alias: VatsimDataHandler::getSingleton().getAliases().values(icao)) {
+      fir = FirDatabase::getSingleton().findFirByIcao(alias, true);
 
       if (fir) {
         fir->addStaff(this);
@@ -206,10 +206,10 @@ Controller::__setMyIcaoAndFacility() {
     else if (sections.back() == "ATIS")
       facility = ATIS;
 
-    const AirportRecord* apShot = AirportDatabase::GetSingleton().find(sections.front());
+    const AirportRecord* apShot = AirportDatabase::getSingleton().find(sections.front());
 
     if (apShot) {
-      ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(sections.front());
+      ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(sections.front());
       ap->addStaff(this);
       airport = ap->getData();
       __produceDescription(airport);
@@ -218,10 +218,10 @@ Controller::__setMyIcaoAndFacility() {
       if (sections.front().length() == 3) {
         // USA callsigns often are just three last letters of full airport ICAO code
         QString alias = "K" + sections.front();
-        apShot = AirportDatabase::GetSingleton().find(alias);
+        apShot = AirportDatabase::getSingleton().find(alias);
 
         if (apShot) {
-          ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
+          ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
           ap->addStaff(this);
           airport = ap->getData();
           __produceDescription(airport);
@@ -229,11 +229,11 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      for (QString & alias: VatsimDataHandler::GetSingleton().getAliases().values(sections.front())) {
-        apShot = AirportDatabase::GetSingleton().find(alias);
+      for (QString & alias: VatsimDataHandler::getSingleton().getAliases().values(sections.front())) {
+        apShot = AirportDatabase::getSingleton().find(alias);
 
         if (apShot) {
-          ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(alias);
+          ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
           ap->addStaff(this);
           airport = ap->getData();
           __produceDescription(airport);

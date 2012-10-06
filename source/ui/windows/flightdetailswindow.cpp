@@ -41,7 +41,7 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 
   connect(TrackFlightBox, SIGNAL(stateChanged(int)), this, SLOT(stateHandle(int)));
   connect(ShowButton, SIGNAL(clicked()),  this, SLOT(__handleShowClicked()));
-  connect(VatsinatorApplication::GetSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
           this,           SLOT(__updateData()));
 
   UserInterface::setWindowPosition(this);
@@ -94,7 +94,7 @@ FlightDetailsWindow::show(const Client* _client) {
   RouteField->setPlainText(__current->route.route);
   RemarksField->setPlainText(__current->remarks);
 
-  if (FlightTracker::GetSingleton().getTracked() == __current)
+  if (FlightTracker::getSingleton().getTracked() == __current)
     TrackFlightBox->setCheckState(Qt::Checked);
   else
     TrackFlightBox->setCheckState(Qt::Unchecked);
@@ -113,7 +113,7 @@ FlightDetailsWindow::stateHandle(int _state) {
 void
 FlightDetailsWindow::__updateToFromButtons() {
   if (!__current->route.origin.isEmpty()) {
-    Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.origin];
+    Airport* ap = VatsimDataHandler::getSingleton().getActiveAirports()[__current->route.origin];
     QString text = __current->route.origin;
 
     if (ap->getData()) {
@@ -137,7 +137,7 @@ FlightDetailsWindow::__updateToFromButtons() {
   }
 
   if (!__current->route.destination.isEmpty()) {
-    Airport* ap = VatsimDataHandler::GetSingleton().getActiveAirports()[__current->route.destination];
+    Airport* ap = VatsimDataHandler::getSingleton().getActiveAirports()[__current->route.destination];
     QString text = __current->route.destination;
 
     if (ap->getData()) {
@@ -163,7 +163,7 @@ FlightDetailsWindow::__updateToFromButtons() {
 
 void
 FlightDetailsWindow::__updateData() {
-  __current = VatsimDataHandler::GetSingleton().findPilot(__currentCallsign);
+  __current = VatsimDataHandler::getSingleton().findPilot(__currentCallsign);
 
   if (!__current || __current->prefiledOnly) {
     __currentCallsign = "";
@@ -176,7 +176,7 @@ FlightDetailsWindow::__updateData() {
 void
 FlightDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
-  MapWidget::GetSingleton().showClient(__current);
+  MapWidget::getSingleton().showClient(__current);
 }
 
 

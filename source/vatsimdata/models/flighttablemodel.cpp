@@ -98,7 +98,7 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
         case Name:
           return __flights[_index.row()]->realName;
         case From:
-          ap = AirportDatabase::GetSingleton().find(__flights[_index.row()]->route.origin);
+          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route.origin);
 
           if (ap)
             return QString(
@@ -110,7 +110,7 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
             return __flights[_index.row()]->route.origin;
 
         case To:
-          ap = AirportDatabase::GetSingleton().find(__flights[_index.row()]->route.destination);
+          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route.destination);
 
           if (ap)
             return QString(

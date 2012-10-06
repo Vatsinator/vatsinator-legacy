@@ -96,7 +96,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     squawk = "0" + squawk;
 
   if (!route.origin.isEmpty()) {
-    ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
+    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(route.origin);
     ap->addOutbound(this);
 
     if (prefiledOnly && ap->getData()) {
@@ -112,7 +112,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   }
 
   if (!route.destination.isEmpty()) {
-    ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.destination);
+    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(route.destination);
     ap->addInbound(this);
 
     if (ap->getFirs()[0])
@@ -125,7 +125,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   __setMyStatus();
   __generateLines();
 
-  modelTexture = ModelMatcher::GetSingleton().matchMyModel(aircraft);
+  modelTexture = ModelMatcher::getSingleton().matchMyModel(aircraft);
 }
 
 Pilot::~Pilot() {
@@ -142,9 +142,9 @@ Pilot::~Pilot() {
 void
 Pilot::drawLineFrom() const {
   if (__lineFrom) {
-    glColor4d(SettingsManager::GetSingleton().getOriginToPilotLineColor().redF(),
-              SettingsManager::GetSingleton().getOriginToPilotLineColor().greenF(),
-              SettingsManager::GetSingleton().getOriginToPilotLineColor().blueF(),
+    glColor4d(SettingsManager::getSingleton().getOriginToPilotLineColor().redF(),
+              SettingsManager::getSingleton().getOriginToPilotLineColor().greenF(),
+              SettingsManager::getSingleton().getOriginToPilotLineColor().blueF(),
               1.0
              );
     glVertexPointer(2, GL_FLOAT, 0, __lineFrom);
@@ -155,9 +155,9 @@ Pilot::drawLineFrom() const {
 void
 Pilot::drawLineTo() const {
   if (__lineTo) {
-    glColor4d(SettingsManager::GetSingleton().getPilotToDestinationLineColor().redF(),
-              SettingsManager::GetSingleton().getPilotToDestinationLineColor().greenF(),
-              SettingsManager::GetSingleton().getPilotToDestinationLineColor().blueF(),
+    glColor4d(SettingsManager::getSingleton().getPilotToDestinationLineColor().redF(),
+              SettingsManager::getSingleton().getPilotToDestinationLineColor().greenF(),
+              SettingsManager::getSingleton().getPilotToDestinationLineColor().blueF(),
               1.0
              );
     glVertexPointer(2, GL_FLOAT, 0, __lineTo);
@@ -171,9 +171,9 @@ void
 Pilot::__setMyStatus() {
   if (!route.origin.isEmpty() && !route.destination.isEmpty()) {
     const AirportRecord* ap_origin =
-      VatsimDataHandler::GetSingleton().getActiveAirports()[route.origin]->getData();
+      VatsimDataHandler::getSingleton().getActiveAirports()[route.origin]->getData();
     const AirportRecord* ap_arrival =
-      VatsimDataHandler::GetSingleton().getActiveAirports()[route.destination]->getData();
+      VatsimDataHandler::getSingleton().getActiveAirports()[route.destination]->getData();
 
     if ((ap_origin == ap_arrival) && (ap_origin != NULL)) // traffic pattern?
       if (groundSpeed < 50) {
@@ -206,7 +206,7 @@ Pilot::__setMyStatus() {
 
     qreal distance = 0.0;
 
-    for (const AirportRecord & ap: AirportDatabase::GetSingleton().getAirports()) {
+    for (const AirportRecord & ap: AirportDatabase::getSingleton().getAirports()) {
       qreal temp = VatsimDataHandler::calcDistance(ap.longitude, ap.latitude,
                    position.longitude, position.latitude);
 
@@ -223,7 +223,7 @@ Pilot::__setMyStatus() {
       }
 
       route.origin = closest->icao;
-      ActiveAirport* ap = VatsimDataHandler::GetSingleton().addActiveAirport(route.origin);
+      ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(route.origin);
       ap->addOutbound(this);
       flightStatus = DEPARTING;
       return;
@@ -238,7 +238,7 @@ Pilot::__generateLines() {
   const Airport* ap = NULL;
 
   if (!route.origin.isEmpty())
-    ap = VatsimDataHandler::GetSingleton().getActiveAirports()[route.origin];
+    ap = VatsimDataHandler::getSingleton().getActiveAirports()[route.origin];
 
   if (ap && ap->getData()) {
     __lineFrom = new GLfloat[4];
@@ -262,7 +262,7 @@ Pilot::__generateLines() {
   ap = NULL;
 
   if (!route.destination.isEmpty())
-    ap = VatsimDataHandler::GetSingleton().getActiveAirports()[route.destination];
+    ap = VatsimDataHandler::getSingleton().getActiveAirports()[route.destination];
 
   if (ap && ap->getData()) {
     __lineTo = new GLfloat[4];
@@ -286,12 +286,12 @@ Pilot::__generateLines() {
 
 GLuint
 Pilot::__generateTip() const {
-  QImage temp(MapWidget::GetSingleton().getPilotToolTipBackground());
+  QImage temp(MapWidget::getSingleton().getPilotToolTipBackground());
   QPainter painter(&temp);
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::GetSingleton().getPilotFont());
+  painter.setFont(MapWidget::getSingleton().getPilotFont());
   painter.setPen(QColor(PILOTS_LABELS_FONT_COLOR));
   QRect rectangle(0, 1, 75, 14); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, callsign);

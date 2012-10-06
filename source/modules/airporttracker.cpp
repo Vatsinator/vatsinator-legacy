@@ -43,7 +43,7 @@ AirportTracker::~AirportTracker() {
 
 void
 AirportTracker::init() {
-  __myMapWidget = MapWidget::GetSingletonPtr();
+  __myMapWidget = MapWidget::getSingletonPtr();
   connect(__myMapWidget,    SIGNAL(airportLinesToggled(const Airport*)),
           this,             SLOT(__toggleAirport(const Airport*)));
 }
@@ -54,7 +54,7 @@ AirportTracker::updateData() {
     __readSettings();
   
   for (auto it = __trackedAirports.begin(); it != __trackedAirports.end(); ++it) {
-    it.value() = VatsimDataHandler::GetSingleton().findAirport(it.key());
+    it.value() = VatsimDataHandler::getSingleton().findAirport(it.key());
   }
 }
 
