@@ -25,6 +25,8 @@
 
 #include "vatsimdata/clickable.h"
 
+#include "vatsimdata/client/controller.h"
+
 struct AirportRecord;
 class Fir;
 
@@ -49,7 +51,7 @@ public:
   virtual unsigned countInbounds() const = 0;
   
   virtual bool hasApproach() const = 0;
-  virtual unsigned getFacilities() const = 0;
+  virtual Controller::Facilities getFacilities() const = 0;
   
   virtual void drawLines() const = 0;
   

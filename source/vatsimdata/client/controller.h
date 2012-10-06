@@ -29,19 +29,6 @@ struct AirportRecord;
 class Fir;
 class Uir;
 
-enum Facility {
-  ATIS = 1,
-  DEL = 2,
-  GND = 4,
-  TWR = 8,
-  APP = 16,
-  DEP = 32,
-  CTR = 64,
-  FSS = 128,
-  OBS = 256
-};
-
-
 class Controller : public Client {
   
   /*
@@ -50,22 +37,39 @@ class Controller : public Client {
 
 public:
   Controller(const QStringList&);
-
+  
   ClientType type() const { return ATC; }
-
-  QString   frequency;
-  int   rating;
-  QString   icao;
-
-  QString   atis;
-
-  const AirportRecord*  airport;
-
-  Facility  facility;
-
-  QString   description;
-
-  bool    isOK;
+  
+  
+  
+  enum Facility {
+    ATIS      = 1,
+    DEL       = 2,
+    GND       = 4,
+    TWR       = 8,
+    APP       = 16,
+    DEP       = 32,
+    CTR       = 64,
+    FSS       = 128,
+    OBS       = 256
+  };
+  Q_DECLARE_FLAGS(Facilities, Facility);
+  
+  
+  
+  QString              frequency;
+  int                  rating;
+  QString              icao;
+  
+  QString              atis;
+  
+  const AirportRecord* airport;
+  
+  Controller::Facility facility;
+  
+  QString              description;
+  
+  bool                 isOK;
 
   /* Stores ATC ratings.
    * See http://vateud.org/index.php?option=com_content&view=article&id=28&Itemid=133
@@ -83,5 +87,7 @@ private:
   static bool __ratingsInitialized;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(Controller::Facilities);
 
 #endif // CONTROLLER_H

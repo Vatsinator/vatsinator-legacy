@@ -21,11 +21,12 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
-#include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
 
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
+
+#include "vatsimdata/fir.h"
 
 #include "activeairport.h"
 #include "defines.h"
@@ -82,15 +83,17 @@ ActiveAirport::countInbounds() const {
 bool
 ActiveAirport::hasApproach() const {
   for (const Controller* c: __staff->getStaff())
-    if (c->facility == APP)
+    if (c->facility == Controller::APP)
       return true;
   
   return false;
 }
 
-unsigned
+Controller::Facilities
 ActiveAirport::getFacilities() const {
-  unsigned facilities = 0;
+  /* TODO Return a reference or something */
+  
+  Controller::Facilities facilities = 0;
   
   for (const Controller* c: __staff->getStaff())
     facilities |= c->facility;

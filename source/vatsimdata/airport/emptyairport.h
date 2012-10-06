@@ -47,7 +47,7 @@ public:
   inline bool
   hasApproach() const { return false; }
   
-  inline unsigned
+  inline Controller::Facilities
   getFacilities() const { return 0; }
   
   inline void

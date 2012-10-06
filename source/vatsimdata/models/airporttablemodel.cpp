@@ -130,29 +130,29 @@ AirportTableModel::__produceLabel(int _row) const {
 
 inline QString
 AirportTableModel::__produceFacilities(int _row) const {
-  unsigned facilities = __airports[_row]->getFacilities();
+  Controller::Facilities facilities = __airports[_row]->getFacilities();
 
   if (!facilities)
     return "-";
 
   QString result;
 
-  if (facilities & APP)
+  if (facilities.testFlag(Controller::APP))
     result += "APP ";
 
-  if (facilities & DEP)
+  if (facilities.testFlag(Controller::DEP))
     result += "DEP ";
 
-  if (facilities & TWR)
+  if (facilities.testFlag(Controller::TWR))
     result += "TWR ";
 
-  if (facilities & GND)
+  if (facilities.testFlag(Controller::GND))
     result += "GND ";
 
-  if (facilities & DEL)
+  if (facilities.testFlag(Controller::DEL))
     result += "DEL ";
 
-  if (facilities & ATIS)
+  if (facilities.testFlag(Controller::ATIS))
     result += "ATIS ";
 
   return result.simplified();

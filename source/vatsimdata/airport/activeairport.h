@@ -24,7 +24,6 @@
 
 #include "vatsimdata/airport.h"
 
-class Controller;
 class ControllerTableModel;
 class FlightTableModel;
 class Pilot;
@@ -42,7 +41,7 @@ public:
   unsigned countInbounds() const;
   
   bool hasApproach() const;
-  unsigned getFacilities() const;
+  Controller::Facilities getFacilities() const;
   
   void drawLines() const;
   
