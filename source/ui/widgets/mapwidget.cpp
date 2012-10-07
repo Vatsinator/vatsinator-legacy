@@ -78,10 +78,10 @@ const GLfloat VERTICES[] = {
    0.025, -0.025
 };
 const GLfloat PILOT_TOOLTIP_VERTICES[] = {
-  -0.09375,  0.02,
-  -0.09375,  0.1,
-   0.09375,  0.1,
-   0.09375,  0.02
+  -0.16,  0.019,
+  -0.16,  0.12566666,
+   0.16,  0.12566666,
+   0.16,  0.019
 };
 const GLfloat AIRPORT_TOOLTIP_VERTICES[] = {
   -0.06, -0.065,
