@@ -72,10 +72,10 @@
 const double PI = 3.1415926535897;
 
 const GLfloat VERTICES[] = {
-  -0.025, -0.025,
-  -0.025,  0.025,
-   0.025,  0.025,
-   0.025, -0.025
+  -0.04, -0.02,
+  -0.04,  0.06,
+   0.04,  0.06,
+   0.04, -0.02
 };
 const GLfloat PILOT_TOOLTIP_VERTICES[] = {
   -0.16,  0.019,
@@ -84,10 +84,10 @@ const GLfloat PILOT_TOOLTIP_VERTICES[] = {
    0.16,  0.019
 };
 const GLfloat AIRPORT_TOOLTIP_VERTICES[] = {
-  -0.06, -0.065,
-  -0.06, -0.025,
-   0.06, -0.025,
-   0.06, -0.065
+  -0.08, -0.05333333,
+  -0.08, 0,
+   0.08, 0,
+   0.08, -0.05333333
 };
 const GLfloat FIR_TOOLTIP_VERTICES[] = {
   -0.08, -0.04,
