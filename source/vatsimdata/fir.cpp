@@ -178,7 +178,7 @@ Fir::__generateTip() const {
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
   painter.setFont(MapWidget::getSingleton().getFirFont());
   painter.setPen(QColor(FIRS_LABELS_FONT_COLOR));
-  QRect rectangle(0, 0, 64, 24);
+  QRect rectangle(0, 4, 64, 24);
   painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
   __icaoTip = MapWidget::loadImage(temp);
   return __icaoTip;

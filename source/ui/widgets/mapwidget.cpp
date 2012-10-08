@@ -90,10 +90,10 @@ const GLfloat AIRPORT_TOOLTIP_VERTICES[] = {
    0.08, -0.05333333
 };
 const GLfloat FIR_TOOLTIP_VERTICES[] = {
-  -0.08, -0.04,
-  -0.08,  0.04,
-   0.08,  0.04,
-   0.08, -0.04
+  -0.08, -0.05333333,
+  -0.08,  0.05333333,
+   0.08,  0.05333333,
+   0.08, -0.05333333
 };
 const GLfloat MODEL_VERTICES[] = {
   -0.03, -0.03,
@@ -132,7 +132,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __pilotFont("Verdana"),
     __airportToolTip(":/pixmaps/airport_tooltip.png"),
     __airportFont("Verdana"),
-    __firToolTip(64, 24, QImage::Format_ARGB32_Premultiplied),
+    __firToolTip(64, 32, QImage::Format_ARGB32_Premultiplied),
     __firFont("Verdana"),
     __position(0.0, 0.0),
     __zoom(ZOOM_MINIMUM),
