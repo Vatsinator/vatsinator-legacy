@@ -88,9 +88,9 @@ if (LINUX)
     include (Packaging-linux)
     
     option (WITH_DEBIAN OFF)
-    if (WITH_DEBIAN)
+    if (WITH_DEBIAN AND EXISTS "debian/")
         add_subdirectory (debian)
-    endif (WITH_DEBIAN)
+    endif (WITH_DEBIAN AND EXISTS "debian/")
 
     option (WITH_RPM OFF)
     

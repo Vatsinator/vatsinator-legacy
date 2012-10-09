@@ -9,7 +9,7 @@ if [ -z "$dist" ]; then
 	exit 1
 fi
 
-vatsinator_ppa=ppa:michal-k93/vatsinator
+vatsinator_ppa=ppa:michal-k93/vatsim
 vatsinator_git=git://github.com/Garrappachc/Vatsinator.git
 
 tmpdir=`pwd`/work
