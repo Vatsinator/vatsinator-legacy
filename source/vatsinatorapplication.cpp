@@ -171,6 +171,8 @@ VatsinatorApplication::refreshData() {
   __httpHandler->fetchData(__vatsimData->getDataUrl());
   if (!__userInterface->autoUpdatesEnabled())
     __timer.stop();
+  else
+    __timer.start();
 }
 
 void
