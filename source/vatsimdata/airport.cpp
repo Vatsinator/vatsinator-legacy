@@ -67,7 +67,7 @@ Airport::__generateTip() const {
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
   painter.setFont(MapWidget::getSingleton().getAirportFont());
   painter.setPen(QColor(AIRPORTS_LABELS_FONT_COLOR));
-  QRect rectangle(0, 0, 48, 12); // size of the tooltip.png
+  QRect rectangle(8, 2, 48, 12); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, static_cast< QString >(__data->icao));
   __labelTip = MapWidget::loadImage(temp);
   return __labelTip;
