@@ -26,8 +26,8 @@ Current release: **Vatsinator 0.1_beta4**
 	
 	- Debian<br>
 		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
-		[vatsinator-0.1-beta4_i386.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4_i386.deb) for i386<br>
-		[vatsinator-0.1-beta4_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4_amd64.deb) for amd64<br>
+		[vatsinator-0.1-beta4](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4~wheezy_i386.deb) for i386<br>
+		[vatsinator-0.1-beta4](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4~wheezy_amd64.deb) for amd64<br>
 		
 	- Gentoo<br>
 		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).<br>
