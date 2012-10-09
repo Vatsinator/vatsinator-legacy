@@ -30,7 +30,7 @@ Current release: **Vatsinator 0.1_beta4**
 		[vatsinator-0.1-beta4~wheezy_amd64](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4~wheezy_amd64.deb) for amd64<br>
 	
 	- Fedora<br>
-		Builds for Fedora 17:
+		Builds for Fedora 17:<br>
 		[vatsinator-0.1_beta4-2.1.i686.rpm](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta4-2.1.i686.rpm) for i686<br>
 		[vatsinator-0.1_beta4-2.1.x86_64.rpm](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1_beta4-2.1.x86_64.rpm) for x86_64<br>
 		
