@@ -1,0 +1,8 @@
+--- v0.1 ---
+
+ [1] FIX   Connection timeout handling
+ [2] FIX   Sliding long METARs
+ [3] CONV  Customize FIR label color
+ [4] MISC  Split vatsinator.dat file
+ [5] MISC  Latest Vatsinator installed version
+ 
