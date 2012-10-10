@@ -23,11 +23,12 @@ Current release: **Vatsinator 0.1_beta4**
 		$ sudo apt-get update
 		$ sudo apt-get install vatsinator
 		```
+		Only 12.04 and 12.10 are currently supported.
 	
 	- Debian<br>
 		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
 		[vatsinator-0.1-beta4~wheezy_i386.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4~wheezy_i386.deb) for i386<br>
-		[vatsinator-0.1-beta4~wheezy_amd64](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4~wheezy_amd64.deb) for amd64<br>
+		[vatsinator-0.1-beta4~wheezy_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-beta4~wheezy_amd64.deb) for amd64<br>
 	
 	- Fedora<br>
 		Builds for Fedora 17:<br>

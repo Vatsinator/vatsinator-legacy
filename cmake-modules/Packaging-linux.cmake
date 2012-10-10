@@ -21,6 +21,7 @@ else (“${CMAKE_SYSTEM_PROCESSOR}” STREQUAL “x86_64”)
     set (CPACK_RPM_PACKAGE_ARCHITECTURE ${CMAKE_SYSTEM_PROCESSOR})
 endif (“${CMAKE_SYSTEM_PROCESSOR}” STREQUAL “x86_64”)
 
+set (CPACK_DEBIAN_PACKAGE_NAME "vatsinator")
 set (CPACK_DEBIAN_PACKAGE_DEPENDS "libqt4-core (>=4.7), libqt4-gui (>=4.7), libqt4-opengl (>=4.7), libqt4-network (>=4.7)")
 set (CPACK_DEBIAN_PACKAGE_SECTION "web")
 set (CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
