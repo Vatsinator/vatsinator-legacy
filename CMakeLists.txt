@@ -48,13 +48,11 @@ if (NOT vatsinator_VERSION)
     string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
 endif (NOT vatsinator_VERSION)
 
-# only for Linux
 if (LINUX)
     # install files
     install (FILES
         COPYING
         resources/models.dat
-        resources/vatsinator.dat
         resources/WorldAirports.db
         resources/WorldFirs.db
         resources/WorldMap.db
@@ -70,6 +68,14 @@ if (LINUX)
         resources/pixmaps/4j32.png
         resources/pixmaps/conc32.png
         DESTINATION share/vatsinator/pixmaps
+    )
+    
+    install (FILES
+        resources/data/alias
+        resources/data/country
+        resources/data/fir
+        resources/data/uir
+        DESTINATION share/vatsinator/data
     )
     
     macro (install_icon SIZE)

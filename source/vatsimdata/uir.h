@@ -31,6 +31,10 @@ class Fir;
 class Uir : public Clickable {
 
 public:
+  /**
+   * @param ICAO
+   */
+  Uir(const QString&);
 
   ObjectType objectType() const { return UIR; }
 
