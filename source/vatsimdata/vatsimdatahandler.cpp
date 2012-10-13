@@ -65,10 +65,14 @@ VatsimDataHandler::~VatsimDataHandler() {
 
 void
 VatsimDataHandler::init() {
-  __readAliasFile(__dataFiles["alias"]);
-  __readCountryFile(__dataFiles["country"]);
-  __readFirFile(__dataFiles["fir"]);
-  __readUirFile(__dataFiles["uir"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile, __dataFiles["alias"]);
+//   __readAliasFile(__dataFiles["alias"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile, __dataFiles["country"]);
+//   __readCountryFile(__dataFiles["country"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readFirFile, __dataFiles["fir"]);
+//   __readFirFile(__dataFiles["fir"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile, __dataFiles["uir"]);
+//   __readUirFile(__dataFiles["uir"]);
 }
 
 void
