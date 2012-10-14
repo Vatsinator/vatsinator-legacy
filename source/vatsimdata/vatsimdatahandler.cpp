@@ -261,6 +261,8 @@ VatsimDataHandler::obsCount() const {
 
 void
 VatsimDataHandler::__readAliasFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"alias\" file...");
+  
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -299,10 +301,14 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
   }
   
   file.close();
+  
+  VatsinatorApplication::log("Finished reading \"alias\" file.");
 }
 
 void
 VatsimDataHandler::__readCountryFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"country\" file...");
+  
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -326,10 +332,14 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
   }
   
   file.close();
+  
+  VatsinatorApplication::log("Finished reading \"country\" file.");
 }
 
 void
 VatsimDataHandler::__readFirFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"fir\" file...");
+  
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -375,10 +385,14 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   }
   
   file.close();
+  
+  VatsinatorApplication::log("Finished reading \"fir\" file.");
 }
 
 void
 VatsimDataHandler::__readUirFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"uir\" file...");
+  
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -415,6 +429,8 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
   }
   
   file.close();
+  
+  VatsinatorApplication::log("Finished reading \"uir\" file.");
 }
 
 
