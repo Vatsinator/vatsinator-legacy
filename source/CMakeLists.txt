@@ -138,6 +138,10 @@ elseif (APPLE)
         COMMAND cp ARGS ${vatsinator_BUNDLE_PIXMAPS}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
         COMMAND mkdir ARGS -p
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/data
+        COMMAND cp ARGS ${vatsinator_BUNDLE_DATA}
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/data
+        COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
         COMMAND cp ARGS ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations

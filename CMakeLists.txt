@@ -109,7 +109,6 @@ elseif (APPLE)
     set (vatsinator_BUNDLE_RESOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/COPYING
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/models.dat
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/vatsinator.dat
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldAirports.db
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldFirs.db
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldMap.db
@@ -123,6 +122,13 @@ elseif (APPLE)
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/3j32.png
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/4j32.png
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/conc32.png
+    )
+    
+    set (vatsinator_BUNDLE_DATA
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/alias
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/country
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/fir
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/uir
     )
 
 # builds for win32
@@ -147,7 +153,6 @@ elseif (WIN32)
     install (FILES
         COPYING
         resources/models.dat
-        resources/vatsinator.dat
         resources/WorldAirports.db
         resources/WorldFirs.db
         resources/WorldMap.db
@@ -163,6 +168,14 @@ elseif (WIN32)
         resources/pixmaps/4j32.png
         resources/pixmaps/conc32.png
         DESTINATION ./pixmaps
+    )
+    
+     install (FILES
+        resources/data/alias
+        resources/data/country
+        resources/data/fir
+        resources/data/uir
+        DESTINATION ./data
     )
     
     include (Packaging-win32)
