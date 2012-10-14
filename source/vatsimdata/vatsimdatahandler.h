@@ -51,7 +51,6 @@ class VatsimDataHandler :
   /*
    * This class contains data about all connected clients, needed URLs
    * and airports.
-   * TODO: Divide the .dat file to several small files - one per each section.
    */
 
   Q_OBJECT
@@ -180,6 +179,9 @@ public:
 
   inline bool
   statusFileFetched() const { return __statusFileFetched; }
+  
+  inline static const QMap< QString, QString > &
+  getFiles() { return __dataFiles; }
 
   inline static qreal
   calcDistance(const qreal& _ax, const qreal& _ay,
@@ -191,16 +193,29 @@ public:
   }
   
 private:
-
   /**
-   * Clears the flags used during parsing the data file.
+   * These functions read data files.
+   * @param fileName Location of the data file.
    */
-  void __clearFlags(QMap< QString, bool >&);
+  void __readAliasFile(const QString&);
+  void __readCountryFile(const QString&);
+  void __readFirFile(const QString&);
+  void __readUirFile(const QString&);
 
   /**
    * Removes all data, frees pointers
    */
   void __clearData();
+  
+  /**
+   * TODO Change this shit below to QFlags.
+   */
+  void __clearFlags(QMap< QString, bool >&);
+  
+  /**
+   * Produce file names, using appropriate prefix.
+   */
+  static bool __initFileNames();
 
   /* These are vectors of connected clients */
   FlightTableModel*   __flights;
@@ -235,6 +250,10 @@ private:
 
   AirportDatabase& __airports;
   FirDatabase&     __firs;
+  
+  static bool __fileNamesInitialized;
+  
+  static QMap< QString, QString > __dataFiles;
   
   
 signals:

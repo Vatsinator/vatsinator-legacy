@@ -23,6 +23,8 @@
 #include "uir.h"
 #include "defines.h"
 
+Uir::Uir(const QString& _icao) : icao(_icao) {}
+
 void
 Uir::addFir(Fir* _f) {
   __range.push_back(_f);

@@ -21,6 +21,7 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
+#include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
 
 #include "vatsimdata/airport/activeairport.h"
@@ -36,6 +37,11 @@
 
 #include "vatsimdatahandler.h"
 #include "defines.h"
+
+QMap< QString, QString > VatsimDataHandler::__dataFiles;
+bool VatsimDataHandler::__fileNamesInitialized = VatsimDataHandler::__initFileNames();
+
+static QMap< QString, QString > countries; // used by __readCountryFile() and __readFirFile()
 
 
 VatsimDataHandler::VatsimDataHandler() :
@@ -59,115 +65,14 @@ VatsimDataHandler::~VatsimDataHandler() {
 
 void
 VatsimDataHandler::init() {
-  QFile datFile(VATSINATOR_DAT);
-
-  if (!datFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
-      static_cast< QString >("File ") +
-      static_cast< QString >(VATSINATOR_DAT) +
-      static_cast< QString >(" could not be opened!"));
-    return;
-  }
-
-  QMap< QString, bool > flags;
-  flags["[COUNTRY]"] = false;
-  flags["[FIR]"] = false;
-  flags["[ALIAS]"] = false;
-  flags["[UIR]"] = false;
-
-  QMap< QString, QString > countries;
-
-  while (!datFile.atEnd()) {
-    QString line = QString::fromUtf8(datFile.readLine());
-
-    line = line.simplified();
-
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-
-    if (line[0] == '[') {
-      if (!flags.contains(line)) {
-        qDebug() << "Flag " << line << " could not be recognized! Check your vatsinator.dat file.";
-        continue;
-      }
-
-      __clearFlags(flags);
-      flags[line] = true;
-      continue;
-    }
-
-    if (flags["[COUNTRY]"]) {
-      countries.insert(
-        line.section(' ', -1),
-        line.section(' ', 0, -2)
-      );
-    } else if (flags["[FIR]"]) {
-      QString icao = line.section(' ', 0, 0);
-
-      Fir* currentFir = __firs.findFirByIcao(icao);
-
-      if (currentFir) {
-        currentFir->setName(line.section(' ', 1));
-
-        if (currentFir->getIcao() == "UMKK") // fix for Kaliningrad Center
-          currentFir->setCountry("Russia");
-        else
-          currentFir->setCountry(countries[icao.left(2)]);
-
-        currentFir->correctName();
-      }
-
-      // look for same oceanic fir
-      currentFir = __firs.findFirByIcao(icao, true);
-
-      if (currentFir) {
-        currentFir->setName(line.section(' ', 1));
-        currentFir->setCountry(countries[icao.left(2)]);
-        currentFir->correctName();
-      }
-
-
-    } else if (flags["[ALIAS]"]) {
-      QStringList data = line.split(' ');
-      QString icao = data[0];
-
-      if (icao.length() != 4) {
-        qDebug() << "Word " << icao << " is not an ICAO code and could not be parsed." <<
-                 "For aliases see [ALIAS] section.";
-        continue;
-      }
-
-      for (int i = 1; i < data.length(); ++i) {
-        if (data[i][0] == '{') {
-          __aliases.insert(data[i].mid(1), icao);
-        } else if (data[i].toUpper() == data[i]) {
-          __aliases.insert(data[i], icao);
-          //qDebug() << "I: " << data[i] << " = " << icao;
-        }
-      }
-    } else if (flags["[UIR]"]) {
-      QStringList data = line.split(' ');
-      Uir* uir = new Uir;
-      uir->icao = data[0];
-
-      for (int i = 1; i < data.length(); ++i) {
-        if (data[i].toUpper() == data[i]) {
-          Fir* fir = __firs.findFirByIcao(data[i]);
-
-          if (fir)
-            uir->addFir(fir);
-          else
-            qDebug() << "FIR " << data[i] << " could not be found!";
-        } else {
-          uir->name.append(data[i] + " ");
-        }
-      }
-
-      __uirs.push_back(uir);
-    }
-  }
-
-  datFile.close();
+  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile, __dataFiles["alias"]);
+//   __readAliasFile(__dataFiles["alias"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile, __dataFiles["country"]);
+//   __readCountryFile(__dataFiles["country"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readFirFile, __dataFiles["fir"]);
+//   __readFirFile(__dataFiles["fir"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile, __dataFiles["uir"]);
+//   __readUirFile(__dataFiles["uir"]);
 }
 
 void
@@ -355,10 +260,179 @@ VatsimDataHandler::obsCount() const {
 }
 
 void
-VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
-  for (auto it = _flags.begin(); it != _flags.end(); ++it)
-    it.value() = false;
+VatsimDataHandler::__readAliasFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"alias\" file...");
+  
+  QFile file(_fName);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    VatsinatorApplication::alert(
+        tr("File") % " " % _fName % " " % tr("could not be opened!"),
+        true
+      );
+    return;
+  }
+  
+  while (!file.atEnd()) {
+    QString line = QString::fromUtf8(file.readLine()).simplified();
+    
+    if (line[0] == '#' || line.isEmpty())
+      continue;
+    
+    QStringList data = line.split(' ');
+    QString& icao = data.front();
+    
+    Q_ASSERT(icao.length() == 4);
+    
+    for (int i = 1; i < data.length(); ++i) {
+      if (data[i][0] == '{') {
+        __aliases.insert(data[i].mid(1), icao);
+      } else if (data[i].toUpper() == data[i]) {
+        __aliases.insert(data[i], icao);
+      }
+      /*
+       * TODO Read also named aliases (those in brackets) - they should be displayed
+       *      if used. For example, if you have:
+       *        LGGG {LGMD Makedonia}
+       *      then if user clicks on "LGGG" default name should be shown, otherwise
+       *      "Makedonia".
+       */
+    }
+  }
+  
+  file.close();
+  
+  VatsinatorApplication::log("Finished reading \"alias\" file.");
 }
+
+void
+VatsimDataHandler::__readCountryFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"country\" file...");
+  
+  QFile file(_fName);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    VatsinatorApplication::alert(
+        tr("File") % " " % _fName % " " % tr("could not be opened!"),
+        true
+      );
+    return;
+  }
+  
+  while (!file.atEnd()) {
+     QString line = QString::fromUtf8(file.readLine()).simplified();
+    
+    if (line[0] == '#' || line.isEmpty())
+      continue;
+    
+    countries.insert(
+              line.section(' ', -1),
+              line.section(' ', 0, -2)
+              );
+  }
+  
+  file.close();
+  
+  VatsinatorApplication::log("Finished reading \"country\" file.");
+}
+
+void
+VatsimDataHandler::__readFirFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"fir\" file...");
+  
+  QFile file(_fName);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    VatsinatorApplication::alert(
+        tr("File") % " " % _fName % " " % tr("could not be opened!"),
+        true
+      );
+    return;
+  }
+  
+  while (!file.atEnd()) {
+     QString line = QString::fromUtf8(file.readLine()).simplified();
+    
+    if (line[0] == '#' || line.isEmpty())
+      continue;
+    
+    QString icao = line.section(' ', 0, 0);
+    
+    Fir* currentFir = __firs.findFirByIcao(icao);
+    if (currentFir) {
+      currentFir->setName(line.section(' ', 1));
+      
+      if (currentFir->getIcao() == "UMKK") // fix for Kaliningrad center
+        currentFir->setCountry("Russia");
+      else
+        currentFir->setCountry(countries[icao.left(2)]);
+      
+      /*
+       * TODO Make this above more convenient, i.e. allow writing some kind of
+       *      "exceptions" in the data file.
+       */
+      
+      currentFir->correctName();
+    }
+    
+    // look for some oceanic fir
+    currentFir = __firs.findFirByIcao(icao, true);
+    if (currentFir) {
+      currentFir->setName(line.section(' ', 1));
+      currentFir->setCountry(countries[icao.left(2)]);
+      currentFir->correctName();
+    }
+  }
+  
+  file.close();
+  
+  VatsinatorApplication::log("Finished reading \"fir\" file.");
+}
+
+void
+VatsimDataHandler::__readUirFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading \"uir\" file...");
+  
+  QFile file(_fName);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    VatsinatorApplication::alert(
+        tr("File") % " " % _fName % " " % tr("could not be opened!"),
+        true
+      );
+    return;
+  }
+  
+  while (!file.atEnd()) {
+     QString line = QString::fromUtf8(file.readLine()).simplified();
+    
+    if (line[0] == '#' || line.isEmpty())
+      continue;
+    
+    QStringList data = line.split(' ');
+    Uir* uir = new Uir(data[0]);
+    
+    for (int i = 1; i < data.length(); ++i) {
+      if (data[i].toUpper() == data[i]) {
+        Fir* fir = __firs.findFirByIcao(data[i]);
+        
+        if (fir)
+          uir->addFir(fir);
+        else
+          VatsinatorApplication::log("FIR %s could not be found!", data[i].toStdString().c_str());
+      } else {
+        uir->name.append(data[i] + " ");
+      }
+    }
+    
+    __uirs.push_back(uir);
+  }
+  
+  file.close();
+  
+  VatsinatorApplication::log("Finished reading \"uir\" file.");
+}
+
 
 void
 VatsimDataHandler::__clearData() {
@@ -386,4 +460,35 @@ VatsimDataHandler::__clearData() {
   __emptyAirports.clear();
 
   __observers = 0;
+}
+
+void
+VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
+  for (auto it = _flags.begin(); it != _flags.end(); ++it)
+    it.value() = false;
+}
+
+bool
+VatsimDataHandler::__initFileNames() {
+#ifndef Q_OS_DARWIN
+  VatsimDataHandler::__dataFiles.insert("alias",
+                                        VATSINATOR_PREFIX "data/alias");
+  VatsimDataHandler::__dataFiles.insert("country",
+                                        VATSINATOR_PREFIX "data/country");
+  VatsimDataHandler::__dataFiles.insert("fir",
+                                        VATSINATOR_PREFIX "data/fir");
+  VatsimDataHandler::__dataFiles.insert("uir",
+                                        VATSINATOR_PREFIX "data/uir");
+#else
+  VatsimDataHandler::__dataFiles.insert("alias",
+                   QCoreApplication::applicationDirPath() + "/../Resources/data/alias");
+  VatsimDataHandler::__dataFiles.insert("contry",
+                   QCoreApplication::applicationDirPath() + "/../Resources/data/country");
+  VatsimDataHandler::__dataFiles.insert("fir",
+                   QCoreApplication::applicationDirPath() + "/../Resources/data/fir");
+  VatsimDataHandler::__dataFiles.insert("uir",
+                   QCoreApplication::applicationDirPath() + "/../Resources/data/uir");
+#endif // Q_OS_DARWIN
+  
+  return true;
 }

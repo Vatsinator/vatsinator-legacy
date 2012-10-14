@@ -50,8 +50,11 @@ make clean
 %{_datadir}/vatsinator/pixmaps/conc32.png
 %{_datadir}/vatsinator/pixmaps/2p32.png
 %{_datadir}/vatsinator/pixmaps/4j32.png
+%{_datadir}/vatsinator/data/alias
+%{_datadir}/vatsinator/data/country
+%{_datadir}/vatsinator/data/fir
+%{_datadir}/vatsinator/data/uir
 %{_datadir}/vatsinator/WorldAirports.db
-%{_datadir}/vatsinator/vatsinator.dat
 %{_datadir}/vatsinator/WorldMap.db
 %{_datadir}/vatsinator/COPYING
 %{_datadir}/vatsinator/translations/pl_PL.language
