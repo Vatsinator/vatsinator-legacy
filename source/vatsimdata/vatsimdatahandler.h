@@ -67,7 +67,7 @@ public:
   ~VatsimDataHandler();
 
   /**
-   * Parses the vatsinator.dat file. Must be called after AirportsDatabase::init()
+   * Parses the data files. Must be called after AirportsDatabase::init()
    * and FirsDatabase::init().
    */
   void init();
@@ -94,12 +94,16 @@ public:
   /**
    * Finds pilot by callsign and returns pointer. If not found, returns
    * NULL.
+   * @param callsign Callsign of the pilot to be found.
+   * @return Const-pointer to the Pilot class instance or NULL.
    */
   const Pilot* findPilot(const QString&) const;
   
   /**
    * Finds Controller by callsign and returns pointer. If not found,
    * returns NULL.
+   * @param callsign Callsign of the controller to be found.
+   * @return Const-pointer to the Controller class instance or NULL.
    */
   const Controller* findATC(const QString&) const;
 
@@ -109,7 +113,9 @@ public:
   Uir* findUIR(const QString&);
 
   /**
-   * Adds an airport to the ActiveAirports map.
+   * Adds an airport to the ActiveAirports map (if it doesn't exist already).
+   * @param icao ICAO code of the airport to be added.
+   * @return Pointer to the ActiveAirport.
    */
   ActiveAirport* addActiveAirport(const QString&);
   
