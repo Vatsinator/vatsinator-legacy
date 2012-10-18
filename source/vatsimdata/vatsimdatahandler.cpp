@@ -477,6 +477,8 @@ VatsimDataHandler::__initFileNames() {
                                         VATSINATOR_PREFIX "data/country");
   VatsimDataHandler::__dataFiles.insert("fir",
                                         VATSINATOR_PREFIX "data/fir");
+  VatsimDataHandler::__dataFiles.insert("model",
+                                        VATSINATOR_PREFIX "data/model");
   VatsimDataHandler::__dataFiles.insert("uir",
                                         VATSINATOR_PREFIX "data/uir");
 #else
@@ -486,6 +488,8 @@ VatsimDataHandler::__initFileNames() {
                    QCoreApplication::applicationDirPath() + "/../Resources/data/country");
   VatsimDataHandler::__dataFiles.insert("fir",
                    QCoreApplication::applicationDirPath() + "/../Resources/data/fir");
+  VatsimDataHandler::__dataFiles.insert("model",
+                   QCoreApplication::applicationDirPath() + "/../Resources/data/model");
   VatsimDataHandler::__dataFiles.insert("uir",
                    QCoreApplication::applicationDirPath() + "/../Resources/data/uir");
 #endif // Q_OS_DARWIN

@@ -53,14 +53,14 @@ make clean
 %{_datadir}/vatsinator/data/alias
 %{_datadir}/vatsinator/data/country
 %{_datadir}/vatsinator/data/fir
+%{_datadir}/vatsinator/data/model
 %{_datadir}/vatsinator/data/uir
 %{_datadir}/vatsinator/WorldAirports.db
+%{_datadir}/vatsinator/WorldFirs.db
 %{_datadir}/vatsinator/WorldMap.db
 %{_datadir}/vatsinator/COPYING
 %{_datadir}/vatsinator/translations/pl_PL.language
 %{_datadir}/vatsinator/translations/vatsinator-pl_PL.qm
-%{_datadir}/vatsinator/models.dat
-%{_datadir}/vatsinator/WorldFirs.db
 
 %changelog
 * @vatsinator_RPM_DATE@ Michał Garapich <michal@garapich.pl> - @vatsinator_VERSION@

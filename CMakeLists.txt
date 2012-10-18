@@ -52,7 +52,6 @@ if (LINUX)
     # install files
     install (FILES
         COPYING
-        resources/models.dat
         resources/WorldAirports.db
         resources/WorldFirs.db
         resources/WorldMap.db
@@ -74,6 +73,7 @@ if (LINUX)
         resources/data/alias
         resources/data/country
         resources/data/fir
+        resources/data/model
         resources/data/uir
         DESTINATION share/vatsinator/data
     )
@@ -108,7 +108,6 @@ elseif (APPLE)
     
     set (vatsinator_BUNDLE_RESOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/COPYING
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/models.dat
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldAirports.db
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldFirs.db
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldMap.db
@@ -128,6 +127,7 @@ elseif (APPLE)
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/alias
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/country
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/fir
+        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/model
         ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/uir
     )
 
@@ -152,7 +152,6 @@ elseif (WIN32)
     
     install (FILES
         COPYING
-        resources/models.dat
         resources/WorldAirports.db
         resources/WorldFirs.db
         resources/WorldMap.db
@@ -174,6 +173,7 @@ elseif (WIN32)
         resources/data/alias
         resources/data/country
         resources/data/fir
+        resources/data/model
         resources/data/uir
         DESTINATION ./data
     )

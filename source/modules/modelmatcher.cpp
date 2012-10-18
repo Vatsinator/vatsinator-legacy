@@ -20,6 +20,8 @@
 
 #include "ui/widgets/mapwidget.h"
 
+#include "vatsimdata/vatsimdatahandler.h"
+
 #include "vatsinatorapplication.h"
 
 #include "modelmatcher.h"
@@ -28,7 +30,7 @@
 ModelMatcher::ModelMatcher() {
   __modelsFiles["ZZZZ"] = "1p"; // default
 
-  QFile modelsFile(MODELS_DAT);
+  QFile modelsFile(VatsimDataHandler::getFiles()["model"]);
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     VatsinatorApplication::alert(
