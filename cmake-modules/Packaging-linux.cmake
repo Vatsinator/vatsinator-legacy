@@ -22,7 +22,7 @@ else (“${CMAKE_SYSTEM_PROCESSOR}” STREQUAL “x86_64”)
 endif (“${CMAKE_SYSTEM_PROCESSOR}” STREQUAL “x86_64”)
 
 set (CPACK_DEBIAN_PACKAGE_NAME "vatsinator")
-set (CPACK_DEBIAN_PACKAGE_DEPENDS "libqt4-core (>=4.7), libqt4-gui (>=4.7), libqt4-opengl (>=4.7), libqt4-network (>=4.7)")
+set (CPACK_DEBIAN_PACKAGE_DEPENDS "libqt4-core (>=4.8), libqt4-gui (>=4.8), libqt4-opengl (>=4.8), libqt4-network (>=4.8)")
 set (CPACK_DEBIAN_PACKAGE_SECTION "web")
 set (CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
 
@@ -31,7 +31,7 @@ set (CPACK_RPM_PACKAGE_LICENSE GPLv3)
 set (CPACK_RPM_PACKAGE_GROUP Applications/Internet)
 set (CPACK_RPM_PACKAGE_VENDOR Vatsinator)
 set (CPACK_RPM_PACKAGE_DESCRIPTION "An open-source Vatsim monitor")
-set (CPACK_RPM_PACKAGE_REQUIRES "libqt4-core >= 4.7, libqt4-gui >= 4.7, libqt4-network >= 4.7, libqt4-opengl >= 4.7")
+set (CPACK_RPM_PACKAGE_REQUIRES "libqt4-core >= 4.8, libqt4-gui >= 4.8, libqt4-network >= 4.8, libqt4-opengl >= 4.8")
 
 include (CPack)
 

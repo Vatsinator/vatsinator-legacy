@@ -7,7 +7,7 @@ project (vatsinator)
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
 # find necessary libs
-find_package (Qt4 4.7 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
+find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
 find_package (OpenGL REQUIRED)
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
