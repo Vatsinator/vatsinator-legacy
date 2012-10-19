@@ -38,9 +38,9 @@ set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
 set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
 
 # set windres command
-if (MINGW)
-  set (WINDRES_COMMAND i686-pc-mingw32-windres)
-endif (MINGW)
+if (MINGW AND NOT WINDRES_COMMAND)
+  set (WINDRES_COMMAND /usr/bin/i686-pc-mingw32-windres)
+endif (MINGW AND NOT WINDRES_COMMAND)
 
 # find version
 if (NOT vatsinator_VERSION)
