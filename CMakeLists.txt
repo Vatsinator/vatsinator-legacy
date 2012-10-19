@@ -48,36 +48,40 @@ if (NOT vatsinator_VERSION)
     string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
 endif (NOT vatsinator_VERSION)
 
+include (VatsinatorInstall)
+
+set (vatsinator_RESOURCES
+    COPYING
+    resources/WorldAirports.db
+    resources/WorldFirs.db
+    resources/WorldMap.db)
+
+vatsinator_install (
+    "${vatsinator_RESOURCES}" "")
+
+set (vatsinator_RESOURCES_PIXMAPS
+    resources/pixmaps/1p32.png
+    resources/pixmaps/2p32.png
+    resources/pixmaps/4p32.png
+    resources/pixmaps/2j32.png
+    resources/pixmaps/3j32.png
+    resources/pixmaps/4j32.png
+    resources/pixmaps/conc32.png)
+
+vatsinator_install (
+    "${vatsinator_RESOURCES_PIXMAPS}" "/pixmaps")
+
+set (vatsinator_RESOURCES_DATA
+    resources/data/alias
+    resources/data/country
+    resources/data/fir
+    resources/data/model
+    resources/data/uir)
+
+vatsinator_install (
+    "${vatsinator_RESOURCES_DATA}" "/data")
+
 if (LINUX)
-    # install files
-    install (FILES
-        COPYING
-        resources/WorldAirports.db
-        resources/WorldFirs.db
-        resources/WorldMap.db
-        DESTINATION share/vatsinator
-    )
-    
-    install (FILES
-        resources/pixmaps/1p32.png
-        resources/pixmaps/2p32.png
-        resources/pixmaps/4p32.png
-        resources/pixmaps/2j32.png
-        resources/pixmaps/3j32.png
-        resources/pixmaps/4j32.png
-        resources/pixmaps/conc32.png
-        DESTINATION share/vatsinator/pixmaps
-    )
-    
-    install (FILES
-        resources/data/alias
-        resources/data/country
-        resources/data/fir
-        resources/data/model
-        resources/data/uir
-        DESTINATION share/vatsinator/data
-    )
-    
     macro (install_icon SIZE)
         install (FILES resources/vatsinator-${SIZE}.png
             DESTINATION "share/icons/hicolor/${SIZE}x${SIZE}/apps"
@@ -105,31 +109,6 @@ if (LINUX)
 elseif (APPLE)
     
     include (Packaging-darwin)
-    
-    set (vatsinator_BUNDLE_RESOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/COPYING
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldAirports.db
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldFirs.db
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldMap.db
-    )
-    
-    set (vatsinator_BUNDLE_PIXMAPS
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/1p32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/2p32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/4p32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/2j32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/3j32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/4j32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/conc32.png
-    )
-    
-    set (vatsinator_BUNDLE_DATA
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/alias
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/country
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/fir
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/model
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/data/uir
-    )
 
 # builds for win32
 elseif (WIN32)
@@ -148,34 +127,6 @@ elseif (WIN32)
         ${MINGW_LIBS_PATH}/libgcc_s_dw2-1.dll
         ${MINGW_LIBS_PATH}/mingwm10.dll
         DESTINATION .
-    )
-    
-    install (FILES
-        COPYING
-        resources/WorldAirports.db
-        resources/WorldFirs.db
-        resources/WorldMap.db
-        DESTINATION .
-    )
-    
-    install (FILES
-        resources/pixmaps/1p32.png
-        resources/pixmaps/2p32.png
-        resources/pixmaps/4p32.png
-        resources/pixmaps/2j32.png
-        resources/pixmaps/3j32.png
-        resources/pixmaps/4j32.png
-        resources/pixmaps/conc32.png
-        DESTINATION ./pixmaps
-    )
-    
-     install (FILES
-        resources/data/alias
-        resources/data/country
-        resources/data/fir
-        resources/data/model
-        resources/data/uir
-        DESTINATION ./data
     )
     
     include (Packaging-win32)
