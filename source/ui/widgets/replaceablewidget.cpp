@@ -25,17 +25,12 @@ ReplaceableWidget::ReplaceableWidget(QWidget* _parent) :
   QStackedWidget(_parent) {}
 
 void
-ReplaceableWidget::setWidgets(QWidget* _a, QWidget* _b) {
-  addWidget(_a);
-  addWidget(_b);
+ReplaceableWidget::addWidgets(std::initializer_list< QWidget* > _wList) {
+  for (auto it = _wList.begin(); it != _wList.end(); ++it)
+    addWidget(*it);
 }
 
 void
-ReplaceableWidget::toggle() {
-  setCurrentIndex(count() - currentIndex() - 1);
-}
-
-void
-ReplaceableWidget::setWidget(unsigned _num) {
-  setCurrentIndex(_num);
+ReplaceableWidget::next() {
+  setCurrentIndex(currentIndex() >= count() - 1 ? 0 : currentIndex() + 1);
 }
