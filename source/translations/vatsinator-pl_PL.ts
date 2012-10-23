@@ -1145,6 +1145,25 @@
     </message>
 </context>
 <context>
+    <name>VatsimDataHandler</name>
+    <message>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="270"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="316"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="400"/>
+        <source>File</source>
+        <translation>Plik</translation>
+    </message>
+    <message>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="270"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="316"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="400"/>
+        <source>could not be opened!</source>
+        <translation>nie istnieje!</translation>
+    </message>
+</context>
+<context>
     <name>VatsinatorApplication</name>
     <message>
         <source>Fetching data...</source>
