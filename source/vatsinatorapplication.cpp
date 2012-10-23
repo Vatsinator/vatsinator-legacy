@@ -57,7 +57,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __userInterface(NULL) {
   
 #ifndef NO_DEBUG
-#if defined Q_OS_LINUX
+# if defined Q_OS_LINUX
 #  pragma message("Platform: Linux")
 # elif defined Q_OS_WIN32
 #  pragma message("Platform: Win32")
@@ -69,7 +69,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 #endif
 
   __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + __settingsManager->getLanguage());
-  this->installTranslator(&__translator);
+  installTranslator(&__translator);
 
   // if user enabled caching load data as soon as OpenGL context is initialized
   if (__settingsManager->cacheEnabled()) {

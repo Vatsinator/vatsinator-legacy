@@ -41,12 +41,12 @@ CacheFile::CacheFile(const QString& _fileName) :
 
 bool
 CacheFile::exists() const {
-    if (!QDir(CACHE_DIRECTORY).exists()) {
-      QDir().mkdir(CACHE_DIRECTORY);
-      return false;
-    }
-    
-    return QFile::exists();
+  if (!QDir(CACHE_DIRECTORY).exists()) {
+    QDir().mkdir(CACHE_DIRECTORY);
+    return false;
+  }
+  
+  return QFile::exists();
 }
 
 bool

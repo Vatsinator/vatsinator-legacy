@@ -13,14 +13,6 @@ set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
 
-# if (APPLE)
-#     set (vatsinator_SRCS
-#         ${vatsinator_SRCS}
-#         ${CMAKE_CURRENT_SOURCE_DIR}/ui/resources/vatsinator.icns
-#     )
-# endif (APPLE)
-
-
 set (vatsinator_MOC_SRCS
     vatsinatorapplication.h
 )
@@ -128,6 +120,7 @@ if (LINUX)
         DESTINATION share/vatsinator/translations
     )
 elseif (APPLE)
+    # move all files to .app bundle
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
