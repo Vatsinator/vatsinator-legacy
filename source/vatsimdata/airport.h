@@ -33,9 +33,9 @@ class Fir;
 class Airport : public Clickable {
   
   /*
-   * This is interface for airport object.
+   * This is the interface for airport object.
    * It represents an airport on the map - can be clicked
-   * or constructed the sub-menu on.
+   * or have the sub-menu.
    * Inherited by ActiveAirport and EmptyAirport classes.
    */
 

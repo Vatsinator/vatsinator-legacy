@@ -16,9 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <fstream>
-
 #include <QtGui>
 
 #include "vatsinatorapplication.h"
@@ -65,15 +62,17 @@ WorldMap::draw() const {
 }
 
 void WorldMap::__readDatabase() {
-  if (!QFile(WORLD_MAP).exists())
-    VatsinatorApplication::alert(static_cast< QString >("File ") +
-        WORLD_MAP + " does not exist! Please reinstsall the application.", true);
+  QFile db(WORLD_MAP);
   
-  std::fstream db(QString(WORLD_MAP).toStdString().c_str(), std::ios::in | std::ios::binary);
+  if (!db.exists() || !db.open(QIODevice::ReadOnly))
+    VatsinatorApplication::alert(
+        tr("File") % " " % WORLD_MAP % " " %
+        tr("does not exist! Please reinstall the application."),
+      true);
 
   int size;
   db.read(reinterpret_cast< char* >(&size), 4);
-  db.seekg(4);
+  db.seek(4);
 
   VatsinatorApplication::log("World map polygons: %i.", size);
 
@@ -86,7 +85,6 @@ void WorldMap::__readDatabase() {
     int counting;
     db.read(reinterpret_cast< char* >(&counting), 4);
 
-    //qDebug() << "First counting: " << counting;
     if (counting) {
       polygons[i].borders.resize(counting);
       db.read(reinterpret_cast< char* >(&polygons[i].borders[0].x), sizeof(Point) * counting);
@@ -95,7 +93,6 @@ void WorldMap::__readDatabase() {
 
     db.read(reinterpret_cast< char* >(&counting), 4);
 
-    //qDebug() << "Second counting: " << counting;
     if (counting) {
       polygons[i].triangles.resize(counting);
       db.read(reinterpret_cast< char* >(&polygons[i].triangles[0]), sizeof(unsigned short) * counting);

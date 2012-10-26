@@ -16,9 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <fstream>
-
 #include <QtGui>
 
 #include "vatsimdata/fir.h"
@@ -70,18 +67,20 @@ FirDatabase::__readDatabase() {
   __toolTipsPrepared = false;
   __firs.clear();
   
-  if (!QFile(FIRS_DB).exists())
-    VatsinatorApplication::alert(static_cast< QString >("File ") +
-        FIRS_DB + " does not exist! Please reinstsall the application.", true);
-
-  std::fstream db(QString(FIRS_DB).toStdString().c_str(), std::ios::in | std::ios::binary);
+  QFile db(FIRS_DB);
+  
+  if (!db.exists() || !db.open(QIODevice::ReadOnly))
+    VatsinatorApplication::alert(
+        tr("File") % " " FIRS_DB % " " %
+        tr("could not be opened! Please reinstall the application."),
+      true);
 
   int size;
   db.read(reinterpret_cast< char* >(&size), 4);
 
   VatsinatorApplication::log("Firs to be read: %i.", size);
 
-  db.seekg(4);
+  db.seek(4);
   FirHeader tempHeader;
 
   __firs.resize(size);
@@ -109,8 +108,7 @@ FirDatabase::__readDatabase() {
 
 void
 FirDatabase::__init() {
-  if (__toolTipsPrepared)
-    return;
+  Q_ASSERT(!__toolTipsPrepared);
 
   VatsinatorApplication::log("Preparing VBOs for FIRs...");
 

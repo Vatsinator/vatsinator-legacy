@@ -16,9 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <fstream>
-
 #include <QtGui>
 
 #include "vatsinatorapplication.h"
@@ -49,23 +46,23 @@ AirportDatabase::__readDatabase() {
   
   __airports.clear();
   
-  if (!QFile(AIRPORTS_DB).exists())
-    VatsinatorApplication::alert(
-      static_cast< QString >("File ") + AIRPORTS_DB + " does not exist! Please reinstsall the application. Application path: " +
-      VatsinatorApplication::getSingleton().applicationDirPath(),
-      true);
+  QFile db(AIRPORTS_DB);
   
-  std::fstream db(QString(AIRPORTS_DB).toStdString().c_str(), std::ios::in | std::ios::binary);
+  if (!db.exists() || !db.open(QIODevice::ReadOnly))
+    VatsinatorApplication::alert(
+      tr("File") % " " % AIRPORTS_DB % " " %
+      tr("could not be opened! Please reinstall the application."),
+      true);
 
   int size;
   db.read((char*)&size, 4);
 
   VatsinatorApplication::log("Airports to be read: %i.", size);
 
-  db.seekg(4);
+  db.seek(4);
 
   __airports.resize(size);
-  db.read((char*)&__airports[0], sizeof(AirportRecord) * size);
+  db.read(reinterpret_cast< char* >(&__airports[0]), sizeof(AirportRecord) * size);
 
   db.close();
 
