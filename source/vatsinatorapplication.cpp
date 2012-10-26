@@ -52,7 +52,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __modulesManager(new ModuleManager()),
     __userInterface(NULL) {
 
-  __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + __settingsManager->getLanguage());
+  __translator.load(QString("vatsinator-") % __settingsManager->getLanguage(),
+                    QString(TRANSLATIONS_DIR));
   installTranslator(&__translator);
 
   // if user enabled caching load data as soon as OpenGL context is initialized
