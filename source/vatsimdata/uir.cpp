@@ -32,7 +32,7 @@ Uir::addFir(Fir* _f) {
 
 void
 Uir::addStaff(const Controller* _c) {
-for (Fir * f: __range)
+  for (Fir * f: __range)
     f->addUirStaff(_c);
 
   __staff.push_back(_c);

@@ -56,8 +56,7 @@ VatsimDataHandler::VatsimDataHandler() :
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
 
-  while (!__uirs.empty())
-    delete __uirs.back(), __uirs.pop_back();
+  qDeleteAll(__uirs);
 
   delete __atcs;
   delete __flights;
@@ -66,13 +65,9 @@ VatsimDataHandler::~VatsimDataHandler() {
 void
 VatsimDataHandler::init() {
   QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile, __dataFiles["alias"]);
-//   __readAliasFile(__dataFiles["alias"]);
   QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile, __dataFiles["country"]);
-//   __readCountryFile(__dataFiles["country"]);
   QtConcurrent::run(this, &VatsimDataHandler::__readFirFile, __dataFiles["fir"]);
-//   __readFirFile(__dataFiles["fir"]);
   QtConcurrent::run(this, &VatsimDataHandler::__readUirFile, __dataFiles["uir"]);
-//   __readUirFile(__dataFiles["uir"]);
 }
 
 void
@@ -176,7 +171,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
   }
 }
 
-const QString&
+const QString &
 VatsimDataHandler::getDataUrl() const {
   if (__statusFileFetched) {
     qsrand(QTime::currentTime().msec());
@@ -196,7 +191,7 @@ VatsimDataHandler::findATC(const QString& _callsign) const {
   return __atcs->findATCByCallsign(_callsign);
 }
 
-Uir*
+Uir *
 VatsimDataHandler::findUIR(const QString& _icao) {
 for (Uir * u: __uirs)
     if (u->icao == _icao)
@@ -205,7 +200,7 @@ for (Uir * u: __uirs)
   return NULL;
 }
 
-ActiveAirport*
+ActiveAirport *
 VatsimDataHandler::addActiveAirport(const QString& _icao) {
   if (!__activeAirports.contains(_icao))
     __activeAirports.insert(_icao, new ActiveAirport(_icao));
@@ -213,7 +208,7 @@ VatsimDataHandler::addActiveAirport(const QString& _icao) {
   return __activeAirports[_icao];
 }
 
-EmptyAirport*
+EmptyAirport *
 VatsimDataHandler::addEmptyAirport(const QString& _icao) {
   if (!__emptyAirports.contains(_icao))
     __emptyAirports.insert(_icao, new EmptyAirport(_icao));
@@ -221,7 +216,7 @@ VatsimDataHandler::addEmptyAirport(const QString& _icao) {
   return __emptyAirports[_icao];
 }
 
-EmptyAirport*
+EmptyAirport *
 VatsimDataHandler::addEmptyAirport(const AirportRecord* _ap) {
   QString icao(_ap->icao);
   
@@ -231,7 +226,7 @@ VatsimDataHandler::addEmptyAirport(const AirportRecord* _ap) {
   return __emptyAirports[icao];
 }
 
-Airport*
+Airport *
 VatsimDataHandler::findAirport(const QString& _icao) {
   if (__activeAirports.contains(_icao))
     return __activeAirports[_icao];
@@ -436,28 +431,13 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
 
 void
 VatsimDataHandler::__clearData() {
-  for (const Pilot * p: __flights->getFlights())
-    delete p;
-
-  __flights->clear();
-
-  for (const Controller * c: __atcs->getStaff())
-    delete c;
-
-  __atcs->clear();
+  qDeleteAll(__flights->getFlights()), __flights->clear();
+  qDeleteAll(__atcs->getStaff()), __atcs->clear();
+  qDeleteAll(__activeAirports), __activeAirports.clear();
+  qDeleteAll(__emptyAirports), __emptyAirports.clear();
 
   for (Uir * u: __uirs)
     u->clear();
-
-  for (auto it = __activeAirports.begin(); it != __activeAirports.end(); ++it)
-    delete it.value();
-
-  __activeAirports.clear();
-  
-  for (auto it = __emptyAirports.begin(); it != __emptyAirports.end(); ++it)
-    delete it.value();
-  
-  __emptyAirports.clear();
 
   __observers = 0;
 }
