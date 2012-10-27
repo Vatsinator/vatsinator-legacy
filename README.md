@@ -54,11 +54,6 @@ Current release: **Vatsinator 0.1**
 - Windows<br>
 	[VatsinatorSetup-0.1.exe](https://github.com/downloads/Garrappachc/Vatsinator/VatsinatorSetup-0.1.exe)
 
-- MacOS<br>
-	There is a bundle for MacOS. However, it was not tested yet to ensure it works on every Mac computer.<br>
-	If you have MacOS, please download and test it - if it doesn't work, just let me know on michal@garapich.pl<br>
-	[Vatsinator-0.1_beta4.dmg](https://github.com/downloads/Garrappachc/Vatsinator/Vatsinator-0.1_beta4.dmg)
-
 - Source Code<br>
 	[vatsinator-0.1.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1.tar.gz)
 
