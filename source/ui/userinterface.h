@@ -57,10 +57,27 @@ public:
 
   virtual ~UserInterface();
 
+  /**
+   * Sets the specified message in the bottom-left bar corner
+   * or puts simple "Last update" text.
+   * @param text If specified, this text will be shown.
+   */
   void statusBarUpdate(const QString& = "");
+  
+  /**
+   * Toggles status bar with progress bar (bottom-left corner).
+   */
   void toggleStatusBar();
+  
+  /**
+   * The middle part of status bar - how many clients, etc etc.
+   */
   void infoBarUpdate();
   
+  /**
+   * Sets the window on the center of the screen.
+   * @param widget Window to have the position set.
+   */
   static void setWindowPosition(QWidget*);
 
   inline MapWidget*

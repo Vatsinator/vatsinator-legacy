@@ -52,12 +52,14 @@ public:
     __ms_Singleton = 0;
   }
 
-  inline static T& getSingleton() {
+  inline static T &
+  getSingleton() {
     Q_ASSERT(__ms_Singleton);
     return *__ms_Singleton;
   }
 
-  inline static T* getSingletonPtr() {
+  inline static T *
+  getSingletonPtr() {
     Q_ASSERT(__ms_Singleton);
     return __ms_Singleton;
   }

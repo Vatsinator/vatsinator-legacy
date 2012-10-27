@@ -82,16 +82,16 @@ public:
   inline bool
   isOceanic() const { return __oceanic; }
 
-  inline const Point&
+  inline const Point &
   getTextPosition() const { return __textPosition; }
 
-  inline const QString&
+  inline const QString &
   getName() const { return __name; }
 
   inline void
   setName(const QString& _n) { __name = _n; }
 
-  inline const QString&
+  inline const QString &
   getCountry() const { return __country; }
 
   inline void

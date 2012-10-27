@@ -13,14 +13,6 @@ set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
 
-# if (APPLE)
-#     set (vatsinator_SRCS
-#         ${vatsinator_SRCS}
-#         ${CMAKE_CURRENT_SOURCE_DIR}/ui/resources/vatsinator.icns
-#     )
-# endif (APPLE)
-
-
 set (vatsinator_MOC_SRCS
     vatsinatorapplication.h
 )
@@ -128,6 +120,7 @@ if (LINUX)
         DESTINATION share/vatsinator/translations
     )
 elseif (APPLE)
+    # move all files to .app bundle
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
@@ -135,8 +128,12 @@ elseif (APPLE)
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
-        COMMAND cp ARGS ${vatsinator_BUNDLE_PIXMAPS}
+        COMMAND cp ARGS ${vatsinator_BUNDLE_RESOURCES_pixmaps}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
+        COMMAND mkdir ARGS -p
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/data
+        COMMAND cp ARGS ${vatsinator_BUNDLE_RESOURCES_data}
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/data
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
         COMMAND cp ARGS ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}

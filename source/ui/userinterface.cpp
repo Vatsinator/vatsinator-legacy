@@ -117,7 +117,7 @@ UserInterface::statusBarUpdate(const QString& _message) {
 
 void
 UserInterface::toggleStatusBar() {
-  Replaceable->toggle();
+  Replaceable->next();
 }
 
 void
@@ -204,7 +204,7 @@ UserInterface::__setupWindow() {
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
   
-  Replaceable->setWidgets(__statusBox, __progressBar);
+  Replaceable->addWidgets({__statusBox, __progressBar});
 
 #ifndef NO_DEBUG
   MenuHelp->addSeparator();
@@ -270,10 +270,10 @@ UserInterface::__getInitialPoint() {
 
 void
 UserInterface::__dataDownloading() {
-  Replaceable->setWidget(ReplaceableWidget::SecondWidget);
+  Replaceable->setCurrentWidget(__progressBar);
 }
 
 void
 UserInterface::__dataUpdated() {
-  Replaceable->setWidget(ReplaceableWidget::FirstWidget);
+  Replaceable->setCurrentWidget(__statusBox);
 }

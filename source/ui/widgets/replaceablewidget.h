@@ -20,7 +20,9 @@
 #ifndef REPLACEABLEWIDGET_H
 #define REPLACEABLEWIDGET_H
 
+#include <initializer_list>
 #include <QStackedWidget>
+#include <QVector>
 
 class ReplaceableWidget : public QStackedWidget {
   
@@ -36,26 +38,14 @@ public:
   ReplaceableWidget(QWidget* = 0);
   
   /**
-   * Sets the two given widgets.
+   * Adds given widgets.
    */
-  void setWidgets(QWidget*, QWidget*);
+  void addWidgets(std::initializer_list< QWidget* >);
   
   /**
-   * Swaps one widget with another.
+   * Changes current widget to the next.
    */
-  void toggle();
-  
-  /**
-   * Sets the desired widget.
-   * @param num Widget number. Must be
-   *   ReplaceableWidget::FirstWidget or ::SecondWidget.
-   */
-  void setWidget(unsigned);
-  
-  enum {
-    FirstWidget      = 0,
-    SecondWidget     = 1
-  };
+  void next();
   
 };
 

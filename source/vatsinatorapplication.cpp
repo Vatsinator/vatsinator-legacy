@@ -16,10 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdlib>
-
-#include <iostream>
-
 #include <QtGui>
 
 #include "cache/cachefile.h"
@@ -55,21 +51,10 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __settingsManager(new SettingsManager()),
     __modulesManager(new ModuleManager()),
     __userInterface(NULL) {
-  
-#ifndef NO_DEBUG
-#if defined Q_OS_LINUX
-#  pragma message("Platform: Linux")
-# elif defined Q_OS_WIN32
-#  pragma message("Platform: Win32")
-# elif defined Q_OS_DARWIN
-#  pragma message("Platform: Darwin")
-# else
-#  pragma message("Platform: undefined")
-# endif
-#endif
 
-  __translator.load(QString(TRANSLATIONS_DIR "/vatsinator-") + __settingsManager->getLanguage());
-  this->installTranslator(&__translator);
+  __translator.load(QString("vatsinator-") % __settingsManager->getLanguage(),
+                    QString(TRANSLATIONS_DIR));
+  installTranslator(&__translator);
 
   // if user enabled caching load data as soon as OpenGL context is initialized
   if (__settingsManager->cacheEnabled()) {

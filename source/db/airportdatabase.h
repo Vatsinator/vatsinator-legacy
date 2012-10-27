@@ -20,6 +20,7 @@
 #ifndef AIRPORTDATABASE_H
 #define AIRPORTDATABASE_H
 
+#include <QCoreApplication>
 #include <QVector>
 
 #include "singleton.h"
@@ -54,6 +55,8 @@ class AirportDatabase :
   /*
    * This class contains all needed info about airports.
    */
+  
+  Q_DECLARE_TR_FUNCTIONS(AirportDatabase);
 
 public:
 

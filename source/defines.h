@@ -31,7 +31,6 @@
 
 #define AIRPORTS_DB      VATSINATOR_PREFIX "WorldAirports.db"
 #define FIRS_DB          VATSINATOR_PREFIX "WorldFirs.db"
-#define VATSINATOR_DAT   VATSINATOR_PREFIX "vatsinator.dat"
 #define MODELS_DAT       VATSINATOR_PREFIX "models.dat"
 #define WORLD_MAP        VATSINATOR_PREFIX "WorldMap.db"
 #define PIXMAPS_DIR      VATSINATOR_PREFIX "pixmaps"
@@ -41,7 +40,6 @@
 
 #define AIRPORTS_DB      QCoreApplication::applicationDirPath() + "/../Resources/WorldAirports.db"
 #define FIRS_DB          QCoreApplication::applicationDirPath() + "/../Resources/WorldFirs.db"
-#define VATSINATOR_DAT   QCoreApplication::applicationDirPath() + "/../Resources/vatsinator.dat"
 #define MODELS_DAT       QCoreApplication::applicationDirPath() + "/../Resources/models.dat"
 #define WORLD_MAP        QCoreApplication::applicationDirPath() + "/../Resources/WorldMap.db"
 #define PIXMAPS_DIR      QCoreApplication::applicationDirPath() + "/../Resources/pixmaps"

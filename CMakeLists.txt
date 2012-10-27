@@ -20,7 +20,7 @@ project (vatsinator)
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
 # find necessary libs
-find_package (Qt4 4.7 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
+find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
 find_package (OpenGL REQUIRED)
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
@@ -51,9 +51,9 @@ set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
 set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
 
 # set windres command
-if (MINGW)
-  set (WINDRES_COMMAND i686-pc-mingw32-windres)
-endif (MINGW)
+if (MINGW AND NOT WINDRES_COMMAND)
+  set (WINDRES_COMMAND /usr/bin/i686-pc-mingw32-windres)
+endif (MINGW AND NOT WINDRES_COMMAND)
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -61,30 +61,40 @@ if (NOT vatsinator_VERSION)
     string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
 endif (NOT vatsinator_VERSION)
 
-# only for Linux
+include (VatsinatorInstall)
+
+set (vatsinator_RESOURCES
+    COPYING
+    resources/WorldAirports.db
+    resources/WorldFirs.db
+    resources/WorldMap.db)
+
+vatsinator_install (
+    "${vatsinator_RESOURCES}" "")
+
+set (vatsinator_RESOURCES_PIXMAPS
+    resources/pixmaps/1p32.png
+    resources/pixmaps/2p32.png
+    resources/pixmaps/4p32.png
+    resources/pixmaps/2j32.png
+    resources/pixmaps/3j32.png
+    resources/pixmaps/4j32.png
+    resources/pixmaps/conc32.png)
+
+vatsinator_install (
+    "${vatsinator_RESOURCES_PIXMAPS}" "/pixmaps")
+
+set (vatsinator_RESOURCES_DATA
+    resources/data/alias
+    resources/data/country
+    resources/data/fir
+    resources/data/model
+    resources/data/uir)
+
+vatsinator_install (
+    "${vatsinator_RESOURCES_DATA}" "/data")
+
 if (LINUX)
-    # install files
-    install (FILES
-        COPYING
-        resources/models.dat
-        resources/vatsinator.dat
-        resources/WorldAirports.db
-        resources/WorldFirs.db
-        resources/WorldMap.db
-        DESTINATION share/vatsinator
-    )
-    
-    install (FILES
-        resources/pixmaps/1p32.png
-        resources/pixmaps/2p32.png
-        resources/pixmaps/4p32.png
-        resources/pixmaps/2j32.png
-        resources/pixmaps/3j32.png
-        resources/pixmaps/4j32.png
-        resources/pixmaps/conc32.png
-        DESTINATION share/vatsinator/pixmaps
-    )
-    
     macro (install_icon SIZE)
         install (FILES resources/vatsinator-${SIZE}.png
             DESTINATION "share/icons/hicolor/${SIZE}x${SIZE}/apps"
@@ -112,25 +122,6 @@ if (LINUX)
 elseif (APPLE)
     
     include (Packaging-darwin)
-    
-    set (vatsinator_BUNDLE_RESOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/COPYING
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/models.dat
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/vatsinator.dat
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldAirports.db
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldFirs.db
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/WorldMap.db
-    )
-    
-    set (vatsinator_BUNDLE_PIXMAPS
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/1p32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/2p32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/4p32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/2j32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/3j32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/4j32.png
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources/pixmaps/conc32.png
-    )
 
 # builds for win32
 elseif (WIN32)
@@ -149,27 +140,6 @@ elseif (WIN32)
         ${MINGW_LIBS_PATH}/libgcc_s_dw2-1.dll
         ${MINGW_LIBS_PATH}/mingwm10.dll
         DESTINATION .
-    )
-    
-    install (FILES
-        COPYING
-        resources/models.dat
-        resources/vatsinator.dat
-        resources/WorldAirports.db
-        resources/WorldFirs.db
-        resources/WorldMap.db
-        DESTINATION .
-    )
-    
-    install (FILES
-        resources/pixmaps/1p32.png
-        resources/pixmaps/2p32.png
-        resources/pixmaps/4p32.png
-        resources/pixmaps/2j32.png
-        resources/pixmaps/3j32.png
-        resources/pixmaps/4j32.png
-        resources/pixmaps/conc32.png
-        DESTINATION ./pixmaps
     )
     
     include (Packaging-win32)

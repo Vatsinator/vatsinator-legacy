@@ -9,7 +9,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libqt4-devel gcc-c++ cmake
 
-Requires:       libqt4-core >= 4.7, libqt4-gui >= 4.7, libqt4-network >= 4.7, libqt4-opengl >= 4.7
+Requires:       libqt4-core >= 4.8, libqt4-gui >= 4.8, libqt4-network >= 4.8, libqt4-opengl >= 4.8
 
 %description
 Vatsinator is an open-source Vatsim network monitor. It shows
@@ -23,7 +23,7 @@ rm -rf $RPM_BUILD_DIR/%{name}-@vatsinator_VERSION@
 
 %build
 cd $RPM_BUILD_DIR/%{name}-@vatsinator_VERSION@
-%{cmake} . -DCMAKE_INSTALL_PREFIX=/usr
+%{cmake}
 make %{?_smp_mflags}
 
 %install
@@ -50,14 +50,17 @@ make clean
 %{_datadir}/vatsinator/pixmaps/conc32.png
 %{_datadir}/vatsinator/pixmaps/2p32.png
 %{_datadir}/vatsinator/pixmaps/4j32.png
+%{_datadir}/vatsinator/data/alias
+%{_datadir}/vatsinator/data/country
+%{_datadir}/vatsinator/data/fir
+%{_datadir}/vatsinator/data/model
+%{_datadir}/vatsinator/data/uir
 %{_datadir}/vatsinator/WorldAirports.db
-%{_datadir}/vatsinator/vatsinator.dat
+%{_datadir}/vatsinator/WorldFirs.db
 %{_datadir}/vatsinator/WorldMap.db
 %{_datadir}/vatsinator/COPYING
 %{_datadir}/vatsinator/translations/pl_PL.language
 %{_datadir}/vatsinator/translations/vatsinator-pl_PL.qm
-%{_datadir}/vatsinator/models.dat
-%{_datadir}/vatsinator/WorldFirs.db
 
 %changelog
 * @vatsinator_RPM_DATE@ Michał Garapich <michal@garapich.pl> - @vatsinator_VERSION@
