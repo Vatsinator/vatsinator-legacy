@@ -111,9 +111,9 @@ if (LINUX)
     include (Packaging-linux)
     
     option (WITH_DEBIAN OFF)
-    if (WITH_DEBIAN AND EXISTS "debian/")
+    if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
         add_subdirectory (debian)
-    endif (WITH_DEBIAN AND EXISTS "debian/")
+    endif (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
 
     option (WITH_RPM OFF)
     
