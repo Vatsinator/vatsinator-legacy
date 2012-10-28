@@ -79,6 +79,7 @@ FlightDetailsWindow::show(const Client* _client) {
   ServerLabel->setText(__current->server);
   TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
   SquawkLabel->setText(__current->squawk);
+  AltimeterLabel->setText(__current->pressure.mb % " / " % __current->pressure.ihg);
   
   VatawareLink->setText("<a href=\"http://www.vataware.com/pilot.cfm?cid=" %
       QString::number(__current->pid) %

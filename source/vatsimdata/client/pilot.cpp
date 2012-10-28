@@ -88,14 +88,15 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     flightRules(_data[21] == "I" ? IFR : VFR),
     remarks(_data[29]),
     heading(_data[38].toUInt()),
-    route( {_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
+    pressure({_data[39], _data[40]}),
+    route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
     prefiledOnly(_prefiled),
     __lineFrom(NULL),
     __lineTo(NULL),
     __callsignTip(0) {
   // vatsim sometimes skips the 0 on the beginning
   if (squawk.length() == 3)
-    squawk = "0" + squawk;
+    squawk.prepend("0");
 
   if (!route.origin.isEmpty()) {
     ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(route.origin);

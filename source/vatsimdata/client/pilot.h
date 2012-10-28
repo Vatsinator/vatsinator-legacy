@@ -79,6 +79,11 @@ public:
   QString   remarks;
 
   unsigned  heading;
+  
+  struct {
+    QString ihg;
+    QString mb;
+  } pressure;
 
   Status    flightStatus;
 
