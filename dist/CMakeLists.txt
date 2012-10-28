@@ -23,7 +23,7 @@ if (LINUX)
   
   add_custom_command (OUTPUT ${DESKTOP_ENTRY}
       COMMAND touch ${DESKTOP_ENTRY}
-      COMMAND sh ${DESKTOP_SH_FILE} ${vatsinator_VERSION} ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
+      COMMAND sh ${DESKTOP_SH_FILE} ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
       DEPENDS ${DESKTOP_SH_FILE}
       COMMENT "Generating desktop entry file"
   )
