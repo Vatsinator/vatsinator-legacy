@@ -79,8 +79,7 @@ for (QString & temp: tempList) {
       continue;
 
     if (temp.startsWith("metar0=")) {
-      __metarURL = temp.mid(7);
-      __metarURL = __metarURL.simplified();
+      __metarURL = temp.mid(7).simplified();
       continue;
     }
 

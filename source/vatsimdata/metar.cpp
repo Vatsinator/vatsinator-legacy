@@ -34,5 +34,3 @@ Metar::setMetar(const QString& _m) {
   __metar = _m;
   __lastFetchedTime = QDateTime::currentDateTimeUtc();
 }
-
-

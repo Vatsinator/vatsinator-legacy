@@ -35,7 +35,7 @@
 #include <OpenGL/glext.h>
 #endif
 
-#ifndef Q_OS_DARWIN // apple's impelementation already knows these extensions
+#ifndef Q_WS_MAC // apple's impelementation already knows these extensions
 using std::string;
 
 typedef ptrdiff_t GLsizeiptr;
@@ -53,9 +53,9 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
 template < typename T >
 inline T getProcAddress(const string& _procName) {
   T temp = NULL;
-#if defined Q_OS_LINUX
+#if defined Q_WS_X11
   temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
-#elif defined Q_OS_WIN32
+#elif defined Q_WS_WIN
   temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
 #endif
 
@@ -80,5 +80,5 @@ initGLExtensionsPointers() {
   glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
 }
 
-#endif // Q_OS_DARWIN
+#endif // Q_WS_MAC
 
