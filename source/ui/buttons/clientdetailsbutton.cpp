@@ -23,7 +23,9 @@
 #include "clientdetailsbutton.h"
 #include "defines.h"
 
-ClientDetailsButton::ClientDetailsButton(const Client* _client, const QString& _text, QWidget* _parent) :
+ClientDetailsButton::ClientDetailsButton(const Client* _client,
+                                         const QString& _text,
+                                         QWidget* _parent) :
     QPushButton(_text, _parent),
     __current(_client) {
   connect(this, SIGNAL(clicked()),

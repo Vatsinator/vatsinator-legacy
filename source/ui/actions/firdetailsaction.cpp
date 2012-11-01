@@ -20,7 +20,9 @@
 #include "firdetailsaction.h"
 #include "defines.h"
 
-FirDetailsAction::FirDetailsAction(const Fir* _f, const QString& _label, QObject* _parent) :
+FirDetailsAction::FirDetailsAction(const Fir* _f,
+                                   const QString& _label,
+                                   QObject* _parent) :
     QAction(_label, _parent),
     __current(_f) {
   connect(this, SIGNAL(triggered()),

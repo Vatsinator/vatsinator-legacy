@@ -1320,7 +1320,7 @@ MapWidget::__producePilotToolTip(const Pilot* _p) {
         _p->route.destination)) %
     "</nobr><br>" %
     tr("Ground speed:") % " " % QString::number(_p->groundSpeed) %
-    " " % tr("kts") % "<br>" % tr("Altitude: ") %
+    " " % tr("kts") % "<br>" % tr("Altitude:") % " " %
     QString::number(_p->altitude) % " " % tr("ft") % "</center>";
 }
 

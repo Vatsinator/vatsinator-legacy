@@ -38,6 +38,28 @@ HttpHandler::fetchData(const QString& _url) {
 }
 
 void
+HttpHandler::__startRequest() {
+  if (!__urls.isEmpty())
+    __reply = __nam.get(QNetworkRequest(__urls.dequeue()));
+  else
+    return;
+
+  connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
+  connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
+  connect(__reply, SIGNAL(error(QNetworkReply::NetworkError)),
+          this,    SLOT(__onError(QNetworkReply::NetworkError)));
+
+  if (__progressBar)
+    connect(__reply, SIGNAL(downloadProgress(qint64, qint64)),
+            this,    SLOT(__updateProgress(qint64, qint64)));
+
+  __temp.clear();
+
+  if (__progressBar)
+    __progressBar->setEnabled(true);
+}
+
+void
 HttpHandler::__readyRead() {
   __temp.append(__reply->readAll());
 }
@@ -65,7 +87,6 @@ HttpHandler::__finished() {
     if (anyTasksLeft())
       __startRequest();
 }
-
 
 void
 HttpHandler::__updateProgress(qint64 _bRead, qint64 _bTotal) {
@@ -95,26 +116,3 @@ HttpHandler::__onError(QNetworkReply::NetworkError) {
   if (!__urls.isEmpty())
     __startRequest();
 }
-
-void
-HttpHandler::__startRequest() {
-  if (!__urls.isEmpty())
-    __reply = __nam.get(QNetworkRequest(__urls.dequeue()));
-  else
-    return;
-
-  connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
-  connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
-  connect(__reply, SIGNAL(error(QNetworkReply::NetworkError)),
-          this,    SLOT(__onError(QNetworkReply::NetworkError)));
-
-  if (__progressBar)
-    connect(__reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this,    SLOT(__updateProgress(qint64, qint64)));
-
-  __temp.clear();
-
-  if (__progressBar)
-    __progressBar->setEnabled(true);
-}
-

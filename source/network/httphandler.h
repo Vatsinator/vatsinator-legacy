@@ -28,6 +28,10 @@
 #include <QUrl>
 
 class HttpHandler : public QObject {
+  
+  /*
+   * Handles http queries. Receives plain text.
+   */
 
   Q_OBJECT
 
@@ -39,16 +43,6 @@ public:
   
   inline bool
   anyTasksLeft() const { return !__urls.isEmpty(); }
-
-signals:
-  void finished(const QString&);
-  void fetchError();
-
-private slots:
-  void __readyRead();
-  void __finished();
-  void __updateProgress(qint64, qint64);
-  void __onError(QNetworkReply::NetworkError);
 
 private:
   void  __startRequest();
@@ -63,6 +57,16 @@ private:
   QNetworkAccessManager __nam;
 
   QNetworkReply*  __reply;
+  
+private slots:
+  void __readyRead();
+  void __finished();
+  void __updateProgress(qint64, qint64);
+  void __onError(QNetworkReply::NetworkError);
+
+signals:
+  void finished(const QString&);
+  void fetchError();
 
 };
 

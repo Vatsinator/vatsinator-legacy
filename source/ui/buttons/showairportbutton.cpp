@@ -32,7 +32,10 @@ ShowAirportButton::ShowAirportButton(QWidget* _parent) :
           AirportDetailsWindow::getSingletonPtr(),  SLOT(show(const Airport*)));
 }
 
-ShowAirportButton::ShowAirportButton(const Airport* _ap, const QString& _text, bool _autoconnect, QWidget* _parent) :
+ShowAirportButton::ShowAirportButton(const Airport* _ap,
+                                     const QString& _text,
+                                     bool _autoconnect,
+                                     QWidget* _parent) :
     QPushButton(_text, _parent),
     __current(_ap) {
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));

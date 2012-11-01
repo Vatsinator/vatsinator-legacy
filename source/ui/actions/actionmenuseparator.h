@@ -23,6 +23,10 @@
 #include <QAction>
 
 class ActionMenuSeparator : public QAction {
+  
+  /*
+   * This is the disabled menu action that represents the section title.
+   */
 
   Q_OBJECT
 

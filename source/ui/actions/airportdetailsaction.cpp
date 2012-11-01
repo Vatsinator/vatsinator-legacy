@@ -20,7 +20,9 @@
 #include "airportdetailsaction.h"
 #include "defines.h"
 
-AirportDetailsAction::AirportDetailsAction(const Airport* _ap, const QString& _label, QObject* _parent) :
+AirportDetailsAction::AirportDetailsAction(const Airport* _ap,
+                                           const QString& _label,
+                                           QObject* _parent) :
     QAction(_label, _parent),
     __current(_ap) {
   connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));

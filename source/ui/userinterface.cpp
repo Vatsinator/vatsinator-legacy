@@ -57,26 +57,26 @@ UserInterface::UserInterface(QWidget* _parent) :
   setWindowPosition(this);
   __restoreWindowGeometry();
 
-  connect(ActionExit,                                   SIGNAL(triggered()),
-          this,                                         SLOT(quit()));
-  connect(ActionAbout,                                  SIGNAL(triggered()),
-          __aboutWindow,                                SLOT(show()));
-  connect(ActionMetar,                                  SIGNAL(triggered()),
-          __metarsWindow,                               SLOT(show()));
-  connect(ActionRefresh,                                SIGNAL(triggered()),
-          VatsinatorApplication::getSingletonPtr(),     SLOT(refreshData()));
-  connect(ActionPreferences,                            SIGNAL(triggered()),
-          __settingsWindow,                             SLOT(show()));
-  connect(ActionFlightList,                             SIGNAL(triggered()),
-          __flightsListWindow,                          SLOT(show()));
-  connect(ActionATCList,                                SIGNAL(triggered()),
-          __atcListWindow,                              SLOT(show()));
-  connect(EnableAutoUpdatesAction,                      SIGNAL(toggled(bool)),
-          this,                                         SIGNAL(autoUpdatesEnabled(bool)));
-  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(dataDownloading()),
-          this,                                         SLOT(__dataDownloading()));
-  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(dataUpdated()),
-          this,                                         SLOT(__dataUpdated()));
+  connect(ActionExit,                               SIGNAL(triggered()),
+          this,                                     SLOT(quit()));
+  connect(ActionAbout,                              SIGNAL(triggered()),
+          __aboutWindow,                            SLOT(show()));
+  connect(ActionMetar,                              SIGNAL(triggered()),
+          __metarsWindow,                           SLOT(show()));
+  connect(ActionRefresh,                            SIGNAL(triggered()),
+          VatsinatorApplication::getSingletonPtr(), SLOT(refreshData()));
+  connect(ActionPreferences,                        SIGNAL(triggered()),
+          __settingsWindow,                         SLOT(show()));
+  connect(ActionFlightList,                         SIGNAL(triggered()),
+          __flightsListWindow,                      SLOT(show()));
+  connect(ActionATCList,                            SIGNAL(triggered()),
+          __atcListWindow,                          SLOT(show()));
+  connect(EnableAutoUpdatesAction,                  SIGNAL(toggled(bool)),
+          this,                                     SIGNAL(autoUpdatesEnabled(bool)));
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
+          this,                                     SLOT(__dataDownloading()));
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
+          this,                                     SLOT(__dataUpdated()));
 
   statusBarUpdate();
 }
@@ -107,9 +107,9 @@ UserInterface::statusBarUpdate(const QString& _message) {
       __statusBox->setText(tr("Last update:") % " " % tr("never"));
     else
       __statusBox->setText(tr("Last update:") % " " %
-                       VatsimDataHandler::getSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
-                       tr(" UTC")
-                      );
+          VatsimDataHandler::getSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
+          " " % tr("UTC")
+        );
   } else {
     __statusBox->setText(_message);
   }

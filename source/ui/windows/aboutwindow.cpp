@@ -36,7 +36,10 @@ AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
   LicenseField->setHtml("<pre>" + trUtf8(LICENSE_TEXT) + "</pre>");
   VersionLabel->setText(tr("Version") + " " + VATSINATOR_VERSION);
-  AirportsInDatabaseLabel->setText(QString::number(AirportDatabase::getSingleton().getAirports().size()));
-  FirsInDatabaseLabel->setText(QString::number(FirDatabase::getSingleton().getFirs().size()));
+  
+  AirportsInDatabaseLabel->setText(
+    QString::number(AirportDatabase::getSingleton().getAirports().size()));
+  FirsInDatabaseLabel->setText(
+    QString::number(FirDatabase::getSingleton().getFirs().size()));
 }
 
