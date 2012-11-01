@@ -20,15 +20,14 @@
 #ifndef CLICKABLE_H
 #define CLICKABLE_H
 
-enum ObjectType {
-  PLANE, AIRPORT, FIR, UIR
-};
-
 class Clickable {
 
 public:
+  enum Type {
+    PLANE, AIRPORT, FIR, UIR
+  };
 
-  virtual ObjectType objectType() const = 0;
+  virtual Clickable::Type objectType() const = 0;
 
   virtual ~Clickable() {}
 

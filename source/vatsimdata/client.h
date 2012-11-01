@@ -24,11 +24,6 @@
 #include <QString>
 #include <QStringList>
 
-// types
-enum ClientType {
-  PILOT, ATC
-};
-
 class Client {
 
   /*
@@ -37,6 +32,11 @@ class Client {
    */
 
 public:
+  // types
+  enum Type {
+    PILOT, ATC
+  };
+  
   /**
    * Prevent from creating foo-clients.
    */
@@ -52,7 +52,7 @@ public:
   /**
    * Client can be pilot or ATC.
    */
-  virtual ClientType type() const = 0;
+  virtual inline Client::Type clientType() const = 0;
 
   virtual ~Client() {}
 

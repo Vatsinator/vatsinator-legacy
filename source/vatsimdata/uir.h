@@ -36,7 +36,8 @@ public:
    */
   Uir(const QString&);
 
-  ObjectType objectType() const { return UIR; }
+  inline Clickable::Type
+  objectType() const { return Clickable::UIR; }
 
   void addFir(Fir*);
 

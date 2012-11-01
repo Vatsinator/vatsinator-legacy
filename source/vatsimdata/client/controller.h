@@ -38,7 +38,8 @@ class Controller : public Client {
 public:
   Controller(const QStringList&);
   
-  ClientType type() const { return ATC; }
+  inline Client::Type
+  clientType() const { return Client::ATC; }
   
   
   

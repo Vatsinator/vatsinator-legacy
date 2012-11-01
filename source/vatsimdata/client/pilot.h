@@ -60,8 +60,11 @@ public:
   inline void
   drawLines() const { drawLineFrom(); drawLineTo(); }
 
-  ClientType type() const { return PILOT; }
-  ObjectType objectType() const { return PLANE; }
+  inline Client::Type
+  clientType() const { return Client::PILOT; }
+  
+  inline Clickable::Type
+  objectType() const { return Clickable::PLANE; }
 
   inline GLuint
   getCallsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }

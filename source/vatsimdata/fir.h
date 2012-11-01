@@ -45,7 +45,8 @@ public:
   Fir();
   virtual ~Fir();
 
-  ObjectType objectType() const { return FIR; }
+  inline Clickable::Type
+  objectType() const { return Clickable::FIR; }
 
   void addStaff(const Controller*);
   void addUirStaff(const Controller*);

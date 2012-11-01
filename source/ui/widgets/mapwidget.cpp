@@ -466,16 +466,16 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 
   if ((_event->buttons() & Qt::RightButton) && __underMouse) {
     switch (__underMouse->objectType()) {
-      case PLANE:
+      case Clickable::PLANE:
         emit contextMenuRequested(static_cast< const Pilot* >(__underMouse));
         break;
-      case AIRPORT:
+      case Clickable::AIRPORT:
         emit contextMenuRequested(static_cast< const Airport* >(__underMouse));
         break;
-      case FIR:
+      case Clickable::FIR:
         emit contextMenuRequested(static_cast< const Fir* >(__underMouse));
         break;
-      case UIR:
+      case Clickable::UIR:
         break;
     }
 
@@ -496,16 +496,16 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
 
     if (__recentlyClickedMousePos == __lastMousePos) {
       switch (__underMouse->objectType()) {
-        case PLANE:
+        case Clickable::PLANE:
           emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
           break;
-        case AIRPORT:
+        case Clickable::AIRPORT:
 	  emit airportDetailsWindowRequested(static_cast< const Airport* >(__underMouse));
           break;
-        case FIR:
+        case Clickable::FIR:
           emit firDetailsWindowRequested(static_cast< const Fir* >(__underMouse));
           break;
-        case UIR:
+        case Clickable::UIR:
           // have no idea what to do here
           break;
       }
@@ -1170,10 +1170,10 @@ MapWidget::__drawLines(double _moveX) {
   
   if (__underMouse) {
     switch (__underMouse->objectType()) {
-      case PILOT:
+      case Clickable::PLANE:
         static_cast< const Pilot* >(__underMouse)->drawLines();
         break;
-      case AIRPORT:
+      case Clickable::AIRPORT:
         static_cast< const Airport* >(__underMouse)->drawLines();
         break;
       default:
@@ -1199,16 +1199,16 @@ MapWidget::__drawToolTip() {
   QString text;
 
   switch (__underMouse->objectType()) {
-    case PILOT:
+    case Clickable::PLANE:
       text = __producePilotToolTip(static_cast< const Pilot* >(__underMouse));
       break;
-    case AIRPORT:
+    case Clickable::AIRPORT:
       text = __produceAirportToolTip(static_cast< const Airport* >(__underMouse));
       break;
-    case FIR:
+    case Clickable::FIR:
       text = __produceFirToolTip(static_cast< const Fir* >(__underMouse));
       break;
-    case UIR:
+    case Clickable::UIR:
       break;
   }
 

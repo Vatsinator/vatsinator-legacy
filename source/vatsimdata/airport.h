@@ -58,8 +58,8 @@ public:
   virtual inline const AirportRecord*
   getData() const { return __data; }
   
-  inline ObjectType
-  objectType() const { return AIRPORT; }
+  inline Clickable::Type
+  objectType() const { return Clickable::AIRPORT; }
   
   inline GLuint
   getLabelTip() const { return __labelTip ? __labelTip : __generateTip(); }
