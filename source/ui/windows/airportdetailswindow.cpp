@@ -148,6 +148,10 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
     connect(aa->getStaffModel(),  SIGNAL(sorted()),
             this,                 SLOT(__setATCTableButtons()));
     ATCTable->setModel(aa->getStaffModel());
+  } else {
+    InboundTable->setModel(VatsimDataHandler::emptyFlightTable);
+    OutboundTable->setModel(VatsimDataHandler::emptyFlightTable);
+    ATCTable->setModel(VatsimDataHandler::emptyControllerTable);
   }
   
   BookedATCTable->setModel(

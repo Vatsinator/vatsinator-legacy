@@ -198,6 +198,11 @@ public:
            );
   }
   
+  /* These pointers are used for empty views.
+   * Giving the NULL pointer in setModel() removes headers. */
+  static FlightTableModel* emptyFlightTable;
+  static ControllerTableModel* emptyControllerTable;
+  
 private:
   /**
    * These functions read data files.

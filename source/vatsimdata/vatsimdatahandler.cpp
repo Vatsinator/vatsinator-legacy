@@ -38,6 +38,9 @@
 #include "vatsimdatahandler.h"
 #include "defines.h"
 
+FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
+ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
+
 QMap< QString, QString > VatsimDataHandler::__dataFiles;
 bool VatsimDataHandler::__fileNamesInitialized = VatsimDataHandler::__initFileNames();
 
@@ -60,6 +63,9 @@ VatsimDataHandler::~VatsimDataHandler() {
 
   delete __atcs;
   delete __flights;
+  
+  delete VatsimDataHandler::emptyFlightTable;
+  delete VatsimDataHandler::emptyControllerTable;
 }
 
 void
