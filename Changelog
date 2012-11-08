@@ -3,6 +3,9 @@ Version 0.2
   
   Features:
     * Added "Altimeter" field in Flight Details Window
+  
+  Bugfies:
+    * Fixed non-updating flight & atc tables for inactive airports. (#1)
 
 Version 0.1
   Release date: 27.10.2012
