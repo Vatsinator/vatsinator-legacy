@@ -94,7 +94,7 @@ ColorButton::paintEvent(QPaintEvent*) {
 void
 ColorButton::__initStyleOptionButton(QStyleOptionButton* _btn) const {
   _btn->initFrom(this);
-  _btn->state = isDown() ? QStyle::State_Sunken : QStyle::State_Raised;
+  _btn->state |= isDown() ? QStyle::State_Sunken : QStyle::State_Raised;
   _btn->features = QStyleOptionButton::None;
   _btn->text.clear();
   _btn->icon = QIcon();
