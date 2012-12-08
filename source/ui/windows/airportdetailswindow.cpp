@@ -205,18 +205,18 @@ AirportDetailsWindow::__adjustTables() {
   InboundTable->hideColumn(FlightTableModel::To);
 
   InboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  InboundTable->setColumnWidth(FlightTableModel::From, 320);
+  InboundTable->setColumnWidth(FlightTableModel::From, 350);
   InboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
 
   OutboundTable->hideColumn(FlightTableModel::Name);
   OutboundTable->hideColumn(FlightTableModel::From);
 
   OutboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  OutboundTable->setColumnWidth(FlightTableModel::To, 320);
+  OutboundTable->setColumnWidth(FlightTableModel::To, 350);
   OutboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
 
   ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
-  ATCTable->setColumnWidth(ControllerTableModel::Name, 320);
+  ATCTable->setColumnWidth(ControllerTableModel::Name, 350);
   ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
   
   BookedATCTable->setColumnWidth(BookedAtcTableModel::Callsign, 150);
