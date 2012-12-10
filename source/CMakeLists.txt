@@ -4,11 +4,6 @@ set (vatsinator_TARGET
     vatsinator
 )
 
-if (WIN32)
-    set(vatsinator_TARGET
-        ${vatsinator_TARGET}.exe)
-endif (WIN32)
-
 set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )

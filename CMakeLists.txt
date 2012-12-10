@@ -27,12 +27,16 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)
 endif (UNIX AND NOT APPLE AND NOT MINGW)
 
-if (MINGW)
+if (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
     set (WIN32 1)
     
     # Cmake adds -rdynamic to compiler flags.
     # As mingw doesn't know rdynamic, we want to remove this.
     string (REPLACE "-rdynamic" "" CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS})
+endif (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
+
+if (MINGW)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 endif (MINGW)
 
 include(${QT_USE_FILE})
@@ -49,11 +53,6 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 # set CXX_FLAGS
 set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
 set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
-
-# set windres command
-if (MINGW AND NOT WINDRES_COMMAND)
-  set (WINDRES_COMMAND /usr/bin/i686-pc-mingw32-windres)
-endif (MINGW AND NOT WINDRES_COMMAND)
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -125,11 +124,7 @@ elseif (APPLE)
 
 # builds for win32
 elseif (WIN32)
-    
-    if (MINGW AND NOT MINGW_LIBS_PATH)
-        set (MINGW_LIBS_PATH ${CMAKE_CURRENT_BINARY_DIR})
-    endif (MINGW AND NOT MINGW_LIBS_PATH)
-    
+
     install (FILES
         ${QT_QTGUI_LIBRARY_RELEASE}
         ${QT_QTCORE_LIBRARY_RELEASE}
@@ -137,8 +132,8 @@ elseif (WIN32)
         ${QT_QTOPENGL_LIBRARY_RELEASE}
         ${QT_QTSVG_LIBRARY_RELEASE}
         ${QT_QTXML_LIBRARY_RELEASE}
-        ${MINGW_LIBS_PATH}/libgcc_s_dw2-1.dll
-        ${MINGW_LIBS_PATH}/mingwm10.dll
+        ${QT_LIBRARY_DIR}/libgcc_s_dw2-1.dll
+        ${QT_LIBRARY_DIR}/mingwm10.dll
         DESTINATION .
     )
     
