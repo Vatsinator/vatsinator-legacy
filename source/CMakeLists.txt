@@ -1,8 +1,10 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
+# exec file
 set (vatsinator_TARGET
     vatsinator
 )
+
 
 set (vatsinator_SRCS
     vatsinatorapplication.cpp
@@ -23,6 +25,7 @@ set (vatsinator_SUBDIRS
     vatsimdata
 )
 
+# We can't name it "debug" directory as it conflicts with cmake syntax
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     set (vatsinator_SUBDIRS
         vdebug
@@ -48,8 +51,8 @@ add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     ${vatsinator_TRANSLATIONS}
 )
 
+# Set PREFIX for defines.h and necessary libs
 if (LINUX)
-    # set -DPREFIX for defines.h
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
 
     set (vatsinator_LIBS
@@ -87,6 +90,7 @@ foreach (DIR ${vatsinator_SUBDIRS})
     )
 endforeach (DIR)
 
+
 if (APPLE)
     target_link_libraries (${vatsinator_TARGET}
         -Wl,-all_load ${vatsinator_SUBDIRS}
@@ -102,6 +106,7 @@ else (APPLE)
 endif (APPLE)
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
+
 
 if (LINUX)
     install (PROGRAMS

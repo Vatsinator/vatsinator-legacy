@@ -28,14 +28,16 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
 endif (UNIX AND NOT APPLE AND NOT MINGW)
 
 if (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
-    set (WIN32 1)
-    
     # Cmake adds -rdynamic to compiler flags.
     # As mingw doesn't know rdynamic, we want to remove this.
     string (REPLACE "-rdynamic" "" CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS})
 endif (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
 
 if (MINGW)
+    set (WIN32 1)
+
+    # In order not to include so many dlls to the package, we tell gcc to
+    # include static libgcc and libstdc++
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 endif (MINGW)
 
@@ -93,7 +95,10 @@ set (vatsinator_RESOURCES_DATA
 vatsinator_install (
     "${vatsinator_RESOURCES_DATA}" "/data")
 
+
+# Platform-specific actions
 if (LINUX)
+    # Install icons
     macro (install_icon SIZE)
         install (FILES resources/vatsinator-${SIZE}.png
             DESTINATION "share/icons/hicolor/${SIZE}x${SIZE}/apps"
@@ -107,24 +112,29 @@ if (LINUX)
         install_icon(${ICON})
     endforeach (ICON)
     
+    # This actually creates .deb
     include (Packaging-linux)
     
+    # This sets up the "debian" directory
     option (WITH_DEBIAN OFF)
     if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
         add_subdirectory (debian)
     endif (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
 
+    # Spec file
     option (WITH_RPM OFF)
     
     add_subdirectory (dist)
 
 elseif (APPLE)
     
+    # For bundle creation
     include (Packaging-darwin)
 
 # builds for win32
 elseif (WIN32)
 
+    # Include necessary libs
     install (FILES
         ${QT_QTGUI_LIBRARY_RELEASE}
         ${QT_QTCORE_LIBRARY_RELEASE}
@@ -137,12 +147,14 @@ elseif (WIN32)
         DESTINATION .
     )
     
+    # Awesome NSIS packaging
     include (Packaging-win32)
     
 endif (LINUX)
 
 add_subdirectory (source)
 
+# Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
