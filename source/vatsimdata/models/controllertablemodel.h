@@ -23,7 +23,7 @@
 #include <QAbstractTableModel>
 #include <QVector>
 
-class Controller;
+#include "vatsimdata/client/controller.h"
 
 class ControllerTableModel : public QAbstractTableModel {
 
@@ -35,6 +35,13 @@ class ControllerTableModel : public QAbstractTableModel {
   Q_OBJECT
 
 public:
+  enum Column {
+    Callsign  = 0,
+    Name      = 1,
+    Frequency = 2,
+    Button    = 3
+  };
+  
   explicit ControllerTableModel(QObject* = 0);
 
   void addStaff(const Controller*);
@@ -49,21 +56,12 @@ public:
 
   inline const QVector< const Controller* > &
   getStaff() const { return __staff; }
-
-  enum Column {
-    Callsign  = 0,
-    Name    = 1,
-    Frequency = 2,
-    Button    = 3
-  };
   
 signals:
   void sorted();
 
 private:
   QVector< const Controller* > __staff;
-
-
 
 };
 

@@ -48,8 +48,8 @@ UserInterface::UserInterface(QWidget* _parent) :
     __metarsWindow(new MetarsWindow()),
     __airportDetailsWindow(new AirportDetailsWindow()),
     __firDetailsWindow(new FirDetailsWindow()),
-    __atcDetailsWindow(new ATCDetailsWindow()),
-    __atcListWindow(new ATCListWindow()),
+    __atcDetailsWindow(new AtcDetailsWindow()),
+    __atcListWindow(new AtcListWindow()),
     __flightDetailsWindow(new FlightDetailsWindow()),
     __flightsListWindow(new FlightListWindow()),
     __settingsWindow(new SettingsWindow()) {

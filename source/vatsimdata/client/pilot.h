@@ -28,16 +28,6 @@
 #include "vatsimdata/clickable.h"
 #include "vatsimdata/client.h"
 
-enum FlightRules {
-  IFR, VFR
-};
-
-enum Status {
-  DEPARTING,
-  AIRBORNE,
-  ARRIVED
-};
-
 class Pilot : public Client, public Clickable {
 
   /**
@@ -47,6 +37,31 @@ class Pilot : public Client, public Clickable {
    */
 
 public:
+  /* Types */
+  enum FlightRules {
+    IFR, VFR
+  };
+  
+  enum Status {
+    DEPARTING,
+    AIRBORNE,
+    ARRIVED
+  };
+  
+  struct Pressure {
+    QString ihg;
+    QString mb;
+  };
+  
+  struct Route {
+    QString origin;
+    QString destination;
+    QString route;
+    QString altitude;
+  };
+  
+  Pilot() = delete;
+  
   /**
    * @param list Data.
    * @param prefiled Indicates whether the flight is only prefiled.
@@ -65,43 +80,82 @@ public:
   
   inline Clickable::Type
   objectType() const { return Clickable::PLANE; }
+  
+  inline int
+  getAltitude() const { return __altitude; }
+  
+  inline int
+  getGroundSpeed() const { return __groundSpeed; }
+  
+  inline const QString &
+  getSquawk() const { return __squawk; }
+  
+  inline const QString &
+  getAircraft() const { return __aircraft; }
+  
+  inline int
+  getTas() const { return __tas; }
+  
+  inline const Pilot::FlightRules &
+  getFlightRules() const { return __flightRules; }
+  
+  inline const QString &
+  getRemarks() const { return __remarks; }
+  
+  inline unsigned
+  getHeading() const { return __heading; }
+  
+  inline Pilot::Status
+  getFlightStatus() const { return __flightStatus; }
+  
+  inline const Pilot::Pressure &
+  getPressure() const { return __pressure; }
+  
+  inline const Pilot::Route &
+  getRoute() const { return __route; }
+  
+  inline GLuint
+  getModelTexture() const { return __modelTexture; }
+  
+  inline bool
+  isPrefiledOnly() const { return __prefiledOnly; }
 
   inline GLuint
   getCallsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
-
-  int   altitude;
-  int   groundSpeed;
-  QString   squawk;
-
-  QString   aircraft;
-
-  int   tas;
-
-  FlightRules flightRules;
-
-  QString   remarks;
-
-  unsigned  heading;
   
-  struct {
-    QString ihg;
-    QString mb;
-  } pressure;
+protected:
+  int     __altitude;
+  int     __groundSpeed;
+  QString __squawk;
 
-  Status    flightStatus;
+  QString __aircraft;
 
-  struct {
-    QString origin;
-    QString destination;
-    QString route;
-    QString altitude;
-  } route;
+  /* True AirSpeed */
+  int     __tas;
 
-  GLuint  modelTexture;
+  /* IFR/VFR */
+  Pilot::FlightRules __flightRules;
 
-  bool prefiledOnly;
+  QString   __remarks;
+
+  unsigned  __heading;
+  
+  Pilot::Status   __flightStatus;
+  
+  Pilot::Pressure __pressure;
+
+  Pilot::Route    __route;
+
+  GLuint    __modelTexture;
+
+  bool      __prefiledOnly;
 
 private:
+  /**
+   * Adds origin/destination airports to the vectors.
+   */
+  void __updateAirports();
+  
   /**
    * Checks whether pilot is departing, airborn or has just arrived.
    */

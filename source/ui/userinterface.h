@@ -30,8 +30,8 @@ class DebugWindow;
 
 class AboutWindow;
 class AirportDetailsWindow;
-class ATCDetailsWindow;
-class ATCListWindow;
+class AtcDetailsWindow;
+class AtcListWindow;
 class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightListWindow;
@@ -119,8 +119,8 @@ private:
   MetarsWindow*         __metarsWindow;
   AirportDetailsWindow* __airportDetailsWindow;
   FirDetailsWindow*     __firDetailsWindow;
-  ATCDetailsWindow*     __atcDetailsWindow;
-  ATCListWindow*        __atcListWindow;
+  AtcDetailsWindow*     __atcDetailsWindow;
+  AtcListWindow*        __atcListWindow;
   FlightDetailsWindow*  __flightDetailsWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;

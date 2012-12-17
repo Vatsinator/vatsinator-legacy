@@ -23,7 +23,7 @@
 #include "uir.h"
 #include "defines.h"
 
-Uir::Uir(const QString& _icao) : icao(_icao) {}
+Uir::Uir(const QString& _icao) : __icao(_icao) {}
 
 void
 Uir::addFir(Fir* _f) {

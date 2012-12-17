@@ -32,7 +32,7 @@
 #include "atcdetailswindow.h"
 #include "defines.h"
 
-ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
+AtcDetailsWindow::AtcDetailsWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
@@ -43,33 +43,33 @@ ATCDetailsWindow::ATCDetailsWindow(QWidget* _parent) :
 }
 
 void
-ATCDetailsWindow::show(const Client* _client) {
+AtcDetailsWindow::show(const Client* _client) {
   Q_ASSERT(dynamic_cast< const Controller* >(_client));
   __current = dynamic_cast< const Controller* >(_client);
-  __currentCallsign = __current->callsign;
+  __currentCallsign = __current->getCallsign();
 
-  setWindowTitle(QString(__current->callsign + " - " + tr("ATC details")));
+  setWindowTitle(QString(__current->getCallsign() + " - " + tr("ATC details")));
 
-  CallsignLabel->setText(__current->callsign);
-  FacilityLabel->setText(__current->description);
-  NameLabel->setText(__current->realName + " (" + QString::number(__current->pid) + ")");
-  FrequencyLabel->setText(__current->frequency);
-  RatingLabel->setText(Controller::ratings[__current->rating]);
+  CallsignLabel->setText(__current->getCallsign());
+  FacilityLabel->setText(__current->getDescription());
+  NameLabel->setText(__current->getRealName() + " (" + QString::number(__current->getPid()) + ")");
+  FrequencyLabel->setText(__current->getFrequency());
+  RatingLabel->setText(Controller::ratings[__current->getRating()]);
 
-  if (__current->airport)
-    AirportLabel->setText(static_cast< QString >(__current->airport->icao) %
+  if (__current->getAirport())
+    AirportLabel->setText(static_cast< QString >(__current->getAirport()->icao) %
                           " " %
-                          QString::fromUtf8(__current->airport->name) %
+                          QString::fromUtf8(__current->getAirport()->name) %
                           ", " %
-                          QString::fromUtf8(__current->airport->city)
+                          QString::fromUtf8(__current->getAirport()->city)
                          );
   else
     AirportLabel->setText(tr("N/A"));
 
-  ServerLabel->setText(__current->server);
-  TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
+  ServerLabel->setText(__current->getServer());
+  TimeOnlineLabel->setText(__current->getOnlineFrom().toString("dd MMM yyyy, hh:mm"));
 
-  AtisMessageField->setPlainText(__current->atis);
+  AtisMessageField->setPlainText(__current->getAtis());
 
   if (!isVisible())
     QWidget::show();
@@ -78,7 +78,7 @@ ATCDetailsWindow::show(const Client* _client) {
 }
 
 void
-ATCDetailsWindow::__updateData() {
+AtcDetailsWindow::__updateData() {
   __current = VatsimDataHandler::getSingleton().findATC(__currentCallsign);
   
   if (!__current) {
@@ -88,7 +88,7 @@ ATCDetailsWindow::__updateData() {
 }
 
 void
-ATCDetailsWindow::__handleShowClicked() {
+AtcDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
   MapWidget::getSingleton().showClient(__current);
 }

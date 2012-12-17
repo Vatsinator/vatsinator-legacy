@@ -63,10 +63,10 @@
  * 40 QNH_Mb
  */
 Client::Client(const QStringList& _data) :
-    pid(_data[1].toUInt()),
-    callsign(_data[0]),
-    realName(_data[2].simplified()),
-    server(_data[14]),
-    onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
-    position({_data[5].toFloat(), _data[6].toFloat()}) {}
+    __pid(_data[1].toUInt()),
+    __callsign(_data[0]),
+    __realName(_data[2].simplified()),
+    __server(_data[14]),
+    __onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
+    __position({_data[5].toFloat(), _data[6].toFloat()}) {}
 

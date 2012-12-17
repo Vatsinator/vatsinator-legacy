@@ -37,6 +37,11 @@ public:
     PILOT, ATC
   };
   
+  struct Position {
+    float latitude;
+    float longitude;
+  };
+  
   /**
    * Prevent from creating foo-clients.
    */
@@ -56,19 +61,34 @@ public:
 
   virtual ~Client() {}
 
+  inline unsigned
+  getPid() const { return __pid; }
   
+  inline const QString &
+  getCallsign() const { return __callsign; }
+  
+  inline const QString &
+  getRealName() const { return __realName; }
+  
+  inline const QString &
+  getServer() const { return __server; }
+  
+  inline const QDateTime &
+  getOnlineFrom() const { return __onlineFrom; }
+  
+  inline const Client::Position &
+  getPosition() const { return __position; }
+  
+protected:
   /* Client data */
-  unsigned  pid;
-  QString   callsign;
-  QString   realName;
+  unsigned  __pid;
+  QString   __callsign;
+  QString   __realName;
 
-  QString   server;
-  QDateTime onlineFrom;
+  QString   __server;
+  QDateTime __onlineFrom;
 
-  struct {
-    float latitude;
-    float longitude;
-  } position;
+  Client::Position __position;
 
 };
 

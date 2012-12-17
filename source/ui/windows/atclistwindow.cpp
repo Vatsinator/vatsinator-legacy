@@ -31,7 +31,7 @@
 #include "atclistwindow.h"
 #include "defines.h"
 
-ATCListWindow::ATCListWindow(QWidget* _parent) :
+AtcListWindow::AtcListWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
@@ -44,13 +44,13 @@ ATCListWindow::ATCListWindow(QWidget* _parent) :
 }
 
 void
-ATCListWindow::resizeEvent(QResizeEvent* _event) {
+AtcListWindow::resizeEvent(QResizeEvent* _event) {
   QWidget::resizeEvent(_event);
   __setColumnsWidths();
 }
 
 void
-ATCListWindow::__setColumnsWidths() {
+AtcListWindow::__setColumnsWidths() {
   const int CALLSIGN_SIZE = 100;
   const int FREQUENCY_SIZE = 120;
   const int SCROLLBAR_SIZE = 30;
@@ -62,10 +62,10 @@ ATCListWindow::__setColumnsWidths() {
 }
 
 void
-ATCListWindow::__handleDoubleClicked(const QModelIndex& _index) {
+AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 
-  ATCDetailsWindow::getSingleton().show(
+  AtcDetailsWindow::getSingleton().show(
     (qobject_cast< const ControllerTableModel* >(_index.model()))->getStaff()[_index.row()]
   );
 }

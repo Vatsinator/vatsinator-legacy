@@ -26,15 +26,15 @@
 class Client;
 class Controller;
 
-class ATCDetailsWindow :
+class AtcDetailsWindow :
     public QWidget,
-    public Singleton< ATCDetailsWindow >,
+    public Singleton< AtcDetailsWindow >,
     private Ui::ATCDetailsWindow {
 
   Q_OBJECT
 
 public:
-  ATCDetailsWindow(QWidget* = 0);
+  AtcDetailsWindow(QWidget* = 0);
 
 public slots:
   void show(const Client*);

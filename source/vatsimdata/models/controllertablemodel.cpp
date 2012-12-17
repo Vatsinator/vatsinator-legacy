@@ -17,9 +17,6 @@
 */
 
 #include <QtGui>
-#include <algorithm>
-
-#include "vatsimdata/client/controller.h"
 
 #include "controllertablemodel.h"
 #include "defines.h"
@@ -44,7 +41,7 @@ ControllerTableModel::clear() {
 const Controller *
 ControllerTableModel::findATCByCallsign(const QString& _callsign) const {
   for (const Controller* c: __staff)
-    if (c->callsign == _callsign)
+    if (c->getCallsign() == _callsign)
       return c;
   
   return NULL;
@@ -74,16 +71,16 @@ ControllerTableModel::data(const QModelIndex& _index, int _role) const {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ToolTipRole:
-      return Controller::ratings[__staff[_index.row()]->rating];
+      return Controller::ratings[__staff[_index.row()]->getRating()];
     case Qt::DisplayRole:
 
       switch (_index.column()) {
         case Callsign:
-          return __staff[_index.row()]->callsign;
+          return __staff[_index.row()]->getCallsign();
         case Name:
-          return __staff[_index.row()]->realName;
+          return __staff[_index.row()]->getRealName();
         case Frequency:
-          return __staff[_index.row()]->frequency;
+          return __staff[_index.row()]->getFrequency();
         default:
           return QVariant();
       }
@@ -114,16 +111,31 @@ void
 ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
   beginResetModel();
 
-  if (_column == Callsign) {
-    auto comparator = [_order](const Controller * _a, const Controller * _b) -> bool {
-      return _order == Qt::AscendingOrder ? _a->callsign < _b->callsign : _a->callsign > _b->callsign;
-    };
-    std::sort(__staff.begin(), __staff.end(), comparator);
-  } else if (_column == Name) {
-    auto comparator = [_order](const Controller * _a, const Controller * _b) -> bool {
-      return _order == Qt::AscendingOrder ? _a->realName < _b->realName : _a->realName > _b->realName;
-    };
-    std::sort(__staff.begin(), __staff.end(), comparator);
+  switch (_column) {
+    case Callsign:
+      qSort(__staff.begin(), __staff.end(),
+            _order == Qt::AscendingOrder ?
+              [](const Controller* _a, const Controller* _b) -> bool {
+                return _a->getCallsign() < _b->getCallsign();
+              } :
+              [](const Controller* _a, const Controller* _b) -> bool {
+                return _a->getCallsign() > _b->getCallsign();
+              }
+      );
+      
+      break;
+    case Name:
+      qSort(__staff.begin(), __staff.end(),
+            _order == Qt::AscendingOrder ?
+              [](const Controller* _a, const Controller* _b) -> bool {
+                return _a->getRealName() < _b->getRealName();
+              } :
+              [](const Controller* _a, const Controller* _b) -> bool {
+                return _a->getRealName() > _b->getRealName();
+              }
+      );
+      
+      break;
   }
 
   endResetModel();
