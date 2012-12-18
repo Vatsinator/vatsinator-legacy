@@ -28,6 +28,8 @@
 #include "vatsimdata/clickable.h"
 #include "vatsimdata/client.h"
 
+struct Point;
+
 enum FlightRules {
   IFR, VFR
 };
@@ -43,7 +45,6 @@ class Pilot : public Client, public Clickable {
   /**
    * This class contains info about one particular pilot - his
    * flight plan, actual position, plane, etc etc.
-   * TODO: Flight plan parsing (starting by NATs, may even include the AIRAC later).
    */
 
 public:
@@ -116,11 +117,24 @@ private:
    * Generates the callsign label.
    */
   GLuint __generateTip() const;
+  
+  /**
+   * Parses the NATs.
+   * TODO: Include AIRAC, parse every route, not only NATs.
+   */
+  void __parseRoute();
 
-  GLfloat* __lineFrom;
-  GLfloat* __lineTo;
+//   GLfloat* __lineFrom;
+//   GLfloat* __lineTo;
+//   
+  
+  QVector< GLfloat > __lineFrom;
+  QVector< GLfloat > __lineTo;
 
   mutable GLuint __callsignTip;
+  
+  /* Vector of coordinates */
+  QVector< Point > __routePoints;
 
 };
 
