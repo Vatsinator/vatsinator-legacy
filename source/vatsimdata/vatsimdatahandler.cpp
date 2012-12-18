@@ -149,7 +149,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
       if (clientData[3] == "ATC") {
         Controller* atc = new Controller(clientData);
 
-        if (atc->isOK) {
+        if (atc->isOk()) {
           __atcs->addStaff(atc);
         } else {
           __observers += 1;
@@ -157,7 +157,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         }
       } else if (clientData[3] == "PILOT") {
         Pilot* pilot = new Pilot(clientData);
-        if (pilot->position.latitude == 0 && pilot->position.longitude == 0)
+        if (pilot->getPosition().latitude == 0 && pilot->getPosition().longitude == 0)
           delete pilot; // skip unknown flights
         else
           __flights->addFlight(pilot);
@@ -199,7 +199,7 @@ VatsimDataHandler::findATC(const QString& _callsign) const {
 Uir *
 VatsimDataHandler::findUIR(const QString& _icao) {
 for (Uir * u: __uirs)
-    if (u->icao == _icao)
+    if (u->getIcao() == _icao)
       return u;
 
   return NULL;
@@ -421,7 +421,7 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
         else
           VatsinatorApplication::log("FIR %s could not be found!", data[i].toStdString().c_str());
       } else {
-        uir->name.append(data[i] + " ");
+        uir->getName().append(data[i] + " ");
       }
     }
     

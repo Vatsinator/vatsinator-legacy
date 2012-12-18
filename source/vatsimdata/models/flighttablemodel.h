@@ -23,7 +23,7 @@
 #include <QAbstractTableModel>
 #include <QVector>
 
-class Pilot;
+#include "vatsimdata/client/pilot.h"
 
 class FlightTableModel : public QAbstractTableModel {
 
@@ -35,6 +35,17 @@ class FlightTableModel : public QAbstractTableModel {
   Q_OBJECT
 
 public:
+  
+  /* Columns numbers */
+  enum Column {
+    Callsign  = 0,
+    Name    = 1,
+    From    = 2,
+    To    = 3,
+    Aircraft  = 4,
+    Button    = 5
+  };
+  
   explicit FlightTableModel(QObject* = 0);
 
   void addFlight(const Pilot*);
@@ -49,16 +60,6 @@ public:
 
   inline const QVector< const Pilot* > &
   getFlights() const { return __flights; }
-
-  /* Columns numbers */
-  enum Column {
-    Callsign  = 0,
-    Name    = 1,
-    From    = 2,
-    To    = 3,
-    Aircraft  = 4,
-    Button    = 5
-  };
   
 signals:
   void sorted();

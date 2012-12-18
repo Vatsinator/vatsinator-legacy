@@ -54,49 +54,49 @@ void
 FlightDetailsWindow::show(const Client* _client) {
   Q_ASSERT(dynamic_cast< const Pilot* >(_client));
   __current = dynamic_cast< const Pilot* >(_client);
-  __currentCallsign = __current->callsign;
+  __currentCallsign = __current->getCallsign();
 
-  if (__current->prefiledOnly)
+  if (__current->isPrefiledOnly())
     return;
 
-  setWindowTitle(QString(__current->callsign + " - " + tr("flight details")));
+  setWindowTitle(QString(__current->getCallsign() + " - " + tr("flight details")));
 
-  CallsignLabel->setText(__current->callsign);
-  RouteLabel->setText(__current->route.origin + " -> " + __current->route.destination);
+  CallsignLabel->setText(__current->getCallsign());
+  RouteLabel->setText(__current->getRoute().origin + " -> " + __current->getRoute().destination);
 
-  PilotLabel->setText(__current->realName + " (" + QString::number(__current->pid) + ")");
-  AltitudeLabel->setText(QString::number(__current->altitude) + " " + tr("feet"));
-  GroundSpeedLabel->setText(QString::number(__current->groundSpeed) + " " + tr("kts"));
-  HeadingLabel->setText(QString::number(__current->heading));
+  PilotLabel->setText(__current->getRealName() + " (" + QString::number(__current->getPid()) + ")");
+  AltitudeLabel->setText(QString::number(__current->getAltitude()) + " " + tr("feet"));
+  GroundSpeedLabel->setText(QString::number(__current->getGroundSpeed()) + " " + tr("kts"));
+  HeadingLabel->setText(QString::number(__current->getHeading()));
 
-  if (__current->flightStatus == AIRBORNE)
+  if (__current->getFlightStatus() == Pilot::AIRBORNE)
     CurrentStatusLabel->setText(tr("airborne"));
-  else if (__current->flightStatus == DEPARTING)
+  else if (__current->getFlightStatus() == Pilot::DEPARTING)
     CurrentStatusLabel->setText(tr("departing"));
   else
     CurrentStatusLabel->setText(tr("arrived"));
 
-  ServerLabel->setText(__current->server);
-  TimeOnlineLabel->setText(__current->onlineFrom.toString("dd MMM yyyy, hh:mm"));
-  SquawkLabel->setText(__current->squawk);
-  AltimeterLabel->setText(__current->pressure.mb % " / " % __current->pressure.ihg);
+  ServerLabel->setText(__current->getServer());
+  TimeOnlineLabel->setText(__current->getOnlineFrom().toString("dd MMM yyyy, hh:mm"));
+  SquawkLabel->setText(__current->getSquawk());
+  AltimeterLabel->setText(__current->getPressure().mb % " / " % __current->getPressure().ihg);
   
   VatawareLink->setText("<a href=\"http://www.vataware.com/pilot.cfm?cid=" %
-      QString::number(__current->pid) %
+      QString::number(__current->getPid()) %
       static_cast< QString >("\">") %
       tr("Vataware statistics for this pilot") %
       static_cast< QString >("</a>"));
 
-  FlightRulesLabel->setText((__current->flightRules == IFR) ? "IFR" : "VFR");
+  FlightRulesLabel->setText((__current->getFlightRules() == Pilot::IFR) ? "IFR" : "VFR");
 
   __updateToFromButtons();
 
-  AircraftLabel->setText(__current->aircraft);
-  TrueAirSpeedLabel->setText(QString::number(__current->tas) + " " + tr("kts"));
-  CruiseAltitude->setText(__current->route.altitude);
+  AircraftLabel->setText(__current->getAircraft());
+  TrueAirSpeedLabel->setText(QString::number(__current->getTas()) + " " + tr("kts"));
+  CruiseAltitude->setText(__current->getRoute().altitude);
 
-  RouteField->setPlainText(__current->route.route);
-  RemarksField->setPlainText(__current->remarks);
+  RouteField->setPlainText(__current->getRoute().route);
+  RemarksField->setPlainText(__current->getRemarks());
 
   if (FlightTracker::getSingleton().getTracked() == __current)
     TrackFlightBox->setCheckState(Qt::Checked);
@@ -116,9 +116,9 @@ FlightDetailsWindow::stateHandle(int _state) {
 
 void
 FlightDetailsWindow::__updateToFromButtons() {
-  if (!__current->route.origin.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().getActiveAirports()[__current->route.origin];
-    QString text = __current->route.origin;
+  if (!__current->getRoute().origin.isEmpty()) {
+    Airport* ap = VatsimDataHandler::getSingleton().getActiveAirports()[__current->getRoute().origin];
+    QString text = __current->getRoute().origin;
 
     if (ap->getData()) {
       text.append(static_cast< QString >(" ") %
@@ -140,9 +140,9 @@ FlightDetailsWindow::__updateToFromButtons() {
     OriginButton->setAirportPointer(NULL);
   }
 
-  if (!__current->route.destination.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().getActiveAirports()[__current->route.destination];
-    QString text = __current->route.destination;
+  if (!__current->getRoute().destination.isEmpty()) {
+    Airport* ap = VatsimDataHandler::getSingleton().getActiveAirports()[__current->getRoute().destination];
+    QString text = __current->getRoute().destination;
 
     if (ap->getData()) {
       text.append(static_cast< QString >(" ") %
@@ -169,7 +169,7 @@ void
 FlightDetailsWindow::__updateData() {
   __current = VatsimDataHandler::getSingleton().findPilot(__currentCallsign);
 
-  if (!__current || __current->prefiledOnly) {
+  if (!__current || __current->isPrefiledOnly()) {
     __currentCallsign = "";
     hide();
   } else {

@@ -23,15 +23,15 @@
 #include "ui/ui_atclistwindow.h"
 #include "singleton.h"
 
-class ATCListWindow :
+class AtcListWindow :
     public QWidget,
-    public Singleton< ATCListWindow >,
+    public Singleton< AtcListWindow >,
     private Ui::ATCListWindow {
 
   Q_OBJECT
 
 public:
-  ATCListWindow(QWidget* = 0);
+  AtcListWindow(QWidget* = 0);
 
 protected:
   void resizeEvent(QResizeEvent*);

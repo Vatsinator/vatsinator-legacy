@@ -82,55 +82,29 @@
  */
 Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     Client(_data),
-    altitude(_data[7].toInt()),
-    groundSpeed(_data[8].toInt()),
-    squawk(_data[17]),
-    aircraft(_data[9]),
-    tas(_data[10].toInt()),
-    flightRules(_data[21] == "I" ? IFR : VFR),
-    remarks(_data[29]),
-    heading(_data[38].toUInt()),
-    pressure({_data[39], _data[40]}),
-    route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
-    prefiledOnly(_prefiled),
+    __altitude(_data[7].toInt()),
+    __groundSpeed(_data[8].toInt()),
+    __squawk(_data[17]),
+    __aircraft(_data[9]),
+    __tas(_data[10].toInt()),
+    __flightRules(_data[21] == "I" ? IFR : VFR),
+    __remarks(_data[29]),
+    __heading(_data[38].toUInt()),
+    __pressure({_data[39], _data[40]}),
+    __route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
+    __prefiledOnly(_prefiled),
     __lineFrom(0),
     __lineTo(0),
     __callsignTip(0) {
   // vatsim sometimes skips the 0 on the beginning
-  if (squawk.length() == 3)
-    squawk.prepend("0");
+  if (__squawk.length() == 3)
+    __squawk.prepend("0");
 
-  if (!route.origin.isEmpty()) {
-    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(route.origin);
-    ap->addOutbound(this);
-
-    if (prefiledOnly && ap->getData()) {
-      position.latitude = ap->getData()->latitude;
-      position.longitude = ap->getData()->longitude;
-    }
-
-    if (ap->getFirs()[0])
-      ap->getFirs()[0]->addFlight(this);
-
-    if (ap->getFirs()[1])
-      ap->getFirs()[1]->addFlight(this);
-  }
-
-  if (!route.destination.isEmpty()) {
-    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(route.destination);
-    ap->addInbound(this);
-
-    if (ap->getFirs()[0])
-      ap->getFirs()[0]->addFlight(this);
-
-    if (ap->getFirs()[1])
-      ap->getFirs()[1]->addFlight(this);
-  }
-
+  __updateAirports();
   __setMyStatus();
   __generateLines();
 
-  modelTexture = ModelMatcher::getSingleton().matchMyModel(aircraft);
+  __modelTexture = ModelMatcher::getSingleton().matchMyModel(__aircraft);
 }
 
 Pilot::~Pilot() {
@@ -166,48 +140,76 @@ Pilot::drawLineTo() const {
   }
 }
 
+void Pilot::__updateAirports() {
+  if (!__route.origin.isEmpty()) {
+    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.origin);
+    ap->addOutbound(this);
+
+    if (__prefiledOnly && ap->getData()) {
+      __position.latitude = ap->getData()->latitude;
+      __position.longitude = ap->getData()->longitude;
+    }
+
+    if (ap->getFirs()[0])
+      ap->getFirs()[0]->addFlight(this);
+
+    if (ap->getFirs()[1])
+      ap->getFirs()[1]->addFlight(this);
+  }
+
+  if (!__route.destination.isEmpty()) {
+    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.destination);
+    ap->addInbound(this);
+
+    if (ap->getFirs()[0])
+      ap->getFirs()[0]->addFlight(this);
+
+    if (ap->getFirs()[1])
+      ap->getFirs()[1]->addFlight(this);
+  }
+}
+
 void
 Pilot::__setMyStatus() {
-  if (!route.origin.isEmpty() && !route.destination.isEmpty()) {
+  if (!__route.origin.isEmpty() && !__route.destination.isEmpty()) {
     const AirportRecord* ap_origin =
-      VatsimDataHandler::getSingleton().getActiveAirports()[route.origin]->getData();
+      VatsimDataHandler::getSingleton().getActiveAirports()[__route.origin]->getData();
     const AirportRecord* ap_arrival =
-      VatsimDataHandler::getSingleton().getActiveAirports()[route.destination]->getData();
+      VatsimDataHandler::getSingleton().getActiveAirports()[__route.destination]->getData();
 
     if ((ap_origin == ap_arrival) && (ap_origin != NULL)) // traffic pattern?
-      if (groundSpeed < 50) {
-        flightStatus = DEPARTING;
+      if (__groundSpeed < 50) {
+        __flightStatus = DEPARTING;
         return;
       }
 
     if (ap_origin)
       if ((VatsimDataHandler::calcDistance(ap_origin->longitude, ap_origin->latitude,
-                                           position.longitude, position.latitude) < PILOT_TO_AIRPORT) &&
-      (groundSpeed < 50)) {
-        flightStatus = DEPARTING;
+                                           __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
+      (__groundSpeed < 50)) {
+        __flightStatus = DEPARTING;
         return;
       }
 
     if (ap_arrival)
       if ((VatsimDataHandler::calcDistance(ap_arrival->longitude, ap_arrival->latitude,
-                                           position.longitude, position.latitude) < PILOT_TO_AIRPORT) &&
-      (groundSpeed < 50)) {
-        flightStatus = ARRIVED;
+                                           __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
+      (__groundSpeed < 50)) {
+        __flightStatus = ARRIVED;
         return;
       }
   } else { // no flight plan
-    if (groundSpeed > 50) {
-      flightStatus = AIRBORNE;
+    if (__groundSpeed > 50) {
+      __flightStatus = AIRBORNE;
       return;
     }
 
     const AirportRecord* closest = NULL;
-
     qreal distance = 0.0;
 
     for (const AirportRecord & ap: AirportDatabase::getSingleton().getAirports()) {
       qreal temp = VatsimDataHandler::calcDistance(ap.longitude, ap.latitude,
-                   position.longitude, position.latitude);
+                   __position.longitude, __position.latitude);
 
       if (((temp < distance) && closest) || !closest) {
         closest = &ap;
@@ -217,65 +219,65 @@ Pilot::__setMyStatus() {
 
     if (closest) {
       if (distance > PILOT_TO_AIRPORT) {
-        flightStatus = AIRBORNE;
+        __flightStatus = AIRBORNE;
         return;
       }
 
-      route.origin = closest->icao;
-      ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(route.origin);
+      __route.origin = closest->icao;
+      ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.origin);
       ap->addOutbound(this);
-      flightStatus = DEPARTING;
+      __flightStatus = DEPARTING;
       return;
     }
   }
 
-  flightStatus = AIRBORNE;
+  __flightStatus = AIRBORNE;
 }
 
 void
 Pilot::__generateLines() {
   const Airport* ap = NULL;
 
-  if (!route.origin.isEmpty())
-    ap = VatsimDataHandler::getSingleton().getActiveAirports()[route.origin];
+  if (!__route.origin.isEmpty())
+    ap = VatsimDataHandler::getSingleton().getActiveAirports()[__route.origin];
 
   if (ap && ap->getData()) {
     double myLon = ap->getData()->longitude;
     double myLat = ap->getData()->latitude;
 
-    if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
-        VatsimDataHandler::calcDistance(myLon + 360, myLat, position.longitude, position.latitude))
+    if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
+        VatsimDataHandler::calcDistance(myLon + 360, myLat, __position.longitude, __position.latitude))
       myLon += 360;
-    else if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
-             VatsimDataHandler::calcDistance(myLon - 360, myLat, position.longitude, position.latitude))
+    else if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
+             VatsimDataHandler::calcDistance(myLon - 360, myLat, __position.longitude, __position.latitude))
       myLon -= 360;
 
     __lineFrom << myLon
                << myLat;
   }
   
-  __lineTo << position.longitude
-           << position.latitude;
+  __lineTo << __position.longitude
+           << __position.latitude;
   
   __parseRoute();
   
-  __lineFrom << position.longitude
-             << position.latitude;
+  __lineFrom << __position.longitude
+             << __position.latitude;
 
   ap = NULL;
 
-  if (!route.destination.isEmpty())
-    ap = VatsimDataHandler::getSingleton().getActiveAirports()[route.destination];
+  if (!__route.destination.isEmpty())
+    ap = VatsimDataHandler::getSingleton().getActiveAirports()[__route.destination];
 
   if (ap && ap->getData()) {
     double myLon = ap->getData()->longitude;
     double myLat = ap->getData()->latitude;
 
-    if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
-        VatsimDataHandler::calcDistance(myLon + 360, myLat, position.longitude, position.latitude))
+    if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
+        VatsimDataHandler::calcDistance(myLon + 360, myLat, __position.longitude, __position.latitude))
       myLon += 360;
-    else if (VatsimDataHandler::calcDistance(myLon, myLat, position.longitude, position.latitude) >
-             VatsimDataHandler::calcDistance(myLon - 360, myLat, position.longitude, position.latitude))
+    else if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
+             VatsimDataHandler::calcDistance(myLon - 360, myLat, __position.longitude, __position.latitude))
       myLon -= 360;
 
     __lineTo << myLon
@@ -293,7 +295,7 @@ Pilot::__generateTip() const {
   painter.setFont(MapWidget::getSingleton().getPilotFont());
   painter.setPen(QColor(PILOTS_LABELS_FONT_COLOR));
   QRect rectangle(28, 10, 73, 13); // size of the tooltip.png
-  painter.drawText(rectangle, Qt::AlignCenter, callsign);
+  painter.drawText(rectangle, Qt::AlignCenter, __callsign);
   __callsignTip = MapWidget::loadImage(temp);
   return __callsignTip;
 }
@@ -314,7 +316,7 @@ Pilot::__parseRoute() {
   
   /* 1 */
   static QRegExp expNo1(" ([0-9]{2}[NS][0-9]{2,3}[SW])", Qt::CaseSensitive, QRegExp::RegExp2);
-  while ((pos = expNo1.indexIn(this->route.route, pos)) != -1) {
+  while ((pos = expNo1.indexIn(this->__route.route, pos)) != -1) {
     pos += expNo1.matchedLength();
   }
   
@@ -322,7 +324,7 @@ Pilot::__parseRoute() {
   
   
   static QRegExp expNo2(" ([0-9]{4}[NS])", Qt::CaseSensitive, QRegExp::RegExp2);
-  while ((pos = expNo2.indexIn(this->route.route, pos)) != -1) {
+  while ((pos = expNo2.indexIn(this->__route.route, pos)) != -1) {
     
     QString cap = expNo2.cap(1);
     
@@ -333,8 +335,8 @@ Pilot::__parseRoute() {
     float west = 0 - cap.mid(2, 2).toFloat();
     
     if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
-        (__lineFrom[__lineFrom.size() - 2] < position.longitude && west > position.longitude) ||
-        (__lineFrom[__lineFrom.size() - 2] > position.longitude && west < position.longitude)))
+        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && west > __position.longitude) ||
+        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && west < __position.longitude)))
       curList = &__lineTo;
     
     *curList << west << ns;

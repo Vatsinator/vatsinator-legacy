@@ -143,7 +143,7 @@ FirDetailsWindow::__setFlightTableButtons() {
   Q_ASSERT(flightsModel);
 
   for (int i = 0; i < flightsModel->rowCount(); ++i) {
-    if (flightsModel->getFlights()[i]->prefiledOnly)
+    if (flightsModel->getFlights()[i]->isPrefiledOnly())
       continue;
 
     ClientDetailsButton* pButton = new ClientDetailsButton(flightsModel->getFlights()[i]);
@@ -161,7 +161,7 @@ FirDetailsWindow::__setControllerTableButtons() {
   for (int i = 0; i < atcModel->rowCount(); ++i) {
     ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
     connect(pButton,        SIGNAL(clicked(const Client*)),
-            ATCDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
+            AtcDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
     ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
   }
 }
