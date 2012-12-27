@@ -234,7 +234,7 @@ AirportDetailsWindow::__setInboundTableButtons() {
   Q_ASSERT(inboundModel);
   
   for (int i = 0; i < inboundModel->rowCount(); ++i) {
-    if (inboundModel->getFlights()[i]->prefiledOnly)
+    if (inboundModel->getFlights()[i]->isPrefiledOnly())
       continue;
     
     ClientDetailsButton* pButton = new ClientDetailsButton(inboundModel->getFlights()[i]);
@@ -254,7 +254,7 @@ AirportDetailsWindow::__setOutboundTableButtons() {
   Q_ASSERT(outboundModel);
   
   for (int i = 0; i < outboundModel->rowCount(); ++i) {
-    if (outboundModel->getFlights()[i]->prefiledOnly)
+    if (outboundModel->getFlights()[i]->isPrefiledOnly())
       continue;
     
     ClientDetailsButton* pButton = new ClientDetailsButton(outboundModel->getFlights()[i]);
@@ -276,7 +276,7 @@ AirportDetailsWindow::__setATCTableButtons() {
   for (int i = 0; i < atcModel->rowCount(); ++i) {
     ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
     connect(pButton,        SIGNAL(clicked(const Client*)),
-            ATCDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
+            AtcDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
     ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
   }
 }

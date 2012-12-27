@@ -79,7 +79,7 @@ VatbookHandler::__parseData(const QString& _data) {
     if (data[3] == "ATC") {
       BookedController* bc = new BookedController(data);
       if (!__bookings.contains(bc->getIcao()))
-        __bookings.insert(bc->getIcao(), new BookedAtcTableModel);
+        __bookings.insert(bc->getIcao(), new BookedAtcTableModel());
       __bookings[bc->getIcao()]->addStaff(bc);
     }
   }

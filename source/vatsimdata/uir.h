@@ -51,11 +51,20 @@ public:
 
   inline void
   clear() { __staff.clear(); }
-
-  QString icao;
-  QString name;
+  
+  inline const QString &
+  getIcao() const { return __icao; }
+  
+  inline const QString &
+  getName() const { return __name; }
+  
+  inline QString &
+  getName() { return __name; }
 
 private:
+  QString __icao;
+  QString __name;
+  
   QVector< Fir* > __range;
   QVector< const Controller* >  __staff;
 

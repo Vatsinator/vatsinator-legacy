@@ -40,15 +40,15 @@
  */
 
 BookedController::BookedController(const QStringList& _data) :
-    callsign(_data[0]),
-    realName(_data[2]),
-    trainingSession(_data[4][0] == '1'),
-    dateBooked(QDate::fromString(_data[16], "yyyyMMdd")),
-    bookedFrom(QTime::fromString(_data[37], "hhmm")),
-    bookedTo(QTime::fromString(_data[14], "hhmm")) {}
+    __callsign(_data[0]),
+    __realName(_data[2]),
+    __trainingSession(_data[4][0] == '1'),
+    __dateBooked(QDate::fromString(_data[16], "yyyyMMdd")),
+    __bookedFrom(QTime::fromString(_data[37], "hhmm")),
+    __bookedTo(QTime::fromString(_data[14], "hhmm")) {}
 
 QString
 BookedController::getIcao() const {
-  return callsign.split('_').first();
+  return __callsign.split('_').first();
 }
     

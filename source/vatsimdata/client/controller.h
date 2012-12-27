@@ -36,48 +36,78 @@ class Controller : public Client {
    */
 
 public:
-  Controller(const QStringList&);
-  
-  inline Client::Type
-  clientType() const { return Client::ATC; }
-  
-  
-  
+  /* Types */
   enum Facility {
-    ATIS      = 1,
-    DEL       = 2,
-    GND       = 4,
-    TWR       = 8,
-    APP       = 16,
-    DEP       = 32,
-    CTR       = 64,
-    FSS       = 128,
-    OBS       = 256
+    ATIS      = 0x1,
+    DEL       = 0x2,
+    GND       = 0x4,
+    TWR       = 0x8,
+    APP       = 0x10,
+    DEP       = 0x20,
+    CTR       = 0x40,
+    FSS       = 0x80,
+    OBS       = 0x100
   };
   Q_DECLARE_FLAGS(Facilities, Facility);
   
+  /* Ctors */
+  Controller() = delete;
+  
+  Controller(const QStringList&);
+  
+  /**
+   * Reimplemented from Client::clientType().
+   */
+  inline Client::Type
+  clientType() const { return Client::ATC; }
+  
+  inline const QString &
+  getFrequency() const { return __frequency; }
+  
+  inline int
+  getRating() const { return __rating; }
+  
+  inline const QString &
+  getIcao() const { return __icao; }
+  
+  inline const QString &
+  getAtis() const { return __atis; }
+  
+  inline const AirportRecord *
+  getAirport() const { return __airport; }
+  
+  inline Controller::Facility
+  getFacility() const { return __facility; }
+  
+  inline const QString &
+  getDescription() const { return __description; }
+  
+  inline bool
+  isOk() const { return __isOK; }
   
   
-  QString              frequency;
-  int                  rating;
-  QString              icao;
-  
-  QString              atis;
-  
-  const AirportRecord* airport;
-  
-  Controller::Facility facility;
-  
-  QString              description;
-  
-  bool                 isOK;
-
   /* Stores ATC ratings.
    * See http://vateud.org/index.php?option=com_content&view=article&id=28&Itemid=133
    */
   static QMap< int, QString> ratings;
+  
+protected:
+  QString              __frequency;
+  int                  __rating;
+  QString              __icao;
+  
+  QString              __atis;
+  
+  const AirportRecord* __airport;
+  
+  Controller::Facility __facility;
+  
+  QString              __description;
+  
+  bool                 __isOK;
 
 private:
+  void __cleanupAtis();
   void __setMyIcaoAndFacility();
   void __produceDescription(const Fir*);
   void __produceDescription(const Uir*);

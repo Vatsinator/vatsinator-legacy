@@ -30,7 +30,7 @@
 #include "singleton.h"
 
 class AirportDetailsWindow;
-class ATCDetailsWindow;
+class AtcDetailsWindow;
 class Clickable;
 class Client;
 class Fir;

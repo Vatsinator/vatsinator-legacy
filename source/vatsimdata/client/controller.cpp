@@ -79,42 +79,45 @@ bool Controller::__ratingsInitialized = Controller::__initRatings();
  */
 Controller::Controller(const QStringList& _data) :
     Client(_data),
-    frequency(_data[4]),
-    rating(_data[16].toInt()),
-    atis(_data[35]),
-    airport(NULL),
-    isOK(true) {
+    __frequency(_data[4]),
+    __rating(_data[16].toInt()),
+    __atis(_data[35]),
+    __airport(NULL),
+    __isOK(true) {
+  
+  __cleanupAtis();
+  __setMyIcaoAndFacility();
+}
 
-  // clenup ATIS messahe
-  if (atis[0] == '$') {
-    auto index = atis.indexOf('^');
-    atis.remove(0, index + 2);
+void Controller::__cleanupAtis() {
+  // clenup ATIS message
+  if (__atis[0] == '$') {
+    int index = __atis.indexOf('^');
+    __atis.remove(0, index + 2);
   }
 
-  atis.replace((QString)'^' + (char)167, "\n");
-
-  __setMyIcaoAndFacility();
+  __atis.replace((QString)'^' + (char)167, "\n");
 }
 
 void
 Controller::__setMyIcaoAndFacility() {
-  QStringList sections = callsign.split('_');
+  QStringList sections = __callsign.split('_');
 
   if (sections.back() == "CTR") {
-    facility = CTR;
-    airport = NULL;
+    __facility = CTR;
+    __airport = NULL;
 
-    icao = sections.front();
+    __icao = sections.front();
 
-    Fir* fir = FirDatabase::getSingleton().findFirByIcao(icao);
+    Fir* fir = FirDatabase::getSingleton().findFirByIcao(__icao);
 
     if (fir) {
       fir->addStaff(this);
       __produceDescription(fir);
     } else {
       // handle USA three-letters callsigns
-      if (icao.length() == 3) {
-        fir = FirDatabase::getSingleton().findFirByIcao("K" + icao);
+      if (__icao.length() == 3) {
+        fir = FirDatabase::getSingleton().findFirByIcao("K" + __icao);
 
         if (fir) {
           fir->addStaff(this);
@@ -123,7 +126,7 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      for (const QString & alias: VatsimDataHandler::getSingleton().getAliases().values(icao)) {
+      for (const QString & alias: VatsimDataHandler::getSingleton().getAliases().values(__icao)) {
         fir = FirDatabase::getSingleton().findFirByIcao(alias);
 
         if (fir) {
@@ -133,7 +136,7 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
+      Uir* uir = VatsimDataHandler::getSingleton().findUIR(__icao);
 
       if (uir) {
         uir->addStaff(this);
@@ -141,14 +144,14 @@ Controller::__setMyIcaoAndFacility() {
         return;
       }
 
-      VatsinatorApplication::log("FIR could not be matched for: %s.", callsign.toStdString().c_str());
+      VatsinatorApplication::log("FIR could not be matched for: %s.", __callsign.toStdString().c_str());
 
     }
 
     return;
   } else if (sections.back() == "FSS") {
-    facility = FSS;
-    airport = NULL;
+    __facility = FSS;
+    __airport = NULL;
 
     QString& icao = sections.front();
 
@@ -186,7 +189,7 @@ Controller::__setMyIcaoAndFacility() {
       }
     }
 
-    VatsinatorApplication::log("FIR could not be matched for: %s.", callsign.toStdString().c_str());
+    VatsinatorApplication::log("FIR could not be matched for: %s.", __callsign.toStdString().c_str());
 
     return;
   } else if (
@@ -197,25 +200,25 @@ Controller::__setMyIcaoAndFacility() {
     sections.back() == "DEL" ||
     sections.back() == "ATIS") {
     if (sections.back() == "APP")
-      facility = APP;
+      __facility = APP;
     else if (sections.back() == "DEP")
-      facility = DEP;
+      __facility = DEP;
     else if (sections.back() == "TWR")
-      facility = TWR;
+      __facility = TWR;
     else if (sections.back() == "GND")
-      facility = GND;
+      __facility = GND;
     else if (sections.back() == "DEL")
-      facility = DEL;
+      __facility = DEL;
     else if (sections.back() == "ATIS")
-      facility = ATIS;
+      __facility = ATIS;
 
     const AirportRecord* apShot = AirportDatabase::getSingleton().find(sections.front());
 
     if (apShot) {
       ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(sections.front());
       ap->addStaff(this);
-      airport = ap->getData();
-      __produceDescription(airport);
+      __airport = ap->getData();
+      __produceDescription(__airport);
       return;
     } else {
       if (sections.front().length() == 3) {
@@ -226,8 +229,8 @@ Controller::__setMyIcaoAndFacility() {
         if (apShot) {
           ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
           ap->addStaff(this);
-          airport = ap->getData();
-          __produceDescription(airport);
+          __airport = ap->getData();
+          __produceDescription(__airport);
           return;
         }
       }
@@ -238,32 +241,32 @@ Controller::__setMyIcaoAndFacility() {
         if (apShot) {
           ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
           ap->addStaff(this);
-          airport = ap->getData();
-          __produceDescription(airport);
+          __airport = ap->getData();
+          __produceDescription(__airport);
           return;
         }
       }
 
-      VatsinatorApplication::log("Airport not found for %s.", callsign.toStdString().c_str());
+      VatsinatorApplication::log("Airport not found for %s.", __callsign.toStdString().c_str());
     }
 
     return;
 
   }
 
-  isOK = false;
+  __isOK = false;
 }
 
 void
 Controller::__produceDescription(const Fir* _f) {
   Q_ASSERT(_f);
-  description = _f->getName();
+  __description = _f->getName();
 }
 
 void
 Controller::__produceDescription(const Uir* _u) {
   Q_ASSERT(_u);
-  description = _u->name;
+  __description = _u->getName();
 }
 
 void
@@ -282,7 +285,7 @@ Controller::__produceDescription(const AirportRecord* _ap) {
         QString::fromUtf8(_ap->name);
   }
 
-  switch (facility) {
+  switch (__facility) {
     case ATIS:
       fName = "ATIS";
       break;
@@ -305,7 +308,7 @@ Controller::__produceDescription(const AirportRecord* _ap) {
       break;
   }
 
-  description = apName % " " % fName;
+  __description = apName % " " % fName;
 }
 
 bool

@@ -33,14 +33,33 @@ public:
   
   QString getIcao() const;
   
-  QString callsign;
-  QString realName;
+  inline const QString &
+  getCallsign() const { return __callsign; }
   
-  bool trainingSession;
+  inline const QString &
+  getRealName() const { return __realName; }
   
-  QDate dateBooked;
-  QTime bookedFrom;
-  QTime bookedTo;
+  inline bool
+  isTrainingSession() const { return __trainingSession; }
+  
+  inline const QDate &
+  getDateBooked() const { return __dateBooked; }
+  
+  inline const QTime &
+  getBookedFrom() const { return __bookedFrom; }
+  
+  inline const QTime &
+  getBookedTo() const { return __bookedTo; }
+  
+private:
+  QString __callsign;
+  QString __realName;
+  
+  bool __trainingSession;
+  
+  QDate __dateBooked;
+  QTime __bookedFrom;
+  QTime __bookedTo;
   
 };
 

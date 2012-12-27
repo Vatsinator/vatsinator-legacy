@@ -17,11 +17,8 @@
 */
 
 #include <QtGui>
-#include <algorithm>
 
 #include "db/airportdatabase.h"
-
-#include "vatsimdata/client/pilot.h"
 
 #include "flighttablemodel.h"
 #include "defines.h"
@@ -49,7 +46,7 @@ FlightTableModel::clear() {
 const Pilot*
 FlightTableModel::findFlightByCallsign(const QString& _callsign) const {
 for (const Pilot * p: __flights)
-    if (p->callsign == _callsign)
+    if (p->getCallsign() == _callsign)
       return p;
 
   return NULL;
@@ -81,10 +78,10 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ToolTipRole:
-      return __flights[_index.row()]->realName;
+      return __flights[_index.row()]->getRealName();
     case Qt::ForegroundRole:
 
-      if (__flights[_index.row()]->prefiledOnly)
+      if (__flights[_index.row()]->isPrefiledOnly())
         return QBrush(QColor(Qt::gray));
       else
         return QVariant();
@@ -94,11 +91,11 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 
       switch (_index.column()) {
         case Callsign:
-          return __flights[_index.row()]->callsign;
+          return __flights[_index.row()]->getCallsign();
         case Name:
-          return __flights[_index.row()]->realName;
+          return __flights[_index.row()]->getRealName();
         case From:
-          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route.origin);
+          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->getRoute().origin);
 
           if (ap)
             return QString(
@@ -107,10 +104,10 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
                      QString::fromUtf8(ap->city)
                    );
           else
-            return __flights[_index.row()]->route.origin;
+            return __flights[_index.row()]->getRoute().origin;
 
         case To:
-          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route.destination);
+          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->getRoute().destination);
 
           if (ap)
             return QString(
@@ -119,10 +116,10 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
                      QString::fromUtf8(ap->city)
                    );
           else
-            return __flights[_index.row()]->route.destination;
+            return __flights[_index.row()]->getRoute().destination;
 
         case Aircraft:
-          return __flights[_index.row()]->aircraft;
+          return __flights[_index.row()]->getAircraft();
         case Button: // for non-prefiled-only this will be overriden by QPushButton widget
           return tr("Prefiled");
         default:
@@ -159,34 +156,73 @@ void
 FlightTableModel::sort(int _column, Qt::SortOrder _order) {
   beginResetModel();
 
-  if (_column == Callsign) {
-    auto comparator = [_order](const Pilot * _a, const Pilot * _b) -> bool {
-      return _order == Qt::AscendingOrder ? _a->callsign < _b->callsign : _a->callsign > _b->callsign;
-    };
-    std::sort(__flights.begin(), __flights.end(), comparator);
-  } else if (_column == Name) {
-    auto comparator = [_order](const Pilot * _a, const Pilot * _b) -> bool {
-      return _order == Qt::AscendingOrder ? _a->realName < _b->realName : _a->realName > _b->realName;
-    };
-    std::sort(__flights.begin(), __flights.end(), comparator);
-  } else if (_column == From) {
-    auto comparator = [_order](const Pilot * _a, const Pilot * _b) -> bool {
-      return _order == Qt::AscendingOrder ? _a->route.origin < _b->route.origin :
-      _a->route.origin > _b->route.origin;
-    };
-    std::sort(__flights.begin(), __flights.end(), comparator);
-  } else if (_column == To) {
-    auto comparator = [_order](const Pilot * _a, const Pilot * _b) -> bool {
-      return _order == Qt::AscendingOrder ? _a->route.destination < _b->route.destination :
-      _a->route.destination > _b->route.destination;
-    };
-    std::sort(__flights.begin(), __flights.end(), comparator);
-  } else if (_column == Aircraft) {
-    auto comparator = [_order](const Pilot * _a, const Pilot * _b) -> bool {
-      return _order == Qt::AscendingOrder ? _a->aircraft < _b->aircraft : _a->aircraft > _b->aircraft;
-    };
-    std::sort(__flights.begin(), __flights.end(), comparator);
+  switch (_column) {
+    case Callsign:
+      qSort(__flights.begin(), __flights.end(),
+            _order == Qt::AscendingOrder ?
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getCallsign() < _b->getCallsign();
+              } :
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getCallsign() > _b->getCallsign();
+              }
+      );
+      
+      break;
+      
+    case Name:
+      qSort(__flights.begin(), __flights.end(),
+            _order == Qt::AscendingOrder ?
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getRealName() < _b->getRealName();
+              } :
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getRealName() > _b->getRealName();
+              }
+      );
+      
+      break;
+      
+    case From:
+      qSort(__flights.begin(), __flights.end(),
+            _order == Qt::AscendingOrder ?
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getRoute().origin < _b->getRoute().origin;
+              } :
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getRoute().origin > _b->getRoute().origin;
+              }
+      );
+      
+      break;
+      
+    case To:
+      qSort(__flights.begin(), __flights.end(),
+            _order == Qt::AscendingOrder ?
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getRoute().destination < _b->getRoute().destination;
+              } :
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getRoute().destination > _b->getRoute().destination;
+              }
+      );
+      
+      break;
+      
+    case Aircraft:
+      qSort(__flights.begin(), __flights.end(),
+            _order == Qt::AscendingOrder ?
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getAircraft() < _b->getAircraft();
+              } :
+              [](const Pilot* _a, const Pilot* _b) -> bool {
+                return _a->getAircraft() > _b->getAircraft();
+              }
+      );
+      
+      break;
   }
+      
 
   endResetModel();
   

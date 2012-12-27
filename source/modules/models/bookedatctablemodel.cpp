@@ -72,23 +72,23 @@ BookedAtcTableModel::data(const QModelIndex& _index, int _role) const {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ForegroundRole:
-      if (__staff[_index.row()]->trainingSession)
+      if (__staff[_index.row()]->isTrainingSession())
         return QBrush(Qt::blue);
       return QVariant();
     case Qt::DisplayRole:
       
       switch (_index.column()) {
         case Callsign:
-          return __staff[_index.row()]->callsign;
+          return __staff[_index.row()]->getCallsign();
         case Name:
-          return __staff[_index.row()]->realName;
+          return __staff[_index.row()]->getRealName();
         case Date:
-          return __staff[_index.row()]->dateBooked.toString("dd MMM yyyy");
+          return __staff[_index.row()]->getDateBooked().toString("dd MMM yyyy");
         case Hours:
           return QString(
-              __staff[_index.row()]->bookedFrom.toString("hh:mm") %
+              __staff[_index.row()]->getBookedFrom().toString("hh:mm") %
               static_cast< QString >(" - ") %
-              __staff[_index.row()]->bookedTo.toString("hh:mm"));
+              __staff[_index.row()]->getBookedTo().toString("hh:mm"));
         default:
           return QVariant();
       }

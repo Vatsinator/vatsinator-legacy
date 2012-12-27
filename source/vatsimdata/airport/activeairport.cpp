@@ -53,7 +53,7 @@ ActiveAirport::countDepartures() const {
   unsigned i = 0;
   
   for (const Pilot* p: __outbounds->getFlights())
-    if (p->flightStatus == DEPARTING)
+    if (p->getFlightStatus() == Pilot::DEPARTING)
       i += 1;
   
   return i;
@@ -69,7 +69,7 @@ ActiveAirport::countArrivals() const {
   unsigned i = 0;
   
   for (const Pilot* p: __inbounds->getFlights())
-    if (p->flightStatus == ARRIVED)
+    if (p->getFlightStatus() == Pilot::ARRIVED)
       i += 1;
   
   return i;
@@ -83,7 +83,7 @@ ActiveAirport::countInbounds() const {
 bool
 ActiveAirport::hasApproach() const {
   for (const Controller* c: __staff->getStaff())
-    if (c->facility == Controller::APP)
+    if (c->getFacility() == Controller::APP)
       return true;
   
   return false;
@@ -96,7 +96,7 @@ ActiveAirport::getFacilities() const {
   Controller::Facilities facilities = 0;
   
   for (const Controller* c: __staff->getStaff())
-    facilities |= c->facility;
+    facilities |= c->getFacility();
   
   return facilities;
 }
@@ -104,11 +104,11 @@ ActiveAirport::getFacilities() const {
 void
 ActiveAirport::drawLines() const {
   for (const Pilot* p: __inbounds->getFlights())
-    if (p->flightStatus != ARRIVED)
+    if (p->getFlightStatus() != Pilot::ARRIVED)
       p->drawLineTo();
   
   for (const Pilot* p: __outbounds->getFlights())
-    if (p->flightStatus != DEPARTING)
+    if (p->getFlightStatus() != Pilot::DEPARTING)
       p->drawLineFrom();
 }
 

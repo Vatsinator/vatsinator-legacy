@@ -62,7 +62,7 @@ void
 FlightTracker::__trackFlight(const Pilot* _p) {
   Q_ASSERT(_p);
   __currentPointer = _p;
-  __currentCallsign = _p->callsign;
+  __currentCallsign = _p->getCallsign();
 
   VatsinatorApplication::log("Tracking flight %s.", __currentCallsign.toStdString().c_str());
 }
