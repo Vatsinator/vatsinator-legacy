@@ -93,7 +93,7 @@
 # define DEBUG_NEW new(__FILE__, __LINE__)
 # include "vdebug/memorytracker.h"
 #else
-# define DEBUG_NEW new
+# define DEBUG_NEW new (std::nothrow)
 #endif
 #define new DEBUG_NEW
 
