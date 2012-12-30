@@ -27,6 +27,7 @@
 
 #include "singleton.h"
 
+struct B;
 class BookedAtcTableModel;
 class HttpHandler;
 
@@ -35,7 +36,7 @@ class VatbookHandler :
     public Singleton< VatbookHandler > {
   
   /*
-   * This class privides VATBOOK integration.
+   * This class provides VATBOOK integration.
    */
   
   Q_OBJECT
@@ -49,6 +50,17 @@ public:
   getModel(const QString& _icao) {
     return __bookings.value(_icao, NULL); 
   }
+  
+  /**
+   * If model does not exist, returns VatbookHandler::emptyBookedAtcTable,
+   * which is better for views, as NULL makes the headers disappear.
+   */
+  inline BookedAtcTableModel *
+  getNotNullModel(const QString& _icao) {
+    return __bookings.value(_icao, VatbookHandler::emptyBookedAtcTable);
+  }
+  
+  static BookedAtcTableModel* emptyBookedAtcTable;
   
 private:
   

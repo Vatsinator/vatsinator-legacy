@@ -137,7 +137,7 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   }
   
   BookedATCTable->setModel(
-      VatbookHandler::getSingleton().getModel(QString::fromUtf8(_ap->getData()->icao)));
+      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(_ap->getData()->icao)));
 }
 
 void
