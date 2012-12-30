@@ -33,7 +33,7 @@ class FlightTracker :
     public Singleton< FlightTracker > {
 
   /**
-   * This class is for flight tracking - it centres the map on he
+   * This class is for flight tracking - it centres the map on the
    * tracked plane after every update.
    */
 
@@ -46,7 +46,7 @@ public:
 
   void updateData();
 
-  inline const Pilot*
+  inline const Pilot *
   getTracked() { return __currentPointer; }
 
 private:

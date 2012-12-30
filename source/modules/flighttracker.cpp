@@ -61,10 +61,15 @@ FlightTracker::updateData() {
 void
 FlightTracker::__trackFlight(const Pilot* _p) {
   Q_ASSERT(_p);
-  __currentPointer = _p;
-  __currentCallsign = _p->getCallsign();
-
-  VatsinatorApplication::log("Tracking flight %s.", __currentCallsign.toStdString().c_str());
+  
+  if (_p == __currentPointer) {
+    __cancelFlight();
+  } else {
+    __currentPointer = _p;
+    __currentCallsign = _p->getCallsign();
+    
+    VatsinatorApplication::log("Tracking flight %s.", __currentCallsign.toStdString().c_str());
+  }
 }
 
 void
