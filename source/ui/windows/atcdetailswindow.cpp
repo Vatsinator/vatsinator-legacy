@@ -79,7 +79,7 @@ AtcDetailsWindow::show(const Client* _client) {
 
 void
 AtcDetailsWindow::__updateData() {
-  __current = VatsimDataHandler::getSingleton().findATC(__currentCallsign);
+  __current = VatsimDataHandler::getSingleton().findAtc(__currentCallsign);
   
   if (!__current) {
     __currentCallsign = "";

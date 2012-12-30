@@ -26,6 +26,7 @@
 #include "vatsimdata/clickable.h"
 
 class Controller;
+class ControllerTableModel;
 class Fir;
 
 class Uir : public Clickable {
@@ -36,21 +37,38 @@ public:
    */
   Uir(const QString&);
 
+  /**
+   * Reimplemented from Clickable.
+   */
   inline Clickable::Type
   objectType() const { return Clickable::UIR; }
 
+  /**
+   * @param fir FIR that the UIR is supposed to contain.
+   */
   void addFir(Fir*);
 
+  /**
+   * @param atc UIR controller.
+   */
   void addStaff(const Controller*);
+  
+  /**
+   * Clears the vector.
+   */
+  void clear();
+  
+  /**
+   * @return True, if there is no ATC on position.
+   */
+  bool isEmpty() const;
+  
 
   inline const QVector< Fir* > &
   getRange() const { return __range; }
 
-  inline const QVector< const Controller* > &
+  inline const ControllerTableModel *
   getStaff() const { return __staff; }
-
-  inline void
-  clear() { __staff.clear(); }
   
   inline const QString &
   getIcao() const { return __icao; }
@@ -66,7 +84,7 @@ private:
   QString __name;
   
   QVector< Fir* > __range;
-  QVector< const Controller* >  __staff;
+  ControllerTableModel*  __staff;
 
 };
 
