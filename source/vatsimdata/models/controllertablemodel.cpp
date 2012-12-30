@@ -39,7 +39,7 @@ ControllerTableModel::clear() {
 }
 
 const Controller *
-ControllerTableModel::findATCByCallsign(const QString& _callsign) const {
+ControllerTableModel::findAtcByCallsign(const QString& _callsign) const {
   for (const Controller* c: __staff)
     if (c->getCallsign() == _callsign)
       return c;

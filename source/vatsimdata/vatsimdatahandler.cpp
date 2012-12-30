@@ -192,8 +192,8 @@ VatsimDataHandler::findPilot(const QString& _callsign) const {
 }
 
 const Controller *
-VatsimDataHandler::findATC(const QString& _callsign) const {
-  return __atcs->findATCByCallsign(_callsign);
+VatsimDataHandler::findAtc(const QString& _callsign) const {
+  return __atcs->findAtcByCallsign(_callsign);
 }
 
 Uir *

@@ -34,9 +34,13 @@ set (ui_SRCS
     actions/toggleinboundoutboundlinesaction.cpp
     actions/trackaction.cpp
     
+    buttons/airportdetailsbutton.cpp
     buttons/colorbutton.cpp
     buttons/clientdetailsbutton.cpp
-    buttons/showairportbutton.cpp
+    
+    views/airporttableview.cpp
+    views/controllertableview.cpp
+    views/flighttableview.cpp
     
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
@@ -65,9 +69,13 @@ set (ui_MOC_SRCS
     actions/toggleinboundoutboundlinesaction.h
     actions/trackaction.h
     
+    buttons/airportdetailsbutton.h
     buttons/colorbutton.h
     buttons/clientdetailsbutton.h
-    buttons/showairportbutton.h
+    
+    views/airporttableview.h
+    views/controllertableview.h
+    views/flighttableview.h
     
     widgets/mapwidget.h
     widgets/replaceablewidget.h

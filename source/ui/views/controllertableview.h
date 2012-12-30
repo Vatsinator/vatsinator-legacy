@@ -1,5 +1,5 @@
 /*
-    showairportbutton.h
+    controllertableview.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,39 @@
 */
 
 
-#ifndef SHOWAIRPORTBUTTON_H
-#define SHOWAIRPORTBUTTON_H
+#ifndef CONTROLLERTABLEVIEW_H
+#define CONTROLLERTABLEVIEW_H
 
-#include <QPushButton>
+#include <QTableView>
 
-class Airport;
+class ControllerTableModel;
 
-class ShowAirportButton : public QPushButton {
-
+class ControllerTableView : public QTableView {
+  
+  /*
+   * This class is used to show all controllers in the nice, pretty
+   * table. To use it properly, the ControllerTableModel instance is
+   * needed.
+   */
+  
   Q_OBJECT
-
+  
 public:
-  ShowAirportButton(QWidget* = 0);
-  ShowAirportButton(const Airport*, const QString& = tr("Details"), bool = false, QWidget* = 0);
-
-  void setAirportPointer(const Airport*);
-
-signals:
-  void clicked(const Airport*);
-
+  explicit ControllerTableView(QWidget* = 0);
+  
+  void setModel(ControllerTableModel*);
+  
+protected slots:
+  void rowsInserted(const QModelIndex&, int, int);
+  
 private slots:
-  void __handleClicked();
-
-private:
-  const Airport* __current;
-
+  /**
+   * Re-sets buttons within given range.
+   * If no range is given, whole view is updated.
+   */
+  void __updateButtons(int = -1, int = -1);
+  
+  
 };
 
-#endif // SHOWAIRPORTBUTTON_H
+#endif // CONTROLLERTABLEVIEW_H

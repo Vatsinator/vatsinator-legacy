@@ -20,10 +20,14 @@
 
 #include "vatsimdata/client/controller.h"
 
+#include "vatsimdata/models/controllertablemodel.h"
+
 #include "uir.h"
 #include "defines.h"
 
-Uir::Uir(const QString& _icao) : __icao(_icao) {}
+Uir::Uir(const QString& _icao) :
+    __icao(_icao),
+    __staff(new ControllerTableModel()) {}
 
 void
 Uir::addFir(Fir* _f) {
@@ -34,6 +38,17 @@ void
 Uir::addStaff(const Controller* _c) {
   for (Fir * f: __range)
     f->addUirStaff(_c);
-
-  __staff.push_back(_c);
+  
+  __staff->addStaff(_c);
 }
+
+void
+Uir::clear() {
+  __staff->clear();
+}
+
+bool
+Uir::isEmpty() const {
+  return __staff->getStaff().isEmpty();
+}
+

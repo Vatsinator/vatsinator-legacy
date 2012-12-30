@@ -935,7 +935,7 @@ MapWidget::__drawUirs(double _moveX) {
   glTranslatef(_moveX, 0.0, -0.7);
 
   for (const Uir * uir: __data.getUIRs()) {
-    if (!uir->getStaff().isEmpty()) {
+    if (!uir->isEmpty()) {
       for (const Fir * fir: uir->getRange()) {
         if (!fir->isStaffed()) {
           qglColor(__settings.getStaffedUirBordersColor());

@@ -1,5 +1,5 @@
 /*
-    clientdetailsbutton.cpp
+    airportdetailsbutton.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -16,30 +16,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
 
-#include "vatsimdata/client.h"
+#ifndef AIRPORTDETAILSBUTTON_H
+#define AIRPORTDETAILSBUTTON_H
 
-#include "clientdetailsbutton.h"
-#include "defines.h"
+#include <QPushButton>
 
-ClientDetailsButton::ClientDetailsButton(const Client* _client,
-                                         QWidget* _parent) :
-    QPushButton("", _parent),
-    __current(_client) {
-  setIcon(QIcon(":/uiIcons/button-details.png"));
-  connect(this, SIGNAL(clicked()),
-          this, SLOT(__handleClicked()));
-}
+class Airport;
 
-void
-ClientDetailsButton::setClientPointer(const Client* _client) {
-  __current = _client;
-}
+class AirportDetailsButton : public QPushButton {
 
-void
-ClientDetailsButton::__handleClicked() {
-  emit clicked(__current);
-}
+  Q_OBJECT
 
+public:
+  AirportDetailsButton(QWidget* = 0);
+  AirportDetailsButton(const Airport*, bool = false, QWidget* = 0);
 
+  void setAirportPointer(const Airport*);
+
+signals:
+  void clicked(const Airport*);
+
+private slots:
+  void __handleClicked();
+
+private:
+  const Airport* __current;
+
+};
+
+#endif // AIRPORTDETAILSBUTTON_H

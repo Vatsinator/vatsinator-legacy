@@ -104,16 +104,81 @@ BookedAtcTableModel::headerData(int _section, Qt::Orientation _orientation, int 
     return QVariant();
   
   switch (_section) {
-    case 0:
+    case Callsign:
       return tr("Callsign");
-    case 1:
+    case Name:
       return tr("Name");
-    case 2:
+    case Date:
       return tr("Date");
-    case 3:
+    case Hours:
       return tr("Hours");
     default:
       return QVariant();
   }
+}
+
+void
+BookedAtcTableModel::sort(int _column, Qt::SortOrder _order) {
+  beginResetModel();
+  
+  switch(_column) {
+    case Callsign:
+      qSort(__staff.begin(), __staff.end(),
+            _order == Qt::AscendingOrder ?
+              [](const BookedController* _a, const BookedController* _b) -> bool {
+                return _a->getCallsign() < _b->getCallsign();
+              } :
+              [](const BookedController* _a, const BookedController* _b) -> bool {
+                return _a->getCallsign() > _b->getCallsign();
+              }
+      );
+      
+      break;
+      
+    case Name:
+      qSort(__staff.begin(), __staff.end(),
+            _order == Qt::AscendingOrder ?
+              [](const BookedController* _a, const BookedController* _b) -> bool {
+                return _a->getRealName() < _b->getRealName();
+              } :
+              [](const BookedController* _a, const BookedController* _b) -> bool {
+                return _a->getRealName() > _b->getRealName();
+              }
+      );
+      
+      break;
+      
+    case Date:
+      qSort(__staff.begin(), __staff.end(),
+            _order == Qt::AscendingOrder ?
+              [](const BookedController* _a, const BookedController* _b) -> bool {
+                return _a->getDateBooked() < _b->getDateBooked();
+              } :
+              [](const BookedController* _a, const BookedController* _b) -> bool {
+                return _a->getDateBooked() > _b->getDateBooked();
+              }
+      );
+      
+      break;
+      
+    case Hours:
+      qSort(__staff.begin(), __staff.end(),
+            _order == Qt::AscendingOrder ?
+            [](const BookedController* _a, const BookedController* _b) -> bool {
+              return QDateTime(_a->getDateBooked(), _a->getBookedFrom()) <
+                  QDateTime(_b->getDateBooked(), _b->getBookedFrom());
+            } :
+            [](const BookedController* _a, const BookedController* _b) -> bool {
+              return QDateTime(_a->getDateBooked(), _a->getBookedFrom()) >
+                  QDateTime(_b->getDateBooked(), _b->getBookedFrom());
+            }
+      );
+      
+      break;
+  }
+  
+  endResetModel();
+  
+  emit sorted();
 }
 

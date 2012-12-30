@@ -47,12 +47,13 @@ private:
   void __adjustTables();
 
   QString __currentICAO;
-
-private slots:
-  void __setFlightTableButtons();
-  void __setControllerTableButtons();
-  void __setAirportTableButtons();
-  void __updateData();
+  
+  /*
+   * We don't need dataUpdated() slot here, as FirDetailsWindow
+   * uses already created models and doesn't make any new one.
+   * Therefore, all data updates (resets) are handled by the
+   * views.
+   */
 
 
 };

@@ -105,7 +105,7 @@ public:
    * @param callsign Callsign of the controller to be found.
    * @return Const-pointer to the Controller class instance or NULL.
    */
-  const Controller* findATC(const QString&) const;
+  const Controller* findAtc(const QString&) const;
 
   /**
    * Finds UIR by ICAO.

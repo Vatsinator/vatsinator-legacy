@@ -1,5 +1,5 @@
 /*
-    clientdetailsbutton.cpp
+    airporttableview.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -16,30 +16,39 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
 
-#include "vatsimdata/client.h"
+#ifndef AIRPORTTABLEVIEW_H
+#define AIRPORTTABLEVIEW_H
 
-#include "clientdetailsbutton.h"
-#include "defines.h"
+#include <QTableView>
 
-ClientDetailsButton::ClientDetailsButton(const Client* _client,
-                                         QWidget* _parent) :
-    QPushButton("", _parent),
-    __current(_client) {
-  setIcon(QIcon(":/uiIcons/button-details.png"));
-  connect(this, SIGNAL(clicked()),
-          this, SLOT(__handleClicked()));
-}
+class AirportTableModel;
 
-void
-ClientDetailsButton::setClientPointer(const Client* _client) {
-  __current = _client;
-}
+class AirportTableView : public QTableView {
+  
+  /*
+   * This class is used to represent nicely the AirportTableModel in
+   * the QTableView format.
+   */
+  
+  Q_OBJECT
+  
+public:
+  explicit AirportTableView(QWidget* = 0);
+  
+  void setModel(AirportTableModel*);
+  
+    
+protected slots:
+  void rowsInserted(const QModelIndex&, int, int);
+  
+private slots:
+  /**
+   * Re-sets buttons within given range.
+   * If no range is given, whole view is updated.
+   */
+  void __updateButtons(int = -1, int = -1);
+  
+};
 
-void
-ClientDetailsButton::__handleClicked() {
-  emit clicked(__current);
-}
-
-
+#endif // AIRPORTTABLEVIEW_H

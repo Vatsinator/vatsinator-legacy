@@ -60,7 +60,7 @@
     <attribute name="title">
      <string>Inbound</string>
     </attribute>
-    <widget class="QTableView" name="InboundTable">
+    <widget class="FlightTableView" name="InboundTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -117,13 +117,16 @@
      <attribute name="verticalHeaderDefaultSectionSize">
       <number>25</number>
      </attribute>
+     <attribute name="verticalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
      <string>Outbound</string>
     </attribute>
-    <widget class="QTableView" name="OutboundTable">
+    <widget class="FlightTableView" name="OutboundTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -168,6 +171,9 @@
      <property name="cornerButtonEnabled">
       <bool>false</bool>
      </property>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
      </attribute>
@@ -186,7 +192,7 @@
     <attribute name="title">
      <string>ATC</string>
     </attribute>
-    <widget class="QTableView" name="ATCTable">
+    <widget class="ControllerTableView" name="ATCTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -231,6 +237,9 @@
      <property name="cornerButtonEnabled">
       <bool>false</bool>
      </property>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
      </attribute>
@@ -294,6 +303,9 @@
      <property name="cornerButtonEnabled">
       <bool>false</bool>
      </property>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
      </attribute>
@@ -572,6 +584,18 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FlightTableView</class>
+   <extends>QTableView</extends>
+   <header>ui/views/flighttableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ControllerTableView</class>
+   <extends>QTableView</extends>
+   <header>ui/views/controllertableview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="imgs.qrc"/>
  </resources>
