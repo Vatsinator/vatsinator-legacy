@@ -7,6 +7,11 @@ Version 0.2
   Bugfies:
     * Fixed non-updating flight & atc tables for inactive airports (#1)
     * When bookings table is empty, headers are now visible
+    * NSIS package installer - banner now visible
+
+  Build system:
+    * Added CMake toolchain for MinGW on Linux
+    * Added patch for clang-3.1
     
   Miscellaneous:
     * "Details" buttons have icons
