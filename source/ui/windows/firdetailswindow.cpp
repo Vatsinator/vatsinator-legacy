@@ -72,7 +72,7 @@ FirDetailsWindow::__updateModels(const Fir* _f) {
   ATCTable->setModel(_f->getStaffModel());
   AirportsTable->setModel(_f->getAirportsModel());
   
-  BookedATCTable->setModel(VatbookHandler::getSingleton().getModel(_f->getIcao()));
+  BookedATCTable->setModel(VatbookHandler::getSingleton().getNotNullModel(_f->getIcao()));
 }
 
 void
@@ -93,17 +93,17 @@ FirDetailsWindow::__fillLabels(const Fir* _f) {
 void
 FirDetailsWindow::__adjustTables() {
   FlightsTable->hideColumn(FlightTableModel::Name);
-  // 150, 160, 160, 150, 120
+  
   FlightsTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  FlightsTable->setColumnWidth(FlightTableModel::From, 160);
-  FlightsTable->setColumnWidth(FlightTableModel::To, 160);
+  FlightsTable->setColumnWidth(FlightTableModel::From, 170);
+  FlightsTable->setColumnWidth(FlightTableModel::To, 170);
   FlightsTable->setColumnWidth(FlightTableModel::Aircraft, 150);
 
   ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
-  ATCTable->setColumnWidth(ControllerTableModel::Name, 320);
+  ATCTable->setColumnWidth(ControllerTableModel::Name, 340);
   ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
 
-  AirportsTable->setColumnWidth(AirportTableModel::Label, 250);
+  AirportsTable->setColumnWidth(AirportTableModel::Label, 270);
   AirportsTable->setColumnWidth(AirportTableModel::Facilities, 170);
   AirportsTable->setColumnWidth(AirportTableModel::Outbounds, 100);
   AirportsTable->setColumnWidth(AirportTableModel::Inbounds, 100);
