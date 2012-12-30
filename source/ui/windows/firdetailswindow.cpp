@@ -27,7 +27,7 @@
 #include "ui/userinterface.h"
 
 #include "ui/buttons/clientdetailsbutton.h"
-#include "ui/buttons/showairportbutton.h"
+#include "ui/buttons/airportdetailsbutton.h"
 
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
@@ -37,13 +37,12 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "vatsimdata/client/controller.h"
+#include "vatsimdata/fir.h"
 #include "vatsimdata/client/pilot.h"
 
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
-
-#include "vatsinatorapplication.h"
 
 #include "firdetailswindow.h"
 #include "defines.h"
@@ -52,9 +51,6 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
-
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
-          this,                                     SLOT(__updateData()));
 }
 
 void
@@ -63,9 +59,6 @@ FirDetailsWindow::show(const Fir* _f) {
 
   __fillLabels(_f);
   __updateModels(_f);
-  __setFlightTableButtons();
-  __setControllerTableButtons();
-  __setAirportTableButtons();
   __adjustTables();
 
   QWidget::show();
@@ -73,26 +66,10 @@ FirDetailsWindow::show(const Fir* _f) {
 
 void
 FirDetailsWindow::__updateModels(const Fir* _f) {
-  const Fir* f;
-
-  if (!_f)
-    f = FirDatabase::getSingleton().findFirByIcao(__currentICAO);
-  else
-    f = _f;
-
-  Q_ASSERT(f);
+  Q_ASSERT(_f);
   
-  disconnect(this, SLOT(__setFlightTableButtons()));
-  disconnect(this, SLOT(__setControllerTableButtons()));
-
-  connect(_f->getFlightsModel(), SIGNAL(sorted()),
-          this,                  SLOT(__setFlightTableButtons()));
   FlightsTable->setModel(_f->getFlightsModel());
-  
-  connect(_f->getStaffModel(),   SIGNAL(sorted()),
-          this,                  SLOT(__setControllerTableButtons()));
   ATCTable->setModel(_f->getStaffModel());
-  
   AirportsTable->setModel(_f->getAirportsModel());
   
   BookedATCTable->setModel(VatbookHandler::getSingleton().getModel(_f->getIcao()));
@@ -136,58 +113,3 @@ FirDetailsWindow::__adjustTables() {
   BookedATCTable->setColumnWidth(BookedAtcTableModel::Date, 150);
   BookedATCTable->setColumnWidth(BookedAtcTableModel::Hours, 150);
 }
-
-void
-FirDetailsWindow::__setFlightTableButtons() {
-  const FlightTableModel* flightsModel = qobject_cast< const FlightTableModel* >(FlightsTable->model());
-  Q_ASSERT(flightsModel);
-
-  for (int i = 0; i < flightsModel->rowCount(); ++i) {
-    if (flightsModel->getFlights()[i]->isPrefiledOnly())
-      continue;
-
-    ClientDetailsButton* pButton = new ClientDetailsButton(flightsModel->getFlights()[i]);
-    connect(pButton,        SIGNAL(clicked(const Client*)),
-            FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
-    FlightsTable->setIndexWidget(flightsModel->index(i, FlightTableModel::Button), pButton);
-  }
-}
-
-void
-FirDetailsWindow::__setControllerTableButtons() {
-  const ControllerTableModel* atcModel = qobject_cast< const ControllerTableModel* >(ATCTable->model());
-  Q_ASSERT(atcModel);
-
-  for (int i = 0; i < atcModel->rowCount(); ++i) {
-    ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
-    connect(pButton,        SIGNAL(clicked(const Client*)),
-            AtcDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
-    ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
-  }
-}
-
-void
-FirDetailsWindow::__setAirportTableButtons() {
-  const AirportTableModel* apModel = qobject_cast< const AirportTableModel* >(AirportsTable->model());
-  Q_ASSERT(apModel);
-
-  for (int i = 0; i < apModel->rowCount(); ++i) {
-    ShowAirportButton* pButton = new ShowAirportButton(apModel->getAirports()[i]);
-    connect(pButton,        SIGNAL(clicked(const Airport*)),
-            AirportDetailsWindow::getSingletonPtr(), SLOT(show(const Airport*)));
-    AirportsTable->setIndexWidget(apModel->index(i, AirportTableModel::Button), pButton);
-  }
-}
-
-void
-FirDetailsWindow::__updateData() {
-  if (__currentICAO.isEmpty() || !isVisible())
-    return;
-
-  __setFlightTableButtons();
-  __setControllerTableButtons();
-}
-
-
-
-

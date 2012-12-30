@@ -51,9 +51,9 @@ AtcListWindow::resizeEvent(QResizeEvent* _event) {
 
 void
 AtcListWindow::__setColumnsWidths() {
-  const int CALLSIGN_SIZE = 100;
-  const int FREQUENCY_SIZE = 120;
-  const int SCROLLBAR_SIZE = 30;
+  static const int CALLSIGN_SIZE = 100;
+  static const int FREQUENCY_SIZE = 120;
+  static const int SCROLLBAR_SIZE = 30;
 
   int spaceLeft = ATCTable->width() - CALLSIGN_SIZE - FREQUENCY_SIZE - SCROLLBAR_SIZE;
 

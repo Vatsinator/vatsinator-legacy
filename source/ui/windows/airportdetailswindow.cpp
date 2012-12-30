@@ -79,12 +79,6 @@ AirportDetailsWindow::show(const Airport* _ap) {
 
   __fillLabels(_ap);
   __updateModels(_ap);
-  
-  if (dynamic_cast< const ActiveAirport* >(_ap)) {
-    __setInboundTableButtons();
-    __setOutboundTableButtons();
-    __setATCTableButtons();
-  }
   __adjustTables();
 
   const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
@@ -131,22 +125,10 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   
   __current = _ap;
   
-  disconnect(this, SLOT(__setInboundTableButtons()));
-  disconnect(this, SLOT(__setOutboundTableButtons()));
-  disconnect(this, SLOT(__setATCTableButtons()));
-  
   const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
   if (aa) {
-    connect(aa->getInboundsModel(), SIGNAL(sorted()),
-            this,                   SLOT(__setInboundTableButtons()));
     InboundTable->setModel(aa->getInboundsModel());
-    
-    connect(aa->getOutboundsModel(),  SIGNAL(sorted()),
-            this,                     SLOT(__setOutboundTableButtons()));
     OutboundTable->setModel(aa->getOutboundsModel());
-    
-    connect(aa->getStaffModel(),  SIGNAL(sorted()),
-            this,                 SLOT(__setATCTableButtons()));
     ATCTable->setModel(aa->getStaffModel());
   } else {
     InboundTable->setModel(VatsimDataHandler::emptyFlightTable);
@@ -226,70 +208,11 @@ AirportDetailsWindow::__adjustTables() {
 }
 
 void
-AirportDetailsWindow::__setInboundTableButtons() {
-  if (!InboundTable->model())
-    return;
-  
-  const FlightTableModel* inboundModel = qobject_cast< const FlightTableModel* >(InboundTable->model());
-  Q_ASSERT(inboundModel);
-  
-  for (int i = 0; i < inboundModel->rowCount(); ++i) {
-    if (inboundModel->getFlights()[i]->isPrefiledOnly())
-      continue;
-    
-    ClientDetailsButton* pButton = new ClientDetailsButton(inboundModel->getFlights()[i]);
-    connect(pButton,        SIGNAL(clicked(const Client*)),
-            FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
-    InboundTable->setIndexWidget(inboundModel->index(i, FlightTableModel::Button), pButton);
-  }
-}
-
-void
-AirportDetailsWindow::__setOutboundTableButtons() {
-  if (!OutboundTable->model())
-    return;
-  
-  const FlightTableModel* outboundModel = qobject_cast< const FlightTableModel* >(OutboundTable->model());
-  
-  Q_ASSERT(outboundModel);
-  
-  for (int i = 0; i < outboundModel->rowCount(); ++i) {
-    if (outboundModel->getFlights()[i]->isPrefiledOnly())
-      continue;
-    
-    ClientDetailsButton* pButton = new ClientDetailsButton(outboundModel->getFlights()[i]);
-    connect(pButton,        SIGNAL(clicked(const Client*)),
-            FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
-    OutboundTable->setIndexWidget(outboundModel->index(i, FlightTableModel::Button), pButton);
-  }
-}
-
-void
-AirportDetailsWindow::__setATCTableButtons() {
-  if (!ATCTable->model())
-    return;
-  
-  const ControllerTableModel* atcModel = qobject_cast< const ControllerTableModel* >(ATCTable->model());
-  
-  Q_ASSERT(atcModel);
-  
-  for (int i = 0; i < atcModel->rowCount(); ++i) {
-    ClientDetailsButton* pButton = new ClientDetailsButton(atcModel->getStaff()[i]);
-    connect(pButton,        SIGNAL(clicked(const Client*)),
-            AtcDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
-    ATCTable->setIndexWidget(atcModel->index(i, ControllerTableModel::Button), pButton);
-  }
-}
-
-void
 AirportDetailsWindow::__updateData() {
   if (__currentICAO.isEmpty() || !isVisible())
     return;
 
   __updateModels();
-  __setInboundTableButtons();
-  __setOutboundTableButtons();
-  __setATCTableButtons();
   __adjustTables();
 }
 

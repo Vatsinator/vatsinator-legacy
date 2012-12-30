@@ -1,5 +1,5 @@
 /*
-    clientdetailsbutton.h
+    airportdetailsbutton.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,31 +17,32 @@
 */
 
 
-#ifndef CLIENTDETAILSBUTTON_H
-#define CLIENTDETAILSBUTTON_H
+#ifndef AIRPORTDETAILSBUTTON_H
+#define AIRPORTDETAILSBUTTON_H
 
 #include <QPushButton>
-#include <QIcon>
 
-class Client;
+class Airport;
 
-class ClientDetailsButton : public QPushButton {
+class AirportDetailsButton : public QPushButton {
 
   Q_OBJECT
 
 public:
-  explicit ClientDetailsButton(const Client* = NULL, QWidget* = 0);
-  void setClientPointer(const Client*);
+  AirportDetailsButton(QWidget* = 0);
+  AirportDetailsButton(const Airport*, bool = false, QWidget* = 0);
 
-private:
-  const Client* __current;
+  void setAirportPointer(const Airport*);
+
+signals:
+  void clicked(const Airport*);
 
 private slots:
   void __handleClicked();
-  
-signals:
-  void clicked(const Client*);
+
+private:
+  const Airport* __current;
 
 };
 
-#endif // CLIENTDETAILSBUTTON_H
+#endif // AIRPORTDETAILSBUTTON_H

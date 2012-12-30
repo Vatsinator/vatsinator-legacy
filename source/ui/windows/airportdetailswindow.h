@@ -51,9 +51,6 @@ private:
   const Airport* __current;
 
 private slots:
-  void __setInboundTableButtons();
-  void __setOutboundTableButtons();
-  void __setATCTableButtons();
   void __updateData();
   void __handleShowClicked();
 

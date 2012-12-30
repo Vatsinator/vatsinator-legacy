@@ -56,6 +56,8 @@ public:
   
   /**
    * Client can be pilot or ATC.
+   * Use this class instead of dynamic_cast to check the subclass
+   * type - it is a little bit faster.
    */
   virtual inline Client::Type clientType() const = 0;
 
