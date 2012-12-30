@@ -24,10 +24,10 @@
 #include "defines.h"
 
 ClientDetailsButton::ClientDetailsButton(const Client* _client,
-                                         const QString& _text,
                                          QWidget* _parent) :
-    QPushButton(_text, _parent),
+    QPushButton("", _parent),
     __current(_client) {
+  setIcon(QIcon(":/uiIcons/button-details.png"));
   connect(this, SIGNAL(clicked()),
           this, SLOT(__handleClicked()));
 }

@@ -5,7 +5,12 @@ Version 0.2
     * Added "Altimeter" field in Flight Details Window
   
   Bugfies:
-    * Fixed non-updating flight & atc tables for inactive airports. (#1)
+    * Fixed non-updating flight & atc tables for inactive airports (#1)
+    * When bookings table is empty, headers are now visible
+    
+  Miscellaneous:
+    * "Details" buttons have icons
+    * "Bookings" table is now sortable
 
 Version 0.1
   Release date: 27.10.2012

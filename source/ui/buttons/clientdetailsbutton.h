@@ -21,6 +21,7 @@
 #define CLIENTDETAILSBUTTON_H
 
 #include <QPushButton>
+#include <QIcon>
 
 class Client;
 
@@ -29,17 +30,17 @@ class ClientDetailsButton : public QPushButton {
   Q_OBJECT
 
 public:
-  explicit ClientDetailsButton(const Client* = NULL, const QString& = tr("Details"), QWidget* = 0);
+  explicit ClientDetailsButton(const Client* = NULL, QWidget* = 0);
   void setClientPointer(const Client*);
-
-signals:
-  void clicked(const Client*);
 
 private:
   const Client* __current;
 
 private slots:
   void __handleClicked();
+  
+signals:
+  void clicked(const Client*);
 
 };
 

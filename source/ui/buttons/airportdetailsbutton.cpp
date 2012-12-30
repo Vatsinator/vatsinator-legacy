@@ -1,5 +1,5 @@
 /*
-    showairportbutton.cpp
+    airportdetailsbutton.cpp
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -20,10 +20,10 @@
 
 #include "vatsimdata/airport.h"
 
-#include "showairportbutton.h"
+#include "airportdetailsbutton.h"
 #include "defines.h"
 
-ShowAirportButton::ShowAirportButton(QWidget* _parent) :
+AirportDetailsButton::AirportDetailsButton(QWidget* _parent) :
     QPushButton("", _parent),
     __current(NULL) {
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
@@ -32,12 +32,13 @@ ShowAirportButton::ShowAirportButton(QWidget* _parent) :
           AirportDetailsWindow::getSingletonPtr(),  SLOT(show(const Airport*)));
 }
 
-ShowAirportButton::ShowAirportButton(const Airport* _ap,
-                                     const QString& _text,
+AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
                                      bool _autoconnect,
                                      QWidget* _parent) :
-    QPushButton(_text, _parent),
+    QPushButton("", _parent),
     __current(_ap) {
+  setIcon(QIcon(":/uiIcons/button-details.png"));
+  
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
 
   if (_autoconnect)
@@ -46,14 +47,14 @@ ShowAirportButton::ShowAirportButton(const Airport* _ap,
 }
 
 void
-ShowAirportButton::setAirportPointer(const Airport* _ap) {
+AirportDetailsButton::setAirportPointer(const Airport* _ap) {
   __current = _ap;
   setEnabled(_ap != NULL);
   setFlat(_ap == NULL);
 }
 
 void
-ShowAirportButton::__handleClicked() {
+AirportDetailsButton::__handleClicked() {
   if (__current)
     emit clicked(__current);
 }

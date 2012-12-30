@@ -40,6 +40,7 @@ public:
   int columnCount(const QModelIndex& = QModelIndex()) const;
   QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
   QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
+  void sort(int, Qt::SortOrder = Qt::AscendingOrder);
   
   enum Column {
     Callsign  = 0,
@@ -50,6 +51,9 @@ public:
   
 private:
   QVector< const BookedController* > __staff;
+  
+signals:
+  void sorted();
   
 };
 

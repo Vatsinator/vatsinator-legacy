@@ -1,5 +1,5 @@
 /*
-    showairportbutton.h
+    airportdetailsbutton.h
     Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,20 +17,20 @@
 */
 
 
-#ifndef SHOWAIRPORTBUTTON_H
-#define SHOWAIRPORTBUTTON_H
+#ifndef AIRPORTDETAILSBUTTON_H
+#define AIRPORTDETAILSBUTTON_H
 
 #include <QPushButton>
 
 class Airport;
 
-class ShowAirportButton : public QPushButton {
+class AirportDetailsButton : public QPushButton {
 
   Q_OBJECT
 
 public:
-  ShowAirportButton(QWidget* = 0);
-  ShowAirportButton(const Airport*, const QString& = tr("Details"), bool = false, QWidget* = 0);
+  AirportDetailsButton(QWidget* = 0);
+  AirportDetailsButton(const Airport*, bool = false, QWidget* = 0);
 
   void setAirportPointer(const Airport*);
 
@@ -45,4 +45,4 @@ private:
 
 };
 
-#endif // SHOWAIRPORTBUTTON_H
+#endif // AIRPORTDETAILSBUTTON_H

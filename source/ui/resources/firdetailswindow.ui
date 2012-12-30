@@ -82,7 +82,7 @@
     <attribute name="title">
      <string>Flights</string>
     </attribute>
-    <widget class="QTableView" name="FlightsTable">
+    <widget class="FlightTableView" name="FlightsTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -145,7 +145,7 @@
     <attribute name="title">
      <string>ATC</string>
     </attribute>
-    <widget class="QTableView" name="ATCTable">
+    <widget class="ControllerTableView" name="ATCTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -271,7 +271,7 @@
     <attribute name="title">
      <string>Active airports</string>
     </attribute>
-    <widget class="QTableView" name="AirportsTable">
+    <widget class="AirportTableView" name="AirportsTable">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -342,6 +342,23 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FlightTableView</class>
+   <extends>QTableView</extends>
+   <header>ui/views/flighttableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ControllerTableView</class>
+   <extends>QTableView</extends>
+   <header>ui/views/controllertableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AirportTableView</class>
+   <extends>QTableView</extends>
+   <header>ui/views/airporttableview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="imgs.qrc"/>
  </resources>

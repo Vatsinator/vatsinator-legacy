@@ -685,7 +685,7 @@
        </spacer>
       </item>
       <item row="1" column="2">
-       <widget class="ShowAirportButton" name="OriginButton">
+       <widget class="AirportDetailsButton" name="OriginButton">
         <property name="text">
          <string/>
         </property>
@@ -695,7 +695,7 @@
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="ShowAirportButton" name="ArrivalButton">
+       <widget class="AirportDetailsButton" name="ArrivalButton">
         <property name="text">
          <string/>
         </property>
@@ -900,7 +900,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="ShowButton">
+     <widget class="AirportDetailsButton" name="ShowButton">
       <property name="text">
        <string>Show</string>
       </property>
@@ -921,9 +921,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ShowAirportButton</class>
+   <class>AirportDetailsButton</class>
    <extends>QPushButton</extends>
-   <header>ui/buttons/showairportbutton.h</header>
+   <header>ui/buttons/airportdetailsbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources>

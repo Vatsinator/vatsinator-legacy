@@ -51,9 +51,9 @@ FlightListWindow::resizeEvent(QResizeEvent* _event) {
 
 void
 FlightListWindow::__setColumnsWidths() {
-  const int CALLSIGN_SIZE = 100;
-  const int ACFT_SIZE = 120;
-  const int SCROLLBAR_SIZE = 30;
+  static const int CALLSIGN_SIZE = 100;
+  static const int ACFT_SIZE = 120;
+  static const int SCROLLBAR_SIZE = 30;
 
   int spaceLeft = FlightsTable->width() - CALLSIGN_SIZE - ACFT_SIZE - SCROLLBAR_SIZE;
   spaceLeft /= 3;

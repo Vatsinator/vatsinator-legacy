@@ -27,7 +27,9 @@
 #include "defines.h"
 
 static const QString VATBOOK_URL = "http://vatbook.euroutepro.com/servinfo.asp";
-static const int REFRESH_INTERVAL = 15 * 60000;
+static const int REFRESH_INTERVAL = 15 * 60000; // 15 min
+
+BookedAtcTableModel* VatbookHandler::emptyBookedAtcTable = new BookedAtcTableModel();
 
 VatbookHandler::VatbookHandler(QObject* _parent) : 
     QObject(_parent),
@@ -45,6 +47,8 @@ VatbookHandler::VatbookHandler(QObject* _parent) :
 VatbookHandler::~VatbookHandler() {
   __clear();
   delete __httpHandler;
+  
+  delete VatbookHandler::emptyBookedAtcTable;
 }
 
 void
