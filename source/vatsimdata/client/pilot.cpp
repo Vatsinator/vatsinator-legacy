@@ -115,7 +115,7 @@ Pilot::~Pilot() {
 void
 Pilot::drawLineFrom() const {
   if (!__lineFrom.empty()) {
-    glColor4d(SettingsManager::getSingleton().getOriginToPilotLineColor().redF(),
+    glColor4f(SettingsManager::getSingleton().getOriginToPilotLineColor().redF(),
               SettingsManager::getSingleton().getOriginToPilotLineColor().greenF(),
               SettingsManager::getSingleton().getOriginToPilotLineColor().blueF(),
               1.0
@@ -128,7 +128,7 @@ Pilot::drawLineFrom() const {
 void
 Pilot::drawLineTo() const {
   if (!__lineTo.empty()) {
-    glColor4d(SettingsManager::getSingleton().getPilotToDestinationLineColor().redF(),
+    glColor4f(SettingsManager::getSingleton().getPilotToDestinationLineColor().redF(),
               SettingsManager::getSingleton().getPilotToDestinationLineColor().greenF(),
               SettingsManager::getSingleton().getPilotToDestinationLineColor().blueF(),
               1.0
