@@ -165,7 +165,7 @@ private:
   /**
    * Generates in/out lines.
    */
-  void __generateLines();
+  void __generateLines() const;
 
   /**
    * Generates the callsign label.
@@ -176,10 +176,13 @@ private:
    * Parses the NATs.
    * TODO: Include AIRAC, parse every route, not only NATs.
    */
-  void __parseRoute();
+  void __parseRoute() const;
 
-  QVector< GLfloat > __lineFrom;
-  QVector< GLfloat > __lineTo;
+  mutable QVector< GLfloat > __lineFrom;
+  mutable QVector< GLfloat > __lineTo;
+  
+  /* Route parsing is pretty rich, avoid doing it if unnesesary */
+  mutable bool __linesGenerated;
 
   mutable GLuint __callsignTip;
   

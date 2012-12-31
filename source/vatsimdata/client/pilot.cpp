@@ -95,6 +95,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __prefiledOnly(_prefiled),
     __lineFrom(0),
     __lineTo(0),
+    __linesGenerated(false),
     __callsignTip(0) {
   // vatsim sometimes skips the 0 on the beginning
   if (__squawk.length() == 3)
@@ -102,7 +103,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 
   __updateAirports();
   __setMyStatus();
-  __generateLines();
+//   __generateLines();
 
   __modelTexture = ModelMatcher::getSingleton().matchMyModel(__aircraft);
 }
@@ -114,6 +115,9 @@ Pilot::~Pilot() {
 
 void
 Pilot::drawLineFrom() const {
+  if (!__linesGenerated)
+    __generateLines();
+  
   if (!__lineFrom.empty()) {
     glColor4f(SettingsManager::getSingleton().getOriginToPilotLineColor().redF(),
               SettingsManager::getSingleton().getOriginToPilotLineColor().greenF(),
@@ -127,6 +131,9 @@ Pilot::drawLineFrom() const {
 
 void
 Pilot::drawLineTo() const {
+  if (!__linesGenerated)
+    __generateLines();
+  
   if (!__lineTo.empty()) {
     glColor4f(SettingsManager::getSingleton().getPilotToDestinationLineColor().redF(),
               SettingsManager::getSingleton().getPilotToDestinationLineColor().greenF(),
@@ -235,7 +242,7 @@ Pilot::__setMyStatus() {
 }
 
 void
-Pilot::__generateLines() {
+Pilot::__generateLines() const {
   const Airport* ap = NULL;
 
   if (!__route.origin.isEmpty())
@@ -283,6 +290,8 @@ Pilot::__generateLines() {
     __lineTo << myLon
              << myLat;
   }
+  
+  __linesGenerated = true;
 }
 
 GLuint
@@ -301,7 +310,7 @@ Pilot::__generateTip() const {
 }
 
 void
-Pilot::__parseRoute() {
+Pilot::__parseRoute() const {
   /*
    * Okay, this function needs some comment.
    * Pilots generally fill their NATs in several different ways.
@@ -314,10 +323,70 @@ Pilot::__parseRoute() {
   QVector< float >* curList = &__lineFrom;
   bool natFound = false;
   
-  /* 1) YQX KOBEV 50N50W 51N40W 52N30W 52N20W LIMRI XETBO */
-  static QRegExp expNo1(" ([0-9]{2}[NS][0-9]{2,3}[SW])", Qt::CaseSensitive, QRegExp::RegExp2);
+  /* 0) LINND 3952N06815W 4025N06700W 4307N06000W 4510N05230W 4554N05000W 4810N04000W 4926N03000W 4949N02000W 4941N01500W BARIX */
+//   static QRegExp expNo0(" ([0-9]{4}[NS][0-9]{5}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
+//   while ((pos = expNo0.indexIn(this->__route.route, pos)) != -1) {
+//     QString cap = expNo0.cap(1);
+//     float ns = cap.left(4).toFloat();
+//     if (cap[4] == 'S')
+//       ns = -ns;
+//     
+//     float we = cap.mid(5, 5).toFloat();
+//     if (cap.endsWith('W'))
+//       we = -we;
+//     
+//      if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
+//         (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
+//         (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
+//       curList = &__lineTo;
+//     
+//     *curList << we << ns;
+//     
+//     pos += expNo0.matchedLength();
+//     
+//     natFound = true;
+//   }
+//   
+//   if (natFound)
+//     return;
+//   
+//   pos = 0;
+  
+  /* 1) 5000N 05000W 5100N 04000W 5100N 03000W 5100N 02000W */
+  static QRegExp expNo1(" ([0-9]{4}[NS] [0-9]{5}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
   while ((pos = expNo1.indexIn(this->__route.route, pos)) != -1) {
     QString cap = expNo1.cap(1);
+    QStringList capSplit = cap.split(' ');
+    
+    float ns = capSplit.first().left(4).toFloat();
+    if (capSplit.first().endsWith('S'))
+      ns = -ns;
+    
+    float we = capSplit.last().left(5).toFloat();
+    if (capSplit.last().endsWith('W'))
+      we = -we;
+    
+    if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
+        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
+        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
+      curList = &__lineTo;
+    
+    *curList << we << ns;
+    
+    pos += expNo1.matchedLength();
+    
+    natFound = true;
+  }
+  
+  if (natFound)
+    return;
+  
+  pos = 0;
+  
+  /* 2) YQX KOBEV 50N50W 51N40W 52N30W 52N20W LIMRI XETBO */
+  static QRegExp expNo2(" ([0-9]{2}[NS][0-9]{2,3}[EW]) ", Qt::CaseSensitive, QRegExp::RegExp2);
+  while ((pos = expNo2.indexIn(this->__route.route, pos)) != -1) {
+    QString cap = expNo2.cap(1);
     
     float ns = cap.left(2).toFloat();
     if (cap[2] == 'S')
@@ -340,7 +409,7 @@ Pilot::__parseRoute() {
     
     *curList << we << ns;
     
-    pos += expNo1.matchedLength();
+    pos += expNo2.matchedLength();
     
     natFound = true;
   }
@@ -351,10 +420,10 @@ Pilot::__parseRoute() {
   pos = 0;
   
   
-  /* 2) VIXUN LOGSU 4950N 5140N 5130N 5120N DINIM */
-  static QRegExp expNo2(" ([0-9]{4}[NS])", Qt::CaseSensitive, QRegExp::RegExp2);
-  while ((pos = expNo2.indexIn(this->__route.route, pos)) != -1) {
-    QString cap = expNo2.cap(1);
+  /* 3) VIXUN LOGSU 4950N 5140N 5130N 5120N DINIM */
+  static QRegExp expNo3(" ([0-9]{4}[NS]) ", Qt::CaseSensitive, QRegExp::RegExp2);
+  while ((pos = expNo3.indexIn(this->__route.route, pos)) != -1) {
+    QString cap = expNo3.cap(1);
     
     float ns = cap.left(2).toFloat();
     if (cap.endsWith('S'))
@@ -369,7 +438,7 @@ Pilot::__parseRoute() {
     
     *curList << west << ns;
     
-    pos += expNo2.matchedLength();
+    pos += expNo3.matchedLength();
     
     natFound = true;
   }
