@@ -3,6 +3,7 @@ Version 0.2
   
   Features:
     * Added "Altimeter" field in Flight Details Window
+    * Added NATs parsing
   
   Bugfies:
     * Fixed non-updating flight & atc tables for inactive airports (#1)
