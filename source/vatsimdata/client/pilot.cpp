@@ -304,28 +304,56 @@ void
 Pilot::__parseRoute() {
   /*
    * Okay, this function needs some comment.
-   * Pilots generally fill their NATs in three different ways.
-   * 1) YQX KOBEV 50N50W 51N40W 52N30W 52N20W LIMRI XETBO
-   * 2) VIXUN LOGSU 4950N 5140N 5130N 5120N DINIM
-   * 3) 
+   * Pilots generally fill their NATs in several different ways.
+   * 3) KOBEV 5000N 05000W 5100N 04000W 5100N 03000W 5100N 02000W SOMAX
+   * 5) NAT[A-Z] <- this is the worst for us.
    * TODO: Include NATs entry/exit points.
    */
   
   int pos = 0;
   QVector< float >* curList = &__lineFrom;
+  bool natFound = false;
   
-  /* 1 */
+  /* 1) YQX KOBEV 50N50W 51N40W 52N30W 52N20W LIMRI XETBO */
   static QRegExp expNo1(" ([0-9]{2}[NS][0-9]{2,3}[SW])", Qt::CaseSensitive, QRegExp::RegExp2);
   while ((pos = expNo1.indexIn(this->__route.route, pos)) != -1) {
+    QString cap = expNo1.cap(1);
+    
+    float ns = cap.left(2).toFloat();
+    if (cap[2] == 'S')
+      ns = -ns;
+    
+    float we; // west-east
+    QString temp = cap.mid(3);
+    if (temp.length() > 3)
+      we = temp.left(3).toFloat();
+    else
+      we = temp.left(2).toFloat();
+    
+    if (temp.endsWith('W'))
+      we = -we;
+    
+    if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
+        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
+        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
+      curList = &__lineTo;
+    
+    *curList << we << ns;
+    
     pos += expNo1.matchedLength();
+    
+    natFound = true;
   }
+  
+  if (natFound)
+    return;
   
   pos = 0;
   
   
+  /* 2) VIXUN LOGSU 4950N 5140N 5130N 5120N DINIM */
   static QRegExp expNo2(" ([0-9]{4}[NS])", Qt::CaseSensitive, QRegExp::RegExp2);
   while ((pos = expNo2.indexIn(this->__route.route, pos)) != -1) {
-    
     QString cap = expNo2.cap(1);
     
     float ns = cap.left(2).toFloat();
@@ -342,7 +370,38 @@ Pilot::__parseRoute() {
     *curList << west << ns;
     
     pos += expNo2.matchedLength();
+    
+    natFound = true;
   }
   
+  if (natFound)
+    return;
+  
+  pos = 0;
+  
+  /* 4) MALOT 54/20 54/30 54/40 53/50 HECKK */
+  static QRegExp expNo4(" ([0-9]{2}/[0-9]{2})", Qt::CaseSensitive, QRegExp::RegExp2);
+  while ((pos = expNo4.indexIn(this->__route.route, pos)) != -1) {
+    QString cap = expNo4.cap(1);
+    
+    float north = cap.left(2).toFloat();
+    float west = 0 - cap.right(2).toFloat();
+    
+    if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
+        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && west > __position.longitude) ||
+        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && west < __position.longitude)))
+      curList = &__lineTo;
+    
+    *curList << west << north;
+    
+    pos += expNo4.matchedLength();
+    
+    natFound = true;
+  }
+  
+  if (natFound)
+    return;
+  
+  pos = 0;
 }
 
