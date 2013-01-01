@@ -36,6 +36,8 @@ public:
    * @param ICAO
    */
   Uir(const QString&);
+  
+  virtual ~Uir();
 
   /**
    * Reimplemented from Clickable.

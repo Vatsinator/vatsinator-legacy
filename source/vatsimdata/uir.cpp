@@ -28,6 +28,10 @@
 Uir::Uir(const QString& _icao) :
     __icao(_icao),
     __staff(new ControllerTableModel()) {}
+    
+Uir::~Uir() {
+  delete __staff;
+}
 
 void
 Uir::addFir(Fir* _f) {
