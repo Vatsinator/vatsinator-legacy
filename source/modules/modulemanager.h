@@ -1,6 +1,6 @@
 /*
     modulemanager.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 class AirportTracker;
 class FlightTracker;
 class ModelMatcher;
+class UpdateChecker;
 class VatbookHandler;
 
 class ModuleManager :
@@ -52,6 +53,7 @@ private:
   AirportTracker* __airportTracker;
   FlightTracker*  __flightTracker;
   ModelMatcher*   __modelsMatcher;
+  UpdateChecker*  __updateChecker;
   VatbookHandler* __vatbookHandler;
 };
 

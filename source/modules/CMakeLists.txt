@@ -5,6 +5,7 @@ set (modules_SRCS
     flighttracker.cpp
     modelmatcher.cpp
     modulemanager.cpp
+    updatechecker.cpp
     vatbookhandler.cpp
     
     models/bookedatctablemodel.cpp
@@ -18,6 +19,7 @@ set (modules_MOC_SRCS
     airporttracker.h
     flighttracker.h
     modulemanager.h
+    updatechecker.h
     vatbookhandler.h
     
     models/bookedatctablemodel.h

@@ -2,7 +2,7 @@
     defines.h
     This file contains some const variables.
     
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,9 @@
 
 // where to get all the data from
 #define VATSIM_STATUS_URL "http://status.vatsim.net/status.txt"
+
+// Vatsinator_repo url
+#define VATSINATOR_REPO_URL "https://raw.github.com/Garrappachc/Vatsinator-repo/master"
 
 // set files location
 #ifndef Q_OS_DARWIN

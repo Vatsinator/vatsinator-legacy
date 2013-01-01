@@ -1,6 +1,6 @@
 /*
     modulemanager.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
 #include "modules/modelmatcher.h"
+#include "modules/updatechecker.h"
 #include "modules/vatbookhandler.h"
 
 #include "vatsinatorapplication.h"
@@ -30,6 +31,7 @@ ModuleManager::ModuleManager() :
     __airportTracker(new AirportTracker()),
     __flightTracker(new FlightTracker()),
     __modelsMatcher(new ModelMatcher()),
+    __updateChecker(new UpdateChecker()),
     __vatbookHandler(new VatbookHandler()) {
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
           this,                                     SLOT(__initAfterGL()),
@@ -43,6 +45,7 @@ ModuleManager::~ModuleManager() {
   delete __airportTracker;
   delete __flightTracker;
   delete __modelsMatcher;
+  delete __updateChecker;
   delete __vatbookHandler;
 }
 
@@ -61,4 +64,5 @@ ModuleManager::updateData() {
 void
 ModuleManager::__initAfterGL() {
   __modelsMatcher->init();
+  __updateChecker->init();
 }
