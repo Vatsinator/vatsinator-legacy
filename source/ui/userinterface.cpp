@@ -187,6 +187,12 @@ UserInterface::hideAllWindows() {
 }
 
 void
+UserInterface::notififyAboutUpdates(bool _outdated) {
+  if (_outdated)
+    __updateNotification->show();
+}
+
+void
 UserInterface::closeEvent(QCloseEvent* _event) {
   hideAllWindows();
   _event->accept();
@@ -215,7 +221,6 @@ UserInterface::__setupWindow() {
   
   __updateNotification = new UpdateNotificationWidget(this);
   __updateNotification->setGeometry(0, MenuBar->height(), this->width(), 30);
-//   __updateNotification->show();
   
   Replaceable->addWidgets({__statusBox, __progressBar});
 

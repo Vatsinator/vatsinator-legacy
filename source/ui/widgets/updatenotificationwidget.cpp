@@ -25,6 +25,7 @@ UpdateNotificationWidget::UpdateNotificationWidget(QWidget* _parent) :
     QWidget(_parent),
     __label(this),
     __button(this) {
+  setVisible(false);
   setMinimumWidth(400);
   setFixedHeight(30);
   
@@ -54,9 +55,9 @@ UpdateNotificationWidget::resizeEvent(QResizeEvent* _event) {
   __label.resize(this->width(), this->height());
   
   QSize temp = __button.sizeHint();
-  int marginTop = (this->height() - temp.height()) / 2;
+  int margin = (this->height() - temp.height()) / 2;
   
-  __button.setGeometry(this->width() - temp.width() - 10, marginTop,
+  __button.setGeometry(this->width() - temp.width() - margin, margin,
                        temp.width(), temp.height());
   
   _event->accept();

@@ -49,40 +49,27 @@ UpdateChecker::Version::Version(const QString& _version) {
   
   if (_version.contains('-')) {
     __minor = _version.section('.', 1).section('-', 0, 0).toInt();
-    
-    if (_version.contains("beta"))
-      __revision = _version.section("beta", 1).toInt();
-    else if (_version.contains("alpha"))
-      __revision = _version.section("alpha", 1).toInt();
-    else if (_version.contains('r'))
-      __revision = _version.section('r', 1).toInt();
-    
   } else {
     __minor = _version.section('.', 1).toInt();
-    __revision = 0;
   }
   
-  VatsinatorApplication::log("Parsed %s as major=%i, minor=%i, revision=%i",
-                             qPrintable(_version), __major, __minor, __revision);
+  VatsinatorApplication::log("Parsed %s as major=%i, minor=%i",
+                             qPrintable(_version), __major, __minor);
 }
 
 UpdateChecker::Version::Version() :
    __major(-1),
-   __minor(-1),
-   __revision(-1) {}
+   __minor(-1) {}
 
 bool
 UpdateChecker::Version::operator <(const UpdateChecker::Version& _other) {
-  if (__major >= _other.__major)
-    return false;
+  if (__major < _other.__major)
+    return true;
   
-  if (__minor >= _other.__minor)
-    return false;
+  if (__major == _other.__major && __minor < _other.__minor)
+    return true;
   
-  if (__revision >= _other.__revision)
-    return false;
-  
-  return true;
+  return false;
 }
 
 void

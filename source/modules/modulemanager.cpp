@@ -53,6 +53,7 @@ void
 ModuleManager::init() {
   __airportTracker->init();
   __flightTracker->init();
+  __updateChecker->init();
 }
 
 void
@@ -64,5 +65,4 @@ ModuleManager::updateData() {
 void
 ModuleManager::__initAfterGL() {
   __modelsMatcher->init();
-  __updateChecker->init();
 }

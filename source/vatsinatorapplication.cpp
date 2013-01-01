@@ -1,6 +1,6 @@
 /*
     vatsinatorapplication.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "db/worldmap.h"
 
 #include "modules/modulemanager.h"
+#include "modules/updatechecker.h"
 
 #include "network/httphandler.h"
 
@@ -76,6 +77,10 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   // SettingsManager instance is now created, let him get the pointer & connect his slots
   __settingsManager->init();
   __modulesManager->init();
+  
+  // let user know about updates, if any available
+  connect(UpdateChecker::getSingletonPtr(), SIGNAL(versionChecked(bool)),
+          __userInterface,                  SLOT(notififyAboutUpdates(bool)));
   
   // handle settings changes
   connect(__settingsManager, SIGNAL(settingsChanged()), this, SLOT(__loadNewSettings()));

@@ -59,7 +59,7 @@ private:
     Version(const QString&);
     
     /**
-     * minor = -1, major = -1, revision = -1
+     * minor = -1, major = -1
      */
     Version();
     
@@ -67,10 +67,9 @@ private:
     
   private:
     
-    /* {major}.{minor}-[r/beta/alpha]{revision} */
+    /* {major}.{minor} */
     int __major;
     int __minor;
-    int __revision;
     
   };
   

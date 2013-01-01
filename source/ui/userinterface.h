@@ -96,6 +96,7 @@ public:
 public slots:
   void quit();
   void hideAllWindows();
+  void notififyAboutUpdates(bool);
 
 protected:
   void closeEvent(QCloseEvent*);
