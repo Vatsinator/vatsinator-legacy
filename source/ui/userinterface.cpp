@@ -1,6 +1,6 @@
 /*
     userinterface.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #ifndef NO_DEBUG
 #include "vdebug/debugwindow.h"
 #endif
+
+#include "ui/widgets/updatenotificationwidget.h"
 
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
@@ -85,6 +87,7 @@ UserInterface::~UserInterface() {
   hideAllWindows();
   __storeWindowGeometry();
 
+  delete __updateNotification;
   delete __aboutWindow;
   delete __airportDetailsWindow;
   delete __firDetailsWindow;
@@ -189,6 +192,12 @@ UserInterface::closeEvent(QCloseEvent* _event) {
   _event->accept();
 }
 
+void UserInterface::resizeEvent(QResizeEvent* _event) {
+  __updateNotification->setGeometry(0, MenuBar->height(),
+                                    this->width(), __updateNotification->sizeHint().height());
+  _event->accept();
+}
+
 void
 UserInterface::__setupWindow() {
   setupUi(this);
@@ -203,6 +212,10 @@ UserInterface::__setupWindow() {
   __progressBar->setMaximumSize(QSize(250, 13));
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
+  
+  __updateNotification = new UpdateNotificationWidget(this);
+  __updateNotification->setGeometry(0, MenuBar->height(), this->width(), 30);
+//   __updateNotification->show();
   
   Replaceable->addWidgets({__statusBox, __progressBar});
 

@@ -44,6 +44,7 @@ set (ui_SRCS
     
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
+    widgets/updatenotificationwidget.cpp
     
     windows/aboutwindow.cpp
     windows/airportdetailswindow.cpp
@@ -79,6 +80,7 @@ set (ui_MOC_SRCS
     
     widgets/mapwidget.h
     widgets/replaceablewidget.h
+    widgets/updatenotificationwidget.h
     
     windows/aboutwindow.h
     windows/airportdetailswindow.h

@@ -86,6 +86,9 @@ private slots:
   void __parseVersion(const QString&);
   
 signals:
+  /**
+   * @param outdated If true, Vatsinator is outdated.
+   */
   void versionChecked(bool);
   
 };
