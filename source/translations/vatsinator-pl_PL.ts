@@ -1145,9 +1145,22 @@
 <context>
     <name>TrackAction</name>
     <message>
-        <location filename="../ui/actions/trackaction.cpp" line="25"/>
+        <location filename="../ui/actions/trackaction.cpp" line="27"/>
         <source>Track this flight</source>
         <translation>Śledź ten lot</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateNotificationWidget</name>
+    <message>
+        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="33"/>
+        <source>There is a new version of Vatsinator available! Check it now at</source>
+        <translation>Dostępna jest nowa wersja Vatsinatora. Odwiedź</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="42"/>
+        <source>Close this notification</source>
+        <translation>Zamknij to ostrzeżenie</translation>
     </message>
 </context>
 <context>
@@ -1157,38 +1170,38 @@
         <translation type="obsolete">Aktualizacja:</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="107"/>
-        <location filename="../ui/userinterface.cpp" line="109"/>
+        <location filename="../ui/userinterface.cpp" line="110"/>
+        <location filename="../ui/userinterface.cpp" line="112"/>
         <source>Last update:</source>
         <translation>Aktualizacja:</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="107"/>
+        <location filename="../ui/userinterface.cpp" line="110"/>
         <source>never</source>
         <translation>nigdy</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="111"/>
+        <location filename="../ui/userinterface.cpp" line="114"/>
         <source>UTC</source>
         <translation>UTC</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="128"/>
+        <location filename="../ui/userinterface.cpp" line="131"/>
         <source>Clients</source>
         <translation>Klientów</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="132"/>
+        <location filename="../ui/userinterface.cpp" line="135"/>
         <source>pilots</source>
         <translation>pilotów</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="134"/>
+        <location filename="../ui/userinterface.cpp" line="137"/>
         <source>ATCs</source>
         <translation>kontrolerów</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="136"/>
+        <location filename="../ui/userinterface.cpp" line="139"/>
         <source>observers</source>
         <translation>obserwatorów</translation>
     </message>
@@ -1219,32 +1232,32 @@
         <translation type="obsolete">Pobieranie danych...</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="203"/>
-        <location filename="../vatsinatorapplication.cpp" line="255"/>
+        <location filename="../vatsinatorapplication.cpp" line="208"/>
+        <location filename="../vatsinatorapplication.cpp" line="260"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Nie udało mi się pobrać pliku z danymi.</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="204"/>
-        <location filename="../vatsinatorapplication.cpp" line="256"/>
+        <location filename="../vatsinatorapplication.cpp" line="209"/>
+        <location filename="../vatsinatorapplication.cpp" line="261"/>
         <source>What do you want to do with that?</source>
         <translation>Cóż więc uczynimy?</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="205"/>
-        <location filename="../vatsinatorapplication.cpp" line="257"/>
+        <location filename="../vatsinatorapplication.cpp" line="210"/>
+        <location filename="../vatsinatorapplication.cpp" line="262"/>
         <source>Try again</source>
         <translation>Próbuj jeszcze raz</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="206"/>
-        <location filename="../vatsinatorapplication.cpp" line="258"/>
+        <location filename="../vatsinatorapplication.cpp" line="211"/>
+        <location filename="../vatsinatorapplication.cpp" line="263"/>
         <source>Keep current data</source>
         <translation>Zachowaj aktualne dane</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="217"/>
-        <location filename="../vatsinatorapplication.cpp" line="268"/>
+        <location filename="../vatsinatorapplication.cpp" line="222"/>
+        <location filename="../vatsinatorapplication.cpp" line="273"/>
         <source>Data outdated!</source>
         <translation>Dane nieaktualne!</translation>
     </message>
