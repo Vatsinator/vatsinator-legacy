@@ -208,7 +208,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>(C) 2012 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</string>
+            <string>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
