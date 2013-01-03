@@ -336,64 +336,8 @@
 <context>
     <name>DebugWindow</name>
     <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="35"/>
-        <source>Vatsinator debug</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="75"/>
-        <source>OpenGL errors:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="82"/>
         <source>Refresh</source>
-        <translation>Odśwież</translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="101"/>
-        <source>GPU memory usage:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="115"/>
-        <source>B</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="134"/>
-        <source>OpenGL version:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="160"/>
-        <source>GL extensions pointers:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="212"/>
-        <source>VBOs created:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="241"/>
-        <source>Textures loaded:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="270"/>
-        <source>Number of screens:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="303"/>
-        <source>Screens</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../vdebug/resources/debugwindow.ui" line="319"/>
-        <source>Is virtual desktop?</source>
-        <translation></translation>
+        <translation type="obsolete">Odśwież</translation>
     </message>
 </context>
 <context>

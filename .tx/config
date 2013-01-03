@@ -1,9 +1,0 @@
-[main]
-host = https://www.transifex.com
-type = QT
-
-[vatsinator.develop]
-file_filter = source/translations/vatsinator-<lang>.ts
-source_file = source/translations/vatsinator-en_GB.ts
-source_lang = en_GB
-

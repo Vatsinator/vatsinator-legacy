@@ -32,7 +32,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Vatsinator debug</string>
+   <string notr="true">Vatsinator debug</string>
   </property>
   <widget class="QPlainTextEdit" name="OpenGLErrorsField">
    <property name="geometry">
@@ -72,14 +72,14 @@
     <item>
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>OpenGL errors:</string>
+       <string notr="true">OpenGL errors:</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="RefreshButton">
       <property name="text">
-       <string>Refresh</string>
+       <string notr="true">Refresh</string>
       </property>
      </widget>
     </item>
@@ -98,7 +98,7 @@
     <item>
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>GPU memory usage:</string>
+       <string notr="true">GPU memory usage:</string>
       </property>
      </widget>
     </item>
@@ -112,7 +112,7 @@
     <item>
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>B</string>
+       <string notr="true">B</string>
       </property>
      </widget>
     </item>
@@ -131,14 +131,14 @@
     <item>
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>OpenGL version:</string>
+       <string notr="true">OpenGL version:</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="OpenGLVersionField">
       <property name="text">
-       <string/>
+       <string notr="true"/>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -157,7 +157,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>GL extensions pointers:</string>
+    <string notr="true">GL extensions pointers:</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="ExtensionsTable">
@@ -209,14 +209,14 @@
     <item>
      <widget class="QLabel" name="label_6">
       <property name="text">
-       <string>VBOs created:</string>
+       <string notr="true">VBOs created:</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="VBOsCreatedField">
       <property name="text">
-       <string/>
+       <string notr="true"/>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -238,14 +238,14 @@
     <item>
      <widget class="QLabel" name="label_7">
       <property name="text">
-       <string>Textures loaded:</string>
+       <string notr="true">Textures loaded:</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="TexturesLoadedField">
       <property name="text">
-       <string/>
+       <string notr="true"/>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -267,14 +267,14 @@
     <item>
      <widget class="QLabel" name="label_8">
       <property name="text">
-       <string>Number of screens:</string>
+       <string notr="true">Number of screens:</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="NumberOfScreensField">
       <property name="text">
-       <string/>
+       <string notr="true"/>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -300,7 +300,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Screens</string>
+    <string notr="true">Screens</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -316,14 +316,14 @@
     <item>
      <widget class="QLabel" name="label_10">
       <property name="text">
-       <string>Is virtual desktop?</string>
+       <string notr="true">Is virtual desktop?</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="IsVirtualDesktopField">
       <property name="text">
-       <string/>
+       <string notr="true"/>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
