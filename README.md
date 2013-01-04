@@ -67,7 +67,7 @@ Available languages:
 - English
 - Polish
 
-If you want to translate Vatsinator into your own language, contact me on michal@garapich.pl.
+If you want to translate Vatsinator into your own language, visit [Trasifex site](https://www.transifex.com/projects/p/vatsinator/).
 
 
 ## Contact
