@@ -35,6 +35,9 @@ class CacheFile : public QFile {
 public:
   CacheFile(const QString&);
   
+  /**
+   * NOTE: QFile::exists() is not virtual.
+   */
   bool exists() const;
   
   bool open(OpenMode  = QIODevice::ReadOnly | QIODevice::Text);

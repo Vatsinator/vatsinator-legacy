@@ -19,6 +19,10 @@
 
 #include <QtGui>
 #include <QtOpenGL>
+#include <QtGlobal>
+
+#include "vatsinatorapplication.h"
+
 
 QString   glErrors;
 long unsigned gpuMemoryUsage = 0;
@@ -49,7 +53,7 @@ void checkGLErrorsFunc(const QString& _at) {
   while (err != GL_NO_ERROR) {
     glErrors += _at.section("/", -1, -1) + ": " + getErrorString(err) + "\n";
     err = glGetError();
-    qDebug() << "OpenGL error at " << _at << ", code: " << getErrorString(err);
+    VatsinatorApplication::log("OpenGL error at %s, code: %s", qPrintable(_at), qPrintable(getErrorString(err)));
   }
 }
 

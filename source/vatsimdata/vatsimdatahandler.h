@@ -204,6 +204,7 @@ public:
   static ControllerTableModel* emptyControllerTable;
   
 private:
+  
   /**
    * These functions read data files.
    * @param fileName Location of the data file.
@@ -266,9 +267,15 @@ private:
   
   static QMap< QString, QString > __dataFiles;
   
+private slots:
+  /**
+   * Called if local data is bad.
+   */
+  void __reportDataError(QString);
   
 signals:
   void dataCorrupted();
+  void localDataBad(QString);
 
 };
 

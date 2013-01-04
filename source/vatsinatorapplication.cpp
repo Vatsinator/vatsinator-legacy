@@ -133,7 +133,7 @@ VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
   msgBox.exec();
   
   if (_fatal)
-    quit();
+    QCoreApplication::exit(1);
 }
 
 void

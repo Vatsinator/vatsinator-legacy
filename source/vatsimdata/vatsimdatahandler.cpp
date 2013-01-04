@@ -54,7 +54,10 @@ VatsimDataHandler::VatsimDataHandler() :
     __observers(0),
     __statusFileFetched(false),
     __airports(AirportDatabase::getSingleton()),
-    __firs(FirDatabase::getSingleton()) {}
+    __firs(FirDatabase::getSingleton()) {
+  connect(this, SIGNAL(localDataBad(QString)),
+          this, SLOT(__reportDataError(QString)));
+}
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
@@ -266,10 +269,7 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
-        tr("File") % " " % _fName % " " % tr("could not be opened!"),
-        true
-      );
+    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
     return;
   }
   
@@ -312,10 +312,7 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
-        tr("File") % " " % _fName % " " % tr("could not be opened!"),
-        true
-      );
+    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
     return;
   }
   
@@ -343,10 +340,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
-        tr("File") % " " % _fName % " " % tr("could not be opened!"),
-        true
-      );
+    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
     return;
   }
   
@@ -396,10 +390,7 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
-        tr("File") % " " % _fName % " " % tr("could not be opened!"),
-        true
-      );
+    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
     return;
   }
   
@@ -432,7 +423,6 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
   
   VatsinatorApplication::log("Finished reading \"uir\" file.");
 }
-
 
 void
 VatsimDataHandler::__clearData() {
@@ -480,4 +470,10 @@ VatsimDataHandler::__initFileNames() {
 #endif // Q_OS_DARWIN
   
   return true;
+}
+
+void
+VatsimDataHandler::__reportDataError(QString _msg) {
+  VatsinatorApplication::log(qPrintable(_msg));
+  VatsinatorApplication::alert(_msg, true);
 }

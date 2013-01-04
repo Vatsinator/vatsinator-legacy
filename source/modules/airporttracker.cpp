@@ -23,6 +23,8 @@
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
+#include "vatsinatorapplication.h"
+
 #include "airporttracker.h"
 #include "defines.h"
 
@@ -83,8 +85,6 @@ AirportTracker::__toggleAirport(const Airport* _ap) {
   else
     __trackedAirports.insert(icao, _ap);
   
-#ifndef NO_DEBUG
-  qDebug() << "Toggled: " << icao;
-#endif
+  VatsinatorApplication::log("Airpor toggled: %s", qPrintable(icao));
 }
 

@@ -307,7 +307,7 @@ MapWidget::initializeGL() {
   GLint samples;
   glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
   glGetIntegerv(GL_SAMPLES, &samples);
-  qDebug("Have %d buffers and %d samples", bufs, samples);
+  VatsinatorApplication::log("Have %d buffers and %d samples.", bufs, samples);
 #endif
   
   glShadeModel(GL_SMOOTH);
