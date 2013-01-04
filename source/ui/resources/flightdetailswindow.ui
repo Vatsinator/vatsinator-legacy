@@ -404,7 +404,7 @@
       <item row="8" column="0">
        <widget class="QLabel" name="AltimeterLabelDesc">
         <property name="text">
-         <string>Altimeter:</string>
+         <string>Baro:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
