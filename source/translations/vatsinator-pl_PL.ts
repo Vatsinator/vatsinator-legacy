@@ -441,11 +441,6 @@
         <translation>Barometr:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="449"/>
-        <source>1013 / 2992</source>
-        <translation>1013 / 2992</translation>
-    </message>
-    <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="458"/>
         <source>Flight plan</source>
         <translation>Plan lotu</translation>
@@ -489,11 +484,6 @@
         <location filename="../ui/resources/flightdetailswindow.ui" line="741"/>
         <source>Remarks:</source>
         <translation>Przypisy:</translation>
-    </message>
-    <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="876"/>
-        <source>-&gt;</source>
-        <translation>-&gt;</translation>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="898"/>
