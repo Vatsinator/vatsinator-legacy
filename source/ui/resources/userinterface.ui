@@ -86,7 +86,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Clients:</string>
+         <string notr="true">Clients:</string>
         </property>
        </widget>
       </item>
@@ -112,7 +112,7 @@
          </size>
         </property>
         <property name="text">
-         <string>N E</string>
+         <string notr="true">N E</string>
         </property>
        </widget>
       </item>
@@ -142,8 +142,8 @@
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>227</x>
-      <y>165</y>
+      <x>240</x>
+      <y>200</y>
       <width>180</width>
       <height>210</height>
      </rect>
@@ -155,7 +155,7 @@
      </size>
     </property>
     <property name="title">
-     <string>Vatsinator</string>
+     <string>&amp;Vatsinator</string>
     </property>
     <addaction name="ActionMetar"/>
     <addaction name="ActionRefresh"/>
@@ -174,13 +174,13 @@
      </size>
     </property>
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="ActionAbout"/>
    </widget>
    <widget class="QMenu" name="MenuSettings">
     <property name="title">
-     <string>Settings</string>
+     <string>&amp;Settings</string>
     </property>
     <addaction name="ActionPreferences"/>
    </widget>
@@ -197,7 +197,7 @@
     <string>Exit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string notr="true">Ctrl+Q</string>
    </property>
   </action>
   <action name="ActionAbout">
@@ -221,7 +221,7 @@
     <string>METARs...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+M</string>
+    <string notr="true">Ctrl+M</string>
    </property>
   </action>
   <action name="ActionRefresh">
@@ -233,7 +233,7 @@
     <string>Refresh</string>
    </property>
    <property name="shortcut">
-    <string>F5</string>
+    <string notr="true">F5</string>
    </property>
   </action>
   <action name="ActionPreferences">
@@ -269,7 +269,7 @@
     <string>Enable auto-updates</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string notr="true">Ctrl+R</string>
    </property>
   </action>
  </widget>

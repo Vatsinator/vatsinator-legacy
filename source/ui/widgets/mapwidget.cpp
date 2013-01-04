@@ -695,8 +695,10 @@ MapWidget::__openContextMenu(const Airport* _ap) {
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
+            /* For example: BAW123 to EGLL */
             tr("%1 to %2").arg(
               p->getCallsign(),
+              /* "Nowhere" means there's no destination airport in flight plan yet. */
               (p->getRoute().destination.isEmpty() ? tr("nowhere") : p->getRoute().destination)
             ),
             this
@@ -721,6 +723,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
+            /* For example: BAW123 from EGLL */
             tr("%1 from %2").arg(
               p->getCallsign(),
               p->getRoute().origin
@@ -750,6 +753,7 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   __menu = new QMenu(_fir->getIcao(), this);
 
   FirDetailsAction* showFir = new FirDetailsAction(_fir,
+      /* FIR details */
       tr("%1 details").arg(_fir->getIcao()), this);
 
   __menu->addAction(showFir);
@@ -1356,7 +1360,7 @@ MapWidget::__produceAirportToolTip(const Airport* _ap) {
   int arrs = _ap->countArrivals();
 
   if (arrs)
-    text.append(static_cast< QString >("<br>") % tr("Arrivals: %2").arg(QString::number(arrs)));
+    text.append(static_cast< QString >("<br>") % tr("Arrivals: %1").arg(QString::number(arrs)));
 
   text.append("</center>");
   return text;

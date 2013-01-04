@@ -269,7 +269,7 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
+    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
     return;
   }
   
@@ -312,7 +312,7 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
+    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
     return;
   }
   
@@ -340,7 +340,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
+    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
     return;
   }
   
@@ -390,7 +390,7 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File") % " " % _fName % " " % tr("could not be opened!"));
+    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
     return;
   }
   

@@ -99,7 +99,7 @@
        <item>
         <widget class="QLabel" name="VersionLabel">
          <property name="text">
-          <string>Version</string>
+          <string>Version %1</string>
          </property>
         </widget>
        </item>

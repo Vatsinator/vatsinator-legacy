@@ -71,8 +71,7 @@ FirDatabase::__readDatabase() {
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(
-        tr("File") % " " FIRS_DB % " " %
-        tr("could not be opened! Please reinstall the application."),
+      tr("File %1 could not be opened! Please reinstall the application.").arg(FIRS_DB),
       true);
 
   int size;

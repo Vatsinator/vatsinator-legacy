@@ -66,8 +66,7 @@ void WorldMap::__readDatabase() {
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(
-        tr("File") % " " % WORLD_MAP % " " %
-        tr("does not exist! Please reinstall the application."),
+        tr("File %1 could not be opened! Please reinstall the application.").arg(WORLD_MAP),
       true);
 
   int size;
