@@ -2872,7 +2872,7 @@
 2949,"Murmansk","Murmansk","Russia","MMK","ULMM",68.781672,32.750822,266,4,"N"
 2950,"Gomel","Gomel","Belarus","GME","UMGG",52.527022,31.016692,471,2,"E"
 2951,"Vitebsk","Vitebsk","Belarus","VTB","UMII",55.1265,30.349639,683,2,"E"
-2952,"Khrabrovo","Kaliningrad","Russia","KGD","UMKK",54.89005,20.592633,42,3,"N"
+2952,"Khrabrovo","Kaliningrad","Russia","KGD","UMKK",54.89,20.5925,42,3,"N"
 2953,"Minsk 1","Minsk","Belarus","MHP","UMMM",53.864472,27.539683,748,2,"E"
 2954,"Minsk 2","Minsk 2","Belarus","MSQ","UMMS",53.882469,28.030731,670,2,"E"
 2955,"Abakan","Abakan","Russia","ABA","UNAA",53.74,91.385,831,8,"N"
@@ -6988,3 +6988,4 @@
 8417,"Konin","Kazimierz Biskupi","Poland","","EPKB",52.533333,18.313541,361,1,"E"
 8418,"Wilamowo","Kętrzyn","Poland","","EPKE",54.045000,21.429444,456,1,"E"
 8419,"Pobiednik","Kraków","Poland","","EPKP",50.089672,20.201658,650,1,"E"
+8420,"Świdnik","Lublin","Poland","LUZ","EPLB",51.239333,22.714083,666,1,"E"
