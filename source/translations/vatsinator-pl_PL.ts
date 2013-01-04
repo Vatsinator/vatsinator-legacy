@@ -70,7 +70,7 @@
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="64"/>
         <source>Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="79"/>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../ui/resources/airportdetailswindow.ui" line="193"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>ATC</translation>
     </message>
     <message>
         <location filename="../ui/resources/airportdetailswindow.ui" line="259"/>
@@ -231,7 +231,7 @@
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="96"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>ATC</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="98"/>
@@ -383,7 +383,7 @@
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="89"/>
         <source>Ground speed:</source>
-        <translation type="unfinished"/>
+        <translation>Ground speed:</translation>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="122"/>
@@ -453,7 +453,7 @@
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="502"/>
         <source>TAS:</source>
-        <translation type="unfinished"/>
+        <translation>TAS:</translation>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="528"/>
@@ -493,7 +493,7 @@
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="876"/>
         <source>-&gt;</source>
-        <translation type="unfinished"/>
+        <translation>-&gt;</translation>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="898"/>
@@ -582,12 +582,12 @@
     <message>
         <location filename="../ui/resources/userinterface.ui" line="115"/>
         <source>N E</source>
-        <translation type="unfinished"/>
+        <translation>N E</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="158"/>
         <source>Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="177"/>
@@ -607,7 +607,7 @@
     <message>
         <location filename="../ui/resources/userinterface.ui" line="200"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="209"/>
@@ -622,7 +622,7 @@
     <message>
         <location filename="../ui/resources/userinterface.ui" line="224"/>
         <source>Ctrl+M</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+M</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="233"/>
@@ -632,7 +632,7 @@
     <message>
         <location filename="../ui/resources/userinterface.ui" line="236"/>
         <source>F5</source>
-        <translation type="unfinished"/>
+        <translation>F5</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="245"/>
@@ -716,7 +716,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1322"/>
         <source>Ground speed:</source>
-        <translation type="unfinished"/>
+        <translation>Ground speed:</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1323"/>
