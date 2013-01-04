@@ -695,8 +695,10 @@ MapWidget::__openContextMenu(const Airport* _ap) {
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
-            p->getCallsign() % tr(" to ") %
-                (p->getRoute().destination.isEmpty() ? tr("nowhere") : p->getRoute().destination),
+            tr("%1 to %2").arg(
+              p->getCallsign(),
+              (p->getRoute().destination.isEmpty() ? tr("nowhere") : p->getRoute().destination)
+            ),
             this
           );
         __menu->addAction(showDetails);
@@ -719,7 +721,10 @@ MapWidget::__openContextMenu(const Airport* _ap) {
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
-            p->getCallsign() % tr(" from ") % p->getRoute().origin,
+            tr("%1 from %2").arg(
+              p->getCallsign(),
+              p->getRoute().origin
+            ),
             this
           );
         __menu->addAction(showDetails);
@@ -745,7 +750,7 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   __menu = new QMenu(_fir->getIcao(), this);
 
   FirDetailsAction* showFir = new FirDetailsAction(_fir,
-      static_cast< QString >(_fir->getIcao()).simplified() % " " % tr("details"), this);
+      tr("%1 details").arg(_fir->getIcao()), this);
 
   __menu->addAction(showFir);
 
@@ -1319,9 +1324,10 @@ MapWidget::__producePilotToolTip(const Pilot* _p) {
         _p->getRoute().destination % " " % QString::fromUtf8(__airports[_p->getRoute().destination]->getData()->city) :
         _p->getRoute().destination)) %
     "</nobr><br>" %
-    tr("Ground speed:") % " " % QString::number(_p->getGroundSpeed()) %
-    " " % tr("kts") % "<br>" % tr("Altitude:") % " " %
-    QString::number(_p->getAltitude()) % " " % tr("ft") % "</center>";
+    tr("Ground speed: %1 kts").arg(QString::number(_p->getGroundSpeed())) %
+    "<br>" %
+    tr("Altitude: %1 ft").arg(QString::number(_p->getAltitude())) %
+    "</center>";
 }
 
 inline QString
@@ -1345,12 +1351,12 @@ MapWidget::__produceAirportToolTip(const Airport* _ap) {
   int deps = _ap->countDepartures();
 
   if (deps)
-    text.append(static_cast< QString >("<br>") % tr("Departures:") % " " % QString::number(deps));
+    text.append(static_cast< QString >("<br>") % tr("Departures: %1").arg(QString::number(deps)));
 
   int arrs = _ap->countArrivals();
 
   if (arrs)
-    text.append(static_cast< QString >("<br>") % tr("Arrivals:") % " " % QString::number(arrs));
+    text.append(static_cast< QString >("<br>") % tr("Arrivals: %2").arg(QString::number(arrs)));
 
   text.append("</center>");
   return text;

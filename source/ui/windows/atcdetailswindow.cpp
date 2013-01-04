@@ -48,7 +48,7 @@ AtcDetailsWindow::show(const Client* _client) {
   __current = dynamic_cast< const Controller* >(_client);
   __currentCallsign = __current->getCallsign();
 
-  setWindowTitle(QString(__current->getCallsign() + " - " + tr("ATC details")));
+  setWindowTitle(tr("%1 - ATC details").arg(__current->getCallsign()));
 
   CallsignLabel->setText(__current->getCallsign());
   FacilityLabel->setText(__current->getDescription());

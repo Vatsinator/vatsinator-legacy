@@ -35,6 +35,7 @@
 #include "ui/windows/settingswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
+#include <vatsimdata/client.h>
 
 #include "vatsinatorapplication.h"
 
@@ -107,12 +108,11 @@ void
 UserInterface::statusBarUpdate(const QString& _message) {
   if (_message.isEmpty()) {
     if (VatsimDataHandler::getSingleton().getDateDataUpdated().isNull())
-      __statusBox->setText(tr("Last update:") % " " % tr("never"));
+      __statusBox->setText(tr("Last update: never"));
     else
-      __statusBox->setText(tr("Last update:") % " " %
-          VatsimDataHandler::getSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm") %
-          " " % tr("UTC")
-        );
+      __statusBox->setText(tr("Last update: %1 UTC").arg(
+          VatsimDataHandler::getSingleton().getDateDataUpdated().toString("dd MMM yyyy, hh:mm")
+        ));
   } else {
     __statusBox->setText(_message);
   }
@@ -127,17 +127,14 @@ void
 UserInterface::infoBarUpdate() {
   VatsimDataHandler& data = VatsimDataHandler::getSingleton();
   
-  ClientsBox->setText(
-      tr("Clients") % static_cast< QString >(": ") %
-      QString::number(data.clientCount()) %
-      static_cast< QString >(" (") %
-      QString::number(data.pilotCount()) %
-      " " % tr("pilots") % static_cast< QString >(", ") %
-      QString::number(data.atcCount()) %
-      " " % tr("ATCs") % static_cast< QString >(", ") %
-      QString::number(data.obsCount()) %
-      " " % tr("observers") % static_cast< QString >(")")
-    );
+  ClientsBox->setText(tr(
+      "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
+          QString::number(data.clientCount()),
+          QString::number(data.pilotCount()),
+          QString::number(data.atcCount()),
+          QString::number(data.obsCount())
+        )
+   );
 }
 
 void
