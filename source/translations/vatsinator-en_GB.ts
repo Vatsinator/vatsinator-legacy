@@ -443,11 +443,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="449"/>
-        <source>1013 / 2992</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="458"/>
         <source>Flight plan</source>
         <translation type="unfinished"></translation>
@@ -490,11 +485,6 @@
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="741"/>
         <source>Remarks:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/resources/flightdetailswindow.ui" line="876"/>
-        <source>-&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
