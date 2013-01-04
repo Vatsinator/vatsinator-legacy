@@ -437,8 +437,8 @@
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="407"/>
-        <source>Altimeter:</source>
-        <translation>Barometr:</translation>
+        <source>Baro:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="458"/>
@@ -1044,18 +1044,18 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="270"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="316"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="400"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="272"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="315"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="343"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="393"/>
         <source>File</source>
         <translation>Plik</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="270"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="316"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="400"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="272"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="315"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="343"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="393"/>
         <source>could not be opened!</source>
         <translation>nie istnieje!</translation>
     </message>
