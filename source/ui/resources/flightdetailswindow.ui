@@ -446,7 +446,7 @@
       <item row="8" column="2">
        <widget class="QLabel" name="AltimeterLabel">
         <property name="text">
-         <string>1013 / 2992</string>
+         <string notr="true">1013 / 2992</string>
         </property>
        </widget>
       </item>
@@ -873,7 +873,7 @@
        </font>
       </property>
       <property name="text">
-       <string>-&gt;</string>
+       <string notr="true">-&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
