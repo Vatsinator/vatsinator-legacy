@@ -443,7 +443,7 @@
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="449"/>
         <source>1013 / 2992</source>
-        <translation type="unfinished"/>
+        <translation>1013 / 2992</translation>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="458"/>
