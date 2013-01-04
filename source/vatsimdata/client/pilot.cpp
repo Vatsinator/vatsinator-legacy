@@ -323,47 +323,19 @@ Pilot::__parseRoute() const {
   QVector< float >* curList = &__lineFrom;
   bool natFound = false;
   
-  /* 0) LINND 3952N06815W 4025N06700W 4307N06000W 4510N05230W 4554N05000W 4810N04000W 4926N03000W 4949N02000W 4941N01500W BARIX */
-//   static QRegExp expNo0(" ([0-9]{4}[NS][0-9]{5}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
-//   while ((pos = expNo0.indexIn(this->__route.route, pos)) != -1) {
-//     QString cap = expNo0.cap(1);
-//     float ns = cap.left(4).toFloat();
-//     if (cap[4] == 'S')
-//       ns = -ns;
-//     
-//     float we = cap.mid(5, 5).toFloat();
-//     if (cap.endsWith('W'))
-//       we = -we;
-//     
-//      if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
-//         (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
-//         (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
-//       curList = &__lineTo;
-//     
-//     *curList << we << ns;
-//     
-//     pos += expNo0.matchedLength();
-//     
-//     natFound = true;
-//   }
-//   
-//   if (natFound)
-//     return;
-//   
-//   pos = 0;
-  
   /* 1) 5000N 05000W 5100N 04000W 5100N 03000W 5100N 02000W */
-  static QRegExp expNo1(" ([0-9]{4}[NS] [0-9]{5}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
+  static QRegExp expNo1(" ([0-9]{4}[NS]) ([0-9]{5}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
   while ((pos = expNo1.indexIn(this->__route.route, pos)) != -1) {
-    QString cap = expNo1.cap(1);
-    QStringList capSplit = cap.split(' ');
+    QString cap1 = expNo1.cap(1);
     
-    float ns = capSplit.first().left(4).toFloat();
-    if (capSplit.first().endsWith('S'))
+    float ns = cap1.left(2).toFloat();
+    if (cap1.endsWith('S'))
       ns = -ns;
     
-    float we = capSplit.last().left(5).toFloat();
-    if (capSplit.last().endsWith('W'))
+    QString cap2 = expNo1.cap(2);
+    
+    float we = cap2.left(3).toFloat();
+    if (cap2.endsWith('W'))
       we = -we;
     
     if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
@@ -384,22 +356,23 @@ Pilot::__parseRoute() const {
   pos = 0;
   
   /* 2) YQX KOBEV 50N50W 51N40W 52N30W 52N20W LIMRI XETBO */
-  static QRegExp expNo2(" ([0-9]{2}[NS][0-9]{2,3}[EW]) ", Qt::CaseSensitive, QRegExp::RegExp2);
+  static QRegExp expNo2(" ([0-9]{2}[NS])([0-9]{2,3}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
   while ((pos = expNo2.indexIn(this->__route.route, pos)) != -1) {
-    QString cap = expNo2.cap(1);
+    QString cap1 = expNo2.cap(1);
     
-    float ns = cap.left(2).toFloat();
-    if (cap[2] == 'S')
+    float ns = cap1.left(2).toFloat();
+    if (cap1.endsWith('S'))
       ns = -ns;
     
-    float we; // west-east
-    QString temp = cap.mid(3);
-    if (temp.length() > 3)
-      we = temp.left(3).toFloat();
-    else
-      we = temp.left(2).toFloat();
+    QString cap2 = expNo2.cap(2);
     
-    if (temp.endsWith('W'))
+    float we;
+    if (cap2.length() > 3)
+      we = cap2.left(3).toFloat();
+    else
+      we = cap2.left(2).toFloat();
+    
+    if (cap2.endsWith('W'))
       we = -we;
     
     if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
