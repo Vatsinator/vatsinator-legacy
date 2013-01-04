@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+#include "db/firdatabase.h"
+
 #include "glutils/vertexbufferobject.h"
 #include "glutils/glextensions.h"
 

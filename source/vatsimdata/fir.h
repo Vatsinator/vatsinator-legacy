@@ -24,7 +24,6 @@
 
 #include <qgl.h>
 
-#include "db/firdatabase.h"
 #include "db/point.h"
 
 #include "vatsimdata/airport.h"
