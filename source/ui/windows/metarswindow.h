@@ -48,17 +48,23 @@ public:
 
 public slots:
   void show(QString);
-  void fetchMetar();
+  void metarRequested();
   
 protected:
   virtual void keyPressEvent(QKeyEvent*);
 
 private:
-  HttpHandler*  __httpHandler;
-  MetarListModel*   __metarsHandler;
+  void __findAndSelectMetar(const QString&, bool = true);
+  
+  HttpHandler*    __httpHandler;
+  MetarListModel* __metarsHandler;
+  
+  /* Keeps the ICAO of the metar that user's waiting for */
+  QString __awaited;
 
 private slots:
   void __handleTextChange(const QString&);
+  void __handleNewMetars();
 
 
 

@@ -44,11 +44,21 @@ MetarListModel::fetchMetar(const QString& _icao) {
 
 const Metar*
 MetarListModel::find(const QString& _key) const {
-  for (const Metar & m: __metarList)
+  for (const Metar& m: __metarList)
     if (m.getIcao() == _key)
       return &m;
 
   return static_cast< const Metar* >(NULL);
+}
+
+const QModelIndex
+MetarListModel::getModelIndexForMetar(const Metar* _m) const {
+  for (int i = 0; i < __metarList.size(); ++i) {
+    if (&__metarList.at(i) == _m)
+      return createIndex(i, 0);
+  }
+  
+  return QModelIndex();
 }
 
 int
@@ -77,7 +87,7 @@ MetarListModel::anyMetarsInQueue() const {
 }
 
 void
-MetarListModel::updateAllMetars() {
+MetarListModel::updateAll() {
   for (Metar & m: __metarList)
     fetchMetar(m.getIcao());
 }
@@ -124,7 +134,7 @@ MetarListModel::__gotMetar(const QString& _metar) {
 
   QString oneMetar;
 
-for (QString & word: metar.split(' ')) {
+  for (const QString& word: metar.split(' ')) {
     if (__matches(word)) {
       if (!oneMetar.isEmpty())
         __addMetar(oneMetar);
@@ -132,7 +142,7 @@ for (QString & word: metar.split(' ')) {
       oneMetar.clear();
     }
 
-    oneMetar.append(word + " ");
+    oneMetar.append(word % " ");
   }
 
   if (!oneMetar.isEmpty())

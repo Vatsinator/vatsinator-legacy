@@ -44,10 +44,15 @@ public:
 
   /**
    * Looks for the METAR.
-   * @param icao Airport ICAO code.
+   * @param icao Airport ICAO code. NOTE: The code must be uppercase.
    * @return Const ptr to found METAR or NULL.
    */
   const Metar* find(const QString&) const;
+  
+  /**
+   * Returns the model index for the given metar.
+   */
+  const QModelIndex getModelIndexForMetar(const Metar*) const;
 
   /* Two QAbstractListModel-reimplemented functions */
   int rowCount(const QModelIndex& = QModelIndex()) const;
@@ -56,7 +61,7 @@ public:
   bool anyMetarsInQueue() const;
 
 public slots:
-  void updateAllMetars();
+  void updateAll();
   void clear();
 
 signals:

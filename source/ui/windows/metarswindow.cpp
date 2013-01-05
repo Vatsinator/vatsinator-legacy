@@ -28,7 +28,8 @@
 #include "defines.h"
 
 MetarsWindow::MetarsWindow(QWidget* _parent) :
-    QWidget(_parent) {
+    QWidget(_parent),
+    __awaited("") {
 
   setupUi(this);
 
@@ -38,14 +39,16 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
 
   __metarsHandler = new MetarListModel(__httpHandler);
 
-  connect(FetchButton,    SIGNAL(clicked()),
-          this,     SLOT(fetchMetar()));
+  connect(FetchButton,      SIGNAL(clicked()),
+          this,             SLOT(metarRequested()));
   connect(RefreshAllButton, SIGNAL(clicked()),
-          __metarsHandler,  SLOT(updateAllMetars()));
-  connect(ClearButton,    SIGNAL(clicked()),
+          __metarsHandler,  SLOT(updateAll()));
+  connect(ClearButton,      SIGNAL(clicked()),
           __metarsHandler,  SLOT(clear()));
-  connect(MetarICAO,    SIGNAL(textChanged(const QString&)),
-          this,     SLOT(__handleTextChange(const QString&)));
+  connect(MetarICAO,        SIGNAL(textChanged(const QString&)),
+          this,             SLOT(__handleTextChange(const QString&)));
+  connect(__metarsHandler,  SIGNAL(newMetarsAvailable()),
+          this,             SLOT(__handleNewMetars()));
   
   FetchButton->setEnabled(false);
   MetarsDisplay->setModel(__metarsHandler);
@@ -61,29 +64,50 @@ MetarsWindow::~MetarsWindow() {
 void
 MetarsWindow::show(QString _icao) {
   QWidget::show();
-  __metarsHandler->fetchMetar(_icao);
+  
+  __findAndSelectMetar(_icao);
 }
 
 void
-MetarsWindow::fetchMetar() {
-  __metarsHandler->fetchMetar(MetarICAO->text());
-  MetarICAO->setText("");
+MetarsWindow::metarRequested() {
+  __findAndSelectMetar(MetarICAO->text());
 }
 
 void
 MetarsWindow::keyPressEvent(QKeyEvent* _event) {
-  if (!MetarICAO->text().isEmpty() &&
+  if (!MetarICAO->text().isEmpty() && MetarICAO->hasFocus() &&
       (_event->key() == Qt::Key_Return || _event->key() == Qt::Key_Enter))
-    fetchMetar();
+    metarRequested();
   
   QWidget::keyPressEvent(_event);
 }
 
 void
-MetarsWindow::__handleTextChange(const QString& _text) {
-  if (_text.length() == 0)
-    FetchButton->setEnabled(false);
-  else
-    FetchButton->setEnabled(true);
+MetarsWindow::__findAndSelectMetar(const QString& _icao, bool _fetchIfNotFound) {
+const Metar* m = __metarsHandler->find(_icao.toUpper());
+  if (m) {
+    const QModelIndex mi = __metarsHandler->getModelIndexForMetar(m);
+    MetarsDisplay->setCurrentIndex(mi);
+    MetarsDisplay->scrollTo(mi);
+  } else {
+    if (_fetchIfNotFound) {
+      __metarsHandler->fetchMetar(_icao);
+      __awaited = _icao;
+    }
+  }
+  
+  MetarICAO->setText("");
 }
 
+void
+MetarsWindow::__handleTextChange(const QString& _text) {
+  FetchButton->setEnabled(_text.length() != 0);
+}
+
+void
+MetarsWindow::__handleNewMetars() {
+  if (!__awaited.isEmpty()) {
+    __findAndSelectMetar(__awaited, false);
+    __awaited.clear();
+  }
+}
