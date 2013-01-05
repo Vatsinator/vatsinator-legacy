@@ -1,7 +1,7 @@
 /*
     mapwidget.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
-    Copyright (C) 2012  Jan Macheta janmacheta@gmail.com
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012       Jan Macheta janmacheta@gmail.com
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
