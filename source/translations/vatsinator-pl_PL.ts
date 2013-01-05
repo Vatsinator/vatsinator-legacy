@@ -81,22 +81,22 @@
         <location filename="../ui/resources/aboutwindow.ui" line="102"/>
         <location filename="../ui/windows/aboutwindow.cpp" line="38"/>
         <source>Version %1</source>
-        <translation type="unfinished"/>
+        <translation>Wersja %1</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="125"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator to prosty monitor sieci Vatsim - pokazuje zalogowanych pilotów, kontrolerów oraz dostarcza wielu użytecznych informacji (jak np. raporty pogodowe, czy dane lotniska).</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="151"/>
         <source>Airports in the database:</source>
-        <translation type="unfinished"/>
+        <translation>Lotnisk w bazie danych:</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="178"/>
         <source>FIRs in the database:</source>
-        <translation type="unfinished"/>
+        <translation>FIRów w bazie danych:</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="117"/>
@@ -124,7 +124,7 @@
     <message>
         <location filename="../db/airportdatabase.cpp" line="53"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać otwarty! Proszę przeinstalować aplikację.</translation>
     </message>
 </context>
 <context>
@@ -133,7 +133,7 @@
         <location filename="../ui/resources/airportdetailswindow.ui" line="35"/>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="145"/>
         <source>%1 - airport details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - szczegóły lotniska</translation>
     </message>
     <message>
         <location filename="../ui/resources/airportdetailswindow.ui" line="61"/>
@@ -204,12 +204,12 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="116"/>
         <source>Sorry, no weather report for %1.</source>
-        <translation type="unfinished"/>
+        <translation>Wybacz, nie posiadam informacji pogodowej dla %1.</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="174"/>
         <source>%1 ft</source>
-        <translation type="unfinished"/>
+        <translation>%1 stóp</translation>
     </message>
 </context>
 <context>
@@ -237,12 +237,12 @@
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="116"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Przyloty: %1</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="118"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Odloty: %1</translation>
     </message>
 </context>
 <context>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
         <source>%1 - ATC details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - szczegóły ATC</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="67"/>
@@ -312,7 +312,7 @@
     <message>
         <location filename="../db/firdatabase.cpp" line="74"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać otwarty! Proszę przeinstalować aplikację.</translation>
     </message>
 </context>
 <context>
@@ -345,12 +345,12 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="81"/>
         <source>%1 - FIR details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - szczegóły FIR</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="83"/>
         <source>%1 - ARTCC details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - szczegóły ARTCC</translation>
     </message>
 </context>
 <context>
@@ -359,7 +359,7 @@
         <location filename="../ui/resources/flightdetailswindow.ui" line="35"/>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="62"/>
         <source>%1 - flight details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - szczegóły lotu</translation>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="58"/>
@@ -426,7 +426,7 @@
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="407"/>
         <source>Baro:</source>
-        <translation type="unfinished"/>
+        <translation>Baro:</translation>
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="458"/>
@@ -491,13 +491,13 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="68"/>
         <source>%1 feet</source>
-        <translation type="unfinished"/>
+        <translation>%1 stóp</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="95"/>
         <source>%1 kts</source>
-        <translation type="unfinished"/>
+        <translation>%1 węzłów</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="73"/>
@@ -581,17 +581,17 @@
     <message>
         <location filename="../ui/resources/userinterface.ui" line="158"/>
         <source>&amp;Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Vatsinator</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="177"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Pomoc</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="183"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ustawienia</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="245"/>
@@ -639,37 +639,37 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="699"/>
         <source>%1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 do %2</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="727"/>
         <source>%1 from %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 z %2</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="757"/>
         <source>%1 details</source>
-        <translation type="unfinished"/>
+        <translation>Szczegóły %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1331"/>
         <source>Ground speed: %1 kts</source>
-        <translation type="unfinished"/>
+        <translation>Ground speed: %1 węzłów</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1333"/>
         <source>Altitude: %1 ft</source>
-        <translation type="unfinished"/>
+        <translation>Wysokość: %1 stóp</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1358"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Odloty: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1363"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Przyloty: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="702"/>
@@ -693,7 +693,7 @@
     <message>
         <location filename="../ui/actions/metaraction.cpp" line="25"/>
         <source>%1 metar</source>
-        <translation type="unfinished"/>
+        <translation>%1 - raport pogodowy</translation>
     </message>
 </context>
 <context>
@@ -948,7 +948,7 @@
     <message>
         <location filename="../ui/widgets/updatenotificationwidget.cpp" line="33"/>
         <source>There is a new version of Vatsinator available! Check it now at %1</source>
-        <translation type="unfinished"/>
+        <translation>Nowa wersja Vatsinatora jest już dostępna! Wejdź na %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/updatenotificationwidget.cpp" line="42"/>
@@ -961,17 +961,17 @@
     <message>
         <location filename="../ui/userinterface.cpp" line="111"/>
         <source>Last update: never</source>
-        <translation type="unfinished"/>
+        <translation>Ostatnia aktualizacja: nigdy</translation>
     </message>
     <message>
         <location filename="../ui/userinterface.cpp" line="113"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>Ostatnia aktualizacja: %1 UTC</translation>
     </message>
     <message>
         <location filename="../ui/userinterface.cpp" line="130"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
-        <translation type="unfinished"/>
+        <translation>Klientów: %1 (%2 pilotów, %3 kontrolerów, %4 obserwatorów)</translation>
     </message>
 </context>
 <context>
@@ -982,7 +982,7 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="343"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="393"/>
         <source>File %1 could not be opened!</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać otwarty!</translation>
     </message>
 </context>
 <context>
@@ -1023,7 +1023,7 @@
     <message>
         <location filename="../db/worldmap.cpp" line="69"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać otwarty! Proszę przeinstalować aplikację.</translation>
     </message>
 </context>
 </TS>
