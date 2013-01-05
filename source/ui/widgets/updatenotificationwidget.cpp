@@ -30,8 +30,8 @@ UpdateNotificationWidget::UpdateNotificationWidget(QWidget* _parent) :
   setFixedHeight(30);
   
   __label.setText(
-    tr("There is a new version of Vatsinator available! Check it now at") %
-    " <a href=\"" VATSINATOR_HOMEPAGE "\">" VATSINATOR_HOMEPAGE "</a>"
+    tr("There is a new version of Vatsinator available! Check it now at %1").arg(
+      "<a href=\"" VATSINATOR_HOMEPAGE "\">" VATSINATOR_HOMEPAGE "</a>")
   );
   __label.setStyleSheet("QLabel { background: #ff7d7d; }");
   __label.setContentsMargins(10, 5, 10, 5);

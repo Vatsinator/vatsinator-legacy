@@ -113,10 +113,9 @@ AirportTableModel::clear() {
 inline QString
 AirportTableModel::__arrivalsAndDepartures(int _row) const {
   return
-    tr("Arrivals:") % " " %
-    QString::number(__airports[_row]->countArrivals()) %
-    "<br>" % tr("Departures:") % " " %
-    QString::number(__airports[_row]->countDepartures());
+    tr("Arrivals: %1").arg(QString::number(__airports[_row]->countArrivals())) %
+    "<br>" %
+    tr("Departures: %1").arg(QString::number(__airports[_row]->countDepartures()));
 }
 
 inline QString

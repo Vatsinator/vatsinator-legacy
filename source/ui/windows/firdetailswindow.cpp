@@ -78,9 +78,9 @@ FirDetailsWindow::__updateModels(const Fir* _f) {
 void
 FirDetailsWindow::__fillLabels(const Fir* _f) {
   if (_f->getCountry() != "USA")
-    setWindowTitle(_f->getIcao() + " - " + tr("FIR details"));
+    setWindowTitle(tr("%1 - FIR details").arg(_f->getIcao()));
   else
-    setWindowTitle(_f->getIcao() + " - " + tr("ARTCC details"));
+    setWindowTitle(tr("%1 - ARTCC details").arg(_f->getIcao()));
 
   if (!_f->isOceanic())
     ICAOLabel->setText(_f->getIcao());

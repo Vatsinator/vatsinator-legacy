@@ -59,14 +59,14 @@ FlightDetailsWindow::show(const Client* _client) {
   if (__current->isPrefiledOnly())
     return;
 
-  setWindowTitle(QString(__current->getCallsign() + " - " + tr("flight details")));
+  setWindowTitle(tr("%1 - flight details").arg(__current->getCallsign()));
 
   CallsignLabel->setText(__current->getCallsign());
-  RouteLabel->setText(__current->getRoute().origin + " -> " + __current->getRoute().destination);
+  RouteLabel->setText(__current->getRoute().origin % " -> " % __current->getRoute().destination);
 
   PilotLabel->setText(__current->getRealName() + " (" + QString::number(__current->getPid()) + ")");
-  AltitudeLabel->setText(QString::number(__current->getAltitude()) + " " + tr("feet"));
-  GroundSpeedLabel->setText(QString::number(__current->getGroundSpeed()) + " " + tr("kts"));
+  AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__current->getAltitude())));
+  GroundSpeedLabel->setText(tr("%1 kts").arg(QString::number(__current->getGroundSpeed())));
   HeadingLabel->setText(QString::number(__current->getHeading()));
 
   if (__current->getFlightStatus() == Pilot::AIRBORNE)
@@ -92,7 +92,7 @@ FlightDetailsWindow::show(const Client* _client) {
   __updateToFromButtons();
 
   AircraftLabel->setText(__current->getAircraft());
-  TrueAirSpeedLabel->setText(QString::number(__current->getTas()) + " " + tr("kts"));
+  TrueAirSpeedLabel->setText(tr("%1 kts").arg(QString::number(__current->getTas())));
   CruiseAltitude->setText(__current->getRoute().altitude);
 
   RouteField->setPlainText(__current->getRoute().route);
