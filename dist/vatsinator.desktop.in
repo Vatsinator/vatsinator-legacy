@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Vatsinator
+GenericName=Vatsim monitor
+GenericName[pl]=Monitor sieci Vatsim
+Comment=A simple Vatsim monitor
+Comment[pl]=Monitor sieci Vatsim
+TryExec=${CMAKE_INSTALL_PREFIX}/bin/vatsinator
+Exec=${CMAKE_INSTALL_PREFIX}/bin/vatsinator
+Categories=Network;Qt;
+Icon=vatsinator

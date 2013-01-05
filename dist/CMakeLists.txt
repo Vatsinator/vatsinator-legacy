@@ -19,18 +19,8 @@ if (LINUX)
       set (DESKTOP_ENTRY ${CMAKE_SOURCE_DIR}/dist/vatsinator.desktop)
   endif (NOT DESKTOP_ENTRY)
   
-  set (DESKTOP_SH_FILE ${CMAKE_SOURCE_DIR}/dist/vatsinator-desktop.sh)
-  
-  add_custom_command (OUTPUT ${DESKTOP_ENTRY}
-      COMMAND touch ${DESKTOP_ENTRY}
-      COMMAND sh ${DESKTOP_SH_FILE} ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
-      DEPENDS ${DESKTOP_SH_FILE}
-      COMMENT "Generating desktop entry file"
-  )
-  
-  add_custom_target (DesktopEntryFile ALL
-      DEPENDS ${DESKTOP_ENTRY}
-  )
+  configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator.desktop.in
+      ${DESKTOP_ENTRY})
   
   install (FILES ${DESKTOP_ENTRY}
     DESTINATION share/applications
