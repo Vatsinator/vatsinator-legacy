@@ -68,7 +68,7 @@ LanguageManager::__getInstalledLanguages() {
     if (!descFile.open(QIODevice::ReadOnly | QIODevice::Text))
       continue;
     
-    __languages.push_back({currentId, locale, descFile.readLine().simplified()});
+    __languages.push_back({currentId, locale, QString::fromUtf8(descFile.readLine().simplified())});
     
     descFile.close();
     
