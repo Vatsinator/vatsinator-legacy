@@ -47,6 +47,7 @@ public:
   virtual ~MetarsWindow();
 
 public slots:
+  void show();
   void show(QString);
   void metarRequested();
   

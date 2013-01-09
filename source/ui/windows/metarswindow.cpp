@@ -62,8 +62,15 @@ MetarsWindow::~MetarsWindow() {
 }
 
 void
+MetarsWindow::show() {
+  QWidget::show();
+  MetarICAO->setFocus();
+}
+
+void
 MetarsWindow::show(QString _icao) {
   QWidget::show();
+  MetarICAO->setFocus();
   
   __findAndSelectMetar(_icao);
 }
