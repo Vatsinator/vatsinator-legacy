@@ -33,7 +33,7 @@ MetarListModel::MetarListModel(HttpHandler* _hh, QObject* _parent) :
   connect(__myHttpHandler,  SIGNAL(finished(QString)),
           this,     SLOT(__gotMetar(QString)));
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(metarsRefreshRequested()),
-          this,     SLOT(updateAllMetars()));
+          this,     SLOT(updateAll()));
 }
 
 void

@@ -83,6 +83,7 @@ void
 Fir::correctName() {
   if (!__name.contains("Radar") &&
       !__name.contains("Control") &&
+      !__name.contains("Radio") &&
       !__name.contains("Oceanic")) {
     if (__oceanic)
       __name += " Oceanic";
