@@ -12,5 +12,7 @@ if [ -z "$1" ]; then
 	exit
 fi
 
-$lupdate_exec -recursive ../ -source-language en_GB -target-language $1 -ts vatsinator-$1.ts
+fname=${1:0:2}
+
+$lupdate_exec -recursive ../ -source-language en_GB -target-language $1 -ts vatsinator-$fname.ts
 

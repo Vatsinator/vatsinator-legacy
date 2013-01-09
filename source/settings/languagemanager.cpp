@@ -24,8 +24,6 @@
 #include "vatsinatorapplication.h"
 
 LanguageManager::LanguageManager() {
-  __languages.push_back({0, "en_GB", "English"});
-  
   __getInstalledLanguages();
 }
 
@@ -54,7 +52,7 @@ QString& LanguageManager::getLocaleById(int _id) {
 
 void
 LanguageManager::__getInstalledLanguages() {
-  int currentId = 1;
+  int currentId = 0;
   
   QDir translationsDir(TRANSLATIONS_DIR);
   QStringList locales = translationsDir.entryList({"vatsinator-*.qm"});

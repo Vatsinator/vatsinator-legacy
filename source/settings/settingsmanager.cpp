@@ -141,7 +141,7 @@ SettingsManager::__restoreSettings() {
   __pilotToDestinationLineColor = settings.value("pilotToDestinationLineColor",
                                                  DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR).value<QColor>();
   __language = settings.value("language",
-                              QLocale::system().name()).toString();
+                              QLocale::system().name().left(2)).toString();
 
   settings.endGroup();
 
@@ -255,7 +255,7 @@ SettingsManager::__restoreDefaults() {
   __originToPilotLineColor = DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR;
   __pilotToDestinationLineColor = DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR;
   
-  __language = QLocale::system().name();
+  __language = QLocale::system().name().left(2);
 
   __clearEntries();
 
