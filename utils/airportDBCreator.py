@@ -59,6 +59,9 @@ class Airport(object):
 		self.longitude = float(longitude) # X
 		self.altitude = int(altitude)
 		self.firs = findFir(self)
+	
+	def isOk(self):
+		return not (self.latitude == 0 and self.longitude == 0)
 
 	def data(self):
 		fir_oceanic_a = 0 if len(self.firs) == 0 else self.firs[0].oceanic
@@ -165,7 +168,10 @@ for line in dbin:
 		continue
 	
 	ap = Airport(apdata[1], apdata[2], apdata[3], apdata[4], apdata[5], apdata[6], apdata[7], apdata[8])
-	dbout.write(ap.data())
+	if ap.isOk():
+		dbout.write(ap.data())
+	else:
+		print("Skipping %s..." % ap.icao)
 
 	i += 1
 
