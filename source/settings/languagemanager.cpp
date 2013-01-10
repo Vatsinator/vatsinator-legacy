@@ -1,6 +1,6 @@
 /*
     languagemanager.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ LanguageManager::__getInstalledLanguages() {
   for (const QString& l: locales) {
     QString locale = l.section('-', 1, 1).section('.', 0, 0);
     if (!descriptions.contains(locale + ".language")) {
-      VatsinatorApplication::log("Could not find description for %s.", locale.toStdString().c_str());
+      VatsinatorApplication::log("Could not find description for %s.", qPrintable(locale));
     }
     
     QFile descFile(static_cast< QString >(TRANSLATIONS_DIR) + "/" + locale + ".language");

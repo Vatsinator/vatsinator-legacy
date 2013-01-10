@@ -83,7 +83,7 @@ void
 VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
   QStringList tempList = _statusFile.split('\n', QString::SkipEmptyParts);
 
-for (QString & temp: tempList) {
+  for (QString & temp: tempList) {
     if (temp.startsWith(';'))
       continue;
 
