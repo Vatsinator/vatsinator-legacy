@@ -26,4 +26,7 @@ if (LINUX)
     DESTINATION share/applications
   )
   
+  # install icons
+  add_subdirectory (linux-icons)
+  
 endif (LINUX)

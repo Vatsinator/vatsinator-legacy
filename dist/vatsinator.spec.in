@@ -36,12 +36,13 @@ make clean
 
 %files
 %{_bindir}/vatsinator
+%{_datadir}/icons/hicolor/24x24/apps/vatsinator.png
+%{_datadir}/icons/hicolor/64x64/apps/vatsinator.png
+%{_datadir}/icons/hicolor/32x32/apps/vatsinator.png
 %{_datadir}/icons/hicolor/48x48/apps/vatsinator.png
+%{_datadir}/icons/hicolor/22x22/apps/vatsinator.png
 %{_datadir}/icons/hicolor/16x16/apps/vatsinator.png
 %{_datadir}/icons/hicolor/128x128/apps/vatsinator.png
-%{_datadir}/icons/hicolor/32x32/apps/vatsinator.png
-%{_datadir}/icons/hicolor/22x22/apps/vatsinator.png
-%{_datadir}/icons/hicolor/24x24/apps/vatsinator.png
 %{_datadir}/applications/vatsinator.desktop
 %{_datadir}/vatsinator/pixmaps/1p32.png
 %{_datadir}/vatsinator/pixmaps/4p32.png
@@ -59,8 +60,12 @@ make clean
 %{_datadir}/vatsinator/WorldFirs.db
 %{_datadir}/vatsinator/WorldMap.db
 %{_datadir}/vatsinator/COPYING
-%{_datadir}/vatsinator/translations/pl_PL.language
-%{_datadir}/vatsinator/translations/vatsinator-pl_PL.qm
+%{_datadir}/vatsinator/translations/vatsinator-pt.qm
+%{_datadir}/vatsinator/translations/vatsinator-pl.qm
+%{_datadir}/vatsinator/translations/vatsinator-en.qm
+%{_datadir}/vatsinator/translations/en.language
+%{_datadir}/vatsinator/translations/pt.language
+%{_datadir}/vatsinator/translations/pl.language
 
 %changelog
 * @vatsinator_RPM_DATE@ Michał Garapich <michal@garapich.pl> - @vatsinator_VERSION@

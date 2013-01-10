@@ -97,21 +97,7 @@ vatsinator_install (
 
 
 # Platform-specific actions
-if (LINUX)
-    # Install icons
-    macro (install_icon SIZE)
-        install (FILES resources/vatsinator-${SIZE}.png
-            DESTINATION "share/icons/hicolor/${SIZE}x${SIZE}/apps"
-            RENAME vatsinator.png
-        )
-    endmacro (install_icon)
-    
-    set (SIZES 16 22 24 32 48 128)
-    #install icons
-    foreach (ICON ${SIZES})
-        install_icon(${ICON})
-    endforeach (ICON)
-    
+if (LINUX)    
     # This actually creates .deb
     include (Packaging-linux)
     
