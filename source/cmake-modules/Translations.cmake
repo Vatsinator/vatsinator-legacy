@@ -1,8 +1,8 @@
 file (GLOB TRANSLATION_SOURCES
     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/translations/${CMAKE_PROJECT_NAME}-*.ts")
+    "${CMAKE_CURRENT_SOURCE_DIR}/i18n/${CMAKE_PROJECT_NAME}-*.ts")
 
 file (GLOB LANGUAGE_FILES
-    "${CMAKE_CURRENT_SOURCE_DIR}/translations/*.language")
+    "${CMAKE_CURRENT_SOURCE_DIR}/i18n/*.language")
 
 qt4_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
