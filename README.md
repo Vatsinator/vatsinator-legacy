@@ -66,6 +66,7 @@ See [wiki](https://github.com/Garrappachc/Vatsinator/wiki/Building-Vatsinator).
 Available languages:
 - English
 - Polish
+- Portuguese
 
 If you want to translate Vatsinator into your own language, visit [Trasifex site](https://www.transifex.com/projects/p/vatsinator/).
 
