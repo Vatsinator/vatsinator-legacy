@@ -6,6 +6,7 @@ Version 0.2
     * Added NATs parsing
     * Added new version notifier
     * Metars' window is now more convenient
+    * Added Portuguese translation
   
   Bugfies:
     * Fixed non-updating flight & atc tables for inactive airports (#1)
