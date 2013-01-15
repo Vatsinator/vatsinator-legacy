@@ -12,7 +12,7 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 
 ## Installation
 
-Current release: **Vatsinator 0.1**
+Current release: **Vatsinator 0.2**
 
 - Linux
 	-  Ubuntu<br>
@@ -27,13 +27,13 @@ Current release: **Vatsinator 0.1**
 	
 	- Debian<br>
 		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
-		[vatsinator-0.1~wheezy_i386.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1~wheezy_i386.deb) for i386<br>
-		[vatsinator-0.1~wheezy_amd64.deb](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1~wheezy_amd64.deb) for amd64<br>
+		[vatsinator-0.2~wheezy_i386.deb](http://vatsinator.garapich.pl/downloads/vatsinator-0.2~wheezy_i386.deb) for i386<br>
+		[vatsinator-0.2~wheezy_amd64.deb](http://vatsinator.garapich.pl/downloads/vatsinator-0.2~wheezy_amd64.deb) for amd64<br>
 	
 	- Fedora<br>
 		Builds for Fedora 17:<br>
-		[vatsinator-0.1-2.1.i686.rpm](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-2.1.i686.rpm) for i686<br>
-		[vatsinator-0.1-2.1.x86_64.rpm](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1-2.1.x86_64.rpm) for x86_64<br>
+		[vatsinator-0.2-2.1.i686.rpm](http://vatsinator.garapich.pl/downloads/vatsinator-0.2-2.1.i686.rpm) for i686<br>
+		[vatsinator-0.2-2.1.x86_64.rpm](http://vatsinator.garapich.pl/downloads/vatsinator-0.2-2.1.x86_64.rpm) for x86_64<br>
 		
 	- Gentoo<br>
 		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).<br>
@@ -52,10 +52,10 @@ Current release: **Vatsinator 0.1**
 		There are no packages for other distributions, I am afraid. However, you can compile the Source Code (see below).
 
 - Windows<br>
-	[VatsinatorSetup-0.1.exe](https://github.com/downloads/Garrappachc/Vatsinator/VatsinatorSetup-0.1.exe)
+	[VatsinatorSetup-0.2.exe](http://vatsinator.garapich.pl/downloads/VatsinatorSetup-0.2.exe)
 
 - Source Code<br>
-	[vatsinator-0.1.tar.gz](https://github.com/downloads/Garrappachc/Vatsinator/vatsinator-0.1.tar.gz)
+	[vatsinator-0.2.tar.gz](http://vatsinator.garapich.pl/downloads/vatsinator-0.2.tar.gz)
 
 
 ## Building
