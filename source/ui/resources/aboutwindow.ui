@@ -262,6 +262,24 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="ChangelogTab">
+      <attribute name="title">
+       <string>Changelog</string>
+      </attribute>
+      <widget class="QTextEdit" name="ChangelogField">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>589</width>
+         <height>192</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </item>
   </layout>
