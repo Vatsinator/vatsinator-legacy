@@ -101,6 +101,11 @@
         <translation>FIRs in the database:</translation>
     </message>
     <message>
+        <location filename="../ui/resources/aboutwindow.ui" line="267"/>
+        <source>Changelog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/resources/aboutwindow.ui" line="117"/>
         <source>About</source>
         <translation>About</translation>
