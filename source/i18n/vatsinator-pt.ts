@@ -99,6 +99,11 @@
         <translation>FIRs na base de dados:</translation>
     </message>
     <message>
+        <location filename="../ui/resources/aboutwindow.ui" line="267"/>
+        <source>Changelog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../ui/resources/aboutwindow.ui" line="117"/>
         <source>About</source>
         <translation>Acerca de</translation>
