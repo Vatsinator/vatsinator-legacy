@@ -83,7 +83,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
           __userInterface,                  SLOT(notififyAboutUpdates(bool)));
   
   // handle settings changes
-  connect(__settingsManager, SIGNAL(settingsChanged()), this, SLOT(__loadNewSettings()));
+  connect(__settingsManager,       SIGNAL(settingsChanged()),
+          this,                    SLOT(__loadNewSettings()));
 
   // connect data refresher with the timer
   connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));

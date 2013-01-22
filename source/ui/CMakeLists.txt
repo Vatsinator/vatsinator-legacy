@@ -7,6 +7,16 @@ if (NOT vatsinator_ABOUT)
     string (REPLACE "VATSINATOR_VERSION" "${vatsinator_VERSION}" vatsinator_ABOUT "${vatsinator_ABOUT}")
 endif (NOT vatsinator_ABOUT)
 
+if (NOT vatsinator_CHANGELOG)
+    file (READ ${CMAKE_SOURCE_DIR}/Changelog vatsinator_CHANGELOG)
+    string (REPLACE "<" "&lt;" vatsinator_CHANGELOG "${vatsinator_CHANGELOG}")
+    string (REPLACE ">" "&gt;" vatsinator_CHANGELOG "${vatsinator_CHANGELOG}")
+    string (REPLACE "\n" "<br>" vatsinator_CHANGELOG "${vatsinator_CHANGELOG}")
+    string (REPLACE "\"" "\\\"" vatsinator_CHANGELOG "${vatsinator_CHANGELOG}")
+    string (REPLACE "*" "<span style=\\\"color:#7893A2;\\\">*</span>" vatsinator_CHANGELOG "${vatsinator_CHANGELOG}")
+    
+endif (NOT vatsinator_CHANGELOG)
+
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/about.h
 )

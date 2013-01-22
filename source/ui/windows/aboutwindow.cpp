@@ -34,8 +34,9 @@ AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
-  LicenseField->setHtml("<pre>" + trUtf8(LICENSE_TEXT) + "</pre>");
+  LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");
   VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
+  ChangelogField->setHtml("<pre>" % trUtf8(CHANGELOG_TEXT) % "</pre>");
   
   AirportsInDatabaseLabel->setText(
     QString::number(AirportDatabase::getSingleton().getAirports().size()));
