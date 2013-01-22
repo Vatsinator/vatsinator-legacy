@@ -206,10 +206,12 @@ void
 VatsinatorApplication::__dataUpdated(const QString& _data) {
   if (_data.isEmpty()) {
     QMessageBox decision;
-    decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
-    decision.setInformativeText(tr("What do you want to do with that?"));
+    decision.setText(tr("It seems there is a problem with Vatsim servers."));
+    decision.setInformativeText(tr("You can try again now or wait %1 minutes.")
+      .arg(QString::number(SettingsManager::getSingleton().getRefreshRate()))
+    );
     QPushButton* againButton = decision.addButton(tr("Try again"), QMessageBox::ActionRole);
-    decision.addButton(tr("Keep current data"), QMessageBox::RejectRole);
+    decision.addButton(tr("Wait"), QMessageBox::RejectRole);
     decision.setIcon(QMessageBox::Warning);
 
     __timer.stop();
@@ -218,12 +220,13 @@ VatsinatorApplication::__dataUpdated(const QString& _data) {
 
     if (decision.clickedButton() == againButton) {
       refreshData();
-      return;
     } else {
       __userInterface->statusBarUpdate(tr("Data outdated!"));
       __userInterface->toggleStatusBar();
-      return;
+      __timer.start();
     }
+    
+    return;
   }
 
   if (__vatsimData->statusFileFetched()) {
