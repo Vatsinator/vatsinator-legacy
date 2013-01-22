@@ -1,8 +1,8 @@
 diff -apurN a/source/settings/languagemanager.cpp b/source/settings/languagemanager.cpp
---- a/source/settings/languagemanager.cpp	2012-12-11 20:39:55.528709574 +0100
-+++ b/source/settings/languagemanager.cpp	2012-12-11 20:41:45.131711412 +0100
-@@ -57,8 +57,8 @@ LanguageManager::__getInstalledLanguages
-   int currentId = 1;
+--- a/source/settings/languagemanager.cpp	2013-01-23 00:04:36.435199303 +0100
++++ b/source/settings/languagemanager.cpp	2013-01-23 00:06:50.677203650 +0100
+@@ -55,8 +55,8 @@ LanguageManager::__getInstalledLanguages
+   int currentId = 0;
    
    QDir translationsDir(TRANSLATIONS_DIR);
 -  QStringList locales = translationsDir.entryList({"vatsinator-*.qm"});
