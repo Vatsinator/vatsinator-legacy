@@ -995,32 +995,44 @@
 <context>
     <name>VatsinatorApplication</name>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="208"/>
-        <location filename="../vatsinatorapplication.cpp" line="260"/>
+        <location filename="../vatsinatorapplication.cpp" line="264"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="209"/>
-        <location filename="../vatsinatorapplication.cpp" line="261"/>
+        <location filename="../vatsinatorapplication.cpp" line="265"/>
         <source>What do you want to do with that?</source>
         <translation>What do you want to do with that?</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="210"/>
-        <location filename="../vatsinatorapplication.cpp" line="262"/>
+        <location filename="../vatsinatorapplication.cpp" line="213"/>
+        <location filename="../vatsinatorapplication.cpp" line="266"/>
         <source>Try again</source>
         <translation>Try again</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="211"/>
-        <location filename="../vatsinatorapplication.cpp" line="263"/>
+        <location filename="../vatsinatorapplication.cpp" line="209"/>
+        <source>It seems there is a problem with Vatsim servers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../vatsinatorapplication.cpp" line="210"/>
+        <source>You can try again now or wait %1 minutes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../vatsinatorapplication.cpp" line="214"/>
+        <source>Wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../vatsinatorapplication.cpp" line="267"/>
         <source>Keep current data</source>
         <translation>Keep current data</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="222"/>
-        <location filename="../vatsinatorapplication.cpp" line="273"/>
+        <location filename="../vatsinatorapplication.cpp" line="224"/>
+        <location filename="../vatsinatorapplication.cpp" line="277"/>
         <source>Data outdated!</source>
         <translation>Data outdated!</translation>
     </message>
