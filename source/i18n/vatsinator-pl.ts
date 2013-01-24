@@ -101,7 +101,7 @@
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="267"/>
         <source>Changelog</source>
-        <translation type="unfinished"/>
+        <translation>Lista zmian</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="117"/>
@@ -1011,17 +1011,17 @@
     <message>
         <location filename="../vatsinatorapplication.cpp" line="209"/>
         <source>It seems there is a problem with Vatsim servers.</source>
-        <translation type="unfinished"/>
+        <translation>Wygląda na to, że wystąpiły pewne problemy z serwerami Vatsim.</translation>
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="210"/>
         <source>You can try again now or wait %1 minutes.</source>
-        <translation type="unfinished"/>
+        <translation>Możesz spróbować jeszcze raz lub poczekać %1 minuty.</translation>
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="214"/>
         <source>Wait</source>
-        <translation type="unfinished"/>
+        <translation>Poczekaj</translation>
     </message>
     <message>
         <location filename="../vatsinatorapplication.cpp" line="267"/>
