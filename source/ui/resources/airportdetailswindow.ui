@@ -502,30 +502,6 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QLabel" name="MetarLabel">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>440</y>
-     <width>781</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::PlainText</enum>
-   </property>
-   <property name="indent">
-    <number>10</number>
-   </property>
-  </widget>
   <widget class="QPushButton" name="CloseButton">
    <property name="geometry">
     <rect>
@@ -583,6 +559,16 @@
     <string>Show</string>
    </property>
   </widget>
+  <widget class="ScrollLabel" name="MetarLabel" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>440</y>
+     <width>781</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -594,6 +580,12 @@
    <class>ControllerTableView</class>
    <extends>QTableView</extends>
    <header>ui/views/controllertableview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ScrollLabel</class>
+   <extends>QWidget</extends>
+   <header>ui/widgets/scrolllabel.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

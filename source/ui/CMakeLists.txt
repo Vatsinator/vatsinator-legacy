@@ -54,6 +54,7 @@ set (ui_SRCS
     
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
+    widgets/scrolllabel.cpp
     widgets/updatenotificationwidget.cpp
     
     windows/aboutwindow.cpp
@@ -90,6 +91,7 @@ set (ui_MOC_SRCS
     
     widgets/mapwidget.h
     widgets/replaceablewidget.h
+    widgets/scrolllabel.h
     widgets/updatenotificationwidget.h
     
     windows/aboutwindow.h
