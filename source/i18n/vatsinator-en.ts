@@ -194,12 +194,12 @@
         <translation>Vataware statistics for this airport</translation>
     </message>
     <message>
-        <location filename="../ui/resources/airportdetailswindow.ui" line="539"/>
+        <location filename="../ui/resources/airportdetailswindow.ui" line="515"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/resources/airportdetailswindow.ui" line="583"/>
+        <location filename="../ui/resources/airportdetailswindow.ui" line="559"/>
         <source>Show</source>
         <translation>Show</translation>
     </message>
