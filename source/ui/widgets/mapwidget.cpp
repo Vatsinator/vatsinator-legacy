@@ -769,6 +769,22 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   }
 
   __menu->exec(mapToGlobal(__lastMousePos));
+  
+  delete __menu;
+  __menu = NULL;
+}
+
+void
+MapWidget::__openContextMenu() {
+  __contextMenuOpened = true;
+  
+  __menu = new QMenu(tr("This location"), this);
+  
+  QAction* setAsHome = new QAction(tr("Set as home location"), this);
+  __menu->addAction(setAsHome);
+  
+  __menu->exec(mapToGlobal(__lastMousePos));
+  
   delete __menu;
   __menu = NULL;
 }
