@@ -783,6 +783,9 @@ MapWidget::__openContextMenu() {
   QAction* setAsHome = new QAction(tr("Set as home location"), this);
   __menu->addAction(setAsHome);
   
+  __menu->addSeparator();
+  __menu->addAction(new ActionMenuSeparator(tr("Flights nearby"), this));
+  
   __menu->exec(mapToGlobal(__lastMousePos));
   
   delete __menu;
