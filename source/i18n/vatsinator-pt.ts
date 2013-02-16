@@ -192,12 +192,12 @@
         <translation>Estatísticas para este aeroporto</translation>
     </message>
     <message>
-        <location filename="../ui/resources/airportdetailswindow.ui" line="539"/>
+        <location filename="../ui/resources/airportdetailswindow.ui" line="515"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../ui/resources/airportdetailswindow.ui" line="583"/>
+        <location filename="../ui/resources/airportdetailswindow.ui" line="559"/>
         <source>Show</source>
         <translation>Mostrar</translation>
     </message>
@@ -657,22 +657,32 @@
         <translation>Detalhes %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1331"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="781"/>
+        <source>This location</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
+        <source>Set as home location</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1347"/>
         <source>Ground speed: %1 kts</source>
         <translation>Velocidade: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1333"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1349"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1358"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1374"/>
         <source>Departures: %1</source>
         <translation>Partidas: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1363"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1379"/>
         <source>Arrivals: %1</source>
         <translation>Chegadas: %1</translation>
     </message>
@@ -687,8 +697,8 @@
         <translation>Chegadas</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1323"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1327"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1339"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1343"/>
         <source>(unknown)</source>
         <translation>(desconhecido)</translation>
     </message>
