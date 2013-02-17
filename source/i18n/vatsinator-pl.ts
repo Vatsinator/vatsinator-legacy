@@ -667,22 +667,27 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1347"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="787"/>
+        <source>Flights nearby</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1350"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1349"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1352"/>
         <source>Altitude: %1 ft</source>
         <translation>Wysokość: %1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1374"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1377"/>
         <source>Departures: %1</source>
         <translation>Odloty: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1379"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1382"/>
         <source>Arrivals: %1</source>
         <translation>Przyloty: %1</translation>
     </message>
@@ -697,8 +702,8 @@
         <translation>Przyloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1339"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1343"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1342"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1346"/>
         <source>(unknown)</source>
         <translation>(brak)</translation>
     </message>
