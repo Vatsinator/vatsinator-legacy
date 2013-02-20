@@ -20,6 +20,7 @@
 
 #include "vatsimdata/fir.h"
 
+#include "filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "firdatabase.h"
@@ -67,11 +68,11 @@ FirDatabase::__readDatabase() {
   __toolTipsPrepared = false;
   __firs.clear();
   
-  QFile db(FIRS_DB);
+  QFile db(FileManager::path(FileManager::FIR_DB));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(
-      tr("File %1 could not be opened! Please reinstall the application.").arg(FIRS_DB),
+      tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()),
       true);
 
   int size;

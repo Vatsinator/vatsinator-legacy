@@ -18,12 +18,13 @@
 
 #include <QtGui>
 
-#include "vatsinatorapplication.h"
-
 #include "glutils/vertexbufferobject.h"
 #include "glutils/glextensions.h"
 
 #include "vdebug/glerrors.h"
+
+#include "filemanager.h"
+#include "vatsinatorapplication.h"
 
 #include "worldmap.h"
 #include "defines.h"
@@ -62,11 +63,11 @@ WorldMap::draw() const {
 }
 
 void WorldMap::__readDatabase() {
-  QFile db(WORLD_MAP);
+  QFile db(FileManager::path(FileManager::WORLD_DB));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(
-        tr("File %1 could not be opened! Please reinstall the application.").arg(WORLD_MAP),
+        tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()),
       true);
 
   int size;

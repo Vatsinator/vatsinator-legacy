@@ -39,11 +39,14 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
+#include "filemanager.h"
+
 #include "vatsinatorapplication.h"
 #include "defines.h"
 
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
+    __fileManager(new FileManager()),
     __airportsData(new AirportDatabase()),
     __firsData(new FirDatabase()),
     __worldMap(new WorldMap()),
@@ -121,6 +124,7 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __worldMap;
   delete __userInterface;
   delete __modulesManager;
+  delete __fileManager;
 
 #ifndef NO_DEBUG
   DumpUnfreed();

@@ -22,6 +22,7 @@
 
 #include "vatsimdata/vatsimdatahandler.h"
 
+#include "filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "modelmatcher.h"
@@ -30,12 +31,12 @@
 ModelMatcher::ModelMatcher() {
   __modelsFiles["ZZZZ"] = "1p"; // default
 
-  QFile modelsFile(VatsimDataHandler::getFiles()["model"]);
+  QFile modelsFile(FileManager::path(FileManager::MODEL));
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     VatsinatorApplication::alert(
-      static_cast< QString >("File ") +
-      static_cast< QString >(MODELS_DAT) +
+      static_cast< QString >("File ") %
+      modelsFile.fileName() %
       static_cast< QString >(" could not be opened!"));
     return;
   }

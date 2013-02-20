@@ -37,6 +37,7 @@ class SettingsManager;
 class WorldMap;
 class HttpHandler;
 class ModuleManager;
+class FileManager;
 
 class VatsinatorApplication :
     public QApplication,
@@ -112,6 +113,7 @@ private:
   void __emitGLInitialized();
 
   HttpHandler*       __httpHandler;
+  FileManager*       __fileManager;
   AirportDatabase*   __airportsData;
   FirDatabase*       __firsData;
   WorldMap*          __worldMap;

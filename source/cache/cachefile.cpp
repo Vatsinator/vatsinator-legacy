@@ -23,13 +23,15 @@
 #include "cachefile.h"
 #include "defines.h"
 
+static const QString CACHE_FILE_LOCATON(
 #ifdef Q_OS_WIN32
-static const QString CACHE_FILE_LOCATON(QDir::fromNativeSeparators(qgetenv("LOCALAPPDATA")));
+  QDir::fromNativeSeparators(qgetenv("LOCALAPPDATA"))
 #elif defined Q_OS_LINUX
-static const QString CACHE_FILE_LOCATON(QDir::homePath() % "/.cache");
+  QDir::homePath() % "/.cache"
 #elif defined Q_OS_DARWIN
-static const QString CACHE_FILE_LOCATON(QDir::homePath() % "/Library/Caches");
+  QDir::homePath() % "/Library/Caches"
 #endif
+);
 
 static const QString CACHE_DIRECTORY(QDir::toNativeSeparators(CACHE_FILE_LOCATON % "/Vatsinator"));
 

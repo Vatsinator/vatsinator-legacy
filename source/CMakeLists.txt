@@ -7,6 +7,7 @@ set (vatsinator_TARGET
 
 
 set (vatsinator_SRCS
+    filemanager.cpp
     vatsinatorapplication.cpp
 )
 

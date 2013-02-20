@@ -18,6 +18,7 @@
 
 #include <QtGui>
 
+#include "filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "airportdatabase.h"
@@ -46,11 +47,11 @@ AirportDatabase::__readDatabase() {
   
   __airports.clear();
   
-  QFile db(AIRPORTS_DB);
+  QFile db(FileManager::path(FileManager::AIRPORT_DB));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(
-      tr("File %1 could not be opened! Please reinstall the application.").arg(AIRPORTS_DB),
+      tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()),
       true);
 
   int size;

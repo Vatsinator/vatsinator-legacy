@@ -33,6 +33,7 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
+#include "filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "vatsimdatahandler.h"
@@ -40,9 +41,6 @@
 
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
 ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
-
-QMap< QString, QString > VatsimDataHandler::__dataFiles;
-bool VatsimDataHandler::__fileNamesInitialized = VatsimDataHandler::__initFileNames();
 
 static QMap< QString, QString > countries; // used by __readCountryFile() and __readFirFile()
 
@@ -73,10 +71,10 @@ VatsimDataHandler::~VatsimDataHandler() {
 
 void
 VatsimDataHandler::init() {
-  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile, __dataFiles["alias"]);
-  QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile, __dataFiles["country"]);
-  QtConcurrent::run(this, &VatsimDataHandler::__readFirFile, __dataFiles["fir"]);
-  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile, __dataFiles["uir"]);
+  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile, FileManager::path(FileManager::ALIAS));
+  QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile, FileManager::path(FileManager::COUNTRY));
+  QtConcurrent::run(this, &VatsimDataHandler::__readFirFile, FileManager::path(FileManager::FIR));
+  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile, FileManager::path(FileManager::UIR));
 }
 
 void
@@ -441,35 +439,6 @@ void
 VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
   for (auto it = _flags.begin(); it != _flags.end(); ++it)
     it.value() = false;
-}
-
-bool
-VatsimDataHandler::__initFileNames() {
-#ifndef Q_OS_DARWIN
-  VatsimDataHandler::__dataFiles.insert("alias",
-                                        VATSINATOR_PREFIX "data/alias");
-  VatsimDataHandler::__dataFiles.insert("country",
-                                        VATSINATOR_PREFIX "data/country");
-  VatsimDataHandler::__dataFiles.insert("fir",
-                                        VATSINATOR_PREFIX "data/fir");
-  VatsimDataHandler::__dataFiles.insert("model",
-                                        VATSINATOR_PREFIX "data/model");
-  VatsimDataHandler::__dataFiles.insert("uir",
-                                        VATSINATOR_PREFIX "data/uir");
-#else
-  VatsimDataHandler::__dataFiles.insert("alias",
-                   QCoreApplication::applicationDirPath() + "/../Resources/data/alias");
-  VatsimDataHandler::__dataFiles.insert("contry",
-                   QCoreApplication::applicationDirPath() + "/../Resources/data/country");
-  VatsimDataHandler::__dataFiles.insert("fir",
-                   QCoreApplication::applicationDirPath() + "/../Resources/data/fir");
-  VatsimDataHandler::__dataFiles.insert("model",
-                   QCoreApplication::applicationDirPath() + "/../Resources/data/model");
-  VatsimDataHandler::__dataFiles.insert("uir",
-                   QCoreApplication::applicationDirPath() + "/../Resources/data/uir");
-#endif // Q_OS_DARWIN
-  
-  return true;
 }
 
 void

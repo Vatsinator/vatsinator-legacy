@@ -185,9 +185,6 @@ public:
 
   inline bool
   statusFileFetched() const { return __statusFileFetched; }
-  
-  inline static const QMap< QString, QString > &
-  getFiles() { return __dataFiles; }
 
   inline static qreal
   calcDistance(const qreal& _ax, const qreal& _ay,
@@ -224,10 +221,6 @@ private:
    */
   void __clearFlags(QMap< QString, bool >&);
   
-  /**
-   * Produce file names, using appropriate prefix.
-   */
-  static bool __initFileNames();
 
   /* These are vectors of connected clients */
   FlightTableModel*   __flights;
@@ -262,10 +255,6 @@ private:
 
   AirportDatabase& __airports;
   FirDatabase&     __firs;
-  
-  static bool __fileNamesInitialized;
-  
-  static QMap< QString, QString > __dataFiles;
   
 private slots:
   /**

@@ -35,19 +35,11 @@
 // set files location
 #ifndef Q_OS_DARWIN
 
-#define AIRPORTS_DB      VATSINATOR_PREFIX "WorldAirports.db"
-#define FIRS_DB          VATSINATOR_PREFIX "WorldFirs.db"
-#define MODELS_DAT       VATSINATOR_PREFIX "models.dat"
-#define WORLD_MAP        VATSINATOR_PREFIX "WorldMap.db"
 #define PIXMAPS_DIR      VATSINATOR_PREFIX "pixmaps"
 #define TRANSLATIONS_DIR VATSINATOR_PREFIX "translations"
 
 #else
 
-#define AIRPORTS_DB      QCoreApplication::applicationDirPath() + "/../Resources/WorldAirports.db"
-#define FIRS_DB          QCoreApplication::applicationDirPath() + "/../Resources/WorldFirs.db"
-#define MODELS_DAT       QCoreApplication::applicationDirPath() + "/../Resources/models.dat"
-#define WORLD_MAP        QCoreApplication::applicationDirPath() + "/../Resources/WorldMap.db"
 #define PIXMAPS_DIR      QCoreApplication::applicationDirPath() + "/../Resources/pixmaps"
 #define TRANSLATIONS_DIR QCoreApplication::applicationDirPath() + "/../Resources/translations"
 
