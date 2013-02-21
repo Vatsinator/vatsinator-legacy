@@ -129,7 +129,7 @@
 <context>
     <name>AirportDatabase</name>
     <message>
-        <location filename="../db/airportdatabase.cpp" line="53"/>
+        <location filename="../db/airportdatabase.cpp" line="54"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
@@ -317,7 +317,7 @@
 <context>
     <name>FirDatabase</name>
     <message>
-        <location filename="../db/firdatabase.cpp" line="74"/>
+        <location filename="../db/firdatabase.cpp" line="75"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
@@ -999,10 +999,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="272"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="315"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="343"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="393"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="270"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="313"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="391"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
     </message>
@@ -1010,44 +1010,44 @@
 <context>
     <name>VatsinatorApplication</name>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="264"/>
+        <location filename="../vatsinatorapplication.cpp" line="268"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="265"/>
+        <location filename="../vatsinatorapplication.cpp" line="269"/>
         <source>What do you want to do with that?</source>
         <translation>What do you want to do with that?</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="213"/>
-        <location filename="../vatsinatorapplication.cpp" line="266"/>
+        <location filename="../vatsinatorapplication.cpp" line="217"/>
+        <location filename="../vatsinatorapplication.cpp" line="270"/>
         <source>Try again</source>
         <translation>Try again</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="209"/>
+        <location filename="../vatsinatorapplication.cpp" line="213"/>
         <source>It seems there is a problem with Vatsim servers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="210"/>
+        <location filename="../vatsinatorapplication.cpp" line="214"/>
         <source>You can try again now or wait %1 minutes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="214"/>
+        <location filename="../vatsinatorapplication.cpp" line="218"/>
         <source>Wait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="267"/>
+        <location filename="../vatsinatorapplication.cpp" line="271"/>
         <source>Keep current data</source>
         <translation>Keep current data</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="224"/>
-        <location filename="../vatsinatorapplication.cpp" line="277"/>
+        <location filename="../vatsinatorapplication.cpp" line="228"/>
+        <location filename="../vatsinatorapplication.cpp" line="281"/>
         <source>Data outdated!</source>
         <translation>Data outdated!</translation>
     </message>
@@ -1055,7 +1055,7 @@
 <context>
     <name>WorldMap</name>
     <message>
-        <location filename="../db/worldmap.cpp" line="69"/>
+        <location filename="../db/worldmap.cpp" line="70"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
