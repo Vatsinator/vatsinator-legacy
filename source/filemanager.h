@@ -22,6 +22,8 @@
 
 #include <QString>
 #include <QMutex>
+#include <QMap>
+#include <QDateTime>
 
 #include "singleton.h"
 
@@ -41,7 +43,6 @@ public:
     FIR,
     MODEL,
     UIR,
-    MANIFEST,
     
     __COUNT   // items count
   };
@@ -54,11 +55,48 @@ public:
    * Returns real file location.
    */
   static const QString& path(FileManager::File);
+    
+  /**
+   * From given enum, generates appropriate file name.
+   */
+  static QString enum2Str(FileManager::File);
+  
+  /**
+   * Generates md5 hash of given file.
+   */
+  static QByteArray md5Hash(const QString&);
   
 private:
+  class FileHash {
+    
+    /*
+     * This class is used to describe one file's hash.
+     */
+  public:
+    FileHash() = default;
+    FileHash(const QByteArray&);
+    
+    QByteArray md5;
+  };
+  
+  /**
+   * Reads the manifest file.
+   */
+  void __readManifest(const QString&);
+  
+  /**
+   * Checks if the particular file exists in local data store,
+   * checks manifest and puts correct path in the __files array.
+   */
   void __findFile(FileManager::File);
   
-  QString __files[__COUNT];
+  
+  QString  __files[__COUNT];
+  
+  struct {
+    QMap< QString, FileHash > hash;
+    QDateTime                 timestamp;
+  } __manifest;
   
 };
 

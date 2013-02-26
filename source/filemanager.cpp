@@ -38,6 +38,8 @@ static const QString DATA_LOCATION(QDir::toNativeSeparators(DATA_DIR_LOCATON % "
 
 FileManager::FileManager() {
   VatsinatorApplication::log("Local data location: %s", qPrintable(DATA_LOCATION));
+  
+  __readManifest(DATA_LOCATION % "Manifest");
 }
 
 const QString &
@@ -48,64 +50,117 @@ FileManager::path(FileManager::File _f) {
   return FileManager::getSingleton().__files[_f];
 }
 
-void
-FileManager::__findFile(FileManager::File _f) {
-  QString fname;
-  
+QString
+FileManager::enum2Str(FileManager::File _f) {
   switch (_f) {
     case AIRPORT_DB:
-      fname = "WorldAirports.db";
-      break;
+      return "WorldAirports.db";
     
     case FIR_DB:
-      fname = "WorldFirs.db";
-      break;
+      return "WorldFirs.db";
       
     case WORLD_DB:
-      fname = "WorldMap.db";
-      break;
+      return "WorldMap.db";
       
     case ALIAS:
-      fname = "data/alias";
-      break;
+      return "data/alias";
       
     case COUNTRY:
-      fname = "data/country";
-      break;
+      return "data/country";
     
     case FIR:
-      fname = "data/fir";
-      break;
+      return "data/fir";
       
     case MODEL:
-      fname = "data/model";
-      break;
+      return "data/model";
       
     case UIR:
-      fname = "data/uir";
-      break;
-      
-    case MANIFEST:
-      fname = "Manifest";
-      break;
+      return "data/uir";
       
     default:
       Q_ASSERT(false);
       break;
   }
   
+  return QString();
+}
+
+QByteArray
+FileManager::md5Hash(const QString& _fname) {
+  QFile file(_fname);
+  
+  if (!file.open(QIODevice::ReadOnly)) {
+    return QByteArray();
+  }
+  
+  return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
+}
+
+
+FileManager::FileHash::FileHash(const QByteArray& _md5) :
+    md5(_md5) {}
+
+
+void
+FileManager::__readManifest(const QString& _fname) {
+  QFile file(_fname);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    return;
+  }
+  
+  while (!file.atEnd()) {
+    QByteArray line = file.readLine().simplified();
+    
+    if (line.isEmpty())
+      continue;
+    
+    if (!__manifest.timestamp.isValid()) {
+      __manifest.timestamp = QDateTime::fromString(QString::fromUtf8(line), "yyyyMMddhhmmss");
+    } else {
+      QList< QByteArray > split = line.split(' ');
+      
+      if (split.length() != 2)
+        return;
+      
+      __manifest.hash.insert(QString::fromUtf8(split[0]), FileHash(split[1]));
+    }
+  }
+  
+  file.close();
+  
+  VatsinatorApplication::log("Data updated on %s.",
+                             qPrintable(__manifest.timestamp.toString("yyyyMMddhhmmss")));
+}
+
+void
+FileManager::__findFile(FileManager::File _f) {
+  QString fname = enum2Str(_f);
+  
   QFile tryLocal(DATA_LOCATION % fname);
   if (tryLocal.exists()) {
-    __files[_f] = tryLocal.fileName();
-    
-    VatsinatorApplication::log("File %s loaded from %s.", qPrintable(fname), qPrintable(tryLocal.fileName()));
-  } else {
-    __files[_f] =
-#ifndef Q_OS_DARWIN
-      static_cast< QString >(VATSINATOR_PREFIX)
-#else // on MacOS look for the file in the bundle
-      QCoreApplication::applicationDirPath() % "/../Resources/"
-#endif
-      % fname;
+    if (md5Hash(tryLocal.fileName()) == __manifest.hash[fname].md5) {
+      __files[_f] = tryLocal.fileName();
+      
+      VatsinatorApplication::log("File %s loaded from %s.",
+                                 qPrintable(fname),
+                                 qPrintable(tryLocal.fileName()));
+      return;
+    } else {
+      VatsinatorApplication::log("File %s: checksum mismatch!", qPrintable(fname));
+      VatsinatorApplication::log("  Expected: %s, got: %s",
+                                 __manifest.hash[fname].md5.data(),
+                                 md5Hash(tryLocal.fileName()).data());
+    }
   }
+  
+  __files[_f] =
+#ifndef Q_OS_DARWIN
+    static_cast< QString >(VATSINATOR_PREFIX)
+#else // on MacOS look for the file in the bundle
+    QCoreApplication::applicationDirPath() % "/../Resources/"
+#endif
+    % fname;
 }
+
+
