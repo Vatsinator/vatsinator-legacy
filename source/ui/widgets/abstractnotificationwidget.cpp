@@ -27,9 +27,6 @@ AbstractNotificationWidget::AbstractNotificationWidget() :
     QWidget(UserInterface::getSingletonPtr()) {
   setMinimumWidth(400);
   setFixedHeight(30);
-  
-  setGeometry(0, UserInterface::getSingleton().getMenuBar()->height(),
-    UserInterface::getSingleton().width(), 30);
 }
 
 void
@@ -40,6 +37,26 @@ AbstractNotificationWidget::setText(const QString& _text) {
 void
 AbstractNotificationWidget::setBold(bool _b) {
   __isbold = _b;
+}
+
+void
+AbstractNotificationWidget::setBoundingGeometry(const QRect& _rect) {
+  if (position() == Top)
+    setGeometry(QRect(_rect.x(), _rect.y(),
+                      _rect.width(), this->sizeHint().height()));
+  else
+    setGeometry(QRect(_rect.x(), _rect.y() + _rect.height() - this->sizeHint().height(),
+                      _rect.width(), this->sizeHint().height()));
+}
+
+void
+AbstractNotificationWidget::setBoundingGeometry(int x, int y, int w, int h) {
+  if (position() == Top)
+    setGeometry(QRect(x, y,
+                      w, this->sizeHint().height()));
+  else
+    setGeometry(QRect(x, y + h - this->sizeHint().height(),
+                      w, this->sizeHint().height()));
 }
 
 void

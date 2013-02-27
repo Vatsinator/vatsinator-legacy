@@ -201,8 +201,8 @@ UserInterface::resizeEvent(QResizeEvent* _event) {
   for (auto child: children()) {
     AbstractNotificationWidget* anw = qobject_cast< AbstractNotificationWidget* >(child);
     if (anw)
-      anw->setGeometry(0, MenuBar->height(),
-        this->width(), __updateNotification->sizeHint().height());
+      anw->setBoundingGeometry(0, menuBar()->height(),
+                               this->width(), this->height() - menuBar()->height());
   }
   
   _event->accept();

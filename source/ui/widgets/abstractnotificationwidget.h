@@ -30,6 +30,7 @@ class AbstractNotificationWidget : public QWidget {
    */
   
   Q_OBJECT
+  Q_ENUMS(Position);
   
 public:
   
@@ -53,6 +54,13 @@ public:
   void setText(const QString&);
   void setBold(bool);
   
+  /**
+   * This widget will fit nicely inside gived rect.
+   * @param rect Maximum rect.
+   */
+  void setBoundingGeometry(const QRect&);
+  void setBoundingGeometry(int, int, int, int);
+  
   inline const QString &
   getText() const { return __text; }
   
@@ -65,7 +73,6 @@ protected:
 private:
   QString __text;
   bool    __isbold;
-  
   
 };
 
