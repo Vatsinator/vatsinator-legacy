@@ -92,6 +92,9 @@ public:
   
   inline bool
   autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
+  
+  inline const QMenuBar *
+  getMenuBar() const { return MenuBar; }
 
 public slots:
   void quit();

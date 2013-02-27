@@ -18,52 +18,57 @@
 
 #include <QtGui>
 
+#include "ui/buttons/urlbutton.h"
+
 #include "updatenotificationwidget.h"
 #include "defines.h"
 
-UpdateNotificationWidget::UpdateNotificationWidget(QWidget* _parent) :
-    QWidget(_parent),
-    __label(this),
-    __button(this) {
+UpdateNotificationWidget::UpdateNotificationWidget() :
+    AbstractNotificationWidget(),
+    __closeButton(new QPushButton(tr("&Close this notification"), this)),
+    __visitButton(new UrlButton(tr("&Download new version now!"), VATSINATOR_HOMEPAGE, this)),
+    __layout(new QHBoxLayout(this)) {
   setVisible(false);
-  setMinimumWidth(400);
-  setFixedHeight(30);
+  setBold(true);
   
-  __label.setText(
-    tr("There is a new version of Vatsinator available! Check it now at %1").arg(
-      "<a href=\"" VATSINATOR_HOMEPAGE "\">" VATSINATOR_HOMEPAGE "</a>")
-  );
-  __label.setStyleSheet("QLabel { background: #ff7d7d; }");
-  __label.setContentsMargins(10, 5, 10, 5);
+  setText(tr("There is a new version of Vatsinator available!"));
   
-  connect(&__label,    SIGNAL(linkActivated(const QString&)),
-          this,        SLOT(__openUrl(const QString&)));
+  __visitButton->setDefault(true);
   
-  __button.setText(tr("Close this notification"));
+  __layout->setContentsMargins(5, 2, 5, 2);
   
-  connect(&__button,   SIGNAL(clicked()),
-          this,        SLOT(hide()));
+  __layout->addWidget(__visitButton, 1);
+  __layout->addWidget(__closeButton);
+  
+  connect(__closeButton,   SIGNAL(clicked()),
+          this,            SLOT(hide()));
 }
 
 UpdateNotificationWidget::~UpdateNotificationWidget() {
-  if (isVisible())
-    hide();
+  delete __layout;
+}
+
+QBrush
+UpdateNotificationWidget::background() const {
+  return QBrush(QColor("#ff7d7d"));
+}
+
+QColor
+UpdateNotificationWidget::foreground() const {
+  return QColor("#000000");
 }
 
 void
 UpdateNotificationWidget::resizeEvent(QResizeEvent* _event) {
-  __label.resize(this->width(), this->height());
+  QSize temp = __closeButton->sizeHint();
+  temp.rwidth() *= 3;
+  temp.rheight() = this->height();
   
-  QSize temp = __button.sizeHint();
-  int margin = (this->height() - temp.height()) / 2;
-  
-  __button.setGeometry(this->width() - temp.width() - margin, margin,
-                       temp.width(), temp.height());
+  __layout->setGeometry(QRect(
+    QPoint(this->width() - temp.width(), 0),
+    temp
+  ));
   
   _event->accept();
 }
 
-void
-UpdateNotificationWidget::__openUrl(const QString& _url) {
-  QDesktopServices::openUrl(_url);
-}

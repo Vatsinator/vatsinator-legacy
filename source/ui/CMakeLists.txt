@@ -47,11 +47,13 @@ set (ui_SRCS
     buttons/airportdetailsbutton.cpp
     buttons/colorbutton.cpp
     buttons/clientdetailsbutton.cpp
+    buttons/urlbutton.cpp
     
     views/airporttableview.cpp
     views/controllertableview.cpp
     views/flighttableview.cpp
     
+    widgets/abstractnotificationwidget.cpp
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
@@ -84,11 +86,13 @@ set (ui_MOC_SRCS
     buttons/airportdetailsbutton.h
     buttons/colorbutton.h
     buttons/clientdetailsbutton.h
+    buttons/urlbutton.h
     
     views/airporttableview.h
     views/controllertableview.h
     views/flighttableview.h
     
+    widgets/abstractnotificationwidget.h
     widgets/mapwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h

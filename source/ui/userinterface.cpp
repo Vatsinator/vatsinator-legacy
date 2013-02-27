@@ -195,9 +195,16 @@ UserInterface::closeEvent(QCloseEvent* _event) {
   _event->accept();
 }
 
-void UserInterface::resizeEvent(QResizeEvent* _event) {
-  __updateNotification->setGeometry(0, MenuBar->height(),
-                                    this->width(), __updateNotification->sizeHint().height());
+void
+UserInterface::resizeEvent(QResizeEvent* _event) { 
+  /* Update all notification-widgets */
+  for (auto child: children()) {
+    AbstractNotificationWidget* anw = qobject_cast< AbstractNotificationWidget* >(child);
+    if (anw)
+      anw->setGeometry(0, MenuBar->height(),
+        this->width(), __updateNotification->sizeHint().height());
+  }
+  
   _event->accept();
 }
 
@@ -216,8 +223,7 @@ UserInterface::__setupWindow() {
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
   
-  __updateNotification = new UpdateNotificationWidget(this);
-  __updateNotification->setGeometry(0, MenuBar->height(), this->width(), 30);
+  __updateNotification = new UpdateNotificationWidget();
   
   Replaceable->addWidgets({__statusBox, __progressBar});
 

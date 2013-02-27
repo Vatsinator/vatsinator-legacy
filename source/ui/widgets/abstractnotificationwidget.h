@@ -1,5 +1,5 @@
 /*
-    updatenotificationwidget.h
+    abstractnotificationwidget.h
     Copyright (C) 2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,48 +17,43 @@
 */
 
 
-#ifndef UPDATENOTIFICATIONWIDGET_H
-#define UPDATENOTIFICATIONWIDGET_H
+#ifndef ABSTRACTNOTIFICATIONWIDGET_H
+#define ABSTRACTNOTIFICATIONWIDGET_H
 
 #include <QWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
 
-#include "ui/widgets/abstractnotificationwidget.h"
-
-class UrlButton;
-
-class UpdateNotificationWidget : public AbstractNotificationWidget {
+class AbstractNotificationWidget : public QWidget {
   
   /*
-   * This is the red widget that opens up if UpdateChecker detects
-   * outdated version of running Vatsinator.
+   * Subclass this class in order to display nice notifications above
+   * the map in the main window.
    */
   
   Q_OBJECT
   
 public:
-  explicit UpdateNotificationWidget();
+  AbstractNotificationWidget();
   
-  virtual ~UpdateNotificationWidget();
+  virtual QBrush background() const = 0;
+  virtual QColor foreground() const = 0;
   
-  QBrush background() const;
-  QColor foreground() const;
+  void setText(const QString&);
+  void setBold(bool);
+  
+  inline const QString &
+  getText() const { return __text; }
+  
+  inline const bool
+  isBold() const { return __isbold; }
   
 protected:
-  void resizeEvent(QResizeEvent*);
+  void paintEvent(QPaintEvent*);
   
 private:
-  // "Close this notification" button
-  QPushButton* __closeButton;
+  QString __text;
+  bool    __isbold;
   
-  // "Visit Vatsinator homepage" button
-  UrlButton* __visitButton;
-  
-  // Layout for above buttons
-  QHBoxLayout* __layout;
   
 };
 
-#endif // UPDATENOTIFICATIONWIDGET_H
+#endif // ABSTRACTNOTIFICATIONWIDGET_H
