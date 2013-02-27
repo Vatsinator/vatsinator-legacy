@@ -27,7 +27,7 @@ UpdateNotificationWidget::UpdateNotificationWidget() :
     AbstractNotificationWidget(),
     __closeButton(new QPushButton(tr("&Close this notification"), this)),
     __visitButton(new UrlButton(tr("&Download new version now!"), VATSINATOR_HOMEPAGE, this)),
-    __layout(new QHBoxLayout(this)) {
+    __layout(new QHBoxLayout()) {
   setVisible(false);
   setBold(true);
   
@@ -37,6 +37,7 @@ UpdateNotificationWidget::UpdateNotificationWidget() :
   
   __layout->setContentsMargins(5, 2, 5, 2);
   
+  __layout->setSizeConstraint(QLayout::SetMinimumSize);
   __layout->addWidget(__visitButton, 1);
   __layout->addWidget(__closeButton);
   
@@ -56,6 +57,11 @@ UpdateNotificationWidget::background() const {
 QColor
 UpdateNotificationWidget::foreground() const {
   return QColor("#000000");
+}
+
+AbstractNotificationWidget::Position
+UpdateNotificationWidget::position() const {
+  return AbstractNotificationWidget::Top;
 }
 
 void

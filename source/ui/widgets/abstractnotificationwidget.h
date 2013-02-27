@@ -32,10 +32,23 @@ class AbstractNotificationWidget : public QWidget {
   Q_OBJECT
   
 public:
+  
+  enum Position {
+    /*
+     * Describes the notification widget position above the main window.
+     */
+    Top, Bottom
+  };
+  
+  /**
+   * We need no parent there, it is set to UserInterface's pointer
+   * automatically.
+   */
   AbstractNotificationWidget();
   
   virtual QBrush background() const = 0;
   virtual QColor foreground() const = 0;
+  virtual Position position() const = 0;
   
   void setText(const QString&);
   void setBold(bool);

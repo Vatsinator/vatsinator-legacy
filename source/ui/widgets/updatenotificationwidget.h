@@ -46,6 +46,8 @@ public:
   QBrush background() const;
   QColor foreground() const;
   
+  UpdateNotificationWidget::Position position() const;
+  
 protected:
   void resizeEvent(QResizeEvent*);
   
