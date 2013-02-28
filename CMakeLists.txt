@@ -99,7 +99,10 @@ vatsinator_install (
 
 
 # Platform-specific actions
-if (LINUX)    
+if (LINUX)
+    
+    find_package (QuaZip REQUIRED)
+    
     # This actually creates .deb
     include (Packaging-linux)
     

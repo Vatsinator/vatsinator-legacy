@@ -7,9 +7,9 @@ Group:          Applications/Internet
 Source:         %{name}-@vatsinator_VERSION@.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  libqt4-devel gcc-c++ cmake
+BuildRequires:  libqt4-devel gcc-c++ cmake libquazip-devel
 
-Requires:       libqt4-core >= 4.8, libqt4-gui >= 4.8, libqt4-network >= 4.8, libqt4-opengl >= 4.8
+Requires:       libqt4-core >= 4.8, libqt4-gui >= 4.8, libqt4-network >= 4.8, libqt4-opengl >= 4.8, libquazip
 
 %description
 Vatsinator is an open-source Vatsim network monitor. It shows

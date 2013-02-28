@@ -24,6 +24,7 @@
 #include <QMutex>
 #include <QMap>
 #include <QDateTime>
+#include <QIODevice>
 
 #include "singleton.h"
 
@@ -65,6 +66,7 @@ public:
    * Generates md5 hash of given file.
    */
   static QByteArray md5Hash(const QString&);
+  static QByteArray md5Hash(const QIODevice&);
   
 private:
   class FileHash {

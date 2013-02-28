@@ -18,3 +18,4 @@ ExternalProject_Get_Property (QuaZIP binary_dir)
 include_directories (${source_dir})
 
 set (QUAZIP_LIBRARY_RELEASE ${binary_dir}/libquazip.dll PARENT_SCOPE)
+set (QUAZIP_LIBRARIES ${binary_dir}/libquazip.dll PARENT_SCOPE)

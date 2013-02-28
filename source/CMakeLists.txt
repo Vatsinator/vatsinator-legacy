@@ -59,6 +59,7 @@ if (LINUX)
     set (vatsinator_LIBS
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
+        ${QUAZIP_LIBRARIES}
     )
 elseif (APPLE)
     set (vatsinator_PREFIX "")
@@ -66,6 +67,7 @@ elseif (APPLE)
     set (vatsinator_LIBS
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
+        ${QUAZIP_LIBRARIES}
     )
 else (WIN32)
     set (vatsinator_PREFIX "")
@@ -77,6 +79,7 @@ else (WIN32)
         ${QT_QTGUI_LIBRARY}
         ${QT_QTOPENGL_LIBRARY}
         ${QT_QTNETWORK_LIBRARY}
+        ${QUAZIP_LIBRARIES}
   )
 endif (LINUX)
 
