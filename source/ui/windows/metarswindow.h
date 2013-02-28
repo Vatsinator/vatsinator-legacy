@@ -27,7 +27,7 @@
 #include "vatsimdata/metar.h"
 
 class VatsimDataHandler;
-class HttpHandler;
+class PlainTextDownloader;
 class MetarListModel;
 
 class MetarsWindow :
@@ -57,7 +57,7 @@ protected:
 private:
   void __findAndSelectMetar(const QString&, bool = true);
   
-  HttpHandler*    __httpHandler;
+  PlainTextDownloader*    __httpHandler;
   MetarListModel* __metarsHandler;
   
   /* Keeps the ICAO of the metar that user's waiting for */

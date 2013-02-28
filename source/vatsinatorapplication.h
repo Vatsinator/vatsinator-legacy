@@ -35,7 +35,7 @@ class VatsimDataHandler;
 class LanguageManager;
 class SettingsManager;
 class WorldMap;
-class HttpHandler;
+class PlainTextDownloader;
 class ModuleManager;
 class FileManager;
 
@@ -112,18 +112,18 @@ public slots:
 private:
   void __emitGLInitialized();
 
-  HttpHandler*       __httpHandler;
-  FileManager*       __fileManager;
-  AirportDatabase*   __airportsData;
-  FirDatabase*       __firsData;
-  WorldMap*          __worldMap;
-  VatsimDataHandler* __vatsimData;
-  LanguageManager*   __languageManager;
-  SettingsManager*   __settingsManager;
-  ModuleManager*     __modulesManager;
-  UserInterface*     __userInterface;
-  QTimer             __timer;
-  QTranslator        __translator;
+  PlainTextDownloader* __downloader;
+  FileManager*         __fileManager;
+  AirportDatabase*     __airportsData;
+  FirDatabase*         __firsData;
+  WorldMap*            __worldMap;
+  VatsimDataHandler*   __vatsimData;
+  LanguageManager*     __languageManager;
+  SettingsManager*     __settingsManager;
+  ModuleManager*       __modulesManager;
+  UserInterface*       __userInterface;
+  QTimer               __timer;
+  QTranslator          __translator;
 
 private slots:
   void __loadCachedData();

@@ -27,7 +27,7 @@
 #include "modules/modulemanager.h"
 #include "modules/updatechecker.h"
 
-#include "network/httphandler.h"
+#include "network/plaintextdownloader.h"
 
 #include "settings/languagemanager.h"
 #include "settings/settingsmanager.h"
@@ -90,21 +90,25 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
           this,                    SLOT(__loadNewSettings()));
 
   // connect data refresher with the timer
-  connect(&__timer, SIGNAL(timeout()), this, SLOT(refreshData()));
+  connect(&__timer,                SIGNAL(timeout()),
+          this,                    SLOT(refreshData()));
 
   // read .dat file
   __vatsimData->init();
 
   // if fetch goes wrong, show the alert
-  connect(__vatsimData, SIGNAL(dataCorrupted()), this, SLOT(__showDataAlert()));
+  connect(__vatsimData,            SIGNAL(dataCorrupted()),
+          this,                    SLOT(__showDataAlert()));
 
   // show main window
   __userInterface->show();
 
   // create something that will handle our http requests
-  __httpHandler = new HttpHandler(__userInterface->getProgressBar());
-  connect(__httpHandler, SIGNAL(finished(const QString&)), this, SLOT(__dataUpdated(const QString&)));
-  connect(__httpHandler, SIGNAL(fetchError()), this, SLOT(__showDataAlert()));
+  __downloader = new PlainTextDownloader(__userInterface->getProgressBar());
+  connect(__downloader,         SIGNAL(finished(const QString&)),
+          this,                 SLOT(__dataUpdated(const QString&)));
+  connect(__downloader,         SIGNAL(fetchError()),
+          this,                 SLOT(__showDataAlert()));
 
   // start the timer and fetch data
   __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
@@ -117,7 +121,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 VatsinatorApplication::~VatsinatorApplication() {
   delete __settingsManager;
   delete __languageManager;
-  delete __httpHandler;
+  delete __downloader;
   delete __vatsimData;
   delete __airportsData;
   delete __firsData;
@@ -163,7 +167,7 @@ VatsinatorApplication::log(const char* _s) {
 void
 VatsinatorApplication::refreshData() {
   emit dataDownloading();
-  __httpHandler->fetchData(__vatsimData->getDataUrl());
+  __downloader->fetchData(__vatsimData->getDataUrl());
   if (!__userInterface->autoUpdatesEnabled())
     __timer.stop();
   else

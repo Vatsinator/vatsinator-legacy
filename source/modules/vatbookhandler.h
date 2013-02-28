@@ -29,7 +29,7 @@
 
 struct B;
 class BookedAtcTableModel;
-class HttpHandler;
+class PlainTextDownloader;
 
 class VatbookHandler :
     public QObject,
@@ -70,7 +70,7 @@ private:
   /* This map contains pairs airport/fir icao - atcs */
   QHash< QString, BookedAtcTableModel* > __bookings;
   
-  HttpHandler* __httpHandler;
+  PlainTextDownloader* __httpHandler;
   QTimer       __timer;
   
 private slots:

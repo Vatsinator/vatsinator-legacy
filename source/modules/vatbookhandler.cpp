@@ -21,7 +21,7 @@
 #include "modules/models/bookedatctablemodel.h"
 #include "modules/vatbook/bookedcontroller.h"
 
-#include "network/httphandler.h"
+#include "network/plaintextdownloader.h"
 
 #include "vatbookhandler.h"
 #include "defines.h"
@@ -33,7 +33,7 @@ BookedAtcTableModel* VatbookHandler::emptyBookedAtcTable = new BookedAtcTableMod
 
 VatbookHandler::VatbookHandler(QObject* _parent) : 
     QObject(_parent),
-    __httpHandler(new HttpHandler()) {
+    __httpHandler(new PlainTextDownloader()) {
   
   connect(__httpHandler,    SIGNAL(finished(const QString&)),
           this,             SLOT(__dataFetched(const QString&)));

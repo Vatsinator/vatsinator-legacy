@@ -26,14 +26,14 @@
 
 #include "vatsimdata/metar.h"
 
-class HttpHandler;
+class PlainTextDownloader;
 
 class MetarListModel : public QAbstractListModel, public Singleton< MetarListModel > {
 
   Q_OBJECT
 
 public:
-  MetarListModel(HttpHandler*, QObject* = 0);
+  MetarListModel(PlainTextDownloader*, QObject* = 0);
 
   /**
    * Starts fetching the METAR.
@@ -77,7 +77,7 @@ private:
 
   QList< Metar > __metarList;
 
-  HttpHandler* __myHttpHandler;
+  PlainTextDownloader* __myHttpHandler;
 
 private slots:
   void __gotMetar(const QString&);

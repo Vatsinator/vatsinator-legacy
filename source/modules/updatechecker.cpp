@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "network/httphandler.h"
+#include "network/plaintextdownloader.h"
 
 #include "vatsinatorapplication.h"
 
@@ -28,7 +28,7 @@
 UpdateChecker::UpdateChecker() :
     QObject(),
     __currentVersion(VATSINATOR_VERSION),
-    __httpHandler(new HttpHandler()) {
+    __httpHandler(new PlainTextDownloader()) {
   connect(__httpHandler,    SIGNAL(finished(const QString&)),
           this,             SLOT(__parseVersion(const QString&)));
 }

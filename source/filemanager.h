@@ -28,6 +28,8 @@
 
 #include "singleton.h"
 
+class FileDownloader;
+
 class FileManager : public Singleton< FileManager > {
   
   /*
@@ -51,6 +53,7 @@ public:
   
   
   FileManager();
+  virtual ~FileManager();
   
   /**
    * Returns real file location.
@@ -66,7 +69,7 @@ public:
    * Generates md5 hash of given file.
    */
   static QByteArray md5Hash(const QString&);
-  static QByteArray md5Hash(const QIODevice&);
+  static QByteArray md5Hash(QIODevice&);
   
 private:
   class FileHash {
@@ -99,6 +102,8 @@ private:
     QMap< QString, FileHash > hash;
     QDateTime                 timestamp;
   } __manifest;
+  
+  FileDownloader* __downloader;
   
 };
 

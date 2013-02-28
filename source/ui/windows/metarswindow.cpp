@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "network/httphandler.h"
+#include "network/plaintextdownloader.h"
 
 #include "ui/userinterface.h"
 
@@ -35,7 +35,7 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
 
   UserInterface::setWindowPosition(this);
 
-  __httpHandler = new HttpHandler();
+  __httpHandler = new PlainTextDownloader();
 
   __metarsHandler = new MetarListModel(__httpHandler);
 

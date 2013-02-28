@@ -24,7 +24,7 @@
 
 #include "singleton.h"
 
-class HttpHandler;
+class PlainTextDownloader;
 
 class UpdateChecker :
     public QObject,
@@ -79,7 +79,7 @@ private:
   /* Version that is available to download */
   Version __newVersion;
   
-  HttpHandler* __httpHandler;
+  PlainTextDownloader* __httpHandler;
   
 private slots:
   void __parseVersion(const QString&);

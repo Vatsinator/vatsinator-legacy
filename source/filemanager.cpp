@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+#include "network/filedownloader.h"
+
 #include "vatsinatorapplication.h"
 
 #include "filemanager.h"
@@ -36,10 +38,15 @@ static const QString DATA_DIR_LOCATON(
 static const QString DATA_LOCATION(QDir::toNativeSeparators(DATA_DIR_LOCATON % "/Vatsinator/"));
 
 
-FileManager::FileManager() {
+FileManager::FileManager() :
+    __downloader(new FileDownloader()) {
   VatsinatorApplication::log("Local data location: %s", qPrintable(DATA_LOCATION));
   
   __readManifest(DATA_LOCATION % "Manifest");
+}
+
+FileManager::~FileManager() {
+  delete __downloader;
 }
 
 const QString &
@@ -97,7 +104,7 @@ FileManager::md5Hash(const QString& _fname) {
 }
 
 QByteArray
-FileManager::md5Hash(const QIODevice& _dev) {
+FileManager::md5Hash(QIODevice& _dev) {
   Q_ASSERT(_dev.isOpen());
   
   return QCryptographicHash::hash(_dev.readAll(), QCryptographicHash::Md5).toHex();

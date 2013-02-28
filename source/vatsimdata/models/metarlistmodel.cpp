@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "network/httphandler.h"
+#include "network/plaintextdownloader.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
 
@@ -27,7 +27,7 @@
 #include "metarlistmodel.h"
 #include "defines.h"
 
-MetarListModel::MetarListModel(HttpHandler* _hh, QObject* _parent) :
+MetarListModel::MetarListModel(PlainTextDownloader* _hh, QObject* _parent) :
     QAbstractListModel(_parent),
     __myHttpHandler(_hh) {
   connect(__myHttpHandler,  SIGNAL(finished(QString)),
