@@ -62,6 +62,8 @@ if (NOT vatsinator_VERSION)
     string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
 endif (NOT vatsinator_VERSION)
 
+add_subdirectory (externals)
+
 include (VatsinatorInstall)
 
 set (vatsinator_RESOURCES
@@ -128,6 +130,7 @@ elseif (WIN32)
         ${QT_QTOPENGL_LIBRARY_RELEASE}
         ${QT_QTSVG_LIBRARY_RELEASE}
         ${QT_QTXML_LIBRARY_RELEASE}
+        ${QUAZIP_LIBRARY_RELEASE}
         ${QT_LIBRARY_DIR}/libgcc_s_dw2-1.dll
         ${QT_LIBRARY_DIR}/mingwm10.dll
         DESTINATION .
@@ -166,5 +169,3 @@ add_custom_target (
     uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
-
-
