@@ -22,7 +22,7 @@
 #include "vdebug/debugwindow.h"
 #endif
 
-#include "ui/widgets/updatenotificationwidget.h"
+#include "ui/widgets/newversionnotificationwidget.h"
 
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
@@ -223,7 +223,7 @@ UserInterface::__setupWindow() {
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
   
-  __updateNotification = new UpdateNotificationWidget();
+  __updateNotification = new NewVersionNotificationWidget();
   
   Replaceable->addWidgets({__statusBox, __progressBar});
 

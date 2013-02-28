@@ -38,7 +38,7 @@ class FlightListWindow;
 class MetarsWindow;
 class SettingsWindow;
 class QProgressBar;
-class UpdateNotificationWidget;
+class NewVersionNotificationWidget;
 class VatsinatorApplication;
 
 class UserInterface :
@@ -131,7 +131,7 @@ private:
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
   
-  UpdateNotificationWidget* __updateNotification;
+  NewVersionNotificationWidget* __updateNotification;
   
 private slots:
   void __dataDownloading();

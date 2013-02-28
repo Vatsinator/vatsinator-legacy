@@ -55,9 +55,9 @@ set (ui_SRCS
     
     widgets/abstractnotificationwidget.cpp
     widgets/mapwidget.cpp
+    widgets/newversionnotificationwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
-    widgets/updatenotificationwidget.cpp
     
     windows/aboutwindow.cpp
     windows/airportdetailswindow.cpp
@@ -94,9 +94,9 @@ set (ui_MOC_SRCS
     
     widgets/abstractnotificationwidget.h
     widgets/mapwidget.h
+    widgets/newversionnotificationwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h
-    widgets/updatenotificationwidget.h
     
     windows/aboutwindow.h
     windows/airportdetailswindow.h
