@@ -968,14 +968,27 @@
 <context>
     <name>UpdateNotificationWidget</name>
     <message>
-        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="33"/>
         <source>There is a new version of Vatsinator available! Check it now at %1</source>
-        <translation>There is a new version of Vatsinator available! Check it now at %1</translation>
+        <translation type="obsolete">There is a new version of Vatsinator available! Check it now at %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="42"/>
         <source>Close this notification</source>
-        <translation>Close this notification</translation>
+        <translation type="obsolete">Close this notification</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="28"/>
+        <source>&amp;Close this notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="29"/>
+        <source>&amp;Download new version now!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="34"/>
+        <source>There is a new version of Vatsinator available!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
