@@ -313,6 +313,24 @@
     </message>
 </context>
 <context>
+    <name>FileDownloader</name>
+    <message>
+        <location filename="../network/filedownloader.cpp" line="49"/>
+        <source>Temporary directory (%1) is not readable!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../network/filedownloader.cpp" line="81"/>
+        <source>Could not open file (%1) for writing!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../network/filedownloader.cpp" line="118"/>
+        <source>Error downloading file: %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FirDatabase</name>
     <message>
         <location filename="../db/firdatabase.cpp" line="75"/>
@@ -760,6 +778,24 @@
     </message>
 </context>
 <context>
+    <name>NewVersionNotificationWidget</name>
+    <message>
+        <location filename="../ui/widgets/newversionnotificationwidget.cpp" line="28"/>
+        <source>&amp;Close this notification</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/widgets/newversionnotificationwidget.cpp" line="29"/>
+        <source>&amp;Download new version now!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/widgets/newversionnotificationwidget.cpp" line="34"/>
+        <source>There is a new version of Vatsinator available!</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>SettingsWindow</name>
     <message>
         <location filename="../ui/resources/settingswindow.ui" line="14"/>
@@ -1021,44 +1057,44 @@
 <context>
     <name>VatsinatorApplication</name>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="268"/>
+        <location filename="../vatsinatorapplication.cpp" line="272"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Impossível obter dados da VATSIM.</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="269"/>
+        <location filename="../vatsinatorapplication.cpp" line="273"/>
         <source>What do you want to do with that?</source>
         <translation>Que pretende fazer com isso?</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="217"/>
-        <location filename="../vatsinatorapplication.cpp" line="270"/>
+        <location filename="../vatsinatorapplication.cpp" line="221"/>
+        <location filename="../vatsinatorapplication.cpp" line="274"/>
         <source>Try again</source>
         <translation>Tente novamente</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="213"/>
+        <location filename="../vatsinatorapplication.cpp" line="217"/>
         <source>It seems there is a problem with Vatsim servers.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="214"/>
+        <location filename="../vatsinatorapplication.cpp" line="218"/>
         <source>You can try again now or wait %1 minutes.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="218"/>
+        <location filename="../vatsinatorapplication.cpp" line="222"/>
         <source>Wait</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="271"/>
+        <location filename="../vatsinatorapplication.cpp" line="275"/>
         <source>Keep current data</source>
         <translation>Manter dados actuais</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="228"/>
-        <location filename="../vatsinatorapplication.cpp" line="281"/>
+        <location filename="../vatsinatorapplication.cpp" line="232"/>
+        <location filename="../vatsinatorapplication.cpp" line="285"/>
         <source>Data outdated!</source>
         <translation>Dados obsoletos!</translation>
     </message>
