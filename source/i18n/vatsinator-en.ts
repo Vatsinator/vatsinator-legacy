@@ -255,12 +255,12 @@
 <context>
     <name>AtcDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="54"/>
         <source>%1 - ATC details</source>
         <translation>%1 - ATC details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="67"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="70"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -382,7 +382,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="35"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="62"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="64"/>
         <source>%1 - flight details</source>
         <translation>%1 - flight details</translation>
     </message>
@@ -424,7 +424,7 @@
     </message>
     <message>
         <location filename="../ui/resources/flightdetailswindow.ui" line="227"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="87"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="89"/>
         <source>Vataware statistics for this pilot</source>
         <translation>Vataware statistics for this pilot</translation>
     </message>
@@ -514,28 +514,28 @@
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="68"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="70"/>
         <source>%1 feet</source>
         <translation>%1 feet</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="95"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="71"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="97"/>
         <source>%1 kts</source>
         <translation>%1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="73"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="75"/>
         <source>airborne</source>
         <translation>airborne</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="75"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="77"/>
         <source>departing</source>
         <translation>departing</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="77"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="79"/>
         <source>arrived</source>
         <translation>arrived</translation>
     </message>
@@ -1030,28 +1030,53 @@
 <context>
     <name>UserInterface</name>
     <message>
-        <location filename="../ui/userinterface.cpp" line="111"/>
+        <location filename="../ui/userinterface.cpp" line="117"/>
         <source>Last update: never</source>
         <translation>Last update: never</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="113"/>
+        <location filename="../ui/userinterface.cpp" line="119"/>
         <source>Last update: %1 UTC</source>
         <translation>Last update: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="130"/>
+        <location filename="../ui/userinterface.cpp" line="136"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
+    </message>
+    <message>
+        <location filename="../ui/userinterface.cpp" line="320"/>
+        <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
+        <translation type="unfinished">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
+    </message>
+    <message>
+        <location filename="../ui/userinterface.cpp" line="321"/>
+        <source>What do you want to do with that?</source>
+        <translation type="unfinished">What do you want to do with that?</translation>
+    </message>
+    <message>
+        <location filename="../ui/userinterface.cpp" line="322"/>
+        <source>Try again</source>
+        <translation type="unfinished">Try again</translation>
+    </message>
+    <message>
+        <location filename="../ui/userinterface.cpp" line="323"/>
+        <source>Keep current data</source>
+        <translation type="unfinished">Keep current data</translation>
+    </message>
+    <message>
+        <location filename="../ui/userinterface.cpp" line="331"/>
+        <source>Data outdated!</source>
+        <translation type="unfinished">Data outdated!</translation>
     </message>
 </context>
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="270"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="313"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="391"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="322"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="365"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="393"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="443"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
     </message>
@@ -1059,46 +1084,24 @@
 <context>
     <name>VatsinatorApplication</name>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="272"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
-        <translation>Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
+        <translation type="obsolete">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="273"/>
         <source>What do you want to do with that?</source>
-        <translation>What do you want to do with that?</translation>
+        <translation type="obsolete">What do you want to do with that?</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="221"/>
-        <location filename="../vatsinatorapplication.cpp" line="274"/>
         <source>Try again</source>
-        <translation>Try again</translation>
+        <translation type="obsolete">Try again</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="217"/>
-        <source>It seems there is a problem with Vatsim servers.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../vatsinatorapplication.cpp" line="218"/>
-        <source>You can try again now or wait %1 minutes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../vatsinatorapplication.cpp" line="222"/>
-        <source>Wait</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../vatsinatorapplication.cpp" line="275"/>
         <source>Keep current data</source>
-        <translation>Keep current data</translation>
+        <translation type="obsolete">Keep current data</translation>
     </message>
     <message>
-        <location filename="../vatsinatorapplication.cpp" line="232"/>
-        <location filename="../vatsinatorapplication.cpp" line="285"/>
         <source>Data outdated!</source>
-        <translation>Data outdated!</translation>
+        <translation type="obsolete">Data outdated!</translation>
     </message>
 </context>
 <context>
