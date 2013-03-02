@@ -56,6 +56,13 @@ public:
   virtual ~FileManager();
   
   /**
+   * Stores given data in local cache file.
+   * @param fileName File name. Only file name, not full path.
+   * @param data Data to be saved.
+   */
+  static void cacheData(const QString&, const QString&);
+  
+  /**
    * Returns real file location.
    */
   static const QString& path(FileManager::File);

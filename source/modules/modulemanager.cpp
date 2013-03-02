@@ -22,6 +22,8 @@
 #include "modules/updatechecker.h"
 #include "modules/vatbookhandler.h"
 
+#include "vatsimdata/vatsimdatahandler.h"
+
 #include "vatsinatorapplication.h"
 
 #include "modulemanager.h"
@@ -36,7 +38,7 @@ ModuleManager::ModuleManager() :
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
           this,                                     SLOT(__initAfterGL()),
           Qt::DirectConnection);
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
           this,                                     SLOT(updateData()),
           Qt::DirectConnection);
 }

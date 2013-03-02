@@ -22,6 +22,8 @@
 #include "vdebug/debugwindow.h"
 #endif
 
+#include "settings/settingsmanager.h"
+
 #include "ui/widgets/newversionnotificationwidget.h"
 
 #include "ui/windows/aboutwindow.h"
@@ -35,7 +37,7 @@
 #include "ui/windows/settingswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
-#include <vatsimdata/client.h>
+#include "vatsimdata/client.h"
 
 #include "vatsinatorapplication.h"
 
@@ -78,8 +80,12 @@ UserInterface::UserInterface(QWidget* _parent) :
           this,                                     SIGNAL(autoUpdatesEnabled(bool)));
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
           this,                                     SLOT(__dataDownloading()));
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
+          this,                                     SLOT(__statusUpdated()));
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
           this,                                     SLOT(__dataUpdated()));
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(dataCorrupted()),
+          this,                                     SLOT(__fetchError()));
 
   statusBarUpdate();
 }
@@ -295,6 +301,33 @@ UserInterface::__dataDownloading() {
 }
 
 void
+UserInterface::__statusUpdated() {
+  statusBarUpdate();
+}
+
+void
 UserInterface::__dataUpdated() {
+  infoBarUpdate();
+  statusBarUpdate();
   Replaceable->setCurrentWidget(__statusBox);
+}
+
+void
+UserInterface::__fetchError() {
+  Replaceable->setCurrentWidget(__statusBox);
+  
+  QMessageBox decision;
+  decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
+  decision.setInformativeText(tr("What do you want to do with that?"));
+  QPushButton* againButton = decision.addButton(tr("Try again"), QMessageBox::ActionRole);
+  decision.addButton(tr("Keep current data"), QMessageBox::RejectRole);
+  decision.setIcon(QMessageBox::Warning);
+  
+  decision.exec();
+  
+  if (decision.clickedButton() == againButton) {
+    VatsinatorApplication::getSingleton().refreshData();
+  } else {
+    statusBarUpdate(tr("Data outdated!"));
+  }
 }

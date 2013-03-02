@@ -18,8 +18,18 @@
 
 #include <QtGui>
 
+#include "cache/cachefile.h"
+
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+
+#include "network/plaintextdownloader.h"
+
+#include "modules/modulemanager.h"
+
+#include "ui/userinterface.h"
+
+#include "settings/settingsmanager.h"
 
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
@@ -52,13 +62,26 @@ VatsimDataHandler::VatsimDataHandler() :
     __observers(0),
     __statusFileFetched(false),
     __airports(AirportDatabase::getSingleton()),
-    __firs(FirDatabase::getSingleton()) {
-  connect(this, SIGNAL(localDataBad(QString)),
-          this, SLOT(__reportDataError(QString)));
+    __firs(FirDatabase::getSingleton()),
+    __downloader(new PlainTextDownloader()) {
+  connect(this,                                     SIGNAL(localDataBad(QString)),
+          this,                                     SLOT(__reportDataError(QString)));
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
+          this,                                     SLOT(loadCachedData()));
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
+          this,                                     SLOT(__slotUiCreated()));
+  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
+          this,                                     SLOT(__beginDownload()));
+  connect(__downloader,                             SIGNAL(finished(const QString&)),
+          this,                                     SLOT(__dataFetched(const QString&)));
+  connect(__downloader,                             SIGNAL(fetchError()),
+          this,                                     SIGNAL(dataCorrupted()));
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
+  
+  delete __downloader;
 
   qDeleteAll(__uirs);
 
@@ -71,17 +94,21 @@ VatsimDataHandler::~VatsimDataHandler() {
 
 void
 VatsimDataHandler::init() {
-  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile, FileManager::path(FileManager::ALIAS));
-  QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile, FileManager::path(FileManager::COUNTRY));
-  QtConcurrent::run(this, &VatsimDataHandler::__readFirFile, FileManager::path(FileManager::FIR));
-  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile, FileManager::path(FileManager::UIR));
+  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile,
+                    FileManager::path(FileManager::ALIAS));
+  QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile,
+                    FileManager::path(FileManager::COUNTRY));
+  QtConcurrent::run(this, &VatsimDataHandler::__readFirFile,
+                    FileManager::path(FileManager::FIR));
+  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile,
+                    FileManager::path(FileManager::UIR));
 }
 
 void
 VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
   QStringList tempList = _statusFile.split('\n', QString::SkipEmptyParts);
 
-  for (QString & temp: tempList) {
+  for (QString& temp: tempList) {
     if (temp.startsWith(';'))
       continue;
 
@@ -134,7 +161,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
     if (flags["GENERAL"]) {
       if (temp.startsWith("UPDATE")) {
-        __dateDataUpdated = QDateTime::fromString(
+        __dateVatsimDataUpdated = QDateTime::fromString(
                               temp.split(' ').back().simplified(),
                               "yyyyMMddhhmmss"
                             );
@@ -258,6 +285,31 @@ VatsimDataHandler::atcCount() const {
 int
 VatsimDataHandler::obsCount() const {
   return __observers;
+}
+
+void
+VatsimDataHandler::loadCachedData() {
+  VatsinatorApplication::log("Loading data from cache...");
+  
+  CacheFile file(CACHE_FILE_NAME);
+  if (file.exists()) {
+    FirDatabase::getSingleton().clearAll();
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      VatsinatorApplication::log("File %s is not readable.", qPrintable(file.fileName()));
+      return;
+    }
+    
+    QString data;
+    
+    while (!file.atEnd())
+      data.append(file.readLine());
+    file.close();
+    
+    parseDataFile(data);
+    ModuleManager::getSingleton().updateData();
+  }
+  
+  VatsinatorApplication::log("Cache restored.");
 }
 
 void
@@ -445,4 +497,36 @@ void
 VatsimDataHandler::__reportDataError(QString _msg) {
   VatsinatorApplication::log(qPrintable(_msg));
   VatsinatorApplication::alert(_msg, true);
+}
+
+void
+VatsimDataHandler::__slotUiCreated() {
+  __downloader->setProgressBar(UserInterface::getSingleton().getProgressBar());
+}
+
+void
+VatsimDataHandler::__beginDownload() {
+  VatsinatorApplication::log("Starting download.");
+  __downloader->fetchData(getDataUrl());
+}
+
+void
+VatsimDataHandler::__dataFetched(const QString& _data) {
+  if (_data.isEmpty()) {
+    emit dataCorrupted();
+    return;
+  }
+  
+  if (__statusFileFetched) {
+    FirDatabase::getSingleton().clearAll();
+    parseDataFile(_data);
+    emit vatsimDataUpdated();
+    
+    if (SettingsManager::getSingleton().cacheEnabled())
+      FileManager::cacheData(CACHE_FILE_NAME, _data);
+  } else {
+    parseStatusFile(_data);
+    emit vatsimStatusUpdated();
+    __beginDownload();
+  }
 }

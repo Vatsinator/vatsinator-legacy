@@ -42,10 +42,12 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
 
-  connect(TrackFlightBox, SIGNAL(stateChanged(int)), this, SLOT(stateHandle(int)));
-  connect(ShowButton, SIGNAL(clicked()),  this, SLOT(__handleShowClicked()));
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
-          this,           SLOT(__updateData()));
+  connect(TrackFlightBox,                       SIGNAL(stateChanged(int)),
+          this,                                 SLOT(stateHandle(int)));
+  connect(ShowButton,                           SIGNAL(clicked()),
+          this,                                 SLOT(__handleShowClicked()));
+  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
+          this,                                 SLOT(__updateData()));
 
   UserInterface::setWindowPosition(this);
 }

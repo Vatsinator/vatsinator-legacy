@@ -39,6 +39,7 @@ class EmptyAirport;
 class FirDatabase;
 class FlightTableModel;
 class Pilot;
+class PlainTextDownloader;
 class Uir;
 class VatsinatorApplication;
 
@@ -65,7 +66,7 @@ public:
    * Destructor deletes all pointers.
    */
   ~VatsimDataHandler();
-
+  
   /**
    * Parses the data files. Must be called after AirportsDatabase::init()
    * and FirsDatabase::init().
@@ -181,7 +182,7 @@ public:
   getAliases() const { return __aliases; }
 
   inline const QDateTime&
-  getDateDataUpdated() const { return __dateDataUpdated; }
+  getDateDataUpdated() const { return __dateVatsimDataUpdated; }
 
   inline bool
   statusFileFetched() const { return __statusFileFetched; }
@@ -199,6 +200,13 @@ public:
    * Giving the NULL pointer in setModel() removes headers. */
   static FlightTableModel* emptyFlightTable;
   static ControllerTableModel* emptyControllerTable;
+  
+public slots:
+  
+  /**
+   * Reads cached data.
+   */
+  void loadCachedData();
   
 private:
   
@@ -246,15 +254,17 @@ private:
   /* And status.txt */
   QString   __statusURL;
 
-  QDateTime __dateDataUpdated;
+  QDateTime __dateVatsimDataUpdated;
 
-  int   __observers;
+  int       __observers;
 
   /* Indicates whether the status.txt file was already read or not */
-  bool    __statusFileFetched;
+  bool      __statusFileFetched;
 
   AirportDatabase& __airports;
   FirDatabase&     __firs;
+  
+  PlainTextDownloader* __downloader;
   
 private slots:
   /**
@@ -262,8 +272,30 @@ private slots:
    */
   void __reportDataError(QString);
   
+  void __slotUiCreated();
+  void __beginDownload();
+  void __dataFetched(const QString&);
+  
 signals:
+  
+  /**
+   * Called after status.txt is parsed.
+   */
+  void vatsimStatusUpdated();
+  
+  /**
+   * Called when new data is already parsed.
+   */
+  void vatsimDataUpdated();
+  
+  /**
+   * Incomplete fetch or something like that.
+   */
   void dataCorrupted();
+  
+  /**
+   * If local data is corrupted.
+   */
   void localDataBad(QString);
 
 };

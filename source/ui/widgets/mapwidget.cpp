@@ -151,8 +151,8 @@ MapWidget::MapWidget(QWidget* _parent) :
   
   __produceCircle();
 
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
-          this,                                     SLOT(redraw()));
+  connect(&__data, SIGNAL(vatsimDataUpdated()),
+          this,    SLOT(redraw()));
 
   connect(this, SIGNAL(contextMenuRequested(const Pilot*)),
           this, SLOT(__openContextMenu(const Pilot*)));

@@ -41,6 +41,15 @@ public:
 
   void fetchData(const QString&);
   
+  inline QProgressBar *
+  getProgressBar() { return __progressBar; }
+  
+  inline const QProgressBar *
+  getProgressBar() const { return __progressBar; }
+  
+  inline void
+  setProgressBar(QProgressBar* _pb) { __progressBar = _pb; }
+  
   inline bool
   anyTasksLeft() const { return !__urls.isEmpty(); }
 

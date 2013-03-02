@@ -57,14 +57,14 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   setupUi(this);
   UserInterface::setWindowPosition(this);
 
-  connect(MetarListModel::getSingletonPtr(),  SIGNAL(newMetarsAvailable()),
-          this,                               SLOT(updateMetar()));
+  connect(MetarListModel::getSingletonPtr(),    SIGNAL(newMetarsAvailable()),
+          this,                                 SLOT(updateMetar()));
   
-  connect(MetarListModel::getSingletonPtr(),  SIGNAL(noMetar(QString)),
-          this,                               SLOT(updateMetar(QString)));
+  connect(MetarListModel::getSingletonPtr(),    SIGNAL(noMetar(QString)),
+          this,                                 SLOT(updateMetar(QString)));
 
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
-          this,                                     SLOT(__updateData()));
+  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
+          this,                                 SLOT(__updateData()));
 
   connect(ShowButton, SIGNAL(clicked()),
           this,       SLOT(__handleShowClicked()));

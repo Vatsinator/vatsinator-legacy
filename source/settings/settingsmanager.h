@@ -47,7 +47,7 @@ public:
   };
 
   SettingsManager(QObject* = 0);
-
+  
   void init();
 
   inline int

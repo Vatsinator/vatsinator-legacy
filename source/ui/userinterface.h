@@ -135,7 +135,9 @@ private:
   
 private slots:
   void __dataDownloading();
+  void __statusUpdated();
   void __dataUpdated();
+  void __fetchError();
   
 signals:
   void autoUpdatesEnabled(bool);

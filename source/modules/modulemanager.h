@@ -39,7 +39,7 @@ class ModuleManager :
 public:
   ModuleManager();
   virtual ~ModuleManager();
-
+  
   void init();
   
 public slots:
@@ -47,7 +47,6 @@ public slots:
 
 private slots:
   void __initAfterGL();
-  
 
 private:
   AirportTracker* __airportTracker;

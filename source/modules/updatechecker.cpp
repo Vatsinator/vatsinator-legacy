@@ -25,6 +25,9 @@
 #include "updatechecker.h"
 #include "defines.h"
 
+// new version will be fetched after 10 seconds
+static const int FETCH_DELAY = 10 * 1000;
+
 UpdateChecker::UpdateChecker() :
     QObject(),
     __currentVersion(VATSINATOR_VERSION),
@@ -39,9 +42,7 @@ UpdateChecker::~UpdateChecker() {
 
 void
 UpdateChecker::init() {
-  __httpHandler->fetchData(
-      static_cast< QString >(VATSINATOR_REPO_URL) %
-      "/VERSION");
+  QTimer::singleShot(FETCH_DELAY, this, SLOT(__fetchVersion()));
 }
 
 UpdateChecker::Version::Version(const QString& _version) {
@@ -70,6 +71,13 @@ UpdateChecker::Version::operator <(const UpdateChecker::Version& _other) {
     return true;
   
   return false;
+}
+
+void
+UpdateChecker::__fetchVersion() {
+  __httpHandler->fetchData(
+      static_cast< QString >(VATSINATOR_REPO_URL) %
+      "/VERSION");
 }
 
 void

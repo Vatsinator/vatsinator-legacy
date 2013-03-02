@@ -45,6 +45,7 @@ SettingsManager::init() {
           this,                                   SLOT(__restoreDefaults()));
 }
 
+
 void
 SettingsManager::__saveSettings() {
   QSettings settings("Vatsinator", "Vatsinator");

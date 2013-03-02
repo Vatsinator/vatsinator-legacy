@@ -27,6 +27,8 @@
 
 #include "vatsimdata/client/controller.h"
 
+#include "vatsimdata/vatsimdatahandler.h"
+
 #include "vatsinatorapplication.h"
 
 #include "atcdetailswindow.h"
@@ -37,9 +39,10 @@ AtcDetailsWindow::AtcDetailsWindow(QWidget* _parent) :
   setupUi(this);
   UserInterface::setWindowPosition(this);
 
-  connect(ShowButton, SIGNAL(clicked()), this, SLOT(__handleShowClicked()));
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataUpdated()),
-          this,       SLOT(__updateData()));
+  connect(ShowButton,                           SIGNAL(clicked()),
+          this,                                 SLOT(__handleShowClicked()));
+  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
+          this,                                 SLOT(__updateData()));
 }
 
 void

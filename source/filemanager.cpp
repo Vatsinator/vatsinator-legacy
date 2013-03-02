@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+#include "cache/cachefile.h"
+
 #include "network/filedownloader.h"
 
 #include "vatsinatorapplication.h"
@@ -47,6 +49,14 @@ FileManager::FileManager() :
 
 FileManager::~FileManager() {
   delete __downloader;
+}
+
+void
+FileManager::cacheData(const QString& _fileName, const QString& _data) {
+  CacheFile cache(_fileName);
+  cache.open(QIODevice::WriteOnly | QIODevice::Truncate);
+  cache.write(_data.toUtf8());
+  cache.close();
 }
 
 const QString &

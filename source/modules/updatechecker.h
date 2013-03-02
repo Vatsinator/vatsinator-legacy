@@ -82,6 +82,7 @@ private:
   PlainTextDownloader* __httpHandler;
   
 private slots:
+  void __fetchVersion();
   void __parseVersion(const QString&);
   
 signals:

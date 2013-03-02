@@ -35,7 +35,6 @@ class VatsimDataHandler;
 class LanguageManager;
 class SettingsManager;
 class WorldMap;
-class PlainTextDownloader;
 class ModuleManager;
 class FileManager;
 
@@ -65,13 +64,6 @@ public:
   static void alert(const QString&, bool = false);
 
   static void emitGLInitialized();
-  
-  /**
-   * Use this function in QtConcurrent::run to read data
-   * stored in cache file in separated thread.
-   * @param fileName Name of the file in cache.
-   */
-  static void dispatchDataUpdate(const QString&);
 
 #ifdef NO_DEBUG
 
@@ -111,8 +103,7 @@ public slots:
 
 private:
   void __emitGLInitialized();
-
-  PlainTextDownloader* __downloader;
+  
   FileManager*         __fileManager;
   AirportDatabase*     __airportsData;
   FirDatabase*         __firsData;
@@ -120,22 +111,19 @@ private:
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;
   SettingsManager*     __settingsManager;
-  ModuleManager*       __modulesManager;
+  ModuleManager*       __moduleManager;
   UserInterface*       __userInterface;
   QTimer               __timer;
   QTranslator          __translator;
 
 private slots:
-  void __loadCachedData();
-  void __dataUpdated(const QString&);
-  void __showDataAlert();
   void __loadNewSettings();
   void __autoUpdatesToggled(bool);
   
 signals:
+  void uiCreated();
   void glInitialized();
   void dataDownloading();
-  void dataUpdated();
   void metarsRefreshRequested();
 
 };
