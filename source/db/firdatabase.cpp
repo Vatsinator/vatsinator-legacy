@@ -27,7 +27,8 @@
 #include "defines.h"
 
 FirDatabase::FirDatabase() {
-  __readDatabase();
+//   __readDatabase();
+  QtConcurrent::run(this, &FirDatabase::__readDatabase);
 
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
           this,                                      SLOT(__init()),

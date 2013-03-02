@@ -64,7 +64,6 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   
   // slots set, crate User Interface
   __userInterface = new UserInterface();
-  emit uiCreated();
   
   // __settingsManager->init();
   QtConcurrent::run(__settingsManager, &SettingsManager::init);
@@ -93,6 +92,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 
   // show main window
   __userInterface->show();
+  emit uiCreated();
 
   // start the timer and fetch data
   __timer.setInterval(__settingsManager->getRefreshRate() * 60000);

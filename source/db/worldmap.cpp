@@ -30,8 +30,9 @@
 #include "defines.h"
 
 WorldMap::WorldMap() {
-  __readDatabase();
-
+//   __readDatabase();
+  QtConcurrent::run(this, &WorldMap::__readDatabase);
+  
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
           this,                                     SLOT(__init()),
           Qt::DirectConnection);

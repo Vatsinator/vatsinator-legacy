@@ -25,7 +25,8 @@
 #include "defines.h"
 
 AirportDatabase::AirportDatabase() {
-  __readDatabase();
+//   __readDatabase();
+  QtConcurrent::run(this, &AirportDatabase::__readDatabase);
 }
 
 const AirportRecord*
