@@ -18,7 +18,7 @@ DEPEND="
 	>=dev-qt/qtgui-4.8.0
 	>=dev-qt/qtopengl-4.8.0
 	>=sys-devel/gcc-4.6
-	virtual/opengl
+	dev-libs/quazip
 	"
 RDEPEND="${DEPEND}"
 
