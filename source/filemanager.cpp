@@ -163,28 +163,20 @@ FileManager::__findFile(FileManager::File _f) {
   
   QFile tryLocal(DATA_LOCATION % fname);
   if (tryLocal.exists()) {
-    if (md5Hash(tryLocal.fileName()) == __manifest.hash[fname].md5) {
-      __files[_f] = tryLocal.fileName();
-      
-      VatsinatorApplication::log("File %s loaded from %s.",
-                                 qPrintable(fname),
-                                 qPrintable(tryLocal.fileName()));
-      return;
-    } else {
-      VatsinatorApplication::log("File %s: checksum mismatch!", qPrintable(fname));
-      VatsinatorApplication::log("  Expected: %s, got: %s",
-                                 __manifest.hash[fname].md5.data(),
-                                 md5Hash(tryLocal.fileName()).data());
-    }
-  }
-  
-  __files[_f] =
+    __files[_f] = tryLocal.fileName();
+    
+    VatsinatorApplication::log("File %s loaded from %s.",
+                               qPrintable(fname),
+                               qPrintable(tryLocal.fileName()));
+  } else {
+    __files[_f] =
 #ifndef Q_OS_DARWIN
-    static_cast< QString >(VATSINATOR_PREFIX)
+      static_cast< QString >(VATSINATOR_PREFIX)
 #else // on MacOS look for the file in the bundle
-    QCoreApplication::applicationDirPath() % "/../Resources/"
+      QCoreApplication::applicationDirPath() % "/../Resources/"
 #endif
-    % fname;
+      % fname;
+  }
 }
 
 

@@ -10,5 +10,10 @@ if (WIN32)
     set (QUAZIP_LIBRARY_RELEASE ${QUAZIP_LIBRARY_RELEASE} PARENT_SCOPE)
     set (QUAZIP_LIBRARIES ${QUAZIP_LIBRARIES} PARENT_SCOPE)
     
+elseif (LINUX)
+
+    find_package (ZLIB REQUIRED)
+    include_directories (${ZLIB_INCLUDE_DIRS}})
+    
 endif (WIN32)
 

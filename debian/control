@@ -10,7 +10,8 @@ Build-Depends: debhelper (>= 8.0.0),
                libqt4-network (>=4.8),
                libqt4-opengl-dev (>=4.8),
                qt4-qmake (>=4.8),
-               libquazip0-dev
+               libquazip0-dev,
+               zlib1g-dev
 Standards-Version: 3.9.3
 Homepage: https://github.com/Garrappachc/Vatsinator
 

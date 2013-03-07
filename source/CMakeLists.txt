@@ -8,10 +8,12 @@ set (vatsinator_TARGET
 
 set (vatsinator_SRCS
     filemanager.cpp
+    unzipper.cpp
     vatsinatorapplication.cpp
 )
 
 set (vatsinator_MOC_SRCS
+    unzipper.h
     vatsinatorapplication.h
 )
 
