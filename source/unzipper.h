@@ -39,7 +39,6 @@ public:
     UNZIPPER_OK,
     UNZIPPER_FAIL
   };
-  Q_ENUM(UnzipStatus);
   
   explicit Unzipper(const QString&, QObject* = 0);
   explicit Unzipper(QObject* = 0);
@@ -80,13 +79,13 @@ signals:
    * NOTE: Files are listed with their path as it is stored in zip.
    * Example: "foo.txt", "bar/bar.txt", "bar/baz/baz.txt"
    */
-  void unzipped(const QStringList);
+  void unzipped(Unzipper::UnzipStatus);
   
   /**
    * Emited then an error occurs.
    * @param erStr Error status.
    */
-  void error(Unzipper::UnzipStatus);
+  void error(QString);
   
 };
 
