@@ -7,23 +7,19 @@ set (vatsinator_TARGET
 
 
 set (vatsinator_SRCS
-    filemanager.cpp
-    unzipper.cpp
     vatsinatorapplication.cpp
 )
 
 set (vatsinator_MOC_SRCS
-    unzipper.h
     vatsinatorapplication.h
 )
 
 set (vatsinator_SUBDIRS
-    cache
     db
     glutils
     modules
     network
-    settings
+    storage
     ui
     vatsimdata
 )
@@ -31,7 +27,7 @@ set (vatsinator_SUBDIRS
 # We can't name it "debug" directory as it conflicts with cmake syntax
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     set (vatsinator_SUBDIRS
-        vdebug
+        debugging
         ${vatsinator_SUBDIRS}
     )
 endif (CMAKE_BUILD_TYPE MATCHES Debug)
@@ -83,6 +79,9 @@ else (WIN32)
         ${QT_QTNETWORK_LIBRARY}
         ${QUAZIP_LIBRARIES}
   )
+  
+  # disable VBO on Win32 build - MinGW doesn't handle it properly
+  set (CONFIG_NO_VBO 1)
 endif (LINUX)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.cmake

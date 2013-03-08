@@ -18,7 +18,8 @@
 
 #include <QtGui>
 
-#include "filemanager.h"
+#include "storage/filemanager.h"
+
 #include "vatsinatorapplication.h"
 
 #include "airportdatabase.h"
@@ -29,7 +30,7 @@ AirportDatabase::AirportDatabase() {
   QtConcurrent::run(this, &AirportDatabase::__readDatabase);
 }
 
-const AirportRecord*
+const AirportRecord *
 AirportDatabase::find(const QString& _key) {
   for (const AirportRecord & a: __airports)
     if (static_cast< QString >(a.icao) == _key)

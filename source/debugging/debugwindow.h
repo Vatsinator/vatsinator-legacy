@@ -21,7 +21,7 @@
 #ifndef DEBUGWINDOW_H
 #define DEBUGWINDOW_H
 
-#include "vdebug/ui_debugwindow.h"
+#include "debugging/ui_debugwindow.h"
 #include "singleton.h"
 
 class DebugWindow :

@@ -20,7 +20,7 @@
 
 #include "vatsimdata/fir.h"
 
-#include "filemanager.h"
+#include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "firdatabase.h"
@@ -36,8 +36,8 @@ FirDatabase::FirDatabase() {
 }
 
 
-Fir*
-FirDatabase::findFirByIcao(const QString& _icao, bool _fss) {
+Fir *
+FirDatabase::find(const QString& _icao, bool _fss) {
   if (_icao == "ZZZZ")
     return NULL;
 

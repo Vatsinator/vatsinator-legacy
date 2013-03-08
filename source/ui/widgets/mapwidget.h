@@ -59,53 +59,143 @@ public:
 
   virtual ~MapWidget();
 
+  /**
+   * Converts given image to OpenGL formatm loads it and returns
+   * its GL-ID.
+   * NOTE: You must call MapWidget::deleteImage on the image eventually.
+   * @param image Already loaded QImage.
+   * @return GL's image id in the GPU memory.
+   */
+  static GLuint loadImage(const QImage&);
+  
+  /**
+   * Loads image from the given path.
+   * NOTE: You must call MapWidget::deleteImage on the image eventually.
+   * @param path Path to the image, can be any Qt-supported type.
+   * @return GL's image id in the GPU memory.
+   */
+  static GLuint loadImage(const QString&);
+  
+  /**
+   * Unloads the image from the GPU memory, frees the pointer.
+   * @param img Image handle.
+   */
+  static void deleteImage(GLuint);
+  
+  /**
+   * Obtains default format, tweaks it and returns.
+   */
+  static QGLFormat getFormat();
+  
+  
   /* For Pilot class */
-  inline const QImage&
-  getPilotToolTipBackground() { return __pilotToolTip; }
+  inline const QImage &
+  getPilotToolTipBackground() const { return __pilotToolTip; }
 
-  inline const QFont&
-  getPilotFont() { return __pilotFont; }
+  inline const QFont &
+  getPilotFont() const { return __pilotFont; }
 
   /* For Airport class */
-  inline const QImage&
-  getAirportToolTipBackground() { return __airportToolTip; }
+  inline const QImage &
+  getAirportToolTipBackground() const { return __airportToolTip; }
 
-  inline const QFont&
-  getAirportFont() { return __airportFont; }
+  inline const QFont &
+  getAirportFont() const { return __airportFont; }
 
   /* For Fir class */
-  inline const QImage&
-  getFirToolTipBackground() { return __firToolTip; }
+  inline const QImage &
+  getFirToolTipBackground() const { return __firToolTip; }
 
-  inline const QFont&
-  getFirFont() { return __firFont; }
+  inline const QFont &
+  getFirFont() const { return __firFont; }
 
   inline bool
   isInitialized() const { return __isInitialized; }
-
-  static GLuint loadImage(const QImage&);
-  static GLuint loadImage(const QString&);
-  static void deleteImage(GLuint);
-  static QGLFormat getFormat();
 
 #ifndef NO_DEBUG
   static unsigned texturesCount;
 #endif
 
 signals:
+  /**
+   * Emitted when user clicks right mouse button on
+   * any pilot.
+   * @param pilot The pilot that user clicked on.
+   */
   void contextMenuRequested(const Pilot*);
+  
+  /**
+   * Emitted when user clicks right mouse button on
+   * any airport.
+   * @param airport The airport that user clicked on.
+   */
   void contextMenuRequested(const Airport*);
+  
+  /**
+   * Emitted when user clicks right mouse button on
+   * any FIR.
+   * @param fir The FIR that user clicked.
+   */
   void contextMenuRequested(const Fir*);
+  
+  /**
+   * Emitted when user clicks left mouse button on
+   * any pilot.
+   * @param pilot The pilot that user clicked.
+   */
   void flightDetailsWindowRequested(const Client*);
+  
+  /**
+   * Emitted when user clicks left mouse button on
+   * any airport.
+   * @param airport The airport that user clicked.
+   */
   void airportDetailsWindowRequested(const Airport*);
+  
+  /**
+   * Emitted when user clicks left mouse button on
+   * any FIR.
+   * @param fir The FIR that user clicked.
+   */
   void firDetailsWindowRequested(const Fir*);
+  
+  /**
+   * Emitted when user wants to track any plane.
+   * @param pilot Plane that user wants to track.
+   */
   void flightTrackingRequested(const Pilot*);
+  
+  /**
+   * Emitted when user cancels the flight tracking,
+   * either by deselecting the check-box or by moving
+   * the map with mouse.
+   */
   void flightTrackingCanceled();
+  
+  /**
+   * Called when user toggles "Show airport inbound/outbound
+   * lines".
+   * @param airport The airport that action was taken on.
+   */
   void airportLinesToggled(const Airport*);
 
 public slots:
+  /**
+   * Sets the plane at the middle of the map.
+   * @param client Client to be shown.
+   */
   void showClient(const Client*);
+  
+  /**
+   * Sets the airport at the middle of the map.
+   * @param airport Airport to be shown.
+   */
   void showAirport(const Airport*);
+  
+  /**
+   * Hides the menu (if any), hides the tooltip
+   * and redraws the map.
+   */
   void redraw();
 
 protected:

@@ -18,8 +18,8 @@
 
 #include <QtGui>
 
-#include "settings/languagemanager.h"
-#include "settings/settingsmanager.h"
+#include "storage/languagemanager.h"
+#include "storage/settingsmanager.h"
 
 #include "ui/widgets/mapwidget.h"
 

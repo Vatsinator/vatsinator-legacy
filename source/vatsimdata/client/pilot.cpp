@@ -24,7 +24,7 @@
 
 #include "modules/modelmatcher.h"
 
-#include "settings/settingsmanager.h"
+#include "storage/settingsmanager.h"
 
 #include "ui/widgets/mapwidget.h"
 

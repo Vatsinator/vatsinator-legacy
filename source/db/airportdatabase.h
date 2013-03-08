@@ -64,13 +64,19 @@ public:
    * Default ctor.
    */
   AirportDatabase();
-
+  
   /**
-   * Gives access to the vector of airports.
+   * Looks for the airport.
+   * @param icao ICAO code.
+   * @return NULL if nothing found.
    */
-  QVector< AirportRecord > & getAirports() { return __airports; }
-
   const AirportRecord* find(const QString&);
+  
+  inline QVector< AirportRecord > &
+  getAirports() { return __airports; }
+  
+  inline const QVector< AirportRecord > &
+  getAirports() const { return __airports; }
 
 private:
   

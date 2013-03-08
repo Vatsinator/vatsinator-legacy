@@ -1,6 +1,6 @@
 /*
     glextensions.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,16 +23,16 @@
 #include <QDebug>
 #include <QGLContext>
 
-#include "vdebug/glerrors.h"
+#include "debugging/glerrors.h"
 
 #include "config.h"
 #if defined Q_OS_LINUX
-#include <GL/glx.h>
+# include <GL/glx.h>
 #elif defined Q_OS_WIN32
-#include <windows.h>
-#include <wingdi.h>
+# include <windows.h>
+# include <wingdi.h>
 #elif defined Q_OS_DARWIN
-#include <OpenGL/glext.h>
+# include <OpenGL/glext.h>
 #endif
 
 #ifndef Q_WS_MAC // apple's impelementation already knows these extensions

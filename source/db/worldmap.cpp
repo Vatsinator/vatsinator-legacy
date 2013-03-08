@@ -21,9 +21,9 @@
 #include "glutils/vertexbufferobject.h"
 #include "glutils/glextensions.h"
 
-#include "vdebug/glerrors.h"
+#include "debugging/glerrors.h"
 
-#include "filemanager.h"
+#include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "worldmap.h"
@@ -39,7 +39,7 @@ WorldMap::WorldMap() {
 }
 
 WorldMap::~WorldMap() {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
   delete __worldPolygon.vbo.border;
   delete __worldPolygon.vbo.triangles;
 #endif
@@ -47,7 +47,7 @@ WorldMap::~WorldMap() {
 
 void
 WorldMap::draw() const {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
   __worldPolygon.vbo.border->bind();
   __worldPolygon.vbo.triangles->bind();
 
@@ -122,7 +122,7 @@ void WorldMap::__readDatabase() {
 
 void
 WorldMap::__init() {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
   VatsinatorApplication::log("Preparing VBOs for WorldMap...");
 
   __worldPolygon.vbo.border = new VertexBufferObject(GL_ARRAY_BUFFER);

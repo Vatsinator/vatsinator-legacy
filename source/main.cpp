@@ -1,6 +1,6 @@
 /*
     main.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,5 +19,8 @@
 #include "vatsinatorapplication.h"
 
 int main(int argc, char** argv) {
+  QApplication::setApplicationName("Vatsinator");
+  QApplication::setOrganizationName("Vatsinator");
+  
   return VatsinatorApplication(argc, argv).exec();
 }

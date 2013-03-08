@@ -139,4 +139,4 @@ endif (WIN32)
 
 vatsinator_end_subdirectory (ui)
 
-add_dependencies (ui vdebug)
+add_dependencies (ui debugging)

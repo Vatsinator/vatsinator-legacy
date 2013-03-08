@@ -36,8 +36,8 @@ Airport::Airport(const QString& _icao) :
     VatsinatorApplication::log("Airport %s not found!", _icao.toStdString().c_str());
   
   if (__data) {
-    __firs[0] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_b), __data->is_fir_b_oceanic);
+    __firs[0] = FirDatabase::getSingleton().find(QString(__data->fir_a), __data->is_fir_a_oceanic);
+    __firs[1] = FirDatabase::getSingleton().find(QString(__data->fir_b), __data->is_fir_b_oceanic);
   }
 }
 
@@ -46,8 +46,8 @@ Airport::Airport(const AirportRecord* _ap) :
      __data(_ap),
      __labelTip(0) {
   if (__data) {
-    __firs[0] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::getSingleton().findFirByIcao(QString(__data->fir_b), __data->is_fir_b_oceanic);
+    __firs[0] = FirDatabase::getSingleton().find(QString(__data->fir_a), __data->is_fir_a_oceanic);
+    __firs[1] = FirDatabase::getSingleton().find(QString(__data->fir_b), __data->is_fir_b_oceanic);
   }
 }
 

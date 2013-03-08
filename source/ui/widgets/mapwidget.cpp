@@ -28,7 +28,7 @@
 #include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
 
-#include "settings/settingsmanager.h"
+#include "storage/settingsmanager.h"
 
 #include "ui/userinterface.h"
 
@@ -58,7 +58,7 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
-#include "vdebug/glerrors.h"
+#include "debugging/glerrors.h"
 
 #include "vatsinatorapplication.h"
 
@@ -1256,7 +1256,7 @@ MapWidget::__setAntyaliasing(bool _on) {
 
 void
 MapWidget::__storeSettings() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("CameraSettings");
 
@@ -1269,7 +1269,7 @@ MapWidget::__storeSettings() {
 
 void
 MapWidget::__restoreSettings() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("CameraSettings");
 

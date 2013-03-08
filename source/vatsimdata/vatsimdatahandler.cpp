@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "cache/cachefile.h"
+#include "storage/cachefile.h"
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
@@ -29,7 +29,7 @@
 
 #include "ui/userinterface.h"
 
-#include "settings/settingsmanager.h"
+#include "storage/settingsmanager.h"
 
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
@@ -43,7 +43,7 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
-#include "filemanager.h"
+#include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "vatsimdatahandler.h"
@@ -402,7 +402,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     
     QString icao = line.section(' ', 0, 0);
     
-    Fir* currentFir = __firs.findFirByIcao(icao);
+    Fir* currentFir = __firs.find(icao);
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       
@@ -420,7 +420,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     }
     
     // look for some oceanic fir
-    currentFir = __firs.findFirByIcao(icao, true);
+    currentFir = __firs.find(icao, true);
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       currentFir->setCountry(countries[icao.left(2)]);
@@ -455,7 +455,7 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
     
     for (int i = 1; i < data.length(); ++i) {
       if (data[i].toUpper() == data[i]) {
-        Fir* fir = __firs.findFirByIcao(data[i]);
+        Fir* fir = __firs.find(data[i]);
         
         if (fir)
           uir->addFir(fir);

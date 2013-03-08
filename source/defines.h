@@ -89,7 +89,7 @@
 // if debug, add MemoryTracker to the buildset
 #ifndef NO_DEBUG
 # define DEBUG_NEW new(__FILE__, __LINE__)
-# include "vdebug/memorytracker.h"
+# include "debugging/memorytracker.h"
 #else
 # define DEBUG_NEW new (std::nothrow)
 #endif

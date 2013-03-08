@@ -50,12 +50,24 @@ class FirDatabase :
 public:
   FirDatabase();
 
-  Fir*  findFirByIcao(const QString&, bool = false);
+  /**
+   * Finds FIR by given ICAO.
+   * @param icao ICAO code.
+   * @param fss If true, will dinf only FSS FIRs. Default: false
+   * @return FIR if any found, otherwise NULL.
+   */
+  Fir* find(const QString&, bool = false);
 
+  /**
+   * Calls Fir::clear() on every Fir.
+   */
   void  clearAll();
 
-  inline const QVector< Fir > &
+  inline QVector< Fir > &
   getFirs() { return __firs; }
+  
+  inline const QVector< Fir > &
+  getFirs() const { return __firs; }
 
 private:
   void __readDatabase();

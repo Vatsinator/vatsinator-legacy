@@ -1,6 +1,6 @@
 /*
     settingsmanager.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 #include "ui/windows/settingswindow.h"
 
-#include "settings/languagemanager.h"
+#include "storage/languagemanager.h"
 
 #include "vatsinatorapplication.h"
 
@@ -48,7 +48,7 @@ SettingsManager::init() {
 
 void
 SettingsManager::__saveSettings() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("Settings");
 
@@ -84,7 +84,7 @@ SettingsManager::__saveSettings() {
 
 void
 SettingsManager::__restoreSettings() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("Settings");
 
@@ -151,7 +151,7 @@ SettingsManager::__restoreSettings() {
 
 void
 SettingsManager::__clearEntries() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("Settings");
   settings.remove("");

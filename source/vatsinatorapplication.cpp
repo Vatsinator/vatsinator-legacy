@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "cache/cachefile.h"
+#include "storage/cachefile.h"
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
@@ -29,8 +29,8 @@
 
 #include "network/plaintextdownloader.h"
 
-#include "settings/languagemanager.h"
-#include "settings/settingsmanager.h"
+#include "storage/languagemanager.h"
+#include "storage/settingsmanager.h"
 
 #include "ui/userinterface.h"
 #include "ui/windows/settingswindow.h"
@@ -39,7 +39,7 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
-#include "filemanager.h"
+#include "storage/filemanager.h"
 
 #include "vatsinatorapplication.h"
 #include "defines.h"

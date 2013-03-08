@@ -29,7 +29,7 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
-#include "vdebug/glerrors.h"
+#include "debugging/glerrors.h"
 
 #include "fir.h"
 #include "defines.h"

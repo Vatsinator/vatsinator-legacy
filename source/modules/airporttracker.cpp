@@ -35,7 +35,7 @@ AirportTracker::AirportTracker(QObject* _parent) :
 AirportTracker::~AirportTracker() {
   QStringList trackedAirports(__trackedAirports.keys());
   
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
   settings.beginGroup("Modules");
   
   settings.setValue("trackedAirports", trackedAirports.join(":"));

@@ -19,10 +19,10 @@
 #include <QtGui>
 
 #ifndef NO_DEBUG
-#include "vdebug/debugwindow.h"
+#include "debugging/debugwindow.h"
 #endif
 
-#include "settings/settingsmanager.h"
+#include "storage/settingsmanager.h"
 
 #include "ui/widgets/newversionnotificationwidget.h"
 
@@ -247,7 +247,7 @@ UserInterface::__setupWindow() {
 
 void
 UserInterface::__storeWindowGeometry() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("MainWindow");
 
@@ -267,7 +267,7 @@ UserInterface::__storeWindowGeometry() {
 
 void
 UserInterface::__restoreWindowGeometry() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("MainWindow");
   restoreGeometry(settings.value( "geometry", saveGeometry()).toByteArray());
@@ -285,7 +285,7 @@ UserInterface::__restoreWindowGeometry() {
 
 QPoint
 UserInterface::__getInitialPoint() {
-  QSettings settings("Vatsinator", "Vatsinator");
+  QSettings settings;
 
   settings.beginGroup("MainWindow");
   QPoint p = settings.value("position", QPoint(1, 1)).toPoint();

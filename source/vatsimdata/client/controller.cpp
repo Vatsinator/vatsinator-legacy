@@ -109,7 +109,7 @@ Controller::__setMyIcaoAndFacility() {
 
     __icao = sections.front();
 
-    Fir* fir = FirDatabase::getSingleton().findFirByIcao(__icao);
+    Fir* fir = FirDatabase::getSingleton().find(__icao);
 
     if (fir) {
       fir->addStaff(this);
@@ -117,7 +117,7 @@ Controller::__setMyIcaoAndFacility() {
     } else {
       // handle USA three-letters callsigns
       if (__icao.length() == 3) {
-        fir = FirDatabase::getSingleton().findFirByIcao("K" + __icao);
+        fir = FirDatabase::getSingleton().find("K" + __icao);
 
         if (fir) {
           fir->addStaff(this);
@@ -127,7 +127,7 @@ Controller::__setMyIcaoAndFacility() {
       }
 
       for (const QString & alias: VatsimDataHandler::getSingleton().getAliases().values(__icao)) {
-        fir = FirDatabase::getSingleton().findFirByIcao(alias);
+        fir = FirDatabase::getSingleton().find(alias);
 
         if (fir) {
           fir->addStaff(this);
@@ -155,7 +155,7 @@ Controller::__setMyIcaoAndFacility() {
 
     QString& icao = sections.front();
 
-    Fir* fir = FirDatabase::getSingleton().findFirByIcao(icao, true);
+    Fir* fir = FirDatabase::getSingleton().find(icao, true);
 
     if (fir) {
       fir->addStaff(this);
@@ -171,7 +171,7 @@ Controller::__setMyIcaoAndFacility() {
       return;
     }
 
-    fir = FirDatabase::getSingleton().findFirByIcao(icao);
+    fir = FirDatabase::getSingleton().find(icao);
 
     if (fir) {
       fir->addStaff(this);
@@ -180,7 +180,7 @@ Controller::__setMyIcaoAndFacility() {
     }
 
     for (QString & alias: VatsimDataHandler::getSingleton().getAliases().values(icao)) {
-      fir = FirDatabase::getSingleton().findFirByIcao(alias, true);
+      fir = FirDatabase::getSingleton().find(alias, true);
 
       if (fir) {
         fir->addStaff(this);

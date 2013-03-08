@@ -20,7 +20,7 @@
 
 #include "glutils/glextensions.h"
 
-#include "vdebug/glerrors.h"
+#include "debugging/glerrors.h"
 
 #include "vertexbufferobject.h"
 #include "defines.h"

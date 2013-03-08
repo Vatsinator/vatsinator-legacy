@@ -18,13 +18,13 @@
 
 #include <QtGui>
 
-#include "cache/cachefile.h"
+#include "storage/cachefile.h"
 
 #include "network/filedownloader.h"
 
 #include "vatsinatorapplication.h"
 
-#include "filemanager.h"
+#include "storage/filemanager.h"
 #include "defines.h"
 
 static const QString DATA_DIR_LOCATON(

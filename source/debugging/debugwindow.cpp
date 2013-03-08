@@ -22,7 +22,7 @@
 
 #include "ui/widgets/mapwidget.h"
 
-#include "vdebug/glerrors.h"
+#include "debugging/glerrors.h"
 
 #include "debugwindow.h"
 #include "defines.h"

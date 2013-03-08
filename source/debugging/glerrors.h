@@ -1,6 +1,6 @@
 /*
     glerrors.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -38,8 +38,9 @@ void registerGPUMemoryAllocFunc(long unsigned);
 void unregisterGPUMemoryAllocFunc(long unsigned);
 void registerExtensionPointer(const QString&, long long unsigned);
 
-extern QString    glErrors;
+extern QString        glErrors;
 extern long unsigned  gpuMemoryUsage;
+
 extern QMap< QString, long long unsigned >  extensions;
 
 #else
