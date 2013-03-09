@@ -35,10 +35,9 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
 include (Macros)
-include (Translations)
 
-set(QT_USE_QTOPENGL TRUE)
-set(QT_USE_QTNETWORK TRUE)
+set (QT_USE_QTOPENGL TRUE)
+set (QT_USE_QTNETWORK TRUE)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -47,7 +46,6 @@ add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     main.cpp
     ${vatsinator_SRCS}
     ${vatsinator_MOC_FILES}
-    ${vatsinator_TRANSLATIONS}
 )
 
 # Set PREFIX for defines.h and necessary libs
@@ -95,6 +93,8 @@ foreach (DIR ${vatsinator_SUBDIRS})
     )
 endforeach (DIR)
 
+add_subdirectory (i18n)
+add_dependencies (${vatsinator_TARGET} i18n)
 
 if (APPLE)
     target_link_libraries (${vatsinator_TARGET}
@@ -118,12 +118,6 @@ if (LINUX)
         ${CMAKE_CURRENT_BINARY_DIR}/vatsinator
         DESTINATION bin
     )
-    
-    install (FILES
-        ${vatsinator_TRANSLATIONS}
-        ${LANGUAGE_FILES}
-        DESTINATION share/vatsinator/translations
-    )
 elseif (APPLE)
     # move all files to .app bundle
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
@@ -141,7 +135,7 @@ elseif (APPLE)
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/data
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
-        COMMAND cp ARGS ${vatsinator_TRANSLATIONS} ${LANGUAGE_FILES}
+        COMMAND cp ARGS ${vatsinator_BUNDLE_RESOURCES_translations}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
     )
     
@@ -153,11 +147,5 @@ elseif (WIN32)
     install (PROGRAMS
         ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.exe
         DESTINATION .
-    )
-    
-    install (FILES
-        ${LANGUAGE_FILES}
-        ${vatsinator_TRANSLATIONS}
-        DESTINATION ./translations
     )
 endif (LINUX)

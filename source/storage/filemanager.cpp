@@ -33,7 +33,7 @@ static const QString DATA_DIR_LOCATON(
 #elif defined Q_OS_LINUX
   QDir::homePath() % "/.local/share"
 #elif defined Q_OS_DARWIN
-  // TODO: fill it in
+  QDir::homePath() % "/Library/Application Support"
 #endif
 );
 
