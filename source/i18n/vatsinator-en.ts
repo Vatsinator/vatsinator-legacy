@@ -129,7 +129,7 @@
 <context>
     <name>AirportDatabase</name>
     <message>
-        <location filename="../db/airportdatabase.cpp" line="54"/>
+        <location filename="../db/airportdatabase.cpp" line="56"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
@@ -335,7 +335,7 @@
 <context>
     <name>FirDatabase</name>
     <message>
-        <location filename="../db/firdatabase.cpp" line="75"/>
+        <location filename="../db/firdatabase.cpp" line="76"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
@@ -1002,6 +1002,19 @@
     </message>
 </context>
 <context>
+    <name>Unzipper</name>
+    <message>
+        <location filename="../storage/unzipper.cpp" line="78"/>
+        <source>Could not open zip file: %1 (check your directory permissions)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../storage/unzipper.cpp" line="98"/>
+        <source>Could not access zip archive (%1) properly. Skipping...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UpdateNotificationWidget</name>
     <message>
         <source>There is a new version of Vatsinator available! Check it now at %1</source>
@@ -1107,7 +1120,7 @@
 <context>
     <name>WorldMap</name>
     <message>
-        <location filename="../db/worldmap.cpp" line="70"/>
+        <location filename="../db/worldmap.cpp" line="71"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
