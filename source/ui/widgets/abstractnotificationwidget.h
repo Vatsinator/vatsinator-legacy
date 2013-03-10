@@ -47,12 +47,7 @@ public:
    */
   AbstractNotificationWidget();
   
-  virtual QBrush background() const = 0;
-  virtual QColor foreground() const = 0;
   virtual Position position() const = 0;
-  
-  void setText(const QString&);
-  void setBold(bool);
   
   /**
    * This widget will fit nicely inside gived rect.
@@ -60,19 +55,6 @@ public:
    */
   void setBoundingGeometry(const QRect&);
   void setBoundingGeometry(int, int, int, int);
-  
-  inline const QString &
-  getText() const { return __text; }
-  
-  inline const bool
-  isBold() const { return __isbold; }
-  
-protected:
-  void paintEvent(QPaintEvent*);
-  
-private:
-  QString __text;
-  bool    __isbold;
   
 };
 

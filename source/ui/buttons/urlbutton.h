@@ -40,11 +40,17 @@ public:
   explicit UrlButton(const QString&, const QString&, QWidget* = 0);
   
   /**
-   * Creates a button with no text and with given url.
-   * @param url URL to be opened after the button is clicked.
+   * Creates a button with no url and given text.
+   * @param text Text that appears on the button.
    * @param parent
    */
   explicit UrlButton(const QString&, QWidget* = 0);
+  
+  /**
+   * Creates a button with no url and no text.
+   * @param parent
+   */
+  explicit UrlButton(QWidget* = 0);
   
   void setUrl(const QString&);
   

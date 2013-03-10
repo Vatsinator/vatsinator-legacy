@@ -26,10 +26,13 @@
 #include <QHBoxLayout>
 
 #include "ui/widgets/abstractnotificationwidget.h"
+#include "ui/ui_newversionnotificationwidget.h"
 
-class UrlButton;
+// class UrlButton;
 
-class NewVersionNotificationWidget : public AbstractNotificationWidget {
+class NewVersionNotificationWidget :
+    public AbstractNotificationWidget,
+    private Ui::NewVersionNotificationWidget {
   
   /*
    * This is the red widget that opens up if UpdateChecker detects
@@ -41,25 +44,7 @@ class NewVersionNotificationWidget : public AbstractNotificationWidget {
 public:
   explicit NewVersionNotificationWidget();
   
-  virtual ~NewVersionNotificationWidget();
-  
-  QBrush background() const;
-  QColor foreground() const;
-  
   NewVersionNotificationWidget::Position position() const;
-  
-protected:
-  void resizeEvent(QResizeEvent*);
-  
-private:
-  // "Close this notification" button
-  QPushButton* __closeButton;
-  
-  // "Visit Vatsinator homepage" button
-  UrlButton* __visitButton;
-  
-  // Layout for above buttons
-  QHBoxLayout* __layout;
   
 };
 

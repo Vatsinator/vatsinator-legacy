@@ -30,16 +30,6 @@ AbstractNotificationWidget::AbstractNotificationWidget() :
 }
 
 void
-AbstractNotificationWidget::setText(const QString& _text) {
-  __text = _text;
-}
-
-void
-AbstractNotificationWidget::setBold(bool _b) {
-  __isbold = _b;
-}
-
-void
 AbstractNotificationWidget::setBoundingGeometry(const QRect& _rect) {
   if (position() == Top)
     setGeometry(QRect(_rect.x(), _rect.y(),
@@ -59,22 +49,4 @@ AbstractNotificationWidget::setBoundingGeometry(int x, int y, int w, int h) {
                       w, this->sizeHint().height()));
 }
 
-void
-AbstractNotificationWidget::paintEvent(QPaintEvent*) {
-  QPainter p(this);
-  
-  p.fillRect(rect(), background());
-  
-  QPen pen(foreground());
-  p.setPen(pen);
-  
-  QFont font(QWidget::font());
-  font.setPointSize(font.pointSize() + 1);
-  if (__isbold)
-    font.setWeight(QFont::DemiBold);
-  p.setFont(font);
-  
-  p.translate(QPoint(10, (height() / 2) + 5));
-  p.drawText(0, 0, __text);
-}
 

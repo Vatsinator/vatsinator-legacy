@@ -120,6 +120,7 @@ set (ui_FORMS
     resources/flightdetailswindow.ui
     resources/flightlistwindow.ui
     resources/metarswindow.ui
+    resources/newversionnotificationwidget.ui
     resources/settingswindow.ui
     resources/userinterface.ui
 )

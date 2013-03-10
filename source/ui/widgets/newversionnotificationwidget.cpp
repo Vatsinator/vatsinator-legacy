@@ -18,63 +18,21 @@
 
 #include <QtGui>
 
-#include "ui/buttons/urlbutton.h"
-
 #include "newversionnotificationwidget.h"
 #include "defines.h"
 
 NewVersionNotificationWidget::NewVersionNotificationWidget() :
-    AbstractNotificationWidget(),
-    __closeButton(new QPushButton(tr("&Close this notification"), this)),
-    __visitButton(new UrlButton(tr("&Download new version now!"), VATSINATOR_HOMEPAGE, this)),
-    __layout(new QHBoxLayout()) {
+    AbstractNotificationWidget() {
   setVisible(false);
-  setBold(true);
   
-  setText(tr("There is a new version of Vatsinator available!"));
+  setupUi(this);
+  VisitButton->setUrl(VATSINATOR_HOMEPAGE);
   
-  __visitButton->setDefault(true);
-  
-  __layout->setContentsMargins(5, 2, 5, 2);
-  
-  __layout->setSizeConstraint(QLayout::SetMinimumSize);
-  __layout->addWidget(__visitButton, 1);
-  __layout->addWidget(__closeButton);
-  
-  connect(__closeButton,   SIGNAL(clicked()),
+  connect(CloseButton,   SIGNAL(clicked()),
           this,            SLOT(hide()));
-}
-
-NewVersionNotificationWidget::~NewVersionNotificationWidget() {
-  delete __layout;
-}
-
-QBrush
-NewVersionNotificationWidget::background() const {
-  return QBrush(QColor("#ff7d7d"));
-}
-
-QColor
-NewVersionNotificationWidget::foreground() const {
-  return QColor("#000000");
 }
 
 AbstractNotificationWidget::Position
 NewVersionNotificationWidget::position() const {
   return AbstractNotificationWidget::Top;
 }
-
-void
-NewVersionNotificationWidget::resizeEvent(QResizeEvent* _event) {
-  QSize temp = __closeButton->sizeHint();
-  temp.rwidth() *= 3;
-  temp.rheight() = this->height();
-  
-  __layout->setGeometry(QRect(
-    QPoint(this->width() - temp.width(), 0),
-    temp
-  ));
-  
-  _event->accept();
-}
-

@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+#include "vatsinatorapplication.h"
+
 #include "urlbutton.h"
 #include "defines.h"
 
@@ -28,9 +30,14 @@ UrlButton::UrlButton(const QString& _text, const QString& _url, QWidget* _parent
           this, SLOT(__openUrl()));
 }
 
-UrlButton::UrlButton(const QString& _url, QWidget* _parent) :
-    QPushButton(_parent),
-    __url(_url) {
+UrlButton::UrlButton(const QString& _text, QWidget* _parent) :
+    QPushButton(_text, _parent) {
+  connect(this, SIGNAL(clicked()),
+          this, SLOT(__openUrl()));
+}
+
+UrlButton::UrlButton(QWidget* _parent) :
+    QPushButton(_parent) {
   connect(this, SIGNAL(clicked()),
           this, SLOT(__openUrl()));
 }
@@ -42,5 +49,8 @@ UrlButton::setUrl(const QString& _url) {
 
 void
 UrlButton::__openUrl() {
-  QDesktopServices::openUrl(__url);
+  if (__url.isEmpty())
+    VatsinatorApplication::log("UrlButton: empty url open requested");
+  else
+    QDesktopServices::openUrl(__url);
 }
