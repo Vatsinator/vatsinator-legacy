@@ -35,6 +35,9 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
 include (Macros)
+if (CMAKE_COMPILER_IS_GNUCC)
+    include (GccVersion)
+endif (CMAKE_COMPILER_IS_GNUCC)
 
 set (QT_USE_QTOPENGL TRUE)
 set (QT_USE_QTNETWORK TRUE)

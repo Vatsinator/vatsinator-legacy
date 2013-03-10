@@ -17,8 +17,14 @@
 */
 
 #include <QtCore>
-#include <quazip/quazip.h>
-#include <quazip/quazipfile.h>
+
+#ifdef Q_OS_WIN32
+# include "quazip/quazip.h"
+# include "quazip/quazipfile.h"
+#else
+# include <quazip/quazip.h>
+# include <quazip/quazipfile.h>
+#endif
 
 #include "vatsinatorapplication.h"
 
@@ -40,7 +46,22 @@ Unzipper::Unzipper(const QString& _fn, QObject* _parent) :
 }
 
 Unzipper::Unzipper(QObject* _parent) :
+#ifdef GCC_VERSION_47
     Unzipper("", _parent) {}
+#else
+    QObject(_parent),
+    __myThread(nullptr),
+    __fileName("") {
+  if (!_parent) {
+    __myThread = new QThread(this);
+    
+    connect(__myThread, SIGNAL(started()),
+            this,       SLOT(__unzip()));
+    connect(this, SIGNAL(unzipped(Unzipper::UnzipStatus)),
+                  SLOT(__restoreThread(Unzipper::UnzipStatus)));
+  }
+}
+#endif
 
 Unzipper::~Unzipper() {
   if (__myThread) {

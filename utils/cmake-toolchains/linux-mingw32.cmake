@@ -24,6 +24,10 @@ set (QT_X11_DIR /usr/bin)
 set (CMAKE_RC_COMPILER   /usr/bin/${COMPILER_PREFIX}-windres)
 set (CMAKE_C_COMPILER    /usr/bin/${COMPILER_PREFIX}-gcc)
 set (CMAKE_CXX_COMPILER  /usr/bin/${COMPILER_PREFIX}-g++)
+
+set (CMAKE_C_FLAGS "-static -static-libgcc" CACHE STRING "" FORCE)
+set (CMAKE_CXX_FLAGS "-static -static-libgcc -static-libstdc++" CACHE STRING "" FORCE)
+set (CMAKE_SHARED_LINKER_FLAGS "-static" CACHE STRING "" FORCE)
  
 # here is the target environment located
 set (CMAKE_FIND_ROOT_PATH

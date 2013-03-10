@@ -35,10 +35,6 @@ endif (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
 
 if (MINGW)
     set (WIN32 1)
-
-    # In order not to include so many dlls to the package, we tell gcc to
-    # include static libgcc and libstdc++
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 endif (MINGW)
 
 include(${QT_USE_FILE})
@@ -63,6 +59,7 @@ if (NOT vatsinator_VERSION)
 endif (NOT vatsinator_VERSION)
 
 add_subdirectory (externals)
+include_directories (${QUAZIP_SOURCE_DIR})
 
 include (VatsinatorInstall)
 
@@ -124,6 +121,14 @@ elseif (APPLE)
 
 # builds for win32
 elseif (WIN32)
+    
+    if (MINGW)
+        install (FILES
+            ${QT_LIBRARY_DIR}/libgcc_s_dw2-1.dll
+            ${QT_LIBRARY_DIR}/mingwm10.dll
+            DESTINATION .
+        )
+    endif (MINGW)
 
     # Include necessary libs
     install (FILES
@@ -134,8 +139,6 @@ elseif (WIN32)
         ${QT_QTSVG_LIBRARY_RELEASE}
         ${QT_QTXML_LIBRARY_RELEASE}
         ${QUAZIP_LIBRARY_RELEASE}
-        ${QT_LIBRARY_DIR}/libgcc_s_dw2-1.dll
-        ${QT_LIBRARY_DIR}/mingwm10.dll
         DESTINATION .
     )
     

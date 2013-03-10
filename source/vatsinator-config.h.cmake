@@ -21,3 +21,7 @@
 #define VATSINATOR_PREFIX "${vatsinator_PREFIX}"
 
 #cmakedefine CONFIG_NO_VBO
+
+#cmakedefine GCC_VERSION_47
+#cmakedefine GCC_VERSION_46
+#cmakedefine GCC_VERSION_45
