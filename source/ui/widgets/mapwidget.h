@@ -178,6 +178,11 @@ signals:
    * @param airport The airport that action was taken on.
    */
   void airportLinesToggled(const Airport*);
+  
+  /**
+   * Called from resizeEvent().
+   */
+  void resized();
 
 public slots:
   /**

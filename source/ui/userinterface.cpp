@@ -193,26 +193,15 @@ UserInterface::hideAllWindows() {
 
 void
 UserInterface::notififyAboutUpdates(bool _outdated) {
-  if (_outdated)
+  if (_outdated) {
+    __updateNotification->setBoundingGeometry(MapDisplay->geometry());
     __updateNotification->show();
+  }
 }
 
 void
 UserInterface::closeEvent(QCloseEvent* _event) {
   hideAllWindows();
-  _event->accept();
-}
-
-void
-UserInterface::resizeEvent(QResizeEvent* _event) { 
-  /* Update all notification-widgets */
-  for (auto child: children()) {
-    AbstractNotificationWidget* anw = qobject_cast< AbstractNotificationWidget* >(child);
-    if (anw)
-      anw->setBoundingGeometry(0, menuBar()->height(),
-                               this->width(), this->height() - menuBar()->height() - ClientsBox->height());
-  }
-  
   _event->accept();
 }
 

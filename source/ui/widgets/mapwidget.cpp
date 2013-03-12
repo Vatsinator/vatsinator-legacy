@@ -447,6 +447,8 @@ MapWidget::resizeGL(int width, int height) {
 
   __winWidth = width;
   __winHeight = height;
+  
+  emit resized();
 }
 
 void

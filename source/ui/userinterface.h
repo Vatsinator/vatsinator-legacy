@@ -104,7 +104,6 @@ public slots:
 
 protected:
   void closeEvent(QCloseEvent*);
-  void resizeEvent(QResizeEvent*);
 
 private:
   void __setupWindow();

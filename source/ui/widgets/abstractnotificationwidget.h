@@ -50,11 +50,14 @@ public:
   virtual Position position() const = 0;
   
   /**
-   * This widget will fit nicely inside gived rect.
+   * This widget will fit nicely inside given rect.
    * @param rect Maximum rect.
    */
   void setBoundingGeometry(const QRect&);
   void setBoundingGeometry(int, int, int, int);
+  
+public slots:
+  void resize();
   
 };
 

@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+#include "ui/widgets/mapwidget.h"
+
 #include "ui/userinterface.h"
 
 #include "abstractnotificationwidget.h"
@@ -27,6 +29,9 @@ AbstractNotificationWidget::AbstractNotificationWidget() :
     QWidget(UserInterface::getSingletonPtr()) {
   setMinimumWidth(400);
   setFixedHeight(30);
+  
+  connect(MapWidget::getSingletonPtr(), SIGNAL(resized()),
+          this,                         SLOT(resize()));
 }
 
 void
@@ -49,4 +54,7 @@ AbstractNotificationWidget::setBoundingGeometry(int x, int y, int w, int h) {
                       w, this->sizeHint().height()));
 }
 
-
+void
+AbstractNotificationWidget::resize() {
+  setBoundingGeometry(MapWidget::getSingleton().geometry());
+}
