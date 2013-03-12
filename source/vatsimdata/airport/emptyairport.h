@@ -27,7 +27,7 @@
 class EmptyAirport : public Airport {
   
 public:
-  EmptyAirport(const QString&);
+  EmptyAirport(QString);
   EmptyAirport(const AirportRecord*);
   
   virtual ~EmptyAirport();

@@ -21,8 +21,8 @@
 #include "emptyairport.h"
 #include "defines.h"
 
-EmptyAirport::EmptyAirport(const QString& _icao) :
-  Airport(_icao) {}
+EmptyAirport::EmptyAirport(QString _icao) :
+  Airport(std::move(_icao)) {}
 
 EmptyAirport::EmptyAirport(const AirportRecord* _ap) :
   Airport(_ap) {}

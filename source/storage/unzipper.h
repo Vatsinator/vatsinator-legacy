@@ -40,7 +40,7 @@ public:
     UNZIPPER_FAIL
   };
   
-  explicit Unzipper(const QString&, QObject* = 0);
+  explicit Unzipper(QString, QObject* = 0);
   explicit Unzipper(QObject* = 0);
   virtual ~Unzipper();
   

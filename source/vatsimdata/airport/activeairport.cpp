@@ -31,8 +31,8 @@
 #include "activeairport.h"
 #include "defines.h"
 
-ActiveAirport::ActiveAirport (const QString& _icao) :
-    Airport(_icao),
+ActiveAirport::ActiveAirport (QString _icao) :
+    Airport(std::move(_icao)),
     __staff(new ControllerTableModel()),
     __inbounds(new FlightTableModel()),
     __outbounds(new FlightTableModel()) {

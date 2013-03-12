@@ -31,10 +31,10 @@
 #include "unzipper.h"
 #include "defines.h"
 
-Unzipper::Unzipper(const QString& _fn, QObject* _parent) :
+Unzipper::Unzipper(QString _fn, QObject* _parent) :
     QObject(_parent),
     __myThread(nullptr),
-    __fileName(_fn) {
+    __fileName(std::move(_fn)) {
   if (!_parent) {
     __myThread = new QThread(this);
     

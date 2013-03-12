@@ -31,7 +31,7 @@ class Pilot;
 class ActiveAirport : public Airport {
   
 public:
-  ActiveAirport(const QString& = "");
+  ActiveAirport(QString = "");
   
   virtual ~ActiveAirport();
   
