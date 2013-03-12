@@ -140,5 +140,5 @@ Unzipper::__unzip() {
 
 void
 Unzipper::__restoreThread(Unzipper::UnzipStatus) {
-  moveToThread(QApplication::instance()->thread());
+  moveToThread(qApp->thread());
 }

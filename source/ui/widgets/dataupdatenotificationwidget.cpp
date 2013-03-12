@@ -23,7 +23,7 @@
 
 DataUpdateNotificationWidget::DataUpdateNotificationWidget() :
     AbstractNotificationWidget() {
-  
+  setVisible(false);
   setupUi(this);
 }
 
