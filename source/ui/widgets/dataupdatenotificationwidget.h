@@ -1,5 +1,5 @@
 /*
-    newversionnotificationwidget.h
+    dataupdatenotificationwidget.h
     Copyright (C) 2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,33 +17,28 @@
 */
 
 
-#ifndef NEWVERSIONNOTIFICATIONWIDGET_H
-#define NEWVERSIONNOTIFICATIONWIDGET_H
-
-#include <QWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
+#ifndef DATAUPDATENOTIFICATIONWIDGET_H
+#define DATAUPDATENOTIFICATIONWIDGET_H
 
 #include "ui/widgets/abstractnotificationwidget.h"
-#include "ui/ui_newversionnotificationwidget.h"
+#include "ui/ui_dataupdatenotificationwidget.h"
 
-class NewVersionNotificationWidget :
+class DataUpdateNotificationWidget :
     public AbstractNotificationWidget,
-    private Ui::NewVersionNotificationWidget {
+    private Ui::DataUpdateNotificationWidget {
   
   /*
-   * This is the red widget that opens up if UpdateChecker detects
-   * outdated version of running Vatsinator.
+   * This notification shows data download progress, extracting
+   * progress and some more additional info.
    */
   
   Q_OBJECT
   
 public:
-  explicit NewVersionNotificationWidget();
+  explicit DataUpdateNotificationWidget();
   
   AbstractNotificationWidget::Position position() const;
   
 };
 
-#endif // NEWVERSIONNOTIFICATIONWIDGET_H
+#endif // DATAUPDATENOTIFICATIONWIDGET_H

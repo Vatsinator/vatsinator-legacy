@@ -32,6 +32,7 @@ class AboutWindow;
 class AirportDetailsWindow;
 class AtcDetailsWindow;
 class AtcListWindow;
+class DataUpdateNotificationWidget;
 class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightListWindow;
@@ -131,6 +132,7 @@ private:
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
   
+  DataUpdateNotificationWidget* __dataUpdateNotification;
   NewVersionNotificationWidget* __updateNotification;
   
 private slots:

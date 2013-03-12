@@ -24,6 +24,7 @@
 
 #include "storage/settingsmanager.h"
 
+#include "ui/widgets/dataupdatenotificationwidget.h"
 #include "ui/widgets/newversionnotificationwidget.h"
 
 #include "ui/windows/aboutwindow.h"
@@ -94,6 +95,7 @@ UserInterface::~UserInterface() {
   hideAllWindows();
   __storeWindowGeometry();
 
+  delete __dataUpdateNotification;
   delete __updateNotification;
   delete __aboutWindow;
   delete __airportDetailsWindow;
@@ -208,7 +210,7 @@ UserInterface::resizeEvent(QResizeEvent* _event) {
     AbstractNotificationWidget* anw = qobject_cast< AbstractNotificationWidget* >(child);
     if (anw)
       anw->setBoundingGeometry(0, menuBar()->height(),
-                               this->width(), this->height() - menuBar()->height());
+                               this->width(), this->height() - menuBar()->height() - ClientsBox->height());
   }
   
   _event->accept();
@@ -229,6 +231,7 @@ UserInterface::__setupWindow() {
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
   
+  __dataUpdateNotification = new DataUpdateNotificationWidget();
   __updateNotification = new NewVersionNotificationWidget();
   
   Replaceable->addWidgets({__statusBox, __progressBar});

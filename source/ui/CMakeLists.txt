@@ -54,6 +54,7 @@ set (ui_SRCS
     views/flighttableview.cpp
     
     widgets/abstractnotificationwidget.cpp
+    widgets/dataupdatenotificationwidget.cpp
     widgets/mapwidget.cpp
     widgets/newversionnotificationwidget.cpp
     widgets/replaceablewidget.cpp
@@ -93,6 +94,7 @@ set (ui_MOC_SRCS
     views/flighttableview.h
     
     widgets/abstractnotificationwidget.h
+    widgets/dataupdatenotificationwidget.h
     widgets/mapwidget.h
     widgets/newversionnotificationwidget.h
     widgets/replaceablewidget.h
@@ -116,6 +118,7 @@ set (ui_FORMS
     resources/airportdetailswindow.ui
     resources/atcdetailswindow.ui
     resources/atclistwindow.ui
+    resources/dataupdatenotificationwidget.ui
     resources/firdetailswindow.ui
     resources/flightdetailswindow.ui
     resources/flightlistwindow.ui
