@@ -52,9 +52,8 @@ VatbookHandler::~VatbookHandler() {
 }
 
 void
-VatbookHandler::__clear() {
-  for (auto it = __bookings.begin(); it != __bookings.end(); ++it)
-    delete it.value();
+VatbookHandler::__clear() {   
+  qDeleteAll(__bookings);
   
   __bookings.clear();
 }

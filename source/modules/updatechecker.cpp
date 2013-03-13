@@ -20,28 +20,35 @@
 
 #include "network/plaintextdownloader.h"
 
+#include "ui/widgets/newversionnotificationwidget.h"
+
 #include "vatsinatorapplication.h"
 
 #include "updatechecker.h"
 #include "defines.h"
 
-// new version will be fetched after 10 seconds
-static const int FETCH_DELAY = 10 * 1000;
+// new version will be fetched after 3 seconds
+static const int FETCH_DELAY = 3 * 1000;
 
 UpdateChecker::UpdateChecker() :
     QObject(),
     __currentVersion(VATSINATOR_VERSION),
-    __httpHandler(new PlainTextDownloader()) {
+    __httpHandler(new PlainTextDownloader()),
+    __notification(nullptr) {
   connect(__httpHandler,    SIGNAL(finished(const QString&)),
           this,             SLOT(__parseVersion(const QString&)));
 }
 
 UpdateChecker::~UpdateChecker() {
+  if (__notification)
+    delete __notification;
+  
   delete __httpHandler;
 }
 
 void
 UpdateChecker::init() {
+  __notification = new NewVersionNotificationWidget();
   QTimer::singleShot(FETCH_DELAY, this, SLOT(__fetchVersion()));
 }
 
@@ -84,7 +91,9 @@ void
 UpdateChecker::__parseVersion(const QString& _versionString) {
   __newVersion = Version(_versionString.simplified());
   
-  emit versionChecked(__currentVersion < __newVersion);
+  if (__currentVersion < __newVersion) {
+    __notification->show();
+  }
 }
 
 

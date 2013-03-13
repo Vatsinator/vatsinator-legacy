@@ -96,7 +96,6 @@ UserInterface::~UserInterface() {
   __storeWindowGeometry();
 
   delete __dataUpdateNotification;
-  delete __updateNotification;
   delete __aboutWindow;
   delete __airportDetailsWindow;
   delete __firDetailsWindow;
@@ -192,14 +191,6 @@ UserInterface::hideAllWindows() {
 }
 
 void
-UserInterface::notififyAboutUpdates(bool _outdated) {
-  if (_outdated) {
-    __updateNotification->setBoundingGeometry(MapDisplay->geometry());
-    __updateNotification->show();
-  }
-}
-
-void
 UserInterface::closeEvent(QCloseEvent* _event) {
   hideAllWindows();
   _event->accept();
@@ -221,7 +212,6 @@ UserInterface::__setupWindow() {
   __progressBar->setTextVisible(true);
   
   __dataUpdateNotification = new DataUpdateNotificationWidget();
-  __updateNotification = new NewVersionNotificationWidget();
   
   Replaceable->addWidgets({__statusBox, __progressBar});
 

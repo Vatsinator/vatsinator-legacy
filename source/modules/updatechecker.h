@@ -25,6 +25,7 @@
 #include "singleton.h"
 
 class PlainTextDownloader;
+class NewVersionNotificationWidget;
 
 class UpdateChecker :
     public QObject,
@@ -79,17 +80,12 @@ private:
   /* Version that is available to download */
   Version __newVersion;
   
-  PlainTextDownloader* __httpHandler;
+  PlainTextDownloader*          __httpHandler;
+  NewVersionNotificationWidget* __notification;
   
 private slots:
   void __fetchVersion();
   void __parseVersion(const QString&);
-  
-signals:
-  /**
-   * @param outdated If true, Vatsinator is outdated.
-   */
-  void versionChecked(bool);
   
 };
 

@@ -39,7 +39,6 @@ class FlightListWindow;
 class MetarsWindow;
 class SettingsWindow;
 class QProgressBar;
-class NewVersionNotificationWidget;
 class VatsinatorApplication;
 
 class UserInterface :
@@ -100,7 +99,6 @@ public:
 public slots:
   void quit();
   void hideAllWindows();
-  void notififyAboutUpdates(bool);
 
 protected:
   void closeEvent(QCloseEvent*);
@@ -132,7 +130,6 @@ private:
   SettingsWindow*       __settingsWindow;
   
   DataUpdateNotificationWidget* __dataUpdateNotification;
-  NewVersionNotificationWidget* __updateNotification;
   
 private slots:
   void __dataDownloading();

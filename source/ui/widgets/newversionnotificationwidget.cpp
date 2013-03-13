@@ -23,13 +23,10 @@
 
 NewVersionNotificationWidget::NewVersionNotificationWidget() :
     AbstractNotificationWidget() {
-  setVisible(false);
   
+  setVisible(false);
   setupUi(this);
   VisitButton->setUrl(VATSINATOR_HOMEPAGE);
-  
-  connect(CloseButton,   SIGNAL(clicked()),
-          this,            SLOT(hide()));
 }
 
 AbstractNotificationWidget::Position

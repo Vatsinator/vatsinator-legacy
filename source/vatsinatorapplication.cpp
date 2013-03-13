@@ -67,8 +67,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   
   // __settingsManager->init();
   QtConcurrent::run(__settingsManager, &SettingsManager::init);
-  // __moduleManager->init();
-  QtConcurrent::run(__moduleManager, &ModuleManager::init);
+  
+  __moduleManager->init();
 
   // destroy all children windows before the program exits
   connect(this,             SIGNAL(destroyed()),
@@ -77,10 +77,6 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   // connect EnableAutoUpdatesAction toggle
   connect(__userInterface,  SIGNAL(autoUpdatesEnabled(bool)),
           this,             SLOT(__autoUpdatesToggled(bool)));
-  
-  // let user know about updates, if any available
-  connect(UpdateChecker::getSingletonPtr(), SIGNAL(versionChecked(bool)),
-          __userInterface,                  SLOT(notififyAboutUpdates(bool)));
   
   // handle settings changes
   connect(__settingsManager,       SIGNAL(settingsChanged()),

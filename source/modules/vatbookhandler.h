@@ -27,7 +27,6 @@
 
 #include "singleton.h"
 
-struct B;
 class BookedAtcTableModel;
 class PlainTextDownloader;
 
