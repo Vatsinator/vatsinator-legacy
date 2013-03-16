@@ -315,6 +315,29 @@
     </message>
 </context>
 <context>
+    <name>DataUpdateNotificationWidget</name>
+    <message>
+        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="78"/>
+        <source>Data Update Notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="110"/>
+        <source>Downloading new data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="135"/>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="187"/>
+        <source>Extracting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FileDownloader</name>
     <message>
         <location filename="../network/filedownloader.cpp" line="49"/>
@@ -642,88 +665,88 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="620"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="622"/>
         <source>Flight details</source>
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="657"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="659"/>
         <source>Airport details</source>
         <translation>Airport details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="678"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="680"/>
         <source>Controllers</source>
         <translation>Controllers</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="690"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="692"/>
         <source>Departures</source>
         <translation>Departures</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="699"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="701"/>
         <source>%1 to %2</source>
         <translation>%1 to %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="727"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="729"/>
         <source>%1 from %2</source>
         <translation>%1 from %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="757"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="759"/>
         <source>%1 details</source>
         <translation>%1 details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="781"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
         <source>This location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="785"/>
         <source>Set as home location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="787"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="789"/>
         <source>Flights nearby</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1350"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1352"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1352"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1354"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1377"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1379"/>
         <source>Departures: %1</source>
         <translation>Departures: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1382"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1384"/>
         <source>Arrivals: %1</source>
         <translation>Arrivals: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="702"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="704"/>
         <source>nowhere</source>
         <translation>nowhere</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="718"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="720"/>
         <source>Arrivals</source>
         <translation>Arrivals</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1342"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1346"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1344"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1348"/>
         <source>(unknown)</source>
         <translation>(unknown)</translation>
     </message>
@@ -782,17 +805,17 @@
 <context>
     <name>NewVersionNotificationWidget</name>
     <message>
-        <location filename="../ui/widgets/newversionnotificationwidget.cpp" line="28"/>
-        <source>&amp;Close this notification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/widgets/newversionnotificationwidget.cpp" line="29"/>
+        <location filename="../ui/resources/newversionnotificationwidget.ui" line="125"/>
         <source>&amp;Download new version now!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/newversionnotificationwidget.cpp" line="34"/>
+        <location filename="../ui/resources/newversionnotificationwidget.ui" line="135"/>
+        <source>Close this notification</source>
+        <translation type="unfinished">Close this notification</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/newversionnotificationwidget.ui" line="112"/>
         <source>There is a new version of Vatsinator available!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1004,12 +1027,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="78"/>
+        <location filename="../storage/unzipper.cpp" line="99"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="98"/>
+        <location filename="../storage/unzipper.cpp" line="119"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1024,61 +1047,46 @@
         <source>Close this notification</source>
         <translation type="obsolete">Close this notification</translation>
     </message>
-    <message>
-        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="28"/>
-        <source>&amp;Close this notification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="29"/>
-        <source>&amp;Download new version now!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/widgets/updatenotificationwidget.cpp" line="34"/>
-        <source>There is a new version of Vatsinator available!</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UserInterface</name>
     <message>
-        <location filename="../ui/userinterface.cpp" line="117"/>
+        <location filename="../ui/userinterface.cpp" line="118"/>
         <source>Last update: never</source>
         <translation>Last update: never</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="119"/>
+        <location filename="../ui/userinterface.cpp" line="120"/>
         <source>Last update: %1 UTC</source>
         <translation>Last update: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="136"/>
+        <location filename="../ui/userinterface.cpp" line="137"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="320"/>
+        <location filename="../ui/userinterface.cpp" line="302"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation type="unfinished">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="321"/>
+        <location filename="../ui/userinterface.cpp" line="303"/>
         <source>What do you want to do with that?</source>
         <translation type="unfinished">What do you want to do with that?</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="322"/>
+        <location filename="../ui/userinterface.cpp" line="304"/>
         <source>Try again</source>
         <translation type="unfinished">Try again</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="323"/>
+        <location filename="../ui/userinterface.cpp" line="305"/>
         <source>Keep current data</source>
         <translation type="unfinished">Keep current data</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="331"/>
+        <location filename="../ui/userinterface.cpp" line="313"/>
         <source>Data outdated!</source>
         <translation type="unfinished">Data outdated!</translation>
     </message>
