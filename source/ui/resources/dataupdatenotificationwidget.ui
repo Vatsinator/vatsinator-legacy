@@ -75,7 +75,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>Data Update Notification</string>
+   <string notr="true">Data Update Notification</string>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>
@@ -86,6 +86,9 @@
    </property>
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
      <widget class="QWidget" name="DownloadPage">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
