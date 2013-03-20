@@ -109,7 +109,9 @@ private:
   void __restoreWindowGeometry();
   
   /* Returns main window initial position */
-  static QPoint __getInitialPoint();
+  static const QPoint& __getInitialPoint();
+  
+  static QPoint __initialPoint;
   
   QLabel*       __statusBox;
   QProgressBar* __progressBar;

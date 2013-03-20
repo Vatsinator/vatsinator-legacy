@@ -45,6 +45,8 @@
 #include "userinterface.h"
 #include "defines.h"
 
+QPoint UserInterface::__initialPoint(0, 0);
+
 UserInterface::UserInterface(QWidget* _parent) :
     QMainWindow(_parent),
 #ifndef NO_DEBUG
@@ -265,16 +267,18 @@ UserInterface::__restoreWindowGeometry() {
   settings.endGroup();
 }
 
-QPoint
+const QPoint &
 UserInterface::__getInitialPoint() {
-  QSettings settings;
-
-  settings.beginGroup("MainWindow");
-  QPoint p = settings.value("position", QPoint(1, 1)).toPoint();
-
-  settings.endGroup();
+  if (__initialPoint.isNull()) {
+    QSettings settings;
+    
+    settings.beginGroup("MainWindow");
+    __initialPoint = settings.value("position", QPoint(1, 1)).toPoint();
+    
+    settings.endGroup();
+  }
   
-  return p;
+  return __initialPoint;
 }
 
 void
