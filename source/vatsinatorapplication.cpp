@@ -32,6 +32,8 @@
 #include "storage/languagemanager.h"
 #include "storage/settingsmanager.h"
 
+#include "ui/pages/miscellaneouspage.h"
+
 #include "ui/userinterface.h"
 #include "ui/windows/settingswindow.h"
 
@@ -56,7 +58,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __moduleManager(new ModuleManager()),
     __userInterface(NULL) {
 
-  __translator.load(QString("vatsinator-") % __settingsManager->getLanguage(),
+  __translator.load(QString("vatsinator-") %
+                      SettingsManager::earlyGetLocale(),
                     QString(TRANSLATIONS_DIR));
   installTranslator(&__translator);
   
@@ -65,33 +68,33 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   // slots set, crate User Interface
   __userInterface = new UserInterface();
   
-  // __settingsManager->init();
-  QtConcurrent::run(__settingsManager, &SettingsManager::init);
+  __settingsManager->init();
+//   QtConcurrent::run(__settingsManager, &SettingsManager::init);
   
   __moduleManager->init();
 
   // destroy all children windows before the program exits
-  connect(this,             SIGNAL(destroyed()),
-          __userInterface,  SLOT(hideAllWindows()));
+  connect(this,                 SIGNAL(destroyed()),
+          __userInterface,      SLOT(hideAllWindows()));
   
   // connect EnableAutoUpdatesAction toggle
-  connect(__userInterface,  SIGNAL(autoUpdatesEnabled(bool)),
-          this,             SLOT(__autoUpdatesToggled(bool)));
+  connect(__userInterface,      SIGNAL(autoUpdatesEnabled(bool)),
+          this,                 SLOT(__autoUpdatesToggled(bool)));
   
   // handle settings changes
-  connect(__settingsManager,       SIGNAL(settingsChanged()),
-          this,                    SLOT(__loadNewSettings()));
+  connect(__settingsManager,    SIGNAL(settingsChanged()),
+          this,                 SLOT(__loadNewSettings()));
 
   // connect data refresher with the timer
-  connect(&__timer,                SIGNAL(timeout()),
-          this,                    SLOT(refreshData()));
+  connect(&__timer,             SIGNAL(timeout()),
+          this,                 SLOT(refreshData()));
 
   // show main window
   __userInterface->show();
   emit uiCreated();
 
   // start the timer and fetch data
-  __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
+  __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
   if (__userInterface->autoUpdatesEnabled()) {
     __timer.start();
     refreshData();
@@ -117,10 +120,14 @@ VatsinatorApplication::~VatsinatorApplication() {
 
 void
 VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
-  QMessageBox msgBox;
-  msgBox.setText(_msg);
-  msgBox.exec();
+  if (getSingleton().__userInterface) {
+    QMessageBox msgBox;
+    msgBox.setText(_msg);
+    msgBox.exec();
+  }
   
+  VatsinatorApplication::log(qPrintable(_msg));
+    
   if (_fatal)
     QCoreApplication::exit(1);
 }
@@ -160,8 +167,8 @@ VatsinatorApplication::__emitGLInitialized() {
 
 void
 VatsinatorApplication::__loadNewSettings() {
-  if (__timer.interval() / 60000 != __settingsManager->getRefreshRate()) {
-    __timer.setInterval(__settingsManager->getRefreshRate() * 60000);
+  if (__timer.interval() / 60000 != SM::get("misc.refresh_rate").toInt()) {
+    __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
     
     if (__userInterface->autoUpdatesEnabled())
       refreshData();

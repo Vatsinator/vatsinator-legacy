@@ -20,10 +20,12 @@
 #ifndef SETTINGSWINDOW_H
 #define SETTINGSWINDOW_H
 
+#include <QVector>
+
 #include "ui/ui_settingswindow.h"
 #include "singleton.h"
 
-class SettingsManager;
+class AbstractSettingsPage;
 
 class SettingsWindow :
     public QWidget,
@@ -32,28 +34,16 @@ class SettingsWindow :
 
   Q_OBJECT
 
-  friend class SettingsManager;
-
 public:
   SettingsWindow(QWidget* = 0);
-
-public slots:
-  void show();
-
+  
+  void addPage(AbstractSettingsPage*);
+  
 private:
-
-  SettingsManager* __mySettingsManager;
-
+  QVector< AbstractSettingsPage* > __pages;
+  
 private slots:
-  /* Reads settings from the SettingsManager instance
-   * and updated the window */
-  void __updateWindow();
-
-  /* For "Restore defaults" button */
   void __handleButton(QAbstractButton*);
-
-  /* Disables checkboxes */
-  void __handleAlwaysCheckBox(int);
   
 signals:
   void restoreDefaults();

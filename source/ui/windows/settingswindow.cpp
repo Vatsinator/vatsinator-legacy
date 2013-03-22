@@ -21,6 +21,9 @@
 #include "storage/languagemanager.h"
 #include "storage/settingsmanager.h"
 
+#include "ui/pages/abstractsettingspage.h"
+#include "ui/pages/miscellaneouspage.h"
+
 #include "ui/widgets/mapwidget.h"
 
 #include "ui/userinterface.h"
@@ -29,108 +32,37 @@
 #include "defines.h"
 
 SettingsWindow::SettingsWindow(QWidget* _parent) :
-    QWidget(_parent),
-    __mySettingsManager(SettingsManager::getSingletonPtr()) {
+    QWidget(_parent) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
-  LanguageComboBox->addItems(LanguageManager::getSingleton().getAllLanguages());
 
-  connect(OKCancelButtonBox,  SIGNAL(clicked(QAbstractButton*)),
-          this,     SLOT(__handleButton(QAbstractButton*)));
-  connect(OKCancelButtonBox,  SIGNAL(accepted()),
-          this,     SLOT(hide()));
-  connect(ShowPilotsLabelsAlwaysCheckBox, SIGNAL(stateChanged(int)),
-          this,     SLOT(__handleAlwaysCheckBox(int)));
-  connect(__mySettingsManager,  SIGNAL(settingsRestored()),
-          this,     SLOT(__updateWindow()));
+  connect(OKCancelButtonBox,    SIGNAL(clicked(QAbstractButton*)),
+          this,                 SLOT(__handleButton(QAbstractButton*)));
 }
 
 void
-SettingsWindow::show() {
-  __updateWindow();
-  QWidget::show();
-}
-
-void
-SettingsWindow::__updateWindow() {
-  RefreshRateBox->setValue(__mySettingsManager->getRefreshRate());
-  RefreshMetarsCheckBox->setChecked(__mySettingsManager->refreshMetars());
-  AntyaliasingCheckBox->setChecked(__mySettingsManager->hasAntyaliasing());
-  EnableCachingCheckBox->setChecked(__mySettingsManager->cacheEnabled());
-  ZoomCoefficientSlider->setValue(__mySettingsManager->getZoomCoefficient());
-  PilotsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().pilots);
-  AirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().airports);
-  StaffedFirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().staffedFirs);
-  UnstaffedFirsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().unstaffedFirs);
-  InactiveAirportsCheckBox->setChecked(__mySettingsManager->getDisplayLayersPolicy().emptyAirports);
-
-  if (__mySettingsManager->displayAirportLabels()) {
-    AlwaysRadioButton->setChecked(true);
-    NeverRadioButton->setChecked(false);
-  } else {
-    AlwaysRadioButton->setChecked(false);
-    NeverRadioButton->setChecked(true);
-  }
-
-  if (__mySettingsManager->displayPilotsLabelsAlways())
-    __handleAlwaysCheckBox(Qt::Checked);
-  else {
-    __handleAlwaysCheckBox(Qt::Unchecked);
-
-    if (__mySettingsManager->displayPilotsLabelsWhenHovered())
-      ShowPilotsLabelsWhenHoveredCheckBox->setCheckState(Qt::Checked);
-    else
-      ShowPilotsLabelsWhenHoveredCheckBox->setCheckState(Qt::Unchecked);
-
-    if (__mySettingsManager->displayPilotsLabelsAirportRelated())
-      ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Checked);
-    else
-      ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Unchecked);
-  }
-
-  UnstaffedFirColorButton->setColor(__mySettingsManager->getUnstaffedFirBordersColor());
-  StaffedFirColorButton->setColor(__mySettingsManager->getStaffedFirBordersColor());
-  StaffedFirColorAlphaBox->setValue(__mySettingsManager->getStaffedFirBackgroundColor().alpha());
-  StaffedUirColorButton->setColor(__mySettingsManager->getStaffedUirBordersColor());
-  StaffedUirColorAlphaBox->setValue(__mySettingsManager->getStaffedUirBackgroundColor().alpha());
-  ApproachCircleColorButton->setColor(__mySettingsManager->getApproachCircleColor());
-  SeasColorButton->setColor(__mySettingsManager->getSeasColor());
-  LandsColorButton->setColor(__mySettingsManager->getLandsColor());
-  OriginToPilotLineColorButton->setColor(__mySettingsManager->getOriginToPilotLineColor());
-  PilotToDestinationLineColorButton->setColor(__mySettingsManager->getPilotToDestinationLineColor());
+SettingsWindow::addPage(AbstractSettingsPage* _page) {
+  __pages << _page;
   
-  LanguageComboBox->setCurrentIndex(
-      LanguageManager::getSingleton().getLanguageId(__mySettingsManager->getLanguage())
-    );
+  QListWidgetItem *item = new QListWidgetItem(CategoryList);
+  
+  QIcon listIcon(_page->listIcon());
+  item->setIcon(listIcon);
+  item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+  
+  item->setText(_page->listElement());
+  
+  SwappingWidget->addWidget(_page);
+  
+  if (CategoryList->count() == 1)
+    item->setSelected(true);
 }
 
-
 void
-SettingsWindow::__handleButton(QAbstractButton* _button) {
-  if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == _button) {
+SettingsWindow::__handleButton(QAbstractButton* _btn) {
+  if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == _btn)
     emit restoreDefaults();
-  } else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == _button) {
+  else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == _btn)
     emit settingsApplied();
-  }
 }
-
-void
-SettingsWindow::__handleAlwaysCheckBox(int _state) {
-  if (_state == Qt::Checked) {
-    ShowPilotsLabelsAlwaysCheckBox->setCheckState(Qt::Checked);
-    ShowPilotsLabelsWhenHoveredCheckBox->setCheckState(Qt::Checked);
-    ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Checked);
-
-    ShowPilotsLabelsWhenHoveredCheckBox->setEnabled(false);
-    ShowPilotsLabelsAirportRelatedCheckBox->setEnabled(false);
-  } else {
-    ShowPilotsLabelsAlwaysCheckBox->setCheckState(Qt::Unchecked);
-
-    ShowPilotsLabelsWhenHoveredCheckBox->setEnabled(true);
-    ShowPilotsLabelsAirportRelatedCheckBox->setEnabled(true);
-  }
-}
-
-
-
 

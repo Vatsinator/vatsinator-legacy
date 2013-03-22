@@ -22,144 +22,70 @@
 
 #include <QObject>
 #include <QColor>
+#include <QVariant>
 
 #include "singleton.h"
+#include "ui/pages/pagelist.h"
 
+class AbstractSettingsPage;
 class SettingsWindow;
 
-class SettingsManager : public QObject, public Singleton< SettingsManager > {
+class SettingsManager :
+    public QObject,
+    public Singleton< SettingsManager > {
+  
+  /*
+   * This class gives us access to global user configuration.
+   * Usage is pretty rich, so avoid it if unnesessary or store
+   * settings in local variables. You can use settingsChanged()
+   * signal to update needed settings.
+   * It works like this:
+   * SM::get("misc.refresh_rate").toInt();
+   * SM is typedef for SettingsManager.
+   */
 
   Q_OBJECT
 
-  enum {
-    WHEN_HOVERED = 1,
-    AIRPORT_RELATED = 2,
-    ALWAYS = 4
-  };
-
 public:
-  struct DisplayLayersPolicy {
-    bool  pilots;
-    bool  airports;
-    bool  staffedFirs;
-    bool  unstaffedFirs;
-    bool  emptyAirports;
-  };
-
   SettingsManager(QObject* = 0);
+  virtual ~SettingsManager();
   
   void init();
-
-  inline int
-  getRefreshRate() const { return __refreshRate; }
-
-  inline bool
-  refreshMetars() const { return __metarsRefresh; }
-
-  inline bool
-  hasAntyaliasing() const { return __antyaliasing; }
   
-  inline bool
-  cacheEnabled() const { return __cacheEnabled; }
+  /**
+   * We need this to be accessible before all pages are created.
+   * All pages are QWidget-dependent, so they can not be constructed
+   * before whole UI.
+   */
+  static QString earlyGetLocale();
   
-  inline int
-  getZoomCoefficient() const { return __zoomCoefficient; }
-
-  inline const DisplayLayersPolicy &
-  getDisplayLayersPolicy() const { return __displayLayers; }
-
-  inline bool
-  displayAirportLabels() const { return __displayAirportLabels; }
-
-  inline bool
-  displayPilotsLabelsWhenHovered() const { return __pilotsLabelsDisplayPolicy & WHEN_HOVERED; }
-
-  inline bool
-  displayPilotsLabelsAirportRelated() const { return __pilotsLabelsDisplayPolicy & AIRPORT_RELATED; }
-
-  inline bool
-  displayPilotsLabelsAlways() const { return __pilotsLabelsDisplayPolicy & ALWAYS; }
-
-  inline const QColor&
-  getUnstaffedFirBordersColor() const { return __unstaffedFirBordersColor; }
-
-  inline const QColor&
-  getStaffedFirBordersColor() const { return __staffedFirBordersColor; }
-
-  inline const QColor&
-  getStaffedFirBackgroundColor() const { return __staffedFirBackgroundColor; }
-
-  inline const QColor&
-  getStaffedUirBordersColor() const { return __staffedUirBordersColor; }
-
-  inline const QColor&
-  getStaffedUirBackgroundColor() const { return __staffedUirBackgroundColor; }
-
-  inline const QColor&
-  getApproachCircleColor() const { return __approachCircleColor; }
-
-  inline const QColor&
-  getSeasColor() const { return __seasColor; }
-
-  inline const QColor&
-  getLandsColor() const { return __landsColor; }
-
-  inline const QColor&
-  getOriginToPilotLineColor() const { return __originToPilotLineColor; }
-
-  inline const QColor&
-  getPilotToDestinationLineColor() const { return __pilotToDestinationLineColor; }
-  
-  inline const QString&
-  getLanguage() const { return __language; }
-
-signals:
-  void settingsRestored();
-  void settingsChanged();
+  /**
+   * Gives access to particular setting.
+   * @param s Page and variable name, glued by dot (.).
+   *    Example: SettingsManager::get("misc.refresh_rate")
+   */
+  static QVariant get(const QString&);
 
 private:
-  /* Saves all settings in the system, using QSettings */
-  void __saveSettings();
-
-  /* Restores settings from the registry/config files */
+  /**
+   * Reads config file, restores all settings.
+   */
   void __restoreSettings();
-
-  /* Clears all config entries from the registry/config files */
-  void __clearEntries();
-
-  SettingsWindow*   __mySettingsWindow;
-
-  /* Miscallaneous */
-  int                 __refreshRate;
-  bool                __metarsRefresh;
-  bool                __antyaliasing;
-  bool                __cacheEnabled;
-  int                 __zoomCoefficient;
-  DisplayLayersPolicy __displayLayers;
-  unsigned            __pilotsLabelsDisplayPolicy;
-  bool                __displayAirportLabels;
-
-  /* Various map colors */
-  QColor __unstaffedFirBordersColor;
-  QColor __staffedFirBordersColor;
-  int    __staffedFirBackgroundAlpha;
-  QColor __staffedFirBackgroundColor;
-  QColor __staffedUirBordersColor;
-  int    __staffedUirBackgroundAlpha;
-  QColor __staffedUirBackgroundColor;
-  QColor __approachCircleColor;
-  QColor __seasColor;
-  QColor __landsColor;
-  QColor __originToPilotLineColor;
-  QColor __pilotToDestinationLineColor;
   
-  QString __language;
-
-private slots:
-  void __updateSettings();
-  void __restoreDefaults();
-
+  /**
+   * Saves all settings to local config file.
+   */
+  void __saveSettings();
+  
+  const AbstractSettingsPage* __parsePage(const QString&) const;
+  
+  AbstractSettingsPage* __pages[PageList::__count];
+  
+signals:
+  void settingsChanged();
 
 };
+
+typedef SettingsManager SM;
 
 #endif // SETTINGSMANAGER_H

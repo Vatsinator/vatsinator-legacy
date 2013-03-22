@@ -27,6 +27,8 @@
 
 #include "modules/modulemanager.h"
 
+#include "ui/pages/miscellaneouspage.h"
+
 #include "ui/userinterface.h"
 
 #include "storage/settingsmanager.h"
@@ -522,7 +524,7 @@ VatsimDataHandler::__dataFetched(const QString& _data) {
     parseDataFile(_data);
     emit vatsimDataUpdated();
     
-    if (SettingsManager::getSingleton().cacheEnabled())
+    if (SM::get("misc.cache_enabled").toBool())
       FileManager::cacheData(CACHE_FILE_NAME, _data);
   } else {
     parseStatusFile(_data);

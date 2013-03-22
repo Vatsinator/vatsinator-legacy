@@ -1,6 +1,6 @@
 /*
-    main.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    abstractsettingspage.cpp
+    Copyright (C) 2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,11 +16,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "vatsinatorapplication.h"
+#include <QtGui>
 
-int main(int argc, char** argv) {
-  QApplication::setApplicationName("Vatsinator");
-  QApplication::setOrganizationName("VatsinatorTeam");
-  
-  return VatsinatorApplication(argc, argv).exec();
+#include "abstractsettingspage.h"
+#include "defines.h"
+
+AbstractSettingsPage::AbstractSettingsPage(QWidget* _parent) :
+  QWidget(_parent) {}
+
+void
+AbstractSettingsPage::restoreSettings(QSettings& _s) {
+  _s.beginGroup(__sm_page_name());
+  __restore(_s);
+  _s.endGroup();
+}
+
+void
+AbstractSettingsPage::saveSettings(QSettings& _s) {
+  _s.beginGroup(__sm_page_name());
+  __save(_s);
+  _s.endGroup();
 }
