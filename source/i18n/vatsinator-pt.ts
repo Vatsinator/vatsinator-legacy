@@ -315,22 +315,17 @@
 <context>
     <name>DataUpdateNotificationWidget</name>
     <message>
-        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="78"/>
-        <source>Data Update Notification</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="110"/>
+        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="113"/>
         <source>Downloading new data...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="135"/>
+        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="138"/>
         <source>Abort</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="187"/>
+        <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="190"/>
         <source>Extracting...</source>
         <translation type="unfinished"/>
     </message>
@@ -810,7 +805,7 @@
     <message>
         <location filename="../ui/resources/newversionnotificationwidget.ui" line="135"/>
         <source>Close this notification</source>
-        <translation type="unfinished"/>
+        <translation>Fechar esta notificação</translation>
     </message>
     <message>
         <location filename="../ui/resources/newversionnotificationwidget.ui" line="112"/>
@@ -1049,42 +1044,42 @@
 <context>
     <name>UserInterface</name>
     <message>
-        <location filename="../ui/userinterface.cpp" line="118"/>
+        <location filename="../ui/userinterface.cpp" line="120"/>
         <source>Last update: never</source>
         <translation>Última actualização: nunca</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="120"/>
+        <location filename="../ui/userinterface.cpp" line="122"/>
         <source>Last update: %1 UTC</source>
         <translation>Última actualização: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="137"/>
+        <location filename="../ui/userinterface.cpp" line="139"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Clientes: %1 (%2 pilotos, %3 ATC, %4 observadores)</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="302"/>
+        <location filename="../ui/userinterface.cpp" line="306"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation>Impossível obter dados da VATSIM.</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="303"/>
+        <location filename="../ui/userinterface.cpp" line="307"/>
         <source>What do you want to do with that?</source>
         <translation>Que pretende fazer com isso?</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="304"/>
+        <location filename="../ui/userinterface.cpp" line="308"/>
         <source>Try again</source>
         <translation>Tente novamente</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="305"/>
+        <location filename="../ui/userinterface.cpp" line="309"/>
         <source>Keep current data</source>
         <translation>Manter dados actuais</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="313"/>
+        <location filename="../ui/userinterface.cpp" line="317"/>
         <source>Data outdated!</source>
         <translation>Dados obsoletos!</translation>
     </message>
