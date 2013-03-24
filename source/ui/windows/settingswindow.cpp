@@ -62,7 +62,8 @@ void
 SettingsWindow::__handleButton(QAbstractButton* _btn) {
   if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == _btn)
     emit restoreDefaults();
-  else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == _btn)
+  else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == _btn
+        || OKCancelButtonBox->button(QDialogButtonBox::Ok) == _btn)
     emit settingsApplied();
 }
 

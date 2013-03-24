@@ -45,6 +45,11 @@ SettingsManager::init() {
   for (AbstractSettingsPage* p: __pages)
     SettingsWindow::getSingleton().addPage(p);
   
+  connect(SettingsWindow::getSingletonPtr(),    SIGNAL(settingsApplied()),
+          this,                                 SLOT(__saveSettings()));
+  connect(SettingsWindow::getSingletonPtr(),    SIGNAL(restoreDefaults()),
+          this,                                 SLOT(__restoreDefaults()));
+  
   __restoreSettings();
 }
 
@@ -74,17 +79,12 @@ SettingsManager::get(const QString& _s) {
 void
 SettingsManager::__restoreSettings() {
   QSettings s;
+  s.beginGroup("Settings");
   
   for (AbstractSettingsPage* p: __pages)
     p->restoreSettings(s);
-}
-
-void
-SettingsManager::__saveSettings() {
-  QSettings s;
   
-  for (AbstractSettingsPage* p: __pages)
-    p->saveSettings(s);
+  s.endGroup();
 }
 
 const AbstractSettingsPage *
@@ -94,4 +94,28 @@ SettingsManager::__parsePage(const QString& _s) const {
       return p;
   
   return nullptr;
+}
+
+void
+SettingsManager::__saveSettings() {
+  QSettings s;
+  s.beginGroup("Settings");
+  
+  for (AbstractSettingsPage* p: __pages)
+    p->saveSettings(s);
+  
+  s.endGroup();
+}
+
+void
+SettingsManager::__restoreDefaults() {
+  QSettings s;
+  s.beginGroup("Settings");
+  
+  s.remove("");
+  
+  for (AbstractSettingsPage* p: __pages)
+    p->restoreSettings(s);
+  
+  s.endGroup();
 }

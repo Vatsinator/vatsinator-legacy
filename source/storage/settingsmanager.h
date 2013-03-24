@@ -72,13 +72,21 @@ private:
    */
   void __restoreSettings();
   
+  const AbstractSettingsPage* __parsePage(const QString&) const;
+  
+private slots:
+  
   /**
    * Saves all settings to local config file.
    */
   void __saveSettings();
   
-  const AbstractSettingsPage* __parsePage(const QString&) const;
+  /**
+   * Clears all entries and then calls __restoreSettings().
+   */
+  void __restoreDefaults();
   
+private:
   AbstractSettingsPage* __pages[PageList::__count];
   
 signals:
