@@ -66,15 +66,19 @@ public:
   /**
    * Needed and used by SettingsManager.
    */
-  virtual inline QString
-  __sm_page_name() const { return QString(""); }
+  const QString __sm_page_name_s = "";
+  
+  virtual const QString &
+  __sm_page_name() const { return __sm_page_name_s; }
 };
 
-#define VATSINATOR_DECLARE_PAGE(x)                \
-  public:                                         \
-  inline QString __sm_page_name() const {         \
-    return QString(#x).toLower();                 \
-  }                                               \
+#define VATSINATOR_DECLARE_PAGE(x)                          \
+  private:                                                  \
+    const QString __sm_page_name_s = QString(#x).toLower(); \
+  public:                                                   \
+    const QString& __sm_page_name() const {                 \
+      return __sm_page_name_s;                              \
+    }                                                       \
   private:
 
 #define _S(name, value) if (_s == #name) return value
