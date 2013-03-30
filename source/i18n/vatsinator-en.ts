@@ -101,6 +101,11 @@
         <translation>FIRs in the database:</translation>
     </message>
     <message>
+        <location filename="../ui/resources/aboutwindow.ui" line="211"/>
+        <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.org/&quot;&gt;vatsinator.org&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/resources/aboutwindow.ui" line="267"/>
         <source>Changelog</source>
         <translation type="unfinished"></translation>
@@ -111,9 +116,8 @@
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../ui/resources/aboutwindow.ui" line="211"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</source>
-        <translation>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</translation>
+        <translation type="obsolete">(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="230"/>
