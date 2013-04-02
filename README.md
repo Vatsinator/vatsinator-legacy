@@ -1,5 +1,9 @@
 ![Vatsinator](http://vatsinator.org/images/header.jpg)
 
+---
+**This is developers' site** You probably want to visit [http://vatsinator.org/](Vatsinator's homepage).
+---
+
 **Vatsinator** is an open-source Vatsim network monitor. It shows logged-in pilots and controllers, provides weather and airport information. Vatsinator is designed to be quick and handy, in order to be useful on desktops (when not flying) and note/netbooks (during flight).
 
 Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Currently we can run this application on Linux and Windows. We are looking for MacOS package maintainers.
