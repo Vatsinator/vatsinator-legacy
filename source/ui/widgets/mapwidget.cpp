@@ -163,6 +163,9 @@ MapWidget::MapWidget(QWidget* _parent) :
           this, SLOT(__openContextMenu(const Airport*)));
   connect(this, SIGNAL(contextMenuRequested(const Fir*)),
           this, SLOT(__openContextMenu(const Fir*)));
+  
+  connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
+          this,                                    SLOT(__loadNewSettings()));
 
   setAutoBufferSwap(true);
 
@@ -351,9 +354,9 @@ MapWidget::paintGL() {
   __drawRight = (1 - __position.x()) * __zoom < __orthoRangeX;
   __360degreesMapped = -__position.x() * __zoom;
 
-  qglColor(SM::get("colors.lands").value<QColor>());
+  qglColor(__settings.colors.lands);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  qglClearColor(SM::get("colors.seas").value<QColor>());
+  qglClearColor(__settings.colors.seas);
   glLoadIdentity();
 
   if (FlightTracker::getSingleton().getTracked()) {
@@ -399,7 +402,7 @@ MapWidget::paintGL() {
   if (__drawRight)
     __drawFirsLabels(360.0);
 
-  if (SM::get("view.airports_layer").toBool()) {
+  if (__settings.view.airports_layer) {
     __drawAirports();
 
     if (__drawLeft)
@@ -409,7 +412,7 @@ MapWidget::paintGL() {
       __drawAirports(360.0);
   }
 
-  if (SM::get("view.pilots_layer").toBool()) {
+  if (__settings.view.pilots_layer) {
     __drawPilots();
 
     if (__drawLeft)
@@ -609,10 +612,28 @@ MapWidget::keyReleaseEvent(QKeyEvent* _event) {
 
 void
 MapWidget::__loadNewSettings() {
-  if (SM::get("misc.has_antyaliasing").toBool())
-    __setAntyaliasing(true);
-  else
-    __setAntyaliasing(false);
+  __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toBool();
+  
+  __settings.colors.lands = SM::get("colors.lands").value<QColor>();
+  __settings.colors.seas = SM::get("colors.seas").value<QColor>();
+  __settings.colors.staffed_fir_borders = SM::get("colors.staffed_fir_borders").value<QColor>();
+  __settings.colors.staffed_fir_background = SM::get("colors.staffed_fir_background").value<QColor>();
+  __settings.colors.staffed_uir_borders = SM::get("colors.staffed_uir_borders").value<QColor>();
+  __settings.colors.staffed_uir_background = SM::get("colors.staffed_uir_background").value<QColor>();
+  __settings.colors.unstaffed_fir_borders = SM::get("colors.unstaffed_fir_borders").value<QColor>();
+  __settings.colors.approach_circle = SM::get("colors.approach_circle").value<QColor>();
+  
+  __settings.view.airports_layer = SM::get("view.airports_layer").toBool();
+  __settings.view.airport_labels = SM::get("view.airport_labels").toBool();
+  __settings.view.pilots_layer = SM::get("view.pilots_layer").toBool();
+  __settings.view.staffed_firs = SM::get("view.staffed_firs").toBool();
+  __settings.view.unstaffed_firs = SM::get("view.unstaffed_firs").toBool();
+  __settings.view.empty_airports = SM::get("view.empty_airports").toBool();
+  __settings.view.pilot_labels.always = SM::get("view.pilot_labels.always").toBool();
+  __settings.view.pilot_labels.airport_related = SM::get("view.pilot_labels.airport_related").toBool();
+  __settings.view.pilot_labels.when_hovered = SM::get("view.pilot_labels.when_hovered").toBool();
+  
+  __setAntyaliasing(SM::get("misc.has_antyaliasing").toBool());
 }
 
 void
@@ -815,8 +836,6 @@ MapWidget::__init() {
   connect(this,                                    SIGNAL(airportDetailsWindowRequested(const Airport*)),
           AirportDetailsWindow::getSingletonPtr(), SLOT(show(const Airport*)));
   connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
-          this,                                    SLOT(__loadNewSettings()));
-  connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
           this,                                    SLOT(redraw()));
 
   VatsinatorApplication::log("Setting fonts...");
@@ -826,8 +845,8 @@ MapWidget::__init() {
   __airportFont.setPixelSize(AIRPORT_FONT_PIXEL_SIZE);
   __airportFont.setWeight(AIRPORT_FONT_WEIGHT);
 
-//   VatsinatorApplication::log("Restoring settings...");
-//   __restoreSettings();
+  VatsinatorApplication::log("Restoring settings...");
+  __restoreSettings();
 //   __loadNewSettings();
 
   VatsinatorApplication::emitGLInitialized();
@@ -912,7 +931,7 @@ MapWidget::__drawWorld(double _moveX) {
   glPushMatrix();
   glTranslatef(_moveX, 0.0, -0.9);
 
-  qglColor(SM::get("colors.lands").value<QColor>());
+  qglColor(__settings.colors.lands);
   WorldMap::getSingleton().draw();
   checkGLErrors(HERE);
   glPopMatrix();
@@ -920,7 +939,7 @@ MapWidget::__drawWorld(double _moveX) {
 
 void
 MapWidget::__drawFirs(double _moveX) {
-  if (SM::get("view.unstaffed_firs").toBool()) {
+  if (__settings.view.unstaffed_firs) {
     glPushMatrix();
     glTranslatef(_moveX, 0.0, -0.8);
 
@@ -929,14 +948,14 @@ MapWidget::__drawFirs(double _moveX) {
         continue;
       }
 
-      qglColor(SM::get("colors.unstaffed_fir_borders").value<QColor>());
+      qglColor(__settings.colors.unstaffed_fir_borders);
       fir.drawBorders(); checkGLErrors(HERE);
     }
 
     glPopMatrix();
   }
 
-  if (SM::get("view.staffed_firs").toBool()) {
+  if (__settings.view.staffed_firs) {
     __drawUirs(_moveX);
 
     glLineWidth(3.0);
@@ -947,10 +966,10 @@ MapWidget::__drawFirs(double _moveX) {
       if (!fir.isStaffed())
         continue;
 
-      qglColor(SM::get("colors.staffed_fir_borders").value<QColor>());
+      qglColor(__settings.colors.staffed_fir_borders);
       fir.drawBorders(); checkGLErrors(HERE);
 
-      qglColor(SM::get("colors.staffed_fir_background").value<QColor>());
+      qglColor(__settings.colors.staffed_fir_background);
       fir.drawTriangles(); checkGLErrors(HERE);
     }
 
@@ -970,10 +989,10 @@ MapWidget::__drawUirs(double _moveX) {
     if (!uir->isEmpty()) {
       for (const Fir * fir: uir->getRange()) {
         if (!fir->isStaffed()) {
-          qglColor(SM::get("colors.staffed_uir_borders").value<QColor>());
+          qglColor(__settings.colors.staffed_uir_borders);
           fir->drawBorders(); checkGLErrors(HERE);
 
-          qglColor(SM::get("colors.staffed_uir_background").value<QColor>());
+          qglColor(__settings.colors.staffed_uir_background);
           fir->drawTriangles(); checkGLErrors(HERE);
         }
       }
@@ -984,7 +1003,7 @@ MapWidget::__drawUirs(double _moveX) {
 
   glPopMatrix();
 
-  qglColor(SM::get("colors.seas").value<QColor>());
+  qglColor(__settings.colors.seas);
   glLineWidth(1.0);
   checkGLErrors(HERE);
 }
@@ -1024,7 +1043,7 @@ MapWidget::__drawAirports(float _moveX) {
   glColor4f(1.0, 1.0, 1.0, 1.0);
   
 //   Draw inactive airports 
-  if (SM::get("view.empty_airports").toBool() || __keyPressed) {
+  if (__settings.view.empty_airports || __keyPressed) {
     for (AirportRecord& ap: AirportDatabase::getSingleton().getAirports()) {
       if (__airports.contains(ap.icao))
         continue;
@@ -1084,7 +1103,7 @@ MapWidget::__drawAirports(float _moveX) {
       glTranslatef(x, y, -0.4); checkGLErrors(HERE);
       glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
       
-      if (SM::get("view.airport_labels").toBool() || __keyPressed)
+      if (__settings.view.airport_labels || __keyPressed)
 	__drawIcaoLabel(it.value()); checkGLErrors(HERE);
       
       if (inRange && !__underMouse)
@@ -1093,7 +1112,7 @@ MapWidget::__drawAirports(float _moveX) {
       if (it.value()->hasApproach()) {
 	glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
   
-	qglColor(SM::get("colors.approach_circle").value<QColor>());
+	qglColor(__settings.colors.approach_circle);
 	glVertexPointer(2, GL_FLOAT, 0, __circle); checkGLErrors(HERE);
   
 	glLineWidth(1.5);
@@ -1112,8 +1131,8 @@ MapWidget::__drawAirports(float _moveX) {
     glPopMatrix();
 
     if (inRange && __underMouse == it.value() &&
-        !SM::get("view.pilot_labels.always").toBool() &&
-        SM::get("view.pilot_labels.airport_related").toBool() &&
+        !__settings.view.pilot_labels.always &&
+        __settings.view.pilot_labels.airport_related &&
         !__keyPressed) { // draw callsign labels if not drawn already
       float tipX, tipY;
 
@@ -1176,9 +1195,9 @@ MapWidget::__drawPilots(float _moveX) {
     if (inRange && !__underMouse)
       __underMouse = client;
 
-    if (((SM::get("view.pilot_labels.when_hovered").toBool())
+    if (((__settings.view.pilot_labels.when_hovered)
          && (__keyPressed || inRange))
-        || (SM::get("view.pilot_labels.always").toBool()))
+        || (__settings.view.pilot_labels.always))
       __drawCallsign(client);
 
     glPopMatrix(); checkGLErrors(HERE);
@@ -1289,7 +1308,7 @@ MapWidget::__updateZoom(int _steps) {
   //count limiter for this function
   __actualZoomMaximum =
       qFloor(qLn((ZOOM_MAXIMUM - ZOOM_MINIMUM) / ZOOM_NORMALIZE_COEFFICIENT) /
-      qLn(ZOOM_BASE + (SM::get("misc.zoom_coefficient").toInt() * 0.01)));
+      qLn(ZOOM_BASE + (__settings.misc.zoom_coefficient * 0.01)));
   
   //set the actual zoom level according to number of scroll wheel steps
   __actualZoom += _steps;
@@ -1299,7 +1318,7 @@ MapWidget::__updateZoom(int _steps) {
   
   // count value of closeup
   __zoom = ZOOM_MINIMUM + ZOOM_NORMALIZE_COEFFICIENT *
-      qPow(ZOOM_BASE + (SM::get("misc.zoom_coefficient").toInt() * 0.01),
+      qPow(ZOOM_BASE + (__settings.misc.zoom_coefficient * 0.01),
            (__actualZoom));
 }
 

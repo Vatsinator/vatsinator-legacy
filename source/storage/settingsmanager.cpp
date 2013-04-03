@@ -85,6 +85,8 @@ SettingsManager::__restoreSettings() {
     p->restoreSettings(s);
   
   s.endGroup();
+  
+  emit settingsChanged();
 }
 
 const AbstractSettingsPage *
@@ -105,6 +107,8 @@ SettingsManager::__saveSettings() {
     p->saveSettings(s);
   
   s.endGroup();
+  
+  emit settingsChanged();
 }
 
 void
@@ -118,4 +122,6 @@ SettingsManager::__restoreDefaults() {
     p->restoreSettings(s);
   
   s.endGroup();
+  
+  emit settingsChanged();
 }
