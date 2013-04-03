@@ -45,7 +45,7 @@ class WorldMap;
 
 class MapWidget :
     public QGLWidget,
-    public Singleton< MapWidget > {
+    public Singleton<MapWidget> {
 
   /*
    * We need this class to build our QGLWidget for UserInterface class.
@@ -224,6 +224,7 @@ private slots:
 
 private:
   enum PMMatrixMode {
+    /* Describes Projection Matrix mode */
     AIRPORTS_PILOTS, WORLD
   };
 
@@ -253,7 +254,7 @@ private:
 
   /* Some inlined helpful functions */
   float __distanceFromCamera(float, float);
-  void  __mapCoordinates(float, float, float&, float&);
+  void  __mapCoordinates(float, float, float*, float*);
   QString __producePilotToolTip(const Pilot*);
   QString __produceAirportToolTip(const Airport*);
   QString __produceFirToolTip(const Fir*);
@@ -342,6 +343,7 @@ private:
   VatsimDataHandler&        __data;
   const AirportsMap&        __airports;
   
+  /* Structs below store settings locally to avoid expensive SM::get() calling. */
   struct {
     struct {
       int zoom_coefficient;

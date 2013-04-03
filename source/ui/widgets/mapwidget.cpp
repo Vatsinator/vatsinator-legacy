@@ -73,39 +73,39 @@
 #define GL_MULTISAMPLE 0x809D
 #endif
 
-const double PI = 3.1415926535897;
+static const double PI = 3.1415926535897;
 
-const GLfloat VERTICES[] = {
+static const GLfloat VERTICES[] = {
   -0.04, -0.02,
   -0.04,  0.06,
    0.04,  0.06,
    0.04, -0.02
 };
-const GLfloat PILOT_TOOLTIP_VERTICES[] = {
+static const GLfloat PILOT_TOOLTIP_VERTICES[] = {
   -0.16,  0.019,
   -0.16,  0.12566666,
    0.16,  0.12566666,
    0.16,  0.019
 };
-const GLfloat AIRPORT_TOOLTIP_VERTICES[] = {
+static const GLfloat AIRPORT_TOOLTIP_VERTICES[] = {
   -0.08, -0.05333333,
   -0.08, 0,
    0.08, 0,
    0.08, -0.05333333
 };
-const GLfloat FIR_TOOLTIP_VERTICES[] = {
+static const GLfloat FIR_TOOLTIP_VERTICES[] = {
   -0.08, -0.05333333,
   -0.08,  0.05333333,
    0.08,  0.05333333,
    0.08, -0.05333333
 };
-const GLfloat MODEL_VERTICES[] = {
+static const GLfloat MODEL_VERTICES[] = {
   -0.03, -0.03,
   -0.03,  0.03,
    0.03,  0.03,
    0.03, -0.03
 };
-const GLfloat TEXCOORDS[] = {
+static const GLfloat TEXCOORDS[] = {
   0.0, 0.0,
   0.0, 1.0,
   1.0, 1.0,
@@ -117,16 +117,7 @@ const GLfloat TEXCOORDS[] = {
 unsigned MapWidget::texturesCount = 0;
 #endif
 
-
-/* Just one helpful function */
-
-template< typename T >
-inline T absHelper(const T& _v) {
-  return _v < 0 ? -_v : _v;
-}
-
-
-QGLFormat myformat = MapWidget::getFormat();
+static QGLFormat myformat = MapWidget::getFormat();
 
   
 MapWidget::MapWidget(QWidget* _parent) :
@@ -143,10 +134,10 @@ MapWidget::MapWidget(QWidget* _parent) :
     __actualZoom(ACTUAL_ZOOM_MINIMUM),
     __actualZoomMaximum(),
     __keyPressed(false),
-    __underMouse(NULL),
+    __underMouse(nullptr),
     __contextMenuOpened(false),
-    __label(NULL),
-    __menu(NULL),
+    __label(nullptr),
+    __menu(nullptr),
     __drawLeft(false),
     __drawRight(false),
     __data(VatsimDataHandler::getSingleton()),
@@ -201,7 +192,7 @@ MapWidget::loadImage(const QImage& _img) {
   glBindTexture(GL_TEXTURE_2D, 0);
 
 #ifndef NO_DEBUG
-  MapWidget::getSingleton().__imagesMemory[pix] = static_cast< unsigned >(final.byteCount());
+  MapWidget::getSingleton().__imagesMemory[pix] = static_cast<unsigned>(final.byteCount());
   registerGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[pix]);
   texturesCount += 1;
 #endif
@@ -235,7 +226,7 @@ MapWidget::loadImage(const QString& _fName) {
   glBindTexture(GL_TEXTURE_2D, 0);
 
 #ifndef NO_DEBUG
-  MapWidget::getSingleton().__imagesMemory[pix] = static_cast< unsigned >(final.byteCount());
+  MapWidget::getSingleton().__imagesMemory[pix] = static_cast<unsigned>(final.byteCount());
   registerGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[pix]);
   texturesCount += 1;
 #endif
@@ -285,7 +276,7 @@ MapWidget::showAirport(const Airport* _ap) {
 
 void
 MapWidget::redraw() {
-  __underMouse = NULL;
+  __underMouse = nullptr;
   QToolTip::hideText();
 
   if (cursor().shape() != Qt::SizeAllCursor)
@@ -294,7 +285,7 @@ MapWidget::redraw() {
   if (__menu) {
     __menu->close();
     delete __menu;
-    __menu = NULL;
+    __menu = nullptr;
   }
 
   updateGL();
@@ -348,7 +339,7 @@ MapWidget::initializeGL() {
 
 void
 MapWidget::paintGL() {
-  __underMouse = NULL;
+  __underMouse = nullptr;
 
   __drawLeft = (-1 - __position.x()) * __zoom > -__orthoRangeX;
   __drawRight = (1 - __position.x()) * __zoom < __orthoRangeX;
@@ -438,16 +429,17 @@ MapWidget::paintGL() {
 
     if (cursor().shape() != Qt::SizeAllCursor)
       setCursor(QCursor(Qt::ArrowCursor));
-  } else
+  } else {
     __drawToolTip();
+  }
 }
 
 void
 MapWidget::resizeGL(int width, int height) {
   glViewport(0, 0, width, height);
 
-  __orthoRangeX = static_cast< GLdouble >(width) / BASE_SIZE_WIDTH;
-  __orthoRangeY = static_cast< GLdouble >(height) / BASE_SIZE_HEIGHT;
+  __orthoRangeX = static_cast<GLdouble>(width) / BASE_SIZE_WIDTH;
+  __orthoRangeY = static_cast<GLdouble>(height) / BASE_SIZE_HEIGHT;
 
   __prepareMatrix(WORLD);
 
@@ -475,19 +467,19 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
   if ((_event->buttons() & Qt::RightButton) && __underMouse) {
     switch (__underMouse->objectType()) {
       case Clickable::PLANE:
-        emit contextMenuRequested(static_cast< const Pilot* >(__underMouse));
+        emit contextMenuRequested(static_cast<const Pilot*>(__underMouse));
         break;
       case Clickable::AIRPORT:
-        emit contextMenuRequested(static_cast< const Airport* >(__underMouse));
+        emit contextMenuRequested(static_cast<const Airport*>(__underMouse));
         break;
       case Clickable::FIR:
-        emit contextMenuRequested(static_cast< const Fir* >(__underMouse));
+        emit contextMenuRequested(static_cast<const Fir*>(__underMouse));
         break;
       case Clickable::UIR:
         break;
     }
 
-    __underMouse = NULL;
+    __underMouse = nullptr;
   } else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
     // store the clicked position - if user clicks & moves, it is just map move
     __recentlyClickedMousePos = _event->pos();
@@ -505,13 +497,13 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
     if (__recentlyClickedMousePos == __lastMousePos) {
       switch (__underMouse->objectType()) {
         case Clickable::PLANE:
-          emit flightDetailsWindowRequested(static_cast< const Pilot* >(__underMouse));
+          emit flightDetailsWindowRequested(static_cast<const Pilot*>(__underMouse));
           break;
         case Clickable::AIRPORT:
-	  emit airportDetailsWindowRequested(static_cast< const Airport* >(__underMouse));
+	  emit airportDetailsWindowRequested(static_cast<const Airport*>(__underMouse));
           break;
         case Clickable::FIR:
-          emit firDetailsWindowRequested(static_cast< const Fir* >(__underMouse));
+          emit firDetailsWindowRequested(static_cast<const Fir*>(__underMouse));
           break;
         case Clickable::UIR:
           // have no idea what to do here
@@ -520,7 +512,7 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
     }
   }
 
-  __underMouse = NULL;
+  __underMouse = nullptr;
 }
 
 void
@@ -532,14 +524,14 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     setCursor(QCursor(Qt::SizeAllCursor));
 
     // count the new position
-    __position.rx() -= (double)dx / (BASE_SIZE_WIDTH / 2) / (double)__zoom;
+    __position.rx() -= static_cast<qreal>(dx) / (BASE_SIZE_WIDTH / 2) / static_cast<qreal>(__zoom);
 
     if (__position.x() < -1)
       __position.rx() += 2;
     else if (__position.x() > 1)
       __position.rx() -= 2;
 
-    double newY = __position.y() + ((double)dy / 300.0 / (double)__zoom);
+    qreal newY = __position.y() + (static_cast<qreal>(dy) / 300.0 / static_cast<qreal>(__zoom));
 
     if ((newY < RANGE_Y) && (newY > -RANGE_Y))
       __position.setY(newY);
@@ -551,19 +543,16 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   __lastMousePos = _event->pos();
 
   // counts the mouse position point, interpolated to the GL's context size
-  __lastMousePosInterpolated.rx() = ((double)__lastMousePos.x() -
-                                     (((double)__winWidth - BASE_SIZE_WIDTH) / 2)) / (BASE_SIZE_WIDTH / 2) - 1.0;
-  __lastMousePosInterpolated.ry() = -(((double)__lastMousePos.y() -
-                                       (((double)__winHeight - BASE_SIZE_HEIGHT) / 2)) / (BASE_SIZE_HEIGHT / 2) - 1.0);
+  __lastMousePosInterpolated.rx() = (static_cast<qreal>(__lastMousePos.x()) -
+                                     ((static_cast<qreal>(__winWidth) - BASE_SIZE_WIDTH) / 2)) / (BASE_SIZE_WIDTH / 2) - 1.0;
+  __lastMousePosInterpolated.ry() = -((static_cast<qreal>(__lastMousePos.y()) -
+                                       ((static_cast<qreal>(__winHeight) - BASE_SIZE_HEIGHT) / 2)) / (BASE_SIZE_HEIGHT / 2) - 1.0);
 
   // count the mouse position global coordinates
-  double longitude = (__lastMousePosInterpolated.x() / (double)__zoom + __position.x()) * 180;
-  double latitude = (__lastMousePosInterpolated.y() / (double)__zoom + __position.y()) * 90;
+  qreal longitude = (__lastMousePosInterpolated.x() / static_cast<qreal>(__zoom) + __position.x()) * 180;
+  qreal latitude = (__lastMousePosInterpolated.y() / static_cast<qreal>(__zoom) + __position.y()) * 90;
 
-  if (latitude < -90)
-    latitude = -90;
-  else if (latitude > 90)
-    latitude = 90;
+  latitude = qBound(-90.0, latitude, 90.0);
 
   if (longitude < -180)
     longitude += 360;
@@ -573,9 +562,9 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   // update the label on the very bottom of the main window
   UserInterface::getSingleton().getPositionBox()->setText(
     QString((latitude > 0) ? "N" : "S") + " " +
-    QString::number(absHelper(latitude), 'g', 6) + " " +
+    QString::number(qAbs(latitude), 'g', 6) + " " +
     QString((longitude < 0) ? "W" : "E") + " " +
-    QString::number(absHelper(longitude), 'g', 6) + " "
+    QString::number(qAbs(longitude), 'g', 6) + " "
   );
 
   __contextMenuOpened = false;
@@ -670,7 +659,7 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 
   __menu->exec(mapToGlobal(__lastMousePos));
   delete __menu;
-  __menu = NULL;
+  __menu = nullptr;
 }
 
 void
@@ -696,8 +685,8 @@ MapWidget::__openContextMenu(const Airport* _ap) {
   connect(toggleAction,                              SIGNAL(triggered(const Airport*)),
           this,                                      SIGNAL(airportLinesToggled(const Airport*)));
 
-  if (dynamic_cast< const ActiveAirport* >(_ap) != NULL) {
-    const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
+  if (dynamic_cast<const ActiveAirport*>(_ap) != nullptr) {
+    const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
     if (!aa->getStaffModel()->getStaff().isEmpty()) {
       __menu->addSeparator();
       __menu->addAction(new ActionMenuSeparator(tr("Controllers"), this));
@@ -768,7 +757,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 
   __menu->exec(mapToGlobal(__lastMousePos));
   delete __menu;
-  __menu = NULL;
+  __menu = nullptr;
 }
 
 void
@@ -796,7 +785,7 @@ MapWidget::__openContextMenu(const Fir* _fir) {
   __menu->exec(mapToGlobal(__lastMousePos));
   
   delete __menu;
-  __menu = NULL;
+  __menu = nullptr;
 }
 
 void
@@ -814,7 +803,7 @@ MapWidget::__openContextMenu() {
   __menu->exec(mapToGlobal(__lastMousePos));
   
   delete __menu;
-  __menu = NULL;
+  __menu = nullptr;
 }
 
 void
@@ -847,7 +836,6 @@ MapWidget::__init() {
 
   VatsinatorApplication::log("Restoring settings...");
   __restoreSettings();
-//   __loadNewSettings();
 
   VatsinatorApplication::emitGLInitialized();
 }
@@ -882,6 +870,7 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode, double _moveX) {
 
       checkGLErrors(HERE);
       break;
+      
     case AIRPORTS_PILOTS:
       break;
   }
@@ -1019,7 +1008,7 @@ MapWidget::__drawFirsLabels(float _moveX) {
       continue;
 
     float x, y;
-    __mapCoordinates(fir.getTextPosition().x + _moveX, fir.getTextPosition().y, x, y);
+    __mapCoordinates(fir.getTextPosition().x + _moveX, fir.getTextPosition().y, &x, &y);
 
     if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
         (x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
@@ -1095,7 +1084,7 @@ MapWidget::__drawAirports(float _moveX) {
 
     bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 
-    glBindTexture(GL_TEXTURE_2D, (it.value()->getStaffModel()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon );
+    glBindTexture(GL_TEXTURE_2D, (it.value()->getStaffModel()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon);
     checkGLErrors(HERE);
 
     glPushMatrix();
@@ -1136,18 +1125,18 @@ MapWidget::__drawAirports(float _moveX) {
         !__keyPressed) { // draw callsign labels if not drawn already
       float tipX, tipY;
 
-      for (const Pilot * p: it.value()->getOutboundsModel()->getFlights()) {
+      for (const Pilot* p: it.value()->getOutboundsModel()->getFlights()) {
         if (p->getFlightStatus() == Pilot::AIRBORNE) {
           __mapCoordinates(p->getPosition().longitude, p->getPosition().latitude,
-                           tipX, tipY);
+                           &tipX, &tipY);
           __drawCallsign(tipX, tipY, p);
         }
       }
 
-      for (const Pilot * p: it.value()->getInboundsModel()->getFlights()) {
+      for (const Pilot* p: it.value()->getInboundsModel()->getFlights()) {
         if (p->getFlightStatus() == Pilot::AIRBORNE) {
           __mapCoordinates(p->getPosition().longitude, p->getPosition().latitude,
-                           tipX, tipY);
+                           &tipX, &tipY);
           __drawCallsign(tipX, tipY, p);
         }
       }
@@ -1161,7 +1150,7 @@ void
 MapWidget::__drawPilots(float _moveX) {
   glColor4f(1.0, 1.0, 1.0, 1.0);
   
-  for (const Pilot * client: VatsimDataHandler::getSingleton().getFlightsModel()->getFlights()) {
+  for (const Pilot* client: VatsimDataHandler::getSingleton().getFlightsModel()->getFlights()) {
     Q_CHECK_PTR(client);
     if (client->getFlightStatus() != Pilot::AIRBORNE || client->isPrefiledOnly())
       continue;
@@ -1184,7 +1173,7 @@ MapWidget::__drawPilots(float _moveX) {
     glTranslatef(x, y, -0.2); checkGLErrors(HERE);
 
     glPushMatrix();
-    glRotatef(static_cast< GLfloat >(client->getHeading()), 0, 0, -1); checkGLErrors(HERE);
+    glRotatef(static_cast<GLfloat>(client->getHeading()), 0, 0, -1); checkGLErrors(HERE);
 
     glVertexPointer(2, GL_FLOAT, 0, MODEL_VERTICES); checkGLErrors(HERE);
     glBindTexture(GL_TEXTURE_2D, client->getModelTexture()); checkGLErrors(HERE);
@@ -1222,10 +1211,10 @@ MapWidget::__drawLines(double _moveX) {
   if (__underMouse) {
     switch (__underMouse->objectType()) {
       case Clickable::PLANE:
-        static_cast< const Pilot* >(__underMouse)->drawLines();
+        static_cast<const Pilot*>(__underMouse)->drawLines();
         break;
       case Clickable::AIRPORT:
-        static_cast< const Airport* >(__underMouse)->drawLines();
+        static_cast<const Airport*>(__underMouse)->drawLines();
         break;
       default:
         break;
@@ -1251,13 +1240,13 @@ MapWidget::__drawToolTip() {
 
   switch (__underMouse->objectType()) {
     case Clickable::PLANE:
-      text = __producePilotToolTip(static_cast< const Pilot* >(__underMouse));
+      text = __producePilotToolTip(static_cast<const Pilot*>(__underMouse));
       break;
     case Clickable::AIRPORT:
-      text = __produceAirportToolTip(static_cast< const Airport* >(__underMouse));
+      text = __produceAirportToolTip(static_cast<const Airport*>(__underMouse));
       break;
     case Clickable::FIR:
-      text = __produceFirToolTip(static_cast< const Fir* >(__underMouse));
+      text = __produceFirToolTip(static_cast<const Fir*>(__underMouse));
       break;
     case Clickable::UIR:
       break;
@@ -1327,7 +1316,7 @@ MapWidget::__produceCircle() {
   __circleCount = 0;
 
   // count how many vertices we will have
-  for (double angle = 0.0; angle <= (2 * PI); angle += 0.1, ++__circleCount);
+  for (qreal angle = 0.0; angle <= (2 * PI); angle += 0.1, ++__circleCount);
 
   __circle = new GLfloat[__circleCount * 2 + 2];
   unsigned i = 0;
@@ -1344,23 +1333,23 @@ MapWidget::__produceCircle() {
 
 inline float
 MapWidget::__distanceFromCamera(float _x, float _y) {
-  return sqrt(
-           pow(_x - __lastMousePosInterpolated.x(), 2) +
-           pow(_y - __lastMousePosInterpolated.y(), 2)
+  return qSqrt(
+           qPow(_x - __lastMousePosInterpolated.x(), 2) +
+           qPow(_y - __lastMousePosInterpolated.y(), 2)
          );
 }
 
 inline void
 MapWidget::__mapCoordinates(float _xFrom, float _yFrom,
-                            float& _xTo, float& _yTo) {
-  _xTo = (_xFrom / 180 - __position.x()) * __zoom;
-  _yTo = (_yFrom / 90 - __position.y()) * __zoom;
+                            float* _xTo, float* _yTo) {
+  *_xTo = (_xFrom / 180 - __position.x()) * __zoom;
+  *_yTo = (_yFrom / 90 - __position.y()) * __zoom;
 }
 
 inline QString
 MapWidget::__producePilotToolTip(const Pilot* _p) {
   return
-    static_cast< QString >("<center>") %
+    static_cast<QString>("<center>") %
     _p->getCallsign() % "<br><nobr>" %
     _p->getRealName() % " (" % _p->getAircraft() % ")</nobr><br><nobr>" %
     (_p->getRoute().origin.isEmpty() ? tr("(unknown)") : (__airports[_p->getRoute().origin]->getData() ?
@@ -1379,17 +1368,17 @@ MapWidget::__producePilotToolTip(const Pilot* _p) {
 
 inline QString
 MapWidget::__produceAirportToolTip(const Airport* _ap) {
-  QString text = static_cast< QString >("<center>") %
-                 static_cast< QString >(_ap->getData()->icao) %
-                 static_cast< QString >("<br><nobr>") %
+  QString text = static_cast<QString>("<center>") %
+                 static_cast<QString>(_ap->getData()->icao) %
+                 static_cast<QString>("<br><nobr>") %
                  QString::fromUtf8(_ap->getData()->name) %
-                 static_cast< QString >(", ") %
+                 static_cast<QString>(", ") %
                  QString::fromUtf8(_ap->getData()->city) %
-                 static_cast< QString >("</nobr>");
-  if (dynamic_cast< const ActiveAirport* >(_ap) != NULL) {
-    const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
-    for (const Controller * c: aa->getStaffModel()->getStaff())
-      text.append((QString)"<br><nobr>" %
+                 static_cast<QString>("</nobr>");
+  if (dynamic_cast<const ActiveAirport*>(_ap) != nullptr) {
+    const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
+    for (const Controller* c: aa->getStaffModel()->getStaff())
+      text.append(static_cast<QString>("<br><nobr>") %
                   c->getCallsign() % " " % c->getFrequency() % " " % c->getRealName() %
                   "</nobr>"
                  );
@@ -1398,12 +1387,12 @@ MapWidget::__produceAirportToolTip(const Airport* _ap) {
   int deps = _ap->countDepartures();
 
   if (deps)
-    text.append(static_cast< QString >("<br>") % tr("Departures: %1").arg(QString::number(deps)));
+    text.append(static_cast<QString>("<br>") % tr("Departures: %1").arg(QString::number(deps)));
 
   int arrs = _ap->countArrivals();
 
   if (arrs)
-    text.append(static_cast< QString >("<br>") % tr("Arrivals: %1").arg(QString::number(arrs)));
+    text.append(static_cast<QString>("<br>") % tr("Arrivals: %1").arg(QString::number(arrs)));
 
   text.append("</center>");
   return text;
@@ -1417,18 +1406,18 @@ MapWidget::__produceFirToolTip(const Fir* _f) {
   QString text = "<center>";
 
   if (!_f->getName().isEmpty()) {
-    text.append(static_cast< QString >("<nobr>") % _f->getName());
+    text.append(static_cast<QString>("<nobr>") % _f->getName());
 
     if (!_f->getCountry().isEmpty())
-      text.append(static_cast< QString >(", ") % _f->getCountry());
+      text.append(static_cast<QString>(", ") % _f->getCountry());
 
-    text.append(static_cast< QString >("</nobr>"));
+    text.append(static_cast<QString>("</nobr>"));
   }
 
   for (const Controller * c: _f->getStaffModel()->getStaff())
-    text.append(static_cast< QString >("<br><nobr>") %
+    text.append(static_cast<QString>("<br><nobr>") %
                 c->getCallsign() % " " % c->getFrequency() % " " % c->getRealName() %
-                static_cast< QString >("</nobr>")
+                static_cast<QString>("</nobr>")
                );
 
   text.append("</center>");
