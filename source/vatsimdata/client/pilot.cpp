@@ -26,6 +26,8 @@
 
 #include "storage/settingsmanager.h"
 
+#include "ui/pages/colorspage.h"
+
 #include "ui/widgets/mapwidget.h"
 
 #include "vatsimdata/airport/activeairport.h"
@@ -119,11 +121,13 @@ Pilot::drawLineFrom() const {
     __generateLines();
   
   if (!__lineFrom.empty()) {
-    glColor4f(SettingsManager::getSingleton().getOriginToPilotLineColor().redF(),
-              SettingsManager::getSingleton().getOriginToPilotLineColor().greenF(),
-              SettingsManager::getSingleton().getOriginToPilotLineColor().blueF(),
+    QColor otp = SM::get("colors.origin_to_pilot_line").value<QColor>();
+    glColor4f(otp.redF(),
+              otp.greenF(),
+              otp.blueF(),
               1.0
              );
+    
     glVertexPointer(2, GL_FLOAT, 0, &__lineFrom[0]);
     glDrawArrays(GL_LINE_STRIP, 0, __lineFrom.size() / 2);
   }
@@ -135,9 +139,10 @@ Pilot::drawLineTo() const {
     __generateLines();
   
   if (!__lineTo.empty()) {
-    glColor4f(SettingsManager::getSingleton().getPilotToDestinationLineColor().redF(),
-              SettingsManager::getSingleton().getPilotToDestinationLineColor().greenF(),
-              SettingsManager::getSingleton().getPilotToDestinationLineColor().blueF(),
+    QColor ptd = SM::get("colors.pilot_to_destination_line").value<QColor>();
+    glColor4f(ptd.redF(),
+              ptd.greenF(),
+              ptd.blueF(),
               1.0
              );
     glVertexPointer(2, GL_FLOAT, 0, &__lineTo[0]);

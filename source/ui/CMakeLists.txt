@@ -1,3 +1,6 @@
+# generate macros
+add_subdirectory (pages)
+
 vatsinator_start_subdirectory (ui)
 
 if (NOT vatsinator_ABOUT)
@@ -49,6 +52,11 @@ set (ui_SRCS
     buttons/clientdetailsbutton.cpp
     buttons/urlbutton.cpp
     
+    pages/abstractsettingspage.cpp
+    pages/colorspage.cpp
+    pages/miscellaneouspage.cpp
+    pages/viewpage.cpp
+    
     views/airporttableview.cpp
     views/controllertableview.cpp
     views/flighttableview.cpp
@@ -89,6 +97,11 @@ set (ui_MOC_SRCS
     buttons/clientdetailsbutton.h
     buttons/urlbutton.h
     
+    pages/abstractsettingspage.h
+    pages/colorspage.h
+    pages/miscellaneouspage.h
+    pages/viewpage.h
+    
     views/airporttableview.h
     views/controllertableview.h
     views/flighttableview.h
@@ -118,14 +131,17 @@ set (ui_FORMS
     resources/airportdetailswindow.ui
     resources/atcdetailswindow.ui
     resources/atclistwindow.ui
+    resources/colorspage.ui
     resources/dataupdatenotificationwidget.ui
     resources/firdetailswindow.ui
     resources/flightdetailswindow.ui
     resources/flightlistwindow.ui
     resources/metarswindow.ui
+    resources/miscellaneouspage.ui
     resources/newversionnotificationwidget.ui
     resources/settingswindow.ui
     resources/userinterface.ui
+    resources/viewpage.ui
 )
 
 vatsinator_subdirectory_forms (ui "${ui_FORMS}")

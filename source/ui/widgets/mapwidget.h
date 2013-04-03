@@ -40,7 +40,6 @@ class FlightDetailsWindow;
 class FlightTracker;
 class MetarsWindow;
 class Pilot;
-class SettingsManager;
 class VatsinatorApplication;
 class WorldMap;
 
@@ -297,9 +296,9 @@ private:
   int   __actualZoom;
 
   /* Zoom Coefficient to let users customize their zooming speed */
-  /* Zoom Coefficient is defined in SettingsManager */
+  /* Zoom Coefficient is defined in MiscellaneousPage */
 
-  /*Minimum for __actualZoom not to exceed ZOOM_MAXIMUM value*/
+  /* Minimum for __actualZoom not to exceed ZOOM_MAXIMUM value */
   int  __actualZoomMaximum;
   
   /*----------ZOOM HANDLING SECTION END---------*/
@@ -342,7 +341,38 @@ private:
   /* We keep some singleton pointers to have the code clean */
   VatsimDataHandler&        __data;
   const AirportsMap&        __airports;
-  const SettingsManager&    __settings;
+  
+  struct {
+    struct {
+      int zoom_coefficient;
+    } misc;
+    
+    struct {
+      QColor lands;
+      QColor seas;
+      QColor staffed_fir_borders;
+      QColor staffed_fir_background;
+      QColor staffed_uir_borders;
+      QColor staffed_uir_background;
+      QColor unstaffed_fir_borders;
+      QColor approach_circle;
+    } colors;
+    
+    struct {
+      bool airports_layer;
+      bool airport_labels;
+      bool pilots_layer;
+      bool staffed_firs;
+      bool unstaffed_firs;
+      bool empty_airports;
+      
+      struct {
+        bool always;
+        bool airport_related;
+        bool when_hovered;
+      } pilot_labels;
+    } view;
+  } __settings;
 
 #ifndef NO_DEBUG
   /* For memory tracking */
