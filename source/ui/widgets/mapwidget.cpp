@@ -612,7 +612,7 @@ MapWidget::keyReleaseEvent(QKeyEvent* _event) {
 
 void
 MapWidget::__loadNewSettings() {
-  __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toBool();
+  __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toInt();
   
   __settings.colors.lands = SM::get("colors.lands").value<QColor>();
   __settings.colors.seas = SM::get("colors.seas").value<QColor>();
