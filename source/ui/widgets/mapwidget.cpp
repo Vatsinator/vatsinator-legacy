@@ -157,6 +157,11 @@ MapWidget::MapWidget(QWidget* _parent) :
   
   connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
           this,                                    SLOT(__loadNewSettings()));
+  connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
+          this,                                    SLOT(redraw()));
+  
+  connect(VatsinatorApplication::getSingletonPtr(),SIGNAL(uiCreated()),
+          this,                                    SLOT(__slotUiCreated()));
 
   setAutoBufferSwap(true);
 
@@ -622,7 +627,8 @@ MapWidget::__loadNewSettings() {
   __settings.view.pilot_labels.airport_related = SM::get("view.pilot_labels.airport_related").toBool();
   __settings.view.pilot_labels.when_hovered = SM::get("view.pilot_labels.when_hovered").toBool();
   
-  __setAntyaliasing(SM::get("misc.has_antyaliasing").toBool());
+  if (__isInitialized)
+    __setAntyaliasing(SM::get("misc.has_antyaliasing").toBool());
 }
 
 void
@@ -807,6 +813,12 @@ MapWidget::__openContextMenu() {
 }
 
 void
+MapWidget::__slotUiCreated() {
+  Q_ASSERT(__isInitialized);
+  __setAntyaliasing(SM::get("misc.has_antyaliasing").toBool());
+}
+
+void
 MapWidget::__init() {
   setEnabled(true);
 
@@ -824,8 +836,6 @@ MapWidget::__init() {
           FlightDetailsWindow::getSingletonPtr(),  SLOT(show(const Client*)));
   connect(this,                                    SIGNAL(airportDetailsWindowRequested(const Airport*)),
           AirportDetailsWindow::getSingletonPtr(), SLOT(show(const Airport*)));
-  connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
-          this,                                    SLOT(redraw()));
 
   VatsinatorApplication::log("Setting fonts...");
   __pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);
@@ -1257,6 +1267,8 @@ MapWidget::__drawToolTip() {
 
 void
 MapWidget::__setAntyaliasing(bool _on) {
+  VatsinatorApplication::log("Settings antyaliasing %s...", _on ? "on" : "off");
+  
   if (_on) {
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); checkGLErrors(HERE);
     glEnable(GL_LINE_SMOOTH); checkGLErrors(HERE);

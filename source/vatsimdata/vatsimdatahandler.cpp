@@ -54,7 +54,7 @@
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
 ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
 
-static QMap< QString, QString > countries; // used by __readCountryFile() and __readFirFile()
+static QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
 
 
 VatsimDataHandler::VatsimDataHandler() :
@@ -96,14 +96,16 @@ VatsimDataHandler::~VatsimDataHandler() {
 
 void
 VatsimDataHandler::init() {
+  auto f = QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile,
+                             FileManager::path(FileManager::COUNTRY));
+  
   QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile,
                     FileManager::path(FileManager::ALIAS));
-  QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile,
-                    FileManager::path(FileManager::COUNTRY));
-  QtConcurrent::run(this, &VatsimDataHandler::__readFirFile,
-                    FileManager::path(FileManager::FIR));
   QtConcurrent::run(this, &VatsimDataHandler::__readUirFile,
                     FileManager::path(FileManager::UIR));
+  
+  f.waitForFinished();
+  __readFirFile(FileManager::path(FileManager::FIR));
 }
 
 void
@@ -139,71 +141,78 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
   QStringList tempList = _data.split('\n', QString::SkipEmptyParts);
 
-  QMap< QString, bool > flags;
-  flags["GENERAL"] = false;
-  flags["CLIENTS"] = false;
-  flags["PREFILE"] = false;
+  DataSections section = None;
 
-  for (QString & temp: tempList) {
+  for (QString& temp: tempList) {
     if (temp.startsWith(';'))
       continue;
 
     if (temp.startsWith('!')) {
-      __clearFlags(flags);
-
-      if (temp.simplified() == "!GENERAL:")
-        flags["GENERAL"] = true;
-      else if (temp.simplified() == "!CLIENTS:")
-        flags["CLIENTS"] = true;
-      else if (temp.simplified() == "!PREFILE:")
-        flags["PREFILE"] = true;
+      section = None;
+      
+      if (temp.contains("GENERAL"))
+        section = DataSections::General;
+      else if (temp.contains("CLIENTS"))
+        section = DataSections::Clients;
+      else if (temp.contains("PREFILE"))
+        section = DataSections::Prefile;
 
       continue;
     }
 
-    if (flags["GENERAL"]) {
-      if (temp.startsWith("UPDATE")) {
-        __dateVatsimDataUpdated = QDateTime::fromString(
-                              temp.split(' ').back().simplified(),
-                              "yyyyMMddhhmmss"
-                            );
-      }
-    } else if (flags["CLIENTS"]) {
-      QStringList clientData = temp.split(':');
-
-      if (clientData.size() < 40) {
-        emit dataCorrupted();
-        return;
-      }
-
-      if (clientData[3] == "ATC") {
-        Controller* atc = new Controller(clientData);
-
-        if (atc->isOk()) {
-          __atcs->addStaff(atc);
-        } else {
-          __observers += 1;
-          delete atc;
+    switch (section) {
+      case DataSections::General: {
+        if (temp.startsWith("UPDATE")) {
+          __dateVatsimDataUpdated = QDateTime::fromString(
+                                temp.split(' ').back().simplified(),
+                                "yyyyMMddhhmmss"
+                              );
         }
-      } else if (clientData[3] == "PILOT") {
-        Pilot* pilot = new Pilot(clientData);
-        if (pilot->getPosition().latitude == 0 && pilot->getPosition().longitude == 0)
-          delete pilot; // skip unknown flights
-        else
-          __flights->addFlight(pilot);
-      }
-    } else if (flags["PREFILE"]) {
-      QStringList clientData = temp.split(':');
-
-      if (clientData.size() < 40) {
-        emit dataCorrupted();
-        return;
-      }
-
-      Pilot* pilot = new Pilot(clientData, true);
-      __flights->addFlight(pilot);
-    }
-  }
+        break;
+      } // DataSections::General
+    
+      case DataSections::Clients: {
+        QStringList clientData = temp.split(':');
+        
+        if (clientData.size() < 40) {
+          emit dataCorrupted();
+          return;
+        }
+        
+        if (clientData[3] == "ATC") {
+          Controller* atc = new Controller(clientData);
+          
+          if (atc->isOk()) {
+            __atcs->addStaff(atc);
+          } else {
+            __observers += 1;
+            delete atc;
+          }
+        } else if (clientData[3] == "PILOT") {
+          Pilot* pilot = new Pilot(clientData);
+          if (pilot->getPosition().latitude == 0 && pilot->getPosition().longitude == 0)
+            delete pilot; // skip unknown flights
+          else
+            __flights->addFlight(pilot);
+        }
+        break;
+      } // DataSections::Clients
+    
+      case DataSections::Prefile: {
+        QStringList clientData = temp.split(':');
+        
+        if (clientData.size() < 40) {
+          emit dataCorrupted();
+          return;
+        }
+        
+        __flights->addFlight(new Pilot(clientData, true));
+        break;
+      } // DataSections::Prefile
+      
+      default: {}
+    } // switch (section)
+  } // for
 }
 
 const QString &
@@ -483,16 +492,10 @@ VatsimDataHandler::__clearData() {
   qDeleteAll(__activeAirports), __activeAirports.clear();
   qDeleteAll(__emptyAirports), __emptyAirports.clear();
 
-  for (Uir * u: __uirs)
+  for (Uir* u: __uirs)
     u->clear();
 
   __observers = 0;
-}
-
-void
-VatsimDataHandler::__clearFlags(QMap< QString, bool >& _flags) {
-  for (auto it = _flags.begin(); it != _flags.end(); ++it)
-    it.value() = false;
 }
 
 void

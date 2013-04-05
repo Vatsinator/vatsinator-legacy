@@ -196,7 +196,7 @@ Pilot::__setMyStatus() {
       }
 
     if (ap_origin)
-      if ((VatsimDataHandler::calcDistance(ap_origin->longitude, ap_origin->latitude,
+      if ((VatsimDataHandler::distance(ap_origin->longitude, ap_origin->latitude,
                                            __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
       (__groundSpeed < 50)) {
         __flightStatus = DEPARTING;
@@ -204,7 +204,7 @@ Pilot::__setMyStatus() {
       }
 
     if (ap_arrival)
-      if ((VatsimDataHandler::calcDistance(ap_arrival->longitude, ap_arrival->latitude,
+      if ((VatsimDataHandler::distance(ap_arrival->longitude, ap_arrival->latitude,
                                            __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
       (__groundSpeed < 50)) {
         __flightStatus = ARRIVED;
@@ -220,7 +220,7 @@ Pilot::__setMyStatus() {
     qreal distance = 0.0;
 
     for (const AirportRecord & ap: AirportDatabase::getSingleton().getAirports()) {
-      qreal temp = VatsimDataHandler::calcDistance(ap.longitude, ap.latitude,
+      qreal temp = VatsimDataHandler::distance(ap.longitude, ap.latitude,
                    __position.longitude, __position.latitude);
 
       if (((temp < distance) && closest) || !closest) {
@@ -257,11 +257,11 @@ Pilot::__generateLines() const {
     double myLon = ap->getData()->longitude;
     double myLat = ap->getData()->latitude;
 
-    if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
-        VatsimDataHandler::calcDistance(myLon + 360, myLat, __position.longitude, __position.latitude))
+    if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
+        VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
       myLon += 360;
-    else if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
-             VatsimDataHandler::calcDistance(myLon - 360, myLat, __position.longitude, __position.latitude))
+    else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
+             VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
       myLon -= 360;
 
     __lineFrom << myLon
@@ -285,11 +285,11 @@ Pilot::__generateLines() const {
     double myLon = ap->getData()->longitude;
     double myLat = ap->getData()->latitude;
 
-    if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
-        VatsimDataHandler::calcDistance(myLon + 360, myLat, __position.longitude, __position.latitude))
+    if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
+        VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
       myLon += 360;
-    else if (VatsimDataHandler::calcDistance(myLon, myLat, __position.longitude, __position.latitude) >
-             VatsimDataHandler::calcDistance(myLon - 360, myLat, __position.longitude, __position.latitude))
+    else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
+             VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
       myLon -= 360;
 
     __lineTo << myLon

@@ -122,6 +122,4 @@ SettingsManager::__restoreDefaults() {
     p->restoreSettings(s);
   
   s.endGroup();
-  
-  emit settingsChanged();
 }

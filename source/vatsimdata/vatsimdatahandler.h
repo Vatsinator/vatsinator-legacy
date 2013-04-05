@@ -47,7 +47,7 @@ struct AirportRecord;
 
 class VatsimDataHandler :
     public QObject,
-    public Singleton< VatsimDataHandler > {
+    public Singleton<VatsimDataHandler> {
 
   /*
    * This class contains data about all connected clients, needed URLs
@@ -188,7 +188,7 @@ public:
   statusFileFetched() const { return __statusFileFetched; }
 
   inline static qreal
-  calcDistance(const qreal& _ax, const qreal& _ay,
+  distance(const qreal& _ax, const qreal& _ay,
                const qreal& _bx, const qreal& _by) {
     return qSqrt(
              qPow(_ax - _bx, 2) +
@@ -210,6 +210,17 @@ public slots:
   
 private:
   
+  enum DataSections {
+    /* Sections of the data file. Each section is defined as "!SECTION:"
+     * For example:
+     *   !CLIENTS:
+     */
+    None,
+    General,
+    Clients,
+    Prefile
+  };
+  
   /**
    * These functions read data files.
    * @param fileName Location of the data file.
@@ -223,11 +234,6 @@ private:
    * Removes all data, frees pointers
    */
   void __clearData();
-  
-  /**
-   * TODO Change this shit below to QFlags.
-   */
-  void __clearFlags(QMap< QString, bool >&);
   
 
   /* These are vectors of connected clients */

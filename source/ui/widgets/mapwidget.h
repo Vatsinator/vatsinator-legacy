@@ -221,6 +221,7 @@ private slots:
   void __openContextMenu(const Airport*);
   void __openContextMenu(const Fir*);
   void __openContextMenu();
+  void __slotUiCreated();
 
 private:
   enum PMMatrixMode {
