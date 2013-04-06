@@ -301,6 +301,61 @@
     </message>
 </context>
 <context>
+    <name>ColorsPage</name>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="26"/>
+        <location filename="../ui/pages/colorspage.cpp" line="47"/>
+        <source>Colors</source>
+        <translation type="unfinished">Colors</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="45"/>
+        <source>Unstaffed FIR borders color:</source>
+        <translation type="unfinished">Unstaffed FIR borders color:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="75"/>
+        <source>Staffed FIR background color:</source>
+        <translation type="unfinished">Staffed FIR background color:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="121"/>
+        <location filename="../ui/resources/colorspage.ui" line="200"/>
+        <source>Alpha channel:</source>
+        <translation type="unfinished">Alpha channel:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="154"/>
+        <source>Staffed UIR background color:</source>
+        <translation type="unfinished">Staffed UIR background color:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="233"/>
+        <source>Approach circle color:</source>
+        <translation type="unfinished">Approach circle color:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="263"/>
+        <source>Seas color:</source>
+        <translation type="unfinished">Seas color:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="293"/>
+        <source>Lands color:</source>
+        <translation type="unfinished">Lands color:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="323"/>
+        <source>Origin-to-pilot line color:</source>
+        <translation type="unfinished">Origin-to-pilot line color:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/colorspage.ui" line="353"/>
+        <source>Pilot-to-destination line color:</source>
+        <translation type="unfinished">Pilot-to-destination line color:</translation>
+    </message>
+</context>
+<context>
     <name>ControllerTableModel</name>
     <message>
         <location filename="../vatsimdata/models/controllertablemodel.cpp" line="100"/>
@@ -664,88 +719,88 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="622"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="640"/>
         <source>Flight details</source>
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="659"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="677"/>
         <source>Airport details</source>
         <translation>Airport details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="680"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="698"/>
         <source>Controllers</source>
         <translation>Controllers</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="692"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="710"/>
         <source>Departures</source>
         <translation>Departures</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="701"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="719"/>
         <source>%1 to %2</source>
         <translation>%1 to %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="729"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="747"/>
         <source>%1 from %2</source>
         <translation>%1 from %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="759"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="777"/>
         <source>%1 details</source>
         <translation>%1 details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="801"/>
         <source>This location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="785"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="803"/>
         <source>Set as home location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="789"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="807"/>
         <source>Flights nearby</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1352"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1375"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1354"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1377"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1379"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1402"/>
         <source>Departures: %1</source>
         <translation>Departures: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1384"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1407"/>
         <source>Arrivals: %1</source>
         <translation>Arrivals: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="704"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="722"/>
         <source>nowhere</source>
         <translation>nowhere</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="720"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="738"/>
         <source>Arrivals</source>
         <translation>Arrivals</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1344"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1348"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1367"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1371"/>
         <source>(unknown)</source>
         <translation>(unknown)</translation>
     </message>
@@ -802,6 +857,70 @@
     </message>
 </context>
 <context>
+    <name>MiscellaneousPage</name>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="26"/>
+        <location filename="../ui/pages/miscellaneouspage.cpp" line="44"/>
+        <source>Miscellaneous</source>
+        <translation type="unfinished">Miscellaneous</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="41"/>
+        <source>Enable caching</source>
+        <translation type="unfinished">Enable caching</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="64"/>
+        <source>Refresh METARs as well</source>
+        <translation type="unfinished">Refresh METARs as well</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="80"/>
+        <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
+        <translation type="unfinished">Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="92"/>
+        <source>Language:</source>
+        <translation type="unfinished">Language:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="129"/>
+        <source>Refresh every</source>
+        <translation type="unfinished">Refresh every</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="155"/>
+        <source>minutes</source>
+        <translation type="unfinished">minutes</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="186"/>
+        <source>If checked, all METARs will be re-fetched just after data update.</source>
+        <translation type="unfinished">If checked, all METARs will be re-fetched just after data update.</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="205"/>
+        <source>Nicer but slower.</source>
+        <translation type="unfinished">Nicer but slower.</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="218"/>
+        <source>Antyaliasing</source>
+        <translation type="unfinished">Antyaliasing</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="227"/>
+        <source>Zooming intensivity:</source>
+        <translation type="unfinished">Zooming intensivity:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/miscellaneouspage.ui" line="273"/>
+        <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
+        <translation type="unfinished">If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</translation>
+    </message>
+</context>
+<context>
     <name>NewVersionNotificationWidget</name>
     <message>
         <location filename="../ui/resources/newversionnotificationwidget.ui" line="125"/>
@@ -827,184 +946,144 @@
         <translation>Vatsinator settings</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="42"/>
-        <location filename="../ui/resources/settingswindow.ui" line="945"/>
         <source>Miscellaneous</source>
-        <translation>Miscellaneous</translation>
+        <translation type="obsolete">Miscellaneous</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="57"/>
         <source>Enable caching</source>
-        <translation>Enable caching</translation>
+        <translation type="obsolete">Enable caching</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="80"/>
         <source>Refresh METARs as well</source>
-        <translation>Refresh METARs as well</translation>
+        <translation type="obsolete">Refresh METARs as well</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="96"/>
         <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
-        <translation>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</translation>
+        <translation type="obsolete">Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="108"/>
         <source>Language:</source>
-        <translation>Language:</translation>
+        <translation type="obsolete">Language:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="145"/>
         <source>Refresh every</source>
-        <translation>Refresh every</translation>
+        <translation type="obsolete">Refresh every</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="171"/>
         <source>minutes</source>
-        <translation>minutes</translation>
+        <translation type="obsolete">minutes</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="202"/>
         <source>If checked, all METARs will be re-fetched just after data update.</source>
-        <translation>If checked, all METARs will be re-fetched just after data update.</translation>
+        <translation type="obsolete">If checked, all METARs will be re-fetched just after data update.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="221"/>
         <source>Nicer but slower.</source>
-        <translation>Nicer but slower.</translation>
+        <translation type="obsolete">Nicer but slower.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="234"/>
         <source>Antyaliasing</source>
-        <translation>Antyaliasing</translation>
+        <translation type="obsolete">Antyaliasing</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="243"/>
         <source>Zooming intensivity:</source>
-        <translation>Zooming intensivity:</translation>
+        <translation type="obsolete">Zooming intensivity:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="289"/>
         <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
-        <translation>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</translation>
+        <translation type="obsolete">If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="331"/>
-        <location filename="../ui/resources/settingswindow.ui" line="957"/>
         <source>View</source>
-        <translation>View</translation>
+        <translation type="obsolete">View</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="348"/>
         <source>Show pilot labels:</source>
-        <translation>Show pilot labels:</translation>
+        <translation type="obsolete">Show pilot labels:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="355"/>
-        <location filename="../ui/resources/settingswindow.ui" line="480"/>
         <source>Always</source>
-        <translation>Always</translation>
+        <translation type="obsolete">Always</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="365"/>
         <source>When hovered</source>
-        <translation>When hovered</translation>
+        <translation type="obsolete">When hovered</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="375"/>
         <source>Airport-related</source>
-        <translation>Airport-related</translation>
+        <translation type="obsolete">Airport-related</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="402"/>
         <source>Display layers:</source>
-        <translation>Display layers:</translation>
+        <translation type="obsolete">Display layers:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="409"/>
         <source>Pilots</source>
-        <translation>Pilots</translation>
+        <translation type="obsolete">Pilots</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="419"/>
         <source>Airports</source>
-        <translation>Airports</translation>
+        <translation type="obsolete">Airports</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="429"/>
         <source>Staffed FIRs</source>
-        <translation>Staffed FIRs</translation>
+        <translation type="obsolete">Staffed FIRs</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="439"/>
         <source>Unstaffed FIRs</source>
-        <translation>Unstaffed FIRs</translation>
+        <translation type="obsolete">Unstaffed FIRs</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="449"/>
         <source>Inactive airports</source>
-        <translation>Inactive airports</translation>
+        <translation type="obsolete">Inactive airports</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="473"/>
         <source>Show airport labels:</source>
-        <translation>Show airport labels:</translation>
+        <translation type="obsolete">Show airport labels:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="490"/>
         <source>Never</source>
-        <translation>Never</translation>
+        <translation type="obsolete">Never</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="525"/>
-        <location filename="../ui/resources/settingswindow.ui" line="966"/>
         <source>Colors</source>
-        <translation>Colors</translation>
+        <translation type="obsolete">Colors</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="544"/>
         <source>Unstaffed FIR borders color:</source>
-        <translation>Unstaffed FIR borders color:</translation>
+        <translation type="obsolete">Unstaffed FIR borders color:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="574"/>
         <source>Staffed FIR background color:</source>
-        <translation>Staffed FIR background color:</translation>
+        <translation type="obsolete">Staffed FIR background color:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="620"/>
-        <location filename="../ui/resources/settingswindow.ui" line="699"/>
         <source>Alpha channel:</source>
-        <translation>Alpha channel:</translation>
+        <translation type="obsolete">Alpha channel:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="653"/>
         <source>Staffed UIR background color:</source>
-        <translation>Staffed UIR background color:</translation>
+        <translation type="obsolete">Staffed UIR background color:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="732"/>
         <source>Approach circle color:</source>
-        <translation>Approach circle color:</translation>
+        <translation type="obsolete">Approach circle color:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="762"/>
         <source>Seas color:</source>
-        <translation>Seas color:</translation>
+        <translation type="obsolete">Seas color:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="792"/>
         <source>Lands color:</source>
-        <translation>Lands color:</translation>
+        <translation type="obsolete">Lands color:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="822"/>
         <source>Origin-to-pilot line color:</source>
-        <translation>Origin-to-pilot line color:</translation>
+        <translation type="obsolete">Origin-to-pilot line color:</translation>
     </message>
     <message>
-        <location filename="../ui/resources/settingswindow.ui" line="852"/>
         <source>Pilot-to-destination line color:</source>
-        <translation>Pilot-to-destination line color:</translation>
+        <translation type="obsolete">Pilot-to-destination line color:</translation>
     </message>
 </context>
 <context>
@@ -1093,10 +1172,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="322"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="365"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="393"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="443"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="333"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="376"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="404"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="454"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
     </message>
@@ -1122,6 +1201,76 @@
     <message>
         <source>Data outdated!</source>
         <translation type="obsolete">Data outdated!</translation>
+    </message>
+</context>
+<context>
+    <name>ViewPage</name>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="26"/>
+        <location filename="../ui/pages/viewpage.cpp" line="52"/>
+        <source>View</source>
+        <translation type="unfinished">View</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="43"/>
+        <source>Show pilot labels:</source>
+        <translation type="unfinished">Show pilot labels:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="50"/>
+        <location filename="../ui/resources/viewpage.ui" line="175"/>
+        <source>Always</source>
+        <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="60"/>
+        <source>When hovered</source>
+        <translation type="unfinished">When hovered</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="70"/>
+        <source>Airport-related</source>
+        <translation type="unfinished">Airport-related</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="97"/>
+        <source>Display layers:</source>
+        <translation type="unfinished">Display layers:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="104"/>
+        <source>Pilots</source>
+        <translation type="unfinished">Pilots</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="114"/>
+        <source>Airports</source>
+        <translation type="unfinished">Airports</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="124"/>
+        <source>Staffed FIRs</source>
+        <translation type="unfinished">Staffed FIRs</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="134"/>
+        <source>Unstaffed FIRs</source>
+        <translation type="unfinished">Unstaffed FIRs</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="144"/>
+        <source>Inactive airports</source>
+        <translation type="unfinished">Inactive airports</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="168"/>
+        <source>Show airport labels:</source>
+        <translation type="unfinished">Show airport labels:</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/viewpage.ui" line="185"/>
+        <source>Never</source>
+        <translation type="unfinished">Never</translation>
     </message>
 </context>
 <context>
