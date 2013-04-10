@@ -30,7 +30,7 @@
 
 class FileDownloader;
 
-class FileManager : public Singleton< FileManager > {
+class FileManager : public Singleton<FileManager> {
   
   /*
    * This class stores vatsinator files' locations.
@@ -106,8 +106,8 @@ private:
   QString  __files[__COUNT];
   
   struct {
-    QMap< QString, FileHash > hash;
-    QDateTime                 timestamp;
+    QMap<QString, FileHash> hash;
+    QDateTime               timestamp;
   } __manifest;
   
   FileDownloader* __downloader;

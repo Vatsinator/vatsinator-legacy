@@ -25,7 +25,7 @@
 
 #include "singleton.h"
 
-class LanguageManager : public Singleton< LanguageManager > {
+class LanguageManager : public Singleton<LanguageManager> {
   
 public:
   LanguageManager();
@@ -45,7 +45,7 @@ private:
   
   void __getInstalledLanguages();
   
-  QVector< LangInfo > __languages;
+  QVector<LangInfo> __languages;
   
 };
 

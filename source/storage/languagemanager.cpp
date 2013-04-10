@@ -64,7 +64,7 @@ LanguageManager::__getInstalledLanguages() {
       VatsinatorApplication::log("Could not find description for %s.", qPrintable(locale));
     }
     
-    QFile descFile(static_cast< QString >(TRANSLATIONS_DIR) + "/" + locale + ".language");
+    QFile descFile(static_cast<QString>(TRANSLATIONS_DIR) % "/" % locale % ".language");
     if (!descFile.open(QIODevice::ReadOnly | QIODevice::Text))
       continue;
     

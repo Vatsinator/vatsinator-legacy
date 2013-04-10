@@ -38,7 +38,7 @@ static const QString CACHE_DIRECTORY(QDir::toNativeSeparators(CACHE_FILE_LOCATON
 
 CacheFile::CacheFile(const QString& _fileName) :
     QFile(CACHE_DIRECTORY % "/" % _fileName) {
-  VatsinatorApplication::log("Cache file location: %s", fileName().toStdString().c_str());
+  VatsinatorApplication::log("Cache file location: %s", qPrintable(fileName()));
 }
 
 bool
@@ -58,7 +58,7 @@ CacheFile::open(OpenMode _mode) {
   
   bool wasOpened = QFile::open(_mode);
   if (!wasOpened)
-    VatsinatorApplication::log("Cache file %s failed to open.", fileName().toStdString().c_str());
+    VatsinatorApplication::log("Cache file %s failed to open.", qPrintable(fileName()));
   
   return wasOpened;
 }

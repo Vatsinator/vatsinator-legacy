@@ -142,7 +142,7 @@ FileManager::__readManifest(const QString& _fname) {
     if (!__manifest.timestamp.isValid()) {
       __manifest.timestamp = QDateTime::fromString(QString::fromUtf8(line), "yyyyMMddhhmmss");
     } else {
-      QList< QByteArray > split = line.split(' ');
+      QList<QByteArray> split = line.split(' ');
       
       if (split.length() != 2)
         return;
@@ -171,7 +171,7 @@ FileManager::__findFile(FileManager::File _f) {
   } else {
     __files[_f] =
 #ifndef Q_OS_DARWIN
-      static_cast< QString >(VATSINATOR_PREFIX)
+      static_cast<QString>(VATSINATOR_PREFIX)
 #else // on MacOS look for the file in the bundle
       QCoreApplication::applicationDirPath() % "/../Resources/"
 #endif

@@ -32,7 +32,7 @@ class SettingsWindow;
 
 class SettingsManager :
     public QObject,
-    public Singleton< SettingsManager > {
+    public Singleton<SettingsManager> {
   
   /*
    * This class gives us access to global user configuration.
