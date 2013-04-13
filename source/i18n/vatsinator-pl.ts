@@ -101,7 +101,7 @@
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="211"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.org/&quot;&gt;vatsinator.org&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>(C) 2012-2013 Zespół Vatsinator&lt;br&gt;&lt;a href=&quot;http://vatsinator.org/&quot;&gt;vatsinator.org&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../ui/resources/aboutwindow.ui" line="267"/>
@@ -304,53 +304,53 @@
         <location filename="../ui/resources/colorspage.ui" line="26"/>
         <location filename="../ui/pages/colorspage.cpp" line="47"/>
         <source>Colors</source>
-        <translation type="unfinished"/>
+        <translation>Kolory</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="45"/>
         <source>Unstaffed FIR borders color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolory obramowania FIR bez kontrolera:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="75"/>
         <source>Staffed FIR background color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolor tła obstawionego FIR:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="121"/>
         <location filename="../ui/resources/colorspage.ui" line="200"/>
         <source>Alpha channel:</source>
-        <translation type="unfinished"/>
+        <translation>Przezroczystość:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="154"/>
         <source>Staffed UIR background color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolor tła obstawionego UIR:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="233"/>
         <source>Approach circle color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolor kręgu zbliżania:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="263"/>
         <source>Seas color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolor mórz:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="293"/>
         <source>Lands color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolor lądów:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="323"/>
         <source>Origin-to-pilot line color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolor linii lotnisko startu-pilot:</translation>
     </message>
     <message>
         <location filename="../ui/resources/colorspage.ui" line="353"/>
         <source>Pilot-to-destination line color:</source>
-        <translation type="unfinished"/>
+        <translation>Kolor linii pilot-lotnisko docelowe:</translation>
     </message>
 </context>
 <context>
@@ -376,17 +376,17 @@
     <message>
         <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="113"/>
         <source>Downloading new data...</source>
-        <translation type="unfinished"/>
+        <translation>Ściąganie nowych danych...</translation>
     </message>
     <message>
         <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="138"/>
         <source>Abort</source>
-        <translation type="unfinished"/>
+        <translation>Przerwij</translation>
     </message>
     <message>
         <location filename="../ui/resources/dataupdatenotificationwidget.ui" line="190"/>
         <source>Extracting...</source>
-        <translation type="unfinished"/>
+        <translation>Rozpakowywanie...</translation>
     </message>
 </context>
 <context>
@@ -860,62 +860,62 @@
         <location filename="../ui/resources/miscellaneouspage.ui" line="26"/>
         <location filename="../ui/pages/miscellaneouspage.cpp" line="44"/>
         <source>Miscellaneous</source>
-        <translation type="unfinished"/>
+        <translation>Różne</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="41"/>
         <source>Enable caching</source>
-        <translation type="unfinished"/>
+        <translation>Zapisuj pobrane dane</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="64"/>
         <source>Refresh METARs as well</source>
-        <translation type="unfinished"/>
+        <translation>Odśwież także raporty</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="80"/>
         <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
-        <translation type="unfinished"/>
+        <translation>Aby zastosować zmiany języka,&lt;br&gt;Vatsinator musi zostać uruchomiony ponownie.</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="92"/>
         <source>Language:</source>
-        <translation type="unfinished"/>
+        <translation>Język:</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="129"/>
         <source>Refresh every</source>
-        <translation type="unfinished"/>
+        <translation>Odświeżaj co</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="155"/>
         <source>minutes</source>
-        <translation type="unfinished"/>
+        <translation>minuty</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="186"/>
         <source>If checked, all METARs will be re-fetched just after data update.</source>
-        <translation type="unfinished"/>
+        <translation>Jeżeli opcja jest zaznaczona, razem z odświeżeniem statusu odświeżone zostaną także raporty pogodowe.</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="205"/>
         <source>Nicer but slower.</source>
-        <translation type="unfinished"/>
+        <translation>Ładniej lecz wolniej.</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="218"/>
         <source>Antyaliasing</source>
-        <translation type="unfinished"/>
+        <translation>Wygładzanie</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="227"/>
         <source>Zooming intensivity:</source>
-        <translation type="unfinished"/>
+        <translation>Szybkość przybliżania:</translation>
     </message>
     <message>
         <location filename="../ui/resources/miscellaneouspage.ui" line="273"/>
         <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
-        <translation type="unfinished"/>
+        <translation>Jeżeli zaznaczone, Vatsinator zapisze pobrane dane w pliku, by odtworzyć je przy następnym uruchomieniu.</translation>
     </message>
 </context>
 <context>
@@ -1207,68 +1207,68 @@
         <location filename="../ui/resources/viewpage.ui" line="26"/>
         <location filename="../ui/pages/viewpage.cpp" line="52"/>
         <source>View</source>
-        <translation type="unfinished"/>
+        <translation>Widok</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="43"/>
         <source>Show pilot labels:</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż etykiety pilotów:</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="50"/>
         <location filename="../ui/resources/viewpage.ui" line="175"/>
         <source>Always</source>
-        <translation type="unfinished"/>
+        <translation>Zawsze</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="60"/>
         <source>When hovered</source>
-        <translation type="unfinished"/>
+        <translation>Pod kursorem</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="70"/>
         <source>Airport-related</source>
-        <translation type="unfinished"/>
+        <translation>Lotnisko aktywuje</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="97"/>
         <source>Display layers:</source>
-        <translation type="unfinished"/>
+        <translation>Warstwy:</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="104"/>
         <source>Pilots</source>
-        <translation type="unfinished"/>
+        <translation>Piloci</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="114"/>
         <source>Airports</source>
-        <translation type="unfinished"/>
+        <translation>Lotniska</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="124"/>
         <source>Staffed FIRs</source>
-        <translation type="unfinished"/>
+        <translation>Obsadzone FIRy</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="134"/>
         <source>Unstaffed FIRs</source>
-        <translation type="unfinished"/>
+        <translation>FIRy bez ATC</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="144"/>
         <source>Inactive airports</source>
-        <translation type="unfinished"/>
+        <translation>Puste lotniska</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="168"/>
         <source>Show airport labels:</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż etykiety lotnisk:</translation>
     </message>
     <message>
         <location filename="../ui/resources/viewpage.ui" line="185"/>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Nigdy</translation>
     </message>
 </context>
 <context>
