@@ -39,7 +39,7 @@ FirDatabase::FirDatabase() {
 Fir *
 FirDatabase::find(const QString& _icao, bool _fss) {
   if (_icao == "ZZZZ")
-    return NULL;
+    return nullptr;
 
   for (Fir & f: __firs)
     if (static_cast< QString >(f.getIcao()) == _icao) {
@@ -55,7 +55,7 @@ FirDatabase::find(const QString& _icao, bool _fss) {
         continue;
   }
 
-  return NULL;
+  return nullptr;
 }
 
 void
@@ -77,7 +77,7 @@ FirDatabase::__readDatabase() {
       true);
 
   int size;
-  db.read(reinterpret_cast< char* >(&size), 4);
+  db.read(reinterpret_cast<char*>(&size), 4);
 
   VatsinatorApplication::log("Firs to be read: %i.", size);
 
@@ -87,18 +87,18 @@ FirDatabase::__readDatabase() {
   __firs.resize(size);
 
   for (int i = 0; i < size; ++i) {
-    db.read(reinterpret_cast< char* >(&tempHeader), sizeof(FirHeader));
+    db.read(reinterpret_cast<char*>(&tempHeader), sizeof(FirHeader));
     __firs[i].loadHeader(tempHeader);
     int counting;
-    db.read(reinterpret_cast< char* >(&counting), sizeof(int));
+    db.read(reinterpret_cast<char*>(&counting), sizeof(int));
     __firs[i].getBorders().resize(counting);
-    db.read(reinterpret_cast< char* >(&__firs[i].getBorders()[0]), sizeof(Point) * counting);
+    db.read(reinterpret_cast<char*>(&__firs[i].getBorders()[0]), sizeof(Point) * counting);
 
-    db.read(reinterpret_cast< char* >(&counting), sizeof(int));
+    db.read(reinterpret_cast<char*>(&counting), sizeof(int));
 
     if (counting) {
       __firs[i].getTriangles().resize(counting * 3);
-      db.read(reinterpret_cast< char* >(&__firs[i].getTriangles()[0]), 2 * counting * 3);
+      db.read(reinterpret_cast<char*>(&__firs[i].getTriangles()[0]), 2 * counting * 3);
     }
   }
 

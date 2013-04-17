@@ -33,15 +33,14 @@ AirportDatabase::AirportDatabase() {
 const AirportRecord *
 AirportDatabase::find(const QString& _key) {
   for (const AirportRecord & a: __airports)
-    if (static_cast< QString >(a.icao) == _key)
+    if (static_cast<QString>(a.icao) == _key)
       return &a;
   
-  return NULL;
+  return nullptr;
 }
 
 void
-AirportDatabase::__readDatabase() {
-  
+AirportDatabase::__readDatabase() {  
   static_assert(
     sizeof(AirportRecord) == 436,
     "Sizeof Airport class is not 436 bytes! The WorldAirports database will be incompatible!"
@@ -69,4 +68,3 @@ AirportDatabase::__readDatabase() {
   db.close();
 
 }
-

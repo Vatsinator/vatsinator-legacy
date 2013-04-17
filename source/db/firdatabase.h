@@ -43,7 +43,7 @@ struct FirHeader {
 
 class FirDatabase :
     public QObject,
-    public Singleton< FirDatabase > {
+    public Singleton<FirDatabase> {
 
   Q_OBJECT
 
@@ -63,16 +63,16 @@ public:
    */
   void  clearAll();
 
-  inline QVector< Fir > &
+  inline QVector<Fir> &
   getFirs() { return __firs; }
   
-  inline const QVector< Fir > &
+  inline const QVector<Fir> &
   getFirs() const { return __firs; }
 
 private:
   void __readDatabase();
 
-  QVector< Fir >  __firs;
+  QVector<Fir>  __firs;
 
   bool __toolTipsPrepared;
 

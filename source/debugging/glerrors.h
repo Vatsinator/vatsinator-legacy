@@ -29,9 +29,9 @@
 #define HERE __FILE__ " : " TOSTRING(__LINE__)
 
 #ifndef NO_DEBUG
-#define checkGLErrors(WHERE) checkGLErrorsFunc(WHERE)
-#define registerGPUMemoryAlloc(HOWMUCH) registerGPUMemoryAllocFunc(HOWMUCH)
-#define unregisterGPUMemoryAlloc(HOWMUCH) unregisterGPUMemoryAllocFunc(HOWMUCH)
+# define checkGLErrors(WHERE) checkGLErrorsFunc(WHERE)
+# define registerGPUMemoryAlloc(HOWMUCH) registerGPUMemoryAllocFunc(HOWMUCH)
+# define unregisterGPUMemoryAlloc(HOWMUCH) unregisterGPUMemoryAllocFunc(HOWMUCH)
 
 void checkGLErrorsFunc(const QString&);
 void registerGPUMemoryAllocFunc(long unsigned);
@@ -41,12 +41,12 @@ void registerExtensionPointer(const QString&, long long unsigned);
 extern QString        glErrors;
 extern long unsigned  gpuMemoryUsage;
 
-extern QMap< QString, long long unsigned >  extensions;
+extern QMap<QString, long long unsigned> extensions;
 
 #else
-#define checkGLErrors(WHERE)
-#define registerGPUMemoryAlloc(HOWMUCH)
-#define unregisterGPUMemoryAlloc(HOWMUCH)
+# define checkGLErrors(WHERE)
+# define registerGPUMemoryAlloc(HOWMUCH)
+# define unregisterGPUMemoryAlloc(HOWMUCH)
 #endif
 
 #endif // GLERRORS_H

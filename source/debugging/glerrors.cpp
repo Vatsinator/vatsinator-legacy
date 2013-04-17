@@ -1,6 +1,6 @@
 /*
     glerrors.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,12 +24,13 @@
 #include "vatsinatorapplication.h"
 
 
-QString   glErrors;
-long unsigned gpuMemoryUsage = 0;
-QMap< QString, long long unsigned > extensions;
+QString                           glErrors;
+long unsigned                     gpuMemoryUsage = 0;
+QMap<QString, long long unsigned> extensions;
 
 
-QString getErrorString(GLenum _err) {
+QString
+getErrorString(GLenum _err) {
   switch (_err) {
     case 0x0500:
       return "GL_INVALID_ENUM";
@@ -47,24 +48,30 @@ QString getErrorString(GLenum _err) {
   }
 }
 
-void checkGLErrorsFunc(const QString& _at) {
+void
+checkGLErrorsFunc(const QString& _at) {
   GLenum err = glGetError(); // fetch errors
 
   while (err != GL_NO_ERROR) {
     glErrors += _at.section("/", -1, -1) + ": " + getErrorString(err) + "\n";
     err = glGetError();
-    VatsinatorApplication::log("OpenGL error at %s, code: %s", qPrintable(_at), qPrintable(getErrorString(err)));
+    VatsinatorApplication::log("OpenGL error at %s, code: %s",
+                               qPrintable(_at),
+                               qPrintable(getErrorString(err)));
   }
 }
 
-void registerGPUMemoryAllocFunc(long unsigned _howMuch) {
+void
+registerGPUMemoryAllocFunc(long unsigned _howMuch) {
   gpuMemoryUsage += _howMuch;
 }
 
-void unregisterGPUMemoryAllocFunc(long unsigned _howMuch) {
+void
+unregisterGPUMemoryAllocFunc(long unsigned _howMuch) {
   gpuMemoryUsage -= _howMuch;
 }
 
-void registerExtensionPointer(const QString& _proc, long long unsigned _ptr) {
+void
+registerExtensionPointer(const QString& _proc, long long unsigned _ptr) {
   extensions[_proc] = _ptr;
 }

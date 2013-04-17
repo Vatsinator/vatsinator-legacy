@@ -50,7 +50,7 @@ struct AirportRecord {
 #pragma pack()
 
 class AirportDatabase :
-    public Singleton< AirportDatabase > {
+    public Singleton<AirportDatabase> {
 
   /*
    * This class contains all needed info about airports.
@@ -72,10 +72,10 @@ public:
    */
   const AirportRecord* find(const QString&);
   
-  inline QVector< AirportRecord > &
+  inline QVector<AirportRecord> &
   getAirports() { return __airports; }
   
-  inline const QVector< AirportRecord > &
+  inline const QVector<AirportRecord> &
   getAirports() const { return __airports; }
 
 private:
@@ -85,7 +85,7 @@ private:
    */
   void __readDatabase();
 
-  QVector< AirportRecord > __airports;
+  QVector<AirportRecord> __airports;
 
 };
 

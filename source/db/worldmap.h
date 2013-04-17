@@ -31,7 +31,7 @@ class VertexBufferObject;
 
 class WorldMap :
     public QObject,
-    public Singleton< WorldMap > {
+    public Singleton<WorldMap> {
 
   Q_OBJECT
 
@@ -43,9 +43,9 @@ class WorldMap :
   };
 
   struct Polygon {
-    QVector< Point >          borders;
-    QVector< unsigned short > triangles;
-    WorldMapVBO               vbo;
+    QVector<Point>          borders;
+    QVector<unsigned short> triangles;
+    WorldMapVBO             vbo;
   };
   
   

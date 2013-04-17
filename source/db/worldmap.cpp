@@ -72,31 +72,31 @@ void WorldMap::__readDatabase() {
       true);
 
   int size;
-  db.read(reinterpret_cast< char* >(&size), 4);
+  db.read(reinterpret_cast<char*>(&size), 4);
   db.seek(4);
 
   VatsinatorApplication::log("World map polygons: %i.", size);
 
-  QVector< Polygon > polygons;
+  QVector<Polygon> polygons;
 
   polygons.resize(size);
   unsigned allTogether = 0;
 
   for (int i = 0; i < size; ++i) {
     int counting;
-    db.read(reinterpret_cast< char* >(&counting), 4);
+    db.read(reinterpret_cast<char*>(&counting), 4);
 
     if (counting) {
       polygons[i].borders.resize(counting);
-      db.read(reinterpret_cast< char* >(&polygons[i].borders[0].x), sizeof(Point) * counting);
+      db.read(reinterpret_cast<char*>(&polygons[i].borders[0].x), sizeof(Point) * counting);
       allTogether += counting;
     }
 
-    db.read(reinterpret_cast< char* >(&counting), 4);
+    db.read(reinterpret_cast<char*>(&counting), 4);
 
     if (counting) {
       polygons[i].triangles.resize(counting);
-      db.read(reinterpret_cast< char* >(&polygons[i].triangles[0]), sizeof(unsigned short) * counting);
+      db.read(reinterpret_cast<char*>(&polygons[i].triangles[0]), sizeof(unsigned short) * counting);
     }
 
   }

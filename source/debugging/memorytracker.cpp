@@ -1,6 +1,6 @@
 /*
     memorytracker.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ typedef struct {
   myDword line;
 } ALLOC_INFO;
 
-typedef list< ALLOC_INFO* > AllocList;
+typedef list<ALLOC_INFO*> AllocList;
 
 AllocList* allocList;
 

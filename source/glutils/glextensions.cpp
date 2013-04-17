@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <string>
 #include <cstddef>
 
 #include <QtOpenGL>
@@ -36,7 +35,6 @@
 #endif
 
 #ifndef Q_WS_MAC // apple's impelementation already knows these extensions
-using std::string;
 
 typedef ptrdiff_t GLsizeiptr;
 typedef ptrdiff_t GLintptr;
@@ -50,19 +48,20 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
 /*
  * Get extension pointer.
  */
-template < typename T >
-inline T getProcAddress(const string& _procName) {
+template <typename T>
+static inline T
+getProcAddress(const char* _procName) {
   T temp = NULL;
 #if defined Q_WS_X11
-  temp = reinterpret_cast< T >(glXGetProcAddress((GLubyte*)_procName.c_str()));
+  temp = reinterpret_cast<T>(glXGetProcAddress(reinterpret_cast<const GLubyte*>(_procName)));
 #elif defined Q_WS_WIN
-  temp = reinterpret_cast< T >(wglGetProcAddress(_procName.c_str()));
+  temp = reinterpret_cast<T>(wglGetProcAddress(_procName));
 #endif
 
-  Q_ASSERT(temp != (T)NULL);
+  Q_ASSERT(temp != nullptr);
 
 #ifndef NO_DEBUG
-  registerExtensionPointer(_procName.c_str(), reinterpret_cast< long long unsigned >(temp));
+  registerExtensionPointer(_procName, reinterpret_cast<long long unsigned>(temp));
 #endif
 
   return temp;
@@ -70,14 +69,13 @@ inline T getProcAddress(const string& _procName) {
 
 void
 initGLExtensionsPointers() {
-  const QGLContext* context = QGLContext::currentContext();
-  Q_ASSERT(context->isValid());
+  Q_ASSERT(QGLContext::currentContext()->isValid());
 
-  glBindBuffer = getProcAddress< decltype(glBindBuffer) >("glBindBuffer");
-  glBufferData = getProcAddress< decltype(glBufferData) >("glBufferData");
-  glBufferSubData = getProcAddress< decltype(glBufferSubData) >("glBufferSubData");
-  glDeleteBuffers = getProcAddress< decltype(glDeleteBuffers) >("glDeleteBuffers");
-  glGenBuffers = getProcAddress< decltype(glGenBuffers) >("glGenBuffers");
+  glBindBuffer = getProcAddress<decltype(glBindBuffer)>("glBindBuffer");
+  glBufferData = getProcAddress<decltype(glBufferData)>("glBufferData");
+  glBufferSubData = getProcAddress<decltype(glBufferSubData)>("glBufferSubData");
+  glDeleteBuffers = getProcAddress<decltype(glDeleteBuffers)>("glDeleteBuffers");
+  glGenBuffers = getProcAddress<decltype(glGenBuffers)>("glGenBuffers");
 }
 
 #endif // Q_WS_MAC
