@@ -117,10 +117,7 @@ target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
 
 if (LINUX)
-    install (PROGRAMS
-        ${CMAKE_CURRENT_BINARY_DIR}/vatsinator
-        DESTINATION bin
-    )
+    install (TARGETS ${vatsinator_TARGET} RUNTIME DESTINATION bin)
 elseif (APPLE)
     # move all files to .app bundle
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
@@ -147,8 +144,5 @@ elseif (APPLE)
     include (DeployQt4)
     install_qt4_executable ("${vatsinator_TARGET}.app")
 elseif (WIN32)
-    install (PROGRAMS
-        ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.exe
-        DESTINATION .
-    )
+    install (TARGETS ${vatsinator_TARGET} DESTINATION .)
 endif (LINUX)
