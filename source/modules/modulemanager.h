@@ -25,6 +25,7 @@
 #include <QObject>
 
 class AirportTracker;
+class HomeLocation;
 class FlightTracker;
 class ModelMatcher;
 class UpdateChecker;
@@ -51,6 +52,7 @@ private slots:
 private:
   AirportTracker* __airportTracker;
   FlightTracker*  __flightTracker;
+  HomeLocation*   __homeLocation;
   ModelMatcher*   __modelsMatcher;
   UpdateChecker*  __updateChecker;
   VatbookHandler* __vatbookHandler;

@@ -27,6 +27,7 @@
 
 #include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
+#include "modules/homelocation.h"
 
 #include "storage/settingsmanager.h"
 
@@ -154,6 +155,8 @@ MapWidget::MapWidget(QWidget* _parent) :
           this, SLOT(__openContextMenu(const Airport*)));
   connect(this, SIGNAL(contextMenuRequested(const Fir*)),
           this, SLOT(__openContextMenu(const Fir*)));
+  connect(this, SIGNAL(contextMenuRequested()),
+	  this, SLOT(__openContextMenu()));
   
   connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
           this,                                    SLOT(__loadNewSettings()));
@@ -177,6 +180,12 @@ MapWidget::~MapWidget() {
 
   __storeSettings();
   delete [] __circle;
+}
+
+void
+MapWidget::mouse2LatLon(qreal* lat, qreal* lon) {
+  *lon = (__lastMousePosInterpolated.x() / static_cast<qreal>(__zoom) + __position.x()) * 180;
+  *lat = (__lastMousePosInterpolated.y() / static_cast<qreal>(__zoom) + __position.y()) * 90;
 }
 
 GLuint
@@ -264,6 +273,7 @@ MapWidget::showClient(const Client* _c) {
 
   __position.rx() = _c->getPosition().longitude / 180;
   __position.ry() = _c->getPosition().latitude / 90;
+  
   updateGL();
 }
 
@@ -276,6 +286,19 @@ MapWidget::showAirport(const Airport* _ap) {
 
   __position.rx() = _ap->getData()->longitude / 180;
   __position.ry() = _ap->getData()->latitude / 90;
+  
+  updateGL();
+}
+
+void
+MapWidget::showPoint(const QPointF& _p) {
+  if (FlightTracker::getSingleton().getTracked())
+    emit flightTrackingCanceled();
+  
+  __position = _p;
+  __position.rx() /= 180.0;
+  __position.ry() /= 90.0;
+  
   updateGL();
 }
 
@@ -488,6 +511,8 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
   } else if ((_event->buttons() & Qt::LeftButton) && __underMouse) {
     // store the clicked position - if user clicks & moves, it is just map move
     __recentlyClickedMousePos = _event->pos();
+  } else if ((_event->buttons() & Qt::RightButton) && !__underMouse) {
+    emit contextMenuRequested();
   }
 }
 
@@ -554,8 +579,8 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
                                        ((static_cast<qreal>(__winHeight) - BASE_SIZE_HEIGHT) / 2)) / (BASE_SIZE_HEIGHT / 2) - 1.0);
 
   // count the mouse position global coordinates
-  qreal longitude = (__lastMousePosInterpolated.x() / static_cast<qreal>(__zoom) + __position.x()) * 180;
-  qreal latitude = (__lastMousePosInterpolated.y() / static_cast<qreal>(__zoom) + __position.y()) * 90;
+  qreal latitude, longitude;
+  mouse2LatLon(&latitude, &longitude);
 
   latitude = qBound(-90.0, latitude, 90.0);
 
@@ -802,6 +827,9 @@ MapWidget::__openContextMenu() {
   
   QAction* setAsHome = new QAction(tr("Set as home location"), this);
   __menu->addAction(setAsHome);
+  
+  connect(setAsHome,				SIGNAL(triggered()),
+	  HomeLocation::getSingletonPtr(),	SLOT(set()));
   
   __menu->addSeparator();
   __menu->addAction(new ActionMenuSeparator(tr("Flights nearby"), this));

@@ -136,16 +136,16 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>200</y>
-      <width>180</width>
-      <height>210</height>
+      <x>191</x>
+      <y>251</y>
+      <width>186</width>
+      <height>221</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -160,6 +160,7 @@
     <addaction name="ActionMetar"/>
     <addaction name="ActionRefresh"/>
     <addaction name="EnableAutoUpdatesAction"/>
+    <addaction name="ActionHomeLocation"/>
     <addaction name="separator"/>
     <addaction name="ActionFlightList"/>
     <addaction name="ActionATCList"/>
@@ -270,6 +271,14 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+R</string>
+   </property>
+  </action>
+  <action name="ActionHomeLocation">
+   <property name="text">
+    <string>Show home location</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+S</string>
    </property>
   </action>
  </widget>

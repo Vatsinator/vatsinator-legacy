@@ -57,6 +57,13 @@ public:
   MapWidget(QWidget* = 0);
 
   virtual ~MapWidget();
+  
+  /**
+   * Gets latitude and longitude of mouse position on the map.
+   * @param lat Stores latitude.
+   * @param lon Stores longitude.
+   */
+  void mouse2LatLon(qreal*, qreal*);
 
   /**
    * Converts given image to OpenGL formatm loads it and returns
@@ -138,6 +145,12 @@ signals:
   void contextMenuRequested(const Fir*);
   
   /**
+   * Emitted when user clicks right mouse button in the middle
+   * of nowhere.
+   */
+  void contextMenuRequested();
+  
+  /**
    * Emitted when user clicks left mouse button on
    * any pilot.
    * @param pilot The pilot that user clicked.
@@ -195,6 +208,12 @@ public slots:
    * @param airport Airport to be shown.
    */
   void showAirport(const Airport*);
+  
+  /**
+   * Sets the given point at the middle of the map.
+   * @param p Point (lat, lon).
+   */
+  void showPoint(const QPointF&);
   
   /**
    * Hides the menu (if any), hides the tooltip

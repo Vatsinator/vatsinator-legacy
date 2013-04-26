@@ -22,6 +22,8 @@
 #include "debugging/debugwindow.h"
 #endif
 
+#include "modules/homelocation.h"
+
 #include "storage/settingsmanager.h"
 
 #include "ui/widgets/dataupdatenotificationwidget.h"
@@ -81,6 +83,8 @@ UserInterface::UserInterface(QWidget* _parent) :
           __atcListWindow,                          SLOT(show()));
   connect(EnableAutoUpdatesAction,                  SIGNAL(toggled(bool)),
           this,                                     SIGNAL(autoUpdatesEnabled(bool)));
+  connect(ActionHomeLocation,                       SIGNAL(triggered()),
+	  HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
           this,                                     SLOT(__dataDownloading()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),

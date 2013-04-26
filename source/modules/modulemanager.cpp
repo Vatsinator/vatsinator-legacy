@@ -18,6 +18,7 @@
 
 #include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
+#include "modules/homelocation.h"
 #include "modules/modelmatcher.h"
 #include "modules/updatechecker.h"
 #include "modules/vatbookhandler.h"
@@ -32,6 +33,7 @@
 ModuleManager::ModuleManager() :
     __airportTracker(new AirportTracker()),
     __flightTracker(new FlightTracker()),
+    __homeLocation(new HomeLocation()),
     __modelsMatcher(new ModelMatcher()),
     __updateChecker(new UpdateChecker()),
     __vatbookHandler(new VatbookHandler()) {
@@ -46,6 +48,7 @@ ModuleManager::ModuleManager() :
 ModuleManager::~ModuleManager() {
   delete __airportTracker;
   delete __flightTracker;
+  delete __homeLocation;
   delete __modelsMatcher;
   delete __updateChecker;
   delete __vatbookHandler;
