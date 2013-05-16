@@ -661,22 +661,22 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="197"/>
+        <location filename="../ui/resources/userinterface.ui" line="198"/>
         <source>Exit</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="209"/>
+        <location filename="../ui/resources/userinterface.ui" line="210"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="221"/>
+        <location filename="../ui/resources/userinterface.ui" line="222"/>
         <source>METARs...</source>
         <translation>METARs...</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="233"/>
+        <location filename="../ui/resources/userinterface.ui" line="234"/>
         <source>Refresh</source>
         <translation>Refresh</translation>
     </message>
@@ -686,121 +686,131 @@
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="177"/>
+        <location filename="../ui/resources/userinterface.ui" line="178"/>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="183"/>
+        <location filename="../ui/resources/userinterface.ui" line="184"/>
         <source>&amp;Settings</source>
         <translation>&amp;Settings</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="245"/>
+        <location filename="../ui/resources/userinterface.ui" line="246"/>
         <source>Preferences: Vatsinator</source>
         <translation>Preferences: Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="253"/>
+        <location filename="../ui/resources/userinterface.ui" line="254"/>
         <source>Flight list...</source>
         <translation>Flight list...</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="258"/>
+        <location filename="../ui/resources/userinterface.ui" line="259"/>
         <source>ATC list...</source>
         <translation>ATC list...</translation>
     </message>
     <message>
-        <location filename="../ui/resources/userinterface.ui" line="269"/>
+        <location filename="../ui/resources/userinterface.ui" line="270"/>
         <source>Enable auto-updates</source>
         <translation>Enable auto-updates</translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/userinterface.ui" line="278"/>
+        <source>Show home location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/resources/userinterface.ui" line="281"/>
+        <source>Ctrl+H</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="640"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="665"/>
         <source>Flight details</source>
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="677"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="702"/>
         <source>Airport details</source>
         <translation>Airport details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="698"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="723"/>
         <source>Controllers</source>
         <translation>Controllers</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="710"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="735"/>
         <source>Departures</source>
         <translation>Departures</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="719"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="744"/>
         <source>%1 to %2</source>
         <translation>%1 to %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="747"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="772"/>
         <source>%1 from %2</source>
         <translation>%1 from %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="777"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="802"/>
         <source>%1 details</source>
         <translation>%1 details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="801"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="826"/>
         <source>This location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="803"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="828"/>
         <source>Set as home location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="807"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="835"/>
         <source>Flights nearby</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1375"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1403"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1377"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1405"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1402"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1430"/>
         <source>Departures: %1</source>
         <translation>Departures: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1407"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1435"/>
         <source>Arrivals: %1</source>
         <translation>Arrivals: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="722"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="747"/>
         <source>nowhere</source>
         <translation>nowhere</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="738"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="763"/>
         <source>Arrivals</source>
         <translation>Arrivals</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1367"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1371"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1395"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1399"/>
         <source>(unknown)</source>
         <translation>(unknown)</translation>
     </message>
@@ -1129,42 +1139,42 @@
 <context>
     <name>UserInterface</name>
     <message>
-        <location filename="../ui/userinterface.cpp" line="120"/>
+        <location filename="../ui/userinterface.cpp" line="124"/>
         <source>Last update: never</source>
         <translation>Last update: never</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="122"/>
+        <location filename="../ui/userinterface.cpp" line="126"/>
         <source>Last update: %1 UTC</source>
         <translation>Last update: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="139"/>
+        <location filename="../ui/userinterface.cpp" line="143"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="306"/>
+        <location filename="../ui/userinterface.cpp" line="310"/>
         <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
         <translation type="unfinished">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="307"/>
+        <location filename="../ui/userinterface.cpp" line="311"/>
         <source>What do you want to do with that?</source>
         <translation type="unfinished">What do you want to do with that?</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="308"/>
+        <location filename="../ui/userinterface.cpp" line="312"/>
         <source>Try again</source>
         <translation type="unfinished">Try again</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="309"/>
+        <location filename="../ui/userinterface.cpp" line="313"/>
         <source>Keep current data</source>
         <translation type="unfinished">Keep current data</translation>
     </message>
     <message>
-        <location filename="../ui/userinterface.cpp" line="317"/>
+        <location filename="../ui/userinterface.cpp" line="321"/>
         <source>Data outdated!</source>
         <translation type="unfinished">Data outdated!</translation>
     </message>
