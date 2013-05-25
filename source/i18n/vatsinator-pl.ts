@@ -716,12 +716,12 @@
     <message>
         <location filename="../ui/resources/userinterface.ui" line="278"/>
         <source>Show home location</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż lokalizację domu</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="281"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+H</translation>
     </message>
 </context>
 <context>
