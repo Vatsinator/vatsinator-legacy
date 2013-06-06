@@ -53,7 +53,7 @@ FlightTableView::rowsInserted(const QModelIndex& _parent, int _start, int _end) 
 void
 FlightTableView::__updateButtons(int _start, int _end) {
   Q_ASSERT(model());
-  const FlightTableModel* fModel = qobject_cast< const FlightTableModel* >(model());
+  const FlightTableModel* fModel = qobject_cast<const FlightTableModel*>(model());
   Q_ASSERT(fModel);
   
   if (_start == -1)

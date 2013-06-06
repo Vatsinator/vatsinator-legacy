@@ -47,8 +47,8 @@ AtcDetailsWindow::AtcDetailsWindow(QWidget* _parent) :
 
 void
 AtcDetailsWindow::show(const Client* _client) {
-  Q_ASSERT(dynamic_cast< const Controller* >(_client));
-  __current = dynamic_cast< const Controller* >(_client);
+  Q_ASSERT(dynamic_cast<const Controller*>(_client));
+  __current = dynamic_cast<const Controller*>(_client);
   __currentCallsign = __current->getCallsign();
 
   setWindowTitle(tr("%1 - ATC details").arg(__current->getCallsign()));
@@ -60,7 +60,7 @@ AtcDetailsWindow::show(const Client* _client) {
   RatingLabel->setText(Controller::ratings[__current->getRating()]);
 
   if (__current->getAirport())
-    AirportLabel->setText(static_cast< QString >(__current->getAirport()->icao) %
+    AirportLabel->setText(static_cast<QString>(__current->getAirport()->icao) %
                           " " %
                           QString::fromUtf8(__current->getAirport()->name) %
                           ", " %

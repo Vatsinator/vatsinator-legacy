@@ -125,7 +125,7 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   
   __current = _ap;
   
-  const ActiveAirport* aa = dynamic_cast< const ActiveAirport* >(_ap);
+  const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
   if (aa) {
     InboundTable->setModel(aa->getInboundsModel());
     OutboundTable->setModel(aa->getOutboundsModel());
@@ -144,14 +144,14 @@ void
 AirportDetailsWindow::__fillLabels(const Airport* _ap) {
   setWindowTitle(tr("%1 - airport details").arg(_ap->getData()->icao));
 
-  if (!static_cast< QString >(_ap->getData()->iata).isEmpty())
+  if (!static_cast<QString>(_ap->getData()->iata).isEmpty())
     CodesLabel->setText(
-      static_cast< QString >(_ap->getData()->icao) %
+      static_cast<QString>(_ap->getData()->icao) %
       "/" %
-      static_cast< QString >(_ap->getData()->iata)
+      static_cast<QString>(_ap->getData()->iata)
     );
   else
-    CodesLabel->setText(static_cast< QString >(_ap->getData()->icao));
+    CodesLabel->setText(static_cast<QString>(_ap->getData()->icao));
 
   NameLabel->setText(
     QString::fromUtf8(_ap->getData()->name) %
@@ -161,8 +161,8 @@ AirportDetailsWindow::__fillLabels(const Airport* _ap) {
 #ifndef NO_DEBUG
     //display FIR info only in debug mode
     % " (" %
-    static_cast< QString >(_ap->getData()->fir_a) % " & " %
-    static_cast< QString >(_ap->getData()->fir_b) % " FIR)"
+    static_cast<QString>(_ap->getData()->fir_a) % " & " %
+    static_cast<QString>(_ap->getData()->fir_b) % " FIR)"
 #endif
   );
 

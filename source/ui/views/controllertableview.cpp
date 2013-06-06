@@ -53,7 +53,7 @@ ControllerTableView::rowsInserted(const QModelIndex& _parent, int _start, int _e
 void
 ControllerTableView::__updateButtons(int _start, int _end) {
   Q_ASSERT(model());
-  const ControllerTableModel* cModel = qobject_cast< const ControllerTableModel* >(model());
+  const ControllerTableModel* cModel = qobject_cast<const ControllerTableModel*>(model());
   Q_ASSERT(cModel);
   
   if (_start == -1)

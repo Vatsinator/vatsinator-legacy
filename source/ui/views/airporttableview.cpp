@@ -44,7 +44,7 @@ AirportTableView::rowsInserted(const QModelIndex& _parent, int _start, int _end)
 
 void
 AirportTableView::__updateButtons(int _start, int _end) {
-  const AirportTableModel* apModel = qobject_cast< const AirportTableModel* >(model());
+  const AirportTableModel* apModel = qobject_cast<const AirportTableModel*>(model());
   Q_ASSERT(apModel);
   
   if (_start == -1)

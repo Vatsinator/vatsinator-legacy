@@ -54,8 +54,8 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
 
 void
 FlightDetailsWindow::show(const Client* _client) {
-  Q_ASSERT(dynamic_cast< const Pilot* >(_client));
-  __current = dynamic_cast< const Pilot* >(_client);
+  Q_ASSERT(dynamic_cast<const Pilot*>(_client));
+  __current = dynamic_cast<const Pilot*>(_client);
   __currentCallsign = __current->getCallsign();
 
   if (__current->isPrefiledOnly())
@@ -85,9 +85,9 @@ FlightDetailsWindow::show(const Client* _client) {
   
   VatawareLink->setText("<a href=\"http://www.vataware.com/pilot.cfm?cid=" %
       QString::number(__current->getPid()) %
-      static_cast< QString >("\">") %
+      static_cast<QString>("\">") %
       tr("Vataware statistics for this pilot") %
-      static_cast< QString >("</a>"));
+      static_cast<QString>("</a>"));
 
   FlightRulesLabel->setText((__current->getFlightRules() == Pilot::IFR) ? "IFR" : "VFR");
 
@@ -123,12 +123,12 @@ FlightDetailsWindow::__updateToFromButtons() {
     QString text = __current->getRoute().origin;
 
     if (ap->getData()) {
-      text.append(static_cast< QString >(" ") %
+      text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->getData()->name));
 
       if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
         text.append(
-          static_cast< QString >(" - ") %
+          static_cast<QString>(" - ") %
           QString::fromUtf8(ap->getData()->city));
 
       OriginButton->setAirportPointer(ap);
@@ -147,12 +147,12 @@ FlightDetailsWindow::__updateToFromButtons() {
     QString text = __current->getRoute().destination;
 
     if (ap->getData()) {
-      text.append(static_cast< QString >(" ") %
+      text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->getData()->name));
 
       if (!QString::fromUtf8(ap->getData()->name).contains(QString::fromUtf8(ap->getData()->city)))
         text.append(
-          static_cast< QString >(" - ") %
+          static_cast<QString>(" - ") %
           QString::fromUtf8(ap->getData()->city));
 
       ArrivalButton->setAirportPointer(ap);
