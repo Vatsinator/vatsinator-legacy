@@ -190,7 +190,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
           }
         } else if (clientData[3] == "PILOT") {
           Pilot* pilot = new Pilot(clientData);
-          if (pilot->getPosition().latitude == 0 && pilot->getPosition().longitude == 0)
+          if (pilot->position().latitude == 0 && pilot->position().longitude == 0)
             delete pilot; // skip unknown flights
           else
             __flights->addFlight(pilot);
@@ -238,7 +238,7 @@ VatsimDataHandler::findAtc(const QString& _callsign) const {
 Uir *
 VatsimDataHandler::findUIR(const QString& _icao) {
 for (Uir * u: __uirs)
-    if (u->getIcao() == _icao)
+    if (u->icao() == _icao)
       return u;
 
   return NULL;
@@ -417,7 +417,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       
-      if (currentFir->getIcao() == "UMKK") // fix for Kaliningrad center
+      if (currentFir->icao() == "UMKK") // fix for Kaliningrad center
         currentFir->setCountry("Russia");
       else
         currentFir->setCountry(countries[icao.left(2)]);
@@ -473,7 +473,7 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
         else
           VatsinatorApplication::log("FIR %s could not be found!", data[i].toStdString().c_str());
       } else {
-        uir->getName().append(data[i] + " ");
+        uir->name().append(data[i] + " ");
       }
     }
     
@@ -487,8 +487,8 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
 
 void
 VatsimDataHandler::__clearData() {
-  qDeleteAll(__flights->getFlights()), __flights->clear();
-  qDeleteAll(__atcs->getStaff()), __atcs->clear();
+  qDeleteAll(__flights->flights()), __flights->clear();
+  qDeleteAll(__atcs->staff()), __atcs->clear();
   qDeleteAll(__activeAirports), __activeAirports.clear();
   qDeleteAll(__emptyAirports), __emptyAirports.clear();
 
@@ -506,7 +506,7 @@ VatsimDataHandler::__reportDataError(QString _msg) {
 
 void
 VatsimDataHandler::__slotUiCreated() {
-  __downloader->setProgressBar(UserInterface::getSingleton().getProgressBar());
+  __downloader->setProgressBar(UserInterface::getSingleton().progressBar());
 }
 
 void

@@ -60,12 +60,12 @@ GLuint
 Airport::__generateTip() const {
   Q_ASSERT(__data);
   
-  QImage temp(MapWidget::getSingleton().getAirportToolTipBackground());
+  QImage temp(MapWidget::getSingleton().airportToolTipBackground());
   QPainter painter(&temp);
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::getSingleton().getAirportFont());
+  painter.setFont(MapWidget::getSingleton().airportFont());
   painter.setPen(QColor(AIRPORTS_LABELS_FONT_COLOR));
   QRect rectangle(8, 2, 48, 12); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, static_cast< QString >(__data->icao));

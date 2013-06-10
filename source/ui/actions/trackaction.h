@@ -28,11 +28,11 @@ class TrackAction : public QAction {
 
   Q_OBJECT
 
-public:
-  TrackAction(const Pilot*, QObject*);
-
 signals:
   void triggered(const Pilot*);
+
+public:
+  TrackAction(const Pilot*, QObject*);
 
 private slots:
   void __handleTriggered();

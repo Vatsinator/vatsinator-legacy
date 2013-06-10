@@ -27,7 +27,7 @@ TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
     QAction(tr("Track this flight"), _parent),
     __current(_pilot) {
   setCheckable(true);
-  if (__current == FlightTracker::getSingleton().getTracked())
+  if (__current == FlightTracker::getSingleton().tracked())
     setChecked(true);
 
   connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));

@@ -55,7 +55,7 @@ public:
   void setUrl(const QString&);
   
   inline const QString &
-  getUrl() const { return __url; }
+  url() const { return __url; }
   
 private:
   QString __url;

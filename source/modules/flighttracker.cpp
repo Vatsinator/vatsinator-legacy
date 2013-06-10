@@ -66,9 +66,9 @@ FlightTracker::__trackFlight(const Pilot* _p) {
     __cancelFlight();
   } else {
     __currentPointer = _p;
-    __currentCallsign = _p->getCallsign();
+    __currentCallsign = _p->callsign();
     
-    VatsinatorApplication::log("Tracking flight %s.", __currentCallsign.toStdString().c_str());
+    VatsinatorApplication::log("Tracking flight %s.", qPrintable(__currentCallsign));
   }
 }
 
@@ -84,12 +84,12 @@ FlightTracker::__trackFlight(const Pilot* _p, int _state) {
     }
   }
 
-  VatsinatorApplication::log("Tracking flight %s.", __currentCallsign.toStdString().c_str());
+  VatsinatorApplication::log("Tracking flight %s.", qPrintable(__currentCallsign));
 }
 
 void
 FlightTracker::__cancelFlight() {
-  VatsinatorApplication::log("Stooped tracking flight %s.", __currentCallsign.toStdString().c_str());
+  VatsinatorApplication::log("Stooped tracking flight %s.", qPrintable(__currentCallsign));
 
   __currentCallsign = "";
   __currentPointer = NULL;

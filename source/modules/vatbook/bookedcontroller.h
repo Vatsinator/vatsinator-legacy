@@ -31,25 +31,25 @@ public:
   BookedController() = delete;
   BookedController(const QStringList&);
   
-  QString getIcao() const;
+  QString icao() const;
   
   inline const QString &
-  getCallsign() const { return __callsign; }
+  callsign() const { return __callsign; }
   
   inline const QString &
-  getRealName() const { return __realName; }
+  realName() const { return __realName; }
   
   inline bool
   isTrainingSession() const { return __trainingSession; }
   
   inline const QDate &
-  getDateBooked() const { return __dateBooked; }
+  dateBooked() const { return __dateBooked; }
   
   inline const QTime &
-  getBookedFrom() const { return __bookedFrom; }
+  bookedFrom() const { return __bookedFrom; }
   
   inline const QTime &
-  getBookedTo() const { return __bookedTo; }
+  bookedTo() const { return __bookedTo; }
   
 private:
   QString __callsign;

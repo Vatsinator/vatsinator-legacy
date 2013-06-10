@@ -39,8 +39,8 @@ AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
   ChangelogField->setHtml("<pre>" % trUtf8(CHANGELOG_TEXT) % "</pre>");
   
   AirportsInDatabaseLabel->setText(
-    QString::number(AirportDatabase::getSingleton().getAirports().size()));
+    QString::number(AirportDatabase::getSingleton().airports().size()));
   FirsInDatabaseLabel->setText(
-    QString::number(FirDatabase::getSingleton().getFirs().size()));
+    QString::number(FirDatabase::getSingleton().firs().size()));
 }
 

@@ -41,7 +41,7 @@ ControllerTableModel::clear() {
 const Controller *
 ControllerTableModel::findAtcByCallsign(const QString& _callsign) const {
   for (const Controller* c: __staff)
-    if (c->getCallsign() == _callsign)
+    if (c->callsign() == _callsign)
       return c;
   
   return NULL;
@@ -71,16 +71,16 @@ ControllerTableModel::data(const QModelIndex& _index, int _role) const {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ToolTipRole:
-      return Controller::ratings[__staff[_index.row()]->getRating()];
+      return Controller::ratings[__staff[_index.row()]->rating()];
     case Qt::DisplayRole:
 
       switch (_index.column()) {
         case Callsign:
-          return __staff[_index.row()]->getCallsign();
+          return __staff[_index.row()]->callsign();
         case Name:
-          return __staff[_index.row()]->getRealName();
+          return __staff[_index.row()]->realName();
         case Frequency:
-          return __staff[_index.row()]->getFrequency();
+          return __staff[_index.row()]->frequency();
         default:
           return QVariant();
       }
@@ -116,10 +116,10 @@ ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
       qSort(__staff.begin(), __staff.end(),
             _order == Qt::AscendingOrder ?
               [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->getCallsign() < _b->getCallsign();
+                return _a->callsign() < _b->callsign();
               } :
               [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->getCallsign() > _b->getCallsign();
+                return _a->callsign() > _b->callsign();
               }
       );
       
@@ -128,10 +128,10 @@ ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
       qSort(__staff.begin(), __staff.end(),
             _order == Qt::AscendingOrder ?
               [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->getRealName() < _b->getRealName();
+                return _a->realName() < _b->realName();
               } :
               [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->getRealName() > _b->getRealName();
+                return _a->realName() > _b->realName();
               }
       );
       

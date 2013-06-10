@@ -26,11 +26,11 @@ Metar::Metar() : __icao("ZZZZ") {}
 Metar::Metar(const QString& _icao, const QString& _metar) :
     __icao(_icao),
     __metar(_metar),
-    __lastFetchedTime(QDateTime::currentDateTimeUtc()) {}
+    __lastFetchTime(QDateTime::currentDateTimeUtc()) {}
 
 void
 Metar::setMetar(const QString& _m) {
   Q_ASSERT(_m.left(4) == __icao);
   __metar = _m;
-  __lastFetchedTime = QDateTime::currentDateTimeUtc();
+  __lastFetchTime = QDateTime::currentDateTimeUtc();
 }

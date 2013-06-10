@@ -116,7 +116,7 @@ Fir::clear() {
 
 bool
 Fir::isStaffed() const {
-  return !__staff->getStaff().isEmpty() && __uirStaffCount < static_cast< unsigned >(__staff->rowCount());
+  return !__staff->staff().isEmpty() && __uirStaffCount < static_cast< unsigned >(__staff->rowCount());
 }
 
 void
@@ -174,12 +174,12 @@ Fir::__generateTip() const {
     return __icaoTip;
   }
 
-  QImage temp(MapWidget::getSingleton().getFirToolTipBackground());
+  QImage temp(MapWidget::getSingleton().firToolTipBackground());
   QPainter painter(&temp);
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::getSingleton().getFirFont());
+  painter.setFont(MapWidget::getSingleton().firFont());
   painter.setPen(QColor(FIRS_LABELS_FONT_COLOR));
   QRect rectangle(0, 4, 64, 24);
   painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);

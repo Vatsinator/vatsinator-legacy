@@ -28,14 +28,14 @@ class AirportDetailsButton : public QPushButton {
 
   Q_OBJECT
 
+signals:
+  void clicked(const Airport*);
+
 public:
   AirportDetailsButton(QWidget* = 0);
   AirportDetailsButton(const Airport*, bool = false, QWidget* = 0);
 
   void setAirportPointer(const Airport*);
-
-signals:
-  void clicked(const Airport*);
 
 private slots:
   void __handleClicked();

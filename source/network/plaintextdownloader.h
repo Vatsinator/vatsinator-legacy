@@ -35,6 +35,10 @@ class PlainTextDownloader : public QObject {
 
   Q_OBJECT
 
+signals:
+  void finished(const QString&);
+  void fetchError();
+
 public:
 
   PlainTextDownloader(QProgressBar* = 0, QObject* = 0);
@@ -42,10 +46,10 @@ public:
   void fetchData(const QString&);
   
   inline QProgressBar *
-  getProgressBar() { return __progressBar; }
+  progressBar() { return __progressBar; }
   
   inline const QProgressBar *
-  getProgressBar() const { return __progressBar; }
+  progressBar() const { return __progressBar; }
   
   inline void
   setProgressBar(QProgressBar* _pb) { __progressBar = _pb; }
@@ -58,7 +62,7 @@ private:
 
   QProgressBar*   __progressBar;
 
-  QQueue< QUrl >  __urls;
+  QQueue<QUrl>    __urls;
 
   QString __temp;
   QString __data;
@@ -72,10 +76,6 @@ private slots:
   void __finished();
   void __updateProgress(qint64, qint64);
   void __onError(QNetworkReply::NetworkError);
-
-signals:
-  void finished(const QString&);
-  void fetchError();
 
 };
 

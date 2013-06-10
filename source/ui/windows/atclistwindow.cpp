@@ -35,7 +35,7 @@ AtcListWindow::AtcListWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
   UserInterface::setWindowPosition(this);
-  ATCTable->setModel(VatsimDataHandler::getSingleton().getATCsModel());
+  ATCTable->setModel(VatsimDataHandler::getSingleton().atcModel());
   ATCTable->hideColumn(ControllerTableModel::Button);
   __setColumnsWidths();
 
@@ -66,7 +66,7 @@ AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 
   AtcDetailsWindow::getSingleton().show(
-    (qobject_cast< const ControllerTableModel* >(_index.model()))->getStaff()[_index.row()]
+    (qobject_cast< const ControllerTableModel* >(_index.model()))->staff()[_index.row()]
   );
 }
 

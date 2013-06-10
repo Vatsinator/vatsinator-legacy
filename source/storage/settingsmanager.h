@@ -46,6 +46,9 @@ class SettingsManager :
 
   Q_OBJECT
 
+signals:
+  void settingsChanged();
+
 public:
   SettingsManager(QObject* = 0);
   virtual ~SettingsManager();
@@ -88,9 +91,6 @@ private slots:
   
 private:
   AbstractSettingsPage* __pages[PageList::__count];
-  
-signals:
-  void settingsChanged();
 
 };
 

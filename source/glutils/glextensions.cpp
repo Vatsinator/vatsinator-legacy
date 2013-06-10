@@ -49,23 +49,23 @@ void (* glGenBuffers)    (GLsizei, GLuint*);
  * Get extension pointer.
  */
 template <typename T>
-static inline T
-getProcAddress(const char* _procName) {
-  T temp = NULL;
+ static inline T
+ getProcAddress(const char* _procName) {
+   T temp = NULL;
 #if defined Q_WS_X11
-  temp = reinterpret_cast<T>(glXGetProcAddress(reinterpret_cast<const GLubyte*>(_procName)));
+    temp = reinterpret_cast<T>(glXGetProcAddress(reinterpret_cast<const GLubyte*>(_procName)));
 #elif defined Q_WS_WIN
-  temp = reinterpret_cast<T>(wglGetProcAddress(_procName));
+    temp = reinterpret_cast<T>(wglGetProcAddress(_procName));
 #endif
-
-  Q_ASSERT(temp != nullptr);
+    
+    Q_ASSERT(temp != nullptr);
 
 #ifndef NO_DEBUG
-  registerExtensionPointer(_procName, reinterpret_cast<long long unsigned>(temp));
+    registerExtensionPointer(_procName, reinterpret_cast<long long unsigned>(temp));
 #endif
-
-  return temp;
-}
+  
+    return temp;
+  }
 
 void
 initGLExtensionsPointers() {

@@ -108,8 +108,8 @@ void WorldMap::__readDatabase() {
   /* Move all the polygons to one polygon */
   int offset = 0;
 
-  for (Polygon & p: polygons) {
-    for (const Point & pt: p.borders)
+  for (Polygon& p: polygons) {
+    for (const Point& pt: p.borders)
       __worldPolygon.borders.push_back(pt);
 
     for (const unsigned short c: p.triangles)

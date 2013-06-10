@@ -63,10 +63,10 @@ FlightTableView::__updateButtons(int _start, int _end) {
     _end = fModel->rowCount();
   
   for (int i = _start; i < _end; ++i) {
-    if (fModel->getFlights()[i]->isPrefiledOnly())
+    if (fModel->flights()[i]->isPrefiledOnly())
       continue;
     
-    ClientDetailsButton* dButton = new ClientDetailsButton(fModel->getFlights()[i]);
+    ClientDetailsButton* dButton = new ClientDetailsButton(fModel->flights()[i]);
     connect(dButton,                                SIGNAL(clicked(const Client*)),
             FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
     setIndexWidget(fModel->index(i, FlightTableModel::Button), dButton);

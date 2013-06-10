@@ -36,7 +36,7 @@ namespace DefaultSettings {
 MiscellaneousPage::MiscellaneousPage(QWidget* _parent) :
     AbstractSettingsPage(_parent) {
   setupUi(this);
-  LanguageComboBox->addItems(LanguageManager::getSingleton().getAllLanguages());
+  LanguageComboBox->addItems(LanguageManager::getSingleton().allLanguages());
 }
 
 QString

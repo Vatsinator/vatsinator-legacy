@@ -48,7 +48,7 @@ public:
   hasApproach() const { return false; }
   
   inline Controller::Facilities
-  getFacilities() const { return 0; }
+  facilities() const { return 0; }
   
   inline void
   drawLines() const {}

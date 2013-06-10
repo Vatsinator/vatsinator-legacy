@@ -41,7 +41,7 @@ public:
   unsigned countInbounds() const;
   
   bool hasApproach() const;
-  Controller::Facilities getFacilities() const;
+  Controller::Facilities facilities() const;
   
   void drawLines() const;
   
@@ -50,13 +50,13 @@ public:
   void addOutbound(const Pilot*);
   
   inline ControllerTableModel *
-  getStaffModel() const { return __staff; }
+  staffModel() const { return __staff; }
   
   inline FlightTableModel *
-  getInboundsModel() const { return __inbounds; }
+  inboundsModel() const { return __inbounds; }
   
   inline FlightTableModel *
-  getOutboundsModel() const { return __outbounds; }
+  outboundsModel() const { return __outbounds; }
   
 private:
   ControllerTableModel* __staff;

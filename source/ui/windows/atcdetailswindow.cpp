@@ -49,30 +49,30 @@ void
 AtcDetailsWindow::show(const Client* _client) {
   Q_ASSERT(dynamic_cast<const Controller*>(_client));
   __current = dynamic_cast<const Controller*>(_client);
-  __currentCallsign = __current->getCallsign();
+  __currentCallsign = __current->callsign();
 
-  setWindowTitle(tr("%1 - ATC details").arg(__current->getCallsign()));
+  setWindowTitle(tr("%1 - ATC details").arg(__current->callsign()));
 
-  CallsignLabel->setText(__current->getCallsign());
-  FacilityLabel->setText(__current->getDescription());
-  NameLabel->setText(__current->getRealName() + " (" + QString::number(__current->getPid()) + ")");
-  FrequencyLabel->setText(__current->getFrequency());
-  RatingLabel->setText(Controller::ratings[__current->getRating()]);
+  CallsignLabel->setText(__current->callsign());
+  FacilityLabel->setText(__current->description());
+  NameLabel->setText(__current->realName() + " (" + QString::number(__current->pid()) + ")");
+  FrequencyLabel->setText(__current->frequency());
+  RatingLabel->setText(Controller::ratings[__current->rating()]);
 
-  if (__current->getAirport())
-    AirportLabel->setText(static_cast<QString>(__current->getAirport()->icao) %
+  if (__current->airport())
+    AirportLabel->setText(static_cast<QString>(__current->airport()->icao) %
                           " " %
-                          QString::fromUtf8(__current->getAirport()->name) %
+                          QString::fromUtf8(__current->airport()->name) %
                           ", " %
-                          QString::fromUtf8(__current->getAirport()->city)
+                          QString::fromUtf8(__current->airport()->city)
                          );
   else
     AirportLabel->setText(tr("N/A"));
 
-  ServerLabel->setText(__current->getServer());
-  TimeOnlineLabel->setText(__current->getOnlineFrom().toString("dd MMM yyyy, hh:mm"));
+  ServerLabel->setText(__current->server());
+  TimeOnlineLabel->setText(__current->onlineFrom().toString("dd MMM yyyy, hh:mm"));
 
-  AtisMessageField->setPlainText(__current->getAtis());
+  AtisMessageField->setPlainText(__current->atis());
 
   if (!isVisible())
     QWidget::show();

@@ -33,6 +33,10 @@ class SettingsWindow :
     private Ui::SettingsWindow {
 
   Q_OBJECT
+  
+signals:
+  void restoreDefaults();
+  void settingsApplied();
 
 public:
   SettingsWindow(QWidget* = 0);
@@ -40,14 +44,10 @@ public:
   void addPage(AbstractSettingsPage*);
   
 private:
-  QVector< AbstractSettingsPage* > __pages;
+  QVector<AbstractSettingsPage*> __pages;
   
 private slots:
   void __handleButton(QAbstractButton*);
-  
-signals:
-  void restoreDefaults();
-  void settingsApplied();
 
 };
 

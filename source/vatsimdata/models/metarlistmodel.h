@@ -28,9 +28,15 @@
 
 class PlainTextDownloader;
 
-class MetarListModel : public QAbstractListModel, public Singleton< MetarListModel > {
+class MetarListModel :
+    public QAbstractListModel,
+    public Singleton<MetarListModel> {
 
   Q_OBJECT
+
+signals:
+  void newMetarsAvailable();
+  void noMetar(QString);
 
 public:
   MetarListModel(PlainTextDownloader*, QObject* = 0);
@@ -64,18 +70,14 @@ public slots:
   void updateAll();
   void clear();
 
-signals:
-  void newMetarsAvailable();
-  void noMetar(QString);
-
 private:
   void __addMetar(const QString&);
 
   bool __matches(const QString&);
 
-  QQueue< QString > __requests;
+  QQueue<QString> __requests;
 
-  QList< Metar > __metarList;
+  QList<Metar> __metarList;
 
   PlainTextDownloader* __myHttpHandler;
 

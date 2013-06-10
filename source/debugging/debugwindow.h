@@ -39,7 +39,7 @@ public slots:
 
 private:
   void __setWindowPosition();
-  QString __getGLVersion();
+  QString __getGlVersion();
 
 private slots:
   void __updateContents();

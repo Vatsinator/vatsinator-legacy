@@ -63,7 +63,7 @@ public:
 private:
   void __startRequest();
   
-  QQueue< QUrl > __urls;
+  QQueue<QUrl>   __urls;
   QProgressBar*  __pb;
   QFile          __output;
   

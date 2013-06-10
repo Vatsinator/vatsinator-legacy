@@ -48,6 +48,12 @@ class VatsinatorApplication :
    */
 
   Q_OBJECT
+  
+signals:
+  void uiCreated();
+  void glInitialized();
+  void dataDownloading();
+  void metarsRefreshRequested();
 
 public:
   /**
@@ -70,7 +76,7 @@ public:
   inline static void
   log(const char*) {}
 
-  template< typename T, typename... Args >
+  template <typename T, typename... Args>
   inline static void
   log(const char*, T, Args...) {}
 
@@ -78,7 +84,7 @@ public:
 
   static void log(const char*);
 
-  template< typename T, typename... Args >
+  template <typename T, typename... Args>
   static void log(const char* _s, T _value, Args... _args) {
     while (*_s) {
       if (*_s == '%' && *(++_s) != '%') {
@@ -96,7 +102,7 @@ public:
 #endif
 
   inline VatsimDataHandler &
-  getData() { return *__vatsimData; }
+  vatsimData() { return *__vatsimData; }
 
 public slots:
   void refreshData();
@@ -119,12 +125,6 @@ private:
 private slots:
   void __loadNewSettings();
   void __autoUpdatesToggled(bool);
-  
-signals:
-  void uiCreated();
-  void glInitialized();
-  void dataDownloading();
-  void metarsRefreshRequested();
 
 };
 

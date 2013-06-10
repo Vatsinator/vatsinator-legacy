@@ -62,25 +62,25 @@ public:
   clientType() const { return Client::ATC; }
   
   inline const QString &
-  getFrequency() const { return __frequency; }
+  frequency() const { return __frequency; }
   
   inline int
-  getRating() const { return __rating; }
+  rating() const { return __rating; }
   
   inline const QString &
-  getIcao() const { return __icao; }
+  icao() const { return __icao; }
   
   inline const QString &
-  getAtis() const { return __atis; }
+  atis() const { return __atis; }
   
   inline const AirportRecord *
-  getAirport() const { return __airport; }
+  airport() const { return __airport; }
   
   inline Controller::Facility
-  getFacility() const { return __facility; }
+  facility() const { return __facility; }
   
   inline const QString &
-  getDescription() const { return __description; }
+  description() const { return __description; }
   
   inline bool
   isOk() const { return __isOK; }
@@ -89,7 +89,7 @@ public:
   /* Stores ATC ratings.
    * See http://vateud.org/index.php?option=com_content&view=article&id=28&Itemid=133
    */
-  static QMap< int, QString> ratings;
+  static QMap<int, QString> ratings;
   
 protected:
   QString              __frequency;

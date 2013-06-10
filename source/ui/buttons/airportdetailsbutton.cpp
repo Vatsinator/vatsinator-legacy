@@ -42,7 +42,7 @@ AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
 
   if (_autoconnect)
-    connect(this,           SIGNAL(clicked(const Airport*)),
+    connect(this,                                     SIGNAL(clicked(const Airport*)),
             AirportDetailsWindow::getSingletonPtr(),  SLOT(show(const Airport*)));
 }
 

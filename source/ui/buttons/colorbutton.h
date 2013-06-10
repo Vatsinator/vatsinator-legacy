@@ -41,7 +41,7 @@ public:
   virtual QSize minimumSizeHint() const;
 
   inline const QColor&
-  getColor() { return __current; }
+  color() { return __current; }
   
 protected:
   virtual void paintEvent(QPaintEvent*);

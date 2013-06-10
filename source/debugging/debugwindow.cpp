@@ -50,7 +50,7 @@ void
 DebugWindow::show() {
   OpenGLErrorsField->setPlainText(glErrors);
   GPUMemoryUsageField->setText(QString::number(gpuMemoryUsage));
-  OpenGLVersionField->setText(__getGLVersion());
+  OpenGLVersionField->setText(__getGlVersion());
   VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
   TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
   NumberOfScreensField->setText(QString::number(QApplication::desktop()->screenCount()));
@@ -99,7 +99,7 @@ DebugWindow::__setWindowPosition() {
 }
 
 QString
-DebugWindow::__getGLVersion() {
+DebugWindow::__getGlVersion() {
   QGLFormat::OpenGLVersionFlags ogvf = QGLFormat::openGLVersionFlags();
 
   if (ogvf & QGLFormat::OpenGL_Version_4_0)

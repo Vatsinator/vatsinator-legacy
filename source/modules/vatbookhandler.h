@@ -32,7 +32,7 @@ class PlainTextDownloader;
 
 class VatbookHandler :
     public QObject,
-    public Singleton< VatbookHandler > {
+    public Singleton<VatbookHandler> {
   
   /*
    * This class provides VATBOOK integration.
@@ -67,10 +67,10 @@ private:
   void __parseData(const QString&);
   
   /* This map contains pairs airport/fir icao - atcs */
-  QHash< QString, BookedAtcTableModel* > __bookings;
+  QHash<QString, BookedAtcTableModel*> __bookings;
   
   PlainTextDownloader* __httpHandler;
-  QTimer       __timer;
+  QTimer               __timer;
   
 private slots:
   

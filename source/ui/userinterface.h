@@ -43,7 +43,7 @@ class VatsinatorApplication;
 
 class UserInterface :
     public QMainWindow,
-    public Singleton< UserInterface >,
+    public Singleton<UserInterface>,
     private Ui::MainWindow {
 
   /*
@@ -52,6 +52,9 @@ class UserInterface :
 
 
   Q_OBJECT
+  
+signals:
+  void autoUpdatesEnabled(bool);
 
 public:
   UserInterface(QWidget* = 0);
@@ -82,19 +85,19 @@ public:
   static void setWindowPosition(QWidget*);
 
   inline MapWidget*
-  getMapWidget() { return MapDisplay; }
+  mapWidget() { return MapDisplay; }
 
   inline QProgressBar*
-  getProgressBar() { return __progressBar; }
+  progressBar() { return __progressBar; }
 
   inline QLabel*
-  getPositionBox() { return PositionBox; }
+  positionBox() { return PositionBox; }
   
   inline bool
   autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
   
   inline const QMenuBar *
-  getMenuBar() const { return MenuBar; }
+  menuBar() const { return MenuBar; }
 
 public slots:
   void quit();
@@ -138,9 +141,6 @@ private slots:
   void __statusUpdated();
   void __dataUpdated();
   void __fetchError();
-  
-signals:
-  void autoUpdatesEnabled(bool);
 
 };
 

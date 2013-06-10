@@ -64,10 +64,10 @@ public:
   void  clearAll();
 
   inline QVector<Fir> &
-  getFirs() { return __firs; }
+  firs() { return __firs; }
   
   inline const QVector<Fir> &
-  getFirs() const { return __firs; }
+  firs() const { return __firs; }
 
 private:
   void __readDatabase();

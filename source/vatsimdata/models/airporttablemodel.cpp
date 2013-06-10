@@ -122,14 +122,14 @@ inline QString
 AirportTableModel::__produceLabel(int _row) const {
   return
     static_cast< QString >(" ") %
-    QString::fromUtf8(__airports[_row]->getData()->icao) %
+    QString::fromUtf8(__airports[_row]->data()->icao) %
     static_cast< QString >(" ") %
-    QString::fromUtf8(__airports[_row]->getData()->city);
+    QString::fromUtf8(__airports[_row]->data()->city);
 }
 
 inline QString
 AirportTableModel::__produceFacilities(int _row) const {
-  Controller::Facilities facilities = __airports[_row]->getFacilities();
+  Controller::Facilities facilities = __airports[_row]->facilities();
 
   if (!facilities)
     return "-";

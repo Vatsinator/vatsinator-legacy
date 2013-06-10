@@ -22,50 +22,50 @@
 /* Q_ASSERT */
 #include <QtGlobal>
 
-template < typename T >
-class Singleton {
+template <typename T>
+  class Singleton {
+  
+  private:
+    static T* __ms_Singleton;
+  
+  public:
+    Singleton() {
+      Q_ASSERT(!__ms_Singleton);
 
-private:
-  static T* __ms_Singleton;
+      /*
+      * This is a little bit complicated, but the best singleton implementation
+      * I've ever seen.
+      * It counts the relative inherited class's address and stores it in
+      * __ms_Singleton. Notice that derived class can inherit from more than one
+      * Singleton class, but in that case 'this' of the derived class can differ
+      * from 'this' of the Singleton. Solution of this problem is to get
+      * non-existent object from address 0x1, casting it to both types and
+      * check the difference, which is in fact the distance between
+      * Singleton< T > and its derived type T.
+      */
+      intptr_t offset = (intptr_t)(T*)1 - (intptr_t)(Singleton*)(T*)1;
+      __ms_Singleton = (T*)((intptr_t)this + offset);
+    }
 
-public:
-  Singleton() {
-    Q_ASSERT(!__ms_Singleton);
+    ~Singleton() {
+      Q_ASSERT(__ms_Singleton);
+      __ms_Singleton = 0;
+    }
 
-    /*
-     * This is a little bit complicated, but the best singleton implementation
-     * I've ever seen.
-     * It counts the relative inherited class's address and stores it in
-     * __ms_Singleton. Notice that derived class can inherit from more than one
-     * Singleton class, but in that case 'this' of the derived class can differ
-     * from 'this' of the Singleton. Solution of this problem is to get
-     * non-existent object from address 0x1, casting it to both types and
-     * check the difference, which is in fact the distance between
-     * Singleton< T > and its derived type T.
-     */
-    intptr_t offset = (intptr_t)(T*)1 - (intptr_t)(Singleton*)(T*)1;
-    __ms_Singleton = (T*)((intptr_t)this + offset);
-  }
+    inline static T &
+    getSingleton() {
+      Q_ASSERT(__ms_Singleton);
+      return *__ms_Singleton;
+    }
 
-  ~Singleton() {
-    Q_ASSERT(__ms_Singleton);
-    __ms_Singleton = 0;
-  }
+    inline static T *
+    getSingletonPtr() {
+      Q_ASSERT(__ms_Singleton);
+      return __ms_Singleton;
+    }
+  };
 
-  inline static T &
-  getSingleton() {
-    Q_ASSERT(__ms_Singleton);
-    return *__ms_Singleton;
-  }
-
-  inline static T *
-  getSingletonPtr() {
-    Q_ASSERT(__ms_Singleton);
-    return __ms_Singleton;
-  }
-};
-
-template < typename T >
-T* Singleton< T >::__ms_Singleton = 0;
+template <typename T>
+  T* Singleton<T>::__ms_Singleton = 0;
 
 #endif  /* SINGLETON_H */

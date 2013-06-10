@@ -30,7 +30,7 @@ class Pilot;
 
 class FlightTracker :
     public QObject,
-    public Singleton< FlightTracker > {
+    public Singleton<FlightTracker> {
 
   /**
    * This class is for flight tracking - it centres the map on the
@@ -47,7 +47,7 @@ public:
   void updateData();
 
   inline const Pilot *
-  getTracked() { return __currentPointer; }
+  tracked() { return __currentPointer; }
 
 private:
   QString       __currentCallsign;

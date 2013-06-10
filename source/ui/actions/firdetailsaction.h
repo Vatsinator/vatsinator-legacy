@@ -28,11 +28,11 @@ class FirDetailsAction : public QAction {
 
   Q_OBJECT
 
-public:
-  FirDetailsAction(const Fir*, const QString&, QObject*);
-
 signals:
   void triggered(const Fir*);
+
+public:
+  FirDetailsAction(const Fir*, const QString&, QObject*);
 
 private slots:
   void __handleTriggered();

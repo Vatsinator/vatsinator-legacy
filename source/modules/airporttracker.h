@@ -30,7 +30,7 @@ class MapWidget;
 
 class AirportTracker :
      public QObject,
-     public Singleton< AirportTracker > {
+     public Singleton<AirportTracker> {
   
   Q_OBJECT
   
@@ -43,7 +43,7 @@ public:
   void updateData();
   
   inline const QMap< QString, const Airport* > &
-  getTracked() { return __trackedAirports; }
+  tracked() { return __trackedAirports; }
   
   inline bool
   isInitialized() { return __isInitialized; }

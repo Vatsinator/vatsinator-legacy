@@ -55,7 +55,7 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
 
 void
 FirDetailsWindow::show(const Fir* _f) {
-  __currentICAO = _f->getIcao();
+  __currentICAO = _f->icao();
 
   __fillLabels(_f);
   __updateModels(_f);
@@ -68,26 +68,26 @@ void
 FirDetailsWindow::__updateModels(const Fir* _f) {
   Q_ASSERT(_f);
   
-  FlightsTable->setModel(_f->getFlightsModel());
-  ATCTable->setModel(_f->getStaffModel());
-  AirportsTable->setModel(_f->getAirportsModel());
+  FlightsTable->setModel(_f->flightsModel());
+  ATCTable->setModel(_f->staffModel());
+  AirportsTable->setModel(_f->airportsModel());
   
-  BookedATCTable->setModel(VatbookHandler::getSingleton().getNotNullModel(_f->getIcao()));
+  BookedATCTable->setModel(VatbookHandler::getSingleton().getNotNullModel(_f->icao()));
 }
 
 void
 FirDetailsWindow::__fillLabels(const Fir* _f) {
-  if (_f->getCountry() != "USA")
-    setWindowTitle(tr("%1 - FIR details").arg(_f->getIcao()));
+  if (_f->country() != "USA")
+    setWindowTitle(tr("%1 - FIR details").arg(_f->icao()));
   else
-    setWindowTitle(tr("%1 - ARTCC details").arg(_f->getIcao()));
+    setWindowTitle(tr("%1 - ARTCC details").arg(_f->icao()));
 
   if (!_f->isOceanic())
-    ICAOLabel->setText(_f->getIcao());
+    ICAOLabel->setText(_f->icao());
   else
-    ICAOLabel->setText(_f->getIcao() + " Oceanic");
+    ICAOLabel->setText(_f->icao() + " Oceanic");
 
-  NameLabel->setText(_f->getName());
+  NameLabel->setText(_f->name());
 }
 
 void

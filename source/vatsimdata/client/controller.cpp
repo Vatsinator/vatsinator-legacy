@@ -31,7 +31,7 @@
 #include "controller.h"
 #include "defines.h"
 
-QMap< int, QString> Controller::ratings;
+QMap<int, QString> Controller::ratings;
 bool Controller::__ratingsInitialized = Controller::__initRatings();
 
 /*
@@ -126,7 +126,7 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      for (const QString & alias: VatsimDataHandler::getSingleton().getAliases().values(__icao)) {
+      for (const QString& alias: VatsimDataHandler::getSingleton().aliases().values(__icao)) {
         fir = FirDatabase::getSingleton().find(alias);
 
         if (fir) {
@@ -179,7 +179,7 @@ Controller::__setMyIcaoAndFacility() {
       return;
     }
 
-    for (QString & alias: VatsimDataHandler::getSingleton().getAliases().values(icao)) {
+    for (QString & alias: VatsimDataHandler::getSingleton().aliases().values(icao)) {
       fir = FirDatabase::getSingleton().find(alias, true);
 
       if (fir) {
@@ -217,7 +217,7 @@ Controller::__setMyIcaoAndFacility() {
     if (apShot) {
       ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(sections.front());
       ap->addStaff(this);
-      __airport = ap->getData();
+      __airport = ap->data();
       __produceDescription(__airport);
       return;
     } else {
@@ -229,19 +229,19 @@ Controller::__setMyIcaoAndFacility() {
         if (apShot) {
           ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
           ap->addStaff(this);
-          __airport = ap->getData();
+          __airport = ap->data();
           __produceDescription(__airport);
           return;
         }
       }
 
-      for (QString & alias: VatsimDataHandler::getSingleton().getAliases().values(sections.front())) {
+      for (QString & alias: VatsimDataHandler::getSingleton().aliases().values(sections.front())) {
         apShot = AirportDatabase::getSingleton().find(alias);
 
         if (apShot) {
           ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
           ap->addStaff(this);
-          __airport = ap->getData();
+          __airport = ap->data();
           __produceDescription(__airport);
           return;
         }
@@ -260,13 +260,13 @@ Controller::__setMyIcaoAndFacility() {
 void
 Controller::__produceDescription(const Fir* _f) {
   Q_ASSERT(_f);
-  __description = _f->getName();
+  __description = _f->name();
 }
 
 void
 Controller::__produceDescription(const Uir* _u) {
   Q_ASSERT(_u);
-  __description = _u->getName();
+  __description = _u->name();
 }
 
 void
@@ -276,7 +276,7 @@ Controller::__produceDescription(const AirportRecord* _ap) {
   if (!_ap) {
     apName = "Unknown";
   } else {
-    if (static_cast< QString >(_ap->name) == static_cast< QString >(_ap->city))
+    if (qstrcmp(_ap->name, _ap->city) == 0)
       apName = QString::fromUtf8(_ap->name);
     else
       apName =

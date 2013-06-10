@@ -142,7 +142,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __drawLeft(false),
     __drawRight(false),
     __data(VatsimDataHandler::getSingleton()),
-    __airports(__data.getActiveAirports()) {
+    __airports(__data.activeAirports()) {
   
   __produceCircle();
 
@@ -268,31 +268,31 @@ MapWidget::getFormat() {
 
 void
 MapWidget::showClient(const Client* _c) {
-  if (FlightTracker::getSingleton().getTracked() != _c)
+  if (FlightTracker::getSingleton().tracked() != _c)
     emit flightTrackingCanceled();
 
-  __position.rx() = _c->getPosition().longitude / 180;
-  __position.ry() = _c->getPosition().latitude / 90;
+  __position.rx() = _c->position().longitude / 180;
+  __position.ry() = _c->position().latitude / 90;
   
   updateGL();
 }
 
 void
 MapWidget::showAirport(const Airport* _ap) {
-  if (FlightTracker::getSingleton().getTracked())
+  if (FlightTracker::getSingleton().tracked())
     emit flightTrackingCanceled();
   
-  Q_ASSERT(_ap->getData());
+  Q_ASSERT(_ap->data());
 
-  __position.rx() = _ap->getData()->longitude / 180;
-  __position.ry() = _ap->getData()->latitude / 90;
+  __position.rx() = _ap->data()->longitude / 180;
+  __position.ry() = _ap->data()->latitude / 90;
   
   updateGL();
 }
 
 void
 MapWidget::showPoint(const QPointF& _p) {
-  if (FlightTracker::getSingleton().getTracked())
+  if (FlightTracker::getSingleton().tracked())
     emit flightTrackingCanceled();
   
   __position = _p;
@@ -378,9 +378,9 @@ MapWidget::paintGL() {
   qglClearColor(__settings.colors.seas);
   glLoadIdentity();
 
-  if (FlightTracker::getSingleton().getTracked()) {
-    __position.rx() = FlightTracker::getSingleton().getTracked()->getPosition().longitude / 180;
-    __position.ry() = FlightTracker::getSingleton().getTracked()->getPosition().latitude / 90;
+  if (FlightTracker::getSingleton().tracked()) {
+    __position.rx() = FlightTracker::getSingleton().tracked()->position().longitude / 180;
+    __position.ry() = FlightTracker::getSingleton().tracked()->position().latitude / 90;
   }
 
   glEnableClientState(GL_VERTEX_ARRAY);
@@ -566,7 +566,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     if ((newY < RANGE_Y) && (newY > -RANGE_Y))
       __position.setY(newY);
 
-    if (FlightTracker::getSingleton().getTracked() && (dx != 0 || dy != 0))
+    if (FlightTracker::getSingleton().tracked() && (dx != 0 || dy != 0))
       emit flightTrackingCanceled();
   }
 
@@ -590,7 +590,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     longitude -= 360;
 
   // update the label on the very bottom of the main window
-  UserInterface::getSingleton().getPositionBox()->setText(
+  UserInterface::getSingleton().positionBox()->setText(
     QString((latitude > 0) ? "N" : "S") + " " +
     QString::number(qAbs(latitude), 'g', 6) + " " +
     QString((longitude < 0) ? "W" : "E") + " " +
@@ -660,7 +660,7 @@ void
 MapWidget::__openContextMenu(const Pilot* _pilot) {
   __contextMenuOpened = true;
   
-  __menu = new QMenu(_pilot->getCallsign(), this);
+  __menu = new QMenu(_pilot->callsign(), this);
 
   ClientDetailsAction* showDetails = new ClientDetailsAction(_pilot, tr("Flight details"), this);
   TrackAction* trackThisFlight = new TrackAction(_pilot, this);
@@ -674,15 +674,15 @@ MapWidget::__openContextMenu(const Pilot* _pilot) {
 
   __menu->addSeparator();
 
-  if (!_pilot->getRoute().origin.isEmpty()) {
-    MetarAction* showDepMetar = new MetarAction(_pilot->getRoute().origin, this);
+  if (!_pilot->route().origin.isEmpty()) {
+    MetarAction* showDepMetar = new MetarAction(_pilot->route().origin, this);
     __menu->addAction(showDepMetar);
     connect(showDepMetar,                    SIGNAL(triggered(QString)),
             MetarsWindow::getSingletonPtr(), SLOT(show(QString)));
   }
 
-  if (!_pilot->getRoute().destination.isEmpty()) {
-    MetarAction* showArrMetar = new MetarAction(_pilot->getRoute().destination, this);
+  if (!_pilot->route().destination.isEmpty()) {
+    MetarAction* showArrMetar = new MetarAction(_pilot->route().destination, this);
     __menu->addAction(showArrMetar);
     connect(showArrMetar,                    SIGNAL(triggered(QString)),
             MetarsWindow::getSingletonPtr(), SLOT(show(QString)));
@@ -697,10 +697,10 @@ void
 MapWidget::__openContextMenu(const Airport* _ap) {
   __contextMenuOpened = true;
   
-  __menu = new QMenu(_ap->getData()->icao, this);
+  __menu = new QMenu(_ap->data()->icao, this);
 
   AirportDetailsAction* showAp = new AirportDetailsAction(_ap, tr("Airport details"), this);
-  MetarAction* showMetar = new MetarAction(_ap->getData()->icao, this);
+  MetarAction* showMetar = new MetarAction(_ap->data()->icao, this);
   ToggleInboundOutboundLinesAction* toggleAction = new ToggleInboundOutboundLinesAction(_ap, this);
 
   __menu->addAction(showAp);
@@ -718,33 +718,33 @@ MapWidget::__openContextMenu(const Airport* _ap) {
 
   if (dynamic_cast<const ActiveAirport*>(_ap) != nullptr) {
     const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
-    if (!aa->getStaffModel()->getStaff().isEmpty()) {
+    if (!aa->staffModel()->staff().isEmpty()) {
       __menu->addSeparator();
       __menu->addAction(new ActionMenuSeparator(tr("Controllers"), this));
   
-      for (const Controller* c: aa->getStaffModel()->getStaff()) {
-        ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->getCallsign(), this);
+      for (const Controller* c: aa->staffModel()->staff()) {
+        ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign(), this);
         __menu->addAction(showDetails);
         connect(showDetails,                         SIGNAL(triggered(const Client*)),
                 AtcDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
       }
     }
   
-    if (!aa->getOutboundsModel()->getFlights().isEmpty() && aa->countDepartures()) {
+    if (!aa->outboundsModel()->flights().isEmpty() && aa->countDepartures()) {
       __menu->addSeparator();
       __menu->addAction(new ActionMenuSeparator(tr("Departures"), this));
       
-      for (const Pilot* p: aa->getOutboundsModel()->getFlights()) {
-        if (p->getFlightStatus() != Pilot::DEPARTING)
+      for (const Pilot* p: aa->outboundsModel()->flights()) {
+        if (p->flightStatus() != Pilot::DEPARTING)
           continue;
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
             /* For example: BAW123 to EGLL */
             tr("%1 to %2").arg(
-              p->getCallsign(),
+              p->callsign(),
               /* "Nowhere" means there's no destination airport in flight plan yet. */
-              (p->getRoute().destination.isEmpty() ? tr("nowhere") : p->getRoute().destination)
+              (p->route().destination.isEmpty() ? tr("nowhere") : p->route().destination)
             ),
             this
           );
@@ -758,20 +758,20 @@ MapWidget::__openContextMenu(const Airport* _ap) {
       }
     }
   
-    if (!aa->getInboundsModel()->getFlights().isEmpty() && aa->countArrivals()) {
+    if (!aa->inboundsModel()->flights().isEmpty() && aa->countArrivals()) {
       __menu->addSeparator();
       __menu->addAction(new ActionMenuSeparator(tr("Arrivals"), this));
     
-      for (const Pilot* p: aa->getInboundsModel()->getFlights()) {
-        if (p->getFlightStatus() != Pilot::ARRIVED)
+      for (const Pilot* p: aa->inboundsModel()->flights()) {
+        if (p->flightStatus() != Pilot::ARRIVED)
           continue;
       
         ClientDetailsAction* showDetails = new ClientDetailsAction(
             p,
             /* For example: BAW123 from EGLL */
             tr("%1 from %2").arg(
-              p->getCallsign(),
-              p->getRoute().origin
+              p->callsign(),
+              p->route().origin
             ),
             this
           );
@@ -795,19 +795,19 @@ void
 MapWidget::__openContextMenu(const Fir* _fir) {
   __contextMenuOpened = true;
   
-  __menu = new QMenu(_fir->getIcao(), this);
+  __menu = new QMenu(_fir->icao(), this);
 
   FirDetailsAction* showFir = new FirDetailsAction(_fir,
       /* FIR details */
-      tr("%1 details").arg(_fir->getIcao()), this);
+      tr("%1 details").arg(_fir->icao()), this);
 
   __menu->addAction(showFir);
 
   connect(showFir,                             SIGNAL(triggered(const Fir*)),
           FirDetailsWindow::getSingletonPtr(), SLOT(show(const Fir*)));
 
-  for (const Controller* c: _fir->getStaffModel()->getStaff()) {
-    ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->getCallsign(), this);
+  for (const Controller* c: _fir->staffModel()->staff()) {
+    ClientDetailsAction* showDetails = new ClientDetailsAction(c, c->callsign(), this);
     __menu->addAction(showDetails);
     connect(showDetails,                         SIGNAL(triggered(const Client*)),
             AtcDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
@@ -970,7 +970,7 @@ MapWidget::__drawFirs(double _moveX) {
     glPushMatrix();
     glTranslatef(_moveX, 0.0, -0.8);
 
-    for (const Fir& fir: FirDatabase::getSingleton().getFirs()) {
+    for (const Fir& fir: FirDatabase::getSingleton().firs()) {
       if (fir.isStaffed()) {
         continue;
       }
@@ -989,7 +989,7 @@ MapWidget::__drawFirs(double _moveX) {
     glPushMatrix();
     glTranslatef(_moveX, 0.0, -0.6);
 
-    for (const Fir& fir: FirDatabase::getSingleton().getFirs()) {
+    for (const Fir& fir: FirDatabase::getSingleton().firs()) {
       if (!fir.isStaffed())
         continue;
 
@@ -1012,9 +1012,9 @@ MapWidget::__drawUirs(double _moveX) {
   glPushMatrix();
   glTranslatef(_moveX, 0.0, -0.7);
 
-  for (const Uir * uir: __data.getUIRs()) {
+  for (const Uir * uir: __data.uirs()) {
     if (!uir->isEmpty()) {
-      for (const Fir * fir: uir->getRange()) {
+      for (const Fir * fir: uir->range()) {
         if (!fir->isStaffed()) {
           qglColor(__settings.colors.staffed_uir_borders);
           fir->drawBorders(); checkGLErrors(HERE);
@@ -1041,12 +1041,12 @@ MapWidget::__drawFirsLabels(float _moveX) {
   glPushMatrix();
   glTranslatef(0.0, 0.0, -0.5);
 
-  for (const Fir& fir: FirDatabase::getSingleton().getFirs()) {
-    if (fir.getTextPosition().x == 0.0 && fir.getTextPosition().y == 0.0)
+  for (const Fir& fir: FirDatabase::getSingleton().firs()) {
+    if (fir.textPosition().x == 0.0 && fir.textPosition().y == 0.0)
       continue;
 
     float x, y;
-    __mapCoordinates(fir.getTextPosition().x + _moveX, fir.getTextPosition().y, &x, &y);
+    __mapCoordinates(fir.textPosition().x + _moveX, fir.textPosition().y, &x, &y);
 
     if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
         (x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
@@ -1071,7 +1071,7 @@ MapWidget::__drawAirports(float _moveX) {
   
 //   Draw inactive airports 
   if (__settings.view.empty_airports || __keyPressed) {
-    for (AirportRecord& ap: AirportDatabase::getSingleton().getAirports()) {
+    for (AirportRecord& ap: AirportDatabase::getSingleton().airports()) {
       if (__airports.contains(ap.icao))
         continue;
       
@@ -1105,15 +1105,15 @@ MapWidget::__drawAirports(float _moveX) {
 //   And then draw active airports 
   for (auto it = __airports.begin(); it != __airports.end(); ++it) {
 
-    if (!it.value()->getData())
+    if (!it.value()->data())
       continue;
 
-    GLfloat x = (((it.value()->getData()->longitude + _moveX) / 180) - __position.x()) * __zoom;
+    GLfloat x = (((it.value()->data()->longitude + _moveX) / 180) - __position.x()) * __zoom;
 
     if (x < -__orthoRangeX || x > __orthoRangeX)
       continue;
 
-    GLfloat y = ((it.value()->getData()->latitude / 90) - __position.y()) * __zoom;
+    GLfloat y = ((it.value()->data()->latitude / 90) - __position.y()) * __zoom;
 
     if (y < -__orthoRangeY || y > __orthoRangeY)
       continue;
@@ -1122,7 +1122,7 @@ MapWidget::__drawAirports(float _moveX) {
 
     bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
 
-    glBindTexture(GL_TEXTURE_2D, (it.value()->getStaffModel()->getStaff().isEmpty()) ? __apIcon : __apStaffedIcon);
+    glBindTexture(GL_TEXTURE_2D, (it.value()->staffModel()->staff().isEmpty()) ? __apIcon : __apStaffedIcon);
     checkGLErrors(HERE);
 
     glPushMatrix();
@@ -1163,17 +1163,17 @@ MapWidget::__drawAirports(float _moveX) {
         !__keyPressed) { // draw callsign labels if not drawn already
       float tipX, tipY;
 
-      for (const Pilot* p: it.value()->getOutboundsModel()->getFlights()) {
-        if (p->getFlightStatus() == Pilot::AIRBORNE) {
-          __mapCoordinates(p->getPosition().longitude, p->getPosition().latitude,
+      for (const Pilot* p: it.value()->outboundsModel()->flights()) {
+        if (p->flightStatus() == Pilot::AIRBORNE) {
+          __mapCoordinates(p->position().longitude, p->position().latitude,
                            &tipX, &tipY);
           __drawCallsign(tipX, tipY, p);
         }
       }
 
-      for (const Pilot* p: it.value()->getInboundsModel()->getFlights()) {
-        if (p->getFlightStatus() == Pilot::AIRBORNE) {
-          __mapCoordinates(p->getPosition().longitude, p->getPosition().latitude,
+      for (const Pilot* p: it.value()->inboundsModel()->flights()) {
+        if (p->flightStatus() == Pilot::AIRBORNE) {
+          __mapCoordinates(p->position().longitude, p->position().latitude,
                            &tipX, &tipY);
           __drawCallsign(tipX, tipY, p);
         }
@@ -1188,17 +1188,17 @@ void
 MapWidget::__drawPilots(float _moveX) {
   glColor4f(1.0, 1.0, 1.0, 1.0);
   
-  for (const Pilot* client: VatsimDataHandler::getSingleton().getFlightsModel()->getFlights()) {
+  for (const Pilot* client: VatsimDataHandler::getSingleton().flightsModel()->flights()) {
     Q_CHECK_PTR(client);
-    if (client->getFlightStatus() != Pilot::AIRBORNE || client->isPrefiledOnly())
+    if (client->flightStatus() != Pilot::AIRBORNE || client->isPrefiledOnly())
       continue;
 
-    GLfloat x = ((client->getPosition().longitude + _moveX) / 180 - __position.x()) * __zoom;
+    GLfloat x = ((client->position().longitude + _moveX) / 180 - __position.x()) * __zoom;
 
     if (x < -__orthoRangeX || x > __orthoRangeX)
       continue;
 
-    GLfloat y = (client->getPosition().latitude / 90 - __position.y()) * __zoom;
+    GLfloat y = (client->position().latitude / 90 - __position.y()) * __zoom;
 
     if (y < -__orthoRangeY || y > __orthoRangeY)
       continue;
@@ -1211,10 +1211,10 @@ MapWidget::__drawPilots(float _moveX) {
     glTranslatef(x, y, -0.2); checkGLErrors(HERE);
 
     glPushMatrix();
-    glRotatef(static_cast<GLfloat>(client->getHeading()), 0, 0, -1); checkGLErrors(HERE);
+    glRotatef(static_cast<GLfloat>(client->heading()), 0, 0, -1); checkGLErrors(HERE);
 
     glVertexPointer(2, GL_FLOAT, 0, MODEL_VERTICES); checkGLErrors(HERE);
-    glBindTexture(GL_TEXTURE_2D, client->getModelTexture()); checkGLErrors(HERE);
+    glBindTexture(GL_TEXTURE_2D, client->modelTexture()); checkGLErrors(HERE);
 
     glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
     glPopMatrix();
@@ -1238,8 +1238,8 @@ MapWidget::__drawLines(double _moveX) {
   __prepareMatrix(WORLD, _moveX);
   
   if (__keyPressed) {
-    for (const Pilot* p: VatsimDataHandler::getSingleton().getFlightsModel()->getFlights()) {
-      if (p->getFlightStatus() == Pilot::AIRBORNE)
+    for (const Pilot* p: VatsimDataHandler::getSingleton().flightsModel()->flights()) {
+      if (p->flightStatus() == Pilot::AIRBORNE)
         p->drawLines();
     }
   
@@ -1259,11 +1259,11 @@ MapWidget::__drawLines(double _moveX) {
     }
   }
   
-  if (FlightTracker::getSingleton().getTracked())
-    FlightTracker::getSingleton().getTracked()->drawLines();
+  if (FlightTracker::getSingleton().tracked())
+    FlightTracker::getSingleton().tracked()->drawLines();
   
   if (AirportTracker::getSingleton().isInitialized()) {
-    for (auto it: AirportTracker::getSingleton().getTracked().values()) {
+    for (auto it: AirportTracker::getSingleton().tracked().values()) {
       Q_CHECK_PTR(it);
       it->drawLines();
     }
@@ -1390,36 +1390,36 @@ inline QString
 MapWidget::__producePilotToolTip(const Pilot* _p) {
   return
     static_cast<QString>("<center>") %
-    _p->getCallsign() % "<br><nobr>" %
-    _p->getRealName() % " (" % _p->getAircraft() % ")</nobr><br><nobr>" %
-    (_p->getRoute().origin.isEmpty() ? tr("(unknown)") : (__airports[_p->getRoute().origin]->getData() ?
-        _p->getRoute().origin % " " % QString::fromUtf8(__airports[_p->getRoute().origin]->getData()->city) :
-        _p->getRoute().origin)) %
+    _p->callsign() % "<br><nobr>" %
+    _p->realName() % " (" % _p->aircraft() % ")</nobr><br><nobr>" %
+    (_p->route().origin.isEmpty() ? tr("(unknown)") : (__airports[_p->route().origin]->data() ?
+        _p->route().origin % " " % QString::fromUtf8(__airports[_p->route().origin]->data()->city) :
+        _p->route().origin)) %
     " > " %
-    (_p->getRoute().destination.isEmpty() ? tr("(unknown)") : (__airports[_p->getRoute().destination]->getData() ?
-        _p->getRoute().destination % " " % QString::fromUtf8(__airports[_p->getRoute().destination]->getData()->city) :
-        _p->getRoute().destination)) %
+    (_p->route().destination.isEmpty() ? tr("(unknown)") : (__airports[_p->route().destination]->data() ?
+        _p->route().destination % " " % QString::fromUtf8(__airports[_p->route().destination]->data()->city) :
+        _p->route().destination)) %
     "</nobr><br>" %
-    tr("Ground speed: %1 kts").arg(QString::number(_p->getGroundSpeed())) %
+    tr("Ground speed: %1 kts").arg(QString::number(_p->groundSpeed())) %
     "<br>" %
-    tr("Altitude: %1 ft").arg(QString::number(_p->getAltitude())) %
+    tr("Altitude: %1 ft").arg(QString::number(_p->altitude())) %
     "</center>";
 }
 
 inline QString
 MapWidget::__produceAirportToolTip(const Airport* _ap) {
   QString text = static_cast<QString>("<center>") %
-                 static_cast<QString>(_ap->getData()->icao) %
+                 static_cast<QString>(_ap->data()->icao) %
                  static_cast<QString>("<br><nobr>") %
-                 QString::fromUtf8(_ap->getData()->name) %
+                 QString::fromUtf8(_ap->data()->name) %
                  static_cast<QString>(", ") %
-                 QString::fromUtf8(_ap->getData()->city) %
+                 QString::fromUtf8(_ap->data()->city) %
                  static_cast<QString>("</nobr>");
   if (dynamic_cast<const ActiveAirport*>(_ap) != nullptr) {
     const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
-    for (const Controller* c: aa->getStaffModel()->getStaff())
+    for (const Controller* c: aa->staffModel()->staff())
       text.append(static_cast<QString>("<br><nobr>") %
-                  c->getCallsign() % " " % c->getFrequency() % " " % c->getRealName() %
+                  c->callsign() % " " % c->frequency() % " " % c->realName() %
                   "</nobr>"
                  );
   }
@@ -1440,23 +1440,23 @@ MapWidget::__produceAirportToolTip(const Airport* _ap) {
 
 inline QString
 MapWidget::__produceFirToolTip(const Fir* _f) {
-  if (_f->getName().isEmpty() && !_f->isStaffed())
+  if (_f->name().isEmpty() && !_f->isStaffed())
     return "";
 
   QString text = "<center>";
 
-  if (!_f->getName().isEmpty()) {
-    text.append(static_cast<QString>("<nobr>") % _f->getName());
+  if (!_f->name().isEmpty()) {
+    text.append(static_cast<QString>("<nobr>") % _f->name());
 
-    if (!_f->getCountry().isEmpty())
-      text.append(static_cast<QString>(", ") % _f->getCountry());
+    if (!_f->country().isEmpty())
+      text.append(static_cast<QString>(", ") % _f->country());
 
     text.append(static_cast<QString>("</nobr>"));
   }
 
-  for (const Controller * c: _f->getStaffModel()->getStaff())
+  for (const Controller * c: _f->staffModel()->staff())
     text.append(static_cast<QString>("<br><nobr>") %
-                c->getCallsign() % " " % c->getFrequency() % " " % c->getRealName() %
+                c->callsign() % " " % c->frequency() % " " % c->realName() %
                 static_cast<QString>("</nobr>")
                );
 
@@ -1473,7 +1473,7 @@ MapWidget::__drawCallsign(const Pilot* _p) {
   else
     glTranslatef(0.0f, 0.0f, 0.1f);
 
-  glBindTexture(GL_TEXTURE_2D, _p->getCallsignTip()); checkGLErrors(HERE);
+  glBindTexture(GL_TEXTURE_2D, _p->callsignTip()); checkGLErrors(HERE);
   glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
   glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
   glBindTexture(GL_TEXTURE_2D, 0);
@@ -1484,7 +1484,7 @@ inline void
 MapWidget::__drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
   glPushMatrix();
   glTranslatef(_x, _y, 0.1f);
-  glBindTexture(GL_TEXTURE_2D, _p->getCallsignTip()); checkGLErrors(HERE);
+  glBindTexture(GL_TEXTURE_2D, _p->callsignTip()); checkGLErrors(HERE);
   glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
   glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
   glBindTexture(GL_TEXTURE_2D, 0);
@@ -1495,7 +1495,7 @@ inline void
 MapWidget::__drawIcaoLabel(const Airport* _ap) {
   glPushMatrix();
   glTranslatef(0.0f, 0.0f, 0.1f);
-  glBindTexture(GL_TEXTURE_2D, _ap->getLabelTip()); checkGLErrors(HERE);
+  glBindTexture(GL_TEXTURE_2D, _ap->labelTip()); checkGLErrors(HERE);
   glVertexPointer(2, GL_FLOAT, 0, AIRPORT_TOOLTIP_VERTICES); checkGLErrors(HERE);
   glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
   glBindTexture(GL_TEXTURE_2D, 0);
@@ -1504,10 +1504,10 @@ MapWidget::__drawIcaoLabel(const Airport* _ap) {
 
 inline void
 MapWidget::__drawFirLabel(GLfloat _x, GLfloat _y, const Fir& _f) {
-  if (_f.getIcaoTip()) {
+  if (_f.icaoTip()) {
     glPushMatrix();
     glTranslatef(_x, _y, 0.0f);
-    glBindTexture(GL_TEXTURE_2D, _f.getIcaoTip()); checkGLErrors(HERE);
+    glBindTexture(GL_TEXTURE_2D, _f.icaoTip()); checkGLErrors(HERE);
     glVertexPointer(2, GL_FLOAT, 0, FIR_TOOLTIP_VERTICES); checkGLErrors(HERE);
     glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
     glBindTexture(GL_TEXTURE_2D, 0);

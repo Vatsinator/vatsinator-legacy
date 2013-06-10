@@ -34,37 +34,12 @@ class Unzipper : public QObject {
   Q_OBJECT
   
 public:
-  
+    
   enum UnzipStatus {
     UNZIPPER_OK,
     UNZIPPER_FAIL
   };
-  
-  explicit Unzipper(QString, QObject* = 0);
-  explicit Unzipper(QObject* = 0);
-  virtual ~Unzipper();
-  
-  void unzip();
-  
-  void setFileName(const QString&);
-  
-  inline const QString &
-  getFileName() const { return __fileName; }
-  
-  inline const QStringList &
-  getFileList() const { return __fileList; }
-  
-private:
-  QThread*    __myThread;
-  QStringList __fileList;
-  
-  /* zip file name */
-  QString     __fileName;
-  
-private slots:
-  void __unzip();
-  void __restoreThread(Unzipper::UnzipStatus);
-  
+
 signals:
   /**
    * Emited after next file is already unzipped.
@@ -86,6 +61,33 @@ signals:
    * @param erStr Error status.
    */
   void error(QString);
+  
+public:
+  
+  explicit Unzipper(QString, QObject* = 0);
+  explicit Unzipper(QObject* = 0);
+  virtual ~Unzipper();
+  
+  void unzip();
+  
+  void setFileName(const QString&);
+  
+  inline const QString &
+  fileName() const { return __fileName; }
+  
+  inline const QStringList &
+  fileList() const { return __fileList; }
+  
+private:
+  QThread*    __myThread;
+  QStringList __fileList;
+  
+  /* zip file name */
+  QString     __fileName;
+  
+private slots:
+  void __unzip();
+  void __restoreThread(Unzipper::UnzipStatus);
   
 };
 

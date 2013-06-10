@@ -54,24 +54,24 @@ ColorsPage::listIcon() const {
 
 QVariant
 ColorsPage::get(const QString& _s) const {
-  _S(staffed_fir_borders,       StaffedFirColorButton->getColor());
-  _S(unstaffed_fir_borders,     UnstaffedFirColorButton->getColor());
-  _S(staffed_uir_borders,       StaffedUirColorButton->getColor());
-  _S(approach_circle,           ApproachCircleColorButton->getColor());
-  _S(seas,                      SeasColorButton->getColor());
-  _S(lands,                     LandsColorButton->getColor());
-  _S(origin_to_pilot_line,      OriginToPilotLineColorButton->getColor());
-  _S(pilot_to_destination_line, PilotToDestinationLineColorButton->getColor());
+  _S(staffed_fir_borders,       StaffedFirColorButton->color());
+  _S(unstaffed_fir_borders,     UnstaffedFirColorButton->color());
+  _S(staffed_uir_borders,       StaffedUirColorButton->color());
+  _S(approach_circle,           ApproachCircleColorButton->color());
+  _S(seas,                      SeasColorButton->color());
+  _S(lands,                     LandsColorButton->color());
+  _S(origin_to_pilot_line,      OriginToPilotLineColorButton->color());
+  _S(pilot_to_destination_line, PilotToDestinationLineColorButton->color());
   
   // _S macro cannot handle these
   if (_s == "staffed_fir_background") {
-    QColor tmp = StaffedFirColorButton->getColor();
+    QColor tmp = StaffedFirColorButton->color();
     tmp.setAlpha(StaffedFirColorAlphaBox->value());
     return tmp;
   }
   
   if (_s == "staffed_uir_background") {
-    QColor tmp = StaffedUirColorButton->getColor();
+    QColor tmp = StaffedUirColorButton->color();
     tmp.setAlpha(StaffedUirColorAlphaBox->value());
     return tmp;
   }
@@ -105,14 +105,14 @@ ColorsPage::__restore(QSettings& _s) {
 
 void
 ColorsPage::__save(QSettings& _s) {
-  _s.setValue("staffed_fir_borders", StaffedFirColorButton->getColor());
+  _s.setValue("staffed_fir_borders", StaffedFirColorButton->color());
   _s.setValue("staffed_fir_alpha", StaffedFirColorAlphaBox->value());
-  _s.setValue("unstaffed_fir_borders", UnstaffedFirColorButton->getColor());
-  _s.setValue("staffed_uir_borders", StaffedUirColorButton->getColor());
+  _s.setValue("unstaffed_fir_borders", UnstaffedFirColorButton->color());
+  _s.setValue("staffed_uir_borders", StaffedUirColorButton->color());
   _s.setValue("staffed_uir_alpha", StaffedUirColorAlphaBox->value());
-  _s.setValue("approach_circle", ApproachCircleColorButton->getColor());
-  _s.setValue("seas", SeasColorButton->getColor());
-  _s.setValue("lands", LandsColorButton->getColor());
-  _s.setValue("origin_to_pilot_line", OriginToPilotLineColorButton->getColor());
-  _s.setValue("pilot_to_destination_line", PilotToDestinationLineColorButton->getColor());
+  _s.setValue("approach_circle", ApproachCircleColorButton->color());
+  _s.setValue("seas", SeasColorButton->color());
+  _s.setValue("lands", LandsColorButton->color());
+  _s.setValue("origin_to_pilot_line", OriginToPilotLineColorButton->color());
+  _s.setValue("pilot_to_destination_line", PilotToDestinationLineColorButton->color());
 }

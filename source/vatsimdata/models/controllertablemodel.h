@@ -34,6 +34,9 @@ class ControllerTableModel : public QAbstractTableModel {
 
   Q_OBJECT
 
+signals:
+  void sorted();
+
 public:
   enum Column {
     Callsign  = 0,
@@ -54,14 +57,11 @@ public:
   QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
   void sort(int, Qt::SortOrder = Qt::AscendingOrder);
 
-  inline const QVector< const Controller* > &
-  getStaff() const { return __staff; }
-  
-signals:
-  void sorted();
+  inline const QVector<const Controller*> &
+  staff() const { return __staff; }
 
 private:
-  QVector< const Controller* > __staff;
+  QVector<const Controller*> __staff;
 
 };
 

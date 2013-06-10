@@ -64,22 +64,22 @@ public:
   virtual ~Client() {}
 
   inline unsigned
-  getPid() const { return __pid; }
+  pid() const { return __pid; }
   
   inline const QString &
-  getCallsign() const { return __callsign; }
+  callsign() const { return __callsign; }
   
   inline const QString &
-  getRealName() const { return __realName; }
+  realName() const { return __realName; }
   
   inline const QString &
-  getServer() const { return __server; }
+  server() const { return __server; }
   
   inline const QDateTime &
-  getOnlineFrom() const { return __onlineFrom; }
+  onlineFrom() const { return __onlineFrom; }
   
   inline const Client::Position &
-  getPosition() const { return __position; }
+  position() const { return __position; }
   
 protected:
   /* Client data */

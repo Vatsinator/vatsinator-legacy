@@ -48,7 +48,7 @@ BookedController::BookedController(const QStringList& _data) :
     __bookedTo(QTime::fromString(_data[14], "hhmm")) {}
 
 QString
-BookedController::getIcao() const {
+BookedController::icao() const {
   return __callsign.split('_').first();
 }
     

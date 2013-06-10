@@ -157,27 +157,27 @@ void Pilot::__updateAirports() {
     ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.origin);
     ap->addOutbound(this);
 
-    if (__prefiledOnly && ap->getData()) {
-      __position.latitude = ap->getData()->latitude;
-      __position.longitude = ap->getData()->longitude;
+    if (__prefiledOnly && ap->data()) {
+      __position.latitude = ap->data()->latitude;
+      __position.longitude = ap->data()->longitude;
     }
 
-    if (ap->getFirs()[0])
-      ap->getFirs()[0]->addFlight(this);
+    if (ap->firs()[0])
+      ap->firs()[0]->addFlight(this);
 
-    if (ap->getFirs()[1])
-      ap->getFirs()[1]->addFlight(this);
+    if (ap->firs()[1])
+      ap->firs()[1]->addFlight(this);
   }
 
   if (!__route.destination.isEmpty()) {
     ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.destination);
     ap->addInbound(this);
 
-    if (ap->getFirs()[0])
-      ap->getFirs()[0]->addFlight(this);
+    if (ap->firs()[0])
+      ap->firs()[0]->addFlight(this);
 
-    if (ap->getFirs()[1])
-      ap->getFirs()[1]->addFlight(this);
+    if (ap->firs()[1])
+      ap->firs()[1]->addFlight(this);
   }
 }
 
@@ -185,9 +185,9 @@ void
 Pilot::__setMyStatus() {
   if (!__route.origin.isEmpty() && !__route.destination.isEmpty()) {
     const AirportRecord* ap_origin =
-      VatsimDataHandler::getSingleton().getActiveAirports()[__route.origin]->getData();
+      VatsimDataHandler::getSingleton().activeAirports()[__route.origin]->data();
     const AirportRecord* ap_arrival =
-      VatsimDataHandler::getSingleton().getActiveAirports()[__route.destination]->getData();
+      VatsimDataHandler::getSingleton().activeAirports()[__route.destination]->data();
 
     if ((ap_origin == ap_arrival) && (ap_origin != NULL)) // traffic pattern?
       if (__groundSpeed < 50) {
@@ -219,7 +219,7 @@ Pilot::__setMyStatus() {
     const AirportRecord* closest = NULL;
     qreal distance = 0.0;
 
-    for (const AirportRecord & ap: AirportDatabase::getSingleton().getAirports()) {
+    for (const AirportRecord & ap: AirportDatabase::getSingleton().airports()) {
       qreal temp = VatsimDataHandler::distance(ap.longitude, ap.latitude,
                    __position.longitude, __position.latitude);
 
@@ -251,11 +251,11 @@ Pilot::__generateLines() const {
   const Airport* ap = NULL;
 
   if (!__route.origin.isEmpty())
-    ap = VatsimDataHandler::getSingleton().getActiveAirports()[__route.origin];
+    ap = VatsimDataHandler::getSingleton().activeAirports()[__route.origin];
 
-  if (ap && ap->getData()) {
-    double myLon = ap->getData()->longitude;
-    double myLat = ap->getData()->latitude;
+  if (ap && ap->data()) {
+    double myLon = ap->data()->longitude;
+    double myLat = ap->data()->latitude;
 
     if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
         VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
@@ -279,11 +279,11 @@ Pilot::__generateLines() const {
   ap = NULL;
 
   if (!__route.destination.isEmpty())
-    ap = VatsimDataHandler::getSingleton().getActiveAirports()[__route.destination];
+    ap = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
 
-  if (ap && ap->getData()) {
-    double myLon = ap->getData()->longitude;
-    double myLat = ap->getData()->latitude;
+  if (ap && ap->data()) {
+    double myLon = ap->data()->longitude;
+    double myLat = ap->data()->latitude;
 
     if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
         VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
@@ -301,12 +301,12 @@ Pilot::__generateLines() const {
 
 GLuint
 Pilot::__generateTip() const {
-  QImage temp(MapWidget::getSingleton().getPilotToolTipBackground());
+  QImage temp(MapWidget::getSingleton().pilotToolTipBackground());
   QPainter painter(&temp);
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::getSingleton().getPilotFont());
+  painter.setFont(MapWidget::getSingleton().pilotFont());
   painter.setPen(QColor(PILOTS_LABELS_FONT_COLOR));
   QRect rectangle(28, 10, 73, 13); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, __callsign);
@@ -318,14 +318,13 @@ void
 Pilot::__parseRoute() const {
   /*
    * Okay, this function needs some comment.
-   * Pilots generally fill their NATs in several different ways.
-   * 3) KOBEV 5000N 05000W 5100N 04000W 5100N 03000W 5100N 02000W SOMAX
-   * 5) NAT[A-Z] <- this is the worst for us.
+   * Pilots generally fill their NATs in several different ways, but
+   * NAT[A-Z] is the worst for us.
    * TODO: Include NATs entry/exit points.
    */
   
   int pos = 0;
-  QVector< float >* curList = &__lineFrom;
+  QVector<float>* curList = &__lineFrom;
   bool natFound = false;
   
   /* 1) 5000N 05000W 5100N 04000W 5100N 03000W 5100N 02000W */

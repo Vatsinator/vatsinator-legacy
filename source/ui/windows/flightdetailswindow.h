@@ -32,12 +32,12 @@ class FlightDetailsWindow :
     private Ui::FlightDetailsWindow {
 
   Q_OBJECT
+  
+signals:
+  void flightTrackingStateChanged(const Pilot*, int);
 
 public:
   FlightDetailsWindow(QWidget* = 0);
-
-signals:
-  void flightTrackingStateChanged(const Pilot*, int);
 
 public slots:
   void show(const Client*);

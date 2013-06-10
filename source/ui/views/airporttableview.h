@@ -37,7 +37,6 @@ public:
   explicit AirportTableView(QWidget* = 0);
   
   void setModel(AirportTableModel*);
-  
     
 protected slots:
   void rowsInserted(const QModelIndex&, int, int);

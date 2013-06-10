@@ -53,75 +53,6 @@ class MapWidget :
 
   Q_OBJECT
 
-public:
-  MapWidget(QWidget* = 0);
-
-  virtual ~MapWidget();
-  
-  /**
-   * Gets latitude and longitude of mouse position on the map.
-   * @param lat Stores latitude.
-   * @param lon Stores longitude.
-   */
-  void mouse2LatLon(qreal*, qreal*);
-
-  /**
-   * Converts given image to OpenGL formatm loads it and returns
-   * its GL-ID.
-   * NOTE: You must call MapWidget::deleteImage on the image eventually.
-   * @param image Already loaded QImage.
-   * @return GL's image id in the GPU memory.
-   */
-  static GLuint loadImage(const QImage&);
-  
-  /**
-   * Loads image from the given path.
-   * NOTE: You must call MapWidget::deleteImage on the image eventually.
-   * @param path Path to the image, can be any Qt-supported type.
-   * @return GL's image id in the GPU memory.
-   */
-  static GLuint loadImage(const QString&);
-  
-  /**
-   * Unloads the image from the GPU memory, frees the pointer.
-   * @param img Image handle.
-   */
-  static void deleteImage(GLuint);
-  
-  /**
-   * Obtains default format, tweaks it and returns.
-   */
-  static QGLFormat getFormat();
-  
-  
-  /* For Pilot class */
-  inline const QImage &
-  getPilotToolTipBackground() const { return __pilotToolTip; }
-
-  inline const QFont &
-  getPilotFont() const { return __pilotFont; }
-
-  /* For Airport class */
-  inline const QImage &
-  getAirportToolTipBackground() const { return __airportToolTip; }
-
-  inline const QFont &
-  getAirportFont() const { return __airportFont; }
-
-  /* For Fir class */
-  inline const QImage &
-  getFirToolTipBackground() const { return __firToolTip; }
-
-  inline const QFont &
-  getFirFont() const { return __firFont; }
-
-  inline bool
-  isInitialized() const { return __isInitialized; }
-
-#ifndef NO_DEBUG
-  static unsigned texturesCount;
-#endif
-
 signals:
   /**
    * Emitted when user clicks right mouse button on
@@ -195,6 +126,75 @@ signals:
    * Called from resizeEvent().
    */
   void resized();
+
+public:
+  MapWidget(QWidget* = 0);
+
+  virtual ~MapWidget();
+  
+  /**
+   * Gets latitude and longitude of mouse position on the map.
+   * @param lat Stores latitude.
+   * @param lon Stores longitude.
+   */
+  void mouse2LatLon(qreal*, qreal*);
+
+  /**
+   * Converts given image to OpenGL formatm loads it and returns
+   * its GL-ID.
+   * NOTE: You must call MapWidget::deleteImage on the image eventually.
+   * @param image Already loaded QImage.
+   * @return GL's image id in the GPU memory.
+   */
+  static GLuint loadImage(const QImage&);
+  
+  /**
+   * Loads image from the given path.
+   * NOTE: You must call MapWidget::deleteImage on the image eventually.
+   * @param path Path to the image, can be any Qt-supported type.
+   * @return GL's image id in the GPU memory.
+   */
+  static GLuint loadImage(const QString&);
+  
+  /**
+   * Unloads the image from the GPU memory, frees the pointer.
+   * @param img Image handle.
+   */
+  static void deleteImage(GLuint);
+  
+  /**
+   * Obtains default format, tweaks it and returns.
+   */
+  static QGLFormat getFormat();
+  
+  
+  /* For Pilot class */
+  inline const QImage &
+  pilotToolTipBackground() const { return __pilotToolTip; }
+
+  inline const QFont &
+  pilotFont() const { return __pilotFont; }
+
+  /* For Airport class */
+  inline const QImage &
+  airportToolTipBackground() const { return __airportToolTip; }
+
+  inline const QFont &
+  airportFont() const { return __airportFont; }
+
+  /* For Fir class */
+  inline const QImage &
+  firToolTipBackground() const { return __firToolTip; }
+
+  inline const QFont &
+  firFont() const { return __firFont; }
+
+  inline bool
+  isInitialized() const { return __isInitialized; }
+
+#ifndef NO_DEBUG
+  static unsigned texturesCount;
+#endif
 
 public slots:
   /**
@@ -361,7 +361,7 @@ private:
 
   /* We keep some singleton pointers to have the code clean */
   VatsimDataHandler&        __data;
-  const AirportsMap&        __airports;
+  const AirportMap&        __airports;
   
   /* Structs below store settings locally to avoid expensive SM::get() calling. */
   struct {
@@ -398,7 +398,7 @@ private:
 
 #ifndef NO_DEBUG
   /* For memory tracking */
-  QMap< GLuint, unsigned > __imagesMemory;
+  QMap<GLuint, unsigned> __imagesMemory;
 #endif
 };
 

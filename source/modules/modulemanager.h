@@ -33,7 +33,7 @@ class VatbookHandler;
 
 class ModuleManager :
     public QObject,
-    public Singleton< ModuleManager > {
+    public Singleton<ModuleManager> {
 
   Q_OBJECT
 

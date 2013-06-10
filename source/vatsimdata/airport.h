@@ -51,21 +51,21 @@ public:
   virtual unsigned countInbounds() const = 0;
   
   virtual bool hasApproach() const = 0;
-  virtual Controller::Facilities getFacilities() const = 0;
+  virtual Controller::Facilities facilities() const = 0;
   
   virtual void drawLines() const = 0;
   
-  virtual inline const AirportRecord*
-  getData() const { return __data; }
+  virtual inline const AirportRecord *
+  data() const { return __data; }
   
   inline Clickable::Type
   objectType() const { return Clickable::AIRPORT; }
   
   inline GLuint
-  getLabelTip() const { return __labelTip ? __labelTip : __generateTip(); }
+  labelTip() const { return __labelTip ? __labelTip : __generateTip(); }
   
-  inline Fir**
-  getFirs() { return __firs; }
+  inline Fir **
+  firs() { return __firs; }
   
 protected:
   Fir* __firs[2];

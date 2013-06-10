@@ -55,6 +55,28 @@ class VatsimDataHandler :
    */
 
   Q_OBJECT
+  
+signals:
+  
+  /**
+   * Called after status.txt is parsed.
+   */
+  void vatsimStatusUpdated();
+  
+  /**
+   * Called when new data is already parsed.
+   */
+  void vatsimDataUpdated();
+  
+  /**
+   * Incomplete fetch or something like that.
+   */
+  void dataCorrupted();
+  
+  /**
+   * If local data is corrupted.
+   */
+  void localDataBad(QString);
 
 public:
   /**
@@ -157,32 +179,32 @@ public:
   /**
    * Returns an URL to where METARs can be fetched from.
    */
-  inline const QString&
-  getMetarUrl() const { return __metarURL; }
+  inline const QString &
+  metarUrl() const { return __metarURL; }
 
   /**
    * The following functions return const references to vectors of clients.
    */
   inline FlightTableModel*
-  getFlightsModel() { return __flights; }
+  flightsModel() { return __flights; }
 
   inline ControllerTableModel*
-  getATCsModel() { return __atcs; }
+  atcModel() { return __atcs; }
 
-  inline const QVector< Uir* > &
-  getUIRs() const { return __uirs; }
+  inline const QVector<Uir*> &
+  uirs() const { return __uirs; }
 
-  inline const QMap< QString, ActiveAirport* > &
-  getActiveAirports() const { return __activeAirports; }
+  inline const QMap<QString, ActiveAirport*> &
+  activeAirports() const { return __activeAirports; }
   
-  inline const QMap< QString, EmptyAirport* > &
-  getEmptyAirports() const { return __emptyAirports; }
+  inline const QMap<QString, EmptyAirport*> &
+  emptyAirports() const { return __emptyAirports; }
 
-  inline const QMultiMap< QString, QString > &
-  getAliases() const { return __aliases; }
+  inline const QMultiMap<QString, QString> &
+  aliases() const { return __aliases; }
 
-  inline const QDateTime&
-  getDateDataUpdated() const { return __dateVatsimDataUpdated; }
+  inline const QDateTime &
+  dateDataUpdated() const { return __dateVatsimDataUpdated; }
 
   inline bool
   statusFileFetched() const { return __statusFileFetched; }
@@ -240,19 +262,19 @@ private:
   FlightTableModel*   __flights;
   ControllerTableModel*   __atcs;
 
-  QVector< Uir* >   __uirs;
+  QVector<Uir*>   __uirs;
 
   /* This is vector of data servers, obtained from status file */
-  QVector< QString >  __servers;
+  QVector<QString>  __servers;
 
   /* This set contains list of active airports, used later by OpenGLWidget */
-  QMap< QString, ActiveAirport* > __activeAirports;
+  QMap<QString, ActiveAirport*> __activeAirports;
   
   /* Inactive airports (no staff, no flights) */
-  QMap< QString, EmptyAirport* > __emptyAirports;
+  QMap<QString, EmptyAirport*> __emptyAirports;
 
   /* This set contains list of aliases. Filled in by init() method */
-  QMultiMap< QString, QString > __aliases;
+  QMultiMap<QString, QString> __aliases;
 
   /* This is URL that we can obtain METAR from */
   QString   __metarURL;
@@ -281,31 +303,9 @@ private slots:
   void __slotUiCreated();
   void __beginDownload();
   void __dataFetched(const QString&);
-  
-signals:
-  
-  /**
-   * Called after status.txt is parsed.
-   */
-  void vatsimStatusUpdated();
-  
-  /**
-   * Called when new data is already parsed.
-   */
-  void vatsimDataUpdated();
-  
-  /**
-   * Incomplete fetch or something like that.
-   */
-  void dataCorrupted();
-  
-  /**
-   * If local data is corrupted.
-   */
-  void localDataBad(QString);
 
 };
 
-typedef QMap< QString, ActiveAirport* > AirportsMap;
+typedef QMap<QString, ActiveAirport*> AirportMap;
 
 #endif // VATSIMDATAHANDLER_H

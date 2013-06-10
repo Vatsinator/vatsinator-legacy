@@ -29,8 +29,11 @@ class BookedAtcTableModel : public QAbstractTableModel {
   
   Q_OBJECT
   
+signals:
+  void sorted();
+  
 public:
-  explicit BookedAtcTableModel (QObject* = 0);
+  explicit BookedAtcTableModel(QObject* = 0);
   virtual ~BookedAtcTableModel();
   
   void addStaff(const BookedController*);
@@ -50,10 +53,7 @@ public:
   };
   
 private:
-  QVector< const BookedController* > __staff;
-  
-signals:
-  void sorted();
+  QVector<const BookedController*> __staff;
   
 };
 

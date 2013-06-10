@@ -36,10 +36,6 @@ public:
   explicit ScrollLabel(QWidget* parent = 0);
   
   inline const QString &
-  getText() const { return __text; }
-  
-  // QT compatibility
-  inline const QString &
   text() const { return __text; }
   
 public slots:

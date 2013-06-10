@@ -46,7 +46,7 @@ FlightTableModel::clear() {
 const Pilot*
 FlightTableModel::findFlightByCallsign(const QString& _callsign) const {
 for (const Pilot * p: __flights)
-    if (p->getCallsign() == _callsign)
+    if (p->callsign() == _callsign)
       return p;
 
   return NULL;
@@ -78,7 +78,7 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ToolTipRole:
-      return __flights[_index.row()]->getRealName();
+      return __flights[_index.row()]->realName();
     case Qt::ForegroundRole:
 
       if (__flights[_index.row()]->isPrefiledOnly())
@@ -91,11 +91,11 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 
       switch (_index.column()) {
         case Callsign:
-          return __flights[_index.row()]->getCallsign();
+          return __flights[_index.row()]->callsign();
         case Name:
-          return __flights[_index.row()]->getRealName();
+          return __flights[_index.row()]->realName();
         case From:
-          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->getRoute().origin);
+          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route().origin);
 
           if (ap)
             return QString(
@@ -104,10 +104,10 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
                      QString::fromUtf8(ap->city)
                    );
           else
-            return __flights[_index.row()]->getRoute().origin;
+            return __flights[_index.row()]->route().origin;
 
         case To:
-          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->getRoute().destination);
+          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route().destination);
 
           if (ap)
             return QString(
@@ -116,10 +116,10 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
                      QString::fromUtf8(ap->city)
                    );
           else
-            return __flights[_index.row()]->getRoute().destination;
+            return __flights[_index.row()]->route().destination;
 
         case Aircraft:
-          return __flights[_index.row()]->getAircraft();
+          return __flights[_index.row()]->aircraft();
         case Button: // for non-prefiled-only this will be overriden by QPushButton widget
           return tr("Prefiled");
         default:
@@ -161,10 +161,10 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
       qSort(__flights.begin(), __flights.end(),
             _order == Qt::AscendingOrder ?
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getCallsign() < _b->getCallsign();
+                return _a->callsign() < _b->callsign();
               } :
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getCallsign() > _b->getCallsign();
+                return _a->callsign() > _b->callsign();
               }
       );
       
@@ -174,10 +174,10 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
       qSort(__flights.begin(), __flights.end(),
             _order == Qt::AscendingOrder ?
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getRealName() < _b->getRealName();
+                return _a->realName() < _b->realName();
               } :
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getRealName() > _b->getRealName();
+                return _a->realName() > _b->realName();
               }
       );
       
@@ -187,10 +187,10 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
       qSort(__flights.begin(), __flights.end(),
             _order == Qt::AscendingOrder ?
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getRoute().origin < _b->getRoute().origin;
+                return _a->route().origin < _b->route().origin;
               } :
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getRoute().origin > _b->getRoute().origin;
+                return _a->route().origin > _b->route().origin;
               }
       );
       
@@ -200,10 +200,10 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
       qSort(__flights.begin(), __flights.end(),
             _order == Qt::AscendingOrder ?
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getRoute().destination < _b->getRoute().destination;
+                return _a->route().destination < _b->route().destination;
               } :
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getRoute().destination > _b->getRoute().destination;
+                return _a->route().destination > _b->route().destination;
               }
       );
       
@@ -213,10 +213,10 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
       qSort(__flights.begin(), __flights.end(),
             _order == Qt::AscendingOrder ?
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getAircraft() < _b->getAircraft();
+                return _a->aircraft() < _b->aircraft();
               } :
               [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->getAircraft() > _b->getAircraft();
+                return _a->aircraft() > _b->aircraft();
               }
       );
       

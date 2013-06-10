@@ -33,7 +33,7 @@ ClientDetailsButton::ClientDetailsButton(const Client* _client,
 }
 
 void
-ClientDetailsButton::setClientPointer(const Client* _client) {
+ClientDetailsButton::setClient(const Client* _client) {
   __current = _client;
 }
 

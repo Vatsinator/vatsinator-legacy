@@ -28,19 +28,19 @@ class Client;
 class ClientDetailsButton : public QPushButton {
 
   Q_OBJECT
+  
+signals:
+  void clicked(const Client*);
 
 public:
   explicit ClientDetailsButton(const Client* = NULL, QWidget* = 0);
-  void setClientPointer(const Client*);
+  void setClient(const Client*);
 
 private:
   const Client* __current;
 
 private slots:
   void __handleClicked();
-  
-signals:
-  void clicked(const Client*);
 
 };
 

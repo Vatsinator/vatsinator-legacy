@@ -26,7 +26,7 @@
 
 #include "singleton.h"
 
-class ModelMatcher : public Singleton< ModelMatcher > {
+class ModelMatcher : public Singleton<ModelMatcher> {
 
   /**
    * This class matches the models to the planes.

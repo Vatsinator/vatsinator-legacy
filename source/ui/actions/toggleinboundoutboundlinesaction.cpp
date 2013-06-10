@@ -32,7 +32,7 @@ ToggleInboundOutboundLinesAction::ToggleInboundOutboundLinesAction(
     QAction(tr("Toggle inbound/outbound lines"), _parent),
     __current(_ap) {
   setCheckable(true);
-  if (AirportTracker::getSingleton().getTracked().contains(QString(_ap->getData()->icao)))
+  if (AirportTracker::getSingleton().tracked().contains(QString(_ap->data()->icao)))
     setChecked(true);
   
   connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));

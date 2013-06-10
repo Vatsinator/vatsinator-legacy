@@ -28,7 +28,7 @@ LanguageManager::LanguageManager() {
 }
 
 QStringList
-LanguageManager::getAllLanguages() {
+LanguageManager::allLanguages() {
   QStringList result;
   for (LangInfo& li: __languages)
     result << li.description;

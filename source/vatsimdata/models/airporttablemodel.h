@@ -45,8 +45,8 @@ public:
 
   void clear();
 
-  inline const QVector< const Airport* > &
-  getAirports() const { return __airports; }
+  inline const QVector<const Airport*> &
+  airports() const { return __airports; }
 
   enum Column {
     Label   = 0,
@@ -61,7 +61,7 @@ private:
   QString __produceLabel(int) const;
   QString __produceFacilities(int) const;
 
-  QVector< const Airport* > __airports;
+  QVector<const Airport*> __airports;
 
 
 };

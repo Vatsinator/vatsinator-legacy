@@ -32,11 +32,11 @@ class MetarAction : public QAction {
 
   Q_OBJECT
 
-public:
-  MetarAction(const QString&, QObject*);
-
 signals:
   void triggered(QString);
+
+public:
+  MetarAction(const QString&, QObject*);
 
 private slots:
   void __handleTriggered();

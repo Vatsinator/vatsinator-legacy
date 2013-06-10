@@ -30,7 +30,7 @@ class LanguageManager : public Singleton<LanguageManager> {
 public:
   LanguageManager();
   
-  QStringList getAllLanguages();
+  QStringList allLanguages();
   
   int getLanguageId(const QString&);
   

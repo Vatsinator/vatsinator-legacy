@@ -54,7 +54,7 @@ AirportTableView::__updateButtons(int _start, int _end) {
     _end = apModel->rowCount();
 
   for (int i = _start; i < _end; ++i) {
-    AirportDetailsButton* dButton = new AirportDetailsButton(apModel->getAirports()[i]);
+    AirportDetailsButton* dButton = new AirportDetailsButton(apModel->airports()[i]);
     connect(dButton,                                 SIGNAL(clicked(const Airport*)),
             AirportDetailsWindow::getSingletonPtr(), SLOT(show(const Airport*)));
     setIndexWidget(apModel->index(i, AirportTableModel::Button), dButton);

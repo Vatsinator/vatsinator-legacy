@@ -31,7 +31,7 @@ FirDatabase::FirDatabase() {
   QtConcurrent::run(this, &FirDatabase::__readDatabase);
 
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
-          this,                                      SLOT(__init()),
+          this,                                     SLOT(__init()),
           Qt::DirectConnection);
 }
 
@@ -41,15 +41,15 @@ FirDatabase::find(const QString& _icao, bool _fss) {
   if (_icao == "ZZZZ")
     return nullptr;
 
-  for (Fir & f: __firs)
-    if (static_cast< QString >(f.getIcao()) == _icao) {
+  for (Fir& f: __firs)
+    if (static_cast<QString>(f.icao()) == _icao) {
       if (!f.isOceanic() && _fss)
         continue;
 
       if (f.isOceanic() && !_fss)
         continue;
 
-      if (f.getTextPosition().x != 0 && f.getTextPosition().y != 0)
+      if (f.textPosition().x != 0 && f.textPosition().y != 0)
         return &f;
       else
         continue;
@@ -60,7 +60,7 @@ FirDatabase::find(const QString& _icao, bool _fss) {
 
 void
 FirDatabase::clearAll() {
-  for (Fir & f: __firs)
+  for (Fir& f: __firs)
     f.clear();
 }
 
@@ -91,14 +91,14 @@ FirDatabase::__readDatabase() {
     __firs[i].loadHeader(tempHeader);
     int counting;
     db.read(reinterpret_cast<char*>(&counting), sizeof(int));
-    __firs[i].getBorders().resize(counting);
-    db.read(reinterpret_cast<char*>(&__firs[i].getBorders()[0]), sizeof(Point) * counting);
+    __firs[i].borders().resize(counting);
+    db.read(reinterpret_cast<char*>(&__firs[i].borders()[0]), sizeof(Point) * counting);
 
     db.read(reinterpret_cast<char*>(&counting), sizeof(int));
 
     if (counting) {
-      __firs[i].getTriangles().resize(counting * 3);
-      db.read(reinterpret_cast<char*>(&__firs[i].getTriangles()[0]), 2 * counting * 3);
+      __firs[i].triangles().resize(counting * 3);
+      db.read(reinterpret_cast<char*>(&__firs[i].triangles()[0]), 2 * counting * 3);
     }
   }
 
@@ -113,7 +113,7 @@ FirDatabase::__init() {
 
   VatsinatorApplication::log("Preparing VBOs for FIRs...");
 
-  for (Fir & f: __firs)
+  for (Fir& f: __firs)
     f.init();
 
   __toolTipsPrepared = true;

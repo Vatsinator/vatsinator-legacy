@@ -28,11 +28,11 @@ class ClientDetailsAction : public QAction {
 
   Q_OBJECT
 
-public:
-  ClientDetailsAction(const Client*, const QString&, QObject*);
-
 signals:
   void triggered(const Client*);
+
+public:
+  ClientDetailsAction(const Client*, const QString&, QObject*);
 
 private slots:
   void __handleTriggered();

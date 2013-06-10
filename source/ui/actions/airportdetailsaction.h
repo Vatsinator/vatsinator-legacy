@@ -28,11 +28,11 @@ class AirportDetailsAction : public QAction {
 
   Q_OBJECT
 
-public:
-  AirportDetailsAction(const Airport*, const QString&, QObject*);
-
 signals:
   void triggered(const Airport*);
+
+public:
+  AirportDetailsAction(const Airport*, const QString&, QObject*);
 
 private slots:
   void __handleTriggered();

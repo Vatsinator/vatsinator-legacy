@@ -38,19 +38,19 @@ public:
 
   void setMetar(const QString&);
 
-  inline const QString&
-  getIcao() const { return __icao; }
+  inline const QString &
+  icao() const { return __icao; }
 
-  inline const QString&
-  getMetar() const { return __metar; }
+  inline const QString &
+  metar() const { return __metar; }
 
   inline const QString
-  getLastFetchedTime() const { return __lastFetchedTime.toString("dd MMM yyyy, hh:mm") % " UTC"; }
+  lastFetchTime() const { return __lastFetchTime.toString("dd MMM yyyy, hh:mm") % " UTC"; }
 
 private:
   QString   __icao;
   QString   __metar;
-  QDateTime __lastFetchedTime;
+  QDateTime __lastFetchTime;
 
 };
 

@@ -53,6 +53,6 @@ Uir::clear() {
 
 bool
 Uir::isEmpty() const {
-  return __staff->getStaff().isEmpty();
+  return __staff->staff().isEmpty();
 }
 

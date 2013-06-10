@@ -32,7 +32,7 @@ AirportDatabase::AirportDatabase() {
 
 const AirportRecord *
 AirportDatabase::find(const QString& _key) {
-  for (const AirportRecord & a: __airports)
+  for (const AirportRecord& a: __airports)
     if (static_cast<QString>(a.icao) == _key)
       return &a;
   
@@ -56,14 +56,14 @@ AirportDatabase::__readDatabase() {
       true);
 
   int size;
-  db.read((char*)&size, 4);
+  db.read(reinterpret_cast<char*>(&size), 4);
 
   VatsinatorApplication::log("Airports to be read: %i.", size);
 
   db.seek(4);
 
   __airports.resize(size);
-  db.read(reinterpret_cast< char* >(&__airports[0]), sizeof(AirportRecord) * size);
+  db.read(reinterpret_cast<char*>(&__airports[0]), sizeof(AirportRecord) * size);
 
   db.close();
 

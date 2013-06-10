@@ -35,9 +35,9 @@ ModelMatcher::ModelMatcher() {
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     VatsinatorApplication::alert(
-      static_cast< QString >("File ") %
+      static_cast<QString>("File ") %
       modelsFile.fileName() %
-      static_cast< QString >(" could not be opened!"));
+      static_cast<QString>(" could not be opened!"));
     return;
   }
 
@@ -55,7 +55,7 @@ ModelMatcher::ModelMatcher() {
 
 void
 ModelMatcher::init() {
-  QMap< QString, GLuint > pixmapsLoaded;
+  QMap<QString, GLuint> pixmapsLoaded;
 
   pixmapsLoaded.insert("1p", MapWidget::loadImage(PIXMAPS_DIR "/1p32.png"));
   pixmapsLoaded.insert("2p", MapWidget::loadImage(PIXMAPS_DIR "/2p32.png"));

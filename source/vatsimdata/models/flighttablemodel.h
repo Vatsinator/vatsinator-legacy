@@ -33,6 +33,9 @@ class FlightTableModel : public QAbstractTableModel {
    */
 
   Q_OBJECT
+  
+signals:
+  void sorted();
 
 public:
   
@@ -58,14 +61,11 @@ public:
   QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
   void sort(int, Qt::SortOrder = Qt::AscendingOrder);
 
-  inline const QVector< const Pilot* > &
-  getFlights() const { return __flights; }
-  
-signals:
-  void sorted();
+  inline const QVector<const Pilot*> &
+  flights() const { return __flights; }
 
 private:
-  QVector< const Pilot* > __flights;
+  QVector<const Pilot*> __flights;
 
 };
 

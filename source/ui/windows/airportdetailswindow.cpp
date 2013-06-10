@@ -72,9 +72,9 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 
 void
 AirportDetailsWindow::show(const Airport* _ap) {
-  Q_ASSERT(_ap->getData());
+  Q_ASSERT(_ap->data());
 
-  __currentICAO = _ap->getData()->icao;
+  __currentICAO = _ap->data()->icao;
   __current = _ap;
 
   __fillLabels(_ap);
@@ -84,7 +84,7 @@ AirportDetailsWindow::show(const Airport* _ap) {
   const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
 
   if (m) {
-    MetarLabel->setText(m->getMetar());
+    MetarLabel->setText(m->metar());
   } else {
     MetarLabel->setText(tr("Fetching..."));
     MetarListModel::getSingleton().fetchMetar(__currentICAO);
@@ -104,7 +104,7 @@ AirportDetailsWindow::updateMetar() {
   const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
 
   if (m)
-    MetarLabel->setText(m->getMetar());
+    MetarLabel->setText(m->metar());
 }
 
 void
@@ -127,9 +127,9 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   
   const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
   if (aa) {
-    InboundTable->setModel(aa->getInboundsModel());
-    OutboundTable->setModel(aa->getOutboundsModel());
-    ATCTable->setModel(aa->getStaffModel());
+    InboundTable->setModel(aa->inboundsModel());
+    OutboundTable->setModel(aa->outboundsModel());
+    ATCTable->setModel(aa->staffModel());
   } else {
     InboundTable->setModel(VatsimDataHandler::emptyFlightTable);
     OutboundTable->setModel(VatsimDataHandler::emptyFlightTable);
@@ -137,37 +137,37 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   }
   
   BookedATCTable->setModel(
-      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(_ap->getData()->icao)));
+      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(_ap->data()->icao)));
 }
 
 void
 AirportDetailsWindow::__fillLabels(const Airport* _ap) {
-  setWindowTitle(tr("%1 - airport details").arg(_ap->getData()->icao));
+  setWindowTitle(tr("%1 - airport details").arg(_ap->data()->icao));
 
-  if (!static_cast<QString>(_ap->getData()->iata).isEmpty())
+  if (!static_cast<QString>(_ap->data()->iata).isEmpty())
     CodesLabel->setText(
-      static_cast<QString>(_ap->getData()->icao) %
+      static_cast<QString>(_ap->data()->icao) %
       "/" %
-      static_cast<QString>(_ap->getData()->iata)
+      static_cast<QString>(_ap->data()->iata)
     );
   else
-    CodesLabel->setText(static_cast<QString>(_ap->getData()->icao));
+    CodesLabel->setText(static_cast<QString>(_ap->data()->icao));
 
   NameLabel->setText(
-    QString::fromUtf8(_ap->getData()->name) %
+    QString::fromUtf8(_ap->data()->name) %
     ", " %
-    QString::fromUtf8(_ap->getData()->city)
+    QString::fromUtf8(_ap->data()->city)
 
 #ifndef NO_DEBUG
     //display FIR info only in debug mode
     % " (" %
-    static_cast<QString>(_ap->getData()->fir_a) % " & " %
-    static_cast<QString>(_ap->getData()->fir_b) % " FIR)"
+    static_cast<QString>(_ap->data()->fir_a) % " & " %
+    static_cast<QString>(_ap->data()->fir_b) % " FIR)"
 #endif
   );
 
   // fill "Airport info" tab
-  const AirportRecord* apData = _ap->getData();
+  const AirportRecord* apData = _ap->data();
   FullNameLabel->setText(QString::fromUtf8(apData->name));
   CityLabel->setText(QString::fromUtf8(apData->city));
   CountryLabel->setText(QString::fromUtf8(apData->country));

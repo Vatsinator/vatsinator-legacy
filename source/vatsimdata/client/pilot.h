@@ -83,46 +83,46 @@ public:
   objectType() const { return Clickable::PLANE; }
   
   inline int
-  getAltitude() const { return __altitude; }
+  altitude() const { return __altitude; }
   
   inline int
-  getGroundSpeed() const { return __groundSpeed; }
+  groundSpeed() const { return __groundSpeed; }
   
   inline const QString &
-  getSquawk() const { return __squawk; }
+  squawk() const { return __squawk; }
   
   inline const QString &
-  getAircraft() const { return __aircraft; }
+  aircraft() const { return __aircraft; }
   
   inline int
-  getTas() const { return __tas; }
+  tas() const { return __tas; }
   
   inline const Pilot::FlightRules &
-  getFlightRules() const { return __flightRules; }
+  flightRules() const { return __flightRules; }
   
   inline const QString &
-  getRemarks() const { return __remarks; }
+  remarks() const { return __remarks; }
   
   inline unsigned
-  getHeading() const { return __heading; }
+  heading() const { return __heading; }
   
   inline Pilot::Status
-  getFlightStatus() const { return __flightStatus; }
+  flightStatus() const { return __flightStatus; }
   
   inline const Pilot::Pressure &
-  getPressure() const { return __pressure; }
+  pressure() const { return __pressure; }
   
   inline const Pilot::Route &
-  getRoute() const { return __route; }
+  route() const { return __route; }
   
   inline GLuint
-  getModelTexture() const { return __modelTexture; }
+  modelTexture() const { return __modelTexture; }
   
   inline bool
   isPrefiledOnly() const { return __prefiledOnly; }
 
   inline GLuint
-  getCallsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
+  callsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
   
 protected:
   int     __altitude;
@@ -178,8 +178,8 @@ private:
    */
   void __parseRoute() const;
 
-  mutable QVector< GLfloat > __lineFrom;
-  mutable QVector< GLfloat > __lineTo;
+  mutable QVector<GLfloat> __lineFrom;
+  mutable QVector<GLfloat> __lineTo;
   
   /* Route parsing is pretty rich, avoid doing it if unnesesary */
   mutable bool __linesGenerated;
@@ -187,7 +187,7 @@ private:
   mutable GLuint __callsignTip;
   
   /* Vector of coordinates */
-  QVector< Point > __routePoints;
+  QVector<Point> __routePoints;
 
 };
 

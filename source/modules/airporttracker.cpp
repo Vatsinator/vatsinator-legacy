@@ -79,7 +79,7 @@ AirportTracker::__readSettings() {
 
 void
 AirportTracker::__toggleAirport(const Airport* _ap) {
-  QString icao(_ap->getData()->icao);
+  QString icao(_ap->data()->icao);
   if (__trackedAirports.contains(icao))
     __trackedAirports.remove(icao);
   else

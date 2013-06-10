@@ -38,14 +38,14 @@ MetarListModel::MetarListModel(PlainTextDownloader* _hh, QObject* _parent) :
 
 void
 MetarListModel::fetchMetar(const QString& _icao) {
-  __myHttpHandler->fetchData(VatsimDataHandler::getSingleton().getMetarUrl() + "?id=" + _icao.toLower());
+  __myHttpHandler->fetchData(VatsimDataHandler::getSingleton().metarUrl() + "?id=" + _icao.toLower());
   __requests.enqueue(_icao.simplified());
 }
 
-const Metar*
+const Metar *
 MetarListModel::find(const QString& _key) const {
   for (const Metar& m: __metarList)
-    if (m.getIcao() == _key)
+    if (m.icao() == _key)
       return &m;
 
   return static_cast< const Metar* >(NULL);
@@ -73,9 +73,9 @@ MetarListModel::data(const QModelIndex& _index, int _role) const {
 
   switch (_role) {
     case Qt::DisplayRole:
-      return __metarList.at(_index.row()).getMetar();
+      return __metarList.at(_index.row()).metar();
     case Qt::ToolTipRole:
-      return __metarList.at(_index.row()).getLastFetchedTime();
+      return __metarList.at(_index.row()).lastFetchTime();
     default:
       return QVariant();
   }
@@ -89,7 +89,7 @@ MetarListModel::anyMetarsInQueue() const {
 void
 MetarListModel::updateAll() {
   for (Metar & m: __metarList)
-    fetchMetar(m.getIcao());
+    fetchMetar(m.icao());
 }
 
 void
@@ -103,7 +103,7 @@ MetarListModel::clear() {
 void
 MetarListModel::__addMetar(const QString& _metar) {
   for (Metar & m: __metarList) {
-    if (m.getIcao() == _metar.left(4)) {
+    if (m.icao() == _metar.left(4)) {
       m.setMetar(_metar);
       return;
     }
