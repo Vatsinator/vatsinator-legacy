@@ -142,9 +142,9 @@
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>217</x>
-      <y>127</y>
-      <width>182</width>
+      <x>203</x>
+      <y>93</y>
+      <width>185</width>
       <height>234</height>
      </rect>
     </property>
@@ -200,6 +200,9 @@
    <property name="shortcut">
     <string notr="true">Ctrl+Q</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
   </action>
   <action name="ActionAbout">
    <property name="icon">
@@ -243,7 +246,10 @@
      <normaloff>:/uiIcons/configure.png</normaloff>:/uiIcons/configure.png</iconset>
    </property>
    <property name="text">
-    <string>Preferences: Vatsinator</string>
+    <string>Settings</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
   <action name="ActionFlightList">

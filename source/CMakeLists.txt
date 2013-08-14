@@ -123,19 +123,19 @@ elseif (APPLE)
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
-        COMMAND cp ARGS ${MACOSX_BUNDLE_ICON} ${vatsinator_BUNDLE_RESOURCES}
+        COMMAND cp ARGS -R ${MACOSX_BUNDLE_ICON} ${vatsinator_BUNDLE_RESOURCES}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
-        COMMAND cp ARGS ${vatsinator_BUNDLE_RESOURCES_pixmaps}
+        COMMAND cp ARGS -R ${vatsinator_BUNDLE_RESOURCES_pixmaps}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/pixmaps
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/data
-        COMMAND cp ARGS ${vatsinator_BUNDLE_RESOURCES_data}
+        COMMAND cp ARGS -R ${vatsinator_BUNDLE_RESOURCES_data}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/data
         COMMAND mkdir ARGS -p
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
-        COMMAND cp ARGS ${vatsinator_BUNDLE_RESOURCES_translations}
+        COMMAND cp ARGS -R ${vatsinator_BUNDLE_RESOURCES_translations}
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/translations
     )
     
