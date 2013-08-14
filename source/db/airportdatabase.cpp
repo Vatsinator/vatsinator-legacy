@@ -48,7 +48,7 @@ AirportDatabase::__readDatabase() {
   
   __airports.clear();
   
-  QFile db(FileManager::path(FileManager::AIRPORT_DB));
+  QFile db(FileManager::path("/WorldAirports.db"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(

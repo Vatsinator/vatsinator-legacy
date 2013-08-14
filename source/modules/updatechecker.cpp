@@ -48,7 +48,6 @@ UpdateChecker::~UpdateChecker() {
 
 void
 UpdateChecker::init() {
-  __notification = new NewVersionNotificationWidget();
   QTimer::singleShot(FETCH_DELAY, this, SLOT(__fetchVersion()));
 }
 
@@ -83,7 +82,7 @@ UpdateChecker::Version::operator <(const UpdateChecker::Version& _other) {
 void
 UpdateChecker::__fetchVersion() {
   __httpHandler->fetchData(
-      static_cast< QString >(VATSINATOR_REPO_URL) %
+      static_cast<QString>(VATSINATOR_REPO_URL) %
       "/VERSION");
 }
 
@@ -92,6 +91,7 @@ UpdateChecker::__parseVersion(const QString& _versionString) {
   __newVersion = Version(_versionString.simplified());
   
   if (__currentVersion < __newVersion) {
+    __notification = new NewVersionNotificationWidget();
     __notification->show();
   }
 }

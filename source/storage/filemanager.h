@@ -37,23 +37,9 @@ class FileManager : public Singleton<FileManager> {
    */
   
 public:
-  enum File {
-    AIRPORT_DB,
-    FIR_DB,
-    WORLD_DB,
-    ALIAS,
-    COUNTRY,
-    FIR,
-    MODEL,
-    UIR,
-    
-    __COUNT   // items count
-  };
-  
-  
   
   FileManager();
-  virtual ~FileManager();
+  virtual ~FileManager() = default;
   
   /**
    * Stores given data in local cache file.
@@ -63,14 +49,17 @@ public:
   static void cacheData(const QString&, const QString&);
   
   /**
-   * Returns real file location.
+   * Returns a real file location.
+   * 
+   * Vatsinator can store its data files in two locations: at the global scope
+   * (i.e. /usr/share/vatsinator/ on Linux) and locally (after data update,
+   * for example ~/.local/share/vatsinator/). This function makes it not only
+   * transparent (every file can be stored in both locations, local files have
+   * got higher priority, however) but it also makes it cross-platform (on
+   * Windows, for example, globally-scoped files are stored in Program Files
+   * directory).
    */
-  static const QString& path(FileManager::File);
-    
-  /**
-   * From given enum, generates appropriate file name.
-   */
-  static QString enum2Str(FileManager::File);
+  static QString path(const QString&);
   
   /**
    * Generates md5 hash of given file.
@@ -96,21 +85,10 @@ private:
    */
   void __readManifest(const QString&);
   
-  /**
-   * Checks if the particular file exists in local data store,
-   * checks manifest and puts correct path in the __files array.
-   */
-  void __findFile(FileManager::File);
-  
-  
-  QString  __files[__COUNT];
-  
   struct {
     QMap<QString, FileHash> hash;
     QDateTime               timestamp;
   } __manifest;
-  
-  FileDownloader* __downloader;
   
 };
 

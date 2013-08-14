@@ -20,8 +20,6 @@
 
 #include "storage/cachefile.h"
 
-#include "network/filedownloader.h"
-
 #include "vatsinatorapplication.h"
 
 #include "storage/filemanager.h"
@@ -40,15 +38,10 @@ static const QString DATA_DIR_LOCATON(
 static const QString DATA_LOCATION(QDir::toNativeSeparators(DATA_DIR_LOCATON % "/Vatsinator/"));
 
 
-FileManager::FileManager() :
-    __downloader(new FileDownloader()) {
+FileManager::FileManager() {
   VatsinatorApplication::log("Local data location: %s", qPrintable(DATA_LOCATION));
   
   __readManifest(DATA_LOCATION % "Manifest");
-}
-
-FileManager::~FileManager() {
-  delete __downloader;
 }
 
 void
@@ -59,47 +52,23 @@ FileManager::cacheData(const QString& _fileName, const QString& _data) {
   cache.close();
 }
 
-const QString &
-FileManager::path(FileManager::File _f) {
-  if (FileManager::getSingleton().__files[_f].isEmpty())
-    FileManager::getSingleton().__findFile(_f);
-  
-  return FileManager::getSingleton().__files[_f];
-}
-
 QString
-FileManager::enum2Str(FileManager::File _f) {
-  switch (_f) {
-    case AIRPORT_DB:
-      return "WorldAirports.db";
-    
-    case FIR_DB:
-      return "WorldFirs.db";
-      
-    case WORLD_DB:
-      return "WorldMap.db";
-      
-    case ALIAS:
-      return "data/alias";
-      
-    case COUNTRY:
-      return "data/country";
-    
-    case FIR:
-      return "data/fir";
-      
-    case MODEL:
-      return "data/model";
-      
-    case UIR:
-      return "data/uir";
-      
-    default:
-      Q_ASSERT(false);
-      break;
+FileManager::path(const QString& _f) {
+  QFile tryLocal(DATA_LOCATION % _f);
+  if (tryLocal.exists()) {
+    VatsinatorApplication::log("File %s loaded from %s.",
+                               qPrintable(_f),
+                               qPrintable(tryLocal.fileName()));
+    return tryLocal.fileName();
+  } else {
+    return
+#ifndef Q_OS_DARWIN
+      static_cast<QString>(VATSINATOR_PREFIX)
+#else // on MacOS look for the file in the bundle
+      QCoreApplication::applicationDirPath() % "/../Resources/"
+#endif
+      % _f;
   }
-  
-  return QString();
 }
 
 QByteArray
@@ -156,27 +125,4 @@ FileManager::__readManifest(const QString& _fname) {
   VatsinatorApplication::log("Data updated on %s.",
                              qPrintable(__manifest.timestamp.toString("yyyyMMddhhmmss")));
 }
-
-void
-FileManager::__findFile(FileManager::File _f) {
-  QString fname = enum2Str(_f);
-  
-  QFile tryLocal(DATA_LOCATION % fname);
-  if (tryLocal.exists()) {
-    __files[_f] = tryLocal.fileName();
-    
-    VatsinatorApplication::log("File %s loaded from %s.",
-                               qPrintable(fname),
-                               qPrintable(tryLocal.fileName()));
-  } else {
-    __files[_f] =
-#ifndef Q_OS_DARWIN
-      static_cast<QString>(VATSINATOR_PREFIX)
-#else // on MacOS look for the file in the bundle
-      QCoreApplication::applicationDirPath() % "/../Resources/"
-#endif
-      % fname;
-  }
-}
-
 

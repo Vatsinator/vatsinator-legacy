@@ -69,7 +69,7 @@ FirDatabase::__readDatabase() {
   __toolTipsPrepared = false;
   __firs.clear();
   
-  QFile db(FileManager::path(FileManager::FIR_DB));
+  QFile db(FileManager::path("/WorldFirs.db"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(
