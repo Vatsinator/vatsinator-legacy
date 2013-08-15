@@ -148,7 +148,9 @@ elseif (WIN32)
     
 endif (LINUX)
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+if (NOT APPLE)
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif (NOT APPLE)
 add_subdirectory (source)
 
 # Sum up our configuration

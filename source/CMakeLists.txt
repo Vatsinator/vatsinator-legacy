@@ -5,6 +5,12 @@ set (vatsinator_TARGET
     vatsinator
 )
 
+if (APPLE)
+  set (vatsinator_TARGET
+    Vatsinator
+  )
+endif (APPLE)
+
 
 set (vatsinator_SRCS
     vatsinatorapplication.cpp
