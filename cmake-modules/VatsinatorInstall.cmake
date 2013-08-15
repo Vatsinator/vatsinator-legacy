@@ -6,14 +6,10 @@ macro (vatsinator_install INSTALL_FILES INSTALL_DIR)
         install (FILES ${INSTALL_FILES}
                  DESTINATION .${INSTALL_DIR})
     elseif (APPLE)
-        string (REPLACE "/" "_" DIR_NAME "${INSTALL_DIR}")
+        file (MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/vatsinator.resources${INSTALL_DIR}")
         foreach (f ${INSTALL_FILES})
-          set (vatsinator_BUNDLE_RESOURCES${DIR_NAME}
-               ${vatsinator_BUNDLE_RESOURCES${DIR_NAME}}  ${CMAKE_CURRENT_SOURCE_DIR}/${f})
-          if (NOT ${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
-            set (vatsinator_BUNDLE_RESOURCES${DIR_NAME}
-              ${vatsinator_BUNDLE_RESOURCES${DIR_NAME}} PARENT_SCOPE)
-          endif (NOT ${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
-        endforeach (f ${INSTALL_FILES})
+          configure_file (${f} "${CMAKE_BINARY_DIR}/vatsinator.resources${INSTALL_DIR}/"
+                          COPYONLY)
+        endforeach (f)
     endif (LINUX)
 endmacro (vatsinator_install)

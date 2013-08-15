@@ -94,7 +94,6 @@ set (vatsinator_RESOURCES_DATA
 vatsinator_install (
     "${vatsinator_RESOURCES_DATA}" "/data")
 
-
 # Platform-specific actions
 if (LINUX)
     
