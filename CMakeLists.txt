@@ -115,6 +115,8 @@ if (LINUX)
     add_subdirectory (dist)
 
 elseif (APPLE)
+
+    find_package (QuaZip REQUIRED)
     
     # For bundle creation
     include (Packaging-darwin)
