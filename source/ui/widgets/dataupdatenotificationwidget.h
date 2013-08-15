@@ -23,6 +23,8 @@
 #include "ui/widgets/abstractnotificationwidget.h"
 #include "ui/ui_dataupdatenotificationwidget.h"
 
+class DataUpdater;
+
 class DataUpdateNotificationWidget :
     public AbstractNotificationWidget,
     private Ui::DataUpdateNotificationWidget {
@@ -35,9 +37,24 @@ class DataUpdateNotificationWidget :
   Q_OBJECT
   
 public:
-  explicit DataUpdateNotificationWidget();
+  
+  explicit DataUpdateNotificationWidget(DataUpdater*);
   
   AbstractNotificationWidget::Position position() const;
+  
+  inline QProgressBar *
+    downloadBar() {
+      return DownloadBar;
+    }
+  
+  inline const QProgressBar *
+    downloadBar() const {
+      return DownloadBar;
+    }
+  
+public slots:
+  
+  void downloadPage();
   
 };
 

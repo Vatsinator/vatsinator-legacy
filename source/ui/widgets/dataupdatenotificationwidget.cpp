@@ -18,17 +18,32 @@
 
 #include <QtGui>
 
+#include "modules/dataupdater.h"
+
 #include "dataupdatenotificationwidget.h"
 #include "defines.h"
 
-DataUpdateNotificationWidget::DataUpdateNotificationWidget() :
+DataUpdateNotificationWidget::DataUpdateNotificationWidget(DataUpdater* _du) :
     AbstractNotificationWidget() {
+  
+  Q_ASSERT(_du);
+  
   setVisible(false);
   setupUi(this);
+  
+  connect(_du,  SIGNAL(downloading()),
+          this, SLOT(downloadPage()));
+  
 }
 
 AbstractNotificationWidget::Position
 DataUpdateNotificationWidget::position() const {
   return AbstractNotificationWidget::Bottom;
+}
+
+void
+DataUpdateNotificationWidget::downloadPage() {
+  StackedWidget->setCurrentIndex(0);
+  setVisible(true);
 }
 

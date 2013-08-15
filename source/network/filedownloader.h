@@ -36,6 +36,19 @@ class FileDownloader : public QObject {
    */
   
   Q_OBJECT
+
+signals:
+  /**
+   * Emited when download is complete.
+   * @param fileName Location of the downloaded file.
+   */
+  void finished(QString);
+  
+  /**
+   * Emited when an error occurs.
+   * @param erStr Error string.
+   */
+  void error(QString);
   
 public:
   /**
@@ -74,19 +87,6 @@ private slots:
   void __readyRead();
   void __finished();
   void __updateProgress(qint64, qint64);
-  
-signals:
-  /**
-   * Emited when download is complete.
-   * @param fileName Location of the downloaded file.
-   */
-  void finished(QString);
-  
-  /**
-   * Emited when an error occurs.
-   * @param erStr Error string.
-   */
-  void error(QString);
   
 };
 

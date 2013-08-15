@@ -29,7 +29,7 @@ class NewVersionNotificationWidget;
 
 class UpdateChecker :
     public QObject,
-    public Singleton< UpdateChecker > {
+    public Singleton<UpdateChecker> {
   
   /*
    * This class is used to check the current application version, the
