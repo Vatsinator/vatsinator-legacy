@@ -5,13 +5,6 @@ set (vatsinator_TARGET
     vatsinator
 )
 
-if (APPLE)
-  set (vatsinator_TARGET
-    Vatsinator
-  )
-endif (APPLE)
-
-
 set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
@@ -127,18 +120,22 @@ if (LINUX)
 elseif (APPLE)
     # move all files to .app bundle
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
+        COMMAND cp ARGS
+        ${QUAZIP_LIBRARIES} ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/MacOS/
         COMMAND mkdir ARGS -p
-        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/
         COMMAND cp ARGS -R ${MACOSX_BUNDLE_ICON}
-        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources
+        ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/
         COMMAND cp ARGS -R ${CMAKE_BINARY_DIR}/vatsinator.resources/*
         ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app/Contents/Resources/
     )
     
+    get_filename_component(QUAZIP_LIB_FILE ${QUAZIP_LIBRARIES} NAME)
+    
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
     include (DeployQt4)
-    install_qt4_executable ("${vatsinator_TARGET}.app")
+    install_qt4_executable ("${vatsinator_TARGET}.app" "" "${vatsinator_TARGET}.app/Contents/MacOS/${QUAZIP_LIB_FILE}")
 elseif (WIN32)
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
 endif (LINUX)
