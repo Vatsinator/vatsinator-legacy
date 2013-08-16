@@ -1,5 +1,5 @@
 /*
- * dataupdater.h
+ * notificationwidget.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,43 +17,38 @@
  *
  */
 
-#ifndef DATAUPDATER_H
-#define DATAUPDATER_H
+#ifndef NOTIFICATIONWIDGET_H
+#define NOTIFICATIONWIDGET_H
 
-#include <QObject>
+#include <QWidget>
 
-class DataUpdateNotificationWidget;
+class UserInterface;
 
-class DataUpdater : public QObject {
-  
-  /**
-   * The DataUpdater class is responsible for downloading the data package,
-   * unpacking it, checking the manifest file, copying modified files to
-   * local directory and restarting the application, simultaneously
-   * showing the appropraite notification.
-   */
+class NotificationWidget : public QWidget {
   
   Q_OBJECT
+  
+  friend class UserInterface;
 
-signals:
-  
-  void downloading();
-  
 public:
   
-  explicit DataUpdater(QObject* = 0);
+  enum Position {
+    Top,
+    Bottom
+  };
   
-  virtual ~DataUpdater();
+  explicit NotificationWidget(Position = Top);
+  
+  virtual ~NotificationWidget();
+  
+protected:
+  
+  void setBoundingGeometry(const QRect&);
   
 private:
   
-  DataUpdateNotificationWidget* __notification;
-  
-private slots:
-  
-  void __startDownload();
-  void __downloadFinished(QString);
+  Position __position;
 
 };
 
-#endif // DATAUPDATER_H
+#endif // NOTIFICATIONWIDGET_H

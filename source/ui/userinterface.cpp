@@ -22,11 +22,12 @@
 #include "debugging/debugwindow.h"
 #endif
 
+#include "network/resourcemanager.h"
+
 #include "modules/homelocation.h"
 
 #include "storage/settingsmanager.h"
 
-#include "ui/widgets/dataupdatenotificationwidget.h"
 #include "ui/widgets/newversionnotificationwidget.h"
 
 #include "ui/windows/aboutwindow.h"
@@ -93,6 +94,8 @@ UserInterface::UserInterface(QWidget* _parent) :
           this,                                     SLOT(__dataUpdated()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(dataCorrupted()),
           this,                                     SLOT(__fetchError()));
+  connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
+          this,                                     SLOT(__showVersionNotification()));
 
   statusBarUpdate();
 }
@@ -101,7 +104,6 @@ UserInterface::~UserInterface() {
   hideAllWindows();
   __storeWindowGeometry();
 
-  delete __dataUpdateNotification;
   delete __aboutWindow;
   delete __airportDetailsWindow;
   delete __firDetailsWindow;
@@ -148,6 +150,19 @@ UserInterface::infoBarUpdate() {
           QString::number(data.obsCount())
         )
    );
+}
+
+void
+UserInterface::addNotifier(NotificationWidget* _nw) {
+  __notifiers.push_back(_nw);
+  _nw->setBoundingGeometry(mapWidget()->geometry());
+}
+
+void
+UserInterface::removeNotifier(NotificationWidget* _nw) {
+  Q_ASSERT(__notifiers.indexOf(_nw) >= 0);
+  
+  __notifiers.remove(__notifiers.indexOf(_nw));
 }
 
 void
@@ -203,6 +218,17 @@ UserInterface::closeEvent(QCloseEvent* _event) {
 }
 
 void
+UserInterface::resizeEvent(QResizeEvent* _event) {
+  QRect geometry = mapWidget()->geometry();
+  
+  for (NotificationWidget* n: __notifiers) {
+    n->setBoundingGeometry(geometry);
+  }
+  
+  _event->accept();
+}
+
+void
 UserInterface::__setupWindow() {
   setupUi(this);
   
@@ -216,8 +242,6 @@ UserInterface::__setupWindow() {
   __progressBar->setMaximumSize(QSize(250, 13));
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
-  
-  __dataUpdateNotification = new DataUpdateNotificationWidget();
   
   Replaceable->addWidgets({__statusBox, __progressBar});
 
@@ -320,4 +344,10 @@ UserInterface::__fetchError() {
   } else {
     statusBarUpdate(tr("Data outdated!"));
   }
+}
+
+void
+UserInterface::__showVersionNotification() {
+  /* Don't worry, it will delete itself */
+  new NewVersionNotificationWidget();
 }

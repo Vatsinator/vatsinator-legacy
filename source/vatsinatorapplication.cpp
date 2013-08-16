@@ -25,9 +25,9 @@
 #include "db/worldmap.h"
 
 #include "modules/modulemanager.h"
-#include "modules/updatechecker.h"
 
 #include "network/plaintextdownloader.h"
+#include "network/resourcemanager.h"
 
 #include "storage/languagemanager.h"
 #include "storage/settingsmanager.h"
@@ -54,9 +54,10 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __worldMap(new WorldMap()),
     __vatsimData(new VatsimDataHandler()),
     __languageManager(new LanguageManager()),
+    __resourceManager(new ResourceManager()),
     __settingsManager(new SettingsManager()),
     __moduleManager(new ModuleManager()),
-    __userInterface(NULL) {
+    __userInterface(nullptr) {
 
   __translator.load(QString("vatsinator-") %
                       SettingsManager::earlyGetLocale(),
@@ -64,6 +65,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   installTranslator(&__translator);
   
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
+  
   
   // slots set, crate User Interface
   __userInterface = new UserInterface();
@@ -99,9 +101,18 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __timer.start();
     refreshData();
   }
+  
+  /* Thread for ResourceManager */
+  QThread* rmThread = new QThread(this);
+  __resourceManager->moveToThread(rmThread);
+  rmThread->start();
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
+  
+  QThread* rmThread = __resourceManager->thread();
+  __resourceManager->deleteLater();
+  rmThread->quit();
   
   delete __settingsManager;
   delete __moduleManager;
@@ -112,6 +123,8 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __worldMap;
   delete __userInterface;
   delete __fileManager;
+  
+  rmThread->wait();
 
 #ifndef NO_DEBUG
   DumpUnfreed();

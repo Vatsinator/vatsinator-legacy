@@ -44,7 +44,17 @@ void
 DataUpdater::__startDownload() {
   __notification = new DataUpdateNotificationWidget(this);
   FileDownloader* fd = new FileDownloader(__notification->downloadBar());
+  connect(fd,   SIGNAL(finished(QString)),
+          this, SLOT(__downloadFinished(QString)));
+  emit downloading();
+  fd->fetch(QUrl("http://vatsinator.eu.org/downloads/latest.zip"));
+}
+
+void
+DataUpdater::__downloadFinished(QString _fileName) {
+  sender()->deleteLater();
   
+  this->deleteLater();
 }
 
 

@@ -18,18 +18,18 @@
 
 #include <QtGui>
 
+#include "ui/userinterface.h"
+
 #include "newversionnotificationwidget.h"
 #include "defines.h"
 
 NewVersionNotificationWidget::NewVersionNotificationWidget() :
-    AbstractNotificationWidget() {
+    NotificationWidget(Top) {
   
-  setVisible(false);
   setupUi(this);
   VisitButton->setUrl(VATSINATOR_HOMEPAGE);
 }
 
-AbstractNotificationWidget::Position
-NewVersionNotificationWidget::position() const {
-  return AbstractNotificationWidget::Top;
+void NewVersionNotificationWidget::hideEvent(QHideEvent*) {
+  deleteLater();
 }

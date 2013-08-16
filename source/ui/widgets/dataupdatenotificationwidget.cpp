@@ -24,21 +24,15 @@
 #include "defines.h"
 
 DataUpdateNotificationWidget::DataUpdateNotificationWidget(DataUpdater* _du) :
-    AbstractNotificationWidget() {
+    NotificationWidget(Bottom) {
   
   Q_ASSERT(_du);
   
-  setVisible(false);
   setupUi(this);
   
   connect(_du,  SIGNAL(downloading()),
           this, SLOT(downloadPage()));
   
-}
-
-AbstractNotificationWidget::Position
-DataUpdateNotificationWidget::position() const {
-  return AbstractNotificationWidget::Bottom;
 }
 
 void

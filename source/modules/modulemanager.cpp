@@ -20,7 +20,6 @@
 #include "modules/flighttracker.h"
 #include "modules/homelocation.h"
 #include "modules/modelmatcher.h"
-#include "modules/updatechecker.h"
 #include "modules/vatbookhandler.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
@@ -35,7 +34,6 @@ ModuleManager::ModuleManager() :
     __flightTracker(new FlightTracker()),
     __homeLocation(new HomeLocation()),
     __modelsMatcher(new ModelMatcher()),
-    __updateChecker(new UpdateChecker()),
     __vatbookHandler(new VatbookHandler()) {
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
           this,                                     SLOT(__initAfterGL()),
@@ -50,7 +48,6 @@ ModuleManager::~ModuleManager() {
   delete __flightTracker;
   delete __homeLocation;
   delete __modelsMatcher;
-  delete __updateChecker;
   delete __vatbookHandler;
 }
 
@@ -58,7 +55,6 @@ void
 ModuleManager::init() {
   __airportTracker->init();
   __flightTracker->init();
-  __updateChecker->init();
 }
 
 void

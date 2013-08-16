@@ -29,14 +29,15 @@
 
 class AirportDatabase;
 class CacheFile;
+class FileManager;
 class FirDatabase;
+class LanguageManager;
+class ModuleManager;
+class ResourceManager;
+class SettingsManager;
 class UserInterface;
 class VatsimDataHandler;
-class LanguageManager;
-class SettingsManager;
 class WorldMap;
-class ModuleManager;
-class FileManager;
 
 class VatsinatorApplication :
     public QApplication,
@@ -118,7 +119,9 @@ private:
   LanguageManager*     __languageManager;
   SettingsManager*     __settingsManager;
   ModuleManager*       __moduleManager;
+  ResourceManager*     __resourceManager;
   UserInterface*       __userInterface;
+  
   QTimer               __timer;
   QTranslator          __translator;
 

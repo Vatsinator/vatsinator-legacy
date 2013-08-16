@@ -61,10 +61,10 @@ set (ui_SRCS
     views/controllertableview.cpp
     views/flighttableview.cpp
     
-    widgets/abstractnotificationwidget.cpp
     widgets/dataupdatenotificationwidget.cpp
     widgets/mapwidget.cpp
     widgets/newversionnotificationwidget.cpp
+    widgets/notificationwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
     
@@ -106,10 +106,10 @@ set (ui_MOC_SRCS
     views/controllertableview.h
     views/flighttableview.h
     
-    widgets/abstractnotificationwidget.h
     widgets/dataupdatenotificationwidget.h
     widgets/mapwidget.h
     widgets/newversionnotificationwidget.h
+    widgets/notificationwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h
     

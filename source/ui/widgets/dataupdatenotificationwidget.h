@@ -20,13 +20,13 @@
 #ifndef DATAUPDATENOTIFICATIONWIDGET_H
 #define DATAUPDATENOTIFICATIONWIDGET_H
 
-#include "ui/widgets/abstractnotificationwidget.h"
+#include "ui/widgets/notificationwidget.h"
 #include "ui/ui_dataupdatenotificationwidget.h"
 
 class DataUpdater;
 
 class DataUpdateNotificationWidget :
-    public AbstractNotificationWidget,
+    public NotificationWidget,
     private Ui::DataUpdateNotificationWidget {
   
   /*
@@ -39,8 +39,6 @@ class DataUpdateNotificationWidget :
 public:
   
   explicit DataUpdateNotificationWidget(DataUpdater*);
-  
-  AbstractNotificationWidget::Position position() const;
   
   inline QProgressBar *
     downloadBar() {

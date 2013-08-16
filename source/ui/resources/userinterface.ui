@@ -41,14 +41,7 @@
      <number>1</number>
     </property>
     <item>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="5">
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
+     <layout class="QGridLayout" name="MainGridLayout">
       <item row="1" column="0">
        <widget class="ReplaceableWidget" name="Replaceable" native="true">
         <property name="sizePolicy">
@@ -71,7 +64,14 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2" colspan="3">
+      <item row="1" column="4">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" colspan="2">
        <widget class="QLabel" name="ClientsBox">
         <property name="minimumSize">
          <size>
@@ -90,14 +90,17 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+      <item row="0" column="0" colspan="6">
+       <widget class="MapWidget" name="MapDisplay" native="true">
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
         </property>
        </widget>
       </item>
-      <item row="1" column="6">
+      <item row="1" column="5">
        <widget class="QLabel" name="PositionBox">
         <property name="minimumSize">
          <size>
@@ -116,13 +119,10 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="7">
-       <widget class="MapWidget" name="MapDisplay" native="true">
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::StrongFocus</enum>
+      <item row="1" column="1">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
        </widget>
       </item>
@@ -144,7 +144,7 @@
      <rect>
       <x>217</x>
       <y>127</y>
-      <width>182</width>
+      <width>185</width>
       <height>234</height>
      </rect>
     </property>

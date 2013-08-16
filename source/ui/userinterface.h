@@ -37,6 +37,7 @@ class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightListWindow;
 class MetarsWindow;
+class NotificationWidget;
 class SettingsWindow;
 class QProgressBar;
 class VatsinatorApplication;
@@ -79,6 +80,17 @@ public:
   void infoBarUpdate();
   
   /**
+   * Called by NotificationWidget's constructor, adds the notification
+   * widget to handle properly window's resizes.
+   */
+  void addNotifier(NotificationWidget*);
+  
+  /**
+   * Removes the notification widget pointer.
+   */
+  void removeNotifier(NotificationWidget*);
+  
+  /**
    * Sets the window on the center of the screen.
    * @param widget Window to have the position set.
    */
@@ -95,9 +107,6 @@ public:
   
   inline bool
   autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
-  
-  inline const QMenuBar *
-  menuBar() const { return MenuBar; }
 
 public slots:
   void quit();
@@ -105,6 +114,7 @@ public slots:
 
 protected:
   void closeEvent(QCloseEvent*);
+  void resizeEvent(QResizeEvent*);
 
 private:
   void __setupWindow();
@@ -113,7 +123,15 @@ private:
   
   /* Returns main window initial position */
   static const QPoint& __getInitialPoint();
+
+private slots:
+  void __dataDownloading();
+  void __statusUpdated();
+  void __dataUpdated();
+  void __fetchError();
+  void __showVersionNotification();
   
+private:  
   static QPoint __initialPoint;
   
   QLabel*       __statusBox;
@@ -134,13 +152,8 @@ private:
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
   
-  DataUpdateNotificationWidget* __dataUpdateNotification;
+  QVector<NotificationWidget*> __notifiers;
   
-private slots:
-  void __dataDownloading();
-  void __statusUpdated();
-  void __dataUpdated();
-  void __fetchError();
 
 };
 

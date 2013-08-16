@@ -28,7 +28,6 @@ class AirportTracker;
 class HomeLocation;
 class FlightTracker;
 class ModelMatcher;
-class UpdateChecker;
 class VatbookHandler;
 
 class ModuleManager :
@@ -54,7 +53,6 @@ private:
   FlightTracker*  __flightTracker;
   HomeLocation*   __homeLocation;
   ModelMatcher*   __modelsMatcher;
-  UpdateChecker*  __updateChecker;
   VatbookHandler* __vatbookHandler;
 };
 

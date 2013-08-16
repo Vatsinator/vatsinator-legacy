@@ -20,16 +20,11 @@
 #ifndef NEWVERSIONNOTIFICATIONWIDGET_H
 #define NEWVERSIONNOTIFICATIONWIDGET_H
 
-#include <QWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
-
-#include "ui/widgets/abstractnotificationwidget.h"
+#include "ui/widgets/notificationwidget.h"
 #include "ui/ui_newversionnotificationwidget.h"
 
 class NewVersionNotificationWidget :
-    public AbstractNotificationWidget,
+    public NotificationWidget,
     private Ui::NewVersionNotificationWidget {
   
   /*
@@ -42,7 +37,8 @@ class NewVersionNotificationWidget :
 public:
   explicit NewVersionNotificationWidget();
   
-  AbstractNotificationWidget::Position position() const;
+protected:
+  void hideEvent(QHideEvent*);
   
 };
 
