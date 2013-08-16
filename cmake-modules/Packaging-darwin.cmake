@@ -12,7 +12,8 @@ set (MACOSX_BUNDLE_ICON_FILE "vatsinator.icns")
 set (MACOSX_BUNDLE_VERSION "${vatsinator_VERSION}")
 set (MACOSX_BUNDLE_SHORT_VERSION_STRING "${vatsinator_VERSION}")
 set (MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${vatsinator_VERSION}")
-set (MACOSX_BUNDLE_GUI_IDENTIFIER "Vatsinator")
+set (MACOSX_BUNDLE_COPYRIGHT "2013 by VatsinatorTeam")
+set (MACOSX_BUNDLE_GUI_IDENTIFIER "org.vatsinator")
 set (MACOSX_BUNDLE_BUNDLE_NAME "Vatsinator")
 
 set (MACOSX_BUNDLE_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_BUNDLE}/Contents/Resources")
@@ -23,5 +24,7 @@ set (CPACK_DMG_FORMAT "UDBZ")
 set (CPACK_DMG_VOLUME_NAME "Vatsinator")
 set (CPACK_SYSTEM_NAME "OSX")
 set (CPACK_PACKAGE_FILE_NAME "Vatsinator-${vatsinator_VERSION}")
+
+set (CPACK_DMG_BACKGROUND_IMAGE "${PROJECT_SOURCE_DIR}/dist/dmg-background.png")
 
 include (CPack)
