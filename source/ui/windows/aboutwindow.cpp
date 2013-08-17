@@ -42,5 +42,9 @@ AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
     QString::number(AirportDatabase::getSingleton().airports().size()));
   FirsInDatabaseLabel->setText(
     QString::number(FirDatabase::getSingleton().firs().size()));
+  
+  QFont titleFont = QApplication::font();
+  titleFont.setPointSize(titleFont.pointSize() + 2);
+  TitleLabel->setFont(titleFont);
 }
 

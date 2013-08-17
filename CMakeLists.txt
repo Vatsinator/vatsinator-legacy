@@ -94,7 +94,6 @@ set (vatsinator_RESOURCES_DATA
 vatsinator_install (
     "${vatsinator_RESOURCES_DATA}" "/data")
 
-
 # Platform-specific actions
 if (LINUX)
     
@@ -115,6 +114,8 @@ if (LINUX)
     add_subdirectory (dist)
 
 elseif (APPLE)
+
+    find_package (QuaZip REQUIRED)
     
     # For bundle creation
     include (Packaging-darwin)
@@ -147,7 +148,9 @@ elseif (WIN32)
     
 endif (LINUX)
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+if (NOT APPLE)
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif (NOT APPLE)
 add_subdirectory (source)
 
 # Sum up our configuration
