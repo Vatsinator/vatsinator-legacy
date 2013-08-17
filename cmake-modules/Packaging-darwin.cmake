@@ -25,6 +25,7 @@ set (CPACK_DMG_VOLUME_NAME "Vatsinator")
 set (CPACK_SYSTEM_NAME "OSX")
 set (CPACK_PACKAGE_FILE_NAME "Vatsinator-${vatsinator_VERSION}")
 
+set (CPACK_DMG_DS_STORE "${PROJECT_SOURCE_DIR}/dist/DS_Store")
 set (CPACK_DMG_BACKGROUND_IMAGE "${PROJECT_SOURCE_DIR}/dist/dmg-background.png")
 
 include (CPack)

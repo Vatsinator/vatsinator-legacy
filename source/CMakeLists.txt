@@ -146,7 +146,7 @@ elseif (APPLE)
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
     include (DeployQt4)
-    install_qt4_executable ("${vatsinator_TARGET}.app" "" "${vatsinator_BUNDLE}/Contents/MacOS/${QUAZIP_LIB_FILE}")
+    install_qt4_executable ("${vatsinator_TARGET}.app" "" "${vatsinator_TARGET}.app/Contents/MacOS/${QUAZIP_LIB_FILE}")
     
 elseif (WIN32)
 
