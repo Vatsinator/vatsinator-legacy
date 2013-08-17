@@ -27,7 +27,7 @@
 #define VATSIM_STATUS_URL "http://status.vatsim.net/status.txt"
 
 // Vatsinator homepage url
-#define VATSINATOR_HOMEPAGE "http://vatsinator.org/"
+#define VATSINATOR_HOMEPAGE "http://vatsinator.eu.org/"
 
 // Vatsinator_repo url
 #define VATSINATOR_REPO_URL "https://raw.github.com/Garrappachc/Vatsinator-repo/master"

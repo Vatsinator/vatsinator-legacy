@@ -1,6 +1,6 @@
-![Vatsinator](http://vatsinator.org/images/header.jpg)
+![Vatsinator](http://vatsinator.eu.org/images/header.jpg)
 
--> **This is developers' site** You probably want to visit [Vatsinator homepage](http://vatsinator.org/). <-
+-> **This is developers' site** You probably want to visit [Vatsinator homepage](http://vatsinator.eu.org/). <-
 
 **Vatsinator** is an open-source Vatsim network monitor. It shows logged-in pilots and controllers, provides weather and airport information. Vatsinator is designed to be quick and handy, in order to be useful on desktops (when not flying) and note/netbooks (during flight).
 
@@ -8,7 +8,7 @@ Vatsinator uses QT libraries for GUI and OpenGL as a map rendering engine. Curre
 
 **To avoid confusion** Vatsinator does NOT show real-life traffic. It is only VATSIM (Virtual Air Traffic Simulation) network monitor. To find out what VATSIM is, see [http://www.vatsim.net](http://www.vatsim.net/).
 
-[![Subscribe in Google+](http://www.vatsinator.org/images/gplus.png)](https://plus.google.com/100938719910263601185)
+[![Subscribe in Google+](http://www.vatsinator.eu.org/images/gplus.png)](https://plus.google.com/100938719910263601185)
 
 ---
 
@@ -29,13 +29,13 @@ Current release: **Vatsinator 0.2**
 	
 	- Debian<br>
 		There are packages for Debian Wheezy. Squeeze is not supported because it is a little bit outdated.<br>
-		[vatsinator-0.2~wheezy_i386.deb](http://vatsinator.org/downloads/vatsinator-0.2~wheezy_i386.deb) for i386<br>
-		[vatsinator-0.2~wheezy_amd64.deb](http://vatsinator.org/downloads/vatsinator-0.2~wheezy_amd64.deb) for amd64<br>
+		[vatsinator-0.2~wheezy_i386.deb](http://vatsinator.eu.org/downloads/vatsinator-0.2~wheezy_i386.deb) for i386<br>
+		[vatsinator-0.2~wheezy_amd64.deb](http://vatsinator.eu.org/downloads/vatsinator-0.2~wheezy_amd64.deb) for amd64<br>
 	
 	- Fedora<br>
 		Builds for Fedora 17:<br>
-		[vatsinator-0.2-2.1.i686.rpm](http://vatsinator.org/downloads/vatsinator-0.2-2.1.i686.rpm) for i686<br>
-		[vatsinator-0.2-2.1.x86_64.rpm](http://vatsinator.org/downloads/vatsinator-0.2-2.1.x86_64.rpm) for x86_64<br>
+		[vatsinator-0.2-2.1.i686.rpm](http://vatsinator.eu.org/downloads/vatsinator-0.2-2.1.i686.rpm) for i686<br>
+		[vatsinator-0.2-2.1.x86_64.rpm](http://vatsinator.eu.org/downloads/vatsinator-0.2-2.1.x86_64.rpm) for x86_64<br>
 		
 	- Gentoo<br>
 		You can find Vatsinator ebuild in [regen2-overlay](https://github.com/regen2/regen2-overlay/tree/master/net-misc/vatsinator).<br>
@@ -54,10 +54,10 @@ Current release: **Vatsinator 0.2**
 		There are no packages for other distributions, I am afraid. However, you can compile the Source Code (see below).
 
 - Windows<br>
-	[VatsinatorSetup-0.2.exe](http://vatsinator.org/downloads/VatsinatorSetup-0.2.exe)
+	[VatsinatorSetup-0.2.exe](http://vatsinator.eu.org/downloads/VatsinatorSetup-0.2.exe)
 
 - Source Code<br>
-	[vatsinator-0.2.tar.gz](http://vatsinator.org/downloads/vatsinator-0.2.tar.gz)
+	[vatsinator-0.2.tar.gz](http://vatsinator.eu.org/downloads/vatsinator-0.2.tar.gz)
 
 
 ## Building
