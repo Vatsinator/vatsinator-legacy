@@ -700,7 +700,7 @@
     <message>
         <location filename="../ui/resources/userinterface.ui" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia</translation>
     </message>
     <message>
         <location filename="../ui/resources/userinterface.ui" line="260"/>
