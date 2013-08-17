@@ -59,13 +59,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>270</width>
           <height>13</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>250</width>
+          <width>270</width>
           <height>13</height>
          </size>
         </property>
