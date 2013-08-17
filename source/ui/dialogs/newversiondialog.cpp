@@ -1,5 +1,5 @@
 /*
- * notificationwidget.cpp
+ * newversiondialog.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,37 +19,14 @@
 
 #include <QtGui>
 
-#include "ui/userinterface.h"
-
-#include "notificationwidget.h"
+#include "newversiondialog.h"
 #include "defines.h"
 
-NotificationWidget::NotificationWidget(Position _position) :
-    QWidget(UserInterface::getSingletonPtr()->mapWidget()),
-    __position(_position) {
+NewVersionDialog::NewVersionDialog(QWidget* _parent) :
+    QDialog(_parent) {
+  setupUi(this);
   
-  UserInterface::getSingleton().addNotifier(this);
-  setVisible(true);
-  
-  setMinimumWidth(400);
-  setFixedHeight(30);
+  DownloadButton->setUrl(VATSINATOR_HOMEPAGE);
 }
 
-NotificationWidget::~NotificationWidget() {
-  UserInterface::getSingleton().removeNotifier(this);
-}
 
-void
-NotificationWidget::setBoundingGeometry(const QRect& _rect) {
-  QRect geometry = _rect;
-  
-  if (__position == Top) {
-    geometry.setBottom(_rect.top() + 30);
-  } else {
-    geometry.setTop(_rect.bottom() - 30);
-  }
-  
-  setGeometry(geometry);
-  
-  qDebug() << "New geometry: " << geometry;
-}

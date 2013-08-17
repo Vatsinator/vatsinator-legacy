@@ -28,7 +28,7 @@
 
 #include "storage/settingsmanager.h"
 
-#include "ui/widgets/newversionnotificationwidget.h"
+#include "ui/dialogs/newversiondialog.h"
 
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
@@ -95,7 +95,7 @@ UserInterface::UserInterface(QWidget* _parent) :
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(dataCorrupted()),
           this,                                     SLOT(__fetchError()));
   connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
-          this,                                     SLOT(__showVersionNotification()));
+          this,                                     SLOT(__showNewVersionDialog()));
 
   statusBarUpdate();
 }
@@ -153,19 +153,6 @@ UserInterface::infoBarUpdate() {
 }
 
 void
-UserInterface::addNotifier(NotificationWidget* _nw) {
-  __notifiers.push_back(_nw);
-  _nw->setBoundingGeometry(mapWidget()->geometry());
-}
-
-void
-UserInterface::removeNotifier(NotificationWidget* _nw) {
-  Q_ASSERT(__notifiers.indexOf(_nw) >= 0);
-  
-  __notifiers.remove(__notifiers.indexOf(_nw));
-}
-
-void
 UserInterface::setWindowPosition(QWidget* _window) {
   QRect frect = _window->frameGeometry();
   frect.moveCenter(QDesktopWidget().availableGeometry(UserInterface::__getInitialPoint()).center());
@@ -214,17 +201,6 @@ UserInterface::hideAllWindows() {
 void
 UserInterface::closeEvent(QCloseEvent* _event) {
   hideAllWindows();
-  _event->accept();
-}
-
-void
-UserInterface::resizeEvent(QResizeEvent* _event) {
-  QRect geometry = mapWidget()->geometry();
-  
-  for (NotificationWidget* n: __notifiers) {
-    n->setBoundingGeometry(geometry);
-  }
-  
   _event->accept();
 }
 
@@ -288,10 +264,10 @@ UserInterface::__restoreWindowGeometry() {
   QSettings settings;
 
   settings.beginGroup("MainWindow");
-  restoreGeometry(settings.value( "geometry", saveGeometry()).toByteArray());
-  restoreState(settings.value( "savestate", saveState()).toByteArray());
-  move(settings.value( "position", pos()).toPoint());
-  resize(settings.value( "size", size()).toSize());
+  restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
+  restoreState(settings.value("savestate", saveState()).toByteArray());
+  move(settings.value("position", pos()).toPoint());
+  resize(settings.value("size", size()).toSize());
 
   if ( settings.value( "maximized", isMaximized()).toBool() )
     showMaximized();
@@ -353,7 +329,7 @@ UserInterface::__fetchError() {
 }
 
 void
-UserInterface::__showVersionNotification() {
-  /* Don't worry, it will delete itself */
-  new NewVersionNotificationWidget();
+UserInterface::__showNewVersionDialog() {
+  NewVersionDialog dialog(this);
+  dialog.exec();
 }

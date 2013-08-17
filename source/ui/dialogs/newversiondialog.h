@@ -1,5 +1,5 @@
 /*
- * notificationwidget.h
+ * newversiondialog.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,38 +17,22 @@
  *
  */
 
-#ifndef NOTIFICATIONWIDGET_H
-#define NOTIFICATIONWIDGET_H
+#ifndef NEWVERSIONDIALOG_H
+#define NEWVERSIONDIALOG_H
 
-#include <QWidget>
+#include <QDialog>
 
-class UserInterface;
+#include "ui/ui_newversiondialog.h"
 
-class NotificationWidget : public QWidget {
+class NewVersionDialog :
+    public QDialog,
+    private Ui::NewVersionDialog {
   
   Q_OBJECT
-  
-  friend class UserInterface;
 
 public:
-  
-  enum Position {
-    Top,
-    Bottom
-  };
-  
-  explicit NotificationWidget(Position = Top);
-  
-  virtual ~NotificationWidget();
-  
-protected:
-  
-  void setBoundingGeometry(const QRect&);
-  
-private:
-  
-  Position __position;
+  explicit NewVersionDialog(QWidget* = 0);
 
 };
 
-#endif // NOTIFICATIONWIDGET_H
+#endif // NEWVERSIONDIALOG_H

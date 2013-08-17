@@ -52,6 +52,8 @@ set (ui_SRCS
     buttons/clientdetailsbutton.cpp
     buttons/urlbutton.cpp
     
+    dialogs/newversiondialog.cpp
+    
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
     pages/miscellaneouspage.cpp
@@ -61,10 +63,7 @@ set (ui_SRCS
     views/controllertableview.cpp
     views/flighttableview.cpp
     
-    widgets/dataupdatenotificationwidget.cpp
     widgets/mapwidget.cpp
-    widgets/newversionnotificationwidget.cpp
-    widgets/notificationwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
     
@@ -97,6 +96,8 @@ set (ui_MOC_SRCS
     buttons/clientdetailsbutton.h
     buttons/urlbutton.h
     
+    dialogs/newversiondialog.h
+    
     pages/abstractsettingspage.h
     pages/colorspage.h
     pages/miscellaneouspage.h
@@ -106,10 +107,7 @@ set (ui_MOC_SRCS
     views/controllertableview.h
     views/flighttableview.h
     
-    widgets/dataupdatenotificationwidget.h
     widgets/mapwidget.h
-    widgets/newversionnotificationwidget.h
-    widgets/notificationwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h
     
@@ -132,13 +130,12 @@ set (ui_FORMS
     resources/atcdetailswindow.ui
     resources/atclistwindow.ui
     resources/colorspage.ui
-    resources/dataupdatenotificationwidget.ui
     resources/firdetailswindow.ui
     resources/flightdetailswindow.ui
     resources/flightlistwindow.ui
     resources/metarswindow.ui
     resources/miscellaneouspage.ui
-    resources/newversionnotificationwidget.ui
+    resources/newversiondialog.ui
     resources/settingswindow.ui
     resources/userinterface.ui
     resources/viewpage.ui

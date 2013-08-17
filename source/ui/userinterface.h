@@ -37,7 +37,6 @@ class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightListWindow;
 class MetarsWindow;
-class NotificationWidget;
 class SettingsWindow;
 class QProgressBar;
 class VatsinatorApplication;
@@ -80,17 +79,6 @@ public:
   void infoBarUpdate();
   
   /**
-   * Called by NotificationWidget's constructor, adds the notification
-   * widget to handle properly window's resizes.
-   */
-  void addNotifier(NotificationWidget*);
-  
-  /**
-   * Removes the notification widget pointer.
-   */
-  void removeNotifier(NotificationWidget*);
-  
-  /**
    * Sets the window on the center of the screen.
    * @param widget Window to have the position set.
    */
@@ -114,7 +102,6 @@ public slots:
 
 protected:
   void closeEvent(QCloseEvent*);
-  void resizeEvent(QResizeEvent*);
 
 private:
   void __setupWindow();
@@ -129,7 +116,7 @@ private slots:
   void __statusUpdated();
   void __dataUpdated();
   void __fetchError();
-  void __showVersionNotification();
+  void __showNewVersionDialog();
   
 private:  
   static QPoint __initialPoint;
@@ -151,8 +138,6 @@ private:
   FlightDetailsWindow*  __flightDetailsWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
-  
-  QVector<NotificationWidget*> __notifiers;
   
 
 };
