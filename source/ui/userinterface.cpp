@@ -232,6 +232,12 @@ void
 UserInterface::__setupWindow() {
   setupUi(this);
   
+#ifdef Q_OS_DARWIN
+  /* On Mac set main manu name to "Menu" in order not to have two
+     "Vatsinator"s on the menubar. */
+  MenuVatsinator->setTitle(tr("&Menu"));
+#endif
+  
   __statusBox = new QLabel();
   __statusBox->setMinimumSize(QSize(250, 13));
   __statusBox->setMaximumSize(QSize(250, 13));
