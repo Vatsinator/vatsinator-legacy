@@ -131,8 +131,6 @@ elseif (APPLE)
     set (vatsinator_BUNDLE ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app)
     
     add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
-        COMMAND cp ARGS
-        ${QUAZIP_LIBRARIES} ${vatsinator_BUNDLE}/Contents/MacOS/
         COMMAND mkdir ARGS -p
         ${vatsinator_BUNDLE}/Contents/Resources/
         COMMAND cp ARGS -R
@@ -141,12 +139,14 @@ elseif (APPLE)
         ${CMAKE_BINARY_DIR}/vatsinator.resources/* ${vatsinator_BUNDLE}/Contents/Resources/
     )
     
-    get_filename_component(QUAZIP_LIB_FILE ${QUAZIP_LIBRARIES} NAME)
-    
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
     include (DeployQt4)
-    install_qt4_executable ("${vatsinator_TARGET}.app" "" "${vatsinator_TARGET}.app/Contents/MacOS/${QUAZIP_LIB_FILE}")
+    install_qt4_executable ("${vatsinator_TARGET}.app"
+        "" # qtplugins
+        "" # libs
+        "/usr/local/lib" # dirs
+)
     
 elseif (WIN32)
 
