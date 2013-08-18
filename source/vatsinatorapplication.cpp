@@ -54,9 +54,9 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __worldMap(new WorldMap()),
     __vatsimData(new VatsimDataHandler()),
     __languageManager(new LanguageManager()),
-    __resourceManager(new ResourceManager()),
     __settingsManager(new SettingsManager()),
     __moduleManager(new ModuleManager()),
+    __resourceManager(new ResourceManager()),
     __userInterface(nullptr) {
 
   __translator.load(QString("vatsinator-") %
@@ -125,6 +125,7 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __fileManager;
   
   rmThread->wait();
+  delete rmThread;
 
 #ifndef NO_DEBUG
   DumpUnfreed();

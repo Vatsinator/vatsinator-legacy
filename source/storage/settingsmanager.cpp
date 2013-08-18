@@ -55,8 +55,8 @@ SettingsManager::init() {
 
 QString
 SettingsManager::earlyGetLocale() {
-  QSettings settings("Vatsinator", "Vatsinator");
-  settings.beginGroup("Settings");
+  QSettings settings;
+  settings.beginGroup("Settings/misc");
   
   QString language = settings.value("language",
                               QLocale::system().name().left(2)).toString();

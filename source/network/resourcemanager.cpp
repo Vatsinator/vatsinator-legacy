@@ -21,6 +21,8 @@
 
 #include "network/plaintextdownloader.h"
 
+#include "storage/filemanager.h"
+
 #include "vatsinatorapplication.h"
 
 #include "resourcemanager.h"

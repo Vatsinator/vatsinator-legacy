@@ -21,6 +21,8 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
+#include "storage/filemanager.h"
+
 #include "ui/userinterface.h"
 
 #include "aboutwindow.h"
@@ -42,6 +44,13 @@ AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
     QString::number(AirportDatabase::getSingleton().airports().size()));
   FirsInDatabaseLabel->setText(
     QString::number(FirDatabase::getSingleton().firs().size()));
+  
+  QDateTime sync = FileManager::timestamp();
+  if (sync.isNull()) {
+    SyncTimeLabel->setText(tr("never"));
+  } else {
+    SyncTimeLabel->setText(sync.toString("dd/MM/yyyy hh:mm"));
+  }
   
   QFont titleFont = QApplication::font();
   titleFont.setPointSize(titleFont.pointSize() + 2);

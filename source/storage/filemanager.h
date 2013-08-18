@@ -67,6 +67,11 @@ public:
   static QByteArray md5Hash(const QString&);
   static QByteArray md5Hash(QIODevice&);
   
+  inline static const QDateTime &
+  timestamp() {
+    return getSingleton().__manifest.timestamp;
+  }
+  
 private:
   class FileHash {
     

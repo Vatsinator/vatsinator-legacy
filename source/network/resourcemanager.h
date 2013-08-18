@@ -20,6 +20,7 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
+#include <QDateTime>
 #include <QObject>
 
 #include "singleton.h"

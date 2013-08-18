@@ -35,13 +35,13 @@ static const QString DATA_DIR_LOCATON(
 #endif
 );
 
-static const QString DATA_LOCATION(QDir::toNativeSeparators(DATA_DIR_LOCATON % "/Vatsinator/"));
+static const QString DATA_LOCATION(QDir::toNativeSeparators(DATA_DIR_LOCATON % "/Vatsinator"));
 
 
 FileManager::FileManager() {
   VatsinatorApplication::log("Local data location: %s", qPrintable(DATA_LOCATION));
   
-  __readManifest(DATA_LOCATION % "Manifest");
+  __readManifest(DATA_LOCATION % "/Manifest");
 }
 
 void
@@ -109,7 +109,7 @@ FileManager::__readManifest(const QString& _fname) {
       continue;
     
     if (!__manifest.timestamp.isValid()) {
-      __manifest.timestamp = QDateTime::fromString(QString::fromUtf8(line), "yyyyMMddhhmmss");
+      __manifest.timestamp = QDateTime::fromString(QString::fromUtf8(line), "yyyyMMddhhmm");
     } else {
       QList<QByteArray> split = line.split(' ');
       
@@ -123,6 +123,6 @@ FileManager::__readManifest(const QString& _fname) {
   file.close();
   
   VatsinatorApplication::log("Data updated on %s.",
-                             qPrintable(__manifest.timestamp.toString("yyyyMMddhhmmss")));
+                             qPrintable(__manifest.timestamp.toString("yyyyMMddhhmm")));
 }
 
