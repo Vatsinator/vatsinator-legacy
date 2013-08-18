@@ -215,13 +215,11 @@ UserInterface::__setupWindow() {
 #endif
   
   __statusBox = new QLabel();
-  __statusBox->setMinimumSize(QSize(250, 13));
-  __statusBox->setMaximumSize(QSize(250, 13));
+//   __statusBox->setMinimumSize(QSize(250, 13));
   __statusBox->setIndent(5);
   
   __progressBar = new QProgressBar();
-  __progressBar->setMinimumSize(QSize(250, 13));
-  __progressBar->setMaximumSize(QSize(250, 13));
+//   __progressBar->setMinimumSize(QSize(250, 13));
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
   
