@@ -59,14 +59,14 @@ FileManager::staticPath(FileManager::StaticDir _d) {
 #ifndef Q_OS_DARWIN
       return QString(VATSINATOR_PREFIX) % "pixmaps";
 #else
-      return QCoreApplication::applicationDirPath() % "/../Resources/pixmaps"
+      return QCoreApplication::applicationDirPath() % "/../Resources/pixmaps";
 #endif
       
     case Translations:
 #ifndef Q_OS_DARWIN
       return QString(VATSINATOR_PREFIX) % "translations";
 #else
-      return QCoreApplication::applicationDirPath() % "/../Resources/translations"
+      return QCoreApplication::applicationDirPath() % "/../Resources/translations";
 #endif
     
     default:
