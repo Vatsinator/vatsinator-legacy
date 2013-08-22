@@ -23,7 +23,7 @@ else (NOT APPLE)
   
   foreach (LANG ${LANGUAGE_FILES})
     string (REGEX
-      REPLACE "^(.+)\.language$"
+      REPLACE "^.*/([a-z]+)\\.language$"
       "\\1"
       lang_symbol ${LANG}
     )
@@ -32,7 +32,7 @@ else (NOT APPLE)
       TARGET i18n POST_BUILD
       COMMAND mkdir ARGS -p
         ${CMAKE_BINARY_DIR}/vatsinator.resources/${lang_symbol}.lproj
-      COMMENT "Enabling MacOS menu translations..."
+      COMMENT "Enabling MacOS menu translations for ${lang_symbol}..."
     )
     
     configure_file (
