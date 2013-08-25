@@ -28,7 +28,9 @@
 
 #include "storage/settingsmanager.h"
 
+#include "ui/dialogs/datafetcherrordialog.h"
 #include "ui/dialogs/newversiondialog.h"
+#include "ui/dialogs/statusfetcherrordialog.h"
 
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
@@ -116,28 +118,16 @@ UserInterface::__getInitialPoint() {
 
 void
 UserInterface::__statusFileError() {
-  QMessageBox alert;
-  alert.setText(tr("Vatsinator was unable to fetch the status file."));
-  alert.setInformativeText(tr("It means that no data can be obtained at all. Check your "
-    "internet connection and the accessibility of Vatsim servers."));
-  alert.setIcon(QMessageBox::Critical);
-  alert.addButton(QMessageBox::Ok);
-  alert.exec();
+  StatusFetchErrorDialog dialog;
+  dialog.exec();
 }
 
 void
 UserInterface::__fetchError() {
-  QMessageBox decision;
-  decision.setText(tr("Vatsinator was unable to fetch Vatsim's data file."));
-  decision.setInformativeText(tr("What do you want to do with that?"));
-  decision.setIcon(QMessageBox::Question);
-  QPushButton* againButton = decision.addButton(tr("Try again"), QMessageBox::ActionRole);
-  decision.addButton(tr("Keep current data"), QMessageBox::RejectRole);
-  decision.setIcon(QMessageBox::Warning);
+  DataFetchErrorDialog dialog;
+  dialog.exec();
   
-  decision.exec();
-  
-  if (decision.clickedButton() == againButton) {
+  if (dialog.clickedButton() == dialog.again()) {
     VatsinatorApplication::getSingleton().refreshData();
   }
 }

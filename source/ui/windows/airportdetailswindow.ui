@@ -35,7 +35,7 @@
    <string>%1 - airport details</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="imgs.qrc">
+   <iconset resource="../resources/imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <widget class="QTabWidget" name="InboundsOutboundsTab">
@@ -460,7 +460,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="imgs.qrc">:/extra/vataware.png</pixmap>
+           <pixmap resource="../resources/imgs.qrc">:/extra/vataware.png</pixmap>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -589,6 +589,7 @@
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../resources/imgs.qrc"/>
   <include location="imgs.qrc"/>
  </resources>
  <connections>

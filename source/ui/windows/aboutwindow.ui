@@ -28,7 +28,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="imgs.qrc">:/mainIcon/icon.png</pixmap>
+        <pixmap resource="../resources/imgs.qrc">:/mainIcon/icon.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>false</bool>
@@ -210,7 +210,7 @@
             <string>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+            <set>Qt::AlignBottom|Qt::AlignHCenter</set>
            </property>
            <property name="margin">
             <number>5</number>
@@ -283,6 +283,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="../resources/imgs.qrc"/>
   <include location="imgs.qrc"/>
  </resources>
  <connections/>

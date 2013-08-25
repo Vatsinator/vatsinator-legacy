@@ -52,7 +52,9 @@ set (ui_SRCS
     buttons/clientdetailsbutton.cpp
     buttons/urlbutton.cpp
     
+    dialogs/datafetcherrordialog.cpp
     dialogs/newversiondialog.cpp
+    dialogs/statusfetcherrordialog.cpp
     
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
@@ -97,7 +99,9 @@ set (ui_MOC_SRCS
     buttons/clientdetailsbutton.h
     buttons/urlbutton.h
     
+    dialogs/datafetcherrordialog.h
     dialogs/newversiondialog.h
+    dialogs/statusfetcherrordialog.h
     
     pages/abstractsettingspage.h
     pages/colorspage.h

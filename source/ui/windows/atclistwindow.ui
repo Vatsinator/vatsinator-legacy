@@ -14,7 +14,7 @@
    <string>ATC list</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="imgs.qrc">
+   <iconset resource="../resources/imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -76,7 +76,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="imgs.qrc"/>
+  <include location="../resources/imgs.qrc"/>
  </resources>
  <connections/>
 </ui>
