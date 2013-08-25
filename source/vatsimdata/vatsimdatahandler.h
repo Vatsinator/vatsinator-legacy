@@ -64,6 +64,11 @@ signals:
   void vatsimStatusUpdated();
   
   /**
+   * Status file could not be fetched correctly.
+   */
+  void vatsimStatusError();
+  
+  /**
    * Called when new data is already parsed.
    */
   void vatsimDataUpdated();

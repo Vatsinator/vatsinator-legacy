@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>VatsinatorWindow</class>
+ <widget class="QMainWindow" name="VatsinatorWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -26,7 +26,7 @@
    <string notr="true">Vatsinator</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="imgs.qrc">
+   <iconset resource="../resources/imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <widget class="QWidget" name="MainWidget">
@@ -154,8 +154,8 @@
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>203</x>
-      <y>93</y>
+      <x>236</x>
+      <y>199</y>
       <width>185</width>
       <height>234</height>
      </rect>
@@ -203,7 +203,7 @@
   </widget>
   <action name="ActionExit">
    <property name="icon">
-    <iconset theme="application-exit" resource="imgs.qrc">
+    <iconset theme="application-exit" resource="../resources/imgs.qrc">
      <normaloff>:/uiIcons/application-exit.png</normaloff>:/uiIcons/application-exit.png</iconset>
    </property>
    <property name="text">
@@ -218,7 +218,7 @@
   </action>
   <action name="ActionAbout">
    <property name="icon">
-    <iconset resource="imgs.qrc">
+    <iconset resource="../resources/imgs.qrc">
      <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
    </property>
    <property name="text">
@@ -230,7 +230,7 @@
   </action>
   <action name="ActionMetar">
    <property name="icon">
-    <iconset theme="weather-few-clouds" resource="imgs.qrc">
+    <iconset theme="weather-few-clouds" resource="../resources/imgs.qrc">
      <normaloff>:/uiIcons/weather-clouds.png</normaloff>:/uiIcons/weather-clouds.png</iconset>
    </property>
    <property name="text">
@@ -241,8 +241,11 @@
    </property>
   </action>
   <action name="ActionRefresh">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
-    <iconset theme="view-refresh" resource="imgs.qrc">
+    <iconset theme="view-refresh" resource="../resources/imgs.qrc">
      <normaloff>:/uiIcons/view-refresh.png</normaloff>:/uiIcons/view-refresh.png</iconset>
    </property>
    <property name="text">
@@ -254,7 +257,7 @@
   </action>
   <action name="ActionPreferences">
    <property name="icon">
-    <iconset theme="preferences-system" resource="imgs.qrc">
+    <iconset theme="preferences-system" resource="../resources/imgs.qrc">
      <normaloff>:/uiIcons/configure.png</normaloff>:/uiIcons/configure.png</iconset>
    </property>
    <property name="text">
@@ -314,7 +317,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="imgs.qrc"/>
+  <include location="../resources/imgs.qrc"/>
  </resources>
  <connections/>
 </ui>

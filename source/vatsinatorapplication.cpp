@@ -36,6 +36,7 @@
 
 #include "ui/userinterface.h"
 #include "ui/windows/settingswindow.h"
+#include "ui/windows/vatsinatorwindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -74,33 +75,26 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 //   QtConcurrent::run(__settingsManager, &SettingsManager::init);
   
   __moduleManager->init();
-
-  // destroy all children windows before the program exits
-  connect(this,                 SIGNAL(destroyed()),
-          __userInterface,      SLOT(hideAllWindows()));
   
   // connect EnableAutoUpdatesAction toggle
-  connect(__userInterface,      SIGNAL(autoUpdatesEnabled(bool)),
-          this,                 SLOT(__autoUpdatesToggled(bool)));
+  connect(VatsinatorWindow::getSingletonPtr(),  SIGNAL(autoUpdatesEnabled(bool)),
+          this,                                 SLOT(__autoUpdatesToggled(bool)));
   
   // handle settings changes
-  connect(__settingsManager,    SIGNAL(settingsChanged()),
-          this,                 SLOT(__loadNewSettings()));
+  connect(__settingsManager,                    SIGNAL(settingsChanged()),
+          this,                                 SLOT(__loadNewSettings()));
 
   // connect data refresher with the timer
-  connect(&__timer,             SIGNAL(timeout()),
-          this,                 SLOT(refreshData()));
+  connect(&__timer,                             SIGNAL(timeout()),
+          this,                                 SLOT(refreshData()));
+  
+  // when status file is fetched, we may start fetching the data
+  connect(__vatsimData,                         SIGNAL(vatsimStatusUpdated()),
+          this,                                 SLOT(__beginDownload()));
 
   // show main window
-  __userInterface->show();
+  VatsinatorWindow::getSingleton().show();
   emit uiCreated();
-
-  // start the timer and fetch data
-  __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
-  if (__userInterface->autoUpdatesEnabled()) {
-    __timer.start();
-    refreshData();
-  }
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);
@@ -168,7 +162,8 @@ VatsinatorApplication::log(const char* _s) {
 void
 VatsinatorApplication::refreshData() {
   emit dataDownloading();
-  if (!__userInterface->autoUpdatesEnabled())
+  
+  if (!VatsinatorWindow::getSingleton().autoUpdatesEnabled())
     __timer.stop();
   else
     __timer.start();
@@ -180,11 +175,18 @@ VatsinatorApplication::__emitGLInitialized() {
 }
 
 void
+VatsinatorApplication::__beginDownload() {
+  // start the timer and fetch data
+  __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
+  refreshData();
+}
+
+void
 VatsinatorApplication::__loadNewSettings() {
   if (__timer.interval() / 60000 != SM::get("misc.refresh_rate").toInt()) {
     __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
     
-    if (__userInterface->autoUpdatesEnabled())
+    if (VatsinatorWindow::getSingleton().autoUpdatesEnabled())
       refreshData();
   }
 }

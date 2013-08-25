@@ -25,7 +25,7 @@
 
 class AboutWindow :
     public QWidget,
-    public Singleton< AboutWindow >,
+    public Singleton<AboutWindow>,
     private Ui::AboutWindow {
 
   Q_OBJECT

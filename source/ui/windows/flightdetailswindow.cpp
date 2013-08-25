@@ -41,6 +41,9 @@
 FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
+  
+  connect(qApp, SIGNAL(aboutToQuit()),
+          this, SLOT(hide()));
 
   connect(TrackFlightBox,                       SIGNAL(stateChanged(int)),
           this,                                 SLOT(stateHandle(int)));

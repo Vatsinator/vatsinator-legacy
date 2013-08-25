@@ -26,7 +26,7 @@
 
 class DebugWindow :
     public QWidget,
-    public Singleton< DebugWindow >,
+    public Singleton<DebugWindow>,
     private Ui::DebugWindow {
 
   Q_OBJECT

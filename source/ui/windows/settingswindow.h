@@ -29,7 +29,7 @@ class AbstractSettingsPage;
 
 class SettingsWindow :
     public QWidget,
-    public Singleton< SettingsWindow >,
+    public Singleton<SettingsWindow>,
     private Ui::SettingsWindow {
 
   Q_OBJECT

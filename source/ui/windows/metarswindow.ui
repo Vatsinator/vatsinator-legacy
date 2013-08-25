@@ -17,7 +17,7 @@
    <string>METARs</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="imgs.qrc">
+   <iconset resource="../resources/imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -47,6 +47,9 @@
    </item>
    <item row="3" column="0">
     <widget class="QPushButton" name="RefreshAllButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Refresh all</string>
      </property>
@@ -61,6 +64,9 @@
    </item>
    <item row="0" column="1" colspan="3">
     <widget class="QPushButton" name="FetchButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
@@ -94,7 +100,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="imgs.qrc"/>
+  <include location="../resources/imgs.qrc"/>
  </resources>
  <connections>
   <connection>

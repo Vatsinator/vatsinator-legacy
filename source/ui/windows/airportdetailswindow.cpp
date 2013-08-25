@@ -55,6 +55,10 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
     QWidget(_parent),
     __currentICAO("") {
   setupUi(this);
+  
+  connect(qApp, SIGNAL(aboutToQuit()),
+          this, SLOT(hide()));
+  
   UserInterface::setWindowPosition(this);
 
   connect(MetarListModel::getSingletonPtr(),    SIGNAL(newMetarsAvailable()),

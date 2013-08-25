@@ -106,10 +106,17 @@ public:
   vatsimData() { return *__vatsimData; }
 
 public slots:
-  void refreshData();
-
+  void refreshData();  
+  
 private:
   void __emitGLInitialized();
+  
+private slots:
+  void __beginDownload();
+  void __loadNewSettings();
+  void __autoUpdatesToggled(bool);
+  
+private:
   
   FileManager*         __fileManager;
   AirportDatabase*     __airportsData;
@@ -124,10 +131,6 @@ private:
   
   QTimer               __timer;
   QTranslator          __translator;
-
-private slots:
-  void __loadNewSettings();
-  void __autoUpdatesToggled(bool);
 
 };
 

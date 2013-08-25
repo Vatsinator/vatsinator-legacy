@@ -75,7 +75,6 @@ private slots:
   void __readyRead();
   void __finished();
   void __updateProgress(qint64, qint64);
-  void __onError(QNetworkReply::NetworkError);
 
 };
 

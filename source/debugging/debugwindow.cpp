@@ -30,6 +30,10 @@
 DebugWindow::DebugWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
+  
+  connect(qApp, SIGNAL(aboutToQuit()),
+          this, SLOT(hide()));
+  
   __setWindowPosition();
 
   connect(RefreshButton,  SIGNAL(clicked()),

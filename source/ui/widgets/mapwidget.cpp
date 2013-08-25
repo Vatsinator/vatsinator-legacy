@@ -50,6 +50,7 @@
 #include "ui/windows/firdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/windows/metarswindow.h"
+#include "ui/windows/vatsinatorwindow.h"
 
 #include "vatsimdata/uir.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -590,7 +591,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     longitude -= 360;
 
   // update the label on the very bottom of the main window
-  UserInterface::getSingleton().positionBox()->setText(
+  VatsinatorWindow::getSingleton().positionBox()->setText(
     QString((latitude > 0) ? "N" : "S") + " " +
     QString::number(qAbs(latitude), 'g', 6) + " " +
     QString((longitude < 0) ? "W" : "E") + " " +
