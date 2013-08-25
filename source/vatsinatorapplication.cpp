@@ -90,11 +90,13 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   
   // when status file is fetched, we may start fetching the data
   connect(__vatsimData,                         SIGNAL(vatsimStatusUpdated()),
-          this,                                 SLOT(__beginDownload()));
+          this,                                 SLOT(refreshData()));
 
   // show main window
   VatsinatorWindow::getSingleton().show();
   emit uiCreated();
+  
+  __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);
@@ -172,13 +174,6 @@ VatsinatorApplication::refreshData() {
 void
 VatsinatorApplication::__emitGLInitialized() {
   emit glInitialized();
-}
-
-void
-VatsinatorApplication::__beginDownload() {
-  // start the timer and fetch data
-  __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
-  refreshData();
 }
 
 void

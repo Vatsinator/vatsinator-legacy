@@ -112,7 +112,6 @@ private:
   void __emitGLInitialized();
   
 private slots:
-  void __beginDownload();
   void __loadNewSettings();
   void __autoUpdatesToggled(bool);
   
