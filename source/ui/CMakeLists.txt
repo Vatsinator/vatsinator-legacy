@@ -52,7 +52,9 @@ set (ui_SRCS
     buttons/clientdetailsbutton.cpp
     buttons/urlbutton.cpp
     
+    dialogs/datafetcherrordialog.cpp
     dialogs/newversiondialog.cpp
+    dialogs/statusfetcherrordialog.cpp
     
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
@@ -76,6 +78,7 @@ set (ui_SRCS
     windows/flightlistwindow.cpp
     windows/metarswindow.cpp
     windows/settingswindow.cpp
+    windows/vatsinatorwindow.cpp
 )
 
 vatsinator_subdirectory_sources (ui "${ui_SRCS}")
@@ -96,7 +99,9 @@ set (ui_MOC_SRCS
     buttons/clientdetailsbutton.h
     buttons/urlbutton.h
     
+    dialogs/datafetcherrordialog.h
     dialogs/newversiondialog.h
+    dialogs/statusfetcherrordialog.h
     
     pages/abstractsettingspage.h
     pages/colorspage.h
@@ -120,25 +125,28 @@ set (ui_MOC_SRCS
     windows/flightlistwindow.h
     windows/metarswindow.h
     windows/settingswindow.h
+    windows/vatsinatorwindow.h
 )
 
 vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
 
 set (ui_FORMS
-    resources/aboutwindow.ui
-    resources/airportdetailswindow.ui
-    resources/atcdetailswindow.ui
-    resources/atclistwindow.ui
-    resources/colorspage.ui
-    resources/firdetailswindow.ui
-    resources/flightdetailswindow.ui
-    resources/flightlistwindow.ui
-    resources/metarswindow.ui
-    resources/miscellaneouspage.ui
-    resources/newversiondialog.ui
-    resources/settingswindow.ui
-    resources/userinterface.ui
-    resources/viewpage.ui
+    dialogs/newversiondialog.ui
+    
+    pages/colorspage.ui
+    pages/miscellaneouspage.ui
+    pages/viewpage.ui
+
+    windows/aboutwindow.ui
+    windows/airportdetailswindow.ui
+    windows/atcdetailswindow.ui
+    windows/atclistwindow.ui
+    windows/firdetailswindow.ui
+    windows/flightdetailswindow.ui
+    windows/flightlistwindow.ui
+    windows/metarswindow.ui
+    windows/settingswindow.ui
+    windows/vatsinatorwindow.ui
 )
 
 vatsinator_subdirectory_forms (ui "${ui_FORMS}")

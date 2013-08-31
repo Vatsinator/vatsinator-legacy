@@ -34,6 +34,10 @@
 FlightListWindow::FlightListWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
+  
+  connect(qApp, SIGNAL(aboutToQuit()),
+          this, SLOT(hide()));
+  
   UserInterface::setWindowPosition(this);
   FlightsTable->setModel(VatsimDataHandler::getSingleton().flightsModel());
   FlightsTable->hideColumn(FlightTableModel::Button);

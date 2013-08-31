@@ -23,6 +23,7 @@
 #include "ui/userinterface.h"
 
 #include "vatsimdata/models/metarlistmodel.h"
+#include "vatsimdata/vatsimdatahandler.h"
 
 #include "metarswindow.h"
 #include "defines.h"
@@ -30,8 +31,10 @@
 MetarsWindow::MetarsWindow(QWidget* _parent) :
     QWidget(_parent),
     __awaited("") {
-
   setupUi(this);
+  
+  connect(qApp, SIGNAL(aboutToQuit()),
+          this, SLOT(hide()));
 
   UserInterface::setWindowPosition(this);
 
@@ -49,6 +52,8 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
           this,             SLOT(__handleTextChange(const QString&)));
   connect(__metarsHandler,  SIGNAL(newMetarsAvailable()),
           this,             SLOT(__handleNewMetars()));
+  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
+          this,                                 SLOT(__enableButtons()));
   
   FetchButton->setEnabled(false);
   MetarsDisplay->setModel(__metarsHandler);
@@ -117,4 +122,10 @@ MetarsWindow::__handleNewMetars() {
     __findAndSelectMetar(__awaited, false);
     __awaited.clear();
   }
+}
+
+void
+MetarsWindow::__enableButtons() {
+  FetchButton->setEnabled(true);
+  RefreshAllButton->setEnabled(true);
 }

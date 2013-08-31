@@ -25,7 +25,7 @@
 
 class FlightListWindow :
     public QWidget,
-    public Singleton< FlightListWindow >,
+    public Singleton<FlightListWindow>,
     private Ui::FlightListWindow {
 
   Q_OBJECT

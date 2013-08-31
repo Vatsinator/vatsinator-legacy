@@ -45,8 +45,8 @@ PlainTextDownloader::__startRequest() {
 
   connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
   connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
-  connect(__reply, SIGNAL(error(QNetworkReply::NetworkError)),
-          this,    SLOT(__onError(QNetworkReply::NetworkError)));
+//   connect(__reply, SIGNAL(error(QNetworkReply::NetworkError)),
+//           this,    SLOT(__finished()));
 
   if (__progressBar) {
     connect(__reply, SIGNAL(downloadProgress(qint64, qint64)),
@@ -64,16 +64,21 @@ PlainTextDownloader::__readyRead() {
 
 void
 PlainTextDownloader::__finished() {
-  __reply->deleteLater();
-  __reply = NULL;
   
   if (__progressBar) {
     __progressBar->reset();
     __progressBar->setEnabled(false);
   }
   
-  __data = __temp;
-  emit finished(__data);
+  if (__reply->error() == QNetworkReply::NoError) {
+    __data = __temp;
+    emit finished(__data);
+  } else {
+    emit fetchError();
+  }
+  
+  __reply->deleteLater();
+  __reply = NULL;
   
   if (anyTasksLeft())
     __startRequest();
@@ -83,20 +88,4 @@ void
 PlainTextDownloader::__updateProgress(qint64 _bRead, qint64 _bTotal) {
   __progressBar->setMaximum(_bTotal);
   __progressBar->setValue(_bRead);
-}
-
-void
-PlainTextDownloader::__onError(QNetworkReply::NetworkError) {
-  __reply->deleteLater();
-  __reply = NULL;
-  
-  if (__progressBar) {
-    __progressBar->reset();
-    __progressBar->setEnabled(false);
-  }
-  
-  emit fetchError();
-  
-  if (anyTasksLeft())
-    __startRequest();
 }

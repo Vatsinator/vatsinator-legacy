@@ -32,7 +32,7 @@ class MetarListModel;
 
 class MetarsWindow :
     public QWidget,
-    public Singleton< MetarsWindow >,
+    public Singleton<MetarsWindow>,
     private Ui::MetarsWindow {
 
   /*
@@ -56,16 +56,18 @@ protected:
 
 private:
   void __findAndSelectMetar(const QString&, bool = true);
-  
-  PlainTextDownloader*    __httpHandler;
-  MetarListModel* __metarsHandler;
-  
-  /* Keeps the ICAO of the metar that user's waiting for */
-  QString __awaited;
 
 private slots:
   void __handleTextChange(const QString&);
   void __handleNewMetars();
+  void __enableButtons();
+  
+private:
+  PlainTextDownloader* __httpHandler;
+  MetarListModel*      __metarsHandler;
+  
+  /* Keeps the ICAO of the metar that user's waiting for */
+  QString __awaited;
 
 
 

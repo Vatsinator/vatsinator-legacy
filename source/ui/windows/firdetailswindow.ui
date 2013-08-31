@@ -32,7 +32,7 @@
    <string/>
   </property>
   <property name="windowIcon">
-   <iconset resource="imgs.qrc">
+   <iconset resource="../resources/imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <widget class="QWidget" name="layoutWidget">
@@ -360,7 +360,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="imgs.qrc"/>
+  <include location="../resources/imgs.qrc"/>
  </resources>
  <connections>
   <connection>

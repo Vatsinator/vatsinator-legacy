@@ -34,6 +34,10 @@
 SettingsWindow::SettingsWindow(QWidget* _parent) :
     QWidget(_parent) {
   setupUi(this);
+  
+  connect(qApp, SIGNAL(aboutToQuit()),
+          this, SLOT(hide()));
+  
   UserInterface::setWindowPosition(this);
 
   connect(OKCancelButtonBox,    SIGNAL(clicked(QAbstractButton*)),

@@ -29,7 +29,7 @@
 
 #include "ui/pages/miscellaneouspage.h"
 
-#include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
 
 #include "storage/settingsmanager.h"
 
@@ -77,7 +77,7 @@ VatsimDataHandler::VatsimDataHandler() :
   connect(__downloader,                             SIGNAL(finished(const QString&)),
           this,                                     SLOT(__dataFetched(const QString&)));
   connect(__downloader,                             SIGNAL(fetchError()),
-          this,                                     SIGNAL(dataCorrupted()));
+          this,                                     SIGNAL(vatsimStatusError()));
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
@@ -129,8 +129,20 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
       continue;
     }
   }
-
-  __statusFileFetched = true;
+  
+  if (__metarURL.isEmpty() || __servers.empty()) {
+    emit vatsimStatusError();
+  } else {
+    __statusFileFetched = true;
+    
+    disconnect(__downloader, SIGNAL(fetchError()),
+          this,              SIGNAL(vatsimStatusError()));
+    
+    connect(__downloader, SIGNAL(fetchError()),
+            this,         SIGNAL(dataCorrupted()));
+    
+    emit vatsimStatusUpdated();
+  }
 }
 
 void
@@ -310,12 +322,8 @@ VatsimDataHandler::loadCachedData() {
       return;
     }
     
-    QString data;
-    
-    while (!file.atEnd())
-      data.append(file.readLine());
+    QString data(file.readAll());
     file.close();
-    
     parseDataFile(data);
     ModuleManager::getSingleton().updateData();
   }
@@ -506,7 +514,8 @@ VatsimDataHandler::__reportDataError(QString _msg) {
 
 void
 VatsimDataHandler::__slotUiCreated() {
-  __downloader->setProgressBar(UserInterface::getSingleton().progressBar());
+  __downloader->setProgressBar(VatsinatorWindow::getSingleton().progressBar());
+  __beginDownload();
 }
 
 void
@@ -517,12 +526,11 @@ VatsimDataHandler::__beginDownload() {
 
 void
 VatsimDataHandler::__dataFetched(const QString& _data) {
-  if (_data.isEmpty()) {
-    emit dataCorrupted();
-    return;
-  }
-  
   if (__statusFileFetched) {
+    if (_data.isEmpty()) {
+      emit dataCorrupted();
+      return;
+    }
     FirDatabase::getSingleton().clearAll();
     parseDataFile(_data);
     emit vatsimDataUpdated();
@@ -531,7 +539,5 @@ VatsimDataHandler::__dataFetched(const QString& _data) {
       FileManager::cacheData(CACHE_FILE_NAME, _data);
   } else {
     parseStatusFile(_data);
-    emit vatsimStatusUpdated();
-    __beginDownload();
   }
 }

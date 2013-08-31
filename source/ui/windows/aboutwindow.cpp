@@ -34,6 +34,10 @@
 
 AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
   setupUi(this);
+  
+  connect(qApp, SIGNAL(aboutToQuit()),
+          this, SLOT(hide()));
+  
   UserInterface::setWindowPosition(this);
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
   LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");

@@ -25,7 +25,7 @@
 
 class AtcListWindow :
     public QWidget,
-    public Singleton< AtcListWindow >,
+    public Singleton<AtcListWindow>,
     private Ui::ATCListWindow {
 
   Q_OBJECT

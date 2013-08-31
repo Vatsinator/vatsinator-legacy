@@ -20,7 +20,8 @@
 #ifndef USERINTERFACE_H
 #define USERINTERFACE_H
 
-#include "ui/ui_userinterface.h"
+#include <QObject>
+
 #include "ui/widgets/mapwidget.h"
 #include "singleton.h"
 
@@ -39,44 +40,22 @@ class FlightListWindow;
 class MetarsWindow;
 class SettingsWindow;
 class QProgressBar;
-class VatsinatorApplication;
+class VatsinatorWindow;
 
 class UserInterface :
-    public QMainWindow,
-    public Singleton<UserInterface>,
-    private Ui::MainWindow {
+  public QObject,
+  public Singleton<UserInterface> {
 
   /*
-   * This class handles the Vatsinator's QT GUI interface.
+   * This class manager the Vatsinator's GUI interface.
    */
-
 
   Q_OBJECT
-  
-signals:
-  void autoUpdatesEnabled(bool);
 
 public:
-  UserInterface(QWidget* = 0);
+  UserInterface();
 
   virtual ~UserInterface();
-
-  /**
-   * Sets the specified message in the bottom-left bar corner
-   * or puts simple "Last update" text.
-   * @param text If specified, this text will be shown.
-   */
-  void statusBarUpdate(const QString& = "");
-  
-  /**
-   * Toggles status bar with progress bar (bottom-left corner).
-   */
-  void toggleStatusBar();
-  
-  /**
-   * The middle part of status bar - how many clients, etc etc.
-   */
-  void infoBarUpdate();
   
   /**
    * Sets the window on the center of the screen.
@@ -84,45 +63,18 @@ public:
    */
   static void setWindowPosition(QWidget*);
 
-  inline MapWidget*
-  mapWidget() { return MapDisplay; }
-
-  inline QProgressBar*
-  progressBar() { return __progressBar; }
-
-  inline QLabel*
-  positionBox() { return PositionBox; }
-  
-  inline bool
-  autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
-
-public slots:
-  void quit();
-  void hideAllWindows();
-
-protected:
-  void closeEvent(QCloseEvent*);
-
 private:
-  void __setupWindow();
-  void __storeWindowGeometry();
-  void __restoreWindowGeometry();
   
   /* Returns main window initial position */
   static const QPoint& __getInitialPoint();
 
 private slots:
-  void __dataDownloading();
-  void __statusUpdated();
-  void __dataUpdated();
+  void __statusFileError();
   void __fetchError();
   void __showNewVersionDialog();
   
 private:  
   static QPoint __initialPoint;
-  
-  QLabel*       __statusBox;
-  QProgressBar* __progressBar;
 
 
 #ifndef NO_DEBUG
@@ -138,7 +90,7 @@ private:
   FlightDetailsWindow*  __flightDetailsWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
-  
+  VatsinatorWindow*     __vatsinatorWindow;
 
 };
 
