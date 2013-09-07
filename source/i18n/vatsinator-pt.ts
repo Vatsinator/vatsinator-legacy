@@ -391,17 +391,17 @@
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="31"/>
         <source>What do you want to do with that?</source>
-        <translation type="unfinished"/>
+        <translation>Que pretende fazer com isso?</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="34"/>
         <source>Try again</source>
-        <translation type="unfinished"/>
+        <translation>Tente novamente</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="35"/>
         <source>Keep current data</source>
-        <translation type="unfinished"/>
+        <translation>Manter dados actuais</translation>
     </message>
 </context>
 <context>
@@ -1227,37 +1227,37 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
         <source>&amp;Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Vatsinator</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ajuda</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Definições</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Sair</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
         <source>METARs...</source>
-        <translation type="unfinished"/>
+        <translation>METARs...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
         <source>Refresh</source>
-        <translation type="unfinished"/>
+        <translation>Refrescar</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
@@ -1267,17 +1267,17 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
         <source>Flight list...</source>
-        <translation type="unfinished"/>
+        <translation>Lista de vôo...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
         <source>ATC list...</source>
-        <translation type="unfinished"/>
+        <translation>Lista de ATC...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
         <source>Enable auto-updates</source>
-        <translation type="unfinished"/>
+        <translation>Activar actualização automática</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
@@ -1297,17 +1297,17 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="121"/>
         <source>Last update: never</source>
-        <translation type="unfinished"/>
+        <translation>Última actualização: nunca</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="123"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>Última actualização: %1 UTC</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="135"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
-        <translation type="unfinished"/>
+        <translation>Clientes: %1 (%2 pilotos, %3 ATC, %4 observadores)</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="209"/>
