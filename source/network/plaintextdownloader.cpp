@@ -26,7 +26,7 @@
 PlainTextDownloader::PlainTextDownloader(QProgressBar* _pb, QObject* _parent) :
     QObject(_parent),
     __progressBar(_pb),
-    __reply(0) {}
+    __reply(nullptr) {}
 
 void
 PlainTextDownloader::fetchData(const QString& _url) {
@@ -42,19 +42,17 @@ PlainTextDownloader::__startRequest() {
     __reply = __nam.get(QNetworkRequest(__urls.dequeue()));
   else
     return;
+  
+  __temp.clear(); 
 
   connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
   connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
-//   connect(__reply, SIGNAL(error(QNetworkReply::NetworkError)),
-//           this,    SLOT(__finished()));
 
   if (__progressBar) {
     connect(__reply, SIGNAL(downloadProgress(qint64, qint64)),
             this,    SLOT(__updateProgress(qint64, qint64)));
     __progressBar->setEnabled(true);
   }
-
-  __temp.clear(); 
 }
 
 void

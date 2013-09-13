@@ -90,7 +90,7 @@ else (WIN32)
   set (CONFIG_NO_VBO 1)
 endif (LINUX)
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.cmake
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/config.h
 )
 

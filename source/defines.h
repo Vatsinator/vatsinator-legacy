@@ -32,6 +32,14 @@
 // Vatsinator_repo url
 #define VATSINATOR_REPO_URL "https://raw.github.com/Garrappachc/Vatsinator-repo/master"
 
+// Vataware airport url
+// %1: ICAO code
+#define VATAWARE_AIRPORT_URL "http://www.vataware.com/airport.cfm?airport=%1"
+
+// Vataware pilot url
+// %1: Vatsim PID
+#define VATAWARE_PILOT_URL "http://www.vataware.com/pilot.cfm?cid=%1"
+
 // set files location
 #ifndef Q_OS_DARWIN
 

@@ -21,27 +21,22 @@
 #include "db/airportdatabase.h"
 
 #include "modules/vatbookhandler.h"
-
 #include "modules/models/bookedatctablemodel.h"
 
+#include "network/weatherforecast.h"
+
 #include "ui/userinterface.h"
-
 #include "ui/buttons/clientdetailsbutton.h"
-
 #include "ui/widgets/mapwidget.h"
-
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsimdata/airport/activeairport.h"
-
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/metarlistmodel.h"
@@ -53,7 +48,8 @@
 
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
     QWidget(_parent),
-    __currentICAO("") {
+    __currentICAO(""),
+    __forecast(new WeatherForecast()) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -72,6 +68,10 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 
   connect(ShowButton, SIGNAL(clicked()),
           this,       SLOT(__handleShowClicked()));
+}
+
+AirportDetailsWindow::~AirportDetailsWindow() {
+  delete __forecast;
 }
 
 void
@@ -94,10 +94,13 @@ AirportDetailsWindow::show(const Airport* _ap) {
     MetarListModel::getSingleton().fetchMetar(__currentICAO);
   }
 
-  if (!isVisible())
+  if (!isVisible()) {
     QWidget::show();
-  else
+    __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
+                              QString::fromUtf8(_ap->data()->country));
+  } else {
     activateWindow();
+  }
 }
 
 void
@@ -176,11 +179,12 @@ AirportDetailsWindow::__fillLabels(const Airport* _ap) {
   CityLabel->setText(QString::fromUtf8(apData->city));
   CountryLabel->setText(QString::fromUtf8(apData->country));
   AltitudeLabel->setText(tr("%1 ft").arg(QString::number(apData->altitude)));
-  VatawareAirportLinkLabel->setText("<a href=\"http://www.vataware.com/airport.cfm?airport=" %
-      QString::fromUtf8(apData->icao) %
-      static_cast< QString >("\">") %
+  VatawareAirportLinkLabel->setText(
+      QString("<a href=\"") %
+      QString(VATAWARE_AIRPORT_URL).arg(QString::fromUtf8(apData->icao)) %
+      QString("\">") %
       tr("Vataware statistics for this airport") %
-      static_cast< QString >("</a>")
+      QString("</a>")
     );
 }
 

@@ -26,6 +26,7 @@
 class Airport;
 class Controller;
 class Pilot;
+class WeatherForecast;
 
 class AirportDetailsWindow :
     public QWidget,
@@ -36,6 +37,7 @@ class AirportDetailsWindow :
 
 public:
   AirportDetailsWindow(QWidget* = 0);
+  virtual ~AirportDetailsWindow();
 
 public slots:
   void show(const Airport*);
@@ -46,13 +48,16 @@ private:
   void __updateModels(const Airport* = NULL);
   void __fillLabels(const Airport*);
   void __adjustTables();
-
-  QString __currentICAO;
-  const Airport* __current;
-
+  
 private slots:
   void __updateData();
   void __handleShowClicked();
+
+private:
+  QString __currentICAO;
+  const Airport* __current;
+  
+  WeatherForecast* __forecast;
 
 };
 

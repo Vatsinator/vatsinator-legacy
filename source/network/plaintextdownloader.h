@@ -59,7 +59,13 @@ public:
 
 private:
   void  __startRequest();
-
+  
+private slots:
+  void __readyRead();
+  void __finished();
+  void __updateProgress(qint64, qint64);
+  
+private:
   QProgressBar*   __progressBar;
 
   QQueue<QUrl>    __urls;
@@ -70,11 +76,6 @@ private:
   QNetworkAccessManager __nam;
 
   QNetworkReply*  __reply;
-  
-private slots:
-  void __readyRead();
-  void __finished();
-  void __updateProgress(qint64, qint64);
 
 };
 
