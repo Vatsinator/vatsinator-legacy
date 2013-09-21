@@ -68,6 +68,10 @@ FileManager::staticPath(FileManager::StaticDir _d) {
 #else
       return QCoreApplication::applicationDirPath() % "/../Resources/translations"
 #endif
+    
+    default:
+      Q_ASSERT_X(false, "getting static path", "No such file!");
+      return QString();
   }
 }
 

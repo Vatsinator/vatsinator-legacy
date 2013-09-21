@@ -96,32 +96,6 @@ UserInterface::~UserInterface() {
 }
 
 void
-UserInterface::setWindowPosition(QWidget* _window) {
-  _window->setGeometry(
-    QStyle::alignedRect(
-      Qt::LeftToRight,
-      Qt::AlignCenter,
-      _window->size(),
-      QDesktopWidget().screenGeometry(UserInterface::__getInitialPoint())
-    )
-  );
-}
-
-const QPoint &
-UserInterface::__getInitialPoint() {
-  if (__initialPoint.isNull()) {
-    QSettings settings;
-    
-    settings.beginGroup("MainWindow");
-    __initialPoint = settings.value("position", QPoint(1, 1)).toPoint();
-    
-    settings.endGroup();
-  }
-  
-  return __initialPoint;
-}
-
-void
 UserInterface::__statusFileError() {
   StatusFetchErrorDialog dialog;
   dialog.exec();

@@ -56,17 +56,6 @@ public:
   UserInterface();
 
   virtual ~UserInterface();
-  
-  /**
-   * Sets the window on the center of the screen.
-   * @param widget Window to have the position set.
-   */
-  static void setWindowPosition(QWidget*);
-
-private:
-  
-  /* Returns main window initial position */
-  static const QPoint& __getInitialPoint();
 
 private slots:
   void __statusFileError();

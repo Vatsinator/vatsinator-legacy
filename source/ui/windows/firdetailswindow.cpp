@@ -53,8 +53,6 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  
-  UserInterface::setWindowPosition(this);
 }
 
 void

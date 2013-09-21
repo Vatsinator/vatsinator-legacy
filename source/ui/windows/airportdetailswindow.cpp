@@ -58,8 +58,6 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  
-  UserInterface::setWindowPosition(this);
 
   connect(MetarListModel::getSingletonPtr(),    SIGNAL(newMetarsAvailable()),
           this,                                 SLOT(updateMetar()));

@@ -51,8 +51,6 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
           this,                                 SLOT(__handleShowClicked()));
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
-
-  UserInterface::setWindowPosition(this);
 }
 
 void

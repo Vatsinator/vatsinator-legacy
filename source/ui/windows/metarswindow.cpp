@@ -36,8 +36,6 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
 
-  UserInterface::setWindowPosition(this);
-
   __httpHandler = new PlainTextDownloader();
 
   __metarsHandler = new MetarListModel(__httpHandler);

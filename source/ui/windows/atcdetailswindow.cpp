@@ -40,8 +40,6 @@ AtcDetailsWindow::AtcDetailsWindow(QWidget* _parent) :
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  
-  UserInterface::setWindowPosition(this);
 
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
