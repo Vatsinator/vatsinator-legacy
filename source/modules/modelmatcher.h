@@ -20,6 +20,7 @@
 #ifndef MODELMATCHER_H
 #define MODELMATCHER_H
 
+#include <QCoreApplication>
 #include <QString>
 #include <QMap>
 #include <QtOpenGL>
@@ -31,6 +32,8 @@ class ModelMatcher : public Singleton<ModelMatcher> {
   /**
    * This class matches the models to the planes.
    */
+  
+  Q_DECLARE_TR_FUNCTIONS(ModelMatcher);
 
 public:
   /**
@@ -50,7 +53,6 @@ public:
   GLuint matchMyModel(const QString&);
 
 private:
-  void __readDatFile();
 
   QMap< QString, QString > __modelsFiles;
   QMap< QString, GLuint >  __modelsPixmaps;

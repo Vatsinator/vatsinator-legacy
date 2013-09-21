@@ -53,6 +53,25 @@ FileManager::cacheData(const QString& _fileName, const QString& _data) {
 }
 
 QString
+FileManager::staticPath(FileManager::StaticDir _d) {
+  switch (_d) {
+    case Pixmaps:
+#ifndef Q_OS_DARWIN
+      return QString(VATSINATOR_PREFIX) % "pixmaps";
+#else
+      return QCoreApplication::applicationDirPath() % "/../Resources/pixmaps"
+#endif
+      
+    case Translations:
+#ifndef Q_OS_DARWIN
+      return QString(VATSINATOR_PREFIX) % "translations";
+#else
+      return QCoreApplication::applicationDirPath() % "/../Resources/translations"
+#endif
+  }
+}
+
+QString
 FileManager::path(const QString& _f) {
   QFile tryLocal(DATA_LOCATION % _f);
   if (tryLocal.exists()) {

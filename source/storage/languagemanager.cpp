@@ -18,6 +18,8 @@
 
 #include <QtCore>
 
+#include "storage/filemanager.h"
+
 #include "languagemanager.h"
 #include "defines.h"
 
@@ -54,7 +56,7 @@ void
 LanguageManager::__getInstalledLanguages() {
   int currentId = 0;
   
-  QDir translationsDir(TRANSLATIONS_DIR);
+  QDir translationsDir(FileManager::staticPath(FileManager::Translations));
   QStringList locales = translationsDir.entryList({"vatsinator-*.qm"});
   QStringList descriptions = translationsDir.entryList({"*.language"});
   
@@ -64,7 +66,7 @@ LanguageManager::__getInstalledLanguages() {
       VatsinatorApplication::log("Could not find description for %s.", qPrintable(locale));
     }
     
-    QFile descFile(static_cast<QString>(TRANSLATIONS_DIR) % "/" % locale % ".language");
+    QFile descFile(FileManager::staticPath(FileManager::Translations) % "/" % locale % ".language");
     if (!descFile.open(QIODevice::ReadOnly | QIODevice::Text))
       continue;
     

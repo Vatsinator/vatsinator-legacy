@@ -62,7 +62,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 
   __translator.load(QString("vatsinator-") %
                       SettingsManager::earlyGetLocale(),
-                    QString(TRANSLATIONS_DIR));
+                    FileManager::staticPath(FileManager::Translations));
   installTranslator(&__translator);
   
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
