@@ -91,7 +91,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="156"/>
         <source>Database sync time:</source>
-        <translation type="unfinished"/>
+        <translation>Ostatnia synchronizacja z bazą danych:</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="179"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="210"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>(C) 2012-2013 Zespół Vatsinator&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="266"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="53"/>
         <source>never</source>
-        <translation type="unfinished"/>
+        <translation>nigdy</translation>
     </message>
 </context>
 <context>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="30"/>
         <source>Vatsinator was unable to fetch the data file.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało mi się pobrać pliku z danymi.</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="31"/>
@@ -927,7 +927,7 @@
     <message>
         <location filename="../modules/modelmatcher.cpp" line="38"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać otwarty! Sprawdź jego uprawnienia lub przeinstaluj aplikację.</translation>
     </message>
 </context>
 <context>
@@ -940,12 +940,12 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="97"/>
         <source>There is a new version of Vatsinator available!</source>
-        <translation type="unfinished"/>
+        <translation>Dostępna jest nowa wersja programu!</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="128"/>
         <source>Download now!</source>
-        <translation type="unfinished"/>
+        <translation>Ś&amp;ciągnij nową wersję!</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="135"/>
@@ -1113,12 +1113,12 @@
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="28"/>
         <source>Vatsinator was unable to fetch the needed status.txt file.</source>
-        <translation type="unfinished"/>
+        <translation>Nie da się pobrać pliku status.txt.</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="29"/>
         <source>It means that no data can be obtained at all. Check your internet connection and the accessibility of Vatsim servers.</source>
-        <translation type="unfinished"/>
+        <translation>Oznacza to, że żadne pozostałe dane nie mogą zostać pobrane. Sprawdź swoje połączenie z internetem i dostępność serwerów Vatsim.</translation>
     </message>
 </context>
 <context>
@@ -1270,7 +1270,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
@@ -1290,17 +1290,17 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
         <source>Show home location</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż miejsce domowe</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
         <source>&amp;Menu</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Menu</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="120"/>
@@ -1320,7 +1320,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="220"/>
         <source>Invalid data!</source>
-        <translation type="unfinished"/>
+        <translation>Błędne dane!</translation>
     </message>
 </context>
 <context>
