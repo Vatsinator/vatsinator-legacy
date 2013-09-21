@@ -22,13 +22,15 @@
 
 #include <QVector>
 
+#include "ui/windows/basewindow.h"
+
 #include "ui/ui_settingswindow.h"
 #include "singleton.h"
 
 class AbstractSettingsPage;
 
 class SettingsWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton<SettingsWindow>,
     private Ui::SettingsWindow {
 
@@ -39,7 +41,7 @@ signals:
   void settingsApplied();
 
 public:
-  SettingsWindow(QWidget* = 0);
+  SettingsWindow(QWidget* = nullptr);
   
   void addPage(AbstractSettingsPage*);
   

@@ -48,7 +48,7 @@
 #include "defines.h"
 
 FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
-    QWidget(_parent) {
+    BaseWindow(_parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),

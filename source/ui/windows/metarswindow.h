@@ -22,6 +22,7 @@
 
 #include <QVector>
 
+#include "ui/windows/basewindow.h"
 #include "ui/ui_metarswindow.h"
 #include "singleton.h"
 #include "vatsimdata/metar.h"
@@ -31,7 +32,7 @@ class PlainTextDownloader;
 class MetarListModel;
 
 class MetarsWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton<MetarsWindow>,
     private Ui::MetarsWindow {
 
@@ -43,7 +44,7 @@ class MetarsWindow :
   Q_OBJECT
 
 public:
-  MetarsWindow(QWidget* = 0);
+  MetarsWindow(QWidget* = nullptr);
   virtual ~MetarsWindow();
 
 public slots:

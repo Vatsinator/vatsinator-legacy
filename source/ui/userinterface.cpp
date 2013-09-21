@@ -97,9 +97,14 @@ UserInterface::~UserInterface() {
 
 void
 UserInterface::setWindowPosition(QWidget* _window) {
-  QRect frect = _window->frameGeometry();
-  frect.moveCenter(QDesktopWidget().availableGeometry(UserInterface::__getInitialPoint()).center());
-  _window->move(frect.topLeft());
+  _window->setGeometry(
+    QStyle::alignedRect(
+      Qt::LeftToRight,
+      Qt::AlignCenter,
+      _window->size(),
+      QDesktopWidget().screenGeometry(UserInterface::__getInitialPoint())
+    )
+  );
 }
 
 const QPoint &

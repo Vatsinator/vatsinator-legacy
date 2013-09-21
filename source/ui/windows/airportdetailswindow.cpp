@@ -52,7 +52,7 @@
 #include "defines.h"
 
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
-    QWidget(_parent),
+    BaseWindow(_parent),
     __currentICAO("") {
   setupUi(this);
   

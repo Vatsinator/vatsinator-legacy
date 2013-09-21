@@ -32,7 +32,7 @@
 #include "ui/license.h"
 
 
-AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
+AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
