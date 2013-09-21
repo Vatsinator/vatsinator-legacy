@@ -79,7 +79,7 @@
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="92"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="44"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="43"/>
         <source>Version %1</source>
         <translation>Wersja %1</translation>
     </message>
@@ -133,7 +133,7 @@
         <translation>Licencja</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="54"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="53"/>
         <source>never</source>
         <translation type="unfinished"/>
     </message>
@@ -150,7 +150,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="35"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="149"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="147"/>
         <source>%1 - airport details</source>
         <translation>%1 - szczegóły lotniska</translation>
     </message>
@@ -201,7 +201,7 @@
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="492"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="182"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="180"/>
         <source>Vataware statistics for this airport</source>
         <translation>Statystyki Vataware dla tego lotniska</translation>
     </message>
@@ -216,17 +216,17 @@
         <translation>Pokaż</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="93"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="91"/>
         <source>Fetching...</source>
         <translation>Pobieranie informacji o pogodzie...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="120"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="118"/>
         <source>Sorry, no weather report for %1.</source>
         <translation>Wybacz, nie posiadam informacji pogodowej dla %1.</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="178"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="176"/>
         <source>%1 ft</source>
         <translation>%1 stóp</translation>
     </message>
@@ -267,12 +267,12 @@
 <context>
     <name>AtcDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="58"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="56"/>
         <source>%1 - ATC details</source>
         <translation>%1 - szczegóły ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="74"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="72"/>
         <source>N/A</source>
         <translation>Niedostępne</translation>
     </message>
@@ -458,12 +458,12 @@
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="83"/>
         <source>%1 - FIR details</source>
         <translation>%1 - szczegóły FIR</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="87"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - szczegóły ARTCC</translation>
     </message>
@@ -472,7 +472,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="67"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="65"/>
         <source>%1 - flight details</source>
         <translation>%1 - szczegóły lotu</translation>
     </message>
@@ -514,7 +514,7 @@
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="280"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="92"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="90"/>
         <source>Vataware statistics for this pilot</source>
         <translation>Statystyki Vataware dla tego pilota</translation>
     </message>
@@ -604,28 +604,28 @@
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="73"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="71"/>
         <source>%1 feet</source>
         <translation>%1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="100"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="72"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="98"/>
         <source>%1 kts</source>
         <translation>%1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
         <source>airborne</source>
         <translation>w powietrzu</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="80"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
         <source>departing</source>
         <translation>odlatuje</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="82"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="80"/>
         <source>arrived</source>
         <translation>przyleciał</translation>
     </message>
@@ -920,6 +920,14 @@
         <location filename="../ui/pages/miscellaneouspage.ui" line="273"/>
         <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
         <translation>Jeżeli zaznaczone, Vatsinator zapisze pobrane dane w pliku, by odtworzyć je przy następnym uruchomieniu.</translation>
+    </message>
+</context>
+<context>
+    <name>ModelMatcher</name>
+    <message>
+        <location filename="../modules/modelmatcher.cpp" line="38"/>
+        <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1290,27 +1298,27 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="87"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
         <source>&amp;Menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="121"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="120"/>
         <source>Last update: never</source>
         <translation>Ostatnia aktualizacja: nigdy</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="123"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="122"/>
         <source>Last update: %1 UTC</source>
         <translation>Ostatnia aktualizacja: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="135"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="134"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Klientów: %1 (%2 pilotów, %3 kontrolerów, %4 obserwatorów)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="209"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="220"/>
         <source>Invalid data!</source>
         <translation type="unfinished"/>
     </message>
