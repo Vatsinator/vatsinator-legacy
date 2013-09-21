@@ -29,14 +29,12 @@
 #include "defines.h"
 
 MetarsWindow::MetarsWindow(QWidget* _parent) :
-    QWidget(_parent),
+    BaseWindow(_parent),
     __awaited("") {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-
-  UserInterface::setWindowPosition(this);
 
   __httpHandler = new PlainTextDownloader();
 

@@ -20,18 +20,20 @@
 #ifndef ATCLISTWINDOW_H
 #define ATCLISTWINDOW_H
 
+#include "ui/windows/basewindow.h"
+
 #include "ui/ui_atclistwindow.h"
 #include "singleton.h"
 
 class AtcListWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton<AtcListWindow>,
     private Ui::ATCListWindow {
 
   Q_OBJECT
 
 public:
-  AtcListWindow(QWidget* = 0);
+  AtcListWindow(QWidget* = nullptr);
 
 protected:
   void resizeEvent(QResizeEvent*);

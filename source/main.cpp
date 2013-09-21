@@ -17,10 +17,12 @@
 */
 
 #include "vatsinatorapplication.h"
+#include "config.h"
 
 int main(int argc, char** argv) {
   QApplication::setApplicationName("Vatsinator");
   QApplication::setOrganizationName("VatsinatorTeam");
+  QApplication::setApplicationVersion(VATSINATOR_VERSION);
   
   return VatsinatorApplication(argc, argv).exec();
 }

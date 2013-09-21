@@ -20,18 +20,20 @@
 #ifndef FLIGHTLISTWINDOW_H
 #define FLIGHTLISTWINDOW_H
 
+#include "ui/windows/basewindow.h"
+
 #include "ui/ui_flightlistwindow.h"
 #include "singleton.h"
 
 class FlightListWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton<FlightListWindow>,
     private Ui::FlightListWindow {
 
   Q_OBJECT
 
 public:
-  FlightListWindow(QWidget* = 0);
+  FlightListWindow(QWidget* = nullptr);
 
 protected:
   void resizeEvent(QResizeEvent*);

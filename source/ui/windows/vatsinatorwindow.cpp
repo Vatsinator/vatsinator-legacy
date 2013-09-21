@@ -42,7 +42,6 @@
 VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
     QMainWindow(_parent) {
   setupUi(this);
-  UserInterface::setWindowPosition(this);
   __restoreWindowGeometry();
 
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -173,13 +172,25 @@ VatsinatorWindow::__restoreWindowGeometry() {
   QSettings settings;
 
   settings.beginGroup("MainWindow");
-  restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
-  restoreState(settings.value("savestate", saveState()).toByteArray());
-  move(settings.value("position", pos()).toPoint());
-  resize(settings.value("size", size()).toSize());
-
-  if ( settings.value( "maximized", isMaximized()).toBool() )
-    showMaximized();
+  
+  if (settings.contains("geometry")) { /* Restore saved geometry */
+    restoreGeometry(settings.value("geometry", saveGeometry()).toByteArray());
+    restoreState(settings.value("savestate", saveState()).toByteArray());
+    move(settings.value("position", pos()).toPoint());
+    resize(settings.value("size", size()).toSize());
+    
+    if ( settings.value( "maximized", isMaximized()).toBool() )
+      showMaximized();
+  } else { /* Place the window in the middle of the screen */
+    setGeometry(
+      QStyle::alignedRect(
+        Qt::LeftToRight,
+        Qt::AlignCenter,
+        size(),
+        QDesktopWidget().screenGeometry()
+      )
+    );
+  }
   
   EnableAutoUpdatesAction->setChecked(settings.value("autoUpdatesEnabled", true).toBool());
 

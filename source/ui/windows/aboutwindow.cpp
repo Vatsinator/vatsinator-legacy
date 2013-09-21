@@ -32,13 +32,12 @@
 #include "ui/license.h"
 
 
-AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
+AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
   
-  UserInterface::setWindowPosition(this);
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
   LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");
   VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
