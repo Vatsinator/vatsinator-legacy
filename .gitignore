@@ -18,3 +18,8 @@ dist/vatsinator.spec
 dist/vatsinator.desktop
 dist/maketarball.sh
 
+# finder stuff
+.DS_Store
+
+# QtCreator stuff
+CMakeLists.txt.user

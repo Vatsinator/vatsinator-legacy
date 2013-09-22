@@ -8,11 +8,19 @@ vatsinator_install ("${LANGUAGE_FILES}" "/translations")
 
 qt4_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
 
+if (APPLE)
+  file (GLOB MAC_TRANSLATION_SOURCES
+        "mac-app-menu-*.ts")
+  qt4_add_translation (vatsinator_MAC_TRANSLATIONS ${MAC_TRANSLATION_SOURCES})
+  set (vatsinator_TRANSLATIONS ${vatsinator_TRANSLATIONS} ${vatsinator_MAC_TRANSLATIONS})
+endif (APPLE)
+
 add_custom_target (i18n DEPENDS ${vatsinator_TRANSLATIONS})
 
 if (NOT APPLE)
   vatsinator_install ("${vatsinator_TRANSLATIONS}" "/translations")
 else (NOT APPLE)
+
   # vatisnator_install macro works only for existing files
   add_custom_command (
     TARGET i18n POST_BUILD
