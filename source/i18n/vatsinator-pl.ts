@@ -119,10 +119,6 @@
         <translation>O programie</translation>
     </message>
     <message>
-        <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../ui/windows/aboutwindow.ui" line="243"/>
         <source>Authors</source>
         <translation>Autorzy</translation>
@@ -141,13 +137,13 @@
         <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
-        <translation type="unfinished"/>
+        <translation>aktualna</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
-        <translation type="unfinished"/>
+        <translation>nieaktualna</translation>
     </message>
 </context>
 <context>
@@ -684,84 +680,6 @@
     </message>
 </context>
 <context>
-    <name>MAC_APPLICATION_MENU</name>
-    <message>
-        <source>About %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Preferences...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Services</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Hide %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Hide Others</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Show All</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Quit %1</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Exit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>About</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>METARs...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>&amp;Vatsinator</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>&amp;Settings</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Preferences: Vatsinator</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Flight list...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>ATC list...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Enable auto-updates</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>MapWidget</name>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="666"/>
@@ -977,30 +895,23 @@
     <name>NewVersionDialog</name>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="78"/>
-        <source>Dialog</source>
+        <source>New version available</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="97"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="101"/>
         <source>There is a new version of Vatsinator available!</source>
         <translation>Dostępna jest nowa wersja programu!</translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="128"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="132"/>
         <source>Download now!</source>
-        <translation>Ś&amp;ciągnij nową wersję!</translation>
+        <translation>Ściągnij nową wersję!</translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="135"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
         <source>Close</source>
         <translation>Zamknij</translation>
-    </message>
-</context>
-<context>
-    <name>NewVersionNotificationWidget</name>
-    <message>
-        <source>Close this notification</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1009,146 +920,6 @@
         <location filename="../ui/windows/settingswindow.ui" line="14"/>
         <source>Vatsinator settings</source>
         <translation>Vatsinator - ustawienia</translation>
-    </message>
-    <message>
-        <source>Miscellaneous</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Enable caching</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Refresh METARs as well</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Language:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Refresh every</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>If checked, all METARs will be re-fetched just after data update.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Nicer but slower.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Antyaliasing</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Zooming intensivity:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Show pilot labels:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Always</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>When hovered</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Airport-related</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Display layers:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Pilots</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Airports</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Staffed FIRs</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Unstaffed FIRs</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Inactive airports</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Show airport labels:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Unstaffed FIR borders color:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Staffed FIR background color:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Alpha channel:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Staffed UIR background color:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Approach circle color:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Seas color:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Lands color:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Origin-to-pilot line color:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Pilot-to-destination line color:</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1194,52 +965,6 @@
     </message>
 </context>
 <context>
-    <name>UpdateNotificationWidget</name>
-    <message>
-        <source>There is a new version of Vatsinator available! Check it now at %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Close this notification</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>UserInterface</name>
-    <message>
-        <source>Last update: never</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>What do you want to do with that?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Try again</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Keep current data</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Data outdated!</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>VatsimDataHandler</name>
     <message>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
@@ -1248,29 +973,6 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
         <source>File %1 could not be opened!</source>
         <translation>Plik %1 nie mógł zostać otwarty!</translation>
-    </message>
-</context>
-<context>
-    <name>VatsinatorApplication</name>
-    <message>
-        <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>What do you want to do with that?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Try again</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Keep current data</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Data outdated!</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1303,7 +1005,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
         <source>METARs...</source>
-        <translation>Raporty pogodowe</translation>
+        <translation>Raporty pogodowe...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
@@ -1318,12 +1020,12 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
         <source>Flight list...</source>
-        <translation>Lista lotów</translation>
+        <translation>Lista lotów...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
         <source>ATC list...</source>
-        <translation>Lista kontrolerów</translation>
+        <translation>Lista kontrolerów...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>

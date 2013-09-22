@@ -897,21 +897,21 @@
     <name>NewVersionDialog</name>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="78"/>
-        <source>Dialog</source>
+        <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="97"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="101"/>
         <source>There is a new version of Vatsinator available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="128"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="132"/>
         <source>Download now!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="135"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
         <source>Close</source>
         <translation type="unfinished">Close</translation>
     </message>
