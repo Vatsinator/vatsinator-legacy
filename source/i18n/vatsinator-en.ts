@@ -80,43 +80,43 @@
         <translation>A simple Vatsim monitor</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="92"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="43"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="94"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="47"/>
         <source>Version %1</source>
         <translation>Version %1</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="115"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="129"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
         <translation>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="156"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Database sync time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="179"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>Airports in the database:</source>
         <translation>Airports in the database:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="146"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="160"/>
         <source>FIRs in the database:</source>
         <translation>FIRs in the database:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="210"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="224"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="280"/>
         <source>Changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="107"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
         <translation>About</translation>
     </message>
@@ -125,18 +125,30 @@
         <translation type="obsolete">(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="229"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="243"/>
         <source>Authors</source>
         <translation>Authors</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="252"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
         <source>License</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="53"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
         <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
+        <source>up-to-date</source>
+        <comment>Vatsinator version indicator</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
+        <source>outdated</source>
+        <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -671,6 +683,37 @@
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="149"/>
         <source>Aircraft</source>
         <translation>Aircraft</translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>About %1</source>
+        <translation type="obsolete">About %1</translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="obsolete">Preferences...</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation type="obsolete">Services</translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="obsolete">Hide %1</translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="obsolete">Hide Others</translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="obsolete">Show All</translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="obsolete">Quit %1</translation>
     </message>
 </context>
 <context>
@@ -1401,37 +1444,6 @@
         <location filename="../db/worldmap.cpp" line="71"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
-    </message>
-</context>
-<context>
-    <name>MAC_APPLICATION_MENU</name>
-    <message>
-        <source>About %1</source>
-        <translation>About %1</translation>
-    </message>
-    <message>
-        <source>Preferences...</source>
-        <translation>Preferences...</translation>
-    </message>
-    <message>
-        <source>Services</source>
-        <translation>Services</translation>
-    </message>
-    <message>
-        <source>Hide %1</source>
-        <translation>Hide %1</translation>
-    </message>
-    <message>
-        <source>Hide Others</source>
-        <translation>Hide Others</translation>
-    </message>
-    <message>
-        <source>Show All</source>
-        <translation>Show All</translation>
-    </message>
-    <message>
-        <source>Quit %1</source>
-        <translation>Quit %1</translation>
     </message>
 </context>
 </TS>

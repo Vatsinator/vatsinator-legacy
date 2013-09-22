@@ -78,43 +78,43 @@
         <translation>Otwarty monitor sieci VATSIM</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="92"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="43"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="94"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="47"/>
         <source>Version %1</source>
         <translation>Wersja %1</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="115"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="129"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
         <translation>Vatsinator to prosty monitor sieci Vatsim - pokazuje zalogowanych pilotów, kontrolerów oraz dostarcza wielu użytecznych informacji (jak np. raporty pogodowe, czy dane lotniska).</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="156"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Database sync time:</source>
         <translation>Ostatnia synchronizacja z bazą danych:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="179"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>Airports in the database:</source>
         <translation>Lotnisk w bazie danych:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="146"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="160"/>
         <source>FIRs in the database:</source>
         <translation>FIRów w bazie danych:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="210"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="224"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
         <translation>(C) 2012-2013 Zespół Vatsinator&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="280"/>
         <source>Changelog</source>
         <translation>Lista zmian</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="107"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
         <translation>O programie</translation>
     </message>
@@ -123,19 +123,31 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="229"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="243"/>
         <source>Authors</source>
         <translation>Autorzy</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="252"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
         <source>License</source>
         <translation>Licencja</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="53"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
         <source>never</source>
         <translation>nigdy</translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
+        <source>up-to-date</source>
+        <comment>Vatsinator version indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
+        <source>outdated</source>
+        <comment>Vatsinator version indicator</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -669,6 +681,37 @@
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="149"/>
         <source>Aircraft</source>
         <translation>Model</translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
