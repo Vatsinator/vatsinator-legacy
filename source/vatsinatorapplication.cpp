@@ -59,19 +59,20 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
     __userInterface(nullptr) {
-
-  __translator.load(QString("vatsinator-") %
-                      SettingsManager::earlyGetLocale(),
-                    FileManager::staticPath(FileManager::Translations));
-  installTranslator(&__translator);
-
+ 
 #ifdef Q_OS_DARWIN
-  QTranslator* mac_tr = new QTranslator;
-  mac_tr->load(QString("mac-app-menu-") %
-               SettingsManager::earlyGetLocale(),
-               FileManager::staticPath(FileManager::Translations));
-  installTranslator(mac_tr);
+  QTranslator mac_tr;
+  mac_tr.load(QString("mac-app-menu-") %
+                SettingsManager::earlyGetLocale(),
+              FileManager::staticPath(FileManager::Translations));
+  installTranslator(&mac_tr);
 #endif
+
+  QTranslator tr;
+  tr.load(QString("vatsinator-") %
+            SettingsManager::earlyGetLocale(),
+          FileManager::staticPath(FileManager::Translations));
+  installTranslator(&tr);
   
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   

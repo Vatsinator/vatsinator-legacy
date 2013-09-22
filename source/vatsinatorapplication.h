@@ -21,7 +21,6 @@
 #define VATSINATORAPPLICATION_H
 
 #include <QApplication>
-#include <QTranslator>
 #include <QTimer>
 #include <iostream>
 
@@ -129,7 +128,6 @@ private:
   UserInterface*       __userInterface;
   
   QTimer               __timer;
-  QTranslator          __translator;
 
 };
 
