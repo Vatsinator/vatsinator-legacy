@@ -20,6 +20,8 @@
 #ifndef ABOUTWINDOW_H
 #define ABOUTWINDOW_H
 
+#include "network/resourcemanager.h"
+
 #include "ui/windows/basewindow.h"
 
 #include "ui/ui_aboutwindow.h"
@@ -34,6 +36,15 @@ class AboutWindow :
 
 public:
   AboutWindow(QWidget* = nullptr);
+  
+private slots:
+  
+  /**
+   * If the version is outdated, it displays
+   * "outdated" warning, otherwise "up-to-date"
+   * confirmation gets displayed.
+   */
+  void __updateVersionStatus(ResourceManager::VersionStatus);
 
 };
 

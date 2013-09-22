@@ -1403,4 +1403,35 @@
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
 </context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>About %1</source>
+        <translation>About %1</translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation>Preferences...</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Services</translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation>Hide %1</translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation>Hide Others</translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation>Show All</translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation>Quit %1</translation>
+    </message>
+</context>
 </TS>
