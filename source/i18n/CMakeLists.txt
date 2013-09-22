@@ -1,51 +1,60 @@
-file (GLOB TRANSLATION_SOURCES
-    "${CMAKE_PROJECT_NAME}-*.ts")
-
 file (GLOB LANGUAGE_FILES
     "*.language")
-
 vatsinator_install ("${LANGUAGE_FILES}" "/translations")
+
+set (vatsinator_LANGUAGES "")
+
+# get all languages
+foreach (LANG ${LANGUAGE_FILES})
+  string (REGEX
+    REPLACE "^.*/([a-z]+)\\.language$"
+    "\\1"
+    lang_symbol ${LANG}
+  )
+  set (vatsinator_LANGUAGES ${vatsinator_LANGUAGES} ${lang_symbol})
+endforeach (LANG)
+
+# gather .ts files and qt translations
+set (TRANSLATION_SOURCES "")
+set (qt_TRANSLATIONS "")
+foreach (LANG ${vatsinator_LANGUAGES})
+  set (TS_FILE "${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}-${LANG}.ts")
+  set (TRANSLATION_SOURCES ${TRANSLATION_SOURCES} ${TS_FILE})
+  
+  if (NOT "en" STREQUAL "${LANG}")
+    set (QM_FILE "${QT_TRANSLATIONS_DIR}/qt_${LANG}.qm")
+    set (qt_TRANSLATIONS ${qt_TRANSLATIONS} ${QM_FILE})
+  endif (NOT "en" STREQUAL "${LANG}")
+endforeach (LANG)
 
 qt4_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
 
-if (APPLE)
-  file (GLOB MAC_TRANSLATION_SOURCES
-        "mac-app-menu-*.ts")
-  qt4_add_translation (vatsinator_MAC_TRANSLATIONS ${MAC_TRANSLATION_SOURCES})
-  set (vatsinator_TRANSLATIONS ${vatsinator_TRANSLATIONS} ${vatsinator_MAC_TRANSLATIONS})
-endif (APPLE)
-
-add_custom_target (i18n DEPENDS ${vatsinator_TRANSLATIONS})
+add_custom_target (i18n DEPENDS ${vatsinator_TRANSLATIONS} ${qt_TRANSLATIONS})
 
 if (NOT APPLE)
   vatsinator_install ("${vatsinator_TRANSLATIONS}" "/translations")
+  vatsinator_install ("${qt_TRANSLATIONS}" "/translations")
 else (NOT APPLE)
 
   # vatisnator_install macro works only for existing files
   add_custom_command (
     TARGET i18n POST_BUILD
-    COMMAND cp ARGS -R ${vatsinator_TRANSLATIONS}
+    COMMAND cp ARGS -R ${vatsinator_TRANSLATIONS} ${qt_TRANSLATIONS}
       ${CMAKE_BINARY_DIR}/vatsinator.resources/translations/
     COMMENT "Copying files to the bundle..."
     )
   
-  foreach (LANG ${LANGUAGE_FILES})
-    string (REGEX
-      REPLACE "^.*/([a-z]+)\\.language$"
-      "\\1"
-      lang_symbol ${LANG}
-    )
-    
+  foreach (LANG ${vatsinator_LANGUAGES})
     add_custom_command (
       TARGET i18n POST_BUILD
       COMMAND mkdir ARGS -p
-        ${CMAKE_BINARY_DIR}/vatsinator.resources/${lang_symbol}.lproj
-      COMMENT "Enabling MacOS menu translations for ${lang_symbol}..."
+        ${CMAKE_BINARY_DIR}/vatsinator.resources/${LANG}.lproj
+      COMMENT "Enabling MacOS menu translations for ${LANG}..."
     )
     
     configure_file (
       ${CMAKE_CURRENT_SOURCE_DIR}/locversion.plist.in
-      ${CMAKE_BINARY_DIR}/vatsinator.resources/${lang_symbol}.lproj/locversion.plist
+      ${CMAKE_BINARY_DIR}/vatsinator.resources/${LANG}.lproj/locversion.plist
     )
     
   endforeach (LANG)
