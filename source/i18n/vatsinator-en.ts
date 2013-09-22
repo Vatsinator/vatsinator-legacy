@@ -121,10 +121,6 @@
         <translation>About</translation>
     </message>
     <message>
-        <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</source>
-        <translation type="obsolete">(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</translation>
-    </message>
-    <message>
         <location filename="../ui/windows/aboutwindow.ui" line="243"/>
         <source>Authors</source>
         <translation>Authors</translation>
@@ -686,84 +682,6 @@
     </message>
 </context>
 <context>
-    <name>MAC_APPLICATION_MENU</name>
-    <message>
-        <source>About %1</source>
-        <translation type="obsolete">About %1</translation>
-    </message>
-    <message>
-        <source>Preferences...</source>
-        <translation type="obsolete">Preferences...</translation>
-    </message>
-    <message>
-        <source>Services</source>
-        <translation type="obsolete">Services</translation>
-    </message>
-    <message>
-        <source>Hide %1</source>
-        <translation type="obsolete">Hide %1</translation>
-    </message>
-    <message>
-        <source>Hide Others</source>
-        <translation type="obsolete">Hide Others</translation>
-    </message>
-    <message>
-        <source>Show All</source>
-        <translation type="obsolete">Show All</translation>
-    </message>
-    <message>
-        <source>Quit %1</source>
-        <translation type="obsolete">Quit %1</translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Exit</source>
-        <translation type="obsolete">Exit</translation>
-    </message>
-    <message>
-        <source>About</source>
-        <translation type="obsolete">About</translation>
-    </message>
-    <message>
-        <source>METARs...</source>
-        <translation type="obsolete">METARs...</translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="obsolete">Refresh</translation>
-    </message>
-    <message>
-        <source>&amp;Vatsinator</source>
-        <translation type="obsolete">&amp;Vatsinator</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Help</translation>
-    </message>
-    <message>
-        <source>&amp;Settings</source>
-        <translation type="obsolete">&amp;Settings</translation>
-    </message>
-    <message>
-        <source>Preferences: Vatsinator</source>
-        <translation type="obsolete">Preferences: Vatsinator</translation>
-    </message>
-    <message>
-        <source>Flight list...</source>
-        <translation type="obsolete">Flight list...</translation>
-    </message>
-    <message>
-        <source>ATC list...</source>
-        <translation type="obsolete">ATC list...</translation>
-    </message>
-    <message>
-        <source>Enable auto-updates</source>
-        <translation type="obsolete">Enable auto-updates</translation>
-    </message>
-</context>
-<context>
     <name>MapWidget</name>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="666"/>
@@ -999,158 +917,11 @@
     </message>
 </context>
 <context>
-    <name>NewVersionNotificationWidget</name>
-    <message>
-        <source>Close this notification</source>
-        <translation type="obsolete">Close this notification</translation>
-    </message>
-</context>
-<context>
     <name>SettingsWindow</name>
     <message>
         <location filename="../ui/windows/settingswindow.ui" line="14"/>
         <source>Vatsinator settings</source>
         <translation>Vatsinator settings</translation>
-    </message>
-    <message>
-        <source>Miscellaneous</source>
-        <translation type="obsolete">Miscellaneous</translation>
-    </message>
-    <message>
-        <source>Enable caching</source>
-        <translation type="obsolete">Enable caching</translation>
-    </message>
-    <message>
-        <source>Refresh METARs as well</source>
-        <translation type="obsolete">Refresh METARs as well</translation>
-    </message>
-    <message>
-        <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
-        <translation type="obsolete">Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</translation>
-    </message>
-    <message>
-        <source>Language:</source>
-        <translation type="obsolete">Language:</translation>
-    </message>
-    <message>
-        <source>Refresh every</source>
-        <translation type="obsolete">Refresh every</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation type="obsolete">minutes</translation>
-    </message>
-    <message>
-        <source>If checked, all METARs will be re-fetched just after data update.</source>
-        <translation type="obsolete">If checked, all METARs will be re-fetched just after data update.</translation>
-    </message>
-    <message>
-        <source>Nicer but slower.</source>
-        <translation type="obsolete">Nicer but slower.</translation>
-    </message>
-    <message>
-        <source>Antyaliasing</source>
-        <translation type="obsolete">Antyaliasing</translation>
-    </message>
-    <message>
-        <source>Zooming intensivity:</source>
-        <translation type="obsolete">Zooming intensivity:</translation>
-    </message>
-    <message>
-        <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
-        <translation type="obsolete">If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">View</translation>
-    </message>
-    <message>
-        <source>Show pilot labels:</source>
-        <translation type="obsolete">Show pilot labels:</translation>
-    </message>
-    <message>
-        <source>Always</source>
-        <translation type="obsolete">Always</translation>
-    </message>
-    <message>
-        <source>When hovered</source>
-        <translation type="obsolete">When hovered</translation>
-    </message>
-    <message>
-        <source>Airport-related</source>
-        <translation type="obsolete">Airport-related</translation>
-    </message>
-    <message>
-        <source>Display layers:</source>
-        <translation type="obsolete">Display layers:</translation>
-    </message>
-    <message>
-        <source>Pilots</source>
-        <translation type="obsolete">Pilots</translation>
-    </message>
-    <message>
-        <source>Airports</source>
-        <translation type="obsolete">Airports</translation>
-    </message>
-    <message>
-        <source>Staffed FIRs</source>
-        <translation type="obsolete">Staffed FIRs</translation>
-    </message>
-    <message>
-        <source>Unstaffed FIRs</source>
-        <translation type="obsolete">Unstaffed FIRs</translation>
-    </message>
-    <message>
-        <source>Inactive airports</source>
-        <translation type="obsolete">Inactive airports</translation>
-    </message>
-    <message>
-        <source>Show airport labels:</source>
-        <translation type="obsolete">Show airport labels:</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation type="obsolete">Never</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation type="obsolete">Colors</translation>
-    </message>
-    <message>
-        <source>Unstaffed FIR borders color:</source>
-        <translation type="obsolete">Unstaffed FIR borders color:</translation>
-    </message>
-    <message>
-        <source>Staffed FIR background color:</source>
-        <translation type="obsolete">Staffed FIR background color:</translation>
-    </message>
-    <message>
-        <source>Alpha channel:</source>
-        <translation type="obsolete">Alpha channel:</translation>
-    </message>
-    <message>
-        <source>Staffed UIR background color:</source>
-        <translation type="obsolete">Staffed UIR background color:</translation>
-    </message>
-    <message>
-        <source>Approach circle color:</source>
-        <translation type="obsolete">Approach circle color:</translation>
-    </message>
-    <message>
-        <source>Seas color:</source>
-        <translation type="obsolete">Seas color:</translation>
-    </message>
-    <message>
-        <source>Lands color:</source>
-        <translation type="obsolete">Lands color:</translation>
-    </message>
-    <message>
-        <source>Origin-to-pilot line color:</source>
-        <translation type="obsolete">Origin-to-pilot line color:</translation>
-    </message>
-    <message>
-        <source>Pilot-to-destination line color:</source>
-        <translation type="obsolete">Pilot-to-destination line color:</translation>
     </message>
 </context>
 <context>
@@ -1196,52 +967,6 @@
     </message>
 </context>
 <context>
-    <name>UpdateNotificationWidget</name>
-    <message>
-        <source>There is a new version of Vatsinator available! Check it now at %1</source>
-        <translation type="obsolete">There is a new version of Vatsinator available! Check it now at %1</translation>
-    </message>
-    <message>
-        <source>Close this notification</source>
-        <translation type="obsolete">Close this notification</translation>
-    </message>
-</context>
-<context>
-    <name>UserInterface</name>
-    <message>
-        <source>Last update: never</source>
-        <translation type="obsolete">Last update: never</translation>
-    </message>
-    <message>
-        <source>Last update: %1 UTC</source>
-        <translation type="obsolete">Last update: %1 UTC</translation>
-    </message>
-    <message>
-        <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
-        <translation type="obsolete">Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
-    </message>
-    <message>
-        <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
-        <translation type="obsolete">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
-    </message>
-    <message>
-        <source>What do you want to do with that?</source>
-        <translation type="obsolete">What do you want to do with that?</translation>
-    </message>
-    <message>
-        <source>Try again</source>
-        <translation type="obsolete">Try again</translation>
-    </message>
-    <message>
-        <source>Keep current data</source>
-        <translation type="obsolete">Keep current data</translation>
-    </message>
-    <message>
-        <source>Data outdated!</source>
-        <translation type="obsolete">Data outdated!</translation>
-    </message>
-</context>
-<context>
     <name>VatsimDataHandler</name>
     <message>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
@@ -1250,29 +975,6 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
-    </message>
-</context>
-<context>
-    <name>VatsinatorApplication</name>
-    <message>
-        <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
-        <translation type="obsolete">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
-    </message>
-    <message>
-        <source>What do you want to do with that?</source>
-        <translation type="obsolete">What do you want to do with that?</translation>
-    </message>
-    <message>
-        <source>Try again</source>
-        <translation type="obsolete">Try again</translation>
-    </message>
-    <message>
-        <source>Keep current data</source>
-        <translation type="obsolete">Keep current data</translation>
-    </message>
-    <message>
-        <source>Data outdated!</source>
-        <translation type="obsolete">Data outdated!</translation>
     </message>
 </context>
 <context>
