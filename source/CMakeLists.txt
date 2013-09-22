@@ -137,8 +137,6 @@ elseif (APPLE)
         ${MACOSX_BUNDLE_ICON} ${vatsinator_BUNDLE}/Contents/Resources/
         COMMAND cp ARGS -R
         ${CMAKE_BINARY_DIR}/vatsinator.resources/* ${vatsinator_BUNDLE}/Contents/Resources/
-        COMMAND mkdir
-        ${vatsinator_BUNDLE}/Contents/Resources/{en,pl,pt}.lproj
     )
     
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)

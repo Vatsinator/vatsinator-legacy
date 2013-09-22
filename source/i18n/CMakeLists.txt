@@ -20,4 +20,25 @@ else (NOT APPLE)
       ${CMAKE_BINARY_DIR}/vatsinator.resources/translations/
     COMMENT "Copying files to the bundle..."
     )
+  
+  foreach (LANG ${LANGUAGE_FILES})
+    string (REGEX
+      REPLACE "^(.+)\.language$"
+      "\\1"
+      lang_symbol ${LANG}
+    )
+    
+    add_custom_command (
+      TARGET i18n POST_BUILD
+      COMMAND mkdir ARGS -p
+        ${CMAKE_BINARY_DIR}/vatsinator.resources/${lang_symbol}.lproj
+      COMMENT "Enabling MacOS menu translations..."
+    )
+    
+    configure_file (
+      ${CMAKE_CURRENT_SOURCE_DIR}/locversion.plist.in
+      ${CMAKE_BINARY_DIR}/vatsinator.resources/${lang_symbol}.lproj/locversion.plist
+    )
+    
+  endforeach (LANG)
 endif (NOT APPLE)
