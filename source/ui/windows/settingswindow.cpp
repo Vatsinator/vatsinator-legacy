@@ -32,13 +32,11 @@
 #include "defines.h"
 
 SettingsWindow::SettingsWindow(QWidget* _parent) :
-    QWidget(_parent) {
+    BaseWindow(_parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  
-  UserInterface::setWindowPosition(this);
 
   connect(OKCancelButtonBox,    SIGNAL(clicked(QAbstractButton*)),
           this,                 SLOT(__handleButton(QAbstractButton*)));

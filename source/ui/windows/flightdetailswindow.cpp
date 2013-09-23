@@ -39,7 +39,7 @@
 #include "defines.h"
 
 FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
-    QWidget(_parent) {
+    BaseWindow(_parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -51,8 +51,6 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
           this,                                 SLOT(__handleShowClicked()));
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
-
-  UserInterface::setWindowPosition(this);
 }
 
 void

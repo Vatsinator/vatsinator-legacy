@@ -80,63 +80,71 @@
         <translation>A simple Vatsim monitor</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="92"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="44"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="94"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="47"/>
         <source>Version %1</source>
         <translation>Version %1</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="115"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="129"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
         <translation>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="156"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Database sync time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="179"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>Airports in the database:</source>
         <translation>Airports in the database:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="146"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="160"/>
         <source>FIRs in the database:</source>
         <translation>FIRs in the database:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="210"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="224"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="280"/>
         <source>Changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="107"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</source>
-        <translation type="obsolete">(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;https://github.com/Garrappachc/Vatsinator&quot;&gt;https://github.com/Garrappachc/Vatsinator&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="229"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="243"/>
         <source>Authors</source>
         <translation>Authors</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="252"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
         <source>License</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="54"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
         <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
+        <source>up-to-date</source>
+        <comment>Vatsinator version indicator</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
+        <source>outdated</source>
+        <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -152,7 +160,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="35"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="149"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="147"/>
         <source>%1 - airport details</source>
         <translation>%1 - airport details</translation>
     </message>
@@ -203,7 +211,7 @@
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="492"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="182"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="180"/>
         <source>Vataware statistics for this airport</source>
         <translation>Vataware statistics for this airport</translation>
     </message>
@@ -218,17 +226,17 @@
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="93"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="91"/>
         <source>Fetching...</source>
         <translation>Fetching...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="120"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="118"/>
         <source>Sorry, no weather report for %1.</source>
         <translation>Sorry, no weather report for %1.</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="178"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="176"/>
         <source>%1 ft</source>
         <translation>%1 ft</translation>
     </message>
@@ -269,12 +277,12 @@
 <context>
     <name>AtcDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="58"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="56"/>
         <source>%1 - ATC details</source>
         <translation>%1 - ATC details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="74"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="72"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -460,12 +468,12 @@
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="83"/>
         <source>%1 - FIR details</source>
         <translation>%1 - FIR details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="87"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - ARTCC details</translation>
     </message>
@@ -474,7 +482,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="67"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="65"/>
         <source>%1 - flight details</source>
         <translation>%1 - flight details</translation>
     </message>
@@ -516,7 +524,7 @@
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="280"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="92"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="90"/>
         <source>Vataware statistics for this pilot</source>
         <translation>Vataware statistics for this pilot</translation>
     </message>
@@ -606,28 +614,28 @@
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="73"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="71"/>
         <source>%1 feet</source>
         <translation>%1 feet</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="100"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="72"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="98"/>
         <source>%1 kts</source>
         <translation>%1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
         <source>airborne</source>
         <translation>airborne</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="80"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
         <source>departing</source>
         <translation>departing</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="82"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="80"/>
         <source>arrived</source>
         <translation>arrived</translation>
     </message>
@@ -671,53 +679,6 @@
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="149"/>
         <source>Aircraft</source>
         <translation>Aircraft</translation>
-    </message>
-</context>
-<context>
-    <name>MainWindow</name>
-    <message>
-        <source>Exit</source>
-        <translation type="obsolete">Exit</translation>
-    </message>
-    <message>
-        <source>About</source>
-        <translation type="obsolete">About</translation>
-    </message>
-    <message>
-        <source>METARs...</source>
-        <translation type="obsolete">METARs...</translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="obsolete">Refresh</translation>
-    </message>
-    <message>
-        <source>&amp;Vatsinator</source>
-        <translation type="obsolete">&amp;Vatsinator</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation type="obsolete">&amp;Help</translation>
-    </message>
-    <message>
-        <source>&amp;Settings</source>
-        <translation type="obsolete">&amp;Settings</translation>
-    </message>
-    <message>
-        <source>Preferences: Vatsinator</source>
-        <translation type="obsolete">Preferences: Vatsinator</translation>
-    </message>
-    <message>
-        <source>Flight list...</source>
-        <translation type="obsolete">Flight list...</translation>
-    </message>
-    <message>
-        <source>ATC list...</source>
-        <translation type="obsolete">ATC list...</translation>
-    </message>
-    <message>
-        <source>Enable auto-updates</source>
-        <translation type="obsolete">Enable auto-updates</translation>
     </message>
 </context>
 <context>
@@ -925,33 +886,34 @@
     </message>
 </context>
 <context>
+    <name>ModelMatcher</name>
+    <message>
+        <location filename="../modules/modelmatcher.cpp" line="38"/>
+        <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>NewVersionDialog</name>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="78"/>
-        <source>Dialog</source>
+        <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="97"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="101"/>
         <source>There is a new version of Vatsinator available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="128"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="132"/>
         <source>Download now!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialogs/newversiondialog.ui" line="135"/>
+        <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
         <source>Close</source>
         <translation type="unfinished">Close</translation>
-    </message>
-</context>
-<context>
-    <name>NewVersionNotificationWidget</name>
-    <message>
-        <source>Close this notification</source>
-        <translation type="obsolete">Close this notification</translation>
     </message>
 </context>
 <context>
@@ -960,146 +922,6 @@
         <location filename="../ui/windows/settingswindow.ui" line="14"/>
         <source>Vatsinator settings</source>
         <translation>Vatsinator settings</translation>
-    </message>
-    <message>
-        <source>Miscellaneous</source>
-        <translation type="obsolete">Miscellaneous</translation>
-    </message>
-    <message>
-        <source>Enable caching</source>
-        <translation type="obsolete">Enable caching</translation>
-    </message>
-    <message>
-        <source>Refresh METARs as well</source>
-        <translation type="obsolete">Refresh METARs as well</translation>
-    </message>
-    <message>
-        <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
-        <translation type="obsolete">Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</translation>
-    </message>
-    <message>
-        <source>Language:</source>
-        <translation type="obsolete">Language:</translation>
-    </message>
-    <message>
-        <source>Refresh every</source>
-        <translation type="obsolete">Refresh every</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation type="obsolete">minutes</translation>
-    </message>
-    <message>
-        <source>If checked, all METARs will be re-fetched just after data update.</source>
-        <translation type="obsolete">If checked, all METARs will be re-fetched just after data update.</translation>
-    </message>
-    <message>
-        <source>Nicer but slower.</source>
-        <translation type="obsolete">Nicer but slower.</translation>
-    </message>
-    <message>
-        <source>Antyaliasing</source>
-        <translation type="obsolete">Antyaliasing</translation>
-    </message>
-    <message>
-        <source>Zooming intensivity:</source>
-        <translation type="obsolete">Zooming intensivity:</translation>
-    </message>
-    <message>
-        <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
-        <translation type="obsolete">If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</translation>
-    </message>
-    <message>
-        <source>View</source>
-        <translation type="obsolete">View</translation>
-    </message>
-    <message>
-        <source>Show pilot labels:</source>
-        <translation type="obsolete">Show pilot labels:</translation>
-    </message>
-    <message>
-        <source>Always</source>
-        <translation type="obsolete">Always</translation>
-    </message>
-    <message>
-        <source>When hovered</source>
-        <translation type="obsolete">When hovered</translation>
-    </message>
-    <message>
-        <source>Airport-related</source>
-        <translation type="obsolete">Airport-related</translation>
-    </message>
-    <message>
-        <source>Display layers:</source>
-        <translation type="obsolete">Display layers:</translation>
-    </message>
-    <message>
-        <source>Pilots</source>
-        <translation type="obsolete">Pilots</translation>
-    </message>
-    <message>
-        <source>Airports</source>
-        <translation type="obsolete">Airports</translation>
-    </message>
-    <message>
-        <source>Staffed FIRs</source>
-        <translation type="obsolete">Staffed FIRs</translation>
-    </message>
-    <message>
-        <source>Unstaffed FIRs</source>
-        <translation type="obsolete">Unstaffed FIRs</translation>
-    </message>
-    <message>
-        <source>Inactive airports</source>
-        <translation type="obsolete">Inactive airports</translation>
-    </message>
-    <message>
-        <source>Show airport labels:</source>
-        <translation type="obsolete">Show airport labels:</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation type="obsolete">Never</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation type="obsolete">Colors</translation>
-    </message>
-    <message>
-        <source>Unstaffed FIR borders color:</source>
-        <translation type="obsolete">Unstaffed FIR borders color:</translation>
-    </message>
-    <message>
-        <source>Staffed FIR background color:</source>
-        <translation type="obsolete">Staffed FIR background color:</translation>
-    </message>
-    <message>
-        <source>Alpha channel:</source>
-        <translation type="obsolete">Alpha channel:</translation>
-    </message>
-    <message>
-        <source>Staffed UIR background color:</source>
-        <translation type="obsolete">Staffed UIR background color:</translation>
-    </message>
-    <message>
-        <source>Approach circle color:</source>
-        <translation type="obsolete">Approach circle color:</translation>
-    </message>
-    <message>
-        <source>Seas color:</source>
-        <translation type="obsolete">Seas color:</translation>
-    </message>
-    <message>
-        <source>Lands color:</source>
-        <translation type="obsolete">Lands color:</translation>
-    </message>
-    <message>
-        <source>Origin-to-pilot line color:</source>
-        <translation type="obsolete">Origin-to-pilot line color:</translation>
-    </message>
-    <message>
-        <source>Pilot-to-destination line color:</source>
-        <translation type="obsolete">Pilot-to-destination line color:</translation>
     </message>
 </context>
 <context>
@@ -1145,52 +967,6 @@
     </message>
 </context>
 <context>
-    <name>UpdateNotificationWidget</name>
-    <message>
-        <source>There is a new version of Vatsinator available! Check it now at %1</source>
-        <translation type="obsolete">There is a new version of Vatsinator available! Check it now at %1</translation>
-    </message>
-    <message>
-        <source>Close this notification</source>
-        <translation type="obsolete">Close this notification</translation>
-    </message>
-</context>
-<context>
-    <name>UserInterface</name>
-    <message>
-        <source>Last update: never</source>
-        <translation type="obsolete">Last update: never</translation>
-    </message>
-    <message>
-        <source>Last update: %1 UTC</source>
-        <translation type="obsolete">Last update: %1 UTC</translation>
-    </message>
-    <message>
-        <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
-        <translation type="obsolete">Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
-    </message>
-    <message>
-        <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
-        <translation type="obsolete">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
-    </message>
-    <message>
-        <source>What do you want to do with that?</source>
-        <translation type="obsolete">What do you want to do with that?</translation>
-    </message>
-    <message>
-        <source>Try again</source>
-        <translation type="obsolete">Try again</translation>
-    </message>
-    <message>
-        <source>Keep current data</source>
-        <translation type="obsolete">Keep current data</translation>
-    </message>
-    <message>
-        <source>Data outdated!</source>
-        <translation type="obsolete">Data outdated!</translation>
-    </message>
-</context>
-<context>
     <name>VatsimDataHandler</name>
     <message>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
@@ -1199,29 +975,6 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
-    </message>
-</context>
-<context>
-    <name>VatsinatorApplication</name>
-    <message>
-        <source>Vatsinator was unable to fetch Vatsim&apos;s data file.</source>
-        <translation type="obsolete">Vatsinator was unable to fetch Vatsim&apos;s data file.</translation>
-    </message>
-    <message>
-        <source>What do you want to do with that?</source>
-        <translation type="obsolete">What do you want to do with that?</translation>
-    </message>
-    <message>
-        <source>Try again</source>
-        <translation type="obsolete">Try again</translation>
-    </message>
-    <message>
-        <source>Keep current data</source>
-        <translation type="obsolete">Keep current data</translation>
-    </message>
-    <message>
-        <source>Data outdated!</source>
-        <translation type="obsolete">Data outdated!</translation>
     </message>
 </context>
 <context>
@@ -1292,27 +1045,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="87"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
         <source>&amp;Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="121"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="120"/>
         <source>Last update: never</source>
         <translation type="unfinished">Last update: never</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="123"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="122"/>
         <source>Last update: %1 UTC</source>
         <translation type="unfinished">Last update: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="135"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="134"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation type="unfinished">Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="209"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="220"/>
         <source>Invalid data!</source>
         <translation type="unfinished"></translation>
     </message>

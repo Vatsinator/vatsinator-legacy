@@ -35,6 +35,8 @@ ResourceManager::ResourceManager(QObject* _parent) :
     QObject(_parent),
     __currentVersion(VATSINATOR_VERSION) {
   
+   qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
+  
   QTimer::singleShot(START_DELAY, this, SLOT(__fetchVersion()));
 }
 
@@ -57,11 +59,9 @@ ResourceManager::__parseVersion(QString _versionString) {
   if (__currentVersion < latest)
     emit outdated();
   
-  emit versionChecked();
+  emit versionChecked(__currentVersion < latest ? Outdated : Updated);
   
   sender()->deleteLater();
-  
-  qDebug() << "Version checked.";
 }
 
 ResourceManager::Version::Version(const QString& _str) {

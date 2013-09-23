@@ -32,13 +32,16 @@
 #include "ui/license.h"
 
 
-AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
+AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
+  connect(ResourceManager::getSingletonPtr(),
+                SIGNAL(versionChecked(ResourceManager::VersionStatus)),
+          this,
+                SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
   
-  UserInterface::setWindowPosition(this);
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
   LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");
   VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
@@ -60,4 +63,19 @@ AboutWindow::AboutWindow(QWidget* _parent) : QWidget(_parent) {
   titleFont.setPointSize(titleFont.pointSize() + 2);
   TitleLabel->setFont(titleFont);
 }
+
+void
+AboutWindow::__updateVersionStatus(ResourceManager::VersionStatus _status) {
+  QPalette p = VersionStatusLabel->palette();
+  if (_status == ResourceManager::Updated) {
+    p.setColor(QPalette::WindowText, Qt::darkGreen);
+    VersionStatusLabel->setPalette(p);
+    VersionStatusLabel->setText(tr("up-to-date", "Vatsinator version indicator"));
+  } else {
+    p.setColor(QPalette::WindowText, Qt::red);
+    VersionStatusLabel->setPalette(p);
+    VersionStatusLabel->setText(tr("outdated", "Vatsinator version indicator"));
+  }
+}
+
 

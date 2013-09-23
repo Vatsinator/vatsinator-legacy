@@ -59,11 +59,22 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
     __userInterface(nullptr) {
-
-  __translator.load(QString("vatsinator-") %
-                      SettingsManager::earlyGetLocale(),
-                    QString(TRANSLATIONS_DIR));
-  installTranslator(&__translator);
+ 
+  QTranslator* tr_qt = new QTranslator();
+  tr_qt->load(QString("qt_") %
+                SettingsManager::earlyGetLocale(),
+              FileManager::staticPath(FileManager::Translations));
+  installTranslator(tr_qt);
+  connect(qApp,         SIGNAL(aboutToQuit()),
+          tr_qt,        SLOT(deleteLater()));
+  
+  QTranslator* tr = new QTranslator();
+  tr->load(QString("vatsinator-") %
+             SettingsManager::earlyGetLocale(),
+           FileManager::staticPath(FileManager::Translations));
+  installTranslator(tr);
+  connect(qApp,         SIGNAL(aboutToQuit()),
+          tr,           SLOT(deleteLater()));
   
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   

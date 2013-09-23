@@ -38,6 +38,17 @@ class FileManager : public Singleton<FileManager> {
   
 public:
   
+  /**
+   * Static directories contain files that are installed once
+   * and can not be overriden by any of the updates, thus
+   * they have static path.
+   * @sa staticPath()
+   */
+  enum StaticDir {
+    Pixmaps,
+    Translations
+  };
+  
   FileManager();
   virtual ~FileManager() = default;
   
@@ -47,6 +58,11 @@ public:
    * @param data Data to be saved.
    */
   static void cacheData(const QString&, const QString&);
+  
+  /**
+   * Gets static directory's location in the filesystem.
+   */
+  static QString staticPath(StaticDir);
   
   /**
    * Returns a real file location.

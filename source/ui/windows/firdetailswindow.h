@@ -20,6 +20,8 @@
 #ifndef FIRDETAILSWINDOW_H
 #define FIRDETAILSWINDOW_H
 
+#include "ui/windows/basewindow.h"
+
 #include "ui/ui_firdetailswindow.h"
 #include "singleton.h"
 
@@ -29,14 +31,14 @@ class Fir;
 class Pilot;
 
 class FirDetailsWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton< FirDetailsWindow >,
     private Ui::FirDetailsWindow {
 
   Q_OBJECT
 
 public:
-  FirDetailsWindow(QWidget* = 0);
+  FirDetailsWindow(QWidget* = nullptr);
 
 public slots:
   void show(const Fir*);

@@ -47,15 +47,13 @@
 #include "defines.h"
 
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
-    QWidget(_parent),
+    BaseWindow(_parent),
     __currentICAO(""),
     __forecast(new WeatherForecast()) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  
-  UserInterface::setWindowPosition(this);
 
   connect(MetarListModel::getSingletonPtr(),    SIGNAL(newMetarsAvailable()),
           this,                                 SLOT(updateMetar()));

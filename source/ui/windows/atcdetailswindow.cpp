@@ -35,13 +35,11 @@
 #include "defines.h"
 
 AtcDetailsWindow::AtcDetailsWindow(QWidget* _parent) :
-    QWidget(_parent) {
+    BaseWindow(_parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  
-  UserInterface::setWindowPosition(this);
 
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));

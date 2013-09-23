@@ -20,6 +20,8 @@
 #ifndef ATCDETAILSWINDOW_H
 #define ATCDETAILSWINDOW_H
 
+#include "ui/windows/basewindow.h"
+
 #include "ui/ui_atcdetailswindow.h"
 #include "singleton.h"
 
@@ -27,14 +29,14 @@ class Client;
 class Controller;
 
 class AtcDetailsWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton< AtcDetailsWindow >,
     private Ui::ATCDetailsWindow {
 
   Q_OBJECT
 
 public:
-  AtcDetailsWindow(QWidget* = 0);
+  AtcDetailsWindow(QWidget* = nullptr);
 
 public slots:
   void show(const Client*);

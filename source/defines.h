@@ -26,11 +26,14 @@
 // where to get all the data from
 #define VATSIM_STATUS_URL "http://status.vatsim.net/status.txt"
 
+// base Vatsinator domain
+#define VATSINATOR_BASE_URL "vatsinator.eu.org"
+
 // Vatsinator homepage url
-#define VATSINATOR_HOMEPAGE "http://vatsinator.eu.org/"
+#define VATSINATOR_HOMEPAGE "http://" VATSINATOR_BASE_URL
 
 // Vatsinator_repo url
-#define VATSINATOR_REPO_URL "https://raw.github.com/Garrappachc/Vatsinator-repo/master"
+#define VATSINATOR_REPO_URL "http://repo." VATSINATOR_BASE_URL
 
 // Vataware airport url
 // %1: ICAO code
@@ -39,19 +42,6 @@
 // Vataware pilot url
 // %1: Vatsim PID
 #define VATAWARE_PILOT_URL "http://www.vataware.com/pilot.cfm?cid=%1"
-
-// set files location
-#ifndef Q_OS_DARWIN
-
-#define PIXMAPS_DIR      VATSINATOR_PREFIX "pixmaps"
-#define TRANSLATIONS_DIR VATSINATOR_PREFIX "translations"
-
-#else
-
-#define PIXMAPS_DIR      QCoreApplication::applicationDirPath() + "/../Resources/pixmaps"
-#define TRANSLATIONS_DIR QCoreApplication::applicationDirPath() + "/../Resources/translations"
-
-#endif // Q_OS_DARWIN
 
 // cache file name
 #define CACHE_FILE_NAME "lastdata"

@@ -87,11 +87,25 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="VersionLabel">
-         <property name="text">
-          <string>Version %1</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+         <item>
+          <widget class="QLabel" name="VersionLabel">
+           <property name="text">
+            <string>Version %1</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="VersionStatusLabel">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="margin">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
@@ -284,7 +298,7 @@
  </widget>
  <resources>
   <include location="../resources/imgs.qrc"/>
-  <include location="imgs.qrc"/>
+  <include location="../resources/imgs.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -20,6 +20,8 @@
 #ifndef FLIGHTDETAILSWINDOW_H
 #define FLIGHTDETAILSWINDOW_H
 
+#include "ui/windows/basewindow.h"
+
 #include "ui/ui_flightdetailswindow.h"
 #include "singleton.h"
 
@@ -27,7 +29,7 @@ class Client;
 class Pilot;
 
 class FlightDetailsWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton< FlightDetailsWindow >,
     private Ui::FlightDetailsWindow {
 
@@ -37,7 +39,7 @@ signals:
   void flightTrackingStateChanged(const Pilot*, int);
 
 public:
-  FlightDetailsWindow(QWidget* = 0);
+  FlightDetailsWindow(QWidget* = nullptr);
 
 public slots:
   void show(const Client*);

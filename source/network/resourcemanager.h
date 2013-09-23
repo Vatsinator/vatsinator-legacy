@@ -39,6 +39,14 @@ class ResourceManager :
   
   Q_OBJECT
   
+public:
+  
+  enum VersionStatus {
+    Updated,
+    Outdated
+  };
+  Q_ENUMS(ResourceManager::VersionStatus);
+  
 signals:
   
   /**
@@ -50,7 +58,7 @@ signals:
   /**
    * Emitted after version has been checked.
    */
-  void versionChecked();
+  void versionChecked(ResourceManager::VersionStatus);
   
 public:
   

@@ -20,6 +20,8 @@
 #ifndef AIRPORTDETAILSWINDOW_H
 #define AIRPORTDETAILSWINDOW_H
 
+#include "ui/windows/basewindow.h"
+
 #include "ui/ui_airportdetailswindow.h"
 #include "singleton.h"
 
@@ -29,14 +31,14 @@ class Pilot;
 class WeatherForecast;
 
 class AirportDetailsWindow :
-    public QWidget,
+    public BaseWindow,
     public Singleton< AirportDetailsWindow >,
     private Ui::AirportDetailsWindow {
 
   Q_OBJECT
 
 public:
-  AirportDetailsWindow(QWidget* = 0);
+  AirportDetailsWindow(QWidget* = nullptr);
   virtual ~AirportDetailsWindow();
 
 public slots:
