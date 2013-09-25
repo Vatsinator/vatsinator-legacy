@@ -1,3 +1,9 @@
+#
+# NOTE: This file does NOT contain list of source or include files.
+# It only creates the page list for the SettingsManager.
+# To add new source files, go to ui/CMakeLists.txt.
+#
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 include (Pages)
 

@@ -38,11 +38,9 @@ public:
   
   /**
    * @variables
-   * refresh_rate:      int
-   * refresh_metars:    bool
    * has_antyaliasing:  bool
-   * cache_enabled:     bool
    * zoom_coefficient:  int
+   * send_statistics:   bool
    * language:          QString
    */
   QVariant get(const QString&) const;

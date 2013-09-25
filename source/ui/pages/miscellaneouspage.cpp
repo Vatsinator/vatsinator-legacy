@@ -25,11 +25,9 @@
 
 /* Default settings for MiscellaneousPage */
 namespace DefaultSettings {
-  static const int     REFRESH_RATE     = 3;
-  static const bool    METARS_REFRESH   = true;
   static const bool    ANTYALIASING     = false;
-  static const bool    CACHE_ENABLED    = true;
   static const int     ZOOM_COEFFICIENT = 30;
+  static const bool    SEND_STATS       = true;
   static const QString LANGUAGE         = QLocale::system().name().left(2);
 }
 
@@ -51,11 +49,9 @@ MiscellaneousPage::listIcon() const {
 
 QVariant
 MiscellaneousPage::get(const QString& _s) const {
-  _S(refresh_rate,      RefreshRateBox->value());
-  _S(refresh_metars,    RefreshMetarsCheckBox->isChecked());
   _S(has_antyaliasing,  AntyaliasingCheckBox->isChecked());
-  _S(cache_enabled,     EnableCachingCheckBox->isChecked());
   _S(zoom_coefficient,  ZoomCoefficientSlider->value());
+  _S(send_statistics,   StatsCheckBox->isChecked());
   _S(language,          LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
   
   _S_END;
@@ -63,16 +59,12 @@ MiscellaneousPage::get(const QString& _s) const {
 
 void
 MiscellaneousPage::__restore(QSettings& _s) {
-  RefreshRateBox->setValue(
-    _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt());
-  RefreshMetarsCheckBox->setChecked(
-    _s.value("refresh_metars", DefaultSettings::METARS_REFRESH).toBool());
   AntyaliasingCheckBox->setChecked(
     _s.value("has_antyaliasing", DefaultSettings::ANTYALIASING).toBool());
-  EnableCachingCheckBox->setChecked(
-    _s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
   ZoomCoefficientSlider->setValue(
     _s.value("zoom_coefficient", DefaultSettings::ZOOM_COEFFICIENT).toInt());
+  StatsCheckBox->setChecked(
+    _s.value("send_statistics", DefaultSettings::SEND_STATS).toBool());
   LanguageComboBox->setCurrentIndex(
     LanguageManager::getSingleton().getLanguageId(
       _s.value("language", DefaultSettings::LANGUAGE).toString()
@@ -82,10 +74,8 @@ MiscellaneousPage::__restore(QSettings& _s) {
 
 void
 MiscellaneousPage::__save(QSettings& _s) {
-  _s.setValue("refresh_rate", RefreshRateBox->value());
-  _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   _s.setValue("has_antyaliasing", AntyaliasingCheckBox->isChecked());
-  _s.setValue("cache_enabled", EnableCachingCheckBox->isChecked());
   _s.setValue("zoom_coefficient", ZoomCoefficientSlider->value());
+  _s.setValue("send_statistics", StatsCheckBox->isChecked());
   _s.setValue("language", LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
 }

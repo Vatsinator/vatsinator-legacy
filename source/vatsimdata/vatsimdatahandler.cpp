@@ -312,6 +312,10 @@ VatsimDataHandler::obsCount() const {
 
 void
 VatsimDataHandler::loadCachedData() {
+  /* Honor user settings */
+  if (SM::get("network.cache_enabled").toBool() == false)
+    return;
+  
   VatsinatorApplication::log("Loading data from cache...");
   
   CacheFile file(CACHE_FILE_NAME);
@@ -535,7 +539,7 @@ VatsimDataHandler::__dataFetched(const QString& _data) {
     parseDataFile(_data);
     emit vatsimDataUpdated();
     
-    if (SM::get("misc.cache_enabled").toBool())
+    if (SM::get("network.cache_enabled").toBool())
       FileManager::cacheData(CACHE_FILE_NAME, _data);
   } else {
     parseStatusFile(_data);

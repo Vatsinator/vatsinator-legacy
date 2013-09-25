@@ -59,6 +59,7 @@ set (ui_SRCS
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
     pages/miscellaneouspage.cpp
+    pages/networkpage.cpp
     pages/viewpage.cpp
     
     views/airporttableview.cpp
@@ -107,6 +108,7 @@ set (ui_MOC_SRCS
     pages/abstractsettingspage.h
     pages/colorspage.h
     pages/miscellaneouspage.h
+    pages/networkpage.h
     pages/viewpage.h
     
     views/airporttableview.h
@@ -137,6 +139,7 @@ set (ui_FORMS
     
     pages/colorspage.ui
     pages/miscellaneouspage.ui
+    pages/networkpage.ui
     pages/viewpage.ui
 
     windows/aboutwindow.ui

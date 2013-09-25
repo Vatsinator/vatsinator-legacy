@@ -107,7 +107,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   VatsinatorWindow::getSingleton().show();
   emit uiCreated();
   
-  __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
+  __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);
@@ -162,6 +162,8 @@ VatsinatorApplication::emitGLInitialized() {
 
 void
 VatsinatorApplication::log(const char* _s) {
+  QMutexLocker l(&__mutex);
+  
   while (*_s) {
     Q_ASSERT(!(*_s == '%' && *(++_s) != '%'));
     std::cout << *_s++;
@@ -189,8 +191,8 @@ VatsinatorApplication::__emitGLInitialized() {
 
 void
 VatsinatorApplication::__loadNewSettings() {
-  if (__timer.interval() / 60000 != SM::get("misc.refresh_rate").toInt()) {
-    __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
+  if (__timer.interval() / 60000 != SM::get("network.refresh_rate").toInt()) {
+    __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
     
     if (VatsinatorWindow::getSingleton().autoUpdatesEnabled())
       refreshData();
@@ -206,3 +208,5 @@ VatsinatorApplication::__autoUpdatesToggled(bool _state) {
       refreshData();
   }
 }
+
+QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

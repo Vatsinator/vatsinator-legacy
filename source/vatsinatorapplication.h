@@ -21,6 +21,7 @@
 #define VATSINATORAPPLICATION_H
 
 #include <QApplication>
+#include <QMutex>
 #include <QTimer>
 #include <iostream>
 
@@ -86,6 +87,8 @@ public:
 
   template <typename T, typename... Args>
   static void log(const char* _s, T _value, Args... _args) {
+    QMutexLocker l(&__mutex);
+    
     while (*_s) {
       if (*_s == '%' && *(++_s) != '%') {
         std::cout << _value;
@@ -128,6 +131,7 @@ private:
   UserInterface*       __userInterface;
   
   QTimer               __timer;
+  static QMutex        __mutex; /* For stdout */
 
 };
 

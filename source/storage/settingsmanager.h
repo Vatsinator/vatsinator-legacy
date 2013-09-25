@@ -40,7 +40,7 @@ class SettingsManager :
    * settings in local variables. You can use settingsChanged()
    * signal to update needed settings.
    * It works like this:
-   * SM::get("misc.refresh_rate").toInt();
+   * SM::get("network.refresh_rate").toInt();
    * SM is typedef for SettingsManager.
    */
 
@@ -65,7 +65,7 @@ public:
   /**
    * Gives access to particular setting.
    * @param s Page and variable name, glued by dot (.).
-   *    Example: SettingsManager::get("misc.refresh_rate")
+   *    Example: SettingsManager::get("network.refresh_rate")
    */
   static QVariant get(const QString&);
 
