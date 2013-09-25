@@ -35,6 +35,7 @@ class LanguageManager;
 class ModuleManager;
 class ResourceManager;
 class SettingsManager;
+class StatsPurveyor;
 class UserInterface;
 class VatsimDataHandler;
 class WorldMap;
@@ -128,6 +129,7 @@ private:
   SettingsManager*     __settingsManager;
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
+  StatsPurveyor*       __statsPurveyor;
   UserInterface*       __userInterface;
   
   QTimer               __timer;

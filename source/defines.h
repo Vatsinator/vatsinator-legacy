@@ -35,6 +35,9 @@
 // Vatsinator_repo url
 #define VATSINATOR_REPO_URL "http://repo." VATSINATOR_BASE_URL
 
+// Where stats will be collected
+#define VATSINATOR_STATS_URL "http://stats." VATSINATOR_BASE_URL
+
 // cache file name
 #define CACHE_FILE_NAME "lastdata"
 
@@ -64,7 +67,7 @@
 #define AIRPORTS_LABELS_FONT_COLOR  250, 250, 250
 #define FIRS_LABELS_FONT_COLOR      173, 173, 173
 
-// camera position won't go further
+// camera position won't go any further
 #define RANGE_Y   1.0
 
 // fonts properties

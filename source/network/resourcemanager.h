@@ -25,8 +25,6 @@
 
 #include "singleton.h"
 
-class QThread;
-
 class ResourceManager :
     public QObject,
     public Singleton<ResourceManager> {
@@ -80,9 +78,6 @@ private slots:
   void __parseVersion(QString);
   
 private:
-  
-  /* The thread that this ResourceManager will be running on */
-  QThread* __myThread;
   
   class Version {
     
