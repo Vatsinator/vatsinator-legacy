@@ -64,6 +64,7 @@ if (LINUX)
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
+        ${QJSON_LIBRARIES}
     )
 elseif (APPLE)
     set (vatsinator_PREFIX "")

@@ -20,10 +20,16 @@
 #ifndef STATSPURVEYOR_H
 #define STATSPURVEYOR_H
 
-#include <QObject>
 #include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QQueue>
+#include "singleton.h"
 
-class StatsPurveyor : public QObject {
+class QNetworkReply;
+
+class StatsPurveyor :
+    public QObject,
+    public Singleton<StatsPurveyor> {
 
   /**
    * This class is used to send anonymous statistics to Vatsinator
@@ -43,8 +49,28 @@ public slots:
    */
   void reportStartup();
   
-public:
+private slots:
+  
+  /**
+   * Usually JSON-formatted response.
+   */
+  void __parseResponse();
+  
+  /**
+   * Dequeues next request and executes it.
+   */
+  void __nextRequest();
+  
+private:
+  void __enqueueRequest(const QNetworkRequest&);
+  
+  /* networkAccessible = NotAccessible when user disables stats */
   QNetworkAccessManager __nam;
+  
+  /* Requests to be sent */
+  QQueue<QNetworkRequest> __requests;
+  
+  QNetworkReply* __reply;
 
 };
 

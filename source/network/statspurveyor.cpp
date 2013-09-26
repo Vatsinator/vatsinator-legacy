@@ -19,6 +19,7 @@
 
 #include <QtGui>
 #include <QtNetwork>
+#include <qjson/parser.h>
 
 #include "vatsinatorapplication.h"
 
@@ -27,6 +28,9 @@
 
 // send the startup report after 10 seconds
 static const int START_DELAY = 10 * 1000;
+
+// if stats query failed, retry in 1 minute
+static const int RETRY_DELAY = 60 * 1000;
 
 // request urls
 static const QString STARTUP_PATH = "/startup.php?version=%1&os=%2";
@@ -42,10 +46,12 @@ static const QString OS_STRING =
   "unknown"
 #endif
   ;
+  
 
 StatsPurveyor::StatsPurveyor(QObject* _parent) :
     QObject(_parent),
-    __nam(this) {
+    __nam(this),
+    __reply(nullptr) {
 
   QTimer::singleShot(START_DELAY, this, SLOT(reportStartup()));
 }
@@ -57,9 +63,51 @@ StatsPurveyor::reportStartup() {
   QString url = QString(VATSINATOR_STATS_URL) % STARTUP_PATH;
   QNetworkRequest request(url.arg(VATSINATOR_VERSION, OS_STRING));
   
-  VatsinatorApplication::log("StatsPurveyor: startup request: %s",
+  VatsinatorApplication::log("StatsPurveyor: query string: %s",
                              qPrintable(request.url().toString()));
   
-  __nam.get(request);
+  __enqueueRequest(QNetworkRequest(request));
 }
 
+void
+StatsPurveyor::__parseResponse() {
+  QJson::Parser parser;
+  bool ok;
+  QVariantMap content = parser.parse(__reply, &ok).toMap();
+  if (ok && __reply->error() == QNetworkReply::NoError) {
+    int result = content["result"].toInt();
+    if (result > 0) {
+      __requests.dequeue();
+      if (!__requests.isEmpty()) {
+        __reply->deleteLater();
+        __reply = nullptr;
+        __nextRequest(); 
+      }
+    } else {
+      Q_ASSERT_X(false, "StatsPurveyor", "Invalid query");
+    }
+  } else {
+    VatsinatorApplication::log("StatsPurveyor: query failed; retry in 1 minute...");
+    QTimer::singleShot(RETRY_DELAY, this, SLOT(__nextRequest()));
+    __reply->deleteLater();
+    __reply = nullptr;
+  }
+}
+
+void
+StatsPurveyor::__nextRequest() {
+  Q_ASSERT(!__requests.isEmpty());
+  Q_ASSERT(!__reply);
+  
+  __reply = __nam.get(__requests.head());
+  connect(__reply,      SIGNAL(finished()),
+          this,         SLOT(__parseResponse()));
+}
+
+void
+StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
+  __requests.enqueue(_request);
+  
+  if (!__reply)
+    __nextRequest();
+}

@@ -45,8 +45,6 @@ PlainTextDownloader::__startRequest() {
 
   connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
   connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
-//   connect(__reply, SIGNAL(error(QNetworkReply::NetworkError)),
-//           this,    SLOT(__finished()));
 
   if (__progressBar) {
     connect(__reply, SIGNAL(downloadProgress(qint64, qint64)),

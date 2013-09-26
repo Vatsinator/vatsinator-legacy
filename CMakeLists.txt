@@ -17,6 +17,11 @@
 
 project (vatsinator)
 
+#
+# TODO: Add QJSON for Win32 and MacOS
+#       Update dependencied for Ubuntu & Gentoo
+#
+
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
 # find necessary libs
@@ -59,7 +64,6 @@ if (NOT vatsinator_VERSION)
 endif (NOT vatsinator_VERSION)
 
 add_subdirectory (externals)
-include_directories (${QUAZIP_SOURCE_DIR})
 
 include (VatsinatorInstall)
 
@@ -98,6 +102,7 @@ vatsinator_install (
 if (LINUX)
     
     find_package (QuaZip REQUIRED)
+    find_package (QJSON REQUIRED)
     
     # This actually creates .deb
     include (Packaging-linux)
@@ -122,6 +127,8 @@ elseif (APPLE)
 
 # builds for win32
 elseif (WIN32)
+    
+    include_directories (${QUAZIP_SOURCE_DIR})
     
     if (MINGW)
         install (FILES
