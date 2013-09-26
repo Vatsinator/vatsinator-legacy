@@ -60,7 +60,6 @@ StatsPurveyor::reportStartup() {
   VatsinatorApplication::log("StatsPurveyor: startup request: %s",
                              qPrintable(request.url().toString()));
   
-  QNetworkReply* reply = __nam.get(request);
-  connect(reply, SIGNAL(finished()), reply, SLOT(deleteLater()));
+  __nam.get(request);
 }
 
