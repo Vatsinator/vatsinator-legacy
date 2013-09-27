@@ -49,6 +49,11 @@ public slots:
    */
   void reportStartup();
   
+  /**
+   * If an ATC has unknown callsign, we should report it.
+   */
+  void reportNoAtc(const QString&);
+  
 private slots:
   
   /**

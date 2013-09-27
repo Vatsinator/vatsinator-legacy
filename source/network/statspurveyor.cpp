@@ -34,6 +34,7 @@ static const int RETRY_DELAY = 60 * 1000;
 
 // request urls
 static const QString STARTUP_PATH = "/startup.php?version=%1&os=%2";
+static const QString NOATC_PATH = "/noatc.php?atc=%1";
 
 static const QString OS_STRING =
 #ifdef Q_OS_WIN32
@@ -63,10 +64,15 @@ StatsPurveyor::reportStartup() {
   QString url = QString(VATSINATOR_STATS_URL) % STARTUP_PATH;
   QNetworkRequest request(url.arg(VATSINATOR_VERSION, OS_STRING));
   
-  VatsinatorApplication::log("StatsPurveyor: query string: %s",
-                             qPrintable(request.url().toString()));
+  __enqueueRequest(request);
+}
+
+void
+StatsPurveyor::reportNoAtc(const QString& _atc) {
+  QString url = QString(VATSINATOR_STATS_URL) % NOATC_PATH;
+  QNetworkRequest request(url.arg(_atc));
   
-  __enqueueRequest(QNetworkRequest(request));
+  __enqueueRequest(request);
 }
 
 void
@@ -98,6 +104,8 @@ void
 StatsPurveyor::__nextRequest() {
   Q_ASSERT(!__requests.isEmpty());
   Q_ASSERT(!__reply);
+  
+  VatsinatorApplication::log("StatsPurveyor: request: %s", qPrintable(__requests.head().url().toString()));
   
   __reply = __nam.get(__requests.head());
   connect(__reply,      SIGNAL(finished()),

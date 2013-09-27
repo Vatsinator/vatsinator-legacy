@@ -21,6 +21,8 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
+#include "network/statspurveyor.h"
+
 #include "vatsimdata/airport/activeairport.h"
 
 #include "vatsimdata/uir.h"
@@ -247,7 +249,8 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      VatsinatorApplication::log("Airport not found for %s.", __callsign.toStdString().c_str());
+      StatsPurveyor::getSingleton().reportNoAtc(__callsign);
+      VatsinatorApplication::log("Airport not found for %s.", qPrintable(__callsign));
     }
 
     return;
