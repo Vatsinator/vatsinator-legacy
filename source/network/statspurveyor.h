@@ -66,6 +66,11 @@ private slots:
    */
   void __nextRequest();
   
+  /**
+   * Honors user's settings.
+   */
+  void __applySettings();
+  
 private:
   void __enqueueRequest(const QNetworkRequest&);
   

@@ -21,6 +21,8 @@
 #include <QtNetwork>
 #include <qjson/parser.h>
 
+#include "storage/settingsmanager.h"
+
 #include "vatsinatorapplication.h"
 
 #include "statspurveyor.h"
@@ -53,8 +55,11 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
     QObject(_parent),
     __nam(this),
     __reply(nullptr) {
-
+  
   QTimer::singleShot(START_DELAY, this, SLOT(reportStartup()));
+  
+  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+          this,                                 SLOT(__applySettings()));
 }
 
 StatsPurveyor::~StatsPurveyor() {}
@@ -113,7 +118,19 @@ StatsPurveyor::__nextRequest() {
 }
 
 void
+StatsPurveyor::__applySettings() {
+  bool sendStats = SM::get("misc.send_statistics").toBool();
+  if (sendStats)
+    __nam.setNetworkAccessible(QNetworkAccessManager::Accessible);
+  else
+    __nam.setNetworkAccessible(QNetworkAccessManager::NotAccessible);
+}
+
+void
 StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
+  if (__nam.networkAccessible() == QNetworkAccessManager::NotAccessible)
+    return;
+  
   __requests.enqueue(_request);
   
   if (!__reply)
