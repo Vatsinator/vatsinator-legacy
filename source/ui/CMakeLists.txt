@@ -53,6 +53,7 @@ set (ui_SRCS
     buttons/urlbutton.cpp
     
     dialogs/datafetcherrordialog.cpp
+    dialogs/letsendstatsdialog.cpp
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
     
@@ -102,6 +103,7 @@ set (ui_MOC_SRCS
     buttons/urlbutton.h
     
     dialogs/datafetcherrordialog.h
+    dialogs/letsendstatsdialog.h
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
     
@@ -135,6 +137,7 @@ set (ui_MOC_SRCS
 vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
 
 set (ui_FORMS
+    dialogs/letsendstatsdialog.ui
     dialogs/newversiondialog.ui
     
     pages/colorspage.ui

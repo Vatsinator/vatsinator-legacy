@@ -71,9 +71,21 @@ SettingsManager::get(const QString& _s) {
   QString variable = _s.section('.', 1);
   
   Q_ASSERT_X(getSingleton().__parsePage(page),
-             qPrintable(QString("SettingsManager::get(") % _s % QString(")")),
+             qPrintable(QString("SettingsManager::get(%1)").arg(page)),
              "No such page");
   return getSingleton().__parsePage(page)->get(variable);
+}
+
+void
+SettingsManager::updateUi(const QString& _pName) {
+  Q_ASSERT_X(getSingleton().__parsePage(_pName),
+             qPrintable(QString("SettingsManager::updateUi(%1)").arg(_pName)),
+             "No such page");
+  
+  QSettings s;
+  s.beginGroup("Settings");
+  getSingleton().__parsePage(_pName)->restoreSettings(s);
+  s.endGroup();
 }
 
 void
@@ -89,9 +101,9 @@ SettingsManager::__restoreSettings() {
   emit settingsChanged();
 }
 
-const AbstractSettingsPage *
+AbstractSettingsPage *
 SettingsManager::__parsePage(const QString& _s) const {
-  for (const AbstractSettingsPage* p: __pages)
+  for (AbstractSettingsPage* p: __pages)
     if (p->__sm_page_name() == _s)
       return p;
   

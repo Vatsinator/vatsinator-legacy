@@ -71,6 +71,12 @@ private slots:
    */
   void __applySettings();
   
+  /**
+   * Connected to the LetSendStatsDialog.
+   */
+  void __statsAccepted();
+  void __statsRejected();
+  
 private:
   void __enqueueRequest(const QNetworkRequest&);
   

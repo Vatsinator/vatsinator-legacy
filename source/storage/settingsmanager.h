@@ -68,6 +68,13 @@ public:
    *    Example: SettingsManager::get("network.refresh_rate")
    */
   static QVariant get(const QString&);
+  
+  /**
+   * If any class modifies the QSettings directly, it should call
+   * this method in order to have changes visible in the UI.
+   * @param pName Page name.
+   */
+  static void updateUi(const QString&);
 
 private:
   /**
@@ -75,7 +82,7 @@ private:
    */
   void __restoreSettings();
   
-  const AbstractSettingsPage* __parsePage(const QString&) const;
+  AbstractSettingsPage* __parsePage(const QString&) const;
   
 private slots:
   
