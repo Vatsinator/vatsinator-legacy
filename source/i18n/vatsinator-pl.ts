@@ -680,6 +680,24 @@
     </message>
 </context>
 <context>
+    <name>LetSendStatsDialog</name>
+    <message>
+        <location filename="../ui/dialogs/letsendstatsdialog.ui" line="14"/>
+        <source>Send anonymous statistics</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/letsendstatsdialog.ui" line="43"/>
+        <source>Do you let Vatsinator send some anonymous statistics?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/letsendstatsdialog.ui" line="56"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vatsinator can collect some anonymous statistics in order to provide better quality and usability. Things that will be sent to servers include: application version, operating system, errors and warnings. We do not collect such data as IP addresses or users&apos; locations.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>MapWidget</name>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="666"/>
@@ -823,64 +841,49 @@
     <name>MiscellaneousPage</name>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="26"/>
-        <location filename="../ui/pages/miscellaneouspage.cpp" line="44"/>
+        <location filename="../ui/pages/miscellaneouspage.cpp" line="42"/>
         <source>Miscellaneous</source>
         <translation>Różne</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="41"/>
-        <source>Enable caching</source>
-        <translation>Zapisuj pobrane dane</translation>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="119"/>
+        <source>Send anonymous statistics</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="64"/>
-        <source>Refresh METARs as well</source>
-        <translation>Odśwież także raporty</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="80"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="132"/>
         <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
         <translation>Aby zastosować zmiany języka,&lt;br&gt;Vatsinator musi zostać uruchomiony ponownie.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="92"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="147"/>
+        <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="162"/>
         <source>Language:</source>
         <translation>Język:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="129"/>
-        <source>Refresh every</source>
-        <translation>Odświeżaj co</translation>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="232"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="155"/>
-        <source>minutes</source>
-        <translation>minuty</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="186"/>
-        <source>If checked, all METARs will be re-fetched just after data update.</source>
-        <translation>Jeżeli opcja jest zaznaczona, razem z odświeżeniem statusu odświeżone zostaną także raporty pogodowe.</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="205"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="219"/>
         <source>Nicer but slower.</source>
         <translation>Ładniej lecz wolniej.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="218"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="99"/>
         <source>Antyaliasing</source>
         <translation>Wygładzanie</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="227"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="43"/>
         <source>Zooming intensivity:</source>
         <translation>Szybkość przybliżania:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="273"/>
-        <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
-        <translation>Jeżeli zaznaczone, Vatsinator zapisze pobrane dane w pliku, by odtworzyć je przy następnym uruchomieniu.</translation>
     </message>
 </context>
 <context>
@@ -889,6 +892,66 @@
         <location filename="../modules/modelmatcher.cpp" line="38"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
         <translation>Plik %1 nie mógł zostać otwarty! Sprawdź jego uprawnienia lub przeinstaluj aplikację.</translation>
+    </message>
+</context>
+<context>
+    <name>NetworkPage</name>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="14"/>
+        <location filename="../ui/pages/networkpage.ui" line="20"/>
+        <location filename="../ui/pages/networkpage.cpp" line="41"/>
+        <source>Network</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="34"/>
+        <source>Refresh data every</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="60"/>
+        <source>minutes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="85"/>
+        <source>Let me know when an error occurs</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="97"/>
+        <source>If enabled, you will be asked what to do each time data downloading fails. Otherwise, Vatsinator will make the decision itself.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="110"/>
+        <source>Enable caching</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="125"/>
+        <source>If enabled, Vatsinator will cache some downloaded data.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="138"/>
+        <source>Keep METARs updated</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="153"/>
+        <source>If enabled, all weather reports will be refreshed periodically.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="166"/>
+        <source>Enable version checking</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="181"/>
+        <source>If enabled, you will be notified if the new version of the application is available.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -926,8 +989,8 @@
     <name>StatusFetchErrorDialog</name>
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="28"/>
-        <source>Vatsinator was unable to fetch the needed status.txt file.</source>
-        <translation>Nie da się pobrać pliku status.txt.</translation>
+        <source>Vatsinator was unable to fetch the status.txt file.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="29"/>
@@ -967,10 +1030,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="384"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
         <source>File %1 could not be opened!</source>
         <translation>Plik %1 nie mógł zostać otwarty!</translation>
     </message>
@@ -1077,53 +1140,53 @@
         <translation>Widok</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="43"/>
+        <location filename="../ui/pages/viewpage.ui" line="114"/>
         <source>Show pilot labels:</source>
         <translation>Pokaż etykiety pilotów:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="50"/>
+        <location filename="../ui/pages/viewpage.ui" line="121"/>
         <location filename="../ui/pages/viewpage.ui" line="175"/>
         <source>Always</source>
         <translation>Zawsze</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="60"/>
+        <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>When hovered</source>
         <translation>Pod kursorem</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="70"/>
+        <location filename="../ui/pages/viewpage.ui" line="141"/>
         <source>Airport-related</source>
         <translation>Lotnisko aktywuje</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="97"/>
+        <location filename="../ui/pages/viewpage.ui" line="43"/>
         <source>Display layers:</source>
         <translation>Warstwy:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="104"/>
+        <location filename="../ui/pages/viewpage.ui" line="50"/>
         <source>Pilots</source>
         <translation>Piloci</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="114"/>
+        <location filename="../ui/pages/viewpage.ui" line="60"/>
         <source>Airports</source>
         <translation>Lotniska</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="124"/>
+        <location filename="../ui/pages/viewpage.ui" line="70"/>
         <source>Staffed FIRs</source>
         <translation>Obsadzone FIRy</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="134"/>
+        <location filename="../ui/pages/viewpage.ui" line="80"/>
         <source>Unstaffed FIRs</source>
         <translation>FIRy bez ATC</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="144"/>
+        <location filename="../ui/pages/viewpage.ui" line="90"/>
         <source>Inactive airports</source>
         <translation>Puste lotniska</translation>
     </message>
