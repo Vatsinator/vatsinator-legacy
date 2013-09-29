@@ -22,8 +22,7 @@
 #include "defines.h"
 
 AbstractSettingsPage::AbstractSettingsPage(QWidget* _parent) :
-  QWidget(_parent),
-  __sm_page_name("") {}
+  QWidget(_parent) {}
 
 void
 AbstractSettingsPage::restoreSettings(QSettings& _s) {
