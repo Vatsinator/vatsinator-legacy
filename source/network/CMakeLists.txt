@@ -20,3 +20,5 @@ vatsinator_subdirectory_mocs (network "${network_MOC_SRCS}")
 
 vatsinator_end_subdirectory (network)
 
+add_dependencies (network ui)
+

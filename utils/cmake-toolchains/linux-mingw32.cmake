@@ -14,6 +14,7 @@
 
 # the name of the target operating system
 set (CMAKE_SYSTEM_NAME Windows)
+set (WIN32 1)
 
 # changing these three values should be enough
 set (COMPILER_PREFIX "i686-pc-mingw32")
@@ -31,8 +32,7 @@ set (CMAKE_SHARED_LINKER_FLAGS "-static" CACHE STRING "" FORCE)
  
 # here is the target environment located
 set (CMAKE_FIND_ROOT_PATH
-    /usr/${COMPILER_PREFIX}/usr/lib
-    /usr/${COMPILER_PREFIX}/usr/include
+    /usr/${COMPILER_PREFIX}
     ${QT_WIN32_PREFIX}
 )
  

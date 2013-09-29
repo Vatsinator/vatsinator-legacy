@@ -27,6 +27,10 @@ cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 # find necessary libs
 find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
 find_package (OpenGL REQUIRED)
+find_package (QuaZip REQUIRED)
+find_package (QJSON REQUIRED)
+find_package (ZLIB REQUIRED)
+
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)
@@ -43,6 +47,7 @@ if (MINGW)
 endif (MINGW)
 
 include(${QT_USE_FILE})
+include_directories (${ZLIB_INCLUDE_DIRS}})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
@@ -62,8 +67,6 @@ if (NOT vatsinator_VERSION)
     file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION vatsinator_VERSION)
     string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
 endif (NOT vatsinator_VERSION)
-
-add_subdirectory (externals)
 
 include (VatsinatorInstall)
 
@@ -101,9 +104,6 @@ vatsinator_install (
 # Platform-specific actions
 if (LINUX)
     
-    find_package (QuaZip REQUIRED)
-    find_package (QJSON REQUIRED)
-    
     # This actually creates .deb
     include (Packaging-linux)
     
@@ -119,8 +119,6 @@ if (LINUX)
     add_subdirectory (dist)
 
 elseif (APPLE)
-
-    find_package (QuaZip REQUIRED)
     
     # For bundle creation
     include (Packaging-darwin)
@@ -128,27 +126,37 @@ elseif (APPLE)
 # builds for win32
 elseif (WIN32)
     
-    include_directories (${QUAZIP_SOURCE_DIR})
-    
     if (MINGW)
+        
+        # find absolute path to QJson library
+        find_library (QJSON_LIBRARY
+            NAMES libqjson.dll
+        )
+        
+        message (STATUS "Found QJson library: ${QJSON_LIBRARY}")
+        
+        # On native compilers, we should use DeployQt4 module, as it
+        # works on Apple builds. However, it is not possible during
+        # cross-compile.
         install (FILES
             ${QT_LIBRARY_DIR}/libgcc_s_dw2-1.dll
             ${QT_LIBRARY_DIR}/mingwm10.dll
+            ${QT_QTGUI_LIBRARY_RELEASE}
+            ${QT_QTCORE_LIBRARY_RELEASE}
+            ${QT_QTNETWORK_LIBRARY_RELEASE}
+            ${QT_QTOPENGL_LIBRARY_RELEASE}
+            ${QT_QTSVG_LIBRARY_RELEASE}
+            ${QT_QTXML_LIBRARY_RELEASE}
+            ${QUAZIP_LIBRARIES}
+            ${QJSON_LIBRARY}
             DESTINATION .
         )
+    
+    else (MINGW)
+    
+        message (FATAL_ERROR "Sorry, only MinGW is currently supported for Win32 builds")
+          
     endif (MINGW)
-
-    # Include necessary libs
-    install (FILES
-        ${QT_QTGUI_LIBRARY_RELEASE}
-        ${QT_QTCORE_LIBRARY_RELEASE}
-        ${QT_QTNETWORK_LIBRARY_RELEASE}
-        ${QT_QTOPENGL_LIBRARY_RELEASE}
-        ${QT_QTSVG_LIBRARY_RELEASE}
-        ${QT_QTXML_LIBRARY_RELEASE}
-        ${QUAZIP_LIBRARY_RELEASE}
-        DESTINATION .
-    )
     
     # Awesome NSIS packaging
     include (Packaging-win32)
@@ -173,7 +181,6 @@ elseif (WIN32)
 else (LINUX)
     message (STATUS " * platform: Undefined")
 endif (LINUX)
-
 
 # uninstall target
 configure_file (

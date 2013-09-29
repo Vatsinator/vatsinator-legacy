@@ -18,13 +18,9 @@
 
 #include <QtCore>
 
-#ifdef Q_OS_WIN32
-# include "quazip/quazip.h"
-# include "quazip/quazipfile.h"
-#else
-# include <quazip/quazip.h>
-# include <quazip/quazipfile.h>
-#endif
+
+#include <quazip/quazip.h>
+#include <quazip/quazipfile.h>
 
 #include "vatsinatorapplication.h"
 
