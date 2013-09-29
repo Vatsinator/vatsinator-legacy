@@ -684,104 +684,104 @@
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="14"/>
         <source>Send anonymous statistics</source>
-        <translation type="unfinished"/>
+        <translation>Wyślij anonimowe statystki</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="43"/>
         <source>Do you let Vatsinator send some anonymous statistics?</source>
-        <translation type="unfinished"/>
+        <translation>Czy chcesz pozwolić na wysyłanie anonimowych statystyk?</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="56"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vatsinator can collect some anonymous statistics in order to provide better quality and usability. Things that will be sent to servers include: application version, operating system, errors and warnings. We do not collect such data as IP addresses or users&apos; locations.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vatsinator może zbierać niektóre informacje, aby zapewnić jak najlepszą jakość i największą wygodę. Rzeczy, które będą wysyłane obejmują: wersję aplikacji, system operacyjny, błędy oraz ostrzeżenia. Nie zbieramy takich danych jak adresów IP czy lokalizacji użytkowników.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Polityka prywatności Vatsinator&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="666"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="685"/>
         <source>Flight details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="703"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="722"/>
         <source>Airport details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="724"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="743"/>
         <source>Controllers</source>
         <translation>Kontrolerzy</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="736"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="755"/>
         <source>Departures</source>
         <translation>Odloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="745"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
         <source>%1 to %2</source>
         <translation>%1 do %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="773"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="792"/>
         <source>%1 from %2</source>
         <translation>%1 z %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="803"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="822"/>
         <source>%1 details</source>
         <translation>Szczegóły %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="827"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="846"/>
         <source>This location</source>
         <translation>To miejsce</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="829"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="848"/>
         <source>Set as home location</source>
         <translation>Ustaw jako miejsce domowe</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="836"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="855"/>
         <source>Flights nearby</source>
         <translation>Loty nieopodal</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1404"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1423"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1406"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1425"/>
         <source>Altitude: %1 ft</source>
         <translation>Wysokość: %1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1431"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1450"/>
         <source>Departures: %1</source>
         <translation>Odloty: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1436"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1455"/>
         <source>Arrivals: %1</source>
         <translation>Przyloty: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="748"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="767"/>
         <source>nowhere</source>
         <translation>nikąd</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
         <source>Arrivals</source>
         <translation>Przyloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1396"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1400"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1415"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1419"/>
         <source>(unknown)</source>
         <translation>(brak)</translation>
     </message>
@@ -848,7 +848,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="119"/>
         <source>Send anonymous statistics</source>
-        <translation type="unfinished"/>
+        <translation>Wysyłaj anonimowe statystyki</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="132"/>
@@ -858,7 +858,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="147"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
-        <translation type="unfinished"/>
+        <translation>Jeśli zaznaczone, niektóre dane (takie jak system operacyjny, ostrzeżenia i błędy) będą wysyłane do serwerów Vatsinatora.</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="162"/>
@@ -868,7 +868,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="232"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Polityka prywatności Vatsinator&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="219"/>
@@ -901,57 +901,57 @@
         <location filename="../ui/pages/networkpage.ui" line="20"/>
         <location filename="../ui/pages/networkpage.cpp" line="41"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Sieć</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="34"/>
         <source>Refresh data every</source>
-        <translation type="unfinished"/>
+        <translation>Odświeżaj dane co</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="60"/>
         <source>minutes</source>
-        <translation type="unfinished"/>
+        <translation>minuty</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="85"/>
         <source>Let me know when an error occurs</source>
-        <translation type="unfinished"/>
+        <translation>Powiadom mnie o błędach</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="97"/>
         <source>If enabled, you will be asked what to do each time data downloading fails. Otherwise, Vatsinator will make the decision itself.</source>
-        <translation type="unfinished"/>
+        <translation>Jeżeli zaznaczone, użytkownik będzie pytany co robić za każdym razem gdy pojawi się problem z pobieraniem danych. W przeciwnym wypadku, Vatsinator podejmie decyzję sam. </translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="110"/>
         <source>Enable caching</source>
-        <translation type="unfinished"/>
+        <translation>Zapisywanie pobranych danych</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="125"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
-        <translation type="unfinished"/>
+        <translation>Jeżeli zaznaczone, Vatsinator będzie zapisywał część pobranych danych.</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="138"/>
         <source>Keep METARs updated</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizuj raporty pogodowe</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="153"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
-        <translation type="unfinished"/>
+        <translation>Jeżeli zaznaczone, raporty pogodowe będą okresowo odświeżane.</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="166"/>
         <source>Enable version checking</source>
-        <translation type="unfinished"/>
+        <translation>Sprawdzaj aktualizacje</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="181"/>
         <source>If enabled, you will be notified if the new version of the application is available.</source>
-        <translation type="unfinished"/>
+        <translation>Jeżeli zaznaczone, użytkownik będzie powiadamiany, kiedy pojawi się nowa wersja programu.</translation>
     </message>
 </context>
 <context>
@@ -959,7 +959,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="78"/>
         <source>New version available</source>
-        <translation type="unfinished"/>
+        <translation>Nowa wersja jest dostępna</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="101"/>
@@ -990,7 +990,7 @@
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="28"/>
         <source>Vatsinator was unable to fetch the status.txt file.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się pobrać pliku status.txt.</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="29"/>
@@ -1017,12 +1017,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="99"/>
+        <location filename="../storage/unzipper.cpp" line="95"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation>Nie można otworzyć archiwum zip: %1 (sprawdź uprawnienia katalogu)</translation>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="119"/>
+        <location filename="../storage/unzipper.cpp" line="115"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation>Brak dostępu do archiwum zip (%1). Pomijam...</translation>
     </message>
@@ -1030,10 +1030,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="390"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="418"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="468"/>
         <source>File %1 could not be opened!</source>
         <translation>Plik %1 nie mógł zostać otwarty!</translation>
     </message>
