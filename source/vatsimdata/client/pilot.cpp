@@ -39,6 +39,10 @@
 #include "pilot.h"
 #include "defines.h"
 
+// how far from the airport the pilot must be to be recognized as "departing"
+// or "arrived"
+static const qreal PILOT_TO_AIRPORT = 0.1;
+
 /*
  * 0 callsign
  * 1 cid
@@ -307,7 +311,7 @@ Pilot::__generateTip() const {
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
   painter.setFont(MapWidget::getSingleton().pilotFont());
-  painter.setPen(QColor(PILOTS_LABELS_FONT_COLOR));
+  painter.setPen(MapWidget::getSingleton().pilotPen());
   QRect rectangle(28, 10, 73, 13); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, __callsign);
   __callsignTip = MapWidget::loadImage(temp);

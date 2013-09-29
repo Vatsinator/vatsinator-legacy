@@ -51,6 +51,8 @@
 #include "vatsimdatahandler.h"
 #include "defines.h"
 
+static const QString CACHE_FILE_NAME = "lastdata";
+
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
 ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
 

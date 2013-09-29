@@ -180,7 +180,7 @@ Fir::__generateTip() const {
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
   painter.setFont(MapWidget::getSingleton().firFont());
-  painter.setPen(QColor(FIRS_LABELS_FONT_COLOR));
+  painter.setPen(MapWidget::getSingleton().firPen());
   QRect rectangle(0, 4, 64, 24);
   painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
   __icaoTip = MapWidget::loadImage(temp);
