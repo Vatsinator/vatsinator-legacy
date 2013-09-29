@@ -66,7 +66,7 @@ public:
   /**
    * Needed and used by SettingsManager.
    */
-  const QString __sm_page_name_s = "";
+  const QString __sm_page_name_s;
   
   virtual const QString &
   __sm_page_name() const { return __sm_page_name_s; }
