@@ -37,6 +37,13 @@ class StatsPurveyor :
    */
 
   Q_OBJECT
+  
+signals:
+  
+  /**
+   * Emited when new request is enqueued.
+   */
+  void newRequest();
 
 public:
   explicit StatsPurveyor(QObject* = 0);
@@ -53,6 +60,9 @@ public slots:
    * If an ATC has unknown callsign, we should report it.
    */
   void reportNoAtc(const QString&);
+
+private:
+  void __enqueueRequest(const QNetworkRequest&);
   
 private slots:
   
@@ -77,8 +87,12 @@ private slots:
   void __statsAccepted();
   void __statsRejected();
   
+  /**
+   * Starts new request if nothing is being sent at the moment.
+   */
+  void __nextIfFree();
+  
 private:
-  void __enqueueRequest(const QNetworkRequest&);
   
   /* networkAccessible = NotAccessible when user disables stats */
   QNetworkAccessManager __nam;

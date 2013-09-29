@@ -57,6 +57,9 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
     QObject(_parent),
     __nam(this),
     __reply(nullptr) {
+      
+ /* Do not report stats until we read config file or user makes the decision */
+  __nam.setNetworkAccessible(QNetworkAccessManager::NotAccessible);
   
   QSettings s;
   if (!s.contains("Decided/stats")) {
@@ -73,6 +76,8 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
           this,                                 SLOT(__applySettings()));
+  connect(this,                                 SIGNAL(newRequest()),
+          this,                                 SLOT(__nextIfFree()));
 }
 
 StatsPurveyor::~StatsPurveyor() {}
@@ -94,6 +99,15 @@ StatsPurveyor::reportNoAtc(const QString& _atc) {
 }
 
 void
+StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
+  if (__nam.networkAccessible() == QNetworkAccessManager::NotAccessible)
+    return;
+  
+  __requests.enqueue(_request);
+  emit newRequest();
+}
+
+void
 StatsPurveyor::__parseResponse() {
   QJson::Parser parser;
   bool ok;
@@ -102,11 +116,10 @@ StatsPurveyor::__parseResponse() {
     int result = content["result"].toInt();
     if (result > 0) {
       __requests.dequeue();
-      if (!__requests.isEmpty()) {
-        __reply->deleteLater();
-        __reply = nullptr;
+      __reply->deleteLater();
+      __reply = nullptr;
+      if (!__requests.isEmpty())
         __nextRequest(); 
-      }
     } else {
       Q_ASSERT_X(false, "StatsPurveyor", "Invalid query");
     }
@@ -161,12 +174,7 @@ StatsPurveyor::__statsRejected() {
 }
 
 void
-StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
-  if (__nam.networkAccessible() == QNetworkAccessManager::NotAccessible)
-    return;
-  
-  __requests.enqueue(_request);
-  
+StatsPurveyor::__nextIfFree() {
   if (!__reply)
     __nextRequest();
 }
