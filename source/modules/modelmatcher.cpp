@@ -31,7 +31,7 @@
 ModelMatcher::ModelMatcher() {
   __modelsFiles["ZZZZ"] = "1p"; // default
 
-  QFile modelsFile(FileManager::path("/data/model"));
+  QFile modelsFile(FileManager::path("data/model"));
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     VatsinatorApplication::alert(

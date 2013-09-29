@@ -97,15 +97,15 @@ VatsimDataHandler::~VatsimDataHandler() {
 void
 VatsimDataHandler::init() {
   auto f = QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile,
-                             FileManager::path("/data/country"));
+                             FileManager::path("data/country"));
   
   QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile,
-                    FileManager::path("/data/alias"));
+                    FileManager::path("data/alias"));
   QtConcurrent::run(this, &VatsimDataHandler::__readUirFile,
-                    FileManager::path("/data/uir"));
+                    FileManager::path("data/uir"));
   
   f.waitForFinished();
-  __readFirFile(FileManager::path("/data/fir"));
+  __readFirFile(FileManager::path("data/fir"));
 }
 
 void
