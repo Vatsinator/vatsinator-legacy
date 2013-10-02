@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+#include "storage/settingsmanager.h"
+
 #include "abstractsettingspage.h"
 #include "defines.h"
 
@@ -26,14 +28,20 @@ AbstractSettingsPage::AbstractSettingsPage(QWidget* _parent) :
 
 void
 AbstractSettingsPage::restoreSettings(QSettings& _s) {
-  _s.beginGroup(__sm_page_name());
+  _s.beginGroup(pageName());
   __restore(_s);
   _s.endGroup();
 }
 
 void
 AbstractSettingsPage::saveSettings(QSettings& _s) {
-  _s.beginGroup(__sm_page_name());
+  _s.beginGroup(pageName());
   __save(_s);
   _s.endGroup();
+}
+
+void
+AbstractSettingsPage::setValue(const QString& _key, QVariant&& _value) const {
+  SettingsManager::updateValue(pageName() % "." % _key,
+                            std::forward<QVariant>(_value));
 }

@@ -28,13 +28,14 @@ class NetworkPage :
     private Ui::NetworkPage {
   
   Q_OBJECT
-  VATSINATOR_DECLARE_PAGE(Network)
+  DECLARE_SETTINGS_PAGE(Network)
 
 public:
   NetworkPage(QWidget* = 0);
   
   QString listElement() const;
   QString listIcon() const;
+  QString pageName() const;
   
   /**
    * @variables
@@ -44,7 +45,7 @@ public:
    * cache_enabled:     bool
    * version_check:     bool
    */
-  QVariant get(const QString&) const;
+  void updateFromUi() const;
   
 protected:
   void __restore(QSettings&);

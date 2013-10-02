@@ -14,7 +14,7 @@ foreach (HEADER ${PAGE_HEADERS})
     if (NOT "${HEADER}" MATCHES ".*abstractsettingspage.*")
         file (READ ${HEADER} HEADER_CONTENT)
         string (REGEX
-            REPLACE ".*VATSINATOR_DECLARE_PAGE\\(([^\\)]+)\\).*"
+            REPLACE ".*DECLARE_SETTINGS_PAGE\\(([^\\)]+)\\).*"
             "\\1"
             PAGE_NAME ${HEADER_CONTENT}
         )

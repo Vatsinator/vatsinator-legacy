@@ -52,31 +52,38 @@ ColorsPage::listIcon() const {
   return ":/settings/preferences-colors.png";
 }
 
-QVariant
-ColorsPage::get(const QString& _s) const {
-  _S(staffed_fir_borders,       StaffedFirColorButton->color());
-  _S(unstaffed_fir_borders,     UnstaffedFirColorButton->color());
-  _S(staffed_uir_borders,       StaffedUirColorButton->color());
-  _S(approach_circle,           ApproachCircleColorButton->color());
-  _S(seas,                      SeasColorButton->color());
-  _S(lands,                     LandsColorButton->color());
-  _S(origin_to_pilot_line,      OriginToPilotLineColorButton->color());
-  _S(pilot_to_destination_line, PilotToDestinationLineColorButton->color());
+QString
+ColorsPage::pageName() const {
+  return "colors";
+}
+
+void
+ColorsPage::updateFromUi() const {
+  setValue("staffed_fir_borders",
+           StaffedFirColorButton->color());
+  setValue("unstaffed_fir_borders",
+           UnstaffedFirColorButton->color());
+  setValue("staffed_uir_borders",
+           StaffedUirColorButton->color());
+  setValue("approach_circle",
+           ApproachCircleColorButton->color());
+  setValue("seas",
+           SeasColorButton->color());
+  setValue("lands",
+           LandsColorButton->color());
+  setValue("origin_to_pilot_line",
+           OriginToPilotLineColorButton->color());
+  setValue("pilot_to_destination_line",
+           PilotToDestinationLineColorButton->color());
   
-  // _S macro cannot handle these
-  if (_s == "staffed_fir_background") {
-    QColor tmp = StaffedFirColorButton->color();
-    tmp.setAlpha(StaffedFirColorAlphaBox->value());
-    return tmp;
-  }
+  QColor tmp = StaffedFirColorButton->color();
+  tmp.setAlpha(StaffedFirColorAlphaBox->value());
+  setValue("staffed_fir_background", tmp);
   
-  if (_s == "staffed_uir_background") {
-    QColor tmp = StaffedUirColorButton->color();
-    tmp.setAlpha(StaffedUirColorAlphaBox->value());
-    return tmp;
-  }
+  tmp = StaffedUirColorButton->color();
+  tmp.setAlpha(StaffedUirColorAlphaBox->value());
   
-  _S_END;
+  setValue("staffed_uir_background", tmp);
 }
 
 void

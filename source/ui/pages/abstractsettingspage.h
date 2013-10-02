@@ -51,40 +51,31 @@ public:
   virtual QString listIcon() const = 0;
   
   /**
-   * Setting accessed via QString.
+   * The page's name that will appear in SettingsManager's registry,
+   * before the dot.
    */
-  virtual QVariant get(const QString&) const = 0;
+  virtual QString pageName() const = 0;
+  
+  /**
+   * Puts all values that the page handles in the settingsmanager's
+   * map, using setValue().
+   */
+  virtual void updateFromUi() const = 0;
   
   void restoreSettings(QSettings&);
   void saveSettings(QSettings&);
   
 protected:
+  void setValue(const QString&, QVariant&&) const;
+  
   virtual void __restore(QSettings&) = 0;
   virtual void __save(QSettings&) = 0;
   
-public:
-  /**
-   * Needed and used by SettingsManager.
-   */
-  virtual const QString &
-  __sm_page_name() const {
-      static QString pageName = "";
-      return pageName;
-    }
 };
 
-#define VATSINATOR_DECLARE_PAGE(x)                         \
-  public:                                                  \
-    const QString& __sm_page_name() const {                \
-      static QString pageName = QString(#x).toLower();     \
-      return pageName;                                     \
-    }                                                      \
-  private:
+// shortcut for setValue()
+#define SV(key, value) setValue
 
-#define _S(name, value) if (_s == #name) return value
-
-#define _S_END                                             \
-  Q_ASSERT_X(false, qPrintable(__sm_page_name()), "No such variable"); \
-  return QVariant()
+#define DECLARE_SETTINGS_PAGE(name)
 
 #endif // ABSTRACTSETTINGSPAGE_H

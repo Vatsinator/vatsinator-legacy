@@ -47,14 +47,21 @@ MiscellaneousPage::listIcon() const {
   return ":/settings/preferences-miscellaneous.png";
 }
 
-QVariant
-MiscellaneousPage::get(const QString& _s) const {
-  _S(has_antyaliasing,  AntyaliasingCheckBox->isChecked());
-  _S(zoom_coefficient,  ZoomCoefficientSlider->value());
-  _S(send_statistics,   StatsCheckBox->isChecked());
-  _S(language,          LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
-  
-  _S_END;
+QString
+MiscellaneousPage::pageName() const {
+  return "misc";
+}
+
+void
+MiscellaneousPage::updateFromUi() const {
+  setValue("has_antyaliasing",
+           AntyaliasingCheckBox->isChecked());
+  setValue("zoom_coefficient",
+           ZoomCoefficientSlider->value());
+  setValue("send_statistics",
+           StatsCheckBox->isChecked());
+  setValue("language",
+           LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
 }
 
 void
