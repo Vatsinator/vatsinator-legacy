@@ -28,10 +28,7 @@
 
 WeatherForecast::WeatherForecast(QObject* _parent) :
     QObject(_parent),
-    __reply(nullptr) {
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(aboutToQuit()),
-          this,                                     SLOT(deleteLater()));
-}
+    __reply(nullptr) {}
 
 void
 WeatherForecast::fetchForecast(const QString& _city, const QString& _country) {

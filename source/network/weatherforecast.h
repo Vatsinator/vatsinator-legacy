@@ -37,7 +37,6 @@ public:
 private slots:
   void __readyRead();
   void __finished();
-//   void __parseResponse(QString);
   
 private:
   QNetworkAccessManager __nam;
