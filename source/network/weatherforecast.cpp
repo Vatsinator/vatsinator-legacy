@@ -20,6 +20,7 @@
 #include <QtNetwork>
 
 #include "network/ultimate-weather-forecasts.h"
+#include "network/models/weatherforecastmodel.h"
 
 #include "vatsinatorapplication.h"
 
@@ -36,7 +37,7 @@ WeatherForecast::fetchForecast(const QString& _city, const QString& _country) {
     __reply->abort();
     __reply->deleteLater();
   }
-  __temp.clear();
+  __data.clear();
   
   QString location = _city % ", " % _country;
   
@@ -53,7 +54,7 @@ WeatherForecast::fetchForecast(const QString& _city, const QString& _country) {
 
 void
 WeatherForecast::__readyRead() {
-  __temp.append(__reply->readAll());
+  __data.append(__reply->readAll());
 }
 
 void
@@ -61,7 +62,7 @@ WeatherForecast::__finished() {
   __reply->deleteLater();
   __reply = nullptr;
   
-  VatsinatorApplication::log("Response: %s", qPrintable(__temp));
+  WeatherForecastModel* model = new WeatherForecastModel(__data);
+  emit forecastReady(model);
 }
-
 

@@ -24,6 +24,7 @@
 #include "modules/models/bookedatctablemodel.h"
 
 #include "network/weatherforecast.h"
+#include "network/models/weatherforecastmodel.h"
 
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
@@ -63,13 +64,20 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
+  
+  connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
+          this,                                 SLOT(__updateForecast(WeatherForecastModel*)));
 
-  connect(ShowButton, SIGNAL(clicked()),
-          this,       SLOT(__handleShowClicked()));
+  connect(ShowButton,                           SIGNAL(clicked()),
+          this,                                 SLOT(__handleShowClicked()));
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {
   delete __forecast;
+  
+  QAbstractItemModel* m = ForecastView->model();
+  if (m)
+    delete m;
 }
 
 void
@@ -220,6 +228,15 @@ AirportDetailsWindow::__updateData() {
 
   __updateModels();
   __adjustTables();
+}
+
+void
+AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
+  QAbstractItemModel* m = ForecastView->model();
+  if (m)
+    m->deleteLater();
+  
+  ForecastView->setModel(model);
 }
 
 void

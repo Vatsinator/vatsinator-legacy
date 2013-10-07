@@ -13,6 +13,8 @@ set (network_SRCS
     resourcemanager.cpp
     statspurveyor.cpp
     weatherforecast.cpp
+    
+    models/weatherforecastmodel.cpp
 )
 
 vatsinator_subdirectory_sources (network "${network_SRCS}")
@@ -23,6 +25,8 @@ set (network_MOC_SRCS
     resourcemanager.h
     statspurveyor.h
     weatherforecast.h
+    
+    models/weatherforecastmodel.h
 )
 
 vatsinator_subdirectory_mocs (network "${network_MOC_SRCS}")

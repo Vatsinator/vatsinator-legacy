@@ -1,5 +1,5 @@
 /*
- * weatherforecast.h
+ * weatherforecastmodel.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,43 +17,43 @@
  *
  */
 
-#ifndef WEATHERFORECAST_H
-#define WEATHERFORECAST_H
+#ifndef WEATHERFORECASTMODEL_H
+#define WEATHERFORECASTMODEL_H
 
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QString>
-#include <QObject>
+#include <QAbstractTableModel>
+#include <QByteArray>
+#include <QVector>
 
-class WeatherForecastModel;
-
-class WeatherForecast : public QObject {
+class WeatherForecastModel : public QAbstractTableModel {
+  
+  /**
+   * This is model for the weather forecast.
+   */
   
   Q_OBJECT
   
-signals:
-  /**
-   * Gives pointer to the prepared model.
-   * This model has to be deleted.
-   */
-  void forecastReady(WeatherForecastModel*);
-  
 public:
-  explicit WeatherForecast(QObject* = 0);
   
-  void fetchForecast(const QString&, const QString&);
-
-private slots:
-  void __readyRead();
-  void __finished();
+  explicit WeatherForecastModel(const QByteArray&, QObject* = 0);
+  
+  int rowCount(const QModelIndex& = QModelIndex()) const;
+  int columnCount(const QModelIndex& = QModelIndex()) const;
+  QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
   
 private:
-  QNetworkAccessManager __nam;
   
-  QByteArray __data;
+  struct ForecastForDay {
+    QString day;
+    float   high;
+    float   low;
+    QString condition;
+  };
   
-  QNetworkReply* __reply;
-
+  void __parseJson(const QByteArray&);
+  
+  QVector<ForecastForDay> __data;
+  bool __dataValid;
+  
 };
 
-#endif // WEATHERFORECAST_H
+#endif // WEATHERFORECASTMODEL_H

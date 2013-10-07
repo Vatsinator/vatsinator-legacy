@@ -29,6 +29,7 @@ class Airport;
 class Controller;
 class Pilot;
 class WeatherForecast;
+class WeatherForecastModel;
 
 class AirportDetailsWindow :
     public BaseWindow,
@@ -53,6 +54,7 @@ private:
   
 private slots:
   void __updateData();
+  void __updateForecast(WeatherForecastModel*);
   void __handleShowClicked();
 
 private:

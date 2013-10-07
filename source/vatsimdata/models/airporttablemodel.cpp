@@ -64,8 +64,8 @@ AirportTableModel::data(const QModelIndex& _index, int _role) const {
 
     case Qt::ToolTipRole:
       return __arrivalsAndDepartures(_index.row());
+      
     case Qt::DisplayRole:
-
       switch (_index.column()) {
         case Label:
           return __produceLabel(_index.row());
