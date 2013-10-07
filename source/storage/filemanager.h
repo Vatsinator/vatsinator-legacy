@@ -50,7 +50,6 @@ public:
   };
   
   FileManager();
-  virtual ~FileManager() = default;
   
   /**
    * Stores given data in local cache file.

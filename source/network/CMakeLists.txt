@@ -11,6 +11,7 @@ set (network_SRCS
     filedownloader.cpp
     plaintextdownloader.cpp
     resourcemanager.cpp
+    statspurveyor.cpp
     weatherforecast.cpp
 )
 
@@ -20,10 +21,13 @@ set (network_MOC_SRCS
     filedownloader.h
     plaintextdownloader.h
     resourcemanager.h
+    statspurveyor.h
     weatherforecast.h
 )
 
 vatsinator_subdirectory_mocs (network "${network_MOC_SRCS}")
 
 vatsinator_end_subdirectory (network)
+
+add_dependencies (network ui)
 

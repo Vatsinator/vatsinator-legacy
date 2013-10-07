@@ -64,7 +64,7 @@ WorldMap::draw() const {
 }
 
 void WorldMap::__readDatabase() {
-  QFile db(FileManager::path("/WorldMap.db"));
+  QFile db(FileManager::path("WorldMap.db"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
     VatsinatorApplication::alert(

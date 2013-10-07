@@ -1,5 +1,5 @@
 /*
- * statusfetcherrordialog.cpp
+ * letsendstatsdialog.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,17 +17,22 @@
  *
  */
 
-#include <QtGui>
+#ifndef LETSENDSTATSDIALOG_H
+#define LETSENDSTATSDIALOG_H
 
-#include "statusfetcherrordialog.h"
-#include "defines.h"
+#include <QDialog>
 
-StatusFetchErrorDialog::StatusFetchErrorDialog(QWidget* _parent) :
-    QMessageBox(_parent) {
+#include "ui/ui_letsendstatsdialog.h"
+
+class LetSendStatsDialog :
+    public QDialog,
+    private Ui::LetSendStatsDialog {
   
-  setText(tr("Vatsinator was unable to fetch the status.txt file."));
-  setInformativeText(tr("It means that no data can be obtained at all. Check your "
-    "internet connection and the accessibility of Vatsim servers."));
-  setIcon(QMessageBox::Critical);
-  addButton(QMessageBox::Ok);
-}
+  Q_OBJECT
+
+public:
+  explicit LetSendStatsDialog(QWidget* = 0);
+
+};
+
+#endif // LETSENDSTATSDIALOG_H

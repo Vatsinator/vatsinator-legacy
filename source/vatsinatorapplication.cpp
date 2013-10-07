@@ -28,6 +28,7 @@
 
 #include "network/plaintextdownloader.h"
 #include "network/resourcemanager.h"
+#include "network/statspurveyor.h"
 
 #include "storage/languagemanager.h"
 #include "storage/settingsmanager.h"
@@ -58,8 +59,10 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __settingsManager(new SettingsManager()),
     __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
+    __statsPurveyor(new StatsPurveyor()),
     __userInterface(nullptr) {
  
+  /* Set up translations */
   QTranslator* tr_qt = new QTranslator();
   tr_qt->load(QString("qt_") %
                 SettingsManager::earlyGetLocale(),
@@ -76,15 +79,12 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr,           SLOT(deleteLater()));
   
+  
+  /* Basic initializes */
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   
-  
-  // slots set, crate User Interface
   __userInterface = new UserInterface();
-  
   __settingsManager->init();
-//   QtConcurrent::run(__settingsManager, &SettingsManager::init);
-  
   __moduleManager->init();
   
   // connect EnableAutoUpdatesAction toggle
@@ -107,12 +107,17 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   VatsinatorWindow::getSingleton().show();
   emit uiCreated();
   
-  __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
+  __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);
   __resourceManager->moveToThread(rmThread);
   rmThread->start();
+  
+  /* Thread for StatsPurveyor */
+  QThread* spThread = new QThread(this);
+  __statsPurveyor->moveToThread(spThread);
+  spThread->start();
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
@@ -120,6 +125,10 @@ VatsinatorApplication::~VatsinatorApplication() {
   QThread* rmThread = __resourceManager->thread();
   __resourceManager->deleteLater();
   rmThread->quit();
+
+  QThread* spThread = __statsPurveyor->thread();
+  __statsPurveyor->deleteLater();
+  spThread->quit();
   
   delete __settingsManager;
   delete __moduleManager;
@@ -133,6 +142,9 @@ VatsinatorApplication::~VatsinatorApplication() {
   
   rmThread->wait();
   delete rmThread;
+  
+  spThread->wait();
+  delete spThread;
 
 #ifndef NO_DEBUG
   DumpUnfreed();
@@ -162,6 +174,8 @@ VatsinatorApplication::emitGLInitialized() {
 
 void
 VatsinatorApplication::log(const char* _s) {
+  QMutexLocker l(&__mutex);
+  
   while (*_s) {
     Q_ASSERT(!(*_s == '%' && *(++_s) != '%'));
     std::cout << *_s++;
@@ -189,8 +203,8 @@ VatsinatorApplication::__emitGLInitialized() {
 
 void
 VatsinatorApplication::__loadNewSettings() {
-  if (__timer.interval() / 60000 != SM::get("misc.refresh_rate").toInt()) {
-    __timer.setInterval(SM::get("misc.refresh_rate").toInt() * 60000);
+  if (__timer.interval() / 60000 != SM::get("network.refresh_rate").toInt()) {
+    __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
     
     if (VatsinatorWindow::getSingleton().autoUpdatesEnabled())
       refreshData();
@@ -206,3 +220,5 @@ VatsinatorApplication::__autoUpdatesToggled(bool _state) {
       refreshData();
   }
 }
+
+QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

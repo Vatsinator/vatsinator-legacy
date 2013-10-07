@@ -21,6 +21,7 @@
 #define VATSINATORAPPLICATION_H
 
 #include <QApplication>
+#include <QMutex>
 #include <QTimer>
 #include <iostream>
 
@@ -34,6 +35,7 @@ class LanguageManager;
 class ModuleManager;
 class ResourceManager;
 class SettingsManager;
+class StatsPurveyor;
 class UserInterface;
 class VatsimDataHandler;
 class WorldMap;
@@ -86,6 +88,8 @@ public:
 
   template <typename T, typename... Args>
   static void log(const char* _s, T _value, Args... _args) {
+    QMutexLocker l(&__mutex);
+    
     while (*_s) {
       if (*_s == '%' && *(++_s) != '%') {
         std::cout << _value;
@@ -125,9 +129,11 @@ private:
   SettingsManager*     __settingsManager;
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
+  StatsPurveyor*       __statsPurveyor;
   UserInterface*       __userInterface;
   
   QTimer               __timer;
+  static QMutex        __mutex; /* For stdout */
 
 };
 

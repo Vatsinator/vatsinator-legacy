@@ -70,6 +70,7 @@
 
 #include "mapwidget.h"
 #include "defines.h"
+#include "mapconfig.h"
 
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE 0x809D
@@ -265,6 +266,24 @@ MapWidget::getFormat() {
   glf.setSampleBuffers(true);
   glf.setSamples(4);
   return glf;
+}
+
+const QColor &
+MapWidget::pilotPen() const {
+  static QColor pen(PILOTS_LABELS_FONT_COLOR);
+  return pen;
+}
+
+const QColor &
+MapWidget::airportPen() const {
+  static QColor pen(AIRPORTS_LABELS_FONT_COLOR);
+  return pen;
+}
+
+const QColor &
+MapWidget::firPen() const {
+  static QColor pen(FIRS_LABELS_FONT_COLOR);
+  return pen;
 }
 
 void
@@ -744,7 +763,7 @@ MapWidget::__openContextMenu(const Airport* _ap) {
             /* For example: BAW123 to EGLL */
             tr("%1 to %2").arg(
               p->callsign(),
-              /* "Nowhere" means there's no destination airport in flight plan yet. */
+              /* "Nowhere" means there's no destination airport in the flight plan yet. */
               (p->route().destination.isEmpty() ? tr("nowhere") : p->route().destination)
             ),
             this

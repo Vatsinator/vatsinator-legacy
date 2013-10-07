@@ -19,6 +19,7 @@ DEPEND="
 	>=dev-qt/qtopengl-4.8.0
 	>=sys-devel/gcc-4.6
 	dev-libs/quazip
+	dev-libs/qjson
 	"
 RDEPEND="${DEPEND}"
 

@@ -682,90 +682,108 @@
     </message>
 </context>
 <context>
+    <name>LetSendStatsDialog</name>
+    <message>
+        <location filename="../ui/dialogs/letsendstatsdialog.ui" line="14"/>
+        <source>Send anonymous statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/letsendstatsdialog.ui" line="43"/>
+        <source>Do you let Vatsinator send some anonymous statistics?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/letsendstatsdialog.ui" line="56"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vatsinator can collect some anonymous statistics in order to provide better quality and usability. Things that will be sent to servers include: application version, operating system, errors and warnings. We do not collect such data as IP addresses or users&apos; locations.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="666"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="685"/>
         <source>Flight details</source>
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="703"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="722"/>
         <source>Airport details</source>
         <translation>Airport details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="724"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="743"/>
         <source>Controllers</source>
         <translation>Controllers</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="736"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="755"/>
         <source>Departures</source>
         <translation>Departures</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="745"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
         <source>%1 to %2</source>
         <translation>%1 to %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="773"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="792"/>
         <source>%1 from %2</source>
         <translation>%1 from %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="803"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="822"/>
         <source>%1 details</source>
         <translation>%1 details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="827"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="846"/>
         <source>This location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="829"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="848"/>
         <source>Set as home location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="836"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="855"/>
         <source>Flights nearby</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1404"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1423"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1406"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1425"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1431"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1450"/>
         <source>Departures: %1</source>
         <translation>Departures: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1436"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1455"/>
         <source>Arrivals: %1</source>
         <translation>Arrivals: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="748"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="767"/>
         <source>nowhere</source>
         <translation>nowhere</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
         <source>Arrivals</source>
         <translation>Arrivals</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1396"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1400"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1415"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1419"/>
         <source>(unknown)</source>
         <translation>(unknown)</translation>
     </message>
@@ -825,64 +843,49 @@
     <name>MiscellaneousPage</name>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="26"/>
-        <location filename="../ui/pages/miscellaneouspage.cpp" line="44"/>
+        <location filename="../ui/pages/miscellaneouspage.cpp" line="42"/>
         <source>Miscellaneous</source>
         <translation type="unfinished">Miscellaneous</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="41"/>
-        <source>Enable caching</source>
-        <translation type="unfinished">Enable caching</translation>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="119"/>
+        <source>Send anonymous statistics</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="64"/>
-        <source>Refresh METARs as well</source>
-        <translation type="unfinished">Refresh METARs as well</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="80"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="132"/>
         <source>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</source>
         <translation type="unfinished">Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="92"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="147"/>
+        <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="162"/>
         <source>Language:</source>
         <translation type="unfinished">Language:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="129"/>
-        <source>Refresh every</source>
-        <translation type="unfinished">Refresh every</translation>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="232"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="155"/>
-        <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="186"/>
-        <source>If checked, all METARs will be re-fetched just after data update.</source>
-        <translation type="unfinished">If checked, all METARs will be re-fetched just after data update.</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="205"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="219"/>
         <source>Nicer but slower.</source>
         <translation type="unfinished">Nicer but slower.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="218"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="99"/>
         <source>Antyaliasing</source>
         <translation type="unfinished">Antyaliasing</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="227"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="43"/>
         <source>Zooming intensivity:</source>
         <translation type="unfinished">Zooming intensivity:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="273"/>
-        <source>If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</source>
-        <translation type="unfinished">If checked, Vatsinator will save the downloaded data on exit and restore it before the first update the next time.</translation>
     </message>
 </context>
 <context>
@@ -890,6 +893,66 @@
     <message>
         <location filename="../modules/modelmatcher.cpp" line="38"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NetworkPage</name>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="14"/>
+        <location filename="../ui/pages/networkpage.ui" line="20"/>
+        <location filename="../ui/pages/networkpage.cpp" line="41"/>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="34"/>
+        <source>Refresh data every</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="60"/>
+        <source>minutes</source>
+        <translation type="unfinished">minutes</translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="85"/>
+        <source>Let me know when an error occurs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="97"/>
+        <source>If enabled, you will be asked what to do each time data downloading fails. Otherwise, Vatsinator will make the decision itself.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="110"/>
+        <source>Enable caching</source>
+        <translation type="unfinished">Enable caching</translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="125"/>
+        <source>If enabled, Vatsinator will cache some downloaded data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="138"/>
+        <source>Keep METARs updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="153"/>
+        <source>If enabled, all weather reports will be refreshed periodically.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="166"/>
+        <source>Enable version checking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="181"/>
+        <source>If enabled, you will be notified if the new version of the application is available.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -928,7 +991,7 @@
     <name>StatusFetchErrorDialog</name>
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="28"/>
-        <source>Vatsinator was unable to fetch the needed status.txt file.</source>
+        <source>Vatsinator was unable to fetch the status.txt file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -956,12 +1019,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="99"/>
+        <location filename="../storage/unzipper.cpp" line="95"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="119"/>
+        <location filename="../storage/unzipper.cpp" line="115"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -969,10 +1032,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="384"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="390"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="418"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="468"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
     </message>
@@ -1079,53 +1142,53 @@
         <translation type="unfinished">View</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="43"/>
+        <location filename="../ui/pages/viewpage.ui" line="114"/>
         <source>Show pilot labels:</source>
         <translation type="unfinished">Show pilot labels:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="50"/>
+        <location filename="../ui/pages/viewpage.ui" line="121"/>
         <location filename="../ui/pages/viewpage.ui" line="175"/>
         <source>Always</source>
         <translation type="unfinished">Always</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="60"/>
+        <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>When hovered</source>
         <translation type="unfinished">When hovered</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="70"/>
+        <location filename="../ui/pages/viewpage.ui" line="141"/>
         <source>Airport-related</source>
         <translation type="unfinished">Airport-related</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="97"/>
+        <location filename="../ui/pages/viewpage.ui" line="43"/>
         <source>Display layers:</source>
         <translation type="unfinished">Display layers:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="104"/>
+        <location filename="../ui/pages/viewpage.ui" line="50"/>
         <source>Pilots</source>
         <translation type="unfinished">Pilots</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="114"/>
+        <location filename="../ui/pages/viewpage.ui" line="60"/>
         <source>Airports</source>
         <translation type="unfinished">Airports</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="124"/>
+        <location filename="../ui/pages/viewpage.ui" line="70"/>
         <source>Staffed FIRs</source>
         <translation type="unfinished">Staffed FIRs</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="134"/>
+        <location filename="../ui/pages/viewpage.ui" line="80"/>
         <source>Unstaffed FIRs</source>
         <translation type="unfinished">Unstaffed FIRs</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="144"/>
+        <location filename="../ui/pages/viewpage.ui" line="90"/>
         <source>Inactive airports</source>
         <translation type="unfinished">Inactive airports</translation>
     </message>

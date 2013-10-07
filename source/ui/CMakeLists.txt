@@ -53,12 +53,14 @@ set (ui_SRCS
     buttons/urlbutton.cpp
     
     dialogs/datafetcherrordialog.cpp
+    dialogs/letsendstatsdialog.cpp
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
     
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
     pages/miscellaneouspage.cpp
+    pages/networkpage.cpp
     pages/viewpage.cpp
     
     views/airporttableview.cpp
@@ -101,12 +103,14 @@ set (ui_MOC_SRCS
     buttons/urlbutton.h
     
     dialogs/datafetcherrordialog.h
+    dialogs/letsendstatsdialog.h
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
     
     pages/abstractsettingspage.h
     pages/colorspage.h
     pages/miscellaneouspage.h
+    pages/networkpage.h
     pages/viewpage.h
     
     views/airporttableview.h
@@ -133,10 +137,12 @@ set (ui_MOC_SRCS
 vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
 
 set (ui_FORMS
+    dialogs/letsendstatsdialog.ui
     dialogs/newversiondialog.ui
     
     pages/colorspage.ui
     pages/miscellaneouspage.ui
+    pages/networkpage.ui
     pages/viewpage.ui
 
     windows/aboutwindow.ui

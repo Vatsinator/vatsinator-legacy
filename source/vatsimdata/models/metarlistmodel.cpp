@@ -27,6 +27,12 @@
 #include "metarlistmodel.h"
 #include "defines.h"
 
+// How to recognize unavailable metars.
+// This value represents the response returned by vatsim server
+// in case given METAR could not be found.
+static const QString METAR_NO_AVAIL = "No METAR available";
+
+
 MetarListModel::MetarListModel(PlainTextDownloader* _hh, QObject* _parent) :
     QAbstractListModel(_parent),
     __myHttpHandler(_hh) {

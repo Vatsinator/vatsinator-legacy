@@ -167,6 +167,20 @@ public:
    */
   static QGLFormat getFormat();
   
+  /**
+   * Color of font on pilots' tooltips.
+   */
+  const QColor& pilotPen() const;
+  
+  /**
+   * Color of font on airports' tooltips. 
+   */
+  const QColor& airportPen() const;
+  
+  /**
+   * Color of font on firs' tooltips.
+   */
+  const QColor& firPen() const;
   
   /* For Pilot class */
   inline const QImage &

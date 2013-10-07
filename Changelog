@@ -1,5 +1,9 @@
 Version 1.0
   Release date:
+
+  Features:
+    * Added "Network" page in settings window
+    * Added stats collecting
   
   Build system:
     * Added support for MacOS X

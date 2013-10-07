@@ -3,6 +3,7 @@
     <file>icon.png</file>
   </qresource>
   <qresource prefix="settings">
+    <file>preferences-network.png</file>
     <file>preferences-background.png</file>
     <file>preferences-miscellaneous.png</file>
     <file>preferences-view.png</file>

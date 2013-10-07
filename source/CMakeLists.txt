@@ -64,6 +64,7 @@ if (LINUX)
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
+        ${QJSON_LIBRARIES}
     )
 elseif (APPLE)
     set (vatsinator_PREFIX "")
@@ -72,6 +73,7 @@ elseif (APPLE)
         ${QT_LIBRARIES}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
+        ${QJSON_LIBRARIES}
     )
 else (WIN32)
     set (vatsinator_PREFIX "")
@@ -84,6 +86,7 @@ else (WIN32)
         ${QT_QTOPENGL_LIBRARY}
         ${QT_QTNETWORK_LIBRARY}
         ${QUAZIP_LIBRARIES}
+        ${QJSON_LIBRARIES}
   )
   
   # disable VBO on Win32 build - MinGW doesn't handle it properly
@@ -146,7 +149,7 @@ elseif (APPLE)
         "" # qtplugins
         "" # libs
         "/usr/local/lib" # dirs
-)
+    )
     
 elseif (WIN32)
 
