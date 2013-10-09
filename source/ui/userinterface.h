@@ -62,9 +62,7 @@ private slots:
   void __fetchError();
   void __showNewVersionDialog();
   
-private:  
-  static QPoint __initialPoint;
-
+private:
 
 #ifndef NO_DEBUG
   DebugWindow*  __debugWindow;

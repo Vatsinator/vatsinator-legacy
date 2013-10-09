@@ -51,8 +51,6 @@
 #include "userinterface.h"
 #include "defines.h"
 
-QPoint UserInterface::__initialPoint(0, 0);
-
 UserInterface::UserInterface() :
 #ifndef NO_DEBUG
     __debugWindow(new DebugWindow()),
