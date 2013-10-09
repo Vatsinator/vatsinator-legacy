@@ -27,17 +27,9 @@
 #include "weatherforecast.h"
 #include "defines.h"
 
-WeatherForecastModel* WeatherForecast::__progressModel = nullptr;
-
 WeatherForecast::WeatherForecast(QObject* _parent) :
     QObject(_parent),
-    __reply(nullptr) {
-  if (!__progressModel) {
-    __progressModel = new WeatherForecastModel();
-    connect(qApp,               SIGNAL(aboutToQuit()),
-            __progressModel,    SLOT(deleteLater()));
-  }
-}
+    __reply(nullptr) {}
 
 void
 WeatherForecast::fetchForecast(const QString& _city, const QString& _country) {

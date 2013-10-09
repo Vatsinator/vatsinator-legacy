@@ -50,7 +50,8 @@
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent),
     __currentICAO(""),
-    __forecast(new WeatherForecast()) {
+    __forecast(new WeatherForecast()),
+    __progressModel(new WeatherForecastModel()){
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -78,6 +79,8 @@ AirportDetailsWindow::~AirportDetailsWindow() {
   QAbstractItemModel* m = ForecastView->model();
   if (m)
     delete m;
+  
+  delete __progressModel;
 }
 
 void
@@ -102,7 +105,7 @@ AirportDetailsWindow::show(const Airport* _ap) {
 
   if (!isVisible()) {
     QWidget::show();
-    ForecastView->setModel(WeatherForecast::progressModel());
+    ForecastView->setModel(__progressModel);
     __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
                               QString::fromUtf8(_ap->data()->country));
   } else {
@@ -234,7 +237,7 @@ AirportDetailsWindow::__updateData() {
 void
 AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
   QAbstractItemModel* m = ForecastView->model();
-  if (m)
+  if (m && m!= __progressModel)
     m->deleteLater();
   
   ForecastView->setModel(model);

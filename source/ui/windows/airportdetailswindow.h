@@ -62,6 +62,8 @@ private:
   const Airport* __current;
   
   WeatherForecast* __forecast;
+  
+  WeatherForecastModel* __progressModel;
 
 };
 
