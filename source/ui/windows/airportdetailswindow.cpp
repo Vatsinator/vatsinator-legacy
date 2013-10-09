@@ -102,6 +102,7 @@ AirportDetailsWindow::show(const Airport* _ap) {
 
   if (!isVisible()) {
     QWidget::show();
+    ForecastView->setModel(WeatherForecast::progressModel());
     __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
                               QString::fromUtf8(_ap->data()->country));
   } else {

@@ -26,18 +26,23 @@
 #include "defines.h"
 
 WeatherForecastModel::WeatherForecastModel(const QByteArray& _json, QObject* _parent) :
-    QAbstractTableModel(_parent) {
+    QAbstractTableModel(_parent),
+    __status(Progress) {
   __parseJson(_json);
 }
 
+WeatherForecastModel::WeatherForecastModel(QObject* _parent) :
+    QAbstractTableModel(_parent),
+    __status(Progress) {}
+
 int
 WeatherForecastModel::rowCount(const QModelIndex&) const {
-  return __dataValid ? 2 : 1;
+  return __status == Fetched ? 2 : 1;
 }
 
 int
 WeatherForecastModel::columnCount(const QModelIndex&) const {
-  return __dataValid ? __data.size() : 1;
+  return __status == Fetched ? __data.size() : 1;
 }
 
 QVariant
@@ -50,15 +55,18 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
       return Qt::AlignCenter;
     
     case Qt::DisplayRole:
-      if (__dataValid) {
-        switch (_index.row()) {
-          case 0:
-            return __data.at(_index.column()).day;
-          case 1:
-            return __data.at(_index.column()).condition;
-        }
-      } else {
-        return tr("Data not accessible");
+      switch (__status) {
+        case Fetched:
+          switch (_index.row()) {
+            case 0:
+              return __data.at(_index.column()).day;
+            case 1:
+              return __data.at(_index.column()).condition;
+          }
+        case Error:
+          return tr("Data not accessible");
+        case Progress:
+          return tr("Fetching data...");
       }
   }
   
@@ -73,7 +81,7 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
   QVariant content = parser.parse(_json, &ok);
   if (!ok) {
     VatsinatorApplication::log("WeatherForecastModel: error parsing response");
-    __dataValid = false;
+    __status = Error;
     return;
   }
   
@@ -89,6 +97,6 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
     __data << forecast;
   }
   
-  __dataValid = true;
+  __status = Fetched;
 }
 

@@ -35,12 +35,19 @@ class WeatherForecastModel : public QAbstractTableModel {
 public:
   
   explicit WeatherForecastModel(const QByteArray&, QObject* = 0);
+  explicit WeatherForecastModel(QObject* = 0);
   
   int rowCount(const QModelIndex& = QModelIndex()) const;
   int columnCount(const QModelIndex& = QModelIndex()) const;
   QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
   
 private:
+  
+  enum DataStatus {
+    Progress,
+    Error,
+    Fetched
+  };
   
   struct ForecastForDay {
     QString day;
@@ -52,7 +59,7 @@ private:
   void __parseJson(const QByteArray&);
   
   QVector<ForecastForDay> __data;
-  bool __dataValid;
+  DataStatus __status;
   
 };
 

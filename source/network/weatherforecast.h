@@ -42,6 +42,11 @@ public:
   explicit WeatherForecast(QObject* = 0);
   
   void fetchForecast(const QString&, const QString&);
+  
+  inline static WeatherForecastModel *
+  progressModel() {
+    return __progressModel;
+  }
 
 private slots:
   void __readyRead();
@@ -53,6 +58,8 @@ private:
   QByteArray __data;
   
   QNetworkReply* __reply;
+  
+  static WeatherForecastModel* __progressModel;
 
 };
 
