@@ -170,6 +170,13 @@ VatsinatorApplication::emitGLInitialized() {
   VatsinatorApplication::getSingleton().__emitGLInitialized();
 }
 
+const QFont &
+VatsinatorApplication::boldFont() {
+  static QFont font;
+  font.setBold(true);
+  return font;
+}
+
 #ifndef NO_DEBUG
 
 void

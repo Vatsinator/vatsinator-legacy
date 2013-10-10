@@ -21,6 +21,7 @@
 #define VATSINATORAPPLICATION_H
 
 #include <QApplication>
+#include <QFont>
 #include <QMutex>
 #include <QTimer>
 #include <iostream>
@@ -42,7 +43,7 @@ class WorldMap;
 
 class VatsinatorApplication :
     public QApplication,
-    public Singleton< VatsinatorApplication > {
+    public Singleton<VatsinatorApplication> {
 
   /*
    * This class handles the whole Vatsinator application and has
@@ -72,6 +73,8 @@ public:
   static void alert(const QString&, bool = false);
 
   static void emitGLInitialized();
+  
+  static const QFont& boldFont();
 
 #ifdef NO_DEBUG
 

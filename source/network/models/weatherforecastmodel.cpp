@@ -68,6 +68,12 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
         case Progress:
           return tr("Fetching data...");
       }
+    
+    case Qt::FontRole:
+      if (__status == Fetched && _index.row() == 0)
+        return VatsinatorApplication::boldFont();
+      else
+        return QFont();
   }
   
   return QVariant();

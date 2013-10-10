@@ -45,7 +45,7 @@ WeatherForecast::fetchForecast(const QString& _city, const QString& _country) {
   QNetworkRequest request(url);
   request.setRawHeader("X-Mashape-Authorization", ULTIMATE_WEATHER_FORECASTS_API_KEY);
   
-  VatsinatorApplication::log("Request: %s", qPrintable(request.url().toString()));
+  VatsinatorApplication::log("WeatherForecast: request: %s", qPrintable(request.url().toString()));
   
   __reply = __nam.get(request);
   connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
