@@ -31,7 +31,7 @@ set (CPACK_RPM_PACKAGE_LICENSE GPLv3)
 set (CPACK_RPM_PACKAGE_GROUP Applications/Internet)
 set (CPACK_RPM_PACKAGE_VENDOR Vatsinator)
 set (CPACK_RPM_PACKAGE_DESCRIPTION "An open-source Vatsim monitor")
-set (CPACK_RPM_PACKAGE_REQUIRES "libqt4-core >= 4.8, libqt4-gui >= 4.8, libqt4-network >= 4.8, libqt4-opengl >= 4.8, libquazip0")
+set (CPACK_RPM_PACKAGE_REQUIRES "libqt4 >= 4.8, libqt4-x11 >= 4.8, libquazip1, libqjson0")
 
 include (CPack)
 
