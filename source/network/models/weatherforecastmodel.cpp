@@ -90,10 +90,10 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
           if (_index.row() == 1)
             return QSize(64, 64);
           else
-            return QSize(64, 20);
+            return QSize(64, 30);
         case Error:
         case Progress:
-          return QSize(448, 20);
+          return QSize(448, 30);
       }
     
     case Qt::FontRole:
@@ -148,6 +148,7 @@ WeatherForecastModel::__iconsMapFilled() {
   
   map.insert("Mostly cloudy until evening.", ":/weather/weather-clouds.png");
   map.insert("Mostly cloudy throughout the day.", ":/weather/weather-clouds.png");
+  map.insert("Mostly cloudy until afternoon.", ":/weather/weather-clouds.png");
   
   map.insert("Light rain until afternoon.", ":/weather/weather-showers-scattered.png");
   map.insert("Light rain starting in the afternoon.", ":/weather/weather-showers-scattered.png");
