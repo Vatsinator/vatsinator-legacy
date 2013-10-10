@@ -450,6 +450,19 @@
           </layout>
          </item>
          <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="horizontalLayout_11">
            <item>
             <spacer name="horizontalSpacer_3">
@@ -457,7 +470,7 @@
               <enum>Qt::Horizontal</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::Maximum</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -469,12 +482,100 @@
            </item>
            <item>
             <widget class="QGroupBox" name="groupBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string>Weather forecast</string>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_12">
               <item>
                <widget class="QTableView" name="ForecastView">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>448</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>448</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="palette">
+                 <palette>
+                  <active>
+                   <colorrole role="Text">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>229</red>
+                      <green>229</green>
+                      <blue>229</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>68</red>
+                      <green>68</green>
+                      <blue>69</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </active>
+                  <inactive>
+                   <colorrole role="Text">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>229</red>
+                      <green>229</green>
+                      <blue>229</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>68</red>
+                      <green>68</green>
+                      <blue>69</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </inactive>
+                  <disabled>
+                   <colorrole role="Text">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>165</red>
+                      <green>165</green>
+                      <blue>166</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Base">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>254</red>
+                      <green>254</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                  </disabled>
+                 </palette>
+                </property>
                 <property name="frameShape">
                  <enum>QFrame::NoFrame</enum>
                 </property>
@@ -486,6 +587,9 @@
                 </property>
                 <property name="horizontalScrollBarPolicy">
                  <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="autoScroll">
+                 <bool>false</bool>
                 </property>
                 <property name="editTriggers">
                  <set>QAbstractItemView::NoEditTriggers</set>
@@ -519,7 +623,7 @@
               <enum>Qt::Horizontal</enum>
              </property>
              <property name="sizeType">
-              <enum>QSizePolicy::Maximum</enum>
+              <enum>QSizePolicy::Expanding</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>

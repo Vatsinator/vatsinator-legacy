@@ -23,6 +23,7 @@
 #include <QAbstractTableModel>
 #include <QByteArray>
 #include <QVector>
+#include <QMap>
 
 class WeatherForecastModel : public QAbstractTableModel {
   
@@ -58,8 +59,18 @@ private:
   
   void __parseJson(const QByteArray&);
   
+  static QMap<QString, QString> __iconsMapFilled();
+  
   QVector<ForecastForDay> __data;
   DataStatus __status;
+  
+  /* The Ultimate Weather Forecasts returns condition as a string.
+   * As for september of 2013, returning condition as a number is one of
+   * the requests in their issue tracker.
+   * So, as for now, we have to put all the strings that the API can
+   * return in the map and assign pixmaps to it.
+   */
+  static QMap<QString, QString> __iconsMap;
   
 };
 

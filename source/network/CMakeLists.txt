@@ -31,6 +31,12 @@ set (network_MOC_SRCS
 
 vatsinator_subdirectory_mocs (network "${network_MOC_SRCS}")
 
+set (network_QRCS
+    resources/weather.qrc
+)
+
+vatsinator_subdirectory_resources (network "${network_QRCS}")
+
 vatsinator_end_subdirectory (network)
 
 add_dependencies (network ui)

@@ -71,6 +71,9 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
+  
+  ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
+  ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {

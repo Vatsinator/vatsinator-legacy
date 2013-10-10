@@ -25,6 +25,8 @@
 #include "weatherforecastmodel.h"
 #include "defines.h"
 
+QMap<QString, QString> WeatherForecastModel::__iconsMap = WeatherForecastModel::__iconsMapFilled();
+
 WeatherForecastModel::WeatherForecastModel(const QByteArray& _json, QObject* _parent) :
     QAbstractTableModel(_parent),
     __status(Progress) {
@@ -51,8 +53,6 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
     return QVariant();
   
   switch (_role) {
-    case Qt::TextAlignmentRole:
-      return Qt::AlignCenter;
     
     case Qt::DisplayRole:
       switch (__status) {
@@ -61,12 +61,39 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
             case 0:
               return __data.at(_index.column()).day;
             case 1:
-              return __data.at(_index.column()).condition;
+              return QVariant();
           }
         case Error:
           return tr("Data not accessible");
         case Progress:
           return tr("Fetching data...");
+      }
+    
+    case Qt::DecorationRole:
+      switch (__status) {
+        case Fetched:
+          if (_index.row() == 1)
+            return QPixmap(__iconsMap.value(__data.at(_index.column()).condition,
+                                            ":/weather/weather-clear.png"));
+      }
+    
+    case Qt::ToolTipRole:
+      switch (__status) {
+        case Fetched:
+          return __data.at(_index.column()).condition;
+      }
+    
+    case Qt::SizeHintRole:
+      switch (__status) {
+        case Fetched:
+          Q_ASSERT(__data.size());
+          if (_index.row() == 1)
+            return QSize(64, 64);
+          else
+            return QSize(64, 20);
+        case Error:
+        case Progress:
+          return QSize(448, 20);
       }
     
     case Qt::FontRole:
@@ -106,3 +133,26 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
   __status = Fetched;
 }
 
+QMap<QString, QString>
+WeatherForecastModel::__iconsMapFilled() {
+  QMap<QString, QString> map;
+  
+  map.insert("Drizzle in the morning.", ":/weather/weather-clear.png");
+  map.insert("Drizzle in the afternoon.", ":/weather/weather-clear.png");
+  map.insert("Drizzle starting in the afternoon.", ":/weather/weather-clear.png");
+  
+  map.insert("Partly cloudy throughout the day.", ":/weather/weather-few-clouds.png");
+  map.insert("Partly cloudy in the evening.", ":/weather/weather-few-clouds.png");
+  map.insert("Partly cloudy overnight.", ":/weather/weather-few-clouds.png");
+  map.insert("Partly cloudy until afternoon.", ":/weather/weather-few-clouds.png");
+  
+  map.insert("Mostly cloudy until evening.", ":/weather/weather-clouds.png");
+  map.insert("Mostly cloudy throughout the day.", ":/weather/weather-clouds.png");
+  
+  map.insert("Light rain until afternoon.", ":/weather/weather-showers-scattered.png");
+  map.insert("Light rain starting in the afternoon.", ":/weather/weather-showers-scattered.png");
+  map.insert("Light rain throughout the day.", ":/weather/weather-showers-scattered.png");
+  map.insert("Light rain in the morning.", ":/weather/weather-showers-scattered.png");
+  
+  return std::move(map);
+}
