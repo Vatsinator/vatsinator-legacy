@@ -701,7 +701,14 @@
     </widget>
    </item>
    <item>
-    <widget class="ScrollLabel" name="MetarLabel" native="true"/>
+    <widget class="ScrollLabel" name="MetarLabel" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
