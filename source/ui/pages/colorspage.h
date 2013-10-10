@@ -28,7 +28,7 @@ class ColorsPage :
     private Ui::ColorsPage {
   
   Q_OBJECT
-  VATSINATOR_DECLARE_PAGE(Colors)
+    DECLARE_SETTINGS_PAGE(Colors)
 
 public:
   
@@ -36,6 +36,7 @@ public:
   
   QString listElement() const;
   QString listIcon() const;
+  QString pageName() const;
   
   /**
    * @variables
@@ -50,7 +51,7 @@ public:
    * origin_to_pilot_line:      QColor
    * pilot_to_destination_line: QColor
    */
-  QVariant get(const QString&) const;
+  void updateFromUi() const;
   
 protected:
   void __restore(QSettings&);

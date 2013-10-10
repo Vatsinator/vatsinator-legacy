@@ -57,19 +57,31 @@ ViewPage::listIcon() const {
   return ":/settings/preferences-view.png";
 }
 
-QVariant
-ViewPage::get(const QString& _s) const {
-  _S(pilots_layer,                 PilotsCheckBox->isChecked());
-  _S(airports_layer,               AirportsCheckBox->isChecked());
-  _S(staffed_firs,                 StaffedFirsCheckBox->isChecked());
-  _S(unstaffed_firs,               UnstaffedFirsCheckBox->isChecked());
-  _S(empty_airports,               InactiveAirportsCheckBox->isChecked());
-  _S(pilot_labels.always,          ShowPilotsLabelsAlwaysCheckBox->isChecked());
-  _S(pilot_labels.when_hovered,    ShowPilotsLabelsWhenHoveredCheckBox->isChecked());
-  _S(pilot_labels.airport_related, ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
-  _S(airport_labels,               AlwaysRadioButton->isChecked());
-  
-  _S_END;
+QString
+ViewPage::pageName() const {
+  return "view";
+}
+
+void
+ViewPage::updateFromUi() const {
+  setValue("pilots_layer",
+           PilotsCheckBox->isChecked());
+  setValue("airports_layer",
+           AirportsCheckBox->isChecked());
+  setValue("staffed_firs",
+           StaffedFirsCheckBox->isChecked());
+  setValue("unstaffed_firs",
+           UnstaffedFirsCheckBox->isChecked());
+  setValue("empty_airports",
+           InactiveAirportsCheckBox->isChecked());
+  setValue("pilot_labels.always",
+           ShowPilotsLabelsAlwaysCheckBox->isChecked());
+  setValue("pilot_labels.when_hovered",
+           ShowPilotsLabelsWhenHoveredCheckBox->isChecked());
+  setValue("pilot_labels.airport_related",
+           ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
+  setValue("airport_labels",
+           AlwaysRadioButton->isChecked());
 }
 
 void

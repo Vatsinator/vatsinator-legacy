@@ -46,15 +46,18 @@ NetworkPage::listIcon() const {
   return ":/settings/preferences-network.png";
 }
 
-QVariant
-NetworkPage::get(const QString& _s) const {
-  _S(refresh_rate,      RefreshRateBox->value());
-  _S(prompt_on_error,   PromptOnErrorCheckBox->isChecked());
-  _S(cache_enabled,     CachingCheckBox->isChecked());
-  _S(refresh_metars,    RefreshMetarsCheckBox->isChecked());
-  _S(version_check,     VersionCheckingCheckBox->isChecked());
-  
-  _S_END;
+QString
+NetworkPage::pageName() const {
+  return "network";
+}
+
+void
+NetworkPage::updateFromUi() const {
+  setValue("refresh_rate", RefreshRateBox->value());
+  setValue("prompt_on_error", PromptOnErrorCheckBox->isChecked());
+  setValue("cache_enabled", CachingCheckBox->isChecked());
+  setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
+  setValue("version_check", VersionCheckingCheckBox->isChecked());
 }
 
 void

@@ -45,6 +45,8 @@ class SettingsManager :
    */
 
   Q_OBJECT
+  
+  friend class AbstractSettingsPage;
 
 signals:
   void settingsChanged();
@@ -67,7 +69,7 @@ public:
    * @param s Page and variable name, glued by dot (.).
    *    Example: SettingsManager::get("network.refresh_rate")
    */
-  static QVariant get(const QString&);
+  static const QVariant& get(const QString&);
   
   /**
    * If any class modifies the QSettings directly, it should call
@@ -77,12 +79,20 @@ public:
   static void updateUi(const QString&);
 
 private:
+  
+  /**
+   * Sets the given value in the settings map.
+   * @param key Key of the value.
+   * @param value The value.
+   */
+  static void updateValue(QString&&, QVariant&&);
+  
   /**
    * Reads config file, restores all settings.
    */
   void __restoreSettings();
   
-  AbstractSettingsPage* __parsePage(const QString&) const;
+  AbstractSettingsPage* __getPage(const QString&) const;
   
 private slots:
   
@@ -98,6 +108,8 @@ private slots:
   
 private:
   AbstractSettingsPage* __pages[PageList::__count];
+  
+  QVariantHash __settings;
 
 };
 

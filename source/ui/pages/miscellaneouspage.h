@@ -27,7 +27,7 @@ class MiscellaneousPage :
     private Ui::MiscellaneousPage {
   
   Q_OBJECT
-  VATSINATOR_DECLARE_PAGE(Misc)
+  DECLARE_SETTINGS_PAGE(Misc)
   
 public:
   
@@ -35,6 +35,7 @@ public:
   
   QString listElement() const;
   QString listIcon() const;
+  QString pageName() const;
   
   /**
    * @variables
@@ -43,7 +44,7 @@ public:
    * send_statistics:   bool
    * language:          QString
    */
-  QVariant get(const QString&) const;
+  void updateFromUi() const;
 
 protected:
   void __restore(QSettings&);
