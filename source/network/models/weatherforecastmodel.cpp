@@ -25,7 +25,7 @@
 #include "weatherforecastmodel.h"
 #include "defines.h"
 
-QMap<QString, QString> WeatherForecastModel::__iconsMap = WeatherForecastModel::__iconsMapFilled();
+QMap<int, QString> WeatherForecastModel::__iconsMap = WeatherForecastModel::__iconsMapFilled();
 
 WeatherForecastModel::WeatherForecastModel(const QByteArray& _json, QObject* _parent) :
     QAbstractTableModel(_parent),
@@ -73,7 +73,7 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
       switch (__status) {
         case Fetched:
           if (_index.row() == 1)
-            return QPixmap(__iconsMap.value(__data.at(_index.column()).condition,
+            return QPixmap(__iconsMap.value(__data.at(_index.column()).iconNum,
                                             ":/weather/weather-clear.png"));
       }
     
@@ -126,6 +126,7 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
     forecast.high = dayData["high"].toFloat();
     forecast.low = dayData["low"].toFloat();
     forecast.condition = dayData["condition"].toString();
+    forecast.iconNum = dayData["icon_num"].toInt();
     
     __data << forecast;
   }
@@ -133,27 +134,14 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
   __status = Fetched;
 }
 
-QMap<QString, QString>
+QMap<int, QString>
 WeatherForecastModel::__iconsMapFilled() {
-  QMap<QString, QString> map;
+  QMap<int, QString> map;
   
-  map.insert("Drizzle in the morning.", ":/weather/weather-clear.png");
-  map.insert("Drizzle in the afternoon.", ":/weather/weather-clear.png");
-  map.insert("Drizzle starting in the afternoon.", ":/weather/weather-clear.png");
-  
-  map.insert("Partly cloudy throughout the day.", ":/weather/weather-few-clouds.png");
-  map.insert("Partly cloudy in the evening.", ":/weather/weather-few-clouds.png");
-  map.insert("Partly cloudy overnight.", ":/weather/weather-few-clouds.png");
-  map.insert("Partly cloudy until afternoon.", ":/weather/weather-few-clouds.png");
-  
-  map.insert("Mostly cloudy until evening.", ":/weather/weather-clouds.png");
-  map.insert("Mostly cloudy throughout the day.", ":/weather/weather-clouds.png");
-  map.insert("Mostly cloudy until afternoon.", ":/weather/weather-clouds.png");
-  
-  map.insert("Light rain until afternoon.", ":/weather/weather-showers-scattered.png");
-  map.insert("Light rain starting in the afternoon.", ":/weather/weather-showers-scattered.png");
-  map.insert("Light rain throughout the day.", ":/weather/weather-showers-scattered.png");
-  map.insert("Light rain in the morning.", ":/weather/weather-showers-scattered.png");
+  map.insert(0, ":/weather/weather-clear.png");
+  map.insert(1, ":/weather/weather-few-clouds.png");
+  map.insert(2, ":/weather/weather-clouds.png");
+  map.insert(3, ":/weather/weather-showers-scattered.png");
   
   return std::move(map);
 }
