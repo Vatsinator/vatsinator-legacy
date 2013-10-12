@@ -1,2 +1,0 @@
-#define ULTIMATE_WEATHER_FORECASTS_API_KEY "${ultimate_weather_forecasts_API_KEY}"
-#define ULTIMATE_WEATHER_FORECASTS_API_URL "https://george-vustrey-weather.p.mashape.com/api.php?location=%1"
