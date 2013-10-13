@@ -50,8 +50,20 @@
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent),
     __currentICAO(""),
-    __forecast(new WeatherForecast()),
-    __progressModel(new WeatherForecastModel()){
+    __forecast(
+#ifdef WITH_WEATHER_FORECAST
+      new WeatherForecast()
+#else
+      nullptr
+#endif
+    ),
+    __progressModel(
+#ifdef WITH_WEATHER_FORECAST
+      new WeatherForecastModel()
+#else
+      nullptr
+#endif
+    ){
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -65,18 +77,23 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
 
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
-  
-  connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
-          this,                                 SLOT(__updateForecast(WeatherForecastModel*)));
 
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
   
+#ifdef WITH_WEATHER_FORECAST
+  connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
+          this,                                 SLOT(__updateForecast(WeatherForecastModel*)));
+  
   ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
   ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+#else
+  ForecastGroup->hide();
+#endif
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {
+#ifdef WITH_WEATHER_FORECAST
   delete __forecast;
   
   QAbstractItemModel* m = ForecastView->model();
@@ -84,6 +101,7 @@ AirportDetailsWindow::~AirportDetailsWindow() {
     delete m;
   
   delete __progressModel;
+#endif
 }
 
 void
@@ -108,16 +126,19 @@ AirportDetailsWindow::show(const Airport* _ap) {
 
   if (!isVisible()) {
     QWidget::show();
-    QAbstractItemModel* m = ForecastView->model();
-      if (m && m!= __progressModel)
-        m->deleteLater();
-    
-    ForecastView->setModel(__progressModel);
-    __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
-                              QString::fromUtf8(_ap->data()->country));
   } else {
     activateWindow();
   }
+
+#ifdef WITH_WEATHER_FORECAST
+  QAbstractItemModel* fvm = ForecastView->model();
+  if (fvm && fvm != __progressModel)
+    fvm->deleteLater();
+      
+  ForecastView->setModel(__progressModel);
+  __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
+                            QString::fromUtf8(_ap->data()->country));
+#endif
 }
 
 void
@@ -243,11 +264,13 @@ AirportDetailsWindow::__updateData() {
 
 void
 AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
+#ifdef WITH_WEATHER_FORECAST
   QAbstractItemModel* m = ForecastView->model();
   if (m && m!= __progressModel)
     m->deleteLater();
   
   ForecastView->setModel(model);
+#endif
 }
 
 void

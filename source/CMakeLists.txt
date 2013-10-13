@@ -56,6 +56,9 @@ add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     ${vatsinator_MOC_FILES}
 )
 
+option (WITH_WEATHER_FORECAST
+    "Enable weather forecast" ON)
+
 # Set PREFIX for defines.h and necessary libs
 if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")

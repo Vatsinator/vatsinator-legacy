@@ -21,6 +21,7 @@
 #define VATSINATOR_PREFIX "${vatsinator_PREFIX}"
 
 #cmakedefine CONFIG_NO_VBO
+#cmakedefine WITH_WEATHER_FORECAST
 
 #cmakedefine GCC_VERSION_47
 #cmakedefine GCC_VERSION_46
