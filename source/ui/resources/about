@@ -3,37 +3,61 @@
 p, li { white-space: pre-wrap; }
 
 body {
-	font-family: 'Verdana';
-	font-size: 8pt;
-	font-weight: 400;
-	font-style: normal;
-	margin: 2px;
+  font-family: 'Verdana';
+  font-size: 10pt;
+  font-weight: 400;
+  font-style: normal;
+  margin: 2px;
+  text-align: center;
 }
 
 span.name {
-	font-size: 11pt;
-	font-weight: bold;
-	color: #480000;
+  font-size: 15pt;
+  font-weight: bold;
+  color: #480000;
 }
 
 span.mail {
-	font-size: 9pt;
-	font-weight: bold;
-	color: #323a48;
+  font-size: 9pt;
+  font-weight: bold;
+  color: #323a48;
 }
+
+div.links {
+  font-size: 10pt;
+  font-weight: bold;
+  font-style: italic;
+  color: #222830;
+  
+  margin: 20px 0 0 10px;
+}
+
+  div.links ul li {
+    font-size: 8pt;
+    font-weight: normal;
+    font-style: normal;
+    color: #1a62ff;
+  }
 
 </style>
 </head>
 
-<body>
-<span class="name">Michał Garapich</span> <span class="mail">michal@garapich.pl</span><br>
-Creator, designer and core developer of Vatsinator.<br>
-<br>
-<span class="name">Jan Macheta</span> <span class="mail">jan@macheta.net</span><br>
-Coding, graphics, beta-testing and a lot of mental work ;)<br>
-<br>
-<span class="name">Miguel Frias</span> <span class="mail">vateud8@vateud.net</span><br>
-Portuguese translation.<br>
+<body><p align="center">
+<span class="name">Michał Garapich</span><br />
+<span class="mail">michal@garapich.pl</span><br />
+Creator, designer and core developer of Vatsinator.<br />
+<br />
+<span class="name">Jan Macheta</span><br />
+<span class="mail">jan@macheta.net</span><br />
+Coding, graphics, maths, beta-testing and a lot of mental work ;)<br />
+<br />
+<span class="name">Miguel Frias</span><br />
+<span class="mail">vateud8@vateud.net</span><br />
+Portuguese translation.<br />
+<br />
+<br />
+<hr />
+Settings Window icons by http://dryicons.com
 
-</body>
+</p></body>
 </html>
