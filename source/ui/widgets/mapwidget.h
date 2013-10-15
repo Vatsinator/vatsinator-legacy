@@ -161,21 +161,21 @@ public:
   
   /* For Pilot class */
   inline const QImage &
-  pilotToolTipBackground() const { return __pilotToolTip; }
+  pilotToolTipBackground() const { return __pilotLabel; }
 
   inline const QFont &
   pilotFont() const { return __pilotFont; }
 
   /* For Airport class */
   inline const QImage &
-  airportToolTipBackground() const { return __airportToolTip; }
+  airportToolTipBackground() const { return __airportLabel; }
 
   inline const QFont &
   airportFont() const { return __airportFont; }
 
   /* For Fir class */
   inline const QImage &
-  firToolTipBackground() const { return __firToolTip; }
+  firToolTipBackground() const { return __firLabel; }
 
   inline const QFont &
   firFont() const { return __firFont; }
@@ -242,15 +242,49 @@ private:
   void __drawMarks();
 #endif
 
+  /**
+   * Draws the world map.
+   */
   void __drawWorld(double = 0.0);
-  void __drawFirs(double = 0.0);
-  void __drawUirs(double);
-  void __drawFirsLabels(float = 0.0);
+  
+  /**
+   * Draws FIRs' borders.
+   */
+  void __drawFirBorders(double = 0.0);
+  
+  /**
+   * Draws UIRs' borders.
+   */
+  void __drawUirBorders(double);
+  
+  /**
+   * Draws FIRs' labels.
+   */
+  void __drawFirs(float = 0.0);
+  
+  /**
+   * Draws airports icons & labels.
+   */
   void __drawAirports(float = 0.0);
+  
+  /**
+   * Draws pilots models & labels.
+   */
   void __drawPilots(float = 0.0);
-  void __drawLines(double = 0.0); // lines when airport/pilot on hover
+  
+  /**
+   * Draws lines between pilots and airports.
+   */
+  void __drawLines(double = 0.0);
+  
+  /**
+   * Draws the mouse tooltip (QToolTip).
+   */
   void __drawToolTip();
 
+  /**
+   * Switches the antyaliasing on/off.
+   */
   void __setAntyaliasing(bool);
 
   void __storeSettings();
@@ -258,16 +292,15 @@ private:
   void __updateZoom(int);
 
   void __produceCircle();
-
-  /* Some inlined helpful functions */
+  
   float __distanceFromCamera(float, float);
   void  __mapCoordinates(float, float, float*, float*);
-  QString __producePilotToolTip(const Pilot*);
-  QString __produceAirportToolTip(const Airport*);
-  QString __produceFirToolTip(const Fir*);
-  void  __drawCallsign(const Pilot*);
-  void  __drawCallsign(GLfloat, GLfloat, const Pilot*);
-  void  __drawIcaoLabel(const Airport*);
+  QString __pilotToolTipText(const Pilot*);
+  QString __airportToolTipText(const Airport*);
+  QString __firToolTipText(const Fir*);
+  void  __drawPilotLabel(const Pilot*);
+  void  __drawPilotLabel(GLfloat, GLfloat, const Pilot*);
+  void  __drawAirportLabel(const Airport*);
   void  __drawFirLabel(GLfloat, GLfloat, const Fir&);
 
   bool  __isInitialized;
@@ -278,15 +311,15 @@ private:
   GLuint  __apInactiveIcon;
 
   /* Used by Pilot class */
-  QImage  __pilotToolTip;
+  QImage  __pilotLabel;
   QFont   __pilotFont;
 
   /* For Airport class */
-  QImage  __airportToolTip;
+  QImage  __airportLabel;
   QFont   __airportFont;
 
   /* For Fir class */
-  QImage  __firToolTip;
+  QImage  __firLabel;
   QFont   __firFont;
 
   /* Approach circle array and vertices count */

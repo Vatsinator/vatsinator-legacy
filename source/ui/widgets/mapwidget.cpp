@@ -74,64 +74,21 @@
 #include "mapconfig.h"
 
 #ifndef GL_MULTISAMPLE
-#define GL_MULTISAMPLE 0x809D
+# define GL_MULTISAMPLE 0x809D
 #endif
 
 static const double PI = 3.1415926535897;
 
-static const GLfloat VERTICES[] = {
-  -0.04, -0.02,
-  -0.04,  0.06,
-   0.04,  0.06,
-   0.04, -0.02
-};
-static const GLfloat PILOT_TOOLTIP_VERTICES[] = {
-  -0.16,  0.019,
-  -0.16,  0.12566666,
-   0.16,  0.12566666,
-   0.16,  0.019
-};
-static const GLfloat AIRPORT_TOOLTIP_VERTICES[] = {
-  -0.08, -0.05333333,
-  -0.08, 0,
-   0.08, 0,
-   0.08, -0.05333333
-};
-static const GLfloat FIR_TOOLTIP_VERTICES[] = {
-  -0.08, -0.05333333,
-  -0.08,  0.05333333,
-   0.08,  0.05333333,
-   0.08, -0.05333333
-};
-static const GLfloat MODEL_VERTICES[] = {
-  -0.03, -0.03,
-  -0.03,  0.03,
-   0.03,  0.03,
-   0.03, -0.03
-};
-static const GLfloat TEXCOORDS[] = {
-  0.0, 0.0,
-  0.0, 1.0,
-  1.0, 1.0,
-  1.0, 0.0
-};
-
-
-#ifndef NO_DEBUG
-unsigned MapWidget::texturesCount = 0;
-#endif
-
 static QGLFormat myformat = MapWidget::getFormat();
-
   
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(myformat, _parent),
     __isInitialized(false),
-    __pilotToolTip(":/pixmaps/pilot_tooltip.png"),
+    __pilotLabel(":/pixmaps/pilot_tooltip.png"),
     __pilotFont("Verdana"),
-    __airportToolTip(":/pixmaps/airport_tooltip.png"),
+    __airportLabel(":/pixmaps/airport_tooltip.png"),
     __airportFont("Verdana"),
-    __firToolTip(64, 32, QImage::Format_ARGB32_Premultiplied),
+    __firLabel(64, 32, QImage::Format_ARGB32_Premultiplied),
     __firFont("Verdana"),
     __position(0.0, 0.0),
     __zoom(ZOOM_MINIMUM),
@@ -159,7 +116,7 @@ MapWidget::MapWidget(QWidget* _parent) :
   connect(this, SIGNAL(contextMenuRequested(const Fir*)),
           this, SLOT(__openContextMenu(const Fir*)));
   connect(this, SIGNAL(contextMenuRequested()),
-	  this, SLOT(__openContextMenu()));
+          this, SLOT(__openContextMenu()));
   
   connect(SettingsManager::getSingletonPtr(),      SIGNAL(settingsChanged()),
           this,                                    SLOT(__loadNewSettings()));
@@ -168,13 +125,13 @@ MapWidget::MapWidget(QWidget* _parent) :
   
   connect(VatsinatorApplication::getSingletonPtr(),SIGNAL(uiCreated()),
           this,                                    SLOT(__slotUiCreated()));
-
+  
   setAutoBufferSwap(true);
-
+  
   __firFont.setPixelSize(FIR_FONT_PIXEL_SIZE);
   __firFont.setWeight(FIR_FONT_WEIGHT);
-
-  __firToolTip.fill(0);
+  
+  __firLabel.fill(0);
 }
 
 MapWidget::~MapWidget() {
@@ -272,7 +229,7 @@ MapWidget::redraw() {
 
 void
 MapWidget::initializeGL() {
-  VatsinatorApplication::log("Initializing OpenGL...");
+  VatsinatorApplication::log("MapWidget: initializing OpenGL...");
   
   makeCurrent();
   
@@ -283,7 +240,7 @@ MapWidget::initializeGL() {
   GLint samples;
   glGetIntegerv(GL_SAMPLE_BUFFERS, &bufs);
   glGetIntegerv(GL_SAMPLES, &samples);
-  VatsinatorApplication::log("Have %d buffers and %d samples.", bufs, samples);
+  VatsinatorApplication::log("MapWidget: have %d buffers and %d samples.", bufs, samples);
 #endif
   
   glShadeModel(GL_SMOOTH);
@@ -291,13 +248,13 @@ MapWidget::initializeGL() {
   
   glEnable(GL_LINE_STIPPLE);
   glEnable(GL_ALPHA_TEST);
-  glAlphaFunc(GL_GREATER, 0.1f); checkGLErrors(HERE);
+  glAlphaFunc(GL_GREATER, 0.1f);
   
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
-  glEnable(GL_DEPTH_TEST); checkGLErrors(HERE);
-  glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_TEXTURE_2D);
   glEnableClientState(GL_VERTEX_ARRAY);
   
   /* For a really strony debug */
@@ -307,18 +264,25 @@ MapWidget::initializeGL() {
   initGLExtensionsPointers();
 #endif
   
-  VatsinatorApplication::log("OpenGL set up.");
+  VatsinatorApplication::log("MapWidget: OpenGL set up.");
   
   QCoreApplication::flush();
   __init();
   
   __isInitialized = true;
   
-  VatsinatorApplication::log("Ready to render.");
+  VatsinatorApplication::log("MapWidget: ready to render.");
 }
 
 void
 MapWidget::paintGL() {
+  static const GLfloat textureCoords[] = {
+    0.0, 0.0,
+    0.0, 1.0,
+    1.0, 1.0,
+    1.0, 0.0
+  };
+  
   __underMouse = nullptr;
 
   __drawLeft = (-1 - __position.x()) * __zoom > -__orthoRangeX;
@@ -334,7 +298,7 @@ MapWidget::paintGL() {
     __position.rx() = FlightTracker::getSingleton().tracked()->position().longitude / 180;
     __position.ry() = FlightTracker::getSingleton().tracked()->position().latitude / 90;
   }
-
+  
   glEnableClientState(GL_VERTEX_ARRAY);
   checkGLErrors(HERE);
   __prepareMatrix(WORLD);
@@ -352,6 +316,19 @@ MapWidget::paintGL() {
     __drawWorld(360.0);
 
 
+  __drawFirBorders();
+
+  if (__drawLeft)
+    __drawFirBorders(-360.0);
+
+  if (__drawRight)
+    __drawFirBorders(360.0);
+
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
+
+  __prepareMatrix(AIRPORTS_PILOTS);
+
   __drawFirs();
 
   if (__drawLeft)
@@ -359,19 +336,6 @@ MapWidget::paintGL() {
 
   if (__drawRight)
     __drawFirs(360.0);
-
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS);
-
-  __prepareMatrix(AIRPORTS_PILOTS);
-
-  __drawFirsLabels();
-
-  if (__drawLeft)
-    __drawFirsLabels(-360.0);
-
-  if (__drawRight)
-    __drawFirsLabels(360.0);
 
   if (__settings.view.airports_layer) {
     __drawAirports();
@@ -780,8 +744,8 @@ MapWidget::__openContextMenu() {
   QAction* setAsHome = new QAction(tr("Set as home location"), this);
   __menu->addAction(setAsHome);
   
-  connect(setAsHome,				SIGNAL(triggered()),
-	  HomeLocation::getSingletonPtr(),	SLOT(set()));
+  connect(setAsHome,                            SIGNAL(triggered()),
+          HomeLocation::getSingletonPtr(),      SLOT(set()));
   
   __menu->addSeparator();
   __menu->addAction(new ActionMenuSeparator(tr("Flights nearby"), this));
@@ -802,13 +766,13 @@ void
 MapWidget::__init() {
   setEnabled(true);
 
-  VatsinatorApplication::log("Loading images...");
+  VatsinatorApplication::log("MapWidget: loading images...");
 
   __apIcon = GlResourceManager::loadImage(":/pixmaps/airport.png");
   __apStaffedIcon = GlResourceManager::loadImage(":/pixmaps/airport_staffed.png");
   __apInactiveIcon = GlResourceManager::loadImage(":/pixmaps/airport_inactive.png");
 
-  VatsinatorApplication::log("Preparing signals & slots...");
+  VatsinatorApplication::log("MapWidget: preparing signals & slots...");
 
   connect(this,                                    SIGNAL(firDetailsWindowRequested(const Fir*)),
           FirDetailsWindow::getSingletonPtr(),     SLOT(show(const Fir*)));
@@ -817,35 +781,32 @@ MapWidget::__init() {
   connect(this,                                    SIGNAL(airportDetailsWindowRequested(const Airport*)),
           AirportDetailsWindow::getSingletonPtr(), SLOT(show(const Airport*)));
 
-  VatsinatorApplication::log("Setting fonts...");
+  VatsinatorApplication::log("MapWidget: setting fonts...");
   __pilotFont.setPixelSize(PILOT_FONT_PIXEL_SIZE);
   __pilotFont.setWeight(PILOT_FONT_WEIGHT);
 
   __airportFont.setPixelSize(AIRPORT_FONT_PIXEL_SIZE);
   __airportFont.setWeight(AIRPORT_FONT_WEIGHT);
 
-  VatsinatorApplication::log("Restoring settings...");
+  VatsinatorApplication::log("MapWidget: restoring settings...");
   __restoreSettings();
-
+  
   VatsinatorApplication::emitGLInitialized();
 }
 
-inline void
+void
 MapWidget::__prepareMatrix(PMMatrixMode _mode, double _moveX) {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  glOrtho(
-    -__orthoRangeX,
-    __orthoRangeX,
-    -__orthoRangeY,
-    __orthoRangeY,
-    -1.0, 1.0
-  );
+  glOrtho(-__orthoRangeX, __orthoRangeX,
+          -__orthoRangeY, __orthoRangeY,
+          -1.0,           1.0
+    );
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-
+  
   switch(_mode) {
     case WORLD:
       glMatrixMode(GL_MODELVIEW);
@@ -854,10 +815,10 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode, double _moveX) {
       glScalef(1.0f / 180.0f, 1.0f / 90.0f, 1.0f);
       glScalef(__zoom, __zoom, 1.0);
       glTranslated(-__position.x() * 180, -__position.y() * 90, 0.0);
-
+      
       if (_moveX)
         glTranslated(_moveX, 0.0, 0.0);
-
+      
       checkGLErrors(HERE);
       break;
       
@@ -869,156 +830,164 @@ MapWidget::__prepareMatrix(PMMatrixMode _mode, double _moveX) {
 #ifndef NO_DEBUG
 void
 MapWidget::__drawMarks() {
+  static const GLfloat textureCoords[] = {
+    0.0, 0.0,
+    0.0, 1.0,
+    1.0, 1.0,
+    1.0, 0.0
+  };
+  
   glDisableClientState(GL_VERTEX_ARRAY);
   glDisable(GL_TEXTURE_2D);
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
+  
   glColor4f(0.0, 0.0, 0.0, 1.0);
   glPointSize(5.0);
   glBegin(GL_POINTS);
-  // Lopp Lagoon, Alaska, USA
-  glVertex2f(-168.010255, 65.658275);
-
-  // Jastrzębia Góra, Poland
-  glVertex2f(18.316498, 54.830754);
-
-  // the most eastern coast of Russia :)
-  glVertex2f(-169.764405, 66.10717);
-
-  // Tierra del Fuego, Argentina
-  glVertex2f(-65.166321, -54.664301);
-
-  // Aghulas National Park, Republic of South Africa
-  glVertex2f(20.000153, -34.827332);
-
-  // Steward Island, New Zealand
-  glVertex2f(167.705383, -47.118738);
-
+    // Lopp Lagoon, Alaska, USA
+    glVertex2f(-168.010255, 65.658275);
+    
+    // Jastrzębia Góra, Poland
+    glVertex2f(18.316498, 54.830754);
+    
+    // the most eastern coast of Russia :)
+    glVertex2f(-169.764405, 66.10717);
+    
+    // Tierra del Fuego, Argentina
+    glVertex2f(-65.166321, -54.664301);
+    
+    // Aghulas National Park, Republic of South Africa
+    glVertex2f(20.000153, -34.827332);
+    
+    // Steward Island, New Zealand
+    glVertex2f(167.705383, -47.118738);
   glEnd();
   checkGLErrors(HERE);
-
+  
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnable(GL_TEXTURE_2D);
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glTexCoordPointer(2, GL_FLOAT, 0, TEXCOORDS); checkGLErrors(HERE);
+  glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
+  checkGLErrors(HERE);
 }
 #endif
 
 
-inline void
+void
 MapWidget::__drawWorld(double _moveX) {
   glPushMatrix();
-  glTranslatef(_moveX, 0.0, -0.9);
-
-  qglColor(__settings.colors.lands);
-  WorldMap::getSingleton().draw();
-  checkGLErrors(HERE);
+    glTranslatef(_moveX, 0.0, -0.9);
+    
+    qglColor(__settings.colors.lands);
+    WorldMap::getSingleton().draw();
+    checkGLErrors(HERE);
   glPopMatrix();
 }
 
 void
-MapWidget::__drawFirs(double _moveX) {
+MapWidget::__drawFirBorders(double _moveX) {
   if (__settings.view.unstaffed_firs) {
     glPushMatrix();
-    glTranslatef(_moveX, 0.0, -0.8);
-
-    for (const Fir& fir: FirDatabase::getSingleton().firs()) {
-      if (fir.isStaffed()) {
-        continue;
+      glTranslatef(_moveX, 0.0, -0.8);
+      
+      for (const Fir& fir: FirDatabase::getSingleton().firs()) {
+        if (fir.isStaffed())
+          continue;
+      
+        qglColor(__settings.colors.unstaffed_fir_borders);
+        fir.drawBorders();
       }
-
-      qglColor(__settings.colors.unstaffed_fir_borders);
-      fir.drawBorders(); checkGLErrors(HERE);
-    }
-
+    
     glPopMatrix();
   }
 
   if (__settings.view.staffed_firs) {
-    __drawUirs(_moveX);
+    __drawUirBorders(_moveX);
 
     glLineWidth(3.0);
     glPushMatrix();
-    glTranslatef(_moveX, 0.0, -0.6);
-
-    for (const Fir& fir: FirDatabase::getSingleton().firs()) {
-      if (!fir.isStaffed())
-        continue;
-
-      qglColor(__settings.colors.staffed_fir_borders);
-      fir.drawBorders(); checkGLErrors(HERE);
-
-      qglColor(__settings.colors.staffed_fir_background);
-      fir.drawTriangles(); checkGLErrors(HERE);
-    }
-
+      glTranslatef(_moveX, 0.0, -0.6);
+      
+      for (const Fir& fir: FirDatabase::getSingleton().firs()) {
+        if (!fir.isStaffed())
+          continue;
+        
+        qglColor(__settings.colors.staffed_fir_borders);
+        fir.drawBorders();
+        
+        qglColor(__settings.colors.staffed_fir_background);
+        fir.drawTriangles();
+      }
+      
     glPopMatrix();
     glLineWidth(1.0);
   }
 }
 
-inline void
-MapWidget::__drawUirs(double _moveX) {
+void
+MapWidget::__drawUirBorders(double _moveX) {
   glLineWidth(3.0);
-
+  
   glPushMatrix();
-  glTranslatef(_moveX, 0.0, -0.7);
+    glTranslatef(_moveX, 0.0, -0.7);
+    
+    for (const Uir * uir: __data.uirs()) {
+      if (!uir->isEmpty()) {
+        for (const Fir * fir: uir->range()) {
+          if (!fir->isStaffed()) {
+            qglColor(__settings.colors.staffed_uir_borders);
+            fir->drawBorders();
+            
+            qglColor(__settings.colors.staffed_uir_background);
+            fir->drawTriangles();
+          }
+        }
+      }
+    }
+  
+  glPopMatrix();
+  
+  qglColor(__settings.colors.seas);
+  glLineWidth(1.0);
+}
 
-  for (const Uir * uir: __data.uirs()) {
-    if (!uir->isEmpty()) {
-      for (const Fir * fir: uir->range()) {
-        if (!fir->isStaffed()) {
-          qglColor(__settings.colors.staffed_uir_borders);
-          fir->drawBorders(); checkGLErrors(HERE);
-
-          qglColor(__settings.colors.staffed_uir_background);
-          fir->drawTriangles(); checkGLErrors(HERE);
+void
+MapWidget::__drawFirs(float _moveX) {
+  glColor4f(1.0, 1.0, 1.0, 1.0);
+  glPushMatrix();
+    glTranslatef(0.0, 0.0, -0.5);
+    
+    for (const Fir& fir: FirDatabase::getSingleton().firs()) {
+      if (fir.textPosition().x == 0.0 && fir.textPosition().y == 0.0)
+        continue;
+      
+      float x, y;
+      __mapCoordinates(fir.textPosition().x + _moveX, fir.textPosition().y, &x, &y);
+      
+      if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
+          (x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
+      
+        __drawFirLabel(x, y, fir);
+        
+        if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE &&
+            !__underMouse) {
+          __underMouse = &fir;
         }
       }
     }
 
-    checkGLErrors(HERE);
-  }
-
   glPopMatrix();
-
-  qglColor(__settings.colors.seas);
-  glLineWidth(1.0);
-  checkGLErrors(HERE);
-}
-
-void
-MapWidget::__drawFirsLabels(float _moveX) {
-  glColor4f(1.0, 1.0, 1.0, 1.0);
-  glPushMatrix();
-  glTranslatef(0.0, 0.0, -0.5);
-
-  for (const Fir& fir: FirDatabase::getSingleton().firs()) {
-    if (fir.textPosition().x == 0.0 && fir.textPosition().y == 0.0)
-      continue;
-
-    float x, y;
-    __mapCoordinates(fir.textPosition().x + _moveX, fir.textPosition().y, &x, &y);
-
-    if ((x <= __orthoRangeX) && (y <= __orthoRangeY) &&
-        (x >= -__orthoRangeX) && (y >= -__orthoRangeY)) {
-
-      __drawFirLabel(x, y, fir);
-      checkGLErrors(HERE);
-
-      if (__distanceFromCamera(x, y) < OBJECT_TO_MOUSE &&
-          !__underMouse) {
-        __underMouse = &fir;
-      }
-    }
-  }
-
-  glPopMatrix();
-  checkGLErrors(HERE);
 }
 
 void
 MapWidget::__drawAirports(float _moveX) {
+  static const GLfloat iconRect[] = {
+    -0.04, -0.02,
+    -0.04,  0.06,
+     0.04,  0.06,
+     0.04, -0.02
+  };
+  
   glColor4f(1.0, 1.0, 1.0, 1.0);
   
 //   Draw inactive airports 
@@ -1041,15 +1010,14 @@ MapWidget::__drawAirports(float _moveX) {
       if (inRange && !__underMouse)
         __underMouse = __data.addEmptyAirport(&ap);
       
-      glVertexPointer(2, GL_FLOAT, 0, VERTICES); checkGLErrors(HERE);
-      
-      glBindTexture(GL_TEXTURE_2D, __apInactiveIcon); checkGLErrors(HERE);
+      glVertexPointer(2, GL_FLOAT, 0, iconRect);
+      glBindTexture(GL_TEXTURE_2D, __apInactiveIcon);
+      checkGLErrors(HERE);
       
       glPushMatrix();
-      
-        glTranslatef(x, y, -0.5); checkGLErrors(HERE);
-        glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-      
+        glTranslatef(x, y, -0.5);
+        glDrawArrays(GL_QUADS, 0, 4);
+        checkGLErrors(HERE);
       glPopMatrix();
     }
   }
@@ -1059,52 +1027,53 @@ MapWidget::__drawAirports(float _moveX) {
 
     if (!it.value()->data())
       continue;
-
+    
     GLfloat x = (((it.value()->data()->longitude + _moveX) / 180) - __position.x()) * __zoom;
 
     if (x < -__orthoRangeX || x > __orthoRangeX)
       continue;
-
+    
     GLfloat y = ((it.value()->data()->latitude / 90) - __position.y()) * __zoom;
-
+    
     if (y < -__orthoRangeY || y > __orthoRangeY)
       continue;
-
-    glVertexPointer(2, GL_FLOAT, 0, VERTICES); checkGLErrors(HERE);
-
-    bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
-
+    
+    glVertexPointer(2, GL_FLOAT, 0, iconRect);
+    
     glBindTexture(GL_TEXTURE_2D, (it.value()->staffModel()->staff().isEmpty()) ? __apIcon : __apStaffedIcon);
     checkGLErrors(HERE);
-
+    
     glPushMatrix();
 
-      glTranslatef(x, y, -0.4); checkGLErrors(HERE);
-      glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+      glTranslatef(x, y, -0.4);
+      glDrawArrays(GL_QUADS, 0, 4);
+      checkGLErrors(HERE);
       
       if (__settings.view.airport_labels || __keyPressed)
-	__drawIcaoLabel(it.value()); checkGLErrors(HERE);
+        __drawAirportLabel(it.value());
       
+      bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
       if (inRange && !__underMouse)
-	__underMouse = it.value();
+        __underMouse = it.value();
       
       if (it.value()->hasApproach()) {
-	glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
-  
-	qglColor(__settings.colors.approach_circle);
-	glVertexPointer(2, GL_FLOAT, 0, __circle); checkGLErrors(HERE);
-  
-	glLineWidth(1.5);
-	glLineStipple(1, 0xF0F0);
-	glPushMatrix();
-	glScalef(0.005f * __zoom, 0.005f * __zoom, 0); checkGLErrors(HERE);
-	glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
-	glPopMatrix();
-	glLineWidth(1.0);
-	glLineStipple(1, 0xFFFF); checkGLErrors(HERE);
-	
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	glVertexPointer(2, GL_FLOAT, 0, VERTICES);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        qglColor(__settings.colors.approach_circle);
+        glVertexPointer(2, GL_FLOAT, 0, __circle);
+        glLineWidth(1.5);
+        glLineStipple(1, 0xF0F0);
+        
+        glPushMatrix();
+          glScalef(0.005f * __zoom, 0.005f * __zoom, 0);
+          glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
+          checkGLErrors(HERE);
+        glPopMatrix();
+        
+        glLineWidth(1.0);
+        glLineStipple(1, 0xFFFF); checkGLErrors(HERE);
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+        glVertexPointer(2, GL_FLOAT, 0, iconRect);
       }
       
     glPopMatrix();
@@ -1119,7 +1088,7 @@ MapWidget::__drawAirports(float _moveX) {
         if (p->flightStatus() == Pilot::AIRBORNE) {
           __mapCoordinates(p->position().longitude, p->position().latitude,
                            &tipX, &tipY);
-          __drawCallsign(tipX, tipY, p);
+          __drawPilotLabel(tipX, tipY, p);
         }
       }
 
@@ -1127,21 +1096,28 @@ MapWidget::__drawAirports(float _moveX) {
         if (p->flightStatus() == Pilot::AIRBORNE) {
           __mapCoordinates(p->position().longitude, p->position().latitude,
                            &tipX, &tipY);
-          __drawCallsign(tipX, tipY, p);
+          __drawPilotLabel(tipX, tipY, p);
         }
       }
     }
   }
 
-  glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void
 MapWidget::__drawPilots(float _moveX) {
+  static const GLfloat modelRect[] = {
+    -0.03, -0.03,
+    -0.03,  0.03,
+     0.03,  0.03,
+     0.03, -0.03
+  };
+  
   glColor4f(1.0, 1.0, 1.0, 1.0);
   
   for (const Pilot* client: VatsimDataHandler::getSingleton().flightsModel()->flights()) {
-    Q_CHECK_PTR(client);
+    Q_ASSERT(client);
     if (client->flightStatus() != Pilot::AIRBORNE || client->isPrefiledOnly())
       continue;
 
@@ -1149,40 +1125,38 @@ MapWidget::__drawPilots(float _moveX) {
 
     if (x < -__orthoRangeX || x > __orthoRangeX)
       continue;
-
+    
     GLfloat y = (client->position().latitude / 90 - __position.y()) * __zoom;
-
+    
     if (y < -__orthoRangeY || y > __orthoRangeY)
       continue;
-
+    
     glPushMatrix();
-    bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
-
-    glColor4f(1.0, 1.0, 1.0, 1.0);
-
-    glTranslatef(x, y, -0.2); checkGLErrors(HERE);
-
-    glPushMatrix();
-    glRotatef(static_cast<GLfloat>(client->heading()), 0, 0, -1); checkGLErrors(HERE);
-
-    glVertexPointer(2, GL_FLOAT, 0, MODEL_VERTICES); checkGLErrors(HERE);
-    glBindTexture(GL_TEXTURE_2D, client->modelTexture()); checkGLErrors(HERE);
-
-    glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
+      glColor4f(1.0, 1.0, 1.0, 1.0);
+      glTranslatef(x, y, -0.2);
+      
+      glPushMatrix();
+        glRotatef(static_cast<GLfloat>(client->heading()), 0, 0, -1);
+        glVertexPointer(2, GL_FLOAT, 0, modelRect);
+        glBindTexture(GL_TEXTURE_2D, client->modelTexture());
+        glDrawArrays(GL_QUADS, 0, 4);
+        checkGLErrors(HERE);
+      glPopMatrix();
+      
+      bool inRange = __distanceFromCamera(x, y) < OBJECT_TO_MOUSE;
+      if (inRange && !__underMouse)
+        __underMouse = client;
+      
+      if (((__settings.view.pilot_labels.when_hovered)
+          && (__keyPressed || inRange))
+          || (__settings.view.pilot_labels.always))
+        __drawPilotLabel(client);
+    
     glPopMatrix();
-
-    if (inRange && !__underMouse)
-      __underMouse = client;
-
-    if (((__settings.view.pilot_labels.when_hovered)
-         && (__keyPressed || inRange))
-        || (__settings.view.pilot_labels.always))
-      __drawCallsign(client);
-
-    glPopMatrix(); checkGLErrors(HERE);
+    checkGLErrors(HERE);
   }
 
-  glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void
@@ -1216,7 +1190,7 @@ MapWidget::__drawLines(double _moveX) {
   
   if (AirportTracker::getSingleton().isInitialized()) {
     for (auto it: AirportTracker::getSingleton().tracked().values()) {
-      Q_CHECK_PTR(it);
+      Q_ASSERT(it);
       it->drawLines();
     }
   }
@@ -1230,13 +1204,13 @@ MapWidget::__drawToolTip() {
 
   switch (__underMouse->objectType()) {
     case Clickable::PLANE:
-      text = __producePilotToolTip(static_cast<const Pilot*>(__underMouse));
+      text = __pilotToolTipText(static_cast<const Pilot*>(__underMouse));
       break;
     case Clickable::AIRPORT:
-      text = __produceAirportToolTip(static_cast<const Airport*>(__underMouse));
+      text = __airportToolTipText(static_cast<const Airport*>(__underMouse));
       break;
     case Clickable::FIR:
-      text = __produceFirToolTip(static_cast<const Fir*>(__underMouse));
+      text = __firToolTipText(static_cast<const Fir*>(__underMouse));
       break;
     case Clickable::UIR:
       break;
@@ -1247,15 +1221,16 @@ MapWidget::__drawToolTip() {
 
 void
 MapWidget::__setAntyaliasing(bool _on) {
-  VatsinatorApplication::log("Settings antyaliasing %s...", _on ? "on" : "off");
+  VatsinatorApplication::log("MapWidget: settings antyaliasing %s...", _on ? "on" : "off");
   
   if (_on) {
-    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST); checkGLErrors(HERE);
-    glEnable(GL_LINE_SMOOTH); checkGLErrors(HERE);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+    glEnable(GL_LINE_SMOOTH);
   } else {
-    glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST); checkGLErrors(HERE);
-    glDisable(GL_LINE_SMOOTH); checkGLErrors(HERE);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST);
+    glDisable(GL_LINE_SMOOTH);
   }
+  checkGLErrors(HERE);
 }
 
 void
@@ -1331,15 +1306,18 @@ MapWidget::__distanceFromCamera(float _x, float _y) {
          );
 }
 
-inline void
+void
 MapWidget::__mapCoordinates(float _xFrom, float _yFrom,
                             float* _xTo, float* _yTo) {
+  Q_ASSERT(_xTo);
+  Q_ASSERT(_xFrom);
+  
   *_xTo = (_xFrom / 180 - __position.x()) * __zoom;
   *_yTo = (_yFrom / 90 - __position.y()) * __zoom;
 }
 
-inline QString
-MapWidget::__producePilotToolTip(const Pilot* _p) {
+QString
+MapWidget::__pilotToolTipText(const Pilot* _p) {
   return
     static_cast<QString>("<center>") %
     _p->callsign() % "<br><nobr>" %
@@ -1358,8 +1336,8 @@ MapWidget::__producePilotToolTip(const Pilot* _p) {
     "</center>";
 }
 
-inline QString
-MapWidget::__produceAirportToolTip(const Airport* _ap) {
+QString
+MapWidget::__airportToolTipText(const Airport* _ap) {
   QString text = static_cast<QString>("<center>") %
                  static_cast<QString>(_ap->data()->icao) %
                  static_cast<QString>("<br><nobr>") %
@@ -1380,18 +1358,18 @@ MapWidget::__produceAirportToolTip(const Airport* _ap) {
 
   if (deps)
     text.append(static_cast<QString>("<br>") % tr("Departures: %1").arg(QString::number(deps)));
-
+  
   int arrs = _ap->countArrivals();
-
+  
   if (arrs)
     text.append(static_cast<QString>("<br>") % tr("Arrivals: %1").arg(QString::number(arrs)));
 
   text.append("</center>");
-  return text;
+  return std::move(text);
 }
 
-inline QString
-MapWidget::__produceFirToolTip(const Fir* _f) {
+QString
+MapWidget::__firToolTipText(const Fir* _f) {
   if (_f->name().isEmpty() && !_f->isStaffed())
     return "";
 
@@ -1413,56 +1391,88 @@ MapWidget::__produceFirToolTip(const Fir* _f) {
                );
 
   text.append("</center>");
-  return text;
+  return std::move(text);
 }
 
-inline void
-MapWidget::__drawCallsign(const Pilot* _p) {
+void
+MapWidget::__drawPilotLabel(const Pilot* _p) {
+  static const GLfloat tooltipRect[] = {
+    -0.16,  0.019,
+    -0.16,  0.12566666,
+     0.16,  0.12566666,
+     0.16,  0.019
+  };
+  
   glPushMatrix();
 
-  if (__underMouse == _p)
-    glTranslatef(0.0f, 0.0f, 0.2f);
-  else
+    if (__underMouse == _p)
+      glTranslatef(0.0f, 0.0f, 0.2f);
+    else
+      glTranslatef(0.0f, 0.0f, 0.1f);
+    
+    glBindTexture(GL_TEXTURE_2D, _p->callsignTip());
+    glVertexPointer(2, GL_FLOAT, 0, tooltipRect);
+    glDrawArrays(GL_QUADS, 0, 4);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    checkGLErrors(HERE);
+  glPopMatrix();
+}
+
+void
+MapWidget::__drawPilotLabel(GLfloat _x, GLfloat _y, const Pilot* _p) {
+  static const GLfloat tooltipRect[] = {
+    -0.16,  0.019,
+    -0.16,  0.12566666,
+     0.16,  0.12566666,
+     0.16,  0.019
+  };
+  
+  glPushMatrix();
+    glTranslatef(_x, _y, 0.1f);
+    glBindTexture(GL_TEXTURE_2D, _p->callsignTip());
+    glVertexPointer(2, GL_FLOAT, 0, tooltipRect);
+    glDrawArrays(GL_QUADS, 0, 4);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    checkGLErrors(HERE);
+  glPopMatrix();
+}
+
+void
+MapWidget::__drawAirportLabel(const Airport* _ap) {
+  static const GLfloat tooltipRect[] = {
+    -0.08, -0.05333333,
+    -0.08,  0,
+     0.08,  0,
+     0.08, -0.05333333
+  };
+  
+  glPushMatrix();
     glTranslatef(0.0f, 0.0f, 0.1f);
-
-  glBindTexture(GL_TEXTURE_2D, _p->callsignTip()); checkGLErrors(HERE);
-  glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
-  glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-  glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, _ap->labelTip());
+    glVertexPointer(2, GL_FLOAT, 0, tooltipRect);
+    glDrawArrays(GL_QUADS, 0, 4);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    checkGLErrors(HERE);
   glPopMatrix(); checkGLErrors(HERE);
 }
 
-inline void
-MapWidget::__drawCallsign(GLfloat _x, GLfloat _y, const Pilot* _p) {
-  glPushMatrix();
-  glTranslatef(_x, _y, 0.1f);
-  glBindTexture(GL_TEXTURE_2D, _p->callsignTip()); checkGLErrors(HERE);
-  glVertexPointer(2, GL_FLOAT, 0, PILOT_TOOLTIP_VERTICES); checkGLErrors(HERE);
-  glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glPopMatrix(); checkGLErrors(HERE);
-}
-
-inline void
-MapWidget::__drawIcaoLabel(const Airport* _ap) {
-  glPushMatrix();
-  glTranslatef(0.0f, 0.0f, 0.1f);
-  glBindTexture(GL_TEXTURE_2D, _ap->labelTip()); checkGLErrors(HERE);
-  glVertexPointer(2, GL_FLOAT, 0, AIRPORT_TOOLTIP_VERTICES); checkGLErrors(HERE);
-  glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glPopMatrix(); checkGLErrors(HERE);
-}
-
-inline void
+void
 MapWidget::__drawFirLabel(GLfloat _x, GLfloat _y, const Fir& _f) {
+  static const GLfloat tooltipRect[] = {
+    -0.08, -0.05333333,
+    -0.08,  0.05333333,
+     0.08,  0.05333333,
+     0.08, -0.05333333
+  };
+  
   if (_f.icaoTip()) {
     glPushMatrix();
-    glTranslatef(_x, _y, 0.0f);
-    glBindTexture(GL_TEXTURE_2D, _f.icaoTip()); checkGLErrors(HERE);
-    glVertexPointer(2, GL_FLOAT, 0, FIR_TOOLTIP_VERTICES); checkGLErrors(HERE);
-    glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glPopMatrix(); checkGLErrors(HERE);
+      glTranslatef(_x, _y, 0.0f);
+      glBindTexture(GL_TEXTURE_2D, _f.icaoTip());
+      glVertexPointer(2, GL_FLOAT, 0, tooltipRect);
+      glDrawArrays(GL_QUADS, 0, 4);
+      glBindTexture(GL_TEXTURE_2D, 0);
+      checkGLErrors(HERE);
+    glPopMatrix();;
   }
 }
