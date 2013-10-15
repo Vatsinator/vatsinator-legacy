@@ -138,29 +138,6 @@ public:
    * @param lon Stores longitude.
    */
   void mouse2LatLon(qreal*, qreal*);
-
-  /**
-   * Converts given image to OpenGL formatm loads it and returns
-   * its GL-ID.
-   * NOTE: You must call MapWidget::deleteImage on the image eventually.
-   * @param image Already loaded QImage.
-   * @return GL's image id in the GPU memory.
-   */
-  static GLuint loadImage(const QImage&);
-  
-  /**
-   * Loads image from the given path.
-   * NOTE: You must call MapWidget::deleteImage on the image eventually.
-   * @param path Path to the image, can be any Qt-supported type.
-   * @return GL's image id in the GPU memory.
-   */
-  static GLuint loadImage(const QString&);
-  
-  /**
-   * Unloads the image from the GPU memory, frees the pointer.
-   * @param img Image handle.
-   */
-  static void deleteImage(GLuint);
   
   /**
    * Obtains default format, tweaks it and returns.
@@ -205,10 +182,6 @@ public:
 
   inline bool
   isInitialized() const { return __isInitialized; }
-
-#ifndef NO_DEBUG
-  static unsigned texturesCount;
-#endif
 
 public slots:
   /**
@@ -410,10 +383,6 @@ private:
     } view;
   } __settings;
 
-#ifndef NO_DEBUG
-  /* For memory tracking */
-  QMap<GLuint, unsigned> __imagesMemory;
-#endif
 };
 
 #endif // MAPWIDGET_H

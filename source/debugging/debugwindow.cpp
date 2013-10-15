@@ -18,6 +18,7 @@
 
 #include <QtGui>
 
+#include "glutils/glresourcemanager.h"
 #include "glutils/vertexbufferobject.h"
 
 #include "ui/widgets/mapwidget.h"
@@ -56,7 +57,7 @@ DebugWindow::show() {
   GPUMemoryUsageField->setText(QString::number(gpuMemoryUsage));
   OpenGLVersionField->setText(__getGlVersion());
   VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
-  TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
+  TexturesLoadedField->setText(QString::number(GlResourceManager::textureCount()));
   NumberOfScreensField->setText(QString::number(QApplication::desktop()->screenCount()));
   IsVirtualDesktopField->setText(QApplication::desktop()->isVirtualDesktop() ? "yes" : "no");
 
@@ -141,5 +142,5 @@ DebugWindow::__updateContents() {
   OpenGLErrorsField->setPlainText(glErrors);
   GPUMemoryUsageField->setText(QString::number(gpuMemoryUsage));
   VBOsCreatedField->setText(QString::number(VertexBufferObject::vboCount));
-  TexturesLoadedField->setText(QString::number(MapWidget::texturesCount));
+  TexturesLoadedField->setText(QString::number(GlResourceManager::textureCount()));
 }

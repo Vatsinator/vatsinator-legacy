@@ -22,6 +22,7 @@
 
 #include "glutils/vertexbufferobject.h"
 #include "glutils/glextensions.h"
+#include "glutils/glresourcemanager.h"
 
 #include "ui/widgets/mapwidget.h"
 
@@ -43,13 +44,13 @@ Fir::Fir() :
 
 Fir::~Fir() {
   if (__icaoTip)
-    MapWidget::deleteImage(__icaoTip);
+    GlResourceManager::deleteImage(__icaoTip);
 
   delete __staff;
   delete __flights;
   delete __airports;
 
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
 
   if (__trianglesVBO)
     delete __trianglesVBO;
@@ -121,7 +122,7 @@ Fir::isStaffed() const {
 
 void
 Fir::drawBorders() const {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
   __bordersVBO->bind();
 
   glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
@@ -136,7 +137,7 @@ Fir::drawBorders() const {
 
 void
 Fir::drawTriangles() const {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
 
   if (__trianglesSize) {
     __bordersVBO->bind();
@@ -183,13 +184,13 @@ Fir::__generateTip() const {
   painter.setPen(MapWidget::getSingleton().firPen());
   QRect rectangle(0, 4, 64, 24);
   painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
-  __icaoTip = MapWidget::loadImage(temp);
+  __icaoTip = GlResourceManager::loadImage(temp);
   return __icaoTip;
 }
 
 void
 Fir::__prepareVBO() {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
   __bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
   __bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
 

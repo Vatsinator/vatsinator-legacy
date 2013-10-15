@@ -22,16 +22,16 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
+#include "glutils/glresourcemanager.h"
+
 #include "modules/modelmatcher.h"
 
 #include "storage/settingsmanager.h"
 
 #include "ui/pages/colorspage.h"
-
 #include "ui/widgets/mapwidget.h"
 
 #include "vatsimdata/airport/activeairport.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "vatsinatorapplication.h"
@@ -116,7 +116,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 
 Pilot::~Pilot() {
   if (__callsignTip)
-    MapWidget::deleteImage(__callsignTip);
+    GlResourceManager::deleteImage(__callsignTip);
 }
 
 void
@@ -314,7 +314,7 @@ Pilot::__generateTip() const {
   painter.setPen(MapWidget::getSingleton().pilotPen());
   QRect rectangle(28, 10, 73, 13); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, __callsign);
-  __callsignTip = MapWidget::loadImage(temp);
+  __callsignTip = GlResourceManager::loadImage(temp);
   return __callsignTip;
 }
 

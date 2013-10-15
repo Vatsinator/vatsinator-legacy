@@ -1,6 +1,7 @@
 vatsinator_start_subdirectory (glutils)
 
 set (glutils_SRCS
+    glresourcemanager.cpp
     vertexbufferobject.cpp
     
     glextensions.cpp

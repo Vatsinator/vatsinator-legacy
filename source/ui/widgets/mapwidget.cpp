@@ -24,6 +24,7 @@
 #include "db/worldmap.h"
 
 #include "glutils/glextensions.h"
+#include "glutils/glresourcemanager.h"
 
 #include "modules/airporttracker.h"
 #include "modules/flighttracker.h"
@@ -177,8 +178,8 @@ MapWidget::MapWidget(QWidget* _parent) :
 }
 
 MapWidget::~MapWidget() {
-  deleteImage(__apIcon);
-  deleteImage(__apStaffedIcon);
+  GlResourceManager::deleteImage(__apIcon);
+  GlResourceManager::deleteImage(__apStaffedIcon);
 
   __storeSettings();
   delete [] __circle;
@@ -188,76 +189,6 @@ void
 MapWidget::mouse2LatLon(qreal* lat, qreal* lon) {
   *lon = (__lastMousePosInterpolated.x() / static_cast<qreal>(__zoom) + __position.x()) * 180;
   *lat = (__lastMousePosInterpolated.y() / static_cast<qreal>(__zoom) + __position.y()) * 90;
-}
-
-GLuint
-MapWidget::loadImage(const QImage& _img) {
-  GLuint pix;
-  QImage final = QGLWidget::convertToGLFormat(_img);
-
-  glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
-  glGenTextures(1, &pix); checkGLErrors(HERE);
-
-  glBindTexture(GL_TEXTURE_2D, pix); checkGLErrors(HERE);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(),
-               0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits()); checkGLErrors(HERE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // GL_LINEAR causes the text
-  // on the tooltip is blurred
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-
-#ifndef NO_DEBUG
-  MapWidget::getSingleton().__imagesMemory[pix] = static_cast<unsigned>(final.byteCount());
-  registerGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[pix]);
-  texturesCount += 1;
-#endif
-
-  return pix;
-}
-
-GLuint
-MapWidget::loadImage(const QString& _fName) {
-  GLuint pix;
-  QImage final, temp;
-
-  VatsinatorApplication::log("Loading texture: %s...", _fName.toStdString().c_str());
-
-  if (!temp.load(_fName)) {
-    VatsinatorApplication::alert("Image " + _fName + " could not be loaded!");
-    VatsinatorApplication::quit();
-  }
-
-  final = QGLWidget::convertToGLFormat(temp);
-
-  glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
-  glGenTextures(1, &pix); checkGLErrors(HERE);
-
-  glBindTexture(GL_TEXTURE_2D, pix); checkGLErrors(HERE);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(),
-               0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits()); checkGLErrors(HERE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-
-#ifndef NO_DEBUG
-  MapWidget::getSingleton().__imagesMemory[pix] = static_cast<unsigned>(final.byteCount());
-  registerGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[pix]);
-  texturesCount += 1;
-#endif
-
-  return pix;
-}
-
-void
-MapWidget::deleteImage(GLuint _tex) {
-  glDeleteTextures(1, &_tex); checkGLErrors(HERE);
-
-#ifndef NO_DEBUG
-  unregisterGPUMemoryAllocFunc(MapWidget::getSingleton().__imagesMemory[_tex]);
-  texturesCount -= 1;
-#endif
 }
 
 QGLFormat
@@ -369,6 +300,7 @@ MapWidget::initializeGL() {
   glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
   glEnableClientState(GL_VERTEX_ARRAY);
   
+  /* For a really strony debug */
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   
 #ifndef Q_OS_DARWIN
@@ -872,9 +804,9 @@ MapWidget::__init() {
 
   VatsinatorApplication::log("Loading images...");
 
-  __apIcon = loadImage(":/pixmaps/airport.png");
-  __apStaffedIcon = loadImage(":/pixmaps/airport_staffed.png");
-  __apInactiveIcon = loadImage(":/pixmaps/airport_inactive.png");
+  __apIcon = GlResourceManager::loadImage(":/pixmaps/airport.png");
+  __apStaffedIcon = GlResourceManager::loadImage(":/pixmaps/airport_staffed.png");
+  __apInactiveIcon = GlResourceManager::loadImage(":/pixmaps/airport_inactive.png");
 
   VatsinatorApplication::log("Preparing signals & slots...");
 
