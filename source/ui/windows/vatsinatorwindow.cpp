@@ -42,11 +42,9 @@
 VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
     QMainWindow(_parent) {
   setupUi(this);
-  __restoreWindowGeometry();
 
   connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-  
+          this, SLOT(close()));
   
   connect(ActionExit,                               SIGNAL(triggered()),
           qApp,                                     SLOT(quit()));
@@ -89,7 +87,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   __statusBox = new QLabel();
   __statusBox->setIndent(5);
   
-    __progressBar = new QProgressBar();
+  __progressBar = new QProgressBar();
   __progressBar->setValue(0);
   __progressBar->setTextVisible(true);
   
@@ -107,10 +105,6 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
 #endif
   
   statusBarUpdate();
-}
-
-VatsinatorWindow::~VatsinatorWindow() {
-  __storeWindowGeometry();
 }
 
 void
@@ -142,9 +136,14 @@ VatsinatorWindow::infoBarUpdate() {
 }
 
 void
-VatsinatorWindow::closeEvent(QCloseEvent* _event) {
+VatsinatorWindow::closeEvent(QCloseEvent*) {
+  __storeWindowGeometry();
   qApp->quit();
-  _event->accept();
+}
+
+void
+VatsinatorWindow::showEvent(QShowEvent*) {
+  __restoreWindowGeometry();
 }
 
 void

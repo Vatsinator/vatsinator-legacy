@@ -40,7 +40,7 @@ public:
   /**
    * Adds given widgets.
    */
-  void addWidgets(std::initializer_list<QWidget*>);
+  void addWidgets(std::initializer_list<QWidget*>&&);
   
   /**
    * Changes current widget to the next.

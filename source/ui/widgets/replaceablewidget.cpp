@@ -25,11 +25,9 @@ ReplaceableWidget::ReplaceableWidget(QWidget* _parent) :
   QStackedWidget(_parent) {}
 
 void
-ReplaceableWidget::addWidgets(std::initializer_list<QWidget*> _wList) {
-  for (auto it: _wList) {
+ReplaceableWidget::addWidgets(std::initializer_list<QWidget*>&& _wList) {
+  for (auto it: _wList)
     addWidget(it);
-//     it->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-  }
 }
 
 void

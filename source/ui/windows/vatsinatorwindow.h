@@ -40,7 +40,7 @@ signals:
 
 public:
   explicit VatsinatorWindow(QWidget* = 0);
-  virtual ~VatsinatorWindow();
+  virtual ~VatsinatorWindow() = default;
   
   /**
    * Sets the specified message in the bottom-left bar corner
@@ -67,7 +67,8 @@ public:
   autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
   
 protected:
-  void closeEvent(QCloseEvent*);
+  void closeEvent(QCloseEvent*) override;
+  void showEvent(QShowEvent*) override;
 
 private:
   void __storeWindowGeometry();
