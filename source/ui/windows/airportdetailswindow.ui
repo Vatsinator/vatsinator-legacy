@@ -502,79 +502,15 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>448</width>
+                  <width>469</width>
                   <height>100</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>448</width>
+                  <width>469</width>
                   <height>100</height>
                  </size>
-                </property>
-                <property name="palette">
-                 <palette>
-                  <active>
-                   <colorrole role="Text">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>229</red>
-                      <green>229</green>
-                      <blue>229</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                   <colorrole role="Base">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>68</red>
-                      <green>68</green>
-                      <blue>69</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </active>
-                  <inactive>
-                   <colorrole role="Text">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>229</red>
-                      <green>229</green>
-                      <blue>229</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                   <colorrole role="Base">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>68</red>
-                      <green>68</green>
-                      <blue>69</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </inactive>
-                  <disabled>
-                   <colorrole role="Text">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>165</red>
-                      <green>165</green>
-                      <blue>166</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                   <colorrole role="Base">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>254</red>
-                      <green>254</green>
-                      <blue>255</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </disabled>
-                 </palette>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::NoFrame</enum>

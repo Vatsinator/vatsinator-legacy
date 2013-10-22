@@ -23,7 +23,6 @@
 #include <QAbstractTableModel>
 #include <QByteArray>
 #include <QVector>
-#include <QMap>
 
 class WeatherForecastModel : public QAbstractTableModel {
   
@@ -59,13 +58,10 @@ private:
   };
   
   void __parseJson(const QByteArray&);
-  
-  static QMap<int, QString> __iconsMapFilled();
+  QString __iconForCondition(int) const;
   
   QVector<ForecastForDay> __data;
   DataStatus __status;
-  
-  static QMap<int, QString> __iconsMap;
   
 };
 

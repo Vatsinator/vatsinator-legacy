@@ -25,8 +25,6 @@
 #include "weatherforecastmodel.h"
 #include "defines.h"
 
-QMap<int, QString> WeatherForecastModel::__iconsMap = WeatherForecastModel::__iconsMapFilled();
-
 WeatherForecastModel::WeatherForecastModel(const QByteArray& _json, QObject* _parent) :
     QAbstractTableModel(_parent),
     __status(Progress) {
@@ -73,8 +71,7 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
       switch (__status) {
         case Fetched:
           if (_index.row() == 1)
-            return QPixmap(__iconsMap.value(__data.at(_index.column()).iconNum,
-                                            ":/weather/weather-clear.png"));
+            return QPixmap(__iconForCondition(__data.at(_index.column()).iconNum));
       }
     
     case Qt::ToolTipRole:
@@ -88,12 +85,12 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
         case Fetched:
           Q_ASSERT(__data.size());
           if (_index.row() == 1)
-            return QSize(64, 64);
+            return QSize(67, 64);
           else
-            return QSize(64, 30);
+            return QSize(67, 30);
         case Error:
         case Progress:
-          return QSize(448, 30);
+          return QSize(469, 30);
       }
     
     case Qt::FontRole:
@@ -134,14 +131,23 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
   __status = Fetched;
 }
 
-QMap<int, QString>
-WeatherForecastModel::__iconsMapFilled() {
-  QMap<int, QString> map;
-  
-  map.insert(0, ":/weather/weather-clear.png");
-  map.insert(1, ":/weather/weather-few-clouds.png");
-  map.insert(2, ":/weather/weather-clouds.png");
-  map.insert(3, ":/weather/weather-showers-scattered.png");
-  
-  return std::move(map);
+QString
+WeatherForecastModel::__iconForCondition(int _condition) const {
+  switch (_condition) {
+    case 0:
+      return ":/weather/weather-clear.png";
+    case 1:
+      return ":/weather/weather-few-clouds.png";
+    case 2:
+      return ":/weather/weather-clouds.png";
+    case 3:
+      return ":/weather/weather-showers-scattered.png";
+    case 7:
+      return ":/weather/weather-breezy.png";
+    case 8:
+      return ":/weather/weather-windy.png";
+      
+    default:
+      return ":/weather/weather-clear.png";
+  }
 }

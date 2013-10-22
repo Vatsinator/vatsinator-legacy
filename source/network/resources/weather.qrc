@@ -1,21 +1,10 @@
 <RCC>
   <qresource prefix="weather">
     <file>weather-clear.png</file>
-    <file>weather-hail.png</file>
-    <file>weather-mist.png</file>
     <file>weather-clouds.png</file>
     <file>weather-few-clouds.png</file>
-    <file>weather-freezing-rain.png</file>
-    <file>weather-many-clouds.png</file>
-    <file>weather-showers-day.png</file>
-    <file>weather-showers-scattered-day.png</file>
     <file>weather-showers-scattered.png</file>
-    <file>weather-showers.png</file>
-    <file>weather-snow-rain.png</file>
-    <file>weather-snow-scattered-day.png</file>
-    <file>weather-snow-scattered.png</file>
-    <file>weather-snow.png</file>
-    <file>weather-storm-day.png</file>
-    <file>weather-storm.png</file>
+    <file>weather-breezy.png</file>
+    <file>weather-windy.png</file>
   </qresource>
 </RCC>
