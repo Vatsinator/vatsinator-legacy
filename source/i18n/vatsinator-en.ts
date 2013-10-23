@@ -702,88 +702,88 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="685"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="581"/>
         <source>Flight details</source>
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="722"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="618"/>
         <source>Airport details</source>
         <translation>Airport details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="743"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="639"/>
         <source>Controllers</source>
         <translation>Controllers</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="755"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="651"/>
         <source>Departures</source>
         <translation>Departures</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="660"/>
         <source>%1 to %2</source>
         <translation>%1 to %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="792"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="688"/>
         <source>%1 from %2</source>
         <translation>%1 from %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="822"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="718"/>
         <source>%1 details</source>
         <translation>%1 details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="846"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="742"/>
         <source>This location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="848"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="744"/>
         <source>Set as home location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="855"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="751"/>
         <source>Flights nearby</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1423"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1333"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1425"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1335"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1450"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1360"/>
         <source>Departures: %1</source>
         <translation>Departures: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1455"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1365"/>
         <source>Arrivals: %1</source>
         <translation>Arrivals: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="767"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="663"/>
         <source>nowhere</source>
         <translation>nowhere</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="679"/>
         <source>Arrivals</source>
         <translation>Arrivals</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1415"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1419"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1325"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1329"/>
         <source>(unknown)</source>
         <translation>(unknown)</translation>
     </message>
