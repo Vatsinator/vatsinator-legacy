@@ -65,27 +65,29 @@ SettingsManager::earlyGetLocale() {
   return language;
 }
 
-QVariant
+const QVariant &
 SettingsManager::get(const QString& _s) {
-  QString page = _s.section('.', 0, 0);
-  QString variable = _s.section('.', 1);
-  
-  Q_ASSERT_X(getSingleton().__parsePage(page),
-             qPrintable(QString("SettingsManager::get(%1)").arg(page)),
-             "No such page");
-  return getSingleton().__parsePage(page)->get(variable);
+  Q_ASSERT_X(getSingleton().__settings.contains(_s),
+             qPrintable(QString("SettingsManager::get(%1)").arg(_s)),
+             "No such value");
+  return getSingleton().__settings[_s];
 }
 
 void
 SettingsManager::updateUi(const QString& _pName) {
-  Q_ASSERT_X(getSingleton().__parsePage(_pName),
+  Q_ASSERT_X(getSingleton().__getPage(_pName),
              qPrintable(QString("SettingsManager::updateUi(%1)").arg(_pName)),
              "No such page");
   
   QSettings s;
   s.beginGroup("Settings");
-  getSingleton().__parsePage(_pName)->restoreSettings(s);
+  getSingleton().__getPage(_pName)->restoreSettings(s);
   s.endGroup();
+}
+
+void
+SettingsManager::updateValue(QString&& _key, QVariant&& _value) {
+  getSingleton().__settings[_key] = _value;
 }
 
 void
@@ -93,8 +95,10 @@ SettingsManager::__restoreSettings() {
   QSettings s;
   s.beginGroup("Settings");
   
-  for (AbstractSettingsPage* p: __pages)
+  for (AbstractSettingsPage* p: __pages) {
     p->restoreSettings(s);
+    p->updateFromUi();
+  }
   
   s.endGroup();
   
@@ -102,9 +106,9 @@ SettingsManager::__restoreSettings() {
 }
 
 AbstractSettingsPage *
-SettingsManager::__parsePage(const QString& _s) const {
+SettingsManager::__getPage(const QString& _s) const {
   for (AbstractSettingsPage* p: __pages)
-    if (p->__sm_page_name() == _s)
+    if (p->pageName() == _s)
       return p;
   
   return nullptr;
@@ -115,8 +119,10 @@ SettingsManager::__saveSettings() {
   QSettings s;
   s.beginGroup("Settings");
   
-  for (AbstractSettingsPage* p: __pages)
+  for (AbstractSettingsPage* p: __pages) {
     p->saveSettings(s);
+    p->updateFromUi();
+  }
   
   s.endGroup();
   

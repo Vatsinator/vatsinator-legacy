@@ -700,88 +700,88 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="666"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="685"/>
         <source>Flight details</source>
         <translation>Detalhes de vôo</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="703"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="722"/>
         <source>Airport details</source>
         <translation>Detalhes de aeroporto</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="724"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="743"/>
         <source>Controllers</source>
         <translation>Controladores</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="736"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="755"/>
         <source>Departures</source>
         <translation>Partidas</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="745"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
         <source>%1 to %2</source>
         <translation>%1 a %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="773"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="792"/>
         <source>%1 from %2</source>
         <translation>%1 de %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="803"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="822"/>
         <source>%1 details</source>
         <translation>Detalhes %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="827"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="846"/>
         <source>This location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="829"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="848"/>
         <source>Set as home location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="836"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="855"/>
         <source>Flights nearby</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1404"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1423"/>
         <source>Ground speed: %1 kts</source>
         <translation>Velocidade: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1406"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1425"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1431"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1450"/>
         <source>Departures: %1</source>
         <translation>Partidas: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1436"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1455"/>
         <source>Arrivals: %1</source>
         <translation>Chegadas: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="748"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="767"/>
         <source>nowhere</source>
         <translation>sem destino</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
         <source>Arrivals</source>
         <translation>Chegadas</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1396"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1400"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1415"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1419"/>
         <source>(unknown)</source>
         <translation>(desconhecido)</translation>
     </message>
@@ -911,7 +911,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="60"/>
         <source>minutes</source>
-        <translation type="unfinished"/>
+        <translation>minutos</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="85"/>
@@ -926,7 +926,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="110"/>
         <source>Enable caching</source>
-        <translation type="unfinished"/>
+        <translation>Activar cache</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="125"/>
@@ -1017,12 +1017,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="99"/>
+        <location filename="../storage/unzipper.cpp" line="95"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="119"/>
+        <location filename="../storage/unzipper.cpp" line="115"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation type="unfinished"/>
     </message>
@@ -1030,10 +1030,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="390"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="418"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="468"/>
         <source>File %1 could not be opened!</source>
         <translation>O ficheiro %1 não pode ser aberto!</translation>
     </message>

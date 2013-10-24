@@ -22,6 +22,7 @@
 
 #include "glutils/vertexbufferobject.h"
 #include "glutils/glextensions.h"
+#include "glutils/glresourcemanager.h"
 
 #include "ui/widgets/mapwidget.h"
 
@@ -43,14 +44,13 @@ Fir::Fir() :
 
 Fir::~Fir() {
   if (__icaoTip)
-    MapWidget::deleteImage(__icaoTip);
+    GlResourceManager::deleteImage(__icaoTip);
 
   delete __staff;
   delete __flights;
   delete __airports;
 
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
-
+#ifndef CONFIG_NO_VBO
   if (__trianglesVBO)
     delete __trianglesVBO;
 
@@ -121,29 +121,34 @@ Fir::isStaffed() const {
 
 void
 Fir::drawBorders() const {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
   __bordersVBO->bind();
-
-  glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
-  glDrawArrays(GL_LINE_LOOP, 0, __bordersSize); checkGLErrors(HERE);
-
+  
+  glVertexPointer(2, GL_FLOAT, 0, 0);
+  glDrawArrays(GL_LINE_LOOP, 0, __bordersSize);
+  
   __bordersVBO->unbind();
+  
 #else
-  glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
-  glDrawArrays(GL_LINE_LOOP, 0, __borders.size()); checkGLErrors(HERE);
+  
+  glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x);
+  glDrawArrays(GL_LINE_LOOP, 0, __borders.size());
+  
 #endif
+  
+  checkGLErrors(HERE);
 }
 
 void
 Fir::drawTriangles() const {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
 
   if (__trianglesSize) {
     __bordersVBO->bind();
     __trianglesVBO->bind();
 
-    glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
-    glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0); checkGLErrors(HERE);
+    glVertexPointer(2, GL_FLOAT, 0, 0);
+    glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0);
 
     __trianglesVBO->unbind();
     __bordersVBO->unbind();
@@ -152,11 +157,13 @@ Fir::drawTriangles() const {
 #else
 
   if (!__triangles.isEmpty()) {
-    glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x); checkGLErrors(HERE);
-    glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]); checkGLErrors(HERE);
+    glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x);
+    glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]);
   }
 
 #endif
+
+  checkGLErrors(HERE);
 }
 
 GLuint
@@ -183,13 +190,13 @@ Fir::__generateTip() const {
   painter.setPen(MapWidget::getSingleton().firPen());
   QRect rectangle(0, 4, 64, 24);
   painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
-  __icaoTip = MapWidget::loadImage(temp);
+  __icaoTip = GlResourceManager::loadImage(temp);
   return __icaoTip;
 }
 
 void
 Fir::__prepareVBO() {
-#if defined Q_OS_LINUX || defined Q_OS_DARWIN
+#ifndef CONFIG_NO_VBO
   __bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
   __bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
 
@@ -202,8 +209,9 @@ Fir::__prepareVBO() {
 
     __trianglesSize = __triangles.size();
     __triangles.clear();
-  } else
-    __trianglesVBO = NULL;
+  } else {
+    __trianglesVBO = nullptr;
+  }
 
 #endif
 }

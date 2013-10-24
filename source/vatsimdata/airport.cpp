@@ -21,6 +21,8 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
+#include "glutils/glresourcemanager.h"
+
 #include "ui/widgets/mapwidget.h"
 
 #include "vatsinatorapplication.h"
@@ -53,7 +55,7 @@ Airport::Airport(const AirportRecord* _ap) :
 
 Airport::~Airport() {
   if (__labelTip)
-    MapWidget::deleteImage(__labelTip);
+    GlResourceManager::deleteImage(__labelTip);
 }
 
 GLuint
@@ -69,6 +71,6 @@ Airport::__generateTip() const {
   painter.setPen(MapWidget::getSingleton().airportPen());
   QRect rectangle(8, 2, 48, 12); // size of the tooltip.png
   painter.drawText(rectangle, Qt::AlignCenter, static_cast< QString >(__data->icao));
-  __labelTip = MapWidget::loadImage(temp);
+  __labelTip = GlResourceManager::loadImage(temp);
   return __labelTip;
 }

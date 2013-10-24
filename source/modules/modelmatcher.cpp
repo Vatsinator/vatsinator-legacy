@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "ui/widgets/mapwidget.h"
+#include "glutils/glresourcemanager.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
 
@@ -57,13 +57,13 @@ ModelMatcher::init() {
   QMap<QString, GLuint> pixmapsLoaded;
   QString path(FileManager::staticPath(FileManager::Pixmaps));
 
-  pixmapsLoaded.insert("1p", MapWidget::loadImage(path % "/1p32.png"));
-  pixmapsLoaded.insert("2p", MapWidget::loadImage(path % "/2p32.png"));
-  pixmapsLoaded.insert("4p", MapWidget::loadImage(path % "/4p32.png"));
-  pixmapsLoaded.insert("2j", MapWidget::loadImage(path % "/2j32.png"));
-  pixmapsLoaded.insert("3j", MapWidget::loadImage(path % "/3j32.png"));
-  pixmapsLoaded.insert("4j", MapWidget::loadImage(path % "/4j32.png"));
-  pixmapsLoaded.insert("conc", MapWidget::loadImage(path % "/conc32.png"));
+  pixmapsLoaded.insert("1p", GlResourceManager::loadImage(path % "/1p32.png"));
+  pixmapsLoaded.insert("2p", GlResourceManager::loadImage(path % "/2p32.png"));
+  pixmapsLoaded.insert("4p", GlResourceManager::loadImage(path % "/4p32.png"));
+  pixmapsLoaded.insert("2j", GlResourceManager::loadImage(path % "/2j32.png"));
+  pixmapsLoaded.insert("3j", GlResourceManager::loadImage(path % "/3j32.png"));
+  pixmapsLoaded.insert("4j", GlResourceManager::loadImage(path % "/4j32.png"));
+  pixmapsLoaded.insert("conc", GlResourceManager::loadImage(path % "/conc32.png"));
 
   for (auto it = __modelsFiles.begin(); it != __modelsFiles.end(); ++it) {
     Q_ASSERT(pixmapsLoaded.contains(it.value()));
@@ -79,6 +79,3 @@ ModelMatcher::matchMyModel(const QString& _acft) {
 
   return __modelsPixmaps["ZZZZ"];
 }
-
-
-

@@ -28,7 +28,7 @@ class ViewPage :
     private Ui::ViewPage {
   
   Q_OBJECT
-  VATSINATOR_DECLARE_PAGE(View)
+  DECLARE_SETTINGS_PAGE(View)
   
 public:
 
@@ -36,6 +36,7 @@ public:
   
   QString listElement() const;
   QString listIcon() const;
+  QString pageName() const;
   
   /**
    * @variables
@@ -51,7 +52,7 @@ public:
    * 
    * airport_labels:                    bool
    */
-  QVariant get(const QString&) const;
+  void updateFromUi() const;
 
 protected:
   void __restore(QSettings&);
