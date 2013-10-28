@@ -59,7 +59,7 @@ SettingsManager::earlyGetLocale() {
   settings.beginGroup("Settings/misc");
   
   QString language = settings.value("language",
-                              QLocale::system().name().left(2)).toString();
+                              QLocale::system().name()).toString();
   
   settings.endGroup();
   return language;
