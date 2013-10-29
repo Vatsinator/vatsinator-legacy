@@ -34,7 +34,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="244"/>
         <source>Online from:</source>
-        <translation>Połączony od:</translation>
+        <translation>Podłączony od:</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="153"/>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="69"/>
         <source>A simple Vatsim monitor</source>
-        <translation>Otwarty monitor sieci VATSIM</translation>
+        <translation>Prosty monitor sieci Vatsim</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="91"/>
         <source>Fetching...</source>
-        <translation>Pobieranie informacji o pogodzie...</translation>
+        <translation>Pobieranie...</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="118"/>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="160"/>
         <source>Current status:</source>
-        <translation>Obecnie:</translation>
+        <translation>Etap lotu:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="97"/>
@@ -700,88 +700,88 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="685"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="581"/>
         <source>Flight details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="722"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="618"/>
         <source>Airport details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="743"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="639"/>
         <source>Controllers</source>
         <translation>Kontrolerzy</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="755"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="651"/>
         <source>Departures</source>
         <translation>Odloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="764"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="660"/>
         <source>%1 to %2</source>
         <translation>%1 do %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="792"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="688"/>
         <source>%1 from %2</source>
         <translation>%1 z %2</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="822"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="718"/>
         <source>%1 details</source>
         <translation>Szczegóły %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="846"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="742"/>
         <source>This location</source>
         <translation>To miejsce</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="848"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="744"/>
         <source>Set as home location</source>
         <translation>Ustaw jako miejsce domowe</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="855"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="751"/>
         <source>Flights nearby</source>
         <translation>Loty nieopodal</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1423"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1333"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1425"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1335"/>
         <source>Altitude: %1 ft</source>
         <translation>Wysokość: %1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1450"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1360"/>
         <source>Departures: %1</source>
         <translation>Odloty: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1455"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1365"/>
         <source>Arrivals: %1</source>
         <translation>Przyloty: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="767"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="663"/>
         <source>nowhere</source>
         <translation>nikąd</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="783"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="679"/>
         <source>Arrivals</source>
         <translation>Przyloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1415"/>
-        <location filename="../ui/widgets/mapwidget.cpp" line="1419"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1325"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="1329"/>
         <source>(unknown)</source>
         <translation>(brak)</translation>
     </message>
@@ -1106,27 +1106,27 @@
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
         <source>&amp;Menu</source>
         <translation>&amp;Menu</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="120"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
         <source>Last update: never</source>
         <translation>Ostatnia aktualizacja: nigdy</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="122"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="116"/>
         <source>Last update: %1 UTC</source>
         <translation>Ostatnia aktualizacja: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="134"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="128"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Klientów: %1 (%2 pilotów, %3 kontrolerów, %4 obserwatorów)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="220"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="219"/>
         <source>Invalid data!</source>
         <translation>Błędne dane!</translation>
     </message>

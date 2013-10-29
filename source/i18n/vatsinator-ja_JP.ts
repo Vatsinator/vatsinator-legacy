@@ -34,12 +34,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="244"/>
         <source>Online from:</source>
-        <translation type="unfinished"/>
+        <translation>ログイン時刻:</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="153"/>
         <source>Atis message:</source>
-        <translation type="unfinished"/>
+        <translation>ATIS メッセージ:</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="388"/>
@@ -70,68 +70,68 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="59"/>
         <source>Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="69"/>
         <source>A simple Vatsim monitor</source>
-        <translation type="unfinished"/>
+        <translation>シンプルな Vatsim モニタ</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
         <location filename="../ui/windows/aboutwindow.cpp" line="47"/>
         <source>Version %1</source>
-        <translation type="unfinished"/>
+        <translation>バージョン %1</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="129"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator はシンプルな Vatsim モニタ - ログインしているパイロット、管制官、そしていくつかの便利な情報 (METAR や空港の詳細) を表示します。</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Database sync time:</source>
-        <translation type="unfinished"/>
+        <translation>データベース同期時刻:</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>Airports in the database:</source>
-        <translation type="unfinished"/>
+        <translation>データベース中の空港</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="160"/>
         <source>FIRs in the database:</source>
-        <translation type="unfinished"/>
+        <translation>データベース中の FIR</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="224"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>(C) 2012-2013 Vatsinator チーム&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="280"/>
         <source>Changelog</source>
-        <translation type="unfinished"/>
+        <translation>変更履歴</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>About</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="243"/>
         <source>Authors</source>
-        <translation type="unfinished"/>
+        <translation>作者</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="266"/>
         <source>License</source>
-        <translation type="unfinished"/>
+        <translation>ライセンス</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
         <source>never</source>
-        <translation type="unfinished"/>
+        <translation>なし</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
@@ -160,7 +160,7 @@
         <location filename="../ui/windows/airportdetailswindow.ui" line="35"/>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="147"/>
         <source>%1 - airport details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - 空港詳細</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="61"/>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="259"/>
         <source>Bookings</source>
-        <translation type="unfinished"/>
+        <translation>飛行予定</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="325"/>
@@ -211,7 +211,7 @@
         <location filename="../ui/windows/airportdetailswindow.ui" line="492"/>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="180"/>
         <source>Vataware statistics for this airport</source>
-        <translation type="unfinished"/>
+        <translation>Vataware による空港の統計情報</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="515"/>
@@ -231,12 +231,12 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="118"/>
         <source>Sorry, no weather report for %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 に対する気象レポートはありません。</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="176"/>
         <source>%1 ft</source>
-        <translation type="unfinished"/>
+        <translation>%1 フィート</translation>
     </message>
 </context>
 <context>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="94"/>
         <source>Airport</source>
-        <translation type="unfinished"/>
+        <translation>空港</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="96"/>
@@ -277,12 +277,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="56"/>
         <source>%1 - ATC details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - ATC 詳細</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="72"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../ui/buttons/colorbutton.cpp" line="106"/>
         <source>Select color</source>
-        <translation type="unfinished"/>
+        <translation>色選択</translation>
     </message>
 </context>
 <context>
@@ -322,53 +322,53 @@
         <location filename="../ui/pages/colorspage.ui" line="26"/>
         <location filename="../ui/pages/colorspage.cpp" line="47"/>
         <source>Colors</source>
-        <translation type="unfinished"/>
+        <translation>表示色の設定</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="45"/>
         <source>Unstaffed FIR borders color:</source>
-        <translation type="unfinished"/>
+        <translation>管制官が離籍中の FIR の境界色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="75"/>
         <source>Staffed FIR background color:</source>
-        <translation type="unfinished"/>
+        <translation>管制官が在籍中の FIR の背景色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="121"/>
         <location filename="../ui/pages/colorspage.ui" line="200"/>
         <source>Alpha channel:</source>
-        <translation type="unfinished"/>
+        <translation>透明度:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="154"/>
         <source>Staffed UIR background color:</source>
-        <translation type="unfinished"/>
+        <translation>管制官が在籍中の UIR の背景色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="233"/>
         <source>Approach circle color:</source>
-        <translation type="unfinished"/>
+        <translation>アプローチを示す円の表示色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="263"/>
         <source>Seas color:</source>
-        <translation type="unfinished"/>
+        <translation>海洋の表示色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="293"/>
         <source>Lands color:</source>
-        <translation type="unfinished"/>
+        <translation>陸地の表示色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="323"/>
         <source>Origin-to-pilot line color:</source>
-        <translation type="unfinished"/>
+        <translation>出発空港から飛行位置までの線の表示色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="353"/>
         <source>Pilot-to-destination line color:</source>
-        <translation type="unfinished"/>
+        <translation>飛行位置から到着空港までの線の表示色:</translation>
     </message>
 </context>
 <context>
@@ -427,7 +427,7 @@
     <message>
         <location filename="../network/filedownloader.cpp" line="118"/>
         <source>Error downloading file: %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルのダウンロード失敗: %1</translation>
     </message>
 </context>
 <context>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="83"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>フライト</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="146"/>
@@ -453,12 +453,12 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="209"/>
         <source>Bookings</source>
-        <translation type="unfinished"/>
+        <translation>飛行予定</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="272"/>
         <source>Active airports</source>
-        <translation type="unfinished"/>
+        <translation>アクティブな空港</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="341"/>
@@ -468,12 +468,12 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="83"/>
         <source>%1 - FIR details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - FIR 詳細</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
         <source>%1 - ARTCC details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - ARTCC 詳細</translation>
     </message>
 </context>
 <context>
@@ -482,7 +482,7 @@
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="65"/>
         <source>%1 - flight details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - フライト詳細</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="68"/>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="160"/>
         <source>Current status:</source>
-        <translation type="unfinished"/>
+        <translation>現在の状態:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="97"/>
@@ -524,12 +524,12 @@
         <location filename="../ui/windows/flightdetailswindow.ui" line="280"/>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="90"/>
         <source>Vataware statistics for this pilot</source>
-        <translation type="unfinished"/>
+        <translation>Vataware によるパイロットの統計情報</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="194"/>
         <source>Logged from:</source>
-        <translation type="unfinished"/>
+        <translation>ログイン時刻:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="114"/>
@@ -539,22 +539,22 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="130"/>
         <source>Captain:</source>
-        <translation type="unfinished"/>
+        <translation>機長:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="211"/>
         <source>Squawk:</source>
-        <translation type="unfinished"/>
+        <translation>Squawk:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="228"/>
         <source>Baro:</source>
-        <translation type="unfinished"/>
+        <translation>高度計規正値:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="297"/>
         <source>Flight plan</source>
-        <translation type="unfinished"/>
+        <translation>フライトプラン:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="342"/>
@@ -599,7 +599,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="508"/>
         <source>Track this flight</source>
-        <translation type="unfinished"/>
+        <translation>飛行経路を表示</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="515"/>
@@ -643,7 +643,7 @@
     <message>
         <location filename="../ui/windows/flightlistwindow.ui" line="14"/>
         <source>Flight list</source>
-        <translation type="unfinished"/>
+        <translation>フライトリスト:</translation>
     </message>
 </context>
 <context>
@@ -651,7 +651,7 @@
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="124"/>
         <source>Prefiled</source>
-        <translation type="unfinished"/>
+        <translation>ファイル済み:</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="141"/>
@@ -666,12 +666,12 @@
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="145"/>
         <source>From</source>
-        <translation type="unfinished"/>
+        <translation>出発空港</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="147"/>
         <source>To</source>
-        <translation type="unfinished"/>
+        <translation>到着空港</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="149"/>
@@ -722,32 +722,32 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="660"/>
         <source>%1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 から %2 へ</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="688"/>
         <source>%1 from %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 から %1 へ</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="718"/>
         <source>%1 details</source>
-        <translation type="unfinished"/>
+        <translation>%1 詳細</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="742"/>
         <source>This location</source>
-        <translation type="unfinished"/>
+        <translation>この場所</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="744"/>
         <source>Set as home location</source>
-        <translation type="unfinished"/>
+        <translation>ホームに設定</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="751"/>
         <source>Flights nearby</source>
-        <translation type="unfinished"/>
+        <translation>周囲のフライト</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1333"/>
@@ -772,7 +772,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="663"/>
         <source>nowhere</source>
-        <translation type="unfinished"/>
+        <translation>不明</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="679"/>
@@ -791,7 +791,7 @@
     <message>
         <location filename="../ui/actions/metaraction.cpp" line="25"/>
         <source>%1 metar</source>
-        <translation type="unfinished"/>
+        <translation>%1 metar</translation>
     </message>
 </context>
 <context>
@@ -799,7 +799,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="17"/>
         <source>METARs</source>
-        <translation type="unfinished"/>
+        <translation>METAR</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="27"/>
@@ -809,7 +809,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="37"/>
         <source>There are METARs that were fetched recently:</source>
-        <translation type="unfinished"/>
+        <translation>最近取得された METAR の一覧:</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="44"/>
@@ -843,7 +843,7 @@
         <location filename="../ui/pages/miscellaneouspage.ui" line="26"/>
         <location filename="../ui/pages/miscellaneouspage.cpp" line="42"/>
         <source>Miscellaneous</source>
-        <translation type="unfinished"/>
+        <translation>その他の設定</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="119"/>
@@ -868,22 +868,22 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="232"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Vatsinator の個人情報保護に関する詳細について&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="219"/>
         <source>Nicer but slower.</source>
-        <translation type="unfinished"/>
+        <translation>描画品質は向上、描画速度は遅い</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="99"/>
         <source>Antyaliasing</source>
-        <translation type="unfinished"/>
+        <translation>アンチエイリアス処理</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="43"/>
         <source>Zooming intensivity:</source>
-        <translation type="unfinished"/>
+        <translation>ズーム強度:</translation>
     </message>
 </context>
 <context>
@@ -901,32 +901,32 @@
         <location filename="../ui/pages/networkpage.ui" line="20"/>
         <location filename="../ui/pages/networkpage.cpp" line="41"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>ネットワーク</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="34"/>
         <source>Refresh data every</source>
-        <translation type="unfinished"/>
+        <translation>データ更新周期</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="60"/>
         <source>minutes</source>
-        <translation type="unfinished"/>
+        <translation>分毎</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="85"/>
         <source>Let me know when an error occurs</source>
-        <translation type="unfinished"/>
+        <translation>エラー発生時はご連絡ください。</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="97"/>
         <source>If enabled, you will be asked what to do each time data downloading fails. Otherwise, Vatsinator will make the decision itself.</source>
-        <translation type="unfinished"/>
+        <translation>有効の場合、データの取得失敗時にどのようにするかをユーザに確認します。それ以外は Vatsinator が決定します。</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="110"/>
         <source>Enable caching</source>
-        <translation type="unfinished"/>
+        <translation>キャッシュを有効にする</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="125"/>
@@ -936,7 +936,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="138"/>
         <source>Keep METARs updated</source>
-        <translation type="unfinished"/>
+        <translation>METAR を最新状態に保つ</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="153"/>
@@ -946,12 +946,12 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="166"/>
         <source>Enable version checking</source>
-        <translation type="unfinished"/>
+        <translation>バージョン確認を有効にする</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="181"/>
         <source>If enabled, you will be notified if the new version of the application is available.</source>
-        <translation type="unfinished"/>
+        <translation>有効の場合、プログラムの最新バージョンが利用可能な場合通知されます。</translation>
     </message>
 </context>
 <context>
@@ -969,7 +969,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="132"/>
         <source>Download now!</source>
-        <translation type="unfinished"/>
+        <translation>今すぐダウンロード!</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
@@ -995,7 +995,7 @@
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="29"/>
         <source>It means that no data can be obtained at all. Check your internet connection and the accessibility of Vatsim servers.</source>
-        <translation type="unfinished"/>
+        <translation>一切のデータを取得できないことを意味します。インターネット接続と Vatsim サーバへ接続可能か確認してください。</translation>
     </message>
 </context>
 <context>
@@ -1003,7 +1003,7 @@
     <message>
         <location filename="../ui/actions/toggleinboundoutboundlinesaction.cpp" line="32"/>
         <source>Toggle inbound/outbound lines</source>
-        <translation type="unfinished"/>
+        <translation>到着/出発の線を入れ替える</translation>
     </message>
 </context>
 <context>
@@ -1011,7 +1011,7 @@
     <message>
         <location filename="../ui/actions/trackaction.cpp" line="27"/>
         <source>Track this flight</source>
-        <translation type="unfinished"/>
+        <translation>飛行経路を表示</translation>
     </message>
 </context>
 <context>
@@ -1019,12 +1019,12 @@
     <message>
         <location filename="../storage/unzipper.cpp" line="95"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
-        <translation type="unfinished"/>
+        <translation>Zip 圧縮ファイルを開けません: %1 (ディレクトリのパーミッションを確認してください)</translation>
     </message>
     <message>
         <location filename="../storage/unzipper.cpp" line="115"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
-        <translation type="unfinished"/>
+        <translation>Zip 圧縮ファイル (%1) にアクセスできません。無視して続行します...</translation>
     </message>
 </context>
 <context>
@@ -1043,32 +1043,32 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
         <source>&amp;Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Vatsinator</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Hヘルプ</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"/>
+        <translation>&amp;S設定</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>About</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
         <source>METARs...</source>
-        <translation type="unfinished"/>
+        <translation>METAR...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
@@ -1093,42 +1093,42 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
         <source>Enable auto-updates</source>
-        <translation type="unfinished"/>
+        <translation>自動更新有効</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
         <source>Show home location</source>
-        <translation type="unfinished"/>
+        <translation>ホームを表示</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
         <source>Ctrl+H</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
         <source>&amp;Menu</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Mメニュー</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="120"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
         <source>Last update: never</source>
-        <translation type="unfinished"/>
+        <translation>最終更新時刻: 未実施</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="122"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="116"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>最終更新時刻: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="134"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="128"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
-        <translation type="unfinished"/>
+        <translation>クライアント: %1 (パイロット %2、ATC %3、オブザーバ %4)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="220"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="219"/>
         <source>Invalid data!</source>
-        <translation type="unfinished"/>
+        <translation>無効なデータです!</translation>
     </message>
 </context>
 <context>
@@ -1137,7 +1137,7 @@
         <location filename="../ui/pages/viewpage.ui" line="26"/>
         <location filename="../ui/pages/viewpage.cpp" line="52"/>
         <source>View</source>
-        <translation type="unfinished"/>
+        <translation>表示設定</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="114"/>
@@ -1153,12 +1153,12 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>When hovered</source>
-        <translation type="unfinished"/>
+        <translation>マウスカーソルを当てた時</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="141"/>
         <source>Airport-related</source>
-        <translation type="unfinished"/>
+        <translation>関連する空港</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="43"/>
@@ -1188,7 +1188,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="90"/>
         <source>Inactive airports</source>
-        <translation type="unfinished"/>
+        <translation>非アクティブな空港</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="168"/>

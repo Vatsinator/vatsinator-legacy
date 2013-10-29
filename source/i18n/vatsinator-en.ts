@@ -1108,27 +1108,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
         <source>&amp;Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="120"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
         <source>Last update: never</source>
         <translation type="unfinished">Last update: never</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="122"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="116"/>
         <source>Last update: %1 UTC</source>
         <translation type="unfinished">Last update: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="134"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="128"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation type="unfinished">Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="220"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="219"/>
         <source>Invalid data!</source>
         <translation type="unfinished"></translation>
     </message>
