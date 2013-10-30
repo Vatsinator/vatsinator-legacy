@@ -142,6 +142,10 @@ WeatherForecastModel::__iconForCondition(int _condition) const {
       return ":/weather/weather-clouds.png";
     case 3:
       return ":/weather/weather-showers-scattered.png";
+    case 4:
+      return ":/weather/weather-light-snow.png";
+    case 5:
+      return ":/weather/weather-snow.png";
     case 7:
       return ":/weather/weather-breezy.png";
     case 8:

@@ -6,5 +6,7 @@
     <file>weather-showers-scattered.png</file>
     <file>weather-breezy.png</file>
     <file>weather-windy.png</file>
+    <file>weather-light-snow.png</file>
+    <file>weather-snow.png</file>
   </qresource>
 </RCC>
