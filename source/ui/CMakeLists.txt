@@ -52,6 +52,7 @@ set (ui_SRCS
     buttons/clientdetailsbutton.cpp
     buttons/urlbutton.cpp
     
+    dialogs/apprestartdialog.cpp
     dialogs/datafetcherrordialog.cpp
     dialogs/letsendstatsdialog.cpp
     dialogs/newversiondialog.cpp
@@ -102,6 +103,7 @@ set (ui_MOC_SRCS
     buttons/clientdetailsbutton.h
     buttons/urlbutton.h
     
+    dialogs/apprestartdialog.h
     dialogs/datafetcherrordialog.h
     dialogs/letsendstatsdialog.h
     dialogs/newversiondialog.h
@@ -137,6 +139,7 @@ set (ui_MOC_SRCS
 vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
 
 set (ui_FORMS
+    dialogs/apprestartdialog.ui
     dialogs/letsendstatsdialog.ui
     dialogs/newversiondialog.ui
     

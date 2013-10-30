@@ -109,7 +109,8 @@ public:
   vatsimData() { return *__vatsimData; }
 
 public slots:
-  void refreshData();  
+  void refreshData();
+  void restart();
   
 private:
   void __emitGLInitialized();

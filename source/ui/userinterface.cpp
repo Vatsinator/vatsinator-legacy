@@ -28,6 +28,7 @@
 
 #include "storage/settingsmanager.h"
 
+#include "ui/dialogs/apprestartdialog.h"
 #include "ui/dialogs/datafetcherrordialog.h"
 #include "ui/dialogs/newversiondialog.h"
 #include "ui/dialogs/statusfetcherrordialog.h"
@@ -93,6 +94,21 @@ UserInterface::~UserInterface() {
 #ifndef NO_DEBUG
   delete __debugWindow;
 #endif
+}
+
+void
+UserInterface::showAppRestartDialog() {
+  AppRestartDialog* dialog = new AppRestartDialog();
+  
+  connect(dialog,                                       SIGNAL(accepted()),
+          VatsinatorApplication::getSingletonPtr(),     SLOT(restart()));
+  connect(dialog,                                       SIGNAL(finished(int)),
+          dialog,                                       SLOT(deleteLater()));
+  
+  dialog->show();
+  dialog->raise();
+  dialog->activateWindow();
+  
 }
 
 void

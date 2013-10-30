@@ -94,5 +94,38 @@
  <resources>
   <include location="../resources/imgs.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>YesNoButtonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>LetSendStatsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>96</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>YesNoButtonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>LetSendStatsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>96</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

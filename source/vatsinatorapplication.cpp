@@ -197,6 +197,13 @@ VatsinatorApplication::refreshData() {
 }
 
 void
+VatsinatorApplication::restart() {
+  /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
+  qApp->quit();
+  QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
+void
 VatsinatorApplication::__emitGLInitialized() {
   emit glInitialized();
 }

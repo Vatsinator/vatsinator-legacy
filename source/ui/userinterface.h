@@ -56,6 +56,9 @@ public:
   UserInterface();
 
   virtual ~UserInterface();
+  
+public slots:
+  void showAppRestartDialog();
 
 private slots:
   void __statusFileError();

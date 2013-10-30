@@ -87,7 +87,7 @@ ColorsPage::updateFromUi() const {
 }
 
 void
-ColorsPage::__restore(QSettings& _s) {
+ColorsPage::restore(QSettings& _s) {
   StaffedFirColorButton->setColor(
     _s.value("staffed_fir_borders", DefaultSettings::STAFFED_FIR_BORDERS_COLOR).value<QColor>());
   StaffedFirColorAlphaBox->setValue(
@@ -111,7 +111,7 @@ ColorsPage::__restore(QSettings& _s) {
 }
 
 void
-ColorsPage::__save(QSettings& _s) {
+ColorsPage::save(QSettings& _s) {
   _s.setValue("staffed_fir_borders", StaffedFirColorButton->color());
   _s.setValue("staffed_fir_alpha", StaffedFirColorAlphaBox->value());
   _s.setValue("unstaffed_fir_borders", UnstaffedFirColorButton->color());

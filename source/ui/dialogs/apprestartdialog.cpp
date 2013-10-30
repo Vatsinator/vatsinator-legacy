@@ -1,5 +1,5 @@
 /*
- * letsendstatsdialog.cpp
+ * apprestartdialog.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,10 @@
 
 #include <QtGui>
 
-#include "letsendstatsdialog.h"
+#include "apprestartdialog.h"
 #include "defines.h"
 
-LetSendStatsDialog::LetSendStatsDialog(QWidget* _parent) :
+AppRestartDialog::AppRestartDialog(QWidget* _parent) :
     QDialog(_parent) {
   setupUi(this);
 }

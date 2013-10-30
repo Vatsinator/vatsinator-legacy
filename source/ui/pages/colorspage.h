@@ -54,8 +54,8 @@ public:
   void updateFromUi() const;
   
 protected:
-  void __restore(QSettings&);
-  void __save(QSettings&);
+  void restore(QSettings&);
+  void save(QSettings&);
   
 };
 

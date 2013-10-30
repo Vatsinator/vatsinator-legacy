@@ -29,6 +29,9 @@ class MiscellaneousPage :
   Q_OBJECT
   DECLARE_SETTINGS_PAGE(Misc)
   
+signals:
+  void languageChanged();
+  
 public:
   
   MiscellaneousPage(QWidget* = 0);
@@ -47,8 +50,12 @@ public:
   void updateFromUi() const;
 
 protected:
-  void __restore(QSettings&);
-  void __save(QSettings&);
+  void showEvent(QShowEvent*) override;
+  
+  void restore(QSettings&);
+  void save(QSettings&);
+  
+  int __languageIndex;
   
 };
 
