@@ -29,6 +29,32 @@ EmptyAirport::EmptyAirport(const AirportRecord* _ap) :
   
 EmptyAirport::~EmptyAirport() {}
 
+unsigned
+EmptyAirport::countDepartures() const {
+  return 0;
+}
 
+unsigned
+EmptyAirport::countOutbounds() const {
+  return 0;
+}
 
+unsigned
+EmptyAirport::countArrivals() const {
+  return 0;
+}
 
+unsigned
+EmptyAirport::countInbounds() const {
+  return 0;
+}
+
+bool
+EmptyAirport::hasApproach() const {
+  return false;
+}
+
+Controller::Facilities
+EmptyAirport::facilities() const {
+  return 0;
+}

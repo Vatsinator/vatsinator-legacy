@@ -58,6 +58,9 @@ set (ui_SRCS
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
     
+    map/mapconfig.cpp
+    map/worldpolygon.cpp
+    
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
     pages/miscellaneouspage.cpp

@@ -95,6 +95,7 @@ AtcDetailsWindow::__updateData() {
 void
 AtcDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
-  MapWidget::getSingleton().showClient(__current);
+  // TODO
+//   MapWidget::getSingleton().showClient(__current);
 }
 

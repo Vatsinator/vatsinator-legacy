@@ -29,10 +29,6 @@
 FirDatabase::FirDatabase() {
 //   __readDatabase();
   QtConcurrent::run(this, &FirDatabase::__readDatabase);
-
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
-          this,                                     SLOT(__init()),
-          Qt::DirectConnection);
 }
 
 
@@ -66,7 +62,6 @@ FirDatabase::clearAll() {
 
 void
 FirDatabase::__readDatabase() {
-  __toolTipsPrepared = false;
   __firs.clear();
   
   QFile db(FileManager::path("WorldFirs.db"));
@@ -105,18 +100,4 @@ FirDatabase::__readDatabase() {
   db.close();
 
   clearAll();
-}
-
-void
-FirDatabase::__init() {
-  Q_ASSERT(!__toolTipsPrepared);
-
-  VatsinatorApplication::log("Preparing VBOs for FIRs...");
-
-  for (Fir& f: __firs)
-    f.init();
-
-  __toolTipsPrepared = true;
-
-  VatsinatorApplication::log("FIRs' VBOs prepared.");
 }

@@ -20,6 +20,7 @@
 #ifndef FIRDATABASE_H
 #define FIRDATABASE_H
 
+#include <QCoreApplication>
 #include <QVector>
 #include <QString>
 
@@ -42,11 +43,10 @@ struct FirHeader {
 
 
 class FirDatabase :
-    public QObject,
     public Singleton<FirDatabase> {
-
-  Q_OBJECT
-
+  
+  Q_DECLARE_TR_FUNCTIONS(FirDatabase);
+    
 public:
   FirDatabase();
 
@@ -73,11 +73,6 @@ private:
   void __readDatabase();
 
   QVector<Fir>  __firs;
-
-  bool __toolTipsPrepared;
-
-private slots:
-  void __init();
 
 };
 

@@ -102,17 +102,6 @@ ActiveAirport::facilities() const {
 }
 
 void
-ActiveAirport::drawLines() const {
-  for (const Pilot* p: __inbounds->flights())
-    if (p->flightStatus() != Pilot::ARRIVED)
-      p->drawLineTo();
-  
-  for (const Pilot* p: __outbounds->flights())
-    if (p->flightStatus() != Pilot::DEPARTING)
-      p->drawLineFrom();
-}
-
-void
 ActiveAirport::addStaff(const Controller* _c) {
   __staff->addStaff(_c);
 }

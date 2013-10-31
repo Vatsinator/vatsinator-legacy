@@ -34,7 +34,7 @@ class Client {
 public:
   // types
   enum Type {
-    PILOT, ATC
+    Pilot, Atc
   };
   
   struct Position {
@@ -59,7 +59,7 @@ public:
    * Use this class instead of dynamic_cast to check the subclass
    * type - it is a little bit faster.
    */
-  virtual inline Client::Type clientType() const = 0;
+  virtual Client::Type clientType() const = 0;
 
   virtual ~Client() {}
 

@@ -35,6 +35,9 @@ public:
 
   void bind() const;
   void unbind() const;
+  
+  inline unsigned
+  dataSize() const { return __dataSize; }
 
 #ifndef NO_DEBUG
   static unsigned vboCount;
@@ -43,6 +46,7 @@ public:
 private:
   GLuint __vboID;
   GLenum __type;
+  unsigned __dataSize;
 
 #ifndef NO_DEBUG
   unsigned __size;

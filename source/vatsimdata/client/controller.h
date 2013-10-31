@@ -58,8 +58,7 @@ public:
   /**
    * Reimplemented from Client::clientType().
    */
-  inline Client::Type
-  clientType() const { return Client::ATC; }
+  Client::Type clientType() const override;
   
   inline const QString &
   frequency() const { return __frequency; }

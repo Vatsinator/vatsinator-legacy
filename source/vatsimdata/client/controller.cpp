@@ -91,6 +91,11 @@ Controller::Controller(const QStringList& _data) :
   __setMyIcaoAndFacility();
 }
 
+Client::Type
+Controller::clientType() const {
+  return Client::Atc;
+}
+
 void Controller::__cleanupAtis() {
   // clenup ATIS message
   if (__atis[0] == '$') {

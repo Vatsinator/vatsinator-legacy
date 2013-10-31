@@ -22,12 +22,9 @@
 
 #include <QVector>
 
-#include <qgl.h>
-
 #include "db/point.h"
 
 #include "vatsimdata/airport.h"
-#include "vatsimdata/clickable.h"
 
 class AirportTableModel;
 class Controller;
@@ -35,17 +32,13 @@ class ControllerTableModel;
 class FirDatabase;
 class FlightTableModel;
 class Pilot;
-class VertexBufferObject;
 struct FirHeader;
 
-class Fir : public Clickable {
+class Fir {
 
 public:
   Fir();
   virtual ~Fir();
-
-  inline Clickable::Type
-  objectType() const { return Clickable::FIR; }
 
   void addStaff(const Controller*);
   void addUirStaff(const Controller*);
@@ -56,7 +49,6 @@ public:
 
   void correctName();
 
-  void init();
   void loadHeader(const FirHeader&);
   void clear();
   bool isStaffed() const;
@@ -96,10 +88,7 @@ public:
 
   inline void
   setCountry(const QString& _c) { __country = _c; }
-
-  inline GLuint
-  icaoTip() const { return __icaoTip ? __icaoTip : __generateTip(); }
-
+  
   inline QVector<Point> &
   borders() { return __borders; }
 
@@ -107,9 +96,6 @@ public:
   triangles() { return __triangles; }
 
 private:
-
-  GLuint __generateTip() const;
-  void __prepareVBO();
 
   QString __icao;
   bool __oceanic;
@@ -121,19 +107,11 @@ private:
   QVector<Point> __borders;
   QVector<unsigned short> __triangles;
 
-  mutable GLuint __icaoTip;
-
-  ControllerTableModel*   __staff;
-  FlightTableModel*   __flights;
-  AirportTableModel*  __airports;
+  ControllerTableModel* __staff;
+  FlightTableModel*     __flights;
+  AirportTableModel*    __airports;
 
   unsigned __uirStaffCount;
-
-  VertexBufferObject* __bordersVBO;
-  VertexBufferObject* __trianglesVBO;
-
-  unsigned  __bordersSize;
-  unsigned  __trianglesSize;
 };
 
 #endif // FIR_H

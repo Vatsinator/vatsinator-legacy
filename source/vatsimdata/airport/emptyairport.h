@@ -16,11 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef EMPTYAIRPORT_H
 #define EMPTYAIRPORT_H
-
-#include <QMap>
 
 #include "vatsimdata/airport.h"
 
@@ -32,26 +29,14 @@ public:
   
   virtual ~EmptyAirport();
   
-  inline unsigned
-  countDepartures() const { return 0; }
+  unsigned countDepartures() const override;
+  unsigned countOutbounds() const override;
+  unsigned countArrivals() const override;
+  unsigned countInbounds() const override;
   
-  inline unsigned
-  countOutbounds() const { return 0; }
+  bool hasApproach() const override;
   
-  inline unsigned
-  countArrivals() const { return 0; }
-  
-  inline unsigned
-  countInbounds() const { return 0; }
-  
-  inline bool
-  hasApproach() const { return false; }
-  
-  inline Controller::Facilities
-  facilities() const { return 0; }
-  
-  inline void
-  drawLines() const {}
+  Controller::Facilities facilities() const override;
   
 };
 

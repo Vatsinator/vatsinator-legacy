@@ -22,14 +22,7 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
-#include "glutils/glresourcemanager.h"
-
-#include "modules/modelmatcher.h"
-
 #include "storage/settingsmanager.h"
-
-#include "ui/pages/colorspage.h"
-#include "ui/widgets/mapwidget.h"
 
 #include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -98,11 +91,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __heading(_data[38].toUInt()),
     __pressure({_data[39], _data[40]}),
     __route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
-    __prefiledOnly(_prefiled),
-    __lineFrom(0),
-    __lineTo(0),
-    __linesGenerated(false),
-    __callsignTip(0) {
+    __prefiledOnly(_prefiled) {
   // vatsim sometimes skips the 0 on the beginning
   if (__squawk.length() == 3)
     __squawk.prepend("0");
@@ -110,50 +99,13 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   __updateAirports();
   __setMyStatus();
 //   __generateLines();
-
-  __modelTexture = ModelMatcher::getSingleton().matchMyModel(__aircraft);
 }
 
-Pilot::~Pilot() {
-  if (__callsignTip)
-    GlResourceManager::deleteImage(__callsignTip);
-}
+Pilot::~Pilot() {}
 
-void
-Pilot::drawLineFrom() const {
-  if (!__linesGenerated)
-    __generateLines();
-  
-  if (!__lineFrom.empty()) {
-    QColor otp = SM::get("colors.origin_to_pilot_line").value<QColor>();
-    glColor4f(otp.redF(),
-              otp.greenF(),
-              otp.blueF(),
-              1.0
-             );
-    
-    glVertexPointer(2, GL_FLOAT, 0, &__lineFrom[0]);
-    glDrawArrays(GL_LINE_STRIP, 0, __lineFrom.size() / 2);
-  }
-}
-
-void
-Pilot::drawLineTo() const {
-  if (!__linesGenerated)
-    __generateLines();
-  
-  if (!__lineTo.empty()) {
-    QColor ptd = SM::get("colors.pilot_to_destination_line").value<QColor>();
-    glColor4f(ptd.redF(),
-              ptd.greenF(),
-              ptd.blueF(),
-              1.0
-             );
-    glVertexPointer(2, GL_FLOAT, 0, &__lineTo[0]);
-    glLineStipple(3, 0xF0F0);
-    glDrawArrays(GL_LINE_STRIP, 0, __lineTo.size() / 2);
-    glLineStipple(1, 0xFFFF);
-  }
+Client::Type
+Pilot::clientType() const {
+  return Client::Pilot;
 }
 
 void Pilot::__updateAirports() {
@@ -249,209 +201,3 @@ Pilot::__setMyStatus() {
 
   __flightStatus = AIRBORNE;
 }
-
-void
-Pilot::__generateLines() const {
-  const Airport* ap = NULL;
-
-  if (!__route.origin.isEmpty())
-    ap = VatsimDataHandler::getSingleton().activeAirports()[__route.origin];
-
-  if (ap && ap->data()) {
-    double myLon = ap->data()->longitude;
-    double myLat = ap->data()->latitude;
-
-    if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-        VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
-      myLon += 360;
-    else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-             VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
-      myLon -= 360;
-
-    __lineFrom << myLon
-               << myLat;
-  }
-  
-  __lineTo << __position.longitude
-           << __position.latitude;
-  
-  __parseRoute();
-  
-  __lineFrom << __position.longitude
-             << __position.latitude;
-
-  ap = NULL;
-
-  if (!__route.destination.isEmpty())
-    ap = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
-
-  if (ap && ap->data()) {
-    double myLon = ap->data()->longitude;
-    double myLat = ap->data()->latitude;
-
-    if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-        VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
-      myLon += 360;
-    else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-             VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
-      myLon -= 360;
-
-    __lineTo << myLon
-             << myLat;
-  }
-  
-  __linesGenerated = true;
-}
-
-GLuint
-Pilot::__generateTip() const {
-  QImage temp(MapWidget::getSingleton().pilotToolTipBackground());
-  QPainter painter(&temp);
-  painter.setRenderHint(QPainter::TextAntialiasing);
-  painter.setRenderHint(QPainter::SmoothPixmapTransform);
-  painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::getSingleton().pilotFont());
-  painter.setPen(MapWidget::getSingleton().pilotPen());
-  QRect rectangle(28, 10, 73, 13); // size of the tooltip.png
-  painter.drawText(rectangle, Qt::AlignCenter, __callsign);
-  __callsignTip = GlResourceManager::loadImage(temp);
-  return __callsignTip;
-}
-
-void
-Pilot::__parseRoute() const {
-  /*
-   * Okay, this function needs some comment.
-   * Pilots generally fill their NATs in several different ways, but
-   * NAT[A-Z] is the worst for us.
-   * TODO: Include NATs entry/exit points.
-   */
-  
-  int pos = 0;
-  QVector<float>* curList = &__lineFrom;
-  bool natFound = false;
-  
-  /* 1) 5000N 05000W 5100N 04000W 5100N 03000W 5100N 02000W */
-  static QRegExp expNo1(" ([0-9]{4}[NS]) ([0-9]{5}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
-  while ((pos = expNo1.indexIn(this->__route.route, pos)) != -1) {
-    QString cap1 = expNo1.cap(1);
-    
-    float ns = cap1.left(2).toFloat();
-    if (cap1.endsWith('S'))
-      ns = -ns;
-    
-    QString cap2 = expNo1.cap(2);
-    
-    float we = cap2.left(3).toFloat();
-    if (cap2.endsWith('W'))
-      we = -we;
-    
-    if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
-        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
-        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
-      curList = &__lineTo;
-    
-    *curList << we << ns;
-    
-    pos += expNo1.matchedLength();
-    
-    natFound = true;
-  }
-  
-  if (natFound)
-    return;
-  
-  pos = 0;
-  
-  /* 2) YQX KOBEV 50N50W 51N40W 52N30W 52N20W LIMRI XETBO */
-  static QRegExp expNo2(" ([0-9]{2}[NS])([0-9]{2,3}[EW])", Qt::CaseSensitive, QRegExp::RegExp2);
-  while ((pos = expNo2.indexIn(this->__route.route, pos)) != -1) {
-    QString cap1 = expNo2.cap(1);
-    
-    float ns = cap1.left(2).toFloat();
-    if (cap1.endsWith('S'))
-      ns = -ns;
-    
-    QString cap2 = expNo2.cap(2);
-    
-    float we;
-    if (cap2.length() > 3)
-      we = cap2.left(3).toFloat();
-    else
-      we = cap2.left(2).toFloat();
-    
-    if (cap2.endsWith('W'))
-      we = -we;
-    
-    if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
-        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
-        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
-      curList = &__lineTo;
-    
-    *curList << we << ns;
-    
-    pos += expNo2.matchedLength();
-    
-    natFound = true;
-  }
-  
-  if (natFound)
-    return;
-  
-  pos = 0;
-  
-  
-  /* 3) VIXUN LOGSU 4950N 5140N 5130N 5120N DINIM */
-  static QRegExp expNo3(" ([0-9]{4}[NS]) ", Qt::CaseSensitive, QRegExp::RegExp2);
-  while ((pos = expNo3.indexIn(this->__route.route, pos)) != -1) {
-    QString cap = expNo3.cap(1);
-    
-    float ns = cap.left(2).toFloat();
-    if (cap.endsWith('S'))
-      ns = -ns;
-    
-    float west = 0 - cap.mid(2, 2).toFloat();
-    
-    if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
-        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && west > __position.longitude) ||
-        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && west < __position.longitude)))
-      curList = &__lineTo;
-    
-    *curList << west << ns;
-    
-    pos += expNo3.matchedLength();
-    
-    natFound = true;
-  }
-  
-  if (natFound)
-    return;
-  
-  pos = 0;
-  
-  /* 4) MALOT 54/20 54/30 54/40 53/50 HECKK */
-  static QRegExp expNo4(" ([0-9]{2}/[0-9]{2})", Qt::CaseSensitive, QRegExp::RegExp2);
-  while ((pos = expNo4.indexIn(this->__route.route, pos)) != -1) {
-    QString cap = expNo4.cap(1);
-    
-    float north = cap.left(2).toFloat();
-    float west = 0 - cap.right(2).toFloat();
-    
-    if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
-        (__lineFrom[__lineFrom.size() - 2] < __position.longitude && west > __position.longitude) ||
-        (__lineFrom[__lineFrom.size() - 2] > __position.longitude && west < __position.longitude)))
-      curList = &__lineTo;
-    
-    *curList << west << north;
-    
-    pos += expNo4.matchedLength();
-    
-    natFound = true;
-  }
-  
-  if (natFound)
-    return;
-  
-  pos = 0;
-}
-

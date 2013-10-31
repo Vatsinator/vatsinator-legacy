@@ -53,14 +53,18 @@ public:
    */
   void infoBarUpdate();
   
+  /**
+   * Updates the global coordinates in the right-bottom of the window.
+   * @param longitude
+   * @param latitude
+   */
+  void updatePositionBox(qreal, qreal);
+  
   inline MapWidget*
   mapWidget() { return MapDisplay; }
 
   inline QProgressBar*
   progressBar() { return __progressBar; }
-
-  inline QLabel*
-  positionBox() { return PositionBox; }
   
   inline bool
   autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
@@ -68,7 +72,7 @@ public:
 protected:
   void closeEvent(QCloseEvent*) override;
   void showEvent(QShowEvent*) override;
-
+  
 private:
   void __storeWindowGeometry();
   void __restoreWindowGeometry();

@@ -23,14 +23,11 @@
 #include <QStringList>
 #include <QString>
 
-#include <QtOpenGL>
-
-#include "vatsimdata/clickable.h"
 #include "vatsimdata/client.h"
 
 struct Point;
 
-class Pilot : public Client, public Clickable {
+class Pilot : public Client {
 
   /**
    * This class contains info about one particular pilot - his
@@ -70,17 +67,7 @@ public:
   Pilot(const QStringList&, bool = false);
   virtual ~Pilot();
 
-  void drawLineFrom() const;
-  void drawLineTo() const;
-
-  inline void
-  drawLines() const { drawLineFrom(); drawLineTo(); }
-
-  inline Client::Type
-  clientType() const { return Client::PILOT; }
-  
-  inline Clickable::Type
-  objectType() const { return Clickable::PLANE; }
+  Client::Type clientType() const override;
   
   inline int
   altitude() const { return __altitude; }
@@ -115,14 +102,8 @@ public:
   inline const Pilot::Route &
   route() const { return __route; }
   
-  inline GLuint
-  modelTexture() const { return __modelTexture; }
-  
   inline bool
   isPrefiledOnly() const { return __prefiledOnly; }
-
-  inline GLuint
-  callsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
   
 protected:
   int     __altitude;
@@ -147,8 +128,6 @@ protected:
 
   Pilot::Route    __route;
 
-  GLuint    __modelTexture;
-
   bool      __prefiledOnly;
 
 private:
@@ -161,33 +140,6 @@ private:
    * Checks whether pilot is departing, airborn or has just arrived.
    */
   void __setMyStatus();
-
-  /**
-   * Generates in/out lines.
-   */
-  void __generateLines() const;
-
-  /**
-   * Generates the callsign label.
-   */
-  GLuint __generateTip() const;
-  
-  /**
-   * Parses the NATs.
-   * TODO: Include AIRAC, parse every route, not only NATs.
-   */
-  void __parseRoute() const;
-
-  mutable QVector<GLfloat> __lineFrom;
-  mutable QVector<GLfloat> __lineTo;
-  
-  /* Route parsing is pretty rich, avoid doing it if unnesesary */
-  mutable bool __linesGenerated;
-
-  mutable GLuint __callsignTip;
-  
-  /* Vector of coordinates */
-  QVector<Point> __routePoints;
 
 };
 

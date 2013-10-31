@@ -18,6 +18,8 @@
 
 #include <QtGui>
 
+#include "db/airportdatabase.h"
+
 #include "ui/widgets/mapwidget.h"
 
 #include "vatsimdata/airport.h"

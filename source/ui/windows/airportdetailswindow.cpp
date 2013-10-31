@@ -221,5 +221,6 @@ AirportDetailsWindow::__updateData() {
 void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
-  MapWidget::getSingleton().showAirport(__current);
+  // TODO
+//   MapWidget::getSingleton().showAirport(__current);
 }

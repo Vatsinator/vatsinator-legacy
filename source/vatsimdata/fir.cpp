@@ -20,42 +20,23 @@
 
 #include "db/firdatabase.h"
 
-#include "glutils/vertexbufferobject.h"
-#include "glutils/glextensions.h"
-#include "glutils/glresourcemanager.h"
-
-#include "ui/widgets/mapwidget.h"
-
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
-
-#include "debugging/glerrors.h"
 
 #include "fir.h"
 #include "defines.h"
 
 Fir::Fir() :
-    __icaoTip(0),
     __staff(new ControllerTableModel()),
     __flights(new FlightTableModel()),
     __airports(new AirportTableModel()),
     __uirStaffCount(0) {}
 
 Fir::~Fir() {
-  if (__icaoTip)
-    GlResourceManager::deleteImage(__icaoTip);
-
   delete __staff;
   delete __flights;
   delete __airports;
-
-#ifndef CONFIG_NO_VBO
-  if (__trianglesVBO)
-    delete __trianglesVBO;
-
-  delete __bordersVBO;
-#endif
 }
 
 void
@@ -93,12 +74,6 @@ Fir::correctName() {
 }
 
 void
-Fir::init() {
-  __generateTip();
-  __prepareVBO();
-}
-
-void
 Fir::loadHeader(const FirHeader& _header) {
   __icao = _header.icao;
   __oceanic = static_cast< bool >(_header.oceanic);
@@ -118,102 +93,3 @@ bool
 Fir::isStaffed() const {
   return !__staff->staff().isEmpty() && __uirStaffCount < static_cast< unsigned >(__staff->rowCount());
 }
-
-void
-Fir::drawBorders() const {
-#ifndef CONFIG_NO_VBO
-  __bordersVBO->bind();
-  
-  glVertexPointer(2, GL_FLOAT, 0, 0);
-  glDrawArrays(GL_LINE_LOOP, 0, __bordersSize);
-  
-  __bordersVBO->unbind();
-  
-#else
-  
-  glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x);
-  glDrawArrays(GL_LINE_LOOP, 0, __borders.size());
-  
-#endif
-  
-  checkGLErrors(HERE);
-}
-
-void
-Fir::drawTriangles() const {
-#ifndef CONFIG_NO_VBO
-
-  if (__trianglesSize) {
-    __bordersVBO->bind();
-    __trianglesVBO->bind();
-
-    glVertexPointer(2, GL_FLOAT, 0, 0);
-    glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0);
-
-    __trianglesVBO->unbind();
-    __bordersVBO->unbind();
-  }
-
-#else
-
-  if (!__triangles.isEmpty()) {
-    glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x);
-    glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]);
-  }
-
-#endif
-
-  checkGLErrors(HERE);
-}
-
-GLuint
-Fir::__generateTip() const {
-  QString icao(__icao);
-
-  if (__oceanic) {
-    icao = icao.left(4) + " Oceanic";
-  }
-
-  icao = icao.simplified();
-
-  if (__textPosition.x == 0.0 && __textPosition.y == 0.0) {
-    __icaoTip = 0;
-    return __icaoTip;
-  }
-
-  QImage temp(MapWidget::getSingleton().firToolTipBackground());
-  QPainter painter(&temp);
-  painter.setRenderHint(QPainter::TextAntialiasing);
-  painter.setRenderHint(QPainter::SmoothPixmapTransform);
-  painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::getSingleton().firFont());
-  painter.setPen(MapWidget::getSingleton().firPen());
-  QRect rectangle(0, 4, 64, 24);
-  painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
-  __icaoTip = GlResourceManager::loadImage(temp);
-  return __icaoTip;
-}
-
-void
-Fir::__prepareVBO() {
-#ifndef CONFIG_NO_VBO
-  __bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
-  __bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
-
-  __bordersSize = __borders.size();
-  __borders.clear();
-
-  if (!__triangles.isEmpty()) {
-    __trianglesVBO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-    __trianglesVBO->sendData(sizeof(unsigned short) * __triangles.size(), &__triangles[0]);
-
-    __trianglesSize = __triangles.size();
-    __triangles.clear();
-  } else {
-    __trianglesVBO = nullptr;
-  }
-
-#endif
-}
-
-

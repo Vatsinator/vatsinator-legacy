@@ -21,16 +21,13 @@
 #define AIRPORT_H
 
 #include <QString>
-#include <QtOpenGL>
-
-#include "vatsimdata/clickable.h"
 
 #include "vatsimdata/client/controller.h"
 
 struct AirportRecord;
 class Fir;
 
-class Airport : public Clickable {
+class Airport {
   
   /*
    * This is the interface for airport object.
@@ -53,16 +50,8 @@ public:
   virtual bool hasApproach() const = 0;
   virtual Controller::Facilities facilities() const = 0;
   
-  virtual void drawLines() const = 0;
-  
-  virtual inline const AirportRecord *
+  inline const AirportRecord *
   data() const { return __data; }
-  
-  inline Clickable::Type
-  objectType() const { return Clickable::AIRPORT; }
-  
-  inline GLuint
-  labelTip() const { return __labelTip ? __labelTip : __generateTip(); }
   
   inline Fir **
   firs() { return __firs; }
@@ -71,11 +60,8 @@ protected:
   Fir* __firs[2];
   
 private:
-  GLuint __generateTip() const;
   
   const AirportRecord* __data;
-  
-  mutable GLuint __labelTip;
 
 };
 

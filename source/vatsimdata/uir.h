@@ -23,13 +23,11 @@
 #include <QString>
 #include <QVector>
 
-#include "vatsimdata/clickable.h"
-
 class Controller;
 class ControllerTableModel;
 class Fir;
 
-class Uir : public Clickable {
+class Uir {
 
 public:
   /**
@@ -38,12 +36,6 @@ public:
   Uir(const QString&);
   
   virtual ~Uir();
-
-  /**
-   * Reimplemented from Clickable.
-   */
-  inline Clickable::Type
-  objectType() const { return Clickable::UIR; }
 
   /**
    * @param fir FIR that the UIR is supposed to contain.

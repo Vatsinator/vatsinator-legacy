@@ -35,15 +35,13 @@ public:
   
   virtual ~ActiveAirport();
   
-  unsigned countDepartures() const;
-  unsigned countOutbounds() const;
-  unsigned countArrivals() const;
-  unsigned countInbounds() const;
+  unsigned countDepartures() const override;
+  unsigned countOutbounds() const override;
+  unsigned countArrivals() const override;
+  unsigned countInbounds() const override;
   
-  bool hasApproach() const;
-  Controller::Facilities facilities() const;
-  
-  void drawLines() const;
+  bool hasApproach() const override;
+  Controller::Facilities facilities() const override;
   
   void addStaff(const Controller*);
   void addInbound(const Pilot*);
