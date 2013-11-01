@@ -26,6 +26,8 @@
 #include "network/weatherforecast.h"
 #include "network/models/weatherforecastmodel.h"
 
+#include "storage/settingsmanager.h"
+
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/widgets/mapwidget.h"
@@ -134,10 +136,15 @@ AirportDetailsWindow::show(const Airport* _ap) {
   QAbstractItemModel* fvm = ForecastView->model();
   if (fvm && fvm != __progressModel)
     fvm->deleteLater();
-      
-  ForecastView->setModel(__progressModel);
-  __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
-                            QString::fromUtf8(_ap->data()->country));
+  
+  if (SM::get("network.weather_forecasts").toBool()) {
+    ForecastGroup->setEnabled(true);
+    ForecastView->setModel(__progressModel);
+    __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
+                              QString::fromUtf8(_ap->data()->country));
+  } else {
+    ForecastGroup->setEnabled(false);
+  }
 #endif
 }
 

@@ -24,11 +24,12 @@
 
 /* Default settings for NetworkPage */
 namespace DefaultSettings {
-  static const int     REFRESH_RATE     = 3;
-  static const bool    PROMPT_ON_ERROR  = false;
-  static const bool    METARS_REFRESH   = true;
-  static const bool    CACHE_ENABLED    = true;
-  static const bool    VERSION_CHECK    = true;
+  static const int     REFRESH_RATE      = 3;
+  static const bool    PROMPT_ON_ERROR   = false;
+  static const bool    METARS_REFRESH    = true;
+  static const bool    CACHE_ENABLED     = true;
+  static const bool    VERSION_CHECK     = true;
+  static const bool    WEATHER_FORECASTS = true;
 }
 
 NetworkPage::NetworkPage(QWidget* _parent) :
@@ -58,6 +59,7 @@ NetworkPage::updateFromUi() const {
   setValue("cache_enabled", CachingCheckBox->isChecked());
   setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   setValue("version_check", VersionCheckingCheckBox->isChecked());
+  setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
 }
 
 void
@@ -72,6 +74,8 @@ NetworkPage::restore(QSettings& _s) {
     _s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
   VersionCheckingCheckBox->setChecked(
     _s.value("version_check", DefaultSettings::VERSION_CHECK).toBool());
+  WeatherForecastCheckBox->setChecked(
+    _s.value("weather_forecasts", DefaultSettings::WEATHER_FORECASTS).toBool());
 }
 
 void
@@ -81,4 +85,5 @@ NetworkPage::save(QSettings& _s) {
   _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   _s.setValue("cache_enabled", CachingCheckBox->isChecked());
   _s.setValue("version_check", VersionCheckingCheckBox->isChecked());
+  _s.setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
 }
