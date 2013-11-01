@@ -134,22 +134,20 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
 QString
 WeatherForecastModel::__iconForCondition(int _condition) const {
   switch (_condition) {
-    case 0:
-      return ":/weather/weather-clear.png";
-    case 1:
-      return ":/weather/weather-few-clouds.png";
-    case 2:
-      return ":/weather/weather-clouds.png";
-    case 3:
-      return ":/weather/weather-showers-scattered.png";
-    case 4:
-      return ":/weather/weather-light-snow.png";
-    case 5:
-      return ":/weather/weather-snow.png";
-    case 7:
-      return ":/weather/weather-breezy.png";
-    case 8:
-      return ":/weather/weather-windy.png";
+    case 0: return ":/weather/weather-clear.png";
+    case 1: return ":/weather/weather-few-clouds.png";
+    case 2: return ":/weather/weather-clouds.png";
+    case 3: return ":/weather/weather-overcast.png";
+    case 4: return ":/weather/weather-drizzle.png";
+    case 5: return ":/weather/weather-light-rain.png";
+    case 6: return ":/weather/weather-light-snow.png";
+    case 7: return ":/weather/weather-snow.png";
+    case 8: return ":/weather/weather-heavy-snow.png";
+    case 9: return ":/weather/weather-foggy.png";
+    case 10: return ":/weather/weather-breezy.png";
+    case 11: return ":/weather/weather-windy.png";
+    case 12: return ":/weather/weather-rain.png";
+    case 13: return ":/weather/weather-rain-windy.png";
       
     default:
       return ":/weather/weather-clear.png";
