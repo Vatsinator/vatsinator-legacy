@@ -58,7 +58,7 @@ public:
    * @param longitude
    * @param latitude
    */
-  void updatePositionBox(qreal, qreal);
+  void positionBoxUpdate(qreal, qreal);
   
   inline MapWidget*
   mapWidget() { return MapDisplay; }

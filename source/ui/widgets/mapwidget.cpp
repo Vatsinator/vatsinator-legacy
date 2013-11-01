@@ -57,8 +57,8 @@ MapWidget::mapToLonLat(const QPoint& _point) {
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPointF(
-      static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(__zoom) + __center.x(),
-      static_cast<qreal>(_point.y()) * yFactor / static_cast<qreal>(__zoom) + __center.y()
+      static_cast<qreal>(_point.x() - (width() / 2)) * xFactor / static_cast<qreal>(__zoom) + __center.x(),
+      static_cast<qreal>(_point.y() - (height() / 2)) * yFactor / static_cast<qreal>(__zoom) + __center.y()
     );
 }
 
@@ -177,7 +177,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   updateGL();
   
   QPointF coords = mapToLonLat(__mousePosition);
-  VatsinatorWindow::getSingleton().updatePositionBox(coords.x(), coords.y());
+  VatsinatorWindow::getSingleton().positionBoxUpdate(coords.x(), coords.y());
   
   _event->accept();
 }

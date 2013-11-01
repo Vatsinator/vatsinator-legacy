@@ -136,11 +136,11 @@ VatsinatorWindow::infoBarUpdate() {
 }
 
 void
-VatsinatorWindow::updatePositionBox(qreal _lon, qreal _lat) {
+VatsinatorWindow::positionBoxUpdate(qreal _lon, qreal _lat) {
   PositionBox->setText(QString("%1 %2 %3 %4").arg(
-    _lat >= 0 ? "N" : "S",
+    _lat < 0 ? "N" : "S",
     QString::number(qAbs(_lat), 'g', 6),
-    _lon >= 0 ? "E" : "W",
+    _lon < 0 ? "W" : "E",
     QString::number(qAbs(_lon), 'g', 6)
   ));
 }
