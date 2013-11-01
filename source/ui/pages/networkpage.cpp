@@ -61,7 +61,7 @@ NetworkPage::updateFromUi() const {
 }
 
 void
-NetworkPage::__restore(QSettings& _s) {
+NetworkPage::restore(QSettings& _s) {
   RefreshRateBox->setValue(
     _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt());
   PromptOnErrorCheckBox->setChecked(
@@ -75,7 +75,7 @@ NetworkPage::__restore(QSettings& _s) {
 }
 
 void
-NetworkPage::__save(QSettings& _s) {
+NetworkPage::save(QSettings& _s) {
   _s.setValue("refresh_rate", RefreshRateBox->value());
   _s.setValue("prompt_on_error", PromptOnErrorCheckBox->isChecked());
   _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());

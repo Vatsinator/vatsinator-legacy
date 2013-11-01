@@ -68,8 +68,15 @@ public:
 protected:
   void setValue(const QString&, QVariant&&) const;
   
-  virtual void __restore(QSettings&) = 0;
-  virtual void __save(QSettings&) = 0;
+  /**
+   * Restores user's settings.
+   */
+  virtual void restore(QSettings&) = 0;
+  
+  /**
+   * Saves user's settings.
+   */
+  virtual void save(QSettings&) = 0;
   
 };
 

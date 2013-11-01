@@ -20,6 +20,8 @@
 
 #include "storage/languagemanager.h"
 
+#include "ui/userinterface.h"
+
 #include "miscellaneouspage.h"
 #include "defines.h"
 
@@ -35,6 +37,9 @@ MiscellaneousPage::MiscellaneousPage(QWidget* _parent) :
     AbstractSettingsPage(_parent) {
   setupUi(this);
   LanguageComboBox->addItems(LanguageManager::getSingleton().allLanguages());
+  
+  connect(this,                                 SIGNAL(languageChanged()),
+          UserInterface::getSingletonPtr(),     SLOT(showAppRestartDialog()));
 }
 
 QString
@@ -65,7 +70,12 @@ MiscellaneousPage::updateFromUi() const {
 }
 
 void
-MiscellaneousPage::__restore(QSettings& _s) {
+MiscellaneousPage::showEvent(QShowEvent*) {
+  __languageIndex = LanguageComboBox->currentIndex();
+}
+
+void
+MiscellaneousPage::restore(QSettings& _s) {
   AntyaliasingCheckBox->setChecked(
     _s.value("has_antyaliasing", DefaultSettings::ANTYALIASING).toBool());
   ZoomCoefficientSlider->setValue(
@@ -80,9 +90,12 @@ MiscellaneousPage::__restore(QSettings& _s) {
 }
 
 void
-MiscellaneousPage::__save(QSettings& _s) {
+MiscellaneousPage::save(QSettings& _s) {
   _s.setValue("has_antyaliasing", AntyaliasingCheckBox->isChecked());
   _s.setValue("zoom_coefficient", ZoomCoefficientSlider->value());
   _s.setValue("send_statistics", StatsCheckBox->isChecked());
   _s.setValue("language", LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
+  
+  if (__languageIndex != LanguageComboBox->currentIndex())
+    emit languageChanged();
 }

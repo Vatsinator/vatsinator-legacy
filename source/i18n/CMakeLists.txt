@@ -7,7 +7,7 @@ set (vatsinator_LANGUAGES "")
 # get all languages
 foreach (LANG ${LANGUAGE_FILES})
   string (REGEX
-    REPLACE "^.*/([a-z]+)\\.language$"
+    REPLACE "^.*/(.+)\\.language$"
     "\\1"
     lang_symbol ${LANG}
   )
@@ -23,7 +23,16 @@ foreach (LANG ${vatsinator_LANGUAGES})
   
   if (NOT "en" STREQUAL "${LANG}")
     set (QM_FILE "${QT_TRANSLATIONS_DIR}/qt_${LANG}.qm")
-    set (qt_TRANSLATIONS ${qt_TRANSLATIONS} ${QM_FILE})
+    if (NOT EXISTS ${QM_FILE})
+      string (SUBSTRING "${LANG}" 0 2 LANG_NO_REGION)
+      set (QM_FILE "${QT_TRANSLATIONS_DIR}/qt_${LANG_NO_REGION}.qm")
+    endif (NOT EXISTS ${QM_FILE})
+    
+    if (EXISTS ${QM_FILE})
+      set (qt_TRANSLATIONS ${qt_TRANSLATIONS} ${QM_FILE})
+    else (EXISTS ${QM_FILE})
+      message (WARNING "No Qt translation for ${LANG}!")
+    endif (EXISTS ${QM_FILE})
   endif (NOT "en" STREQUAL "${LANG}")
 endforeach (LANG)
 

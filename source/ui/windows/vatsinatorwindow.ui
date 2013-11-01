@@ -92,7 +92,7 @@
          </size>
         </property>
         <property name="text">
-         <string notr="true">Clients:</string>
+         <string>Clients:</string>
         </property>
        </widget>
       </item>
@@ -156,7 +156,7 @@
      <rect>
       <x>236</x>
       <y>199</y>
-      <width>185</width>
+      <width>191</width>
       <height>234</height>
      </rect>
     </property>

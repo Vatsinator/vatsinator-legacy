@@ -85,7 +85,7 @@ ViewPage::updateFromUi() const {
 }
 
 void
-ViewPage::__restore(QSettings& _s) {
+ViewPage::restore(QSettings& _s) {
   PilotsCheckBox->setChecked(
     _s.value("pilots_layer", DefaultSettings::PILOTS_CHECKBOX).toBool());
   AirportsCheckBox->setChecked(
@@ -107,7 +107,7 @@ ViewPage::__restore(QSettings& _s) {
 }
 
 void
-ViewPage::__save(QSettings& _s) {
+ViewPage::save(QSettings& _s) {
   _s.setValue("pilots_layer", PilotsCheckBox->isChecked());
   _s.setValue("airports_layer", AirportsCheckBox->isChecked());
   _s.setValue("staffed_firs", StaffedFirsCheckBox->isChecked());

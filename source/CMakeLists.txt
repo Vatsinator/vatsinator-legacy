@@ -42,6 +42,11 @@ qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 include (Macros)
 if (CMAKE_COMPILER_IS_GNUCC)
     include (GccVersion)
+        
+    # workaround for gcc <= 4.6
+    if (NOT GCC_VERSION_47)
+      add_definitions("-Doverride=" "")
+    endif (NOT GCC_VERSION_47)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
 set (QT_USE_QTOPENGL TRUE)

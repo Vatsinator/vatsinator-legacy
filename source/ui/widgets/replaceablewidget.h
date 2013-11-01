@@ -22,7 +22,6 @@
 
 #include <initializer_list>
 #include <QStackedWidget>
-#include <QVector>
 
 class ReplaceableWidget : public QStackedWidget {
   
@@ -40,7 +39,7 @@ public:
   /**
    * Adds given widgets.
    */
-  void addWidgets(std::initializer_list<QWidget*>);
+  void addWidgets(const std::initializer_list<QWidget*>&);
   
   /**
    * Changes current widget to the next.

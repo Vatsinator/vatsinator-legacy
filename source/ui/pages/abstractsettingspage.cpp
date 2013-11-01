@@ -29,14 +29,14 @@ AbstractSettingsPage::AbstractSettingsPage(QWidget* _parent) :
 void
 AbstractSettingsPage::restoreSettings(QSettings& _s) {
   _s.beginGroup(pageName());
-  __restore(_s);
+  restore(_s);
   _s.endGroup();
 }
 
 void
 AbstractSettingsPage::saveSettings(QSettings& _s) {
   _s.beginGroup(pageName());
-  __save(_s);
+  save(_s);
   _s.endGroup();
 }
 
