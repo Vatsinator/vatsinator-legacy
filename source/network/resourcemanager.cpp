@@ -23,6 +23,7 @@
 
 #include "storage/filemanager.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "resourcemanager.h"
@@ -49,7 +50,7 @@ ResourceManager::__fetchVersion() {
   connect(fetcher,      SIGNAL(finished(QString)),
           this,         SLOT(__parseVersion(QString)));
   
-  fetcher->fetchData(QString(VATSINATOR_REPO_URL) % "/VERSION");
+  fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "/VERSION");
 }
 
 void
@@ -83,7 +84,7 @@ ResourceManager::Version::Version() :
 
 bool
 ResourceManager::Version::operator<(const ResourceManager::Version& _other) {
-if (__major < _other.__major)
+  if (__major < _other.__major)
     return true;
   
   if (__major == _other.__major && __minor < _other.__minor)

@@ -44,6 +44,7 @@
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/metarlistmodel.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "airportdetailswindow.h"
@@ -226,7 +227,7 @@ AirportDetailsWindow::__fillLabels(const Airport* _ap) {
   AltitudeLabel->setText(tr("%1 ft").arg(QString::number(apData->altitude)));
   VatawareAirportLinkLabel->setText(
       QString("<a href=\"") %
-      QString(VATAWARE_AIRPORT_URL).arg(QString::fromUtf8(apData->icao)) %
+      QString(NetConfig::Vataware::airportUrl()).arg(QString::fromUtf8(apData->icao)) %
       QString("\">") %
       tr("Vataware statistics for this airport") %
       QString("</a>")

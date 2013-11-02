@@ -1,5 +1,5 @@
 /*
- * newversiondialog.cpp
+ * netconfig.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,16 +17,4 @@
  *
  */
 
-#include <QtGui>
-
 #include "netconfig.h"
-
-#include "newversiondialog.h"
-#include "defines.h"
-
-NewVersionDialog::NewVersionDialog(QWidget* _parent) :
-    QDialog(_parent) {
-  setupUi(this);
-  
-  DownloadButton->setUrl(QString(NetConfig::Vatsinator::homePageUrl()));
-}

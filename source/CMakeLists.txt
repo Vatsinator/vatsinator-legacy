@@ -12,6 +12,7 @@ if (APPLE) # bundle looks better
 endif (APPLE)
 
 set (vatsinator_SRCS
+    netconfig.cpp
     vatsinatorapplication.cpp
 )
 

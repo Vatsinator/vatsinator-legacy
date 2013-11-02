@@ -18,8 +18,6 @@
 
 #include <QtGui>
 
-#include "storage/cachefile.h"
-
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 
@@ -28,24 +26,23 @@
 #include "modules/modulemanager.h"
 
 #include "ui/pages/miscellaneouspage.h"
-
 #include "ui/windows/vatsinatorwindow.h"
 
+#include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
 
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
-
 #include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/airport/emptyairport.h"
-
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "storage/filemanager.h"
+
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "vatsimdatahandler.h"
@@ -62,7 +59,7 @@ static QMap<QString, QString> countries; // used by __readCountryFile() and __re
 VatsimDataHandler::VatsimDataHandler() :
     __flights(new FlightTableModel()),
     __atcs(new ControllerTableModel()),
-    __statusURL(VATSIM_STATUS_URL),
+    __statusURL(NetConfig::Vatsim::statusUrl()),
     __observers(0),
     __statusFileFetched(false),
     __airports(AirportDatabase::getSingleton()),

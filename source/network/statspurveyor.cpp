@@ -25,6 +25,7 @@
 
 #include "ui/dialogs/letsendstatsdialog.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "statspurveyor.h"
@@ -84,7 +85,7 @@ StatsPurveyor::~StatsPurveyor() {}
 
 void
 StatsPurveyor::reportStartup() {
-  QString url = QString(VATSINATOR_STATS_URL) % STARTUP_PATH;
+  QString url = QString(NetConfig::Vatsinator::statsUrl()) % STARTUP_PATH;
   QNetworkRequest request(url.arg(VATSINATOR_VERSION, OS_STRING));
   
   __enqueueRequest(request);
@@ -92,7 +93,7 @@ StatsPurveyor::reportStartup() {
 
 void
 StatsPurveyor::reportNoAtc(const QString& _atc) {
-  QString url = QString(VATSINATOR_STATS_URL) % NOATC_PATH;
+  QString url = QString(NetConfig::Vatsinator::statsUrl()) % NOATC_PATH;
   QNetworkRequest request(url.arg(_atc));
   
   __enqueueRequest(request);
