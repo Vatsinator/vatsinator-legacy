@@ -47,6 +47,13 @@ public:
       return "http://status.vatsim.net/status.txt";
     }
     
+    /**
+     * URL to copy of status.txt in case vatsim servers are out of order
+     */
+    static constexpr const char* backupStatusUrl() {
+      return "http://repo.vatsinator.eu.org/status.txt";
+    }
+    
   };
   
   class Vataware {
