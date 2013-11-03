@@ -922,69 +922,69 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
-        <location filename="../ui/pages/networkpage.cpp" line="42"/>
+        <location filename="../ui/pages/networkpage.cpp" line="46"/>
         <source>Network</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="34"/>
+        <location filename="../ui/pages/networkpage.ui" line="79"/>
         <source>Refresh data every</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="60"/>
-        <source>minutes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="85"/>
-        <source>Let me know when an error occurs</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="97"/>
-        <source>If enabled, you will be asked what to do each time data downloading fails. Otherwise, Vatsinator will make the decision itself.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="110"/>
+        <location filename="../ui/pages/networkpage.ui" line="178"/>
         <source>Enable caching</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="125"/>
+        <location filename="../ui/pages/networkpage.ui" line="193"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="138"/>
+        <location filename="../ui/pages/networkpage.ui" line="130"/>
         <source>Keep METARs updated</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="153"/>
+        <location filename="../ui/pages/networkpage.ui" line="32"/>
+        <source>Enable auto-updater</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="47"/>
+        <source>Auto-updater keeps all the data up-to-date automatically.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="145"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="166"/>
+        <location filename="../ui/pages/networkpage.ui" line="206"/>
         <source>Enable version checking</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="181"/>
+        <location filename="../ui/pages/networkpage.ui" line="221"/>
         <source>If enabled, you will be notified if the new version of the application is available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="197"/>
+        <location filename="../ui/pages/networkpage.ui" line="237"/>
         <source>Weather forecasts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="212"/>
+        <location filename="../ui/pages/networkpage.ui" line="252"/>
         <source>Uncheck to disable weather forecasts</source>
         <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/pages/networkpage.cpp" line="101"/>
+        <source>minute(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1063,10 +1063,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="344"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="387"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="415"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="465"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="352"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="395"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="473"/>
         <source>File %1 could not be opened!</source>
         <translation type="unfinished"/>
     </message>
@@ -1173,7 +1173,7 @@
     <name>ViewPage</name>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="26"/>
-        <location filename="../ui/pages/viewpage.cpp" line="52"/>
+        <location filename="../ui/pages/viewpage.cpp" line="51"/>
         <source>View</source>
         <translation type="unfinished"/>
     </message>
