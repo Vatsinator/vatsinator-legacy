@@ -19,8 +19,9 @@
 #include <QtGui>
 #include <QtNetwork>
 
-#include "plaintextdownloader.h"
+#include "vatsinatorapplication.h"
 
+#include "plaintextdownloader.h"
 #include "defines.h"
 
 PlainTextDownloader::PlainTextDownloader(QProgressBar* _pb, QObject* _parent) :
@@ -38,16 +39,19 @@ PlainTextDownloader::fetchData(const QString& _url) {
 
 void
 PlainTextDownloader::__startRequest() {
-  if (!__urls.isEmpty())
-    __reply = __nam.get(QNetworkRequest(__urls.dequeue()));
-  else
+  if (!__urls.isEmpty()) {
+    QNetworkRequest request(__urls.dequeue());
+    request.setRawHeader("User-Agent", "Vatsinator " VATSINATOR_VERSION);
+    __reply = __nam.get(request);
+  } else {
     return;
+  }
   
   __temp.clear(); 
 
   connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
   connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
-
+  
   if (__progressBar) {
     connect(__reply, SIGNAL(downloadProgress(qint64, qint64)),
             this,    SLOT(__updateProgress(qint64, qint64)));
@@ -69,14 +73,21 @@ PlainTextDownloader::__finished() {
   }
   
   if (__reply->error() == QNetworkReply::NoError) {
+    VatsinatorApplication::log("PlainTextDownloader: %s: finished",
+                               qPrintable(__reply->url().toString()));
+    
     __data = __temp;
     emit finished(__data);
   } else {
+    VatsinatorApplication::log("PlainTextDownloader: %s: error (%s)",
+                               qPrintable(__reply->url().toString()),
+                               qPrintable(__reply->errorString()));
+    
     emit fetchError();
   }
   
   __reply->deleteLater();
-  __reply = NULL;
+  __reply = nullptr;
   
   if (anyTasksLeft())
     __startRequest();

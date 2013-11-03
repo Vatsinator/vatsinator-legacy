@@ -38,8 +38,8 @@ static const int START_DELAY = 10 * 1000;
 static const int RETRY_DELAY = 60 * 1000;
 
 // request urls
-static const QString STARTUP_PATH = "/startup.php?version=%1&os=%2";
-static const QString NOATC_PATH = "/noatc.php?atc=%1";
+static const QString STARTUP_PATH = "startup.php?version=%1&os=%2";
+static const QString NOATC_PATH = "noatc.php?atc=%1";
 
 static const QString OS_STRING =
 #ifdef Q_OS_WIN32

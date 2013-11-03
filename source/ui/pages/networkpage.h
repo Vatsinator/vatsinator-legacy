@@ -53,6 +53,7 @@ protected:
   
 private slots:
   void __updateRefreshRateLabel(int);
+  void __updateAutoUpdaterLocks(int);
 
 };
 

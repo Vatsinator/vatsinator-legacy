@@ -37,6 +37,8 @@ NetworkPage::NetworkPage(QWidget* _parent) :
   setupUi(this);
   connect(RefreshRateBox, SIGNAL(valueChanged(int)),
           this,           SLOT(__updateRefreshRateLabel(int)));
+  connect(AutoUpdaterCheckBox,  SIGNAL(stateChanged(int)),
+          this,                 SLOT(__updateAutoUpdaterLocks(int)));
 }
 
 QString
@@ -66,8 +68,9 @@ NetworkPage::updateFromUi() const {
 
 void
 NetworkPage::restore(QSettings& _s) {
-  AutoUpdaterCheckBox->setChecked(
-    _s.value("auto_updater", DefaultSettings::AUTO_UPDATER).toBool());
+  bool state = _s.value("auto_updater", DefaultSettings::AUTO_UPDATER).toBool();
+  AutoUpdaterCheckBox->setChecked(state);
+  __updateAutoUpdaterLocks(state);
   
   int val = _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt();
   RefreshRateBox->setValue(val);
@@ -96,4 +99,15 @@ NetworkPage::save(QSettings& _s) {
 void
 NetworkPage::__updateRefreshRateLabel(int _n) {
   RefreshRateLabel->setText(tr("minute(s)", "", _n));
+}
+
+void
+NetworkPage::__updateAutoUpdaterLocks(int _state) {
+  if (_state == Qt::Checked) {
+    RefreshRateBox->setEnabled(false);
+    RefreshMetarsCheckBox->setEnabled(false);
+  } else {
+    RefreshRateBox->setEnabled(true);
+    RefreshMetarsCheckBox->setEnabled(true);
+  }
 }

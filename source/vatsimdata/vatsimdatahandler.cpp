@@ -157,7 +157,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
   VatsinatorApplication::log("Data length: %i.", _data.length());
 
   QStringList tempList = _data.split('\n', QString::SkipEmptyParts);
-
+  
   DataSections section = None;
 
   for (QString& temp: tempList) {
@@ -192,6 +192,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         QStringList clientData = temp.split(':');
         
         if (clientData.size() < 40) {
+          VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
           emit dataCorrupted();
           return;
         }
@@ -219,6 +220,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         QStringList clientData = temp.split(':');
         
         if (clientData.size() < 40) {
+          VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
           emit dataCorrupted();
           return;
         }
