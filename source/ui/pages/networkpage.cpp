@@ -24,8 +24,8 @@
 
 /* Default settings for NetworkPage */
 namespace DefaultSettings {
+  static const bool    AUTO_UPDATER      = true;
   static const int     REFRESH_RATE      = 3;
-  static const bool    PROMPT_ON_ERROR   = false;
   static const bool    METARS_REFRESH    = true;
   static const bool    CACHE_ENABLED     = true;
   static const bool    VERSION_CHECK     = true;
@@ -35,6 +35,8 @@ namespace DefaultSettings {
 NetworkPage::NetworkPage(QWidget* _parent) :
     AbstractSettingsPage(_parent) {
   setupUi(this);
+  connect(RefreshRateBox, SIGNAL(valueChanged(int)),
+          this,           SLOT(__updateRefreshRateLabel(int)));
 }
 
 QString
@@ -54,8 +56,8 @@ NetworkPage::pageName() const {
 
 void
 NetworkPage::updateFromUi() const {
+  setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
   setValue("refresh_rate", RefreshRateBox->value());
-  setValue("prompt_on_error", PromptOnErrorCheckBox->isChecked());
   setValue("cache_enabled", CachingCheckBox->isChecked());
   setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   setValue("version_check", VersionCheckingCheckBox->isChecked());
@@ -64,10 +66,13 @@ NetworkPage::updateFromUi() const {
 
 void
 NetworkPage::restore(QSettings& _s) {
-  RefreshRateBox->setValue(
-    _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt());
-  PromptOnErrorCheckBox->setChecked(
-    _s.value("prompt_on_error", DefaultSettings::PROMPT_ON_ERROR).toBool());
+  AutoUpdaterCheckBox->setChecked(
+    _s.value("auto_updater", DefaultSettings::AUTO_UPDATER).toBool());
+  
+  int val = _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt();
+  RefreshRateBox->setValue(val);
+  __updateRefreshRateLabel(val);
+  
   RefreshMetarsCheckBox->setChecked(
     _s.value("refresh_metars", DefaultSettings::METARS_REFRESH).toBool());
   CachingCheckBox->setChecked(
@@ -80,10 +85,15 @@ NetworkPage::restore(QSettings& _s) {
 
 void
 NetworkPage::save(QSettings& _s) {
+  _s.setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
   _s.setValue("refresh_rate", RefreshRateBox->value());
-  _s.setValue("prompt_on_error", PromptOnErrorCheckBox->isChecked());
   _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   _s.setValue("cache_enabled", CachingCheckBox->isChecked());
   _s.setValue("version_check", VersionCheckingCheckBox->isChecked());
   _s.setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
+}
+
+void
+NetworkPage::__updateRefreshRateLabel(int _n) {
+  RefreshRateLabel->setText(tr("minute(s)", "", _n));
 }

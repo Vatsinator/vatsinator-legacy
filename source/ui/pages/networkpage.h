@@ -39,8 +39,8 @@ public:
   
   /**
    * @variables
+   * auto_updater:      bool
    * refresh_rate:      int
-   * prompt_on_error:   bool
    * refresh_metars:    bool
    * cache_enabled:     bool
    * version_check:     bool
@@ -50,6 +50,9 @@ public:
 protected:
   void restore(QSettings&);
   void save(QSettings&);
+  
+private slots:
+  void __updateRefreshRateLabel(int);
 
 };
 
