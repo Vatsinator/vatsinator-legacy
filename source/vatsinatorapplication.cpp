@@ -156,11 +156,12 @@ VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
   if (getSingleton().__userInterface) {
     QMessageBox msgBox;
     msgBox.setText(_msg);
+    msgBox.setIcon(_fatal ? QMessageBox::Critical : QMessageBox::Warning);
     msgBox.exec();
   }
   
   VatsinatorApplication::log(qPrintable(_msg));
-    
+  
   if (_fatal)
     QCoreApplication::exit(1);
 }
@@ -217,8 +218,9 @@ VatsinatorApplication::__emitGLInitialized() {
 
 void
 VatsinatorApplication::__loadNewSettings() {
-  if (__timer.interval() / 60000 != SM::get("network.refresh_rate").toInt()) {
-    __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
+  int rr = SM::get("network.refresh_rate").toInt();
+  if (__timer.interval() / 60000 != rr) {
+    __timer.setInterval(rr * 60000);
     
     if (VatsinatorWindow::getSingleton().autoUpdatesEnabled())
       refreshData();

@@ -139,13 +139,6 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
     emit vatsimStatusError();
   } else {
     __statusFileFetched = true;
-    /*
-    disconnect(__downloader, SIGNAL(fetchError()),
-               this,         SIGNAL(vatsimStatusError()));
-    
-    connect(__downloader, SIGNAL(fetchError()),
-            this,         SIGNAL(dataCorrupted()));*/
-    
     emit vatsimStatusUpdated();
   }
 }
