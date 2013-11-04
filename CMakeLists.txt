@@ -61,6 +61,16 @@ set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
 if (NOT vatsinator_VERSION)
     file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION vatsinator_VERSION)
     string (REPLACE "\n" "" vatsinator_VERSION ${vatsinator_VERSION})
+    
+    include(GetGitRevisionDescription)
+    get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+    
+    if (NOT "${GIT_SHA1}" STREQUAL "GITDIR-NOTFOUND")
+        # shorten the sha
+        string (SUBSTRING "${GIT_SHA1}" 0 10 GIT_HASH)
+        
+        set (vatsinator_VERSION ${vatsinator_VERSION}-${GIT_HASH}-git)
+    endif (NOT "${GIT_SHA1}" STREQUAL "GITDIR-NOTFOUND")
 endif (NOT vatsinator_VERSION)
 
 include (VatsinatorInstall)
