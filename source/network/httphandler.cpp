@@ -39,10 +39,13 @@ HttpHandler::fetchData(const QString& _url) {
 
 void
 HttpHandler::__startRequest() {
-  if (!__urls.isEmpty())
-    __reply = __nam.get(QNetworkRequest(__urls.dequeue()));
-  else
+  if (!__urls.isEmpty()) {
+    QNetworkRequest request(__urls.dequeue());
+    request.setRawHeader("User-Agent", "Vatsinator " VATSINATOR_VERSION);
+    __reply = __nam.get(request);
+  } else {
     return;
+  }
 
   connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
   connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
