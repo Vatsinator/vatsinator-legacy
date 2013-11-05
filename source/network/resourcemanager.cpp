@@ -51,7 +51,7 @@ ResourceManager::__fetchVersion() {
     connect(fetcher,      SIGNAL(finished(QString)),
             this,         SLOT(__parseVersion(QString)));
     
-    fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "/VERSION");
+    fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
   }
 }
 
@@ -62,7 +62,7 @@ ResourceManager::__parseVersion(QString _versionString) {
   VatsinatorApplication::log("ResourceManager: version(%1) %2 version(%3)",
                              VATSINATOR_VERSION,
                              actual ? ">=" : "<",
-                             qPrintable(_versionString));
+                             qPrintable(_versionString.simplified()));
   
   if (!actual)
     emit outdated();

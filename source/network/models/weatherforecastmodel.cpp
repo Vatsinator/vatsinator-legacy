@@ -72,12 +72,16 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
         case Fetched:
           if (_index.row() == 1)
             return QPixmap(__iconForCondition(__data.at(_index.column()).iconNum));
+        default:
+          return QVariant();
       }
     
     case Qt::ToolTipRole:
       switch (__status) {
         case Fetched:
           return __data.at(_index.column()).condition;
+        default:
+          return QVariant();
       }
     
     case Qt::SizeHintRole:

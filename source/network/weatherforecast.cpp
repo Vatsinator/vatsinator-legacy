@@ -21,12 +21,14 @@
 
 #include "network/models/weatherforecastmodel.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "weatherforecast.h"
 #include "defines.h"
 
-#define WEATHER_FORECASTS_API_URL "http://api.vatsinator.eu.org/weatherforecast.php?location=%1"
+static QString WeatherForecastApiUrl =
+  QString(NetConfig::Vatsinator::apiUrl()) + QString("weatherforecast.php?location=%1");
 
 WeatherForecast::WeatherForecast(QObject* _parent) :
     QObject(_parent),
@@ -42,7 +44,7 @@ WeatherForecast::fetchForecast(const QString& _city, const QString& _country) {
   
   QString location = _city % ", " % _country;
   
-  QString url = QString(WEATHER_FORECASTS_API_URL).arg(location);
+  QString url = QString(WeatherForecastApiUrl).arg(location);
   QNetworkRequest request(url);
   
   VatsinatorApplication::log("WeatherForecast: request: %s", qPrintable(request.url().toString()));

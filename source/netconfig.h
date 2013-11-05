@@ -37,6 +37,10 @@ public:
     static constexpr const char* statsUrl() {
       return "http://stats.vatsinator.eu.org/";
     }
+    
+    static constexpr const char* apiUrl() {
+      return "http://api.vatsinator.eu.org/";
+    }
   
   };
   

@@ -25,23 +25,14 @@
 #include "storage/filemanager.h"
 #include "defines.h"
 
-static const QString DATA_DIR_LOCATON(
-#ifdef Q_OS_WIN32
-  QDir::fromNativeSeparators(qgetenv("LOCALAPPDATA"))
-#elif defined Q_OS_LINUX
-  QDir::homePath() % "/.local/share"
-#elif defined Q_OS_DARWIN
-  QDir::homePath() % "/Library/Application Support"
-#endif
-);
-
-static const QString DATA_LOCATION(QDir::toNativeSeparators(DATA_DIR_LOCATON % "/Vatsinator"));
+static const QString LocalDataLocation =
+    QDesktopServices::storageLocation(QDesktopServices::DataLocation) % "Vatsinator/";
 
 
 FileManager::FileManager() {
-  VatsinatorApplication::log("Local data location: %s", qPrintable(DATA_LOCATION));
+  VatsinatorApplication::log("FileManager: local data location: %s", qPrintable(LocalDataLocation));
   
-  __readManifest(DATA_LOCATION % "/Manifest");
+  __readManifest(LocalDataLocation % "/Manifest");
 }
 
 void
@@ -77,7 +68,7 @@ FileManager::staticPath(FileManager::StaticDir _d) {
 
 QString
 FileManager::path(const QString& _f) {
-  QFile tryLocal(DATA_LOCATION % _f);
+  QFile tryLocal(LocalDataLocation % _f);
   if (tryLocal.exists()) {
     VatsinatorApplication::log("File %s loaded from %s.",
                                qPrintable(_f),

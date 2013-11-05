@@ -48,7 +48,7 @@
 #include "vatsimdatahandler.h"
 #include "defines.h"
 
-static const QString CACHE_FILE_NAME = "lastdata";
+static const QString CacheFileName = "lastdata";
 
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
 ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
@@ -83,7 +83,7 @@ VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
   
   delete __downloader;
-
+  
   qDeleteAll(__uirs);
 
   delete __atcs;
@@ -542,7 +542,7 @@ VatsimDataHandler::__dataFetched(QString _data) {
     emit vatsimDataUpdated();
     
     if (SM::get("network.cache_enabled").toBool())
-      FileManager::cacheData(CACHE_FILE_NAME, _data);
+      FileManager::cacheData(CacheFileName, _data);
   } else {
     parseStatusFile(_data);
   }

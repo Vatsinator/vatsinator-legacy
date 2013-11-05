@@ -23,28 +23,20 @@
 #include "cachefile.h"
 #include "defines.h"
 
-static const QString CACHE_FILE_LOCATON(
-#ifdef Q_OS_WIN32
-  QDir::fromNativeSeparators(qgetenv("LOCALAPPDATA"))
-#elif defined Q_OS_LINUX
-  QDir::homePath() % "/.cache"
-#elif defined Q_OS_DARWIN
-  QDir::homePath() % "/Library/Caches"
-#endif
-);
-
-static const QString CACHE_DIRECTORY(QDir::toNativeSeparators(CACHE_FILE_LOCATON % "/Vatsinator"));
+static const QString CacheDirectory =
+    QDesktopServices::storageLocation(QDesktopServices::CacheLocation) % "Vatsinator";
 
 
 CacheFile::CacheFile(const QString& _fileName) :
-    QFile(CACHE_DIRECTORY % "/" % _fileName) {
+    QFile(CacheDirectory % "/" % _fileName) {
   VatsinatorApplication::log("Cache file location: %s", qPrintable(fileName()));
 }
 
 bool
 CacheFile::exists() const {
-  if (!QDir(CACHE_DIRECTORY).exists()) {
-    QDir().mkdir(CACHE_DIRECTORY);
+  if (!QDir(CacheDirectory).exists()) {
+    VatsinatorApplication::log("CacheFile: creating directory %s...", qPrintable(CacheDirectory));
+    QDir().mkdir(CacheDirectory);
     return false;
   }
   
@@ -53,12 +45,12 @@ CacheFile::exists() const {
 
 bool
 CacheFile::open(OpenMode _mode) {
-  if (!QDir(CACHE_DIRECTORY).exists())
-    QDir().mkdir(CACHE_DIRECTORY);
+  if (!QDir(CacheDirectory).exists())
+    QDir().mkdir(CacheDirectory);
   
   bool wasOpened = QFile::open(_mode);
   if (!wasOpened)
-    VatsinatorApplication::log("Cache file %s failed to open.", qPrintable(fileName()));
+    VatsinatorApplication::log("CacheFile: %s failed to open.", qPrintable(fileName()));
   
   return wasOpened;
 }

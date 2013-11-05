@@ -32,10 +32,10 @@
 #include "defines.h"
 
 // send the startup report after 10 seconds
-static const int START_DELAY = 10 * 1000;
+static constexpr int StartDelay = 10 * 1000;
 
 // if stats query failed, retry in 1 minute
-static const int RETRY_DELAY = 60 * 1000;
+static constexpr int RetryDelay = 60 * 1000;
 
 // request urls
 static const QString STARTUP_PATH = "startup.php?version=%1&os=%2";
@@ -72,7 +72,9 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
     connect(VatsinatorApplication::getSingletonPtr(),   SIGNAL(uiCreated()),
             dialog,                                     SLOT(show()));
   } else {
-    QTimer::singleShot(START_DELAY, this, SLOT(reportStartup()));
+    /* In the meantime, settingsChanged() signal will be emited, so user's
+     * preferences will be honored. */
+    QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
   }
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
@@ -126,7 +128,7 @@ StatsPurveyor::__parseResponse() {
     }
   } else {
     VatsinatorApplication::log("StatsPurveyor: query failed; retry in 1 minute...");
-    QTimer::singleShot(RETRY_DELAY, this, SLOT(__nextRequest()));
+    QTimer::singleShot(RetryDelay, this, SLOT(__nextRequest()));
     __reply->deleteLater();
     __reply = nullptr;
   }
@@ -158,7 +160,7 @@ StatsPurveyor::__statsAccepted() {
   QSettings s;
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", true);
-  QTimer::singleShot(START_DELAY, this, SLOT(reportStartup()));
+  QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
   sender()->deleteLater();
   
   SM::updateUi("misc");
