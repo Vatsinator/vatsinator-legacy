@@ -318,7 +318,7 @@ VatsimDataHandler::loadCachedData() {
   
   VatsinatorApplication::log("Loading data from cache...");
   
-  CacheFile file(CACHE_FILE_NAME);
+  CacheFile file(CacheFileName);
   if (file.exists()) {
     FirDatabase::getSingleton().clearAll();
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
