@@ -18,7 +18,6 @@
 
 #include <QtCore>
 
-
 #include <quazip/quazip.h>
 #include <quazip/quazipfile.h>
 

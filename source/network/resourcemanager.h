@@ -79,30 +79,14 @@ private slots:
   
 private:
   
-  class Version {
-    
-  public:
-    
-    /**
-     * Parses version string.
-     */
-    Version(const QString&);
-    
-    /**
-     * minor = -1, major = -1
-     */
-    Version();
-    
-    bool operator <(const Version&);
-    
-  private:
-    
-    /* {major}.{minor} */
-    int __major;
-    int __minor;
-  };
-  
-  Version __currentVersion;
+  /**
+   * Returns true if version1 is equal or higher that version2.
+   * 
+   * @param version1
+   * @param version2
+   * @return True if version1 >= version2.
+   */
+  bool __versionActual(const QString&, const QString&);
   
 
 };

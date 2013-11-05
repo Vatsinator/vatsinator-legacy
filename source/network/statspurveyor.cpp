@@ -25,20 +25,21 @@
 
 #include "ui/dialogs/letsendstatsdialog.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "statspurveyor.h"
 #include "defines.h"
 
 // send the startup report after 10 seconds
-static const int START_DELAY = 10 * 1000;
+static constexpr int StartDelay = 10 * 1000;
 
 // if stats query failed, retry in 1 minute
-static const int RETRY_DELAY = 60 * 1000;
+static constexpr int RetryDelay = 60 * 1000;
 
 // request urls
-static const QString STARTUP_PATH = "/startup.php?version=%1&os=%2";
-static const QString NOATC_PATH = "/noatc.php?atc=%1";
+static const QString STARTUP_PATH = "startup.php?version=%1&os=%2";
+static const QString NOATC_PATH = "noatc.php?atc=%1";
 
 static const QString OS_STRING =
 #ifdef Q_OS_WIN32
@@ -71,7 +72,9 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
     connect(VatsinatorApplication::getSingletonPtr(),   SIGNAL(uiCreated()),
             dialog,                                     SLOT(show()));
   } else {
-    QTimer::singleShot(START_DELAY, this, SLOT(reportStartup()));
+    /* In the meantime, settingsChanged() signal will be emited, so user's
+     * preferences will be honored. */
+    QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
   }
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
@@ -84,7 +87,7 @@ StatsPurveyor::~StatsPurveyor() {}
 
 void
 StatsPurveyor::reportStartup() {
-  QString url = QString(VATSINATOR_STATS_URL) % STARTUP_PATH;
+  QString url = QString(NetConfig::Vatsinator::statsUrl()) % STARTUP_PATH;
   QNetworkRequest request(url.arg(VATSINATOR_VERSION, OS_STRING));
   
   __enqueueRequest(request);
@@ -92,7 +95,7 @@ StatsPurveyor::reportStartup() {
 
 void
 StatsPurveyor::reportNoAtc(const QString& _atc) {
-  QString url = QString(VATSINATOR_STATS_URL) % NOATC_PATH;
+  QString url = QString(NetConfig::Vatsinator::statsUrl()) % NOATC_PATH;
   QNetworkRequest request(url.arg(_atc));
   
   __enqueueRequest(request);
@@ -125,7 +128,7 @@ StatsPurveyor::__parseResponse() {
     }
   } else {
     VatsinatorApplication::log("StatsPurveyor: query failed; retry in 1 minute...");
-    QTimer::singleShot(RETRY_DELAY, this, SLOT(__nextRequest()));
+    QTimer::singleShot(RetryDelay, this, SLOT(__nextRequest()));
     __reply->deleteLater();
     __reply = nullptr;
   }
@@ -157,7 +160,7 @@ StatsPurveyor::__statsAccepted() {
   QSettings s;
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", true);
-  QTimer::singleShot(START_DELAY, this, SLOT(reportStartup()));
+  QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
   sender()->deleteLater();
   
   SM::updateUi("misc");

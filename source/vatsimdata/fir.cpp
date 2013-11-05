@@ -76,7 +76,7 @@ Fir::correctName() {
 void
 Fir::loadHeader(const FirHeader& _header) {
   __icao = _header.icao;
-  __oceanic = static_cast< bool >(_header.oceanic);
+  __oceanic = static_cast<bool>(_header.oceanic);
   memcpy(__externities, _header.externities, sizeof(Point) * 2);
   __textPosition = _header.textPosition;
 }
@@ -91,5 +91,5 @@ Fir::clear() {
 
 bool
 Fir::isStaffed() const {
-  return !__staff->staff().isEmpty() && __uirStaffCount < static_cast< unsigned >(__staff->rowCount());
+  return !__staff->staff().isEmpty() && __uirStaffCount < static_cast<unsigned>(__staff->rowCount());
 }

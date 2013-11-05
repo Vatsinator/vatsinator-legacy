@@ -185,7 +185,7 @@ public:
    * Returns an URL to where METARs can be fetched from.
    */
   inline const QString &
-  metarUrl() const { return __metarURL; }
+  metarUrl() const { return __metarUrl; }
 
   /**
    * The following functions return const references to vectors of clients.
@@ -262,6 +262,22 @@ private:
    */
   void __clearData();
   
+private slots:
+  /**
+   * Called if local data is bad.
+   */
+  void __reportDataError(QString);
+  
+  void __slotUiCreated();
+  void __beginDownload();
+  void __dataFetched(QString);
+  
+  /**
+   * If any file can't be fetched.
+   */
+  void __handleFetchError();
+      
+private:  
 
   /* These are vectors of connected clients */
   FlightTableModel*   __flights;
@@ -270,7 +286,7 @@ private:
   QVector<Uir*>   __uirs;
 
   /* This is vector of data servers, obtained from status file */
-  QVector<QString>  __servers;
+  QVector<QString>  __dataServers;
 
   /* This set contains list of active airports, used later by OpenGLWidget */
   QMap<QString, ActiveAirport*> __activeAirports;
@@ -282,10 +298,10 @@ private:
   QMultiMap<QString, QString> __aliases;
 
   /* This is URL that we can obtain METAR from */
-  QString   __metarURL;
+  QString   __metarUrl;
 
   /* And status.txt */
-  QString   __statusURL;
+  QString   __statusUrl;
 
   QDateTime __dateVatsimDataUpdated;
 
@@ -298,16 +314,6 @@ private:
   FirDatabase&     __firs;
   
   PlainTextDownloader* __downloader;
-  
-private slots:
-  /**
-   * Called if local data is bad.
-   */
-  void __reportDataError(QString);
-  
-  void __slotUiCreated();
-  void __beginDownload();
-  void __dataFetched(const QString&);
 
 };
 

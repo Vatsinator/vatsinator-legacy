@@ -37,7 +37,6 @@ namespace DefaultSettings {
 }
 
 
-
 ViewPage::ViewPage(QWidget* _parent) :
     AbstractSettingsPage(_parent) {
   setupUi(this);

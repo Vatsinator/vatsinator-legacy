@@ -54,7 +54,7 @@ AirportDatabase::__readDatabase() {
     VatsinatorApplication::alert(
       tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()),
       true);
-
+  
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);
 

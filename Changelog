@@ -2,18 +2,25 @@ Version 1.0
   Release date:
 
   Features:
-    * Added "Network" page in settings window
+    * Added Weather Forecasts
     * Added stats collecting
+    * Added Japanese translation
   
   Build system:
     * Added support for MacOS X
     
   Miscellaneous:
-    * Homepage update
+    * Added "Network" page in settings window
+    * Better handling of network errors
   
+Version 0.2.1
+  Release date: 04.11.2013
+  
+  Hotfix:
+    * Added User-Agent header so Vatsim servers won't complain
 
 Version 0.2
-  Release date: 15.01.2012
+  Release date: 15.01.2013
   
   Features:
     * Added "Altimeter" field in Flight Details Window

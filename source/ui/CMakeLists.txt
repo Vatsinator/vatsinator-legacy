@@ -20,7 +20,7 @@ if (NOT vatsinator_CHANGELOG)
     
 endif (NOT vatsinator_CHANGELOG)
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.cmake
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/about.h
 )
 
@@ -32,7 +32,7 @@ if (NOT vatsinator_LICENSE)
     string (REPLACE "\"" "\\\"" vatsinator_LICENSE "${vatsinator_LICENSE}")
 endif (NOT vatsinator_LICENSE)
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.cmake
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/license.h
 )
 

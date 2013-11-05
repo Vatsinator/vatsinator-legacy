@@ -22,7 +22,9 @@
 #include "network/plaintextdownloader.h"
 
 #include "storage/filemanager.h"
+#include "storage/settingsmanager.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "resourcemanager.h"
@@ -32,8 +34,7 @@
 static const int START_DELAY = 2 * 1000;
 
 ResourceManager::ResourceManager(QObject* _parent) :
-    QObject(_parent),
-    __currentVersion(VATSINATOR_VERSION) {
+    QObject(_parent) {
   
   qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
   
@@ -44,50 +45,45 @@ ResourceManager::~ResourceManager() {}
 
 void
 ResourceManager::__fetchVersion() {
-  PlainTextDownloader* fetcher = new PlainTextDownloader();
-  
-  connect(fetcher,      SIGNAL(finished(QString)),
-          this,         SLOT(__parseVersion(QString)));
-  
-  fetcher->fetchData(QString(VATSINATOR_REPO_URL) % "/VERSION");
+  if (SM::get("network.version_check").toBool()) {
+    PlainTextDownloader* fetcher = new PlainTextDownloader();
+    
+    connect(fetcher,      SIGNAL(finished(QString)),
+            this,         SLOT(__parseVersion(QString)));
+    
+    fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
+  }
 }
 
 void
 ResourceManager::__parseVersion(QString _versionString) {
-  Version latest(_versionString);
+  bool actual = __versionActual(QString(VATSINATOR_VERSION), _versionString);
   
-  if (__currentVersion < latest)
+  VatsinatorApplication::log("ResourceManager: version(%1) %2 version(%3)",
+                             VATSINATOR_VERSION,
+                             actual ? ">=" : "<",
+                             qPrintable(_versionString.simplified()));
+  
+  if (!actual)
     emit outdated();
   
-  emit versionChecked(__currentVersion < latest ? Outdated : Updated);
+  emit versionChecked(actual ? Updated : Outdated);
   
   sender()->deleteLater();
 }
 
-ResourceManager::Version::Version(const QString& _str) {
-  __major = _str.section('.', 0, 0).toInt();
-  
-  if (_str.contains('-')) {
-    __minor = _str.section('.', 1).section('-', 0, 0).toInt();
-  } else {
-    __minor = _str.section('.', 1).toInt();
+bool
+ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
+  auto ver1 = _version1.split(QRegExp("\\D+"));
+  auto ver2 = _version2.split(QRegExp("\\D+"));
+
+  for (int i = 0; i < ver1.size() && i < ver2.size(); ++i) {
+    if (ver1[i].toInt() < ver2[i].toInt())
+      return false;
+    
+    if (ver1[i].toInt() > ver2[i].toInt())
+      return true;
   }
   
-  VatsinatorApplication::log("Parsed %s as major=%i, minor=%i",
-                             qPrintable(_str), __major, __minor);
-}
-
-ResourceManager::Version::Version() :
-  __major(-1),
-  __minor(-1) {}
-
-bool
-ResourceManager::Version::operator<(const ResourceManager::Version& _other) {
-if (__major < _other.__major)
-    return true;
-  
-  if (__major == _other.__major && __minor < _other.__minor)
-    return true;
-  
-  return false;
+  return true;
 }

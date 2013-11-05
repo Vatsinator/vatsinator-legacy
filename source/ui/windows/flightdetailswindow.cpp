@@ -23,16 +23,14 @@
 #include "modules/flighttracker.h"
 
 #include "ui/userinterface.h"
-
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsimdata/airport/activeairport.h"
-
 #include "vatsimdata/client/pilot.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "flightdetailswindow.h"
@@ -84,11 +82,11 @@ FlightDetailsWindow::show(const Client* _client) {
   SquawkLabel->setText(__current->squawk());
   AltimeterLabel->setText(__current->pressure().mb % " / " % __current->pressure().ihg);
   
-  VatawareLink->setText("<a href=\"http://www.vataware.com/pilot.cfm?cid=" %
-      QString::number(__current->pid()) %
-      static_cast<QString>("\">") %
+  VatawareLink->setText(QString("<a href=\"") %
+      QString(NetConfig::Vataware::pilotUrl()).arg(QString::number(__current->pid())) %
+      QString("\">") %
       tr("Vataware statistics for this pilot") %
-      static_cast<QString>("</a>"));
+      QString("</a>"));
 
   FlightRulesLabel->setText((__current->flightRules() == Pilot::IFR) ? "IFR" : "VFR");
 

@@ -21,31 +21,30 @@
 #include "db/airportdatabase.h"
 
 #include "modules/vatbookhandler.h"
-
 #include "modules/models/bookedatctablemodel.h"
 
+#include "network/weatherforecast.h"
+#include "network/models/weatherforecastmodel.h"
+
+#include "storage/settingsmanager.h"
+
 #include "ui/userinterface.h"
-
 #include "ui/buttons/clientdetailsbutton.h"
-
 #include "ui/widgets/mapwidget.h"
-
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsimdata/airport/activeairport.h"
-
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/metarlistmodel.h"
 
+#include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "airportdetailswindow.h"
@@ -53,7 +52,21 @@
 
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent),
-    __currentICAO("") {
+    __currentICAO(""),
+    __forecast(
+#ifdef WITH_WEATHER_FORECAST
+      new WeatherForecast()
+#else
+      nullptr
+#endif
+    ),
+    __progressModel(
+#ifdef WITH_WEATHER_FORECAST
+      new WeatherForecastModel()
+#else
+      nullptr
+#endif
+    ){
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -68,8 +81,30 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
 
-  connect(ShowButton, SIGNAL(clicked()),
-          this,       SLOT(__handleShowClicked()));
+  connect(ShowButton,                           SIGNAL(clicked()),
+          this,                                 SLOT(__handleShowClicked()));
+  
+#ifdef WITH_WEATHER_FORECAST
+  connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
+          this,                                 SLOT(__updateForecast(WeatherForecastModel*)));
+  
+  ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
+  ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+#else
+  ForecastGroup->hide();
+#endif
+}
+
+AirportDetailsWindow::~AirportDetailsWindow() {
+#ifdef WITH_WEATHER_FORECAST
+  delete __forecast;
+  
+  QAbstractItemModel* m = ForecastView->model();
+  if (m)
+    delete m;
+  
+  delete __progressModel;
+#endif
 }
 
 void
@@ -92,10 +127,26 @@ AirportDetailsWindow::show(const Airport* _ap) {
     MetarListModel::getSingleton().fetchMetar(__currentICAO);
   }
 
-  if (!isVisible())
+  if (!isVisible()) {
     QWidget::show();
-  else
+  } else {
     activateWindow();
+  }
+
+#ifdef WITH_WEATHER_FORECAST
+  QAbstractItemModel* fvm = ForecastView->model();
+  if (fvm && fvm != __progressModel)
+    fvm->deleteLater();
+  
+  if (SM::get("network.weather_forecasts").toBool()) {
+    ForecastGroup->setEnabled(true);
+    ForecastView->setModel(__progressModel);
+    __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
+                              QString::fromUtf8(_ap->data()->country));
+  } else {
+    ForecastGroup->setEnabled(false);
+  }
+#endif
 }
 
 void
@@ -174,11 +225,12 @@ AirportDetailsWindow::__fillLabels(const Airport* _ap) {
   CityLabel->setText(QString::fromUtf8(apData->city));
   CountryLabel->setText(QString::fromUtf8(apData->country));
   AltitudeLabel->setText(tr("%1 ft").arg(QString::number(apData->altitude)));
-  VatawareAirportLinkLabel->setText("<a href=\"http://www.vataware.com/airport.cfm?airport=" %
-      QString::fromUtf8(apData->icao) %
-      static_cast< QString >("\">") %
+  VatawareAirportLinkLabel->setText(
+      QString("<a href=\"") %
+      QString(NetConfig::Vataware::airportUrl()).arg(QString::fromUtf8(apData->icao)) %
+      QString("\">") %
       tr("Vataware statistics for this airport") %
-      static_cast< QString >("</a>")
+      QString("</a>")
     );
 }
 
@@ -216,6 +268,17 @@ AirportDetailsWindow::__updateData() {
 
   __updateModels();
   __adjustTables();
+}
+
+void
+AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
+#ifdef WITH_WEATHER_FORECAST
+  QAbstractItemModel* m = ForecastView->model();
+  if (m && m!= __progressModel)
+    m->deleteLater();
+  
+  ForecastView->setModel(model);
+#endif
 }
 
 void

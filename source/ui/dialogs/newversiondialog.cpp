@@ -19,6 +19,8 @@
 
 #include <QtGui>
 
+#include "netconfig.h"
+
 #include "newversiondialog.h"
 #include "defines.h"
 
@@ -26,7 +28,5 @@ NewVersionDialog::NewVersionDialog(QWidget* _parent) :
     QDialog(_parent) {
   setupUi(this);
   
-  DownloadButton->setUrl(VATSINATOR_HOMEPAGE);
+  DownloadButton->setUrl(QString(NetConfig::Vatsinator::homePageUrl()));
 }
-
-

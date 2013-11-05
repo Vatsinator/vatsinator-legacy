@@ -158,83 +158,88 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="35"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="147"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="198"/>
         <source>%1 - airport details</source>
         <translation>%1 - 空港詳細</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="61"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="78"/>
         <source>Inbound</source>
         <translation>出発機</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="127"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="140"/>
         <source>Outbound</source>
         <translation>到着機</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="193"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="202"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="259"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="264"/>
         <source>Bookings</source>
         <translation>飛行予定</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="325"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="326"/>
         <source>Airport info</source>
         <translation>空港情報</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="348"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="358"/>
         <source>Airport name:</source>
         <translation>空港名:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="372"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="382"/>
         <source>City:</source>
         <translation>都市:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="396"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="406"/>
         <source>Country:</source>
         <translation>国:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="423"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="433"/>
         <source>Altitude:</source>
-        <translation>高度:</translation>
+        <translation>標高:</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="492"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="180"/>
+        <source>Weather forecast</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="624"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="232"/>
         <source>Vataware statistics for this airport</source>
         <translation>Vataware による空港の統計情報</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="515"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="698"/>
         <source>Close</source>
         <translation>閉じる</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="559"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="679"/>
         <source>Show</source>
         <translation>表示</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="91"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="126"/>
         <source>Fetching...</source>
         <translation>取得中...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="118"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="169"/>
         <source>Sorry, no weather report for %1.</source>
         <translation>%1 に対する気象レポートはありません。</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="176"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="227"/>
         <source>%1 ft</source>
         <translation>%1 フィート</translation>
     </message>
@@ -273,6 +278,24 @@
     </message>
 </context>
 <context>
+    <name>AppRestartDialog</name>
+    <message>
+        <location filename="../ui/dialogs/apprestartdialog.ui" line="14"/>
+        <source>Restart application?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/apprestartdialog.ui" line="24"/>
+        <source>You changed the language. To have it visible, you need to restart the application.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/apprestartdialog.ui" line="40"/>
+        <source>Do you want to restart the application now?</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AtcDetailsWindow</name>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="56"/>
@@ -305,7 +328,7 @@
     <message>
         <location filename="../modules/models/bookedatctablemodel.cpp" line="114"/>
         <source>Hours</source>
-        <translation>時刻</translation>
+        <translation>時間</translation>
     </message>
 </context>
 <context>
@@ -322,7 +345,7 @@
         <location filename="../ui/pages/colorspage.ui" line="26"/>
         <location filename="../ui/pages/colorspage.cpp" line="47"/>
         <source>Colors</source>
-        <translation>表示色の設定</translation>
+        <translation>色</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="45"/>
@@ -480,7 +503,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="65"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="63"/>
         <source>%1 - flight details</source>
         <translation>%1 - フライト詳細</translation>
     </message>
@@ -522,7 +545,7 @@
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="280"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="90"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="88"/>
         <source>Vataware statistics for this pilot</source>
         <translation>Vataware によるパイロットの統計情報</translation>
     </message>
@@ -612,28 +635,28 @@
         <translation>閉じる</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="71"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
         <source>%1 feet</source>
         <translation>%1 フィート</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="72"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="98"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="70"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="96"/>
         <source>%1 kts</source>
         <translation>%1 ノット</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
         <source>airborne</source>
         <translation>飛行中</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
         <source>departing</source>
         <translation>出発</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="80"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
         <source>arrived</source>
         <translation>到着</translation>
     </message>
@@ -841,9 +864,9 @@
     <name>MiscellaneousPage</name>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="26"/>
-        <location filename="../ui/pages/miscellaneouspage.cpp" line="42"/>
+        <location filename="../ui/pages/miscellaneouspage.cpp" line="47"/>
         <source>Miscellaneous</source>
-        <translation>その他の設定</translation>
+        <translation>その他</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="119"/>
@@ -899,59 +922,69 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
-        <location filename="../ui/pages/networkpage.cpp" line="41"/>
+        <location filename="../ui/pages/networkpage.cpp" line="46"/>
         <source>Network</source>
         <translation>ネットワーク</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="34"/>
+        <location filename="../ui/pages/networkpage.ui" line="79"/>
         <source>Refresh data every</source>
         <translation>データ更新周期</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="60"/>
-        <source>minutes</source>
-        <translation>分毎</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="85"/>
-        <source>Let me know when an error occurs</source>
-        <translation>エラー発生時はご連絡ください。</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="97"/>
-        <source>If enabled, you will be asked what to do each time data downloading fails. Otherwise, Vatsinator will make the decision itself.</source>
-        <translation>有効の場合、データの取得失敗時にどのようにするかをユーザに確認します。それ以外は Vatsinator が決定します。</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="110"/>
+        <location filename="../ui/pages/networkpage.ui" line="178"/>
         <source>Enable caching</source>
         <translation>キャッシュを有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="125"/>
+        <location filename="../ui/pages/networkpage.ui" line="193"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
         <translation>有効の場合、取得したデータをキャッシュします。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="138"/>
+        <location filename="../ui/pages/networkpage.ui" line="130"/>
         <source>Keep METARs updated</source>
         <translation>METAR を最新状態に保つ</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="153"/>
+        <location filename="../ui/pages/networkpage.ui" line="32"/>
+        <source>Enable auto-updater</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="47"/>
+        <source>Auto-updater keeps all the data up-to-date automatically.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="145"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
         <translation>有効の場合、すべての気象データを定期的に更新します。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="166"/>
+        <location filename="../ui/pages/networkpage.ui" line="206"/>
         <source>Enable version checking</source>
         <translation>バージョン確認を有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="181"/>
+        <location filename="../ui/pages/networkpage.ui" line="221"/>
         <source>If enabled, you will be notified if the new version of the application is available.</source>
         <translation>有効の場合、プログラムの最新バージョンが利用可能な場合通知されます。</translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="237"/>
+        <source>Weather forecasts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="252"/>
+        <source>Uncheck to disable weather forecasts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/pages/networkpage.cpp" line="101"/>
+        <source>minute(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1030,16 +1063,21 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="347"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="390"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="418"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="468"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="352"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="395"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="473"/>
         <source>File %1 could not be opened!</source>
         <translation>ファイル %1 を開くことができません！</translation>
     </message>
 </context>
 <context>
     <name>VatsinatorWindow</name>
+    <message>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="95"/>
+        <source>Clients:</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
         <source>&amp;Vatsinator</source>
@@ -1048,12 +1086,12 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
         <source>&amp;Help</source>
-        <translation>&amp;Hヘルプ</translation>
+        <translation>&amp;ヘルプ</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
         <source>&amp;Settings</source>
-        <translation>&amp;S設定</translation>
+        <translation>&amp;設定</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
@@ -1108,7 +1146,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
         <source>&amp;Menu</source>
-        <translation>&amp;Mメニュー</translation>
+        <translation>&amp;メニュー</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
@@ -1135,30 +1173,30 @@
     <name>ViewPage</name>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="26"/>
-        <location filename="../ui/pages/viewpage.cpp" line="52"/>
+        <location filename="../ui/pages/viewpage.cpp" line="51"/>
         <source>View</source>
-        <translation>表示設定</translation>
+        <translation>表示</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="114"/>
         <source>Show pilot labels:</source>
-        <translation>パイロットのラベル:</translation>
+        <translation>パイロットのラベル表示:</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="121"/>
         <location filename="../ui/pages/viewpage.ui" line="175"/>
         <source>Always</source>
-        <translation>する</translation>
+        <translation>常時</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>When hovered</source>
-        <translation>マウスカーソルを当てた時</translation>
+        <translation>マウスカーソルを当てた時に表示する</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="141"/>
         <source>Airport-related</source>
-        <translation>関連する空港</translation>
+        <translation>関連する空港を選択した時</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="43"/>
@@ -1178,7 +1216,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="70"/>
         <source>Staffed FIRs</source>
-        <translation>管制空域</translation>
+        <translation>オンライン中の FIR</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="80"/>
@@ -1199,6 +1237,19 @@
         <location filename="../ui/pages/viewpage.ui" line="185"/>
         <source>Never</source>
         <translation>しない</translation>
+    </message>
+</context>
+<context>
+    <name>WeatherForecastModel</name>
+    <message>
+        <location filename="../network/models/weatherforecastmodel.cpp" line="65"/>
+        <source>Data not accessible</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../network/models/weatherforecastmodel.cpp" line="67"/>
+        <source>Fetching data...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

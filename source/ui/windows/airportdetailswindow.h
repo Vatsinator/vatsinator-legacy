@@ -28,6 +28,8 @@
 class Airport;
 class Controller;
 class Pilot;
+class WeatherForecast;
+class WeatherForecastModel;
 
 class AirportDetailsWindow :
     public BaseWindow,
@@ -38,6 +40,7 @@ class AirportDetailsWindow :
 
 public:
   AirportDetailsWindow(QWidget* = nullptr);
+  virtual ~AirportDetailsWindow();
 
 public slots:
   void show(const Airport*);
@@ -48,13 +51,19 @@ private:
   void __updateModels(const Airport* = NULL);
   void __fillLabels(const Airport*);
   void __adjustTables();
-
-  QString __currentICAO;
-  const Airport* __current;
-
+  
 private slots:
   void __updateData();
+  void __updateForecast(WeatherForecastModel*);
   void __handleShowClicked();
+
+private:
+  QString __currentICAO;
+  const Airport* __current;
+  
+  WeatherForecast* __forecast;
+  
+  WeatherForecastModel* __progressModel;
 
 };
 

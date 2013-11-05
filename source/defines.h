@@ -1,6 +1,6 @@
 /*
     defines.h
-    This file contains some const variables.
+    This file contains global build configuration.
     
     Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
 
@@ -22,23 +22,6 @@
 #define DEFINES_H
 
 #include "config.h"
-
-// where to get all the data from
-#define VATSIM_STATUS_URL "http://status.vatsim.net/status.txt"
-
-// base Vatsinator domain
-#define VATSINATOR_BASE_URL "vatsinator.eu.org"
-
-// Vatsinator homepage url
-#define VATSINATOR_HOMEPAGE "http://" VATSINATOR_BASE_URL
-
-// Vatsinator_repo url
-#define VATSINATOR_REPO_URL "http://repo." VATSINATOR_BASE_URL
-
-// Where stats will be collected
-#define VATSINATOR_STATS_URL "http://stats." VATSINATOR_BASE_URL
-
-
 
 // if debug, add MemoryTracker to the buildset
 #ifndef NO_DEBUG

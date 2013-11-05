@@ -24,16 +24,21 @@
 
 /* Default settings for NetworkPage */
 namespace DefaultSettings {
-  static const int     REFRESH_RATE     = 3;
-  static const bool    PROMPT_ON_ERROR  = false;
-  static const bool    METARS_REFRESH   = true;
-  static const bool    CACHE_ENABLED    = true;
-  static const bool    VERSION_CHECK    = true;
+  static const bool    AUTO_UPDATER      = true;
+  static const int     REFRESH_RATE      = 3;
+  static const bool    METARS_REFRESH    = true;
+  static const bool    CACHE_ENABLED     = true;
+  static const bool    VERSION_CHECK     = true;
+  static const bool    WEATHER_FORECASTS = true;
 }
 
 NetworkPage::NetworkPage(QWidget* _parent) :
     AbstractSettingsPage(_parent) {
   setupUi(this);
+  connect(RefreshRateBox, SIGNAL(valueChanged(int)),
+          this,           SLOT(__updateRefreshRateLabel(int)));
+  connect(AutoUpdaterCheckBox,  SIGNAL(stateChanged(int)),
+          this,                 SLOT(__updateAutoUpdaterLocks(int)));
 }
 
 QString
@@ -53,32 +58,56 @@ NetworkPage::pageName() const {
 
 void
 NetworkPage::updateFromUi() const {
+  setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
   setValue("refresh_rate", RefreshRateBox->value());
-  setValue("prompt_on_error", PromptOnErrorCheckBox->isChecked());
   setValue("cache_enabled", CachingCheckBox->isChecked());
   setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   setValue("version_check", VersionCheckingCheckBox->isChecked());
+  setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
 }
 
 void
 NetworkPage::restore(QSettings& _s) {
-  RefreshRateBox->setValue(
-    _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt());
-  PromptOnErrorCheckBox->setChecked(
-    _s.value("prompt_on_error", DefaultSettings::PROMPT_ON_ERROR).toBool());
+  bool state = _s.value("auto_updater", DefaultSettings::AUTO_UPDATER).toBool();
+  AutoUpdaterCheckBox->setChecked(state);
+  __updateAutoUpdaterLocks(state);
+  
+  int val = _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt();
+  RefreshRateBox->setValue(val);
+  __updateRefreshRateLabel(val);
+  
   RefreshMetarsCheckBox->setChecked(
     _s.value("refresh_metars", DefaultSettings::METARS_REFRESH).toBool());
   CachingCheckBox->setChecked(
     _s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
   VersionCheckingCheckBox->setChecked(
     _s.value("version_check", DefaultSettings::VERSION_CHECK).toBool());
+  WeatherForecastCheckBox->setChecked(
+    _s.value("weather_forecasts", DefaultSettings::WEATHER_FORECASTS).toBool());
 }
 
 void
 NetworkPage::save(QSettings& _s) {
+  _s.setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
   _s.setValue("refresh_rate", RefreshRateBox->value());
-  _s.setValue("prompt_on_error", PromptOnErrorCheckBox->isChecked());
   _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   _s.setValue("cache_enabled", CachingCheckBox->isChecked());
   _s.setValue("version_check", VersionCheckingCheckBox->isChecked());
+  _s.setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
+}
+
+void
+NetworkPage::__updateRefreshRateLabel(int _n) {
+  RefreshRateLabel->setText(tr("minute(s)", "", _n));
+}
+
+void
+NetworkPage::__updateAutoUpdaterLocks(int _state) {
+  if (_state == Qt::Checked) {
+    RefreshRateBox->setEnabled(false);
+    RefreshMetarsCheckBox->setEnabled(false);
+  } else {
+    RefreshRateBox->setEnabled(true);
+    RefreshMetarsCheckBox->setEnabled(true);
+  }
 }
