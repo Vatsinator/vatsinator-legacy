@@ -1055,12 +1055,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="95"/>
+        <location filename="../storage/unzipper.cpp" line="94"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="115"/>
+        <location filename="../storage/unzipper.cpp" line="114"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1068,10 +1068,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="352"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="395"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="473"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
     </message>

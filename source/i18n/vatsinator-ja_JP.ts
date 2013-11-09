@@ -210,7 +210,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="492"/>
         <source>Weather forecast</source>
-        <translation type="unfinished"/>
+        <translation>気象予報</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="624"/>
@@ -282,17 +282,17 @@
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="14"/>
         <source>Restart application?</source>
-        <translation type="unfinished"/>
+        <translation>プログラムを再起動しますか？</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="24"/>
         <source>You changed the language. To have it visible, you need to restart the application.</source>
-        <translation type="unfinished"/>
+        <translation>言語設定を反映させるには、プログラムの再起動が必要です。</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="40"/>
         <source>Do you want to restart the application now?</source>
-        <translation type="unfinished"/>
+        <translation>今すぐプログラムを再起動しますか？</translation>
     </message>
 </context>
 <context>
@@ -350,12 +350,12 @@
     <message>
         <location filename="../ui/pages/colorspage.ui" line="45"/>
         <source>Unstaffed FIR borders color:</source>
-        <translation>管制官が離籍中の FIR の境界色:</translation>
+        <translation>管制官がオフラインの FIR の境界色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="75"/>
         <source>Staffed FIR background color:</source>
-        <translation>管制官が在籍中の FIR の背景色:</translation>
+        <translation>管制官がオンラインの FIR の背景色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="121"/>
@@ -366,7 +366,7 @@
     <message>
         <location filename="../ui/pages/colorspage.ui" line="154"/>
         <source>Staffed UIR background color:</source>
-        <translation>管制官が在籍中の UIR の背景色:</translation>
+        <translation>管制官がオンラインの UIR の背景色:</translation>
     </message>
     <message>
         <location filename="../ui/pages/colorspage.ui" line="233"/>
@@ -896,7 +896,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="219"/>
         <source>Nicer but slower.</source>
-        <translation>描画品質は向上、描画速度は遅い</translation>
+        <translation>有効の場合、描画品質は向上するが描画速度は遅くなります。</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="99"/>
@@ -949,12 +949,12 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="32"/>
         <source>Enable auto-updater</source>
-        <translation type="unfinished"/>
+        <translation>自動更新を有効にする</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="47"/>
         <source>Auto-updater keeps all the data up-to-date automatically.</source>
-        <translation type="unfinished"/>
+        <translation>有効の場合、すべてのデータを自動的に最新状態に保つ。</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="145"/>
@@ -974,17 +974,17 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="237"/>
         <source>Weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>気象予報</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="252"/>
         <source>Uncheck to disable weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>有効の場合、気象予報を取得します。</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/pages/networkpage.cpp" line="101"/>
         <source>minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>分</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1050,12 +1050,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="95"/>
+        <location filename="../storage/unzipper.cpp" line="94"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation>Zip 圧縮ファイルを開けません: %1 (ディレクトリのパーミッションを確認してください)</translation>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="115"/>
+        <location filename="../storage/unzipper.cpp" line="114"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation>Zip 圧縮ファイル (%1) にアクセスできません。無視して続行します...</translation>
     </message>
@@ -1063,10 +1063,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="352"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="395"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="473"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
         <source>File %1 could not be opened!</source>
         <translation>ファイル %1 を開くことができません！</translation>
     </message>
@@ -1076,7 +1076,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="95"/>
         <source>Clients:</source>
-        <translation type="unfinished"/>
+        <translation>クライアント:</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
@@ -1131,7 +1131,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
         <source>Enable auto-updates</source>
-        <translation>自動更新有効</translation>
+        <translation>自動更新を有効にする</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
@@ -1216,12 +1216,12 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="70"/>
         <source>Staffed FIRs</source>
-        <translation>オンライン中の FIR</translation>
+        <translation>管制官がオンラインの FIR</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="80"/>
         <source>Unstaffed FIRs</source>
-        <translation>非管制空域</translation>
+        <translation>管制官がオフラインの FIR</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="90"/>
@@ -1244,12 +1244,12 @@
     <message>
         <location filename="../network/models/weatherforecastmodel.cpp" line="65"/>
         <source>Data not accessible</source>
-        <translation type="unfinished"/>
+        <translation>データにアクセスできません。</translation>
     </message>
     <message>
         <location filename="../network/models/weatherforecastmodel.cpp" line="67"/>
         <source>Fetching data...</source>
-        <translation type="unfinished"/>
+        <translation>データを取得中...</translation>
     </message>
 </context>
 <context>

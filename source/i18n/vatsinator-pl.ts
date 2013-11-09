@@ -210,7 +210,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="492"/>
         <source>Weather forecast</source>
-        <translation type="unfinished"/>
+        <translation>Prognoza pogody</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="624"/>
@@ -282,17 +282,17 @@
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="14"/>
         <source>Restart application?</source>
-        <translation type="unfinished"/>
+        <translation>Uruchomić aplikację ponownie?</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="24"/>
         <source>You changed the language. To have it visible, you need to restart the application.</source>
-        <translation type="unfinished"/>
+        <translation>Zmieniłeś język. Aby zobaczyć zmiany, musisz uruchomić ponownie aplikację.</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="40"/>
         <source>Do you want to restart the application now?</source>
-        <translation type="unfinished"/>
+        <translation>Chcesz to zrobić teraz?</translation>
     </message>
 </context>
 <context>
@@ -974,17 +974,17 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="237"/>
         <source>Weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>Prognozy pogody</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="252"/>
         <source>Uncheck to disable weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>Odznacz, aby zablokować pobieranie prognoz</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/pages/networkpage.cpp" line="101"/>
         <source>minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>minuta</numerusform><numerusform>minuty</numerusform><numerusform>minut</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1050,12 +1050,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="95"/>
+        <location filename="../storage/unzipper.cpp" line="94"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation>Nie można otworzyć archiwum zip: %1 (sprawdź uprawnienia katalogu)</translation>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="115"/>
+        <location filename="../storage/unzipper.cpp" line="114"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation>Brak dostępu do archiwum zip (%1). Pomijam...</translation>
     </message>
@@ -1063,10 +1063,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="352"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="395"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="473"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
         <source>File %1 could not be opened!</source>
         <translation>Plik %1 nie mógł zostać otwarty!</translation>
     </message>
@@ -1076,7 +1076,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="95"/>
         <source>Clients:</source>
-        <translation type="unfinished"/>
+        <translation>Klientów:</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
@@ -1244,12 +1244,12 @@
     <message>
         <location filename="../network/models/weatherforecastmodel.cpp" line="65"/>
         <source>Data not accessible</source>
-        <translation type="unfinished"/>
+        <translation>Dane niedostępne</translation>
     </message>
     <message>
         <location filename="../network/models/weatherforecastmodel.cpp" line="67"/>
         <source>Fetching data...</source>
-        <translation type="unfinished"/>
+        <translation>Pobieranie danych...</translation>
     </message>
 </context>
 <context>
