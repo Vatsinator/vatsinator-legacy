@@ -927,22 +927,22 @@
         <translation>ネットワーク</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="79"/>
+        <location filename="../ui/pages/networkpage.ui" line="90"/>
         <source>Refresh data every</source>
         <translation>データ更新周期</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="178"/>
+        <location filename="../ui/pages/networkpage.ui" line="210"/>
         <source>Enable caching</source>
         <translation>キャッシュを有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="193"/>
+        <location filename="../ui/pages/networkpage.ui" line="225"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
         <translation>有効の場合、取得したデータをキャッシュします。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="130"/>
+        <location filename="../ui/pages/networkpage.ui" line="141"/>
         <source>Keep METARs updated</source>
         <translation>METAR を最新状態に保つ</translation>
     </message>
@@ -957,27 +957,32 @@
         <translation>有効の場合、すべてのデータを自動的に最新状態に保つ。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="145"/>
+        <location filename="../ui/pages/networkpage.ui" line="75"/>
+        <source>Custom updates settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="156"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
         <translation>有効の場合、すべての気象データを定期的に更新します。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="206"/>
+        <location filename="../ui/pages/networkpage.ui" line="238"/>
         <source>Enable version checking</source>
         <translation>バージョン確認を有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="221"/>
+        <location filename="../ui/pages/networkpage.ui" line="253"/>
         <source>If enabled, you will be notified if the new version of the application is available.</source>
         <translation>有効の場合、プログラムの最新バージョンが利用可能な場合通知されます。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="237"/>
+        <location filename="../ui/pages/networkpage.ui" line="269"/>
         <source>Weather forecasts</source>
         <translation>気象予報</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="252"/>
+        <location filename="../ui/pages/networkpage.ui" line="284"/>
         <source>Uncheck to disable weather forecasts</source>
         <translation>有効の場合、気象予報を取得します。</translation>
     </message>
@@ -1063,12 +1068,25 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="369"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="440"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="490"/>
         <source>File %1 could not be opened!</source>
         <translation>ファイル %1 を開くことができません！</translation>
+    </message>
+</context>
+<context>
+    <name>VatsimMessageDialog</name>
+    <message>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="14"/>
+        <source>A message from Vatsim</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="59"/>
+        <source>Do not show this message again</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1084,87 +1102,87 @@
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="189"/>
         <source>&amp;Help</source>
         <translation>&amp;ヘルプ</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="195"/>
         <source>&amp;Settings</source>
         <translation>&amp;設定</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="209"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="224"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="236"/>
         <source>METARs...</source>
         <translation>METAR...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="251"/>
         <source>Refresh</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="263"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="274"/>
         <source>Flight list...</source>
         <translation>フライトリスト:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>ATC list...</source>
         <translation>ATC リスト:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
         <source>Enable auto-updates</source>
         <translation>自動更新を有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="298"/>
         <source>Show home location</source>
         <translation>ホームを表示</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="301"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="82"/>
         <source>&amp;Menu</source>
         <translation>&amp;メニュー</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="112"/>
         <source>Last update: never</source>
         <translation>最終更新時刻: 未実施</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="116"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
         <source>Last update: %1 UTC</source>
         <translation>最終更新時刻: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="128"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="126"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>クライアント: %1 (パイロット %2、ATC %3、オブザーバ %4)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="219"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="215"/>
         <source>Invalid data!</source>
         <translation>無効なデータです!</translation>
     </message>

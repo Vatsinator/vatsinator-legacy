@@ -827,12 +827,12 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="27"/>
         <source>Type airport ICAO here to fetch METAR</source>
-        <translation>Wpisz tutaj kod lotniska, aby pobrać raport</translation>
+        <translation>Wpisz tutaj kod lotniska, aby pobrać depeszę METAR</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="37"/>
         <source>There are METARs that were fetched recently:</source>
-        <translation>Poniżej znajdują się pobrane wcześniej raporty pogodowe:</translation>
+        <translation>Poniżej znajdują się pobrane wcześniej depesze METAR:</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="44"/>
@@ -927,57 +927,62 @@
         <translation>Sieć</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="79"/>
+        <location filename="../ui/pages/networkpage.ui" line="90"/>
         <source>Refresh data every</source>
         <translation>Odświeżaj dane co</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="178"/>
+        <location filename="../ui/pages/networkpage.ui" line="210"/>
         <source>Enable caching</source>
         <translation>Zapisywanie pobranych danych</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="193"/>
+        <location filename="../ui/pages/networkpage.ui" line="225"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
         <translation>Jeżeli zaznaczone, Vatsinator będzie zapisywał część pobranych danych.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="130"/>
+        <location filename="../ui/pages/networkpage.ui" line="141"/>
         <source>Keep METARs updated</source>
-        <translation>Aktualizuj raporty pogodowe</translation>
+        <translation>Aktualizuj depesze METAR</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="32"/>
         <source>Enable auto-updater</source>
-        <translation type="unfinished"/>
+        <translation>Automatyczne odświeżanie</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="47"/>
         <source>Auto-updater keeps all the data up-to-date automatically.</source>
+        <translation>Program automatycznie zadba o to, by wszystkie dane były zawsze aktualne.</translation>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="75"/>
+        <source>Custom updates settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="145"/>
+        <location filename="../ui/pages/networkpage.ui" line="156"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
         <translation>Jeżeli zaznaczone, raporty pogodowe będą okresowo odświeżane.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="206"/>
+        <location filename="../ui/pages/networkpage.ui" line="238"/>
         <source>Enable version checking</source>
         <translation>Sprawdzaj aktualizacje</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="221"/>
+        <location filename="../ui/pages/networkpage.ui" line="253"/>
         <source>If enabled, you will be notified if the new version of the application is available.</source>
         <translation>Jeżeli zaznaczone, użytkownik będzie powiadamiany, kiedy pojawi się nowa wersja programu.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="237"/>
+        <location filename="../ui/pages/networkpage.ui" line="269"/>
         <source>Weather forecasts</source>
         <translation>Prognozy pogody</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="252"/>
+        <location filename="../ui/pages/networkpage.ui" line="284"/>
         <source>Uncheck to disable weather forecasts</source>
         <translation>Odznacz, aby zablokować pobieranie prognoz</translation>
     </message>
@@ -1063,12 +1068,25 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="345"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="416"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="369"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="440"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="490"/>
         <source>File %1 could not be opened!</source>
         <translation>Plik %1 nie mógł zostać otwarty!</translation>
+    </message>
+</context>
+<context>
+    <name>VatsimMessageDialog</name>
+    <message>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="14"/>
+        <source>A message from Vatsim</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="59"/>
+        <source>Do not show this message again</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1084,87 +1102,87 @@
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="189"/>
         <source>&amp;Help</source>
         <translation>&amp;Pomoc</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="195"/>
         <source>&amp;Settings</source>
         <translation>&amp;Ustawienia</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="209"/>
         <source>Exit</source>
         <translation>Wyjście</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="224"/>
         <source>About</source>
         <translation>O programie</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="236"/>
         <source>METARs...</source>
-        <translation>Raporty pogodowe...</translation>
+        <translation>Depesze METAR...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="251"/>
         <source>Refresh</source>
         <translation>Odśwież</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="263"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="274"/>
         <source>Flight list...</source>
         <translation>Lista lotów...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>ATC list...</source>
         <translation>Lista kontrolerów...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
         <source>Enable auto-updates</source>
         <translation>Automatyczne aktualizacje</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="298"/>
         <source>Show home location</source>
         <translation>Pokaż miejsce domowe</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="301"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="82"/>
         <source>&amp;Menu</source>
         <translation>&amp;Menu</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="112"/>
         <source>Last update: never</source>
         <translation>Ostatnia aktualizacja: nigdy</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="116"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
         <source>Last update: %1 UTC</source>
         <translation>Ostatnia aktualizacja: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="128"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="126"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Klientów: %1 (%2 pilotów, %3 kontrolerów, %4 obserwatorów)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="219"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="215"/>
         <source>Invalid data!</source>
         <translation>Błędne dane!</translation>
     </message>

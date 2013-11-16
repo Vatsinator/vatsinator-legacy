@@ -927,22 +927,22 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="79"/>
+        <location filename="../ui/pages/networkpage.ui" line="90"/>
         <source>Refresh data every</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="178"/>
+        <location filename="../ui/pages/networkpage.ui" line="210"/>
         <source>Enable caching</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="193"/>
+        <location filename="../ui/pages/networkpage.ui" line="225"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="130"/>
+        <location filename="../ui/pages/networkpage.ui" line="141"/>
         <source>Keep METARs updated</source>
         <translation type="unfinished"/>
     </message>
@@ -957,27 +957,32 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="145"/>
+        <location filename="../ui/pages/networkpage.ui" line="75"/>
+        <source>Custom updates settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="156"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="206"/>
+        <location filename="../ui/pages/networkpage.ui" line="238"/>
         <source>Enable version checking</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="221"/>
+        <location filename="../ui/pages/networkpage.ui" line="253"/>
         <source>If enabled, you will be notified if the new version of the application is available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="237"/>
+        <location filename="../ui/pages/networkpage.ui" line="269"/>
         <source>Weather forecasts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="252"/>
+        <location filename="../ui/pages/networkpage.ui" line="284"/>
         <source>Uncheck to disable weather forecasts</source>
         <translation type="unfinished"/>
     </message>
@@ -1050,12 +1055,12 @@
 <context>
     <name>Unzipper</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="95"/>
+        <location filename="../storage/unzipper.cpp" line="94"/>
         <source>Could not open zip file: %1 (check your directory permissions)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../storage/unzipper.cpp" line="115"/>
+        <location filename="../storage/unzipper.cpp" line="114"/>
         <source>Could not access zip archive (%1) properly. Skipping...</source>
         <translation type="unfinished"/>
     </message>
@@ -1063,11 +1068,24 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="352"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="395"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="473"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="369"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="440"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="490"/>
         <source>File %1 could not be opened!</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>VatsimMessageDialog</name>
+    <message>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="14"/>
+        <source>A message from Vatsim</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="59"/>
+        <source>Do not show this message again</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1084,87 +1102,87 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="189"/>
         <source>&amp;Help</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="195"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="209"/>
         <source>Exit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="224"/>
         <source>About</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="236"/>
         <source>METARs...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="251"/>
         <source>Refresh</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="263"/>
         <source>Settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="274"/>
         <source>Flight list...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>ATC list...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
         <source>Enable auto-updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="298"/>
         <source>Show home location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="301"/>
         <source>Ctrl+H</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="82"/>
         <source>&amp;Menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="112"/>
         <source>Last update: never</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="116"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
         <source>Last update: %1 UTC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="128"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="126"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="219"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="215"/>
         <source>Invalid data!</source>
         <translation type="unfinished"/>
     </message>
