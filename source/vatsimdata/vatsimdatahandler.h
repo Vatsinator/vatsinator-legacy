@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QString>
 #include <QVector>
+#include <QTimer>
 #include <QMap>
 
 #include <qmath.h>
@@ -59,6 +60,11 @@ class VatsimDataHandler :
 signals:
   
   /**
+   * Called when vatsim data starts to be downloaded.
+   */
+  void vatsimDataDownloading();
+  
+  /**
    * Called after status.txt is parsed.
    */
   void vatsimStatusUpdated();
@@ -76,7 +82,7 @@ signals:
   /**
    * Incomplete fetch or something like that.
    */
-  void dataCorrupted();
+  void vatsimDataCorrupted();
   
   /**
    * If local data is corrupted.
@@ -235,6 +241,11 @@ public slots:
    */
   void loadCachedData();
   
+  /**
+   * Fetches the new data.
+   */
+  void requestDataUpdate();
+  
 private:
   
   enum DataSections {
@@ -261,6 +272,11 @@ private:
    * Removes all data, frees pointers
    */
   void __clearData();
+  
+  /**
+   * Handles "RELOAD =" section of the data file.
+   */
+  void __updateInterval(int);
   
 private slots:
   /**
@@ -314,6 +330,7 @@ private:
   FirDatabase&     __firs;
   
   PlainTextDownloader* __downloader;
+  QTimer               __timer;
 
 };
 

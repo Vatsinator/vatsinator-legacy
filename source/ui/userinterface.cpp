@@ -68,7 +68,7 @@ UserInterface::UserInterface() :
     __vatsinatorWindow(new VatsinatorWindow()) {
 
 
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(dataCorrupted()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataCorrupted()),
           this,                                     SLOT(__fetchError()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
           this,                                     SLOT(__statusFileError()));
@@ -121,7 +121,8 @@ UserInterface::__fetchError() {
   dialog.exec();
   
   if (dialog.clickedButton() == dialog.again()) {
-    VatsinatorApplication::getSingleton().refreshData();
+    // TODO
+//     VatsinatorApplication::getSingleton().refreshData();
   }
 }
 

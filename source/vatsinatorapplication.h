@@ -23,7 +23,6 @@
 #include <QApplication>
 #include <QFont>
 #include <QMutex>
-#include <QTimer>
 #include <iostream>
 
 #include "singleton.h"
@@ -55,8 +54,6 @@ class VatsinatorApplication :
 signals:
   void uiCreated();
   void glInitialized();
-  void dataDownloading();
-  void metarsRefreshRequested();
 
 public:
   /**
@@ -108,19 +105,11 @@ public:
 
 #endif
 
-  inline VatsimDataHandler &
-  vatsimData() { return *__vatsimData; }
-
 public slots:
-  void refreshData();
   void restart();
   
 private:
   void __emitGLInitialized();
-  
-private slots:
-  void __loadNewSettings();
-  void __autoUpdatesToggled(bool);
   
 private:
   
@@ -136,7 +125,6 @@ private:
   StatsPurveyor*       __statsPurveyor;
   UserInterface*       __userInterface;
   
-  QTimer               __timer;
   static QMutex        __mutex; /* For stdout */
 
 };

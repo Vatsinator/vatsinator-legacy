@@ -86,28 +86,10 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   __userInterface = new UserInterface();
   __settingsManager->init();
   __moduleManager->init();
-  
-  // connect EnableAutoUpdatesAction toggle
-  connect(VatsinatorWindow::getSingletonPtr(),  SIGNAL(autoUpdatesEnabled(bool)),
-          this,                                 SLOT(__autoUpdatesToggled(bool)));
-  
-  // handle settings changes
-  connect(__settingsManager,                    SIGNAL(settingsChanged()),
-          this,                                 SLOT(__loadNewSettings()));
-
-  // connect data refresher with the timer
-  connect(&__timer,                             SIGNAL(timeout()),
-          this,                                 SLOT(refreshData()));
-  
-  // when status file is fetched, we may start fetching the data
-  connect(__vatsimData,                         SIGNAL(vatsimStatusUpdated()),
-          this,                                 SLOT(refreshData()));
 
   // show main window
   VatsinatorWindow::getSingleton().show();
   emit uiCreated();
-  
-  __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);
@@ -195,16 +177,6 @@ VatsinatorApplication::log(const char* _s) {
 #endif
 
 void
-VatsinatorApplication::refreshData() {
-  emit dataDownloading();
-  
-  if (!VatsinatorWindow::getSingleton().autoUpdatesEnabled())
-    __timer.stop();
-  else
-    __timer.start();
-}
-
-void
 VatsinatorApplication::restart() {
   /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
   qApp->quit();
@@ -214,27 +186,6 @@ VatsinatorApplication::restart() {
 void
 VatsinatorApplication::__emitGLInitialized() {
   emit glInitialized();
-}
-
-void
-VatsinatorApplication::__loadNewSettings() {
-  int rr = SM::get("network.refresh_rate").toInt();
-  if (__timer.interval() / 60000 != rr) {
-    __timer.setInterval(rr * 60000);
-    
-    if (VatsinatorWindow::getSingleton().autoUpdatesEnabled())
-      refreshData();
-  }
-}
-
-void
-VatsinatorApplication::__autoUpdatesToggled(bool _state) {
-  if (!_state) {
-    __timer.stop();
-  } else {
-    if (!__timer.isActive())
-      refreshData();
-  }
 }
 
 QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

@@ -34,9 +34,6 @@ class VatsinatorWindow :
     private Ui::VatsinatorWindow {
   
   Q_OBJECT
-  
-signals:
-  void autoUpdatesEnabled(bool);
 
 public:
   explicit VatsinatorWindow(QWidget* = 0);
@@ -61,9 +58,6 @@ public:
 
   inline QLabel*
   positionBox() { return PositionBox; }
-  
-  inline bool
-  autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
   
 protected:
   void closeEvent(QCloseEvent*) override;

@@ -30,7 +30,7 @@
 // How to recognize unavailable metars.
 // This value represents the response returned by vatsim server
 // in case given METAR could not be found.
-static const QString METAR_NO_AVAIL = "No METAR available";
+static const QString NoMetarText = "No METAR available";
 
 
 MetarListModel::MetarListModel(PlainTextDownloader* _hh, QObject* _parent) :
@@ -38,8 +38,6 @@ MetarListModel::MetarListModel(PlainTextDownloader* _hh, QObject* _parent) :
     __myHttpHandler(_hh) {
   connect(__myHttpHandler,  SIGNAL(finished(QString)),
           this,     SLOT(__gotMetar(QString)));
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(metarsRefreshRequested()),
-          this,     SLOT(updateAll()));
 }
 
 void
@@ -54,7 +52,7 @@ MetarListModel::find(const QString& _key) const {
     if (m.icao() == _key)
       return &m;
 
-  return static_cast< const Metar* >(NULL);
+  return nullptr;
 }
 
 const QModelIndex
@@ -120,7 +118,7 @@ MetarListModel::__addMetar(const QString& _metar) {
   endInsertRows();
 }
 
-inline bool
+bool
 MetarListModel::__matches(const QString& _word) {
   return (_word.length() == 4) &&
          (_word.startsWith(__requests.head(), Qt::CaseInsensitive));
@@ -133,7 +131,7 @@ MetarListModel::__gotMetar(const QString& _metar) {
   if (metar.isEmpty())
     return;
 
-  if (metar.contains(METAR_NO_AVAIL)) {
+  if (metar.contains(NoMetarText)) {
     emit noMetar(__requests.dequeue());
     return;
   }
@@ -158,5 +156,3 @@ MetarListModel::__gotMetar(const QString& _metar) {
 
   emit newMetarsAvailable();
 }
-
-

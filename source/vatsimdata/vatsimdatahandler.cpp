@@ -39,6 +39,7 @@
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
+#include "vatsimdata/models/metarlistmodel.h"
 
 #include "storage/filemanager.h"
 
@@ -65,18 +66,22 @@ VatsimDataHandler::VatsimDataHandler() :
     __airports(AirportDatabase::getSingleton()),
     __firs(FirDatabase::getSingleton()),
     __downloader(new PlainTextDownloader()) {
-  connect(this,                                     SIGNAL(localDataBad(QString)),
-          this,                                     SLOT(__reportDataError(QString)));
+  
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(loadCachedData()));
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(__slotUiCreated()));
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
-          this,                                     SLOT(__beginDownload()));
   connect(__downloader,                             SIGNAL(finished(QString)),
           this,                                     SLOT(__dataFetched(QString)));
   connect(__downloader,                             SIGNAL(fetchError()),
           this,                                     SLOT(__handleFetchError()));
+  
+  connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
+  connect(this, SIGNAL(localDataBad(QString)), SLOT(__reportDataError(QString)));
+  
+  __timer.setSingleShot(true);
+  connect(&__timer,     SIGNAL(timeout()),
+          this,         SIGNAL(vatsimDataDownloading()));
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
@@ -140,6 +145,7 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
   } else {
     __statusFileFetched = true;
     emit vatsimStatusUpdated();
+    emit vatsimDataDownloading();
   }
 }
 
@@ -177,6 +183,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
                                 temp.split(' ').back().simplified(),
                                 "yyyyMMddhhmmss"
                               );
+        } else if (temp.startsWith("RELOAD")) {
+          __updateInterval(
+            temp.split(' ').back().simplified().toInt() * 1000 * 60
+          );
         }
         break;
       } // DataSections::General
@@ -186,7 +196,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         
         if (clientData.size() < 40) {
           VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit dataCorrupted();
+          emit vatsimDataCorrupted();
           return;
         }
         
@@ -214,7 +224,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         
         if (clientData.size() < 40) {
           VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit dataCorrupted();
+          emit vatsimDataCorrupted();
           return;
         }
         
@@ -316,13 +326,14 @@ VatsimDataHandler::loadCachedData() {
   if (SM::get("network.cache_enabled").toBool() == false)
     return;
   
-  VatsinatorApplication::log("Loading data from cache...");
+  VatsinatorApplication::log("VatsimDataHandler: loading data from cache...");
   
   CacheFile file(CacheFileName);
   if (file.exists()) {
     FirDatabase::getSingleton().clearAll();
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      VatsinatorApplication::log("File %s is not readable.", qPrintable(file.fileName()));
+      VatsinatorApplication::log("VatsimDataHandler: cache file %s is not readable.",
+                                 qPrintable(file.fileName()));
       return;
     }
     
@@ -332,7 +343,15 @@ VatsimDataHandler::loadCachedData() {
     ModuleManager::getSingleton().updateData();
   }
   
-  VatsinatorApplication::log("Cache restored.");
+  VatsinatorApplication::log("VatsimDataHandler: cache restored.");
+}
+
+void
+VatsimDataHandler::requestDataUpdate() {
+  if (__downloader->isWorking())
+    __downloader->abort();
+  
+  emit vatsimDataDownloading();
 }
 
 void
@@ -513,6 +532,13 @@ VatsimDataHandler::__clearData() {
 }
 
 void
+VatsimDataHandler::__updateInterval(int _interval) {
+  if (SM::get("network.auto_updater").toBool() == true) {
+    __timer.setInterval(_interval);
+  }
+}
+
+void
 VatsimDataHandler::__reportDataError(QString _msg) {
   VatsinatorApplication::log(qPrintable(_msg));
   VatsinatorApplication::alert(_msg, true);
@@ -520,6 +546,12 @@ VatsimDataHandler::__reportDataError(QString _msg) {
 
 void
 VatsimDataHandler::__slotUiCreated() {
+  if (SM::get("network.auto_updater").toBool() == false) {
+    __timer.setInterval(SM::get("network.refresh_rate").toInt() * 1000 * 60);
+  } else {
+    __timer.setInterval(3 * 1000 * 60);
+  }
+  
   __downloader->setProgressBar(VatsinatorWindow::getSingleton().progressBar());
   __beginDownload();
 }
@@ -534,15 +566,18 @@ void
 VatsimDataHandler::__dataFetched(QString _data) {
   if (__statusFileFetched) {
     if (_data.isEmpty()) {
-      emit dataCorrupted();
+      emit vatsimDataCorrupted();
       return;
     }
     
     parseDataFile(_data);
     emit vatsimDataUpdated();
+    __timer.start();
     
     if (SM::get("network.cache_enabled").toBool())
       FileManager::cacheData(CacheFileName, _data);
+    
+    MetarListModel::getSingleton().updateAll();
   } else {
     parseStatusFile(_data);
   }
@@ -551,7 +586,7 @@ VatsimDataHandler::__dataFetched(QString _data) {
 void
 VatsimDataHandler::__handleFetchError() {
   if (__statusFileFetched) {
-    emit dataCorrupted();
+    emit vatsimDataCorrupted();
   } else {
     if (__statusUrl != QString(NetConfig::Vatsim::backupStatusUrl())) {
       /* Try the backup url */

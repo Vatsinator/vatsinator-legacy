@@ -38,6 +38,18 @@ PlainTextDownloader::fetchData(const QString& _url) {
 }
 
 void
+PlainTextDownloader::abort() {
+  if (__reply) {
+    __reply->abort();
+    __reply->deleteLater();
+    __reply = nullptr;
+  
+    if (anyTasksLeft())
+      __startRequest();
+  }
+}
+
+void
 PlainTextDownloader::__startRequest() {
   if (!__urls.isEmpty()) {
     QNetworkRequest request(__urls.dequeue());

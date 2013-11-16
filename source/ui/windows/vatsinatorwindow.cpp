@@ -53,19 +53,17 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   connect(ActionMetar,                              SIGNAL(triggered()),
           MetarsWindow::getSingletonPtr(),          SLOT(show()));
   connect(ActionRefresh,                            SIGNAL(triggered()),
-          VatsinatorApplication::getSingletonPtr(), SLOT(refreshData()));
+          VatsimDataHandler::getSingletonPtr(),     SLOT(requestDataUpdate()));
   connect(ActionPreferences,                        SIGNAL(triggered()),
           SettingsWindow::getSingletonPtr(),        SLOT(show()));
   connect(ActionFlightList,                         SIGNAL(triggered()),
           FlightListWindow::getSingletonPtr(),      SLOT(show()));
   connect(ActionATCList,                            SIGNAL(triggered()),
           AtcListWindow::getSingletonPtr(),         SLOT(show()));
-  connect(EnableAutoUpdatesAction,                  SIGNAL(toggled(bool)),
-          this,                                     SIGNAL(autoUpdatesEnabled(bool)));
   connect(ActionHomeLocation,                       SIGNAL(triggered()),
           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
   
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataDownloading()),
           this,                                     SLOT(__dataDownloading()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
           this,                                     SLOT(__statusUpdated()));
@@ -73,7 +71,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
           this,                                     SLOT(__dataCorrupted()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
           this,                                     SLOT(__dataUpdated()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(dataCorrupted()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataCorrupted()),
           this,                                     SLOT(__dataCorrupted()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
           this,                                     SLOT(__enableRefreshAction()));
@@ -160,8 +158,6 @@ VatsinatorWindow::__storeWindowGeometry() {
     settings.setValue("position", pos());
     settings.setValue("size", size());
   }
-  
-  settings.setValue("autoUpdatesEnabled", autoUpdatesEnabled());
 
   settings.endGroup();
 }
