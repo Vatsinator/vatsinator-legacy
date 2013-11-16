@@ -59,6 +59,7 @@ public:
   
 public slots:
   void showAppRestartDialog();
+  void showVatsimMessage(const QString&);
 
 private slots:
   void __statusFileError();

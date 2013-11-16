@@ -24,6 +24,7 @@
     <file>airport_tooltip.png</file>
   </qresource>
   <qresource prefix="extra">
+    <file>vatsim.png</file>
     <file>vataware.png</file>
   </qresource>
 </RCC>

@@ -57,6 +57,7 @@ set (ui_SRCS
     dialogs/letsendstatsdialog.cpp
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
+    dialogs/vatsimmessagedialog.cpp
     
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
@@ -108,6 +109,7 @@ set (ui_MOC_SRCS
     dialogs/letsendstatsdialog.h
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
+    dialogs/vatsimmessagedialog.h
     
     pages/abstractsettingspage.h
     pages/colorspage.h
@@ -142,6 +144,7 @@ set (ui_FORMS
     dialogs/apprestartdialog.ui
     dialogs/letsendstatsdialog.ui
     dialogs/newversiondialog.ui
+    dialogs/vatsimmessagedialog.ui
     
     pages/colorspage.ui
     pages/miscellaneouspage.ui

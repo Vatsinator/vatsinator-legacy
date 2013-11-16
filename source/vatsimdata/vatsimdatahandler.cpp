@@ -27,6 +27,7 @@
 
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/windows/vatsinatorwindow.h"
+#include "ui/userinterface.h"
 
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
@@ -114,29 +115,30 @@ VatsimDataHandler::init() {
 
 void
 VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
+  static QRegExp rx("(msg0|url0|moveto0|metar0)=(.+)\\b");
+  
   QStringList tempList = _statusFile.split('\n', QString::SkipEmptyParts);
-
+  
   for (QString& temp: tempList) {
     if (temp.startsWith(';'))
       continue;
     
-    if (temp.startsWith("moveto0=")) {
-      __statusUrl = temp.mid(8).simplified();
-      __beginDownload();
-      return;
-    }
-    
-    if (temp.startsWith("metar0=")) {
-      __metarUrl = temp.mid(7).simplified();
-      continue;
-    }
-
-    if (temp.startsWith("url0=")) {
-      QString url0 = temp.mid(5);
-      url0 = url0.simplified();
-      __dataServers << url0;
-
-      continue;
+    if (rx.indexIn(temp) >= 0) {
+      QString key = rx.cap(1);
+      QString value = rx.cap(2);
+      
+      if (key == "moveto0") {
+        __statusUrl = value;
+        __beginDownload();
+        return;
+      } else if (key == "metar0") {
+        __metarUrl = value;
+      } else if (key == "url0") {
+        QString url0 = value;
+        __dataServers << url0;
+      } else if (key == "msg0") {
+        UserInterface::getSingleton().showVatsimMessage(value);
+      }
     }
   }
   
@@ -151,6 +153,8 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 
 void
 VatsimDataHandler::parseDataFile(const QString& _data) {
+  static QRegExp rx("^\\b(UPDATE|RELOAD)\\b\\s?=\\s?\\b(.+)\\b$");
+  
   __clearData();
 
   VatsinatorApplication::log("Data length: %i.", _data.length());
@@ -175,18 +179,19 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
       continue;
     }
-
+    http://www.pcflyer.net/DataFeed/vatsim-servers.txt
     switch (section) {
       case DataSections::General: {
-        if (temp.startsWith("UPDATE")) {
-          __dateVatsimDataUpdated = QDateTime::fromString(
-                                temp.split(' ').back().simplified(),
-                                "yyyyMMddhhmmss"
-                              );
-        } else if (temp.startsWith("RELOAD")) {
-          __updateInterval(
-            temp.split(' ').back().simplified().toInt() * 1000 * 60
-          );
+        if (rx.indexIn(temp) >= 0) {
+          QString key = rx.cap(1);
+          QString value = rx.cap(2);
+          
+          if (key == "UPDATE") {
+            __dateVatsimDataUpdated = QDateTime::fromString(
+              value, "yyyyMMddhhmmss");
+          } else if (key == "RELOAD") {
+            __updateInterval(value.toInt() * 1000 * 60);
+          }
         }
         break;
       } // DataSections::General

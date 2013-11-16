@@ -32,6 +32,7 @@
 #include "ui/dialogs/datafetcherrordialog.h"
 #include "ui/dialogs/newversiondialog.h"
 #include "ui/dialogs/statusfetcherrordialog.h"
+#include "ui/dialogs/vatsimmessagedialog.h"
 
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
@@ -105,8 +106,19 @@ UserInterface::showAppRestartDialog() {
   
   dialog->show();
   dialog->raise();
-  dialog->activateWindow();
+  dialog->activateWindow();  
+}
+
+void
+UserInterface::showVatsimMessage(const QString& _msg) {
+  VatsimMessageDialog* dialog = new VatsimMessageDialog(_msg);
   
+  connect(dialog,       SIGNAL(finished(int)),
+          dialog,       SLOT(deleteLater()));
+  
+  dialog->show();
+  dialog->raise();
+  dialog->activateWindow();
 }
 
 void
