@@ -70,7 +70,7 @@ void
 NetworkPage::restore(QSettings& _s) {
   bool state = _s.value("auto_updater", DefaultSettings::AUTO_UPDATER).toBool();
   AutoUpdaterCheckBox->setChecked(state);
-  __updateAutoUpdaterLocks(state);
+  __updateAutoUpdaterLocks(state ? Qt::Checked : Qt::Unchecked);
   
   int val = _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt();
   RefreshRateBox->setValue(val);
@@ -103,11 +103,5 @@ NetworkPage::__updateRefreshRateLabel(int _n) {
 
 void
 NetworkPage::__updateAutoUpdaterLocks(int _state) {
-  if (_state == Qt::Checked) {
-    RefreshRateBox->setEnabled(false);
-    RefreshMetarsCheckBox->setEnabled(false);
-  } else {
-    RefreshRateBox->setEnabled(true);
-    RefreshMetarsCheckBox->setEnabled(true);
-  }
+  CustomUpdatesBox->setEnabled(_state == Qt::Checked ? false : true);
 }
