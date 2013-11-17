@@ -53,7 +53,7 @@ void
 PlainTextDownloader::__startRequest() {
   if (!__urls.isEmpty()) {
     QNetworkRequest request(__urls.dequeue());
-    request.setRawHeader("User-Agent", "Vatsinator " VATSINATOR_VERSION);
+    request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
     __reply = __nam.get(request);
   } else {
     return;
