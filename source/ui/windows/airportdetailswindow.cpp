@@ -53,50 +53,28 @@
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent),
     __currentICAO(""),
-    __forecast(
-#ifdef WITH_WEATHER_FORECAST
-      new WeatherForecast()
-#else
-      nullptr
-#endif
-    ),
-    __progressModel(
-#ifdef WITH_WEATHER_FORECAST
-      new WeatherForecastModel()
-#else
-      nullptr
-#endif
-    ){
+    __forecast(new WeatherForecast()),
+    __progressModel(new WeatherForecastModel()){
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-
   connect(MetarListModel::getSingletonPtr(),    SIGNAL(newMetarsAvailable()),
           this,                                 SLOT(updateMetar()));
-  
   connect(MetarListModel::getSingletonPtr(),    SIGNAL(noMetar(QString)),
           this,                                 SLOT(updateMetar(QString)));
-
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
-
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
-  
-#ifdef WITH_WEATHER_FORECAST
   connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
           this,                                 SLOT(__updateForecast(WeatherForecastModel*)));
   
   ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
   ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-#else
-  ForecastGroup->hide();
-#endif
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {
-#ifdef WITH_WEATHER_FORECAST
   delete __forecast;
   
   QAbstractItemModel* m = ForecastView->model();
@@ -104,7 +82,6 @@ AirportDetailsWindow::~AirportDetailsWindow() {
     delete m;
   
   delete __progressModel;
-#endif
 }
 
 void
@@ -133,7 +110,6 @@ AirportDetailsWindow::show(const Airport* _ap) {
     activateWindow();
   }
 
-#ifdef WITH_WEATHER_FORECAST
   QAbstractItemModel* fvm = ForecastView->model();
   if (fvm && fvm != __progressModel)
     fvm->deleteLater();
@@ -146,7 +122,6 @@ AirportDetailsWindow::show(const Airport* _ap) {
   } else {
     ForecastGroup->setEnabled(false);
   }
-#endif
 }
 
 void
@@ -272,13 +247,11 @@ AirportDetailsWindow::__updateData() {
 
 void
 AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
-#ifdef WITH_WEATHER_FORECAST
   QAbstractItemModel* m = ForecastView->model();
   if (m && m!= __progressModel)
     m->deleteLater();
   
   ForecastView->setModel(model);
-#endif
 }
 
 void
