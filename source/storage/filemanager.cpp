@@ -31,8 +31,6 @@ static const QString LocalDataLocation =
 
 FileManager::FileManager() {
   VatsinatorApplication::log("FileManager: local data location: %s", qPrintable(LocalDataLocation));
-  
-  __readManifest(LocalDataLocation % "/Manifest");
 }
 
 void
@@ -106,37 +104,3 @@ FileManager::md5Hash(QIODevice& _dev) {
 
 FileManager::FileHash::FileHash(const QByteArray& _md5) :
     md5(_md5) {}
-
-
-void
-FileManager::__readManifest(const QString& _fname) {
-  QFile file(_fname);
-  
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    return;
-  }
-  
-  while (!file.atEnd()) {
-    QByteArray line = file.readLine().simplified();
-    
-    if (line.isEmpty())
-      continue;
-    
-    if (!__manifest.timestamp.isValid()) {
-      __manifest.timestamp = QDateTime::fromString(QString::fromUtf8(line), "yyyyMMddhhmm");
-    } else {
-      QList<QByteArray> split = line.split(' ');
-      
-      if (split.length() != 2)
-        return;
-      
-      __manifest.hash.insert(QString::fromUtf8(split[0]), FileHash(split[1]));
-    }
-  }
-  
-  file.close();
-  
-  VatsinatorApplication::log("Data updated on %s.",
-                             qPrintable(__manifest.timestamp.toString("yyyyMMddhhmm")));
-}
-

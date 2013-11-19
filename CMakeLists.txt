@@ -77,6 +77,7 @@ include (VatsinatorInstall)
 
 set (vatsinator_RESOURCES
     COPYING
+    Manifest
     resources/WorldAirports.db
     resources/WorldFirs.db
     resources/WorldMap.db)

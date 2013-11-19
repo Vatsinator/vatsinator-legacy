@@ -31,14 +31,20 @@
 #include "defines.h"
 
 // start running after two seconds
-static const int START_DELAY = 2 * 1000;
+static const int StartDelay = 2 * 1000;
+
+// manifest file name
+static const QString ManifestFileName = "Manifest";
 
 ResourceManager::ResourceManager(QObject* _parent) :
     QObject(_parent) {
   
   qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
   
-  QTimer::singleShot(START_DELAY, this, SLOT(__fetchVersion()));
+  connect(this, SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
+                SLOT(__checkDatabase(ResourceManager::VersionStatus)));
+  
+  QTimer::singleShot(StartDelay, this, SLOT(__fetchVersion()));
 }
 
 ResourceManager::~ResourceManager() {}
@@ -67,9 +73,31 @@ ResourceManager::__parseVersion(QString _versionString) {
   if (!actual)
     emit outdated();
   
-  emit versionChecked(actual ? Updated : Outdated);
+  emit vatsinatorVersionChecked(actual ? Updated : Outdated);
   
   sender()->deleteLater();
+}
+
+void
+ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
+  if (_status == ResourceManager::Outdated)
+    emit databaseStatusChanged(Unknown);
+  
+  QFile manifest(FileManager::path(ManifestFileName));
+  
+  VatsinatorApplication::log("ResourceManager: Manifest file: %s", qPrintable(manifest.fileName()));
+  
+  if (manifest.open(QIODevice::ReadOnly)) {
+    QDate today = QDate::currentDate();
+    QDate when = QDate::fromString(manifest.readLine().simplified(), "yyyyMMdd");
+    if (when.daysTo(today) < 7) {
+      emit databaseStatusChanged(Updated);
+    } else {
+      emit databaseStatusChanged(Outdated);
+    }
+    
+    manifest.close();
+  }
 }
 
 bool

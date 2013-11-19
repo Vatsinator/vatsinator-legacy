@@ -41,7 +41,9 @@ public:
   
   enum VersionStatus {
     Updated,
-    Outdated
+    Outdated,
+    Updating,
+    Unknown
   };
   Q_ENUMS(ResourceManager::VersionStatus);
   
@@ -54,9 +56,14 @@ signals:
   void outdated();
   
   /**
-   * Emitted after version has been checked.
+   * Emitted after Vatsinator version has been checked.
    */
-  void versionChecked(ResourceManager::VersionStatus);
+  void vatsinatorVersionChecked(ResourceManager::VersionStatus);
+  
+  /**
+   * Emitted after database status has changed (i.e. Updated->Outdated->Updating->Updated).
+   */
+  void databaseStatusChanged(ResourceManager::VersionStatus);
   
 public:
   
@@ -76,6 +83,12 @@ private slots:
    * appropriate notification.
    */
   void __parseVersion(QString);
+  
+  /**
+   * Database sync will be checked only after the Vatsinator version
+   * is checked and if the current version is up-to-date.
+   */
+  void __checkDatabase(ResourceManager::VersionStatus);
   
 private:
   

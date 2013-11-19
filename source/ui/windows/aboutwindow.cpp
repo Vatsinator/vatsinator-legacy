@@ -38,7 +38,7 @@ AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
   connect(ResourceManager::getSingletonPtr(),
-                SIGNAL(versionChecked(ResourceManager::VersionStatus)),
+                SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
           this,
                 SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
   

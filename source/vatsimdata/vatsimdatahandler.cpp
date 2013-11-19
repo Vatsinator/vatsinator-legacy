@@ -179,7 +179,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
       continue;
     }
-    http://www.pcflyer.net/DataFeed/vatsim-servers.txt
+    
     switch (section) {
       case DataSections::General: {
         if (rx.indexIn(temp) >= 0) {

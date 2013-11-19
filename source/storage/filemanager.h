@@ -53,7 +53,7 @@ public:
   
   /**
    * Stores given data in local cache file.
-   * @param fileName File name. Only file name, not full path.
+   * @param fileName File name. Only file name, not the full path.
    * @param data Data to be saved.
    */
   static void cacheData(const QString&, const QString&);
@@ -82,11 +82,6 @@ public:
   static QByteArray md5Hash(const QString&);
   static QByteArray md5Hash(QIODevice&);
   
-  inline static const QDateTime &
-  timestamp() {
-    return getSingleton().__manifest.timestamp;
-  }
-  
 private:
   class FileHash {
     
@@ -99,16 +94,6 @@ private:
     
     QByteArray md5;
   };
-  
-  /**
-   * Reads the manifest file.
-   */
-  void __readManifest(const QString&);
-  
-  struct {
-    QMap<QString, FileHash> hash;
-    QDateTime               timestamp;
-  } __manifest;
   
 };
 

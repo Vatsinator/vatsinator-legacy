@@ -84,6 +84,7 @@ UserInterface::~UserInterface() {
   delete __vatsinatorWindow;
   delete __aboutWindow;
   delete __airportDetailsWindow;
+  delete __databaseWindow;
   delete __firDetailsWindow;
   delete __flightDetailsWindow;
   delete __flightsListWindow;

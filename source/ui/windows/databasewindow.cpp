@@ -39,4 +39,40 @@ DatabaseWindow::DatabaseWindow(QWidget* _parent) :
       "The second part of the summary", FirDatabase::getSingleton().firs().count()
     )
   );
+  
+  __updateDatabaseStatus(ResourceManager::Updated);
+  
+  connect(ResourceManager::getSingletonPtr(),   SIGNAL(databaseStatusChanged(ResourceManager::VersionStatus)),
+          this,                                 SLOT(__updateDatabaseStatus(ResourceManager::VersionStatus)));
+}
+
+void DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus _status) {
+  QPalette p = StatusLabel->palette();
+  
+  switch (_status) {
+    case ResourceManager::Updated:
+      p.setColor(QPalette::WindowText, Qt::darkGreen);
+      StatusLabel->setPalette(p);
+      StatusLabel->setText(tr("up-to-date", "Database status indicator"));
+      break;
+      
+    case ResourceManager::Outdated:
+      p.setColor(QPalette::WindowText, Qt::red);
+      StatusLabel->setPalette(p);
+      StatusLabel->setText(tr("outdated", "Database status indicator"));
+      break;
+      
+    case ResourceManager::Updating:
+      p.setColor(QPalette::WindowText, Qt::darkYellow);
+      StatusLabel->setPalette(p);
+      StatusLabel->setText(tr("updating...", "Database status indicator"));
+      break;
+      
+    case ResourceManager::Unknown:
+      p.setColor(QPalette::WindowText, Qt::darkGray);
+      StatusLabel->setPalette(p);
+      StatusLabel->setText(tr("unknown", "Database status indicator"));
+      StatusLabel->setToolTip(tr("Your Vatsinator version is probably outdated."));
+      break;
+  }
 }

@@ -22,6 +22,7 @@
 
 #include "ui/windows/basewindow.h"
 
+#include "network/resourcemanager.h"
 #include "ui/ui_databasewindow.h"
 #include "singleton.h"
 
@@ -34,6 +35,9 @@ class DatabaseWindow :
 
 public:
   DatabaseWindow(QWidget* = nullptr);
+  
+private slots:
+  void __updateDatabaseStatus(ResourceManager::VersionStatus);
   
 };
 
