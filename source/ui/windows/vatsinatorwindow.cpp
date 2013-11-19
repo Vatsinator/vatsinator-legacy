@@ -27,6 +27,7 @@
 
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/atclistwindow.h"
+#include "ui/windows/databasewindow.h"
 #include "ui/windows/flightlistwindow.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/windows/settingswindow.h"
@@ -52,6 +53,8 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
           AboutWindow::getSingletonPtr(),           SLOT(show()));
   connect(ActionMetar,                              SIGNAL(triggered()),
           MetarsWindow::getSingletonPtr(),          SLOT(show()));
+  connect(ActionDatabase,                           SIGNAL(triggered()),
+          DatabaseWindow::getSingletonPtr(),        SLOT(show()));
   connect(ActionRefresh,                            SIGNAL(triggered()),
           VatsimDataHandler::getSingletonPtr(),     SLOT(requestDataUpdate()));
   connect(ActionPreferences,                        SIGNAL(triggered()),

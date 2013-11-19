@@ -38,6 +38,7 @@
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/atclistwindow.h"
+#include "ui/windows/databasewindow.h"
 #include "ui/windows/firdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/windows/flightlistwindow.h"
@@ -63,6 +64,7 @@ UserInterface::UserInterface() :
     __firDetailsWindow(new FirDetailsWindow()),
     __atcDetailsWindow(new AtcDetailsWindow()),
     __atcListWindow(new AtcListWindow()),
+    __databaseWindow(new DatabaseWindow()),
     __flightDetailsWindow(new FlightDetailsWindow()),
     __flightsListWindow(new FlightListWindow()),
     __settingsWindow(new SettingsWindow()),
