@@ -27,16 +27,14 @@
 FileDownloader::FileDownloader(QProgressBar* _pb, QObject* _parent) :
     QObject(_parent),
     __pb(_pb), 
-    __reply(NULL) {}
+    __reply(nullptr) {}
 
 void
 FileDownloader::fetch(const QUrl& _url) {
-  if (!anyTasksLeft()) {
-    __urls.enqueue(_url);
+  __urls.enqueue(_url);
+  
+  if (!__reply)
     __startRequest();
-  } else {
-    __urls.enqueue(_url);
-  }
 }
 
 QString
@@ -52,10 +50,9 @@ FileDownloader::fileNameForUrl(const QUrl& _url) {
     return QString();
   }
   
-  QString absPath = QDir::fromNativeSeparators(QDir::tempPath()) %
-                    "/" % baseName;
+  QString absPath = QDir::tempPath() % "/" % baseName;
   
-  VatsinatorApplication::log("Absolute downloaded file path: %s", qPrintable(absPath));
+  VatsinatorApplication::log("FileDownloader: file (%s) will be downloaded to: %s", qPrintable(_url.toString()), qPrintable(absPath));
   
   if (QFile::exists(absPath))
     QFile(absPath).remove();
@@ -65,7 +62,7 @@ FileDownloader::fileNameForUrl(const QUrl& _url) {
 
 void
 FileDownloader::__startRequest() {
-  if (!anyTasksLeft())
+  if (__reply || !anyTasksLeft())
     return;
   
   QUrl url = __urls.dequeue();
@@ -77,15 +74,17 @@ FileDownloader::__startRequest() {
   }
   
   __output.setFileName(fileName);
-  if (!__output.open(QIODevice::WriteOnly)) {
+  if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
     emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()));
-    VatsinatorApplication::log("Could not open file (%1) for writing!",
+    VatsinatorApplication::log("FileDownloader: could not open file (%1) for writing!",
                                qPrintable(__output.fileName()));
     __startRequest();
     return;
   }
   
-  __reply = __nam.get(QNetworkRequest(url));
+  QNetworkRequest request(url);
+  request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
+  __reply = __nam.get(request);
   
   connect(__reply,      SIGNAL(finished()),
           this,         SLOT(__finished()));
@@ -106,7 +105,7 @@ FileDownloader::__readyRead() {
 
 void
 FileDownloader::__finished() {
-  __reply->deleteLater();
+  qint64 size = __output.size();
   __output.close();
   
   if (__pb) {
@@ -116,14 +115,18 @@ FileDownloader::__finished() {
   
   if (__reply->error()) {
     emit error(tr("Error downloading file: %1").arg(__reply->errorString()));
-    VatsinatorApplication::log("Error downloading file: %s",
+    VatsinatorApplication::log("FileDownloader: error downloading file: %s",
                                qPrintable(__reply->errorString()));
+    QFile::remove(__output.fileName());
   } else {
     emit finished(QString(__output.fileName()));
-    VatsinatorApplication::log("File %s downloaded, size: %i",
+    VatsinatorApplication::log("FileDownloader: file %s downloaded, size: %i",
                                qPrintable(__output.fileName()),
-                               __output.size());
+                               size);
   }
+  
+  __reply->deleteLater();
+  __reply = nullptr;
   
   __startRequest();
 }

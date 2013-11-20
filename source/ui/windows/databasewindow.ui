@@ -60,7 +60,7 @@
    <item row="4" column="1">
     <widget class="QLabel" name="VisitWebsiteLabel">
      <property name="text">
-      <string>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Visit VatsinatorDatabase website&lt;/a&gt;</string>
+      <string>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Visit the VatsinatorDatabase website&lt;/a&gt;</string>
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>
@@ -80,15 +80,15 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="StatusLabel"/>
-   </item>
    <item row="1" column="0" colspan="3">
     <widget class="QLabel" name="DatabaseInfoLabel">
      <property name="text">
       <string/>
      </property>
     </widget>
+   </item>
+   <item row="3" column="1" colspan="2">
+    <widget class="QLabel" name="StatusLabel"/>
    </item>
   </layout>
  </widget>

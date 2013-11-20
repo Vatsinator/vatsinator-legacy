@@ -19,6 +19,7 @@
 
 #include <QtGui>
 
+#include "network/filedownloader.h"
 #include "network/plaintextdownloader.h"
 
 #include "storage/filemanager.h"
@@ -33,7 +34,7 @@
 // start running after two seconds
 static const int StartDelay = 2 * 1000;
 
-// manifest file name
+// manifest file name, both on local storage and on the server
 static const QString ManifestFileName = "Manifest";
 
 ResourceManager::ResourceManager(QObject* _parent) :
@@ -93,11 +94,41 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     if (when.daysTo(today) < 7) {
       emit databaseStatusChanged(Updated);
     } else {
-      emit databaseStatusChanged(Outdated);
+      __fetchManifest();
     }
     
     manifest.close();
   }
+}
+
+void
+ResourceManager::__handleManifest(QString _fileName) {
+  sender()->deleteLater();
+  
+  QFile file(_fileName);
+  if (!file.open(QIODevice::ReadOnly)) {
+    __manifestError();
+    return;
+  }
+  
+  file.close();
+  
+  QFile oldFile(FileManager::path(ManifestFileName, true));
+  if (oldFile.exists())
+    oldFile.remove();
+  
+  bool result = file.rename(FileManager::path(ManifestFileName, true));
+  if (result)
+    VatsinatorApplication::log("ResourceManager: new Manifest file: %s", qPrintable(file.fileName()));
+  else
+    VatsinatorApplication::log("ResourceManager: cannot rename Manifest to: %s", qPrintable(file.fileName()));
+  
+  emit databaseStatusChanged(Updated);
+}
+
+void ResourceManager::__manifestError() {
+  sender()->deleteLater();
+  emit databaseStatusChanged(Outdated);
 }
 
 bool
@@ -114,4 +145,17 @@ ResourceManager::__versionActual(const QString& _version1, const QString& _versi
   }
   
   return true;
+}
+
+void
+ResourceManager::__fetchManifest() {
+  FileDownloader* fd = new FileDownloader();
+  
+  connect(fd,   SIGNAL(finished(QString)),
+          this, SLOT(__handleManifest(QString)));
+  connect(fd,   SIGNAL(error(QString)),
+          this, SLOT(__manifestError()));
+  
+  fd->fetch(QUrl(QString(NetConfig::Vatsinator::repoUrl()) % ManifestFileName));
+  emit databaseStatusChanged(Updating);
 }

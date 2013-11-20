@@ -73,8 +73,12 @@ public:
    * got higher priority, however) but it also makes it cross-platform (on
    * Windows, for example, globally-scoped files are stored in Program Files
    * directory).
+   * 
+   * @param fileName Name of the file.
+   * @param localOnly If true, this function will return file path on the local
+   *    storage, avoiding checking its existence.
    */
-  static QString path(const QString&);
+  static QString path(const QString&, bool = false);
   
   /**
    * Generates md5 hash of given file.

@@ -31,6 +31,12 @@ static const QString LocalDataLocation =
 
 FileManager::FileManager() {
   VatsinatorApplication::log("FileManager: local data location: %s", qPrintable(LocalDataLocation));
+  
+  QDir dir(LocalDataLocation);
+  if (!dir.exists()) {
+    VatsinatorApplication::log("FileManager: creating directory %s.", qPrintable(LocalDataLocation));
+    dir.mkpath(".");
+  }
 }
 
 void
@@ -65,10 +71,13 @@ FileManager::staticPath(FileManager::StaticDir _d) {
 }
 
 QString
-FileManager::path(const QString& _f) {
+FileManager::path(const QString& _f, bool _localOnly) {
+  if (_localOnly)
+    return LocalDataLocation % _f;
+  
   QFile tryLocal(LocalDataLocation % _f);
   if (tryLocal.exists()) {
-    VatsinatorApplication::log("File %s loaded from %s.",
+    VatsinatorApplication::log("FileManager: file %s loaded from %s.",
                                qPrintable(_f),
                                qPrintable(tryLocal.fileName()));
     return tryLocal.fileName();
@@ -100,7 +109,6 @@ FileManager::md5Hash(QIODevice& _dev) {
   
   return QCryptographicHash::hash(_dev.readAll(), QCryptographicHash::Md5).toHex();
 }
-
 
 FileManager::FileHash::FileHash(const QByteArray& _md5) :
     md5(_md5) {}

@@ -87,7 +87,6 @@ PlainTextDownloader::__finished() {
   if (__reply->error() == QNetworkReply::NoError) {
     VatsinatorApplication::log("PlainTextDownloader: %s: finished",
                                qPrintable(__reply->url().toString()));
-    
     __data = __temp;
     emit finished(__data);
   } else {
@@ -95,7 +94,7 @@ PlainTextDownloader::__finished() {
                                qPrintable(__reply->url().toString()),
                                qPrintable(__reply->errorString()));
     
-    emit fetchError();
+    emit error();
   }
   
   __reply->deleteLater();

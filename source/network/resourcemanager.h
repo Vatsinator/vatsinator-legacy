@@ -90,6 +90,18 @@ private slots:
    */
   void __checkDatabase(ResourceManager::VersionStatus);
   
+  /**
+   * When Manifest file is fetched, we have to check it and move it
+   * to the appropriate place on the local disk.
+   */
+  void __handleManifest(QString);
+  
+  /**
+   * If an error occurs during downloading the manifest, this slot
+   * will be called.
+   */
+  void __manifestError();
+  
 private:
   
   /**
@@ -101,6 +113,10 @@ private:
    */
   bool __versionActual(const QString&, const QString&);
   
+  /**
+   * Fetches the manifest file.
+   */
+  void __fetchManifest();
 
 };
 

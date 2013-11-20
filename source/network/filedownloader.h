@@ -66,7 +66,7 @@ public:
   
   /**
    * Generates the temporary file name (with the absolute path)
-   * from given url.
+   * from the given url.
    */
   QString fileNameForUrl(const QUrl&);
   
