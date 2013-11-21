@@ -71,6 +71,27 @@ public:
   
   virtual ~ResourceManager();
 
+private:
+  
+  /**
+   * Returns true if version1 is equal or higher that version2.
+   * 
+   * @param version1
+   * @param version2
+   * @return True if version1 >= version2.
+   */
+  bool __versionActual(const QString&, const QString&);
+  
+  /**
+   * Fetches the manifest file.
+   */
+  void __downloadManifest();
+  
+  /**
+   * Moves all data files to the local data destination directory.
+   */
+  void __moveFiles();
+
 private slots:
   
   /**
@@ -101,22 +122,11 @@ private slots:
    * will be called.
    */
   void __manifestError();
-  
+
 private:
   
-  /**
-   * Returns true if version1 is equal or higher that version2.
-   * 
-   * @param version1
-   * @param version2
-   * @return True if version1 >= version2.
-   */
-  bool __versionActual(const QString&, const QString&);
-  
-  /**
-   * Fetches the manifest file.
-   */
-  void __downloadManifest();
+  /* Manifest file location in the temp directory. */
+  QString __manifestLocation;
 
 };
 

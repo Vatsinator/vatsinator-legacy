@@ -37,6 +37,34 @@ static const int StartDelay = 2 * 1000;
 // manifest file name, both on local storage and on the server
 static const QString ManifestFileName = "Manifest";
 
+namespace {
+  
+  /**
+   * Moves the file.
+   */
+  bool moveFile(const QString& _oldLocation, const QString& _newLocation) {
+    QFile file(_oldLocation);
+    if (!file.open(QIODevice::ReadWrite)) {
+      return false;
+    }
+  
+    file.close();
+    
+    QFile oldFile(_newLocation);
+    if (oldFile.exists())
+      oldFile.remove();
+    
+    bool result = file.rename(_newLocation);
+    if (result)
+      VatsinatorApplication::log("ResourceManager: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+    else
+      VatsinatorApplication::log("ResourceManager: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+    
+    return result;
+  }
+  
+}
+
 ResourceManager::ResourceManager(QObject* _parent) :
     QObject(_parent) {
   
@@ -49,6 +77,46 @@ ResourceManager::ResourceManager(QObject* _parent) :
 }
 
 ResourceManager::~ResourceManager() {}
+
+bool
+ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
+  auto ver1 = _version1.split(QRegExp("\\D+"));
+  auto ver2 = _version2.split(QRegExp("\\D+"));
+  
+  for (int i = 0; i < ver1.size() && i < ver2.size(); ++i) {
+    if (ver1[i].toInt() < ver2[i].toInt())
+      return false;
+    
+    if (ver1[i].toInt() > ver2[i].toInt())
+      return true;
+  }
+  
+  return true;
+}
+
+void
+ResourceManager::__downloadManifest() {
+  FileDownloader* fd = new FileDownloader();
+  
+  connect(fd,   SIGNAL(finished(QString)),
+          this, SLOT(__handleManifest(QString)));
+  connect(fd,   SIGNAL(finished(QString)),
+          fd,   SLOT(deleteLater()));
+  connect(fd,   SIGNAL(error(QString)),
+          this, SLOT(__manifestError()));
+  connect(fd,   SIGNAL(error(QString)),
+          fd,   SLOT(deleteLater()));
+  
+  fd->fetch(QUrl(QString(NetConfig::Vatsinator::repoUrl()) % ManifestFileName));
+  emit databaseStatusChanged(Updating);
+}
+
+void
+ResourceManager::__moveFiles() {
+  
+  
+  emit databaseStatusChanged(Updated);
+}
 
 void
 ResourceManager::__fetchVersion() {
@@ -103,62 +171,15 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
 
 void
 ResourceManager::__handleManifest(QString _fileName) {
-  sender()->deleteLater();
+  __manifestLocation = _fileName;
   
-  QFile file(_fileName);
-  if (!file.open(QIODevice::ReadOnly)) {
-    __manifestError();
-    return;
-  }
-  
-  file.close();
-  
-  QFile oldFile(FileManager::path(ManifestFileName, true));
-  if (oldFile.exists())
-    oldFile.remove();
-  
-  bool result = file.rename(FileManager::path(ManifestFileName, true));
-  if (result)
-    VatsinatorApplication::log("ResourceManager: new Manifest file: %s", qPrintable(file.fileName()));
+  if (moveFile(_fileName, FileManager::path(ManifestFileName, true)))
+    emit databaseStatusChanged(Updated);
   else
-    VatsinatorApplication::log("ResourceManager: cannot rename Manifest to: %s", qPrintable(file.fileName()));
-  
-  emit databaseStatusChanged(Updated);
+    emit databaseStatusChanged(Outdated);
 }
 
 void
 ResourceManager::__manifestError() {
-  if (sender())
-    sender()->deleteLater();
-  
   emit databaseStatusChanged(Outdated);
-}
-
-bool
-ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
-  auto ver1 = _version1.split(QRegExp("\\D+"));
-  auto ver2 = _version2.split(QRegExp("\\D+"));
-  
-  for (int i = 0; i < ver1.size() && i < ver2.size(); ++i) {
-    if (ver1[i].toInt() < ver2[i].toInt())
-      return false;
-    
-    if (ver1[i].toInt() > ver2[i].toInt())
-      return true;
-  }
-  
-  return true;
-}
-
-void
-ResourceManager::__downloadManifest() {
-  FileDownloader* fd = new FileDownloader();
-  
-  connect(fd,   SIGNAL(finished(QString)),
-          this, SLOT(__handleManifest(QString)));
-  connect(fd,   SIGNAL(error(QString)),
-          this, SLOT(__manifestError()));
-  
-  fd->fetch(QUrl(QString(NetConfig::Vatsinator::repoUrl()) % ManifestFileName));
-  emit databaseStatusChanged(Updating);
 }
