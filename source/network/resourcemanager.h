@@ -116,7 +116,7 @@ private:
   /**
    * Fetches the manifest file.
    */
-  void __fetchManifest();
+  void __downloadManifest();
 
 };
 

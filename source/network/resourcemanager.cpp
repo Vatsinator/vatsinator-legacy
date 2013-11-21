@@ -94,7 +94,7 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     if (when.daysTo(today) < 7) {
       emit databaseStatusChanged(Updated);
     } else {
-      __fetchManifest();
+      __downloadManifest();
     }
     
     manifest.close();
@@ -126,8 +126,11 @@ ResourceManager::__handleManifest(QString _fileName) {
   emit databaseStatusChanged(Updated);
 }
 
-void ResourceManager::__manifestError() {
-  sender()->deleteLater();
+void
+ResourceManager::__manifestError() {
+  if (sender())
+    sender()->deleteLater();
+  
   emit databaseStatusChanged(Outdated);
 }
 
@@ -135,7 +138,7 @@ bool
 ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
   auto ver1 = _version1.split(QRegExp("\\D+"));
   auto ver2 = _version2.split(QRegExp("\\D+"));
-
+  
   for (int i = 0; i < ver1.size() && i < ver2.size(); ++i) {
     if (ver1[i].toInt() < ver2[i].toInt())
       return false;
@@ -148,7 +151,7 @@ ResourceManager::__versionActual(const QString& _version1, const QString& _versi
 }
 
 void
-ResourceManager::__fetchManifest() {
+ResourceManager::__downloadManifest() {
   FileDownloader* fd = new FileDownloader();
   
   connect(fd,   SIGNAL(finished(QString)),

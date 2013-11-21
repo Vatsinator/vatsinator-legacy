@@ -32,6 +32,7 @@ static const QString LocalDataLocation =
 FileManager::FileManager() {
   VatsinatorApplication::log("FileManager: local data location: %s", qPrintable(LocalDataLocation));
   
+  // ensure that our data directory exists
   QDir dir(LocalDataLocation);
   if (!dir.exists()) {
     VatsinatorApplication::log("FileManager: creating directory %s.", qPrintable(LocalDataLocation));
