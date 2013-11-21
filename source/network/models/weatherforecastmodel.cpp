@@ -64,7 +64,7 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
         case Error:
           return tr("Data not accessible");
         case Progress:
-          return tr("Fetching data...");
+          return tr("Retrieving data...");
       }
     
     case Qt::DecorationRole:
@@ -72,6 +72,10 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
         case Fetched:
           if (_index.row() == 1)
             return QPixmap(__iconForCondition(__data.at(_index.column()).iconNum));
+          /* TODO: Display loading gif during profress */
+//         case Progress:
+//           if (__status == Progress)
+//             return QPixmap(":/uiIcons/loading.gif");
         default:
           return QVariant();
       }
@@ -102,6 +106,9 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
         return VatsinatorApplication::boldFont();
       else
         return QFont();
+    
+    case Qt::TextAlignmentRole:
+      return Qt::AlignCenter;
   }
   
   return QVariant();

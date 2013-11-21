@@ -10,6 +10,7 @@
     <file>preferences-colors.png</file>
   </qresource>
   <qresource prefix="uiIcons">
+    <file>loading.gif</file>
     <file>button-details.png</file>
     <file>configure.png</file>
     <file>view-refresh.png</file>
