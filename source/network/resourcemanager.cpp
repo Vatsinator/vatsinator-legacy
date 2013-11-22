@@ -19,6 +19,7 @@
 
 #include <QtGui>
 
+#include "network/dataupdater.h"
 #include "network/filedownloader.h"
 #include "network/plaintextdownloader.h"
 
@@ -36,34 +37,6 @@ static const int StartDelay = 2 * 1000;
 
 // manifest file name, both on local storage and on the server
 static const QString ManifestFileName = "Manifest";
-
-namespace {
-  
-  /**
-   * Moves the file.
-   */
-  bool moveFile(const QString& _oldLocation, const QString& _newLocation) {
-    QFile file(_oldLocation);
-    if (!file.open(QIODevice::ReadWrite)) {
-      return false;
-    }
-  
-    file.close();
-    
-    QFile oldFile(_newLocation);
-    if (oldFile.exists())
-      oldFile.remove();
-    
-    bool result = file.rename(_newLocation);
-    if (result)
-      VatsinatorApplication::log("ResourceManager: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
-    else
-      VatsinatorApplication::log("ResourceManager: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
-    
-    return result;
-  }
-  
-}
 
 ResourceManager::ResourceManager(QObject* _parent) :
     QObject(_parent) {
@@ -95,27 +68,20 @@ ResourceManager::__versionActual(const QString& _version1, const QString& _versi
 }
 
 void
-ResourceManager::__downloadManifest() {
-  FileDownloader* fd = new FileDownloader();
+ResourceManager::__syncDatabase() {
+  DataUpdater* du = new DataUpdater();
+  connect(du,   SIGNAL(updated()),
+          this, SLOT(__databaseUpdated()));
+  connect(du,   SIGNAL(updated()),
+          du,   SLOT(deleteLater()));
+  connect(du,   SIGNAL(failed()),
+          this, SLOT(__databaseFailed()));
+  connect(du,   SIGNAL(failed()),
+          du,   SLOT(deleteLater()));
   
-  connect(fd,   SIGNAL(finished(QString)),
-          this, SLOT(__handleManifest(QString)));
-  connect(fd,   SIGNAL(finished(QString)),
-          fd,   SLOT(deleteLater()));
-  connect(fd,   SIGNAL(error(QString)),
-          this, SLOT(__manifestError()));
-  connect(fd,   SIGNAL(error(QString)),
-          fd,   SLOT(deleteLater()));
+  du->update();
   
-  fd->fetch(QUrl(QString(NetConfig::Vatsinator::repoUrl()) % ManifestFileName));
   emit databaseStatusChanged(Updating);
-}
-
-void
-ResourceManager::__moveFiles() {
-  
-  
-  emit databaseStatusChanged(Updated);
 }
 
 void
@@ -123,8 +89,12 @@ ResourceManager::__fetchVersion() {
   if (SM::get("network.version_check").toBool()) {
     PlainTextDownloader* fetcher = new PlainTextDownloader();
     
-    connect(fetcher,      SIGNAL(finished(QString)),
-            this,         SLOT(__parseVersion(QString)));
+    connect(fetcher,    SIGNAL(finished(QString)),
+            this,       SLOT(__parseVersion(QString)));
+    connect(fetcher,    SIGNAL(finished(QString)),
+            fetcher,    SLOT(deleteLater()));
+    connect(fetcher,    SIGNAL(error()),
+            fetcher,    SLOT(deleteLater()));
     
     fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
   }
@@ -143,8 +113,6 @@ ResourceManager::__parseVersion(QString _versionString) {
     emit outdated();
   
   emit vatsinatorVersionChecked(actual ? Updated : Outdated);
-  
-  sender()->deleteLater();
 }
 
 void
@@ -162,7 +130,7 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     if (when.daysTo(today) < 7) {
       emit databaseStatusChanged(Updated);
     } else {
-      __downloadManifest();
+      __syncDatabase();
     }
     
     manifest.close();
@@ -170,16 +138,13 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
 }
 
 void
-ResourceManager::__handleManifest(QString _fileName) {
-  __manifestLocation = _fileName;
-  
-  if (moveFile(_fileName, FileManager::path(ManifestFileName, true)))
-    emit databaseStatusChanged(Updated);
-  else
-    emit databaseStatusChanged(Outdated);
+ResourceManager::__databaseUpdated() {
+  VatsinatorApplication::log("ResourceManager: database updated.");
+  emit databaseStatusChanged(Updated);
 }
 
 void
-ResourceManager::__manifestError() {
+ResourceManager::__databaseFailed() {
+  VatsinatorApplication::log("ResourceManager: failed updating the database!");
   emit databaseStatusChanged(Outdated);
 }

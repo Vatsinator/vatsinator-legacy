@@ -72,9 +72,7 @@ FileManager::staticPath(FileManager::StaticDir _d) {
 }
 
 QString
-FileManager::path(const QString& _f, bool _localOnly) {
-  if (_localOnly)
-    return LocalDataLocation % _f;
+FileManager::path(const QString& _f) {
   
   QFile tryLocal(LocalDataLocation % _f);
   if (tryLocal.exists()) {
@@ -91,6 +89,11 @@ FileManager::path(const QString& _f, bool _localOnly) {
 #endif
       % _f;
   }
+}
+
+QString
+FileManager::localDataPath() {
+  return LocalDataLocation;
 }
 
 QByteArray

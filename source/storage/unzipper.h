@@ -23,8 +23,6 @@
 #include <QObject>
 #include <QStringList>
 
-class QThread;
-
 class Unzipper : public QObject {
   
   /*
@@ -34,11 +32,6 @@ class Unzipper : public QObject {
   Q_OBJECT
   
 public:
-    
-  enum UnzipStatus {
-    UNZIPPER_OK,
-    UNZIPPER_FAIL
-  };
 
 signals:
   /**
@@ -50,15 +43,13 @@ signals:
   void progress(int, int, QString);
   
   /**
-   * @param fileList List of files that were extraced from the package.
-   * NOTE: Files are listed with their path as it is stored in zip.
-   * Example: "foo.txt", "bar/bar.txt", "bar/baz/baz.txt"
+   * Emited when Unzipper is done with its job.
    */
-  void unzipped(Unzipper::UnzipStatus);
+  void unzipped();
   
   /**
    * Emited then an error occurs.
-   * @param erStr Error status.
+   * @param erStr Error string.
    */
   void error(QString);
   
@@ -66,9 +57,6 @@ public:
   
   explicit Unzipper(QString, QObject* = 0);
   explicit Unzipper(QObject* = 0);
-  virtual ~Unzipper();
-  
-  void unzip();
   
   void setFileName(const QString&);
   
@@ -78,17 +66,21 @@ public:
   inline const QStringList &
   fileList() const { return __fileList; }
   
+  inline const QString &
+  targetDir() const { return __targetDir; }
+  
+public slots:
+  void unzip();
+  
 private:
-  QThread*    __myThread;
   QStringList __fileList;
   
   /* zip file name */
-  QString     __fileName;
+  QString __fileName;
   
-private slots:
-  void __unzip();
-  void __restoreThread(Unzipper::UnzipStatus);
-  
+  /* where all the files are extracted to */
+  QString __targetDir;
+
 };
 
 #endif // UNZIPPER_H

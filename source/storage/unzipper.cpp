@@ -28,52 +28,15 @@
 
 Unzipper::Unzipper(QString _fn, QObject* _parent) :
     QObject(_parent),
-    __myThread(nullptr),
-    __fileName(std::move(_fn)) {
-  if (!_parent) {
-    __myThread = new QThread(this);
-    
-    connect(__myThread, SIGNAL(started()),
-            this,       SLOT(__unzip()));
-    connect(this, SIGNAL(unzipped(Unzipper::UnzipStatus)),
-                  SLOT(__restoreThread(Unzipper::UnzipStatus)));
-  }
-}
+    __fileName(std::move(_fn)) {}
 
 Unzipper::Unzipper(QObject* _parent) :
 #ifdef GCC_VERSION_47
     Unzipper("", _parent) {}
 #else
     QObject(_parent),
-    __myThread(nullptr),
-    __fileName("") {
-  if (!_parent) {
-    __myThread = new QThread(this);
-    
-    connect(__myThread, SIGNAL(started()),
-            this,       SLOT(__unzip()));
-    connect(this, SIGNAL(unzipped(Unzipper::UnzipStatus)),
-                  SLOT(__restoreThread(Unzipper::UnzipStatus)));
-  }
-}
+    __fileName("") {}
 #endif
-
-Unzipper::~Unzipper() {
-  if (__myThread) {
-    __myThread->quit();
-    __myThread->deleteLater();
-  }
-}
-
-void
-Unzipper::unzip() {
-  if (__myThread) {
-    moveToThread(__myThread);
-    __myThread->start();
-  } else {
-    __unzip();
-  }
-}
 
 void
 Unzipper::setFileName(const QString& _fn) {
@@ -81,18 +44,19 @@ Unzipper::setFileName(const QString& _fn) {
 }
 
 void
-Unzipper::__unzip() {
+Unzipper::unzip() {
   if (__fileName.isEmpty()) {
-    VatsinatorApplication::log("Unzipper: error: file name not given, can not start unpacking");
+    VatsinatorApplication::log("Unzipper: error: file name not given!");
+    emit error("File name not given!");
     return;
   }
   
   __fileList.clear();
   
+  VatsinatorApplication::log("Unzipper: unpacking archive %1", qPrintable(__fileName));
   QuaZip zip(__fileName);
   if (!zip.open(QuaZip::mdUnzip)) {
-    emit error(tr("Could not open zip file: %1 (check your directory permissions)")
-        .arg(__fileName));
+    emit error(QString("Could not open zip file: %1").arg(__fileName));
     return;
   }
   
@@ -101,39 +65,47 @@ Unzipper::__unzip() {
   
   /* Create directory that we will exclude files to */
   QDir tempDir(QDir::tempPath());
-  QString targetSubDir("vatsinatordownload-" % zip.getZipName());
-  tempDir.mkdir(targetSubDir);
+  QString targetSubDir("vatsinatordownload_" % QFileInfo(__fileName).fileName());
+  if (!tempDir.mkdir(targetSubDir)) {
+    emit error(QString("Could not create temporary directory: %1/%2").arg(QDir::tempPath(), targetSubDir));
+    return;
+  }
+  
   tempDir.cd(targetSubDir);
+  __targetDir = tempDir.path() % "/";
   
   QuaZipFile file(&zip);
   for (bool f = zip.goToFirstFile(); f; f = zip.goToNextFile()) {
-    QString fName = file.getFileName();
-    emit progress(count, current, fName);
-    
-    if (!file.open(QIODevice::ReadOnly)) {
-      emit error(tr("Could not access zip archive (%1) properly. Skipping...")
-          .arg(__fileName));
-      current += 1;
-      continue;
+    QString fName = file.getActualFileName();
+    if (fName.endsWith('/')) { // a directory
+      if (!tempDir.mkpath(fName)) {
+        emit error(QString("Could not create directory: %1/%2").arg(tempDir.dirName(), fName));
+        return;
+      }
+    } else { // regular file
+      VatsinatorApplication::log("Unzipper: extracting %1...", qPrintable(fName));
+      emit progress(count, current, fName);
+      
+      if (!file.open(QIODevice::ReadOnly)) {
+        emit error(QString("Could not access file %1").arg(__fileName));
+        return;
+      }
+      
+      QFile target(tempDir.path() % "/" % file.getActualFileName());
+      if (!target.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        emit error(QString("Could not access file %1").arg(target.fileName()));
+      }
+      target.write(file.readAll());
+      target.close();
+      
+      file.close();
+      __fileList << fName;
     }
     
-    QFile target(tempDir.path() % "/" % file.getActualFileName());
-    target.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    target.write(file.readAll());
-    target.close();
-    
-    file.close();
-    
-    __fileList << target.fileName();
     ++current;
   }
   
   zip.close();
   
-  emit unzipped(UNZIPPER_OK);
-}
-
-void
-Unzipper::__restoreThread(Unzipper::UnzipStatus) {
-  moveToThread(qApp->thread());
+  emit unzipped();
 }

@@ -83,14 +83,9 @@ private:
   bool __versionActual(const QString&, const QString&);
   
   /**
-   * Fetches the manifest file.
+   * Starts the data updater.
    */
-  void __downloadManifest();
-  
-  /**
-   * Moves all data files to the local data destination directory.
-   */
-  void __moveFiles();
+  void __syncDatabase();
 
 private slots:
   
@@ -111,22 +106,8 @@ private slots:
    */
   void __checkDatabase(ResourceManager::VersionStatus);
   
-  /**
-   * When Manifest file is fetched, we have to check it and move it
-   * to the appropriate place on the local disk.
-   */
-  void __handleManifest(QString);
-  
-  /**
-   * If an error occurs during downloading the manifest, this slot
-   * will be called.
-   */
-  void __manifestError();
-
-private:
-  
-  /* Manifest file location in the temp directory. */
-  QString __manifestLocation;
+  void __databaseUpdated();
+  void __databaseFailed();
 
 };
 

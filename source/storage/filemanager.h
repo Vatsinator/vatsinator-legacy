@@ -75,10 +75,14 @@ public:
    * directory).
    * 
    * @param fileName Name of the file.
-   * @param localOnly If true, this function will return file path on the local
    *    storage, avoiding checking its existence.
    */
-  static QString path(const QString&, bool = false);
+  static QString path(const QString&);
+  
+  /**
+   * Returns path to where local data can be stored.
+   */
+  static QString localDataPath();
   
   /**
    * Generates md5 hash of given file.
