@@ -959,7 +959,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="75"/>
         <source>Custom updates settings</source>
-        <translation type="unfinished"/>
+        <translation>Własne ustawienia aktualizacji</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="156"/>
@@ -1081,12 +1081,12 @@
     <message>
         <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="14"/>
         <source>A message from Vatsim</source>
-        <translation type="unfinished"/>
+        <translation>Wiadomość od Vatsim</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="59"/>
         <source>Do not show this message again</source>
-        <translation type="unfinished"/>
+        <translation>Nie pokazuj tej wiadomości ponownie</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1267,7 @@
     <message>
         <location filename="../network/models/weatherforecastmodel.cpp" line="67"/>
         <source>Retrieving data...</source>
-        <translation type="unfinished"/>
+        <translation>Pobieranie danych...</translation>
     </message>
 </context>
 <context>
