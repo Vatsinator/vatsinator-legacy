@@ -32,6 +32,7 @@
 #include "defines.h"
 
 static const QString PackageUrl = QString(NetConfig::Vatsinator::repoUrl()) % QString("packages/latest.zip");
+static const QString ManifestUrl = QString(NetConfig::Vatsinator::repoUrl()) % QString("packages/Manifest");
 
 namespace {
   
@@ -92,6 +93,17 @@ namespace {
     return result;
   }
   
+  bool checksumMatches(const QString& _fileName, const QByteArray& _md5) {
+    QFile file(_fileName);
+    if (!file.open(QIODevice::ReadOnly))
+      return false;
+    
+    auto hash = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
+    file.close();
+    
+    return hash == _md5;
+  }
+  
 }
 
 DataUpdater::DataUpdater(QObject* _parent) :
@@ -102,7 +114,7 @@ DataUpdater::DataUpdater(QObject* _parent) :
   QThread* thread = new QThread();
   __unzipper->moveToThread(thread);
   connect(__unzipper,   SIGNAL(unzipped()),
-          this,         SLOT(__checkUnzipped()));
+          this,         SLOT(__filesUnzipped()));
   connect(__unzipper,   SIGNAL(error(QString)),
           this,         SLOT(__unzipError(QString)));
   connect(this,         SIGNAL(readyToUnzip()),
@@ -137,6 +149,54 @@ DataUpdater::update() {
 }
 
 bool
+DataUpdater::__checksumsOk(const QString& _fileName) {
+  QFile file(_fileName);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    VatsinatorApplication::log("DataUpdater: cannot open %s for reading!", qPrintable(_fileName));
+    return false;
+  }
+  
+  QHash<QString, QString> md5sums;
+  
+  while (!file.atEnd()) {
+    QString line = QString::fromUtf8(file.readLine()).simplified();
+    
+    if (line.isEmpty())
+      continue;
+    
+    if (QRegExp("\\d{8}").exactMatch(line)) { // manifest date
+      VatsinatorApplication::log("DataUpdater: manifest date: %s", qPrintable(line));
+      continue;
+    }
+    
+    QStringList lineSplitted = line.split(QRegExp("\\s+"));
+    Q_ASSERT(lineSplitted.length() == 2);
+    
+    lineSplitted[1].replace(QString("./"), QString(""));
+    
+    // insert filename <-> md5sum pair
+    md5sums.insert(lineSplitted[1], lineSplitted[0]);
+  }
+  
+  file.close();
+  
+  for (const QString& f: __unzipper->fileList()) {
+    if (!md5sums.contains(f)) {
+      VatsinatorApplication::log("DataUpdater: could not find the md5 sum for file %s!", qPrintable(f));
+      return false;
+    }
+    
+    if (!checksumMatches(__unzipper->targetDir() + f, md5sums[f].toUtf8())) {
+      VatsinatorApplication::log("DataUpdater: checksum failed for %s", qPrintable(f));
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+bool
 DataUpdater::__moveFiles() {
   for (const QString& file: __unzipper->fileList()) {
     if (!moveFile(__unzipper->targetDir() % file, FileManager::localDataPath() % file))
@@ -149,7 +209,9 @@ DataUpdater::__moveFiles() {
 void
 DataUpdater::__cleanup() {
   removeDir(__unzipper->targetDir());
-  QFile::remove(__unzipper->fileName());
+  
+  if (QFile(__unzipper->fileName()).exists())
+    QFile::remove(__unzipper->fileName());
 }
 
 void
@@ -165,18 +227,44 @@ DataUpdater::__fetchError(QString _error) {
 }
 
 void
-DataUpdater::__checkUnzipped() {
+DataUpdater::__filesUnzipped() {
   VatsinatorApplication::log("DataUpdater: files unzipped.");
-  if (__moveFiles()) {
-    __cleanup();
-    emit updated();
-  } else {
-    emit failed();
-  }
+  
+  FileDownloader* fd = new FileDownloader();
+  
+  connect(fd,   SIGNAL(finished(QString)),
+          this, SLOT(__checkManifest(QString)));
+  connect(fd,   SIGNAL(finished(QString)),
+          fd,   SLOT(deleteLater()));
+  connect(fd,   SIGNAL(error(QString)),
+          this, SLOT(__fetchError(QString)));
+  connect(fd,   SIGNAL(error(QString)),
+          fd,   SLOT(deleteLater()));
+  
+  fd->fetch(QUrl(ManifestUrl));
 }
 
 void
 DataUpdater::__unzipError(QString _errStr) {
   VatsinatorApplication::log("DataUpdater: unzip error: %s", qPrintable(_errStr));
   emit failed();
+}
+
+void
+DataUpdater::__checkManifest(QString _fileName) {
+  if (!__checksumsOk(_fileName)) {
+    __cleanup();
+    emit failed();
+    return;
+  }
+  
+  if (!__moveFiles()) {
+    __cleanup();
+    emit failed();
+    return;
+  }
+  
+  moveFile(_fileName, FileManager::localDataPath() % "Manifest");
+  __cleanup();
+  emit updated();
 }

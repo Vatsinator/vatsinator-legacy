@@ -68,23 +68,6 @@ ResourceManager::__versionActual(const QString& _version1, const QString& _versi
 }
 
 void
-ResourceManager::__syncDatabase() {
-  DataUpdater* du = new DataUpdater();
-  connect(du,   SIGNAL(updated()),
-          this, SLOT(__databaseUpdated()));
-  connect(du,   SIGNAL(updated()),
-          du,   SLOT(deleteLater()));
-  connect(du,   SIGNAL(failed()),
-          this, SLOT(__databaseFailed()));
-  connect(du,   SIGNAL(failed()),
-          du,   SLOT(deleteLater()));
-  
-  du->update();
-  
-  emit databaseStatusChanged(Updating);
-}
-
-void
 ResourceManager::__fetchVersion() {
   if (SM::get("network.version_check").toBool()) {
     PlainTextDownloader* fetcher = new PlainTextDownloader();
@@ -113,12 +96,14 @@ ResourceManager::__parseVersion(QString _versionString) {
     emit outdated();
   
   emit vatsinatorVersionChecked(actual ? Updated : Outdated);
-}
+}    
 
 void
 ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
-  if (_status == ResourceManager::Outdated)
+  if (_status == ResourceManager::Outdated) {
+    __errorMessage = tr("Your Vatsinator version is outdated.");
     emit databaseStatusChanged(Unknown);
+  }
   
   QFile manifest(FileManager::path(ManifestFileName));
   
@@ -130,11 +115,30 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     if (when.daysTo(today) < 7) {
       emit databaseStatusChanged(Updated);
     } else {
-      __syncDatabase();
+      emit databaseStatusChanged(Outdated);
+//       __syncDatabase();
+      QTimer::singleShot(3000, this, SLOT(__syncDatabase()));
     }
     
     manifest.close();
   }
+}
+
+void
+ResourceManager::__syncDatabase() {
+  emit databaseStatusChanged(Updating);
+  
+  DataUpdater* du = new DataUpdater();
+  connect(du,   SIGNAL(updated()),
+          this, SLOT(__databaseUpdated()));
+  connect(du,   SIGNAL(updated()),
+          du,   SLOT(deleteLater()));
+  connect(du,   SIGNAL(failed()),
+          this, SLOT(__databaseFailed()));
+  connect(du,   SIGNAL(failed()),
+          du,   SLOT(deleteLater()));
+  
+  du->update();
 }
 
 void

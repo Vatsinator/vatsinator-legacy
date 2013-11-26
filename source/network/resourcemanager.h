@@ -70,6 +70,11 @@ public:
   explicit ResourceManager(QObject* = 0);
   
   virtual ~ResourceManager();
+  
+  inline const QString &
+  errorMessage() const {
+    return __errorMessage;
+  }
 
 private:
   
@@ -81,11 +86,6 @@ private:
    * @return True if version1 >= version2.
    */
   bool __versionActual(const QString&, const QString&);
-  
-  /**
-   * Starts the data updater.
-   */
-  void __syncDatabase();
 
 private slots:
   
@@ -106,8 +106,16 @@ private slots:
    */
   void __checkDatabase(ResourceManager::VersionStatus);
   
+    /**
+   * Starts the data updater.
+   */
+  void __syncDatabase();
+  
   void __databaseUpdated();
   void __databaseFailed();
+  
+private:
+  QString __errorMessage;
 
 };
 

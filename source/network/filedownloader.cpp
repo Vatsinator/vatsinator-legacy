@@ -52,7 +52,7 @@ FileDownloader::fileNameForUrl(const QUrl& _url) {
   
   QString absPath = QDir::tempPath() % "/" % baseName;
   
-  VatsinatorApplication::log("FileDownloader: file (%s) will be downloaded to: %s", qPrintable(_url.toString()), qPrintable(absPath));
+  VatsinatorApplication::log("FileDownloader: file %s will be downloaded to: %s", qPrintable(_url.toString()), qPrintable(absPath));
   
   if (QFile::exists(absPath))
     QFile(absPath).remove();

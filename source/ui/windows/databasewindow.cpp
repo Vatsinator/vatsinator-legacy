@@ -72,7 +72,7 @@ void DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus _stat
       p.setColor(QPalette::WindowText, Qt::darkGray);
       StatusLabel->setPalette(p);
       StatusLabel->setText(tr("unknown", "Database status indicator"));
-      StatusLabel->setToolTip(tr("Your Vatsinator version is probably outdated."));
+      StatusLabel->setToolTip(ResourceManager::getSingleton().errorMessage());
       break;
   }
 }

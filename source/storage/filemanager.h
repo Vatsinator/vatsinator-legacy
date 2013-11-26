@@ -84,25 +84,6 @@ public:
    */
   static QString localDataPath();
   
-  /**
-   * Generates md5 hash of given file.
-   */
-  static QByteArray md5Hash(const QString&);
-  static QByteArray md5Hash(QIODevice&);
-  
-private:
-  class FileHash {
-    
-    /*
-     * This class is used to describe one file's hash.
-     */
-  public:
-    FileHash() = default;
-    FileHash(const QByteArray&);
-    
-    QByteArray md5;
-  };
-  
 };
 
 #endif // FILEMANAGER_H

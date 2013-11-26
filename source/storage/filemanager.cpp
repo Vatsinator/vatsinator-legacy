@@ -95,24 +95,3 @@ QString
 FileManager::localDataPath() {
   return LocalDataLocation;
 }
-
-QByteArray
-FileManager::md5Hash(const QString& _fname) {
-  QFile file(_fname);
-  
-  if (!file.open(QIODevice::ReadOnly)) {
-    return QByteArray();
-  }
-  
-  return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
-}
-
-QByteArray
-FileManager::md5Hash(QIODevice& _dev) {
-  Q_ASSERT(_dev.isOpen());
-  
-  return QCryptographicHash::hash(_dev.readAll(), QCryptographicHash::Md5).toHex();
-}
-
-FileManager::FileHash::FileHash(const QByteArray& _md5) :
-    md5(_md5) {}

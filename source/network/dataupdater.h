@@ -41,14 +41,16 @@ public slots:
   void update();
   
 private:
+  bool __checksumsOk(const QString&);
   bool __moveFiles();
   void __cleanup();
   
 private slots:
   void __unzipPackage(QString);
   void __fetchError(QString);
-  void __checkUnzipped();
+  void __filesUnzipped();
   void __unzipError(QString);
+  void __checkManifest(QString);
   
 private:
   Unzipper* __unzipper;
