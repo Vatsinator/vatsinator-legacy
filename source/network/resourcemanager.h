@@ -39,6 +39,12 @@ class ResourceManager :
   
 public:
   
+  /**
+   * Used for the version control.
+   * Vatsinator version indicator uses only the two values: Updated
+   * and Outdated, whilst the database sync indicator uses all of
+   * them.
+   */
   enum VersionStatus {
     Updated,
     Outdated,
