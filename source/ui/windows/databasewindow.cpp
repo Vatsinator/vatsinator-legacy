@@ -44,9 +44,12 @@ DatabaseWindow::DatabaseWindow(QWidget* _parent) :
   
   connect(ResourceManager::getSingletonPtr(),   SIGNAL(databaseStatusChanged(ResourceManager::VersionStatus)),
           this,                                 SLOT(__updateDatabaseStatus(ResourceManager::VersionStatus)));
+  connect(SyncDatabaseButton,                   SIGNAL(clicked()),
+          ResourceManager::getSingletonPtr(),   SLOT(requestDatabaseSync()));
 }
 
-void DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus _status) {
+void
+DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus _status) {
   QPalette p = StatusLabel->palette();
   
   switch (_status) {
@@ -54,25 +57,31 @@ void DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus _stat
       p.setColor(QPalette::WindowText, Qt::darkGreen);
       StatusLabel->setPalette(p);
       StatusLabel->setText(tr("up-to-date", "Database status indicator"));
+      SyncDatabaseButton->setEnabled(true);
       break;
       
     case ResourceManager::Outdated:
       p.setColor(QPalette::WindowText, Qt::red);
       StatusLabel->setPalette(p);
       StatusLabel->setText(tr("outdated", "Database status indicator"));
+      SyncDatabaseButton->setEnabled(true);
       break;
       
     case ResourceManager::Updating:
       p.setColor(QPalette::WindowText, Qt::darkYellow);
       StatusLabel->setPalette(p);
       StatusLabel->setText(tr("updating...", "Database status indicator"));
+      SyncDatabaseButton->setEnabled(false);
       break;
       
-    case ResourceManager::Unknown:
+    case ResourceManager::CannotUpdate:
       p.setColor(QPalette::WindowText, Qt::darkGray);
       StatusLabel->setPalette(p);
-      StatusLabel->setText(tr("unknown", "Database status indicator"));
-      StatusLabel->setToolTip(ResourceManager::getSingleton().errorMessage());
+      StatusLabel->setText(tr("cannot update", "Database status indicator"));
+      StatusLabel->setToolTip(tr("Your Vatsinator version is outdated."));
+      SyncDatabaseButton->setEnabled(false);
       break;
   }
+  
+  UpdateDateLabel->setText(ResourceManager::getSingleton().lastUpdateDate().toString(Qt::ISODate));
 }

@@ -43,7 +43,7 @@ public:
     Updated,
     Outdated,
     Updating,
-    Unknown
+    CannotUpdate
   };
   Q_ENUMS(ResourceManager::VersionStatus);
   
@@ -71,10 +71,13 @@ public:
   
   virtual ~ResourceManager();
   
-  inline const QString &
-  errorMessage() const {
-    return __errorMessage;
+  inline const QDate &
+  lastUpdateDate() const {
+    return __lastUpdateDate;
   }
+  
+public slots:
+  void requestDatabaseSync();
 
 private:
   
@@ -115,7 +118,9 @@ private slots:
   void __databaseFailed();
   
 private:
-  QString __errorMessage;
+  
+  /* The date of the last database update */
+  QDate __lastUpdateDate;
 
 };
 

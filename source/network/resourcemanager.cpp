@@ -38,6 +38,9 @@ static const int StartDelay = 2 * 1000;
 // manifest file name, both on local storage and on the server
 static const QString ManifestFileName = "Manifest";
 
+// how many days to have the database updated
+static const int DaysToUpdate = 7;
+
 ResourceManager::ResourceManager(QObject* _parent) :
     QObject(_parent) {
   
@@ -50,6 +53,11 @@ ResourceManager::ResourceManager(QObject* _parent) :
 }
 
 ResourceManager::~ResourceManager() {}
+
+void
+ResourceManager::requestDatabaseSync() {
+  __syncDatabase();
+}
 
 bool
 ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
@@ -101,8 +109,7 @@ ResourceManager::__parseVersion(QString _versionString) {
 void
 ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
   if (_status == ResourceManager::Outdated) {
-    __errorMessage = tr("Your Vatsinator version is outdated.");
-    emit databaseStatusChanged(Unknown);
+    emit databaseStatusChanged(CannotUpdate);
   }
   
   QFile manifest(FileManager::path(ManifestFileName));
@@ -112,7 +119,7 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
   if (manifest.open(QIODevice::ReadOnly)) {
     QDate today = QDate::currentDate();
     QDate when = QDate::fromString(manifest.readLine().simplified(), "yyyyMMdd");
-    if (when.daysTo(today) < 7) {
+    if (when.daysTo(today) < DaysToUpdate) {
       emit databaseStatusChanged(Updated);
     } else {
       emit databaseStatusChanged(Outdated);
@@ -121,6 +128,8 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     }
     
     manifest.close();
+    
+    __lastUpdateDate = when;
   }
 }
 
@@ -143,8 +152,7 @@ ResourceManager::__syncDatabase() {
 
 void
 ResourceManager::__databaseUpdated() {
-  VatsinatorApplication::log("ResourceManager: database updated.");
-  emit databaseStatusChanged(Updated);
+  __checkDatabase(Updated);
 }
 
 void
