@@ -77,18 +77,16 @@ ResourceManager::__versionActual(const QString& _version1, const QString& _versi
 
 void
 ResourceManager::__fetchVersion() {
-  if (SM::get("network.version_check").toBool()) {
-    PlainTextDownloader* fetcher = new PlainTextDownloader();
-    
-    connect(fetcher,    SIGNAL(finished(QString)),
-            this,       SLOT(__parseVersion(QString)));
-    connect(fetcher,    SIGNAL(finished(QString)),
-            fetcher,    SLOT(deleteLater()));
-    connect(fetcher,    SIGNAL(error()),
-            fetcher,    SLOT(deleteLater()));
-    
-    fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
-  }
+  PlainTextDownloader* fetcher = new PlainTextDownloader();
+  
+  connect(fetcher,    SIGNAL(finished(QString)),
+          this,       SLOT(__parseVersion(QString)));
+  connect(fetcher,    SIGNAL(finished(QString)),
+          fetcher,    SLOT(deleteLater()));
+  connect(fetcher,    SIGNAL(error()),
+          fetcher,    SLOT(deleteLater()));
+  
+  fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
 }
 
 void
@@ -124,7 +122,8 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     } else {
       emit databaseStatusChanged(Outdated);
 //       __syncDatabase();
-      QTimer::singleShot(3000, this, SLOT(__syncDatabase()));
+      if (SM::get("database_integration").toBool())
+        QTimer::singleShot(3000, this, SLOT(__syncDatabase()));
     }
     
     manifest.close();

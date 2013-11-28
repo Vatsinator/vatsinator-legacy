@@ -24,12 +24,12 @@
 
 /* Default settings for NetworkPage */
 namespace DefaultSettings {
-  static const bool    AUTO_UPDATER      = true;
-  static const int     REFRESH_RATE      = 3;
-  static const bool    METARS_REFRESH    = true;
-  static const bool    CACHE_ENABLED     = true;
-  static const bool    VERSION_CHECK     = true;
-  static const bool    WEATHER_FORECASTS = true;
+  static const bool    AUTO_UPDATER             = true;
+  static const int     REFRESH_RATE             = 3;
+  static const bool    METARS_REFRESH           = true;
+  static const bool    CACHE_ENABLED            = true;
+  static const bool    DATABASE_INTEGRATION     = true;
+  static const bool    WEATHER_FORECASTS        = true;
 }
 
 NetworkPage::NetworkPage(QWidget* _parent) :
@@ -62,7 +62,7 @@ NetworkPage::updateFromUi() const {
   setValue("refresh_rate", RefreshRateBox->value());
   setValue("cache_enabled", CachingCheckBox->isChecked());
   setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
-  setValue("version_check", VersionCheckingCheckBox->isChecked());
+  setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
   setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
 }
 
@@ -80,8 +80,8 @@ NetworkPage::restore(QSettings& _s) {
     _s.value("refresh_metars", DefaultSettings::METARS_REFRESH).toBool());
   CachingCheckBox->setChecked(
     _s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
-  VersionCheckingCheckBox->setChecked(
-    _s.value("version_check", DefaultSettings::VERSION_CHECK).toBool());
+  DatabaseIntegrationCheckBox->setChecked(
+    _s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
   WeatherForecastCheckBox->setChecked(
     _s.value("weather_forecasts", DefaultSettings::WEATHER_FORECASTS).toBool());
 }
@@ -92,7 +92,7 @@ NetworkPage::save(QSettings& _s) {
   _s.setValue("refresh_rate", RefreshRateBox->value());
   _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   _s.setValue("cache_enabled", CachingCheckBox->isChecked());
-  _s.setValue("version_check", VersionCheckingCheckBox->isChecked());
+  _s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
   _s.setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
 }
 
