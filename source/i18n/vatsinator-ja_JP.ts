@@ -86,7 +86,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="129"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
-        <translation>Vatsinator はシンプルな Vatsim モニタ - ログインしているパイロット、管制官、そしていくつかの便利な情報 (METAR や空港の詳細) を表示します。</translation>
+        <translation>Vatsinator はシンプルな Vatsim モニタです。ログインしているパイロット、管制官、そのほか便利な情報 (METAR や空港の詳細) を表示します。</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
@@ -151,7 +151,7 @@
     <message>
         <location filename="../db/airportdatabase.cpp" line="55"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>ファイル %1 を開くことができません！</translation>
+        <translation>ファイル %1 を開くことができません！プログラムを再インストールしてください。</translation>
     </message>
 </context>
 <context>
@@ -165,12 +165,12 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="78"/>
         <source>Inbound</source>
-        <translation>出発機</translation>
+        <translation>到着機</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="149"/>
         <source>Outbound</source>
-        <translation>到着機</translation>
+        <translation>出発機</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="217"/>
@@ -259,12 +259,12 @@
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="98"/>
         <source>Inbound</source>
-        <translation>出発機</translation>
+        <translation>到着機</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="100"/>
         <source>Outbound</source>
-        <translation>到着機</translation>
+        <translation>出発機</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="116"/>
@@ -666,7 +666,7 @@
     <message>
         <location filename="../ui/windows/flightlistwindow.ui" line="14"/>
         <source>Flight list</source>
-        <translation>フライトリスト:</translation>
+        <translation>フライトリスト</translation>
     </message>
 </context>
 <context>
@@ -674,7 +674,7 @@
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="124"/>
         <source>Prefiled</source>
-        <translation>ファイル済み:</translation>
+        <translation>ファイル済み</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="141"/>
@@ -954,7 +954,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="47"/>
         <source>Auto-updater keeps all the data up-to-date automatically.</source>
-        <translation>有効の場合、すべてのデータを自動的に最新状態に保つ。</translation>
+        <translation>有効の場合、すべてのデータを自動的に最新状態に保ちます。</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="75"/>
@@ -1139,12 +1139,12 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="274"/>
         <source>Flight list...</source>
-        <translation>フライトリスト:</translation>
+        <translation>フライトリスト...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>ATC list...</source>
-        <translation>ATC リスト:</translation>
+        <translation>ATC リスト...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
@@ -1209,7 +1209,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>When hovered</source>
-        <translation>マウスカーソルを当てた時に表示する</translation>
+        <translation>マウスカーソルを当てた時</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="141"/>
@@ -1249,7 +1249,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="168"/>
         <source>Show airport labels:</source>
-        <translation>空港の表示</translation>
+        <translation>空港のラベル表示:</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="185"/>
@@ -1267,7 +1267,7 @@
     <message>
         <location filename="../network/models/weatherforecastmodel.cpp" line="67"/>
         <source>Retrieving data...</source>
-        <translation type="unfinished"/>
+        <translation>データを取得中...</translation>
     </message>
 </context>
 <context>
@@ -1275,7 +1275,7 @@
     <message>
         <location filename="../db/worldmap.cpp" line="71"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>ファイル %1 を開くことができません！</translation>
+        <translation>ファイル %1 を開くことができません！プログラムを再インストールしてください。</translation>
     </message>
 </context>
 </TS>
