@@ -233,9 +233,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="VersionCheckingCheckBox">
+       <widget class="QCheckBox" name="DatabaseIntegrationCheckBox">
         <property name="text">
-         <string>Enable version checking</string>
+         <string>Enable automatic database updates</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -250,13 +250,16 @@
          </font>
         </property>
         <property name="text">
-         <string>If enabled, you will be notified if the new version of the application is available.</string>
+         <string>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
         </property>
         <property name="indent">
          <number>25</number>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

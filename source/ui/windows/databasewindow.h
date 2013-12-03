@@ -1,5 +1,5 @@
 /*
- * dataupdater.h
+ * databasewindow.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,43 +17,28 @@
  *
  */
 
-#ifndef DATAUPDATER_H
-#define DATAUPDATER_H
+#ifndef DATABASEWINDOW_H
+#define DATABASEWINDOW_H
 
-#include <QObject>
+#include "ui/windows/basewindow.h"
 
-class DataUpdateNotificationWidget;
+#include "network/resourcemanager.h"
+#include "ui/ui_databasewindow.h"
+#include "singleton.h"
 
-class DataUpdater : public QObject {
-  
-  /**
-   * The DataUpdater class is responsible for downloading the data package,
-   * unpacking it, checking the manifest file, copying modified files to
-   * local directory and restarting the application, simultaneously
-   * showing the appropraite notification.
-   */
+class DatabaseWindow :
+    public BaseWindow,
+    public Singleton<DatabaseWindow>,
+    private Ui::DatabaseWindow {
   
   Q_OBJECT
 
-signals:
-  
-  void downloading();
-  
 public:
-  
-  explicit DataUpdater(QObject* = 0);
-  
-  virtual ~DataUpdater();
-  
-private:
-  
-  DataUpdateNotificationWidget* __notification;
+  DatabaseWindow(QWidget* = nullptr);
   
 private slots:
+  void __updateDatabaseStatus(ResourceManager::VersionStatus);
   
-  void __startDownload();
-  void __downloadFinished(QString);
-
 };
 
-#endif // DATAUPDATER_H
+#endif // DATABASEWINDOW_H

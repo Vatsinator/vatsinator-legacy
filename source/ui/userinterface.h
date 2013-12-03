@@ -33,13 +33,12 @@ class AboutWindow;
 class AirportDetailsWindow;
 class AtcDetailsWindow;
 class AtcListWindow;
-class DataUpdateNotificationWidget;
+class DatabaseWindow;
 class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightListWindow;
 class MetarsWindow;
 class SettingsWindow;
-class QProgressBar;
 class VatsinatorWindow;
 
 class UserInterface :
@@ -75,6 +74,7 @@ private:
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;
   AirportDetailsWindow* __airportDetailsWindow;
+  DatabaseWindow*       __databaseWindow;
   FirDetailsWindow*     __firDetailsWindow;
   AtcDetailsWindow*     __atcDetailsWindow;
   AtcListWindow*        __atcListWindow;

@@ -78,6 +78,7 @@ set (ui_SRCS
     windows/atcdetailswindow.cpp
     windows/atclistwindow.cpp
     windows/basewindow.cpp
+    windows/databasewindow.cpp
     windows/firdetailswindow.cpp
     windows/flightdetailswindow.cpp
     windows/flightlistwindow.cpp
@@ -130,6 +131,7 @@ set (ui_MOC_SRCS
     windows/atcdetailswindow.h
     windows/atclistwindow.h
     windows/basewindow.h
+    windows/databasewindow.h
     windows/firdetailswindow.h
     windows/flightdetailswindow.h
     windows/flightlistwindow.h
@@ -155,6 +157,7 @@ set (ui_FORMS
     windows/airportdetailswindow.ui
     windows/atcdetailswindow.ui
     windows/atclistwindow.ui
+    windows/databasewindow.ui
     windows/firdetailswindow.ui
     windows/flightdetailswindow.ui
     windows/flightlistwindow.ui

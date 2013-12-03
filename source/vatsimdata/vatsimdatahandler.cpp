@@ -74,7 +74,7 @@ VatsimDataHandler::VatsimDataHandler() :
           this,                                     SLOT(__slotUiCreated()));
   connect(__downloader,                             SIGNAL(finished(QString)),
           this,                                     SLOT(__dataFetched(QString)));
-  connect(__downloader,                             SIGNAL(fetchError()),
+  connect(__downloader,                             SIGNAL(error()),
           this,                                     SLOT(__handleFetchError()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
@@ -179,7 +179,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
       continue;
     }
-    http://www.pcflyer.net/DataFeed/vatsim-servers.txt
+    
     switch (section) {
       case DataSections::General: {
         if (rx.indexIn(temp) >= 0) {

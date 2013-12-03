@@ -39,9 +39,17 @@ class ResourceManager :
   
 public:
   
+  /**
+   * Used for the version control.
+   * Vatsinator version indicator uses only the two values: Updated
+   * and Outdated, whilst the database sync indicator uses all of
+   * them.
+   */
   enum VersionStatus {
     Updated,
-    Outdated
+    Outdated,
+    Updating,
+    CannotUpdate
   };
   Q_ENUMS(ResourceManager::VersionStatus);
   
@@ -54,15 +62,39 @@ signals:
   void outdated();
   
   /**
-   * Emitted after version has been checked.
+   * Emitted after Vatsinator version has been checked.
    */
-  void versionChecked(ResourceManager::VersionStatus);
+  void vatsinatorVersionChecked(ResourceManager::VersionStatus);
+  
+  /**
+   * Emitted after database status has changed (i.e. Updated->Outdated->Updating->Updated).
+   */
+  void databaseStatusChanged(ResourceManager::VersionStatus);
   
 public:
   
   explicit ResourceManager(QObject* = 0);
   
   virtual ~ResourceManager();
+  
+  inline const QDate &
+  lastUpdateDate() const {
+    return __lastUpdateDate;
+  }
+  
+public slots:
+  void requestDatabaseSync();
+
+private:
+  
+  /**
+   * Returns true if version1 is equal or higher that version2.
+   * 
+   * @param version1
+   * @param version2
+   * @return True if version1 >= version2.
+   */
+  bool __versionActual(const QString&, const QString&);
 
 private slots:
   
@@ -77,17 +109,24 @@ private slots:
    */
   void __parseVersion(QString);
   
+  /**
+   * Database sync will be checked only after the Vatsinator version
+   * is checked and if the current version is up-to-date.
+   */
+  void __checkDatabase(ResourceManager::VersionStatus);
+  
+    /**
+   * Starts the data updater.
+   */
+  void __syncDatabase();
+  
+  void __databaseUpdated();
+  void __databaseFailed();
+  
 private:
   
-  /**
-   * Returns true if version1 is equal or higher that version2.
-   * 
-   * @param version1
-   * @param version2
-   * @return True if version1 >= version2.
-   */
-  bool __versionActual(const QString&, const QString&);
-  
+  /* The date of the last database update */
+  QDate __lastUpdateDate;
 
 };
 

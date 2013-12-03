@@ -19,6 +19,8 @@
 
 #include <QtGui>
 
+#include "network/dataupdater.h"
+#include "network/filedownloader.h"
 #include "network/plaintextdownloader.h"
 
 #include "storage/filemanager.h"
@@ -31,28 +33,60 @@
 #include "defines.h"
 
 // start running after two seconds
-static const int START_DELAY = 2 * 1000;
+static const int StartDelay = 2 * 1000;
+
+// manifest file name, both on local storage and on the server
+static const QString ManifestFileName = "Manifest";
+
+// how many days to have the database updated
+static const int DaysToUpdate = 7;
 
 ResourceManager::ResourceManager(QObject* _parent) :
     QObject(_parent) {
   
   qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
   
-  QTimer::singleShot(START_DELAY, this, SLOT(__fetchVersion()));
+  connect(this, SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
+                SLOT(__checkDatabase(ResourceManager::VersionStatus)));
+  
+  QTimer::singleShot(StartDelay, this, SLOT(__fetchVersion()));
 }
 
 ResourceManager::~ResourceManager() {}
 
 void
-ResourceManager::__fetchVersion() {
-  if (SM::get("network.version_check").toBool()) {
-    PlainTextDownloader* fetcher = new PlainTextDownloader();
+ResourceManager::requestDatabaseSync() {
+  __syncDatabase();
+}
+
+bool
+ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
+  auto ver1 = _version1.split(QRegExp("\\D+"));
+  auto ver2 = _version2.split(QRegExp("\\D+"));
+  
+  for (int i = 0; i < ver1.size() && i < ver2.size(); ++i) {
+    if (ver1[i].toInt() < ver2[i].toInt())
+      return false;
     
-    connect(fetcher,      SIGNAL(finished(QString)),
-            this,         SLOT(__parseVersion(QString)));
-    
-    fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
+    if (ver1[i].toInt() > ver2[i].toInt())
+      return true;
   }
+  
+  return true;
+}
+
+void
+ResourceManager::__fetchVersion() {
+  PlainTextDownloader* fetcher = new PlainTextDownloader();
+  
+  connect(fetcher,    SIGNAL(finished(QString)),
+          this,       SLOT(__parseVersion(QString)));
+  connect(fetcher,    SIGNAL(finished(QString)),
+          fetcher,    SLOT(deleteLater()));
+  connect(fetcher,    SIGNAL(error()),
+          fetcher,    SLOT(deleteLater()));
+  
+  fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
 }
 
 void
@@ -67,23 +101,61 @@ ResourceManager::__parseVersion(QString _versionString) {
   if (!actual)
     emit outdated();
   
-  emit versionChecked(actual ? Updated : Outdated);
-  
-  sender()->deleteLater();
-}
+  emit vatsinatorVersionChecked(actual ? Updated : Outdated);
+}    
 
-bool
-ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
-  auto ver1 = _version1.split(QRegExp("\\D+"));
-  auto ver2 = _version2.split(QRegExp("\\D+"));
-
-  for (int i = 0; i < ver1.size() && i < ver2.size(); ++i) {
-    if (ver1[i].toInt() < ver2[i].toInt())
-      return false;
-    
-    if (ver1[i].toInt() > ver2[i].toInt())
-      return true;
+void
+ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
+  if (_status == ResourceManager::Outdated) {
+    emit databaseStatusChanged(CannotUpdate);
   }
   
-  return true;
+  QFile manifest(FileManager::path(ManifestFileName));
+  
+  VatsinatorApplication::log("ResourceManager: Manifest file: %s", qPrintable(manifest.fileName()));
+  
+  if (manifest.open(QIODevice::ReadOnly)) {
+    QDate today = QDate::currentDate();
+    QDate when = QDate::fromString(manifest.readLine().simplified(), "yyyyMMdd");
+    if (when.daysTo(today) < DaysToUpdate) {
+      emit databaseStatusChanged(Updated);
+    } else {
+      emit databaseStatusChanged(Outdated);
+//       __syncDatabase();
+      if (SM::get("database_integration").toBool())
+        QTimer::singleShot(3000, this, SLOT(__syncDatabase()));
+    }
+    
+    manifest.close();
+    
+    __lastUpdateDate = when;
+  }
+}
+
+void
+ResourceManager::__syncDatabase() {
+  emit databaseStatusChanged(Updating);
+  
+  DataUpdater* du = new DataUpdater();
+  connect(du,   SIGNAL(updated()),
+          this, SLOT(__databaseUpdated()));
+  connect(du,   SIGNAL(updated()),
+          du,   SLOT(deleteLater()));
+  connect(du,   SIGNAL(failed()),
+          this, SLOT(__databaseFailed()));
+  connect(du,   SIGNAL(failed()),
+          du,   SLOT(deleteLater()));
+  
+  du->update();
+}
+
+void
+ResourceManager::__databaseUpdated() {
+  __checkDatabase(Updated);
+}
+
+void
+ResourceManager::__databaseFailed() {
+  VatsinatorApplication::log("ResourceManager: failed updating the database!");
+  emit databaseStatusChanged(Outdated);
 }

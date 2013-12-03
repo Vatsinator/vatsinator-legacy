@@ -38,7 +38,7 @@ AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
   connect(ResourceManager::getSingletonPtr(),
-                SIGNAL(versionChecked(ResourceManager::VersionStatus)),
+                SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
           this,
                 SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
   
@@ -46,18 +46,6 @@ AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");
   VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
   ChangelogField->setHtml("<pre>" % trUtf8(CHANGELOG_TEXT) % "</pre>");
-  
-  AirportsInDatabaseLabel->setText(
-    QString::number(AirportDatabase::getSingleton().airports().size()));
-  FirsInDatabaseLabel->setText(
-    QString::number(FirDatabase::getSingleton().firs().size()));
-  
-  QDateTime sync = FileManager::timestamp();
-  if (sync.isNull()) {
-    SyncTimeLabel->setText(tr("never"));
-  } else {
-    SyncTimeLabel->setText(sync.toString("dd/MM/yyyy hh:mm"));
-  }
   
   QFont titleFont = QApplication::font();
   titleFont.setPointSize(titleFont.pointSize() + 2);

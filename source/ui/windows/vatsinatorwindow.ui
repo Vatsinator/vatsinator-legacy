@@ -148,16 +148,16 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="MenuVatsinator">
     <property name="geometry">
      <rect>
-      <x>318</x>
-      <y>269</y>
-      <width>163</width>
-      <height>210</height>
+      <x>217</x>
+      <y>159</y>
+      <width>169</width>
+      <height>234</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -175,6 +175,7 @@
     <addaction name="separator"/>
     <addaction name="ActionFlightList"/>
     <addaction name="ActionATCList"/>
+    <addaction name="ActionDatabase"/>
     <addaction name="separator"/>
     <addaction name="ActionExit"/>
    </widget>
@@ -299,6 +300,15 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="ActionDatabase">
+   <property name="icon">
+    <iconset resource="../resources/imgs.qrc">
+     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Database...</string>
    </property>
   </action>
  </widget>
