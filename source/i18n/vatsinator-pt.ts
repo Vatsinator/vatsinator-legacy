@@ -89,27 +89,12 @@
         <translation>Vatsinator é um monitor da VATSIM - mostra pilotos, controladores e disponibiliza informação útil tal como METARs e detalhes de aeroportos.</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
-        <source>Database sync time:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
-        <source>Airports in the database:</source>
-        <translation>Aeroportos na base de dados:</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="160"/>
-        <source>FIRs in the database:</source>
-        <translation>FIRs na base de dados:</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="224"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="280"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="207"/>
         <source>Changelog</source>
         <translation type="unfinished"/>
     </message>
@@ -119,28 +104,23 @@
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="243"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Authors</source>
         <translation>Autores</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>License</source>
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
-        <source>never</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="61"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="65"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"/>
@@ -436,19 +416,95 @@
     </message>
 </context>
 <context>
+    <name>DatabaseWindow</name>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="14"/>
+        <source>Vatsinator Database</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="20"/>
+        <source>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="46"/>
+        <source>Database info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="56"/>
+        <source>Sync database now...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="79"/>
+        <source>Last update time:</source>
+        <extracomment>Database last update time</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="106"/>
+        <source>Current status:</source>
+        <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/windows/databasewindow.cpp" line="33"/>
+        <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
+        <comment>The first part of the summary</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/windows/databasewindow.cpp" line="37"/>
+        <source>and %n FIR(s).</source>
+        <comment>The second part of the summary</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="59"/>
+        <source>up-to-date</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="66"/>
+        <source>outdated</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="73"/>
+        <source>updating...</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="80"/>
+        <source>cannot update</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="81"/>
+        <source>Your Vatsinator version is outdated.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileDownloader</name>
     <message>
-        <location filename="../network/filedownloader.cpp" line="49"/>
+        <location filename="../network/filedownloader.cpp" line="47"/>
         <source>Temporary directory (%1) is not readable!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../network/filedownloader.cpp" line="81"/>
+        <location filename="../network/filedownloader.cpp" line="78"/>
         <source>Could not open file (%1) for writing!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../network/filedownloader.cpp" line="118"/>
+        <location filename="../network/filedownloader.cpp" line="117"/>
         <source>Error downloading file: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -968,21 +1024,21 @@
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="238"/>
-        <source>Enable version checking</source>
+        <source>Enable automatic database updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="253"/>
-        <source>If enabled, you will be notified if the new version of the application is available.</source>
+        <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="269"/>
+        <location filename="../ui/pages/networkpage.ui" line="272"/>
         <source>Weather forecasts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="284"/>
+        <location filename="../ui/pages/networkpage.ui" line="287"/>
         <source>Uncheck to disable weather forecasts</source>
         <translation type="unfinished"/>
     </message>
@@ -1053,19 +1109,6 @@
     </message>
 </context>
 <context>
-    <name>Unzipper</name>
-    <message>
-        <location filename="../storage/unzipper.cpp" line="94"/>
-        <source>Could not open zip file: %1 (check your directory permissions)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../storage/unzipper.cpp" line="114"/>
-        <source>Could not access zip archive (%1) properly. Skipping...</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>VatsimDataHandler</name>
     <message>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="369"/>
@@ -1102,87 +1145,92 @@
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="189"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
         <source>&amp;Help</source>
         <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="195"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
         <source>&amp;Settings</source>
         <translation>&amp;Definições</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="209"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="224"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
         <source>About</source>
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="236"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
         <source>METARs...</source>
         <translation>METARs...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="251"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
         <source>Refresh</source>
         <translation>Refrescar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="263"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
         <source>Settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="274"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
         <source>Flight list...</source>
         <translation>Lista de vôo...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
         <source>ATC list...</source>
         <translation>Lista de ATC...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
         <source>Enable auto-updates</source>
         <translation>Activar actualização automática</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="298"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
         <source>Show home location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="301"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
         <source>Ctrl+H</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="82"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
+        <source>Database...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="85"/>
         <source>&amp;Menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="112"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="115"/>
         <source>Last update: never</source>
         <translation>Última actualização: nunca</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="117"/>
         <source>Last update: %1 UTC</source>
         <translation>Última actualização: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="126"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="129"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Clientes: %1 (%2 pilotos, %3 ATC, %4 observadores)</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="215"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="218"/>
         <source>Invalid data!</source>
         <translation type="unfinished"/>
     </message>
