@@ -26,7 +26,11 @@
 #include "defines.h"
 
 static const QString LocalDataLocation =
-    QDesktopServices::storageLocation(QDesktopServices::DataLocation) % "Vatsinator/";
+    QDir::cleanPath(
+        QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+      % QDir::separator()
+      % "Vatsinator"
+    ) % QDir::separator();
 
 
 FileManager::FileManager() {

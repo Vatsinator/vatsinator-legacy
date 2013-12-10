@@ -24,7 +24,11 @@
 #include "defines.h"
 
 static const QString CacheDirectory =
-    QDesktopServices::storageLocation(QDesktopServices::CacheLocation) % "Vatsinator";
+    QDir::cleanPath(
+        QDesktopServices::storageLocation(QDesktopServices::CacheLocation)
+      % QDir::separator()
+      % "Vatsinator"
+    );
 
 
 CacheFile::CacheFile(const QString& _fileName) :
