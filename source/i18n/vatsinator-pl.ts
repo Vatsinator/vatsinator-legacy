@@ -420,75 +420,75 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="14"/>
         <source>Vatsinator Database</source>
-        <translation type="unfinished"/>
+        <translation>Informacje o bazie danych</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="20"/>
         <source>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Dowiedz się więcej o projekcie VatsinatorDatabase&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="46"/>
         <source>Database info</source>
-        <translation type="unfinished"/>
+        <translation>Baza danych - informacje</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="56"/>
         <source>Sync database now...</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuj bazę danych...</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="79"/>
         <source>Last update time:</source>
         <extracomment>Database last update time</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ostatnia synchronizacja:</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
         <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
-        <translation type="unfinished"/>
+        <translation>Etap lotu:</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="33"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Twoja lokalna kopia Bazy Danych Vatsinator zawiera %n lotnisko</numerusform><numerusform>Twoja lokalna kopia Bazy Danych Vatsinator zawiera %n lotnisk</numerusform><numerusform>Twoja lokalna kopia Bazy Danych Vatsinator zawiera %n lotnisk</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="37"/>
         <source>and %n FIR(s).</source>
         <comment>The second part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>oraz %n FIR.</numerusform><numerusform>oraz %n FIRów.</numerusform><numerusform>oraz %n FIRów.</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="59"/>
         <source>up-to-date</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>aktualna</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="66"/>
         <source>outdated</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>nieaktualna</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="73"/>
         <source>updating...</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>aktualizacja...</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="80"/>
         <source>cannot update</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>nie można aktualizować</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="81"/>
         <source>Your Vatsinator version is outdated.</source>
-        <translation type="unfinished"/>
+        <translation>Twoja wersja programu jest nieaktualna.</translation>
     </message>
 </context>
 <context>
@@ -1025,12 +1025,12 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="238"/>
         <source>Enable automatic database updates</source>
-        <translation type="unfinished"/>
+        <translation>Zezwalaj na automatyczne aktualizacje bazy danych</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="253"/>
         <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
-        <translation type="unfinished"/>
+        <translation>Odblokowuje integrację z &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Bazą Danych Vatsinator&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="272"/>
@@ -1207,7 +1207,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
         <source>Database...</source>
-        <translation type="unfinished"/>
+        <translation>Baza danych...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="85"/>

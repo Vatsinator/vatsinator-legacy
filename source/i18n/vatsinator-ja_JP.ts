@@ -420,75 +420,75 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="14"/>
         <source>Vatsinator Database</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator データベース</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="20"/>
         <source>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator データベースについて&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="46"/>
         <source>Database info</source>
-        <translation type="unfinished"/>
+        <translation>データベース情報</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="56"/>
         <source>Sync database now...</source>
-        <translation type="unfinished"/>
+        <translation>データベース同期中...</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="79"/>
         <source>Last update time:</source>
         <extracomment>Database last update time</extracomment>
-        <translation type="unfinished"/>
+        <translation>最終更新時刻:</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
         <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
-        <translation type="unfinished"/>
+        <translation>現在の状態:</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="33"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>Vatsinator データベースは、%n 空港および</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="37"/>
         <source>and %n FIR(s).</source>
         <comment>The second part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n FIR の情報を保持しています。</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="59"/>
         <source>up-to-date</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>最新</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="66"/>
         <source>outdated</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>有効期限切れ</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="73"/>
         <source>updating...</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>更新中...</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="80"/>
         <source>cannot update</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>更新できません</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="81"/>
         <source>Your Vatsinator version is outdated.</source>
-        <translation type="unfinished"/>
+        <translation>ご使用中の Vatsinator は期限切れです。</translation>
     </message>
 </context>
 <context>
@@ -1025,12 +1025,12 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="238"/>
         <source>Enable automatic database updates</source>
-        <translation type="unfinished"/>
+        <translation>データベースの自動更新を有効にする</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="253"/>
         <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
-        <translation type="unfinished"/>
+        <translation>有効の場合、&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator データベース&lt;/a&gt; と同期します。</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="272"/>
@@ -1207,7 +1207,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
         <source>Database...</source>
-        <translation type="unfinished"/>
+        <translation>データベース...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="85"/>

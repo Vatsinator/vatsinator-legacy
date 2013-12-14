@@ -447,7 +447,7 @@
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
         <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
-        <translation type="unfinished"/>
+        <translation>Estado actual:</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="33"/>
