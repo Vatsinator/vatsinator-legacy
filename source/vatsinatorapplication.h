@@ -72,6 +72,10 @@ public:
   static void emitGLInitialized();
   
   static const QFont& boldFont();
+  
+  static const QFont& h1Font();
+  
+  static const QFont& h2Font();
 
 #ifdef NO_DEBUG
 

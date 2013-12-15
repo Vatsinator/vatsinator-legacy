@@ -160,6 +160,23 @@ VatsinatorApplication::boldFont() {
   return font;
 }
 
+const QFont &
+VatsinatorApplication::h1Font() {
+  static QFont font;
+  static int size = font.pointSize() + 4;
+  font.setPointSize(size);
+  font.setBold(true);
+  return font;
+}
+
+const QFont &
+VatsinatorApplication::h2Font() {
+  static QFont font;
+  static int size = font.pointSize() + 2;
+  font.setPointSize(size);
+  return font;
+}
+
 #ifndef NO_DEBUG
 
 void

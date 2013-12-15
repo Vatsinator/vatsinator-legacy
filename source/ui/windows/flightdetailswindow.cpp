@@ -39,6 +39,9 @@
 FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent) {
   setupUi(this);
+  CallsignLabel->setFont(VatsinatorApplication::h1Font());
+  FromLabel->setFont(VatsinatorApplication::h2Font());
+  ToLabel->setFont(VatsinatorApplication::h2Font());
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
@@ -63,7 +66,8 @@ FlightDetailsWindow::show(const Client* _client) {
   setWindowTitle(tr("%1 - flight details").arg(__current->callsign()));
 
   CallsignLabel->setText(__current->callsign());
-  RouteLabel->setText(__current->route().origin % " -> " % __current->route().destination);
+  FromLabel->setText(__current->route().origin);
+  ToLabel->setText(__current->route().destination);
 
   PilotLabel->setText(__current->realName() + " (" + QString::number(__current->pid()) + ")");
   AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__current->altitude())));
@@ -122,6 +126,7 @@ FlightDetailsWindow::__updateToFromButtons() {
     QString text = __current->route().origin;
 
     if (ap->data()) {
+      FromCityLabel->setText(QString::fromUtf8(ap->data()->city));
       text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->data()->name));
 
@@ -146,6 +151,7 @@ FlightDetailsWindow::__updateToFromButtons() {
     QString text = __current->route().destination;
 
     if (ap->data()) {
+      ToCityLabel->setText(QString::fromUtf8(ap->data()->city));
       text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->data()->name));
 

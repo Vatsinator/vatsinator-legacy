@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>470</height>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,13 +23,11 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QLabel" name="CallsignLabel">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
        <property name="text">
         <string/>
        </property>
@@ -39,19 +37,107 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="RouteLabel">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string notr="true">-&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="AirlineLogoLabel">
+         <property name="maximumSize">
+          <size>
+           <width>85</width>
+           <height>18</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="AirlineLabel">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>85</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="FromLabel">
+         <property name="text">
+          <string notr="true">FROM</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="indent">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="ToLabel">
+         <property name="text">
+          <string notr="true">TO</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="indent">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="FromCityLabel">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="indent">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="ToCityLabel">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="indent">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -538,7 +624,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources/imgs.qrc"/>
   <include location="../resources/imgs.qrc"/>
  </resources>
  <connections>
