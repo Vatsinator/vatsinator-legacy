@@ -456,8 +456,8 @@
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>Your local clone of Vatsinator Database contains %n airport</numerusform>
+            <numerusform>Your local clone of Vatsinator Database contains %n airports</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -465,8 +465,8 @@
         <source>and %n FIR(s).</source>
         <comment>The second part of the summary</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>and %n FIR.</numerusform>
+            <numerusform>and %n FIRs.</numerusform>
         </translation>
     </message>
     <message>
@@ -1054,8 +1054,8 @@
         <location filename="../ui/pages/networkpage.cpp" line="101"/>
         <source>minute(s)</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>minute</numerusform>
+            <numerusform>minutes</numerusform>
         </translation>
     </message>
 </context>
