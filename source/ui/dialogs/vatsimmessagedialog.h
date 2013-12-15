@@ -32,6 +32,12 @@ class VatsimMessageDialog :
 
 public:
     explicit VatsimMessageDialog(const QString&, QWidget* = 0);
+    
+protected:
+  void hideEvent(QHideEvent*) override;
+  
+private:
+  QString __message;
   
   
 };

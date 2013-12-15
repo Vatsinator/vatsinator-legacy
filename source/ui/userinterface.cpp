@@ -114,6 +114,10 @@ UserInterface::showAppRestartDialog() {
 
 void
 UserInterface::showVatsimMessage(const QString& _msg) {
+  QSettings s;
+  if (s.value("VatsimMessages/" % _msg, false).toBool())
+    return;
+  
   VatsimMessageDialog* dialog = new VatsimMessageDialog(_msg);
   
   connect(dialog,       SIGNAL(finished(int)),

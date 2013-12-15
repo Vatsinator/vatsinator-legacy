@@ -23,8 +23,21 @@
 #include "defines.h"
 
 VatsimMessageDialog::VatsimMessageDialog(const QString& _message, QWidget* _parent) :
-    QDialog(_parent) {
+    QDialog(_parent),
+    __message(_message) {
   setupUi(this);
   
   VatsimMessageLabel->setText(_message);
+}
+
+void
+VatsimMessageDialog::hideEvent(QHideEvent*) {
+  if (DoNotShowCheckBox->isChecked()) {
+    QSettings s;
+    s.beginGroup("VatsimMessages");
+    
+    s.setValue(__message, true);
+    
+    s.endGroup();
+  }
 }
