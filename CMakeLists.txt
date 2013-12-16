@@ -98,6 +98,7 @@ vatsinator_install (
     "${vatsinator_RESOURCES_PIXMAPS}" "/pixmaps")
 
 set (vatsinator_RESOURCES_DATA
+    resources/data/airlines
     resources/data/alias
     resources/data/country
     resources/data/fir

@@ -1,6 +1,7 @@
 vatsinator_start_subdirectory (db)
 
 set (db_SRCS
+    airlinedatabase.cpp
     airportdatabase.cpp
     firdatabase.cpp
     worldmap.cpp

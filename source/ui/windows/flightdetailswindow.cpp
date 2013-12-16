@@ -18,6 +18,7 @@
 
 #include <QtGui>
 
+#include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 
 #include "modules/flighttracker.h"
@@ -66,6 +67,7 @@ FlightDetailsWindow::show(const Client* _client) {
   setWindowTitle(tr("%1 - flight details").arg(__current->callsign()));
 
   CallsignLabel->setText(__current->callsign());
+  AirlineLabel->setText(AirlineDatabase::getSingleton().find(__current->callsign().left(3)));
   FromLabel->setText(__current->route().origin);
   ToLabel->setText(__current->route().destination);
 

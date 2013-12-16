@@ -27,6 +27,7 @@
 
 #include "singleton.h"
 
+class AirlineDatabase;
 class AirportDatabase;
 class CacheFile;
 class FileManager;
@@ -118,6 +119,7 @@ private:
 private:
   
   FileManager*         __fileManager;
+  AirlineDatabase*     __airlineDatabase;
   AirportDatabase*     __airportsData;
   FirDatabase*         __firsData;
   WorldMap*            __worldMap;

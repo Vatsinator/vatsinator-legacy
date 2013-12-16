@@ -20,6 +20,7 @@
 
 #include "storage/cachefile.h"
 
+#include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
@@ -51,6 +52,7 @@
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
     __fileManager(new FileManager()),
+    __airlineDatabase(new AirlineDatabase()),
     __airportsData(new AirportDatabase()),
     __firsData(new FirDatabase()),
     __worldMap(new WorldMap()),
@@ -120,6 +122,7 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __firsData;
   delete __worldMap;
   delete __userInterface;
+  delete __airlineDatabase;
   delete __fileManager;
   
   rmThread->wait();
