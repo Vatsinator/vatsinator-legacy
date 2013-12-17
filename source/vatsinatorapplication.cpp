@@ -177,6 +177,7 @@ VatsinatorApplication::h2Font() {
   static QFont font;
   static int size = font.pointSize() + 2;
   font.setPointSize(size);
+  font.setBold(true);
   return font;
 }
 

@@ -28,11 +28,11 @@
      </property>
      <item>
       <widget class="QLabel" name="CallsignLabel">
-       <property name="text">
-        <string/>
-       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::NoTextInteraction</set>
        </property>
       </widget>
      </item>
