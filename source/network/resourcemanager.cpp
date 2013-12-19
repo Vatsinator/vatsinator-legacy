@@ -122,7 +122,7 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     } else {
       emit databaseStatusChanged(Outdated);
 //       __syncDatabase();
-      if (SM::get("database_integration").toBool())
+      if (SM::get("network.database_integration").toBool())
         QTimer::singleShot(3000, this, SLOT(__syncDatabase()));
     }
     
