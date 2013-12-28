@@ -131,7 +131,7 @@
     <message>
         <location filename="../db/airlinedatabase.cpp" line="45"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać otwarty! Proszę przeinstalować aplikację.</translation>
     </message>
 </context>
 <context>
