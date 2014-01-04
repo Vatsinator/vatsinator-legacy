@@ -101,7 +101,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
@@ -111,7 +111,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>License</source>
-        <translation type="unfinished"/>
+        <translation>Lisans</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="61"/>
@@ -270,7 +270,7 @@
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="14"/>
         <source>Restart application?</source>
-        <translation type="unfinished"/>
+        <translation>Uygulama tekrar başlatılsın mı?</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="24"/>
@@ -449,7 +449,7 @@
         <location filename="../ui/windows/databasewindow.ui" line="79"/>
         <source>Last update time:</source>
         <extracomment>Database last update time</extracomment>
-        <translation type="unfinished"/>
+        <translation>Son güncelleme zamanı:</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
@@ -485,13 +485,13 @@
         <location filename="../ui/windows/databasewindow.cpp" line="73"/>
         <source>updating...</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>güncelleniyor...</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="80"/>
         <source>cannot update</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>güncellenemedi</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="81"/>
@@ -870,7 +870,7 @@
         <location filename="../ui/widgets/mapwidget.cpp" line="1325"/>
         <location filename="../ui/widgets/mapwidget.cpp" line="1329"/>
         <source>(unknown)</source>
-        <translation type="unfinished"/>
+        <translation>(bilinmiyor)</translation>
     </message>
 </context>
 <context>
@@ -988,12 +988,12 @@
         <location filename="../ui/pages/networkpage.ui" line="20"/>
         <location filename="../ui/pages/networkpage.cpp" line="46"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Ağ</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="90"/>
         <source>Refresh data every</source>
-        <translation type="unfinished"/>
+        <translation>Günlük veri güncelleme</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="210"/>
@@ -1033,7 +1033,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="238"/>
         <source>Enable automatic database updates</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik veritabanı güncellemesi aktif</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="253"/>
@@ -1053,7 +1053,7 @@
     <message numerus="yes">
         <location filename="../ui/pages/networkpage.cpp" line="101"/>
         <source>minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>dakika</numerusform><numerusform>dakika</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1071,7 +1071,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="132"/>
         <source>Download now!</source>
-        <translation type="unfinished"/>
+        <translation>Şimdi indir!</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
@@ -1137,7 +1137,7 @@
     <message>
         <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="59"/>
         <source>Do not show this message again</source>
-        <translation type="unfinished"/>
+        <translation>Bu mesaajı tekrar gösterme</translation>
     </message>
 </context>
 <context>
@@ -1165,12 +1165,12 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
         <source>About</source>
-        <translation type="unfinished"/>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
@@ -1180,17 +1180,17 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
         <source>Refresh</source>
-        <translation type="unfinished"/>
+        <translation>Yenile</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ayarlar</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
         <source>Flight list...</source>
-        <translation type="unfinished"/>
+        <translation>Uçuş listesi...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
@@ -1215,7 +1215,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
         <source>Database...</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanı...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="85"/>
@@ -1230,7 +1230,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="117"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>Son güncelleme: %1 UTC</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="129"/>
@@ -1240,7 +1240,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="218"/>
         <source>Invalid data!</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz veri!</translation>
     </message>
 </context>
 <context>
@@ -1305,7 +1305,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="168"/>
         <source>Show airport labels:</source>
-        <translation type="unfinished"/>
+        <translation>Havaalanı yazılarını göster:</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="185"/>
