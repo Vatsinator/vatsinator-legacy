@@ -178,6 +178,8 @@ private:
    */
   void __parseRoute() const;
 
+  bool __isCrossingIDL(QVector<GLfloat>&) const;
+
   mutable QVector<GLfloat> __lineFrom;
   mutable QVector<GLfloat> __lineTo;
   
