@@ -260,14 +260,14 @@ Pilot::__generateLines() const {
   if (ap && ap->data()) {
     double myLon = ap->data()->longitude;
     double myLat = ap->data()->latitude;
-
+/*
     if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
         VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
       myLon += 360;
     else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
              VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
       myLon -= 360;
-
+*/
     __lineFrom << myLon
                << myLat;
   }
@@ -288,19 +288,72 @@ Pilot::__generateLines() const {
   if (ap && ap->data()) {
     double myLon = ap->data()->longitude;
     double myLat = ap->data()->latitude;
-
+/*
     if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
         VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
       myLon += 360;
     else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
              VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
       myLon -= 360;
-
+*/
     __lineTo << myLon
              << myLat;
   }
-  
+
+  if(__isCrossingIDL(__lineTo) || __isCrossingIDL(__lineFrom)){ 
+    for(int i=0 ; i<__lineFrom.size() ; i++){
+      if(__lineFrom[i]<0) __lineFrom[i]+=360; i++;
+    }
+    for(int i=0 ; i<__lineTo.size() ; i++){
+      if(__lineTo[i]<0) __lineTo[i]+=360; i++;
+    }
+  }
+ 
   __linesGenerated = true;
+}
+
+bool Pilot::__isCrossingIDL(QVector<GLfloat>& line) const
+{
+  bool isCrossingIDL = false;
+
+  GLfloat plon = line[0];
+  GLfloat plat = line[1];
+  GLfloat clon = plon;
+  GLfloat clat = plat;
+
+  for(int i=2 ; i<line.size() ; i++){
+		clon = line[i]; i++;
+		clat = line[i];
+
+		double pSign = plon / fabs(plon);
+		double cSign = clon / fabs(clon);
+		double dst1 = 0;
+		double dst2 = 0;
+
+		// crossing the IDL or the Greenwich Meridian
+		if(pSign!=cSign){
+
+             		dst1 = VatsimDataHandler::distance(plon, plat, clon, clat);
+			if(pSign<0)
+    				dst2 = VatsimDataHandler::distance(plon + 360, plat, clon, clat);
+			else	
+             			dst2 = VatsimDataHandler::distance(plon, plat, clon + 360, clat);
+
+			if(dst1>dst2) isCrossingIDL = true;
+
+			/* debug print
+			printf("%s: %f %f -> %f %f, Dst1: %f Dst2: %f, IDL: %s\n",
+				__callsign.toLatin1().data(),
+				plon, plat, clon, clat, dst1, dst2,
+				isCrossingIDL ? "crossing IDL" : "crossing meridian");
+                        */
+		}
+		if(isCrossingIDL) return true;
+
+		plon = clon;
+		plat = clat;
+  }
+  return false;
 }
 
 GLuint
@@ -454,4 +507,3 @@ Pilot::__parseRoute() const {
   
   pos = 0;
 }
-
