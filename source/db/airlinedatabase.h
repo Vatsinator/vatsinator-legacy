@@ -40,7 +40,11 @@ private:
   
   QMap<QString, QString> __airlines;
   
+#ifdef GCC_VERSION_47
   const QString __nope = "";
+#else
+  const QString __nope;
+#endif
 
 };
 

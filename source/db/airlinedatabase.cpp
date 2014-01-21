@@ -27,7 +27,11 @@
 #include "airlinedatabase.h"
 #include "defines.h"
 
-AirlineDatabase::AirlineDatabase() {
+AirlineDatabase::AirlineDatabase()
+#ifndef GCC_VERSION_47
+  : __nope("")
+#endif
+{
   QtConcurrent::run(this, &AirlineDatabase::__init);
 }
 
