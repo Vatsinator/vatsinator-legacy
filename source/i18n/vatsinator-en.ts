@@ -131,7 +131,7 @@
 <context>
     <name>AirlineDatabase</name>
     <message>
-        <location filename="../db/airlinedatabase.cpp" line="45"/>
+        <location filename="../db/airlinedatabase.cpp" line="49"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation type="unfinished">File %1 could not be opened! Please reinstall the application.</translation>
     </message>
