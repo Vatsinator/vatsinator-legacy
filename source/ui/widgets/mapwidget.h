@@ -27,6 +27,7 @@
 class Airport;
 class Client;
 class Fir;
+class FrameBufferObject;
 class Pilot;
 class WorldPolygon;
 
@@ -94,12 +95,19 @@ protected:
 private:
   void __drawWorld();
   
+  /**
+   * Updates framebuffer object. Must be called each window resize.
+   * @param width The new width.
+   * @param height The new height.
+   */
+  void __updateFbo(int, int);
   void __updateZoom(int);
   
 private slots:
   void __reloadSettings();
   
 private:
+  FrameBufferObject* __fbo;
   
   /* Global coordinates of the center point of the map */
   QPointF __center;

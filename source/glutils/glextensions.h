@@ -37,6 +37,21 @@ extern void (* glBufferSubData) (GLenum, GLintptr, GLsizeiptr, const GLvoid*);
 extern void (* glDeleteBuffers) (GLsizei, const GLuint*);
 extern void (* glGenBuffers)    (GLsizei, GLuint*);
 
+extern void (* glGenFramebuffers)                       (GLsizei, GLuint*);
+extern void (* glDeleteFramebuffers)                    (GLsizei, GLuint*);
+extern void (* glBindFramebuffer)                       (GLenum, GLuint);
+extern GLenum (* glCheckFramebufferStatus)              (GLenum);
+extern void (* glGetFramebufferAttachmentParameteriv)   (GLenum, GLenum, GLenum, GLint*);
+extern void (* glGenerateMipmap)                        (GLenum);
+extern void (* glFramebufferTexture2D)                  (GLenum, GLenum, GLenum, GLuint, GLint);
+extern void (* glFramebufferRenderbuffer)               (GLenum, GLenum, GLenum, GLuint);
+extern void (* glGenRenderbuffers)                      (GLsizei, GLuint*);
+extern void (* glDeleteRenderbuffers)                   (GLsizei, const GLuint*);
+extern void (* glBindRenderbuffer)                      (GLenum, GLuint);
+extern void (* glRenderbufferStorage)                   (GLenum, GLenum, GLsizei, GLsizei);
+extern void (* glGetRenderbufferParameteriv)            (GLenum, GLenum, GLint*);
+extern GLboolean (* glIsRenderbuffer)                   (GLuint);
+
 void initGLExtensionsPointers();
 #endif // Q_WS_MAC
 

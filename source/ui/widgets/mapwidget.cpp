@@ -20,6 +20,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
+#include "glutils/framebufferobject.h"
 #include "glutils/glextensions.h"
 
 #include "storage/settingsmanager.h"
@@ -35,6 +36,7 @@
 
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
+    __fbo(nullptr),
     __center(0.0, 0.0),
     __actualZoom(0),
     __zoom(1.0f) {
@@ -64,8 +66,8 @@ MapWidget::mapToLonLat(const QPoint& _point) {
 
 QPointF
 MapWidget::scaleToLonLat(const QPoint& _point) {
-  static qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPointF(
       static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(__zoom),
@@ -95,12 +97,14 @@ MapWidget::initializeGL() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  /* For a really strony debug */
+  /* For a really strong debug */
 //   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void
 MapWidget::paintGL() {
+  __fbo->bind();
+  
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
@@ -123,6 +127,44 @@ MapWidget::paintGL() {
   
   glDisableClientState(GL_VERTEX_ARRAY);
   glDisable(GL_DEPTH_TEST);
+  
+  __fbo->unbind();
+  
+  static const float Coords[] = {
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    
+    0.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  
+  glOrtho(-__rangeX, __rangeX,
+          -__rangeY, __rangeY,
+          -1.0,      static_cast<GLdouble>(MapConfig::MapLayers::Count));
+  
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  qglColor(__settings.colors.seas);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glVertexPointer(2, GL_FLOAT, 0, Coords);
+  
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2, GL_FLOAT, 0, Coords);
+  
+  glBindTexture(GL_TEXTURE_2D, __fbo->texture());
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void
@@ -132,6 +174,7 @@ MapWidget::resizeGL(int _width, int _height) {
   __rangeX = static_cast<qreal>(_width) / MapConfig::baseWindowWidth();
   __rangeY = static_cast<qreal>(_height) / MapConfig::baseWindowHeight();
   
+  __updateFbo(_width, _height);
   updateGL();
 }
 
@@ -171,6 +214,10 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     __center -= scaleToLonLat(diff);
     
     __center.ry() = qBound(-90.0, __center.y(), 90.0);
+    if (__center.x() < -180.0)
+      __center.rx() += 360.0;
+    if (__center.x() > 180.0)
+      __center.rx() -= 360.0;
   }
   
   __mousePosition = _event->pos();
@@ -194,6 +241,13 @@ MapWidget::__drawWorld() {
     qglColor(__settings.colors.lands);
     __world->paint();
   glPopMatrix();
+}
+
+void MapWidget::__updateFbo(int _width, int _height) {
+  if (__fbo)
+    delete __fbo;
+  
+  __fbo = new FrameBufferObject(_width, _height);
 }
 
 void

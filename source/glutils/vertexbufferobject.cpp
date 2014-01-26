@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "glutils/glextensions.h"
-
 #include "debugging/glerrors.h"
 
 #include "vertexbufferobject.h"
