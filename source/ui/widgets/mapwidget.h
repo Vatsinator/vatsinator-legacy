@@ -93,6 +93,11 @@ protected:
   void mouseMoveEvent(QMouseEvent*) override;
   
 private:
+  /**
+   * Renders the texture that is stored in FBO.
+   */
+  void __renderTexture();
+  
   void __drawWorld();
   
   /**

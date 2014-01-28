@@ -17,6 +17,7 @@
  *
  */
 
+#include <QtGlobal>
 #include <QtGui>
 #include <QtOpenGL>
 
@@ -91,6 +92,12 @@ MapWidget::initializeGL() {
   
   __world = new WorldPolygon();
   
+  glShadeModel(GL_SMOOTH);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+  
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_DEPTH_TEST);
+  
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   
@@ -118,7 +125,6 @@ MapWidget::paintGL() {
   qglColor(__settings.colors.seas);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  glEnable(GL_DEPTH_TEST);
   glEnableClientState(GL_VERTEX_ARRAY);
   
   qglClearColor(__settings.colors.seas);
@@ -126,45 +132,10 @@ MapWidget::paintGL() {
   __drawWorld();
   
   glDisableClientState(GL_VERTEX_ARRAY);
-  glDisable(GL_DEPTH_TEST);
   
   __fbo->unbind();
   
-  static const float Coords[] = {
-    0.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, 0.0f,
-    
-    0.0f, 1.0f,
-    1.0f, 0.0f,
-    0.0f, 0.0f
-  };
-  
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  
-  glOrtho(-__rangeX, __rangeX,
-          -__rangeY, __rangeY,
-          -1.0,      static_cast<GLdouble>(MapConfig::MapLayers::Count));
-  
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  
-  qglColor(__settings.colors.seas);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glVertexPointer(2, GL_FLOAT, 0, Coords);
-  
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glTexCoordPointer(2, GL_FLOAT, 0, Coords);
-  
-  glBindTexture(GL_TEXTURE_2D, __fbo->texture());
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  
-  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-  glDisableClientState(GL_VERTEX_ARRAY);
+  __renderTexture();
 }
 
 void
@@ -227,6 +198,53 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   VatsinatorWindow::getSingleton().positionBoxUpdate(coords.x(), coords.y());
   
   _event->accept();
+}
+
+void
+MapWidget::__renderTexture() {
+  static const float Coords[] = {
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    
+    0.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  static const float TexCoords[] = {
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    
+    0.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  
+  glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+  
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glVertexPointer(2, GL_FLOAT, 0, Coords);
+  
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2, GL_FLOAT, 0, TexCoords);
+  
+  glBindTexture(GL_TEXTURE_2D, __fbo->texture());
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void
