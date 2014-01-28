@@ -26,7 +26,9 @@
 
 #include "storage/settingsmanager.h"
 
+#include "ui/map/firitem.h"
 #include "ui/map/mapconfig.h"
+#include "ui/map/mapscene.h"
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
 
@@ -40,7 +42,9 @@ MapWidget::MapWidget(QWidget* _parent) :
     __fbo(nullptr),
     __center(0.0, 0.0),
     __actualZoom(0),
-    __zoom(1.0f) {
+    __zoom(1.0f),
+    __world(nullptr),
+    __scene(nullptr) {
   
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(redraw()));
@@ -91,6 +95,7 @@ MapWidget::initializeGL() {
   initGLExtensionsPointers();
   
   __world = new WorldPolygon();
+  __scene = new MapScene();
   
   glShadeModel(GL_SMOOTH);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
@@ -249,16 +254,34 @@ MapWidget::__renderTexture() {
 
 void
 MapWidget::__drawWorld() {
+  static constexpr GLfloat Zvalue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+  
   glPushMatrix();
     glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
     glScalef(__zoom, __zoom, 1.0f);
     glTranslated(-__center.x(), __center.y(), 0.0);
     
-    glTranslatef(0.0, 0.0, static_cast<GLfloat>(MapConfig::MapLayers::WorldMap));
+    glTranslatef(0.0, 0.0, Zvalue);
     
     qglColor(__settings.colors.lands);
     __world->paint();
   glPopMatrix();
+}
+
+void
+MapWidget::__drawFirs() {
+  /* Firstly, draw unstaffed firs */
+  if (__settings.view.unstaffed_firs) {
+    glPushMatrix();
+      glTranslatef(0.0, 0.0, static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs));
+      qglColor(__settings.colors.unstaffed_fir_borders);
+      
+      for (const FirItem* item: __scene->unstaffedFirItems()) {
+        item->drawBorders();
+      }
+    
+    glPopMatrix();
+  }
 }
 
 void MapWidget::__updateFbo(int _width, int _height) {

@@ -89,6 +89,8 @@ public:
   /* Map layers */
   enum MapLayers {
     WorldMap = 0,
+    UnstaffedFirs = 1,
+    StaffedFirs = 2,
     
     Count
   };

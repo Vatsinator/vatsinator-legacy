@@ -53,9 +53,6 @@ public:
   void clear();
   bool isStaffed() const;
 
-  void drawBorders() const;
-  void drawTriangles() const;
-
   inline ControllerTableModel *
   staffModel() const { return __staff; }
 
@@ -91,9 +88,15 @@ public:
   
   inline QVector<Point> &
   borders() { return __borders; }
+  
+  inline const QVector<Point> &
+  borders() const { return __borders; }
 
   inline QVector<unsigned short> &
   triangles() { return __triangles; }
+  
+  inline const QVector<unsigned short> &
+  triangles() const { return __triangles; }
 
 private:
 

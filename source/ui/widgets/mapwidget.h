@@ -28,6 +28,7 @@ class Airport;
 class Client;
 class Fir;
 class FrameBufferObject;
+class MapScene;
 class Pilot;
 class WorldPolygon;
 
@@ -99,6 +100,7 @@ private:
   void __renderTexture();
   
   void __drawWorld();
+  void __drawFirs();
   
   /**
    * Updates framebuffer object. Must be called each window resize.
@@ -140,6 +142,9 @@ private:
   
   /* World map drawer */
   WorldPolygon* __world;
+  
+  /* Scene handler */
+  MapScene* __scene;
   
   /* Structs below store settings locally to avoid expensive SM::get() calling. */
   struct {

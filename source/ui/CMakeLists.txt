@@ -58,7 +58,9 @@ set (ui_SRCS
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
     
+    map/firitem.cpp
     map/mapconfig.cpp
+    map/mapscene.cpp
     map/worldpolygon.cpp
     
     pages/abstractsettingspage.cpp
@@ -111,6 +113,8 @@ set (ui_MOC_SRCS
     dialogs/letsendstatsdialog.h
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
+    
+    map/mapscene.h
     
     pages/abstractsettingspage.h
     pages/colorspage.h

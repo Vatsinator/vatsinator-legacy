@@ -29,7 +29,8 @@ unsigned VertexBufferObject::vboCount = 0;
 #endif
 
 VertexBufferObject::VertexBufferObject(GLenum _type):
-    __type(_type) {
+    __type(_type),
+    __length(0) {
   
   static constexpr bool enabled =
 #ifndef CONFIG_NO_VBO
@@ -84,3 +85,7 @@ VertexBufferObject::unbind() const {
   glBindBuffer(__type, 0); checkGLErrors(HERE);
 }
 
+void
+VertexBufferObject::setLength(unsigned _length) {
+  __length = _length;
+}
