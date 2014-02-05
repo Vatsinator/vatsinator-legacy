@@ -28,11 +28,17 @@
 #include "defines.h"
 
 MapScene::MapScene(QObject* parent): QObject(parent) {
+  for (const Fir& f: FirDatabase::getSingleton().firs())
+    __firItems << new FirItem(&f);
+  
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
   
-  for (auto f: FirDatabase::getSingleton().firs())
-    __firItems << new FirItem(&f);
+  __updateData();
+}
+
+MapScene::~MapScene() {
+  qDeleteAll(__firItems);
 }
 
 void

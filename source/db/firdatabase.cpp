@@ -31,7 +31,6 @@ FirDatabase::FirDatabase() {
   QtConcurrent::run(this, &FirDatabase::__readDatabase);
 }
 
-
 Fir *
 FirDatabase::find(const QString& _icao, bool _fss) {
   if (_icao == "ZZZZ")

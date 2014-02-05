@@ -36,9 +36,7 @@ public:
 //   void drawText() const;
   
   inline const Fir*
-  data() const {
-    return __fir;
-  }
+  data() const { return __fir; }
   
 private:
   void __prepareVbo();

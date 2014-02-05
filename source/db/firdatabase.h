@@ -44,7 +44,7 @@ struct FirHeader {
 
 class FirDatabase :
     public Singleton<FirDatabase> {
-  
+      
   Q_DECLARE_TR_FUNCTIONS(FirDatabase);
     
 public:

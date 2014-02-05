@@ -49,8 +49,8 @@ FirItem::drawBorders() const {
 
 void
 FirItem::__prepareVbo() {
-  auto borders = __fir->borders();
-  auto triangles = __fir->triangles();
+  auto& borders = __fir->borders();
+  auto& triangles = __fir->triangles();
   
   __borders = new VertexBufferObject(GL_ARRAY_BUFFER);
   __borders->sendData(borders.size() * sizeof(borders[0]), &borders[0]);

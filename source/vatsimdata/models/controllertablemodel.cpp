@@ -44,7 +44,7 @@ ControllerTableModel::findAtcByCallsign(const QString& _callsign) const {
     if (c->callsign() == _callsign)
       return c;
   
-  return NULL;
+  return nullptr;
 }
 
 int

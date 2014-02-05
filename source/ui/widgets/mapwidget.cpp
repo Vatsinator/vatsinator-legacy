@@ -55,7 +55,11 @@ MapWidget::MapWidget(QWidget* _parent) :
 }
 
 MapWidget::~MapWidget() {
+  delete __scene;
   delete __world;
+  
+  if (__fbo)
+    delete __fbo;
 }
 
 QPointF
@@ -135,6 +139,7 @@ MapWidget::paintGL() {
   qglClearColor(__settings.colors.seas);
   
   __drawWorld();
+  __drawFirs();
   
   glDisableClientState(GL_VERTEX_ARRAY);
   
@@ -254,14 +259,14 @@ MapWidget::__renderTexture() {
 
 void
 MapWidget::__drawWorld() {
-  static constexpr GLfloat Zvalue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+  static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
   
   glPushMatrix();
     glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
     glScalef(__zoom, __zoom, 1.0f);
     glTranslated(-__center.x(), __center.y(), 0.0);
     
-    glTranslatef(0.0, 0.0, Zvalue);
+    glTranslatef(0.0, 0.0, zValue);
     
     qglColor(__settings.colors.lands);
     __world->paint();
@@ -270,10 +275,16 @@ MapWidget::__drawWorld() {
 
 void
 MapWidget::__drawFirs() {
+  static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
+  
   /* Firstly, draw unstaffed firs */
   if (__settings.view.unstaffed_firs) {
     glPushMatrix();
-      glTranslatef(0.0, 0.0, static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs));
+      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
+      glScalef(__zoom, __zoom, 1.0f);
+      glTranslated(-__center.x(), __center.y(), 0.0);
+      glTranslatef(0.0, 0.0, zValue);
+      
       qglColor(__settings.colors.unstaffed_fir_borders);
       
       for (const FirItem* item: __scene->unstaffedFirItems()) {

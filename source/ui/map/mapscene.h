@@ -35,21 +35,16 @@ class MapScene : public QObject {
 
 public:
   explicit MapScene(QObject* parent = 0);
+  virtual ~MapScene();
   
   inline const QVector<const FirItem*>
-  firItems() const {
-    return __firItems;
-  }
+  firItems() const { return __firItems; }
   
   inline const QVector<const FirItem*>
-  staffedFirItems() const {
-    return __staffedFirItems;
-  }
+  staffedFirItems() const { return __staffedFirItems; }
   
   inline const QVector<const FirItem*>
-  unstaffedFirItems() const {
-    return __unstaffedFirItems;
-  }
+  unstaffedFirItems() const { return __unstaffedFirItems; }
   
 private slots:
   void __updateData();

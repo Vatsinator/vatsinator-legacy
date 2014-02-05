@@ -67,8 +67,8 @@ VatsimDataHandler::VatsimDataHandler() :
     __downloader(new PlainTextDownloader()) {
   connect(this,                                     SIGNAL(localDataBad(QString)),
           this,                                     SLOT(__reportDataError(QString)));
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
-          this,                                     SLOT(loadCachedData()));
+//   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
+//           this,                                     SLOT(loadCachedData()));
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(__slotUiCreated()));
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
