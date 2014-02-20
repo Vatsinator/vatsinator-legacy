@@ -82,7 +82,7 @@ signals:
   /**
    * Incomplete fetch or something like that.
    */
-  void vatsimDataCorrupted();
+  void vatsimDataError();
   
   /**
    * If local data is corrupted.
@@ -235,12 +235,6 @@ public:
   static ControllerTableModel* emptyControllerTable;
   
 public slots:
-  
-  /**
-   * Reads cached data.
-   */
-  void loadCachedData();
-  
   /**
    * Fetches the new data.
    */
@@ -277,6 +271,11 @@ private:
    * Handles "RELOAD =" section of the data file.
    */
   void __updateInterval(int);
+  
+  /**
+   * Loades cached data
+   */
+  void __loadCachedData();
   
 private slots:
   /**

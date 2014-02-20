@@ -96,7 +96,7 @@ void
 MetarsWindow::__findAndSelectMetar(const QString& _icao, bool _fetchIfNotFound) {
 const Metar* m = __metarsHandler->find(_icao.toUpper());
   if (m) {
-    const QModelIndex mi = __metarsHandler->getModelIndexForMetar(m);
+    const QModelIndex mi = __metarsHandler->modelIndexForMetar(m);
     MetarsDisplay->setCurrentIndex(mi);
     MetarsDisplay->scrollTo(mi);
   } else {

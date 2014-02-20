@@ -74,7 +74,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
           this,                                     SLOT(__dataCorrupted()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
           this,                                     SLOT(__dataUpdated()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataCorrupted()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
           this,                                     SLOT(__dataCorrupted()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
           this,                                     SLOT(__enableRefreshAction()));
@@ -109,7 +109,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
 }
 
 void
-VatsinatorWindow::statusBarUpdate(const QString& _message) {
+VatsinatorWindow::statusBarUpdate(const QString& _message, const QPalette& palette) {
   if (_message.isEmpty()) {
     if (VatsimDataHandler::getSingleton().dateDataUpdated().isNull())
       __statusBox->setText(tr("Last update: never"));
@@ -120,6 +120,8 @@ VatsinatorWindow::statusBarUpdate(const QString& _message) {
   } else {
     __statusBox->setText(_message);
   }
+  
+  __statusBox->setPalette(palette);
 }
 
 void
@@ -127,13 +129,13 @@ VatsinatorWindow::infoBarUpdate() {
   VatsimDataHandler& data = VatsimDataHandler::getSingleton();
   
   ClientsBox->setText(tr(
-      "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
-          QString::number(data.clientCount()),
-          QString::number(data.pilotCount()),
-          QString::number(data.atcCount()),
-          QString::number(data.obsCount())
-        )
-   );
+    "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
+      QString::number(data.clientCount()),
+      QString::number(data.pilotCount()),
+      QString::number(data.atcCount()),
+      QString::number(data.obsCount())
+    )
+  );
 }
 
 void
@@ -177,7 +179,7 @@ VatsinatorWindow::__restoreWindowGeometry() {
     move(settings.value("position", pos()).toPoint());
     resize(settings.value("size", size()).toSize());
     
-    if ( settings.value( "maximized", isMaximized()).toBool() )
+    if (settings.value( "maximized", isMaximized()).toBool())
       showMaximized();
   } else { /* Place the window in the middle of the screen */
     setGeometry(
@@ -191,7 +193,6 @@ VatsinatorWindow::__restoreWindowGeometry() {
   }
   
   EnableAutoUpdatesAction->setChecked(settings.value("autoUpdatesEnabled", true).toBool());
-
   settings.endGroup();
 }
 
@@ -215,7 +216,9 @@ VatsinatorWindow::__dataUpdated() {
 void
 VatsinatorWindow::__dataCorrupted() {
   Replaceable->setCurrentWidget(__statusBox);
-  statusBarUpdate(tr("Invalid data!"));
+  QPalette palette = __statusBox->palette();
+  palette.setColor(__statusBox->foregroundRole(), Qt::red);
+  statusBarUpdate("", palette);
 }
 
 void

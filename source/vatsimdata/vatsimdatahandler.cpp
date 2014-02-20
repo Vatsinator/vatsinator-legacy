@@ -69,8 +69,6 @@ VatsimDataHandler::VatsimDataHandler() :
     __downloader(new PlainTextDownloader()) {
   
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
-          this,                                     SLOT(loadCachedData()));
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(__slotUiCreated()));
   connect(__downloader,                             SIGNAL(finished(QString)),
           this,                                     SLOT(__dataFetched(QString)));
@@ -201,7 +199,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         
         if (clientData.size() < 40) {
           VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit vatsimDataCorrupted();
+          emit vatsimDataError();
           return;
         }
         
@@ -229,7 +227,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         
         if (clientData.size() < 40) {
           VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit vatsimDataCorrupted();
+          emit vatsimDataError();
           return;
         }
         
@@ -323,32 +321,6 @@ VatsimDataHandler::atcCount() const {
 int
 VatsimDataHandler::obsCount() const {
   return __observers;
-}
-
-void
-VatsimDataHandler::loadCachedData() {
-  /* Honor user settings */
-  if (SM::get("network.cache_enabled").toBool() == false)
-    return;
-  
-  VatsinatorApplication::log("VatsimDataHandler: loading data from cache...");
-  
-  CacheFile file(CacheFileName);
-  if (file.exists()) {
-    FirDatabase::getSingleton().clearAll();
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      VatsinatorApplication::log("VatsimDataHandler: cache file %s is not readable.",
-                                 qPrintable(file.fileName()));
-      return;
-    }
-    
-    QString data(file.readAll());
-    file.close();
-    parseDataFile(data);
-    ModuleManager::getSingleton().updateData();
-  }
-  
-  VatsinatorApplication::log("VatsimDataHandler: cache restored.");
 }
 
 void
@@ -544,6 +516,28 @@ VatsimDataHandler::__updateInterval(int _interval) {
 }
 
 void
+VatsimDataHandler::__loadCachedData() {
+  VatsinatorApplication::log("VatsimDataHandler: loading data from cache...");
+  
+  CacheFile file(CacheFileName);
+  if (file.exists()) {
+    FirDatabase::getSingleton().clearAll();
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      VatsinatorApplication::log("VatsimDataHandler: cache file %s is not readable.",
+                                 qPrintable(file.fileName()));
+      return;
+    }
+    
+    QString data(file.readAll());
+    file.close();
+    parseDataFile(data);
+    ModuleManager::getSingleton().updateData();
+  }
+  
+  VatsinatorApplication::log("VatsimDataHandler: cache restored.");
+}
+
+void
 VatsimDataHandler::__reportDataError(QString _msg) {
   VatsinatorApplication::log(qPrintable(_msg));
   VatsinatorApplication::alert(_msg, true);
@@ -551,10 +545,13 @@ VatsimDataHandler::__reportDataError(QString _msg) {
 
 void
 VatsimDataHandler::__slotUiCreated() {
+  if (SM::get("network.cache_enabled").toBool() == true)
+    __loadCachedData();
+  
   if (SM::get("network.auto_updater").toBool() == false) {
     __timer.setInterval(SM::get("network.refresh_rate").toInt() * 1000 * 60);
   } else {
-    __timer.setInterval(3 * 1000 * 60);
+    __timer.setInterval(NetConfig::Vatsinator::defaultRefreshRate() * 1000 * 60);
   }
   
   __downloader->setProgressBar(VatsinatorWindow::getSingleton().progressBar());
@@ -571,7 +568,7 @@ void
 VatsimDataHandler::__dataFetched(QString _data) {
   if (__statusFileFetched) {
     if (_data.isEmpty()) {
-      emit vatsimDataCorrupted();
+      emit vatsimDataError();
       return;
     }
     
@@ -591,7 +588,7 @@ VatsimDataHandler::__dataFetched(QString _data) {
 void
 VatsimDataHandler::__handleFetchError() {
   if (__statusFileFetched) {
-    emit vatsimDataCorrupted();
+    emit vatsimDataError();
   } else {
     if (__statusUrl != QString(NetConfig::Vatsim::backupStatusUrl())) {
       /* Try the backup url */

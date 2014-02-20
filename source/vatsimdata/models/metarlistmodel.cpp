@@ -35,14 +35,14 @@ static const QString NoMetarText = "No METAR available";
 
 MetarListModel::MetarListModel(PlainTextDownloader* _hh, QObject* _parent) :
     QAbstractListModel(_parent),
-    __myHttpHandler(_hh) {
-  connect(__myHttpHandler,  SIGNAL(finished(QString)),
-          this,     SLOT(__gotMetar(QString)));
+    __downloader(_hh) {
+  connect(__downloader, SIGNAL(finished(QString)),
+          this,         SLOT(__readMetar(QString)));
 }
 
 void
 MetarListModel::fetchMetar(const QString& _icao) {
-  __myHttpHandler->fetchData(VatsimDataHandler::getSingleton().metarUrl() + "?id=" + _icao.toLower());
+  __downloader->fetchData(VatsimDataHandler::getSingleton().metarUrl() + "?id=" + _icao.toLower());
   __requests.enqueue(_icao.simplified());
 }
 
@@ -56,7 +56,7 @@ MetarListModel::find(const QString& _key) const {
 }
 
 const QModelIndex
-MetarListModel::getModelIndexForMetar(const Metar* _m) const {
+MetarListModel::modelIndexForMetar(const Metar* _m) const {
   for (int i = 0; i < __metarList.size(); ++i) {
     if (&__metarList.at(i) == _m)
       return createIndex(i, 0);
@@ -87,7 +87,7 @@ MetarListModel::data(const QModelIndex& _index, int _role) const {
 
 bool
 MetarListModel::anyMetarsInQueue() const {
-  return __myHttpHandler->anyTasksLeft();
+  return __downloader->anyTasksLeft();
 }
 
 void
@@ -125,7 +125,7 @@ MetarListModel::__matches(const QString& _word) {
 }
 
 void
-MetarListModel::__gotMetar(const QString& _metar) {
+MetarListModel::__readMetar(const QString& _metar) {
   QString metar = _metar.simplified();
 
   if (metar.isEmpty())

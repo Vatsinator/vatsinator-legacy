@@ -53,7 +53,6 @@ class UserInterface :
 
 public:
   UserInterface();
-
   virtual ~UserInterface();
   
 public slots:
@@ -61,8 +60,8 @@ public slots:
   void showVatsimMessage(const QString&);
 
 private slots:
-  void __statusFileError();
-  void __fetchError();
+  void __statusError();
+  void __dataError();
   void __showNewVersionDialog();
   
 private:

@@ -71,16 +71,15 @@ UserInterface::UserInterface() :
     __vatsinatorWindow(new VatsinatorWindow()) {
 
 
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataCorrupted()),
-          this,                                     SLOT(__fetchError()));
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
+          this,                                     SLOT(__dataError()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
-          this,                                     SLOT(__statusFileError()));
+          this,                                     SLOT(__statusError()));
   connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
           this,                                     SLOT(__showNewVersionDialog()));
 }
 
 UserInterface::~UserInterface() {
-
   delete __vatsinatorWindow;
   delete __aboutWindow;
   delete __airportDetailsWindow;
@@ -129,13 +128,13 @@ UserInterface::showVatsimMessage(const QString& _msg) {
 }
 
 void
-UserInterface::__statusFileError() {
+UserInterface::__statusError() {
   StatusFetchErrorDialog dialog;
   dialog.exec();
 }
 
 void
-UserInterface::__fetchError() {
+UserInterface::__dataError() {
   DataFetchErrorDialog dialog;
   dialog.exec();
   

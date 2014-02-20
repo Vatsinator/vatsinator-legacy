@@ -41,6 +41,10 @@ public:
     static constexpr const char* apiUrl() {
       return "http://api.vatsinator.eu.org/";
     }
+    
+    static constexpr int defaultRefreshRate() {
+      return 3;
+    }
   
   };
   
