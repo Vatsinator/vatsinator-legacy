@@ -126,7 +126,7 @@ MapWidget::paintGL() {
 
   glOrtho(-__rangeX, __rangeX,
           -__rangeY, __rangeY,
-          -1.0,      static_cast<GLdouble>(MapConfig::MapLayers::Count));
+          -static_cast<GLdouble>(MapConfig::MapLayers::Count), 1.0);
   
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -275,7 +275,8 @@ MapWidget::__drawWorld() {
 
 void
 MapWidget::__drawFirs() {
-  static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
+  static constexpr GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
+  static constexpr GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
   
   /* Firstly, draw unstaffed firs */
   if (__settings.view.unstaffed_firs) {
@@ -283,14 +284,28 @@ MapWidget::__drawFirs() {
       glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
       glScalef(__zoom, __zoom, 1.0f);
       glTranslated(-__center.x(), __center.y(), 0.0);
-      glTranslatef(0.0, 0.0, zValue);
+      glTranslatef(0.0, 0.0, unstaffedFirsZ);
       
       qglColor(__settings.colors.unstaffed_fir_borders);
-      
       for (const FirItem* item: __scene->unstaffedFirItems()) {
         item->drawBorders();
       }
-    
+    glPopMatrix();
+  }
+  
+  if (__settings.view.staffed_firs) {
+    glPushMatrix();
+      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
+      glScalef(__zoom, __zoom, 1.0f);
+      glTranslated(-__center.x(), __center.y(), 0.0);
+      glTranslatef(0.0, 0.0, staffedFirsZ);
+      
+      qglColor(__settings.colors.staffed_fir_borders);
+      glLineWidth(3.0);
+      for (const FirItem* item: __scene->staffedFirItems()) {
+        item->drawBorders();
+      }
+      glLineWidth(1.0);
     glPopMatrix();
   }
 }

@@ -47,7 +47,7 @@ MapScene::__updateData() {
    * TODO
    * 
    * This is wrong approach, as it removes all the objects and creates
-   * new one. Instead, these objects should be only updated, old ones
+   * new ones. Instead, these objects should be only updated, old ones
    * removed and only these new ones added.
    */
   
