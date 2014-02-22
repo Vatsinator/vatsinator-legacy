@@ -1130,10 +1130,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="369"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="384"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="440"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="490"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
     </message>
@@ -1244,14 +1244,9 @@
         <translation type="unfinished">Last update: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="129"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="131"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation type="unfinished">Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="218"/>
-        <source>Invalid data!</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

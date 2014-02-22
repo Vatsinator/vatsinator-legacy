@@ -129,7 +129,7 @@
 <context>
     <name>AirlineDatabase</name>
     <message>
-        <location filename="../db/airlinedatabase.cpp" line="45"/>
+        <location filename="../db/airlinedatabase.cpp" line="49"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>ファイル %1 を開くことができません！プログラムを再インストールしてください。</translation>
     </message>
@@ -1119,10 +1119,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="369"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="341"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="384"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="440"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="490"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
         <source>File %1 could not be opened!</source>
         <translation>ファイル %1 を開くことができません！</translation>
     </message>
@@ -1233,14 +1233,9 @@
         <translation>最終更新時刻: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="129"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="131"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>クライアント: %1 (パイロット %2、ATC %3、オブザーバ %4)</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="218"/>
-        <source>Invalid data!</source>
-        <translation>無効なデータです!</translation>
     </message>
 </context>
 <context>
