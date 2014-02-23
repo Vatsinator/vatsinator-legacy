@@ -32,7 +32,7 @@ public:
   virtual ~FirItem();
   
   void drawBorders() const;
-//   void drawBackground() const;
+  void drawBackground() const;
 //   void drawText() const;
   
   inline const Fir*

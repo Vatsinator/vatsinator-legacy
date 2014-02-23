@@ -48,6 +48,18 @@ FirItem::drawBorders() const {
 }
 
 void
+FirItem::drawBackground() const {
+  __borders->bind();
+  __triangles->bind();
+  
+  glVertexPointer(2, GL_FLOAT, 0, 0);
+  glDrawElements(GL_TRIANGLES, __triangles->length(), GL_UNSIGNED_SHORT, 0);
+  
+  __triangles->unbind();
+  __borders->unbind();
+}
+
+void
 FirItem::__prepareVbo() {
   auto& borders = __fir->borders();
   auto& triangles = __fir->triangles();

@@ -106,6 +106,10 @@ MapWidget::initializeGL() {
   
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_ALPHA_TEST);
+  glAlphaFunc(GL_GREATER, 0.1f);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -306,6 +310,12 @@ MapWidget::__drawFirs() {
         item->drawBorders();
       }
       glLineWidth(1.0);
+      
+      qglColor(__settings.colors.staffed_fir_background);
+      for (const FirItem* item: __scene->staffedFirItems()) {
+        item->drawBackground();
+      }
+      
     glPopMatrix();
   }
 }
