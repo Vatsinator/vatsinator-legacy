@@ -20,31 +20,46 @@
 #ifndef FIRITEM_H
 #define FIRITEM_H
 
+#include <QtOpenGL>
+#include <QObject>
+#include <QPointF>
+
 class Fir;
 class VertexBufferObject;
 
-class FirItem {
+class FirItem : public QObject {
+  Q_OBJECT
   
 public:
-  FirItem(const Fir*);
+  FirItem(const Fir*, QObject* = nullptr);
   FirItem() = delete;
   
   virtual ~FirItem();
   
   void drawBorders() const;
   void drawBackground() const;
-//   void drawText() const;
+  void drawLabel() const;
   
   inline const Fir*
   data() const { return __fir; }
   
+  inline const QPointF&
+  position() const { return __position; }
+  
 private:
   void __prepareVbo();
   
+private slots:
+  void __generateLabel() const;
+  
+private:
   const Fir* __fir;
+  QPointF    __position;
   
   VertexBufferObject* __borders;
   VertexBufferObject* __triangles;
+  
+  mutable GLuint __label;
   
 };
 

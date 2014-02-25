@@ -47,7 +47,7 @@ public:
 
   void addAirport(const Airport*);
 
-  void correctName();
+  void fixupName();
 
   void loadHeader(const FirHeader&);
   void clear();

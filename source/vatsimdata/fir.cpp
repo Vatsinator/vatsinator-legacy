@@ -61,7 +61,7 @@ Fir::addAirport(const Airport* _ap) {
 }
 
 void
-Fir::correctName() {
+Fir::fixupName() {
   if (!__name.contains("Radar") &&
       !__name.contains("Control") &&
       !__name.contains("Radio") &&

@@ -439,7 +439,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
        *      "exceptions" in the data file.
        */
       
-      currentFir->correctName();
+      currentFir->fixupName();
     }
     
     // look for some oceanic fir
@@ -447,7 +447,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       currentFir->setCountry(countries[icao.left(2)]);
-      currentFir->correctName();
+      currentFir->fixupName();
     }
   }
   

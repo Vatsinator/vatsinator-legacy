@@ -58,12 +58,6 @@ MapConfig::airportPen() {
   return pen;
 }
 
-const QColor &
-MapConfig::firPen() {
-  static QColor pen(173, 173, 173);
-  return pen;
-}
-
 const QPixmap &
 MapConfig::pilotLabelBackground() {
   static QPixmap label(":/pixmaps/pilot_tooltip.png");
@@ -76,15 +70,9 @@ MapConfig::airportLabelBackground() {
   return label;
 }
 
-const QPixmap &
+const QImage &
 MapConfig::firLabelBackground() {
-  static QPixmap label(64, 32);
-  static bool filled = false;
-  if (!filled) {
-    label.fill(QColor(255, 255, 255, 0));
-    filled = true;
-  }
-  
+  static QImage label(64, 32, QImage::Format_ARGB32_Premultiplied);
   return label;
 }
 
@@ -102,6 +90,6 @@ MapConfig::airportFont() {
 
 const QFont &
 MapConfig::firFont() {
-  static QFont font("Verdana", 7, QFont::Bold);
+  static QFont font("Verdana", 8, QFont::Bold);
   return font;
 }

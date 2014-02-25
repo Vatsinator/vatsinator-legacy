@@ -76,11 +76,10 @@ public:
   
   static const QColor& pilotPen();
   static const QColor& airportPen();
-  static const QColor& firPen();
   
   static const QPixmap& pilotLabelBackground();
   static const QPixmap& airportLabelBackground();
-  static const QPixmap& firLabelBackground();
+  static const QImage& firLabelBackground();
   
   static const QFont& pilotFont();
   static const QFont& airportFont();

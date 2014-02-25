@@ -17,20 +17,35 @@
  *
  */
 
+#include "glutils/glresourcemanager.h"
 #include "glutils/vertexbufferobject.h"
+#include "storage/settingsmanager.h"
+#include "ui/map/mapconfig.h"
 #include "vatsimdata/fir.h"
+#include "vatsimdata/vatsimdatahandler.h"
 
 #include "firitem.h"
 #include "defines.h"
 
-FirItem::FirItem(const Fir* _fir) :
+FirItem::FirItem(const Fir* _fir, QObject* _parent) :
+    QObject(_parent),
     __fir(_fir),
+    __position(_fir->textPosition().x, _fir->textPosition().y),
     __borders(nullptr),
-    __triangles(nullptr) {
+    __triangles(nullptr),
+    __label(0) {
   __prepareVbo();
+  
+  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+          this,                                 SLOT(__generateLabel()));
+  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
+          this,                                 SLOT(__generateLabel()));
 }
 
 FirItem::~FirItem() {
+  if (__label)
+    GlResourceManager::deleteImage(__label);
+  
   if (__triangles)
     delete __triangles;
   
@@ -60,6 +75,27 @@ FirItem::drawBackground() const {
 }
 
 void
+FirItem::drawLabel() const {
+  static const GLfloat labelRect[] = {
+    -0.08, -0.05333333,
+    -0.08,  0.05333333,
+     0.08,  0.05333333,
+     0.08, -0.05333333
+  };
+  
+  if (position() == QPointF(0.0, 0.0))
+    return;
+  
+  if (!__label)
+    __generateLabel();
+  
+  glBindTexture(GL_TEXTURE_2D, __label);
+  glVertexPointer(2, GL_FLOAT, 0, labelRect);
+  glDrawArrays(GL_QUADS, 0, 4);
+  glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void
 FirItem::__prepareVbo() {
   auto& borders = __fir->borders();
   auto& triangles = __fir->triangles();
@@ -73,4 +109,36 @@ FirItem::__prepareVbo() {
     __triangles->sendData(triangles.size() * sizeof(triangles[0]), &triangles[0]);
     __triangles->setLength(triangles.size());
   }
+}
+
+void
+FirItem::__generateLabel() const {
+  static QRect labelRect(0, 4, 64, 24);
+  
+  if (__label)
+    GlResourceManager::deleteImage(__label);
+  
+  QString icao(__fir->icao());
+  if (__fir->isOceanic())
+    icao = icao.left(4) + " Oceanic";
+  
+  icao = icao.simplified();
+  
+  QImage temp(MapConfig::firLabelBackground());
+  QPainter painter(&temp);
+  painter.setRenderHint(QPainter::TextAntialiasing);
+  painter.setRenderHint(QPainter::SmoothPixmapTransform);
+  painter.setRenderHint(QPainter::HighQualityAntialiasing);
+  painter.setFont(MapConfig::firFont());
+  
+  QColor color;
+  if (__fir->isStaffed())
+    color = SM::get("colors.staffed_fir_borders").value<QColor>();
+  else
+    color = SM::get("colors.unstaffed_fir_borders").value<QColor>();
+  
+  painter.setPen(color);
+  
+  painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);
+  __label = GlResourceManager::loadImage(temp);
 }

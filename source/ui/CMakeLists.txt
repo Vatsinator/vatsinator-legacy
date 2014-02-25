@@ -114,6 +114,7 @@ set (ui_MOC_SRCS
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
     
+    map/firitem.h
     map/mapscene.h
     
     pages/abstractsettingspage.h

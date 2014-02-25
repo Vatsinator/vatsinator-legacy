@@ -84,6 +84,20 @@ MapWidget::scaleToLonLat(const QPoint& _point) {
     );
 }
 
+QPointF
+MapWidget::mapFromLonLat(const QPointF& _point) {
+  return QPointF(
+      (_point.x() - __center.x()) / MapConfig::longitudeMax() * __zoom,
+      (_point.y() + __center.y()) / MapConfig::latitudeMax() * __zoom
+    );
+}
+
+bool
+MapWidget::onScreen(const QPointF& _point) {
+  return _point.x() <= __rangeX && _point.y() <= __rangeY &&
+    _point.x() >= -__rangeX && _point.y() >= -__rangeY;
+}
+
 void
 MapWidget::redraw() {
   QToolTip::hideText();
@@ -101,13 +115,14 @@ MapWidget::initializeGL() {
   __world = new WorldPolygon();
   __scene = new MapScene();
   
+  glEnable(GL_MULTISAMPLE);
+  
   glShadeModel(GL_SMOOTH);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
   
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_ALPHA_TEST);
-  glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
@@ -123,6 +138,13 @@ MapWidget::initializeGL() {
 
 void
 MapWidget::paintGL() {
+  static const GLfloat textureCoords[] = {
+    0.0, 0.0,
+    0.0, 1.0,
+    1.0, 1.0,
+    1.0, 0.0
+  };
+  
   __fbo->bind();
   
   glMatrixMode(GL_PROJECTION);
@@ -139,12 +161,15 @@ MapWidget::paintGL() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
   
   qglClearColor(__settings.colors.seas);
   
   __drawWorld();
   __drawFirs();
   
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   
   __fbo->unbind();
@@ -317,6 +342,17 @@ MapWidget::__drawFirs() {
       }
       
     glPopMatrix();
+  }
+  
+  glColor4f(1.0, 1.0, 1.0, 1.0);
+  for (const FirItem* item: __scene->firItems()) {
+    QPointF p = mapFromLonLat(item->position());
+    if (onScreen(p)) {
+      glPushMatrix();
+        glTranslated(p.x(), p.y(), staffedFirsZ + 1);
+        item->drawLabel();
+      glPopMatrix();
+    }
   }
 }
 

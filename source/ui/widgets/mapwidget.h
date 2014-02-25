@@ -76,6 +76,16 @@ public:
    */
   QPointF scaleToLonLat(const QPoint&);
   
+  /**
+   * Calculates scene local coordinates from latitude/longitude.
+   */
+  QPointF mapFromLonLat(const QPointF&);
+  
+  /**
+   * Specifies whether the given point is visible on the screen or not.
+   */
+  bool onScreen(const QPointF&);
+  
 public slots:
   
   /**
