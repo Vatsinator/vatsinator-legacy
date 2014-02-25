@@ -73,6 +73,11 @@ MapConfig::airportLabelBackground() {
 const QImage &
 MapConfig::firLabelBackground() {
   static QImage label(64, 32, QImage::Format_ARGB32_Premultiplied);
+  static bool filled = false;
+  if (!filled) {
+    label.fill(0);
+    filled = true;
+  }
   return label;
 }
 
