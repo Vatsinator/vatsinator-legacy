@@ -64,7 +64,7 @@ set (ui_SRCS
     map/worldpolygon.cpp
     
     pages/abstractsettingspage.cpp
-    pages/colorspage.cpp
+    pages/mappage.cpp
     pages/miscellaneouspage.cpp
     pages/networkpage.cpp
     pages/viewpage.cpp
@@ -118,7 +118,7 @@ set (ui_MOC_SRCS
     map/mapscene.h
     
     pages/abstractsettingspage.h
-    pages/colorspage.h
+    pages/mappage.h
     pages/miscellaneouspage.h
     pages/networkpage.h
     pages/viewpage.h
@@ -151,7 +151,7 @@ set (ui_FORMS
     dialogs/letsendstatsdialog.ui
     dialogs/newversiondialog.ui
     
-    pages/colorspage.ui
+    pages/mappage.ui
     pages/miscellaneouspage.ui
     pages/networkpage.ui
     pages/viewpage.ui

@@ -386,14 +386,14 @@ void
 MapWidget::__reloadSettings() {
   __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toInt();
   
-  __settings.colors.lands = SM::get("colors.lands").value<QColor>();
-  __settings.colors.seas = SM::get("colors.seas").value<QColor>();
-  __settings.colors.staffed_fir_borders = SM::get("colors.staffed_fir_borders").value<QColor>();
-  __settings.colors.staffed_fir_background = SM::get("colors.staffed_fir_background").value<QColor>();
-  __settings.colors.staffed_uir_borders = SM::get("colors.staffed_uir_borders").value<QColor>();
-  __settings.colors.staffed_uir_background = SM::get("colors.staffed_uir_background").value<QColor>();
-  __settings.colors.unstaffed_fir_borders = SM::get("colors.unstaffed_fir_borders").value<QColor>();
-  __settings.colors.approach_circle = SM::get("colors.approach_circle").value<QColor>();
+  __settings.colors.lands = SM::get("map.lands_color").value<QColor>();
+  __settings.colors.seas = SM::get("map.seas_color").value<QColor>();
+  __settings.colors.staffed_fir_borders = SM::get("map.staffed_fir_borders_color").value<QColor>();
+  __settings.colors.staffed_fir_background = SM::get("map.staffed_fir_background_color").value<QColor>();
+  __settings.colors.staffed_uir_borders = SM::get("map.staffed_uir_borders_color").value<QColor>();
+  __settings.colors.staffed_uir_background = SM::get("map.staffed_uir_background_color").value<QColor>();
+  __settings.colors.unstaffed_fir_borders = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
+  __settings.colors.approach_circle = SM::get("map.approach_circle_color").value<QColor>();
   
   __settings.view.airports_layer = SM::get("view.airports_layer").toBool();
   __settings.view.airport_labels = SM::get("view.airport_labels").toBool();

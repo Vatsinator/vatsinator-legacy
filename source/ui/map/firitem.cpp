@@ -129,13 +129,14 @@ FirItem::__generateLabel() const {
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapConfig::firFont());
+  
+  painter.setFont(SM::get("map.fir_font").value<QFont>());
   
   QColor color;
   if (__fir->isStaffed())
-    color = SM::get("colors.staffed_fir_borders").value<QColor>();
+    color = SM::get("map.staffed_fir_borders_color").value<QColor>();
   else
-    color = SM::get("colors.unstaffed_fir_borders").value<QColor>();
+    color = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
   
   painter.setPen(color);
   
