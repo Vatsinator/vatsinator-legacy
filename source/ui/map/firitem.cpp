@@ -23,6 +23,7 @@
 #include "ui/map/mapconfig.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsimdata/models/controllertablemodel.h"
 
 #include "firitem.h"
 #include "defines.h"
@@ -93,6 +94,35 @@ FirItem::drawLabel() const {
   glVertexPointer(2, GL_FLOAT, 0, labelRect);
   glDrawArrays(GL_QUADS, 0, 4);
   glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+const
+QPointF& FirItem::position() const {
+  return __position;
+}
+
+QString
+FirItem::tooltipText() const {
+  QString desc;
+  if (!data()->name().isEmpty()) {
+    desc.append(data()->name());
+    
+    if (!data()->country().isEmpty()) {
+      desc.append(", ");
+      desc.append(data()->country());
+    }
+  }
+  
+  QString staff;
+  for (const Controller* c: data()->staffModel()->staff()) {
+    staff.append("<br>");
+    staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
+  }
+  
+  if (desc.isEmpty() && staff.isEmpty())
+    return QString();
+  else
+    return QString("<p style='white-space:nowrap'><center>" % desc % staff % "</center></p>");
 }
 
 void

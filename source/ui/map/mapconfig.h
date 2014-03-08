@@ -51,6 +51,12 @@ public:
     return 600;
   }
   
+  /* Distance between mouse and object that object is considered
+     to be under mouse. */
+  static constexpr qreal mouseOnObject() {
+    return 10.0;
+  }
+  
   /* User won't be able to zoom below this value */
   static constexpr int zoomMinimum() {
     return 1;

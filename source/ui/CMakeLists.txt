@@ -60,6 +60,7 @@ set (ui_SRCS
     
     map/firitem.cpp
     map/mapconfig.cpp
+    map/mapitem.cpp
     map/mapscene.cpp
     map/worldpolygon.cpp
     

@@ -28,6 +28,7 @@ class Airport;
 class Client;
 class Fir;
 class FrameBufferObject;
+class MapItem;
 class MapScene;
 class Pilot;
 class WorldPolygon;
@@ -37,14 +38,10 @@ class MapWidget : public QGLWidget, public Singleton<MapWidget> {
   Q_OBJECT
 
 signals:
-  void menuRequest(const Pilot*);
-  void menuRequest(const Airport*);
-  void menuRequest(const Fir*);
+  void menuRequest(const MapItem*);
   void menuRequest();
   
-  void windowRequest(const Client*);
-  void windowRequest(const Airport*);
-  void windowRequest(const Fir*);
+  void windowRequest(const MapItem*);
   
   void flightTrackingRequest(const Pilot*);
   void flightTrackingCanceled();
@@ -77,9 +74,14 @@ public:
   QPointF scaleToLonLat(const QPoint&);
   
   /**
-   * Calculates scene local coordinates from latitude/longitude.
+   * Calculates widget coordinates from the given lat-lon coordinates.
    */
-  QPointF mapFromLonLat(const QPointF&);
+  QPoint mapFromLonLat(const QPointF&);
+  
+  /**
+   * Calculates OpenGL scene local coordinates from latitude/longitude.
+   */
+  QPointF glFromLonLat(const QPointF&);
   
   /**
    * Specifies whether the given point is visible on the screen or not.
@@ -120,6 +122,13 @@ private:
   void __updateFbo(int, int);
   void __updateZoom(int);
   
+  /**
+   * Shows or hides the tooltip.
+   */
+  void __updateTooltip();
+  
+  void __checkItem(const MapItem*);
+  
 private slots:
   void __reloadSettings();
   
@@ -147,8 +156,47 @@ private:
   float   __zoom;
   
   
-  QPoint __mousePosition;
+  /**
+   * This class handles mouse position on the screen.
+   */
+  class MousePosition {
+  public:
+    
+    /**
+     * Updates the mouse position from location on the widget (as
+     * it is given by Qt).
+     */
+    void update(const QPoint&);
+    
+    qreal screenDistance(const QPoint&);
+    
+    /**
+     * Calculates distance between the point on the globe (lat-lon) and
+     * the mouse cursor position.
+     */
+    qreal geoDistance(const QPointF&);
+    
+    /**
+     * Position within the widget.
+     */
+    inline const QPoint& screenPosition() const {
+      return __screenPosition;
+    }
+    
+    /**
+     * Latitude/longitude that the mouse cursor currently points at.
+     */
+    inline const QPointF& geoPosition() const {
+      return __geoPosition;
+    }
+    
+  private:
+    QPoint  __screenPosition;
+    QPointF __geoPosition;
+  } __mousePosition;
+  
   QPoint __lastClickPosition;
+  const MapItem* __underMouse;
   
   /* World map drawer */
   WorldPolygon* __world;

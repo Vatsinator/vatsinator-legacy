@@ -32,6 +32,7 @@
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
 
+#include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "mapwidget.h"
@@ -69,7 +70,7 @@ MapWidget::mapToLonLat(const QPoint& _point) {
   
   return QPointF(
       static_cast<qreal>(_point.x() - (width() / 2)) * xFactor / static_cast<qreal>(__zoom) + __center.x(),
-      static_cast<qreal>(_point.y() - (height() / 2)) * yFactor / static_cast<qreal>(__zoom) + __center.y()
+      -(static_cast<qreal>(_point.y() - (height() / 2)) * yFactor / static_cast<qreal>(__zoom) + __center.y())
     );
 }
 
@@ -84,8 +85,19 @@ MapWidget::scaleToLonLat(const QPoint& _point) {
     );
 }
 
-QPointF
+QPoint
 MapWidget::mapFromLonLat(const QPointF& _point) {
+  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  
+  return QPoint(
+      static_cast<int>((_point.x() - __center.x()) * __zoom / xFactor) + (width() / 2),
+      static_cast<int>((-_point.y() - __center.y()) * __zoom / yFactor) + (height() / 2)
+    );
+}
+
+QPointF
+MapWidget::glFromLonLat(const QPointF& _point) {
   return QPointF(
       (_point.x() - __center.x()) / MapConfig::longitudeMax() * __zoom,
       (_point.y() + __center.y()) / MapConfig::latitudeMax() * __zoom
@@ -113,7 +125,7 @@ MapWidget::initializeGL() {
   initGLExtensionsPointers();
   
   __world = new WorldPolygon();
-  __scene = new MapScene();
+  __scene = new MapScene(this);
   
   glEnable(GL_MULTISAMPLE);
   
@@ -166,6 +178,7 @@ MapWidget::paintGL() {
   
   qglClearColor(__settings.colors.seas);
   
+  __underMouse = nullptr;
   __drawWorld();
   __drawFirs();
   
@@ -175,6 +188,14 @@ MapWidget::paintGL() {
   __fbo->unbind();
   
   __renderTexture();
+  if (__underMouse) {
+    setCursor(QCursor(Qt::PointingHandCursor));
+  } else {
+    if (cursor().shape() != Qt::SizeAllCursor)
+      setCursor(QCursor(Qt::ArrowCursor));
+  }
+  
+  __updateTooltip();
 }
 
 void
@@ -198,7 +219,7 @@ MapWidget::wheelEvent(QWheelEvent* _event) {
 
 void
 MapWidget::mousePressEvent(QMouseEvent* _event) {
-  __mousePosition = _event->pos();
+  __mousePosition.update(_event->pos());
   QToolTip::hideText();
   
   if (_event->buttons() & Qt::LeftButton)
@@ -209,7 +230,7 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 
 void
 MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
-  __mousePosition = _event->pos();
+  __mousePosition.update(_event->pos());
   setCursor(QCursor(Qt::ArrowCursor));
   
   _event->accept();
@@ -220,7 +241,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   if (_event->buttons() & Qt::LeftButton) {
     setCursor(QCursor(Qt::SizeAllCursor));
     
-    QPoint diff = _event->pos() - __mousePosition;
+    QPoint diff = _event->pos() - __mousePosition.screenPosition();
     __center -= scaleToLonLat(diff);
     
     __center.ry() = qBound(-90.0, __center.y(), 90.0);
@@ -230,12 +251,8 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
       __center.rx() -= 360.0;
   }
   
-  __mousePosition = _event->pos();
+  __mousePosition.update(_event->pos());
   updateGL();
-  
-  QPointF coords = mapToLonLat(__mousePosition);
-  VatsinatorWindow::getSingleton().positionBoxUpdate(coords.x(), coords.y());
-  
   _event->accept();
 }
 
@@ -346,12 +363,17 @@ MapWidget::__drawFirs() {
   
   glColor4f(1.0, 1.0, 1.0, 1.0);
   for (const FirItem* item: __scene->firItems()) {
-    QPointF p = mapFromLonLat(item->position());
+    if (item->position() == QPointF(0.0, 0.0))
+      continue;
+    
+    QPointF p = glFromLonLat(item->position());
     if (onScreen(p)) {
       glPushMatrix();
         glTranslated(p.x(), p.y(), staffedFirsZ + 1);
         item->drawLabel();
       glPopMatrix();
+      
+      __checkItem(item);
     }
   }
 }
@@ -383,6 +405,23 @@ MapWidget::__updateZoom(int _steps) {
 }
 
 void
+MapWidget::__updateTooltip() {
+   if (!__underMouse) {
+    QToolTip::hideText();
+   } else {
+     QToolTip::showText(mapToGlobal(__mousePosition.screenPosition()), __underMouse->tooltipText());
+   }
+}
+
+void
+MapWidget::__checkItem(const MapItem* _item) {
+  if (!__underMouse &&
+      __mousePosition.screenDistance(mapFromLonLat(_item->position())) < MapConfig::mouseOnObject()) {
+    __underMouse = _item;
+  }
+}
+
+void
 MapWidget::__reloadSettings() {
   __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toInt();
   
@@ -406,4 +445,28 @@ MapWidget::__reloadSettings() {
   __settings.view.pilot_labels.when_hovered = SM::get("view.pilot_labels.when_hovered").toBool();
   
   redraw();
+}
+
+void
+MapWidget::MousePosition::update(const QPoint& _pos) {
+  __screenPosition = _pos;
+  __geoPosition = MapWidget::getSingleton().mapToLonLat(_pos);
+  
+  VatsinatorWindow::getSingleton().positionBoxUpdate(__geoPosition.x(), __geoPosition.y());
+}
+
+qreal
+MapWidget::MousePosition::screenDistance(const QPoint& _point) {
+  return qSqrt(
+    qPow(_point.x() - __screenPosition.x(), 2) +
+    qPow(_point.y() - __screenPosition.y(), 2)
+  );
+}
+
+qreal
+MapWidget::MousePosition::geoDistance(const QPointF& _point) {
+  return qSqrt(
+    qPow(_point.x() - __geoPosition.x(), 2) +
+    qPow(_point.y() - __geoPosition.y(), 2)
+  );
 }

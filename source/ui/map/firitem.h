@@ -24,11 +24,18 @@
 #include <QObject>
 #include <QPointF>
 
+#include "ui/map/mapitem.h"
+
 class Fir;
 class VertexBufferObject;
 
-class FirItem : public QObject {
+class FirItem : public QObject, public MapItem {
   Q_OBJECT
+  
+  /**
+   * FirItem is used to draw single FIR border, background and label
+   * on the map.
+   */
   
 public:
   FirItem(const Fir*, QObject* = nullptr);
@@ -40,11 +47,14 @@ public:
   void drawBackground() const;
   void drawLabel() const;
   
+  /**
+   * Label coordinates.
+   */
+  const QPointF& position() const override;
+  QString tooltipText() const override;
+  
   inline const Fir*
   data() const { return __fir; }
-  
-  inline const QPointF&
-  position() const { return __position; }
   
 private:
   void __prepareVbo();
