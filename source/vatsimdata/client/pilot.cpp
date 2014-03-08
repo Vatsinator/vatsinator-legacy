@@ -39,9 +39,18 @@
 #include "pilot.h"
 #include "defines.h"
 
+namespace {
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
-static const qreal PILOT_TO_AIRPORT = 0.1;
+static constexpr qreal PILOT_TO_AIRPORT = 0.1;
+
+inline qreal deg2Rad(qreal deg) {
+  static constexpr qreal PI = 3.14159265359;
+  
+  return deg * PI / 180;
+}
+
+}
 
 /*
  * 0 callsign
@@ -94,6 +103,9 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __aircraft(_data[9]),
     __tas(_data[10].toInt()),
     __flightRules(_data[21] == "I" ? IFR : VFR),
+    __std(QTime::fromString(_data[22], "hhmm")),
+    __atd(QTime::fromString(_data[23], "hhmm")),
+    __sta(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt()),
     __remarks(_data[29]),
     __heading(_data[38].toUInt()),
     __pressure({_data[39], _data[40]}),
@@ -106,6 +118,9 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   // vatsim sometimes skips the 0 on the beginning
   if (__squawk.length() == 3)
     __squawk.prepend("0");
+  
+  if (__sta == QTime(0, 0) || __sta == __std)
+    __sta = QTime();
 
   __updateAirports();
   __setMyStatus();
@@ -154,6 +169,40 @@ Pilot::drawLineTo() const {
     glDrawArrays(GL_LINE_STRIP, 0, __lineTo.size() / 2);
     glLineStipple(1, 0xFFFF);
   }
+}
+
+const QTime &
+Pilot::eta() const {
+  if (__eta.isValid())
+    return __eta;
+  
+  const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
+  if (to && to->data()) {
+    // calculate distance between pilot and destination airport
+    // http://www.movable-type.co.uk/scripts/latlong.html
+    
+    static constexpr qreal R = 3440.06479191; // nm
+    
+    qreal lat1 = deg2Rad(position().latitude);
+    qreal lat2 = deg2Rad(to->data()->latitude);
+    qreal lon1 = deg2Rad(position().longitude);
+    qreal lon2 = deg2Rad(to->data()->longitude);
+    
+    qreal dist =
+      qAcos(
+        qSin(lat1) * qSin(lat2) +
+        qCos(lat1) * qCos(lat2) *
+        qCos(lon2 - lon1)
+      ) * R;
+    
+    int secs = (dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0;
+    
+    __eta = QDateTime::currentDateTimeUtc().time().addSecs(secs);
+  } else {
+    __eta = __sta;
+  }
+  
+  return __eta;
 }
 
 void Pilot::__updateAirports() {

@@ -72,6 +72,8 @@ public:
 
   void drawLineFrom() const;
   void drawLineTo() const;
+  
+  const QTime& eta() const;
 
   inline void
   drawLines() const { drawLineFrom(); drawLineTo(); }
@@ -99,6 +101,24 @@ public:
   
   inline const Pilot::FlightRules &
   flightRules() const { return __flightRules; }
+  
+  /**
+   * Scheduled Time of Departure
+   */
+  inline const QTime &
+  std() const { return __std; }
+  
+  /**
+   * Actual Time of Departure
+   */
+  inline const QTime &
+  atd() const { return __atd; }
+  
+  /**
+   * Scheduled Time of Arrival
+   */
+  inline const QTime &
+  sta() const { return __sta; }
   
   inline const QString &
   remarks() const { return __remarks; }
@@ -128,28 +148,27 @@ protected:
   int     __altitude;
   int     __groundSpeed;
   QString __squawk;
-
   QString __aircraft;
-
+  
   /* True AirSpeed */
   int     __tas;
 
   /* IFR/VFR */
   Pilot::FlightRules __flightRules;
 
-  QString   __remarks;
-
-  unsigned  __heading;
-  
+  QTime           __std; /* Scheduled Time of Departure  */
+  QTime           __atd; /* Actual Time of Departure */
+  QTime           __sta; /* Scheduled Time of Arrival */
+  mutable QTime   __eta; /* Estimated Time of Arrival */
+  QTime           __estimatedArrTime;
+  QString         __remarks;
+  unsigned        __heading;
   Pilot::Status   __flightStatus;
-  
   Pilot::Pressure __pressure;
-
   Pilot::Route    __route;
-
+  bool            __prefiledOnly;
+  
   GLuint    __modelTexture;
-
-  bool      __prefiledOnly;
 
 private:
   /**
