@@ -636,12 +636,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="236"/>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="359"/>
-        <source>1200</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="273"/>
         <source>Actual Time of Departure</source>
         <extracomment>Shortcut expansion for &quot;ATD&quot;</extracomment>
