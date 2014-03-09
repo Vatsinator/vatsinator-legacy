@@ -29,8 +29,7 @@ namespace DefaultSettings {
   static const int    STAFFED_FIR_BACKGROUND_ALPHA    = 30;
   static const QColor STAFFED_UIR_BORDERS_COLOR       = { 0, 118, 148 };
   static const int    STAFFED_UIR_BACKGROUND_ALPHA    = 30;
-  static const QFont  FIR_FONT                        = QFont("Verdana");
-  static const int    FIR_FONT_PIXEL_SIZE             = 9;
+  static const QFont  FIR_FONT                        = QFont("Verdana", 9);
   static const QColor APPROACH_CIRCLE_COLOR           = { 127, 0, 0 };
   static const QColor SEAS_COLOR                      = { 188, 222, 225 };
   static const QColor LANDS_COLOR                     = { 255, 255, 255 };
@@ -40,6 +39,9 @@ namespace DefaultSettings {
 
 MapPage::MapPage(QWidget* _parent) : AbstractSettingsPage(_parent) {
   setupUi(this);
+  
+  connect(FirFontSelectionButton,       SIGNAL(clicked()),
+          this,                         SLOT(__showFirFontDialog()));
 }
 
 QString
@@ -65,6 +67,7 @@ MapPage::updateFromUi() const {
            UnstaffedFirColorButton->color());
   setValue("staffed_uir_borders_color",
            StaffedUirColorButton->color());
+  setValue("fir_font", __firFont);
   setValue("approach_circle_color",
            ApproachCircleColorButton->color());
   setValue("seas_color",
@@ -75,10 +78,6 @@ MapPage::updateFromUi() const {
            OriginToPilotLineColorButton->color());
   setValue("pilot_to_destination_line_color",
            PilotToDestinationLineColorButton->color());
-  
-  QFont firFont = FirFontComboBox->currentFont();
-  firFont.setPixelSize(FirFontSizeSpinBox->value());
-  setValue("fir_font", firFont);
   
   QColor tmp = StaffedFirColorButton->color();
   tmp.setAlpha(StaffedFirColorAlphaBox->value());
@@ -102,10 +101,7 @@ MapPage::restore(QSettings& _s) {
     _s.value("staffed_uir_borders_color", DefaultSettings::STAFFED_UIR_BORDERS_COLOR).value<QColor>());
   StaffedUirColorAlphaBox->setValue(
     _s.value("staffed_uir_alpha_color", DefaultSettings::STAFFED_UIR_BACKGROUND_ALPHA).toInt());
-  FirFontComboBox->setCurrentFont(
-    _s.value("fir_font", DefaultSettings::FIR_FONT).value<QFont>());
-  FirFontSizeSpinBox->setValue(
-    _s.value("fir_font_pixel_size", DefaultSettings::FIR_FONT_PIXEL_SIZE).toInt());
+  __firFont = _s.value("fir_font", DefaultSettings::FIR_FONT).value<QFont>();
   ApproachCircleColorButton->setColor(
     _s.value("approach_circle_color", DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>());
   SeasColorButton->setColor(
@@ -116,6 +112,8 @@ MapPage::restore(QSettings& _s) {
     _s.value("origin_to_pilot_line_color", DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR).value<QColor>());
   PilotToDestinationLineColorButton->setColor(
     _s.value("pilot_to_destination_line_color", DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR).value<QColor>());
+  
+  __updateFontButtons();
 }
 
 void
@@ -125,11 +123,27 @@ MapPage::save(QSettings& _s) {
   _s.setValue("unstaffed_fir_borders_color", UnstaffedFirColorButton->color());
   _s.setValue("staffed_uir_borders_color", StaffedUirColorButton->color());
   _s.setValue("staffed_uir_alpha_color", StaffedUirColorAlphaBox->value());
-  _s.setValue("fir_font", FirFontComboBox->currentFont());
-  _s.setValue("fir_font_pixel_size", FirFontSizeSpinBox->value());
+  _s.setValue("fir_font", __firFont);
   _s.setValue("approach_circle_color", ApproachCircleColorButton->color());
   _s.setValue("seas_color", SeasColorButton->color());
   _s.setValue("lands_color", LandsColorButton->color());
   _s.setValue("origin_to_pilot_line_color", OriginToPilotLineColorButton->color());
   _s.setValue("pilot_to_destination_line_color", PilotToDestinationLineColorButton->color());
+}
+
+void
+MapPage::__updateFontButtons() {
+  QString fontName = QString("%1, %2").arg(__firFont.family(), QString::number(__firFont.pointSize()));
+  FirFontSelectionButton->setText(fontName);
+  FirFontSelectionButton->setFont(__firFont);
+}
+
+void
+MapPage::__showFirFontDialog() {
+  bool ok;
+  QFont font = QFontDialog::getFont(&ok, __firFont, this);
+  if (ok) {
+    __firFont = font;
+    __updateFontButtons();
+  }
 }

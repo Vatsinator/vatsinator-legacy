@@ -20,6 +20,8 @@
 #ifndef MAPPAGE_H
 #define MAPPAGE_H
 
+#include <QFont>
+
 #include "ui/ui_mappage.h"
 #include "ui/pages/abstractsettingspage.h"
 
@@ -54,6 +56,15 @@ public:
 protected:
   void restore(QSettings&) override;
   void save(QSettings&) override;
+  
+private:
+  void __updateFontButtons();
+  
+private slots:
+  void __showFirFontDialog();
+  
+private:
+  QFont __firFont;
   
 };
 
