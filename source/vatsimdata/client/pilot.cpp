@@ -105,7 +105,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __flightRules(_data[21] == "I" ? IFR : VFR),
     __std(QTime::fromString(_data[22], "hhmm")),
     __atd(QTime::fromString(_data[23], "hhmm")),
-    __sta(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt()),
+    __progress(-1),
     __remarks(_data[29]),
     __heading(_data[38].toUInt()),
     __pressure({_data[39], _data[40]}),
@@ -119,9 +119,10 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   if (__squawk.length() == 3)
     __squawk.prepend("0");
   
-  if (__sta == QTime(0, 0) || __sta == __std)
-    __sta = QTime();
-
+  if (__std.isValid() && __sta != QTime(0, 0)) {
+    __sta = QTime(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt());
+  }
+  
   __updateAirports();
   __setMyStatus();
 //   __generateLines();
@@ -179,21 +180,12 @@ Pilot::eta() const {
   const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
   if (to && to->data()) {
     // calculate distance between pilot and destination airport
-    // http://www.movable-type.co.uk/scripts/latlong.html
-    
-    static constexpr qreal R = 3440.06479191; // nm
-    
-    qreal lat1 = deg2Rad(position().latitude);
-    qreal lat2 = deg2Rad(to->data()->latitude);
-    qreal lon1 = deg2Rad(position().longitude);
-    qreal lon2 = deg2Rad(to->data()->longitude);
-    
-    qreal dist =
-      qAcos(
-        qSin(lat1) * qSin(lat2) +
-        qCos(lat1) * qCos(lat2) *
-        qCos(lon2 - lon1)
-      ) * R;
+    qreal dist = VatsimDataHandler::nmDistance(
+        deg2Rad(position().latitude),
+        deg2Rad(position().longitude),
+        deg2Rad(to->data()->latitude),
+        deg2Rad(to->data()->longitude)
+      );
     
     int secs = (dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0;
     
@@ -203,6 +195,36 @@ Pilot::eta() const {
   }
   
   return __eta;
+}
+
+int
+Pilot::progress() const {
+  if (__progress == -1) {
+    const Airport* from = VatsimDataHandler::getSingleton().activeAirports()[__route.origin];
+    const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
+    
+    if (from && to && from->data() && to->data()) {
+      qreal total = VatsimDataHandler::nmDistance(
+        deg2Rad(from->data()->latitude),
+        deg2Rad(from->data()->longitude),
+        deg2Rad(to->data()->latitude),
+        deg2Rad(to->data()->longitude)
+      );
+      
+      qreal left = VatsimDataHandler::nmDistance(
+        deg2Rad(position().latitude),
+        deg2Rad(position().longitude),
+        deg2Rad(to->data()->latitude),
+        deg2Rad(to->data()->longitude)
+      );
+      
+      __progress = 100 - (100 * left / total);
+    } else {
+      __progress = 0;
+    }
+  }
+  
+  return __progress;
 }
 
 void Pilot::__updateAirports() {

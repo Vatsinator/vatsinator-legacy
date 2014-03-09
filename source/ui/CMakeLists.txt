@@ -69,6 +69,7 @@ set (ui_SRCS
     views/controllertableview.cpp
     views/flighttableview.cpp
     
+    widgets/flightprogresswidget.cpp
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
@@ -122,6 +123,7 @@ set (ui_MOC_SRCS
     views/controllertableview.h
     views/flighttableview.h
     
+    widgets/flightprogresswidget.h
     widgets/mapwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h

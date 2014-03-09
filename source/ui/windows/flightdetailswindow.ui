@@ -140,14 +140,44 @@
       </layout>
      </item>
      <item>
-      <widget class="QWidget" name="widget_2" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>10</height>
-        </size>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="0,2,0">
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="FlightProgressWidget" name="FlightProgress" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>10</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -381,16 +411,6 @@
       </layout>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QWidget" name="widget" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>10</height>
-      </size>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QTabWidget" name="InfoTab">
@@ -872,6 +892,12 @@
    <class>AirportDetailsButton</class>
    <extends>QPushButton</extends>
    <header>ui/buttons/airportdetailsbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>FlightProgressWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/widgets/flightprogresswidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

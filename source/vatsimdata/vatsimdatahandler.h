@@ -186,6 +186,24 @@ public:
    * @return Count of logged-in observers.
    */
   int obsCount() const;
+  
+  /**
+   * Calculates distance between two points, expressed in
+   * nautical miles.
+   * 
+   * NOTE: If you don't need the distance specifically in nautical miles
+   * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+   * instead, as it is a lot quicker.
+   * 
+   * NOTE: All coordinates must be in radians.
+   * 
+   * @param lat1 Latitude of the first point.
+   * @param lon1 Longitude of the first point.
+   * @param lat2 Latitude of the second point.
+   * @param lon2 Longitude of the second point.
+   * @return Distance between the two points.
+   */
+  static qreal nmDistance(const qreal&, const qreal&, const qreal&, const qreal&);
 
   /**
    * Returns an URL to where METARs can be fetched from.

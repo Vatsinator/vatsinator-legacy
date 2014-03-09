@@ -74,6 +74,7 @@ public:
   void drawLineTo() const;
   
   const QTime& eta() const;
+  int progress() const;
 
   inline void
   drawLines() const { drawLineFrom(); drawLineTo(); }
@@ -160,7 +161,8 @@ protected:
   QTime           __atd; /* Actual Time of Departure */
   QTime           __sta; /* Scheduled Time of Arrival */
   mutable QTime   __eta; /* Estimated Time of Arrival */
-  QTime           __estimatedArrTime;
+  mutable int     __progress; /* [1-100] */
+  
   QString         __remarks;
   unsigned        __heading;
   Pilot::Status   __flightStatus;

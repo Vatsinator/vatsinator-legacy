@@ -323,6 +323,21 @@ VatsimDataHandler::obsCount() const {
   return __observers;
 }
 
+qreal
+VatsimDataHandler::nmDistance(
+    const qreal& _lat1, const qreal& _lon1,
+    const qreal& _lat2, const qreal& _lon2) {
+  
+  /* http://www.movable-type.co.uk/scripts/latlong.html */
+  static constexpr qreal R = 3440.06479191; // nm
+  
+  return qAcos(
+      qSin(_lat1) * qSin(_lat2) +
+      qCos(_lat1) * qCos(_lat2) *
+      qCos(_lon2 - _lon1)
+    ) * R;
+}
+
 void
 VatsimDataHandler::requestDataUpdate() {
   if (__downloader->isWorking())

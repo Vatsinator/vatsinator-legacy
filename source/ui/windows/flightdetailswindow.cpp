@@ -71,6 +71,8 @@ FlightDetailsWindow::show(const Client* _client) {
   FromLabel->setText(__current->route().origin);
   ToLabel->setText(__current->route().destination);
   
+  FlightProgress->setValue(__current->progress());
+  
   if (__current->std().isValid())
     PlannedDepartureTimeLabel->setText(__current->std().toString("hh:mm"));
   else
