@@ -5,6 +5,8 @@ Version 1.0
     * Added Weather Forecasts
     * Added stats collecting
     * Added Japanese translation
+    * Added flight times: STD, ATD, STA and ETA
+    * Added flight progress widget
   
   Build system:
     * Added support for MacOS X
