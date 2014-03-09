@@ -20,7 +20,11 @@
 #include "glutils/glresourcemanager.h"
 #include "glutils/vertexbufferobject.h"
 #include "storage/settingsmanager.h"
+#include "ui/actions/clientdetailsaction.h"
+#include "ui/actions/firdetailsaction.h"
 #include "ui/map/mapconfig.h"
+#include "ui/windows/atcdetailswindow.h"
+#include "ui/windows/firdetailswindow.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -123,6 +127,34 @@ FirItem::tooltipText() const {
     return QString();
   else
     return QString("<p style='white-space:nowrap'><center>" % desc % staff % "</center></p>");
+}
+
+QMenu *
+FirItem::menu(QWidget* _parent) const {
+  QMenu* menu = new QMenu(data()->icao(), _parent);
+  
+  FirDetailsAction* showFir = new FirDetailsAction(
+      data(),
+      tr("%1 details").arg(data()->icao()),
+      _parent
+    );
+  connect(showFir,                              SIGNAL(triggered(const Fir*)),
+          FirDetailsWindow::getSingletonPtr(),  SLOT(show(const Fir*)));
+  menu->addAction(showFir);
+  
+  for (const Controller* c: data()->staffModel()->staff()) {
+    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
+    connect(cda,                                        SIGNAL(triggered(const Client*)),
+            AtcDetailsWindow::getSingletonPtr(),        SLOT(show(const Client*)));
+    menu->addAction(cda);
+  }
+  
+  return menu;
+}
+
+void
+FirItem::showDetailsWindow() const {
+  FirDetailsWindow::getSingleton().show(data());
 }
 
 void

@@ -131,6 +131,8 @@ private:
   
 private slots:
   void __reloadSettings();
+  void __showMenu(const MapItem*);
+  void __showWindow(const MapItem*);
   
 private:
   FrameBufferObject* __fbo;

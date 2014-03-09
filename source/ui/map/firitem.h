@@ -52,6 +52,8 @@ public:
    */
   const QPointF& position() const override;
   QString tooltipText() const override;
+  QMenu* menu(QWidget*) const override;
+  void showDetailsWindow() const override;
   
   inline const Fir*
   data() const { return __fir; }

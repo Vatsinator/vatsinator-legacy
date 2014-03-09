@@ -52,6 +52,9 @@ MapWidget::MapWidget(QWidget* _parent) :
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings()));
   
+  connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
+  connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
+  
   setAutoBufferSwap(true);
 }
 
@@ -222,8 +225,16 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
   __mousePosition.update(_event->pos());
   QToolTip::hideText();
   
-  if (_event->buttons() & Qt::LeftButton)
+  if (_event->buttons() & Qt::LeftButton) {
     __lastClickPosition = _event->pos();
+  } else if (_event->buttons() & Qt::RightButton) {
+    QToolTip::hideText();
+    if (__underMouse) {
+      emit menuRequest(__underMouse);
+    } else {
+      emit menuRequest();
+    }
+  }
   
   _event->accept();
 }
@@ -232,6 +243,15 @@ void
 MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
   __mousePosition.update(_event->pos());
   setCursor(QCursor(Qt::ArrowCursor));
+  
+  if (__underMouse) {
+    if (__lastClickPosition == __mousePosition.screenPosition()) {
+      QToolTip::hideText();
+      emit windowRequest(__underMouse);
+    }
+    
+    __underMouse = nullptr;
+  }
   
   _event->accept();
 }
@@ -445,6 +465,18 @@ MapWidget::__reloadSettings() {
   __settings.view.pilot_labels.when_hovered = SM::get("view.pilot_labels.when_hovered").toBool();
   
   redraw();
+}
+
+void
+MapWidget::__showMenu(const MapItem* _item) {  
+  QMenu* menu = _item->menu(this);
+  menu->exec(mapToGlobal(__mousePosition.screenPosition()));
+  delete menu;
+}
+
+void
+MapWidget::__showWindow(const MapItem* _item) {
+  _item->showDetailsWindow();
 }
 
 void

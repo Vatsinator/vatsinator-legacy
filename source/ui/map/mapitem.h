@@ -22,6 +22,7 @@
 
 #include <QPointF>
 #include <QString>
+#include <QMenu>
 
 class MapItem {
 public:
@@ -36,6 +37,19 @@ public:
    * Return empty string to ignore.
    */
   virtual QString tooltipText() const = 0;
+  
+  /**
+   * Popup menu that is shown when user right-clicks on
+   * the item.
+   * 
+   * @param parent Parent widget for the menu to be passed in the ctor.
+   */
+  virtual QMenu* menu(QWidget*) const = 0;
+  
+  /**
+   * Open window that shows the item's data details.
+   */
+  virtual void showDetailsWindow() const  = 0;
 };
 
 #endif // MAPITEM_H
