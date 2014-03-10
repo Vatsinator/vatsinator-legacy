@@ -93,16 +93,16 @@ FlightDetailsWindow::show(const Client* _client) {
   else
     EstimatedArrivalTimeLabel->setText("-");
   
-  QFont small;
-  small.setPointSize(small.pointSize() - 2);
-  StdLabel->setFont(small);
-  StdUtcLabel->setFont(small);
-  StaLabel->setFont(small);
-  StaUtcLabel->setFont(small);
-  AtdLabel->setFont(small);
-  AtdUtcLabel->setFont(small);
-  EtaLabel->setFont(small);
-  EtaUtcLabel->setFont(small);
+  QFont smaller;
+  smaller.setPointSize(smaller.pointSize() - 2);
+  StdLabel->setFont(smaller);
+  StdUtcLabel->setFont(smaller);
+  StaLabel->setFont(smaller);
+  StaUtcLabel->setFont(smaller);
+  AtdLabel->setFont(smaller);
+  AtdUtcLabel->setFont(smaller);
+  EtaLabel->setFont(smaller);
+  EtaUtcLabel->setFont(smaller);
 
   PilotLabel->setText(__current->realName() + " (" + QString::number(__current->pid()) + ")");
   AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__current->altitude())));
