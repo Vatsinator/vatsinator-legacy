@@ -1,5 +1,5 @@
 /*
- * firitem.h
+ * airportitem.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,62 +17,42 @@
  *
  */
 
-#ifndef FIRITEM_H
-#define FIRITEM_H
+#ifndef AIRPORTITEM_H
+#define AIRPORTITEM_H
 
-#include <QtOpenGL>
 #include <QObject>
-#include <QPointF>
+#include <QtOpenGL>
 
 #include "ui/map/mapitem.h"
 
-class Fir;
-class VertexBufferObject;
+class Airport;
 
-class FirItem : public QObject, public MapItem {
+class AirportItem : public QObject, public MapItem {
   Q_OBJECT
-  
-  /**
-   * FirItem is used to draw single FIR border, background and label
-   * on the map.
-   */
-  
+
 public:
-  FirItem(const Fir*, QObject* = nullptr);
-  FirItem() = delete;
+  AirportItem(const Airport*, QObject* = nullptr);
+  AirportItem() = delete;
   
-  virtual ~FirItem();
+  virtual ~AirportItem();
   
-  void drawBorders() const;
-  void drawBackground() const;
-  void drawLabel() const;
+  void drawIcon() const;
   
-  /**
-   * Label coordinates.
-   */
   const QPointF& position() const override;
   QString tooltipText() const override;
   QMenu* menu(QWidget*) const override;
   void showDetailsWindow() const override;
   
-  inline const Fir *
-  data() const { return __fir; }
+  inline const Airport *
+  data() const { return __airport; }
   
 private:
-  void __prepareVbo();
+  void __makeIcon() const;
   
-private slots:
-  void __generateLabel() const;
+  const Airport* __airport;
+  QPointF        __position;
   
-private:
-  const Fir* __fir;
-  QPointF    __position;
-  
-  VertexBufferObject* __borders;
-  VertexBufferObject* __triangles;
-  
-  mutable GLuint __label;
-  
+  mutable GLuint __icon;
 };
 
-#endif // FIRITEM_H
+#endif // AIRPORTITEM_H

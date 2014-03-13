@@ -19,10 +19,15 @@
 
 #include <QtCore>
 
+#include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "ui/map/airportitem.h"
 #include "ui/map/firitem.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsimdata/airport/activeairport.h"
+#include "vatsimdata/airport/emptyairport.h"
 
 #include "mapscene.h"
 #include "defines.h"
@@ -61,4 +66,14 @@ MapScene::__updateData() {
       __unstaffedFirItems << f;
   }
   
+  qDeleteAll(__activeAirportItems), __activeAirportItems.clear();
+  qDeleteAll(__emptyAirportItems), __emptyAirportItems.clear();
+  
+  for (AirportRecord& ap: AirportDatabase::getSingleton().airports()) {
+    if (VatsimDataHandler::getSingleton().activeAirports().contains(ap.icao)) {
+      __activeAirportItems << new AirportItem(VatsimDataHandler::getSingleton().activeAirports()[ap.icao]);
+    } else {
+      __emptyAirportItems << new AirportItem(VatsimDataHandler::getSingleton().addEmptyAirport(&ap));
+    }
+  }
 }

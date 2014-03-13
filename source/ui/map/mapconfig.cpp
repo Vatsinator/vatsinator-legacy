@@ -34,15 +34,15 @@ MapConfig::glFormat() {
   return fmt;
 }
 
-const QPixmap &
+const QString &
 MapConfig::airportIcon() {
-  static QPixmap icon(":/pixmaps/airport.png");
+  static QString icon(":/pixmaps/airport.png");
   return icon;
 }
 
-const QPixmap &
+const QString &
 MapConfig::staffedAirportIcon() {
-  static QPixmap icon(":/pixmaps/airport_staffed.png");
+  static QString icon(":/pixmaps/airport_staffed.png");
   return icon;
 }
 

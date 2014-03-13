@@ -100,8 +100,8 @@ FirItem::drawLabel() const {
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-const
-QPointF& FirItem::position() const {
+const QPointF &
+FirItem::position() const {
   return __position;
 }
 

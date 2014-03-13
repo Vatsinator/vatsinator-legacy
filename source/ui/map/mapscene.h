@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QVector>
 
+class AirportItem;
 class FirItem;
 
 class MapScene : public QObject {
@@ -56,6 +57,9 @@ private:
   QVector<const FirItem*> __staffedFirItems;
   QVector<const FirItem*> __unstaffedFirItems;
   
+  /* Groupped airport items */
+  QVector<const AirportItem*> __activeAirportItems;
+  QVector<const AirportItem*> __emptyAirportItems;
   
 };
 

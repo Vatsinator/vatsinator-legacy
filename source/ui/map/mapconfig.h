@@ -77,8 +77,8 @@ public:
   
   static const QGLFormat& glFormat();
   
-  static const QPixmap& airportIcon();
-  static const QPixmap& staffedAirportIcon();
+  static const QString& airportIcon();
+  static const QString& staffedAirportIcon();
   
   static const QColor& pilotPen();
   static const QColor& airportPen();

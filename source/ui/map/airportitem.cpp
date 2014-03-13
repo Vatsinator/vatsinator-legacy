@@ -1,0 +1,146 @@
+/*
+ * airportitem.cpp
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#include "db/airportdatabase.h"
+#include "glutils/glresourcemanager.h"
+#include "ui/actions/actionmenuseparator.h"
+#include "ui/actions/airportdetailsaction.h"
+#include "ui/actions/clientdetailsaction.h"
+#include "ui/actions/metaraction.h"
+#include "ui/map/mapconfig.h"
+#include "ui/windows/airportdetailswindow.h"
+#include "ui/windows/atcdetailswindow.h"
+#include "ui/windows/metarswindow.h"
+#include "vatsimdata/airport.h"
+#include "vatsimdata/airport/activeairport.h"
+#include "vatsimdata/airport/emptyairport.h"
+#include "vatsimdata/models/controllertablemodel.h"
+
+#include "airportitem.h"
+#include "defines.h"
+
+AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
+    QObject(_parent),
+    __airport(_ap),
+    __position(_ap->data()->longitude, _ap->data()->latitude),
+    __icon(0) {}
+
+AirportItem::~AirportItem() {
+
+}
+
+void
+AirportItem::drawIcon() const {
+  static const GLfloat iconRect[] = {
+    -0.04, -0.02,
+    -0.04,  0.06,
+     0.04,  0.06,
+     0.04, -0.02
+  };
+  
+  if (!__icon)
+    __makeIcon();
+  
+  glBindTexture(GL_TEXTURE_2D, __icon);
+  glVertexPointer(2, GL_FLOAT, 0, iconRect);
+  glDrawArrays(GL_QUADS, 0, 4);
+  glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+const QPointF &
+AirportItem::position() const {
+  return __position;
+}
+
+QString
+AirportItem::tooltipText() const {
+  QString desc = QString("%1 %2, %3").arg(data()->data()->icao, data()->data()->name, data()->data()->city);
+  
+  QString staff, deparr;
+  const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
+  if (a) {
+    for (const Controller* c: a->staffModel()->staff()) {
+      staff.append("<br>");
+      staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
+    }
+    
+    int deps = a->countDepartures();
+    if (deps > 0) {
+      deparr.append("<br>");
+      deparr.append(tr("Departures: %1").arg(QString::number(deps)));
+    }
+    
+    int arrs = a->countArrivals();
+    if (arrs > 0) {
+      deparr.append("<br>");
+      deparr.append(tr("Arrivals: %1").arg(QString::number(arrs)));
+    }
+  }
+  
+  return QString("<p style='white-space:nowrap'><center>" % desc % staff % deparr % "</center></p>");
+}
+
+QMenu *
+AirportItem::menu(QWidget* _parent) const {
+  QMenu* menu = new QMenu(data()->data()->icao, _parent);
+  
+  AirportDetailsAction* showAp = new AirportDetailsAction(data(), tr("Airport details"), _parent);
+  connect(showAp,                                       SIGNAL(triggered(const Airport*)),
+          AirportDetailsWindow::getSingletonPtr(),      SLOT(show(const Airport*)));
+  menu->addAction(showAp);
+  
+  MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
+  connect(showMetar,                                    SIGNAL(triggered(QString)),
+          MetarsWindow::getSingletonPtr(),              SLOT(show(QString)));
+  menu->addAction(showMetar);
+  
+  const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
+  if (a) {
+    if (!a->staffModel()->staff().isEmpty()) {
+      menu->addSeparator();
+      menu->addAction(new ActionMenuSeparator(tr("Controllers"), _parent));
+      
+      for (const Controller* c: a->staffModel()->staff()) {
+        ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
+        connect(cda,                                    SIGNAL(triggered(const Client*)),
+                AtcDetailsWindow::getSingletonPtr(),    SLOT(show(const Client*)));
+        menu->addAction(cda);
+      }
+    }
+  }
+  
+  return menu;
+}
+
+void
+AirportItem::showDetailsWindow() const {
+  AirportDetailsWindow::getSingletonPtr()->show(data());
+}
+
+void
+AirportItem::__makeIcon() const {
+  const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
+  if (a) {
+    if (a->staffModel()->staff().isEmpty()) {
+      __icon = GlResourceManager::loadImage(MapConfig::airportIcon());
+    } else {
+      __icon = GlResourceManager::loadImage(MapConfig::staffedAirportIcon());
+    }
+  }
+}
