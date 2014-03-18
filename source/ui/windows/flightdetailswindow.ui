@@ -244,7 +244,7 @@
             <string extracomment="Shortuct expansion for &quot;STA&quot;">Sheduled Time of Arrival</string>
            </property>
            <property name="text">
-            <string>STA</string>
+            <string notr="true">STA</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
