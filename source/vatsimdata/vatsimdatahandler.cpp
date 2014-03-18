@@ -132,8 +132,7 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
       } else if (key == "metar0") {
         __metarUrl = value;
       } else if (key == "url0") {
-        QString url0 = value;
-        __dataServers << url0;
+        __dataServers << value;
       } else if (key == "msg0") {
         UserInterface::getSingleton().showVatsimMessage(value);
       }
@@ -157,7 +156,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
   VatsinatorApplication::log("Data length: %i.", _data.length());
 
-  QStringList tempList = _data.split('\n', QString::SkipEmptyParts);
+  QStringList tempList = _data.split(QRegExp("\r?\n"), QString::SkipEmptyParts);
   
   DataSections section = None;
 

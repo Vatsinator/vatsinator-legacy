@@ -118,6 +118,7 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     QDate today = QDate::currentDate();
     QDate when = QDate::fromString(manifest.readLine().simplified(), "yyyyMMdd");
     if (when.daysTo(today) < DaysToUpdate) {
+      __lastUpdateDate = when;
       emit databaseStatusChanged(Updated);
     } else {
       emit databaseStatusChanged(Outdated);
@@ -127,7 +128,6 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
     }
     
     manifest.close();
-    
     __lastUpdateDate = when;
   }
 }
