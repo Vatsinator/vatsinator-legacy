@@ -34,6 +34,7 @@
 
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
+#include "vatsimdata/updatescheduler.h"
 #include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/airport/emptyairport.h"
 #include "vatsimdata/client/controller.h"
@@ -66,7 +67,8 @@ VatsimDataHandler::VatsimDataHandler() :
     __statusFileFetched(false),
     __airports(AirportDatabase::getSingleton()),
     __firs(FirDatabase::getSingleton()),
-    __downloader(new PlainTextDownloader()) {
+    __downloader(new PlainTextDownloader()),
+    __scheduler(new UpdateScheduler()) {
   
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(__slotUiCreated()));
@@ -74,19 +76,18 @@ VatsimDataHandler::VatsimDataHandler() :
           this,                                     SLOT(__dataFetched(QString)));
   connect(__downloader,                             SIGNAL(error()),
           this,                                     SLOT(__handleFetchError()));
+  connect(__scheduler,                              SIGNAL(timeToUpdate()),
+          this,                                     SLOT(requestDataUpdate()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   connect(this, SIGNAL(localDataBad(QString)), SLOT(__reportDataError(QString)));
-  
-  __timer.setSingleShot(true);
-  connect(&__timer,     SIGNAL(timeout()),
-          this,         SIGNAL(vatsimDataDownloading()));
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
   
   delete __downloader;
+  delete __scheduler;
   
   qDeleteAll(__uirs);
 
@@ -187,7 +188,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
             __dateVatsimDataUpdated = QDateTime::fromString(
               value, "yyyyMMddhhmmss");
           } else if (key == "RELOAD") {
-            __updateInterval(value.toInt() * 1000 * 60);
+            __reload = value.toInt();
           }
         }
         break;
@@ -523,13 +524,6 @@ VatsimDataHandler::__clearData() {
 }
 
 void
-VatsimDataHandler::__updateInterval(int _interval) {
-  if (SM::get("network.auto_updater").toBool() == true) {
-    __timer.setInterval(_interval);
-  }
-}
-
-void
 VatsimDataHandler::__loadCachedData() {
   VatsinatorApplication::log("VatsimDataHandler: loading data from cache...");
   
@@ -562,12 +556,6 @@ VatsimDataHandler::__slotUiCreated() {
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
   
-  if (SM::get("network.auto_updater").toBool() == false) {
-    __timer.setInterval(SM::get("network.refresh_rate").toInt() * 1000 * 60);
-  } else {
-    __timer.setInterval(NetConfig::Vatsinator::defaultRefreshRate() * 1000 * 60);
-  }
-  
   __downloader->setProgressBar(VatsinatorWindow::getSingleton().progressBar());
   __beginDownload();
 }
@@ -588,7 +576,6 @@ VatsimDataHandler::__dataFetched(QString _data) {
     
     parseDataFile(_data);
     emit vatsimDataUpdated();
-    __timer.start();
     
     if (SM::get("network.cache_enabled").toBool())
       FileManager::cacheData(CacheFileName, _data);

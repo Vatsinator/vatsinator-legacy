@@ -24,7 +24,6 @@
 #include <QObject>
 #include <QString>
 #include <QVector>
-#include <QTimer>
 #include <QMap>
 
 #include <qmath.h>
@@ -42,6 +41,7 @@ class FlightTableModel;
 class Pilot;
 class PlainTextDownloader;
 class Uir;
+class UpdateScheduler;
 class VatsinatorApplication;
 
 struct AirportRecord;
@@ -231,7 +231,10 @@ public:
 
   inline const QMultiMap<QString, QString> &
   aliases() const { return __aliases; }
-
+  
+  inline int
+  reload() const { return __reload; }
+  
   inline const QDateTime &
   dateDataUpdated() const { return __dateVatsimDataUpdated; }
 
@@ -253,8 +256,11 @@ public:
   static ControllerTableModel* emptyControllerTable;
   
 public slots:
+  
   /**
-   * Fetches the new data.
+   * This is the safest method to refresh the Vatsim data.
+   * If data is being already downloaded, it is aborted and
+   * the new download is queued.
    */
   void requestDataUpdate();
   
@@ -284,11 +290,6 @@ private:
    * Removes all data, frees pointers
    */
   void __clearData();
-  
-  /**
-   * Handles "RELOAD =" section of the data file.
-   */
-  void __updateInterval(int);
   
   /**
    * Loades cached data
@@ -335,9 +336,16 @@ private:
 
   /* And status.txt */
   QString   __statusUrl;
+  
+  /* Minutes to next reload, as stated in data file */
+  int __reload;
 
+  /* Last time Vatsim data was refreshed.
+   * Get from data file.
+   */
   QDateTime __dateVatsimDataUpdated;
 
+  /* Observer count */
   int       __observers;
 
   /* Indicates whether the status.txt file was already read or not */
@@ -347,7 +355,7 @@ private:
   FirDatabase&     __firs;
   
   PlainTextDownloader* __downloader;
-  QTimer               __timer;
+  UpdateScheduler*     __scheduler;
 
 };
 

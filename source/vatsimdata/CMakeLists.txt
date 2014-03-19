@@ -6,6 +6,7 @@ set (vatsimdata_SRCS
     fir.cpp
     metar.cpp
     uir.cpp
+    updatescheduler.cpp
     vatsimdatahandler.cpp
     
     airport/activeairport.cpp
@@ -23,6 +24,7 @@ set (vatsimdata_SRCS
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
 set (vatsimdata_MOC_SRCS
+    updatescheduler.h
     vatsimdatahandler.h
     
     models/airporttablemodel.h
