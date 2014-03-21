@@ -18,8 +18,8 @@
 
 #include <QtGui>
 
+#include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
-
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
@@ -72,9 +72,8 @@ FirDatabase::__readDatabase() {
   QFile db(FileManager::path("WorldFirs.db"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
-    VatsinatorApplication::alert(
-      tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()),
-      true);
+    UserInterface::fatal(
+      tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
 
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);

@@ -21,7 +21,7 @@
 #include <QRegExp>
 
 #include "storage/filemanager.h"
-
+#include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "airlinedatabase.h"
@@ -45,7 +45,7 @@ AirlineDatabase::__init() {
   QFile db(FileManager::path("data/airlines"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
+    UserInterface::warning(
       tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
     return;
   }

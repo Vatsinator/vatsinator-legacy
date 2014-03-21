@@ -547,8 +547,7 @@ VatsimDataHandler::__loadCachedData() {
 
 void
 VatsimDataHandler::__reportDataError(QString _msg) {
-  VatsinatorApplication::log(qPrintable(_msg));
-  VatsinatorApplication::alert(_msg, true);
+  UserInterface::fatal(_msg);
 }
 
 void

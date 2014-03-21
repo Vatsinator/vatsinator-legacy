@@ -55,6 +55,22 @@ public:
   UserInterface();
   virtual ~UserInterface();
   
+  /**
+   * Reports fatal error to user.
+   * After showing the error message box, the application
+   * will terminate.
+   * 
+   * @param msg Message to be shown.
+   */
+  static void fatal(const QString&);
+  
+  /**
+   * Reports warning to user.
+   * 
+   * @param msg Warning message.
+   */
+  static void warning(const QString&);
+  
 public slots:
   void showAppRestartDialog();
   void showVatsimMessage(const QString&);

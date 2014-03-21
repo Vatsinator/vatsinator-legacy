@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtCore>
 
 #include "storage/cachefile.h"
 
@@ -137,21 +137,6 @@ VatsinatorApplication::~VatsinatorApplication() {
 }
 
 void
-VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
-  if (getSingleton().__userInterface) {
-    QMessageBox msgBox;
-    msgBox.setText(_msg);
-    msgBox.setIcon(_fatal ? QMessageBox::Critical : QMessageBox::Warning);
-    msgBox.exec();
-  }
-  
-  VatsinatorApplication::log(qPrintable(_msg));
-  
-  if (_fatal)
-    QCoreApplication::exit(1);
-}
-
-void
 VatsinatorApplication::emitGLInitialized() {
   VatsinatorApplication::getSingleton().__emitGLInitialized();
 }
@@ -179,6 +164,11 @@ VatsinatorApplication::h2Font() {
   font.setPointSize(size);
   font.setBold(true);
   return font;
+}
+
+void
+VatsinatorApplication::terminate() {
+  std::terminate();
 }
 
 #ifndef NO_DEBUG

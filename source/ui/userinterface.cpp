@@ -98,6 +98,30 @@ UserInterface::~UserInterface() {
 }
 
 void
+UserInterface::fatal(const QString& _msg) {
+  QMessageBox msgBox;
+  msgBox.setText(_msg);
+  msgBox.setIcon(QMessageBox::Critical);
+  
+  VatsinatorApplication::log(qPrintable(_msg));
+  
+  msgBox.exec();
+  
+  VatsinatorApplication::terminate();
+}
+
+void
+UserInterface::warning(const QString& _msg) {
+  QMessageBox msgBox;
+  msgBox.setText(_msg);
+  msgBox.setIcon(QMessageBox::Warning);
+  
+  VatsinatorApplication::log(qPrintable(_msg));
+  
+  msgBox.exec();
+}
+
+void
 UserInterface::showAppRestartDialog() {
   AppRestartDialog* dialog = new AppRestartDialog();
   

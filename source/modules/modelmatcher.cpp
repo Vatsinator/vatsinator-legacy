@@ -19,9 +19,8 @@
 #include <QtGui>
 
 #include "glutils/glresourcemanager.h"
-
+#include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
@@ -34,7 +33,7 @@ ModelMatcher::ModelMatcher() {
   QFile modelsFile(FileManager::path("data/model"));
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
+    UserInterface::warning(
       tr("File %1 could not be opened! Check file permissions or reinstall the application.")
         .arg(modelsFile.fileName()));
     return;

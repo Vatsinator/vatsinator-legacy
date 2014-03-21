@@ -63,20 +63,14 @@ public:
   VatsinatorApplication(int&, char**);
 
   virtual ~VatsinatorApplication();
-  
-  /**
-   * Tell user that something went wrong.
-   * @param msg Message to be displayed.
-   */
-  static void alert(const QString&, bool = false);
 
   static void emitGLInitialized();
   
   static const QFont& boldFont();
-  
   static const QFont& h1Font();
-  
   static const QFont& h2Font();
+  
+  [[noreturn]] static void terminate();
 
 #ifdef NO_DEBUG
 
