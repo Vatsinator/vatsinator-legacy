@@ -1,6 +1,7 @@
 vatsinator_start_subdirectory (network)
 
 set (network_SRCS
+    abstractnotamprovider.cpp
     dataupdater.cpp
     filedownloader.cpp
     plaintextdownloader.cpp
@@ -14,6 +15,7 @@ set (network_SRCS
 vatsinator_subdirectory_sources (network "${network_SRCS}")
 
 set (network_MOC_SRCS
+    abstractnotamprovider.h
     dataupdater.h
     filedownloader.h
     plaintextdownloader.h

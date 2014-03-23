@@ -5,6 +5,7 @@ set (vatsimdata_SRCS
     client.cpp
     fir.cpp
     metar.cpp
+    notam.cpp
     uir.cpp
     updatescheduler.cpp
     vatsimdatahandler.cpp
@@ -19,6 +20,7 @@ set (vatsimdata_SRCS
     models/controllertablemodel.cpp
     models/flighttablemodel.cpp
     models/metarlistmodel.cpp
+    models/notamlistmodel.cpp
 )
 
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
@@ -31,6 +33,7 @@ set (vatsimdata_MOC_SRCS
     models/controllertablemodel.h
     models/flighttablemodel.h
     models/metarlistmodel.h
+    models/notamlistmodel.h
 )
 
 vatsinator_subdirectory_mocs (vatsimdata "${vatsimdata_MOC_SRCS}")
