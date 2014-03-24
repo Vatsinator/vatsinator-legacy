@@ -639,11 +639,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="247"/>
-        <source>STA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="303"/>
         <source>Actual Time of Departure</source>
         <extracomment>Shortcut expansion for &quot;ATD&quot;</extracomment>
@@ -1013,7 +1008,7 @@
 <context>
     <name>ModelMatcher</name>
     <message>
-        <location filename="../modules/modelmatcher.cpp" line="38"/>
+        <location filename="../modules/modelmatcher.cpp" line="37"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1364,7 +1359,7 @@
 <context>
     <name>WorldMap</name>
     <message>
-        <location filename="../db/worldmap.cpp" line="71"/>
+        <location filename="../db/worldmap.cpp" line="70"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>File %1 could not be opened! Please reinstall the application.</translation>
     </message>
