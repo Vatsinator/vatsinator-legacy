@@ -121,6 +121,10 @@ private:
    * @param height The new height.
    */
   void __updateFbo(int, int);
+  
+  /**
+   * Updates the zoom factor.
+   */
   void __updateZoom(int);
   
   /**
@@ -128,6 +132,10 @@ private:
    */
   void __updateTooltip();
   
+  /**
+   * Checks whether the item is under the mouse.
+   * If it is, it is handled properly.
+   */
   void __checkItem(const MapItem*);
   
 private slots:
@@ -171,6 +179,10 @@ private:
      */
     void update(const QPoint&);
     
+    /**
+     * Quickly calculates distance between the given point and mouse cursor
+     * position on the screen, _in pixels_.
+     */
     qreal screenDistance(const QPoint&);
     
     /**
