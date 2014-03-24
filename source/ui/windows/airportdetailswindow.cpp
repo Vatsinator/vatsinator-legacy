@@ -19,21 +19,17 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
-
 #include "modules/vatbookhandler.h"
 #include "modules/models/bookedatctablemodel.h"
-
+#include "network/abstractnotamprovider.h"
 #include "network/weatherforecast.h"
 #include "network/models/weatherforecastmodel.h"
-
 #include "storage/settingsmanager.h"
-
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
-
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -43,7 +39,6 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/metarlistmodel.h"
-
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
@@ -53,8 +48,7 @@
 AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent),
     __currentICAO(""),
-    __forecast(new WeatherForecast()),
-    __progressModel(new WeatherForecastModel()){
+    __forecast(new WeatherForecast()) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -69,6 +63,9 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
           this,                                 SLOT(__handleShowClicked()));
   connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
           this,                                 SLOT(__updateForecast(WeatherForecastModel*)));
+  connect(VatsimDataHandler::getSingletonPtr()->notamProvider(),
+                                                SIGNAL(notamReady(NotamListModel*)),
+          this,                                 SLOT(__notamUpdate(NotamListModel*)));
   
   ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
   ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -80,8 +77,6 @@ AirportDetailsWindow::~AirportDetailsWindow() {
   QAbstractItemModel* m = ForecastView->model();
   if (m)
     delete m;
-  
-  delete __progressModel;
 }
 
 void
@@ -111,17 +106,21 @@ AirportDetailsWindow::show(const Airport* _ap) {
   }
 
   QAbstractItemModel* fvm = ForecastView->model();
-  if (fvm && fvm != __progressModel)
+  if (fvm)
     fvm->deleteLater();
   
   if (SM::get("network.weather_forecasts").toBool()) {
     ForecastGroup->setEnabled(true);
-    ForecastView->setModel(__progressModel);
+    ForecastView->setModel(nullptr);
     __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
                               QString::fromUtf8(_ap->data()->country));
   } else {
     ForecastGroup->setEnabled(false);
   }
+  
+  NotamTableView->setModel(nullptr);
+  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(__currentICAO);
+  NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
 }
 
 void
@@ -248,7 +247,7 @@ AirportDetailsWindow::__updateData() {
 void
 AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
   QAbstractItemModel* m = ForecastView->model();
-  if (m && m!= __progressModel)
+  if (m)
     m->deleteLater();
   
   ForecastView->setModel(model);
@@ -258,4 +257,11 @@ void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
   MapWidget::getSingleton().showAirport(__current);
+}
+
+void
+AirportDetailsWindow::__notamUpdate(NotamListModel* _model) {
+  if (isVisible() && _model->icao() == __currentICAO) {
+    NotamTableView->setModel(_model);
+  }
 }

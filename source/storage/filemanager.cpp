@@ -52,6 +52,29 @@ FileManager::cacheData(const QString& _fileName, const QString& _data) {
   cache.close();
 }
 
+bool
+FileManager::moveToCache(const QString& _source, const QString& _destination) {
+  QFile file(_source);
+  if (!file.open(QIODevice::ReadWrite)) {
+    VatsinatorApplication::log("FileManager: failed to access file %s", qPrintable(_source));
+    return false;
+  }
+  
+  file.close();
+  
+  CacheFile oldCache(_destination);
+  if (oldCache.exists())
+    oldCache.remove();
+  
+  bool result = file.rename(oldCache.fileName());
+  if (result)
+    VatsinatorApplication::log("FileManager: cached file %s", qPrintable(_destination));
+  else
+    VatsinatorApplication::log("FileManager: failed caching file %s", qPrintable(_destination));
+  
+  return result;
+}
+
 QString
 FileManager::staticPath(FileManager::StaticDir _d) {
   switch (_d) {

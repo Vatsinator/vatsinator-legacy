@@ -17,11 +17,13 @@
  *
  */
 
+#include <QtGui>
+
 #include "notamlistmodel.h"
 #include "defines.h"
 
 NotamListModel::NotamListModel(QString _icao, QObject* _parent) :
-  QAbstractListModel(_parent),
+  QAbstractTableModel(_parent),
   __icao(std::move(_icao)) {}
 
 void
@@ -31,9 +33,42 @@ NotamListModel::addNotam(Notam _notam) {
 
 QVariant
 NotamListModel::data(const QModelIndex& _index, int _role) const {
+  if (_index.column() != 0)
+    return QVariant();
+  
   switch (_role) {
     case Qt::DisplayRole:
-      return __notams.at(_index.row()).notam();
+      return QString("%1 %2 %3").arg(
+          __notams.at(_index.row()).icao(),
+          __notams.at(_index.row()).ident(),
+          __notams.at(_index.row()).notam()
+        );
+      
+    case Qt::ToolTipRole: {
+      QString to;
+      if (__notams.at(_index.row()).to().isValid()) {
+        to = __notams.at(_index.row()).to().toString("yyyy-MM-dd hh:mm:ss");
+        if (__notams.at(_index.row()).cflag() == Notam::Est)
+          to += " <strong>EST</strong>";
+      } else {
+        to = "<strong>PERM</strong>";
+      }
+      
+      return QString("<p style='white-space:nowrap'>Effective from %1 until %2</p>").arg(
+        __notams.at(_index.row()).from().toString("yyyy-MM-dd hh:mm:ss"),
+        to
+      );
+    }
+    
+    case Qt::BackgroundRole:
+      switch (__notams.at(_index.row()).type()) {
+        
+        case Notam::Cancellation:
+          return QBrush(QColor(255, 177, 177));
+          
+        default:
+          return QVariant();
+      }
       
     default:
       return QVariant();
@@ -41,7 +76,19 @@ NotamListModel::data(const QModelIndex& _index, int _role) const {
 }
 
 int
-NotamListModel::rowCount(const QModelIndex& _parent) const {
+NotamListModel::rowCount(const QModelIndex&) const {
   return __notams.size();
 }
 
+int
+NotamListModel::columnCount(const QModelIndex&) const {
+  return 1;
+}
+
+void
+NotamListModel::sort(int _column, Qt::SortOrder _order) {
+  if (_column != 0)
+    return;
+  
+  qSort(__notams.begin(), __notams.end());
+}

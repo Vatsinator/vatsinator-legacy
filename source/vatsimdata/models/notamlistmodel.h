@@ -20,11 +20,11 @@
 #ifndef NOTAMLISTMODEL_H
 #define NOTAMLISTMODEL_H
 
-#include <QAbstractListModel>
+#include <QAbstractTableModel>
 
 #include "vatsimdata/notam.h"
 
-class NotamListModel : public QAbstractListModel {
+class NotamListModel : public QAbstractTableModel {
   Q_OBJECT
 
 public:
@@ -34,6 +34,8 @@ public:
   
   QVariant data(const QModelIndex&, int) const override;
   int rowCount(const QModelIndex&) const override;
+  int columnCount(const QModelIndex&) const override;
+  void sort(int, Qt::SortOrder = Qt::AscendingOrder) override;
   
   inline const QString& icao() const {
     return __icao;

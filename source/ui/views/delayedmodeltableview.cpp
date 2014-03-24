@@ -1,5 +1,5 @@
 /*
- * abstractnotamprovider.cpp
+ * delayedmodeltableview.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,31 @@
  *
  */
 
-#include "abstractnotamprovider.h"
+#include <QtGui>
+
+#include "delayedmodeltableview.h"
 #include "defines.h"
 
-QString
-AbstractNotamProvider::providerInfo() const {
-  return QString();
+DelayedModelTableView::DelayedModelTableView(QWidget* _parent) :
+    QTableView(_parent),
+    __loadingText(tr("Loading...")) {}
+
+DelayedModelTableView::DelayedModelTableView(QString _text, QWidget* _parent) :
+    QTableView(_parent),
+    __loadingText(std::move(_text)) {}
+
+void
+DelayedModelTableView::setLoadingText(const QString& _text) {
+  __loadingText = _text;
+}
+
+void
+DelayedModelTableView::paintEvent(QPaintEvent* _e) {
+  if (model()) {
+    QTableView::paintEvent(_e);
+  } else {
+    QPainter painter(viewport());
+    painter.setPen(Qt::darkGray);
+    painter.drawText(rect(), Qt::AlignCenter, __loadingText);
+  }
 }

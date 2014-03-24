@@ -55,6 +55,15 @@ public:
    */
   virtual void fetchNotam(const QString&) = 0;
   
+  /**
+   * Description text for the provider.
+   * This is rich-formatted text that can contain URL, image or anything
+   * Qt can recognize in a QLabel.
+   * 
+   * Default implementation returns an empty string.
+   */
+  virtual QString providerInfo() const;
+  
 };
 
 #endif // ABSTRACTNOTAMPROVIDER_H

@@ -28,6 +28,7 @@
 class Airport;
 class Controller;
 class Pilot;
+class NotamListModel;
 class WeatherForecast;
 class WeatherForecastModel;
 
@@ -56,14 +57,13 @@ private slots:
   void __updateData();
   void __updateForecast(WeatherForecastModel*);
   void __handleShowClicked();
+  void __notamUpdate(NotamListModel*);
 
 private:
   QString __currentICAO;
   const Airport* __current;
   
   WeatherForecast* __forecast;
-  
-  WeatherForecastModel* __progressModel;
 
 };
 

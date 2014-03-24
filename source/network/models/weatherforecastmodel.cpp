@@ -26,23 +26,21 @@
 #include "defines.h"
 
 WeatherForecastModel::WeatherForecastModel(const QByteArray& _json, QObject* _parent) :
-    QAbstractTableModel(_parent),
-    __status(Progress) {
+    QAbstractTableModel(_parent) {
   __parseJson(_json);
 }
 
 WeatherForecastModel::WeatherForecastModel(QObject* _parent) :
-    QAbstractTableModel(_parent),
-    __status(Progress) {}
+    QAbstractTableModel(_parent) {}
 
 int
 WeatherForecastModel::rowCount(const QModelIndex&) const {
-  return __status == Fetched ? 2 : 1;
+  return 2;
 }
 
 int
 WeatherForecastModel::columnCount(const QModelIndex&) const {
-  return __status == Fetched ? __data.size() : 1;
+  return __data.size();
 }
 
 QVariant
@@ -53,56 +51,31 @@ WeatherForecastModel::data(const QModelIndex& _index, int _role) const {
   switch (_role) {
     
     case Qt::DisplayRole:
-      switch (__status) {
-        case Fetched:
-          switch (_index.row()) {
-            case 0:
-              return __data.at(_index.column()).day;
-            case 1:
-              return QVariant();
-          }
-        case Error:
-          return tr("Data not accessible");
-        case Progress:
-          return tr("Retrieving data...");
+      switch (_index.row()) {
+        case 0:
+          return __data.at(_index.column()).day;
+        case 1:
+          return QVariant();
       }
     
     case Qt::DecorationRole:
-      switch (__status) {
-        case Fetched:
-          if (_index.row() == 1)
-            return QPixmap(__iconForCondition(__data.at(_index.column()).iconNum));
-          /* TODO: Display loading gif during profress */
-//         case Progress:
-//           if (__status == Progress)
-//             return QPixmap(":/uiIcons/loading.gif");
-        default:
-          return QVariant();
-      }
+      if (_index.row() == 1)
+        return QPixmap(__iconForCondition(__data.at(_index.column()).iconNum));
+      else
+        return QVariant();
     
     case Qt::ToolTipRole:
-      switch (__status) {
-        case Fetched:
-          return __data.at(_index.column()).condition;
-        default:
-          return QVariant();
-      }
+      return __data.at(_index.column()).condition;
     
     case Qt::SizeHintRole:
-      switch (__status) {
-        case Fetched:
-          Q_ASSERT(__data.size());
-          if (_index.row() == 1)
-            return QSize(67, 64);
-          else
-            return QSize(67, 30);
-        case Error:
-        case Progress:
-          return QSize(469, 30);
-      }
+      Q_ASSERT(__data.size());
+      if (_index.row() == 1)
+        return QSize(67, 64);
+      else
+        return QSize(67, 30);
     
     case Qt::FontRole:
-      if (__status == Fetched && _index.row() == 0)
+      if (_index.row() == 0)
         return VatsinatorApplication::boldFont();
       else
         return QFont();
@@ -122,7 +95,6 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
   QVariant content = parser.parse(_json, &ok);
   if (!ok) {
     VatsinatorApplication::log("WeatherForecastModel: error parsing response");
-    __status = Error;
     return;
   }
   
@@ -138,8 +110,6 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
     
     __data << forecast;
   }
-  
-  __status = Fetched;
 }
 
 QString

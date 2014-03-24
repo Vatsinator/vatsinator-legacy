@@ -32,7 +32,7 @@ static const QString CacheDirectory =
 
 
 CacheFile::CacheFile(const QString& _fileName) :
-    QFile(CacheDirectory % "/" % _fileName) {
+    QFile(CacheDirectory % QDir::separator() % _fileName) {
   VatsinatorApplication::log("Cache file location: %s", qPrintable(fileName()));
 }
 
@@ -40,7 +40,7 @@ bool
 CacheFile::exists() const {
   if (!QDir(CacheDirectory).exists()) {
     VatsinatorApplication::log("CacheFile: creating directory %s...", qPrintable(CacheDirectory));
-    QDir().mkdir(CacheDirectory);
+    QDir().mkpath(CacheDirectory);
     return false;
   }
   

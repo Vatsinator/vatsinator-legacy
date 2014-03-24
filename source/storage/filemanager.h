@@ -59,6 +59,13 @@ public:
   static void cacheData(const QString&, const QString&);
   
   /**
+   * Moves given file to cache.
+   * @param source Source file name, with the full path.
+   * @param destination Target file name, without the path.
+   */
+  static bool moveToCache(const QString&, const QString&);
+  
+  /**
    * Gets static directory's location in the filesystem.
    */
   static QString staticPath(StaticDir);

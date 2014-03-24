@@ -41,6 +41,15 @@ public:
   };
   
   /**
+   * Flag for "to" field.
+   */
+  enum CFlag {
+    None,
+    Est, // estimated
+    Perm // permament
+  };
+  
+  /**
    * @param ident The NOTAM ident.
    */
   Notam(QString);
@@ -52,16 +61,24 @@ public:
    * @param url The URL where user can go to to see full message.
    * @param from NOTAM effective from.
    * @param to NOTAM effective to. Leave null if permament.
+   * @param cflag Effective to flag.
    * @param type NOTAM type.
    */
-  Notam(QString, QString, QString, QString, QDateTime, QDateTime, Type);
+  Notam(QString, QString, QString, QString, QDateTime, QDateTime, CFlag, Type);
   
   void setIcao(const QString&);
   void setNotam(const QString&);
   void setUrl(const QString&);
   void setFrom(const QDateTime&);
   void setTo(const QDateTime&);
+  void setCflag(Notam::CFlag);
   void setType(Notam::Type);
+  
+  /**
+   * For sorting purposes.
+   */
+  bool operator <(const Notam&) const;
+  bool operator >(const Notam&) const;
   
   /**
    * NOTAM ident.
@@ -107,6 +124,13 @@ public:
   }
   
   /**
+   * Flag to "to" field (C).
+   */
+  inline Notam::CFlag cflag() const {
+    return __cflag;
+  }
+  
+  /**
    * NOTAM type.
    */
   inline Notam::Type type() const {
@@ -120,6 +144,7 @@ private:
   QString       __url;
   QDateTime     __from;
   QDateTime     __to;
+  CFlag         __cflag;
   Type          __type;
 };
 

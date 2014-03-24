@@ -78,6 +78,7 @@ namespace {
       p.waitForFinished(-1);
       QString d = p.readAllStandardOutput();
       d.remove("\"");
+      d = d.simplified();
       
       return QString("Linux ") % d;
     } else {

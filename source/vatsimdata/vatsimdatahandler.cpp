@@ -20,18 +20,15 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
+#include "network/abstractnotamprovider.h"
+#include "network/euroutenotamprovider.h"
 #include "network/plaintextdownloader.h"
-
 #include "modules/modulemanager.h"
-
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
-
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
-
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
@@ -42,9 +39,7 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/metarlistmodel.h"
-
 #include "storage/filemanager.h"
-
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
@@ -68,7 +63,8 @@ VatsimDataHandler::VatsimDataHandler() :
     __airports(AirportDatabase::getSingleton()),
     __firs(FirDatabase::getSingleton()),
     __downloader(new PlainTextDownloader()),
-    __scheduler(new UpdateScheduler()) {
+    __scheduler(new UpdateScheduler()),
+    __notamProvider(nullptr) {
   
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(__slotUiCreated()));
@@ -81,10 +77,15 @@ VatsimDataHandler::VatsimDataHandler() :
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   connect(this, SIGNAL(localDataBad(QString)), SLOT(__reportDataError(QString)));
+  
+  __notamProvider = new EurouteNotamProvider();
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
+  
+  if (__notamProvider)
+    delete __notamProvider;
   
   delete __downloader;
   delete __scheduler;
@@ -321,6 +322,14 @@ VatsimDataHandler::atcCount() const {
 int
 VatsimDataHandler::obsCount() const {
   return __observers;
+}
+
+AbstractNotamProvider*
+VatsimDataHandler::notamProvider() {
+  if (__notamProvider == nullptr)
+    __notamProvider = new EurouteNotamProvider();
+  
+  return __notamProvider;
 }
 
 qreal

@@ -24,13 +24,14 @@ Notam::Notam(QString _ident) :
      __ident(std::move(_ident)) {}
 
 Notam::Notam(QString _ident, QString _icao, QString _notam, QString _url,
-             QDateTime _from, QDateTime _to, Notam::Type _type) :
+             QDateTime _from, QDateTime _to, Notam::CFlag _cflag, Notam::Type _type) :
      __ident(std::move(_ident)),
      __icao(std::move(_icao)),
      __notam(std::move(_notam)),
      __url(std::move(_url)),
      __from(std::move(_from)),
      __to(std::move(_to)),
+     __cflag(_cflag),
      __type(_type) {}
 
 void
@@ -59,6 +60,45 @@ Notam::setTo(const QDateTime& _to) {
 }
 
 void
+Notam::setCflag(Notam::CFlag _cflag) {
+  __cflag = _cflag;
+}
+
+void
 Notam::setType(Notam::Type _type) {
   __type = _type;
+}
+
+bool
+Notam::operator <(const Notam& _other) const {
+  if (__type == Cancellation && _other.type() != Cancellation)
+    return false;
+  
+  if (_other.type() == Cancellation && __type != Cancellation)
+    return true;
+  
+  if (__cflag == Perm && _other.cflag() != Perm)
+    return false;
+  
+  if (_other.cflag() == Perm && __cflag != Perm)
+    return true;
+  
+  return __from > _other.from();
+}
+
+bool
+Notam::operator >(const Notam& _other) const {
+  if (__type == Cancellation && _other.type() != Cancellation)
+    return true;
+  
+  if (_other.type() == Cancellation && __type != Cancellation)
+    return false;
+  
+  if (__cflag == Perm && _other.cflag() != Perm)
+    return true;
+  
+  if (_other.cflag() == Perm && __cflag != Perm)
+    return false;
+  
+  return __from < _other.from();
 }

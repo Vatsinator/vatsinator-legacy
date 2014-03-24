@@ -30,6 +30,7 @@
 
 #include "singleton.h"
 
+class AbstractNotamProvider;
 class ActiveAirport;
 class Airport;
 class AirportDatabase;
@@ -186,6 +187,11 @@ public:
    * @return Count of logged-in observers.
    */
   int obsCount() const;
+  
+  /**
+   * Running instance of notam provider.
+   */
+  AbstractNotamProvider* notamProvider();
   
   /**
    * Calculates distance between two points, expressed in
@@ -356,6 +362,8 @@ private:
   
   PlainTextDownloader* __downloader;
   UpdateScheduler*     __scheduler;
+  
+  AbstractNotamProvider* __notamProvider;
 
 };
 

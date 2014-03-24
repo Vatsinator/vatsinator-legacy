@@ -67,6 +67,7 @@ set (ui_SRCS
     
     views/airporttableview.cpp
     views/controllertableview.cpp
+    views/delayedmodeltableview.cpp
     views/flighttableview.cpp
     
     widgets/flightprogresswidget.cpp
@@ -121,6 +122,7 @@ set (ui_MOC_SRCS
     
     views/airporttableview.h
     views/controllertableview.h
+    views/delayedmodeltableview.h
     views/flighttableview.h
     
     widgets/flightprogresswidget.h
@@ -178,7 +180,7 @@ vatsinator_subdirectory_resources (ui "${ui_QRCS}")
 
 # icon for Windows
 if (WIN32)
-      vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
+    vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
 endif (WIN32)
 
 vatsinator_end_subdirectory (ui)
