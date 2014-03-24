@@ -154,7 +154,9 @@ EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
           attrs.value("A").toString(),
           attrs.value("E").toString(),
           attrs.value("url").toString(),
-          from, to, cflag,
+          from, to,
+          attrs.value("D").toString(),
+          cflag,
           typeFromLetter(attrs.value("type").toString())
         ));
       }

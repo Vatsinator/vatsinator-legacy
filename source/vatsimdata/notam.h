@@ -61,16 +61,18 @@ public:
    * @param url The URL where user can go to to see full message.
    * @param from NOTAM effective from.
    * @param to NOTAM effective to. Leave null if permament.
+   * @param diurnal NOTAM diurnal.
    * @param cflag Effective to flag.
    * @param type NOTAM type.
    */
-  Notam(QString, QString, QString, QString, QDateTime, QDateTime, CFlag, Type);
+  Notam(QString, QString, QString, QString, QDateTime, QDateTime, QString, CFlag, Type);
   
   void setIcao(const QString&);
   void setNotam(const QString&);
   void setUrl(const QString&);
   void setFrom(const QDateTime&);
   void setTo(const QDateTime&);
+  void setDiurnal(const QString&);
   void setCflag(Notam::CFlag);
   void setType(Notam::Type);
   
@@ -124,6 +126,13 @@ public:
   }
   
   /**
+   * Diurnal of the NOTAM.
+   */
+  inline const QString& diurnal() const {
+    return __diurnal;
+  }
+  
+  /**
    * Flag to "to" field (C).
    */
   inline Notam::CFlag cflag() const {
@@ -144,6 +153,7 @@ private:
   QString       __url;
   QDateTime     __from;
   QDateTime     __to;
+  QString       __diurnal;
   CFlag         __cflag;
   Type          __type;
 };

@@ -36,32 +36,37 @@ NotamListModel::data(const QModelIndex& _index, int _role) const {
   if (_index.column() != 0)
     return QVariant();
   
+  const Notam& notam = __notams.at(_index.row());
+  
   switch (_role) {
     case Qt::DisplayRole:
       return QString("%1 %2 %3").arg(
-          __notams.at(_index.row()).icao(),
-          __notams.at(_index.row()).ident(),
-          __notams.at(_index.row()).notam()
+          notam.icao(),
+          notam.ident(),
+          notam.notam()
         );
       
     case Qt::ToolTipRole: {
       QString to;
-      if (__notams.at(_index.row()).to().isValid()) {
-        to = __notams.at(_index.row()).to().toString("yyyy-MM-dd hh:mm:ss");
-        if (__notams.at(_index.row()).cflag() == Notam::Est)
+      if (notam.to().isValid()) {
+        to = notam.to().toString("yyyy-MM-dd hh:mm:ss");
+        if (notam.cflag() == Notam::Est)
           to += " <strong>EST</strong>";
       } else {
         to = "<strong>PERM</strong>";
       }
       
+      if (!notam.diurnal().isEmpty())
+        to += "; " + notam.diurnal();
+      
       return QString("<p style='white-space:nowrap'>Effective from %1 until %2</p>").arg(
-        __notams.at(_index.row()).from().toString("yyyy-MM-dd hh:mm:ss"),
+        notam.from().toString("yyyy-MM-dd hh:mm:ss"),
         to
       );
     }
     
     case Qt::BackgroundRole:
-      switch (__notams.at(_index.row()).type()) {
+      switch (notam.type()) {
         
         case Notam::Cancellation:
           return QBrush(QColor(255, 177, 177));
@@ -71,7 +76,7 @@ NotamListModel::data(const QModelIndex& _index, int _role) const {
       }
     
     case Qt::UserRole:
-      return __notams.at(_index.row()).url();
+      return notam.url();
       
     default:
       return QVariant();

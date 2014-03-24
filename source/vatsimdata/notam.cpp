@@ -24,13 +24,15 @@ Notam::Notam(QString _ident) :
      __ident(std::move(_ident)) {}
 
 Notam::Notam(QString _ident, QString _icao, QString _notam, QString _url,
-             QDateTime _from, QDateTime _to, Notam::CFlag _cflag, Notam::Type _type) :
+             QDateTime _from, QDateTime _to, QString _diurnal,
+             Notam::CFlag _cflag, Notam::Type _type) :
      __ident(std::move(_ident)),
      __icao(std::move(_icao)),
      __notam(std::move(_notam)),
      __url(std::move(_url)),
      __from(std::move(_from)),
      __to(std::move(_to)),
+     __diurnal(std::move(_diurnal)),
      __cflag(_cflag),
      __type(_type) {}
 
@@ -57,6 +59,11 @@ Notam::setFrom(const QDateTime& _from) {
 void
 Notam::setTo(const QDateTime& _to) {
   __to = _to;
+}
+
+void
+Notam::setDiurnal(const QString& _diurnal) {
+  __diurnal = _diurnal;
 }
 
 void
