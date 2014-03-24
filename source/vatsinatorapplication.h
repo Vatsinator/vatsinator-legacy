@@ -70,7 +70,10 @@ public:
   static const QFont& h1Font();
   static const QFont& h2Font();
   
-  [[noreturn]] static void terminate();
+#ifdef GCC_VERSION_48
+  [[noreturn]]
+#endif
+    static void terminate();
 
 #ifdef NO_DEBUG
 
