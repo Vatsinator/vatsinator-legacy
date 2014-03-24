@@ -63,7 +63,7 @@ namespace {
         return "Windows XP";
       case QSysInfo::WV_2003:
         return "Windows XP Professional x64";
-      case QSysInfo::WV_Vista:
+      case QSysInfo::WV_VISTA:
         return "Windows Vista";
       case QSysInfo::WV_WINDOWS7:
         return "Windows 7";
