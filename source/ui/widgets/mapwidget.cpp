@@ -400,21 +400,44 @@ MapWidget::__drawFirs() {
 
 void
 MapWidget::__drawAirports() {
+  static constexpr GLfloat emptyAirportsZ = static_cast<GLfloat>(MapConfig::MapLayers::EmptyAirports);
   static constexpr GLfloat activeAirportsZ = static_cast<GLfloat>(MapConfig::MapLayers::ActiveAirports);
   
-  for (const AirportItem* item: __scene->activeAirportItems()) {
-    if (item->position().isNull())
-      continue;
-    
-    QPointF p = glFromLonLat(item->position());
-    if (onScreen(p)) {
-      glPushMatrix();
-        glTranslated(p.x(), p.y(), activeAirportsZ);
-        item->drawIcon();
-        item->drawLabel();
-      glPopMatrix();
+  if (__settings.view.empty_airports) {
+    for (const AirportItem* item: __scene->emptyAirportItems()) {
+      if (item->position().isNull())
+        continue;
       
-      __checkItem(item);
+      QPointF p = glFromLonLat(item->position());
+      if (onScreen(p)) {
+        glPushMatrix();
+          glTranslated(p.x(), p.y(), emptyAirportsZ);
+          item->drawIcon();
+        glPopMatrix();
+        
+        __checkItem(item);
+      }
+    }
+  }
+  
+  if (__settings.view.airports_layer) {
+    for (const AirportItem* item: __scene->activeAirportItems()) {
+      if (item->position().isNull())
+        continue;
+      
+      QPointF p = glFromLonLat(item->position());
+      if (onScreen(p)) {
+        glPushMatrix();
+          glTranslated(p.x(), p.y(), activeAirportsZ);
+          item->drawIcon();
+          
+          if (__settings.view.airport_labels)
+            item->drawLabel();
+        
+        glPopMatrix();
+        
+        __checkItem(item);
+      }
     }
   }
 }

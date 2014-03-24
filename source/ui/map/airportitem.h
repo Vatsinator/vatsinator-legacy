@@ -54,11 +54,33 @@ private slots:
   void __resetLabel();
   
 private:
+  
   const Airport* __airport;
   QPointF        __position;
   
   mutable GLuint __icon;
   mutable GLuint __label;
+  
+  /**
+   * Class that loads and keeps icons.
+   */
+  class IconKeeper {
+  public:
+    IconKeeper();
+    ~IconKeeper();
+    
+    GLuint emptyAirportIcon();
+    GLuint activeAirportIcon();
+    GLuint activeStaffedAirportIcon();
+    
+  private:
+    GLuint __emptyAirportIcon;
+    GLuint __activeAirportIcon;
+    GLuint __activeStaffedAirportIcon;
+    
+  };
+  
+  static IconKeeper __icons;
   
 };
 

@@ -48,9 +48,6 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
 }
 
 AirportItem::~AirportItem() {
-  if (__icon)
-    GlResourceManager::deleteImage(__icon);
-  
   if (__label)
     GlResourceManager::deleteImage(__label);
 }
@@ -172,12 +169,12 @@ AirportItem::__makeIcon() const {
   const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
   if (a) {
     if (a->staffModel()->staff().isEmpty()) {
-      __icon = GlResourceManager::loadImage(MapConfig::activeAirportIcon());
+      __icon = __icons.activeAirportIcon();
     } else {
-      __icon = GlResourceManager::loadImage(MapConfig::activeStaffedAirportIcon());
+      __icon = __icons.activeStaffedAirportIcon();
     }
   } else {
-    __icon = GlResourceManager::loadImage(MapConfig::emptyAirportIcon());
+    __icon = __icons.emptyAirportIcon();
   }
 }
 
@@ -210,3 +207,44 @@ AirportItem::__resetLabel() {
     __label = 0;
   }
 }
+
+AirportItem::IconKeeper::IconKeeper() :
+    __emptyAirportIcon(0),
+    __activeAirportIcon(0),
+    __activeStaffedAirportIcon(0) {}
+
+AirportItem::IconKeeper::~IconKeeper() {
+  if (__emptyAirportIcon)
+    GlResourceManager::deleteImage(__emptyAirportIcon);
+  
+  if (__activeAirportIcon)
+    GlResourceManager::deleteImage(__activeAirportIcon);
+  
+  if (__activeStaffedAirportIcon)
+    GlResourceManager::deleteImage(__activeStaffedAirportIcon);
+}
+
+GLuint
+AirportItem::IconKeeper::emptyAirportIcon() {
+  if (!__emptyAirportIcon)
+    __emptyAirportIcon = GlResourceManager::loadImage(MapConfig::emptyAirportIcon());
+  
+  return __emptyAirportIcon;
+}
+
+GLuint
+AirportItem::IconKeeper::activeAirportIcon() {
+  if (!__activeAirportIcon)
+    __activeAirportIcon = GlResourceManager::loadImage(MapConfig::activeAirportIcon());
+  
+  return __activeAirportIcon;
+}
+
+GLuint AirportItem::IconKeeper::activeStaffedAirportIcon() {
+  if (!__activeStaffedAirportIcon)
+    __activeStaffedAirportIcon = GlResourceManager::loadImage(MapConfig::activeStaffedAirportIcon());
+  
+  return __activeStaffedAirportIcon;
+}
+
+AirportItem::IconKeeper AirportItem::__icons;
