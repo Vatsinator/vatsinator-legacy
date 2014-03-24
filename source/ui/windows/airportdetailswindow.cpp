@@ -66,6 +66,8 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   connect(VatsimDataHandler::getSingletonPtr()->notamProvider(),
                                                 SIGNAL(notamReady(NotamListModel*)),
           this,                                 SLOT(__notamUpdate(NotamListModel*)));
+  connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
+          this,                                 SLOT(__goToNotam(QModelIndex)));
   
   ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
   ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -264,4 +266,11 @@ AirportDetailsWindow::__notamUpdate(NotamListModel* _model) {
   if (isVisible() && _model->icao() == __currentICAO) {
     NotamTableView->setModel(_model);
   }
+}
+
+void
+AirportDetailsWindow::__goToNotam(QModelIndex _index) {
+  QString url = _index.data(Qt::UserRole).toString();
+  if (!url.isEmpty())
+    QDesktopServices::openUrl(url);
 }

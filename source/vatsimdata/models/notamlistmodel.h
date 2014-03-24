@@ -32,6 +32,9 @@ public:
   
   void addNotam(Notam);
   
+  /**
+   * Qt::UserRole returns notam url.
+   */
   QVariant data(const QModelIndex&, int) const override;
   int rowCount(const QModelIndex&) const override;
   int columnCount(const QModelIndex&) const override;

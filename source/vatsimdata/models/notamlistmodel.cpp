@@ -69,6 +69,9 @@ NotamListModel::data(const QModelIndex& _index, int _role) const {
         default:
           return QVariant();
       }
+    
+    case Qt::UserRole:
+      return __notams.at(_index.row()).url();
       
     default:
       return QVariant();

@@ -29,6 +29,7 @@ class Airport;
 class Controller;
 class Fir;
 class Pilot;
+class NotamListModel;
 
 class FirDetailsWindow :
     public BaseWindow,
@@ -47,6 +48,12 @@ private:
   void __updateModels(const Fir* = NULL);
   void __fillLabels(const Fir*);
   void __adjustTables();
+  
+private slots:
+  void __notamUpdate(NotamListModel*);
+  void __goToNotam(QModelIndex);
+  
+private:
 
   QString __currentICAO;
   

@@ -58,6 +58,7 @@ private slots:
   void __updateForecast(WeatherForecastModel*);
   void __handleShowClicked();
   void __notamUpdate(NotamListModel*);
+  void __goToNotam(QModelIndex);
 
 private:
   QString __currentICAO;

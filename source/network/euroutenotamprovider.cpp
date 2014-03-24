@@ -137,10 +137,6 @@ EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
       if (attrs.hasAttribute("ident") && attrs.hasAttribute("A") &&
           attrs.value("A").toString() == _model->icao()) {
         
-        QString ident = attrs.value("ident").toString();
-        QString icao = attrs.value("A").toString();
-        QString notam = attrs.value("E").toString();
-        QString url = attrs.value("url").toString();
         QDateTime from = QDateTime::fromString(attrs.value("B").toString(), "yyyy-MM-dd hh:mm:ss");
         Notam::CFlag cflag = Notam::None;
         QDateTime to;
@@ -154,7 +150,11 @@ EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
         }
         
         _model->addNotam(Notam(
-          ident, icao, notam, url, from, to, cflag,
+          attrs.value("ident").toString(),
+          attrs.value("A").toString(),
+          attrs.value("E").toString(),
+          attrs.value("url").toString(),
+          from, to, cflag,
           typeFromLetter(attrs.value("type").toString())
         ));
       }
