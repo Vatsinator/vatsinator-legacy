@@ -39,16 +39,16 @@
 #include "pilot.h"
 #include "defines.h"
 
-namespace {
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
-static constexpr qreal PILOT_TO_AIRPORT = 0.1;
+static constexpr qreal PilotToAirport = 0.1;
 
-inline qreal deg2Rad(qreal deg) {
-  static constexpr qreal PI = 3.14159265359;
-  
-  return deg * PI / 180;
-}
+namespace {
+
+  inline qreal deg2Rad(qreal deg) {
+    static constexpr qreal PI = 3.14159265359;
+    return deg * PI / 180;
+  }
 
 }
 
@@ -174,6 +174,11 @@ Pilot::drawLineTo() const {
 
 const QTime &
 Pilot::eta() const {
+  if (__flightStatus == DEPARTING) {
+    __eta = QTime();
+    return __eta;
+  }
+  
   if (__eta.isValid())
     return __eta;
   
@@ -199,6 +204,11 @@ Pilot::eta() const {
 
 int
 Pilot::progress() const {
+  if (__flightStatus == ARRIVED)
+    return 100;
+  else if (__flightStatus == DEPARTING)
+    return 0;
+  
   if (__progress == -1) {
     const Airport* from = VatsimDataHandler::getSingleton().activeAirports()[__route.origin];
     const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
@@ -272,7 +282,7 @@ Pilot::__setMyStatus() {
 
     if (ap_origin)
       if ((VatsimDataHandler::distance(ap_origin->longitude, ap_origin->latitude,
-                                           __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
+                                           __position.longitude, __position.latitude) < PilotToAirport) &&
       (__groundSpeed < 50)) {
         __flightStatus = DEPARTING;
         return;
@@ -280,7 +290,7 @@ Pilot::__setMyStatus() {
 
     if (ap_arrival)
       if ((VatsimDataHandler::distance(ap_arrival->longitude, ap_arrival->latitude,
-                                           __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
+                                           __position.longitude, __position.latitude) < PilotToAirport) &&
       (__groundSpeed < 50)) {
         __flightStatus = ARRIVED;
         return;
@@ -305,7 +315,7 @@ Pilot::__setMyStatus() {
     }
 
     if (closest) {
-      if (distance > PILOT_TO_AIRPORT) {
+      if (distance > PilotToAirport) {
         __flightStatus = AIRBORNE;
         return;
       }
