@@ -44,6 +44,8 @@ MapScene::MapScene(QObject* parent): QObject(parent) {
 
 MapScene::~MapScene() {
   qDeleteAll(__firItems);
+  qDeleteAll(__activeAirportItems);
+  qDeleteAll(__emptyAirportItems);
 }
 
 void

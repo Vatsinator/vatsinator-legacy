@@ -77,14 +77,15 @@ public:
   
   static const QGLFormat& glFormat();
   
-  static const QString& airportIcon();
-  static const QString& staffedAirportIcon();
+  static const QString& emptyAirportIcon();
+  static const QString& activeAirportIcon();
+  static const QString& activeStaffedAirportIcon();
   
   static const QColor& pilotPen();
   static const QColor& airportPen();
   
-  static const QPixmap& pilotLabelBackground();
-  static const QPixmap& airportLabelBackground();
+  static const QImage& pilotLabelBackground();
+  static const QImage& airportLabelBackground();
   static const QImage& firLabelBackground();
   
   static const QFont& pilotFont();
@@ -96,6 +97,9 @@ public:
     WorldMap = 1,
     UnstaffedFirs = 2,
     StaffedFirs = 3,
+    
+    EmptyAirports = 5,
+    ActiveAirports = 6,
     
     Count
   };

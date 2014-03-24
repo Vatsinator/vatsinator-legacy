@@ -113,6 +113,7 @@ private:
   
   void __drawWorld();
   void __drawFirs();
+  void __drawAirports();
   
   /**
    * Updates framebuffer object. Must be called each window resize.

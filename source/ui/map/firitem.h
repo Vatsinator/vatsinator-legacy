@@ -60,9 +60,10 @@ public:
   
 private:
   void __prepareVbo();
+  void __generateLabel() const;
   
 private slots:
-  void __generateLabel() const;
+  void __resetLabel();
   
 private:
   const Fir* __fir;

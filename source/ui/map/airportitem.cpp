@@ -19,6 +19,7 @@
 
 #include "db/airportdatabase.h"
 #include "glutils/glresourcemanager.h"
+#include "storage/settingsmanager.h"
 #include "ui/actions/actionmenuseparator.h"
 #include "ui/actions/airportdetailsaction.h"
 #include "ui/actions/clientdetailsaction.h"
@@ -39,10 +40,19 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     QObject(_parent),
     __airport(_ap),
     __position(_ap->data()->longitude, _ap->data()->latitude),
-    __icon(0) {}
+    __icon(0),
+    __label(0) {
+  
+  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+          this,                                 SLOT(__resetLabel()));
+}
 
 AirportItem::~AirportItem() {
-
+  if (__icon)
+    GlResourceManager::deleteImage(__icon);
+  
+  if (__label)
+    GlResourceManager::deleteImage(__label);
 }
 
 void
@@ -63,6 +73,27 @@ AirportItem::drawIcon() const {
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void
+AirportItem::drawLabel() const {
+  static const GLfloat labelRect[] = {
+    -0.08, -0.05333333,
+    -0.08,  0,
+     0.08,  0,
+     0.08, -0.05333333
+  };
+  
+  if (position().isNull())
+    return;
+  
+  if (!__label)
+    __generateLabel();
+  
+  glBindTexture(GL_TEXTURE_2D, __label);
+  glVertexPointer(2, GL_FLOAT, 0, labelRect);
+  glDrawArrays(GL_QUADS, 0, 4);
+  glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 const QPointF &
 AirportItem::position() const {
   return __position;
@@ -70,7 +101,10 @@ AirportItem::position() const {
 
 QString
 AirportItem::tooltipText() const {
-  QString desc = QString("%1 %2, %3").arg(data()->data()->icao, data()->data()->name, data()->data()->city);
+  QString desc = QString("%1 %2, %3").arg(
+    data()->data()->icao,
+    QString::fromUtf8(data()->data()->name),
+    QString::fromUtf8(data()->data()->city));
   
   QString staff, deparr;
   const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
@@ -138,9 +172,41 @@ AirportItem::__makeIcon() const {
   const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
   if (a) {
     if (a->staffModel()->staff().isEmpty()) {
-      __icon = GlResourceManager::loadImage(MapConfig::airportIcon());
+      __icon = GlResourceManager::loadImage(MapConfig::activeAirportIcon());
     } else {
-      __icon = GlResourceManager::loadImage(MapConfig::staffedAirportIcon());
+      __icon = GlResourceManager::loadImage(MapConfig::activeStaffedAirportIcon());
     }
+  } else {
+    __icon = GlResourceManager::loadImage(MapConfig::emptyAirportIcon());
+  }
+}
+
+void
+AirportItem::__generateLabel() const {
+  static QRect labelRect(8, 2, 48, 12);
+  
+  if (__label)
+    GlResourceManager::deleteImage(__label);
+  
+  QString icao(data()->data()->icao);
+  
+  QImage temp(MapConfig::airportLabelBackground());
+  QPainter painter(&temp);
+  painter.setRenderHint(QPainter::TextAntialiasing);
+  painter.setRenderHint(QPainter::SmoothPixmapTransform);
+  painter.setRenderHint(QPainter::HighQualityAntialiasing);
+  
+  painter.setFont(SM::get("map.airport_font").value<QFont>());
+  painter.setPen(MapConfig::airportPen());
+  
+  painter.drawText(labelRect, Qt::AlignCenter, icao);
+  __label = GlResourceManager::loadImage(temp);
+}
+
+void
+AirportItem::__resetLabel() {
+  if (__label) {
+    GlResourceManager::deleteImage(__label);
+    __label = 0;
   }
 }

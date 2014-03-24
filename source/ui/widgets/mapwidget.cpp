@@ -23,15 +23,13 @@
 
 #include "glutils/framebufferobject.h"
 #include "glutils/glextensions.h"
-
 #include "storage/settingsmanager.h"
-
+#include "ui/map/airportitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
-
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
@@ -138,6 +136,7 @@ MapWidget::initializeGL() {
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_ALPHA_TEST);
+  glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
@@ -184,6 +183,7 @@ MapWidget::paintGL() {
   __underMouse = nullptr;
   __drawWorld();
   __drawFirs();
+  __drawAirports();
   
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -383,7 +383,7 @@ MapWidget::__drawFirs() {
   
   glColor4f(1.0, 1.0, 1.0, 1.0);
   for (const FirItem* item: __scene->firItems()) {
-    if (item->position() == QPointF(0.0, 0.0))
+    if (item->position().isNull())
       continue;
     
     QPointF p = glFromLonLat(item->position());
@@ -398,7 +398,29 @@ MapWidget::__drawFirs() {
   }
 }
 
-void MapWidget::__updateFbo(int _width, int _height) {
+void
+MapWidget::__drawAirports() {
+  static constexpr GLfloat activeAirportsZ = static_cast<GLfloat>(MapConfig::MapLayers::ActiveAirports);
+  
+  for (const AirportItem* item: __scene->activeAirportItems()) {
+    if (item->position().isNull())
+      continue;
+    
+    QPointF p = glFromLonLat(item->position());
+    if (onScreen(p)) {
+      glPushMatrix();
+        glTranslated(p.x(), p.y(), activeAirportsZ);
+        item->drawIcon();
+        item->drawLabel();
+      glPopMatrix();
+      
+      __checkItem(item);
+    }
+  }
+}
+
+void
+MapWidget::__updateFbo(int _width, int _height) {
   if (__fbo)
     delete __fbo;
   

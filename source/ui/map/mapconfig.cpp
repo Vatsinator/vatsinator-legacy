@@ -35,13 +35,19 @@ MapConfig::glFormat() {
 }
 
 const QString &
-MapConfig::airportIcon() {
+MapConfig::emptyAirportIcon() {
+  static QString icon(":/pixmaps/airport_inactive.png");
+  return icon;
+}
+
+const QString &
+MapConfig::activeAirportIcon() {
   static QString icon(":/pixmaps/airport.png");
   return icon;
 }
 
 const QString &
-MapConfig::staffedAirportIcon() {
+MapConfig::activeStaffedAirportIcon() {
   static QString icon(":/pixmaps/airport_staffed.png");
   return icon;
 }
@@ -58,15 +64,15 @@ MapConfig::airportPen() {
   return pen;
 }
 
-const QPixmap &
+const QImage &
 MapConfig::pilotLabelBackground() {
-  static QPixmap label(":/pixmaps/pilot_tooltip.png");
+  static QImage label(":/pixmaps/pilot_tooltip.png");
   return label;
 }
 
-const QPixmap &
+const QImage &
 MapConfig::airportLabelBackground() {
-  static QPixmap label(":/pixmaps/airport_tooltip.png");
+  static QImage label(":/pixmaps/airport_tooltip.png");
   return label;
 }
 

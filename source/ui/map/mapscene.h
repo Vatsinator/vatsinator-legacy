@@ -38,14 +38,12 @@ public:
   explicit MapScene(QObject* parent = 0);
   virtual ~MapScene();
   
-  inline const QVector<const FirItem*>
-  firItems() const { return __firItems; }
+  inline const QVector<const FirItem*>& firItems() const { return __firItems; }
+  inline const QVector<const FirItem*>& staffedFirItems() const { return __staffedFirItems; }
+  inline const QVector<const FirItem*>& unstaffedFirItems() const { return __unstaffedFirItems; }
   
-  inline const QVector<const FirItem*>
-  staffedFirItems() const { return __staffedFirItems; }
-  
-  inline const QVector<const FirItem*>
-  unstaffedFirItems() const { return __unstaffedFirItems; }
+  inline const QVector<const AirportItem*>& activeAirportItems() const { return __activeAirportItems; }
+  inline const QVector<const AirportItem*>& emptyAirportItems() const { return __emptyAirportItems; }
   
 private slots:
   void __updateData();

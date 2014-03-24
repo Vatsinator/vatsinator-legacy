@@ -30,6 +30,7 @@ namespace DefaultSettings {
   static const QColor STAFFED_UIR_BORDERS_COLOR       = { 0, 118, 148 };
   static const int    STAFFED_UIR_BACKGROUND_ALPHA    = 30;
   static const QFont  FIR_FONT                        = QFont("Verdana", 9);
+  static const QFont  AIRPORT_FONT                    = QFont("Verdana", 8);
   static const QColor APPROACH_CIRCLE_COLOR           = { 127, 0, 0 };
   static const QColor SEAS_COLOR                      = { 188, 222, 225 };
   static const QColor LANDS_COLOR                     = { 255, 255, 255 };
@@ -42,6 +43,8 @@ MapPage::MapPage(QWidget* _parent) : AbstractSettingsPage(_parent) {
   
   connect(FirFontSelectionButton,       SIGNAL(clicked()),
           this,                         SLOT(__showFirFontDialog()));
+  connect(AirportFontSelectionButton,   SIGNAL(clicked()),
+          this,                         SLOT(__showAirportFontDialog()));
 }
 
 QString
@@ -68,6 +71,7 @@ MapPage::updateFromUi() const {
   setValue("staffed_uir_borders_color",
            StaffedUirColorButton->color());
   setValue("fir_font", __firFont);
+  setValue("airport_font", __airportFont);
   setValue("approach_circle_color",
            ApproachCircleColorButton->color());
   setValue("seas_color",
@@ -102,6 +106,7 @@ MapPage::restore(QSettings& _s) {
   StaffedUirColorAlphaBox->setValue(
     _s.value("staffed_uir_alpha_color", DefaultSettings::STAFFED_UIR_BACKGROUND_ALPHA).toInt());
   __firFont = _s.value("fir_font", DefaultSettings::FIR_FONT).value<QFont>();
+  __airportFont = _s.value("airport_font", DefaultSettings::AIRPORT_FONT).value<QFont>();
   ApproachCircleColorButton->setColor(
     _s.value("approach_circle_color", DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>());
   SeasColorButton->setColor(
@@ -124,6 +129,7 @@ MapPage::save(QSettings& _s) {
   _s.setValue("staffed_uir_borders_color", StaffedUirColorButton->color());
   _s.setValue("staffed_uir_alpha_color", StaffedUirColorAlphaBox->value());
   _s.setValue("fir_font", __firFont);
+  _s.setValue("airport_font", __airportFont);
   _s.setValue("approach_circle_color", ApproachCircleColorButton->color());
   _s.setValue("seas_color", SeasColorButton->color());
   _s.setValue("lands_color", LandsColorButton->color());
@@ -136,6 +142,10 @@ MapPage::__updateFontButtons() {
   QString fontName = QString("%1, %2").arg(__firFont.family(), QString::number(__firFont.pointSize()));
   FirFontSelectionButton->setText(fontName);
   FirFontSelectionButton->setFont(__firFont);
+  
+  fontName = QString("%1, %2").arg(__airportFont.family(), QString::number(__airportFont.pointSize()));
+  AirportFontSelectionButton->setText(fontName);
+  AirportFontSelectionButton->setFont(__airportFont);
 }
 
 void
@@ -144,6 +154,16 @@ MapPage::__showFirFontDialog() {
   QFont font = QFontDialog::getFont(&ok, __firFont, this);
   if (ok) {
     __firFont = font;
+    __updateFontButtons();
+  }
+}
+
+void
+MapPage::__showAirportFontDialog() {
+  bool ok;
+  QFont font = QFontDialog::getFont(&ok, __airportFont, this);
+  if (ok) {
+    __airportFont = font;
     __updateFontButtons();
   }
 }

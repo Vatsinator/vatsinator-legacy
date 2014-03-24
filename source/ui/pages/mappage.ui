@@ -257,6 +257,24 @@
          </layout>
         </item>
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,0">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Airport font:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="AirportFontSelectionButton">
+            <property name="text">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QLabel" name="label_13">

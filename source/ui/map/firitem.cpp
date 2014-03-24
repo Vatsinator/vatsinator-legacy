@@ -42,9 +42,9 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
   __prepareVbo();
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__generateLabel()));
+          this,                                 SLOT(__resetLabel()));
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__generateLabel()));
+          this,                                 SLOT(__resetLabel()));
 }
 
 FirItem::~FirItem() {
@@ -88,7 +88,7 @@ FirItem::drawLabel() const {
      0.08, -0.05333333
   };
   
-  if (position() == QPointF(0.0, 0.0))
+  if (position().isNull())
     return;
   
   if (!__label)
@@ -204,4 +204,12 @@ FirItem::__generateLabel() const {
   
   painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);
   __label = GlResourceManager::loadImage(temp);
+}
+
+void
+FirItem::__resetLabel() {
+  if (__label) {
+    GlResourceManager::deleteImage(__label);
+    __label = 0;
+  }
 }

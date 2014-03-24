@@ -37,22 +37,29 @@ public:
   virtual ~AirportItem();
   
   void drawIcon() const;
+  void drawLabel() const;
   
   const QPointF& position() const override;
   QString tooltipText() const override;
   QMenu* menu(QWidget*) const override;
   void showDetailsWindow() const override;
   
-  inline const Airport *
-  data() const { return __airport; }
+  inline const Airport* data() const { return __airport; }
   
 private:
   void __makeIcon() const;
+  void __generateLabel() const;
+
+private slots:
+  void __resetLabel();
   
+private:
   const Airport* __airport;
   QPointF        __position;
   
   mutable GLuint __icon;
+  mutable GLuint __label;
+  
 };
 
 #endif // AIRPORTITEM_H
