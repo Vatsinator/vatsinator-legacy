@@ -36,12 +36,21 @@ class DelayedModelTableView : public QTableView {
   
 public:
   explicit DelayedModelTableView(QWidget* = nullptr);
-  explicit DelayedModelTableView(QString, QWidget* = nullptr);
   
   void setLoadingText(const QString&);
+  void setErrorText(const QString&);
+  void setErrorOnNoData(bool);
   
   inline const QString& loadingText() const {
     return __loadingText;
+  }
+  
+  inline const QString& errorText() const {
+    return __errorText;
+  }
+  
+  inline bool errorOnNoData() const {
+    return __errorOnNoData;
   }
 
 protected:
@@ -49,6 +58,9 @@ protected:
 
 private:
   QString __loadingText;
+  QString __errorText;
+  bool    __errorOnNoData;
+  
 };
 
 #endif // DELAYEDMODELTABLEVIEW_H

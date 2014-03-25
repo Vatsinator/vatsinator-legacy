@@ -98,7 +98,14 @@ WeatherForecastModel::__parseJson(const QByteArray& _json) {
     return;
   }
   
-  for (QVariant day: content.toList()) {
+  auto list = content.toList();
+  if (list.size() == 1) {
+    QVariantMap dayData = list[0].toMap();
+    if (dayData.contains("code") && dayData["code"].toInt() == 1) // error
+      return;
+  }
+  
+  for (QVariant day: list) {
     QVariantMap dayData = day.toMap();
     
     ForecastForDay forecast;

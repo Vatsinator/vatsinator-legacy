@@ -71,6 +71,7 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   
   ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
   ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  NotamTableView->setErrorOnNoData(false);
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {
