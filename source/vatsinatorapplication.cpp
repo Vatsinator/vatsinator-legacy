@@ -81,7 +81,9 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr,           SLOT(deleteLater()));
   
-  
+#ifdef Q_OS_DARWIN
+  setStyle(new VatsinatorStyle());
+#endif
   /* Basic initializes */
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   
@@ -197,6 +199,15 @@ VatsinatorApplication::restart() {
 void
 VatsinatorApplication::__emitGLInitialized() {
   emit glInitialized();
+}
+
+void
+VatsinatorApplication::VatsinatorStyle::polish(QWidget* _widget) {
+#ifdef Q_OS_DARWIN
+  QMenu* w = qobject_cast<QMenu*>(_widget);
+  if (!w && _widget->testAttribute(Qt::WA_MacNormalSize))
+    _widget->setAttribute(Qt::WA_MacMiniSize);
+#endif
 }
 
 QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QFont>
 #include <QMutex>
+#include <QProxyStyle>
 #include <iostream>
 
 #include "singleton.h"
@@ -129,6 +130,12 @@ private:
   UserInterface*       __userInterface;
   
   static QMutex        __mutex; /* For stdout */
+
+  /* Proxy style to have widgets looking nice on Mac */
+  class VatsinatorStyle : public QProxyStyle {
+  public:
+      void polish(QWidget*) override;
+  };
 
 };
 
