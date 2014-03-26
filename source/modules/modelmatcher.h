@@ -20,42 +20,43 @@
 #ifndef MODELMATCHER_H
 #define MODELMATCHER_H
 
-#include <QCoreApplication>
+#include <QObject>
 #include <QString>
 #include <QMap>
 #include <QtOpenGL>
 
 #include "singleton.h"
 
-class ModelMatcher : public Singleton<ModelMatcher> {
+class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
 
   /**
    * This class matches the models to the planes.
    */
   
-  Q_DECLARE_TR_FUNCTIONS(ModelMatcher);
+  Q_OBJECT
 
 public:
   /**
    * Reads the models.dat file.
    */
-  ModelMatcher();
-
-  /**
-   * Loads the pixmaps.
-   */
-  void init();
+  ModelMatcher(QObject* = nullptr);
 
   /**
    * @param acft Aircraft code that comes from the flight plan.
    * @return Model's texture ID.
    */
   GLuint matchMyModel(const QString&);
+  
+private:
+  void __readModels();
+  
+private slots:
+  void __loadPixmaps();
 
 private:
 
-  QMap< QString, QString > __modelsFiles;
-  QMap< QString, GLuint >  __modelsPixmaps;
+  QMap<QString, QString> __modelsFiles;
+  QMap<QString, GLuint>  __modelsPixmaps;
 
 
 };

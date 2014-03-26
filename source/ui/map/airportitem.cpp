@@ -70,6 +70,11 @@ AirportItem::drawIcon() const {
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+bool
+AirportItem::needsDrawing() const {
+  return !__position.isNull();
+}
+
 void
 AirportItem::drawLabel() const {
   static const GLfloat labelRect[] = {

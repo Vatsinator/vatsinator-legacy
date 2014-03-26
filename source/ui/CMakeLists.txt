@@ -60,6 +60,7 @@ set (ui_SRCS
     
     map/airportitem.cpp
     map/firitem.cpp
+    map/flightitem.cpp
     map/mapconfig.cpp
     map/mapitem.cpp
     map/mapscene.cpp
@@ -118,6 +119,7 @@ set (ui_MOC_SRCS
     
     map/airportitem.h
     map/firitem.h
+    map/flightitem.h
     map/mapscene.h
     
     pages/abstractsettingspage.h

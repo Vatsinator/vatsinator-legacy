@@ -26,6 +26,7 @@
 #include "storage/settingsmanager.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/firitem.h"
+#include "ui/map/flightitem.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/worldpolygon.h"
@@ -123,6 +124,8 @@ MapWidget::redraw() {
 
 void
 MapWidget::initializeGL() {
+  emit glReady();
+  
   initGLExtensionsPointers();
   
   __world = new WorldPolygon();
@@ -184,6 +187,7 @@ MapWidget::paintGL() {
   __drawWorld();
   __drawFirs();
   __drawAirports();
+  __drawPilots();
   
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -383,17 +387,16 @@ MapWidget::__drawFirs() {
   
   glColor4f(1.0, 1.0, 1.0, 1.0);
   for (const FirItem* item: __scene->firItems()) {
-    if (item->position().isNull())
-      continue;
-    
-    QPointF p = glFromLonLat(item->position());
-    if (onScreen(p)) {
-      glPushMatrix();
-        glTranslated(p.x(), p.y(), staffedFirsZ + 1);
-        item->drawLabel();
-      glPopMatrix();
-      
+    if (item->needsDrawing()) {
+      QPointF p = glFromLonLat(item->position());
+      if (onScreen(p)) {
+        glPushMatrix();
+          glTranslated(p.x(), p.y(), staffedFirsZ + 1);
+          item->drawLabel();
+        glPopMatrix();
+        
       __checkItem(item);
+      }
     }
   }
 }
@@ -405,38 +408,58 @@ MapWidget::__drawAirports() {
   
   if (__settings.view.empty_airports) {
     for (const AirportItem* item: __scene->emptyAirportItems()) {
-      if (item->position().isNull())
-        continue;
-      
-      QPointF p = glFromLonLat(item->position());
-      if (onScreen(p)) {
-        glPushMatrix();
-          glTranslated(p.x(), p.y(), emptyAirportsZ);
-          item->drawIcon();
-        glPopMatrix();
-        
-        __checkItem(item);
+      if (item->needsDrawing()) {
+        QPointF p = glFromLonLat(item->position());
+        if (onScreen(p)) {
+          glPushMatrix();
+            glTranslated(p.x(), p.y(), emptyAirportsZ);
+            item->drawIcon();
+          glPopMatrix();
+          
+          __checkItem(item);
+        }
       }
     }
   }
   
   if (__settings.view.airports_layer) {
     for (const AirportItem* item: __scene->activeAirportItems()) {
-      if (item->position().isNull())
-        continue;
-      
-      QPointF p = glFromLonLat(item->position());
-      if (onScreen(p)) {
-        glPushMatrix();
-          glTranslated(p.x(), p.y(), activeAirportsZ);
-          item->drawIcon();
+      if (item->needsDrawing()) {
+        QPointF p = glFromLonLat(item->position());
+        if (onScreen(p)) {
+          glPushMatrix();
+            glTranslated(p.x(), p.y(), activeAirportsZ);
+            item->drawIcon();
+            
+            if (__settings.view.airport_labels)
+              item->drawLabel();
           
-          if (__settings.view.airport_labels)
-            item->drawLabel();
-        
-        glPopMatrix();
-        
-        __checkItem(item);
+          glPopMatrix();
+          
+          __checkItem(item);
+        }
+      }
+    }
+  }
+}
+
+void
+MapWidget::__drawPilots() {
+  static constexpr GLfloat pilotsZ = static_cast<GLfloat>(MapConfig::MapLayers::Pilots);
+  
+  if (__settings.view.pilots_layer) {
+    for (const FlightItem* item: __scene->flightItems()) {
+      if (item->needsDrawing()) {
+        QPointF p = glFromLonLat(item->position());
+        if (onScreen(p)) {
+          glPushMatrix();
+            glTranslated(p.x(), p.y(), pilotsZ);
+            item->drawModel();
+            
+          glPopMatrix();
+          
+          __checkItem(item);
+        }
       }
     }
   }

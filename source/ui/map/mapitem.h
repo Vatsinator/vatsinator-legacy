@@ -28,6 +28,11 @@ class MapItem {
 public:
   
   /**
+   * Indicates whether the items needs to be drawn or not.
+   */
+  virtual bool needsDrawing() const = 0;
+  
+  /**
    * Position of the item, global coordinates.
    */
   virtual const QPointF& position() const = 0;

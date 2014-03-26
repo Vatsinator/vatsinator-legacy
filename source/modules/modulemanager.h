@@ -40,13 +40,9 @@ public:
   ModuleManager();
   virtual ~ModuleManager();
   
-  void init();
-  
 public slots:
+  void init();
   void updateData();
-
-private slots:
-  void __initAfterGL();
 
 private:
   AirportTracker* __airportTracker;

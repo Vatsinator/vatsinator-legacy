@@ -1,5 +1,5 @@
 /*
- * airportitem.h
+ * flightitem.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,27 +17,25 @@
  *
  */
 
-#ifndef AIRPORTITEM_H
-#define AIRPORTITEM_H
+#ifndef FLIGHTITEM_H
+#define FLIGHTITEM_H
 
 #include <QObject>
 #include <QtOpenGL>
-
 #include "ui/map/mapitem.h"
 
-class Airport;
+class Pilot;
 
-class AirportItem : public QObject, public MapItem {
+class FlightItem : public QObject, public MapItem {
   Q_OBJECT
 
 public:
-  AirportItem(const Airport*, QObject* = nullptr);
-  AirportItem() = delete;
+  FlightItem(const Pilot*, QObject* = nullptr);
+  FlightItem() = delete;
   
-  virtual ~AirportItem();
+  virtual ~FlightItem();
   
-  void drawIcon() const;
-  void drawLabel() const;
+  void drawModel() const;
   
   bool needsDrawing() const override;
   const QPointF& position() const override;
@@ -45,44 +43,13 @@ public:
   QMenu* menu(QWidget*) const override;
   void showDetailsWindow() const override;
   
-  inline const Airport* data() const { return __airport; }
+  inline const Pilot* data() const { return __pilot; }
   
 private:
-  void __makeIcon() const;
-  void __generateLabel() const;
-
-private slots:
-  void __resetLabel();
+  const Pilot*  __pilot;
+  QPointF       __position;
   
-private:
-  
-  const Airport* __airport;
-  QPointF        __position;
-  
-  mutable GLuint __icon;
-  mutable GLuint __label;
-  
-  /**
-   * Class that loads and keeps icons.
-   */
-  class IconKeeper {
-  public:
-    IconKeeper();
-    ~IconKeeper();
-    
-    GLuint emptyAirportIcon();
-    GLuint activeAirportIcon();
-    GLuint activeStaffedAirportIcon();
-    
-  private:
-    GLuint __emptyAirportIcon;
-    GLuint __activeAirportIcon;
-    GLuint __activeStaffedAirportIcon;
-    
-  };
-  
-  static IconKeeper __icons;
-  
+  GLuint        __model;
 };
 
-#endif // AIRPORTITEM_H
+#endif // FLIGHTITEM_H

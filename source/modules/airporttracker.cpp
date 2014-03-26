@@ -32,7 +32,10 @@
 
 AirportTracker::AirportTracker(QObject* _parent) :
     QObject(_parent),
-    __isInitialized(false) {}
+    __isInitialized(false) {
+  connect(MapWidget::getSingletonPtr(), SIGNAL(airportLinesToggled(const Airport*)),
+          this,                         SLOT(__toggleAirport(const Airport*)));
+}
 
 AirportTracker::~AirportTracker() {
   QStringList trackedAirports(__trackedAirports.keys());
@@ -43,13 +46,6 @@ AirportTracker::~AirportTracker() {
   settings.setValue("trackedAirports", trackedAirports.join(":"));
   
   settings.endGroup();
-}
-
-void
-AirportTracker::init() {
-  __myMapWidget = MapWidget::getSingletonPtr();
-  connect(__myMapWidget,    SIGNAL(airportLinesToggled(const Airport*)),
-          this,             SLOT(__toggleAirport(const Airport*)));
 }
 
 void

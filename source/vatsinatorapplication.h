@@ -54,7 +54,6 @@ class VatsinatorApplication :
   
 signals:
   void uiCreated();
-  void glInitialized();
   void dataDownloading();
   void metarsRefreshRequested();
 
@@ -71,8 +70,6 @@ public:
    * @param msg Message to be displayed.
    */
   static void alert(const QString&, bool = false);
-
-  static void emitGLInitialized();
   
   static const QFont& boldFont();
 
@@ -114,9 +111,6 @@ public:
 public slots:
   void refreshData();
   void restart();
-  
-private:
-  void __emitGLInitialized();
   
 private slots:
   void __loadNewSettings();

@@ -23,11 +23,13 @@
 #include "db/firdatabase.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/firitem.h"
+#include "ui/map/flightitem.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/airport/emptyairport.h"
+#include "vatsimdata/models/flighttablemodel.h"
 
 #include "mapscene.h"
 #include "defines.h"
@@ -46,6 +48,7 @@ MapScene::~MapScene() {
   qDeleteAll(__firItems);
   qDeleteAll(__activeAirportItems);
   qDeleteAll(__emptyAirportItems);
+  qDeleteAll(__flightItems);
 }
 
 void
@@ -77,5 +80,11 @@ MapScene::__updateData() {
     } else {
       __emptyAirportItems << new AirportItem(VatsimDataHandler::getSingleton().addEmptyAirport(&ap));
     }
+  }
+  
+  qDeleteAll(__flightItems), __flightItems.clear();
+  
+  for (const Pilot* p: VatsimDataHandler::getSingleton().flightsModel()->flights()) {
+    __flightItems << new FlightItem(p);
   }
 }

@@ -19,16 +19,35 @@
 #include <QtGui>
 
 #include "glutils/glresourcemanager.h"
-
+#include "ui/widgets/mapwidget.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "modelmatcher.h"
 #include "defines.h"
 
-ModelMatcher::ModelMatcher() {
+ModelMatcher::ModelMatcher(QObject* _parent) :
+    QObject(_parent) {
+   
+//   connect(MapWidget::getSingletonPtr(), SIGNAL(glReady()),
+//           this,                         SLOT(__loadPixmaps()));
+  
+  __readModels();
+  __loadPixmaps();
+}
+
+GLuint
+ModelMatcher::matchMyModel(const QString& _acft) {
+  for (auto it = __modelsPixmaps.begin(); it != __modelsPixmaps.end(); ++it)
+    if (_acft.contains(it.key(), Qt::CaseInsensitive))
+      return it.value();
+
+  return __modelsPixmaps["ZZZZ"];
+}
+
+void
+ModelMatcher::__readModels() {
   __modelsFiles["ZZZZ"] = "1p"; // default
 
   QFile modelsFile(FileManager::path("data/model"));
@@ -53,7 +72,7 @@ ModelMatcher::ModelMatcher() {
 }
 
 void
-ModelMatcher::init() {
+ModelMatcher::__loadPixmaps() {
   QMap<QString, GLuint> pixmapsLoaded;
   QString path(FileManager::staticPath(FileManager::Pixmaps));
 
@@ -69,13 +88,4 @@ ModelMatcher::init() {
     Q_ASSERT(pixmapsLoaded.contains(it.value()));
     __modelsPixmaps.insert(it.key(), pixmapsLoaded[it.value()]);
   }
-}
-
-GLuint
-ModelMatcher::matchMyModel(const QString& _acft) {
-  for (auto it = __modelsPixmaps.begin(); it != __modelsPixmaps.end(); ++it)
-    if (_acft.contains(it.key(), Qt::CaseInsensitive))
-      return it.value();
-
-  return __modelsPixmaps["ZZZZ"];
 }

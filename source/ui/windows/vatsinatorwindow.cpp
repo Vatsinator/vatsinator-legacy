@@ -62,8 +62,8 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
           AtcListWindow::getSingletonPtr(),         SLOT(show()));
   connect(EnableAutoUpdatesAction,                  SIGNAL(toggled(bool)),
           this,                                     SIGNAL(autoUpdatesEnabled(bool)));
-  connect(ActionHomeLocation,                       SIGNAL(triggered()),
-          HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
+//   connect(ActionHomeLocation,                       SIGNAL(triggered()),
+//           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
   
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
           this,                                     SLOT(__dataDownloading()));

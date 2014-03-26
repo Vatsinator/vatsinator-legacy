@@ -101,6 +101,8 @@ public:
     EmptyAirports = 5,
     ActiveAirports = 6,
     
+    Pilots = 8,
+    
     Count
   };
   

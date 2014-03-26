@@ -85,7 +85,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   
   __userInterface = new UserInterface();
   __settingsManager->init();
-  __moduleManager->init();
+//   __moduleManager->init();
   
   // connect EnableAutoUpdatesAction toggle
   connect(VatsinatorWindow::getSingletonPtr(),  SIGNAL(autoUpdatesEnabled(bool)),
@@ -105,8 +105,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 
   // show main window
   VatsinatorWindow::getSingleton().show();
-//   emit uiCreated();
-  QTimer::singleShot(1000, this, SIGNAL(uiCreated()));
+  emit uiCreated();
   
   __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
   
@@ -167,11 +166,6 @@ VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
     QCoreApplication::exit(1);
 }
 
-void
-VatsinatorApplication::emitGLInitialized() {
-  VatsinatorApplication::getSingleton().__emitGLInitialized();
-}
-
 const QFont &
 VatsinatorApplication::boldFont() {
   static QFont font;
@@ -210,11 +204,6 @@ VatsinatorApplication::restart() {
   /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
   qApp->quit();
   QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-}
-
-void
-VatsinatorApplication::__emitGLInitialized() {
-  emit glInitialized();
 }
 
 void

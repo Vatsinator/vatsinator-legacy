@@ -25,6 +25,7 @@
 
 class AirportItem;
 class FirItem;
+class FlightItem;
 
 class MapScene : public QObject {
   
@@ -45,6 +46,8 @@ public:
   inline const QVector<const AirportItem*>& activeAirportItems() const { return __activeAirportItems; }
   inline const QVector<const AirportItem*>& emptyAirportItems() const { return __emptyAirportItems; }
   
+  inline const QVector<const FlightItem*>& flightItems() const { return __flightItems; }
+  
 private slots:
   void __updateData();
   
@@ -58,6 +61,9 @@ private:
   /* Groupped airport items */
   QVector<const AirportItem*> __activeAirportItems;
   QVector<const AirportItem*> __emptyAirportItems;
+  
+  /* Flights */
+  QVector<const FlightItem*> __flightItems;
   
 };
 

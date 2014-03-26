@@ -38,6 +38,8 @@ class MapWidget : public QGLWidget, public Singleton<MapWidget> {
   Q_OBJECT
 
 signals:
+  void glReady();
+  
   void menuRequest(const MapItem*);
   void menuRequest();
   
@@ -114,6 +116,7 @@ private:
   void __drawWorld();
   void __drawFirs();
   void __drawAirports();
+  void __drawPilots();
   
   /**
    * Updates framebuffer object. Must be called each window resize.

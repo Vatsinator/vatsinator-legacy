@@ -100,6 +100,11 @@ FirItem::drawLabel() const {
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+bool
+FirItem::needsDrawing() const {
+  return !__position.isNull();
+}
+
 const QPointF &
 FirItem::position() const {
   return __position;
