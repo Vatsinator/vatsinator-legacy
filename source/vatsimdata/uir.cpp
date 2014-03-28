@@ -17,9 +17,7 @@
 */
 
 #include "vatsimdata/fir.h"
-
 #include "vatsimdata/client/controller.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "uir.h"

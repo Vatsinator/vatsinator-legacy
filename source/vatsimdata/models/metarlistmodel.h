@@ -72,14 +72,11 @@ public slots:
 
 private:
   void __addMetar(const QString&);
-
   bool __matches(const QString&);
 
-  QQueue<QString> __requests;
-
-  QList<Metar> __metarList;
-
-  PlainTextDownloader* __myHttpHandler;
+  QQueue<QString>       __requests;
+  QList<Metar>          __metarList;
+  PlainTextDownloader*  __downloader;
 
 private slots:
   void __gotMetar(const QString&);

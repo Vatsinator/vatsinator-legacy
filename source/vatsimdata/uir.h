@@ -57,28 +57,18 @@ public:
    */
   bool isEmpty() const;
   
-
-  inline const QVector<Fir*> &
-  range() const { return __range; }
-
-  inline const ControllerTableModel *
-  staffModel() const { return __staff; }
-  
-  inline const QString &
-  icao() const { return __icao; }
-  
-  inline const QString &
-  name() const { return __name; }
-  
-  inline QString &
-  name() { return __name; }
+  inline const QVector<Fir*>& range() const { return __range; }
+  inline const ControllerTableModel* staffModel() const { return __staff; }
+  inline const QString& icao() const { return __icao; }
+  inline const QString& name() const { return __name; }
+  inline QString& name() { return __name; }
 
 private:
   QString __icao;
   QString __name;
   
-  QVector<Fir*> __range;
-  ControllerTableModel*  __staff;
+  QVector<Fir*>         __range;
+  ControllerTableModel* __staff;
 
 };
 

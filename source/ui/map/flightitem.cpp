@@ -87,7 +87,7 @@ FlightItem::drawLabel() const {
 
 bool
 FlightItem::needsDrawing() const {
-  return !(data()->flightStatus() != Pilot::AIRBORNE || data()->isPrefiledOnly());
+  return !(data()->flightStatus() != Pilot::Airborne || data()->isPrefiledOnly());
 }
 
 const QPointF &

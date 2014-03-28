@@ -70,9 +70,9 @@ FlightDetailsWindow::show(const Client* _client) {
   GroundSpeedLabel->setText(tr("%1 kts").arg(QString::number(__current->groundSpeed())));
   HeadingLabel->setText(QString::number(__current->heading()));
 
-  if (__current->flightStatus() == Pilot::AIRBORNE)
+  if (__current->flightStatus() == Pilot::Airborne)
     CurrentStatusLabel->setText(tr("airborne"));
-  else if (__current->flightStatus() == Pilot::DEPARTING)
+  else if (__current->flightStatus() == Pilot::Departing)
     CurrentStatusLabel->setText(tr("departing"));
   else
     CurrentStatusLabel->setText(tr("arrived"));
@@ -88,7 +88,7 @@ FlightDetailsWindow::show(const Client* _client) {
       tr("Vataware statistics for this pilot") %
       QString("</a>"));
 
-  FlightRulesLabel->setText((__current->flightRules() == Pilot::IFR) ? "IFR" : "VFR");
+  FlightRulesLabel->setText((__current->flightRules() == Pilot::Ifr) ? "IFR" : "VFR");
 
   __updateToFromButtons();
 

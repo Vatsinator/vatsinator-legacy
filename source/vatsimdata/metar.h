@@ -34,18 +34,15 @@ class Metar {
 public:
   
   Metar();
-  Metar(const QString&, const QString& = "");
+  Metar(QString, const QString& = "");
   
   void setMetar(const QString&);
   
-  inline const QString &
-  icao() const { return __icao; }
-  
-  inline const QString &
-  metar() const { return __metar; }
-  
-  inline const QString
-  lastFetchTime() const { return __lastFetchTime.toString("dd MMM yyyy, hh:mm") % " UTC"; }
+  inline const QString& icao() const { return __icao; }
+  inline const QString& metar() const { return __metar; }
+  inline const QString lastFetchTime() const {
+    return __lastFetchTime.toString("dd MMM yyyy, hh:mm") % " UTC";
+  }
   
 private:
   QString   __icao;

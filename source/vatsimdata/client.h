@@ -27,15 +27,10 @@
 class Client {
 
   /*
-   * Abstract class for connected client.
    * Inherited by Pilot and Controller classes.
    */
 
 public:
-  // types
-  enum Type {
-    Pilot, Atc
-  };
   
   struct Position {
     float latitude;
@@ -54,43 +49,49 @@ public:
    */
   Client(const QStringList&);
   
-  /**
-   * Client can be pilot or ATC.
-   * Use this class instead of dynamic_cast to check the subclass
-   * type - it is a little bit faster.
-   */
-  virtual Client::Type clientType() const = 0;
-
   virtual ~Client() {}
 
-  inline unsigned
-  pid() const { return __pid; }
+  /**
+   * The client's Vatsim PID.
+   */
+  inline unsigned pid() const { return __pid; }
   
-  inline const QString &
-  callsign() const { return __callsign; }
+  /**
+   * The client's callsign.
+   */
+  inline const QString& callsign() const { return __callsign; }
   
-  inline const QString &
-  realName() const { return __realName; }
+  /**
+   * The client's real name.
+   */
+  inline const QString& realName() const { return __realName; }
   
-  inline const QString &
-  server() const { return __server; }
+  /**
+   * The server that the client is connected to.
+   */
+  inline const QString& server() const { return __server; }
   
-  inline const QDateTime &
-  onlineFrom() const { return __onlineFrom; }
+  /**
+   * When the client went online.
+   */
+  inline const QDateTime& onlineFrom() const { return __onlineFrom; }
   
-  inline const Client::Position &
-  position() const { return __position; }
-  
+  /**
+   * The current client's position.
+   */
+  inline const Client::Position& position() const { return __position; }
+
 protected:
+  void setPosition(Position);
+  
+private:
   /* Client data */
-  unsigned  __pid;
-  QString   __callsign;
-  QString   __realName;
-
-  QString   __server;
-  QDateTime __onlineFrom;
-
-  Client::Position __position;
+  unsigned              __pid;
+  QString               __callsign;
+  QString               __realName;
+  QString               __server;
+  QDateTime             __onlineFrom;
+  Client::Position      __position;
 
 };
 

@@ -37,13 +37,13 @@ class Pilot : public Client {
 public:
   /* Types */
   enum FlightRules {
-    IFR, VFR
+    Ifr, Vfr
   };
   
   enum Status {
-    DEPARTING,
-    AIRBORNE,
-    ARRIVED
+    Departing,
+    Airborne,
+    Arrived
   };
   
   struct Pressure {
@@ -66,69 +66,74 @@ public:
    */
   Pilot(const QStringList&, bool = false);
   virtual ~Pilot();
-
-  Client::Type clientType() const override;
   
-  inline int
-  altitude() const { return __altitude; }
+  /**
+   * The current altitude.
+   */
+  inline int altitude() const { return __altitude; }
   
-  inline int
-  groundSpeed() const { return __groundSpeed; }
+  /**
+   * The client's ground speed, in knots.
+   */
+  inline int groundSpeed() const { return __groundSpeed; }
   
-  inline const QString &
-  squawk() const { return __squawk; }
+  /**
+   * The client's squawk code.
+   * It's string, not int, as squawk might start with '0'.
+   */
+  inline const QString& squawk() const { return __squawk; }
   
-  inline const QString &
-  aircraft() const { return __aircraft; }
+  /**
+   * The client's aircraft.
+   */
+  inline const QString& aircraft() const { return __aircraft; }
   
-  inline int
-  tas() const { return __tas; }
+  /**
+   * The client's current True Air Speed, in knots.
+   * @sa groundSpeed().
+   */
+  inline int tas() const { return __tas; }
   
-  inline const Pilot::FlightRules &
-  flightRules() const { return __flightRules; }
+  /**
+   * The client's flight rules - Ifr or Vfr.
+   */
+  inline const Pilot::FlightRules& flightRules() const { return __flightRules; }
   
-  inline const QString &
-  remarks() const { return __remarks; }
+  /**
+   * The client's remarks.
+   */
+  inline const QString& remarks() const { return __remarks; }
   
-  inline unsigned
-  heading() const { return __heading; }
+  /**
+   * The client's current heading.
+   */
+  inline unsigned heading() const { return __heading; }
   
-  inline Pilot::Status
-  flightStatus() const { return __flightStatus; }
+  /**
+   * The client's current flight status.
+   * Flight status is determined by the current altitude, speed and distance
+   * from airport (origin or destination).
+   * 
+   * TODO Climbing & descending status options.
+   */
+  inline Pilot::Status flightStatus() const { return __flightStatus; }
   
-  inline const Pilot::Pressure &
-  pressure() const { return __pressure; }
+  /**
+   * The client's baro setting.
+   */
+  inline const Pilot::Pressure& pressure() const { return __pressure; }
   
-  inline const Pilot::Route &
-  route() const { return __route; }
+  /**
+   * The client's route details. It includes planned origin and destination
+   * airport, altitude and filled route.
+   */
+  inline const Pilot::Route& route() const { return __route; }
   
-  inline bool
-  isPrefiledOnly() const { return __prefiledOnly; }
-  
-protected:
-  int     __altitude;
-  int     __groundSpeed;
-  QString __squawk;
-
-  QString __aircraft;
-
-  /* True AirSpeed */
-  int     __tas;
-
-  /* IFR/VFR */
-  Pilot::FlightRules __flightRules;
-
-  QString   __remarks;
-
-  unsigned  __heading;
-  
-  Pilot::Status   __flightStatus;
-  
-  Pilot::Pressure __pressure;
-
-  Pilot::Route    __route;
-
-  bool      __prefiledOnly;
+  /**
+   * Prefiled only means that client has prefiled the flight plan, but
+   * he did not log in yet.
+   */
+  inline bool isPrefiledOnly() const { return __prefiledOnly; }
 
 private:
   /**
@@ -140,6 +145,19 @@ private:
    * Checks whether pilot is departing, airborn or has just arrived.
    */
   void __setMyStatus();
+  
+  int                   __altitude;
+  int                   __groundSpeed;
+  QString               __squawk;
+  QString               __aircraft;
+  int                   __tas;
+  Pilot::FlightRules    __flightRules;
+  QString               __remarks;
+  unsigned              __heading;
+  Pilot::Status         __flightStatus;
+  Pilot::Pressure       __pressure;
+  Pilot::Route          __route;
+  bool                  __prefiledOnly;
 
 };
 

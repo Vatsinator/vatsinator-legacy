@@ -20,14 +20,10 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
 #include "network/statspurveyor.h"
-
 #include "vatsimdata/airport/activeairport.h"
-
 #include "vatsimdata/uir.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsinatorapplication.h"
 
 #include "controller.h"
@@ -91,11 +87,6 @@ Controller::Controller(const QStringList& _data) :
   __setMyIcaoAndFacility();
 }
 
-Client::Type
-Controller::clientType() const {
-  return Client::Atc;
-}
-
 void Controller::__cleanupAtis() {
   // clenup ATIS message
   if (__atis[0] == '$') {
@@ -108,10 +99,10 @@ void Controller::__cleanupAtis() {
 
 void
 Controller::__setMyIcaoAndFacility() {
-  QStringList sections = __callsign.split('_');
+  QStringList sections = callsign().split('_');
 
   if (sections.back() == "CTR") {
-    __facility = CTR;
+    __facility = Ctr;
     __airport = NULL;
 
     __icao = sections.front();
@@ -151,13 +142,13 @@ Controller::__setMyIcaoAndFacility() {
         return;
       }
 
-      VatsinatorApplication::log("FIR could not be matched for: %s.", __callsign.toStdString().c_str());
+      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
 
     }
 
     return;
   } else if (sections.back() == "FSS") {
-    __facility = FSS;
+    __facility = Fss;
     __airport = NULL;
 
     QString& icao = sections.front();
@@ -196,7 +187,7 @@ Controller::__setMyIcaoAndFacility() {
       }
     }
 
-    VatsinatorApplication::log("FIR could not be matched for: %s.", __callsign.toStdString().c_str());
+    VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
 
     return;
   } else if (
@@ -207,17 +198,17 @@ Controller::__setMyIcaoAndFacility() {
     sections.back() == "DEL" ||
     sections.back() == "ATIS") {
     if (sections.back() == "APP")
-      __facility = APP;
+      __facility = App;
     else if (sections.back() == "DEP")
-      __facility = DEP;
+      __facility = Dep;
     else if (sections.back() == "TWR")
-      __facility = TWR;
+      __facility = Twr;
     else if (sections.back() == "GND")
-      __facility = GND;
+      __facility = Gnd;
     else if (sections.back() == "DEL")
-      __facility = DEL;
+      __facility = Del;
     else if (sections.back() == "ATIS")
-      __facility = ATIS;
+      __facility = Atis;
 
     const AirportRecord* apShot = AirportDatabase::getSingleton().find(sections.front());
 
@@ -254,8 +245,8 @@ Controller::__setMyIcaoAndFacility() {
         }
       }
 
-      StatsPurveyor::getSingleton().reportNoAtc(__callsign);
-      VatsinatorApplication::log("Airport not found for %s.", qPrintable(__callsign));
+      StatsPurveyor::getSingleton().reportNoAtc(callsign());
+      VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
     }
 
     return;
@@ -294,22 +285,22 @@ Controller::__produceDescription(const AirportRecord* _ap) {
   }
 
   switch (__facility) {
-    case ATIS:
+    case Atis:
       fName = "ATIS";
       break;
-    case DEL:
+    case Del:
       fName = "Delivery";
       break;
-    case GND:
+    case Gnd:
       fName = "Ground";
       break;
-    case TWR:
+    case Twr:
       fName = "Tower";
       break;
-    case APP:
+    case App:
       fName = "Approach";
       break;
-    case DEP:
+    case Dep:
       fName = "Departure";
       break;
     default:

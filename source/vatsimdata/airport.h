@@ -21,6 +21,7 @@
 #define AIRPORT_H
 
 #include <QString>
+#include <QPair>
 
 #include "vatsimdata/client/controller.h"
 
@@ -30,7 +31,7 @@ class Fir;
 class Airport {
   
   /*
-   * This is the interface for airport object.
+   * This is the interface for an airport object.
    * It represents an airport on the map - can be clicked
    * or have the sub-menu.
    * Inherited by ActiveAirport and EmptyAirport classes.
@@ -40,7 +41,7 @@ public:
   Airport(const QString&);
   Airport(const AirportRecord*);
   
-  virtual ~Airport();
+  virtual ~Airport() = default;
   
   virtual unsigned countDepartures() const = 0;
   virtual unsigned countOutbounds() const = 0;
@@ -50,18 +51,13 @@ public:
   virtual bool hasApproach() const = 0;
   virtual Controller::Facilities facilities() const = 0;
   
-  inline const AirportRecord *
-  data() const { return __data; }
-  
-  inline Fir **
-  firs() { return __firs; }
-  
-protected:
-  Fir* __firs[2];
+  inline const AirportRecord* data() const { return __data; }
+  inline const QPair<Fir*, Fir*>& firs() const { return __firs; }
+  inline QPair<Fir*, Fir*>& firs() { return __firs; }
   
 private:
-  
-  const AirportRecord* __data;
+  const AirportRecord*  __data;
+  QPair<Fir*, Fir*>     __firs;
 
 };
 

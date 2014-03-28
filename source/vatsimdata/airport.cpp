@@ -20,31 +20,43 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
 #include "vatsinatorapplication.h"
 
 #include "airport.h"
 #include "defines.h"
 
 Airport::Airport(const QString& _icao) :
-    __firs{NULL, NULL},
+    __firs(nullptr, nullptr),
     __data(AirportDatabase::getSingleton().find(_icao)) {
-  if (!__data)
-    VatsinatorApplication::log("Airport %s not found!", _icao.toStdString().c_str());
   
   if (__data) {
-    __firs[0] = FirDatabase::getSingleton().find(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::getSingleton().find(QString(__data->fir_b), __data->is_fir_b_oceanic);
+    __firs.first = FirDatabase::getSingleton().find(
+      QString(__data->fir_a),
+      __data->is_fir_a_oceanic
+    );
+    
+    __firs.second = FirDatabase::getSingleton().find(
+      QString(__data->fir_b),
+      __data->is_fir_b_oceanic
+    );
+  } else {
+    VatsinatorApplication::log("Airport %s not found!", qPrintable(_icao));
   }
 }
 
 Airport::Airport(const AirportRecord* _ap) :
-     __firs{NULL, NULL},
+     __firs(nullptr, nullptr),
      __data(_ap) {
+  
   if (__data) {
-    __firs[0] = FirDatabase::getSingleton().find(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::getSingleton().find(QString(__data->fir_b), __data->is_fir_b_oceanic);
+    __firs.first = FirDatabase::getSingleton().find(
+      QString(__data->fir_a),
+      __data->is_fir_a_oceanic
+    );
+    
+    __firs.second = FirDatabase::getSingleton().find(
+      QString(__data->fir_b),
+      __data->is_fir_b_oceanic
+    );
   }
 }
-
-Airport::~Airport() {}

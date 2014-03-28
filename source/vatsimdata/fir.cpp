@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "db/firdatabase.h"
-
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"

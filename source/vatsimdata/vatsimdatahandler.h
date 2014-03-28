@@ -184,36 +184,59 @@ public:
   /**
    * Returns an URL to where METARs can be fetched from.
    */
-  inline const QString &
-  metarUrl() const { return __metarUrl; }
+  inline const QString& metarUrl() const { return __metarUrl; }
+  
+  /**
+   * Returns the model containing all flights.
+   */
+  inline FlightTableModel* flightsModel() { return __flights; }
 
   /**
-   * The following functions return const references to vectors of clients.
+   * Returns the model containing all ATCs.
    */
-  inline FlightTableModel*
-  flightsModel() { return __flights; }
+  inline ControllerTableModel* atcModel() { return __atcs; }
 
-  inline ControllerTableModel*
-  atcModel() { return __atcs; }
+  /**
+   * Returns all UIRs.
+   */
+  inline const QVector<Uir*>& uirs() const { return __uirs; }
 
-  inline const QVector<Uir*> &
-  uirs() const { return __uirs; }
-
-  inline const QMap<QString, ActiveAirport*> &
-  activeAirports() const { return __activeAirports; }
+  /**
+   * Gives access to all active airports.
+   */
+  inline const QMap<QString, ActiveAirport*>& activeAirports() const {
+    return __activeAirports;
+  }
   
-  inline const QMap<QString, EmptyAirport*> &
-  emptyAirports() const { return __emptyAirports; }
+  /**
+   * Gives access to all empty airports.
+   */
+  inline const QMap<QString, EmptyAirport*>& emptyAirports() const {
+    return __emptyAirports;
+  }
 
-  inline const QMultiMap<QString, QString> &
-  aliases() const { return __aliases; }
+  /**
+   * Gives access to all aliases, stored in "data/alias" file.
+   */
+  inline const QMultiMap<QString, QString>& aliases() const {
+    return __aliases;
+  }
 
-  inline const QDateTime &
-  dateDataUpdated() const { return __dateVatsimDataUpdated; }
+  /**
+   * Returns last Vatsim data update date and time.
+   */
+  inline const QDateTime& dateDataUpdated() const {
+    return __dateVatsimDataUpdated;
+  }
 
-  inline bool
-  statusFileFetched() const { return __statusFileFetched; }
+  /**
+   * Returns true if status.txt is already fetched & parsed.
+   */
+  inline bool statusFileFetched() const { return __statusFileFetched; }
 
+  /**
+   * Calculates ditance between two points.
+   */
   inline static qreal
   distance(const qreal& _ax, const qreal& _ay,
                const qreal& _bx, const qreal& _by) {

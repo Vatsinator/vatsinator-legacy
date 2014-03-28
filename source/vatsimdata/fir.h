@@ -53,50 +53,21 @@ public:
   void clear();
   bool isStaffed() const;
 
-  inline ControllerTableModel *
-  staffModel() const { return __staff; }
-
-  inline FlightTableModel *
-  flightsModel() const { return __flights; }
-
-  inline AirportTableModel *
-  airportsModel() const { return __airports; }
-
-  inline bool
-  hasUirStaff() const { return __uirStaffCount; }
-
-  inline const QString &
-  icao() const { return __icao; }
-
-  inline bool
-  isOceanic() const { return __oceanic; }
-
-  inline const Point &
-  textPosition() const { return __textPosition; }
-
-  inline const QString &
-  name() const { return __name; }
-
-  inline void
-  setName(const QString& _n) { __name = _n; }
-
-  inline const QString &
-  country() const { return __country; }
-
-  inline void
-  setCountry(const QString& _c) { __country = _c; }
-  
-  inline QVector<Point> &
-  borders() { return __borders; }
-  
-  inline const QVector<Point> &
-  borders() const { return __borders; }
-
-  inline QVector<unsigned short> &
-  triangles() { return __triangles; }
-  
-  inline const QVector<unsigned short> &
-  triangles() const { return __triangles; }
+  inline ControllerTableModel* staffModel() const { return __staff; }
+  inline FlightTableModel* flightsModel() const { return __flights; }
+  inline AirportTableModel* airportsModel() const { return __airports; }
+  inline bool hasUirStaff() const { return __uirStaffCount; }
+  inline const QString& icao() const { return __icao; }
+  inline bool isOceanic() const { return __oceanic; }
+  inline const Point& textPosition() const { return __textPosition; }
+  inline const QString& name() const { return __name; }
+  inline void setName(const QString& _n) { __name = _n; }
+  inline const QString& country() const { return __country; }
+  inline void setCountry(const QString& _c) { __country = _c; }
+  inline QVector<Point>& borders() { return __borders; }
+  inline const QVector<Point>& borders() const { return __borders; }
+  inline QVector<unsigned short>& triangles() { return __triangles; }
+  inline const QVector<unsigned short>& triangles() const { return __triangles; }
 
 private:
 

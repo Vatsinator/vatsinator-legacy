@@ -20,26 +20,24 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
 #include "vatsimdata/client/pilot.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
-
 #include "vatsimdata/fir.h"
 
 #include "activeairport.h"
 #include "defines.h"
 
-ActiveAirport::ActiveAirport (QString _icao) :
+ActiveAirport::ActiveAirport(QString _icao) :
     Airport(std::move(_icao)),
     __staff(new ControllerTableModel()),
     __inbounds(new FlightTableModel()),
     __outbounds(new FlightTableModel()) {
-  if (__firs[0])
-    __firs[0]->addAirport(this);
-  if (__firs[1])
-    __firs[1]->addAirport(this);
+  
+  if (firs().first)
+    firs().first->addAirport(this);
+  if (firs().second)
+    firs().second->addAirport(this);
 }
 
 ActiveAirport::~ActiveAirport() {
@@ -53,7 +51,7 @@ ActiveAirport::countDepartures() const {
   unsigned i = 0;
   
   for (const Pilot* p: __outbounds->flights())
-    if (p->flightStatus() == Pilot::DEPARTING)
+    if (p->flightStatus() == Pilot::Departing)
       i += 1;
   
   return i;
@@ -69,7 +67,7 @@ ActiveAirport::countArrivals() const {
   unsigned i = 0;
   
   for (const Pilot* p: __inbounds->flights())
-    if (p->flightStatus() == Pilot::ARRIVED)
+    if (p->flightStatus() == Pilot::Arrived)
       i += 1;
   
   return i;
@@ -83,7 +81,7 @@ ActiveAirport::countInbounds() const {
 bool
 ActiveAirport::hasApproach() const {
   for (const Controller* c: __staff->staff())
-    if (c->facility() == Controller::APP)
+    if (c->facility() == Controller::App)
       return true;
   
   return false;

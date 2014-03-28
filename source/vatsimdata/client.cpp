@@ -70,3 +70,8 @@ Client::Client(const QStringList& _data) :
     __onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
     __position({_data[5].toFloat(), _data[6].toFloat()}) {}
 
+void
+Client::setPosition(Client::Position _position) {
+  __position = _position;
+}
+
