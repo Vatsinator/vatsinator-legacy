@@ -46,6 +46,7 @@ public:
    * staffed_uir_background_color:      QColor
    * fir_font:                          QFont
    * airport_font:                      QFont
+   * pilot_font:                        QFont
    * approach_circle_color:             QColor
    * seas_color:                        QColor
    * lands_color:                       QColor
@@ -64,10 +65,12 @@ private:
 private slots:
   void __showFirFontDialog();
   void __showAirportFontDialog();
+  void __showPilotFontDialog();
   
 private:
   QFont __firFont;
   QFont __airportFont;
+  QFont __pilotFont;
   
 };
 

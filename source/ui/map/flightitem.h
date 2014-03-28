@@ -36,6 +36,7 @@ public:
   virtual ~FlightItem();
   
   void drawModel() const;
+  void drawLabel() const;
   
   bool needsDrawing() const override;
   const QPointF& position() const override;
@@ -46,10 +47,17 @@ public:
   inline const Pilot* data() const { return __pilot; }
   
 private:
+  void __generateLabel() const;
+  
+private slots:
+  void __resetLabel();
+  
+private:
   const Pilot*  __pilot;
   QPointF       __position;
   
-  GLuint        __model;
+  GLuint                __model;
+  mutable GLuint        __label;
 };
 
 #endif // FLIGHTITEM_H

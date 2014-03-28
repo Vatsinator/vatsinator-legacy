@@ -70,11 +70,6 @@ AirportItem::drawIcon() const {
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-bool
-AirportItem::needsDrawing() const {
-  return !__position.isNull();
-}
-
 void
 AirportItem::drawLabel() const {
   static const GLfloat labelRect[] = {
@@ -84,9 +79,6 @@ AirportItem::drawLabel() const {
      0.08, -0.05333333
   };
   
-  if (position().isNull())
-    return;
-  
   if (!__label)
     __generateLabel();
   
@@ -94,6 +86,11 @@ AirportItem::drawLabel() const {
   glVertexPointer(2, GL_FLOAT, 0, labelRect);
   glDrawArrays(GL_QUADS, 0, 4);
   glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+bool
+AirportItem::needsDrawing() const {
+  return !__position.isNull();
 }
 
 const QPointF &

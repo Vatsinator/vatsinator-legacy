@@ -88,9 +88,6 @@ FirItem::drawLabel() const {
      0.08, -0.05333333
   };
   
-  if (position().isNull())
-    return;
-  
   if (!__label)
     __generateLabel();
   

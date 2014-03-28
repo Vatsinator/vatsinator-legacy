@@ -456,9 +456,11 @@ MapWidget::__drawPilots() {
             glTranslated(p.x(), p.y(), pilotsZ);
             item->drawModel();
             
+            __checkItem(item);
+            if (__shouldDrawPilotLabel(item))
+              item->drawLabel();
+            
           glPopMatrix();
-          
-          __checkItem(item);
         }
       }
     }
@@ -507,6 +509,19 @@ MapWidget::__checkItem(const MapItem* _item) {
       __mousePosition.screenDistance(mapFromLonLat(_item->position())) < MapConfig::mouseOnObject()) {
     __underMouse = _item;
   }
+}
+
+bool
+MapWidget::__shouldDrawPilotLabel(const MapItem* _pilot) {
+  Q_ASSERT(dynamic_cast<const FlightItem*>(_pilot));
+  
+  if (__settings.view.pilot_labels.always)
+    return true;
+  
+  if (__settings.view.pilot_labels.when_hovered && __underMouse == _pilot)
+    return true;
+  
+  return false;
 }
 
 void

@@ -141,6 +141,12 @@ private:
    */
   void __checkItem(const MapItem*);
   
+  /**
+   * Based on user settings, checks whether the pilot's label should
+   * be drawn or not.
+   */
+  bool __shouldDrawPilotLabel(const MapItem*);
+  
 private slots:
   void __reloadSettings();
   void __showMenu(const MapItem*);
