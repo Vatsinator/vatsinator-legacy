@@ -147,89 +147,94 @@
 <context>
     <name>AirportDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="35"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="173"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="17"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="175"/>
         <source>%1 - airport details</source>
         <translation>%1 - airport details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="78"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="60"/>
         <source>Inbound</source>
         <translation>Inbound</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="149"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="131"/>
         <source>Outbound</source>
         <translation>Outbound</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="217"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="199"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="285"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="267"/>
         <source>Bookings</source>
         <translation>Bookings</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="347"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="329"/>
         <source>Airport info</source>
         <translation>Airport info</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="379"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="361"/>
         <source>Airport name:</source>
         <translation>Airport name:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="403"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="385"/>
         <source>City:</source>
         <translation>City:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="427"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="409"/>
         <source>Country:</source>
         <translation>Country:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="454"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="436"/>
         <source>Altitude:</source>
         <translation>Altitude:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="513"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="495"/>
         <source>Weather forecast</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="645"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="207"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="627"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="209"/>
         <source>Vataware statistics for this airport</source>
         <translation>Vataware statistics for this airport</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="719"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="642"/>
+        <source>NOTAM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="758"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="700"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="739"/>
         <source>Show</source>
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="103"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="101"/>
         <source>Fetching...</source>
         <translation>Fetching...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="144"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="146"/>
         <source>Sorry, no weather report for %1.</source>
         <translation>Sorry, no weather report for %1.</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="202"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="204"/>
         <source>%1 ft</source>
         <translation>%1 ft</translation>
     </message>
@@ -508,6 +513,27 @@
     </message>
 </context>
 <context>
+    <name>DelayedModelTableView</name>
+    <message>
+        <location filename="../ui/views/delayedmodeltableview.cpp" line="27"/>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/views/delayedmodeltableview.cpp" line="28"/>
+        <source>Error occured</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EurouteNotamProvider</name>
+    <message>
+        <location filename="../network/euroutenotamprovider.cpp" line="75"/>
+        <source>NOTAMs by &lt;a href=&quot;%1&quot;&gt;EUroute&lt;/a&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FileDownloader</name>
     <message>
         <location filename="../network/filedownloader.cpp" line="47"/>
@@ -536,37 +562,42 @@
 <context>
     <name>FirDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="83"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="69"/>
         <source>Flights</source>
         <translation>Flights</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="146"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="132"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="209"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="195"/>
         <source>Bookings</source>
         <translation>Bookings</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="272"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="258"/>
         <source>Active airports</source>
         <translation>Active airports</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="341"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="318"/>
+        <source>NOTAM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/firdetailswindow.ui" line="390"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="83"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="90"/>
         <source>%1 - FIR details</source>
         <translation>%1 - FIR details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="92"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - ARTCC details</translation>
     </message>
@@ -1154,10 +1185,10 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="356"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="399"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="427"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="477"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="365"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="408"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="436"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="486"/>
         <source>File %1 could not be opened!</source>
         <translation>File %1 could not be opened!</translation>
     </message>
@@ -1341,19 +1372,6 @@
         <location filename="../ui/pages/viewpage.ui" line="185"/>
         <source>Never</source>
         <translation type="unfinished">Never</translation>
-    </message>
-</context>
-<context>
-    <name>WeatherForecastModel</name>
-    <message>
-        <location filename="../network/models/weatherforecastmodel.cpp" line="65"/>
-        <source>Data not accessible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../network/models/weatherforecastmodel.cpp" line="67"/>
-        <source>Retrieving data...</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
