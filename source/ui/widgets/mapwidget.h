@@ -125,6 +125,9 @@ private:
    */
   void __updateFbo(int, int);
   
+  void __storeSettings();
+  void __restoreSettings();
+  
   /**
    * Updates the zoom factor.
    */

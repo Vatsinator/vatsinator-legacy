@@ -42,7 +42,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __fbo(nullptr),
     __center(0.0, 0.0),
     __actualZoom(0),
-    __zoom(1.0f),
+    __zoom(1.5f),
     __world(nullptr),
     __scene(nullptr) {
   
@@ -55,9 +55,13 @@ MapWidget::MapWidget(QWidget* _parent) :
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
   
   setAutoBufferSwap(true);
+  
+  __restoreSettings();
 }
 
 MapWidget::~MapWidget() {
+  __storeSettings();
+  
   delete __scene;
   delete __world;
   
@@ -473,6 +477,32 @@ MapWidget::__updateFbo(int _width, int _height) {
     delete __fbo;
   
   __fbo = new FrameBufferObject(_width, _height);
+}
+
+void
+MapWidget::__storeSettings() {
+  QSettings settings;
+  
+  settings.beginGroup("CameraSettings");
+  
+  settings.setValue("zoomFactor", __zoom);
+  settings.setValue("actualZoomCoefficient", __actualZoom);
+  settings.setValue("cameraPosition", __center);
+  
+  settings.endGroup();
+}
+
+void
+MapWidget::__restoreSettings() {
+  QSettings settings;
+  
+  settings.beginGroup("CameraSettings");
+  
+  __zoom = settings.value("zoomFactor", 1.5f).toFloat();
+  __actualZoom = settings.value("actualZoomCoefficient", 0).toInt();
+  __center = settings.value("cameraPosition", QPointF(0.0, 0.0)).toPointF();
+  
+  settings.endGroup();
 }
 
 void
