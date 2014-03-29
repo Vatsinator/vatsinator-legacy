@@ -22,6 +22,7 @@
 
 #include <QGLWidget>
 
+#include "vatsimdata/lonlat.h"
 #include "singleton.h"
 
 class Airport;
@@ -61,7 +62,7 @@ public:
    * @param point The point on the screen.
    * @return Global coordinates (longitude, latitude).
    */
-  QPointF mapToLonLat(const QPoint&);
+  LonLat mapToLonLat(const QPoint&);
   
   /**
    * Scales the given point (or distance) to the global
@@ -73,17 +74,17 @@ public:
    * @param point The point (or the distance) in the window coordinates.
    * @return Global coordinates (or the distance).
    */
-  QPointF scaleToLonLat(const QPoint&);
+  LonLat scaleToLonLat(const QPoint&);
   
   /**
    * Calculates widget coordinates from the given lat-lon coordinates.
    */
-  QPoint mapFromLonLat(const QPointF&);
+  QPoint mapFromLonLat(const LonLat&);
   
   /**
    * Calculates OpenGL scene local coordinates from latitude/longitude.
    */
-  QPointF glFromLonLat(const QPointF&);
+  QPointF glFromLonLat(const LonLat&);
   
   /**
    * Specifies whether the given point is visible on the screen or not.
@@ -117,6 +118,7 @@ private:
   void __drawFirs();
   void __drawAirports();
   void __drawPilots();
+  void __drawLines();
   
   /**
    * Updates framebuffer object. Must be called each window resize.
@@ -159,7 +161,7 @@ private:
   FrameBufferObject* __fbo;
   
   /* Global coordinates of the center point of the map */
-  QPointF __center;
+  LonLat __center;
   
   /* Stores screen rectangle */
   qreal __rangeX;
@@ -201,7 +203,7 @@ private:
      * Calculates distance between the point on the globe (lat-lon) and
      * the mouse cursor position.
      */
-    qreal geoDistance(const QPointF&);
+    qreal geoDistance(const LonLat&);
     
     /**
      * Position within the widget.

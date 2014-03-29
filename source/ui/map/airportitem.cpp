@@ -93,7 +93,7 @@ AirportItem::needsDrawing() const {
   return !__position.isNull();
 }
 
-const QPointF &
+const LonLat &
 AirportItem::position() const {
   return __position;
 }

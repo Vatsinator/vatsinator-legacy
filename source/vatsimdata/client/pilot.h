@@ -20,6 +20,7 @@
 #ifndef PILOT_H
 #define PILOT_H
 
+#include <QPointF>
 #include <QStringList>
 #include <QString>
 
@@ -56,6 +57,12 @@ public:
     QString destination;
     QString route;
     QString altitude;
+    
+    /* This is vector of points that belong to the route.
+     * The first point is the origin airport, the middle one is
+     * the pilot position and the last one is the destination airport.
+     */
+    QVector<LonLat> waypoints;
   };
   
   Pilot() = delete;

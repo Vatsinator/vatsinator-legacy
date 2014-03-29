@@ -102,7 +102,7 @@ FirItem::needsDrawing() const {
   return !__position.isNull();
 }
 
-const QPointF &
+const LonLat &
 FirItem::position() const {
   return __position;
 }

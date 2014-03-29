@@ -37,12 +37,13 @@
 FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
     QObject(_parent),
     __pilot(_pilot),
-    __position(_pilot->position().longitude, _pilot->position().latitude),
+    __position(_pilot->position()),
     __model(ModelMatcher::getSingleton().matchMyModel(_pilot->aircraft())),
-    __label(0) {
+    __label(0),
+    __linesReady(false) {
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__resetLabel()));
+          this,                                 SLOT(__reloadSettings()));
 }
 
 FlightItem::~FlightItem() {
@@ -85,12 +86,46 @@ FlightItem::drawLabel() const {
   glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void
+FlightItem::drawLines(LineTypes types) const {
+  if (!__linesReady)
+    __prepareLines();
+  
+  if (types.testFlag(OriginToPilot) && !__otpLine.coords.isEmpty()) {
+    if (!__otpLine.color.isValid())
+      __otpLine.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
+    
+    glColor4f(__otpLine.color.redF(),
+              __otpLine.color.greenF(),
+              __otpLine.color.blueF(),
+              1.0);
+    
+    glVertexPointer(2, GL_FLOAT, 0, __otpLine.coords.constData());
+    glDrawArrays(GL_LINE_STRIP, 0, __otpLine.coords.size() / 2);
+  }
+  
+  if (types.testFlag(PilotToDestination) && !__ptdLine.coords.isEmpty()) {
+    if (!__ptdLine.color.isValid())
+      __ptdLine.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
+    
+    glColor4f(__ptdLine.color.redF(),
+              __ptdLine.color.greenF(),
+              __ptdLine.color.blueF(),
+              1.0);
+    
+    glVertexPointer(2, GL_FLOAT, 0, __ptdLine.coords.constData());
+    glLineStipple(3, 0xF0F0); // dashed line
+    glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);
+    glLineStipple(1, 0xFFFF);
+  }
+}
+
 bool
 FlightItem::needsDrawing() const {
   return !(data()->flightStatus() != Pilot::Airborne || data()->isPrefiledOnly());
 }
 
-const QPointF &
+const LonLat &
 FlightItem::position() const {
   return __position;
 }
@@ -192,9 +227,26 @@ FlightItem::__generateLabel() const {
 }
 
 void
-FlightItem::__resetLabel() {
+FlightItem::__prepareLines() const {
+  QVector<GLfloat>* coords = &__otpLine.coords;
+  for (const LonLat& p: data()->route().waypoints) {
+    (*coords) << p.x() << p.y();
+    if (p == data()->position()) {
+      coords = &__ptdLine.coords;
+      (*coords) << p.x() << p.y();
+    }
+  }
+  
+  __linesReady = true;
+}
+
+void
+FlightItem::__reloadSettings() {
   if (__label) {
     GlResourceManager::deleteImage(__label);
     __label = 0;
   }
+  
+  __otpLine.color = QColor();
+  __ptdLine.color = QColor();
 }

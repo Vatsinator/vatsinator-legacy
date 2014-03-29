@@ -4,6 +4,7 @@ set (vatsimdata_SRCS
     airport.cpp
     client.cpp
     fir.cpp
+    lonlat.cpp
     metar.cpp
     uir.cpp
     vatsimdatahandler.cpp

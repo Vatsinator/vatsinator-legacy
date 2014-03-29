@@ -40,7 +40,7 @@ public:
   void drawLabel() const;
   
   bool needsDrawing() const override;
-  const QPointF& position() const override;
+  const LonLat& position() const override;
   QString tooltipText() const override;
   QMenu* menu(QWidget*) const override;
   void showDetailsWindow() const override;
@@ -57,7 +57,7 @@ private slots:
 private:
   
   const Airport* __airport;
-  QPointF        __position;
+  LonLat         __position;
   
   mutable GLuint __icon;
   mutable GLuint __label;

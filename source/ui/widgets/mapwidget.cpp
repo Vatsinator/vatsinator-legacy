@@ -69,30 +69,30 @@ MapWidget::~MapWidget() {
     delete __fbo;
 }
 
-QPointF
+LonLat
 MapWidget::mapToLonLat(const QPoint& _point) {
   static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
-  return QPointF(
+  return LonLat(
       static_cast<qreal>(_point.x() - (width() / 2)) * xFactor / static_cast<qreal>(__zoom) + __center.x(),
       -(static_cast<qreal>(_point.y() - (height() / 2)) * yFactor / static_cast<qreal>(__zoom) + __center.y())
     );
 }
 
-QPointF
+LonLat
 MapWidget::scaleToLonLat(const QPoint& _point) {
   static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
-  return QPointF(
+  return LonLat(
       static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(__zoom),
       static_cast<qreal>(_point.y()) * yFactor / static_cast<qreal>(__zoom)
     );
 }
 
 QPoint
-MapWidget::mapFromLonLat(const QPointF& _point) {
+MapWidget::mapFromLonLat(const LonLat& _point) {
   static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
@@ -103,7 +103,7 @@ MapWidget::mapFromLonLat(const QPointF& _point) {
 }
 
 QPointF
-MapWidget::glFromLonLat(const QPointF& _point) {
+MapWidget::glFromLonLat(const LonLat& _point) {
   return QPointF(
       (_point.x() - __center.x()) / MapConfig::longitudeMax() * __zoom,
       (_point.y() + __center.y()) / MapConfig::latitudeMax() * __zoom
@@ -136,6 +136,7 @@ MapWidget::initializeGL() {
   __scene = new MapScene(this);
   
   glEnable(GL_MULTISAMPLE);
+  glEnable(GL_LINE_STIPPLE);
   
   glShadeModel(GL_SMOOTH);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
@@ -192,6 +193,7 @@ MapWidget::paintGL() {
   __drawFirs();
   __drawAirports();
   __drawPilots();
+  __drawLines();
   
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -472,6 +474,26 @@ MapWidget::__drawPilots() {
 }
 
 void
+MapWidget::__drawLines() {
+  static constexpr GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
+  
+  if (__underMouse) {
+    glPushMatrix();
+      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
+      glScalef(__zoom, __zoom, 1.0f);
+      glTranslated(-__center.x(), __center.y(), 0.0);
+      glTranslatef(0.0, 0.0, linesZ);
+      
+      const FlightItem* pilot = dynamic_cast<const FlightItem*>(__underMouse);
+      if (pilot) {
+        pilot->drawLines(FlightItem::OriginToPilot | FlightItem::PilotToDestination);
+      }
+      
+    glPopMatrix();
+  }
+}
+
+void
 MapWidget::__updateFbo(int _width, int _height) {
   if (__fbo)
     delete __fbo;
@@ -500,7 +522,7 @@ MapWidget::__restoreSettings() {
   
   __zoom = settings.value("zoomFactor", 1.5f).toFloat();
   __actualZoom = settings.value("actualZoomCoefficient", 0).toInt();
-  __center = settings.value("cameraPosition", QPointF(0.0, 0.0)).toPointF();
+  __center = settings.value("cameraPosition", LonLat(0.0, 0.0)).value<LonLat>();
   
   settings.endGroup();
 }
@@ -609,7 +631,7 @@ MapWidget::MousePosition::screenDistance(const QPoint& _point) {
 }
 
 qreal
-MapWidget::MousePosition::geoDistance(const QPointF& _point) {
+MapWidget::MousePosition::geoDistance(const LonLat& _point) {
   return qSqrt(
     qPow(_point.x() - __geoPosition.x(), 2) +
     qPow(_point.y() - __geoPosition.y(), 2)

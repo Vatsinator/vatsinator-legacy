@@ -24,7 +24,14 @@
 #include <QString>
 #include <QMenu>
 
+#include "vatsimdata/lonlat.h"
+
 class MapItem {
+  
+  /**
+   * MapItem is an interface for any object that exists on the map.
+   */
+  
 public:
   
   /**
@@ -35,7 +42,7 @@ public:
   /**
    * Position of the item, global coordinates.
    */
-  virtual const QPointF& position() const = 0;
+  virtual const LonLat& position() const = 0;
   
   /**
    * Tooltip text, shown when the item is mouseover'ed.

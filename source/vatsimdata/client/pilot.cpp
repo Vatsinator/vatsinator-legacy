@@ -103,25 +103,32 @@ void Pilot::__updateAirports() {
   if (!__route.origin.isEmpty()) {
     ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.origin);
     ap->addOutbound(this);
-
+    
     if (__prefiledOnly && ap->data()) {
-      setPosition({ap->data()->latitude, ap->data()->longitude});
+      setPosition(LonLat(ap->data()->longitude, ap->data()->latitude));
+    } else if (ap->data()) {
+      __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);
     }
-
+    
     if (ap->firs().first)
       ap->firs().first->addFlight(this);
-
+    
     if (ap->firs().second)
       ap->firs().second->addFlight(this);
   }
-
+  
+  __route.waypoints << position();
+  
   if (!__route.destination.isEmpty()) {
     ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.destination);
     ap->addInbound(this);
-
+    
+    if (!__prefiledOnly && ap->data())
+      __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);
+    
     if (ap->firs().first)
       ap->firs().first->addFlight(this);
-
+    
     if (ap->firs().second)
       ap->firs().second->addFlight(this);
   }
@@ -143,7 +150,7 @@ Pilot::__setMyStatus() {
     
     if (ap_origin)
       if ((VatsimDataHandler::distance(ap_origin->longitude, ap_origin->latitude,
-                                       position().longitude, position().latitude) < PilotToAirport) &&
+                                       position().longitude(), position().latitude()) < PilotToAirport) &&
       (__groundSpeed < 50)) {
         __flightStatus = Departing;
         return;
@@ -151,7 +158,7 @@ Pilot::__setMyStatus() {
 
     if (ap_arrival)
       if ((VatsimDataHandler::distance(ap_arrival->longitude, ap_arrival->latitude,
-                                       position().longitude, position().latitude) < PilotToAirport) &&
+                                       position().longitude(), position().latitude()) < PilotToAirport) &&
       (__groundSpeed < 50)) {
         __flightStatus = Arrived;
         return;
@@ -167,7 +174,7 @@ Pilot::__setMyStatus() {
     
     for (const AirportRecord & ap: AirportDatabase::getSingleton().airports()) {
       qreal temp = VatsimDataHandler::distance(ap.longitude, ap.latitude,
-                   position().longitude, position().latitude);
+                   position().longitude(), position().latitude());
 
       if (((temp < distance) && closest) || !closest) {
         closest = &ap;

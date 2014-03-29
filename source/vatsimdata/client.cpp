@@ -68,10 +68,10 @@ Client::Client(const QStringList& _data) :
     __realName(_data[2].simplified()),
     __server(_data[14]),
     __onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
-    __position({_data[5].toFloat(), _data[6].toFloat()}) {}
+    __position(_data[6].toFloat(), _data[5].toFloat()) {}
 
 void
-Client::setPosition(Client::Position _position) {
+Client::setPosition(const LonLat& _position) {
   __position = _position;
 }
 

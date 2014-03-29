@@ -24,6 +24,8 @@
 #include <QString>
 #include <QStringList>
 
+#include "vatsimdata/lonlat.h"
+
 class Client {
 
   /*
@@ -31,11 +33,6 @@ class Client {
    */
 
 public:
-  
-  struct Position {
-    float latitude;
-    float longitude;
-  };
   
   /**
    * Prevent from creating foo-clients.
@@ -79,10 +76,10 @@ public:
   /**
    * The current client's position.
    */
-  inline const Client::Position& position() const { return __position; }
+  inline const LonLat& position() const { return __position; }
 
 protected:
-  void setPosition(Position);
+  void setPosition(const LonLat&);
   
 private:
   /* Client data */
@@ -91,7 +88,7 @@ private:
   QString               __realName;
   QString               __server;
   QDateTime             __onlineFrom;
-  Client::Position      __position;
+  LonLat                __position;
 
 };
 

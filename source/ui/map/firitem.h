@@ -50,7 +50,7 @@ public:
    * Label coordinates.
    */
   bool needsDrawing() const override;
-  const QPointF& position() const override;
+  const LonLat& position() const override;
   QString tooltipText() const override;
   QMenu* menu(QWidget*) const override;
   void showDetailsWindow() const override;
@@ -66,7 +66,7 @@ private slots:
   
 private:
   const Fir* __fir;
-  QPointF    __position;
+  LonLat     __position;
   
   VertexBufferObject* __borders;
   VertexBufferObject* __triangles;

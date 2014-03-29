@@ -201,7 +201,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
           }
         } else if (clientData[3] == "PILOT") {
           Pilot* pilot = new Pilot(clientData);
-          if (pilot->position().latitude == 0 && pilot->position().longitude == 0)
+          if (pilot->position().isNull())
             delete pilot; // skip unknown flights
           else
             __flights->addFlight(pilot);
