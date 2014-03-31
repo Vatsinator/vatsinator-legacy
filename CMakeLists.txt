@@ -18,6 +18,7 @@
 project (vatsinator)
 
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
+cmake_policy (SET CMP0020 OLD)
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
