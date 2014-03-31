@@ -24,6 +24,7 @@
 #include <QVector>
 
 class AirportItem;
+class ApproachCircleItem;
 class FirItem;
 class FlightItem;
 
@@ -39,14 +40,33 @@ public:
   explicit MapScene(QObject* parent = 0);
   virtual ~MapScene();
   
-  inline const QVector<const FirItem*>& firItems() const { return __firItems; }
-  inline const QVector<const FirItem*>& staffedFirItems() const { return __staffedFirItems; }
-  inline const QVector<const FirItem*>& unstaffedFirItems() const { return __unstaffedFirItems; }
+  inline const QVector<const FirItem*>& firItems() const {
+    return __firItems;
+  }
   
-  inline const QVector<const AirportItem*>& activeAirportItems() const { return __activeAirportItems; }
-  inline const QVector<const AirportItem*>& emptyAirportItems() const { return __emptyAirportItems; }
+  inline const QVector<const FirItem*>& staffedFirItems() const {
+    return __staffedFirItems;
+  }
   
-  inline const QVector<const FlightItem*>& flightItems() const { return __flightItems; }
+  inline const QVector<const FirItem*>& unstaffedFirItems() const {
+    return __unstaffedFirItems;
+  }
+  
+  inline const QVector<const AirportItem*>& activeAirportItems() const {
+    return __activeAirportItems;
+  }
+  
+  inline const QVector<const AirportItem*>& emptyAirportItems() const {
+    return __emptyAirportItems;
+  }
+  
+  inline const QVector<const ApproachCircleItem*>& approachCircleItems() const {
+    return __approachCircleItems;
+  }
+  
+  inline const QVector<const FlightItem*>& flightItems() const {
+    return __flightItems;
+  }
   
 private slots:
   void __updateData();
@@ -61,6 +81,7 @@ private:
   /* Groupped airport items */
   QVector<const AirportItem*> __activeAirportItems;
   QVector<const AirportItem*> __emptyAirportItems;
+  QVector<const ApproachCircleItem*>    __approachCircleItems;
   
   /* Flights */
   QVector<const FlightItem*> __flightItems;

@@ -25,6 +25,7 @@
 #include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/airportitem.h"
+#include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/mapconfig.h"
@@ -435,6 +436,15 @@ MapWidget::__drawAirports() {
         if (onScreen(p)) {
           glPushMatrix();
             glTranslated(p.x(), p.y(), activeAirportsZ);
+/*            
+            if (item->data()->hasApproach()) {
+              glPushMatrix();
+                glScalef(__zoom, __zoom, 0);
+                glTranslatef(.0f, .0f, -0.5f);
+                item->drawApproachCircle();
+              glPopMatrix();
+            }*/
+            
             item->drawIcon();
             
             if (__settings.view.airport_labels)
@@ -445,6 +455,16 @@ MapWidget::__drawAirports() {
           __checkItem(item);
         }
       }
+    }
+    
+    for (const ApproachCircleItem* item: __scene->approachCircleItems()) {
+      QPointF p = glFromLonLat(item->position());
+      
+      glPushMatrix();
+        glTranslated(p.x(), p.y(), activeAirportsZ);
+        glScalef(__zoom, __zoom, 0);
+        item->drawCircle();
+      glPopMatrix();
     }
   }
 }

@@ -44,7 +44,7 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     __label(0) {
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__resetLabel()));
+          this,                                 SLOT(__reloadSettings()));
 }
 
 AirportItem::~AirportItem() {
@@ -203,7 +203,7 @@ AirportItem::__generateLabel() const {
 }
 
 void
-AirportItem::__resetLabel() {
+AirportItem::__reloadSettings() {
   if (__label) {
     GlResourceManager::deleteImage(__label);
     __label = 0;

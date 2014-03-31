@@ -59,6 +59,7 @@ set (ui_SRCS
     dialogs/statusfetcherrordialog.cpp
     
     map/airportitem.cpp
+    map/approachcircleitem.cpp
     map/firitem.cpp
     map/flightitem.cpp
     map/mapconfig.cpp
@@ -118,6 +119,7 @@ set (ui_MOC_SRCS
     dialogs/statusfetcherrordialog.h
     
     map/airportitem.h
+    map/approachcircleitem.h
     map/firitem.h
     map/flightitem.h
     map/mapscene.h

@@ -22,6 +22,7 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "ui/map/airportitem.h"
+#include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "vatsimdata/airport.h"
@@ -48,6 +49,7 @@ MapScene::~MapScene() {
   qDeleteAll(__firItems);
   qDeleteAll(__activeAirportItems);
   qDeleteAll(__emptyAirportItems);
+  qDeleteAll(__approachCircleItems);
   qDeleteAll(__flightItems);
 }
 
@@ -73,10 +75,13 @@ MapScene::__updateData() {
   
   qDeleteAll(__activeAirportItems), __activeAirportItems.clear();
   qDeleteAll(__emptyAirportItems), __emptyAirportItems.clear();
+  qDeleteAll(__approachCircleItems), __approachCircleItems.clear();
   
   for (AirportRecord& ap: AirportDatabase::getSingleton().airports()) {
     if (VatsimDataHandler::getSingleton().activeAirports().contains(ap.icao)) {
       __activeAirportItems << new AirportItem(VatsimDataHandler::getSingleton().activeAirports()[ap.icao]);
+      if (VatsimDataHandler::getSingleton().activeAirports()[ap.icao]->hasApproach())
+        __approachCircleItems << new ApproachCircleItem(VatsimDataHandler::getSingleton().activeAirports()[ap.icao]);
     } else {
       __emptyAirportItems << new AirportItem(VatsimDataHandler::getSingleton().addEmptyAirport(&ap));
     }

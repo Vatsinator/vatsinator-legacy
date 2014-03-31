@@ -1,5 +1,5 @@
 /*
- * airportitem.h
+ * approachcircleitem.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,28 +17,24 @@
  *
  */
 
-#ifndef AIRPORTITEM_H
-#define AIRPORTITEM_H
+#ifndef APPROACHCIRCLEITEM_H
+#define APPROACHCIRCLEITEM_H
 
 #include <QtOpenGL>
 #include <QObject>
-#include <QVector>
 
 #include "ui/map/mapitem.h"
 
 class Airport;
 
-class AirportItem : public QObject, public MapItem {
+class ApproachCircleItem : public QObject, public MapItem {
   Q_OBJECT
 
 public:
-  AirportItem(const Airport*, QObject* = nullptr);
-  AirportItem() = delete;
+  ApproachCircleItem(const Airport*, QObject* = nullptr);
+  ApproachCircleItem() = delete;
   
-  virtual ~AirportItem();
-  
-  void drawIcon() const;
-  void drawLabel() const;
+  void drawCircle() const;
   
   bool needsDrawing() const override;
   const LonLat& position() const override;
@@ -46,44 +42,18 @@ public:
   QMenu* menu(QWidget*) const override;
   void showDetailsWindow() const override;
   
-  inline const Airport* data() const { return __airport; }
-  
 private:
-  void __makeIcon() const;
-  void __generateLabel() const;
-
+  void __fillColors() const;
+  
 private slots:
   void __reloadSettings();
   
 private:
+  LonLat                        __position;
+  mutable QVector<GLfloat>      __colors;
   
-  const Airport* __airport;
-  LonLat         __position;
-  
-  mutable GLuint                __icon;
-  mutable GLuint                __label;
-  
-  /**
-   * Class that loads and keeps icons.
-   */
-  class IconKeeper {
-  public:
-    IconKeeper();
-    ~IconKeeper();
-    
-    GLuint emptyAirportIcon();
-    GLuint activeAirportIcon();
-    GLuint activeStaffedAirportIcon();
-    
-  private:
-    GLuint __emptyAirportIcon;
-    GLuint __activeAirportIcon;
-    GLuint __activeStaffedAirportIcon;
-    
-  };
-  
-  static IconKeeper             __icons;
+  static QVector<GLfloat>       __circle;
   
 };
 
-#endif // AIRPORTITEM_H
+#endif // APPROACHCIRCLEITEM_H
