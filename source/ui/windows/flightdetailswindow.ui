@@ -424,13 +424,23 @@
       <attribute name="title">
        <string>Flight details</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,2,1" rowminimumheight="20,20,20,20,20,20,20,20,20,0,0">
+      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0" rowminimumheight="20,20,20,20,20,20,20,20,20,0">
        <property name="topMargin">
         <number>10</number>
        </property>
        <property name="horizontalSpacing">
         <number>5</number>
        </property>
+       <item row="7" column="0">
+        <widget class="QLabel" name="SquawkLabelDesc">
+         <property name="text">
+          <string>Squawk:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="1">
         <widget class="QLabel" name="AltitudeLabel">
          <property name="text">
@@ -562,16 +572,6 @@
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="SquawkLabelDesc">
-         <property name="text">
-          <string>Squawk:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
        <item row="7" column="1">
         <widget class="QLabel" name="SquawkLabel">
          <property name="text">
@@ -611,41 +611,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="VatawareIcon">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="../resources/imgs.qrc">:/extra/vataware.png</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QLabel" name="VatawareLink">
-         <property name="minimumSize">
-          <size>
-           <width>220</width>
-           <height>29</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Vataware statistics for this pilot</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="openExternalLinks">
-          <bool>true</bool>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>

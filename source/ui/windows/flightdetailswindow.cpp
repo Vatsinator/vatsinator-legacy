@@ -120,12 +120,6 @@ FlightDetailsWindow::show(const Client* _client) {
   TimeOnlineLabel->setText(__current->onlineFrom().toString("dd MMM yyyy, hh:mm"));
   SquawkLabel->setText(__current->squawk());
   AltimeterLabel->setText(__current->pressure().mb % " / " % __current->pressure().ihg);
-  
-  VatawareLink->setText(QString("<a href=\"") %
-      QString(NetConfig::Vataware::pilotUrl()).arg(QString::number(__current->pid())) %
-      QString("\">") %
-      tr("Vataware statistics for this pilot") %
-      QString("</a>"));
 
   FlightRulesLabel->setText((__current->flightRules() == Pilot::IFR) ? "IFR" : "VFR");
 
