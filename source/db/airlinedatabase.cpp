@@ -27,11 +27,14 @@
 #include "airlinedatabase.h"
 #include "defines.h"
 
-AirlineDatabase::AirlineDatabase()
+AirlineDatabase::AirlineDatabase(QObject* _parent) :
+    QObject(_parent)
 #ifndef GCC_VERSION_47
-  : __nope("")
+    , __nope("")
 #endif
 {
+  connect(this,                                 SIGNAL(warning(QString)),
+          UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
   QtConcurrent::run(this, &AirlineDatabase::__init);
 }
 
@@ -45,8 +48,7 @@ AirlineDatabase::__init() {
   QFile db(FileManager::path("data/airlines"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    UserInterface::warning(
-      tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    emit warning(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
     return;
   }
   

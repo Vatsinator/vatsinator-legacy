@@ -116,6 +116,7 @@ private:
   
 private:
   
+  UserInterface*       __userInterface;
   FileManager*         __fileManager;
   AirlineDatabase*     __airlineDatabase;
   AirportDatabase*     __airportsData;
@@ -127,7 +128,6 @@ private:
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;
-  UserInterface*       __userInterface;
   
   static QMutex        __mutex; /* For stdout */
 

@@ -10,6 +10,8 @@ set (db_SRCS
 vatsinator_subdirectory_sources (db "${db_SRCS}")
 
 set (db_MOC_SRCS
+    airlinedatabase.h
+    airportdatabase.h
     firdatabase.h
     worldmap.h
 )

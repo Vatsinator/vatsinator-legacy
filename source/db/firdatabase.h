@@ -41,14 +41,15 @@ struct FirHeader {
 
 
 
-class FirDatabase :
-    public QObject,
-    public Singleton<FirDatabase> {
-
+class FirDatabase : public QObject, public Singleton<FirDatabase> {
+  
   Q_OBJECT
+  
+signals:
+  void fatal(QString);
 
 public:
-  FirDatabase();
+  FirDatabase(QObject* = nullptr);
 
   /**
    * Finds FIR by given ICAO.

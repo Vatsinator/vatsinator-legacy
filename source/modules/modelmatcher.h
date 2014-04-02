@@ -20,26 +20,29 @@
 #ifndef MODELMATCHER_H
 #define MODELMATCHER_H
 
-#include <QCoreApplication>
+#include <QObject>
 #include <QString>
 #include <QMap>
 #include <QtOpenGL>
 
 #include "singleton.h"
 
-class ModelMatcher : public Singleton<ModelMatcher> {
-
+class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
+  
   /**
    * This class matches the models to the planes.
    */
   
-  Q_DECLARE_TR_FUNCTIONS(ModelMatcher);
+  Q_OBJECT
+  
+signals:
+  void warning(QString);
 
 public:
   /**
    * Reads the models.dat file.
    */
-  ModelMatcher();
+  ModelMatcher(QObject* = nullptr);
 
   /**
    * Loads the pixmaps.

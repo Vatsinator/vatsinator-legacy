@@ -51,6 +51,7 @@
 
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
+    __userInterface(new UserInterface()),
     __fileManager(new FileManager()),
     __airlineDatabase(new AirlineDatabase()),
     __airportsData(new AirportDatabase()),
@@ -61,8 +62,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __settingsManager(new SettingsManager()),
     __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
-    __statsPurveyor(new StatsPurveyor()),
-    __userInterface(nullptr) {
+    __statsPurveyor(new StatsPurveyor()) {
  
   /* Set up translations */
   QTranslator* tr_qt = new QTranslator();
@@ -87,7 +87,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   /* Basic initializes */
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   
-  __userInterface = new UserInterface();
+  __userInterface->init();
   __settingsManager->init();
   __moduleManager->init();
 

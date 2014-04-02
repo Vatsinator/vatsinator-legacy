@@ -28,7 +28,11 @@
 #include "worldmap.h"
 #include "defines.h"
 
-WorldMap::WorldMap() {
+WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {
+  
+  connect(this,                                 SIGNAL(fatal(QString)),
+          UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
+  
 //   __readDatabase();
   QtConcurrent::run(this, &WorldMap::__readDatabase);
   
@@ -66,8 +70,7 @@ void WorldMap::__readDatabase() {
   QFile db(FileManager::path("WorldMap.db"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
-    UserInterface::fatal(
-        tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    emit fatal(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
 
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);

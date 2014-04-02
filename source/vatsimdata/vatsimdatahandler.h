@@ -303,11 +303,6 @@ private:
   void __loadCachedData();
   
 private slots:
-  /**
-   * Called if local data is bad.
-   */
-  void __reportDataError(QString);
-  
   void __slotUiCreated();
   void __beginDownload();
   void __dataFetched(QString);

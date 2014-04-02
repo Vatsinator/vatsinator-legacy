@@ -41,12 +41,10 @@ class MetarsWindow;
 class SettingsWindow;
 class VatsinatorWindow;
 
-class UserInterface :
-  public QObject,
-  public Singleton<UserInterface> {
+class UserInterface : public QObject, public Singleton<UserInterface> {
 
   /*
-   * This class manager the Vatsinator's GUI interface.
+   * This class manager the Vatsinator's GUI.
    */
 
   Q_OBJECT
@@ -55,6 +53,10 @@ public:
   UserInterface();
   virtual ~UserInterface();
   
+public:
+  void init();
+  
+public slots:
   /**
    * Reports fatal error to user.
    * After showing the error message box, the application
@@ -62,16 +64,15 @@ public:
    * 
    * @param msg Message to be shown.
    */
-  static void fatal(const QString&);
+  void fatal(const QString&);
   
   /**
    * Reports warning to user.
    * 
    * @param msg Warning message.
    */
-  static void warning(const QString&);
+  void warning(const QString&);
   
-public slots:
   void showAppRestartDialog();
   void showVatsimMessage(const QString&);
 

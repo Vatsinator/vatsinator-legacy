@@ -19,6 +19,7 @@ set (modules_MOC_SRCS
     airporttracker.h
     flighttracker.h
     homelocation.h
+    modelmatcher.h
     modulemanager.h
     vatbookhandler.h
     

@@ -74,9 +74,11 @@ VatsimDataHandler::VatsimDataHandler() :
           this,                                     SLOT(__handleFetchError()));
   connect(__scheduler,                              SIGNAL(timeToUpdate()),
           this,                                     SLOT(requestDataUpdate()));
+  connect(this,                                     SIGNAL(localDataBad(QString)),
+          UserInterface::getSingletonPtr(),         SLOT(warning(QString)));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
-  connect(this, SIGNAL(localDataBad(QString)), SLOT(__reportDataError(QString)));
+//   connect(this, SIGNAL(localDataBad(QString)), SLOT(__reportDataError(QString)));
   
   __notamProvider = new EurouteNotamProvider();
 }
@@ -552,11 +554,6 @@ VatsimDataHandler::__loadCachedData() {
   }
   
   VatsinatorApplication::log("VatsimDataHandler: cache restored.");
-}
-
-void
-VatsimDataHandler::__reportDataError(QString _msg) {
-  UserInterface::fatal(_msg);
 }
 
 void

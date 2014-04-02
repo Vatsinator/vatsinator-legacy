@@ -27,15 +27,16 @@
 #include "modelmatcher.h"
 #include "defines.h"
 
-ModelMatcher::ModelMatcher() {
+ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
+  connect(this,                                 SIGNAL(warning(QString)),
+          UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
+  
   __modelsFiles["ZZZZ"] = "1p"; // default
 
   QFile modelsFile(FileManager::path("data/model"));
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    UserInterface::warning(
-      tr("File %1 could not be opened! Check file permissions or reinstall the application.")
-        .arg(modelsFile.fileName()));
+    emit warning(tr("File %1 could not be opened! Check file permissions or reinstall the application.").arg(modelsFile.fileName()));
     return;
   }
 

@@ -56,28 +56,19 @@
 
 UserInterface::UserInterface() :
 #ifndef NO_DEBUG
-    __debugWindow(new DebugWindow()),
+    __debugWindow(nullptr),
 #endif
-    __aboutWindow(new AboutWindow()),
-    __metarsWindow(new MetarsWindow()),
-    __airportDetailsWindow(new AirportDetailsWindow()),
-    __databaseWindow(new DatabaseWindow()),
-    __firDetailsWindow(new FirDetailsWindow()),
-    __atcDetailsWindow(new AtcDetailsWindow()),
-    __atcListWindow(new AtcListWindow()),
-    __flightDetailsWindow(new FlightDetailsWindow()),
-    __flightsListWindow(new FlightListWindow()),
-    __settingsWindow(new SettingsWindow()),
-    __vatsinatorWindow(new VatsinatorWindow()) {
-
-
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
-          this,                                     SLOT(__dataError()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
-          this,                                     SLOT(__statusError()));
-  connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
-          this,                                     SLOT(__showNewVersionDialog()));
-}
+    __aboutWindow(nullptr),
+    __metarsWindow(nullptr),
+    __airportDetailsWindow(nullptr),
+    __databaseWindow(nullptr),
+    __firDetailsWindow(nullptr),
+    __atcDetailsWindow(nullptr),
+    __atcListWindow(nullptr),
+    __flightDetailsWindow(nullptr),
+    __flightsListWindow(nullptr),
+    __settingsWindow(nullptr),
+    __vatsinatorWindow(nullptr) {}
 
 UserInterface::~UserInterface() {
   delete __vatsinatorWindow;
@@ -95,6 +86,32 @@ UserInterface::~UserInterface() {
 #ifndef NO_DEBUG
   delete __debugWindow;
 #endif
+}
+
+void
+UserInterface::init() {
+#ifndef NO_DEBUG
+  __debugWindow = new DebugWindow();
+#endif
+  
+  __aboutWindow = new AboutWindow();
+  __metarsWindow = new MetarsWindow();
+  __airportDetailsWindow = new AirportDetailsWindow();
+  __databaseWindow = new DatabaseWindow();
+  __firDetailsWindow = new FirDetailsWindow();
+  __atcDetailsWindow = new AtcDetailsWindow();
+  __atcListWindow = new AtcListWindow();
+  __flightDetailsWindow = new FlightDetailsWindow();
+  __flightsListWindow = new FlightListWindow();
+  __settingsWindow = new SettingsWindow();
+  __vatsinatorWindow = new VatsinatorWindow();
+  
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
+          this,                                     SLOT(__dataError()));
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
+          this,                                     SLOT(__statusError()));
+  connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
+          this,                                     SLOT(__showNewVersionDialog()));
 }
 
 void

@@ -29,9 +29,7 @@
 
 class VertexBufferObject;
 
-class WorldMap :
-    public QObject,
-    public Singleton<WorldMap> {
+class WorldMap : public QObject, public Singleton<WorldMap> {
 
   Q_OBJECT
 
@@ -48,9 +46,11 @@ class WorldMap :
     WorldMapVBO             vbo;
   };
   
+signals:
+  void fatal(QString);
   
 public:
-  WorldMap();
+  WorldMap(QObject* = nullptr);
   virtual ~WorldMap();
 
   void draw() const;

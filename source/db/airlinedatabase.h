@@ -20,18 +20,23 @@
 #ifndef AIRLINEDATABASE_H
 #define AIRLINEDATABASE_H
 
-#include <QCoreApplication>
+#include <QObject>
 #include <QString>
 #include <QMap>
 
 #include "singleton.h"
 
-class AirlineDatabase : public Singleton<AirlineDatabase> {
+class AirlineDatabase : public QObject, public Singleton<AirlineDatabase> {
   
-  Q_DECLARE_TR_FUNCTIONS(AirlineDatabase);
+  Q_OBJECT
+  
+signals:
+  
+  /* Connected to UserInterface::warning() */
+  void warning(QString);
   
 public:
-  AirlineDatabase();
+  AirlineDatabase(QObject* = nullptr);
   
   const QString find(const QString&);
   
