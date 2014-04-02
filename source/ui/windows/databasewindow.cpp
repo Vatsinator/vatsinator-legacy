@@ -19,8 +19,8 @@
 
 #include <QtGui>
 
+#include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
-#include "db/firdatabase.h"
 
 #include "databasewindow.h"
 #include "defines.h"
@@ -35,8 +35,8 @@ DatabaseWindow::DatabaseWindow(QWidget* _parent) :
       "The first part of the summary", AirportDatabase::getSingleton().airports().count()
     ) % " " %
     tr(
-      "and %n FIR(s).",
-      "The second part of the summary", FirDatabase::getSingleton().firs().count()
+      "and %n airlines(s).",
+      "The second part of the summary", AirlineDatabase::getSingleton().airlines().size()
     )
   );
   

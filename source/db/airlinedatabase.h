@@ -35,6 +35,10 @@ public:
   
   const QString find(const QString&);
   
+  inline const QMap<QString, QString> airlines() const {
+    return __airlines;
+  }
+  
 private:
   void __init();
   
