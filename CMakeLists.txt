@@ -78,39 +78,7 @@ if (NOT vatsinator_VERSION)
 endif (NOT vatsinator_VERSION)
 
 include (VatsinatorInstall)
-
-set (vatsinator_RESOURCES
-    COPYING
-    resources/Manifest
-    resources/WorldAirports.db
-    resources/WorldFirs.db
-    resources/WorldMap.db)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES}" "")
-
-set (vatsinator_RESOURCES_PIXMAPS
-    resources/pixmaps/1p32.png
-    resources/pixmaps/2p32.png
-    resources/pixmaps/4p32.png
-    resources/pixmaps/2j32.png
-    resources/pixmaps/3j32.png
-    resources/pixmaps/4j32.png
-    resources/pixmaps/conc32.png)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES_PIXMAPS}" "/pixmaps")
-
-set (vatsinator_RESOURCES_DATA
-    resources/data/airlines
-    resources/data/alias
-    resources/data/country
-    resources/data/fir
-    resources/data/model
-    resources/data/uir)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES_DATA}" "/data")
+add_subdirectory(resources)
 
 # Platform-specific actions
 if (LINUX)
