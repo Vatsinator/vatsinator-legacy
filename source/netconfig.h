@@ -26,23 +26,23 @@ public:
   class Vatsinator {
   public:
     
-    static constexpr const char* homePageUrl() {
+    static const char* homePageUrl() {
       return "http://vatsinator.eu.org/";
     }
   
-    static constexpr const char* repoUrl() {
+    static const char* repoUrl() {
       return "http://repo.vatsinator.eu.org/";
     }
     
-    static constexpr const char* statsUrl() {
+    static const char* statsUrl() {
       return "http://stats.vatsinator.eu.org/";
     }
     
-    static constexpr const char* apiUrl() {
+    static const char* apiUrl() {
       return "http://api.vatsinator.eu.org/";
     }
     
-    static constexpr int defaultRefreshRate() {
+    static const int defaultRefreshRate() {
       return 3;
     }
   
@@ -51,14 +51,14 @@ public:
   class Vatsim {
   public:
     
-    static constexpr const char* statusUrl() {
+    static const char* statusUrl() {
       return "http://status.vatsim.net/status.txt";
     }
     
     /**
      * URL to copy of status.txt in case vatsim servers are out of order
      */
-    static constexpr const char* backupStatusUrl() {
+    static const char* backupStatusUrl() {
       return "http://repo.vatsinator.eu.org/status.txt";
     }
     

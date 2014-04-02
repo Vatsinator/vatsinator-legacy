@@ -110,7 +110,13 @@ ControllerTableModel::headerData(int _section, Qt::Orientation _orientation, int
 void
 ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
   beginResetModel();
-
+  
+  /**
+   * TODO
+   * Sort on MSVC
+   */
+  
+/*
   switch (_column) {
     case Callsign:
       qSort(__staff.begin(), __staff.end(),
@@ -137,7 +143,7 @@ ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
       
       break;
   }
-
+*/
   endResetModel();
   
   emit sorted();

@@ -41,12 +41,12 @@
 
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
-static constexpr qreal PilotToAirport = 0.1;
+static const qreal PilotToAirport = 0.1;
 
 namespace {
 
   inline qreal deg2Rad(qreal deg) {
-    static constexpr qreal PI = 3.14159265359;
+    static const qreal PI = 3.14159265359;
     return deg * PI / 180;
   }
 

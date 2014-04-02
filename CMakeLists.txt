@@ -58,8 +58,17 @@ else (CMAKE_BUILD_TYPE MATCHES Debug)
 endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 # set CXX_FLAGS
-set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x -DNO_DEBUG")
-set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
+if (CMAKE_COMPILER_IS_GNUCXX)
+  set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x")
+  set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
+elseif (MSVC)
+  string (REPLACE "/MT" "/MD" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+endif (CMAKE_COMPILER_IS_GNUCXX)
+
+if (CMAKE_BUILD_TYPE MATCHES Release)
+  add_definitions(-DNO_DEBUG)
+endif (CMAKE_BUILD_TYPE MATCHES Release)
+
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -107,13 +116,6 @@ elseif (WIN32)
     
     if (MINGW)
         
-        # find absolute path to QJson library
-        find_library (QJSON_LIBRARY
-            NAMES libqjson.dll
-        )
-        
-        message (STATUS "Found QJson library: ${QJSON_LIBRARY}")
-        
         # On native compilers, we should use DeployQt4 module, as it
         # works on Apple builds. However, it is not possible during
         # cross-compile.
@@ -130,10 +132,6 @@ elseif (WIN32)
             ${QJSON_LIBRARY}
             DESTINATION .
         )
-    
-    else (MINGW)
-    
-        message (FATAL_ERROR "Sorry, only MinGW is currently supported for Win32 builds")
           
     endif (MINGW)
     

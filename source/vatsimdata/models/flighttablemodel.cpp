@@ -155,7 +155,13 @@ FlightTableModel::headerData(int _section, Qt::Orientation _orientation, int _ro
 void
 FlightTableModel::sort(int _column, Qt::SortOrder _order) {
   beginResetModel();
-
+  
+  /**
+   * TODO
+   * Sort on MSVC
+   */
+  
+/*
   switch (_column) {
     case Callsign:
       qSort(__flights.begin(), __flights.end(),
@@ -223,7 +229,7 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
       break;
   }
       
-
+*/
   endResetModel();
   
   emit sorted();

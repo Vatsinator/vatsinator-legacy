@@ -90,7 +90,6 @@ else (WIN32)
     set (vatsinator_PREFIX "")
 
     set (vatsinator_LIBS
-        mingw32
         ${OPENGL_gl_LIBRARY}
         ${QT_QTCORE_LIBRARY}
         ${QT_QTGUI_LIBRARY}
@@ -98,9 +97,21 @@ else (WIN32)
         ${QT_QTNETWORK_LIBRARY}
         ${QUAZIP_LIBRARIES}
         ${QJSON_LIBRARIES}
-  )
+    )
+    
+    if (MINGW)
+      set (vatsinator_LIBS
+        mingw32
+        ${vatsinator_LIBS}
+      )
+    elseif (MSVC)
+      set (vatsinator_LIBS
+        ${vatsinator_LIBS}
+        ${QT_QTIMAIN_LIBRARY}
+      )
+    endif (MINGW)
   
-  # disable VBO on Win32 build - MinGW doesn't handle it properly
+  # disable VBO on Win32 build - Vatsinator doesn't handle it properly
   set (CONFIG_NO_VBO 1)
 endif (LINUX)
 
@@ -123,16 +134,23 @@ if (APPLE)
         -Wl,-all_load ${vatsinator_SUBDIRS}
     )
 else (APPLE)
+  if (CMAKE_COMPILER_IS_GNUCC)
     target_link_libraries (${vatsinator_TARGET}
-        -Wl,--start-group
-        -Wl,--whole-archive
-        ${vatsinator_SUBDIRS}
-        -Wl,--no-whole-archive
-        -Wl,--end-group
+      -Wl,--start-group
+      -Wl,--whole-archive
+      ${vatsinator_SUBDIRS}
+      -Wl,--no-whole-archive
+      -Wl,--end-group
     )
+  elseif (MSVC)
+    target_link_libraries (${vatsinator_TARGET} ${vatsinator_SUBDIRS})
+  endif (CMAKE_COMPILER_IS_GNUCC)
 endif (APPLE)
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
+
+get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATION)
+get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
 
 
 if (LINUX)
@@ -165,5 +183,17 @@ elseif (APPLE)
 elseif (WIN32)
 
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
+    
+    if (MSVC)
+      get_property (qjson_LIBRARY TARGET qjson PROPERTY IMPORTED_LOCATION_RELEASE)
+      get_filename_component (QJSON_LIBRARY_DIR ${qjson_LIBRARY} PATH)
+      
+      include (DeployQt4)
+      install_qt4_executable ("${vatsinator_EXECUTABLE}"
+          "" # qtplugins
+          "" # libs
+          "${QUAZIP_LIBRARY_DIR};${QJSON_LIBRARY_DIR}"
+        )
+    endif (MSVC)
     
 endif (LINUX)

@@ -32,10 +32,10 @@
 #include "defines.h"
 
 // send the startup report after 10 seconds
-static constexpr int StartDelay = 10 * 1000;
+static const int StartDelay = 10 * 1000;
 
 // if stats query failed, retry in 1 minute
-static constexpr int RetryDelay = 60 * 1000;
+static const int RetryDelay = 60 * 1000;
 
 // request urls
 static const QString STARTUP_PATH = "startup.php?version=%1&os=%2";

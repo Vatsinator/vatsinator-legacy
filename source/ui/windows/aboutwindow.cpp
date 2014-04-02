@@ -43,7 +43,13 @@ AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
                 SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
   
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
-  LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");
+  
+  /**
+   * TODO
+   * 
+   * Fix License text on MSVC
+   */
+  //LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");
   VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
   ChangelogField->setHtml("<pre>" % trUtf8(CHANGELOG_TEXT) % "</pre>");
   

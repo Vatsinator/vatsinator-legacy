@@ -340,7 +340,7 @@ VatsimDataHandler::nmDistance(
     const qreal& _lat2, const qreal& _lon2) {
   
   /* http://www.movable-type.co.uk/scripts/latlong.html */
-  static constexpr qreal R = 3440.06479191; // nm
+  static const qreal R = 3440.06479191; // nm
   
   return qAcos(
       qSin(_lat1) * qSin(_lat2) +

@@ -31,7 +31,6 @@
 #include "defines.h"
 
 Airport::Airport(const QString& _icao) :
-    __firs{NULL, NULL},
     __data(AirportDatabase::getSingleton().find(_icao)),
     __labelTip(0) {
   if (!__data)
@@ -44,7 +43,6 @@ Airport::Airport(const QString& _icao) :
 }
 
 Airport::Airport(const AirportRecord* _ap) :
-     __firs{NULL, NULL},
      __data(_ap),
      __labelTip(0) {
   if (__data) {

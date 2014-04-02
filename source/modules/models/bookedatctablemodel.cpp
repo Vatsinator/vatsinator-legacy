@@ -121,6 +121,13 @@ void
 BookedAtcTableModel::sort(int _column, Qt::SortOrder _order) {
   beginResetModel();
   
+  /**
+   * TODO
+   * 
+   * Sort on MSVC
+   */
+  
+  /* 
   switch(_column) {
     case Callsign:
       qSort(__staff.begin(), __staff.end(),
@@ -176,7 +183,7 @@ BookedAtcTableModel::sort(int _column, Qt::SortOrder _order) {
       
       break;
   }
-  
+  */
   endResetModel();
   
   emit sorted();
