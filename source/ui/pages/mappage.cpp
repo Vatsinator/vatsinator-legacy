@@ -32,7 +32,7 @@ namespace DefaultSettings {
   static const QFont  FIR_FONT                        = QFont("Verdana", 9);
   static const QFont  AIRPORT_FONT                    = QFont("Verdana", 8);
   static const QFont  PILOT_FONT                      = QFont("Verdana", 8);
-  static const QColor APPROACH_CIRCLE_COLOR           = { 127, 0, 0 };
+  static const QColor APPROACH_CIRCLE_COLOR           = { 64, 127, 91 };
   static const QColor SEAS_COLOR                      = { 188, 222, 225 };
   static const QColor LANDS_COLOR                     = { 255, 255, 255 };
   static const QColor ORIGIN_TO_PILOT_LINE_COLOR      = { 3, 116, 164 };

@@ -27,7 +27,7 @@
 
 /* Default settings for MiscellaneousPage */
 namespace DefaultSettings {
-  static const bool    ANTYALIASING     = false;
+  static const bool    ANTYALIASING     = true;
   static const int     ZOOM_COEFFICIENT = 30;
   static const bool    SEND_STATS       = true;
   static const QString LANGUAGE         = QLocale::system().name().left(2);

@@ -26,7 +26,16 @@ LonLat::LonLat() : QPointF() {}
 
 LonLat::LonLat(const QPoint& _p): QPointF(_p) {}
 
-LonLat::LonLat(qreal _lon, qreal _lat): QPointF(_lon, _lat) {
-//   Q_ASSERT(_lon <= 180.0 && _lon >= 0.0);
-//   Q_ASSERT(_lat > -90.0 && _lat <= 90.0);
+LonLat::LonLat(qreal _lon, qreal _lat): QPointF(_lon, _lat) {}
+
+QDataStream &
+operator<<(QDataStream& _stream, const LonLat& _lonlat) {
+  _stream << _lonlat.x() << _lonlat.y();
+  return _stream;
+}
+
+QDataStream &
+operator>>(QDataStream& _stream, LonLat& _lonlat) {
+  _stream >> _lonlat.rx() >> _lonlat.ry();
+  return _stream;
 }

@@ -129,9 +129,8 @@ MapWidget::redraw() {
 
 void
 MapWidget::initializeGL() {
-  emit glReady();
-  
   initGLExtensionsPointers();
+  emit glReady();
   
   __world = new WorldPolygon();
   __scene = new MapScene(this);
@@ -436,14 +435,6 @@ MapWidget::__drawAirports() {
         if (onScreen(p)) {
           glPushMatrix();
             glTranslated(p.x(), p.y(), activeAirportsZ);
-/*            
-            if (item->data()->hasApproach()) {
-              glPushMatrix();
-                glScalef(__zoom, __zoom, 0);
-                glTranslatef(.0f, .0f, -0.5f);
-                item->drawApproachCircle();
-              glPopMatrix();
-            }*/
             
             item->drawIcon();
             
@@ -529,7 +520,7 @@ MapWidget::__storeSettings() {
   
   settings.setValue("zoomFactor", __zoom);
   settings.setValue("actualZoomCoefficient", __actualZoom);
-  settings.setValue("cameraPosition", __center);
+  settings.setValue("cameraPosition", QVariant::fromValue<LonLat>(__center));
   
   settings.endGroup();
 }
@@ -576,6 +567,19 @@ MapWidget::__updateTooltip() {
 }
 
 void
+MapWidget::__updateAntyaliasing() {
+  if (__settings.misc.has_antyaliasing) {
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glEnable(GL_LINE_SMOOTH);
+  } else {
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST);
+    glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
+    glDisable(GL_LINE_SMOOTH);
+  }
+}
+
+void
 MapWidget::__checkItem(const MapItem* _item) {
   if (!__underMouse &&
       __mousePosition.screenDistance(mapFromLonLat(_item->position())) < MapConfig::mouseOnObject()) {
@@ -598,6 +602,7 @@ MapWidget::__shouldDrawPilotLabel(const MapItem* _pilot) {
 
 void
 MapWidget::__reloadSettings() {
+  __settings.misc.has_antyaliasing = SM::get("misc.has_antyaliasing").toBool();
   __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toInt();
   
   __settings.colors.lands = SM::get("map.lands_color").value<QColor>();
@@ -619,6 +624,7 @@ MapWidget::__reloadSettings() {
   __settings.view.pilot_labels.airport_related = SM::get("view.pilot_labels.airport_related").toBool();
   __settings.view.pilot_labels.when_hovered = SM::get("view.pilot_labels.when_hovered").toBool();
   
+  __updateAntyaliasing();
   redraw();
 }
 

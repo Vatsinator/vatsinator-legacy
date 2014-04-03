@@ -141,6 +141,11 @@ private:
   void __updateTooltip();
   
   /**
+   * According to user settings, turns the antyaliasing on or off.
+   */
+  void __updateAntyaliasing();
+  
+  /**
    * Checks whether the item is under the mouse.
    * If it is, it is handled properly.
    */
@@ -236,6 +241,7 @@ private:
   /* Structs below store settings locally to avoid expensive SM::get() calling. */
   struct {
     struct {
+      bool has_antyaliasing;
       int zoom_coefficient;
     } misc;
     

@@ -23,16 +23,12 @@
 #endif
 
 #include "network/resourcemanager.h"
-
 #include "modules/homelocation.h"
-
 #include "storage/settingsmanager.h"
-
 #include "ui/dialogs/apprestartdialog.h"
 #include "ui/dialogs/datafetcherrordialog.h"
 #include "ui/dialogs/newversiondialog.h"
 #include "ui/dialogs/statusfetcherrordialog.h"
-
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
@@ -43,10 +39,8 @@
 #include "ui/windows/metarswindow.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/windows/vatsinatorwindow.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/client.h"
-
 #include "vatsinatorapplication.h"
 
 #include "userinterface.h"

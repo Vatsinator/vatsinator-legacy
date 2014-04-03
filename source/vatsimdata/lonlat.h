@@ -26,6 +26,9 @@
 class LonLat : public QPointF {
 
 public:
+  friend QDataStream& operator<<(QDataStream&, const LonLat&);
+  friend QDataStream& operator>>(QDataStream&, LonLat&);
+  
   LonLat();
   LonLat(const QPoint&);
   LonLat(qreal, qreal);
@@ -34,6 +37,9 @@ public:
   inline qreal latitude() const { return QPointF::y(); }
 
 };
-Q_DECLARE_METATYPE(LonLat);
+Q_DECLARE_METATYPE(LonLat)
+
+QDataStream& operator<<(QDataStream&, const LonLat&);
+QDataStream& operator>>(QDataStream&, LonLat&);
 
 #endif // LONLAT_H
