@@ -21,7 +21,6 @@
 #include <QtGui>
 #include <QtOpenGL>
 
-#include "glutils/framebufferobject.h"
 #include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/airportitem.h"
@@ -40,7 +39,6 @@
 
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
-    __fbo(nullptr),
     __center(0.0, 0.0),
     __actualZoom(0),
     __zoom(1.5f),
@@ -65,9 +63,6 @@ MapWidget::~MapWidget() {
   
   delete __scene;
   delete __world;
-  
-  if (__fbo)
-    delete __fbo;
 }
 
 LonLat
@@ -167,8 +162,6 @@ MapWidget::paintGL() {
     1.0, 0.0
   };
   
-  __fbo->bind();
-  
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
@@ -198,9 +191,6 @@ MapWidget::paintGL() {
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   
-  __fbo->unbind();
-  
-  __renderTexture();
   if (__underMouse) {
     setCursor(QCursor(Qt::PointingHandCursor));
   } else {
@@ -218,7 +208,6 @@ MapWidget::resizeGL(int _width, int _height) {
   __rangeX = static_cast<qreal>(_width) / MapConfig::baseWindowWidth();
   __rangeY = static_cast<qreal>(_height) / MapConfig::baseWindowHeight();
   
-  __updateFbo(_width, _height);
   updateGL();
 }
 
@@ -284,53 +273,6 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   __mousePosition.update(_event->pos());
   updateGL();
   _event->accept();
-}
-
-void
-MapWidget::__renderTexture() {
-  static const float Coords[] = {
-    0.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, 0.0f,
-    
-    0.0f, 1.0f,
-    1.0f, 0.0f,
-    0.0f, 0.0f
-  };
-  
-  static const float TexCoords[] = {
-    0.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, 0.0f,
-    
-    0.0f, 1.0f,
-    1.0f, 0.0f,
-    0.0f, 0.0f
-  };
-  
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  
-  glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
-  
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  
-  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glVertexPointer(2, GL_FLOAT, 0, Coords);
-  
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glTexCoordPointer(2, GL_FLOAT, 0, TexCoords);
-  
-  glBindTexture(GL_TEXTURE_2D, __fbo->texture());
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  
-  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-  glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void
@@ -505,14 +447,6 @@ MapWidget::__drawLines() {
 }
 
 void
-MapWidget::__updateFbo(int _width, int _height) {
-  if (__fbo)
-    delete __fbo;
-  
-  __fbo = new FrameBufferObject(_width, _height);
-}
-
-void
 MapWidget::__storeSettings() {
   QSettings settings;
   
@@ -567,19 +501,6 @@ MapWidget::__updateTooltip() {
 }
 
 void
-MapWidget::__updateAntyaliasing() {
-  if (__settings.misc.has_antyaliasing) {
-    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    glEnable(GL_LINE_SMOOTH);
-  } else {
-    glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST);
-    glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
-    glDisable(GL_LINE_SMOOTH);
-  }
-}
-
-void
 MapWidget::__checkItem(const MapItem* _item) {
   if (!__underMouse &&
       __mousePosition.screenDistance(mapFromLonLat(_item->position())) < MapConfig::mouseOnObject()) {
@@ -602,7 +523,6 @@ MapWidget::__shouldDrawPilotLabel(const MapItem* _pilot) {
 
 void
 MapWidget::__reloadSettings() {
-  __settings.misc.has_antyaliasing = SM::get("misc.has_antyaliasing").toBool();
   __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toInt();
   
   __settings.colors.lands = SM::get("map.lands_color").value<QColor>();
@@ -624,7 +544,6 @@ MapWidget::__reloadSettings() {
   __settings.view.pilot_labels.airport_related = SM::get("view.pilot_labels.airport_related").toBool();
   __settings.view.pilot_labels.when_hovered = SM::get("view.pilot_labels.when_hovered").toBool();
   
-  __updateAntyaliasing();
   redraw();
 }
 

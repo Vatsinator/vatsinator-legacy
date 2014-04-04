@@ -28,7 +28,6 @@
 class Airport;
 class Client;
 class Fir;
-class FrameBufferObject;
 class MapItem;
 class MapScene;
 class Pilot;
@@ -109,23 +108,12 @@ protected:
   void mouseMoveEvent(QMouseEvent*) override;
   
 private:
-  /**
-   * Renders the texture that is stored in FBO.
-   */
-  void __renderTexture();
   
   void __drawWorld();
   void __drawFirs();
   void __drawAirports();
   void __drawPilots();
   void __drawLines();
-  
-  /**
-   * Updates framebuffer object. Must be called each window resize.
-   * @param width The new width.
-   * @param height The new height.
-   */
-  void __updateFbo(int, int);
   
   void __storeSettings();
   void __restoreSettings();
@@ -139,11 +127,6 @@ private:
    * Shows or hides the tooltip.
    */
   void __updateTooltip();
-  
-  /**
-   * According to user settings, turns the antyaliasing on or off.
-   */
-  void __updateAntyaliasing();
   
   /**
    * Checks whether the item is under the mouse.
@@ -163,7 +146,6 @@ private slots:
   void __showWindow(const MapItem*);
   
 private:
-  FrameBufferObject* __fbo;
   
   /* Global coordinates of the center point of the map */
   LonLat __center;
@@ -241,7 +223,6 @@ private:
   /* Structs below store settings locally to avoid expensive SM::get() calling. */
   struct {
     struct {
-      bool has_antyaliasing;
       int zoom_coefficient;
     } misc;
     
