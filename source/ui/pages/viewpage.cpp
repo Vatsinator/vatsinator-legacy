@@ -115,7 +115,7 @@ ViewPage::save(QSettings& _s) {
   _s.setValue("pilot_labels.always", ShowPilotsLabelsAlwaysCheckBox->isChecked());
   _s.setValue("pilot_labels.when_hovered", ShowPilotsLabelsWhenHoveredCheckBox->isChecked());
   _s.setValue("pilot_labels.airport_related", ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
-  _s.setValue("airport_labels", AirportsCheckBox->isChecked());
+  _s.setValue("airport_labels", AlwaysRadioButton->isChecked());
 }
 
 void

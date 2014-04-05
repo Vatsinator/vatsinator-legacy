@@ -118,6 +118,8 @@ private:
   void __storeSettings();
   void __restoreSettings();
   
+  void __updateOffsets();
+  
   /**
    * Updates the zoom factor.
    */
@@ -146,6 +148,12 @@ private slots:
   void __showWindow(const MapItem*);
   
 private:
+  
+  /* To have the map repeated, we keep offsets */
+  QList<GLfloat> __offsets;
+  
+  /* Current offset */
+  GLfloat __xOffset;
   
   /* Global coordinates of the center point of the map */
   LonLat __center;

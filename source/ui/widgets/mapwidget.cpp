@@ -39,6 +39,7 @@
 
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
+    __xOffset(0.0),
     __center(0.0, 0.0),
     __actualZoom(0),
     __zoom(1.5f),
@@ -93,7 +94,7 @@ MapWidget::mapFromLonLat(const LonLat& _point) {
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPoint(
-      static_cast<int>((_point.x() - __center.x()) * __zoom / xFactor) + (width() / 2),
+      static_cast<int>((_point.x() - __center.x() + static_cast<qreal>(__xOffset)) * __zoom / xFactor) + (width() / 2),
       static_cast<int>((-_point.y() - __center.y()) * __zoom / yFactor) + (height() / 2)
     );
 }
@@ -101,7 +102,8 @@ MapWidget::mapFromLonLat(const LonLat& _point) {
 QPointF
 MapWidget::glFromLonLat(const LonLat& _point) {
   return QPointF(
-      (_point.x() - __center.x()) / MapConfig::longitudeMax() * __zoom,
+      (_point.x() - __center.x() + static_cast<qreal>(__xOffset)) /
+          MapConfig::longitudeMax() * __zoom,
       (_point.y() + __center.y()) / MapConfig::latitudeMax() * __zoom
     );
 }
@@ -182,11 +184,19 @@ MapWidget::paintGL() {
   qglClearColor(__settings.colors.seas);
   
   __underMouse = nullptr;
-  __drawWorld();
-  __drawFirs();
-  __drawAirports();
-  __drawPilots();
-  __drawLines();
+  
+  for (GLfloat o: __offsets) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    __xOffset = o;
+    
+    __drawWorld();
+    __drawFirs();
+    __drawAirports();
+    __drawPilots();
+    __drawLines();
+  }
+  
+  __xOffset = 0.0f;
   
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -208,12 +218,15 @@ MapWidget::resizeGL(int _width, int _height) {
   __rangeX = static_cast<qreal>(_width) / MapConfig::baseWindowWidth();
   __rangeY = static_cast<qreal>(_height) / MapConfig::baseWindowHeight();
   
+  __updateOffsets();
+  
   updateGL();
 }
 
 void
 MapWidget::wheelEvent(QWheelEvent* _event) {
   __updateZoom(_event->delta() / 120);
+  __updateOffsets();
   updateGL();
   
   _event->accept();
@@ -268,6 +281,8 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
       __center.rx() += 360.0;
     if (__center.x() > 180.0)
       __center.rx() -= 360.0;
+    
+    __updateOffsets();
   }
   
   __mousePosition.update(_event->pos());
@@ -284,7 +299,7 @@ MapWidget::__drawWorld() {
     glScalef(__zoom, __zoom, 1.0f);
     glTranslated(-__center.x(), __center.y(), 0.0);
     
-    glTranslatef(0.0, 0.0, zValue);
+    glTranslatef(__xOffset, 0.0, zValue);
     
     qglColor(__settings.colors.lands);
     __world->paint();
@@ -302,7 +317,7 @@ MapWidget::__drawFirs() {
       glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
       glScalef(__zoom, __zoom, 1.0f);
       glTranslated(-__center.x(), __center.y(), 0.0);
-      glTranslatef(0.0, 0.0, unstaffedFirsZ);
+      glTranslatef(__xOffset, 0.0, unstaffedFirsZ);
       
       qglColor(__settings.colors.unstaffed_fir_borders);
       for (const FirItem* item: __scene->unstaffedFirItems()) {
@@ -316,7 +331,7 @@ MapWidget::__drawFirs() {
       glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
       glScalef(__zoom, __zoom, 1.0f);
       glTranslated(-__center.x(), __center.y(), 0.0);
-      glTranslatef(0.0, 0.0, staffedFirsZ);
+      glTranslatef(__xOffset, 0.0, staffedFirsZ);
       
       qglColor(__settings.colors.staffed_fir_borders);
       glLineWidth(3.0);
@@ -473,6 +488,18 @@ MapWidget::__restoreSettings() {
 }
 
 void
+MapWidget::__updateOffsets() {
+  __offsets.clear();
+  __offsets.append(0.0f);
+  
+  if ((-1 - __center.x()) * __zoom > -__rangeX)
+    __offsets.prepend(-360.0f);
+  
+  if ((1 - __center.x()) * __zoom < __rangeX)
+    __offsets.append(360.0f);
+}
+
+void
 MapWidget::__updateZoom(int _steps) {
   //count limiter for this function
   __actualZoomMaximum =
@@ -503,7 +530,11 @@ MapWidget::__updateTooltip() {
 void
 MapWidget::__checkItem(const MapItem* _item) {
   if (!__underMouse &&
-      __mousePosition.screenDistance(mapFromLonLat(_item->position())) < MapConfig::mouseOnObject()) {
+      __mousePosition.screenDistance(
+        mapFromLonLat(
+          _item->position()
+        )
+      ) < MapConfig::mouseOnObject()) {
     __underMouse = _item;
   }
 }
