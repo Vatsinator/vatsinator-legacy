@@ -37,7 +37,8 @@ class PlainTextDownloader : public QObject {
 
 signals:
   void finished(const QString&);
-  void fetchError();
+  void error();
+  void aborted();
 
 public:
 
@@ -56,6 +57,12 @@ public:
   
   inline bool
   anyTasksLeft() const { return !__urls.isEmpty(); }
+  
+  inline bool
+  isWorking() const { return __reply != nullptr; }
+  
+public slots:
+  void abort();
 
 private:
   void  __startRequest();

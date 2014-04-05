@@ -42,13 +42,15 @@ struct FirHeader {
 
 
 
-class FirDatabase :
-    public Singleton<FirDatabase> {
-      
-  Q_DECLARE_TR_FUNCTIONS(FirDatabase);
-    
+class FirDatabase : public QObject, public Singleton<FirDatabase> {
+  
+  Q_OBJECT
+  
+signals:
+  void fatal(QString);
+
 public:
-  FirDatabase();
+  FirDatabase(QObject* = nullptr);
 
   /**
    * Finds FIR by given ICAO.
@@ -63,11 +65,8 @@ public:
    */
   void  clearAll();
 
-  inline QVector<Fir> &
-  firs() { return __firs; }
-  
-  inline const QVector<Fir> &
-  firs() const { return __firs; }
+  inline QVector<Fir>& firs() { return __firs; }
+  inline const QVector<Fir>& firs() const { return __firs; }
 
 private:
   void __readDatabase();

@@ -18,6 +18,7 @@
 
 #include <QtGui>
 
+#include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 
 #include "modules/flighttracker.h"
@@ -39,6 +40,9 @@
 FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent) {
   setupUi(this);
+  CallsignLabel->setFont(VatsinatorApplication::h1Font());
+  FromLabel->setFont(VatsinatorApplication::h2Font());
+  ToLabel->setFont(VatsinatorApplication::h2Font());
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
@@ -59,11 +63,46 @@ FlightDetailsWindow::show(const Client* _client) {
 
   if (__current->isPrefiledOnly())
     return;
-
+  
   setWindowTitle(tr("%1 - flight details").arg(__current->callsign()));
-
+  
   CallsignLabel->setText(__current->callsign());
-  RouteLabel->setText(__current->route().origin % " -> " % __current->route().destination);
+  AirlineLabel->setText(AirlineDatabase::getSingleton().find(__current->callsign().left(3)));
+  FromLabel->setText(__current->route().origin);
+  ToLabel->setText(__current->route().destination);
+  
+  FlightProgress->setValue(__current->progress());
+  
+  if (__current->std().isValid())
+    PlannedDepartureTimeLabel->setText(__current->std().toString("hh:mm"));
+  else
+    PlannedDepartureTimeLabel->setText("-");
+  
+  if (__current->atd().isValid())
+    ActualDepartureTimeLabel->setText(__current->atd().toString("hh:mm"));
+  else
+    ActualDepartureTimeLabel->setText("-");
+  
+  if (__current->sta().isValid())
+    PlannedArrivalTimeLabel->setText(__current->sta().toString("hh:mm"));
+  else
+    PlannedArrivalTimeLabel->setText("-");
+  
+  if (__current->eta().isValid())
+    EstimatedArrivalTimeLabel->setText(__current->eta().toString("hh:mm"));
+  else
+    EstimatedArrivalTimeLabel->setText("-");
+  
+  QFont smaller;
+  smaller.setPointSize(smaller.pointSize() - 2);
+  StdLabel->setFont(smaller);
+  StdUtcLabel->setFont(smaller);
+  StaLabel->setFont(smaller);
+  StaUtcLabel->setFont(smaller);
+  AtdLabel->setFont(smaller);
+  AtdUtcLabel->setFont(smaller);
+  EtaLabel->setFont(smaller);
+  EtaUtcLabel->setFont(smaller);
 
   PilotLabel->setText(__current->realName() + " (" + QString::number(__current->pid()) + ")");
   AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__current->altitude())));
@@ -81,12 +120,6 @@ FlightDetailsWindow::show(const Client* _client) {
   TimeOnlineLabel->setText(__current->onlineFrom().toString("dd MMM yyyy, hh:mm"));
   SquawkLabel->setText(__current->squawk());
   AltimeterLabel->setText(__current->pressure().mb % " / " % __current->pressure().ihg);
-  
-  VatawareLink->setText(QString("<a href=\"") %
-      QString(NetConfig::Vataware::pilotUrl()).arg(QString::number(__current->pid())) %
-      QString("\">") %
-      tr("Vataware statistics for this pilot") %
-      QString("</a>"));
 
   FlightRulesLabel->setText((__current->flightRules() == Pilot::Ifr) ? "IFR" : "VFR");
 
@@ -122,6 +155,7 @@ FlightDetailsWindow::__updateToFromButtons() {
     QString text = __current->route().origin;
 
     if (ap->data()) {
+      FromCityLabel->setText(QString::fromUtf8(ap->data()->city));
       text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->data()->name));
 
@@ -133,12 +167,14 @@ FlightDetailsWindow::__updateToFromButtons() {
       OriginButton->setAirportPointer(ap);
     } else {
       OriginButton->setAirportPointer(NULL);
+      FromCityLabel->setText("");
     }
 
     OriginButton->setText(text);
   } else {
     OriginButton->setText("(unknown)");
     OriginButton->setAirportPointer(NULL);
+    FromCityLabel->setText("");
   }
 
   if (!__current->route().destination.isEmpty()) {
@@ -146,6 +182,7 @@ FlightDetailsWindow::__updateToFromButtons() {
     QString text = __current->route().destination;
 
     if (ap->data()) {
+      ToCityLabel->setText(QString::fromUtf8(ap->data()->city));
       text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->data()->name));
 
@@ -157,12 +194,14 @@ FlightDetailsWindow::__updateToFromButtons() {
       ArrivalButton->setAirportPointer(ap);
     } else {
       ArrivalButton->setAirportPointer(NULL);
+      ToCityLabel->setText("");
     }
 
     ArrivalButton->setText(text);
   } else {
     ArrivalButton->setText("(unknown)");
     ArrivalButton->setAirportPointer(NULL);
+    ToCityLabel->setText("");
   }
 }
 

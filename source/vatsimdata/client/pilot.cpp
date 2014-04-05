@@ -32,6 +32,15 @@
 // or "arrived"
 static constexpr qreal PilotToAirport = 0.1;
 
+namespace {
+
+  inline qreal deg2Rad(qreal deg) {
+    static constexpr qreal PI = 3.14159265359;
+    return deg * PI / 180;
+  }
+
+}
+
 /*
  * 0 callsign
  * 1 cid
@@ -83,6 +92,9 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __aircraft(_data[9]),
     __tas(_data[10].toInt()),
     __flightRules(_data[21] == "I" ? Ifr : Vfr),
+    __std(QTime::fromString(_data[22], "hhmm")),
+    __atd(QTime::fromString(_data[23], "hhmm")),
+    __progress(-1),
     __remarks(_data[29]),
     __heading(_data[38].toUInt()),
     __pressure({_data[39], _data[40]}),
@@ -92,12 +104,81 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   // vatsim sometimes skips the 0 on the beginning
   if (__squawk.length() == 3)
     __squawk.prepend("0");
-
+  
+  if (__std.isValid() && __sta != QTime(0, 0)) {
+    __sta = QTime(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt());
+  }
+  
   __updateAirports();
   __setMyStatus();
 }
 
 Pilot::~Pilot() {}
+
+const QTime &
+Pilot::eta() const {
+  if (__flightStatus == Departing) {
+    __eta = QTime();
+    return __eta;
+  }
+  
+  if (__eta.isValid())
+    return __eta;
+  
+  const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
+  if (to && to->data()) {
+    // calculate distance between pilot and destination airport
+    qreal dist = VatsimDataHandler::nmDistance(
+        deg2Rad(position().latitude()),
+        deg2Rad(position().longitude()),
+        deg2Rad(to->data()->latitude),
+        deg2Rad(to->data()->longitude)
+      );
+    
+    int secs = (dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0;
+    
+    __eta = QDateTime::currentDateTimeUtc().time().addSecs(secs);
+  } else {
+    __eta = __sta;
+  }
+  
+  return __eta;
+}
+
+int
+Pilot::progress() const {
+  if (__flightStatus == Arrived)
+    return 100;
+  else if (__flightStatus == Departing)
+    return 0;
+  
+  if (__progress == -1) {
+    const Airport* from = VatsimDataHandler::getSingleton().activeAirports()[__route.origin];
+    const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
+    
+    if (from && to && from->data() && to->data()) {
+      qreal total = VatsimDataHandler::nmDistance(
+        deg2Rad(from->data()->latitude),
+        deg2Rad(from->data()->longitude),
+        deg2Rad(to->data()->latitude),
+        deg2Rad(to->data()->longitude)
+      );
+      
+      qreal left = VatsimDataHandler::nmDistance(
+        deg2Rad(position().latitude()),
+        deg2Rad(position().longitude()),
+        deg2Rad(to->data()->latitude),
+        deg2Rad(to->data()->longitude)
+      );
+      
+      __progress = 100 - (100 * left / total);
+    } else {
+      __progress = 0;
+    }
+  }
+  
+  return __progress;
+}
 
 void Pilot::__updateAirports() {
   if (!__route.origin.isEmpty()) {
@@ -198,3 +279,47 @@ Pilot::__setMyStatus() {
 
   __flightStatus = Airborne;
 }
+ 
+// bool Pilot::__isCrossingIDL(QVector<GLfloat>& line) const
+// {
+//   bool isCrossingIDL = false;
+// 
+//   GLfloat plon = line[0];
+//   GLfloat plat = line[1];
+//   GLfloat clon = plon;
+//   GLfloat clat = plat;
+// 
+//   for(int i=2 ; i<line.size() ; i++){
+// 		clon = line[i]; i++;
+// 		clat = line[i];
+// 
+// 		double pSign = plon / fabs(plon);
+// 		double cSign = clon / fabs(clon);
+// 		double dst1 = 0;
+// 		double dst2 = 0;
+// 
+// 		// crossing the IDL or the Greenwich Meridian
+// 		if(pSign!=cSign){
+// 
+//              		dst1 = VatsimDataHandler::distance(plon, plat, clon, clat);
+// 			if(pSign<0)
+//     				dst2 = VatsimDataHandler::distance(plon + 360, plat, clon, clat);
+// 			else	
+//              			dst2 = VatsimDataHandler::distance(plon, plat, clon + 360, clat);
+// 
+// 			if(dst1>dst2) isCrossingIDL = true;
+// 
+// 			/* debug print
+// 			printf("%s: %f %f -> %f %f, Dst1: %f Dst2: %f, IDL: %s\n",
+// 				__callsign.toLatin1().data(),
+// 				plon, plat, clon, clat, dst1, dst2,
+// 				isCrossingIDL ? "crossing IDL" : "crossing meridian");
+//                         */
+// 		}
+// 		if(isCrossingIDL) return true;
+// 
+// 		plon = clon;
+// 		plat = clat;
+//   }
+//   return false;
+// }

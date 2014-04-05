@@ -53,10 +53,17 @@ public:
   
   /**
    * Stores given data in local cache file.
-   * @param fileName File name. Only file name, not full path.
+   * @param fileName File name. Only file name, not the full path.
    * @param data Data to be saved.
    */
   static void cacheData(const QString&, const QString&);
+  
+  /**
+   * Moves given file to cache.
+   * @param source Source file name, with the full path.
+   * @param destination Target file name, without the path.
+   */
+  static bool moveToCache(const QString&, const QString&);
   
   /**
    * Gets static directory's location in the filesystem.
@@ -73,42 +80,16 @@ public:
    * got higher priority, however) but it also makes it cross-platform (on
    * Windows, for example, globally-scoped files are stored in Program Files
    * directory).
+   * 
+   * @param fileName Name of the file.
+   *    storage, avoiding checking its existence.
    */
   static QString path(const QString&);
   
   /**
-   * Generates md5 hash of given file.
+   * Returns path to where local data can be stored.
    */
-  static QByteArray md5Hash(const QString&);
-  static QByteArray md5Hash(QIODevice&);
-  
-  inline static const QDateTime &
-  timestamp() {
-    return getSingleton().__manifest.timestamp;
-  }
-  
-private:
-  class FileHash {
-    
-    /*
-     * This class is used to describe one file's hash.
-     */
-  public:
-    FileHash() = default;
-    FileHash(const QByteArray&);
-    
-    QByteArray md5;
-  };
-  
-  /**
-   * Reads the manifest file.
-   */
-  void __readManifest(const QString&);
-  
-  struct {
-    QMap<QString, FileHash> hash;
-    QDateTime               timestamp;
-  } __manifest;
+  static QString localDataPath();
   
 };
 

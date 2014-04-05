@@ -28,12 +28,15 @@
 #include "singleton.h"
 
 class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
-
+  
   /**
    * This class matches the models to the planes.
    */
   
   Q_OBJECT
+  
+signals:
+  void warning(QString);
 
 public:
   /**

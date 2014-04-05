@@ -30,6 +30,7 @@
 
 #include "singleton.h"
 
+class AbstractNotamProvider;
 class ActiveAirport;
 class Airport;
 class AirportDatabase;
@@ -41,6 +42,7 @@ class FlightTableModel;
 class Pilot;
 class PlainTextDownloader;
 class Uir;
+class UpdateScheduler;
 class VatsinatorApplication;
 
 struct AirportRecord;
@@ -57,6 +59,11 @@ class VatsimDataHandler :
   Q_OBJECT
   
 signals:
+  
+  /**
+   * Called when vatsim data starts to be downloaded.
+   */
+  void vatsimDataDownloading();
   
   /**
    * Called after status.txt is parsed.
@@ -76,7 +83,7 @@ signals:
   /**
    * Incomplete fetch or something like that.
    */
-  void dataCorrupted();
+  void vatsimDataError();
   
   /**
    * If local data is corrupted.
@@ -180,6 +187,29 @@ public:
    * @return Count of logged-in observers.
    */
   int obsCount() const;
+  
+  /**
+   * Running instance of notam provider.
+   */
+  AbstractNotamProvider* notamProvider();
+  
+  /**
+   * Calculates distance between two points, expressed in
+   * nautical miles.
+   * 
+   * NOTE: If you don't need the distance specifically in nautical miles
+   * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+   * instead, as it is a lot quicker.
+   * 
+   * NOTE: All coordinates must be in radians.
+   * 
+   * @param lat1 Latitude of the first point.
+   * @param lon1 Longitude of the first point.
+   * @param lat2 Latitude of the second point.
+   * @param lon2 Longitude of the second point.
+   * @return Distance between the two points.
+   */
+  static qreal nmDistance(const qreal&, const qreal&, const qreal&, const qreal&);
 
   /**
    * Returns an URL to where METARs can be fetched from.
@@ -221,7 +251,10 @@ public:
   inline const QMultiMap<QString, QString>& aliases() const {
     return __aliases;
   }
-
+  
+  inline int
+  reload() const { return __reload; }
+  
   /**
    * Returns last Vatsim data update date and time.
    */
@@ -254,9 +287,11 @@ public:
 public slots:
   
   /**
-   * Reads cached data.
+   * This is the safest method to refresh the Vatsim data.
+   * If data is being already downloaded, it is aborted and
+   * the new download is queued.
    */
-  void loadCachedData();
+  void requestDataUpdate();
   
 private:
   
@@ -285,12 +320,12 @@ private:
    */
   void __clearData();
   
-private slots:
   /**
-   * Called if local data is bad.
+   * Loades cached data
    */
-  void __reportDataError(QString);
+  void __loadCachedData();
   
+private slots:
   void __slotUiCreated();
   void __beginDownload();
   void __dataFetched(QString);
@@ -325,9 +360,16 @@ private:
 
   /* And status.txt */
   QString   __statusUrl;
+  
+  /* Minutes to next reload, as stated in data file */
+  int __reload;
 
+  /* Last time Vatsim data was refreshed.
+   * Get from data file.
+   */
   QDateTime __dateVatsimDataUpdated;
 
+  /* Observer count */
   int       __observers;
 
   /* Indicates whether the status.txt file was already read or not */
@@ -337,6 +379,9 @@ private:
   FirDatabase&     __firs;
   
   PlainTextDownloader* __downloader;
+  UpdateScheduler*     __scheduler;
+  
+  AbstractNotamProvider* __notamProvider;
 
 };
 

@@ -46,6 +46,7 @@ WeatherForecast::fetchForecast(const QString& _city, const QString& _country) {
   
   QString url = QString(WeatherForecastApiUrl).arg(location);
   QNetworkRequest request(url);
+  request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
   
   VatsinatorApplication::log("WeatherForecast: request: %s", qPrintable(request.url().toString()));
   
@@ -61,10 +62,30 @@ WeatherForecast::__readyRead() {
 
 void
 WeatherForecast::__finished() {
-  __reply->deleteLater();
-  __reply = nullptr;
-  
-  WeatherForecastModel* model = new WeatherForecastModel(__data);
-  emit forecastReady(model);
+  switch (__reply->error()) {
+    case QNetworkReply::NoError: {
+      __reply->deleteLater();
+      __reply = nullptr;
+      
+      WeatherForecastModel* model = new WeatherForecastModel(__data);
+      emit forecastReady(model);
+      
+      break;
+    }
+    case QNetworkReply::TimeoutError:
+    case QNetworkReply::TemporaryNetworkFailureError:
+    case QNetworkReply::ContentReSendError: {
+      QNetworkRequest request = __reply->request();
+      
+      __reply->deleteLater();
+      __reply = __nam.get(request);
+      connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
+      connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
+      
+      break;
+    }
+    default:
+      break;
+  }
 }
 

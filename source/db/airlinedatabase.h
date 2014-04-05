@@ -1,5 +1,5 @@
 /*
- * dataupdater.h
+ * airlinedatabase.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,43 +17,44 @@
  *
  */
 
-#ifndef DATAUPDATER_H
-#define DATAUPDATER_H
+#ifndef AIRLINEDATABASE_H
+#define AIRLINEDATABASE_H
 
 #include <QObject>
+#include <QString>
+#include <QMap>
 
-class DataUpdateNotificationWidget;
+#include "singleton.h"
 
-class DataUpdater : public QObject {
-  
-  /**
-   * The DataUpdater class is responsible for downloading the data package,
-   * unpacking it, checking the manifest file, copying modified files to
-   * local directory and restarting the application, simultaneously
-   * showing the appropraite notification.
-   */
+class AirlineDatabase : public QObject, public Singleton<AirlineDatabase> {
   
   Q_OBJECT
-
+  
 signals:
   
-  void downloading();
+  /* Connected to UserInterface::warning() */
+  void warning(QString);
   
 public:
+  AirlineDatabase(QObject* = nullptr);
   
-  explicit DataUpdater(QObject* = 0);
+  const QString find(const QString&);
   
-  virtual ~DataUpdater();
+  inline const QMap<QString, QString> airlines() const {
+    return __airlines;
+  }
   
 private:
+  void __init();
   
-  DataUpdateNotificationWidget* __notification;
+  QMap<QString, QString> __airlines;
   
-private slots:
-  
-  void __startDownload();
-  void __downloadFinished(QString);
+#ifdef GCC_VERSION_47
+  const QString __nope = "";
+#else
+  const QString __nope;
+#endif
 
 };
 
-#endif // DATAUPDATER_H
+#endif // AIRLINEDATABASE_H

@@ -19,7 +19,7 @@
 #include <QtGui>
 
 #include "glutils/glresourcemanager.h"
-#include "ui/widgets/mapwidget.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
@@ -27,10 +27,10 @@
 #include "modelmatcher.h"
 #include "defines.h"
 
-ModelMatcher::ModelMatcher(QObject* _parent) :
-    QObject(_parent) {
-   
-//   connect(MapWidget::getSingletonPtr(), SIGNAL(glReady()),
+ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
+  connect(this,                                 SIGNAL(warning(QString)),
+          UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
+  
 //           this,                         SLOT(__loadPixmaps()));
   
   __readModels();
@@ -53,9 +53,7 @@ ModelMatcher::__readModels() {
   QFile modelsFile(FileManager::path("data/model"));
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::alert(
-      tr("File %1 could not be opened! Check file permissions or reinstall the application.")
-        .arg(modelsFile.fileName()));
+    emit warning(tr("File %1 could not be opened! Check file permissions or reinstall the application.").arg(modelsFile.fileName()));
     return;
   }
 

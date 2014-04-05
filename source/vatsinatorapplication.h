@@ -23,11 +23,12 @@
 #include <QApplication>
 #include <QFont>
 #include <QMutex>
-#include <QTimer>
+#include <QProxyStyle>
 #include <iostream>
 
 #include "singleton.h"
 
+class AirlineDatabase;
 class AirportDatabase;
 class CacheFile;
 class FileManager;
@@ -54,8 +55,6 @@ class VatsinatorApplication :
   
 signals:
   void uiCreated();
-  void dataDownloading();
-  void metarsRefreshRequested();
 
 public:
   /**
@@ -64,14 +63,16 @@ public:
   VatsinatorApplication(int&, char**);
 
   virtual ~VatsinatorApplication();
-  
-  /**
-   * Tell user that something went wrong.
-   * @param msg Message to be displayed.
-   */
-  static void alert(const QString&, bool = false);
+
   
   static const QFont& boldFont();
+  static const QFont& h1Font();
+  static const QFont& h2Font();
+  
+#ifdef GCC_VERSION_48
+  [[noreturn]]
+#endif
+    static void terminate();
 
 #ifdef NO_DEBUG
 
@@ -105,20 +106,14 @@ public:
 
 #endif
 
-  inline VatsimDataHandler &
-  vatsimData() { return *__vatsimData; }
-
 public slots:
-  void refreshData();
   void restart();
-  
-private slots:
-  void __loadNewSettings();
-  void __autoUpdatesToggled(bool);
   
 private:
   
+  UserInterface*       __userInterface;
   FileManager*         __fileManager;
+  AirlineDatabase*     __airlineDatabase;
   AirportDatabase*     __airportsData;
   FirDatabase*         __firsData;
   WorldMap*            __worldMap;
@@ -128,10 +123,14 @@ private:
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;
-  UserInterface*       __userInterface;
   
-  QTimer               __timer;
   static QMutex        __mutex; /* For stdout */
+
+  /* Proxy style to have widgets looking nice on Mac */
+  class VatsinatorStyle : public QProxyStyle {
+  public:
+      void polish(QWidget*) override;
+  };
 
 };
 

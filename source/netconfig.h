@@ -41,6 +41,10 @@ public:
     static constexpr const char* apiUrl() {
       return "http://api.vatsinator.eu.org/";
     }
+    
+    static constexpr int defaultRefreshRate() {
+      return 3;
+    }
   
   };
   
@@ -56,25 +60,6 @@ public:
      */
     static constexpr const char* backupStatusUrl() {
       return "http://repo.vatsinator.eu.org/status.txt";
-    }
-    
-  };
-  
-  class Vataware {
-  public:
-    
-    /**
-     * @param %1 Airport icao code.
-     */
-    static constexpr const char* airportUrl() {
-      return "http://www.vataware.com/airport.cfm?airport=%1";
-    }
-    
-    /**
-     * @param %1 The pilot's Vatsim PID.
-     */
-    static constexpr const char* pilotUrl() {
-      return "http://www.vataware.com/pilot.cfm?cid=%1";
     }
     
   };

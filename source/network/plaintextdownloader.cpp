@@ -38,10 +38,22 @@ PlainTextDownloader::fetchData(const QString& _url) {
 }
 
 void
+PlainTextDownloader::abort() {
+  if (__reply) {
+    __reply->abort();
+    __reply->deleteLater();
+    __reply = nullptr;
+  
+    if (anyTasksLeft())
+      __startRequest();
+  }
+}
+
+void
 PlainTextDownloader::__startRequest() {
   if (!__urls.isEmpty()) {
     QNetworkRequest request(__urls.dequeue());
-    request.setRawHeader("User-Agent", "Vatsinator " VATSINATOR_VERSION);
+    request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
     __reply = __nam.get(request);
   } else {
     return;
@@ -75,7 +87,6 @@ PlainTextDownloader::__finished() {
   if (__reply->error() == QNetworkReply::NoError) {
     VatsinatorApplication::log("PlainTextDownloader: %s: finished",
                                qPrintable(__reply->url().toString()));
-    
     __data = __temp;
     emit finished(__data);
   } else {
@@ -83,7 +94,7 @@ PlainTextDownloader::__finished() {
                                qPrintable(__reply->url().toString()),
                                qPrintable(__reply->errorString()));
     
-    emit fetchError();
+    emit error();
   }
   
   __reply->deleteLater();

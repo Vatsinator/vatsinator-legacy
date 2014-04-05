@@ -33,36 +33,52 @@ class AboutWindow;
 class AirportDetailsWindow;
 class AtcDetailsWindow;
 class AtcListWindow;
-class DataUpdateNotificationWidget;
+class DatabaseWindow;
 class FirDetailsWindow;
 class FlightDetailsWindow;
 class FlightListWindow;
 class MetarsWindow;
 class SettingsWindow;
-class QProgressBar;
 class VatsinatorWindow;
 
-class UserInterface :
-  public QObject,
-  public Singleton<UserInterface> {
+class UserInterface : public QObject, public Singleton<UserInterface> {
 
   /*
-   * This class manager the Vatsinator's GUI interface.
+   * This class manager the Vatsinator's GUI.
    */
 
   Q_OBJECT
 
 public:
   UserInterface();
-
   virtual ~UserInterface();
   
+public:
+  void init();
+  
 public slots:
+  /**
+   * Reports fatal error to user.
+   * After showing the error message box, the application
+   * will terminate.
+   * 
+   * @param msg Message to be shown.
+   */
+  void fatal(const QString&);
+  
+  /**
+   * Reports warning to user.
+   * 
+   * @param msg Warning message.
+   */
+  void warning(const QString&);
+  
   void showAppRestartDialog();
+  void showVatsimMessage(const QString&);
 
 private slots:
-  void __statusFileError();
-  void __fetchError();
+  void __statusError();
+  void __dataError();
   void __showNewVersionDialog();
   
 private:
@@ -74,6 +90,7 @@ private:
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;
   AirportDetailsWindow* __airportDetailsWindow;
+  DatabaseWindow*       __databaseWindow;
   FirDetailsWindow*     __firDetailsWindow;
   AtcDetailsWindow*     __atcDetailsWindow;
   AtcListWindow*        __atcListWindow;

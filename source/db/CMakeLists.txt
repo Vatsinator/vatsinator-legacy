@@ -1,6 +1,7 @@
 vatsinator_start_subdirectory (db)
 
 set (db_SRCS
+    airlinedatabase.cpp
     airportdatabase.cpp
     firdatabase.cpp
     worldmap.cpp
@@ -9,7 +10,10 @@ set (db_SRCS
 vatsinator_subdirectory_sources (db "${db_SRCS}")
 
 set (db_MOC_SRCS
-
+    airlinedatabase.h
+    airportdatabase.h
+    firdatabase.h
+    worldmap.h
 )
 
 vatsinator_subdirectory_mocs (db "${db_MOC_SRCS}")

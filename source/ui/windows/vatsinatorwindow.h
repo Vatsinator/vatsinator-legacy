@@ -34,9 +34,6 @@ class VatsinatorWindow :
     private Ui::VatsinatorWindow {
   
   Q_OBJECT
-  
-signals:
-  void autoUpdatesEnabled(bool);
 
 public:
   explicit VatsinatorWindow(QWidget* = 0);
@@ -46,7 +43,7 @@ public:
    * or puts simple "Last update" text.
    * @param text If specified, this text will be shown.
    */
-  void statusBarUpdate(const QString& = "");
+  void statusBarUpdate(const QString& = "", const QPalette& = QPalette());
   
   /**
    * The middle part of status bar - how many clients, etc etc.
@@ -65,9 +62,6 @@ public:
 
   inline QProgressBar*
   progressBar() { return __progressBar; }
-  
-  inline bool
-  autoUpdatesEnabled() const { return EnableAutoUpdatesAction->isChecked(); }
   
 protected:
   void closeEvent(QCloseEvent*) override;

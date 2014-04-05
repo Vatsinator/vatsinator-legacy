@@ -16,10 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtCore>
 
 #include "storage/cachefile.h"
 
+#include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
@@ -50,7 +51,9 @@
 
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
+    __userInterface(new UserInterface()),
     __fileManager(new FileManager()),
+    __airlineDatabase(new AirlineDatabase()),
     __airportsData(new AirportDatabase()),
     __firsData(new FirDatabase()),
     __worldMap(new WorldMap()),
@@ -59,8 +62,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __settingsManager(new SettingsManager()),
     __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
-    __statsPurveyor(new StatsPurveyor()),
-    __userInterface(nullptr) {
+    __statsPurveyor(new StatsPurveyor()) {
  
   /* Set up translations */
   QTranslator* tr_qt = new QTranslator();
@@ -79,35 +81,19 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr,           SLOT(deleteLater()));
   
-  
+#ifdef Q_OS_DARWIN
+  setStyle(new VatsinatorStyle());
+#endif
   /* Basic initializes */
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   
-  __userInterface = new UserInterface();
+  __userInterface->init();
   __settingsManager->init();
 //   __moduleManager->init();
-  
-  // connect EnableAutoUpdatesAction toggle
-  connect(VatsinatorWindow::getSingletonPtr(),  SIGNAL(autoUpdatesEnabled(bool)),
-          this,                                 SLOT(__autoUpdatesToggled(bool)));
-  
-  // handle settings changes
-  connect(__settingsManager,                    SIGNAL(settingsChanged()),
-          this,                                 SLOT(__loadNewSettings()));
-
-  // connect data refresher with the timer
-  connect(&__timer,                             SIGNAL(timeout()),
-          this,                                 SLOT(refreshData()));
-  
-  // when status file is fetched, we may start fetching the data
-  connect(__vatsimData,                         SIGNAL(vatsimStatusUpdated()),
-          this,                                 SLOT(refreshData()));
 
   // show main window
   VatsinatorWindow::getSingleton().show();
   emit uiCreated();
-  
-  __timer.setInterval(SM::get("network.refresh_rate").toInt() * 60000);
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);
@@ -138,6 +124,7 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __firsData;
   delete __worldMap;
   delete __userInterface;
+  delete __airlineDatabase;
   delete __fileManager;
   
   rmThread->wait();
@@ -151,26 +138,34 @@ VatsinatorApplication::~VatsinatorApplication() {
 #endif
 }
 
-void
-VatsinatorApplication::alert(const QString& _msg, bool _fatal) {
-  if (getSingleton().__userInterface) {
-    QMessageBox msgBox;
-    msgBox.setText(_msg);
-    msgBox.setIcon(_fatal ? QMessageBox::Critical : QMessageBox::Warning);
-    msgBox.exec();
-  }
-  
-  VatsinatorApplication::log(qPrintable(_msg));
-  
-  if (_fatal)
-    QCoreApplication::exit(1);
-}
-
 const QFont &
 VatsinatorApplication::boldFont() {
   static QFont font;
   font.setBold(true);
   return font;
+}
+
+const QFont &
+VatsinatorApplication::h1Font() {
+  static QFont font;
+  static int size = font.pointSize() + 4;
+  font.setPointSize(size);
+  font.setBold(true);
+  return font;
+}
+
+const QFont &
+VatsinatorApplication::h2Font() {
+  static QFont font;
+  static int size = font.pointSize() + 2;
+  font.setPointSize(size);
+  font.setBold(true);
+  return font;
+}
+
+void
+VatsinatorApplication::terminate() {
+  std::terminate();
 }
 
 #ifndef NO_DEBUG
@@ -190,16 +185,6 @@ VatsinatorApplication::log(const char* _s) {
 #endif
 
 void
-VatsinatorApplication::refreshData() {
-  emit dataDownloading();
-  
-  if (!VatsinatorWindow::getSingleton().autoUpdatesEnabled())
-    __timer.stop();
-  else
-    __timer.start();
-}
-
-void
 VatsinatorApplication::restart() {
   /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
   qApp->quit();
@@ -207,24 +192,12 @@ VatsinatorApplication::restart() {
 }
 
 void
-VatsinatorApplication::__loadNewSettings() {
-  int rr = SM::get("network.refresh_rate").toInt();
-  if (__timer.interval() / 60000 != rr) {
-    __timer.setInterval(rr * 60000);
-    
-    if (VatsinatorWindow::getSingleton().autoUpdatesEnabled())
-      refreshData();
-  }
-}
-
-void
-VatsinatorApplication::__autoUpdatesToggled(bool _state) {
-  if (!_state) {
-    __timer.stop();
-  } else {
-    if (!__timer.isActive())
-      refreshData();
-  }
+VatsinatorApplication::VatsinatorStyle::polish(QWidget* _widget) {
+#ifdef Q_OS_DARWIN
+  QMenu* w = qobject_cast<QMenu*>(_widget);
+  if (!w && _widget->testAttribute(Qt::WA_MacNormalSize))
+    _widget->setAttribute(Qt::WA_MacMiniSize);
+#endif
 }
 
 QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

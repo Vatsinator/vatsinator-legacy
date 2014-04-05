@@ -27,7 +27,10 @@ ClientDetailsButton::ClientDetailsButton(const Client* _client,
                                          QWidget* _parent) :
     QPushButton("", _parent),
     __current(_client) {
-  setIcon(QIcon(":/uiIcons/button-details.png"));
+  
+  static const QIcon iIcon(":/uiIcons/button-details.png");
+  
+  setIcon(iIcon);
   connect(this, SIGNAL(clicked()),
           this, SLOT(__handleClicked()));
 }
@@ -41,5 +44,6 @@ void
 ClientDetailsButton::__handleClicked() {
   emit clicked(__current);
 }
+
 
 

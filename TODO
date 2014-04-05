@@ -1,5 +1,7 @@
 == TODO for version 1.0 ==
 
-* Implement VatsinatorDatabase
+* EUroute NOTAM integration
+* New map engine
+* Extended ATC
 * Home-location
 * Flights nearby

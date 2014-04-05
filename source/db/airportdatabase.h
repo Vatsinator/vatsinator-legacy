@@ -16,11 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef AIRPORTDATABASE_H
 #define AIRPORTDATABASE_H
 
-#include <QCoreApplication>
+#include <QObject>
 #include <QVector>
 
 #include "singleton.h"
@@ -49,21 +48,23 @@ struct AirportRecord {
 };
 #pragma pack()
 
-class AirportDatabase :
-    public Singleton<AirportDatabase> {
+class AirportDatabase : public QObject, public Singleton<AirportDatabase> {
 
   /*
    * This class contains all needed info about airports.
    */
   
-  Q_DECLARE_TR_FUNCTIONS(AirportDatabase);
+  Q_OBJECT
+  
+signals:
+  void fatal(QString);
 
 public:
 
   /**
    * Default ctor.
    */
-  AirportDatabase();
+  AirportDatabase(QObject* = nullptr);
   
   /**
    * Looks for the airport.
@@ -86,7 +87,7 @@ private:
   void __readDatabase();
 
   QVector<AirportRecord> __airports;
-
+  
 };
 
 #endif // AIRPORTDATABASE_H

@@ -26,13 +26,22 @@
 #include "defines.h"
 
 static const QString LocalDataLocation =
-    QDesktopServices::storageLocation(QDesktopServices::DataLocation) % "Vatsinator/";
+    QDir::cleanPath(
+        QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+      % QDir::separator()
+      % "Vatsinator"
+    ) % QDir::separator();
 
 
 FileManager::FileManager() {
   VatsinatorApplication::log("FileManager: local data location: %s", qPrintable(LocalDataLocation));
   
-  __readManifest(LocalDataLocation % "/Manifest");
+  // ensure that our data directory exists
+  QDir dir(LocalDataLocation);
+  if (!dir.exists()) {
+    VatsinatorApplication::log("FileManager: creating directory %s.", qPrintable(LocalDataLocation));
+    dir.mkpath(".");
+  }
 }
 
 void
@@ -41,6 +50,29 @@ FileManager::cacheData(const QString& _fileName, const QString& _data) {
   cache.open(QIODevice::WriteOnly | QIODevice::Truncate);
   cache.write(_data.toUtf8());
   cache.close();
+}
+
+bool
+FileManager::moveToCache(const QString& _source, const QString& _destination) {
+  QFile file(_source);
+  if (!file.open(QIODevice::ReadWrite)) {
+    VatsinatorApplication::log("FileManager: failed to access file %s", qPrintable(_source));
+    return false;
+  }
+  
+  file.close();
+  
+  CacheFile oldCache(_destination);
+  if (oldCache.exists())
+    oldCache.remove();
+  
+  bool result = file.rename(oldCache.fileName());
+  if (result)
+    VatsinatorApplication::log("FileManager: cached file %s", qPrintable(_destination));
+  else
+    VatsinatorApplication::log("FileManager: failed caching file %s", qPrintable(_destination));
+  
+  return result;
 }
 
 QString
@@ -68,9 +100,10 @@ FileManager::staticPath(FileManager::StaticDir _d) {
 
 QString
 FileManager::path(const QString& _f) {
+  
   QFile tryLocal(LocalDataLocation % _f);
   if (tryLocal.exists()) {
-    VatsinatorApplication::log("File %s loaded from %s.",
+    VatsinatorApplication::log("FileManager: file %s loaded from %s.",
                                qPrintable(_f),
                                qPrintable(tryLocal.fileName()));
     return tryLocal.fileName();
@@ -85,58 +118,7 @@ FileManager::path(const QString& _f) {
   }
 }
 
-QByteArray
-FileManager::md5Hash(const QString& _fname) {
-  QFile file(_fname);
-  
-  if (!file.open(QIODevice::ReadOnly)) {
-    return QByteArray();
-  }
-  
-  return QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
+QString
+FileManager::localDataPath() {
+  return LocalDataLocation;
 }
-
-QByteArray
-FileManager::md5Hash(QIODevice& _dev) {
-  Q_ASSERT(_dev.isOpen());
-  
-  return QCryptographicHash::hash(_dev.readAll(), QCryptographicHash::Md5).toHex();
-}
-
-
-FileManager::FileHash::FileHash(const QByteArray& _md5) :
-    md5(_md5) {}
-
-
-void
-FileManager::__readManifest(const QString& _fname) {
-  QFile file(_fname);
-  
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    return;
-  }
-  
-  while (!file.atEnd()) {
-    QByteArray line = file.readLine().simplified();
-    
-    if (line.isEmpty())
-      continue;
-    
-    if (!__manifest.timestamp.isValid()) {
-      __manifest.timestamp = QDateTime::fromString(QString::fromUtf8(line), "yyyyMMddhhmm");
-    } else {
-      QList<QByteArray> split = line.split(' ');
-      
-      if (split.length() != 2)
-        return;
-      
-      __manifest.hash.insert(QString::fromUtf8(split[0]), FileHash(split[1]));
-    }
-  }
-  
-  file.close();
-  
-  VatsinatorApplication::log("Data updated on %s.",
-                             qPrintable(__manifest.timestamp.toString("yyyyMMddhhmm")));
-}
-

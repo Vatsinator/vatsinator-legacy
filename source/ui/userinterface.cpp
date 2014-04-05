@@ -29,10 +29,12 @@
 #include "ui/dialogs/datafetcherrordialog.h"
 #include "ui/dialogs/newversiondialog.h"
 #include "ui/dialogs/statusfetcherrordialog.h"
+#include "ui/dialogs/vatsimmessagedialog.h"
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/atclistwindow.h"
+#include "ui/windows/databasewindow.h"
 #include "ui/windows/firdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/windows/flightlistwindow.h"
@@ -48,33 +50,25 @@
 
 UserInterface::UserInterface() :
 #ifndef NO_DEBUG
-    __debugWindow(new DebugWindow()),
+    __debugWindow(nullptr),
 #endif
-    __aboutWindow(new AboutWindow()),
-    __metarsWindow(new MetarsWindow()),
-    __airportDetailsWindow(new AirportDetailsWindow()),
-    __firDetailsWindow(new FirDetailsWindow()),
-    __atcDetailsWindow(new AtcDetailsWindow()),
-    __atcListWindow(new AtcListWindow()),
-    __flightDetailsWindow(new FlightDetailsWindow()),
-    __flightsListWindow(new FlightListWindow()),
-    __settingsWindow(new SettingsWindow()),
-    __vatsinatorWindow(new VatsinatorWindow()) {
-
-
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(dataCorrupted()),
-          this,                                     SLOT(__fetchError()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
-          this,                                     SLOT(__statusFileError()));
-  connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
-          this,                                     SLOT(__showNewVersionDialog()));
-}
+    __aboutWindow(nullptr),
+    __metarsWindow(nullptr),
+    __airportDetailsWindow(nullptr),
+    __databaseWindow(nullptr),
+    __firDetailsWindow(nullptr),
+    __atcDetailsWindow(nullptr),
+    __atcListWindow(nullptr),
+    __flightDetailsWindow(nullptr),
+    __flightsListWindow(nullptr),
+    __settingsWindow(nullptr),
+    __vatsinatorWindow(nullptr) {}
 
 UserInterface::~UserInterface() {
-
   delete __vatsinatorWindow;
   delete __aboutWindow;
   delete __airportDetailsWindow;
+  delete __databaseWindow;
   delete __firDetailsWindow;
   delete __flightDetailsWindow;
   delete __flightsListWindow;
@@ -89,6 +83,56 @@ UserInterface::~UserInterface() {
 }
 
 void
+UserInterface::init() {
+#ifndef NO_DEBUG
+  __debugWindow = new DebugWindow();
+#endif
+  
+  __aboutWindow = new AboutWindow();
+  __metarsWindow = new MetarsWindow();
+  __airportDetailsWindow = new AirportDetailsWindow();
+  __databaseWindow = new DatabaseWindow();
+  __firDetailsWindow = new FirDetailsWindow();
+  __atcDetailsWindow = new AtcDetailsWindow();
+  __atcListWindow = new AtcListWindow();
+  __flightDetailsWindow = new FlightDetailsWindow();
+  __flightsListWindow = new FlightListWindow();
+  __settingsWindow = new SettingsWindow();
+  __vatsinatorWindow = new VatsinatorWindow();
+  
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
+          this,                                     SLOT(__dataError()));
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
+          this,                                     SLOT(__statusError()));
+  connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
+          this,                                     SLOT(__showNewVersionDialog()));
+}
+
+void
+UserInterface::fatal(const QString& _msg) {
+  QMessageBox msgBox;
+  msgBox.setText(_msg);
+  msgBox.setIcon(QMessageBox::Critical);
+  
+  VatsinatorApplication::log(qPrintable(_msg));
+  
+  msgBox.exec();
+  
+  VatsinatorApplication::terminate();
+}
+
+void
+UserInterface::warning(const QString& _msg) {
+  QMessageBox msgBox;
+  msgBox.setText(_msg);
+  msgBox.setIcon(QMessageBox::Warning);
+  
+  VatsinatorApplication::log(qPrintable(_msg));
+  
+  msgBox.exec();
+}
+
+void
 UserInterface::showAppRestartDialog() {
   AppRestartDialog* dialog = new AppRestartDialog();
   
@@ -99,23 +143,39 @@ UserInterface::showAppRestartDialog() {
   
   dialog->show();
   dialog->raise();
-  dialog->activateWindow();
-  
+  dialog->activateWindow();  
 }
 
 void
-UserInterface::__statusFileError() {
+UserInterface::showVatsimMessage(const QString& _msg) {
+  QSettings s;
+  if (s.value("VatsimMessages/" % _msg, false).toBool())
+    return;
+  
+  VatsimMessageDialog* dialog = new VatsimMessageDialog(_msg);
+  
+  connect(dialog,       SIGNAL(finished(int)),
+          dialog,       SLOT(deleteLater()));
+  
+  dialog->show();
+  dialog->raise();
+  dialog->activateWindow();
+}
+
+void
+UserInterface::__statusError() {
   StatusFetchErrorDialog dialog;
   dialog.exec();
 }
 
 void
-UserInterface::__fetchError() {
+UserInterface::__dataError() {
   DataFetchErrorDialog dialog;
   dialog.exec();
   
   if (dialog.clickedButton() == dialog.again()) {
-    VatsinatorApplication::getSingleton().refreshData();
+    // TODO
+//     VatsinatorApplication::getSingleton().refreshData();
   }
 }
 

@@ -19,6 +19,10 @@ project (vatsinator)
 
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
 
+if ("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VERSION_GREATER 2.8.10)
+  cmake_policy (SET CMP0020 OLD)
+endif ("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VERSION_GREATER 2.8.10)
+
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
 # find necessary libs
@@ -74,37 +78,7 @@ if (NOT vatsinator_VERSION)
 endif (NOT vatsinator_VERSION)
 
 include (VatsinatorInstall)
-
-set (vatsinator_RESOURCES
-    COPYING
-    resources/WorldAirports.db
-    resources/WorldFirs.db
-    resources/WorldMap.db)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES}" "")
-
-set (vatsinator_RESOURCES_PIXMAPS
-    resources/pixmaps/1p32.png
-    resources/pixmaps/2p32.png
-    resources/pixmaps/4p32.png
-    resources/pixmaps/2j32.png
-    resources/pixmaps/3j32.png
-    resources/pixmaps/4j32.png
-    resources/pixmaps/conc32.png)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES_PIXMAPS}" "/pixmaps")
-
-set (vatsinator_RESOURCES_DATA
-    resources/data/alias
-    resources/data/country
-    resources/data/fir
-    resources/data/model
-    resources/data/uir)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES_DATA}" "/data")
+add_subdirectory(resources)
 
 # Platform-specific actions
 if (LINUX)

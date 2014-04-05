@@ -33,6 +33,13 @@ class CacheFile : public QFile {
   Q_OBJECT
   
 public:
+  
+  /**
+   * Default constructor.
+   * 
+   * @param fileName Name of the file in the cache. Only file name, not
+   *    a full path.
+   */
   CacheFile(const QString&);
   
   /**

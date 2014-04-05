@@ -29,23 +29,22 @@
 
 class VertexBufferObject;
 
-class WorldMap : public Singleton<WorldMap> {
-
-  Q_DECLARE_TR_FUNCTIONS(WorldMap);
+class WorldMap : public QObject, public Singleton<WorldMap> {
+  Q_OBJECT
 
   struct Polygon {
     QVector<Point>          borders;
     QVector<unsigned short> triangles;
   };
   
+signals:
+  void fatal(QString);
+  
 public:
-  WorldMap();
+  WorldMap(QObject* = nullptr);
   
-  const QVector<Point> &
-  borders() const { return __worldPolygon.borders; }
-  
-  const QVector<unsigned short> &
-  triangles() const { return __worldPolygon.triangles; }
+  const QVector<Point>& borders() const { return __worldPolygon.borders; }
+  const QVector<unsigned short>& triangles() const { return __worldPolygon.triangles; }
 
 private:
   void __readDatabase();

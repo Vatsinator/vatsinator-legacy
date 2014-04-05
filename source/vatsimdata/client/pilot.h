@@ -80,6 +80,16 @@ public:
   inline int altitude() const { return __altitude; }
   
   /**
+   * Estimated Time of Arrival.
+   */
+  const QTime& eta() const;
+  
+  /**
+   * Progress [1-100].
+   */
+  int progress() const;
+  
+  /**
    * The client's ground speed, in knots.
    */
   inline int groundSpeed() const { return __groundSpeed; }
@@ -110,6 +120,21 @@ public:
    * The client's remarks.
    */
   inline const QString& remarks() const { return __remarks; }
+  
+  /**
+   * Scheduled Time of Departure
+   */
+  inline const QTime& std() const { return __std; }
+  
+  /**
+   * Actual Time of Departure
+   */
+  inline const QTime& atd() const { return __atd; }
+  
+  /**
+   * Scheduled Time of Arrival
+   */
+  inline const QTime& sta() const { return __sta; }
   
   /**
    * The client's current heading.
@@ -153,12 +178,19 @@ private:
    */
   void __setMyStatus();
   
+//   bool __isCrossingIDL(QVector<GLfloat>&) const;
+  
   int                   __altitude;
   int                   __groundSpeed;
   QString               __squawk;
   QString               __aircraft;
   int                   __tas;
   Pilot::FlightRules    __flightRules;
+  QTime                 __std; /* Scheduled Time of Departure  */
+  QTime                 __atd; /* Actual Time of Departure */
+  QTime                 __sta; /* Scheduled Time of Arrival */
+  mutable QTime         __eta; /* Estimated Time of Arrival */
+  mutable int           __progress; /* [1-100] */
   QString               __remarks;
   unsigned              __heading;
   Pilot::Status         __flightStatus;

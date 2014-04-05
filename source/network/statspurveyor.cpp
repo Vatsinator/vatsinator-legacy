@@ -41,17 +41,73 @@ static constexpr int RetryDelay = 60 * 1000;
 static const QString STARTUP_PATH = "startup.php?version=%1&os=%2";
 static const QString NOATC_PATH = "noatc.php?atc=%1";
 
-static const QString OS_STRING =
+namespace {
+  
+  /**
+   * Gets the string representing the running operating system.
+   */
+  QString osString() {
 #ifdef Q_OS_WIN32
-  "Windows"
+    switch (QSysInfo::WindowsVersion) {
+      case QSysInfo::WV_32s:
+        return "Windows 3.1";
+      case QSysInfo::WV_95:
+        return "Windows 95";
+      case QSysInfo::WV_98:
+        return "Windows 98";
+      case QSysInfo::WV_NT:
+        return "Windows NT";
+      case QSysInfo::WV_2000:
+        return "Windows 2000";
+      case QSysInfo::WV_XP:
+        return "Windows XP";
+      case QSysInfo::WV_2003:
+        return "Windows XP Professional x64";
+      case QSysInfo::WV_VISTA:
+        return "Windows Vista";
+      case QSysInfo::WV_WINDOWS7:
+        return "Windows 7";
+      default:
+        return "Windows";
+    }
 #elif defined Q_OS_LINUX
-  "Linux"
+    /* On Linux we have to get distro name somehow, lets try lsb-release */
+    QProcess p;
+    p.start("/usr/bin/lsb_release", {"--description", "--short"});
+    if (p.error() == QProcess::UnknownError) { // no error
+      p.waitForFinished(-1);
+      QString d = p.readAllStandardOutput();
+      d.remove("\"");
+      d = d.simplified();
+      
+      return QString("Linux ") % d;
+    } else {
+      return QString("Linux");
+    }
 #elif defined Q_OS_DARWIN
-  "Darwin"
+    switch (QSysInfo::MacintoshVersion) {
+      case QSysInfo::MV_10_3:
+        return "Mac OS X 10.3";
+      case QSysInfo::MV_10_4:
+        return "Mac OS X 10.4";
+      case QSysInfo::MV_10_5:
+        return "Mac OS X 10.5";
+      case QSysInfo::MV_10_6:
+        return "Mac OS X 10.6";
+      case QSysInfo::MV_10_7:
+        return "Mac OS X 10.7";
+      case QSysInfo::MV_10_8:
+        return "Mac OS X 10.8";
+      default:
+        return "Mac OS X";
+    }
 #else
-  "unknown"
+# warning "Define operating system string here"
+    return "Unknown";
 #endif
-  ;
+  }
+  
+}
   
 
 StatsPurveyor::StatsPurveyor(QObject* _parent) :
@@ -88,7 +144,7 @@ StatsPurveyor::~StatsPurveyor() {}
 void
 StatsPurveyor::reportStartup() {
   QString url = QString(NetConfig::Vatsinator::statsUrl()) % STARTUP_PATH;
-  QNetworkRequest request(url.arg(VATSINATOR_VERSION, OS_STRING));
+  QNetworkRequest request(url.arg(VATSINATOR_VERSION, osString()));
   
   __enqueueRequest(request);
 }

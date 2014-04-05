@@ -27,6 +27,7 @@
 
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/atclistwindow.h"
+#include "ui/windows/databasewindow.h"
 #include "ui/windows/flightlistwindow.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/windows/settingswindow.h"
@@ -52,20 +53,20 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
           AboutWindow::getSingletonPtr(),           SLOT(show()));
   connect(ActionMetar,                              SIGNAL(triggered()),
           MetarsWindow::getSingletonPtr(),          SLOT(show()));
+  connect(ActionDatabase,                           SIGNAL(triggered()),
+          DatabaseWindow::getSingletonPtr(),        SLOT(show()));
   connect(ActionRefresh,                            SIGNAL(triggered()),
-          VatsinatorApplication::getSingletonPtr(), SLOT(refreshData()));
+          VatsimDataHandler::getSingletonPtr(),     SLOT(requestDataUpdate()));
   connect(ActionPreferences,                        SIGNAL(triggered()),
           SettingsWindow::getSingletonPtr(),        SLOT(show()));
   connect(ActionFlightList,                         SIGNAL(triggered()),
           FlightListWindow::getSingletonPtr(),      SLOT(show()));
   connect(ActionATCList,                            SIGNAL(triggered()),
           AtcListWindow::getSingletonPtr(),         SLOT(show()));
-  connect(EnableAutoUpdatesAction,                  SIGNAL(toggled(bool)),
-          this,                                     SIGNAL(autoUpdatesEnabled(bool)));
 //   connect(ActionHomeLocation,                       SIGNAL(triggered()),
 //           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
   
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(dataDownloading()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataDownloading()),
           this,                                     SLOT(__dataDownloading()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
           this,                                     SLOT(__statusUpdated()));
@@ -73,7 +74,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
           this,                                     SLOT(__dataCorrupted()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
           this,                                     SLOT(__dataUpdated()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(dataCorrupted()),
+  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
           this,                                     SLOT(__dataCorrupted()));
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
           this,                                     SLOT(__enableRefreshAction()));
@@ -108,7 +109,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
 }
 
 void
-VatsinatorWindow::statusBarUpdate(const QString& _message) {
+VatsinatorWindow::statusBarUpdate(const QString& _message, const QPalette& palette) {
   if (_message.isEmpty()) {
     if (VatsimDataHandler::getSingleton().dateDataUpdated().isNull())
       __statusBox->setText(tr("Last update: never"));
@@ -119,6 +120,8 @@ VatsinatorWindow::statusBarUpdate(const QString& _message) {
   } else {
     __statusBox->setText(_message);
   }
+  
+  __statusBox->setPalette(palette);
 }
 
 void
@@ -126,13 +129,13 @@ VatsinatorWindow::infoBarUpdate() {
   VatsimDataHandler& data = VatsimDataHandler::getSingleton();
   
   ClientsBox->setText(tr(
-      "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
-          QString::number(data.clientCount()),
-          QString::number(data.pilotCount()),
-          QString::number(data.atcCount()),
-          QString::number(data.obsCount())
-        )
-   );
+    "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
+      QString::number(data.clientCount()),
+      QString::number(data.pilotCount()),
+      QString::number(data.atcCount()),
+      QString::number(data.obsCount())
+    )
+  );
 }
 
 void
@@ -170,8 +173,6 @@ VatsinatorWindow::__storeWindowGeometry() {
     settings.setValue("position", pos());
     settings.setValue("size", size());
   }
-  
-  settings.setValue("autoUpdatesEnabled", autoUpdatesEnabled());
 
   settings.endGroup();
 }
@@ -188,7 +189,7 @@ VatsinatorWindow::__restoreWindowGeometry() {
     move(settings.value("position", pos()).toPoint());
     resize(settings.value("size", size()).toSize());
     
-    if ( settings.value( "maximized", isMaximized()).toBool() )
+    if (settings.value( "maximized", isMaximized()).toBool())
       showMaximized();
   } else { /* Place the window in the middle of the screen */
     setGeometry(
@@ -202,7 +203,6 @@ VatsinatorWindow::__restoreWindowGeometry() {
   }
   
   EnableAutoUpdatesAction->setChecked(settings.value("autoUpdatesEnabled", true).toBool());
-
   settings.endGroup();
 }
 
@@ -226,7 +226,9 @@ VatsinatorWindow::__dataUpdated() {
 void
 VatsinatorWindow::__dataCorrupted() {
   Replaceable->setCurrentWidget(__statusBox);
-  statusBarUpdate(tr("Invalid data!"));
+  QPalette palette = __statusBox->palette();
+  palette.setColor(__statusBox->foregroundRole(), Qt::red);
+  statusBarUpdate("", palette);
 }
 
 void

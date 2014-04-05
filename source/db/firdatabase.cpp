@@ -18,15 +18,18 @@
 
 #include <QtGui>
 
+#include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
-
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "firdatabase.h"
 #include "defines.h"
 
-FirDatabase::FirDatabase() {
+FirDatabase::FirDatabase(QObject* _parent) : QObject(_parent) {
+  connect(this,                                 SIGNAL(fatal(QString)),
+          UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
+  
 //   __readDatabase();
   QtConcurrent::run(this, &FirDatabase::__readDatabase);
 }
@@ -66,9 +69,7 @@ FirDatabase::__readDatabase() {
   QFile db(FileManager::path("WorldFirs.db"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly))
-    VatsinatorApplication::alert(
-      tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()),
-      true);
+    emit fatal(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
 
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);

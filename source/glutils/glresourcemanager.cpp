@@ -20,7 +20,7 @@
 #include <QGLWidget>
 
 #include "debugging/glerrors.h"
-
+#include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "glresourcemanager.h"
@@ -60,9 +60,8 @@ GlResourceManager::loadImage(const QString& _fName) {
   VatsinatorApplication::log("GlResourceManager: loading texture: %s...", _fName.toStdString().c_str());
   
   if (!temp.load(_fName)) {
-    VatsinatorApplication::alert(
-      QString("GlResourceManager: image %1 could not be loaded!").arg(_fName),
-      true);
+    UserInterface::getSingleton().warning(
+      QString("Image %1 could not be loaded").arg(_fName));
   }
   
   final = QGLWidget::convertToGLFormat(temp);

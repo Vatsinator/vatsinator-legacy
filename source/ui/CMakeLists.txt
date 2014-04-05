@@ -57,6 +57,7 @@ set (ui_SRCS
     dialogs/letsendstatsdialog.cpp
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
+    dialogs/vatsimmessagedialog.cpp
     
     map/airportitem.cpp
     map/approachcircleitem.cpp
@@ -75,8 +76,10 @@ set (ui_SRCS
     
     views/airporttableview.cpp
     views/controllertableview.cpp
+    views/delayedmodeltableview.cpp
     views/flighttableview.cpp
     
+    widgets/flightprogresswidget.cpp
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
@@ -86,6 +89,7 @@ set (ui_SRCS
     windows/atcdetailswindow.cpp
     windows/atclistwindow.cpp
     windows/basewindow.cpp
+    windows/databasewindow.cpp
     windows/firdetailswindow.cpp
     windows/flightdetailswindow.cpp
     windows/flightlistwindow.cpp
@@ -117,6 +121,7 @@ set (ui_MOC_SRCS
     dialogs/letsendstatsdialog.h
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
+    dialogs/vatsimmessagedialog.h
     
     map/airportitem.h
     map/approachcircleitem.h
@@ -132,8 +137,10 @@ set (ui_MOC_SRCS
     
     views/airporttableview.h
     views/controllertableview.h
+    views/delayedmodeltableview.h
     views/flighttableview.h
     
+    widgets/flightprogresswidget.h
     widgets/mapwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h
@@ -143,6 +150,7 @@ set (ui_MOC_SRCS
     windows/atcdetailswindow.h
     windows/atclistwindow.h
     windows/basewindow.h
+    windows/databasewindow.h
     windows/firdetailswindow.h
     windows/flightdetailswindow.h
     windows/flightlistwindow.h
@@ -157,6 +165,7 @@ set (ui_FORMS
     dialogs/apprestartdialog.ui
     dialogs/letsendstatsdialog.ui
     dialogs/newversiondialog.ui
+    dialogs/vatsimmessagedialog.ui
     
     pages/mappage.ui
     pages/miscellaneouspage.ui
@@ -167,6 +176,7 @@ set (ui_FORMS
     windows/airportdetailswindow.ui
     windows/atcdetailswindow.ui
     windows/atclistwindow.ui
+    windows/databasewindow.ui
     windows/firdetailswindow.ui
     windows/flightdetailswindow.ui
     windows/flightlistwindow.ui
@@ -185,7 +195,7 @@ vatsinator_subdirectory_resources (ui "${ui_QRCS}")
 
 # icon for Windows
 if (WIN32)
-      vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
+    vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
 endif (WIN32)
 
 vatsinator_end_subdirectory (ui)

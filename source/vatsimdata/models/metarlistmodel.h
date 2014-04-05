@@ -58,7 +58,7 @@ public:
   /**
    * Returns the model index for the given metar.
    */
-  const QModelIndex getModelIndexForMetar(const Metar*) const;
+  const QModelIndex modelIndexForMetar(const Metar*) const;
 
   /* Two QAbstractListModel-reimplemented functions */
   int rowCount(const QModelIndex& = QModelIndex()) const;
@@ -73,13 +73,14 @@ public slots:
 private:
   void __addMetar(const QString&);
   bool __matches(const QString&);
-
+  
+private slots:
+  void __readMetar(const QString&);
+  
+private:
   QQueue<QString>       __requests;
   QList<Metar>          __metarList;
   PlainTextDownloader*  __downloader;
-
-private slots:
-  void __gotMetar(const QString&);
 
 };
 

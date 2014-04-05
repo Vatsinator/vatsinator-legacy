@@ -62,8 +62,10 @@ add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
     ${vatsinator_MOC_FILES}
 )
 
-option (WITH_WEATHER_FORECAST
-    "Enable weather forecast" ON)
+# fix for older versions of qjson library
+if (qjson_LIBRARIES)
+    set (QJSON_LIBRARIES ${qjson_LIBRARIES})
+endif (qjson_LIBRARIES)
 
 # Set PREFIX for defines.h and necessary libs
 if (LINUX)

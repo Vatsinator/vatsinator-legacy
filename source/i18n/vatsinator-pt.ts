@@ -89,27 +89,12 @@
         <translation>Vatsinator é um monitor da VATSIM - mostra pilotos, controladores e disponibiliza informação útil tal como METARs e detalhes de aeroportos.</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
-        <source>Database sync time:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
-        <source>Airports in the database:</source>
-        <translation>Aeroportos na base de dados:</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="160"/>
-        <source>FIRs in the database:</source>
-        <translation>FIRs na base de dados:</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="224"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
         <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="280"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="207"/>
         <source>Changelog</source>
         <translation type="unfinished"/>
     </message>
@@ -119,31 +104,34 @@
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="243"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Authors</source>
         <translation>Autores</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="266"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>License</source>
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
-        <source>never</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="61"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="65"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AirlineDatabase</name>
+    <message>
+        <location filename="../db/airlinedatabase.cpp" line="49"/>
+        <source>File %1 could not be opened! Please reinstall the application.</source>
+        <translation>O ficheiro %1 não pode ser aberto! Por favor re-instale a aplicação.</translation>
     </message>
 </context>
 <context>
@@ -157,89 +145,94 @@
 <context>
     <name>AirportDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="35"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="198"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="17"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="175"/>
         <source>%1 - airport details</source>
         <translation>%1 - detalhes do aeroporto</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="78"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="60"/>
         <source>Inbound</source>
         <translation>Chegadas</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="140"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="131"/>
         <source>Outbound</source>
         <translation>Partidas</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="202"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="199"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="264"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="267"/>
         <source>Bookings</source>
         <translation>Reservas</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="326"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="329"/>
         <source>Airport info</source>
         <translation>Info aeroporto</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="358"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="361"/>
         <source>Airport name:</source>
         <translation>Nome aeroporto:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="382"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="385"/>
         <source>City:</source>
         <translation>Cidade:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="406"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="409"/>
         <source>Country:</source>
         <translation>País:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="433"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="436"/>
         <source>Altitude:</source>
         <translation>Altitude:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="492"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="495"/>
         <source>Weather forecast</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="624"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="232"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="627"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="209"/>
         <source>Vataware statistics for this airport</source>
         <translation>Estatísticas para este aeroporto</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="698"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="642"/>
+        <source>NOTAM</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="758"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="679"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="739"/>
         <source>Show</source>
         <translation>Mostrar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="126"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="101"/>
         <source>Fetching...</source>
         <translation>Pesquisando...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="169"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="146"/>
         <source>Sorry, no weather report for %1.</source>
         <translation>Lamento mas não tenho meteorologia para %1.</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="227"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="204"/>
         <source>%1 ft</source>
         <translation>%1 ft</translation>
     </message>
@@ -436,19 +429,116 @@
     </message>
 </context>
 <context>
+    <name>DatabaseWindow</name>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="14"/>
+        <source>Vatsinator Database</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="20"/>
+        <source>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="46"/>
+        <source>Database info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="56"/>
+        <source>Sync database now...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="79"/>
+        <source>Last update time:</source>
+        <extracomment>Database last update time</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.ui" line="106"/>
+        <source>Current status:</source>
+        <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
+        <translation>Estado actual:</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/windows/databasewindow.cpp" line="33"/>
+        <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
+        <comment>The first part of the summary</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/windows/databasewindow.cpp" line="37"/>
+        <source>and %n FIR(s).</source>
+        <comment>The second part of the summary</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="59"/>
+        <source>up-to-date</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="66"/>
+        <source>outdated</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="73"/>
+        <source>updating...</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="80"/>
+        <source>cannot update</source>
+        <comment>Database status indicator</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/databasewindow.cpp" line="81"/>
+        <source>Your Vatsinator version is outdated.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>DelayedModelTableView</name>
+    <message>
+        <location filename="../ui/views/delayedmodeltableview.cpp" line="27"/>
+        <source>Loading...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/views/delayedmodeltableview.cpp" line="28"/>
+        <source>Error occured</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>EurouteNotamProvider</name>
+    <message>
+        <location filename="../network/euroutenotamprovider.cpp" line="75"/>
+        <source>NOTAMs by &lt;a href=&quot;%1&quot;&gt;EUroute&lt;/a&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileDownloader</name>
     <message>
-        <location filename="../network/filedownloader.cpp" line="49"/>
+        <location filename="../network/filedownloader.cpp" line="47"/>
         <source>Temporary directory (%1) is not readable!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../network/filedownloader.cpp" line="81"/>
+        <location filename="../network/filedownloader.cpp" line="78"/>
         <source>Could not open file (%1) for writing!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../network/filedownloader.cpp" line="118"/>
+        <location filename="../network/filedownloader.cpp" line="117"/>
         <source>Error downloading file: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -464,37 +554,42 @@
 <context>
     <name>FirDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="83"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="69"/>
         <source>Flights</source>
         <translation>Vôos</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="146"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="132"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="209"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="195"/>
         <source>Bookings</source>
         <translation>Reservas</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="272"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="258"/>
         <source>Active airports</source>
         <translation>Aeroportos activos</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="341"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="318"/>
+        <source>NOTAM</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/firdetailswindow.ui" line="390"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="83"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="90"/>
         <source>%1 - FIR details</source>
         <translation>%1 - Detalhes FIR</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="92"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - Detalhes ARTCC</translation>
     </message>
@@ -503,160 +598,184 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="63"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="67"/>
         <source>%1 - flight details</source>
         <translation>%1 - Detalhes vôo</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="68"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="425"/>
         <source>Flight details</source>
         <translation>Detalhes vôo</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="104"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="461"/>
         <source>Heading:</source>
         <translation>Rumo:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="87"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="444"/>
         <source>Ground speed:</source>
         <translation>Velocidade:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="177"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="534"/>
         <source>Server:</source>
         <translation>Servidor:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="80"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="437"/>
         <source>feet</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="160"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="517"/>
         <source>Current status:</source>
         <translation>Estado actual:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="97"/>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="352"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="454"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="709"/>
         <source>kts</source>
         <translation>kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="280"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="88"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="637"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="127"/>
         <source>Vataware statistics for this pilot</source>
         <translation>Estatísticas para este piloto</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="194"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="551"/>
         <source>Logged from:</source>
         <translation>Ligado a partir de:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="114"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="192"/>
+        <source>Sheduled Time of Departure</source>
+        <extracomment>Shortcut expansion for &quot;STD&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="244"/>
+        <source>Sheduled Time of Arrival</source>
+        <extracomment>Shortuct expansion for &quot;STA&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="303"/>
+        <source>Actual Time of Departure</source>
+        <extracomment>Shortcut expansion for &quot;ATD&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="361"/>
+        <source>Estimated Time of Arrival</source>
+        <extracomment>Shortcut expansion for &quot;ETA&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="471"/>
         <source>Altitude:</source>
         <translation>Altitude:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="130"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="487"/>
         <source>Captain:</source>
         <translation>Comandante:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="211"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="568"/>
         <source>Squawk:</source>
         <translation>Squawk:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="228"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="585"/>
         <source>Baro:</source>
         <translation>Barómetro:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="297"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="654"/>
         <source>Flight plan</source>
         <translation>Plano de vôo</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="342"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="699"/>
         <source>TAS:</source>
         <translation>TAS:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="421"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="778"/>
         <source>Origin:</source>
         <translation>Origem:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="325"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="682"/>
         <source>Aircraft:</source>
         <translation>Tipo aeronave:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="359"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="716"/>
         <source>Cruise altitude:</source>
         <translation>Altitude cruzeiro:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="315"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="672"/>
         <source>Flight rules:</source>
         <translation>Tipo de vôo:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="466"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="823"/>
         <source>Arrival:</source>
         <translation>Destino:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="379"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="736"/>
         <source>Route:</source>
         <translation>Rota:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="411"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="768"/>
         <source>Remarks:</source>
         <translation>Remarks:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="508"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="865"/>
         <source>Track this flight</source>
         <translation>Seguir este vôo</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="515"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="872"/>
         <source>Show</source>
         <translation>Mostrar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="522"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="879"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="108"/>
         <source>%1 feet</source>
         <translation>%1 feet</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="70"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="96"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="109"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="135"/>
         <source>%1 kts</source>
         <translation>%1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="113"/>
         <source>airborne</source>
         <translation>no ar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="115"/>
         <source>departing</source>
         <translation>partida</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="117"/>
         <source>arrived</source>
         <translation>chegada</translation>
     </message>
@@ -912,7 +1031,7 @@
 <context>
     <name>ModelMatcher</name>
     <message>
-        <location filename="../modules/modelmatcher.cpp" line="38"/>
+        <location filename="../modules/modelmatcher.cpp" line="37"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
@@ -927,22 +1046,22 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="79"/>
+        <location filename="../ui/pages/networkpage.ui" line="90"/>
         <source>Refresh data every</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="178"/>
+        <location filename="../ui/pages/networkpage.ui" line="210"/>
         <source>Enable caching</source>
         <translation>Activar cache</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="193"/>
+        <location filename="../ui/pages/networkpage.ui" line="225"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="130"/>
+        <location filename="../ui/pages/networkpage.ui" line="141"/>
         <source>Keep METARs updated</source>
         <translation type="unfinished"/>
     </message>
@@ -957,27 +1076,32 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="145"/>
+        <location filename="../ui/pages/networkpage.ui" line="75"/>
+        <source>Custom updates settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="156"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="206"/>
-        <source>Enable version checking</source>
+        <location filename="../ui/pages/networkpage.ui" line="238"/>
+        <source>Enable automatic database updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="221"/>
-        <source>If enabled, you will be notified if the new version of the application is available.</source>
+        <location filename="../ui/pages/networkpage.ui" line="253"/>
+        <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="237"/>
+        <location filename="../ui/pages/networkpage.ui" line="272"/>
         <source>Weather forecasts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="252"/>
+        <location filename="../ui/pages/networkpage.ui" line="287"/>
         <source>Uncheck to disable weather forecasts</source>
         <translation type="unfinished"/>
     </message>
@@ -1048,27 +1172,27 @@
     </message>
 </context>
 <context>
-    <name>Unzipper</name>
+    <name>VatsimDataHandler</name>
     <message>
-        <location filename="../storage/unzipper.cpp" line="95"/>
-        <source>Could not open zip file: %1 (check your directory permissions)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../storage/unzipper.cpp" line="115"/>
-        <source>Could not access zip archive (%1) properly. Skipping...</source>
-        <translation type="unfinished"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="365"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="408"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="436"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="486"/>
+        <source>File %1 could not be opened!</source>
+        <translation>O ficheiro %1 não pode ser aberto!</translation>
     </message>
 </context>
 <context>
-    <name>VatsimDataHandler</name>
+    <name>VatsimMessageDialog</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="352"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="395"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="473"/>
-        <source>File %1 could not be opened!</source>
-        <translation>O ficheiro %1 não pode ser aberto!</translation>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="14"/>
+        <source>A message from Vatsim</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="59"/>
+        <source>Do not show this message again</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1144,29 +1268,29 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="84"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
+        <source>Database...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="85"/>
         <source>&amp;Menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="114"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="115"/>
         <source>Last update: never</source>
         <translation>Última actualização: nunca</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="116"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="117"/>
         <source>Last update: %1 UTC</source>
         <translation>Última actualização: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="128"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="131"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>Clientes: %1 (%2 pilotos, %3 ATC, %4 observadores)</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="219"/>
-        <source>Invalid data!</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1240,22 +1364,9 @@
     </message>
 </context>
 <context>
-    <name>WeatherForecastModel</name>
-    <message>
-        <location filename="../network/models/weatherforecastmodel.cpp" line="65"/>
-        <source>Data not accessible</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../network/models/weatherforecastmodel.cpp" line="67"/>
-        <source>Fetching data...</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>WorldMap</name>
     <message>
-        <location filename="../db/worldmap.cpp" line="71"/>
+        <location filename="../db/worldmap.cpp" line="70"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>O ficheiro %1 não pode ser aberto! Por favor re-instale a aplicação.</translation>
     </message>

@@ -43,12 +43,6 @@ public:
   
 private:
   
-  enum DataStatus {
-    Progress,
-    Error,
-    Fetched
-  };
-  
   struct ForecastForDay {
     QString day;
     float   high;
@@ -61,7 +55,6 @@ private:
   QString __iconForCondition(int) const;
   
   QVector<ForecastForDay> __data;
-  DataStatus __status;
   
 };
 

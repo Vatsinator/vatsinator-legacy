@@ -20,29 +20,24 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
 #include "modules/vatbookhandler.h"
 #include "modules/models/bookedatctablemodel.h"
-
+#include "network/abstractnotamprovider.h"
 #include "ui/userinterface.h"
-
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
-
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
-
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/client/pilot.h"
-
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
+#include "vatsimdata/models/notamlistmodel.h"
 
 #include "firdetailswindow.h"
 #include "defines.h"
@@ -53,6 +48,11 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
+  connect(VatsimDataHandler::getSingletonPtr()->notamProvider(),
+                                                SIGNAL(notamReady(NotamListModel*)),
+          this,                                 SLOT(__notamUpdate(NotamListModel*)));
+  connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
+          this,                                 SLOT(__goToNotam(QModelIndex)));
 }
 
 void
@@ -63,7 +63,14 @@ FirDetailsWindow::show(const Fir* _f) {
   __updateModels(_f);
   __adjustTables();
 
-  QWidget::show();
+  if (isVisible())
+    activateWindow();
+  else
+    QWidget::show();
+  
+  NotamTableView->setModel(nullptr);
+  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(__currentICAO);
+  NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
 }
 
 void
@@ -114,4 +121,18 @@ FirDetailsWindow::__adjustTables() {
   BookedATCTable->setColumnWidth(BookedAtcTableModel::Name, 300);
   BookedATCTable->setColumnWidth(BookedAtcTableModel::Date, 150);
   BookedATCTable->setColumnWidth(BookedAtcTableModel::Hours, 150);
+}
+
+void
+FirDetailsWindow::__notamUpdate(NotamListModel* _model) {
+  if (isVisible() && _model->icao() == __currentICAO) {
+    NotamTableView->setModel(_model);
+  }
+}
+
+void
+FirDetailsWindow::__goToNotam(QModelIndex _index) {
+  QString url = _index.data(Qt::UserRole).toString();
+  if (!url.isEmpty())
+    QDesktopServices::openUrl(url);
 }
