@@ -39,6 +39,7 @@ public:
   
   /**
    * @variables
+   * zoom_coefficient:                  int
    * staffed_fir_borders_color:         QColor
    * staffed_fir_background_color:      QColor
    * unstaffed_fir_borders_color:       QColor

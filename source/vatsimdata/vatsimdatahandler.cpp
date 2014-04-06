@@ -550,7 +550,6 @@ VatsimDataHandler::__loadCachedData() {
     QString data(file.readAll());
     file.close();
     parseDataFile(data);
-    ModuleManager::getSingleton().updateData();
   }
   
   VatsinatorApplication::log("VatsimDataHandler: cache restored.");

@@ -53,30 +53,28 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
     __userInterface(new UserInterface()),
     __fileManager(new FileManager()),
+    __settingsManager(new SettingsManager()),
     __airlineDatabase(new AirlineDatabase()),
     __airportsData(new AirportDatabase()),
     __firsData(new FirDatabase()),
     __worldMap(new WorldMap()),
     __vatsimData(new VatsimDataHandler()),
     __languageManager(new LanguageManager()),
-    __settingsManager(new SettingsManager()),
     __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
     __statsPurveyor(new StatsPurveyor()) {
  
   /* Set up translations */
+  QString locale = SettingsManager::earlyGetLocale();
+  
   QTranslator* tr_qt = new QTranslator();
-  tr_qt->load(QString("qt_") %
-                SettingsManager::earlyGetLocale(),
-              FileManager::staticPath(FileManager::Translations));
+  tr_qt->load(QString("qt_") % locale, FileManager::staticPath(FileManager::Translations));
   installTranslator(tr_qt);
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr_qt,        SLOT(deleteLater()));
   
   QTranslator* tr = new QTranslator();
-  tr->load(QString("vatsinator-") %
-             SettingsManager::earlyGetLocale(),
-           FileManager::staticPath(FileManager::Translations));
+  tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
   installTranslator(tr);
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr,           SLOT(deleteLater()));
@@ -84,16 +82,15 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 #ifdef Q_OS_DARWIN
   setStyle(new VatsinatorStyle());
 #endif
+  
   /* Basic initializes */
   QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   
   __userInterface->init();
-  __settingsManager->init();
-//   __moduleManager->init();
+  emit uiCreated();
 
   // show main window
   VatsinatorWindow::getSingleton().show();
-  emit uiCreated();
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);

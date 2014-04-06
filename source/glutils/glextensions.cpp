@@ -44,20 +44,6 @@ void (* glBufferData)    (GLenum, int, const GLvoid*, GLenum);
 void (* glBufferSubData) (GLenum, GLintptr, GLsizeiptr, const GLvoid*);
 void (* glDeleteBuffers) (GLsizei, const GLuint*);
 void (* glGenBuffers)    (GLsizei, GLuint*);
-void (* glGenFramebuffers)                       (GLsizei, GLuint*);
-void (* glDeleteFramebuffers)                    (GLsizei, GLuint*);
-void (* glBindFramebuffer)                       (GLenum, GLuint);
-GLenum (* glCheckFramebufferStatus)              (GLenum);
-void (* glGetFramebufferAttachmentParameteriv)   (GLenum, GLenum, GLenum, GLint*);
-void (* glGenerateMipmap)                        (GLenum);
-void (* glFramebufferTexture2D)                  (GLenum, GLenum, GLenum, GLuint, GLint);
-void (* glFramebufferRenderbuffer)               (GLenum, GLenum, GLenum, GLuint);
-void (* glGenRenderbuffers)                      (GLsizei, GLuint*);
-void (* glDeleteRenderbuffers)                   (GLsizei, const GLuint*);
-void (* glBindRenderbuffer)                      (GLenum, GLuint);
-void (* glRenderbufferStorage)                   (GLenum, GLenum, GLsizei, GLsizei);
-void (* glGetRenderbufferParameteriv)            (GLenum, GLenum, GLint*);
-GLboolean (* glIsRenderbuffer)                   (GLuint);
 
 /*
  * Get extension pointer.
@@ -92,21 +78,6 @@ initGLExtensionsPointers() {
   init_ext(glBufferSubData);
   init_ext(glDeleteBuffers);
   init_ext(glGenBuffers);
-  
-  init_ext(glGenFramebuffers);
-  init_ext(glDeleteFramebuffers);
-  init_ext(glBindFramebuffer);
-  init_ext(glCheckFramebufferStatus);
-  init_ext(glGetFramebufferAttachmentParameteriv);
-  init_ext(glGenerateMipmap);
-  init_ext(glFramebufferTexture2D);
-  init_ext(glFramebufferRenderbuffer);
-  init_ext(glGenRenderbuffers);
-  init_ext(glDeleteRenderbuffers);
-  init_ext(glBindRenderbuffer);
-  init_ext(glRenderbufferStorage);
-  init_ext(glGetRenderbufferParameteriv);
-  init_ext(glIsRenderbuffer);
   
 #undef init_ext
 }

@@ -24,6 +24,7 @@
 
 /* Default settings for MapPage */
 namespace DefaultSettings {
+  static const int    ZOOM_COEFFICIENT                = 30;
   static const QColor UNSTAFFED_FIR_BORDERS_COLOR     = { 193, 193, 193 };
   static const QColor STAFFED_FIR_BORDERS_COLOR       = { 176, 32, 32 };
   static const int    STAFFED_FIR_BACKGROUND_ALPHA    = 30;
@@ -67,6 +68,8 @@ MapPage::pageName() const {
 
 void
 MapPage::updateFromUi() const {
+  setValue("zoom_coefficient",
+           ZoomCoefficientSlider->value());
   setValue("staffed_fir_borders_color",
            StaffedFirColorButton->color());
   setValue("unstaffed_fir_borders_color",
@@ -99,6 +102,8 @@ MapPage::updateFromUi() const {
 
 void
 MapPage::restore(QSettings& _s) {
+  ZoomCoefficientSlider->setValue(
+    _s.value("zoom_coefficient", DefaultSettings::ZOOM_COEFFICIENT).toInt());
   StaffedFirColorButton->setColor(
     _s.value("staffed_fir_borders_color", DefaultSettings::STAFFED_FIR_BORDERS_COLOR).value<QColor>());
   StaffedFirColorAlphaBox->setValue(
@@ -128,6 +133,7 @@ MapPage::restore(QSettings& _s) {
 
 void
 MapPage::save(QSettings& _s) {
+  _s.setValue("zoom_coefficient", ZoomCoefficientSlider->value());
   _s.setValue("staffed_fir_borders_color", StaffedFirColorButton->color());
   _s.setValue("staffed_fir_alpha_color", StaffedFirColorAlphaBox->value());
   _s.setValue("unstaffed_fir_borders_color", UnstaffedFirColorButton->color());

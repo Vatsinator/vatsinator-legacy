@@ -554,7 +554,7 @@ MapWidget::__shouldDrawPilotLabel(const MapItem* _pilot) {
 
 void
 MapWidget::__reloadSettings() {
-  __settings.misc.zoom_coefficient = SM::get("misc.zoom_coefficient").toInt();
+  __settings.misc.zoom_coefficient = SM::get("map.zoom_coefficient").toInt();
   
   __settings.colors.lands = SM::get("map.lands_color").value<QColor>();
   __settings.colors.seas = SM::get("map.seas_color").value<QColor>();

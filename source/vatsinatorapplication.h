@@ -113,13 +113,13 @@ private:
   
   UserInterface*       __userInterface;
   FileManager*         __fileManager;
+  SettingsManager*     __settingsManager;
   AirlineDatabase*     __airlineDatabase;
   AirportDatabase*     __airportsData;
   FirDatabase*         __firsData;
   WorldMap*            __worldMap;
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;
-  SettingsManager*     __settingsManager;
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;

@@ -37,9 +37,6 @@ ModuleManager::ModuleManager() :
     __vatbookHandler(nullptr) {
   connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(uiCreated()),
           this,                                         SLOT(init()));
-  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimDataUpdated()),
-          this,                                         SLOT(updateData()),
-          Qt::DirectConnection);
 }
 
 ModuleManager::~ModuleManager() {
@@ -57,6 +54,10 @@ ModuleManager::init() {
   __homeLocation = new HomeLocation();
   __modelsMatcher = new ModelMatcher();
   __vatbookHandler = new VatbookHandler();
+  
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimDataUpdated()),
+          this,                                         SLOT(updateData()),
+          Qt::DirectConnection);
 }
 
 void
