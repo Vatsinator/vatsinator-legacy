@@ -89,7 +89,7 @@ MapScene::__updateData() {
   
   qDeleteAll(__flightItems), __flightItems.clear();
   
-  for (const Pilot* p: VatsimDataHandler::getSingleton().flightsModel()->flights()) {
+  for (const Pilot* p: VatsimDataHandler::getSingleton().flights()->flights()) {
     __flightItems << new FlightItem(p);
   }
 }

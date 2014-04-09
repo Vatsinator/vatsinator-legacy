@@ -38,7 +38,7 @@ AtcListWindow::AtcListWindow(QWidget* _parent) :
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
   
-  ATCTable->setModel(VatsimDataHandler::getSingleton().atcModel());
+  ATCTable->setModel(VatsimDataHandler::getSingleton().atcs());
   ATCTable->hideColumn(ControllerTableModel::Button);
   __setColumnsWidths();
 

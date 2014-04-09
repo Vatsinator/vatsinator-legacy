@@ -28,6 +28,7 @@
 
 #include <qmath.h>
 
+#include "vatsimdata/client.h"
 #include "singleton.h"
 
 class AbstractNotamProvider;
@@ -219,12 +220,12 @@ public:
   /**
    * Returns the model containing all flights.
    */
-  inline FlightTableModel* flightsModel() { return __flights; }
+  inline FlightTableModel* flights() { return __flights; }
 
   /**
    * Returns the model containing all ATCs.
    */
-  inline ControllerTableModel* atcModel() { return __atcs; }
+  inline ControllerTableModel* atcs() { return __atcs; }
 
   /**
    * Returns all UIRs.
@@ -252,8 +253,7 @@ public:
     return __aliases;
   }
   
-  inline int
-  reload() const { return __reload; }
+  inline int reload() const { return __reload; }
   
   /**
    * Returns last Vatsim data update date and time.
@@ -336,10 +336,16 @@ private slots:
   void __handleFetchError();
       
 private:  
+  
+  /*
+   * All connected clients
+   * Callsign <-> instance pair
+   */
+  QMap<QString, Client*>        __clients;
 
-  /* These are vectors of connected clients */
-  FlightTableModel*   __flights;
-  ControllerTableModel*   __atcs;
+  /* Models are kept for convenience */
+  FlightTableModel*             __flights;
+  ControllerTableModel*         __atcs;
 
   QVector<Uir*>   __uirs;
 

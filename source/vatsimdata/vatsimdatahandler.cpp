@@ -210,6 +210,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
           Controller* atc = new Controller(clientData);
           
           if (atc->isOk()) {
+            __clients[atc->callsign()] = atc;
             __atcs->addStaff(atc);
           } else {
             __observers += 1;
@@ -217,10 +218,12 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
           }
         } else if (clientData[3] == "PILOT") {
           Pilot* pilot = new Pilot(clientData);
-          if (pilot->position().isNull())
+          if (pilot->position().isNull()) {
             delete pilot; // skip unknown flights
-          else
+          } else {
+            __clients[pilot->callsign()] = pilot;
             __flights->addFlight(pilot);
+          }
         }
         break;
       } // DataSections::Clients
@@ -521,8 +524,9 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
 
 void
 VatsimDataHandler::__clearData() {
-  qDeleteAll(__flights->flights()), __flights->clear();
-  qDeleteAll(__atcs->staff()), __atcs->clear();
+  qDeleteAll(__clients);
+  __flights->clear();
+  __atcs->clear();
   qDeleteAll(__activeAirports), __activeAirports.clear();
   qDeleteAll(__emptyAirports), __emptyAirports.clear();
 
