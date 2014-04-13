@@ -30,9 +30,9 @@ class Pilot;
 
 class FlightDetailsWindow :
     public BaseWindow,
-    public Singleton< FlightDetailsWindow >,
+    public Singleton<FlightDetailsWindow>,
     private Ui::FlightDetailsWindow {
-
+  
   Q_OBJECT
   
 signals:
@@ -54,7 +54,7 @@ private:
 private slots:
   void __updateData();
   void __handleShowClicked();
-
+  void __airlineUpdated();
 
 };
 

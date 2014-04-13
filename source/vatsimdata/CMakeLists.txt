@@ -1,6 +1,8 @@
 vatsinator_start_subdirectory (vatsimdata)
 
 set (vatsimdata_SRCS
+    airline.cpp
+    airlinemanager.cpp
     airport.cpp
     client.cpp
     fir.cpp
@@ -26,6 +28,8 @@ set (vatsimdata_SRCS
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
 set (vatsimdata_MOC_SRCS
+    airline.h
+    airlinemanager.h
     updatescheduler.h
     vatsimdatahandler.h
     
