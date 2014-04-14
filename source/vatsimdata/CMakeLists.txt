@@ -11,9 +11,6 @@ set (vatsimdata_SRCS
     updatescheduler.cpp
     vatsimdatahandler.cpp
     
-    airport/activeairport.cpp
-    airport/emptyairport.cpp
-    
     client/controller.cpp
     client/pilot.cpp
     

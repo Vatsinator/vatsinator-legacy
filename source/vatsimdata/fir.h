@@ -22,37 +22,32 @@
 
 #include <QVector>
 
-#include "db/point.h"
-
-#include "vatsimdata/airport.h"
-
 class AirportTableModel;
 class Controller;
 class ControllerTableModel;
 class FirDatabase;
 class FlightTableModel;
 class Pilot;
-struct FirHeader;
+struct FirRecord;
 
 class Fir {
 
 public:
   Fir();
   virtual ~Fir();
-
+  
   void addStaff(const Controller*);
   void addUirStaff(const Controller*);
-
+  
   void addFlight(const Pilot*);
-
+  
   void addAirport(const Airport*);
-
+  
   void fixupName();
-
-  void loadHeader(const FirHeader&);
+  
   void clear();
   bool isStaffed() const;
-
+  
   inline ControllerTableModel* staffModel() const { return __staff; }
   inline FlightTableModel* flightsModel() const { return __flights; }
   inline AirportTableModel* airportsModel() const { return __airports; }

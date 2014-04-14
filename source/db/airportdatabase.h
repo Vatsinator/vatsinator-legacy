@@ -73,11 +73,8 @@ public:
    */
   const AirportRecord* find(const QString&);
   
-  inline QVector<AirportRecord> &
-  airports() { return __airports; }
-  
-  inline const QVector<AirportRecord> &
-  airports() const { return __airports; }
+  inline QVector<AirportRecord>& airports() { return __airports; }
+  inline const QVector<AirportRecord>& airports() const { return __airports; }
 
 private:
   

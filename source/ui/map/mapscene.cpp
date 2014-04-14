@@ -28,8 +28,6 @@
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/airport/activeairport.h"
-#include "vatsimdata/airport/emptyairport.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "mapscene.h"
@@ -42,15 +40,19 @@ MapScene::MapScene(QObject* parent): QObject(parent) {
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateData()));
   
-  __updateData();
+  __initData();
 }
 
 MapScene::~MapScene() {
   qDeleteAll(__firItems);
-  qDeleteAll(__activeAirportItems);
-  qDeleteAll(__emptyAirportItems);
+  qDeleteAll(__airportItems);
   qDeleteAll(__approachCircleItems);
   qDeleteAll(__flightItems);
+}
+
+void
+MapScene::__initData() {
+  
 }
 
 void
@@ -63,20 +65,8 @@ MapScene::__updateData() {
    * removed and only these new ones added.
    */
   
-  __staffedFirItems.clear();
-  __unstaffedFirItems.clear();
-  
-  for (auto f: __firItems) {
-    if (f->data()->isStaffed())
-      __staffedFirItems << f;
-    else
-      __unstaffedFirItems << f;
-  }
-  
-  qDeleteAll(__activeAirportItems), __activeAirportItems.clear();
-  qDeleteAll(__emptyAirportItems), __emptyAirportItems.clear();
   qDeleteAll(__approachCircleItems), __approachCircleItems.clear();
-  
+  /*
   for (AirportRecord& ap: AirportDatabase::getSingleton().airports()) {
     if (VatsimDataHandler::getSingleton().activeAirports().contains(ap.icao)) {
       __activeAirportItems << new AirportItem(VatsimDataHandler::getSingleton().activeAirports()[ap.icao]);
@@ -85,7 +75,7 @@ MapScene::__updateData() {
     } else {
       __emptyAirportItems << new AirportItem(VatsimDataHandler::getSingleton().addEmptyAirport(&ap));
     }
-  }
+  }*/
   
   qDeleteAll(__flightItems), __flightItems.clear();
   

@@ -26,38 +26,117 @@
 #include "vatsimdata/client/controller.h"
 
 struct AirportRecord;
+class ControllerTableModel;
 class Fir;
+class FlightTableModel;
+class Pilot;
 
 class Airport {
   
   /*
-   * This is the interface for an airport object.
-   * It represents an airport on the map - can be clicked
-   * or have the sub-menu.
-   * Inherited by ActiveAirport and EmptyAirport classes.
+   * This is the class that represents the single airport - either active
+   * or inactive.
    */
 
 public:
+  
+  /**
+   * TODO: remove (deprecated).
+   */
   Airport(const QString&);
+  
+  /**
+   * @param data Record in the database.
+   */
   Airport(const AirportRecord*);
   
   virtual ~Airport() = default;
   
-  virtual unsigned countDepartures() const = 0;
-  virtual unsigned countOutbounds() const = 0;
-  virtual unsigned countArrivals() const = 0;
-  virtual unsigned countInbounds() const = 0;
+  /**
+   * Counts flights that are about to take off.
+   */
+  unsigned countDepartures() const;
   
-  virtual bool hasApproach() const = 0;
-  virtual Controller::Facilities facilities() const = 0;
+  /**
+   * Counts flights that originate from the airport and are airborne
+   * or have just arrived.
+   */
+  unsigned countOutbounds() const;
   
+  /**
+   * Counts flights that have just landed.
+   */
+  unsigned countArrivals() const;
+  
+  /**
+   * Counts flights that fly towards the airport.
+   */
+  unsigned countInbounds() const;
+  
+  /**
+   * Returns OR-combined facilities that are available on the airport.
+   */
+  Controller::Facilities facilities() const;
+  
+  /**
+   * Adds new controller to the airport.
+   */
+  void addStaff(const Controller*);
+  
+  /**
+   * Adds new inbound flight to the airport.
+   */
+  void addInbound(const Pilot*);
+  
+  /**
+   * Adds new outbound flight to the airport.
+   */
+  void addOutbound(const Pilot*);
+  
+  /**
+   * @return True if the airport does not have any controllers or flights, otherwise false.
+   */
+  bool isEmpty() const;
+  
+  /**
+   * @return Pointer to AirportRecord in the database.
+   */
   inline const AirportRecord* data() const { return __data; }
+  
+  /**
+   * Every airport can be in maximum two FIRs.
+   * @return Pair of FIRs that the airport is in.
+   */
   inline const QPair<Fir*, Fir*>& firs() const { return __firs; }
+  
+  /**
+   * Every airport can be in maximum two FIRs.
+   * @return Pair of FIRs that the airport is in.
+   */
   inline QPair<Fir*, Fir*>& firs() { return __firs; }
+  
+  /**
+   * @return Staff model of the airport.
+   */
+  inline ControllerTableModel* staff() const { return __staff; }
+  
+  /**
+   * @return Inbound flights for the airport.
+   */
+  inline FlightTableModel* inbounds() const { return __inbounds; }
+  
+  /**
+   * @return Outbound flights for the airport.
+   */
+  inline FlightTableModel* outbounds() const { return __outbounds; }
   
 private:
   const AirportRecord*  __data;
   QPair<Fir*, Fir*>     __firs;
+  
+  ControllerTableModel* __staff;
+  FlightTableModel*     __inbounds;
+  FlightTableModel*     __outbounds;
 
 };
 

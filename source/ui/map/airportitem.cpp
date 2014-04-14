@@ -29,8 +29,6 @@
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/metarswindow.h"
 #include "vatsimdata/airport.h"
-#include "vatsimdata/airport/activeairport.h"
-#include "vatsimdata/airport/emptyairport.h"
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "airportitem.h"
@@ -168,15 +166,14 @@ AirportItem::showDetailsWindow() const {
 
 void
 AirportItem::__makeIcon() const {
-  const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
-  if (a) {
-    if (a->staffModel()->staff().isEmpty()) {
+  if (data->isEmpty()) {
+    __icon = __icons.emptyAirportIcon();
+  } else {
+    if (data()->staff()->staff().isEmpty()) {
       __icon = __icons.activeAirportIcon();
     } else {
       __icon = __icons.activeStaffedAirportIcon();
     }
-  } else {
-    __icon = __icons.emptyAirportIcon();
   }
 }
 

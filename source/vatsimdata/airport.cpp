@@ -20,6 +20,9 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
 #include "vatsinatorapplication.h"
 
 #include "airport.h"
@@ -27,36 +30,102 @@
 
 Airport::Airport(const QString& _icao) :
     __firs(nullptr, nullptr),
-    __data(AirportDatabase::getSingleton().find(_icao)) {
+    __data(AirportDatabase::getSingleton().find(_icao)),
+    __staff(new ControllerTableModel()),
+    __inbounds(new FlightTableModel()),
+    __outbounds(new FlightTableModel()) {
   
-  if (__data) {
-    __firs.first = FirDatabase::getSingleton().find(
-      QString(__data->fir_a),
-      __data->is_fir_a_oceanic
-    );
-    
-    __firs.second = FirDatabase::getSingleton().find(
-      QString(__data->fir_b),
-      __data->is_fir_b_oceanic
-    );
-  } else {
-    VatsinatorApplication::log("Airport %s not found!", qPrintable(_icao));
-  }
+  Q_CHECK_PTR(__data);
+  
+  __firs.first = FirDatabase::getSingleton().find(
+    QString(__data->fir_a),
+    __data->is_fir_a_oceanic
+  );
+  
+  __firs.second = FirDatabase::getSingleton().find(
+    QString(__data->fir_b),
+    __data->is_fir_b_oceanic
+  );
 }
 
 Airport::Airport(const AirportRecord* _ap) :
-     __firs(nullptr, nullptr),
-     __data(_ap) {
+    __firs(nullptr, nullptr),
+    __data(_ap),
+    __staff(new ControllerTableModel()),
+    __inbounds(new FlightTableModel()),
+    __outbounds(new FlightTableModel()) {
   
-  if (__data) {
-    __firs.first = FirDatabase::getSingleton().find(
-      QString(__data->fir_a),
-      __data->is_fir_a_oceanic
-    );
-    
-    __firs.second = FirDatabase::getSingleton().find(
-      QString(__data->fir_b),
-      __data->is_fir_b_oceanic
-    );
-  }
+  Q_CHECK_PTR(__data);
+  
+  __firs.first = FirDatabase::getSingleton().find(
+    QString(__data->fir_a),
+    __data->is_fir_a_oceanic
+  );
+  
+  __firs.second = FirDatabase::getSingleton().find(
+    QString(__data->fir_b),
+    __data->is_fir_b_oceanic
+  );
+}
+
+unsigned
+Airport::countDepartures() const {
+  unsigned i = 0;
+  
+  for (const Pilot* p: __outbounds->flights())
+    if (p->flightStatus() == Pilot::Departing)
+      i += 1;
+  
+  return i;
+}
+
+unsigned
+Airport::countOutbounds() const {
+  return __outbounds->rowCount();
+}
+
+unsigned
+Airport::countArrivals() const {
+  unsigned i = 0;
+  
+  for (const Pilot* p: __inbounds->flights())
+    if (p->flightStatus() == Pilot::Arrived)
+      i += 1;
+  
+  return i;
+}
+
+unsigned
+Airport::countInbounds() const {
+  return __inbounds->rowCount();
+}
+
+Controller::Facilities
+Airport::facilities() const {
+  Controller::Facilities facilities = 0;
+  
+  for (const Controller* c: __staff->staff())
+    facilities |= c->facility();
+  
+  return facilities;
+}
+
+void
+Airport::addStaff(const Controller* _c) {
+  __staff->addStaff(_c);
+}
+
+void
+Airport::addInbound(const Pilot* _p) {
+  __inbounds->addFlight(_p);
+}
+
+void
+Airport::addOutbound(const Pilot* _p) {
+  __outbounds->addFlight(_p);
+}
+
+bool
+Airport::isEmpty() const {
+  return __staff->rowCount() == 0 && __inbounds->rowCount() == 0 && __outbounds->rowCount() == 0;
 }

@@ -29,8 +29,6 @@
 #include "vatsimdata/fir.h"
 #include "singleton.h"
 
-class Fir;
-
 #pragma pack(1)
 struct FirHeader {
   char  icao[8];
@@ -38,8 +36,14 @@ struct FirHeader {
   Point externities[2];
   Point textPosition;
 };
-#pragma pack()
 
+struct FirRecord {
+  FirHeader header;
+  
+  QVector<Point>          borders;
+  QVector<unsigned short> triangles;
+};
+#pragma pack()
 
 
 class FirDatabase : public QObject, public Singleton<FirDatabase> {
@@ -53,25 +57,20 @@ public:
   FirDatabase(QObject* = nullptr);
 
   /**
-   * Finds FIR by given ICAO.
+   * Finds FirHeader entry by given ICAO.
    * @param icao ICAO code.
-   * @param fss If true, will dinf only FSS FIRs. Default: false
+   * @param fss If true, will find only FSS FIRs. Default: false
    * @return FIR if any found, otherwise NULL.
    */
-  Fir* find(const QString&, bool = false);
+  const FirRecord* find(const QString&, bool = false);
 
-  /**
-   * Calls Fir::clear() on every Fir.
-   */
-  void  clearAll();
-
-  inline QVector<Fir>& firs() { return __firs; }
-  inline const QVector<Fir>& firs() const { return __firs; }
+  inline QVector<FirRecord>& firs() { return __firs; }
+  inline const QVector<FirRecord>& firs() const { return __firs; }
 
 private:
   void __readDatabase();
-
-  QVector<Fir>  __firs;
+  
+  QVector<FirRecord> __firs;
 
 };
 

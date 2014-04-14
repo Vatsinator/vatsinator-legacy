@@ -27,7 +27,6 @@
 #include "ui/map/mapconfig.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/windows/metarswindow.h"
-#include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 

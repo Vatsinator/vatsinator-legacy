@@ -44,22 +44,10 @@ public:
     return __firItems;
   }
   
-  inline const QVector<const FirItem*>& staffedFirItems() const {
-    return __staffedFirItems;
+  inline const QVector<const AirportItem*>& airportItems() const {
+    return __airportItems;
   }
-  
-  inline const QVector<const FirItem*>& unstaffedFirItems() const {
-    return __unstaffedFirItems;
-  }
-  
-  inline const QVector<const AirportItem*>& activeAirportItems() const {
-    return __activeAirportItems;
-  }
-  
-  inline const QVector<const AirportItem*>& emptyAirportItems() const {
-    return __emptyAirportItems;
-  }
-  
+    
   inline const QVector<const ApproachCircleItem*>& approachCircleItems() const {
     return __approachCircleItems;
   }
@@ -68,23 +56,18 @@ public:
     return __flightItems;
   }
   
+private:
+  void __initData();
+  
 private slots:
   void __updateData();
   
 private:
   
-  /* Groupped fir items */
-  QVector<const FirItem*> __firItems;
-  QVector<const FirItem*> __staffedFirItems;
-  QVector<const FirItem*> __unstaffedFirItems;
-  
-  /* Groupped airport items */
-  QVector<const AirportItem*> __activeAirportItems;
-  QVector<const AirportItem*> __emptyAirportItems;
+  QVector<const FirItem*>               __firItems;
+  QVector<const AirportItem*>           __airportItems;
   QVector<const ApproachCircleItem*>    __approachCircleItems;
-  
-  /* Flights */
-  QVector<const FlightItem*> __flightItems;
+  QVector<const FlightItem*>            __flightItems;
   
 };
 

@@ -67,5 +67,4 @@ AirportDatabase::__readDatabase() {
   db.read(reinterpret_cast<char*>(&__airports[0]), sizeof(AirportRecord) * size);
 
   db.close();
-
 }
