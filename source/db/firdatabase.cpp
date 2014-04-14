@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "ui/userinterface.h"
@@ -39,21 +40,16 @@ FirDatabase::find(const QString& _icao, bool _fss) {
   if (_icao == "ZZZZ")
     return nullptr;
   
-  for (FirRecord& f: __firs)
-    if (QString(f.header.icao) == _icao) {
-      if (!f.header.oceanic && _fss)
-        continue;
-      
-      if (f.header.oceanic && !_fss)
-        continue;
-      
-      if (f.header.textPosition.x != 0 && f.header.textPosition.y != 0)
-        return &f;
-      else
-        continue;
-  }
+  auto result = std::lower_bound(__firs.begin(), __firs.end(), _icao,
+    [](const FirRecord& a, const FirRecord& b) ->bool {
+      return QString(a.header.icao) < QString(b.header.icao);
+    });
   
-  return nullptr;
+  if (_icao < *result) {
+    return nullptr;
+  } else {
+    return &(*result);
+  }
 }
 
 void
@@ -89,4 +85,8 @@ FirDatabase::__readDatabase() {
   }
   
   db.close();
+  
+  std::sort(__firs.begin(), __firs.end(), [](const FirRecord& a, const FirRecord& b) -> bool {
+    return QString(a.header.icao) < QString(b.header.icao);
+  });
 }
