@@ -32,7 +32,6 @@
 
 class AbstractNotamProvider;
 class ActiveAirport;
-class AirlineManager;
 class Airport;
 class AirportDatabase;
 class Controller;
@@ -235,8 +234,6 @@ public:
   
   inline const QMap<QString, EmptyAirport*> &
   emptyAirports() const { return __emptyAirports; }
-  
-  inline AirlineManager* airlines() { return __airlines; }
 
   inline const QMultiMap<QString, QString> &
   aliases() const { return __aliases; }
@@ -331,8 +328,6 @@ private:
   
   /* Inactive airports (no staff, no flights) */
   QMap<QString, EmptyAirport*> __emptyAirports;
-  
-  AirlineManager* __airlines;
 
   /* This set contains list of aliases. Filled in by init() method */
   QMultiMap<QString, QString> __aliases;

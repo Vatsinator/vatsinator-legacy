@@ -18,13 +18,13 @@
 
 #include <QtGui>
 
+#include "db/airline.h"
+#include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 #include "modules/flighttracker.h"
 #include "ui/userinterface.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
-#include "vatsimdata/airline.h"
-#include "vatsimdata/airlinemanager.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/client/pilot.h"
@@ -65,23 +65,23 @@ FlightDetailsWindow::show(const Client* _client) {
   
   CallsignLabel->setText(__current->callsign());
   
-  Airline* myAirline = VatsimDataHandler::getSingleton().airlines()->find(__current->callsign().left(3));
+  Airline* myAirline = AirlineDatabase::getSingleton().find(__current->callsign().left(3));
   if (myAirline) {
-    AirlineLabel->setText(myAirline->name());
+    QString tooltip = QString("%1 (%2)").arg(myAirline->name(), myAirline->country());
+    AirlineLabel->setToolTip(tooltip);
     
     if (myAirline->logo().isNull()) {
-      connect(myAirline,    SIGNAL(dataUpdated()),
+      AirlineLabel->setText(myAirline->name());
+      connect(myAirline,    SIGNAL(logoFetched()),
               this,         SLOT(__airlineUpdated()));
-      myAirline->fetchData();
+      myAirline->fetchLogo();
     } else {
       AirlineLabel->setPixmap(QPixmap::fromImage(myAirline->logo()));
-      
-      QString tooltip = QString("%1 (%2)").arg(myAirline->name(), myAirline->country());
-      AirlineLabel->setToolTip(tooltip);
     }
   } else {
     AirlineLabel->setPixmap(QPixmap());
     AirlineLabel->setText("");
+    AirlineLabel->setToolTip("");
   }
   
   FromLabel->setText(__current->route().origin);
@@ -248,8 +248,5 @@ FlightDetailsWindow::__airlineUpdated() {
   if (!logo.isNull()) {
     AirlineLabel->setPixmap(QPixmap::fromImage(logo));
   }
-  
-  QString tooltip = QString("%1 (%2)").arg(a->name(), a->country());
-  AirlineLabel->setToolTip(tooltip);
 }
 

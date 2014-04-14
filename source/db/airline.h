@@ -28,31 +28,36 @@
  */
 class Airline : public QObject {
   Q_OBJECT
+  
 
 signals:
   
   /**
-   * Emitted when data is changed (i.e. new information were fetched via
-   * the Vatsinator Online API or the airline logo has been downloaded).
+   * Emitted when logo is downloaded and loaded (if exists).
    */
-  void dataUpdated();
+  void logoFetched();
   
 public:
-  Airline(QString, QObject* = nullptr);
   
+  /**
+   * @param icao
+   * @param name
+   * @param country
+   * @param website
+   * @param logo
+   */
+  Airline(QString, QString, QString, QString, QString, QObject* = nullptr);
+   
   inline const QString& icao() const { return __icao; }
   inline const QString& name() const { return __name; }
   inline const QString& country() const { return __country; }
   inline const QString& website() const { return __website; }
   inline const QImage& logo() const { return __logo; }
-  inline bool isValid() const { return __isValid; }
   
 public slots:
-  void fetchData();
-  void fetchLogo(QString);
+  void fetchLogo();
   
 private slots:
-  void __dataFetched(QString);
   void __logoFetched(QString);
   
 private:
@@ -60,9 +65,8 @@ private:
   QString __name;
   QString __country;
   QString __website;
+  QString __logoUrl;
   QImage  __logo;
-  
-  bool __isValid;
 
 };
 

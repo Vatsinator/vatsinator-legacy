@@ -18,98 +18,64 @@
  */
 
 #include <QtCore>
-#include <qjson/parser.h>
 
 #include "db/airlinedatabase.h"
 #include "storage/cachefile.h"
 #include "storage/filemanager.h"
 #include "network/filedownloader.h"
-#include "network/plaintextdownloader.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "airline.h"
 #include "defines.h"
 
-static const QString AirlineDataUrl =
-  QString(NetConfig::Vatsinator::apiUrl()) %
-  QString("airlinedata.php?icao=%1");
 static const QString AirlineLogoCacheDir = 
   "airline-logos";
 
-Airline::Airline(QString _icao, QObject* _parent): QObject(_parent), __icao(_icao) {
-  __name = AirlineDatabase::getSingleton().find(_icao);
-  __isValid = !__name.isEmpty();
-}
+Airline::Airline(QString _icao, QString _name, QString _country,
+                 QString _website, QString _logo, QObject* _parent) :
+    QObject(_parent),
+    __icao(_icao),
+    __name(_name),
+    __country(_country),
+    __website(_website),
+    __logoUrl(_logo) {}
 
 void
-Airline::fetchData() {
-  PlainTextDownloader* d = new PlainTextDownloader();
-  connect(d,    SIGNAL(finished(QString)),
-          this, SLOT(__dataFetched(QString)));
-  d->fetchData(AirlineDataUrl.arg(__icao));
-}
-
-void
-Airline::fetchLogo(QString _url) {
-  QUrl url(_url);
+Airline::fetchLogo() {
+  if (!AirlineDatabase::getSingleton().canFetch()) {
+    VatsinatorApplication::log("Airline: can't fetch logo (%s): disabled", qPrintable(__icao));
+    return;
+  }
+  
+  if (__logoUrl.isEmpty())
+    return;
+  
+  QUrl url(AirlineDatabase::getSingleton().airlineLogoUrl() % __logoUrl);
   QString fName = QFileInfo(url.path()).fileName();
   fName.prepend(AirlineLogoCacheDir % QDir::separator());
   
   CacheFile cf(fName);
   if (cf.exists()) {
     __logo.load(cf.fileName());
-    emit dataUpdated();
+    emit logoFetched();
   } else {
     FileDownloader* fd = new FileDownloader();
     connect(fd,         SIGNAL(finished(QString)),
             this,       SLOT(__logoFetched(QString)));
-    fd->fetch(_url);
+    fd->fetch(url);
   }
-}
-
-void
-Airline::__dataFetched(QString _data) {
-  Q_ASSERT(sender());
-  
-  QJson::Parser parser;
-  bool ok;
-  
-  QVariant content = parser.parse(_data.toUtf8(), &ok);
-  if (!ok) {
-    VatsinatorApplication::log("Airline (%s): error parsing response", qPrintable(__icao));
-    return;
-  }
-  
-  QVariantMap map = content.toMap();
-  if (!map["result"].canConvert(QVariant::Int) || map["result"].toInt() != 1) {
-    VatsinatorApplication::log("Airline (%s): error: %s", qPrintable(__icao), qPrintable(map["reason"].toString()));
-    return;
-  }
-  
-  if (map.contains("data")) {
-    QVariantMap data = map["data"].toMap();
-    __country = data["country"].toString();
-    __website = data["website"].toString();
-    
-    QString logoUrl = data["logo"].toString();
-    if (!logoUrl.isEmpty())
-      fetchLogo(logoUrl);
-    
-    emit dataUpdated();
-  }
-  
-  sender()->deleteLater();
 }
 
 void
 Airline::__logoFetched(QString _fileName) {
   Q_ASSERT(sender());
+  qDebug() << "Logo fetched:" << _fileName;
   
   __logo.load(_fileName, "PNG");
   QString newFileName = AirlineLogoCacheDir % QDir::separator() % QFileInfo(_fileName).fileName();
   FileManager::moveToCache(_fileName, newFileName);
-  emit dataUpdated();
+  emit logoFetched();
   
   sender()->deleteLater();
 }

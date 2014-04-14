@@ -29,7 +29,6 @@
 #include "ui/userinterface.h"
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
-#include "vatsimdata/airlinemanager.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
@@ -58,7 +57,6 @@ static QMap<QString, QString> countries; // used by __readCountryFile() and __re
 VatsimDataHandler::VatsimDataHandler() :
     __flights(new FlightTableModel()),
     __atcs(new ControllerTableModel()),
-    __airlines(new AirlineManager()),
     __statusUrl(NetConfig::Vatsim::statusUrl()),
     __observers(0),
     __statusFileFetched(false),
@@ -98,7 +96,6 @@ VatsimDataHandler::~VatsimDataHandler() {
 
   delete __atcs;
   delete __flights;
-  delete __airlines;
   
   delete VatsimDataHandler::emptyFlightTable;
   delete VatsimDataHandler::emptyControllerTable;
