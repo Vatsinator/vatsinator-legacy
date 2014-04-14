@@ -42,7 +42,7 @@ Airline::Airline(QString _icao, QString _name, QString _country,
     __logoUrl(_logo) {}
 
 void
-Airline::fetchLogo() {
+Airline::requestLogo() {
   if (!AirlineDatabase::getSingleton().canFetch()) {
     VatsinatorApplication::log("Airline: can't fetch logo (%s): disabled", qPrintable(__icao));
     return;
@@ -70,7 +70,6 @@ Airline::fetchLogo() {
 void
 Airline::__logoFetched(QString _fileName) {
   Q_ASSERT(sender());
-  qDebug() << "Logo fetched:" << _fileName;
   
   __logo.load(_fileName, "PNG");
   QString newFileName = AirlineLogoCacheDir % QDir::separator() % QFileInfo(_fileName).fileName();

@@ -74,7 +74,7 @@ FlightDetailsWindow::show(const Client* _client) {
       AirlineLabel->setText(myAirline->name());
       connect(myAirline,    SIGNAL(logoFetched()),
               this,         SLOT(__airlineUpdated()));
-      myAirline->fetchLogo();
+      myAirline->requestLogo();
     } else {
       AirlineLabel->setPixmap(QPixmap::fromImage(myAirline->logo()));
     }

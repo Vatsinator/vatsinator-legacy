@@ -29,7 +29,6 @@
 class Airline : public QObject {
   Q_OBJECT
   
-
 signals:
   
   /**
@@ -47,15 +46,14 @@ public:
    * @param logo
    */
   Airline(QString, QString, QString, QString, QString, QObject* = nullptr);
+  
+  void requestLogo();
    
   inline const QString& icao() const { return __icao; }
   inline const QString& name() const { return __name; }
   inline const QString& country() const { return __country; }
   inline const QString& website() const { return __website; }
   inline const QImage& logo() const { return __logo; }
-  
-public slots:
-  void fetchLogo();
   
 private slots:
   void __logoFetched(QString);

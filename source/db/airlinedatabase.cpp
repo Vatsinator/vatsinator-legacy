@@ -34,6 +34,8 @@ AirlineDatabase::AirlineDatabase(QObject* _parent) :
     __canFetch(false) {
   connect(this,                                 SIGNAL(warning(QString)),
           UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
+  
+  //   __init();
   QtConcurrent::run(this, &AirlineDatabase::__init);
 }
 
@@ -59,7 +61,7 @@ AirlineDatabase::__init() {
     emit warning(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
     return;
   }
-  
+
   QJson::Parser parser;
   bool ok;
   
@@ -85,9 +87,12 @@ AirlineDatabase::__init() {
          );
        
        __airlines.insert(airline->icao(), airline);
+       
+       /* Due to the fact that init() is called on separate thread,
+        * we need to move all qobject-based items to the main one */
+       airline->moveToThread(qApp->thread());
      }
   }
   
   db.close();
-  
 }
