@@ -26,8 +26,9 @@
 
 #include "singleton.h"
 
+class Airline;
+
 class AirlineDatabase : public QObject, public Singleton<AirlineDatabase> {
-  
   Q_OBJECT
   
 signals:
@@ -37,23 +38,31 @@ signals:
   
 public:
   AirlineDatabase(QObject* = nullptr);
+  virtual ~AirlineDatabase();
   
-  const QString find(const QString&);
+  Airline* find(const QString&);
+  const Airline* find(const QString&) const;
   
-  inline const QMap<QString, QString> airlines() const {
+  inline const QMap<QString, Airline*>& airlines() const {
     return __airlines;
+  }
+  
+  inline const QString& airlineLogoUrl() const {
+    return __airlineLogoUrl;
+  }
+  
+  inline bool canFetch() const {
+    return __canFetch;
   }
   
 private:
   void __init();
   
-  QMap<QString, QString> __airlines;
+  /* ICAO <-> instance pairs */
+  QMap<QString, Airline*>       __airlines;
   
-#ifdef GCC_VERSION_47
-  const QString __nope = "";
-#else
-  const QString __nope;
-#endif
+  QString       __airlineLogoUrl;
+  bool          __canFetch;
 
 };
 

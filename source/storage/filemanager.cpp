@@ -63,6 +63,9 @@ FileManager::moveToCache(const QString& _source, const QString& _destination) {
   file.close();
   
   CacheFile oldCache(_destination);
+  QFileInfo info(oldCache);
+  QDir(info.path()).mkpath(".");
+  
   if (oldCache.exists())
     oldCache.remove();
   

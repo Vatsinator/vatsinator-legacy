@@ -18,19 +18,16 @@
 
 #include <QtGui>
 
+#include "db/airline.h"
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
-
 #include "modules/flighttracker.h"
-
 #include "ui/userinterface.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/client/pilot.h"
-
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
@@ -46,7 +43,7 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-
+  
   connect(TrackFlightBox,                       SIGNAL(stateChanged(int)),
           this,                                 SLOT(stateHandle(int)));
   connect(ShowButton,                           SIGNAL(clicked()),
@@ -67,7 +64,26 @@ FlightDetailsWindow::show(const Client* _client) {
   setWindowTitle(tr("%1 - flight details").arg(__current->callsign()));
   
   CallsignLabel->setText(__current->callsign());
-  AirlineLabel->setText(AirlineDatabase::getSingleton().find(__current->callsign().left(3)));
+  
+  Airline* myAirline = AirlineDatabase::getSingleton().find(__current->callsign().left(3));
+  if (myAirline) {
+    QString tooltip = QString("%1 (%2)").arg(myAirline->name(), myAirline->country());
+    AirlineLabel->setToolTip(tooltip);
+    
+    if (myAirline->logo().isNull()) {
+      AirlineLabel->setText(myAirline->name());
+      connect(myAirline,    SIGNAL(logoFetched()),
+              this,         SLOT(__airlineUpdated()));
+      myAirline->requestLogo();
+    } else {
+      AirlineLabel->setPixmap(QPixmap::fromImage(myAirline->logo()));
+    }
+  } else {
+    AirlineLabel->setPixmap(QPixmap());
+    AirlineLabel->setText("");
+    AirlineLabel->setToolTip("");
+  }
+  
   FromLabel->setText(__current->route().origin);
   ToLabel->setText(__current->route().destination);
   
@@ -224,4 +240,14 @@ FlightDetailsWindow::__handleShowClicked() {
 //   MapWidget::getSingleton().showClient(__current);
 }
 
+void
+FlightDetailsWindow::__airlineUpdated() {
+  Airline* a = qobject_cast<Airline*>(sender());
+  Q_CHECK_PTR(a);
+  
+  const QImage& logo = a->logo();
+  if (!logo.isNull()) {
+    AirlineLabel->setPixmap(QPixmap::fromImage(logo));
+  }
+}
 

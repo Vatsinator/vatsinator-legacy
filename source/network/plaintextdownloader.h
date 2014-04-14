@@ -36,7 +36,7 @@ class PlainTextDownloader : public QObject {
   Q_OBJECT
 
 signals:
-  void finished(const QString&);
+  void finished(QString);
   void error();
   void aborted();
 
