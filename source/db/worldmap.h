@@ -34,7 +34,7 @@ class WorldMap : public QObject, public Singleton<WorldMap> {
 
   struct Polygon {
     QVector<Point>          borders;
-    QVector<unsigned short> triangles;
+    QVector<unsigned int>   triangles;
   };
   
 signals:
@@ -44,7 +44,7 @@ public:
   WorldMap(QObject* = nullptr);
   
   const QVector<Point>& borders() const { return __worldPolygon.borders; }
-  const QVector<unsigned short>& triangles() const { return __worldPolygon.triangles; }
+  const QVector<unsigned int>& triangles() const { return __worldPolygon.triangles; }
 
 private:
   void __readDatabase();
