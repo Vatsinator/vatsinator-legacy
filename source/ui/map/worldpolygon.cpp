@@ -47,7 +47,7 @@ WorldPolygon::paint() {
   __triangles->bind();
   
   glVertexPointer(2, GL_FLOAT, 0, 0);
-  glDrawElements(GL_TRIANGLES, WorldMap::getSingleton().triangles().size(), GL_UNSIGNED_SHORT, 0);
+  glDrawElements(GL_TRIANGLES, WorldMap::getSingleton().triangles().size(), GL_UNSIGNED_INT, 0);
   checkGLErrors(HERE);
   
   __borders->unbind();
@@ -63,13 +63,13 @@ WorldPolygon::__createVbos() {
   const QVector<Point>& bordersData = WorldMap::getSingleton().borders();
   Q_ASSERT(!bordersData.isEmpty());
   
-  const QVector<unsigned short>& trianglesData = WorldMap::getSingleton().triangles();
+  const QVector<unsigned int>& trianglesData = WorldMap::getSingleton().triangles();
   Q_ASSERT(!trianglesData.isEmpty());
   
   __borders = new VertexBufferObject(GL_ARRAY_BUFFER);
-  __borders->sendData(sizeof(Point) * bordersData.size(), &bordersData[0]);
+  __borders->sendData(sizeof(Point) * bordersData.size(), bordersData.constData());
   
   __triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-  __triangles->sendData(sizeof(unsigned short) * trianglesData.size(), &trianglesData[0]);
+  __triangles->sendData(sizeof(unsigned int) * trianglesData.size(), trianglesData.constData());
 #endif
 }
