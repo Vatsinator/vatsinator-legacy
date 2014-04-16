@@ -42,50 +42,18 @@ void WorldMap::__readDatabase() {
 
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);
-  db.seek(4);
   
-  VatsinatorApplication::log("WorldMap: expected polygons: %i.", size);
-  
-  QVector<Polygon> polygons;
-
-  polygons.resize(size);
-  unsigned allTogether = 0;
-
-  for (int i = 0; i < size; ++i) {
-    int counting;
-    db.read(reinterpret_cast<char*>(&counting), 4);
-
-    if (counting) {
-      polygons[i].borders.resize(counting);
-      db.read(reinterpret_cast<char*>(&polygons[i].borders[0].x), sizeof(Point) * counting);
-      allTogether += counting;
-    }
-
-    db.read(reinterpret_cast<char*>(&counting), 4);
-
-    if (counting) {
-      polygons[i].triangles.resize(counting);
-      db.read(reinterpret_cast<char*>(&polygons[i].triangles[0]), sizeof(unsigned short) * counting);
-    }
-
+  if (size) {
+    __worldPolygon.borders.resize(size);
+    db.read(reinterpret_cast<char*>(__worldPolygon.borders.data()), sizeof(Point) * size);
   }
-
-  VatsinatorApplication::log("WorldMap: coords count: %u.", allTogether);
+  
+  db.read(reinterpret_cast<char*>(&size), 4);
+  if (size) {
+    size *= 3;
+    __worldPolygon.triangles.resize(size);
+    db.read(reinterpret_cast<char*>(__worldPolygon.triangles.data()), sizeof(unsigned int) * size);
+  }
 
   db.close();
-
-  /* Move all the polygons to one polygon */
-  int offset = 0;
-
-  for (Polygon& p: polygons) {
-    for (const Point& pt: p.borders)
-      __worldPolygon.borders.push_back(pt);
-
-    for (const unsigned short c: p.triangles)
-      __worldPolygon.triangles.push_back(c + offset);
-
-    offset += p.borders.size();
-  }
-
-  VatsinatorApplication::log("WorldMap: done reading database.");
 }

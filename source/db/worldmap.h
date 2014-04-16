@@ -34,7 +34,8 @@ class WorldMap : public QObject, public Singleton<WorldMap> {
 
   struct Polygon {
     QVector<Point>          borders;
-    QVector<unsigned short> triangles;
+    QVector<unsigned int>   triangles;
+    WorldMapVBO             vbo;
   };
   
 signals:
