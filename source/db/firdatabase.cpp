@@ -41,11 +41,11 @@ FirDatabase::find(const QString& _icao, bool _fss) {
     return nullptr;
   
   auto result = std::lower_bound(__firs.begin(), __firs.end(), _icao,
-    [](const FirRecord& a, const FirRecord& b) ->bool {
-      return QString(a.header.icao) < QString(b.header.icao);
+    [](const FirRecord& a, const QString& b) ->bool {
+      return QString(a.header.icao) < b;
     });
   
-  if (_icao < *result) {
+  if (_icao < QString(result->header.icao)) {
     return nullptr;
   } else {
     return &(*result);
