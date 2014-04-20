@@ -131,7 +131,7 @@
 <context>
     <name>AirlineDatabase</name>
     <message>
-        <location filename="../db/airlinedatabase.cpp" line="51"/>
+        <location filename="../db/airlinedatabase.cpp" line="61"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation type="unfinished">File %1 could not be opened! Please reinstall the application.</translation>
     </message>
@@ -600,178 +600,178 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="67"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="64"/>
         <source>%1 - flight details</source>
         <translation>%1 - flight details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="425"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="431"/>
         <source>Flight details</source>
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="471"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="477"/>
         <source>Heading:</source>
         <translation>Heading:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="454"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="460"/>
         <source>Ground speed:</source>
         <translation>Ground speed:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="544"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="550"/>
         <source>Server:</source>
         <translation>Server:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="447"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="453"/>
         <source>feet</source>
         <translation>feet</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="527"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="533"/>
         <source>Current status:</source>
         <translation>Current status:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="464"/>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="674"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="470"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="680"/>
         <source>kts</source>
         <translation>kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="561"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="567"/>
         <source>Logged from:</source>
         <translation>Logged from:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="192"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="198"/>
         <source>Sheduled Time of Departure</source>
         <extracomment>Shortcut expansion for &quot;STD&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="244"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="250"/>
         <source>Sheduled Time of Arrival</source>
         <extracomment>Shortuct expansion for &quot;STA&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="303"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="309"/>
         <source>Actual Time of Departure</source>
         <extracomment>Shortcut expansion for &quot;ATD&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="361"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="367"/>
         <source>Estimated Time of Arrival</source>
         <extracomment>Shortcut expansion for &quot;ETA&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="481"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="487"/>
         <source>Altitude:</source>
         <translation>Altitude:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="497"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="503"/>
         <source>Captain:</source>
         <translation>Captain:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="437"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="443"/>
         <source>Squawk:</source>
         <translation>Squawk:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="585"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="591"/>
         <source>Baro:</source>
         <translation>Baro:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="619"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="625"/>
         <source>Flight plan</source>
         <translation>Flight plan</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="664"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="670"/>
         <source>TAS:</source>
         <translation>TAS:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="743"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="749"/>
         <source>Origin:</source>
         <translation>Origin:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="647"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="653"/>
         <source>Aircraft:</source>
         <translation>Aircraft:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="681"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="687"/>
         <source>Cruise altitude:</source>
         <translation>Cruise altitude:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="637"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="643"/>
         <source>Flight rules:</source>
         <translation>Flight rules:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="788"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="794"/>
         <source>Arrival:</source>
         <translation>Arrival:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="701"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="707"/>
         <source>Route:</source>
         <translation>Route:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="733"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="739"/>
         <source>Remarks:</source>
         <translation>Remarks:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="830"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="836"/>
         <source>Track this flight</source>
         <translation>Track this flight</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="837"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="843"/>
         <source>Show</source>
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="844"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="850"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="108"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="124"/>
         <source>%1 feet</source>
         <translation>%1 feet</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="109"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="129"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="125"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="145"/>
         <source>%1 kts</source>
         <translation>%1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="113"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="129"/>
         <source>airborne</source>
         <translation>airborne</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="115"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="131"/>
         <source>departing</source>
         <translation>departing</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="117"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="133"/>
         <source>arrived</source>
         <translation>arrived</translation>
     </message>
