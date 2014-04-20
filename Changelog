@@ -7,6 +7,8 @@ Version 1.0
     * Added Japanese translation
     * Added flight times: STD, ATD, STA and ETA
     * Added flight progress widget
+    * Added Airline display
+    * New world map
   
   Build system:
     * Added support for MacOS X

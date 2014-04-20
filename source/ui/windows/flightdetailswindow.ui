@@ -39,20 +39,26 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QLabel" name="AirlineLogoLabel">
-         <property name="maximumSize">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
           <size>
-           <width>85</width>
-           <height>18</height>
+           <width>40</width>
+           <height>20</height>
           </size>
          </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
+        </spacer>
        </item>
        <item>
         <widget class="QLabel" name="AirlineLabel">
+         <property name="minimumSize">
+          <size>
+           <width>85</width>
+           <height>15</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -67,12 +73,12 @@
           <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
+          <enum>QSizePolicy::Expanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>85</width>
-           <height>18</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
         </spacer>
