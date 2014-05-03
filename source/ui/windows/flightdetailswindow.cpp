@@ -25,8 +25,8 @@
 #include "ui/userinterface.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/client/pilot.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
@@ -37,6 +37,18 @@
 FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
     BaseWindow(_parent) {
   setupUi(this);
+  
+  QFont smaller;
+  smaller.setPointSize(smaller.pointSize() - 2);
+  StdLabel->setFont(smaller);
+  StdUtcLabel->setFont(smaller);
+  StaLabel->setFont(smaller);
+  StaUtcLabel->setFont(smaller);
+  AtdLabel->setFont(smaller);
+  AtdUtcLabel->setFont(smaller);
+  EtaLabel->setFont(smaller);
+  EtaUtcLabel->setFont(smaller);
+  
   CallsignLabel->setFont(VatsinatorApplication::h1Font());
   FromLabel->setFont(VatsinatorApplication::h2Font());
   ToLabel->setFont(VatsinatorApplication::h2Font());
@@ -108,17 +120,6 @@ FlightDetailsWindow::show(const Client* _client) {
     EstimatedArrivalTimeLabel->setText(__current->eta().toString("hh:mm"));
   else
     EstimatedArrivalTimeLabel->setText("-");
-  
-  QFont smaller;
-  smaller.setPointSize(smaller.pointSize() - 2);
-  StdLabel->setFont(smaller);
-  StdUtcLabel->setFont(smaller);
-  StaLabel->setFont(smaller);
-  StaUtcLabel->setFont(smaller);
-  AtdLabel->setFont(smaller);
-  AtdUtcLabel->setFont(smaller);
-  EtaLabel->setFont(smaller);
-  EtaUtcLabel->setFont(smaller);
 
   PilotLabel->setText(__current->realName() + " (" + QString::number(__current->pid()) + ")");
   AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__current->altitude())));
@@ -167,10 +168,10 @@ FlightDetailsWindow::stateHandle(int _state) {
 void
 FlightDetailsWindow::__updateToFromButtons() {
   if (!__current->route().origin.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().activeAirports()[__current->route().origin];
+    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__current->route().origin);
     QString text = __current->route().origin;
 
-    if (ap->data()) {
+    if (ap) {
       FromCityLabel->setText(QString::fromUtf8(ap->data()->city));
       text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->data()->name));
@@ -189,15 +190,15 @@ FlightDetailsWindow::__updateToFromButtons() {
     OriginButton->setText(text);
   } else {
     OriginButton->setText("(unknown)");
-    OriginButton->setAirportPointer(NULL);
+    OriginButton->setAirportPointer(nullptr);
     FromCityLabel->setText("");
   }
 
   if (!__current->route().destination.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().activeAirports()[__current->route().destination];
+    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__current->route().destination);
     QString text = __current->route().destination;
 
-    if (ap->data()) {
+    if (ap) {
       ToCityLabel->setText(QString::fromUtf8(ap->data()->city));
       text.append(static_cast<QString>(" ") %
                   QString::fromUtf8(ap->data()->name));

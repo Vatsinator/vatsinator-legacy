@@ -23,9 +23,11 @@
 #include <QPointF>
 #include <QStringList>
 #include <QString>
+#include <QVector>
 
 #include "vatsimdata/client.h"
 
+class Airport;
 struct Point;
 
 class Pilot : public Client {
@@ -52,6 +54,11 @@ public:
     QString mb;
   };
   
+  /**
+   * Route, as filed in the flight plan.
+   * To get departure & destination airport pointers directly,
+   * see origin() and destination() methods.
+   */
   struct Route {
     QString origin;
     QString destination;
@@ -162,6 +169,16 @@ public:
   inline const Pilot::Route& route() const { return __route; }
   
   /**
+   * @return Origin airport or nullptr if could not match any.
+   */
+  inline const Airport* origin() const { return __origin; }
+  
+  /**
+   * @return Destination airport or nullptr if could not match any.
+   */
+  inline const Airport* destination() const { return __destination; }
+  
+  /**
    * Prefiled only means that client has prefiled the flight plan, but
    * he did not log in yet.
    */
@@ -196,6 +213,8 @@ private:
   Pilot::Status         __flightStatus;
   Pilot::Pressure       __pressure;
   Pilot::Route          __route;
+  const Airport*        __origin;
+  const Airport*        __destination;
   bool                  __prefiledOnly;
 
 };

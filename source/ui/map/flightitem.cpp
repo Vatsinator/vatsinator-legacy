@@ -28,6 +28,7 @@
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/windows/metarswindow.h"
 #include "vatsimdata/client/pilot.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "flightitem.h"
@@ -135,24 +136,18 @@ FlightItem::tooltipText() const {
   QString desc = QString("%1 (%2)").arg(data()->realName(), data()->aircraft());
   
   QString from;
-  if (data()->route().origin.isEmpty()) {
+  const Airport* ap = data()->origin();
+  if (ap)
+    from = QString(ap->icao()) % QString(" ") % QString::fromUtf8(ap->data()->city);
+  else
     from = tr("(unknown)");
-  } else {
-    from = data()->route().origin;
-    const AirportRecord* ap = VatsimDataHandler::getSingleton().activeAirports()[from]->data();
-    if (ap)
-      from += " " + QString::fromUtf8(ap->city);
-  }
   
   QString to;
-  if (data()->route().destination.isEmpty()) {
+  ap = data()->destination();
+  if (ap)
+    to = QString(ap->icao()) % QString(" ") % QString::fromUtf8(ap->data()->city);
+  else
     to = tr("(unknown)");
-  } else {
-    to = data()->route().destination;
-    const AirportRecord* ap = VatsimDataHandler::getSingleton().activeAirports()[to]->data();
-    if (ap)
-      to += " " + QString::fromUtf8(ap->city);
-  }
   
   QString gs = tr("Ground speed: %1 kts").arg(QString::number(data()->groundSpeed()));
   QString alt = tr("Altitude: %1 ft").arg(QString::number(data()->altitude()));

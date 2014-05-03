@@ -1,6 +1,6 @@
 /*
     fir.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,11 +26,16 @@
 #include "fir.h"
 #include "defines.h"
 
-Fir::Fir() :
-    __staff(new ControllerTableModel()),
-    __flights(new FlightTableModel()),
-    __airports(new AirportTableModel()),
-    __uirStaffCount(0) {}
+Fir::Fir(const FirRecord* _data) :
+     __data(_data),
+     __icao(QString::fromUtf8(_data->header.icao)),
+     __oceanic(_data->header.oceanic),
+     __staff(new ControllerTableModel()),
+     __flights(new FlightTableModel()),
+     __airports(new AirportTableModel()) {
+  
+  Q_ASSERT(__data);
+}
 
 Fir::~Fir() {
   delete __staff;
@@ -40,13 +45,7 @@ Fir::~Fir() {
 
 void
 Fir::addStaff(const Controller* _c) {
-  __staff->addStaff(_c);
-}
-
-void
-Fir::addUirStaff(const Controller* _c) {
-  __staff->addStaff(_c);
-  __uirStaffCount += 1;
+//   __staff->addStaff(_c);
 }
 
 void
@@ -72,23 +71,12 @@ Fir::fixupName() {
   }
 }
 
-void
-Fir::loadHeader(const FirHeader& _header) {
-  __icao = _header.icao;
-  __oceanic = static_cast<bool>(_header.oceanic);
-  memcpy(__externities, _header.externities, sizeof(Point) * 2);
-  __textPosition = _header.textPosition;
-}
-
-void
-Fir::clear() {
-  __staff->clear();
-  __flights->clear();
-  __airports->clear();
-  __uirStaffCount = 0;
+bool
+Fir::isStaffed() const {
+  return __staff->rowCount() > 0;
 }
 
 bool
-Fir::isStaffed() const {
-  return !__staff->staff().isEmpty() && __uirStaffCount < static_cast<unsigned>(__staff->rowCount());
+Fir::isEmpty() const {
+  return __staff->rowCount() == 0;
 }

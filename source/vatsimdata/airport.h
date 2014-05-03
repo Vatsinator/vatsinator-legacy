@@ -1,6 +1,6 @@
 /*
     airport.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -99,21 +99,19 @@ public:
   bool isEmpty() const;
   
   /**
+   * @return True if at least one ATC is available on the airport.
+   */
+  bool isStaffed() const;
+  
+  /**
    * @return Pointer to AirportRecord in the database.
    */
   inline const AirportRecord* data() const { return __data; }
   
   /**
-   * Every airport can be in maximum two FIRs.
-   * @return Pair of FIRs that the airport is in.
+   * @return The airport ICAO code.
    */
-  inline const QPair<Fir*, Fir*>& firs() const { return __firs; }
-  
-  /**
-   * Every airport can be in maximum two FIRs.
-   * @return Pair of FIRs that the airport is in.
-   */
-  inline QPair<Fir*, Fir*>& firs() { return __firs; }
+  inline const QString& icao() const { return __icao; }
   
   /**
    * @return Staff model of the airport.
@@ -132,7 +130,7 @@ public:
   
 private:
   const AirportRecord*  __data;
-  QPair<Fir*, Fir*>     __firs;
+  const QString         __icao;
   
   ControllerTableModel* __staff;
   FlightTableModel*     __inbounds;

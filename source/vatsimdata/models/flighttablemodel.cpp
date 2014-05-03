@@ -31,7 +31,7 @@ FlightTableModel::addFlight(const Pilot* _p) {
   Q_ASSERT(_p);
   if (!__flights.contains(_p)) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    __flights.push_back(_p);
+    __flights << _p;
     endInsertRows();
   }
 }
@@ -45,11 +45,11 @@ FlightTableModel::clear() {
 
 const Pilot*
 FlightTableModel::findFlightByCallsign(const QString& _callsign) const {
-for (const Pilot * p: __flights)
+  for (const Pilot* p: __flights)
     if (p->callsign() == _callsign)
       return p;
 
-  return NULL;
+  return nullptr;
 }
 
 int

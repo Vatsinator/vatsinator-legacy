@@ -1,6 +1,6 @@
 /*
     airport.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,43 +29,23 @@
 #include "defines.h"
 
 Airport::Airport(const QString& _icao) :
-    __firs(nullptr, nullptr),
     __data(AirportDatabase::getSingleton().find(_icao)),
+    __icao(_icao),
     __staff(new ControllerTableModel()),
     __inbounds(new FlightTableModel()),
     __outbounds(new FlightTableModel()) {
   
-  Q_CHECK_PTR(__data);
-  
-  __firs.first = FirDatabase::getSingleton().find(
-    QString(__data->fir_a),
-    __data->is_fir_a_oceanic
-  );
-  
-  __firs.second = FirDatabase::getSingleton().find(
-    QString(__data->fir_b),
-    __data->is_fir_b_oceanic
-  );
+  Q_ASSERT(__data);
 }
 
 Airport::Airport(const AirportRecord* _ap) :
-    __firs(nullptr, nullptr),
     __data(_ap),
+    __icao(__data->icao),
     __staff(new ControllerTableModel()),
     __inbounds(new FlightTableModel()),
     __outbounds(new FlightTableModel()) {
   
-  Q_CHECK_PTR(__data);
-  
-  __firs.first = FirDatabase::getSingleton().find(
-    QString(__data->fir_a),
-    __data->is_fir_a_oceanic
-  );
-  
-  __firs.second = FirDatabase::getSingleton().find(
-    QString(__data->fir_b),
-    __data->is_fir_b_oceanic
-  );
+  Q_ASSERT(__data);
 }
 
 unsigned
@@ -127,5 +107,16 @@ Airport::addOutbound(const Pilot* _p) {
 
 bool
 Airport::isEmpty() const {
-  return __staff->rowCount() == 0 && __inbounds->rowCount() == 0 && __outbounds->rowCount() == 0;
+  return
+    __staff->rowCount() == 0 &&
+    __inbounds->rowCount() == 0 &&
+    __outbounds->rowCount() == 0;
+}
+
+bool
+Airport::isStaffed() const {
+  return
+    __staff->rowCount() > 0 || 
+    __inbounds->rowCount() > 0 ||
+    __outbounds->rowCount() > 0;
 }

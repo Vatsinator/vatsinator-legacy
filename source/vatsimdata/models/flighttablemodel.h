@@ -21,7 +21,7 @@
 #define FLIGHTTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <QVector>
+#include <QList>
 
 #include "vatsimdata/client/pilot.h"
 
@@ -41,12 +41,12 @@ public:
   
   /* Columns numbers */
   enum Column {
-    Callsign  = 0,
-    Name    = 1,
-    From    = 2,
-    To    = 3,
-    Aircraft  = 4,
-    Button    = 5
+    Callsign    = 0,
+    Name        = 1,
+    From        = 2,
+    To          = 3,
+    Aircraft    = 4,
+    Button      = 5
   };
   
   explicit FlightTableModel(QObject* = 0);
@@ -60,12 +60,13 @@ public:
   QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
   QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
   void sort(int, Qt::SortOrder = Qt::AscendingOrder);
-
-  inline const QVector<const Pilot*> &
-  flights() const { return __flights; }
+  
+  inline const QList<const Pilot*>& flights() const {
+    return __flights;
+  }
 
 private:
-  QVector<const Pilot*> __flights;
+  QList<const Pilot*> __flights;
 
 };
 

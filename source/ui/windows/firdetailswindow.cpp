@@ -77,9 +77,9 @@ void
 FirDetailsWindow::__updateModels(const Fir* _f) {
   Q_ASSERT(_f);
   
-  FlightsTable->setModel(_f->flightsModel());
-  ATCTable->setModel(_f->staffModel());
-  AirportsTable->setModel(_f->airportsModel());
+  FlightsTable->setModel(_f->flights());
+  ATCTable->setModel(_f->staff());
+  AirportsTable->setModel(_f->airports());
   
   BookedATCTable->setModel(VatbookHandler::getSingleton().getNotNullModel(_f->icao()));
 }

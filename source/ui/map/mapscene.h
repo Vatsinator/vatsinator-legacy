@@ -57,10 +57,10 @@ public:
   }
   
 private:
-  void __initData();
+  void __setupItems();
   
 private slots:
-  void __updateData();
+  void __updateItems();
   
 private:
   

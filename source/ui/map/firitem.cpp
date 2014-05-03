@@ -17,6 +17,7 @@
  *
  */
 
+#include "db/firdatabase.h"
 #include "glutils/glresourcemanager.h"
 #include "glutils/vertexbufferobject.h"
 #include "storage/settingsmanager.h"
@@ -35,7 +36,7 @@
 FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     QObject(_parent),
     __fir(_fir),
-    __position(_fir->textPosition().x, _fir->textPosition().y),
+    __position(_fir->data()->header.textPosition.x, _fir->data()->header.textPosition.y),
     __borders(nullptr),
     __triangles(nullptr),
     __label(0) {
@@ -120,7 +121,7 @@ FirItem::tooltipText() const {
   }
   
   QString staff;
-  for (const Controller* c: data()->staffModel()->staff()) {
+  for (const Controller* c: data()->staff()->staff()) {
     staff.append("<br>");
     staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
   }
@@ -144,7 +145,7 @@ FirItem::menu(QWidget* _parent) const {
           FirDetailsWindow::getSingletonPtr(),  SLOT(show(const Fir*)));
   menu->addAction(showFir);
   
-  for (const Controller* c: data()->staffModel()->staff()) {
+  for (const Controller* c: data()->staff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
     connect(cda,                                        SIGNAL(triggered(const Client*)),
             AtcDetailsWindow::getSingletonPtr(),        SLOT(show(const Client*)));
@@ -161,8 +162,8 @@ FirItem::showDetailsWindow() const {
 
 void
 FirItem::__prepareVbo() {
-  auto& borders = __fir->borders();
-  auto& triangles = __fir->triangles();
+  auto& borders = __fir->data()->borders;
+  auto& triangles = __fir->data()->triangles;
   
   __borders = new VertexBufferObject(GL_ARRAY_BUFFER);
   __borders->sendData(borders.size() * sizeof(borders[0]), &borders[0]);

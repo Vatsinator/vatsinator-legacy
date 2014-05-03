@@ -34,13 +34,11 @@
 #include "defines.h"
 
 MapScene::MapScene(QObject* parent): QObject(parent) {
-  for (const Fir& f: FirDatabase::getSingleton().firs())
-    __firItems << new FirItem(&f);
   
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__updateData()));
+          this,                                 SLOT(__updateItems()));
   
-  __initData();
+  __setupItems();
 }
 
 MapScene::~MapScene() {
@@ -51,32 +49,22 @@ MapScene::~MapScene() {
 }
 
 void
-MapScene::__initData() {
+MapScene::__setupItems() {
+  for (const Airport* a: VatsimDataHandler::getSingleton().airports()) {
+    __airportItems << new AirportItem(a);
+  }
   
+  for (const Fir* f: VatsimDataHandler::getSingleton().firs()) {
+    __firItems << new FirItem(f);
+  }
+  
+  for (const Pilot* p: VatsimDataHandler::getSingleton().flights()->flights()) {
+    __flightItems << new FlightItem(p);
+  }
 }
 
 void
-MapScene::__updateData() {
-  /**
-   * TODO
-   * 
-   * This is wrong approach, as it removes all the objects and creates
-   * new ones. Instead, these objects should be only updated, old ones
-   * removed and only these new ones added.
-   */
-  
-  qDeleteAll(__approachCircleItems), __approachCircleItems.clear();
-  /*
-  for (AirportRecord& ap: AirportDatabase::getSingleton().airports()) {
-    if (VatsimDataHandler::getSingleton().activeAirports().contains(ap.icao)) {
-      __activeAirportItems << new AirportItem(VatsimDataHandler::getSingleton().activeAirports()[ap.icao]);
-      if (VatsimDataHandler::getSingleton().activeAirports()[ap.icao]->hasApproach())
-        __approachCircleItems << new ApproachCircleItem(VatsimDataHandler::getSingleton().activeAirports()[ap.icao]);
-    } else {
-      __emptyAirportItems << new AirportItem(VatsimDataHandler::getSingleton().addEmptyAirport(&ap));
-    }
-  }*/
-  
+MapScene::__updateItems() {
   qDeleteAll(__flightItems), __flightItems.clear();
   
   for (const Pilot* p: VatsimDataHandler::getSingleton().flights()->flights()) {

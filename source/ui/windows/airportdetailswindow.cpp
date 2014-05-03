@@ -33,7 +33,6 @@
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -155,11 +154,10 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   
   __current = _ap;
   
-  const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
-  if (aa) {
-    InboundTable->setModel(aa->inboundsModel());
-    OutboundTable->setModel(aa->outboundsModel());
-    ATCTable->setModel(aa->staffModel());
+  if (__current->isStaffed()) {
+    InboundTable->setModel(__current->inbounds());
+    OutboundTable->setModel(__current->outbounds());
+    ATCTable->setModel(__current->staff());
   } else {
     InboundTable->setModel(VatsimDataHandler::emptyFlightTable);
     OutboundTable->setModel(VatsimDataHandler::emptyFlightTable);

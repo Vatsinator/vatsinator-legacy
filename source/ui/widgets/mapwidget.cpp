@@ -31,6 +31,7 @@
 #include "ui/map/mapscene.h"
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
@@ -311,43 +312,39 @@ MapWidget::__drawFirs() {
   static constexpr GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
   static constexpr GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
   
-  /* Firstly, draw unstaffed firs */
-  if (__settings.view.unstaffed_firs) {
-    glPushMatrix();
-      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-      glScalef(__zoom, __zoom, 1.0f);
-      glTranslated(-__center.x(), __center.y(), 0.0);
-      glTranslatef(__xOffset, 0.0, unstaffedFirsZ);
-      
+  glPushMatrix();
+    glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
+    glScalef(__zoom, __zoom, 1.0f);
+    glTranslated(-__center.x(), __center.y(), 0.0);
+    glTranslatef(__xOffset, 0.0, unstaffedFirsZ);
+    
+    if (__settings.view.unstaffed_firs) {
       qglColor(__settings.colors.unstaffed_fir_borders);
-      for (const FirItem* item: __scene->unstaffedFirItems()) {
-        item->drawBorders();
+      for (const FirItem* item: __scene->firItems()) {
+        if (item->data()->isEmpty())
+          item->drawBorders();
       }
-    glPopMatrix();
-  }
-  
-  if (__settings.view.staffed_firs) {
-    glPushMatrix();
-      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-      glScalef(__zoom, __zoom, 1.0f);
-      glTranslated(-__center.x(), __center.y(), 0.0);
-      glTranslatef(__xOffset, 0.0, staffedFirsZ);
-      
+    }
+    
+    if (__settings.view.staffed_firs) {
       qglColor(__settings.colors.staffed_fir_borders);
       glLineWidth(3.0);
-      for (const FirItem* item: __scene->staffedFirItems()) {
-        item->drawBorders();
+      for (const FirItem* item: __scene->firItems()) {
+        if (item->data()->isStaffed())
+          item->drawBorders();
       }
+      
       glLineWidth(1.0);
       
       qglColor(__settings.colors.staffed_fir_background);
-      for (const FirItem* item: __scene->staffedFirItems()) {
-        item->drawBackground();
+      for (const FirItem* item: __scene->firItems()) {
+        if (item->data()->isStaffed())
+          item->drawBackground();
       }
-      
-    glPopMatrix();
-  }
+    }
+  glPopMatrix();
   
+  // draw labels
   glColor4f(1.0, 1.0, 1.0, 1.0);
   for (const FirItem* item: __scene->firItems()) {
     if (item->needsDrawing()) {
@@ -370,8 +367,8 @@ MapWidget::__drawAirports() {
   static constexpr GLfloat activeAirportsZ = static_cast<GLfloat>(MapConfig::MapLayers::ActiveAirports);
   
   if (__settings.view.empty_airports) {
-    for (const AirportItem* item: __scene->emptyAirportItems()) {
-      if (item->needsDrawing()) {
+    for (const AirportItem* item: __scene->airportItems()) {
+      if (item->data()->isEmpty() && item->needsDrawing()) {
         QPointF p = glFromLonLat(item->position());
         if (onScreen(p)) {
           glPushMatrix();
@@ -386,8 +383,8 @@ MapWidget::__drawAirports() {
   }
   
   if (__settings.view.airports_layer) {
-    for (const AirportItem* item: __scene->activeAirportItems()) {
-      if (item->needsDrawing()) {
+    for (const AirportItem* item: __scene->airportItems()) {
+      if (item->data()->isStaffed() && item->needsDrawing()) {
         QPointF p = glFromLonLat(item->position());
         if (onScreen(p)) {
           glPushMatrix();

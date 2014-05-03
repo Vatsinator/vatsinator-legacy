@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "db/airportdatabase.h"
@@ -29,11 +30,9 @@
 #include "ui/userinterface.h"
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
-#include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
-#include "vatsimdata/airport/activeairport.h"
-#include "vatsimdata/airport/emptyairport.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -46,6 +45,8 @@
 #include "vatsimdatahandler.h"
 #include "defines.h"
 
+using std::for_each;
+
 static const QString CacheFileName = "lastdata";
 
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
@@ -54,14 +55,17 @@ ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTa
 static QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
 
 
+namespace {
+  QMutex dataMutex;
+}
+
+
 VatsimDataHandler::VatsimDataHandler() :
     __flights(new FlightTableModel()),
     __atcs(new ControllerTableModel()),
     __statusUrl(NetConfig::Vatsim::statusUrl()),
     __observers(0),
     __statusFileFetched(false),
-    __airports(AirportDatabase::getSingleton()),
-    __firs(FirDatabase::getSingleton()),
     __downloader(new PlainTextDownloader()),
     __scheduler(new UpdateScheduler()),
     __notamProvider(nullptr) {
@@ -85,14 +89,16 @@ VatsimDataHandler::VatsimDataHandler() :
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
+  dataMutex.lock();
+  qDeleteAll(__airports);
+  qDeleteAll(__firs);
+  dataMutex.unlock();
   
   if (__notamProvider)
     delete __notamProvider;
   
   delete __downloader;
   delete __scheduler;
-  
-  qDeleteAll(__uirs);
 
   delete __atcs;
   delete __flights;
@@ -103,16 +109,11 @@ VatsimDataHandler::~VatsimDataHandler() {
 
 void
 VatsimDataHandler::init() {
-  auto f = QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile,
-                             FileManager::path("data/country"));
-  
-  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile,
-                    FileManager::path("data/alias"));
-  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile,
-                    FileManager::path("data/uir"));
-  
-  f.waitForFinished();
+  __readCountryFile(FileManager::path("data/country"));
+  __readAliasFile(FileManager::path("data/alias"));
   __readFirFile(FileManager::path("data/fir"));
+  
+  __initData();
 }
 
 void
@@ -246,7 +247,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
   } // for
 }
 
-const QString &
+const QString&
 VatsimDataHandler::getDataUrl() const {
   if (__statusFileFetched) {
     qsrand(QTime::currentTime().msec());
@@ -256,57 +257,63 @@ VatsimDataHandler::getDataUrl() const {
   }
 }
 
-const Pilot *
+const Pilot*
 VatsimDataHandler::findPilot(const QString& _callsign) const {
   return __flights->findFlightByCallsign(_callsign);
 }
 
-const Controller *
+const Controller*
 VatsimDataHandler::findAtc(const QString& _callsign) const {
   return __atcs->findAtcByCallsign(_callsign);
 }
 
-Uir *
-VatsimDataHandler::findUIR(const QString& _icao) {
-for (Uir * u: __uirs)
-    if (u->icao() == _icao)
-      return u;
-
-  return NULL;
-}
-
-ActiveAirport *
-VatsimDataHandler::addActiveAirport(const QString& _icao) {
-  if (!__activeAirports.contains(_icao))
-    __activeAirports.insert(_icao, new ActiveAirport(_icao));
-
-  return __activeAirports[_icao];
-}
-
-EmptyAirport *
-VatsimDataHandler::addEmptyAirport(const QString& _icao) {
-  if (!__emptyAirports.contains(_icao))
-    __emptyAirports.insert(_icao, new EmptyAirport(_icao));
-
-  return __emptyAirports[_icao];
-}
-
-EmptyAirport *
-VatsimDataHandler::addEmptyAirport(const AirportRecord* _ap) {
-  QString icao(_ap->icao);
-  
-  if (!__emptyAirports.contains(icao))
-    __emptyAirports.insert(icao, new EmptyAirport(_ap));
-  
-  return __emptyAirports[icao];
-}
-
-Airport *
+Airport*
 VatsimDataHandler::findAirport(const QString& _icao) {
-  if (__activeAirports.contains(_icao))
-    return __activeAirports[_icao];
+  if (__airports.contains(_icao)) {
+    return __airports[_icao];
+  } else {
+    QList<QString> keys = aliases().values(_icao);
+    if (_icao.length() < 4)
+      keys.prepend(QString("K") % _icao);
+    
+    for (const QString& k: keys) {
+      if (__airports.contains(k))
+        return __airports[k];
+    }
+    
+    return nullptr;
+  }
+}
+
+QList<Airport*>
+VatsimDataHandler::airports() const {
+  return std::move(__airports.values());
+}
+
+Fir*
+VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
+  QList<QString> keys = aliases().values(_icao);
+  if (_icao.length() == 4)
+    keys.prepend(_icao);
+  else
+    /* Handle USA 3-letter icao contraction */
+    keys.prepend(QString("K") % _icao);
   
-  return addEmptyAirport(_icao);
+  for (const QString& k: keys) {
+    if (__firs.contains(k)) {
+      QList<Fir*> values = __firs.values(k);
+      for (Fir* f: values)
+        if (f->isOceanic() == _fss)
+          return f;
+    }
+  }
+  
+  return nullptr;
+}
+
+QList<Fir*>
+VatsimDataHandler::firs() const {
+  return std::move(__firs.values());
 }
 
 int
@@ -335,6 +342,16 @@ VatsimDataHandler::notamProvider() {
     __notamProvider = new EurouteNotamProvider();
   
   return __notamProvider;
+}
+
+qreal
+VatsimDataHandler::fastDistance(
+    const qreal& _lat1, const qreal& _lon1,
+    const qreal& _lat2, const qreal& _lon2) {
+  return qSqrt(
+    qPow(_lat1 - _lat2, 2) +
+    qPow(_lon1 - _lon2, 2)
+  );
 }
 
 qreal
@@ -450,7 +467,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     
     QString icao = line.section(' ', 0, 0);
     
-    Fir* currentFir = __firs.find(icao);
+    Fir* currentFir = findFir(icao);
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       
@@ -468,7 +485,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     }
     
     // look for some oceanic fir
-    currentFir = __firs.find(icao, true);
+    currentFir = findFir(icao, true);
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       currentFir->setCountry(countries[icao.left(2)]);
@@ -482,44 +499,26 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
 }
 
 void
-VatsimDataHandler::__readUirFile(const QString& _fName) {
-  VatsinatorApplication::log("Reading \"uir\" file...");
+VatsimDataHandler::__initData() {
+  dataMutex.lock();
   
-  QFile file(_fName);
-  
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
-    return;
-  }
-  
-  while (!file.atEnd()) {
-     QString line = QString::fromUtf8(file.readLine()).simplified();
-    
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-    
-    QStringList data = line.split(' ');
-    Uir* uir = new Uir(data[0]);
-    
-    for (int i = 1; i < data.length(); ++i) {
-      if (data[i].toUpper() == data[i]) {
-        Fir* fir = __firs.find(data[i]);
-        
-        if (fir)
-          uir->addFir(fir);
-        else
-          VatsinatorApplication::log("FIR %s could not be found!", data[i].toStdString().c_str());
-      } else {
-        uir->name().append(data[i] + " ");
-      }
+  for_each(FirDatabase::getSingleton().firs().begin(),
+    FirDatabase::getSingleton().firs().end(),
+    [this](const FirRecord& fr) {
+      Fir* f = new Fir(&fr);
+      __firs.insert(f->icao(), f);
     }
-    
-    __uirs.push_back(uir);
-  }
+  );
   
-  file.close();
+  for_each(AirportDatabase::getSingleton().airports().begin(),
+    AirportDatabase::getSingleton().airports().end(),
+    [this](const AirportRecord& ar) {
+      Airport* a = new Airport(&ar);
+      __airports.insert(a->icao(), a);
+    }
+  );
   
-  VatsinatorApplication::log("Finished reading \"uir\" file.");
+  dataMutex.unlock();
 }
 
 void
@@ -527,24 +526,17 @@ VatsimDataHandler::__clearData() {
   qDeleteAll(__clients);
   __flights->clear();
   __atcs->clear();
-  qDeleteAll(__activeAirports), __activeAirports.clear();
-  qDeleteAll(__emptyAirports), __emptyAirports.clear();
-
-  for (Uir* u: __uirs)
-    u->clear();
-  
-  FirDatabase::getSingleton().clearAll();
 
   __observers = 0;
 }
 
 void
 VatsimDataHandler::__loadCachedData() {
+  dataMutex.lock();
   VatsinatorApplication::log("VatsimDataHandler: loading data from cache...");
   
   CacheFile file(CacheFileName);
   if (file.exists()) {
-    FirDatabase::getSingleton().clearAll();
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
       VatsinatorApplication::log("VatsimDataHandler: cache file %s is not readable.",
                                  qPrintable(file.fileName()));
@@ -555,6 +547,7 @@ VatsimDataHandler::__loadCachedData() {
     file.close();
     parseDataFile(data);
   }
+  dataMutex.unlock();
   
   VatsinatorApplication::log("VatsimDataHandler: cache restored.");
 }

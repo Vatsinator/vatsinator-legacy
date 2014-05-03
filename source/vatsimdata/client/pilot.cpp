@@ -21,7 +21,7 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "storage/settingsmanager.h"
-#include "vatsimdata/airport/activeairport.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -99,6 +99,8 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __heading(_data[38].toUInt()),
     __pressure({_data[39], _data[40]}),
     __route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
+    __origin(nullptr),
+    __destination(nullptr),
     __prefiledOnly(_prefiled) {
     
   // vatsim sometimes skips the 0 on the beginning
@@ -125,8 +127,8 @@ Pilot::eta() const {
   if (__eta.isValid())
     return __eta;
   
-  const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
-  if (to && to->data()) {
+  const Airport* to = VatsimDataHandler::getSingleton().findAirport(__route.destination);
+  if (to) {
     // calculate distance between pilot and destination airport
     qreal dist = VatsimDataHandler::nmDistance(
         deg2Rad(position().latitude()),
@@ -153,10 +155,10 @@ Pilot::progress() const {
     return 0;
   
   if (__progress == -1) {
-    const Airport* from = VatsimDataHandler::getSingleton().activeAirports()[__route.origin];
-    const Airport* to = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
+    const Airport* from = VatsimDataHandler::getSingleton().findAirport(__route.origin);
+    const Airport* to = VatsimDataHandler::getSingleton().findAirport(__route.destination);
     
-    if (from && to && from->data() && to->data()) {
+    if (from && to) {
       qreal total = VatsimDataHandler::nmDistance(
         deg2Rad(from->data()->latitude),
         deg2Rad(from->data()->longitude),
@@ -182,64 +184,53 @@ Pilot::progress() const {
 
 void Pilot::__updateAirports() {
   if (!__route.origin.isEmpty()) {
-    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.origin);
-    ap->addOutbound(this);
-    
-    if (__prefiledOnly && ap->data()) {
-      setPosition(LonLat(ap->data()->longitude, ap->data()->latitude));
-    } else if (ap->data()) {
-      __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);
+    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__route.origin);
+    if (ap) {    
+      ap->addOutbound(this);
+      __origin = ap;
+      
+      if (__prefiledOnly) {
+        setPosition(LonLat(ap->data()->longitude, ap->data()->latitude));
+      } else {
+        __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);
+      }
     }
-    
-    if (ap->firs().first)
-      ap->firs().first->addFlight(this);
-    
-    if (ap->firs().second)
-      ap->firs().second->addFlight(this);
   }
   
   __route.waypoints << position();
   
   if (!__route.destination.isEmpty()) {
-    ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.destination);
-    ap->addInbound(this);
-    
-    if (!__prefiledOnly && ap->data())
-      __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);
-    
-    if (ap->firs().first)
-      ap->firs().first->addFlight(this);
-    
-    if (ap->firs().second)
-      ap->firs().second->addFlight(this);
+    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__route.destination);
+    if (ap) {
+      ap->addInbound(this);
+      __destination = ap;
+      
+      if (!__prefiledOnly)
+        __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);
+    }
   }
 }
 
 void
 Pilot::__setMyStatus() {
   if (!__route.origin.isEmpty() && !__route.destination.isEmpty()) {
-    const AirportRecord* ap_origin =
-      VatsimDataHandler::getSingleton().activeAirports()[__route.origin]->data();
-    const AirportRecord* ap_arrival =
-      VatsimDataHandler::getSingleton().activeAirports()[__route.destination]->data();
-
-    if ((ap_origin == ap_arrival) && (ap_origin != nullptr)) // traffic pattern?
+    if ((origin() == destination()) && (origin() != nullptr)) // traffic pattern?
       if (__groundSpeed < 50) {
         __flightStatus = Departing;
         return;
       }
     
-    if (ap_origin)
-      if ((VatsimDataHandler::distance(ap_origin->longitude, ap_origin->latitude,
-                                       position().longitude(), position().latitude()) < PilotToAirport) &&
+    if (origin())
+      if ((VatsimDataHandler::fastDistance(origin()->data()->longitude, origin()->data()->latitude,
+                                           position().longitude(), position().latitude()) < PilotToAirport) &&
       (__groundSpeed < 50)) {
         __flightStatus = Departing;
         return;
       }
 
-    if (ap_arrival)
-      if ((VatsimDataHandler::distance(ap_arrival->longitude, ap_arrival->latitude,
-                                       position().longitude(), position().latitude()) < PilotToAirport) &&
+    if (destination())
+      if ((VatsimDataHandler::fastDistance(destination()->data()->longitude, destination()->data()->latitude,
+                                           position().longitude(), position().latitude()) < PilotToAirport) &&
       (__groundSpeed < 50)) {
         __flightStatus = Arrived;
         return;
@@ -253,9 +244,9 @@ Pilot::__setMyStatus() {
     const AirportRecord* closest = nullptr;
     qreal distance = 0.0;
     
-    for (const AirportRecord & ap: AirportDatabase::getSingleton().airports()) {
-      qreal temp = VatsimDataHandler::distance(ap.longitude, ap.latitude,
-                   position().longitude(), position().latitude());
+    for (const AirportRecord& ap: AirportDatabase::getSingleton().airports()) {
+      qreal temp = VatsimDataHandler::fastDistance(ap.longitude, ap.latitude,
+                             position().longitude(), position().latitude());
 
       if (((temp < distance) && closest) || !closest) {
         closest = &ap;
@@ -269,9 +260,14 @@ Pilot::__setMyStatus() {
         return;
       }
     
-      __route.origin = closest->icao;
-      ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(__route.origin);
-      ap->addOutbound(this);
+      __route.origin = QString(closest->icao);
+      Airport* ap = VatsimDataHandler::getSingleton().findAirport(__route.origin);
+      __origin = ap;
+      
+      if (ap) {
+        ap->addOutbound(this);
+      }
+      
       __flightStatus = Departing;
       return;
     }

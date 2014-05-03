@@ -104,20 +104,19 @@ AirportItem::tooltipText() const {
     QString::fromUtf8(data()->data()->city));
   
   QString staff, deparr;
-  const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
-  if (a) {
-    for (const Controller* c: a->staffModel()->staff()) {
+  if (!data()->isEmpty()) {
+    for (const Controller* c: data()->staff()->staff()) {
       staff.append("<br>");
       staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
     }
     
-    int deps = a->countDepartures();
+    int deps = data()->countDepartures();
     if (deps > 0) {
       deparr.append("<br>");
       deparr.append(tr("Departures: %1").arg(QString::number(deps)));
     }
     
-    int arrs = a->countArrivals();
+    int arrs = data()->countArrivals();
     if (arrs > 0) {
       deparr.append("<br>");
       deparr.append(tr("Arrivals: %1").arg(QString::number(arrs)));
@@ -141,13 +140,12 @@ AirportItem::menu(QWidget* _parent) const {
           MetarsWindow::getSingletonPtr(),              SLOT(show(QString)));
   menu->addAction(showMetar);
   
-  const ActiveAirport* a = dynamic_cast<const ActiveAirport*>(data());
-  if (a) {
-    if (!a->staffModel()->staff().isEmpty()) {
+  if (!data()->isEmpty()) {
+    if (!data()->staff()->staff().isEmpty()) {
       menu->addSeparator();
       menu->addAction(new ActionMenuSeparator(tr("Controllers"), _parent));
       
-      for (const Controller* c: a->staffModel()->staff()) {
+      for (const Controller* c: data()->staff()->staff()) {
         ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
         connect(cda,                                    SIGNAL(triggered(const Client*)),
                 AtcDetailsWindow::getSingletonPtr(),    SLOT(show(const Client*)));
@@ -166,7 +164,7 @@ AirportItem::showDetailsWindow() const {
 
 void
 AirportItem::__makeIcon() const {
-  if (data->isEmpty()) {
+  if (data()->isEmpty()) {
     __icon = __icons.emptyAirportIcon();
   } else {
     if (data()->staff()->staff().isEmpty()) {

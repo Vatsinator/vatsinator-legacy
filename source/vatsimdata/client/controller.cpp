@@ -19,10 +19,9 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
-#include "db/firdatabase.h"
 #include "network/statspurveyor.h"
-#include "vatsimdata/airport/activeairport.h"
-#include "vatsimdata/uir.h"
+#include "vatsimdata/airport.h"
+#include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -103,93 +102,59 @@ Controller::__setMyIcaoAndFacility() {
 
   if (sections.back() == "CTR") {
     __facility = Ctr;
-    __airport = NULL;
+    __airport = nullptr;
 
     __icao = sections.front();
+    
+    Fir* fir = VatsimDataHandler::getSingleton().findFir(__icao);
+    
+    if (fir) {
+      fir->addStaff(this);
+      __produceDescription(fir);
+    } else {
 
-    Fir* fir = FirDatabase::getSingleton().find(__icao);
+// TODO
+//       Uir* uir = VatsimDataHandler::getSingleton().findUIR(__icao);
+// 
+//       if (uir) {
+//         uir->addStaff(this);
+//         __produceDescription(uir);
+//         return;
+//       }
+      
+      StatsPurveyor::getSingleton().reportNoAtc(callsign());
+      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+      __isOK = false;
+    }
+  } else if (sections.back() == "FSS") {
+    __facility = Fss;
+    __airport = nullptr;
+
+    QString& icao = sections.front();
+
+    Fir* fir = VatsimDataHandler::getSingleton().findFir(icao, true);
+    if (!fir) {
+      fir = VatsimDataHandler::getSingleton().findFir(icao, false);
+    }
 
     if (fir) {
       fir->addStaff(this);
       __produceDescription(fir);
     } else {
-      // handle USA three-letters callsigns
-      if (__icao.length() == 3) {
-        fir = FirDatabase::getSingleton().find("K" + __icao);
-
-        if (fir) {
-          fir->addStaff(this);
-          __produceDescription(fir);
-          return;
-        }
-      }
-
-      for (const QString& alias: VatsimDataHandler::getSingleton().aliases().values(__icao)) {
-        fir = FirDatabase::getSingleton().find(alias);
-
-        if (fir) {
-          fir->addStaff(this);
-          __produceDescription(fir);
-          return;
-        }
-      }
-
-      Uir* uir = VatsimDataHandler::getSingleton().findUIR(__icao);
-
-      if (uir) {
-        uir->addStaff(this);
-        __produceDescription(uir);
-        return;
-      }
-
+      StatsPurveyor::getSingleton().reportNoAtc(callsign());
       VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
-
+      __isOK = false;
     }
 
-    return;
-  } else if (sections.back() == "FSS") {
-    __facility = Fss;
-    __airport = NULL;
-
-    QString& icao = sections.front();
-
-    Fir* fir = FirDatabase::getSingleton().find(icao, true);
-
-    if (fir) {
-      fir->addStaff(this);
-      __produceDescription(fir);
-      return;
-    }
-
-    Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
-
-    if (uir) {
-      uir->addStaff(this);
-      __produceDescription(uir);
-      return;
-    }
-
-    fir = FirDatabase::getSingleton().find(icao);
-
-    if (fir) {
-      fir->addStaff(this);
-      __produceDescription(fir);
-      return;
-    }
-
-    for (QString & alias: VatsimDataHandler::getSingleton().aliases().values(icao)) {
-      fir = FirDatabase::getSingleton().find(alias, true);
-
-      if (fir) {
-        fir->addStaff(this);
-        __produceDescription(fir);
-        return;
-      }
-    }
-
-    VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
-
-    return;
+// TODO
+//     Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
+// 
+//     if (uir) {
+//       uir->addStaff(this);
+//       __produceDescription(uir);
+//       return;
+//     }
+    
   } else if (
     sections.back() == "APP" ||
     sections.back() == "DEP" ||
@@ -210,50 +175,18 @@ Controller::__setMyIcaoAndFacility() {
     else if (sections.back() == "ATIS")
       __facility = Atis;
 
-    const AirportRecord* apShot = AirportDatabase::getSingleton().find(sections.front());
+    Airport* ap = VatsimDataHandler::getSingleton().findAirport(sections.front());
 
-    if (apShot) {
-      ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(sections.front());
+    if (ap) {
       ap->addStaff(this);
       __airport = ap->data();
       __produceDescription(__airport);
-      return;
     } else {
-      if (sections.front().length() == 3) {
-        // USA callsigns often are just three last letters of full airport ICAO code
-        QString alias = "K" + sections.front();
-        apShot = AirportDatabase::getSingleton().find(alias);
-
-        if (apShot) {
-          ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
-          ap->addStaff(this);
-          __airport = ap->data();
-          __produceDescription(__airport);
-          return;
-        }
-      }
-
-      for (QString & alias: VatsimDataHandler::getSingleton().aliases().values(sections.front())) {
-        apShot = AirportDatabase::getSingleton().find(alias);
-
-        if (apShot) {
-          ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
-          ap->addStaff(this);
-          __airport = ap->data();
-          __produceDescription(__airport);
-          return;
-        }
-      }
-
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
       VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
+      __isOK = false;
     }
-
-    return;
-
   }
-
-  __isOK = false;
 }
 
 void
@@ -265,7 +198,7 @@ Controller::__produceDescription(const Fir* _f) {
 void
 Controller::__produceDescription(const Uir* _u) {
   Q_ASSERT(_u);
-  __description = _u->name();
+//   __description = _u->name();
 }
 
 void
