@@ -471,15 +471,14 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       
+      /*
+       * TODO Make this below more convenient, i.e. allow writing some kind of
+       *      "exceptions" in the data file.
+       */
       if (currentFir->icao() == "UMKK") // fix for Kaliningrad center
         currentFir->setCountry("Russia");
       else
         currentFir->setCountry(countries[icao.left(2)]);
-      
-      /*
-       * TODO Make this above more convenient, i.e. allow writing some kind of
-       *      "exceptions" in the data file.
-       */
       
       currentFir->fixupName();
     }

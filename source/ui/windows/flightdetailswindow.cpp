@@ -168,7 +168,7 @@ FlightDetailsWindow::stateHandle(int _state) {
 void
 FlightDetailsWindow::__updateToFromButtons() {
   if (!__current->route().origin.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__current->route().origin);
+    const Airport* ap = __current->origin();
     QString text = __current->route().origin;
 
     if (ap) {
@@ -183,7 +183,7 @@ FlightDetailsWindow::__updateToFromButtons() {
 
       OriginButton->setAirportPointer(ap);
     } else {
-      OriginButton->setAirportPointer(NULL);
+      OriginButton->setAirportPointer(nullptr);
       FromCityLabel->setText("");
     }
 
@@ -195,7 +195,7 @@ FlightDetailsWindow::__updateToFromButtons() {
   }
 
   if (!__current->route().destination.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__current->route().destination);
+    const Airport* ap = __current->destination();
     QString text = __current->route().destination;
 
     if (ap) {
