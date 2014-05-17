@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" sourcelanguage="en_GB" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Authors</source>
-        <translation type="unfinished"/>
+        <translation>Yapımcılar</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="193"/>
@@ -123,7 +123,7 @@
         <location filename="../ui/windows/aboutwindow.cpp" line="65"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
-        <translation type="unfinished"/>
+        <translation>tarihi geçmiş</translation>
     </message>
 </context>
 <context>
@@ -148,7 +148,7 @@
         <location filename="../ui/windows/airportdetailswindow.ui" line="17"/>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="175"/>
         <source>%1 - airport details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - havalimanı detayları</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="60"/>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="436"/>
         <source>Altitude:</source>
-        <translation type="unfinished"/>
+        <translation>Yükseklik:</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="495"/>
@@ -218,7 +218,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="101"/>
         <source>Fetching...</source>
-        <translation type="unfinished"/>
+        <translation>Getiriliyor...</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="146"/>
@@ -256,12 +256,12 @@
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="116"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gelenler: %1</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="118"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gidenler: %1</translation>
     </message>
 </context>
 <context>
@@ -287,12 +287,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="56"/>
         <source>%1 - ATC details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - ATC detayları</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="72"/>
         <source>N/A</source>
-        <translation type="unfinished"/>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -300,7 +300,7 @@
     <message>
         <location filename="../modules/models/bookedatctablemodel.cpp" line="108"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../modules/models/bookedatctablemodel.cpp" line="110"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../vatsimdata/models/controllertablemodel.cpp" line="100"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/controllertablemodel.cpp" line="102"/>
@@ -396,7 +396,7 @@
     <message>
         <location filename="../vatsimdata/models/controllertablemodel.cpp" line="104"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>Frekans:</translation>
     </message>
 </context>
 <context>
@@ -478,7 +478,7 @@
         <location filename="../ui/windows/databasewindow.cpp" line="66"/>
         <source>outdated</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>tarihi geçmiş</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="73"/>
@@ -495,7 +495,7 @@
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="81"/>
         <source>Your Vatsinator version is outdated.</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator&apos;un sürümünün tarihi geçmiş.</translation>
     </message>
 </context>
 <context>
@@ -503,12 +503,12 @@
     <message>
         <location filename="../ui/views/delayedmodeltableview.cpp" line="27"/>
         <source>Loading...</source>
-        <translation type="unfinished"/>
+        <translation>Yükleniyor...</translation>
     </message>
     <message>
         <location filename="../ui/views/delayedmodeltableview.cpp" line="28"/>
         <source>Error occured</source>
-        <translation type="unfinished"/>
+        <translation>Hata oluştu</translation>
     </message>
 </context>
 <context>
@@ -550,7 +550,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="69"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>Uçuşlar</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="132"/>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="90"/>
         <source>%1 - FIR details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - FIR(Uçuş bilgi bölgesi) detayları</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="92"/>
@@ -664,12 +664,12 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="487"/>
         <source>Altitude:</source>
-        <translation type="unfinished"/>
+        <translation>Yükseklik:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="503"/>
         <source>Captain:</source>
-        <translation type="unfinished"/>
+        <translation>Kaptan:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="443"/>
@@ -714,7 +714,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="794"/>
         <source>Arrival:</source>
-        <translation type="unfinished"/>
+        <translation>Varış:</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="707"/>
@@ -773,7 +773,7 @@
     <message>
         <location filename="../ui/windows/flightlistwindow.ui" line="14"/>
         <source>Flight list</source>
-        <translation type="unfinished"/>
+        <translation>Uçuş listesi</translation>
     </message>
 </context>
 <context>
@@ -786,7 +786,7 @@
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="141"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="143"/>
@@ -796,12 +796,12 @@
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="145"/>
         <source>From</source>
-        <translation type="unfinished"/>
+        <translation>dan</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="147"/>
         <source>To</source>
-        <translation type="unfinished"/>
+        <translation>a</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/flighttablemodel.cpp" line="149"/>
@@ -814,7 +814,7 @@
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="14"/>
         <source>Send anonymous statistics</source>
-        <translation type="unfinished"/>
+        <translation>İsimsiz istatistik gönder</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="43"/>
@@ -892,12 +892,12 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1360"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gidenler: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1365"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gelenler: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="663"/>
@@ -949,7 +949,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="54"/>
         <source>Refresh all</source>
-        <translation type="unfinished"/>
+        <translation>Hepsini yenile</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="61"/>
@@ -978,7 +978,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="119"/>
         <source>Send anonymous statistics</source>
-        <translation type="unfinished"/>
+        <translation>İsimsiz istatistik gönder</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="132"/>
@@ -1127,7 +1127,7 @@
     <message>
         <location filename="../ui/windows/settingswindow.ui" line="14"/>
         <source>Vatsinator settings</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator ayarları</translation>
     </message>
 </context>
 <context>
