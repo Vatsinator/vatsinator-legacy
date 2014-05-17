@@ -1,6 +1,6 @@
 /*
     pilot.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -117,6 +117,43 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 
 Pilot::~Pilot() {}
 
+void
+Pilot::update(const QStringList& _data) {
+  Client::update(_data);
+  
+  __altitude = _data[7].toInt();
+  __groundSpeed = _data[8].toInt();
+  __squawk = _data[17].toInt();
+  __aircraft = _data[9];
+  __tas = _data[10].toInt();
+  __flightRules = _data[21] == "I" ? Ifr : Vfr;
+  __std = QTime::fromString(_data[22], "hhmm");
+  __atd = QTime::fromString(_data[23], "hhmm");
+  __remarks = _data[29];
+  __heading = _data[38].toUInt();
+  __pressure = Pressure{ _data[39], _data[40] };
+  __route = Route{ _data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper() };
+  
+  // update airports if anything changed
+  if (
+    !origin()      || origin()->icao() != __route.origin        ||
+    !destination() || destination()->icao() != __route.origin
+  )
+    __updateAirports();
+  
+  if (__squawk.length() == 3)
+    __squawk.prepend("0");
+  
+  if (__std.isValid() && __sta != QTime(0, 0))
+    __sta = QTime(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt());
+  
+  // invalidate eta
+  __eta = QTime();
+  
+  // invalidate progress
+  __progress = -1;
+}
+
 const QTime &
 Pilot::eta() const {
   if (__flightStatus == Departing) {
@@ -185,7 +222,7 @@ Pilot::progress() const {
 void Pilot::__updateAirports() {
   if (!__route.origin.isEmpty()) {
     Airport* ap = VatsimDataHandler::getSingleton().findAirport(__route.origin);
-    if (ap) {    
+    if (ap) {
       ap->addOutbound(this);
       __origin = ap;
       

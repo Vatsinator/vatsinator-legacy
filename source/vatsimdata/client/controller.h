@@ -1,6 +1,6 @@
 /*
     controller.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 
 #include "vatsimdata/client.h"
 
-struct AirportRecord;
+class Airport;
 class Fir;
 class Uir;
 
@@ -55,6 +55,8 @@ public:
   
   Controller(const QStringList&);
   
+  void update(const QStringList&);
+  
   /**
    * The frequency that the ATC currently operates on.
    */
@@ -81,7 +83,7 @@ public:
    * Returns nullptr if the Controller manages Fir or is the Obs, for
    * example.
    */
-  inline const AirportRecord* airport() const { return __airport; }
+  inline const Airport* airport() const { return __airport; }
   
   /**
    * The ATC's facility.
@@ -107,9 +109,9 @@ public:
 private:
   void __cleanupAtis();
   void __setMyIcaoAndFacility();
-  void __produceDescription(const Fir*);
-  void __produceDescription(const Uir*);
-  void __produceDescription(const AirportRecord*);
+  void __makeDescription(const Fir*);
+  void __makeDescription(const Uir*);
+  void __makeDescription(const Airport*);
 
   static bool __initRatings();
 
@@ -117,7 +119,7 @@ private:
   int                  __rating;
   QString              __icao;
   QString              __atis;
-  const AirportRecord* __airport;
+  const Airport*       __airport;
   Controller::Facility __facility;
   QString              __description;
   bool                 __isOK;

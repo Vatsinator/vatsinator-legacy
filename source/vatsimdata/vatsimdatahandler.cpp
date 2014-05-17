@@ -156,17 +156,14 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 void
 VatsimDataHandler::parseDataFile(const QString& _data) {
   static QRegExp rx("^\\b(UPDATE|RELOAD)\\b\\s?=\\s?\\b(.+)\\b$");
-  
-  __clearData();
 
   VatsinatorApplication::log("Data length: %i.", _data.length());
 
-  QStringList tempList = _data.split(QRegExp("\r?\n"), QString::SkipEmptyParts);
-  
+  QStringList tempList = _data.split(QRegExp("\r?\n"), QString::SkipEmptyParts);  
   DataSections section = None;
 
   for (QString& temp: tempList) {
-    if (temp.startsWith(';'))
+    if (temp.startsWith(';')) // comment
       continue;
 
     if (temp.startsWith('!')) {
@@ -207,28 +204,35 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
           return;
         }
         
-        if (clientData[3] == "ATC") {
-          Controller* atc = new Controller(clientData);
-          
-          if (atc->isOk()) {
-            __clients[atc->callsign()] = atc;
-            __atcs->addStaff(atc);
-          } else {
-            __observers += 1;
-            delete atc;
-          }
-        } else if (clientData[3] == "PILOT") {
-          Pilot* pilot = new Pilot(clientData);
-          if (pilot->position().isNull()) {
-            delete pilot; // skip unknown flights
-          } else {
-            __clients[pilot->callsign()] = pilot;
-            __flights->addFlight(pilot);
+        const QString& callsign = clientData[0];
+        if (__clients.contains(callsign)) {
+          Client* c = __clients[callsign];
+          c->update(clientData);
+        } else {
+          if (clientData[3] == "ATC") {
+            Controller* atc = new Controller(clientData);
+            
+            if (atc->isOk()) {
+              __clients[atc->callsign()] = atc;
+              __atcs->addStaff(atc);
+            } else {
+              __observers += 1;
+              delete atc;
+            }
+          } else if (clientData[3] == "PILOT") {
+            Pilot* pilot = new Pilot(clientData);
+            if (pilot->position().isNull()) {
+              delete pilot; // skip unknown flights
+            } else {
+              __clients[pilot->callsign()] = pilot;
+              __flights->addFlight(pilot);
+            }
           }
         }
         break;
       } // DataSections::Clients
     
+    /* TODO Prefile section
       case DataSections::Prefile: {
         QStringList clientData = temp.split(':');
         
@@ -240,7 +244,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         
         __flights->addFlight(new Pilot(clientData, true));
         break;
-      } // DataSections::Prefile
+      } // DataSections::Prefile*/
       
       default: {}
     } // switch (section)

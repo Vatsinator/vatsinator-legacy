@@ -1,6 +1,6 @@
 /*
     pilot.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -81,10 +81,7 @@ public:
   Pilot(const QStringList&, bool = false);
   virtual ~Pilot();
   
-  /**
-   * The current altitude.
-   */
-  inline int altitude() const { return __altitude; }
+  void update(const QStringList&);
   
   /**
    * Estimated Time of Arrival.
@@ -95,6 +92,11 @@ public:
    * Progress [1-100].
    */
   int progress() const;
+  
+  /**
+   * The current altitude.
+   */
+  inline int altitude() const { return __altitude; }
   
   /**
    * The client's ground speed, in knots.

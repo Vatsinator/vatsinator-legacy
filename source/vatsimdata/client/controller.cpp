@@ -1,6 +1,6 @@
 /*
     controller.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -79,11 +79,20 @@ Controller::Controller(const QStringList& _data) :
     __frequency(_data[4]),
     __rating(_data[16].toInt()),
     __atis(_data[35]),
-    __airport(NULL),
+    __airport(nullptr),
     __isOK(true) {
   
   __cleanupAtis();
   __setMyIcaoAndFacility();
+}
+
+void
+Controller::update(const QStringList& _data) {
+  Client::update(_data);
+  __frequency = _data[4];
+  __rating = _data[16].toInt();
+  __atis = _data[35];
+  __cleanupAtis();
 }
 
 void Controller::__cleanupAtis() {
@@ -107,10 +116,9 @@ Controller::__setMyIcaoAndFacility() {
     __icao = sections.front();
     
     Fir* fir = VatsimDataHandler::getSingleton().findFir(__icao);
-    
     if (fir) {
       fir->addStaff(this);
-      __produceDescription(fir);
+      __makeDescription(fir);
     } else {
 
 // TODO
@@ -139,7 +147,7 @@ Controller::__setMyIcaoAndFacility() {
 
     if (fir) {
       fir->addStaff(this);
-      __produceDescription(fir);
+      __makeDescription(fir);
     } else {
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
       VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
@@ -176,11 +184,10 @@ Controller::__setMyIcaoAndFacility() {
       __facility = Atis;
 
     Airport* ap = VatsimDataHandler::getSingleton().findAirport(sections.front());
-
     if (ap) {
       ap->addStaff(this);
-      __airport = ap->data();
-      __produceDescription(__airport);
+      __airport = ap;
+      __makeDescription(__airport);
     } else {
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
       VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
@@ -190,31 +197,31 @@ Controller::__setMyIcaoAndFacility() {
 }
 
 void
-Controller::__produceDescription(const Fir* _f) {
+Controller::__makeDescription(const Fir* _f) {
   Q_ASSERT(_f);
   __description = _f->name();
 }
 
 void
-Controller::__produceDescription(const Uir* _u) {
+Controller::__makeDescription(const Uir* _u) {
   Q_ASSERT(_u);
 //   __description = _u->name();
 }
 
 void
-Controller::__produceDescription(const AirportRecord* _ap) {
+Controller::__makeDescription(const Airport* _ap) {
   QString apName, fName; // airport name, facility name
 
   if (!_ap) {
     apName = "Unknown";
   } else {
-    if (qstrcmp(_ap->name, _ap->city) == 0)
-      apName = QString::fromUtf8(_ap->name);
+    if (qstrcmp(_ap->data()->name, _ap->data()->city) == 0)
+      apName = QString::fromUtf8(_ap->data()->name);
     else
       apName =
-        QString::fromUtf8(_ap->city) %
+        QString::fromUtf8(_ap->data()->city) %
         "/" %
-        QString::fromUtf8(_ap->name);
+        QString::fromUtf8(_ap->data()->name);
   }
 
   switch (__facility) {

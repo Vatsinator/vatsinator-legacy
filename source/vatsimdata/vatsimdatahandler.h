@@ -317,7 +317,7 @@ private slots:
    * If any file can't be fetched.
    */
   void __handleFetchError();
-      
+  
 private:  
   
   /*

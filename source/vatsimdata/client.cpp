@@ -71,6 +71,15 @@ Client::Client(const QStringList& _data) :
     __position(_data[6].toFloat(), _data[5].toFloat()) {}
 
 void
+Client::update(const QStringList& _data) {
+  __pid = _data[1].toUInt();
+  __realName = _data[2].simplified();
+  __server = _data[14];
+  __onlineFrom = QDateTime::fromString(_data[37], "yyyyMMddhhmmss");
+  __position = LonLat(_data[6].toFloat(), _data[5].toFloat());
+}
+
+void
 Client::setPosition(const LonLat& _position) {
   __position = _position;
 }

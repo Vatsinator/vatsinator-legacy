@@ -46,6 +46,13 @@ public:
    */
   Client(const QStringList&);
   
+  /**
+   * Update the client from the _data_ given.
+   * The _data_ is just an appropriate line from the data file, which
+   * is fetched from the internet.
+   */
+  virtual void update(const QStringList&);
+  
   virtual ~Client() {}
 
   /**

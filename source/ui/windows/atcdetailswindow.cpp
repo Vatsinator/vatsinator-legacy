@@ -20,15 +20,11 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
 #include "ui/userinterface.h"
-
 #include "ui/widgets/mapwidget.h"
-
 #include "vatsimdata/client/controller.h"
-
+#include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsinatorapplication.h"
 
 #include "atcdetailswindow.h"
@@ -62,11 +58,11 @@ AtcDetailsWindow::show(const Client* _client) {
   RatingLabel->setText(Controller::ratings[__current->rating()]);
 
   if (__current->airport())
-    AirportLabel->setText(static_cast<QString>(__current->airport()->icao) %
+    AirportLabel->setText(static_cast<QString>(__current->airport()->data()->icao) %
                           " " %
-                          QString::fromUtf8(__current->airport()->name) %
+                          QString::fromUtf8(__current->airport()->data()->name) %
                           ", " %
-                          QString::fromUtf8(__current->airport()->city)
+                          QString::fromUtf8(__current->airport()->data()->city)
                          );
   else
     AirportLabel->setText(tr("N/A"));
