@@ -123,7 +123,7 @@ Pilot::update(const QStringList& _data) {
   
   __altitude = _data[7].toInt();
   __groundSpeed = _data[8].toInt();
-  __squawk = _data[17].toInt();
+  __squawk = _data[17];
   __aircraft = _data[9];
   __tas = _data[10].toInt();
   __flightRules = _data[21] == "I" ? Ifr : Vfr;

@@ -64,6 +64,7 @@ VatsimDataHandler::VatsimDataHandler() :
     __flights(new FlightTableModel()),
     __atcs(new ControllerTableModel()),
     __statusUrl(NetConfig::Vatsim::statusUrl()),
+    __currentTimestamp(0),
     __observers(0),
     __statusFileFetched(false),
     __downloader(new PlainTextDownloader()),
@@ -161,6 +162,8 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
 
   QStringList tempList = _data.split(QRegExp("\r?\n"), QString::SkipEmptyParts);  
   DataSections section = None;
+  
+  __currentTimestamp = QDateTime::currentMSecsSinceEpoch();
 
   for (QString& temp: tempList) {
     if (temp.startsWith(';')) // comment
@@ -196,21 +199,17 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
       } // DataSections::General
     
       case DataSections::Clients: {
-        QStringList clientData = temp.split(':');
+        RawClientData clientData = RawClientData(temp);
         
-        if (clientData.size() < 40) {
-          VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit vatsimDataError();
-          return;
-        }
+        if (!clientData.valid)
+          continue;
         
-        const QString& callsign = clientData[0];
-        if (__clients.contains(callsign)) {
-          Client* c = __clients[callsign];
-          c->update(clientData);
+        if (__clients.contains(clientData.callsign)) {
+          Client* c = __clients[clientData.callsign];
+          c->update(clientData.line);
         } else {
-          if (clientData[3] == "ATC") {
-            Controller* atc = new Controller(clientData);
+          if (clientData.type == RawClientData::Atc) {
+            Controller* atc = new Controller(clientData.line);
             
             if (atc->isOk()) {
               __clients[atc->callsign()] = atc;
@@ -219,8 +218,8 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
               __observers += 1;
               delete atc;
             }
-          } else if (clientData[3] == "PILOT") {
-            Pilot* pilot = new Pilot(clientData);
+          } else if (clientData.type == RawClientData::Pilot) {
+            Pilot* pilot = new Pilot(clientData.line);
             if (pilot->position().isNull()) {
               delete pilot; // skip unknown flights
             } else {
@@ -249,6 +248,8 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
       default: {}
     } // switch (section)
   } // for
+  
+  __cleanupClients();
 }
 
 const QString&
@@ -556,6 +557,11 @@ VatsimDataHandler::__loadCachedData() {
 }
 
 void
+VatsimDataHandler::__cleanupClients() {
+  // TODO
+}
+
+void
 VatsimDataHandler::__slotUiCreated() {
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
@@ -603,5 +609,14 @@ VatsimDataHandler::__handleFetchError() {
       /* We already tried - there is something else causing the error */
       emit vatsimStatusError();
     }
+  }
+}
+
+VatsimDataHandler::RawClientData::RawClientData(const QString& _line) {
+  line = _line.split(':');
+  valid = line.size() == 42;
+  if (valid) {
+    callsign = line[0];
+    type = line[3] == "ATC" ? Atc : Pilot;
   }
 }

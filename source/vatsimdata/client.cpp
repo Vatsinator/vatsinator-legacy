@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "vatsimdata/vatsimdatahandler.h"
+
 #include "client.h"
 #include "defines.h"
 
@@ -68,7 +70,8 @@ Client::Client(const QStringList& _data) :
     __realName(_data[2].simplified()),
     __server(_data[14]),
     __onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
-    __position(_data[6].toFloat(), _data[5].toFloat()) {}
+    __position(_data[6].toFloat(), _data[5].toFloat()),
+    __timestamp(VatsimDataHandler::getSingleton().currentTimestamp()) {}
 
 void
 Client::update(const QStringList& _data) {
@@ -77,6 +80,13 @@ Client::update(const QStringList& _data) {
   __server = _data[14];
   __onlineFrom = QDateTime::fromString(_data[37], "yyyyMMddhhmmss");
   __position = LonLat(_data[6].toFloat(), _data[5].toFloat());
+  
+  __timestamp = VatsimDataHandler::getSingleton().currentTimestamp();
+}
+
+bool
+Client::isOnline() const {
+  return __timestamp == VatsimDataHandler::getSingleton().currentTimestamp();
 }
 
 void

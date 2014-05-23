@@ -252,6 +252,17 @@ public:
   inline const QDateTime& dateDataUpdated() const {
     return __dateVatsimDataUpdated;
   }
+  
+  /**
+   * Current timestamp is updated every time VatsimDataHandler receives new
+   * data file and is guaranteed to be unique. Each client should contain
+   * its own copy of this variable and update it on every update() call.
+   * This way we can track outdated clients that are not longer logged-in
+   * to Vatsim, but still have place in Vatsinator memory.
+   */
+  inline const qint64& currentTimestamp() const {
+      return __currentTimestamp;
+  }
 
   /**
    * Returns true if status.txt is already fetched & parsed.
@@ -274,15 +285,29 @@ public slots:
   
 private:
   
+  /**
+   * Sections of the data file. Each section is defined as "!SECTION:"
+   * For example:
+   *   !CLIENTS:
+   */
   enum DataSections {
-    /* Sections of the data file. Each section is defined as "!SECTION:"
-     * For example:
-     *   !CLIENTS:
-     */
     None,
     General,
     Clients,
     Prefile
+  };
+  
+  /**
+   * Struct that keeps some raw info about client that we need during data file
+   * parsing process.
+   */
+  struct RawClientData {
+    RawClientData(const QString&);
+    
+    QStringList line;
+    bool valid;
+    QString callsign;
+    enum { Pilot, Atc } type;
   };
   
   /**
@@ -292,6 +317,8 @@ private:
   void __readAliasFile(const QString&);
   void __readCountryFile(const QString&);
   void __readFirFile(const QString&);
+  
+  
   
   /**
    * Loads classes that wrap database records.
@@ -307,6 +334,12 @@ private:
    * Loads data file stored in the cache.
    */
   void __loadCachedData();
+  
+  /**
+   * Goes through all the clients and checks whether they are still online
+   * or not. The check is based on the client's timestamp.
+   */
+  void __cleanupClients();
   
 private slots:
   void __slotUiCreated();
@@ -363,6 +396,9 @@ private:
    * Got from data file.
    */
   QDateTime __dateVatsimDataUpdated;
+  
+  /* The timestamp is used to describe every data package, so clients can sync to this. */
+  qint64 __currentTimestamp;
   
   /* Observer count */
   int       __observers;

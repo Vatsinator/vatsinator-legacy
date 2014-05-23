@@ -53,7 +53,15 @@ public:
    */
   virtual void update(const QStringList&);
   
-  virtual ~Client() {}
+  /**
+   * Checks whether the client is still online or not.
+   * This method simply compares the local copy of timestamp with the current timestamp
+   * of VatsimDataHandler instance.
+   * @return True if the client was present in the last data update, otherwise false.
+   */
+  bool isOnline() const;
+  
+  virtual ~Client() = default;
 
   /**
    * The client's Vatsim PID.
@@ -96,6 +104,8 @@ private:
   QString               __server;
   QDateTime             __onlineFrom;
   LonLat                __position;
+  
+  qint64                __timestamp;
 
 };
 
