@@ -112,7 +112,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   }
   
   __updateAirports();
-  __setMyStatus();
+  __discoverFlightPhase();
 }
 
 Pilot::~Pilot() {}
@@ -134,6 +134,8 @@ Pilot::update(const QStringList& _data) {
   __pressure = Pressure{ _data[39], _data[40] };
   __route = Route{ _data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper() };
   
+  __discoverFlightPhase();
+  
   // update airports if anything changed
   if (
     !origin()      || origin()->icao() != __route.origin        ||
@@ -152,11 +154,13 @@ Pilot::update(const QStringList& _data) {
   
   // invalidate progress
   __progress = -1;
+  
+  emit updated();
 }
 
 const QTime &
 Pilot::eta() const {
-  if (__flightStatus == Departing) {
+  if (__phase == Departing) {
     __eta = QTime();
     return __eta;
   }
@@ -186,9 +190,9 @@ Pilot::eta() const {
 
 int
 Pilot::progress() const {
-  if (__flightStatus == Arrived)
+  if (__phase == Arrived)
     return 100;
-  else if (__flightStatus == Departing)
+  else if (__phase == Departing)
     return 0;
   
   if (__progress == -1) {
@@ -249,11 +253,11 @@ void Pilot::__updateAirports() {
 }
 
 void
-Pilot::__setMyStatus() {
+Pilot::__discoverFlightPhase() {
   if (!__route.origin.isEmpty() && !__route.destination.isEmpty()) {
     if ((origin() == destination()) && (origin() != nullptr)) // traffic pattern?
       if (__groundSpeed < 50) {
-        __flightStatus = Departing;
+        __phase = Departing;
         return;
       }
     
@@ -261,7 +265,7 @@ Pilot::__setMyStatus() {
       if ((VatsimDataHandler::fastDistance(origin()->data()->longitude, origin()->data()->latitude,
                                            position().longitude(), position().latitude()) < PilotToAirport) &&
       (__groundSpeed < 50)) {
-        __flightStatus = Departing;
+        __phase = Departing;
         return;
       }
 
@@ -269,12 +273,12 @@ Pilot::__setMyStatus() {
       if ((VatsimDataHandler::fastDistance(destination()->data()->longitude, destination()->data()->latitude,
                                            position().longitude(), position().latitude()) < PilotToAirport) &&
       (__groundSpeed < 50)) {
-        __flightStatus = Arrived;
+        __phase = Arrived;
         return;
       }
   } else { // no flight plan
     if (__groundSpeed > 50) {
-      __flightStatus = Airborne;
+      __phase = Airborne;
       return;
     }
 
@@ -293,7 +297,7 @@ Pilot::__setMyStatus() {
     
     if (closest) {
       if (distance > PilotToAirport) {
-        __flightStatus = Airborne;
+        __phase = Airborne;
         return;
       }
     
@@ -305,12 +309,12 @@ Pilot::__setMyStatus() {
         ap->addOutbound(this);
       }
       
-      __flightStatus = Departing;
+      __phase = Departing;
       return;
     }
   }
 
-  __flightStatus = Airborne;
+  __phase = Airborne;
 }
  
 // bool Pilot::__isCrossingIDL(QVector<GLfloat>& line) const

@@ -122,7 +122,7 @@ FlightItem::drawLines(LineTypes types) const {
 
 bool
 FlightItem::needsDrawing() const {
-  return !(data()->flightStatus() != Pilot::Airborne || data()->isPrefiledOnly());
+  return !(data()->phase() != Pilot::Airborne || data()->isPrefiledOnly());
 }
 
 const LonLat &

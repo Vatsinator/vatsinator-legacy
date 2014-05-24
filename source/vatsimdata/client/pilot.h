@@ -31,6 +31,8 @@ class Airport;
 struct Point;
 
 class Pilot : public Client {
+  
+  Q_OBJECT
 
   /**
    * This class contains info about one particular pilot - his
@@ -43,7 +45,7 @@ public:
     Ifr, Vfr
   };
   
-  enum Status {
+  enum Phase {
     Departing,
     Airborne,
     Arrived
@@ -151,13 +153,13 @@ public:
   inline unsigned heading() const { return __heading; }
   
   /**
-   * The client's current flight status.
+   * The client's current flight phase.
    * Flight status is determined by the current altitude, speed and distance
    * from airport (origin or destination).
    * 
    * TODO Climbing & descending status options.
    */
-  inline Pilot::Status flightStatus() const { return __flightStatus; }
+  inline Pilot::Phase phase() const { return __phase; }
   
   /**
    * The client's baro setting.
@@ -195,7 +197,7 @@ private:
   /**
    * Checks whether pilot is departing, airborn or has just arrived.
    */
-  void __setMyStatus();
+  void __discoverFlightPhase();
   
 //   bool __isCrossingIDL(QVector<GLfloat>&) const;
   
@@ -212,7 +214,7 @@ private:
   mutable int           __progress; /* [1-100] */
   QString               __remarks;
   unsigned              __heading;
-  Pilot::Status         __flightStatus;
+  Pilot::Phase          __phase;
   Pilot::Pressure       __pressure;
   Pilot::Route          __route;
   const Airport*        __origin;

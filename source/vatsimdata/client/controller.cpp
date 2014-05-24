@@ -93,6 +93,8 @@ Controller::update(const QStringList& _data) {
   __rating = _data[16].toInt();
   __atis = _data[35];
   __cleanupAtis();
+  
+  emit updated();
 }
 
 void Controller::__cleanupAtis() {

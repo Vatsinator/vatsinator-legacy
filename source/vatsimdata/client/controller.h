@@ -31,6 +31,8 @@ class Uir;
 
 class Controller : public Client {
   
+  Q_OBJECT
+  
   /*
    * This class represents the ATC.
    */

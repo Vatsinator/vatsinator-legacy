@@ -126,9 +126,9 @@ FlightDetailsWindow::show(const Client* _client) {
   GroundSpeedLabel->setText(tr("%1 kts").arg(QString::number(__current->groundSpeed())));
   HeadingLabel->setText(QString::number(__current->heading()));
 
-  if (__current->flightStatus() == Pilot::Airborne)
+  if (__current->phase() == Pilot::Airborne)
     CurrentStatusLabel->setText(tr("airborne"));
-  else if (__current->flightStatus() == Pilot::Departing)
+  else if (__current->phase() == Pilot::Departing)
     CurrentStatusLabel->setText(tr("departing"));
   else
     CurrentStatusLabel->setText(tr("arrived"));

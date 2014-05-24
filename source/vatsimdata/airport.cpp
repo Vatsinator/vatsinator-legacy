@@ -53,7 +53,7 @@ Airport::countDepartures() const {
   unsigned i = 0;
   
   for (const Pilot* p: __outbounds->flights())
-    if (p->flightStatus() == Pilot::Departing)
+    if (p->phase() == Pilot::Departing)
       i += 1;
   
   return i;
@@ -69,7 +69,7 @@ Airport::countArrivals() const {
   unsigned i = 0;
   
   for (const Pilot* p: __inbounds->flights())
-    if (p->flightStatus() == Pilot::Arrived)
+    if (p->phase() == Pilot::Arrived)
       i += 1;
   
   return i;

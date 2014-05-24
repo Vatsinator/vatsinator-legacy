@@ -23,14 +23,20 @@
 #include <QDateTime>
 #include <QString>
 #include <QStringList>
+#include <QObject>
 
 #include "vatsimdata/lonlat.h"
 
-class Client {
+class Client : public QObject {
+  
+  Q_OBJECT
 
   /*
    * Inherited by Pilot and Controller classes.
    */
+  
+signals:
+  void updated();
 
 public:
   

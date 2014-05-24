@@ -24,8 +24,12 @@ set (vatsimdata_SRCS
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
 set (vatsimdata_MOC_SRCS
+    client.h
     updatescheduler.h
     vatsimdatahandler.h
+    
+    client/controller.h
+    client/pilot.h
     
     models/airporttablemodel.h
     models/controllertablemodel.h
