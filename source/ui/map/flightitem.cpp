@@ -38,12 +38,13 @@ FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
     QObject(_parent),
     __pilot(_pilot),
     __position(_pilot->position()),
-    __model(ModelMatcher::getSingleton().matchMyModel(_pilot->aircraft())),
+    __model(0),
     __label(0),
     __linesReady(false) {
-  
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__reloadSettings()));
+          this,                                 SLOT(__reloadSettings())); 
+  connect(_pilot,                               SIGNAL(updated()),
+          this,                                 SLOT(__invalidate()));
 }
 
 FlightItem::~FlightItem() {
@@ -59,6 +60,9 @@ FlightItem::drawModel() const {
      0.03,  0.03,
      0.03, -0.03
   };
+  
+  if (!__model)
+    __matchModel();
   
   glPushMatrix();
     glRotatef(static_cast<GLfloat>(data()->heading()), 0, 0, -1);
@@ -235,6 +239,11 @@ FlightItem::__prepareLines() const {
 }
 
 void
+FlightItem::__matchModel() const {
+  __model = ModelMatcher::getSingleton().matchMyModel(__pilot->aircraft());
+}
+
+void
 FlightItem::__reloadSettings() {
   if (__label) {
     GlResourceManager::deleteImage(__label);
@@ -243,4 +252,19 @@ FlightItem::__reloadSettings() {
   
   __otpLine.color = QColor();
   __ptdLine.color = QColor();
+}
+
+void
+FlightItem::__invalidate() {
+  __position = __pilot->position();
+  
+  __model = 0;
+  
+  __linesReady = false;
+  __otpLine.coords.clear();
+  __ptdLine.coords.clear();
+ 
+  /* We don't need to invalidate the label - pilot can't just change his
+   * callsign, can he?
+   */
 }

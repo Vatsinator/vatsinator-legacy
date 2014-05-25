@@ -58,16 +58,34 @@ MapScene::__setupItems() {
     __firItems << new FirItem(f);
   }
   
-  for (const Pilot* p: VatsimDataHandler::getSingleton().flights()->flights()) {
-    __flightItems << new FlightItem(p);
+  for (auto c: VatsimDataHandler::getSingleton().clients()) {
+    if (Pilot* p = dynamic_cast<Pilot*>(c)) {
+      connect(p,          SIGNAL(destroyed(QObject*)),
+              this,       SLOT(__removeFlightItem()));
+      __flightItems << new FlightItem(p);
+    }
   }
 }
 
 void
 MapScene::__updateItems() {
-  qDeleteAll(__flightItems), __flightItems.clear();
-  
-  for (const Pilot* p: VatsimDataHandler::getSingleton().flights()->flights()) {
-    __flightItems << new FlightItem(p);
+  for (Client* c: VatsimDataHandler::getSingleton().newClients()) {
+    if (Pilot* p = dynamic_cast<Pilot*>(c))
+      __flightItems << new FlightItem(p);
   }
+}
+
+void
+MapScene::__removeFlightItem() {
+  Q_ASSERT(sender());
+  for (int i = 0; i < __flightItems.size(); ++i) {
+    if (__flightItems[i]->data() == sender()) {
+      __flightItems.at(i)->deleteLater();
+      __flightItems.removeAt(i);
+      
+      return;
+    }
+  }
+  
+  qWarning("No FlightItem for Pilot");
 }

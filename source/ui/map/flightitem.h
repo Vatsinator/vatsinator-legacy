@@ -58,15 +58,17 @@ public:
 private:
   void __generateLabel() const;
   void __prepareLines() const;
+  void __matchModel() const;
   
 private slots:
   void __reloadSettings();
+  void __invalidate();
   
 private:
   const Pilot*  __pilot;
   LonLat        __position;
   
-  GLuint                __model;
+  mutable GLuint        __model;
   mutable GLuint        __label;
   
   mutable struct {

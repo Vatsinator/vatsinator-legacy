@@ -61,8 +61,6 @@ namespace {
 
 
 VatsimDataHandler::VatsimDataHandler() :
-    __flights(new FlightTableModel()),
-    __atcs(new ControllerTableModel()),
     __statusUrl(NetConfig::Vatsim::statusUrl()),
     __currentTimestamp(0),
     __observers(0),
@@ -100,9 +98,6 @@ VatsimDataHandler::~VatsimDataHandler() {
   
   delete __downloader;
   delete __scheduler;
-
-  delete __atcs;
-  delete __flights;
   
   delete VatsimDataHandler::emptyFlightTable;
   delete VatsimDataHandler::emptyControllerTable;
@@ -164,6 +159,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
   DataSections section = None;
   
   __currentTimestamp = QDateTime::currentMSecsSinceEpoch();
+  __newClients.clear();
 
   for (QString& temp: tempList) {
     if (temp.startsWith(';')) // comment
@@ -213,7 +209,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
             
             if (atc->isOk()) {
               __clients[atc->callsign()] = atc;
-              __atcs->addStaff(atc);
+              __newClients << atc;
             } else {
               __observers += 1;
               delete atc;
@@ -224,7 +220,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
               delete pilot; // skip unknown flights
             } else {
               __clients[pilot->callsign()] = pilot;
-              __flights->addFlight(pilot);
+              __newClients << pilot;
             }
           }
         }
@@ -264,12 +260,20 @@ VatsimDataHandler::getDataUrl() const {
 
 const Pilot*
 VatsimDataHandler::findPilot(const QString& _callsign) const {
-  return __flights->findFlightByCallsign(_callsign);
+  if (__clients.contains(_callsign)) {
+    return dynamic_cast<Pilot*>(__clients[_callsign]);
+  } else {
+    return nullptr;
+  }
 }
 
 const Controller*
 VatsimDataHandler::findAtc(const QString& _callsign) const {
-  return __atcs->findAtcByCallsign(_callsign);
+  if (__clients.contains(_callsign)) {
+    return dynamic_cast<Controller*>(__clients[_callsign]);
+  } else {
+    return nullptr;
+  }
 }
 
 Airport*
@@ -328,12 +332,12 @@ VatsimDataHandler::clientCount() const {
 
 int
 VatsimDataHandler::pilotCount() const {
-  return __flights->rowCount();
+  return 0;
 }
 
 int
 VatsimDataHandler::atcCount() const {
-  return __atcs->rowCount();
+  return 0;
 }
 
 int
@@ -528,8 +532,6 @@ VatsimDataHandler::__initData() {
 void
 VatsimDataHandler::__clearData() {
   qDeleteAll(__clients);
-  __flights->clear();
-  __atcs->clear();
 
   __observers = 0;
 }
@@ -558,7 +560,12 @@ VatsimDataHandler::__loadCachedData() {
 
 void
 VatsimDataHandler::__cleanupClients() {
-  // TODO
+  for (auto c: __clients) {
+    if (!c->isOnline()) {
+      __clients.remove(c->callsign());
+      c->deleteLater();
+    }
+  }
 }
 
 void

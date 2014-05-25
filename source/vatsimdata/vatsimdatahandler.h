@@ -218,21 +218,21 @@ public:
    * @return Distance between these two points.
    */
   static qreal nmDistance(const qreal&, const qreal&, const qreal&, const qreal&);
+  
+  /**
+   * Map (Callsign <-> instance pairs) of connected clients.
+   */
+  inline const QMap<QString, Client*>& clients() { return __clients; }
+  
+  /**
+   * List of only new clients, i.e. that showed up in the last update.
+   */
+  inline const QList<Client*>& newClients() { return __newClients; }
 
   /**
    * Returns an URL to where METARs can be fetched from.
    */
   inline const QString& metarUrl() const { return __metarUrl; }
-  
-  /**
-   * Returns the model containing all flights.
-   */
-  inline FlightTableModel* flights() { return __flights; }
-  
-  /**
-   * Returns the model containing all ATCs.
-   */
-  inline ControllerTableModel* atcs() { return __atcs; }
 
   /**
    * Gives access to all aliases, stored in "data/alias" file.
@@ -360,6 +360,11 @@ private:
   QMap<QString, Client*>        __clients;
   
   /*
+   * List of only new clients, i.e. that showed up in the last update.
+   */
+  QList<Client*>                __newClients;
+  
+  /*
    * All airports, each instance wraps the record in the database.
    * ICAO <-> instance pairs
    */
@@ -370,12 +375,6 @@ private:
    * ICAO <-> instance pairs
    */
   QMultiMap<QString, Fir*>      __firs;
-  
-  /* Models are kept for convenience */
-  FlightTableModel*             __flights;
-  ControllerTableModel*         __atcs;
-  
-  
   
   /* This is vector of data servers, obtained from the status file */
   QVector<QString>  __dataServers;

@@ -21,7 +21,7 @@
 #define MAPSCENE_H
 
 #include <QObject>
-#include <QVector>
+#include <QList>
 
 class AirportItem;
 class ApproachCircleItem;
@@ -40,19 +40,19 @@ public:
   explicit MapScene(QObject* parent = 0);
   virtual ~MapScene();
   
-  inline const QVector<const FirItem*>& firItems() const {
+  inline const QList<FirItem*>& firItems() const {
     return __firItems;
   }
   
-  inline const QVector<const AirportItem*>& airportItems() const {
+  inline const QList<AirportItem*>& airportItems() const {
     return __airportItems;
   }
     
-  inline const QVector<const ApproachCircleItem*>& approachCircleItems() const {
+  inline const QList<ApproachCircleItem*>& approachCircleItems() const {
     return __approachCircleItems;
   }
   
-  inline const QVector<const FlightItem*>& flightItems() const {
+  inline const QList<FlightItem*>& flightItems() const {
     return __flightItems;
   }
   
@@ -62,12 +62,17 @@ private:
 private slots:
   void __updateItems();
   
+  /**
+   * This slot is connected to every Pilot's destroyed() signal.
+   */
+  void __removeFlightItem();
+  
 private:
   
-  QVector<const FirItem*>               __firItems;
-  QVector<const AirportItem*>           __airportItems;
-  QVector<const ApproachCircleItem*>    __approachCircleItems;
-  QVector<const FlightItem*>            __flightItems;
+  QList<FirItem*>               __firItems;
+  QList<AirportItem*>           __airportItems;
+  QList<ApproachCircleItem*>    __approachCircleItems;
+  QList<FlightItem*>            __flightItems;
   
 };
 
