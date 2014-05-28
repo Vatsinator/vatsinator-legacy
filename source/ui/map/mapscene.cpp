@@ -45,7 +45,6 @@ MapScene::~MapScene() {
   qDeleteAll(__firItems);
   qDeleteAll(__airportItems);
   qDeleteAll(__approachCircleItems);
-//   qDeleteAll(__flightItems);
 }
 
 void
@@ -60,7 +59,8 @@ MapScene::__setupItems() {
   
   for (auto c: VatsimDataHandler::getSingleton().clients())
     if (Pilot* p = dynamic_cast<Pilot*>(c))
-      __addFlightItem(p);
+      if (p->phase() != Pilot::Arrived)
+        __addFlightItem(p);
 }
 
 void
@@ -74,7 +74,8 @@ void
 MapScene::__updateItems() {
   for (Client* c: VatsimDataHandler::getSingleton().newClients())
     if (Pilot* p = dynamic_cast<Pilot*>(c))
-      __addFlightItem(p);
+      if (p->phase() != Pilot::Arrived)
+        __addFlightItem(p);
 }
 
 void
