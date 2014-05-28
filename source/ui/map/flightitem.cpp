@@ -260,7 +260,7 @@ void
 FlightItem::__invalidate() {
   __position = __pilot->position();
   
-//   __model = 0;
+  __model = 0;
   
   __linesReady = false;
   __otpLine.coords.clear();
