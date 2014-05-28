@@ -45,7 +45,7 @@ MapScene::~MapScene() {
   qDeleteAll(__firItems);
   qDeleteAll(__airportItems);
   qDeleteAll(__approachCircleItems);
-  qDeleteAll(__flightItems);
+//   qDeleteAll(__flightItems);
 }
 
 void
@@ -58,21 +58,23 @@ MapScene::__setupItems() {
     __firItems << new FirItem(f);
   }
   
-  for (auto c: VatsimDataHandler::getSingleton().clients()) {
-    if (Pilot* p = dynamic_cast<Pilot*>(c)) {
-      connect(p,          SIGNAL(destroyed(QObject*)),
-              this,       SLOT(__removeFlightItem()));
-      __flightItems << new FlightItem(p);
-    }
-  }
+  for (auto c: VatsimDataHandler::getSingleton().clients())
+    if (Pilot* p = dynamic_cast<Pilot*>(c))
+      __addFlightItem(p);
+}
+
+void
+MapScene::__addFlightItem(const Pilot* _p) {
+  connect(_p,           SIGNAL(destroyed(QObject*)),
+          this,         SLOT(__removeFlightItem()));
+  __flightItems << new FlightItem(_p);
 }
 
 void
 MapScene::__updateItems() {
-  for (Client* c: VatsimDataHandler::getSingleton().newClients()) {
+  for (Client* c: VatsimDataHandler::getSingleton().newClients())
     if (Pilot* p = dynamic_cast<Pilot*>(c))
-      __flightItems << new FlightItem(p);
-  }
+      __addFlightItem(p);
 }
 
 void
@@ -87,5 +89,5 @@ MapScene::__removeFlightItem() {
     }
   }
   
-  qWarning("No FlightItem for Pilot");
+  Q_ASSERT_X(false, "MapScene", "The flight does not exist in the scene");
 }

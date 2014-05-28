@@ -27,6 +27,7 @@ class AirportItem;
 class ApproachCircleItem;
 class FirItem;
 class FlightItem;
+class Pilot;
 
 class MapScene : public QObject {
   
@@ -58,6 +59,7 @@ public:
   
 private:
   void __setupItems();
+  void __addFlightItem(const Pilot*);
   
 private slots:
   void __updateItems();

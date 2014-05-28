@@ -33,6 +33,9 @@ FlightTableModel::addFlight(const Pilot* _p) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     __flights << _p;
     endInsertRows();
+    
+    connect(_p,         SIGNAL(destroyed(QObject*)),
+            this,       SLOT(__removeFlight()));
   }
 }
 
@@ -229,3 +232,22 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
   emit sorted();
 }
 
+void
+FlightTableModel::__removeFlight() {
+  Q_ASSERT(sender());
+  
+  const Pilot* p = dynamic_cast<const Pilot*>(sender());
+  Q_ASSERT(p);
+  
+  for (int i = 0; i < __flights.size(); ++i) {
+    if (__flights[i] == p) {
+      beginRemoveRows(QModelIndex(), i, i);
+      __flights.removeAt(i);
+      endRemoveRows();
+      
+      return;
+    }
+  }
+  
+  Q_ASSERT_X(false, "FlightTableModel", "The flight does not exist in the model");
+}

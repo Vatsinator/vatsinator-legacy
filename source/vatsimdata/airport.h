@@ -50,7 +50,7 @@ public:
    */
   Airport(const AirportRecord*);
   
-  virtual ~Airport() = default;
+  ~Airport();
   
   /**
    * Counts flights that are about to take off.

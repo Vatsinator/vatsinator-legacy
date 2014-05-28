@@ -31,14 +31,15 @@ ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
   connect(this,                                 SIGNAL(warning(QString)),
           UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
   
-//           this,                         SLOT(__loadPixmaps()));
-  
   __readModels();
   __loadPixmaps();
 }
 
 GLuint
 ModelMatcher::matchMyModel(const QString& _acft) {
+  if (_acft.isEmpty())
+    return __modelsPixmaps["ZZZZ"];
+  
   for (auto it = __modelsPixmaps.begin(); it != __modelsPixmaps.end(); ++it)
     if (_acft.contains(it.key(), Qt::CaseInsensitive))
       return it.value();

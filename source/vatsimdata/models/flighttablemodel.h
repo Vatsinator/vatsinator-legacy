@@ -64,6 +64,9 @@ public:
   inline const QList<const Pilot*>& flights() const {
     return __flights;
   }
+  
+private slots:
+  void __removeFlight();
 
 private:
   QList<const Pilot*> __flights;

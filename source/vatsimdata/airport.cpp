@@ -48,6 +48,12 @@ Airport::Airport(const AirportRecord* _ap) :
   Q_ASSERT(__data);
 }
 
+Airport::~Airport() {
+  delete __staff;
+  delete __inbounds;
+  delete __outbounds;
+}
+
 unsigned
 Airport::countDepartures() const {
   unsigned i = 0;
