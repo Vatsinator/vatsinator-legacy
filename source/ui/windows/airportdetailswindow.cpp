@@ -37,27 +37,22 @@
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
-#include "vatsimdata/models/metarlistmodel.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "airportdetailswindow.h"
 #include "defines.h"
 
-AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
+AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent) :
     BaseWindow(_parent),
-    __currentICAO(""),
+    __airport(_ap),
     __forecast(new WeatherForecast()) {
   setupUi(this);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-  connect(MetarListModel::getSingletonPtr(),    SIGNAL(newMetarsAvailable()),
-          this,                                 SLOT(updateMetar()));
-  connect(MetarListModel::getSingletonPtr(),    SIGNAL(noMetar(QString)),
-          this,                                 SLOT(updateMetar(QString)));
+  connect(qApp,                                 SIGNAL(aboutToQuit()),
+          this,                                 SLOT(hide()));
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__updateData()));
+          this,                                 SLOT(__update()));
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
   connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
@@ -71,6 +66,8 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
   ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
   NotamTableView->setErrorOnNoData(false);
+  
+  __adjustTables();
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {
@@ -80,26 +77,19 @@ AirportDetailsWindow::~AirportDetailsWindow() {
   if (m)
     delete m;
 }
-
+/*
 void
 AirportDetailsWindow::show(const Airport* _ap) {
   Q_ASSERT(_ap->data());
 
-  __currentICAO = _ap->data()->icao;
   __current = _ap;
+  QString icao = QString(_ap->data()->icao);
 
   __fillLabels(_ap);
   __updateModels(_ap);
   __adjustTables();
-
-  const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
-
-  if (m) {
-    MetarLabel->setText(m->metar());
-  } else {
-    MetarLabel->setText(tr("Fetching..."));
-    MetarListModel::getSingleton().fetchMetar(__currentICAO);
-  }
+  
+  // MetarLabel refresh
 
   if (!isVisible()) {
     QWidget::show();
@@ -121,43 +111,16 @@ AirportDetailsWindow::show(const Airport* _ap) {
   }
   
   NotamTableView->setModel(nullptr);
-  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(__currentICAO);
+  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(icao);
   NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
-}
+}*/
 
 void
-AirportDetailsWindow::updateMetar() {
-  if (__currentICAO.isEmpty())
-    return;
-
-  const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
-
-  if (m)
-    MetarLabel->setText(m->metar());
-}
-
-void
-AirportDetailsWindow::updateMetar(QString _icao) {
-  if (__currentICAO.isEmpty() || !isVisible())
-    return;
-  
-  if (_icao == __currentICAO)
-    MetarLabel->setText(tr("Sorry, no weather report for %1.").arg(__currentICAO));
-}
-
-void
-AirportDetailsWindow::__updateModels(const Airport* _ap) {
-  if (!_ap)
-    _ap = VatsimDataHandler::getSingleton().findAirport(__currentICAO);
-  
-  Q_ASSERT(_ap);
-  
-  __current = _ap;
-  
-  if (__current->isStaffed()) {
-    InboundTable->setModel(__current->inbounds());
-    OutboundTable->setModel(__current->outbounds());
-    ATCTable->setModel(__current->staff());
+AirportDetailsWindow::__updateModels() {
+  if (__airport->isStaffed()) {
+    InboundTable->setModel(__airport->inbounds());
+    OutboundTable->setModel(__airport->outbounds());
+    ATCTable->setModel(__airport->staff());
   } else {
     InboundTable->setModel(VatsimDataHandler::emptyFlightTable);
     OutboundTable->setModel(VatsimDataHandler::emptyFlightTable);
@@ -165,41 +128,27 @@ AirportDetailsWindow::__updateModels(const Airport* _ap) {
   }
   
   BookedATCTable->setModel(
-      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(_ap->data()->icao)));
+      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(__airport->data()->icao)));
 }
 
 void
-AirportDetailsWindow::__fillLabels(const Airport* _ap) {
-  setWindowTitle(tr("%1 - airport details").arg(_ap->data()->icao));
+AirportDetailsWindow::__fillLabels() {
+  setWindowTitle(tr("%1 - airport details").arg(__airport->data()->icao));
 
-  if (!static_cast<QString>(_ap->data()->iata).isEmpty())
-    CodesLabel->setText(
-      static_cast<QString>(_ap->data()->icao) %
-      "/" %
-      static_cast<QString>(_ap->data()->iata)
-    );
+  if (!QString(__airport->data()->iata).isEmpty())
+    CodesLabel->setText(QString("%1 / %2").arg(QString(__airport->data()->icao),
+                                               QString(__airport->data()->iata)));
   else
-    CodesLabel->setText(static_cast<QString>(_ap->data()->icao));
+    CodesLabel->setText(QString(__airport->data()->icao));
 
-  NameLabel->setText(
-    QString::fromUtf8(_ap->data()->name) %
-    ", " %
-    QString::fromUtf8(_ap->data()->city)
-
-#ifndef NO_DEBUG
-    //display FIR info only in debug mode
-    % " (" %
-    static_cast<QString>(_ap->data()->fir_a) % " & " %
-    static_cast<QString>(_ap->data()->fir_b) % " FIR)"
-#endif
-  );
+  NameLabel->setText(QString("%1, %2").arg(QString::fromUtf8(__airport->data()->name),
+                                           QString::fromUtf8(__airport->data()->city)));
 
   // fill "Airport info" tab
-  const AirportRecord* apData = _ap->data();
-  FullNameLabel->setText(QString::fromUtf8(apData->name));
-  CityLabel->setText(QString::fromUtf8(apData->city));
-  CountryLabel->setText(QString::fromUtf8(apData->country));
-  AltitudeLabel->setText(tr("%1 ft").arg(QString::number(apData->altitude)));
+  FullNameLabel->setText(QString::fromUtf8(__airport->data()->name));
+  CityLabel->setText(QString::fromUtf8(__airport->data()->city));
+  CountryLabel->setText(QString::fromUtf8(__airport->data()->country));
+  AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->data()->altitude)));
 }
 
 void
@@ -230,10 +179,7 @@ AirportDetailsWindow::__adjustTables() {
 }
 
 void
-AirportDetailsWindow::__updateData() {
-  if (__currentICAO.isEmpty() || !isVisible())
-    return;
-
+AirportDetailsWindow::__update() {
   __updateModels();
   __adjustTables();
 }

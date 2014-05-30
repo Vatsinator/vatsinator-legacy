@@ -23,7 +23,6 @@
 #include "ui/windows/basewindow.h"
 
 #include "ui/ui_airportdetailswindow.h"
-#include "singleton.h"
 
 class Airport;
 class Controller;
@@ -34,37 +33,29 @@ class WeatherForecastModel;
 
 class AirportDetailsWindow :
     public BaseWindow,
-    public Singleton< AirportDetailsWindow >,
     private Ui::AirportDetailsWindow {
 
   Q_OBJECT
 
 public:
-  AirportDetailsWindow(QWidget* = nullptr);
+  AirportDetailsWindow(const Airport*, QWidget* = nullptr);
   virtual ~AirportDetailsWindow();
 
-public slots:
-  void show(const Airport*);
-  void updateMetar();
-  void updateMetar(QString);
-
 private:
-  void __updateModels(const Airport* = NULL);
-  void __fillLabels(const Airport*);
+  void __updateModels();
+  void __fillLabels();
   void __adjustTables();
   
 private slots:
-  void __updateData();
+  void __update();
   void __updateForecast(WeatherForecastModel*);
   void __handleShowClicked();
   void __notamUpdate(NotamListModel*);
   void __goToNotam(QModelIndex);
 
 private:
-  QString __currentICAO;
-  const Airport* __current;
-  
-  WeatherForecast* __forecast;
+  const Airport*        __airport;
+  WeatherForecast*      __forecast;
 
 };
 

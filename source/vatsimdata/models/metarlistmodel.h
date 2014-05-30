@@ -32,6 +32,10 @@ class MetarListModel :
     public QAbstractListModel,
     public Singleton<MetarListModel> {
 
+  /* TODO
+   * Split to MetarListModel & MetarUpdater
+   */
+
   Q_OBJECT
 
 signals:
