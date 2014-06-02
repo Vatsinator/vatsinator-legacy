@@ -94,6 +94,7 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 
       switch (_index.column()) {
         case Callsign:
+          /* TODO Check segfault here */
           return __flights[_index.row()]->callsign();
         case Name:
           return __flights[_index.row()]->realName();

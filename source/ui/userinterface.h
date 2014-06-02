@@ -30,7 +30,7 @@ class DebugWindow;
 #endif
 
 class AboutWindow;
-class AirportDetailsWindow;
+class Airport;
 class AtcDetailsWindow;
 class AtcListWindow;
 class DatabaseWindow;
@@ -75,6 +75,8 @@ public slots:
   
   void showAppRestartDialog();
   void showVatsimMessage(const QString&);
+  
+  void showDetailsWindow(const Airport*);
 
 private slots:
   void __statusError();
@@ -89,7 +91,6 @@ private:
 
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;
-  AirportDetailsWindow* __airportDetailsWindow;
   DatabaseWindow*       __databaseWindow;
   FirDetailsWindow*     __firDetailsWindow;
   AtcDetailsWindow*     __atcDetailsWindow;

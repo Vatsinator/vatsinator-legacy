@@ -25,9 +25,9 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/metaraction.h"
 #include "ui/map/mapconfig.h"
-#include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/metarswindow.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/models/controllertablemodel.h"
 
@@ -131,8 +131,8 @@ AirportItem::menu(QWidget* _parent) const {
   QMenu* menu = new QMenu(data()->data()->icao, _parent);
   
   AirportDetailsAction* showAp = new AirportDetailsAction(data(), tr("Airport details"), _parent);
-  connect(showAp,                                       SIGNAL(triggered(const Airport*)),
-          AirportDetailsWindow::getSingletonPtr(),      SLOT(show(const Airport*)));
+//   connect(showAp,                                       SIGNAL(triggered(const Airport*)),
+//           AirportDetailsWindow::getSingletonPtr(),      SLOT(show(const Airport*)));
   menu->addAction(showAp);
   
   MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
@@ -159,7 +159,7 @@ AirportItem::menu(QWidget* _parent) const {
 
 void
 AirportItem::showDetailsWindow() const {
-  AirportDetailsWindow::getSingletonPtr()->show(data());
+  UserInterface::getSingleton().showDetailsWindow(data());
 }
 
 void

@@ -51,8 +51,6 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
   
   connect(qApp,                                 SIGNAL(aboutToQuit()),
           this,                                 SLOT(hide()));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__update()));
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
   connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
@@ -66,8 +64,6 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
   ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
   ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
   NotamTableView->setErrorOnNoData(false);
-  
-  __adjustTables();
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {
@@ -77,55 +73,39 @@ AirportDetailsWindow::~AirportDetailsWindow() {
   if (m)
     delete m;
 }
-/*
+
 void
-AirportDetailsWindow::show(const Airport* _ap) {
-  Q_ASSERT(_ap->data());
+AirportDetailsWindow::closeEvent(QCloseEvent*) {
+  this->deleteLater();
+}
 
-  __current = _ap;
-  QString icao = QString(_ap->data()->icao);
-
-  __fillLabels(_ap);
-  __updateModels(_ap);
+void
+AirportDetailsWindow::showEvent(QShowEvent* _event) {
+  __fillLabels();
+  __updateModels();
   __adjustTables();
-  
-  // MetarLabel refresh
-
-  if (!isVisible()) {
-    QWidget::show();
-  } else {
-    activateWindow();
-  }
-
-  QAbstractItemModel* fvm = ForecastView->model();
-  if (fvm)
-    fvm->deleteLater();
   
   if (SM::get("network.weather_forecasts").toBool()) {
     ForecastGroup->setEnabled(true);
     ForecastView->setModel(nullptr);
-    __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
-                              QString::fromUtf8(_ap->data()->country));
+    __forecast->fetchForecast(QString::fromUtf8(__airport->data()->city),
+                              QString::fromUtf8(__airport->data()->country));
   } else {
     ForecastGroup->setEnabled(false);
   }
   
   NotamTableView->setModel(nullptr);
-  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(icao);
+  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(QString(__airport->data()->icao));
   NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
-}*/
+  
+  BaseWindow::showEvent(_event);
+}
 
 void
 AirportDetailsWindow::__updateModels() {
-  if (__airport->isStaffed()) {
-    InboundTable->setModel(__airport->inbounds());
-    OutboundTable->setModel(__airport->outbounds());
-    ATCTable->setModel(__airport->staff());
-  } else {
-    InboundTable->setModel(VatsimDataHandler::emptyFlightTable);
-    OutboundTable->setModel(VatsimDataHandler::emptyFlightTable);
-    ATCTable->setModel(VatsimDataHandler::emptyControllerTable);
-  }
+  InboundTable->setModel(__airport->inbounds());
+  OutboundTable->setModel(__airport->outbounds());
+  ATCTable->setModel(__airport->staff());
   
   BookedATCTable->setModel(
       VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(__airport->data()->icao)));
@@ -179,12 +159,6 @@ AirportDetailsWindow::__adjustTables() {
 }
 
 void
-AirportDetailsWindow::__update() {
-  __updateModels();
-  __adjustTables();
-}
-
-void
 AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
   QAbstractItemModel* m = ForecastView->model();
   if (m)
@@ -195,16 +169,15 @@ AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
 
 void
 AirportDetailsWindow::__handleShowClicked() {
-  Q_ASSERT(__current);
+  Q_ASSERT(__airport);
   // TODO
 //   MapWidget::getSingleton().showAirport(__current);
 }
 
 void
 AirportDetailsWindow::__notamUpdate(NotamListModel* _model) {
-  if (isVisible() && _model->icao() == __currentICAO) {
+  if (_model->icao() == QString(__airport->data()->icao))
     NotamTableView->setModel(_model);
-  }
 }
 
 void

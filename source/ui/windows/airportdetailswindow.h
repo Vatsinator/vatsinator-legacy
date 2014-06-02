@@ -40,6 +40,10 @@ class AirportDetailsWindow :
 public:
   AirportDetailsWindow(const Airport*, QWidget* = nullptr);
   virtual ~AirportDetailsWindow();
+  
+protected:
+  void closeEvent(QCloseEvent*) override;
+  void showEvent(QShowEvent*) override;
 
 private:
   void __updateModels();
@@ -47,7 +51,6 @@ private:
   void __adjustTables();
   
 private slots:
-  void __update();
   void __updateForecast(WeatherForecastModel*);
   void __handleShowClicked();
   void __notamUpdate(NotamListModel*);

@@ -54,7 +54,6 @@ UserInterface::UserInterface() :
 #endif
     __aboutWindow(nullptr),
     __metarsWindow(nullptr),
-    __airportDetailsWindow(nullptr),
     __databaseWindow(nullptr),
     __firDetailsWindow(nullptr),
     __atcDetailsWindow(nullptr),
@@ -67,7 +66,6 @@ UserInterface::UserInterface() :
 UserInterface::~UserInterface() {
   delete __vatsinatorWindow;
   delete __aboutWindow;
-  delete __airportDetailsWindow;
   delete __databaseWindow;
   delete __firDetailsWindow;
   delete __flightDetailsWindow;
@@ -90,7 +88,6 @@ UserInterface::init() {
   
   __aboutWindow = new AboutWindow();
   __metarsWindow = new MetarsWindow();
-  __airportDetailsWindow = new AirportDetailsWindow();
   __databaseWindow = new DatabaseWindow();
   __firDetailsWindow = new FirDetailsWindow();
   __atcDetailsWindow = new AtcDetailsWindow();
@@ -160,6 +157,11 @@ UserInterface::showVatsimMessage(const QString& _msg) {
   dialog->show();
   dialog->raise();
   dialog->activateWindow();
+}
+
+void
+UserInterface::showDetailsWindow(const Airport* _ap) {
+  (new AirportDetailsWindow(_ap))->show();
 }
 
 void
