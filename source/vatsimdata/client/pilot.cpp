@@ -115,8 +115,6 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   __discoverFlightPhase();
 }
 
-Pilot::~Pilot() {}
-
 void
 Pilot::update(const QStringList& _data) {
   Client::update(_data);

@@ -1,6 +1,6 @@
 /*
     flighttablemodel.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
+#include "vatsimdata/airport.h"
 
 #include "flighttablemodel.h"
 #include "defines.h"
@@ -27,7 +28,7 @@ FlightTableModel::FlightTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}
 
 void
-FlightTableModel::addFlight(const Pilot* _p) {
+FlightTableModel::add(const Pilot* _p) {
   Q_ASSERT(_p);
   if (!__flights.contains(_p)) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
@@ -35,8 +36,30 @@ FlightTableModel::addFlight(const Pilot* _p) {
     endInsertRows();
     
     connect(_p,         SIGNAL(destroyed(QObject*)),
-            this,       SLOT(__removeFlight()));
+            this,       SLOT(__autoRemove(QObject*)), Qt::DirectConnection);
   }
+}
+
+void
+FlightTableModel::remove(const Pilot* _p) {
+  Q_ASSERT(_p);
+  
+  for (int i = 0; i < __flights.size(); ++i) {
+    if (__flights[i] == _p) {
+      beginRemoveRows(QModelIndex(), i, i);
+      __flights.removeAt(i);
+      endRemoveRows();
+      
+      return;
+    }
+  }
+  
+  Q_ASSERT_X(false, "FlightTableModel", "The flight does not exist in the model");
+}
+
+bool
+FlightTableModel::contains(const Pilot* _p) {
+  return __flights.contains(_p);
 }
 
 void
@@ -83,41 +106,37 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
     case Qt::ToolTipRole:
       return __flights[_index.row()]->realName();
     case Qt::ForegroundRole:
-
       if (__flights[_index.row()]->isPrefiledOnly())
         return QBrush(QColor(Qt::gray));
       else
         return QVariant();
 
     case Qt::DisplayRole:
-      const AirportRecord* ap;
+      const Airport* ap;
 
       switch (_index.column()) {
         case Callsign:
-          /* TODO Check segfault here */
           return __flights[_index.row()]->callsign();
         case Name:
           return __flights[_index.row()]->realName();
         case From:
-          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route().origin);
-
+          ap = __flights[_index.row()]->origin();
           if (ap)
             return QString(
-                     QString::fromUtf8(ap->icao) %
+                     QString::fromUtf8(ap->data()->icao) %
                      " " %
-                     QString::fromUtf8(ap->city)
+                     QString::fromUtf8(ap->data()->city)
                    );
           else
             return __flights[_index.row()]->route().origin;
 
         case To:
-          ap = AirportDatabase::getSingleton().find(__flights[_index.row()]->route().destination);
-
+          ap = __flights[_index.row()]->destination();
           if (ap)
             return QString(
-                     QString::fromUtf8(ap->icao) %
+                     QString::fromUtf8(ap->data()->icao) %
                      " " %
-                     QString::fromUtf8(ap->city)
+                     QString::fromUtf8(ap->data()->city)
                    );
           else
             return __flights[_index.row()]->route().destination;
@@ -171,7 +190,6 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
                 return _a->callsign() > _b->callsign();
               }
       );
-      
       break;
       
     case Name:
@@ -184,7 +202,6 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
                 return _a->realName() > _b->realName();
               }
       );
-      
       break;
       
     case From:
@@ -197,7 +214,6 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
                 return _a->route().origin > _b->route().origin;
               }
       );
-      
       break;
       
     case To:
@@ -210,7 +226,6 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
                 return _a->route().destination > _b->route().destination;
               }
       );
-      
       break;
       
     case Aircraft:
@@ -223,10 +238,8 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
                 return _a->aircraft() > _b->aircraft();
               }
       );
-      
       break;
   }
-      
 
   endResetModel();
   
@@ -234,21 +247,7 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
 }
 
 void
-FlightTableModel::__removeFlight() {
-  Q_ASSERT(sender());
-  
-  const Pilot* p = dynamic_cast<const Pilot*>(sender());
-  Q_ASSERT(p);
-  
-  for (int i = 0; i < __flights.size(); ++i) {
-    if (__flights[i] == p) {
-      beginRemoveRows(QModelIndex(), i, i);
-      __flights.removeAt(i);
-      endRemoveRows();
-      
-      return;
-    }
-  }
-  
-  Q_ASSERT_X(false, "FlightTableModel", "The flight does not exist in the model");
+FlightTableModel::__autoRemove(QObject* _object) {
+  Q_ASSERT(_object);
+  remove(static_cast<const Pilot*>(_object));
 }

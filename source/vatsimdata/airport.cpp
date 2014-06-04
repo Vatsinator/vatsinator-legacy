@@ -98,17 +98,17 @@ Airport::facilities() const {
 
 void
 Airport::addStaff(const Controller* _c) {
-  __staff->addStaff(_c);
+  __staff->add(_c);
 }
 
 void
 Airport::addInbound(const Pilot* _p) {
-  __inbounds->addFlight(_p);
+  __inbounds->add(_p);
 }
 
 void
 Airport::addOutbound(const Pilot* _p) {
-  __outbounds->addFlight(_p);
+  __outbounds->add(_p);
 }
 
 bool

@@ -1,6 +1,6 @@
 /*
     flighttablemodel.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,7 +51,9 @@ public:
   
   explicit FlightTableModel(QObject* = 0);
 
-  void addFlight(const Pilot*);
+  void add(const Pilot*);
+  void remove(const Pilot*);
+  bool contains(const Pilot*);
   void clear();
   const Pilot* findFlightByCallsign(const QString&) const;
 
@@ -61,13 +63,11 @@ public:
   QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
   void sort(int, Qt::SortOrder = Qt::AscendingOrder);
   
-  inline const QList<const Pilot*>& flights() const {
-    return __flights;
-  }
+  inline const QList<const Pilot*>& flights() const { return __flights; }
   
 private slots:
-  void __removeFlight();
-
+  void __autoRemove(QObject*);
+  
 private:
   QList<const Pilot*> __flights;
 

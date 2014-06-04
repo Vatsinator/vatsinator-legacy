@@ -50,7 +50,7 @@ Fir::addStaff(const Controller* _c) {
 
 void
 Fir::addFlight(const Pilot* _p) {
-  __flights->addFlight(_p);
+  __flights->add(_p);
 }
 
 void

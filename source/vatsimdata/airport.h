@@ -20,6 +20,7 @@
 #ifndef AIRPORT_H
 #define AIRPORT_H
 
+#include <QObject>
 #include <QString>
 #include <QPair>
 
@@ -31,12 +32,12 @@ class Fir;
 class FlightTableModel;
 class Pilot;
 
-class Airport {
+class Airport : public QObject {
   
   /*
-   * This is the class that represents the single airport - either active
-   * or inactive.
+   * This is the class that represents the single airport.
    */
+  Q_OBJECT
 
 public:
   

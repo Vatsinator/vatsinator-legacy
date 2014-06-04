@@ -38,7 +38,7 @@ Uir::addFir(Fir* _f) {
 
 void
 Uir::addStaff(const Controller* _c) {
-  __staff->addStaff(_c);
+  __staff->add(_c);
 }
 
 void
