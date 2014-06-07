@@ -42,6 +42,8 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings()));
+  connect(__airport,                            SIGNAL(updated()),
+          this,                                 SLOT(__invalidate()));
 }
 
 AirportItem::~AirportItem() {
@@ -130,8 +132,8 @@ AirportItem::menu(QWidget* _parent) const {
   QMenu* menu = new QMenu(data()->data()->icao, _parent);
   
   AirportDetailsAction* showAp = new AirportDetailsAction(data(), tr("Airport details"), _parent);
-//   connect(showAp,                                       SIGNAL(triggered(const Airport*)),
-//           AirportDetailsWindow::getSingletonPtr(),      SLOT(show(const Airport*)));
+  connect(showAp,                               SIGNAL(triggered(const Airport*)),
+          UserInterface::getSingletonPtr(),     SLOT(showDetailsWindow(const Airport*)));
   menu->addAction(showAp);
   
   MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
@@ -202,6 +204,11 @@ AirportItem::__reloadSettings() {
     GlResourceManager::deleteImage(__label);
     __label = 0;
   }
+}
+
+void
+AirportItem::__invalidate() {
+  __icon = 0;
 }
 
 AirportItem::IconKeeper::IconKeeper() :

@@ -39,6 +39,9 @@ class Airport : public QObject {
    */
   Q_OBJECT
 
+signals:
+  void updated();
+
 public:
   
   /**

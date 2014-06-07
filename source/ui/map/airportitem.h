@@ -54,6 +54,7 @@ private:
 
 private slots:
   void __reloadSettings();
+  void __invalidate();
   
 private:
   
