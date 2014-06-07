@@ -563,6 +563,7 @@ VatsimDataHandler::__cleanupClients() {
   for (auto c: __clients) {
     if (!c->isOnline()) {
       __clients.remove(c->callsign());
+//       delete c;
       c->deleteLater();
     }
   }

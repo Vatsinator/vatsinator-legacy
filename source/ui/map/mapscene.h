@@ -39,7 +39,7 @@ class MapScene : public QObject {
 
 public:
   explicit MapScene(QObject* parent = 0);
-  virtual ~MapScene();
+  virtual ~MapScene() = default;
   
   inline const QList<FirItem*>& firItems() const {
     return __firItems;

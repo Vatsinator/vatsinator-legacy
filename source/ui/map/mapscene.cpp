@@ -41,20 +41,14 @@ MapScene::MapScene(QObject* parent): QObject(parent) {
   __setupItems();
 }
 
-MapScene::~MapScene() {
-  qDeleteAll(__firItems);
-  qDeleteAll(__airportItems);
-  qDeleteAll(__approachCircleItems);
-}
-
 void
 MapScene::__setupItems() {
   for (const Airport* a: VatsimDataHandler::getSingleton().airports()) {
-    __airportItems << new AirportItem(a);
+    __airportItems << new AirportItem(a, this);
   }
   
   for (const Fir* f: VatsimDataHandler::getSingleton().firs()) {
-    __firItems << new FirItem(f);
+    __firItems << new FirItem(f, this);
   }
   
   for (auto c: VatsimDataHandler::getSingleton().clients())
@@ -66,8 +60,8 @@ MapScene::__setupItems() {
 void
 MapScene::__addFlightItem(const Pilot* _p) {
   connect(_p,           SIGNAL(destroyed(QObject*)),
-          this,         SLOT(__removeFlightItem()));
-  __flightItems << new FlightItem(_p);
+          this,         SLOT(__removeFlightItem()), Qt::DirectConnection);
+  __flightItems << new FlightItem(_p, this);
 }
 
 void

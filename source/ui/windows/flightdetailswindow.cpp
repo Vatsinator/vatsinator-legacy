@@ -207,7 +207,7 @@ FlightDetailsWindow::__updateLabels() {
 
 void
 FlightDetailsWindow::__handleClicked() {
-  Q_ASSERT(__current);
+  Q_ASSERT(__pilot);
   // TODO
 //   MapWidget::getSingleton().showClient(__current);
 }
