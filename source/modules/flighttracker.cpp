@@ -38,8 +38,6 @@ FlightTracker::FlightTracker(QObject* _parent) :
           this,                                         SLOT(__trackFlight(const Pilot*)));
   connect(MapWidget::getSingletonPtr(),                 SIGNAL(flightTrackingCanceled()),
           this,                                         SLOT(__cancelFlight()));
-  connect(FlightDetailsWindow::getSingletonPtr(),       SIGNAL(flightTrackingStateChanged(const Pilot*, int)),
-          this,                                         SLOT(__trackFlight(const Pilot*, int)));
 }
 
 void

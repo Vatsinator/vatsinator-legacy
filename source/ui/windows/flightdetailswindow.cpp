@@ -1,6 +1,6 @@
 /*
     flightdetailswindow.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,8 +34,9 @@
 #include "flightdetailswindow.h"
 #include "defines.h"
 
-FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
-    BaseWindow(_parent) {
+FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) :
+    BaseWindow(_parent),
+    __pilot(_pilot) {
   setupUi(this);
   
   QFont smaller;
@@ -53,123 +54,44 @@ FlightDetailsWindow::FlightDetailsWindow(QWidget* _parent) :
   FromLabel->setFont(VatsinatorApplication::h2Font());
   ToLabel->setFont(VatsinatorApplication::h2Font());
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-  
-  connect(TrackFlightBox,                       SIGNAL(stateChanged(int)),
-          this,                                 SLOT(stateHandle(int)));
-  connect(ShowButton,                           SIGNAL(clicked()),
-          this,                                 SLOT(__handleShowClicked()));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__updateData()));
+  connect(qApp,                 SIGNAL(aboutToQuit()),
+          this,                 SLOT(hide()));
+  connect(TrackFlightBox,       SIGNAL(stateChanged(int)),
+          this,                 SLOT(stateHandle(int)));
+  connect(ShowButton,           SIGNAL(clicked()),
+          this,                 SLOT(__handleClicked()));
+  connect(__pilot,              SIGNAL(updated()),
+          this,                 SLOT(__updateLabels()));
 }
 
 void
-FlightDetailsWindow::show(const Client* _client) {
-  Q_ASSERT(dynamic_cast<const Pilot*>(_client));
-  __current = dynamic_cast<const Pilot*>(_client);
-  __currentCallsign = __current->callsign();
-
-  if (__current->isPrefiledOnly())
+FlightDetailsWindow::show() {
+  Q_ASSERT(__pilot);
+  
+  if (__pilot->isPrefiledOnly())
     return;
   
-  setWindowTitle(tr("%1 - flight details").arg(__current->callsign()));
-  
-  CallsignLabel->setText(__current->callsign());
-  
-  Airline* myAirline = AirlineDatabase::getSingleton().find(__current->callsign().left(3));
-  if (myAirline) {
-    QString tooltip = QString("%1 (%2)").arg(myAirline->name(), myAirline->country());
-    AirlineLabel->setToolTip(tooltip);
-    
-    if (myAirline->logo().isNull()) {
-      AirlineLabel->setText(myAirline->name());
-      connect(myAirline,    SIGNAL(logoFetched()),
-              this,         SLOT(__airlineUpdated()));
-      myAirline->requestLogo();
-    } else {
-      AirlineLabel->setPixmap(QPixmap::fromImage(myAirline->logo()));
-    }
-  } else {
-    AirlineLabel->setPixmap(QPixmap());
-    AirlineLabel->setText("");
-    AirlineLabel->setToolTip("");
-  }
-  
-  FromLabel->setText(__current->route().origin);
-  ToLabel->setText(__current->route().destination);
-  
-  FlightProgress->setValue(__current->progress());
-  
-  if (__current->std().isValid())
-    PlannedDepartureTimeLabel->setText(__current->std().toString("hh:mm"));
-  else
-    PlannedDepartureTimeLabel->setText("-");
-  
-  if (__current->atd().isValid())
-    ActualDepartureTimeLabel->setText(__current->atd().toString("hh:mm"));
-  else
-    ActualDepartureTimeLabel->setText("-");
-  
-  if (__current->sta().isValid())
-    PlannedArrivalTimeLabel->setText(__current->sta().toString("hh:mm"));
-  else
-    PlannedArrivalTimeLabel->setText("-");
-  
-  if (__current->eta().isValid())
-    EstimatedArrivalTimeLabel->setText(__current->eta().toString("hh:mm"));
-  else
-    EstimatedArrivalTimeLabel->setText("-");
-
-  PilotLabel->setText(__current->realName() + " (" + QString::number(__current->pid()) + ")");
-  AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__current->altitude())));
-  GroundSpeedLabel->setText(tr("%1 kts").arg(QString::number(__current->groundSpeed())));
-  HeadingLabel->setText(QString::number(__current->heading()));
-
-  if (__current->phase() == Pilot::Airborne)
-    CurrentStatusLabel->setText(tr("airborne"));
-  else if (__current->phase() == Pilot::Departing)
-    CurrentStatusLabel->setText(tr("departing"));
-  else
-    CurrentStatusLabel->setText(tr("arrived"));
-
-  ServerLabel->setText(__current->server());
-  TimeOnlineLabel->setText(__current->onlineFrom().toString("dd MMM yyyy, hh:mm"));
-  SquawkLabel->setText(__current->squawk());
-  AltimeterLabel->setText(__current->pressure().mb % " / " % __current->pressure().ihg);
-
-  FlightRulesLabel->setText((__current->flightRules() == Pilot::Ifr) ? "IFR" : "VFR");
-
-  __updateToFromButtons();
-
-  AircraftLabel->setText(__current->aircraft());
-  TrueAirSpeedLabel->setText(tr("%1 kts").arg(QString::number(__current->tas())));
-  CruiseAltitude->setText(__current->route().altitude);
-
-  RouteField->setPlainText(__current->route().route);
-  RemarksField->setPlainText(__current->remarks());
-
-  if (FlightTracker::getSingleton().tracked() == __current)
+  if (FlightTracker::getSingleton().tracked() == __pilot)
     TrackFlightBox->setCheckState(Qt::Checked);
   else
     TrackFlightBox->setCheckState(Qt::Unchecked);
-
-  if (!isVisible())
-    QWidget::show();
-  else
-    activateWindow();
+  
+  __updateLabels();
+  __updateButtons();
+  
+  BaseWindow::show();
 }
 
 void
 FlightDetailsWindow::stateHandle(int _state) {
-  emit flightTrackingStateChanged(__current, _state);
+  emit flightTrackingStateChanged(__pilot, _state);
 }
 
 void
-FlightDetailsWindow::__updateToFromButtons() {
-  if (!__current->route().origin.isEmpty()) {
-    const Airport* ap = __current->origin();
-    QString text = __current->route().origin;
+FlightDetailsWindow::__updateButtons() {
+  if (!__pilot->route().origin.isEmpty()) {
+    const Airport* ap = __pilot->origin();
+    QString text = __pilot->route().origin;
 
     if (ap) {
       FromCityLabel->setText(QString::fromUtf8(ap->data()->city));
@@ -194,9 +116,9 @@ FlightDetailsWindow::__updateToFromButtons() {
     FromCityLabel->setText("");
   }
 
-  if (!__current->route().destination.isEmpty()) {
-    const Airport* ap = __current->destination();
-    QString text = __current->route().destination;
+  if (!__pilot->route().destination.isEmpty()) {
+    const Airport* ap = __pilot->destination();
+    QString text = __pilot->route().destination;
 
     if (ap) {
       ToCityLabel->setText(QString::fromUtf8(ap->data()->city));
@@ -210,7 +132,7 @@ FlightDetailsWindow::__updateToFromButtons() {
 
       ArrivalButton->setAirportPointer(ap);
     } else {
-      ArrivalButton->setAirportPointer(NULL);
+      ArrivalButton->setAirportPointer(nullptr);
       ToCityLabel->setText("");
     }
 
@@ -223,19 +145,68 @@ FlightDetailsWindow::__updateToFromButtons() {
 }
 
 void
-FlightDetailsWindow::__updateData() {
-  __current = VatsimDataHandler::getSingleton().findPilot(__currentCallsign);
-
-  if (!__current || __current->isPrefiledOnly()) {
-    __currentCallsign = "";
-    hide();
+FlightDetailsWindow::__updateLabels() {
+  setWindowTitle(tr("%1 - flight details").arg(__pilot->callsign()));
+  CallsignLabel->setText(__pilot->callsign());
+  
+  Airline* myAirline = AirlineDatabase::getSingleton().find(__pilot->callsign().left(3));
+  if (myAirline) {
+    QString tooltip = QString("%1 (%2)").arg(myAirline->name(), myAirline->country());
+    AirlineLabel->setToolTip(tooltip);
+    
+    if (myAirline->logo().isNull()) {
+      AirlineLabel->setText(myAirline->name());
+      connect(myAirline,    SIGNAL(logoFetched()),
+              this,         SLOT(__airlineUpdated()));
+      myAirline->requestLogo();
+    } else {
+      AirlineLabel->setPixmap(QPixmap::fromImage(myAirline->logo()));
+    }
   } else {
-    __updateToFromButtons();
+    AirlineLabel->setPixmap(QPixmap());
+    AirlineLabel->setText("");
+    AirlineLabel->setToolTip("");
   }
+  
+  FromLabel->setText(__pilot->route().origin);
+  ToLabel->setText(__pilot->route().destination);
+  
+  FlightProgress->setValue(__pilot->progress());
+  
+  PlannedDepartureTimeLabel->setText(__pilot->std().isValid() ? __pilot->std().toString("hh:mm") : "-");
+  ActualDepartureTimeLabel->setText(__pilot->atd().isValid() ? __pilot->atd().toString("hh:mm") : "-");
+  PlannedArrivalTimeLabel->setText(__pilot->sta().isValid() ? __pilot->sta().toString("hh:mm") : "-");
+  EstimatedArrivalTimeLabel->setText(__pilot->eta().isValid() ? __pilot->eta().toString("hh:mm") : "-");
+
+  PilotLabel->setText(QString("%1 (%2)").arg(__pilot->realName(), QString::number(__pilot->pid())));
+  AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__pilot->altitude())));
+  GroundSpeedLabel->setText(tr("%1 kts").arg(QString::number(__pilot->groundSpeed())));
+  HeadingLabel->setText(QString::number(__pilot->heading()));
+
+  if (__pilot->phase() == Pilot::Airborne)
+    CurrentStatusLabel->setText(tr("airborne"));
+  else if (__pilot->phase() == Pilot::Departing)
+    CurrentStatusLabel->setText(tr("departing"));
+  else
+    CurrentStatusLabel->setText(tr("arrived"));
+
+  ServerLabel->setText(__pilot->server());
+  TimeOnlineLabel->setText(__pilot->onlineFrom().toString("dd MMM yyyy, hh:mm"));
+  SquawkLabel->setText(__pilot->squawk());
+  AltimeterLabel->setText(__pilot->pressure().mb % " / " % __pilot->pressure().ihg);
+
+  FlightRulesLabel->setText((__pilot->flightRules() == Pilot::Ifr) ? "IFR" : "VFR");
+
+  AircraftLabel->setText(__pilot->aircraft());
+  TrueAirSpeedLabel->setText(tr("%1 kts").arg(QString::number(__pilot->tas())));
+  CruiseAltitude->setText(__pilot->route().altitude);
+
+  RouteField->setPlainText(__pilot->route().route);
+  RemarksField->setPlainText(__pilot->remarks());
 }
 
 void
-FlightDetailsWindow::__handleShowClicked() {
+FlightDetailsWindow::__handleClicked() {
   Q_ASSERT(__current);
   // TODO
 //   MapWidget::getSingleton().showClient(__current);

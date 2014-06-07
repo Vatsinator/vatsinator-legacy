@@ -25,7 +25,6 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/metaraction.h"
 #include "ui/map/mapconfig.h"
-#include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
@@ -148,7 +147,7 @@ AirportItem::menu(QWidget* _parent) const {
       for (const Controller* c: data()->staff()->staff()) {
         ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
         connect(cda,                                    SIGNAL(triggered(const Client*)),
-                AtcDetailsWindow::getSingletonPtr(),    SLOT(show(const Client*)));
+                UserInterface::getSingletonPtr(),       SLOT(showDetailsWindow(const Client*)));
         menu->addAction(cda);
       }
     }

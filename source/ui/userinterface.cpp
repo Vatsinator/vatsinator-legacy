@@ -43,6 +43,8 @@
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/client.h"
+#include "vatsimdata/client/controller.h"
+#include "vatsimdata/client/pilot.h"
 #include "vatsinatorapplication.h"
 
 #include "userinterface.h"
@@ -56,9 +58,7 @@ UserInterface::UserInterface() :
     __metarsWindow(nullptr),
     __databaseWindow(nullptr),
     __firDetailsWindow(nullptr),
-    __atcDetailsWindow(nullptr),
     __atcListWindow(nullptr),
-    __flightDetailsWindow(nullptr),
     __flightsListWindow(nullptr),
     __settingsWindow(nullptr),
     __vatsinatorWindow(nullptr) {}
@@ -68,9 +68,7 @@ UserInterface::~UserInterface() {
   delete __aboutWindow;
   delete __databaseWindow;
   delete __firDetailsWindow;
-  delete __flightDetailsWindow;
   delete __flightsListWindow;
-  delete __atcDetailsWindow;
   delete __atcListWindow;
   delete __settingsWindow;
   delete __metarsWindow;
@@ -90,9 +88,7 @@ UserInterface::init() {
   __metarsWindow = new MetarsWindow();
   __databaseWindow = new DatabaseWindow();
   __firDetailsWindow = new FirDetailsWindow();
-  __atcDetailsWindow = new AtcDetailsWindow();
   __atcListWindow = new AtcListWindow();
-  __flightDetailsWindow = new FlightDetailsWindow();
   __flightsListWindow = new FlightListWindow();
   __settingsWindow = new SettingsWindow();
   __vatsinatorWindow = new VatsinatorWindow();
@@ -161,7 +157,22 @@ UserInterface::showVatsimMessage(const QString& _msg) {
 
 void
 UserInterface::showDetailsWindow(const Airport* _ap) {
-  (new AirportDetailsWindow(_ap))->show();
+  AirportDetailsWindow* ap = new AirportDetailsWindow(_ap);
+  ap->setAttribute(Qt::WA_DeleteOnClose);
+  ap->show();
+}
+
+void
+UserInterface::showDetailsWindow(const Client* _c) {
+  if (const Pilot* p = dynamic_cast<const Pilot*>(_c)) {
+    FlightDetailsWindow* w = new FlightDetailsWindow(p);
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
+  } else if (const Controller* c = dynamic_cast<const Controller*>(_c)) {
+    AtcDetailsWindow* w = new AtcDetailsWindow(c);
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
+  }
 }
 
 void

@@ -24,8 +24,8 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/firdetailsaction.h"
 #include "ui/map/mapconfig.h"
-#include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/firdetailswindow.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -147,8 +147,8 @@ FirItem::menu(QWidget* _parent) const {
   
   for (const Controller* c: data()->staff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-    connect(cda,                                        SIGNAL(triggered(const Client*)),
-            AtcDetailsWindow::getSingletonPtr(),        SLOT(show(const Client*)));
+    connect(cda,                                SIGNAL(triggered(const Client*)),
+            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
     menu->addAction(cda);
   }
   

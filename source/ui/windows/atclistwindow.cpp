@@ -19,13 +19,8 @@
 #include <QtGui>
 
 #include "ui/userinterface.h"
-
-#include "ui/windows/atcdetailswindow.h"
-
 #include "vatsimdata/client/controller.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "atclistwindow.h"
@@ -69,8 +64,8 @@ void
 AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 
-  AtcDetailsWindow::getSingleton().show(
-    (qobject_cast< const ControllerTableModel* >(_index.model()))->staff()[_index.row()]
+  UserInterface::getSingleton().showDetailsWindow(
+    (qobject_cast<const ControllerTableModel*>(_index.model()))->staff()[_index.row()]
   );
 }
 

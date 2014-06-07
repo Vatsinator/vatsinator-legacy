@@ -31,12 +31,12 @@ class DebugWindow;
 
 class AboutWindow;
 class Airport;
-class AtcDetailsWindow;
 class AtcListWindow;
+class Client;
 class DatabaseWindow;
 class FirDetailsWindow;
-class FlightDetailsWindow;
 class FlightListWindow;
+class Pilot;
 class MetarsWindow;
 class SettingsWindow;
 class VatsinatorWindow;
@@ -77,6 +77,7 @@ public slots:
   void showVatsimMessage(const QString&);
   
   void showDetailsWindow(const Airport*);
+  void showDetailsWindow(const Client*);
 
 private slots:
   void __statusError();
@@ -93,9 +94,7 @@ private:
   MetarsWindow*         __metarsWindow;
   DatabaseWindow*       __databaseWindow;
   FirDetailsWindow*     __firDetailsWindow;
-  AtcDetailsWindow*     __atcDetailsWindow;
   AtcListWindow*        __atcListWindow;
-  FlightDetailsWindow*  __flightDetailsWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
   VatsinatorWindow*     __vatsinatorWindow;

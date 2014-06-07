@@ -75,11 +75,6 @@ AirportDetailsWindow::~AirportDetailsWindow() {
 }
 
 void
-AirportDetailsWindow::closeEvent(QCloseEvent*) {
-  this->deleteLater();
-}
-
-void
 AirportDetailsWindow::showEvent(QShowEvent* _event) {
   __fillLabels();
   __updateModels();

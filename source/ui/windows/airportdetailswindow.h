@@ -42,7 +42,6 @@ public:
   virtual ~AirportDetailsWindow();
   
 protected:
-  void closeEvent(QCloseEvent*) override;
   void showEvent(QShowEvent*) override;
 
 private:

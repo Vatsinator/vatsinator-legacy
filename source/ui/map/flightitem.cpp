@@ -27,8 +27,8 @@
 #include "ui/actions/metaraction.h"
 #include "ui/actions/trackaction.h"
 #include "ui/map/mapconfig.h"
-#include "ui/windows/flightdetailswindow.h"
 #include "ui/windows/metarswindow.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -173,7 +173,7 @@ FlightItem::menu(QWidget* _parent) const {
   
   ClientDetailsAction* showDetails = new ClientDetailsAction(data(), tr("Flight details"), _parent);
   connect(showDetails,                                  SIGNAL(triggered(const Client*)),
-          FlightDetailsWindow::getSingletonPtr(),       SLOT(show(const Client*)));
+          UserInterface::getSingletonPtr(),             SLOT(showDetailsWindow(const Client*)));
   menu->addAction(showDetails);
   
   TrackAction* trackFlight = new TrackAction(data(), _parent);
@@ -201,7 +201,7 @@ FlightItem::menu(QWidget* _parent) const {
 
 void
 FlightItem::showDetailsWindow() const {
-  FlightDetailsWindow::getSingleton().show(data());
+  UserInterface::getSingleton().showDetailsWindow(data());
 }
 
 void

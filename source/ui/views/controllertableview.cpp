@@ -19,9 +19,7 @@
 #include <QtGui>
 
 #include "ui/buttons/clientdetailsbutton.h"
-
-#include "ui/windows/atcdetailswindow.h"
-
+#include "ui/userinterface.h"
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "controllertableview.h"
@@ -64,8 +62,8 @@ ControllerTableView::__updateButtons(int _start, int _end) {
   
   for (int i = _start; i < _end; ++i) {
     ClientDetailsButton* dButton = new ClientDetailsButton(cModel->staff()[i]);
-    connect(dButton,                             SIGNAL(clicked(const Client*)),
-            AtcDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
+    connect(dButton,                            SIGNAL(clicked(const Client*)),
+            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
     setIndexWidget(cModel->index(i, ControllerTableModel::Button), dButton);
   }
 }

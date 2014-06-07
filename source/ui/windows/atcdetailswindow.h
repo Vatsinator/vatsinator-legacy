@@ -21,33 +21,29 @@
 #define ATCDETAILSWINDOW_H
 
 #include "ui/windows/basewindow.h"
-
 #include "ui/ui_atcdetailswindow.h"
-#include "singleton.h"
 
 class Client;
 class Controller;
 
 class AtcDetailsWindow :
     public BaseWindow,
-    public Singleton< AtcDetailsWindow >,
     private Ui::ATCDetailsWindow {
 
   Q_OBJECT
 
 public:
-  AtcDetailsWindow(QWidget* = nullptr);
+  AtcDetailsWindow(const Controller*, QWidget* = nullptr);
 
 public slots:
-  void show(const Client*);
+  void show();
 
 private:
-  const Controller* __current;
-  QString __currentCallsign;
+  const Controller* __atc;
 
 private slots:
-  void __updateData();
-  void __handleShowClicked();
+  void __updateLabels();
+  void __handleClicked();
 
 
 };

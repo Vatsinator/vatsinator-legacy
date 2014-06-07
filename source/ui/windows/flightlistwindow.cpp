@@ -19,13 +19,8 @@
 #include <QtGui>
 
 #include "ui/userinterface.h"
-
-#include "ui/windows/flightdetailswindow.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsimdata/client/pilot.h"
-
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "flightlistwindow.h"
@@ -72,7 +67,7 @@ void
 FlightListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast<const FlightTableModel*>(_index.model()));
 
-  FlightDetailsWindow::getSingleton().show(
-    (qobject_cast< const FlightTableModel* >(_index.model()))->flights()[_index.row()]
+  UserInterface::getSingleton().showDetailsWindow(
+    (qobject_cast<const FlightTableModel*>(_index.model()))->flights()[_index.row()]
   );
 }
