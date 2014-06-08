@@ -44,8 +44,8 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
           this,                                 SLOT(__resetLabel()));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__resetLabel()));
+  connect(__fir,                                SIGNAL(updated()),
+          this,                                 SLOT(__invalidate()));
 }
 
 FirItem::~FirItem() {
@@ -197,12 +197,10 @@ FirItem::__generateLabel() const {
   
   painter.setFont(SM::get("map.fir_font").value<QFont>());
   
-  QColor color;
-  if (__fir->isStaffed())
-    color = SM::get("map.staffed_fir_borders_color").value<QColor>();
-  else
-    color = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
-  
+  QColor color = __fir->isStaffed() ? 
+    SM::get("map.staffed_fir_borders_color").value<QColor>() :
+    SM::get("map.unstaffed_fir_borders_color").value<QColor>();
+    
   painter.setPen(color);
   
   painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);
@@ -215,4 +213,9 @@ FirItem::__resetLabel() {
     GlResourceManager::deleteImage(__label);
     __label = 0;
   }
+}
+
+void
+FirItem::__invalidate() {
+  __resetLabel();
 }

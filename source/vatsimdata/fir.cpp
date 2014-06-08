@@ -30,27 +30,25 @@ Fir::Fir(const FirRecord* _data) :
      __data(_data),
      __icao(QString::fromUtf8(_data->header.icao)),
      __oceanic(_data->header.oceanic),
-     __staff(new ControllerTableModel()),
-     __flights(new FlightTableModel()),
-     __airports(new AirportTableModel()) {
+     __staff(new ControllerTableModel(this)),
+     __flights(new FlightTableModel(this)),
+     __airports(new AirportTableModel(this)) {
   
   Q_ASSERT(__data);
 }
 
-Fir::~Fir() {
-  delete __staff;
-  delete __flights;
-  delete __airports;
-}
-
 void
 Fir::addStaff(const Controller* _c) {
-//   __staff->addStaff(_c);
+  __staff->add(_c);
+  connect(_c,           SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
 }
 
 void
 Fir::addFlight(const Pilot* _p) {
   __flights->add(_p);
+  connect(_p,           SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
 }
 
 void

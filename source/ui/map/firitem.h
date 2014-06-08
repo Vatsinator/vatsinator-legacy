@@ -63,6 +63,7 @@ private:
   
 private slots:
   void __resetLabel();
+  void __invalidate();
   
 private:
   const Fir* __fir;

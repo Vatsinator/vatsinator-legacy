@@ -20,6 +20,7 @@
 #ifndef FIR_H
 #define FIR_H
 
+#include <QObject>
 #include <QString>
 
 class Airport;
@@ -31,8 +32,12 @@ class FlightTableModel;
 class Pilot;
 struct FirRecord;
 
-class Fir {
-
+class Fir : public QObject {
+  Q_OBJECT
+  
+signals:
+  void updated();
+  
 public:
   
   /**
@@ -40,7 +45,7 @@ public:
    */
   Fir(const FirRecord*);
   
-  virtual ~Fir();
+  virtual ~Fir() = default;
   
   /**
    * Records staff in the fir.
