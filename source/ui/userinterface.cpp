@@ -57,7 +57,6 @@ UserInterface::UserInterface() :
     __aboutWindow(nullptr),
     __metarsWindow(nullptr),
     __databaseWindow(nullptr),
-    __firDetailsWindow(nullptr),
     __atcListWindow(nullptr),
     __flightsListWindow(nullptr),
     __settingsWindow(nullptr),
@@ -67,7 +66,6 @@ UserInterface::~UserInterface() {
   delete __vatsinatorWindow;
   delete __aboutWindow;
   delete __databaseWindow;
-  delete __firDetailsWindow;
   delete __flightsListWindow;
   delete __atcListWindow;
   delete __settingsWindow;
@@ -87,7 +85,6 @@ UserInterface::init() {
   __aboutWindow = new AboutWindow();
   __metarsWindow = new MetarsWindow();
   __databaseWindow = new DatabaseWindow();
-  __firDetailsWindow = new FirDetailsWindow();
   __atcListWindow = new AtcListWindow();
   __flightsListWindow = new FlightListWindow();
   __settingsWindow = new SettingsWindow();
@@ -173,6 +170,13 @@ UserInterface::showDetailsWindow(const Client* _c) {
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
   }
+}
+
+void
+UserInterface::showDetailsWindow(const Fir* _f) {
+  FirDetailsWindow* w = new FirDetailsWindow(_f);
+  w->setAttribute(Qt::WA_DeleteOnClose);
+  w->show();
 }
 
 void

@@ -34,7 +34,7 @@ class Airport;
 class AtcListWindow;
 class Client;
 class DatabaseWindow;
-class FirDetailsWindow;
+class Fir;
 class FlightListWindow;
 class Pilot;
 class MetarsWindow;
@@ -78,7 +78,8 @@ public slots:
   
   void showDetailsWindow(const Airport*);
   void showDetailsWindow(const Client*);
-
+  void showDetailsWindow(const Fir*);
+  
 private slots:
   void __statusError();
   void __dataError();
@@ -93,7 +94,6 @@ private:
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;
   DatabaseWindow*       __databaseWindow;
-  FirDetailsWindow*     __firDetailsWindow;
   AtcListWindow*        __atcListWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;

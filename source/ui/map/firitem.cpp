@@ -24,7 +24,6 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/firdetailsaction.h"
 #include "ui/map/mapconfig.h"
-#include "ui/windows/firdetailswindow.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -142,7 +141,7 @@ FirItem::menu(QWidget* _parent) const {
       _parent
     );
   connect(showFir,                              SIGNAL(triggered(const Fir*)),
-          FirDetailsWindow::getSingletonPtr(),  SLOT(show(const Fir*)));
+          UserInterface::getSingletonPtr(),     SLOT(showDetailsWindow(const Fir*)));
   menu->addAction(showFir);
   
   for (const Controller* c: data()->staff()->staff()) {
@@ -157,7 +156,7 @@ FirItem::menu(QWidget* _parent) const {
 
 void
 FirItem::showDetailsWindow() const {
-  FirDetailsWindow::getSingleton().show(data());
+  UserInterface::getSingleton().showDetailsWindow(data());
 }
 
 void

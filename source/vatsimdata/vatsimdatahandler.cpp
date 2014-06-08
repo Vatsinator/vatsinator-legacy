@@ -105,11 +105,11 @@ VatsimDataHandler::~VatsimDataHandler() {
 
 void
 VatsimDataHandler::init() {
+  __initData();
+  
   __readCountryFile(FileManager::path("data/country"));
   __readAliasFile(FileManager::path("data/alias"));
   __readFirFile(FileManager::path("data/fir"));
-  
-  __initData();
 }
 
 void
