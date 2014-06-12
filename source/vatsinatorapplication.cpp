@@ -125,10 +125,7 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __fileManager;
   
   rmThread->wait();
-  delete rmThread;
-  
   spThread->wait();
-  delete spThread;
 
 #ifndef NO_DEBUG
   DumpUnfreed();

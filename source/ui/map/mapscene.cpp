@@ -48,7 +48,9 @@ MapScene::__setupItems() {
   }
   
   for (const Fir* f: VatsimDataHandler::getSingleton().firs()) {
-    __firItems << new FirItem(f, this);
+    if (f->data()->header.textPosition.x != 0.0 && f->data()->header.textPosition.y != 0.0) {
+      __firItems << new FirItem(f, this);
+    }
   }
   
   for (auto c: VatsimDataHandler::getSingleton().clients())

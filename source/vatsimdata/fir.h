@@ -78,6 +78,9 @@ public:
    */
   bool isEmpty() const;
   
+  void setName(const QString&);
+  void setCountry(const QString&);
+  
   inline const FirRecord* data() const { return __data; }
   
   inline ControllerTableModel* staff() const { return __staff; }
@@ -88,10 +91,7 @@ public:
   inline bool isOceanic() const { return __oceanic; }
   
   inline const QString& name() const { return __name; }
-  inline void setName(const QString& _n) { __name = _n; }
-  
   inline const QString& country() const { return __country; }
-  inline void setCountry(const QString& _c) { __country = _c; }
   
 private:
   

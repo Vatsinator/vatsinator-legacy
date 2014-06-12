@@ -92,7 +92,7 @@ public:
   /**
    * Default ctor.
    */
-  VatsimDataHandler();
+  VatsimDataHandler(QObject* = nullptr);
   
   /**
    * Destructor deletes all pointers.

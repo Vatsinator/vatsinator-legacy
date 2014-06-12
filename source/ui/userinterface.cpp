@@ -50,7 +50,8 @@
 #include "userinterface.h"
 #include "defines.h"
 
-UserInterface::UserInterface() :
+UserInterface::UserInterface(QObject* _parent) :
+    QObject(_parent),
 #ifndef NO_DEBUG
     __debugWindow(nullptr),
 #endif

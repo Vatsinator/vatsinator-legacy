@@ -55,12 +55,8 @@ ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTa
 static QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
 
 
-namespace {
-  QMutex dataMutex;
-}
-
-
-VatsimDataHandler::VatsimDataHandler() :
+VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
+    QObject(_parent),
     __statusUrl(NetConfig::Vatsim::statusUrl()),
     __currentTimestamp(0),
     __observers(0),
@@ -88,10 +84,8 @@ VatsimDataHandler::VatsimDataHandler() :
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
-  dataMutex.lock();
   qDeleteAll(__airports);
   qDeleteAll(__firs);
-  dataMutex.unlock();
   
   if (__notamProvider)
     delete __notamProvider;
@@ -312,8 +306,9 @@ VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
     if (__firs.contains(k)) {
       QList<Fir*> values = __firs.values(k);
       for (Fir* f: values)
-        if (f->isOceanic() == _fss)
+        if (f->isOceanic() == _fss) {
           return f;
+        }
     }
   }
   
@@ -508,8 +503,6 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
 
 void
 VatsimDataHandler::__initData() {
-  dataMutex.lock();
-  
   for_each(FirDatabase::getSingleton().firs().begin(),
     FirDatabase::getSingleton().firs().end(),
     [this](const FirRecord& fr) {
@@ -525,8 +518,6 @@ VatsimDataHandler::__initData() {
       __airports.insert(a->icao(), a);
     }
   );
-  
-  dataMutex.unlock();
 }
 
 void
@@ -538,7 +529,6 @@ VatsimDataHandler::__clearData() {
 
 void
 VatsimDataHandler::__loadCachedData() {
-  dataMutex.lock();
   VatsinatorApplication::log("VatsimDataHandler: loading data from cache...");
   
   CacheFile file(CacheFileName);
@@ -553,7 +543,6 @@ VatsimDataHandler::__loadCachedData() {
     file.close();
     parseDataFile(data);
   }
-  dataMutex.unlock();
   
   VatsinatorApplication::log("VatsimDataHandler: cache restored.");
 }
@@ -563,7 +552,6 @@ VatsimDataHandler::__cleanupClients() {
   for (auto c: __clients) {
     if (!c->isOnline()) {
       __clients.remove(c->callsign());
-//       delete c;
       c->deleteLater();
     }
   }

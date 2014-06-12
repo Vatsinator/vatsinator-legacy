@@ -40,8 +40,11 @@ Fir::Fir(const FirRecord* _data) :
 void
 Fir::addStaff(const Controller* _c) {
   __staff->add(_c);
+  connect(_c,           SIGNAL(updated()),
+          this,         SIGNAL(updated()));
   connect(_c,           SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
 }
 
 void
@@ -67,6 +70,9 @@ Fir::fixupName() {
     else
       __name += " Center";
   }
+  
+  QString oceanic = isOceanic() ? "(oceanic)" : "";
+  qDebug() << icao() << oceanic << name();
 }
 
 bool
@@ -77,4 +83,14 @@ Fir::isStaffed() const {
 bool
 Fir::isEmpty() const {
   return __staff->rowCount() == 0;
+}
+
+void
+Fir::setName(const QString& _n) {
+  __name = _n;
+}
+
+void
+Fir::setCountry(const QString& _c) {
+  __country = _c;
 }

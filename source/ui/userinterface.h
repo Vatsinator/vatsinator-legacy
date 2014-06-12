@@ -50,7 +50,7 @@ class UserInterface : public QObject, public Singleton<UserInterface> {
   Q_OBJECT
 
 public:
-  UserInterface();
+  UserInterface(QObject* = nullptr);
   virtual ~UserInterface();
   
 public:
