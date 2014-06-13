@@ -37,8 +37,15 @@ MapScene::MapScene(QObject* parent): QObject(parent) {
   
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateItems()));
-  
-  __setupItems();
+  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(initialized()),
+          this,                                 SLOT(__setupItems()));
+}
+
+void
+MapScene::__addFlightItem(const Pilot* _p) {
+  connect(_p,           SIGNAL(destroyed(QObject*)),
+          this,         SLOT(__removeFlightItem()), Qt::DirectConnection);
+  __flightItems << new FlightItem(_p, this);
 }
 
 void
@@ -57,13 +64,6 @@ MapScene::__setupItems() {
     if (Pilot* p = dynamic_cast<Pilot*>(c))
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
-}
-
-void
-MapScene::__addFlightItem(const Pilot* _p) {
-  connect(_p,           SIGNAL(destroyed(QObject*)),
-          this,         SLOT(__removeFlightItem()), Qt::DirectConnection);
-  __flightItems << new FlightItem(_p, this);
 }
 
 void

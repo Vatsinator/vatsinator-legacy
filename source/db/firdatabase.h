@@ -55,6 +55,11 @@ signals:
 
 public:
   FirDatabase(QObject* = nullptr);
+  
+  /**
+   * Called by VatsinatorApplication only.
+   */
+  void init();
 
   /**
    * Finds FirHeader entry by given ICAO.

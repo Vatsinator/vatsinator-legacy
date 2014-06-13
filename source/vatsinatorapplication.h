@@ -54,6 +54,14 @@ class VatsinatorApplication :
   Q_OBJECT
   
 signals:
+  /**
+   * First emitted in the application. No objects are created yet.
+   */
+  void initializing();
+  
+  /**
+   * UserInterface is created (all windows).
+   */
   void uiCreated();
 
 public:
@@ -109,14 +117,22 @@ public:
 public slots:
   void restart();
   
+private slots:
+  
+  /**
+   * Initialize the application.
+   * This slot is connected to the initializing() signal.
+   */
+  void __initialize();
+  
 private:
   
   UserInterface*       __userInterface;
   FileManager*         __fileManager;
   SettingsManager*     __settingsManager;
   AirlineDatabase*     __airlineDatabase;
-  AirportDatabase*     __airportsData;
-  FirDatabase*         __firsData;
+  AirportDatabase*     __airportDatabaase;
+  FirDatabase*         __firDatabase;
   WorldMap*            __worldMap;
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;

@@ -55,8 +55,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager()),
     __airlineDatabase(new AirlineDatabase()),
-    __airportsData(new AirportDatabase()),
-    __firsData(new FirDatabase()),
+    __airportDatabaase(new AirportDatabase()),
+    __firDatabase(new FirDatabase()),
     __worldMap(new WorldMap()),
     __vatsimData(new VatsimDataHandler()),
     __languageManager(new LanguageManager()),
@@ -83,24 +83,8 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   setStyle(new VatsinatorStyle());
 #endif
   
-  /* Basic initializes */
-  QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
-  
-  __userInterface->init();
-  emit uiCreated();
-
-  // show main window
-  VatsinatorWindow::getSingleton().show();
-  
-  /* Thread for ResourceManager */
-  QThread* rmThread = new QThread(this);
-  __resourceManager->moveToThread(rmThread);
-  rmThread->start();
-  
-  /* Thread for StatsPurveyor */
-  QThread* spThread = new QThread(this);
-  __statsPurveyor->moveToThread(spThread);
-  spThread->start();
+  connect(this, SIGNAL(initializing()), SLOT(__initialize()));
+  emit initializing();
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
@@ -117,8 +101,8 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __moduleManager;
   delete __languageManager;
   delete __vatsimData;
-  delete __airportsData;
-  delete __firsData;
+  delete __airportDatabaase;
+  delete __firDatabase;
   delete __worldMap;
   delete __userInterface;
   delete __airlineDatabase;
@@ -183,6 +167,39 @@ VatsinatorApplication::restart() {
   /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
   qApp->quit();
   QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+}
+
+void
+VatsinatorApplication::__initialize() {
+  VatsinatorApplication::log("VatsinatorApplication: initializing");
+  
+  /* Read world map before UI */
+  __worldMap->init();
+  
+  /* Create windows */
+  __userInterface->init();
+  emit uiCreated();
+
+  /* show main window */
+  VatsinatorWindow::getSingleton().show();
+  
+  /* Thread for ResourceManager */
+  QThread* rmThread = new QThread(this);
+  __resourceManager->moveToThread(rmThread);
+  rmThread->start();
+  
+  /* Thread for StatsPurveyor */
+  QThread* spThread = new QThread(this);
+  __statsPurveyor->moveToThread(spThread);
+  spThread->start();
+ 
+  /* Initialize everything else */
+  __airlineDatabase->init();
+  __airportDatabaase->init();
+  __firDatabase->init();
+  
+  /* Read data files only after databases are ready */
+  __vatsimData->init();
 }
 
 void

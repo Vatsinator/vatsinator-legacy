@@ -59,6 +59,11 @@ class VatsimDataHandler :
 signals:
   
   /**
+   * All data is read.
+   */
+  void initialized();
+  
+  /**
    * Called when vatsim data starts to be downloaded.
    */
   void vatsimDataDownloading();

@@ -29,9 +29,11 @@ WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {
   
   connect(this,                                 SIGNAL(fatal(QString)),
           UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
-  
-//   __readDatabase();
-  QtConcurrent::run(this, &WorldMap::__readDatabase);
+}
+
+void
+WorldMap::init() {
+  __readDatabase();
 }
 
 void WorldMap::__readDatabase() {

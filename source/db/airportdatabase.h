@@ -67,6 +67,11 @@ public:
   AirportDatabase(QObject* = nullptr);
   
   /**
+   * Called by VatsinatorApplication only.
+   */
+  void init();
+  
+  /**
    * Looks for the airport.
    * @param icao ICAO code.
    * @return NULL if nothing found.

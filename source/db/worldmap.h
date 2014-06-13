@@ -43,6 +43,11 @@ signals:
 public:
   WorldMap(QObject* = nullptr);
   
+  /**
+   * Read by VatsinatorApplication only.
+   */
+  void init();
+  
   const QVector<Point>& borders() const { return __worldPolygon.borders; }
   const QVector<unsigned int>& triangles() const { return __worldPolygon.triangles; }
 

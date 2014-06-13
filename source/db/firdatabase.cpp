@@ -30,9 +30,11 @@
 FirDatabase::FirDatabase(QObject* _parent) : QObject(_parent) {
   connect(this,                                 SIGNAL(fatal(QString)),
           UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
-  
-//   __readDatabase();
-  QtConcurrent::run(this, &FirDatabase::__readDatabase);
+}
+
+void
+FirDatabase::init() {
+  __readDatabase();
 }
 
 const FirRecord *

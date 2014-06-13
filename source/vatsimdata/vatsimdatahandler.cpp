@@ -77,7 +77,6 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
           UserInterface::getSingletonPtr(),         SLOT(warning(QString)));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
-//   connect(this, SIGNAL(localDataBad(QString)), SLOT(__reportDataError(QString)));
   
   __notamProvider = new EurouteNotamProvider();
 }
@@ -104,6 +103,8 @@ VatsimDataHandler::init() {
   __readCountryFile(FileManager::path("data/country"));
   __readAliasFile(FileManager::path("data/alias"));
   __readFirFile(FileManager::path("data/fir"));
+  
+  emit initialized();
 }
 
 void

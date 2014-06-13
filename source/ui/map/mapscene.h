@@ -58,10 +58,10 @@ public:
   }
   
 private:
-  void __setupItems();
   void __addFlightItem(const Pilot*);
   
 private slots:
+  void __setupItems();
   void __updateItems();
   
   /**
