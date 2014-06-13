@@ -70,9 +70,6 @@ Fir::fixupName() {
     else
       __name += " Center";
   }
-  
-  QString oceanic = isOceanic() ? "(oceanic)" : "";
-  qDebug() << icao() << oceanic << name();
 }
 
 bool
@@ -83,6 +80,11 @@ Fir::isStaffed() const {
 bool
 Fir::isEmpty() const {
   return __staff->rowCount() == 0;
+}
+
+bool
+Fir::hasValidPosition() const {
+  return data()->header.textPosition.x != .0f && data()->header.textPosition.y != .0f;
 }
 
 void

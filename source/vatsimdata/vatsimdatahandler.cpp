@@ -296,7 +296,7 @@ VatsimDataHandler::airports() const {
 Fir*
 VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
   QList<QString> keys = aliases().values(_icao);
-  if (_icao.length() == 4)
+  if (_icao.length() >= 4)
     keys.prepend(_icao);
   else
     /* Handle USA 3-letter icao contraction */
@@ -306,7 +306,7 @@ VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
     if (__firs.contains(k)) {
       QList<Fir*> values = __firs.values(k);
       for (Fir* f: values)
-        if (f->isOceanic() == _fss) {
+        if (f->isOceanic() == _fss && f->hasValidPosition()) {
           return f;
         }
     }

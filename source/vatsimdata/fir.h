@@ -78,6 +78,11 @@ public:
    */
   bool isEmpty() const;
   
+  /**
+   * @return True is position is not equal to (0, 0).
+   */
+  bool hasValidPosition() const;
+  
   void setName(const QString&);
   void setCountry(const QString&);
   
