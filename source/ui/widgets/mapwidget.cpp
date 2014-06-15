@@ -327,6 +327,7 @@ MapWidget::__drawFirs() {
     }
     
     if (__settings.view.staffed_firs) {
+      glTranslatef(0.0, 0.0, staffedFirsZ - unstaffedFirsZ);
       qglColor(__settings.colors.staffed_fir_borders);
       glLineWidth(3.0);
       for (const FirItem* item: __scene->firItems()) {
