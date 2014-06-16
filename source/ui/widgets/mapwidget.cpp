@@ -395,22 +395,19 @@ MapWidget::__drawAirports() {
             
             if (__settings.view.airport_labels)
               item->drawLabel();
+            
+            if (item->approachCircle()) {
+              glPushMatrix();
+                glScalef(__zoom, __zoom, 0);
+                item->approachCircle()->drawCircle();
+              glPopMatrix();
+            }
           
           glPopMatrix();
           
           __checkItem(item);
         }
       }
-    }
-    
-    for (const ApproachCircleItem* item: __scene->approachCircleItems()) {
-      QPointF p = glFromLonLat(item->position());
-      
-      glPushMatrix();
-        glTranslated(p.x(), p.y(), activeAirportsZ);
-        glScalef(__zoom, __zoom, 0);
-        item->drawCircle();
-      glPopMatrix();
     }
   }
 }

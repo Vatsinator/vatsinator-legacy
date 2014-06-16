@@ -42,6 +42,8 @@ public:
   QMenu* menu(QWidget*) const override;
   void showDetailsWindow() const override;
   
+  inline const Airport* data() const { return __airport; }
+  
 private:
   void __fillColors() const;
   
@@ -49,6 +51,7 @@ private slots:
   void __reloadSettings();
   
 private:
+  const Airport*                __airport;
   LonLat                        __position;
   mutable QVector<GLfloat>      __colors;
   

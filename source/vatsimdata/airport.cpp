@@ -103,6 +103,7 @@ Airport::addStaff(const Controller* _c) {
           this, SIGNAL(updated()));
   connect(_c,   SIGNAL(destroyed(QObject*)),
           this, SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
 }
 
 void
@@ -112,6 +113,7 @@ Airport::addInbound(const Pilot* _p) {
           this, SIGNAL(updated()));
   connect(_p,   SIGNAL(destroyed(QObject*)),
           this, SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
 }
 
 void
@@ -121,6 +123,7 @@ Airport::addOutbound(const Pilot* _p) {
           this, SIGNAL(updated()));
   connect(_p,   SIGNAL(destroyed(QObject*)),
           this, SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
 }
 
 bool

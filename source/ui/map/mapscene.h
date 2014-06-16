@@ -24,7 +24,7 @@
 #include <QList>
 
 class AirportItem;
-class ApproachCircleItem;
+class Controller;
 class FirItem;
 class FlightItem;
 class Pilot;
@@ -48,10 +48,6 @@ public:
   inline const QList<AirportItem*>& airportItems() const {
     return __airportItems;
   }
-    
-  inline const QList<ApproachCircleItem*>& approachCircleItems() const {
-    return __approachCircleItems;
-  }
   
   inline const QList<FlightItem*>& flightItems() const {
     return __flightItems;
@@ -73,7 +69,6 @@ private:
   
   QList<FirItem*>               __firItems;
   QList<AirportItem*>           __airportItems;
-  QList<ApproachCircleItem*>    __approachCircleItems;
   QList<FlightItem*>            __flightItems;
   
 };

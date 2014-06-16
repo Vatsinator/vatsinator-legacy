@@ -66,9 +66,6 @@ MapScene::__setupItems() {
     if (Pilot* p = dynamic_cast<Pilot*>(c)) {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
-    } else if (Controller* a = dynamic_cast<Controller*>(c)) {
-      if (a->facility() == Controller::App)
-        __approachCircleItems << new ApproachCircleItem(a->airport(), this);
     }
 }
 
@@ -78,9 +75,6 @@ MapScene::__updateItems() {
     if (Pilot* p = dynamic_cast<Pilot*>(c)) {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
-    } else if (Controller* a = dynamic_cast<Controller*>(c)) {
-      if (a->facility() == Controller::App)
-        __approachCircleItems << new ApproachCircleItem(a->airport(), this);
     }
 }
 
@@ -98,3 +92,4 @@ MapScene::__removeFlightItem() {
   
   Q_ASSERT_X(false, "MapScene", "The flight does not exist in the scene");
 }
+

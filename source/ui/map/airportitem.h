@@ -27,6 +27,7 @@
 #include "ui/map/mapitem.h"
 
 class Airport;
+class ApproachCircleItem;
 
 class AirportItem : public QObject, public MapItem {
   Q_OBJECT
@@ -47,6 +48,7 @@ public:
   void showDetailsWindow() const override;
   
   inline const Airport* data() const { return __airport; }
+  inline const ApproachCircleItem* approachCircle() const { return __approachCircle; }
   
 private:
   void __makeIcon() const;
@@ -58,11 +60,12 @@ private slots:
   
 private:
   
-  const Airport* __airport;
-  LonLat         __position;
+  const Airport*        __airport;
+  LonLat                __position;
+  ApproachCircleItem*   __approachCircle;
   
-  mutable GLuint                __icon;
-  mutable GLuint                __label;
+  mutable GLuint        __icon;
+  mutable GLuint        __label;
   
   /**
    * Class that loads and keeps icons.

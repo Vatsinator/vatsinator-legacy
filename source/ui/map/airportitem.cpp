@@ -24,6 +24,7 @@
 #include "ui/actions/airportdetailsaction.h"
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/metaraction.h"
+#include "ui/map/approachcircleitem.h"
 #include "ui/map/mapconfig.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/userinterface.h"
@@ -37,6 +38,7 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     QObject(_parent),
     __airport(_ap),
     __position(_ap->data()->longitude, _ap->data()->latitude),
+    __approachCircle(nullptr),
     __icon(0),
     __label(0) {
   
@@ -209,6 +211,16 @@ AirportItem::__reloadSettings() {
 void
 AirportItem::__invalidate() {
   __icon = 0;
+  
+  if (__airport->facilities().testFlag(Controller::App)) {
+    if (!__approachCircle)
+      __approachCircle = new ApproachCircleItem(data(), this);
+  } else {
+    if (__approachCircle) {
+      __approachCircle->deleteLater();
+      __approachCircle = nullptr;
+    }
+  }
 }
 
 AirportItem::IconKeeper::IconKeeper() :
