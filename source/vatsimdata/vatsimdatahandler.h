@@ -105,8 +105,7 @@ public:
   ~VatsimDataHandler();
   
   /**
-   * Parses the data files. Must be called after AirportsDatabase::init()
-   * and FirsDatabase::init().
+   * Parses the data files.
    */
   void init();
   
@@ -124,6 +123,11 @@ public:
    * Chooses randomly one of URLs and returns it.
    */
   const QString& getDataUrl() const;
+  
+  /**
+   * Creates the new model and populates it with all flights online.
+   */
+  FlightTableModel* flightTableModel() const;
   
   /**
    * Finds pilot by callsign and returns pointer. If not found, returns

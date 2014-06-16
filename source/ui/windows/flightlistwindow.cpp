@@ -1,6 +1,6 @@
 /*
     flightlistwindow.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,14 +30,8 @@ FlightListWindow::FlightListWindow(QWidget* _parent) :
     BaseWindow(_parent) {
   setupUi(this);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-  
-  // TODO make the model
-  FlightsTable->setModel(VatsimDataHandler::emptyFlightTable);
-  FlightsTable->hideColumn(FlightTableModel::Button);
-  __setColumnsWidths();
-
+  connect(qApp,         SIGNAL(aboutToQuit()),
+          this,         SLOT(hide()));
   connect(FlightsTable, SIGNAL(doubleClicked(const QModelIndex&)),
           this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
 }
@@ -49,15 +43,28 @@ FlightListWindow::resizeEvent(QResizeEvent* _event) {
 }
 
 void
-FlightListWindow::__setColumnsWidths() {
-  static const int CALLSIGN_SIZE = 100;
-  static const int ACFT_SIZE = 120;
-  static const int SCROLLBAR_SIZE = 30;
+FlightListWindow::showEvent(QShowEvent* _event) {
+  if (auto m = FlightsTable->model())
+    m->deleteLater();
+  
+  FlightsTable->setModel(VatsimDataHandler::getSingleton().flightTableModel());
+  FlightsTable->hideColumn(FlightTableModel::Button);
+  __setColumnsWidths();
+  
+  BaseWindow::showEvent(_event);
+}
 
-  int spaceLeft = FlightsTable->width() - CALLSIGN_SIZE - ACFT_SIZE - SCROLLBAR_SIZE;
+void
+FlightListWindow::__setColumnsWidths() {
+  static constexpr int CallsignWidth = 100;
+  static constexpr int AircraftWidth = 120;
+  
+  int scrollbarWidth = qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+
+  int spaceLeft = FlightsTable->width() - CallsignWidth - AircraftWidth - scrollbarWidth;
   spaceLeft /= 3;
 
-  FlightsTable->setColumnWidth(FlightTableModel::Callsign, CALLSIGN_SIZE);
+  FlightsTable->setColumnWidth(FlightTableModel::Callsign, CallsignWidth);
   FlightsTable->setColumnWidth(FlightTableModel::Name, spaceLeft);
   FlightsTable->setColumnWidth(FlightTableModel::From, spaceLeft);
   FlightsTable->setColumnWidth(FlightTableModel::To, spaceLeft);
