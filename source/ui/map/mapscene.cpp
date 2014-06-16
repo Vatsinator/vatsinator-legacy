@@ -25,6 +25,8 @@
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
+#include "vatsimdata/client/controller.h"
+#include "vatsimdata/client/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -61,17 +63,25 @@ MapScene::__setupItems() {
   }
   
   for (auto c: VatsimDataHandler::getSingleton().clients())
-    if (Pilot* p = dynamic_cast<Pilot*>(c))
+    if (Pilot* p = dynamic_cast<Pilot*>(c)) {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
+    } else if (Controller* a = dynamic_cast<Controller*>(c)) {
+      if (a->facility() == Controller::App)
+        __approachCircleItems << new ApproachCircleItem(a->airport(), this);
+    }
 }
 
 void
 MapScene::__updateItems() {
   for (Client* c: VatsimDataHandler::getSingleton().newClients())
-    if (Pilot* p = dynamic_cast<Pilot*>(c))
+    if (Pilot* p = dynamic_cast<Pilot*>(c)) {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
+    } else if (Controller* a = dynamic_cast<Controller*>(c)) {
+      if (a->facility() == Controller::App)
+        __approachCircleItems << new ApproachCircleItem(a->airport(), this);
+    }
 }
 
 void
