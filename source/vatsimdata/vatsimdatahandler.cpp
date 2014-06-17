@@ -60,6 +60,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __statusUrl(NetConfig::Vatsim::statusUrl()),
     __currentTimestamp(0),
     __observers(0),
+    __clientCount(0),
     __statusFileFetched(false),
     __downloader(new PlainTextDownloader()),
     __scheduler(new UpdateScheduler()),
@@ -146,7 +147,7 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 
 void
 VatsimDataHandler::parseDataFile(const QString& _data) {
-  static QRegExp rx("^\\b(UPDATE|RELOAD)\\b\\s?=\\s?\\b(.+)\\b$");
+  static QRegExp rx("^\\b(UPDATE|RELOAD|CONNECTED CLIENTS)\\b\\s?=\\s?\\b(.+)\\b$");
 
   VatsinatorApplication::log("Data length: %i.", _data.length());
 
@@ -184,6 +185,8 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
               value, "yyyyMMddhhmmss");
           } else if (key == "RELOAD") {
             __reload = value.toInt();
+          } else if (key == "CONNECTED CLIENTS") {
+            __clientCount = value.toInt();
           }
         }
         break;
@@ -345,17 +348,29 @@ VatsimDataHandler::firs() const {
 
 int
 VatsimDataHandler::clientCount() const {
-  return pilotCount() + atcCount() + obsCount();
+  return __clientCount;
 }
 
 int
 VatsimDataHandler::pilotCount() const {
-  return 0;
+  int p = 0;
+  for (Client* c: __clients.values()) {
+    if (dynamic_cast<Pilot*>(c))
+      p += 1;
+  }
+  
+  return p;
 }
 
 int
 VatsimDataHandler::atcCount() const {
-  return 0;
+  int cc = 0;
+  for (Client* c: __clients.values()) {
+    if (dynamic_cast<Controller*>(c))
+      cc += 1;
+  }
+  
+  return cc;
 }
 
 int

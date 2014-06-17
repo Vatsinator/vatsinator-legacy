@@ -414,10 +414,13 @@ private:
   qint64 __currentTimestamp;
   
   /* Observer count */
-  int       __observers;
+  int __observers;
+  
+  /* Client cound */
+  int __clientCount;
   
   /* Indicates whether the status.txt file was already read or not */
-  bool      __statusFileFetched;
+  bool __statusFileFetched;
   
   PlainTextDownloader* __downloader;
   UpdateScheduler*     __scheduler;
