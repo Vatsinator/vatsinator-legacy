@@ -130,6 +130,11 @@ public:
   FlightTableModel* flightTableModel() const;
   
   /**
+   * Creates the new model and populates it with all controllers online.
+   */
+  ControllerTableModel* controllerTableModel() const;
+  
+  /**
    * Finds pilot by callsign and returns pointer. If not found, returns
    * nullptr.
    * @param callsign Callsign of the pilot to be found.

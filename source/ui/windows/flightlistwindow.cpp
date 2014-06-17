@@ -39,7 +39,7 @@ FlightListWindow::FlightListWindow(QWidget* _parent) :
 void
 FlightListWindow::resizeEvent(QResizeEvent* _event) {
   QWidget::resizeEvent(_event);
-  __setColumnsWidths();
+  __resizeColumns();
 }
 
 void
@@ -49,17 +49,17 @@ FlightListWindow::showEvent(QShowEvent* _event) {
   
   FlightsTable->setModel(VatsimDataHandler::getSingleton().flightTableModel());
   FlightsTable->hideColumn(FlightTableModel::Button);
-  __setColumnsWidths();
+  __resizeColumns();
   
   BaseWindow::showEvent(_event);
 }
 
 void
-FlightListWindow::__setColumnsWidths() {
+FlightListWindow::__resizeColumns() {
   static constexpr int CallsignWidth = 100;
   static constexpr int AircraftWidth = 120;
   
-  int scrollbarWidth = qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+  const int scrollbarWidth = qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
 
   int spaceLeft = FlightsTable->width() - CallsignWidth - AircraftWidth - scrollbarWidth;
   spaceLeft /= 3;

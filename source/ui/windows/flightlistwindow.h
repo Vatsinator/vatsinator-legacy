@@ -40,7 +40,7 @@ protected:
   void showEvent(QShowEvent*) override;
 
 private:
-  void __setColumnsWidths();
+  void __resizeColumns();
 
 private slots:
   void __handleDoubleClicked(const QModelIndex&);

@@ -264,6 +264,17 @@ VatsimDataHandler::flightTableModel() const {
   return model;
 }
 
+ControllerTableModel*
+VatsimDataHandler::controllerTableModel() const {
+  ControllerTableModel* model = new ControllerTableModel();
+  for (Client* c: __clients.values()) {
+    if (Controller* cc = dynamic_cast<Controller*>(c))
+      model->add(cc);
+  }
+  
+  return model;
+}
+
 const Pilot*
 VatsimDataHandler::findPilot(const QString& _callsign) const {
   if (__clients.contains(_callsign)) {
