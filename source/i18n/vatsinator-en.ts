@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en" sourcelanguage="en_GB">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
@@ -455,26 +453,20 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
-        <extracomment>It&apos;s about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
+        <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
         <translation>Current status:</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="33"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
-        <translation>
-            <numerusform>Your local clone of Vatsinator Database contains %n airport</numerusform>
-            <numerusform>Your local clone of Vatsinator Database contains %n airports</numerusform>
-        </translation>
+        <translation><numerusform>Your local clone of Vatsinator Database contains %n airport</numerusform><numerusform>Your local clone of Vatsinator Database contains %n airports</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="37"/>
         <source>and %n airlines(s).</source>
         <comment>The second part of the summary</comment>
-        <translation>
-            <numerusform>and %n airlines(s).</numerusform>
-            <numerusform>and %n airlines(s).</numerusform>
-        </translation>
+        <translation><numerusform>and %n airlines(s).</numerusform><numerusform>and %n airlines(s).</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="59"/>
@@ -1104,10 +1096,7 @@
     <message numerus="yes">
         <location filename="../ui/pages/networkpage.cpp" line="101"/>
         <source>minute(s)</source>
-        <translation>
-            <numerusform>minute</numerusform>
-            <numerusform>minutes</numerusform>
-        </translation>
+        <translation><numerusform>minute</numerusform><numerusform>minutes</numerusform></translation>
     </message>
 </context>
 <context>

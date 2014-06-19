@@ -8,6 +8,9 @@ TryExec=${CMAKE_INSTALL_PREFIX}/bin/vatsinator
 Exec=${CMAKE_INSTALL_PREFIX}/bin/vatsinator
 Categories=Network;Qt;
 Icon=vatsinator
+
+
+# Translations
 Comment[ja_JP]=シンプルな Vatsim モニタ
 GenericName[ja_JP]=Vatsim モニタ
 Name[ja_JP]=Vatsinator

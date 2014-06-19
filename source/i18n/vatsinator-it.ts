@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" sourcelanguage="en_GB" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
