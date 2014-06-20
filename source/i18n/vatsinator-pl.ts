@@ -223,7 +223,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="146"/>
         <source>Sorry, no weather report for %1.</source>
-        <translation>Wybacz, nie posiadam informacji pogodowej dla %1.</translation>
+        <translation>Nie posiadam informacji pogodowej dla %1.</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="204"/>
@@ -246,22 +246,22 @@
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="98"/>
         <source>Inbound</source>
-        <translation>Loty do</translation>
+        <translation>Przyloty</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="100"/>
         <source>Outbound</source>
-        <translation>Loty z</translation>
+        <translation>Odloty</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="116"/>
         <source>Arrivals: %1</source>
-        <translation>Przyloty: %1</translation>
+        <translation>Wylądowało: %1</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/airporttablemodel.cpp" line="118"/>
         <source>Departures: %1</source>
-        <translation>Odloty: %1</translation>
+        <translation>Startują: %1</translation>
     </message>
 </context>
 <context>
@@ -892,12 +892,12 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1360"/>
         <source>Departures: %1</source>
-        <translation>Odloty: %1</translation>
+        <translation>Startują: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="1365"/>
         <source>Arrivals: %1</source>
-        <translation>Przyloty: %1</translation>
+        <translation>Wylądowało: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="663"/>
