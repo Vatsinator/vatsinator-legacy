@@ -29,7 +29,9 @@
 #include "ui/windows/metarswindow.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
+#include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
 
 #include "airportitem.h"
 #include "defines.h"
@@ -40,7 +42,8 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     __position(_ap->data()->longitude, _ap->data()->latitude),
     __approachCircle(nullptr),
     __icon(0),
-    __label(0) {
+    __label(0),
+    __linesReady(false) {
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings()));
@@ -87,6 +90,36 @@ AirportItem::drawLabel() const {
   glVertexPointer(2, GL_FLOAT, 0, labelRect);
   glDrawArrays(GL_QUADS, 0, 4);
   glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void
+AirportItem::drawLines() const {
+  if (!__linesReady)
+    __prepareLines();
+  
+  if (!__otpLines.color.isValid())
+      __otpLines.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
+  
+  glColor4f(__otpLines.color.redF(),
+            __otpLines.color.greenF(),
+            __otpLines.color.blueF(),
+            1.0);
+  
+  glVertexPointer(2, GL_FLOAT, 0, __otpLines.coords.constData());
+  glDrawArrays(GL_LINES, 0, __otpLines.coords.size() / 2);
+  
+  if (!__ptdLines.color.isValid())
+    __ptdLines.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
+    
+  glColor4f(__ptdLines.color.redF(),
+            __ptdLines.color.greenF(),
+            __ptdLines.color.blueF(),
+            1.0);
+    
+    glVertexPointer(2, GL_FLOAT, 0, __ptdLines.coords.constData());
+    glLineStipple(3, 0xF0F0); // dashed line
+    glDrawArrays(GL_LINE_STRIP, 0, __ptdLines.coords.size() / 2);
+    glLineStipple(1, 0xFFFF);
 }
 
 bool
@@ -179,6 +212,35 @@ AirportItem::__makeIcon() const {
 }
 
 void
+AirportItem::__prepareLines() const {
+  for (const Pilot* p: data()->outbounds()->flights()) {
+    for (const LonLat& ll: p->route().waypoints) {
+      __otpLines.coords << ll.x() << ll.y();
+      if (ll == p->position())
+        break;
+      else if (ll != p->route().waypoints[0])
+        __otpLines.coords << ll.x() << ll.y();
+    }
+  }
+  
+  for (const Pilot* p: data()->inbounds()->flights()) {
+    bool append = false;
+    for (const LonLat& ll: p->route().waypoints) {
+      if (append)
+        __ptdLines.coords << ll.x() << ll.y();
+      if (ll == p->position())
+        append = true;
+      if (append && ll != p->route().waypoints.last())
+        __ptdLines.coords << ll.x() << ll.y();
+    }
+  }
+  
+  
+  
+  __linesReady = true;
+}
+
+void
 AirportItem::__generateLabel() const {
   static QRect labelRect(8, 2, 48, 12);
   
@@ -221,6 +283,9 @@ AirportItem::__invalidate() {
       __approachCircle = nullptr;
     }
   }
+  
+  __linesReady = false;
+  __otpLines.coords.clear();
 }
 
 AirportItem::IconKeeper::IconKeeper() :

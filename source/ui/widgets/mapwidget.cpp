@@ -447,9 +447,10 @@ MapWidget::__drawLines() {
       glTranslated(-__center.x(), __center.y(), 0.0);
       glTranslatef(0.0, 0.0, linesZ);
       
-      const FlightItem* pilot = dynamic_cast<const FlightItem*>(__underMouse);
-      if (pilot) {
+      if (const FlightItem* pilot = dynamic_cast<const FlightItem*>(__underMouse)) {
         pilot->drawLines(FlightItem::OriginToPilot | FlightItem::PilotToDestination);
+      } else if (const AirportItem* ap = dynamic_cast<const AirportItem*>(__underMouse)) {
+        ap->drawLines();
       }
       
     glPopMatrix();

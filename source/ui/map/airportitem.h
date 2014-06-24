@@ -40,6 +40,7 @@ public:
   
   void drawIcon() const;
   void drawLabel() const;
+  void drawLines() const;
   
   bool needsDrawing() const override;
   const LonLat& position() const override;
@@ -52,6 +53,7 @@ public:
   
 private:
   void __makeIcon() const;
+  void __prepareLines() const;
   void __generateLabel() const;
 
 private slots:
@@ -59,13 +61,19 @@ private slots:
   void __invalidate();
   
 private:
-  
   const Airport*        __airport;
   LonLat                __position;
   ApproachCircleItem*   __approachCircle;
   
   mutable GLuint        __icon;
   mutable GLuint        __label;
+  
+  mutable struct {
+    QVector<GLfloat>    coords;
+    QColor              color;
+  } __otpLines, __ptdLines; // OriginToPilot & PilotToDestination
+  
+  mutable bool  __linesReady;
   
   /**
    * Class that loads and keeps icons.
