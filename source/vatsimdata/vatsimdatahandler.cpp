@@ -419,6 +419,18 @@ VatsimDataHandler::nmDistance(
     ) * R;
 }
 
+qreal
+VatsimDataHandler::nmDistance(const LonLat& _a, const LonLat& _b) {
+  /* http://www.movable-type.co.uk/scripts/latlong.html */
+  static constexpr qreal R = 3440.06479191; // nm
+  
+  return qAcos(
+      qSin(_a.latitude()) * qSin(_b.latitude()) +
+      qCos(_a.latitude()) * qCos(_b.latitude()) *
+      qCos(_b.longitude() - _a.longitude())
+    ) * R;
+}
+
 void
 VatsimDataHandler::requestDataUpdate() {
   if (__downloader->isWorking())

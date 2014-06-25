@@ -246,6 +246,22 @@ public:
   static qreal nmDistance(const qreal&, const qreal&, const qreal&, const qreal&);
   
   /**
+   * Calculates distance between two points, expressed in
+   * nautical miles.
+   * 
+   * NOTE: If you don't need the distance specifically in nautical miles
+   * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+   * instead, as it is a lot quicker.
+   * 
+   * NOTE: All coordinates must be in radians.
+   * 
+   * @param a First point.
+   * @param b Second point.
+   * @return Distance between these two points.
+   */
+  static qreal nmDistance(const LonLat&, const LonLat&);
+  
+  /**
    * Map (Callsign <-> instance pairs) of connected clients.
    */
   inline const QMap<QString, Client*>& clients() { return __clients; }
