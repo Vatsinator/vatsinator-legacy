@@ -397,6 +397,14 @@ VatsimDataHandler::fastDistance(
 }
 
 qreal
+VatsimDataHandler::fastDistance(const LonLat& _a, const LonLat& _b) {
+  return qSqrt(
+    qPow(_a.latitude() - _b.latitude(), 2) +
+    qPow(_a.longitude() - _b.longitude(), 2)
+  );
+}
+
+qreal
 VatsimDataHandler::nmDistance(
     const qreal& _lat1, const qreal& _lon1,
     const qreal& _lat2, const qreal& _lon2) {

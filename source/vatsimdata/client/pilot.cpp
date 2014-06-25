@@ -34,9 +34,39 @@ static constexpr qreal PilotToAirport = 0.1;
 
 namespace {
 
-  inline qreal deg2Rad(qreal deg) {
+  inline qreal deg2Rad(qreal _deg) {
     static constexpr qreal PI = 3.14159265359;
-    return deg * PI / 180;
+    return _deg * PI / 180;
+  }
+  
+  /**
+   * Checks whether the given line crosses the IDL or the Greenwich Meridian.
+   * For reference:
+   * https://github.com/Vatsinator/Vatsinator/pull/2
+   * Code by @Ucchi98.
+   */
+  bool crossesIdl(const QVector<LonLat>& _line) {
+    LonLat p = _line.first(), c;
+    for (int i = 1; i < _line.size(); ++i) {
+      c = _line[i];
+      qreal pSign = p.longitude() / qFabs(p.longitude());
+      qreal cSign = c.longitude() / qFabs(c.longitude());
+      
+      if (pSign != cSign) {
+        qreal dst1 = VatsimDataHandler::fastDistance(p, c), dst2;
+        if (pSign < 0)
+          dst2 = VatsimDataHandler::fastDistance(p.longitude() + 360.0, p.latitude(), c.longitude(), c.latitude());
+        else
+          dst2 = VatsimDataHandler::fastDistance(p.longitude(), p.latitude(), c.longitude() + 360.0, c.latitude());
+        
+        if (dst1 > dst2)
+          return true;
+      }
+      
+      p = c;
+    }
+    
+    return false;
   }
 
 }
@@ -247,6 +277,12 @@ void Pilot::__updateAirports() {
       if (!__prefiledOnly)
         __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);
     }
+  }
+  
+  if (crossesIdl(__route.waypoints)) {
+    for (LonLat& p: __route.waypoints)
+      if (p.longitude() < 0)
+        p.rx() += 360.0;
   }
 }
 

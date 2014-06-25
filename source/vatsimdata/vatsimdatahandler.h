@@ -216,6 +216,18 @@ public:
   static qreal fastDistance(const qreal&, const qreal&, const qreal&, const qreal&);
   
   /**
+   * Calculates the distance between two points. The unit is undefined.
+   * 
+   * NOTE: If you need specific unit, i.e. nautical miles, use
+   * VatsimDataHandler::nmDistance() function.
+   * 
+   * @param a First point in the global coordinates.
+   * @param b Second point in the global coordinates.
+   * @return Distance between these two points.
+   */
+  static qreal fastDistance(const LonLat&, const LonLat&);
+  
+  /**
    * Calculates distance between two points, expressed in
    * nautical miles.
    * 
