@@ -286,6 +286,7 @@ AirportItem::__invalidate() {
   
   __linesReady = false;
   __otpLines.coords.clear();
+  __ptdLines.coords.clear();
 }
 
 AirportItem::IconKeeper::IconKeeper() :
