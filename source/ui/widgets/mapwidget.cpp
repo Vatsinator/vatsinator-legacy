@@ -1,6 +1,6 @@
 /*
  * mapwidget.cpp
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -186,14 +186,19 @@ MapWidget::paintGL() {
   
   __underMouse = nullptr;
   
+  glBindTexture(GL_TEXTURE_2D, 0);
+  
   for (GLfloat o: __offsets) {
-    glBindTexture(GL_TEXTURE_2D, 0);
     __xOffset = o;
     
     __drawWorld();
     __drawFirs();
     __drawAirports();
     __drawPilots();
+  }
+  
+  for (GLfloat o: __offsets) {
+    __xOffset = o;
     __drawLines();
   }
   
@@ -445,7 +450,7 @@ MapWidget::__drawLines() {
       glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
       glScalef(__zoom, __zoom, 1.0f);
       glTranslated(-__center.x(), __center.y(), 0.0);
-      glTranslatef(0.0, 0.0, linesZ);
+      glTranslatef(__xOffset, 0.0, linesZ);
       
       if (const FlightItem* pilot = dynamic_cast<const FlightItem*>(__underMouse)) {
         pilot->drawLines(FlightItem::OriginToPilot | FlightItem::PilotToDestination);

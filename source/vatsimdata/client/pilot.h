@@ -199,7 +199,10 @@ private:
    */
   void __discoverFlightPhase();
   
-//   bool __isCrossingIDL(QVector<GLfloat>&) const;
+  /**
+   * Checks whether the route crosses the IDL and fixes it.
+   */
+  void __fixupRoute();
   
   int                   __altitude;
   int                   __groundSpeed;

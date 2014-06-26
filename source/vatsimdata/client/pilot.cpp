@@ -142,6 +142,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   }
   
   __updateAirports();
+  __fixupRoute();
   __discoverFlightPhase();
 }
 
@@ -170,6 +171,7 @@ Pilot::update(const QStringList& _data) {
     !destination() || destination()->icao() != __route.origin
   )
     __updateAirports();
+    __fixupRoute();
   
   if (__squawk.length() == 3)
     __squawk.prepend("0");
@@ -279,11 +281,7 @@ void Pilot::__updateAirports() {
     }
   }
   
-  if (crossesIdl(__route.waypoints)) {
-    for (LonLat& p: __route.waypoints)
-      if (p.longitude() < 0)
-        p.rx() += 360.0;
-  }
+  
 }
 
 void
@@ -350,47 +348,12 @@ Pilot::__discoverFlightPhase() {
 
   __phase = Airborne;
 }
- 
-// bool Pilot::__isCrossingIDL(QVector<GLfloat>& line) const
-// {
-//   bool isCrossingIDL = false;
-// 
-//   GLfloat plon = line[0];
-//   GLfloat plat = line[1];
-//   GLfloat clon = plon;
-//   GLfloat clat = plat;
-// 
-//   for(int i=2 ; i<line.size() ; i++){
-// 		clon = line[i]; i++;
-// 		clat = line[i];
-// 
-// 		double pSign = plon / fabs(plon);
-// 		double cSign = clon / fabs(clon);
-// 		double dst1 = 0;
-// 		double dst2 = 0;
-// 
-// 		// crossing the IDL or the Greenwich Meridian
-// 		if(pSign!=cSign){
-// 
-//              		dst1 = VatsimDataHandler::distance(plon, plat, clon, clat);
-// 			if(pSign<0)
-//     				dst2 = VatsimDataHandler::distance(plon + 360, plat, clon, clat);
-// 			else	
-//              			dst2 = VatsimDataHandler::distance(plon, plat, clon + 360, clat);
-// 
-// 			if(dst1>dst2) isCrossingIDL = true;
-// 
-// 			/* debug print
-// 			printf("%s: %f %f -> %f %f, Dst1: %f Dst2: %f, IDL: %s\n",
-// 				__callsign.toLatin1().data(),
-// 				plon, plat, clon, clat, dst1, dst2,
-// 				isCrossingIDL ? "crossing IDL" : "crossing meridian");
-//                         */
-// 		}
-// 		if(isCrossingIDL) return true;
-// 
-// 		plon = clon;
-// 		plat = clat;
-//   }
-//   return false;
-// }
+
+void
+Pilot::__fixupRoute() {
+  if (crossesIdl(__route.waypoints)) {
+    for (LonLat& p: __route.waypoints)
+      if (p.longitude() < 0)
+        p.rx() += 360.0;
+  }
+}
