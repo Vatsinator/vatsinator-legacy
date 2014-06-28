@@ -21,8 +21,8 @@
 #include "db/airline.h"
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
-#include "modules/flighttracker.h"
 #include "ui/userinterface.h"
+#include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
 #include "vatsimdata/airport.h"
@@ -71,7 +71,7 @@ FlightDetailsWindow::show() {
   if (__pilot->isPrefiledOnly())
     return;
   
-  if (FlightTracker::getSingleton().tracked() == __pilot)
+  if (MapWidget::getSingleton().scene()->trackedFlight() == __pilot)
     TrackFlightBox->setCheckState(Qt::Checked);
   else
     TrackFlightBox->setCheckState(Qt::Unchecked);

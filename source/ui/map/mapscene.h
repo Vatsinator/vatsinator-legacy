@@ -36,10 +36,21 @@ class MapScene : public QObject {
    */
   
   Q_OBJECT
+  
+signals:
+  
+  /**
+   * Emitted when user wants to track the flight.
+   * If the pointer is nullptr, it means user just cancelled flight tracking.
+   */
+  void flightTracked(const Pilot*);
 
 public:
   explicit MapScene(QObject* parent = 0);
   virtual ~MapScene() = default;
+  
+  void trackFlight(const Pilot*);
+  void cancelFlightTracking();
   
   inline const QList<FirItem*>& firItems() const {
     return __firItems;
@@ -51,6 +62,10 @@ public:
   
   inline const QList<FlightItem*>& flightItems() const {
     return __flightItems;
+  }
+  
+  inline const Pilot* trackedFlight() const {
+    return __trackedFlight;
   }
   
 private:
@@ -66,10 +81,11 @@ private slots:
   void __removeFlightItem();
   
 private:
-  
   QList<FirItem*>               __firItems;
   QList<AirportItem*>           __airportItems;
   QList<FlightItem*>            __flightItems;
+  
+  const Pilot* __trackedFlight;
   
 };
 

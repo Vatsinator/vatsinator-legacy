@@ -177,7 +177,6 @@ FlightItem::menu(QWidget* _parent) const {
   menu->addAction(showDetails);
   
   TrackAction* trackFlight = new TrackAction(data(), _parent);
-  // TODO connect
   menu->addAction(trackFlight);
   
   menu->addSeparator();

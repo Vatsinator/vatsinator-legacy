@@ -35,12 +35,26 @@
 #include "mapscene.h"
 #include "defines.h"
 
-MapScene::MapScene(QObject* parent): QObject(parent) {
+MapScene::MapScene(QObject* parent) :
+    QObject(parent),
+    __trackedFlight(nullptr) {
   
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateItems()));
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(initialized()),
           this,                                 SLOT(__setupItems()));
+}
+
+void
+MapScene::trackFlight(const Pilot* _p) {
+  __trackedFlight = _p;
+  emit flightTracked(__trackedFlight);
+}
+
+void
+MapScene::cancelFlightTracking() {
+  __trackedFlight = nullptr;
+  emit flightTracked(__trackedFlight);
 }
 
 void

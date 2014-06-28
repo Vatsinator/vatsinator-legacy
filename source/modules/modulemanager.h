@@ -26,7 +26,6 @@
 
 class AirportTracker;
 class HomeLocation;
-class FlightTracker;
 class ModelMatcher;
 class VatbookHandler;
 
@@ -46,7 +45,6 @@ public slots:
 
 private:
   AirportTracker* __airportTracker;
-  FlightTracker*  __flightTracker;
   HomeLocation*   __homeLocation;
   ModelMatcher*   __modelsMatcher;
   VatbookHandler* __vatbookHandler;
