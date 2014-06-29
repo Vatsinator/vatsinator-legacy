@@ -167,6 +167,7 @@ void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__airport);
   MapWidget::getSingleton().scene()->moveSmoothly(__airport->position());
+  close();
 }
 
 void
