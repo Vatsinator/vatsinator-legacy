@@ -23,11 +23,14 @@
 #include <QObject>
 #include <QList>
 
+class AbstractAnimation;
 class AirportItem;
 class Controller;
 class FirItem;
 class FlightItem;
+class LonLat;
 class Pilot;
+class MapWidget;
 
 class MapScene : public QObject {
   
@@ -46,11 +49,20 @@ signals:
   void flightTracked(const Pilot*);
 
 public:
-  explicit MapScene(QObject* parent = 0);
+  explicit MapScene(QObject* parent);
   virtual ~MapScene() = default;
   
   void trackFlight(const Pilot*);
   void cancelFlightTracking();
+  
+  /**
+   * Starts the given animation, aborting any currently running one.
+   * This function takes ownership over the given animation.
+   * NOTE: The animation can't be started yet. This function call start()
+   * on the instance.
+   * @param animation The map animation instance.
+   */
+  void startAnimation(AbstractAnimation*);
   
   inline const QList<FirItem*>& firItems() const {
     return __firItems;
@@ -68,12 +80,25 @@ public:
     return __trackedFlight;
   }
   
+  inline AbstractAnimation* animation() {
+    return __animation;
+  }
+  
+public slots:
+  /**
+   * Moves the map smoothly to the given point.
+   * @param p The target point.
+   */
+  void moveSmoothly(const LonLat&);
+  
 private:
   void __addFlightItem(const Pilot*);
   
 private slots:
   void __setupItems();
   void __updateItems();
+  void __animationStep();
+  void __animationDestroy();
   
   /**
    * This slot is connected to every Pilot's destroyed() signal.
@@ -81,11 +106,15 @@ private slots:
   void __removeFlightItem();
   
 private:
+  MapWidget*    __widget;
+  
   QList<FirItem*>               __firItems;
   QList<AirportItem*>           __airportItems;
   QList<FlightItem*>            __flightItems;
   
   const Pilot* __trackedFlight;
+  
+  AbstractAnimation*    __animation;
   
 };
 

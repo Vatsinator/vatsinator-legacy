@@ -21,10 +21,13 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "ui/map/abstractanimation.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
+#include "ui/map/moveanimation.h"
+#include "ui/widgets/mapwidget.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/airport.h"
@@ -37,7 +40,11 @@
 
 MapScene::MapScene(QObject* parent) :
     QObject(parent),
-    __trackedFlight(nullptr) {
+    __trackedFlight(nullptr),
+    __animation(nullptr) {
+  
+  __widget = qobject_cast<MapWidget*>(parent);
+  Q_ASSERT(__widget);
   
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(__updateItems()));
@@ -55,6 +62,32 @@ void
 MapScene::cancelFlightTracking() {
   __trackedFlight = nullptr;
   emit flightTracked(__trackedFlight);
+}
+
+void
+MapScene::startAnimation(AbstractAnimation* _animation) {
+  if (__animation) {
+    __animation->abort();
+    __animation->deleteLater();
+  }
+  
+  __animation = _animation;
+  
+  __animation->setParent(this);
+  __animation->setPosition(__widget->center());
+  __animation->setZoom(__widget->zoom());
+  connect(__animation,  SIGNAL(step()),
+          this,         SLOT(__animationStep()));
+  connect(__animation,  SIGNAL(stopped()),
+          this,         SLOT(__animationDestroy()));
+  __animation->start();
+}
+
+void
+MapScene::moveSmoothly(const LonLat& _target) {
+  MoveAnimation* a = new MoveAnimation(this);
+  a->setTarget(_target);
+  startAnimation(a);
 }
 
 void
@@ -90,6 +123,24 @@ MapScene::__updateItems() {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
     }
+}
+
+void
+MapScene::__animationStep() {
+  Q_ASSERT(__animation);
+  if (!(__animation->flags() & AbstractAnimation::NoPositionOverride))
+    __widget->setCenter(__animation->position());
+  
+  if (!(__animation->flags() & AbstractAnimation::NoZoomOverride))
+    __widget->setZoom(__animation->zoom());
+  
+  __widget->redraw();
+}
+
+void
+MapScene::__animationDestroy() {
+  __animation->deleteLater();
+  __animation = nullptr;
 }
 
 void

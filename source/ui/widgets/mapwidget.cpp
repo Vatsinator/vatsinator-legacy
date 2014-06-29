@@ -115,6 +115,13 @@ MapWidget::onScreen(const QPointF& _point) {
     _point.x() >= -__rangeX && _point.y() >= -__rangeY;
 }
 
+LonLat
+MapWidget::center() const {
+  LonLat c = __center;
+  c.ry() *= -1;
+  return std::move(c);
+}
+
 void
 MapWidget::redraw() {
   QToolTip::hideText();
@@ -276,7 +283,8 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
 
 void
 MapWidget::mouseMoveEvent(QMouseEvent* _event) {
-  if (_event->buttons() & Qt::LeftButton) {
+  if ((_event->buttons() & Qt::LeftButton) && !scene()->animation()) {
+    
     setCursor(QCursor(Qt::SizeAllCursor));
     
     QPoint diff = _event->pos() - __mousePosition.screenPosition();
@@ -294,6 +302,17 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   __mousePosition.update(_event->pos());
   updateGL();
   _event->accept();
+}
+
+void
+MapWidget::setCenter(const LonLat& _p) {
+  __center = _p;
+  __center.ry() *= -1;
+}
+
+void
+MapWidget::setZoom(int _i) {
+  __zoom = _i;
 }
 
 void

@@ -36,6 +36,8 @@ class WorldPolygon;
 class MapWidget : public QGLWidget, public Singleton<MapWidget> {
   
   Q_OBJECT
+  
+  friend class MapScene;
 
 signals:
   void glReady();
@@ -90,7 +92,10 @@ public:
    */
   bool onScreen(const QPointF&);
   
+  LonLat center() const;
+  
   inline MapScene* scene() { return __scene; }
+  inline int zoom() const { return __zoom; }
   
 public slots:
   
@@ -110,6 +115,16 @@ protected:
   void mouseMoveEvent(QMouseEvent*) override;
   
 private:
+  
+  /**
+   * Used by MapScene only.
+   */
+  void setCenter(const LonLat&);
+  
+  /**
+   * Used by MapScene only.
+   */
+  void setZoom(int);
   
   void __drawWorld();
   void __drawFirs();

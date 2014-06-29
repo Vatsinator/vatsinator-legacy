@@ -208,8 +208,8 @@ FlightDetailsWindow::__updateLabels() {
 void
 FlightDetailsWindow::__handleClicked() {
   Q_ASSERT(__pilot);
-  // TODO
-//   MapWidget::getSingleton().showClient(__current);
+  MapWidget::getSingleton().scene()->moveSmoothly(__pilot->position());
+  close();
 }
 
 void
