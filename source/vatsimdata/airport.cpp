@@ -141,3 +141,8 @@ Airport::isStaffed() const {
     __inbounds->rowCount() > 0 ||
     __outbounds->rowCount() > 0;
 }
+
+LonLat
+Airport::position() const {
+  return std::move(LonLat(data()->longitude, data()->latitude));
+}

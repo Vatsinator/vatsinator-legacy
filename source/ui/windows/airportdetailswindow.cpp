@@ -27,6 +27,7 @@
 #include "storage/settingsmanager.h"
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
+#include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
@@ -165,8 +166,7 @@ AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
 void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__airport);
-  // TODO
-//   MapWidget::getSingleton().showAirport(__current);
+  MapWidget::getSingleton().scene()->moveSmoothly(__airport->position());
 }
 
 void

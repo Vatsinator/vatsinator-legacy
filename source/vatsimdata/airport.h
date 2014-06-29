@@ -108,6 +108,11 @@ public:
   bool isStaffed() const;
   
   /**
+   * @return The airport's position.
+   */
+  LonLat position() const;
+  
+  /**
    * @return Pointer to AirportRecord in the database.
    */
   inline const AirportRecord* data() const { return __data; }
