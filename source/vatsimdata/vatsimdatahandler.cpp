@@ -225,19 +225,20 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         break;
       } // DataSections::Clients
     
-    /* TODO Prefile section
       case DataSections::Prefile: {
-        QStringList clientData = temp.split(':');
+        RawClientData clientData = RawClientData(temp);
         
-        if (clientData.size() < 40) {
-          VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit vatsimDataError();
-          return;
-        }
+        if (!clientData.valid || clientData.type != RawClientData::Pilot)
+          continue;
         
-        __flights->addFlight(new Pilot(clientData, true));
+        if (__clients.contains(clientData.callsign))
+          __clients[clientData.callsign]->deleteLater();
+        
+        Pilot* pilot = new Pilot(clientData.line, true);
+        __clients[pilot->callsign()] = pilot;
+        
         break;
-      } // DataSections::Prefile*/
+      } // DataSections::Prefile
       
       default: {}
     } // switch (section)
