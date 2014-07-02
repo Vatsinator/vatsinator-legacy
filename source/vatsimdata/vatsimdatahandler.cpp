@@ -156,6 +156,7 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
   
   __currentTimestamp = QDateTime::currentMSecsSinceEpoch();
   __newClients.clear();
+  __observers = 0;
 
   for (QString& temp: tempList) {
     if (temp.startsWith(';')) // comment
