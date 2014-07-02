@@ -353,14 +353,13 @@ private:
   };
   
   /**
-   * These functions read data files.
+   * The following functions read data files.
    * @param fileName Location of the data file.
    */
   void __readAliasFile(const QString&);
   void __readCountryFile(const QString&);
   void __readFirFile(const QString&);
-  
-  
+  void __readUirFile(const QString&);
   
   /**
    * Loads classes that wrap database records.

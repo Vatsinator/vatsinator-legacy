@@ -28,6 +28,7 @@ set (vatsimdata_MOC_SRCS
     client.h
     fir.h
     updatescheduler.h
+    uir.h
     vatsimdatahandler.h
     
     client/controller.h

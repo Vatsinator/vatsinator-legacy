@@ -32,6 +32,7 @@
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
+#include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
@@ -104,6 +105,7 @@ VatsimDataHandler::init() {
   __readCountryFile(FileManager::path("data/country"));
   __readAliasFile(FileManager::path("data/alias"));
   __readFirFile(FileManager::path("data/fir"));
+  __readUirFile(FileManager::path("data/uir"));
   
   emit initialized();
 }
@@ -559,6 +561,46 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   file.close();
   
   VatsinatorApplication::log("Finished reading \"fir\" file.");
+}
+
+void
+VatsimDataHandler::__readUirFile(const QString& _fileName) {
+  VatsinatorApplication::log("Reading \"uir\" file...");
+  
+  QFile file(_fileName);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    emit localDataBad(tr("File %1 could not be opened!").arg(_fileName));
+    return;
+  }
+  
+  while (!file.atEnd()) {
+     QString line = QString::fromUtf8(file.readLine()).simplified();
+    
+    if (line[0] == '#' || line.isEmpty())
+      continue;
+    
+    QStringList data = line.split(' ');
+    Uir* uir = new Uir(data.first());
+    
+    for (int i = 1; i < data.length(); ++i) {
+      if (data[i].toUpper() == data[i]) {
+        Fir* fir = findFir(data[i]);
+        
+        if (fir)
+          uir->addFir(fir);
+        else
+          VatsinatorApplication::log("FIR %s could not be found!", data[i].toStdString().c_str());
+      } else {
+        uir->name().append(data[i] + " ");
+      }
+    }
+    
+  }
+  
+  file.close();
+  
+  VatsinatorApplication::log("Finished reading \"uir\" file.");
 }
 
 void

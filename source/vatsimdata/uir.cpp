@@ -1,6 +1,6 @@
 /*
     uir.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,13 +23,10 @@
 #include "uir.h"
 #include "defines.h"
 
-Uir::Uir(const QString& _icao) :
+Uir::Uir(const QString& _icao, QObject* _parent) :
+    QObject(_parent),
     __icao(_icao),
-    __staff(new ControllerTableModel()) {}
-    
-Uir::~Uir() {
-  delete __staff;
-}
+    __staff(new ControllerTableModel(this)) {}
 
 void
 Uir::addFir(Fir* _f) {
@@ -39,11 +36,11 @@ Uir::addFir(Fir* _f) {
 void
 Uir::addStaff(const Controller* _c) {
   __staff->add(_c);
-}
-
-void
-Uir::clear() {
-  __staff->clear();
+  connect(_c,           SIGNAL(updated()),
+          this,         SIGNAL(updated()));
+  connect(_c,           SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
 }
 
 bool
