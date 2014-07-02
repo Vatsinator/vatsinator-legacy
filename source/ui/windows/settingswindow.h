@@ -23,15 +23,12 @@
 #include <QVector>
 
 #include "ui/windows/basewindow.h"
-
 #include "ui/ui_settingswindow.h"
-#include "singleton.h"
 
 class AbstractSettingsPage;
 
 class SettingsWindow :
     public BaseWindow,
-    public Singleton<SettingsWindow>,
     private Ui::SettingsWindow {
 
   Q_OBJECT

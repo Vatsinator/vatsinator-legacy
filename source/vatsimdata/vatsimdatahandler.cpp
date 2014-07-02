@@ -664,7 +664,7 @@ VatsimDataHandler::__slotUiCreated() {
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
   
-  __downloader->setProgressBar(VatsinatorWindow::getSingleton().progressBar());
+  __downloader->setProgressBar(vApp()->userInterface()->mainWindow()->progressBar());
   __beginDownload();
 }
 

@@ -21,13 +21,10 @@
 #define FLIGHTLISTWINDOW_H
 
 #include "ui/windows/basewindow.h"
-
 #include "ui/ui_flightlistwindow.h"
-#include "singleton.h"
 
 class FlightListWindow :
     public BaseWindow,
-    public Singleton<FlightListWindow>,
     private Ui::FlightListWindow {
 
   Q_OBJECT

@@ -71,6 +71,8 @@ public:
   VatsinatorApplication(int&, char**);
 
   virtual ~VatsinatorApplication();
+  
+  UserInterface* userInterface();
 
   
   static const QFont& boldFont();
@@ -148,6 +150,10 @@ private:
       void polish(QWidget*) override;
   };
 
+};
+
+auto vApp = []() -> VatsinatorApplication* {
+  return qobject_cast<VatsinatorApplication*>(QCoreApplication::instance());
 };
 
 #endif // VATSINATORAPPLICATION_H

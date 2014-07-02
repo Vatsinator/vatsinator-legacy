@@ -32,6 +32,7 @@
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsinatorapplication.h"
 
 #include "flightitem.h"
 #include "defines.h"
@@ -183,15 +184,15 @@ FlightItem::menu(QWidget* _parent) const {
 
   if (!data()->route().origin.isEmpty()) {
     MetarAction* ma = new MetarAction(data()->route().origin, _parent);
-    connect(ma,                                 SIGNAL(triggered(QString)),
-            MetarsWindow::getSingletonPtr(),    SLOT(show(QString)));
+    connect(ma,                                         SIGNAL(triggered(QString)),
+            vApp()->userInterface()->metarsWindow(),    SLOT(show(QString)));
     menu->addAction(ma);
   }
   
   if (!data()->route().destination.isEmpty()) {
     MetarAction* ma = new MetarAction(data()->route().destination, _parent);
-    connect(ma,                                 SIGNAL(triggered(QString)),
-            MetarsWindow::getSingletonPtr(),    SLOT(show(QString)));
+    connect(ma,                                         SIGNAL(triggered(QString)),
+            vApp()->userInterface()->metarsWindow(),    SLOT(show(QString)));
     menu->addAction(ma);
   }
   

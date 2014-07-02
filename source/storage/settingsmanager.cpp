@@ -20,6 +20,7 @@
 
 #include "ui/pages/abstractsettingspage.h"
 #include "ui/windows/settingswindow.h"
+#include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "settingsmanager.h"
@@ -79,12 +80,12 @@ SettingsManager::init() {
   CREATE_PAGES
   
   for (AbstractSettingsPage* p: __pages)
-    SettingsWindow::getSingleton().addPage(p);
+    vApp()->userInterface()->settingsWindow()->addPage(p);
   
-  connect(SettingsWindow::getSingletonPtr(),    SIGNAL(settingsApplied()),
-          this,                                 SLOT(__saveSettings()));
-  connect(SettingsWindow::getSingletonPtr(),    SIGNAL(restoreDefaults()),
-          this,                                 SLOT(__restoreDefaults()));
+  connect(vApp()->userInterface()->settingsWindow(),    SIGNAL(settingsApplied()),
+          this,                                         SLOT(__saveSettings()));
+  connect(vApp()->userInterface()->settingsWindow(),    SIGNAL(restoreDefaults()),
+          this,                                         SLOT(__restoreDefaults()));
   
   __restoreSettings();
 }

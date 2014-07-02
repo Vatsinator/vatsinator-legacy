@@ -21,13 +21,10 @@
 #define ATCLISTWINDOW_H
 
 #include "ui/windows/basewindow.h"
-
 #include "ui/ui_atclistwindow.h"
-#include "singleton.h"
 
 class AtcListWindow :
     public BaseWindow,
-    public Singleton<AtcListWindow>,
     private Ui::ATCListWindow {
 
   Q_OBJECT

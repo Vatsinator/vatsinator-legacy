@@ -19,9 +19,7 @@
 #include <QtGui>
 
 #include "network/plaintextdownloader.h"
-
 #include "ui/userinterface.h"
-
 #include "vatsimdata/models/metarlistmodel.h"
 #include "vatsimdata/vatsimdatahandler.h"
 

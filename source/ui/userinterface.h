@@ -56,6 +56,14 @@ public:
 public:
   void init();
   
+  AboutWindow* aboutWindow();
+  AtcListWindow* atcListWindow();
+  DatabaseWindow* databaseWindow();
+  FlightListWindow* flightListWindow();
+  MetarsWindow* metarsWindow();
+  SettingsWindow* settingsWindow();
+  VatsinatorWindow* mainWindow();
+  
 public slots:
   /**
    * Reports fatal error to user.

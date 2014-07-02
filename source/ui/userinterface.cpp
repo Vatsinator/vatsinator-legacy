@@ -99,6 +99,48 @@ UserInterface::init() {
           this,                                     SLOT(__showNewVersionDialog()));
 }
 
+AboutWindow*
+UserInterface::aboutWindow() {
+  Q_ASSERT(__aboutWindow());
+  return __aboutWindow;
+}
+
+AtcListWindow*
+UserInterface::atcListWindow() {
+  Q_ASSERT(__atcListWindow);
+  return __atcListWindow;
+}
+
+DatabaseWindow*
+UserInterface::databaseWindow() {
+  Q_ASSERT(__databaseWindow);
+  return __databaseWindow;
+}
+
+FlightListWindow*
+UserInterface::flightListWindow() {
+  Q_ASSERT(__flightsListWindow);
+  return __flightsListWindow;
+}
+
+MetarsWindow*
+UserInterface::metarsWindow() {
+  Q_ASSERT(__metarsWindow);
+  return __metarsWindow;
+}
+
+SettingsWindow*
+UserInterface::settingsWindow() {
+  Q_ASSERT(__settingsWindow);
+  return __settingsWindow;
+}
+
+VatsinatorWindow*
+UserInterface::mainWindow() {
+  Q_ASSERT(__vatsinatorWindow);
+  return __vatsinatorWindow;
+}
+
 void
 UserInterface::fatal(const QString& _msg) {
   QMessageBox msgBox;

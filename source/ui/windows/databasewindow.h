@@ -21,14 +21,11 @@
 #define DATABASEWINDOW_H
 
 #include "ui/windows/basewindow.h"
-
 #include "network/resourcemanager.h"
 #include "ui/ui_databasewindow.h"
-#include "singleton.h"
 
 class DatabaseWindow :
     public BaseWindow,
-    public Singleton<DatabaseWindow>,
     private Ui::DatabaseWindow {
   
   Q_OBJECT

@@ -116,6 +116,12 @@ VatsinatorApplication::~VatsinatorApplication() {
 #endif
 }
 
+UserInterface*
+VatsinatorApplication::userInterface() {
+  Q_ASSERT(__userInterface);
+  return __userInterface;
+}
+
 const QFont &
 VatsinatorApplication::boldFont() {
   static QFont font;
@@ -181,7 +187,7 @@ VatsinatorApplication::__initialize() {
   emit uiCreated();
 
   /* show main window */
-  VatsinatorWindow::getSingleton().show();
+  userInterface()->mainWindow()->show();
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);

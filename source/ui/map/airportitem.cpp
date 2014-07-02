@@ -32,6 +32,7 @@
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "airportitem.h"
 #include "defines.h"
@@ -173,7 +174,7 @@ AirportItem::menu(QWidget* _parent) const {
   
   MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
   connect(showMetar,                                    SIGNAL(triggered(QString)),
-          MetarsWindow::getSingletonPtr(),              SLOT(show(QString)));
+          vApp()->userInterface()->metarsWindow(),      SLOT(show(QString)));
   menu->addAction(showMetar);
   
   if (!data()->isEmpty()) {

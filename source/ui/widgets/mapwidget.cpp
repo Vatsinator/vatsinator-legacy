@@ -31,9 +31,11 @@
 #include "ui/map/mapscene.h"
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsinatorapplication.h"
 
 #include "mapwidget.h"
 #include "defines.h"
@@ -615,7 +617,7 @@ MapWidget::MousePosition::update(const QPoint& _pos) {
   __screenPosition = _pos;
   __geoPosition = MapWidget::getSingleton().mapToLonLat(_pos);
   
-  VatsinatorWindow::getSingleton().positionBoxUpdate(__geoPosition.x(), __geoPosition.y());
+  vApp()->userInterface()->mainWindow()->positionBoxUpdate(__geoPosition.x(), __geoPosition.y());
 }
 
 qreal

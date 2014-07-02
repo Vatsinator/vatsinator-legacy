@@ -30,7 +30,6 @@ class QProgressBar;
 
 class VatsinatorWindow :
     public QMainWindow,
-    public Singleton<VatsinatorWindow>,
     private Ui::VatsinatorWindow {
   
   Q_OBJECT
