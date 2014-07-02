@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "db/airportdatabase.h"
@@ -29,11 +30,10 @@
 #include "ui/userinterface.h"
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
-#include "vatsimdata/airport/activeairport.h"
-#include "vatsimdata/airport/emptyairport.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -46,6 +46,8 @@
 #include "vatsimdatahandler.h"
 #include "defines.h"
 
+using std::for_each;
+
 static const QString CacheFileName = "lastdata";
 
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
@@ -54,14 +56,13 @@ ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTa
 static QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
 
 
-VatsimDataHandler::VatsimDataHandler() :
-    __flights(new FlightTableModel()),
-    __atcs(new ControllerTableModel()),
+VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
+    QObject(_parent),
     __statusUrl(NetConfig::Vatsim::statusUrl()),
+    __currentTimestamp(0),
     __observers(0),
+    __clientCount(0),
     __statusFileFetched(false),
-    __airports(AirportDatabase::getSingleton()),
-    __firs(FirDatabase::getSingleton()),
     __downloader(new PlainTextDownloader()),
     __scheduler(new UpdateScheduler()),
     __notamProvider(nullptr) {
@@ -78,13 +79,14 @@ VatsimDataHandler::VatsimDataHandler() :
           UserInterface::getSingletonPtr(),         SLOT(warning(QString)));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
-//   connect(this, SIGNAL(localDataBad(QString)), SLOT(__reportDataError(QString)));
   
   __notamProvider = new EurouteNotamProvider();
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
   __clearData();
+  qDeleteAll(__airports);
+  qDeleteAll(__firs);
   
   if (__notamProvider)
     delete __notamProvider;
@@ -92,27 +94,20 @@ VatsimDataHandler::~VatsimDataHandler() {
   delete __downloader;
   delete __scheduler;
   
-  qDeleteAll(__uirs);
-
-  delete __atcs;
-  delete __flights;
-  
   delete VatsimDataHandler::emptyFlightTable;
   delete VatsimDataHandler::emptyControllerTable;
 }
 
 void
 VatsimDataHandler::init() {
-  auto f = QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile,
-                             FileManager::path("data/country"));
+  __initData();
   
-  QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile,
-                    FileManager::path("data/alias"));
-  QtConcurrent::run(this, &VatsimDataHandler::__readUirFile,
-                    FileManager::path("data/uir"));
-  
-  f.waitForFinished();
+  __readCountryFile(FileManager::path("data/country"));
+  __readAliasFile(FileManager::path("data/alias"));
   __readFirFile(FileManager::path("data/fir"));
+  __readUirFile(FileManager::path("data/uir"));
+  
+  emit initialized();
 }
 
 void
@@ -154,18 +149,19 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 
 void
 VatsimDataHandler::parseDataFile(const QString& _data) {
-  static QRegExp rx("^\\b(UPDATE|RELOAD)\\b\\s?=\\s?\\b(.+)\\b$");
-  
-  __clearData();
+  static QRegExp rx("^\\b(UPDATE|RELOAD|CONNECTED CLIENTS)\\b\\s?=\\s?\\b(.+)\\b$");
 
   VatsinatorApplication::log("Data length: %i.", _data.length());
 
-  QStringList tempList = _data.split(QRegExp("\r?\n"), QString::SkipEmptyParts);
-  
+  QStringList tempList = _data.split(QRegExp("\r?\n"), QString::SkipEmptyParts);  
   DataSections section = None;
+  
+  __currentTimestamp = QDateTime::currentMSecsSinceEpoch();
+  __newClients.clear();
+  __observers = 0;
 
   for (QString& temp: tempList) {
-    if (temp.startsWith(';'))
+    if (temp.startsWith(';')) // comment
       continue;
 
     if (temp.startsWith('!')) {
@@ -192,58 +188,69 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
               value, "yyyyMMddhhmmss");
           } else if (key == "RELOAD") {
             __reload = value.toInt();
+          } else if (key == "CONNECTED CLIENTS") {
+            __clientCount = value.toInt();
           }
         }
         break;
       } // DataSections::General
     
       case DataSections::Clients: {
-        QStringList clientData = temp.split(':');
+        RawClientData clientData = RawClientData(temp);
         
-        if (clientData.size() < 40) {
-          VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit vatsimDataError();
-          return;
-        }
+        if (!clientData.valid)
+          continue;
         
-        if (clientData[3] == "ATC") {
-          Controller* atc = new Controller(clientData);
-          
-          if (atc->isOk()) {
-            __atcs->addStaff(atc);
-          } else {
-            __observers += 1;
-            delete atc;
+        if (__clients.contains(clientData.callsign)) {
+          Client* c = __clients[clientData.callsign];
+          c->update(clientData.line);
+        } else {
+          if (clientData.type == RawClientData::Atc) {
+            Controller* atc = new Controller(clientData.line);
+            
+            if (atc->isOk()) {
+              __clients[atc->callsign()] = atc;
+              __newClients << atc;
+            } else {
+              __observers += 1;
+              delete atc;
+            }
+          } else if (clientData.type == RawClientData::Pilot) {
+            Pilot* pilot = new Pilot(clientData.line);
+            if (pilot->position().isNull()) {
+              delete pilot; // skip unknown flights
+            } else {
+              __clients[pilot->callsign()] = pilot;
+              __newClients << pilot;
+            }
           }
-        } else if (clientData[3] == "PILOT") {
-          Pilot* pilot = new Pilot(clientData);
-          if (pilot->position().latitude == 0 && pilot->position().longitude == 0)
-            delete pilot; // skip unknown flights
-          else
-            __flights->addFlight(pilot);
         }
         break;
       } // DataSections::Clients
     
       case DataSections::Prefile: {
-        QStringList clientData = temp.split(':');
+        RawClientData clientData = RawClientData(temp);
         
-        if (clientData.size() < 40) {
-          VatsinatorApplication::log("VatsimDataHandler: line invalid: %s", qPrintable(temp));
-          emit vatsimDataError();
-          return;
-        }
+        if (!clientData.valid || clientData.type != RawClientData::Pilot)
+          continue;
         
-        __flights->addFlight(new Pilot(clientData, true));
+        if (__clients.contains(clientData.callsign))
+          __clients[clientData.callsign]->deleteLater();
+        
+        Pilot* pilot = new Pilot(clientData.line, true);
+        __clients[pilot->callsign()] = pilot;
+        
         break;
       } // DataSections::Prefile
       
       default: {}
     } // switch (section)
   } // for
+  
+  __cleanupClients();
 }
 
-const QString &
+const QString&
 VatsimDataHandler::getDataUrl() const {
   if (__statusFileFetched) {
     qsrand(QTime::currentTime().msec());
@@ -253,72 +260,121 @@ VatsimDataHandler::getDataUrl() const {
   }
 }
 
-const Pilot *
+FlightTableModel*
+VatsimDataHandler::flightTableModel() const {
+  FlightTableModel* model = new FlightTableModel();
+  for (Client* c: __clients.values()) {
+    if (Pilot* p = dynamic_cast<Pilot*>(c))
+      model->add(p);
+  }
+  
+  return model;
+}
+
+ControllerTableModel*
+VatsimDataHandler::controllerTableModel() const {
+  ControllerTableModel* model = new ControllerTableModel();
+  for (Client* c: __clients.values()) {
+    if (Controller* cc = dynamic_cast<Controller*>(c))
+      model->add(cc);
+  }
+  
+  return model;
+}
+
+const Pilot*
 VatsimDataHandler::findPilot(const QString& _callsign) const {
-  return __flights->findFlightByCallsign(_callsign);
+  if (__clients.contains(_callsign)) {
+    return dynamic_cast<Pilot*>(__clients[_callsign]);
+  } else {
+    return nullptr;
+  }
 }
 
-const Controller *
+const Controller*
 VatsimDataHandler::findAtc(const QString& _callsign) const {
-  return __atcs->findAtcByCallsign(_callsign);
+  if (__clients.contains(_callsign)) {
+    return dynamic_cast<Controller*>(__clients[_callsign]);
+  } else {
+    return nullptr;
+  }
 }
 
-Uir *
-VatsimDataHandler::findUIR(const QString& _icao) {
-for (Uir * u: __uirs)
-    if (u->icao() == _icao)
-      return u;
-
-  return NULL;
-}
-
-ActiveAirport *
-VatsimDataHandler::addActiveAirport(const QString& _icao) {
-  if (!__activeAirports.contains(_icao))
-    __activeAirports.insert(_icao, new ActiveAirport(_icao));
-
-  return __activeAirports[_icao];
-}
-
-EmptyAirport *
-VatsimDataHandler::addEmptyAirport(const QString& _icao) {
-  if (!__emptyAirports.contains(_icao))
-    __emptyAirports.insert(_icao, new EmptyAirport(_icao));
-
-  return __emptyAirports[_icao];
-}
-
-EmptyAirport *
-VatsimDataHandler::addEmptyAirport(const AirportRecord* _ap) {
-  QString icao(_ap->icao);
-  
-  if (!__emptyAirports.contains(icao))
-    __emptyAirports.insert(icao, new EmptyAirport(_ap));
-  
-  return __emptyAirports[icao];
-}
-
-Airport *
+Airport*
 VatsimDataHandler::findAirport(const QString& _icao) {
-  if (__activeAirports.contains(_icao))
-    return __activeAirports[_icao];
+  if (__airports.contains(_icao)) {
+    return __airports[_icao];
+  } else {
+    QList<QString> keys = aliases().values(_icao);
+    if (_icao.length() < 4)
+      keys.prepend(QString("K") % _icao);
+    
+    for (const QString& k: keys) {
+      if (__airports.contains(k))
+        return __airports[k];
+    }
+    
+    return nullptr;
+  }
+}
+
+QList<Airport*>
+VatsimDataHandler::airports() const {
+  return std::move(__airports.values());
+}
+
+Fir*
+VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
+  QList<QString> keys = aliases().values(_icao);
+  if (_icao.length() >= 4)
+    keys.prepend(_icao);
+  else
+    /* Handle USA 3-letter icao contraction */
+    keys.prepend(QString("K") % _icao);
   
-  return addEmptyAirport(_icao);
+  for (const QString& k: keys) {
+    if (__firs.contains(k)) {
+      QList<Fir*> values = __firs.values(k);
+      for (Fir* f: values)
+        if (f->isOceanic() == _fss && f->hasValidPosition()) {
+          return f;
+        }
+    }
+  }
+  
+  return nullptr;
+}
+
+QList<Fir*>
+VatsimDataHandler::firs() const {
+  return std::move(__firs.values());
 }
 
 int
 VatsimDataHandler::clientCount() const {
-  return pilotCount() + atcCount() + obsCount();
+  return __clientCount;
 }
 
 int
 VatsimDataHandler::pilotCount() const {
-  return __flights->rowCount();
+  int p = 0;
+  for (Client* c: __clients.values()) {
+    if (dynamic_cast<Pilot*>(c))
+      p += 1;
+  }
+  
+  return p;
 }
 
 int
 VatsimDataHandler::atcCount() const {
-  return __atcs->rowCount();
+  int cc = 0;
+  for (Client* c: __clients.values()) {
+    if (dynamic_cast<Controller*>(c))
+      cc += 1;
+  }
+  
+  return cc;
 }
 
 int
@@ -335,6 +391,24 @@ VatsimDataHandler::notamProvider() {
 }
 
 qreal
+VatsimDataHandler::fastDistance(
+    const qreal& _lat1, const qreal& _lon1,
+    const qreal& _lat2, const qreal& _lon2) {
+  return qSqrt(
+    qPow(_lat1 - _lat2, 2) +
+    qPow(_lon1 - _lon2, 2)
+  );
+}
+
+qreal
+VatsimDataHandler::fastDistance(const LonLat& _a, const LonLat& _b) {
+  return qSqrt(
+    qPow(_a.latitude() - _b.latitude(), 2) +
+    qPow(_a.longitude() - _b.longitude(), 2)
+  );
+}
+
+qreal
 VatsimDataHandler::nmDistance(
     const qreal& _lat1, const qreal& _lon1,
     const qreal& _lat2, const qreal& _lon2) {
@@ -346,6 +420,18 @@ VatsimDataHandler::nmDistance(
       qSin(_lat1) * qSin(_lat2) +
       qCos(_lat1) * qCos(_lat2) *
       qCos(_lon2 - _lon1)
+    ) * R;
+}
+
+qreal
+VatsimDataHandler::nmDistance(const LonLat& _a, const LonLat& _b) {
+  /* http://www.movable-type.co.uk/scripts/latlong.html */
+  static constexpr qreal R = 3440.06479191; // nm
+  
+  return qAcos(
+      qSin(_a.latitude()) * qSin(_b.latitude()) +
+      qCos(_a.latitude()) * qCos(_b.latitude()) *
+      qCos(_b.longitude() - _a.longitude())
     ) * R;
 }
 
@@ -447,29 +533,28 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     
     QString icao = line.section(' ', 0, 0);
     
-    Fir* currentFir = __firs.find(icao);
+    Fir* currentFir = findFir(icao);
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       
+      /*
+       * TODO Make this below more convenient, i.e. allow writing some kind of
+       *      "exceptions" in the data file.
+       */
       if (currentFir->icao() == "UMKK") // fix for Kaliningrad center
         currentFir->setCountry("Russia");
       else
         currentFir->setCountry(countries[icao.left(2)]);
       
-      /*
-       * TODO Make this above more convenient, i.e. allow writing some kind of
-       *      "exceptions" in the data file.
-       */
-      
-      currentFir->correctName();
+      currentFir->fixupName();
     }
     
     // look for some oceanic fir
-    currentFir = __firs.find(icao, true);
+    currentFir = findFir(icao, true);
     if (currentFir) {
       currentFir->setName(line.section(' ', 1));
       currentFir->setCountry(countries[icao.left(2)]);
-      currentFir->correctName();
+      currentFir->fixupName();
     }
   }
   
@@ -479,13 +564,13 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
 }
 
 void
-VatsimDataHandler::__readUirFile(const QString& _fName) {
+VatsimDataHandler::__readUirFile(const QString& _fileName) {
   VatsinatorApplication::log("Reading \"uir\" file...");
   
-  QFile file(_fName);
+  QFile file(_fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    emit localDataBad(tr("File %1 could not be opened!").arg(_fileName));
     return;
   }
   
@@ -496,11 +581,11 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
       continue;
     
     QStringList data = line.split(' ');
-    Uir* uir = new Uir(data[0]);
+    Uir* uir = new Uir(data.first());
     
     for (int i = 1; i < data.length(); ++i) {
       if (data[i].toUpper() == data[i]) {
-        Fir* fir = __firs.find(data[i]);
+        Fir* fir = findFir(data[i]);
         
         if (fir)
           uir->addFir(fir);
@@ -511,7 +596,6 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
       }
     }
     
-    __uirs.push_back(uir);
   }
   
   file.close();
@@ -520,16 +604,27 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
 }
 
 void
-VatsimDataHandler::__clearData() {
-  qDeleteAll(__flights->flights()), __flights->clear();
-  qDeleteAll(__atcs->staff()), __atcs->clear();
-  qDeleteAll(__activeAirports), __activeAirports.clear();
-  qDeleteAll(__emptyAirports), __emptyAirports.clear();
-
-  for (Uir* u: __uirs)
-    u->clear();
+VatsimDataHandler::__initData() {
+  for_each(FirDatabase::getSingleton().firs().begin(),
+    FirDatabase::getSingleton().firs().end(),
+    [this](const FirRecord& fr) {
+      Fir* f = new Fir(&fr);
+      __firs.insert(f->icao(), f);
+    }
+  );
   
-  FirDatabase::getSingleton().clearAll();
+  for_each(AirportDatabase::getSingleton().airports().begin(),
+    AirportDatabase::getSingleton().airports().end(),
+    [this](const AirportRecord& ar) {
+      Airport* a = new Airport(&ar);
+      __airports.insert(a->icao(), a);
+    }
+  );
+}
+
+void
+VatsimDataHandler::__clearData() {
+  qDeleteAll(__clients);
 
   __observers = 0;
 }
@@ -540,7 +635,6 @@ VatsimDataHandler::__loadCachedData() {
   
   CacheFile file(CacheFileName);
   if (file.exists()) {
-    FirDatabase::getSingleton().clearAll();
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
       VatsinatorApplication::log("VatsimDataHandler: cache file %s is not readable.",
                                  qPrintable(file.fileName()));
@@ -550,10 +644,19 @@ VatsimDataHandler::__loadCachedData() {
     QString data(file.readAll());
     file.close();
     parseDataFile(data);
-    ModuleManager::getSingleton().updateData();
   }
   
   VatsinatorApplication::log("VatsimDataHandler: cache restored.");
+}
+
+void
+VatsimDataHandler::__cleanupClients() {
+  for (auto c: __clients) {
+    if (!c->isOnline()) {
+      __clients.remove(c->callsign());
+      c->deleteLater();
+    }
+  }
 }
 
 void
@@ -604,5 +707,14 @@ VatsimDataHandler::__handleFetchError() {
       /* We already tried - there is something else causing the error */
       emit vatsimStatusError();
     }
+  }
+}
+
+VatsimDataHandler::RawClientData::RawClientData(const QString& _line) {
+  line = _line.split(':');
+  valid = line.size() == 42;
+  if (valid) {
+    callsign = line[0];
+    type = line[3] == "ATC" ? Atc : Pilot;
   }
 }

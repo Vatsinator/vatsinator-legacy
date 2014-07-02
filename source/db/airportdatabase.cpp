@@ -28,9 +28,11 @@
 AirportDatabase::AirportDatabase(QObject* _parent) : QObject(_parent) {
   connect(this,                                 SIGNAL(fatal(QString)),
           UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
-  
-//   __readDatabase();
-  QtConcurrent::run(this, &AirportDatabase::__readDatabase);
+}
+
+void
+AirportDatabase::init() {
+  __readDatabase();
 }
 
 const AirportRecord *
@@ -67,5 +69,4 @@ AirportDatabase::__readDatabase() {
   db.read(reinterpret_cast<char*>(&__airports[0]), sizeof(AirportRecord) * size);
 
   db.close();
-
 }

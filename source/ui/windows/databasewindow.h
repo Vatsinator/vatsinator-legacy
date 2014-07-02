@@ -1,6 +1,6 @@
 /*
  * databasewindow.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ public:
   DatabaseWindow(QWidget* = nullptr);
   
 private slots:
+  void __updateNumbers();
   void __updateDatabaseStatus(ResourceManager::VersionStatus);
   
 };

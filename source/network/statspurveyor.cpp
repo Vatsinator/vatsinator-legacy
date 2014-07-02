@@ -121,6 +121,7 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
   QSettings s;
   if (!s.contains("Decided/stats")) {
     LetSendStatsDialog* dialog = new LetSendStatsDialog();
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
     connect(dialog,     SIGNAL(accepted()),
             this,       SLOT(__statsAccepted()));
     connect(dialog,     SIGNAL(rejected()),
@@ -217,7 +218,6 @@ StatsPurveyor::__statsAccepted() {
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", true);
   QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
-  sender()->deleteLater();
   
   SM::updateUi("misc");
 }
@@ -227,7 +227,6 @@ StatsPurveyor::__statsRejected() {
   QSettings s;
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", false);
-  sender()->deleteLater();
   
   SM::updateUi("misc");
 }

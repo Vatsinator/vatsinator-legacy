@@ -70,12 +70,16 @@ template <typename T>
 void
 initGLExtensionsPointers() {
   Q_ASSERT(QGLContext::currentContext()->isValid());
+  
+#define init_ext(val) val = getProcAddress<decltype(val)>(#val)
 
-  glBindBuffer = getProcAddress<decltype(glBindBuffer)>("glBindBuffer");
-  glBufferData = getProcAddress<decltype(glBufferData)>("glBufferData");
-  glBufferSubData = getProcAddress<decltype(glBufferSubData)>("glBufferSubData");
-  glDeleteBuffers = getProcAddress<decltype(glDeleteBuffers)>("glDeleteBuffers");
-  glGenBuffers = getProcAddress<decltype(glGenBuffers)>("glGenBuffers");
+  init_ext(glBindBuffer);
+  init_ext(glBufferData);
+  init_ext(glBufferSubData);
+  init_ext(glDeleteBuffers);
+  init_ext(glGenBuffers);
+  
+#undef init_ext
 }
 
 #endif // Q_WS_MAC

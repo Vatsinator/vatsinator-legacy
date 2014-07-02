@@ -19,9 +19,7 @@
 #include <QtGui>
 
 #include "ui/buttons/clientdetailsbutton.h"
-
-#include "ui/windows/flightdetailswindow.h"
-
+#include "ui/userinterface.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "flighttableview.h"
@@ -67,8 +65,8 @@ FlightTableView::__updateButtons(int _start, int _end) {
       continue;
     
     ClientDetailsButton* dButton = new ClientDetailsButton(fModel->flights()[i]);
-    connect(dButton,                                SIGNAL(clicked(const Client*)),
-            FlightDetailsWindow::getSingletonPtr(), SLOT(show(const Client*)));
+    connect(dButton,                            SIGNAL(clicked(const Client*)),
+            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
     setIndexWidget(fModel->index(i, FlightTableModel::Button), dButton);
   }
 }

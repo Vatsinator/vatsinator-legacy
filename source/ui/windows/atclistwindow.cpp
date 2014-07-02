@@ -1,6 +1,6 @@
 /*
     atclistwindow.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,13 +19,8 @@
 #include <QtGui>
 
 #include "ui/userinterface.h"
-
-#include "ui/windows/atcdetailswindow.h"
-
 #include "vatsimdata/client/controller.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "atclistwindow.h"
@@ -35,32 +30,40 @@ AtcListWindow::AtcListWindow(QWidget* _parent) :
     BaseWindow(_parent) {
   setupUi(this);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-  
-  ATCTable->setModel(VatsimDataHandler::getSingleton().atcModel());
-  ATCTable->hideColumn(ControllerTableModel::Button);
-  __setColumnsWidths();
-
-  connect(ATCTable, SIGNAL(doubleClicked(const QModelIndex&)),
-          this,     SLOT(__handleDoubleClicked(const QModelIndex&)));
+  connect(qApp,         SIGNAL(aboutToQuit()),
+          this,         SLOT(hide()));
+  connect(ATCTable,     SIGNAL(doubleClicked(const QModelIndex&)),
+          this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
 }
 
 void
 AtcListWindow::resizeEvent(QResizeEvent* _event) {
   QWidget::resizeEvent(_event);
-  __setColumnsWidths();
+  __resizeColumns();
 }
 
 void
-AtcListWindow::__setColumnsWidths() {
-  static const int CALLSIGN_SIZE = 100;
-  static const int FREQUENCY_SIZE = 120;
-  static const int SCROLLBAR_SIZE = 30;
+AtcListWindow::showEvent(QShowEvent* _event) {
+  if (auto m = ATCTable->model())
+    m->deleteLater();
+  
+  ATCTable->setModel(VatsimDataHandler::getSingleton().controllerTableModel());
+  ATCTable->hideColumn(ControllerTableModel::Button);
+  __resizeColumns();
+  
+  BaseWindow::showEvent(_event);
+}
 
-  int spaceLeft = ATCTable->width() - CALLSIGN_SIZE - FREQUENCY_SIZE - SCROLLBAR_SIZE;
+void
+AtcListWindow::__resizeColumns() {
+  static const int CallsignWidth = 100;
+  static const int FrequencyWidth = 120;
+  
+  const int scrollbarWidth = qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
 
-  ATCTable->setColumnWidth(ControllerTableModel::Callsign, CALLSIGN_SIZE);
+  int spaceLeft = ATCTable->width() - CallsignWidth - FrequencyWidth - scrollbarWidth;
+
+  ATCTable->setColumnWidth(ControllerTableModel::Callsign, CallsignWidth);
   ATCTable->setColumnWidth(ControllerTableModel::Name, spaceLeft);
 }
 
@@ -68,8 +71,8 @@ void
 AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 
-  AtcDetailsWindow::getSingleton().show(
-    (qobject_cast< const ControllerTableModel* >(_index.model()))->staff()[_index.row()]
+  UserInterface::getSingleton().showDetailsWindow(
+    (qobject_cast<const ControllerTableModel*>(_index.model()))->staff()[_index.row()]
   );
 }
 

@@ -34,27 +34,10 @@ AirlineDatabase::AirlineDatabase(QObject* _parent) :
     __canFetch(false) {
   connect(this,                                 SIGNAL(warning(QString)),
           UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
-  
-  //   __init();
-  QtConcurrent::run(this, &AirlineDatabase::__init);
-}
-
-AirlineDatabase::~AirlineDatabase() {
-  qDeleteAll(__airlines);
-}
-
-Airline*
-AirlineDatabase::find(const QString& _icao) {
-  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
-}
-
-const Airline*
-AirlineDatabase::find(const QString& _icao) const {
-  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
 }
 
 void
-AirlineDatabase::__init() {
+AirlineDatabase::init() {
   QFile db(FileManager::path("data/airlines"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -83,16 +66,23 @@ AirlineDatabase::__init() {
            ad["name"].toString(),
            ad["country"].toString(),
            ad["website"].toString(),
-           ad["logo"].toString()
+           ad["logo"].toString(),
+           this
          );
        
        __airlines.insert(airline->icao(), airline);
-       
-       /* Due to the fact that init() is called on separate thread,
-        * we need to move all qobject-based items to the main one */
-       airline->moveToThread(qApp->thread());
      }
   }
   
   db.close();
+}
+
+Airline*
+AirlineDatabase::find(const QString& _icao) {
+  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
+}
+
+const Airline*
+AirlineDatabase::find(const QString& _icao) const {
+  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
 }

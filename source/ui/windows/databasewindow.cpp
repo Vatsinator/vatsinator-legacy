@@ -1,6 +1,6 @@
 /*
  * databasewindow.cpp
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
+#include "vatsimdata/vatsimdatahandler.h"
 
 #include "databasewindow.h"
 #include "defines.h"
@@ -29,6 +30,18 @@ DatabaseWindow::DatabaseWindow(QWidget* _parent) :
     BaseWindow(_parent) {
   setupUi(this);
   
+  __updateDatabaseStatus(ResourceManager::Updated);
+  
+  connect(ResourceManager::getSingletonPtr(),   SIGNAL(databaseStatusChanged(ResourceManager::VersionStatus)),
+          this,                                 SLOT(__updateDatabaseStatus(ResourceManager::VersionStatus)));
+  connect(SyncDatabaseButton,                   SIGNAL(clicked()),
+          ResourceManager::getSingletonPtr(),   SLOT(requestDatabaseSync()));
+  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(initialized()),
+          this,                                 SLOT(__updateNumbers()));
+}
+
+void
+DatabaseWindow::__updateNumbers() {
   DatabaseInfoLabel->setText(
     tr(
       "Your local clone of Vatsinator Database contains %n airport(s)",
@@ -39,13 +52,6 @@ DatabaseWindow::DatabaseWindow(QWidget* _parent) :
       "The second part of the summary", AirlineDatabase::getSingleton().airlines().size()
     )
   );
-  
-  __updateDatabaseStatus(ResourceManager::Updated);
-  
-  connect(ResourceManager::getSingletonPtr(),   SIGNAL(databaseStatusChanged(ResourceManager::VersionStatus)),
-          this,                                 SLOT(__updateDatabaseStatus(ResourceManager::VersionStatus)));
-  connect(SyncDatabaseButton,                   SIGNAL(clicked()),
-          ResourceManager::getSingletonPtr(),   SLOT(requestDatabaseSync()));
 }
 
 void

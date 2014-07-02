@@ -1,6 +1,6 @@
 /*
     pilot.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,17 +20,19 @@
 #ifndef PILOT_H
 #define PILOT_H
 
+#include <QPointF>
 #include <QStringList>
 #include <QString>
+#include <QVector>
 
-#include <QtOpenGL>
-
-#include "vatsimdata/clickable.h"
 #include "vatsimdata/client.h"
 
+class Airport;
 struct Point;
 
-class Pilot : public Client, public Clickable {
+class Pilot : public Client {
+  
+  Q_OBJECT
 
   /**
    * This class contains info about one particular pilot - his
@@ -40,13 +42,13 @@ class Pilot : public Client, public Clickable {
 public:
   /* Types */
   enum FlightRules {
-    IFR, VFR
+    Ifr, Vfr
   };
   
-  enum Status {
-    DEPARTING,
-    AIRBORNE,
-    ARRIVED
+  enum Phase {
+    Departing,
+    Airborne,
+    Arrived
   };
   
   struct Pressure {
@@ -54,11 +56,22 @@ public:
     QString mb;
   };
   
+  /**
+   * Route, as filed in the flight plan.
+   * To get departure & destination airport pointers directly,
+   * see origin() and destination() methods.
+   */
   struct Route {
     QString origin;
     QString destination;
     QString route;
     QString altitude;
+    
+    /* This is vector of points that belong to the route.
+     * The first point is the origin airport, the middle one is
+     * the pilot position and the last one is the destination airport.
+     */
+    QVector<LonLat> waypoints;
   };
   
   Pilot() = delete;
@@ -68,109 +81,112 @@ public:
    * @param prefiled Indicates whether the flight is only prefiled.
    */
   Pilot(const QStringList&, bool = false);
-  virtual ~Pilot();
-
-  void drawLineFrom() const;
-  void drawLineTo() const;
+  virtual ~Pilot() = default;
   
+  void update(const QStringList&);
+  
+  /**
+   * Estimated Time of Arrival.
+   */
   const QTime& eta() const;
+  
+  /**
+   * Progress [1-100].
+   */
   int progress() const;
-
-  inline void
-  drawLines() const { drawLineFrom(); drawLineTo(); }
-
-  inline Client::Type
-  clientType() const { return Client::PILOT; }
   
-  inline Clickable::Type
-  objectType() const { return Clickable::PLANE; }
+  /**
+   * The current altitude.
+   */
+  inline int altitude() const { return __altitude; }
   
-  inline int
-  altitude() const { return __altitude; }
+  /**
+   * The client's ground speed, in knots.
+   */
+  inline int groundSpeed() const { return __groundSpeed; }
   
-  inline int
-  groundSpeed() const { return __groundSpeed; }
+  /**
+   * The client's squawk code.
+   * It's string, not int, as squawk might start with '0'.
+   */
+  inline const QString& squawk() const { return __squawk; }
   
-  inline const QString &
-  squawk() const { return __squawk; }
+  /**
+   * The client's aircraft.
+   */
+  inline const QString& aircraft() const { return __aircraft; }
   
-  inline const QString &
-  aircraft() const { return __aircraft; }
+  /**
+   * The client's current True Air Speed, in knots.
+   * @sa groundSpeed().
+   */
+  inline int tas() const { return __tas; }
   
-  inline int
-  tas() const { return __tas; }
+  /**
+   * The client's flight rules - Ifr or Vfr.
+   */
+  inline const Pilot::FlightRules& flightRules() const { return __flightRules; }
   
-  inline const Pilot::FlightRules &
-  flightRules() const { return __flightRules; }
+  /**
+   * The client's remarks.
+   */
+  inline const QString& remarks() const { return __remarks; }
   
   /**
    * Scheduled Time of Departure
    */
-  inline const QTime &
-  std() const { return __std; }
+  inline const QTime& std() const { return __std; }
   
   /**
    * Actual Time of Departure
    */
-  inline const QTime &
-  atd() const { return __atd; }
+  inline const QTime& atd() const { return __atd; }
   
   /**
    * Scheduled Time of Arrival
    */
-  inline const QTime &
-  sta() const { return __sta; }
+  inline const QTime& sta() const { return __sta; }
   
-  inline const QString &
-  remarks() const { return __remarks; }
+  /**
+   * The client's current heading.
+   */
+  inline unsigned heading() const { return __heading; }
   
-  inline unsigned
-  heading() const { return __heading; }
+  /**
+   * The client's current flight phase.
+   * Flight status is determined by the current altitude, speed and distance
+   * from airport (origin or destination).
+   * 
+   * TODO Climbing & descending status options.
+   */
+  inline Pilot::Phase phase() const { return __phase; }
   
-  inline Pilot::Status
-  flightStatus() const { return __flightStatus; }
+  /**
+   * The client's baro setting.
+   */
+  inline const Pilot::Pressure& pressure() const { return __pressure; }
   
-  inline const Pilot::Pressure &
-  pressure() const { return __pressure; }
+  /**
+   * The client's route details. It includes planned origin and destination
+   * airport, altitude and filled route.
+   */
+  inline const Pilot::Route& route() const { return __route; }
   
-  inline const Pilot::Route &
-  route() const { return __route; }
+  /**
+   * @return Origin airport or nullptr if could not match any.
+   */
+  inline const Airport* origin() const { return __origin; }
   
-  inline GLuint
-  modelTexture() const { return __modelTexture; }
+  /**
+   * @return Destination airport or nullptr if could not match any.
+   */
+  inline const Airport* destination() const { return __destination; }
   
-  inline bool
-  isPrefiledOnly() const { return __prefiledOnly; }
-
-  inline GLuint
-  callsignTip() const { return __callsignTip ? __callsignTip : __generateTip(); }
-  
-protected:
-  int     __altitude;
-  int     __groundSpeed;
-  QString __squawk;
-  QString __aircraft;
-  
-  /* True AirSpeed */
-  int     __tas;
-
-  /* IFR/VFR */
-  Pilot::FlightRules __flightRules;
-
-  QTime           __std; /* Scheduled Time of Departure  */
-  QTime           __atd; /* Actual Time of Departure */
-  QTime           __sta; /* Scheduled Time of Arrival */
-  mutable QTime   __eta; /* Estimated Time of Arrival */
-  mutable int     __progress; /* [1-100] */
-  
-  QString         __remarks;
-  unsigned        __heading;
-  Pilot::Status   __flightStatus;
-  Pilot::Pressure __pressure;
-  Pilot::Route    __route;
-  bool            __prefiledOnly;
-  
-  GLuint    __modelTexture;
+  /**
+   * Prefiled only means that client has prefiled the flight plan, but
+   * he did not log in yet.
+   */
+  inline bool isPrefiledOnly() const { return __prefiledOnly; }
 
 private:
   /**
@@ -181,36 +197,32 @@ private:
   /**
    * Checks whether pilot is departing, airborn or has just arrived.
    */
-  void __setMyStatus();
-
-  /**
-   * Generates in/out lines.
-   */
-  void __generateLines() const;
-
-  /**
-   * Generates the callsign label.
-   */
-  GLuint __generateTip() const;
+  void __discoverFlightPhase();
   
   /**
-   * Parses the NATs.
-   * TODO: Include AIRAC, parse every route, not only NATs.
+   * Checks whether the route crosses the IDL and fixes it.
    */
-  void __parseRoute() const;
-
-  bool __isCrossingIDL(QVector<GLfloat>&) const;
-
-  mutable QVector<GLfloat> __lineFrom;
-  mutable QVector<GLfloat> __lineTo;
+  void __fixupRoute();
   
-  /* Route parsing is pretty rich, avoid doing it if unnesesary */
-  mutable bool __linesGenerated;
-
-  mutable GLuint __callsignTip;
-  
-  /* Vector of coordinates */
-  QVector<Point> __routePoints;
+  int                   __altitude;
+  int                   __groundSpeed;
+  QString               __squawk;
+  QString               __aircraft;
+  int                   __tas;
+  Pilot::FlightRules    __flightRules;
+  QTime                 __std; /* Scheduled Time of Departure  */
+  QTime                 __atd; /* Actual Time of Departure */
+  QTime                 __sta; /* Scheduled Time of Arrival */
+  mutable QTime         __eta; /* Estimated Time of Arrival */
+  mutable int           __progress; /* [1-100] */
+  QString               __remarks;
+  unsigned              __heading;
+  Pilot::Phase          __phase;
+  Pilot::Pressure       __pressure;
+  Pilot::Route          __route;
+  const Airport*        __origin;
+  const Airport*        __destination;
+  bool                  __prefiledOnly;
 
 };
 

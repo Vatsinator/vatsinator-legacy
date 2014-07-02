@@ -38,7 +38,12 @@ signals:
   
 public:
   AirlineDatabase(QObject* = nullptr);
-  virtual ~AirlineDatabase();
+  virtual ~AirlineDatabase() = default;
+  
+  /**
+   * Called by VatsinatorApplication only.
+   */
+  void init();
   
   Airline* find(const QString&);
   const Airline* find(const QString&) const;
@@ -56,7 +61,6 @@ public:
   }
   
 private:
-  void __init();
   
   /* ICAO <-> instance pairs */
   QMap<QString, Airline*>       __airlines;

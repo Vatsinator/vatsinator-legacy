@@ -1,6 +1,6 @@
 /*
     client.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,24 +23,22 @@
 #include <QDateTime>
 #include <QString>
 #include <QStringList>
+#include <QObject>
 
-class Client {
+#include "vatsimdata/lonlat.h"
+
+class Client : public QObject {
+  
+  Q_OBJECT
 
   /*
-   * Abstract class for connected client.
    * Inherited by Pilot and Controller classes.
    */
+  
+signals:
+  void updated();
 
 public:
-  // types
-  enum Type {
-    PILOT, ATC
-  };
-  
-  struct Position {
-    float latitude;
-    float longitude;
-  };
   
   /**
    * Prevent from creating foo-clients.
@@ -55,42 +53,65 @@ public:
   Client(const QStringList&);
   
   /**
-   * Client can be pilot or ATC.
-   * Use this class instead of dynamic_cast to check the subclass
-   * type - it is a little bit faster.
+   * Update the client from the _data_ given.
+   * The _data_ is just an appropriate line from the data file, which
+   * is fetched from the internet.
    */
-  virtual inline Client::Type clientType() const = 0;
+  virtual void update(const QStringList&);
+  
+  /**
+   * Checks whether the client is still online or not.
+   * This method simply compares the local copy of timestamp with the current timestamp
+   * of VatsimDataHandler instance.
+   * @return True if the client was present in the last data update, otherwise false.
+   */
+  bool isOnline() const;
+  
+  virtual ~Client() = default;
 
-  virtual ~Client() {}
+  /**
+   * The client's Vatsim PID.
+   */
+  inline unsigned pid() const { return __pid; }
+  
+  /**
+   * The client's callsign.
+   */
+  inline const QString& callsign() const { return __callsign; }
+  
+  /**
+   * The client's real name.
+   */
+  inline const QString& realName() const { return __realName; }
+  
+  /**
+   * The server that the client is connected to.
+   */
+  inline const QString& server() const { return __server; }
+  
+  /**
+   * When the client went online.
+   */
+  inline const QDateTime& onlineFrom() const { return __onlineFrom; }
+  
+  /**
+   * The current client's position.
+   */
+  inline const LonLat& position() const { return __position; }
 
-  inline unsigned
-  pid() const { return __pid; }
-  
-  inline const QString &
-  callsign() const { return __callsign; }
-  
-  inline const QString &
-  realName() const { return __realName; }
-  
-  inline const QString &
-  server() const { return __server; }
-  
-  inline const QDateTime &
-  onlineFrom() const { return __onlineFrom; }
-  
-  inline const Client::Position &
-  position() const { return __position; }
-  
 protected:
+  void setPosition(const LonLat&);
+  
+private:
   /* Client data */
-  unsigned  __pid;
-  QString   __callsign;
-  QString   __realName;
-
-  QString   __server;
-  QDateTime __onlineFrom;
-
-  Client::Position __position;
+  unsigned              __pid;
+  QString               __callsign;
+  QString               __realName;
+  QString               __server;
+  QDateTime             __onlineFrom;
+  LonLat                __position;
+  
+  qint64                __timestamp;
 
 };
 

@@ -32,6 +32,10 @@ class MetarListModel :
     public QAbstractListModel,
     public Singleton<MetarListModel> {
 
+  /* TODO
+   * Split to MetarListModel & MetarUpdater
+   */
+
   Q_OBJECT
 
 signals:
@@ -76,7 +80,7 @@ private:
   
 private slots:
   void __readMetar(const QString&);
-
+  
 private:
   QQueue<QString>       __requests;
   QList<Metar>          __metarList;

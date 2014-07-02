@@ -39,10 +39,10 @@ HomeLocation::~HomeLocation() {
 
 void
 HomeLocation::set() {
-  qreal lat, lon;
-  MapWidget::getSingleton().mouse2LatLon(&lat, &lon);
-  __homeLocation.setX(lon);
-  __homeLocation.setY(lat);
+//   qreal lat, lon;
+//   MapWidget::getSingleton().mouse2LatLon(&lat, &lon);
+//   __homeLocation.setX(lon);
+//   __homeLocation.setY(lat);
 }
 
 void
@@ -52,7 +52,7 @@ HomeLocation::set(const QPointF& _p) {
 
 void
 HomeLocation::showOnMap() {
-  MapWidget::getSingleton().showPoint(__homeLocation);
+//   MapWidget::getSingleton().showPoint(__homeLocation);
 }
 
 void

@@ -101,8 +101,12 @@ ViewPage::restore(QSettings& _s) {
     _s.value("pilot_labels.when_hovered", DefaultSettings::WHEN_HOVERED_CHECKBOX).toBool());
   ShowPilotsLabelsAirportRelatedCheckBox->setChecked(
     _s.value("pilot_labels.airport_labels", DefaultSettings::AIRPORT_RELATED_CHECKBOX).toBool());
-  AlwaysRadioButton->setChecked(
-    _s.value("airport_labels", DefaultSettings::AIRPORT_LABELS).toBool());
+  
+  bool airportLabels = _s.value("airport_labels", DefaultSettings::AIRPORT_LABELS).toBool();
+  if (airportLabels)
+    AlwaysRadioButton->setChecked(true);
+  else
+    NeverRadioButton->setChecked(true);
 }
 
 void
@@ -115,7 +119,7 @@ ViewPage::save(QSettings& _s) {
   _s.setValue("pilot_labels.always", ShowPilotsLabelsAlwaysCheckBox->isChecked());
   _s.setValue("pilot_labels.when_hovered", ShowPilotsLabelsWhenHoveredCheckBox->isChecked());
   _s.setValue("pilot_labels.airport_related", ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
-  _s.setValue("airport_labels", AirportsCheckBox->isChecked());
+  _s.setValue("airport_labels", AlwaysRadioButton->isChecked());
 }
 
 void

@@ -17,7 +17,6 @@
 */
 
 #include "modules/airporttracker.h"
-#include "modules/flighttracker.h"
 #include "modules/homelocation.h"
 #include "modules/modelmatcher.h"
 #include "modules/vatbookhandler.h"
@@ -30,22 +29,16 @@
 #include "defines.h"
 
 ModuleManager::ModuleManager() :
-    __airportTracker(new AirportTracker()),
-    __flightTracker(new FlightTracker()),
-    __homeLocation(new HomeLocation()),
-    __modelsMatcher(new ModelMatcher()),
-    __vatbookHandler(new VatbookHandler()) {
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
-          this,                                     SLOT(__initAfterGL()),
-          Qt::DirectConnection);
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
-          this,                                     SLOT(updateData()),
-          Qt::DirectConnection);
+    __airportTracker(nullptr),
+    __homeLocation(nullptr),
+    __modelsMatcher(nullptr),
+    __vatbookHandler(nullptr) {
+  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(uiCreated()),
+          this,                                         SLOT(init()));
 }
 
 ModuleManager::~ModuleManager() {
   delete __airportTracker;
-  delete __flightTracker;
   delete __homeLocation;
   delete __modelsMatcher;
   delete __vatbookHandler;
@@ -53,17 +46,17 @@ ModuleManager::~ModuleManager() {
 
 void
 ModuleManager::init() {
-  __airportTracker->init();
-  __flightTracker->init();
+  __airportTracker = new AirportTracker();
+  __homeLocation = new HomeLocation();
+  __modelsMatcher = new ModelMatcher();
+  __vatbookHandler = new VatbookHandler();
+  
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimDataUpdated()),
+          this,                                         SLOT(updateData()),
+          Qt::DirectConnection);
 }
 
 void
 ModuleManager::updateData() {
   __airportTracker->updateData();
-  __flightTracker->updateData();
-}
-
-void
-ModuleManager::__initAfterGL() {
-  __modelsMatcher->init();
 }

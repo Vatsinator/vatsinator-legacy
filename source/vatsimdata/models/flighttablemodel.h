@@ -1,6 +1,6 @@
 /*
     flighttablemodel.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #define FLIGHTTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <QVector>
+#include <QList>
 
 #include "vatsimdata/client/pilot.h"
 
@@ -41,17 +41,19 @@ public:
   
   /* Columns numbers */
   enum Column {
-    Callsign  = 0,
-    Name    = 1,
-    From    = 2,
-    To    = 3,
-    Aircraft  = 4,
-    Button    = 5
+    Callsign    = 0,
+    Name        = 1,
+    From        = 2,
+    To          = 3,
+    Aircraft    = 4,
+    Button      = 5
   };
   
   explicit FlightTableModel(QObject* = 0);
 
-  void addFlight(const Pilot*);
+  void add(const Pilot*);
+  void remove(const Pilot*);
+  bool contains(const Pilot*);
   void clear();
   const Pilot* findFlightByCallsign(const QString&) const;
 
@@ -60,12 +62,14 @@ public:
   QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
   QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
   void sort(int, Qt::SortOrder = Qt::AscendingOrder);
-
-  inline const QVector<const Pilot*> &
-  flights() const { return __flights; }
-
+  
+  inline const QList<const Pilot*>& flights() const { return __flights; }
+  
+private slots:
+  void __autoRemove(QObject*);
+  
 private:
-  QVector<const Pilot*> __flights;
+  QList<const Pilot*> __flights;
 
 };
 

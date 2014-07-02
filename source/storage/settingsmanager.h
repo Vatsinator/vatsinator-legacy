@@ -55,8 +55,6 @@ public:
   SettingsManager(QObject* = 0);
   virtual ~SettingsManager();
   
-  void init();
-  
   /**
    * We need this to be accessible before all pages are created.
    * All pages are QWidget-dependent, so they can not be constructed
@@ -77,6 +75,9 @@ public:
    * @param pName Page name.
    */
   static void updateUi(const QString&);
+  
+public slots:
+  void init();
 
 private:
   

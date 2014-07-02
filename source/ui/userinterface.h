@@ -30,13 +30,13 @@ class DebugWindow;
 #endif
 
 class AboutWindow;
-class AirportDetailsWindow;
-class AtcDetailsWindow;
+class Airport;
 class AtcListWindow;
+class Client;
 class DatabaseWindow;
-class FirDetailsWindow;
-class FlightDetailsWindow;
+class Fir;
 class FlightListWindow;
+class Pilot;
 class MetarsWindow;
 class SettingsWindow;
 class VatsinatorWindow;
@@ -50,7 +50,7 @@ class UserInterface : public QObject, public Singleton<UserInterface> {
   Q_OBJECT
 
 public:
-  UserInterface();
+  UserInterface(QObject* = nullptr);
   virtual ~UserInterface();
   
 public:
@@ -75,7 +75,11 @@ public slots:
   
   void showAppRestartDialog();
   void showVatsimMessage(const QString&);
-
+  
+  void showDetailsWindow(const Airport*);
+  void showDetailsWindow(const Client*);
+  void showDetailsWindow(const Fir*);
+  
 private slots:
   void __statusError();
   void __dataError();
@@ -89,12 +93,8 @@ private:
 
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;
-  AirportDetailsWindow* __airportDetailsWindow;
   DatabaseWindow*       __databaseWindow;
-  FirDetailsWindow*     __firDetailsWindow;
-  AtcDetailsWindow*     __atcDetailsWindow;
   AtcListWindow*        __atcListWindow;
-  FlightDetailsWindow*  __flightDetailsWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
   VatsinatorWindow*     __vatsinatorWindow;

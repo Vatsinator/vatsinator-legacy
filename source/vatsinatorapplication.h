@@ -54,8 +54,15 @@ class VatsinatorApplication :
   Q_OBJECT
   
 signals:
+  /**
+   * First emitted in the application. No objects are created yet.
+   */
+  void initializing();
+  
+  /**
+   * UserInterface is created (all windows).
+   */
   void uiCreated();
-  void glInitialized();
 
 public:
   /**
@@ -65,7 +72,6 @@ public:
 
   virtual ~VatsinatorApplication();
 
-  static void emitGLInitialized();
   
   static const QFont& boldFont();
   static const QFont& h1Font();
@@ -111,20 +117,25 @@ public:
 public slots:
   void restart();
   
-private:
-  void __emitGLInitialized();
+private slots:
+  
+  /**
+   * Initialize the application.
+   * This slot is connected to the initializing() signal.
+   */
+  void __initialize();
   
 private:
   
   UserInterface*       __userInterface;
   FileManager*         __fileManager;
+  SettingsManager*     __settingsManager;
   AirlineDatabase*     __airlineDatabase;
-  AirportDatabase*     __airportsData;
-  FirDatabase*         __firsData;
+  AirportDatabase*     __airportDatabaase;
+  FirDatabase*         __firDatabase;
   WorldMap*            __worldMap;
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;
-  SettingsManager*     __settingsManager;
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;

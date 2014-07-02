@@ -63,8 +63,8 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
           FlightListWindow::getSingletonPtr(),      SLOT(show()));
   connect(ActionATCList,                            SIGNAL(triggered()),
           AtcListWindow::getSingletonPtr(),         SLOT(show()));
-  connect(ActionHomeLocation,                       SIGNAL(triggered()),
-          HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
+//   connect(ActionHomeLocation,                       SIGNAL(triggered()),
+//           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
   
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataDownloading()),
           this,                                     SLOT(__dataDownloading()));
@@ -136,6 +136,16 @@ VatsinatorWindow::infoBarUpdate() {
       QString::number(data.obsCount())
     )
   );
+}
+
+void
+VatsinatorWindow::positionBoxUpdate(qreal _lon, qreal _lat) {
+  PositionBox->setText(QString("%1 %2 %3 %4").arg(
+    _lat > 0 ? "N" : "S",
+    QString::number(qAbs(_lat), 'g', 6),
+    _lon < 0 ? "W" : "E",
+    QString::number(qAbs(_lon), 'g', 6)
+  ));
 }
 
 void

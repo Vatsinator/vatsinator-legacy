@@ -53,30 +53,28 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
     __userInterface(new UserInterface()),
     __fileManager(new FileManager()),
+    __settingsManager(new SettingsManager()),
     __airlineDatabase(new AirlineDatabase()),
-    __airportsData(new AirportDatabase()),
-    __firsData(new FirDatabase()),
+    __airportDatabaase(new AirportDatabase()),
+    __firDatabase(new FirDatabase()),
     __worldMap(new WorldMap()),
     __vatsimData(new VatsimDataHandler()),
     __languageManager(new LanguageManager()),
-    __settingsManager(new SettingsManager()),
     __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
     __statsPurveyor(new StatsPurveyor()) {
  
   /* Set up translations */
+  QString locale = SettingsManager::earlyGetLocale();
+  
   QTranslator* tr_qt = new QTranslator();
-  tr_qt->load(QString("qt_") %
-                SettingsManager::earlyGetLocale(),
-              FileManager::staticPath(FileManager::Translations));
+  tr_qt->load(QString("qt_") % locale, FileManager::staticPath(FileManager::Translations));
   installTranslator(tr_qt);
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr_qt,        SLOT(deleteLater()));
   
   QTranslator* tr = new QTranslator();
-  tr->load(QString("vatsinator-") %
-             SettingsManager::earlyGetLocale(),
-           FileManager::staticPath(FileManager::Translations));
+  tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
   installTranslator(tr);
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr,           SLOT(deleteLater()));
@@ -84,26 +82,9 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
 #ifdef Q_OS_DARWIN
   setStyle(new VatsinatorStyle());
 #endif
-  /* Basic initializes */
-  QtConcurrent::run(__vatsimData, &VatsimDataHandler::init);
   
-  __userInterface->init();
-  __settingsManager->init();
-  __moduleManager->init();
-
-  // show main window
-  VatsinatorWindow::getSingleton().show();
-  emit uiCreated();
-  
-  /* Thread for ResourceManager */
-  QThread* rmThread = new QThread(this);
-  __resourceManager->moveToThread(rmThread);
-  rmThread->start();
-  
-  /* Thread for StatsPurveyor */
-  QThread* spThread = new QThread(this);
-  __statsPurveyor->moveToThread(spThread);
-  spThread->start();
+  connect(this, SIGNAL(initializing()), SLOT(__initialize()));
+  emit initializing();
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
@@ -120,27 +101,19 @@ VatsinatorApplication::~VatsinatorApplication() {
   delete __moduleManager;
   delete __languageManager;
   delete __vatsimData;
-  delete __airportsData;
-  delete __firsData;
+  delete __airportDatabaase;
+  delete __firDatabase;
   delete __worldMap;
   delete __userInterface;
   delete __airlineDatabase;
   delete __fileManager;
   
   rmThread->wait();
-  delete rmThread;
-  
   spThread->wait();
-  delete spThread;
 
 #ifndef NO_DEBUG
   DumpUnfreed();
 #endif
-}
-
-void
-VatsinatorApplication::emitGLInitialized() {
-  VatsinatorApplication::getSingleton().__emitGLInitialized();
 }
 
 const QFont &
@@ -197,8 +170,36 @@ VatsinatorApplication::restart() {
 }
 
 void
-VatsinatorApplication::__emitGLInitialized() {
-  emit glInitialized();
+VatsinatorApplication::__initialize() {
+  VatsinatorApplication::log("VatsinatorApplication: initializing");
+  
+  /* Read world map before UI */
+  __worldMap->init();
+  
+  /* Create windows */
+  __userInterface->init();
+  emit uiCreated();
+
+  /* show main window */
+  VatsinatorWindow::getSingleton().show();
+  
+  /* Thread for ResourceManager */
+  QThread* rmThread = new QThread(this);
+  __resourceManager->moveToThread(rmThread);
+  rmThread->start();
+  
+  /* Thread for StatsPurveyor */
+  QThread* spThread = new QThread(this);
+  __statsPurveyor->moveToThread(spThread);
+  spThread->start();
+ 
+  /* Initialize everything else */
+  __airlineDatabase->init();
+  __airportDatabaase->init();
+  __firDatabase->init();
+  
+  /* Read data files only after databases are ready */
+  __vatsimData->init();
 }
 
 void

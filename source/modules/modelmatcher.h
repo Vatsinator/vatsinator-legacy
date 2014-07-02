@@ -45,20 +45,21 @@ public:
   ModelMatcher(QObject* = nullptr);
 
   /**
-   * Loads the pixmaps.
-   */
-  void init();
-
-  /**
    * @param acft Aircraft code that comes from the flight plan.
    * @return Model's texture ID.
    */
   GLuint matchMyModel(const QString&);
+  
+private:
+  void __readModels();
+  
+private slots:
+  void __loadPixmaps();
 
 private:
 
-  QMap< QString, QString > __modelsFiles;
-  QMap< QString, GLuint >  __modelsPixmaps;
+  QMap<QString, QString> __modelsFiles;
+  QMap<QString, GLuint>  __modelsPixmaps;
 
 
 };

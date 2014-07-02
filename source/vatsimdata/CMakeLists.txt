@@ -4,14 +4,12 @@ set (vatsimdata_SRCS
     airport.cpp
     client.cpp
     fir.cpp
+    lonlat.cpp
     metar.cpp
     notam.cpp
     uir.cpp
     updatescheduler.cpp
     vatsimdatahandler.cpp
-    
-    airport/activeairport.cpp
-    airport/emptyairport.cpp
     
     client/controller.cpp
     client/pilot.cpp
@@ -26,8 +24,15 @@ set (vatsimdata_SRCS
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
 set (vatsimdata_MOC_SRCS
+    airport.h
+    client.h
+    fir.h
     updatescheduler.h
+    uir.h
     vatsimdatahandler.h
+    
+    client/controller.h
+    client/pilot.h
     
     models/airporttablemodel.h
     models/controllertablemodel.h

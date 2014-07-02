@@ -1,6 +1,6 @@
 /*
     airport.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,57 +20,129 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
-#include "glutils/glresourcemanager.h"
-
-#include "ui/widgets/mapwidget.h"
-
+#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
 #include "vatsinatorapplication.h"
 
 #include "airport.h"
 #include "defines.h"
 
 Airport::Airport(const QString& _icao) :
-    __firs{NULL, NULL},
     __data(AirportDatabase::getSingleton().find(_icao)),
-    __labelTip(0) {
-  if (!__data)
-    VatsinatorApplication::log("Airport %s not found!", _icao.toStdString().c_str());
+    __icao(_icao),
+    __staff(new ControllerTableModel()),
+    __inbounds(new FlightTableModel()),
+    __outbounds(new FlightTableModel()) {
   
-  if (__data) {
-    __firs[0] = FirDatabase::getSingleton().find(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::getSingleton().find(QString(__data->fir_b), __data->is_fir_b_oceanic);
-  }
+  Q_ASSERT(__data);
 }
 
 Airport::Airport(const AirportRecord* _ap) :
-     __firs{NULL, NULL},
-     __data(_ap),
-     __labelTip(0) {
-  if (__data) {
-    __firs[0] = FirDatabase::getSingleton().find(QString(__data->fir_a), __data->is_fir_a_oceanic);
-    __firs[1] = FirDatabase::getSingleton().find(QString(__data->fir_b), __data->is_fir_b_oceanic);
-  }
+    __data(_ap),
+    __icao(__data->icao),
+    __staff(new ControllerTableModel()),
+    __inbounds(new FlightTableModel()),
+    __outbounds(new FlightTableModel()) {
+  
+  Q_ASSERT(__data);
 }
 
 Airport::~Airport() {
-  if (__labelTip)
-    GlResourceManager::deleteImage(__labelTip);
+  delete __staff;
+  delete __inbounds;
+  delete __outbounds;
 }
 
-GLuint
-Airport::__generateTip() const {
-  Q_ASSERT(__data);
+unsigned
+Airport::countDepartures() const {
+  unsigned i = 0;
   
-  QImage temp(MapWidget::getSingleton().airportToolTipBackground());
-  QPainter painter(&temp);
-  painter.setRenderHint(QPainter::TextAntialiasing);
-  painter.setRenderHint(QPainter::SmoothPixmapTransform);
-  painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::getSingleton().airportFont());
-  painter.setPen(MapWidget::getSingleton().airportPen());
-  QRect rectangle(8, 2, 48, 12); // size of the tooltip.png
-  painter.drawText(rectangle, Qt::AlignCenter, static_cast< QString >(__data->icao));
-  __labelTip = GlResourceManager::loadImage(temp);
-  return __labelTip;
+  for (const Pilot* p: __outbounds->flights())
+    if (p->phase() == Pilot::Departing)
+      i += 1;
+  
+  return i;
+}
+
+unsigned
+Airport::countOutbounds() const {
+  return __outbounds->rowCount();
+}
+
+unsigned
+Airport::countArrivals() const {
+  unsigned i = 0;
+  
+  for (const Pilot* p: __inbounds->flights())
+    if (p->phase() == Pilot::Arrived)
+      i += 1;
+  
+  return i;
+}
+
+unsigned
+Airport::countInbounds() const {
+  return __inbounds->rowCount();
+}
+
+Controller::Facilities
+Airport::facilities() const {
+  Controller::Facilities facilities = 0;
+  
+  for (const Controller* c: __staff->staff())
+    facilities |= c->facility();
+  
+  return facilities;
+}
+
+void
+Airport::addStaff(const Controller* _c) {
+  __staff->add(_c);
+  connect(_c,   SIGNAL(updated()),
+          this, SIGNAL(updated()));
+  connect(_c,   SIGNAL(destroyed(QObject*)),
+          this, SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
+}
+
+void
+Airport::addInbound(const Pilot* _p) {
+  __inbounds->add(_p);
+  connect(_p,   SIGNAL(updated()),
+          this, SIGNAL(updated()));
+  connect(_p,   SIGNAL(destroyed(QObject*)),
+          this, SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
+}
+
+void
+Airport::addOutbound(const Pilot* _p) {
+  __outbounds->add(_p);
+  connect(_p,   SIGNAL(updated()),
+          this, SIGNAL(updated()));
+  connect(_p,   SIGNAL(destroyed(QObject*)),
+          this, SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
+}
+
+bool
+Airport::isEmpty() const {
+  return
+    __staff->rowCount() == 0 &&
+    __inbounds->rowCount() == 0 &&
+    __outbounds->rowCount() == 0;
+}
+
+bool
+Airport::isStaffed() const {
+  return
+    __staff->rowCount() > 0 || 
+    __inbounds->rowCount() > 0 ||
+    __outbounds->rowCount() > 0;
+}
+
+LonLat
+Airport::position() const {
+  return std::move(LonLat(data()->longitude, data()->latitude));
 }

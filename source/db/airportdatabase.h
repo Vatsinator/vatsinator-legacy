@@ -67,17 +67,19 @@ public:
   AirportDatabase(QObject* = nullptr);
   
   /**
+   * Called by VatsinatorApplication only.
+   */
+  void init();
+  
+  /**
    * Looks for the airport.
    * @param icao ICAO code.
    * @return NULL if nothing found.
    */
   const AirportRecord* find(const QString&);
   
-  inline QVector<AirportRecord> &
-  airports() { return __airports; }
-  
-  inline const QVector<AirportRecord> &
-  airports() const { return __airports; }
+  inline QVector<AirportRecord>& airports() { return __airports; }
+  inline const QVector<AirportRecord>& airports() const { return __airports; }
 
 private:
   

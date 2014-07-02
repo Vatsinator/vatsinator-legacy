@@ -1,6 +1,6 @@
 /*
     uir.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,30 +20,24 @@
 #ifndef UIR_H
 #define UIR_H
 
-#include <QString>
+#include <QObject>
 #include <QVector>
-
-#include "vatsimdata/clickable.h"
 
 class Controller;
 class ControllerTableModel;
 class Fir;
 
-class Uir : public Clickable {
+class Uir : public QObject {
+  Q_OBJECT
+  
+signals:
+  void updated();
 
 public:
   /**
-   * @param ICAO
+   * @param icao The ICAO code.
    */
-  Uir(const QString&);
-  
-  virtual ~Uir();
-
-  /**
-   * Reimplemented from Clickable.
-   */
-  inline Clickable::Type
-  objectType() const { return Clickable::UIR; }
+  Uir(const QString&, QObject* = nullptr);
 
   /**
    * @param fir FIR that the UIR is supposed to contain.
@@ -56,37 +50,22 @@ public:
   void addStaff(const Controller*);
   
   /**
-   * Clears the vector.
-   */
-  void clear();
-  
-  /**
    * @return True, if there is no ATC on position.
    */
   bool isEmpty() const;
   
-
-  inline const QVector<Fir*> &
-  range() const { return __range; }
-
-  inline const ControllerTableModel *
-  staffModel() const { return __staff; }
-  
-  inline const QString &
-  icao() const { return __icao; }
-  
-  inline const QString &
-  name() const { return __name; }
-  
-  inline QString &
-  name() { return __name; }
+  inline const QVector<Fir*>& range() const { return __range; }
+  inline const ControllerTableModel* staff() const { return __staff; }
+  inline const QString& icao() const { return __icao; }
+  inline const QString& name() const { return __name; }
+  inline QString& name() { return __name; }
 
 private:
   QString __icao;
   QString __name;
   
-  QVector<Fir*> __range;
-  ControllerTableModel*  __staff;
+  QVector<Fir*>         __range;
+  ControllerTableModel* __staff;
 
 };
 

@@ -1,6 +1,6 @@
 /*
     fir.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,59 +19,39 @@
 #include <QtGui>
 
 #include "db/firdatabase.h"
-
-#include "glutils/vertexbufferobject.h"
-#include "glutils/glextensions.h"
-#include "glutils/glresourcemanager.h"
-
-#include "ui/widgets/mapwidget.h"
-
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
-#include "debugging/glerrors.h"
-
 #include "fir.h"
 #include "defines.h"
 
-Fir::Fir() :
-    __icaoTip(0),
-    __staff(new ControllerTableModel()),
-    __flights(new FlightTableModel()),
-    __airports(new AirportTableModel()),
-    __uirStaffCount(0) {}
-
-Fir::~Fir() {
-  if (__icaoTip)
-    GlResourceManager::deleteImage(__icaoTip);
-
-  delete __staff;
-  delete __flights;
-  delete __airports;
-
-#ifndef CONFIG_NO_VBO
-  if (__trianglesVBO)
-    delete __trianglesVBO;
-
-  delete __bordersVBO;
-#endif
+Fir::Fir(const FirRecord* _data) :
+     __data(_data),
+     __icao(QString::fromUtf8(_data->header.icao)),
+     __oceanic(_data->header.oceanic),
+     __staff(new ControllerTableModel(this)),
+     __flights(new FlightTableModel(this)),
+     __airports(new AirportTableModel(this)) {
+  
+  Q_ASSERT(__data);
 }
 
 void
 Fir::addStaff(const Controller* _c) {
-  __staff->addStaff(_c);
-}
-
-void
-Fir::addUirStaff(const Controller* _c) {
-  __staff->addStaff(_c);
-  __uirStaffCount += 1;
+  __staff->add(_c);
+  connect(_c,           SIGNAL(updated()),
+          this,         SIGNAL(updated()));
+  connect(_c,           SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
 }
 
 void
 Fir::addFlight(const Pilot* _p) {
-  __flights->addFlight(_p);
+  __flights->add(_p);
+  connect(_p,           SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
 }
 
 void
@@ -80,7 +60,7 @@ Fir::addAirport(const Airport* _ap) {
 }
 
 void
-Fir::correctName() {
+Fir::fixupName() {
   if (!__name.contains("Radar") &&
       !__name.contains("Control") &&
       !__name.contains("Radio") &&
@@ -92,128 +72,27 @@ Fir::correctName() {
   }
 }
 
-void
-Fir::init() {
-  __generateTip();
-  __prepareVBO();
-}
-
-void
-Fir::loadHeader(const FirHeader& _header) {
-  __icao = _header.icao;
-  __oceanic = static_cast<bool>(_header.oceanic);
-  memcpy(__externities, _header.externities, sizeof(Point) * 2);
-  __textPosition = _header.textPosition;
-}
-
-void
-Fir::clear() {
-  __staff->clear();
-  __flights->clear();
-  __airports->clear();
-  __uirStaffCount = 0;
+bool
+Fir::isStaffed() const {
+  return __staff->rowCount() > 0;
 }
 
 bool
-Fir::isStaffed() const {
-  return !__staff->staff().isEmpty() && __uirStaffCount < static_cast<unsigned>(__staff->rowCount());
+Fir::isEmpty() const {
+  return __staff->rowCount() == 0;
+}
+
+bool
+Fir::hasValidPosition() const {
+  return data()->header.textPosition.x != .0f && data()->header.textPosition.y != .0f;
 }
 
 void
-Fir::drawBorders() const {
-#ifndef CONFIG_NO_VBO
-  __bordersVBO->bind();
-  
-  glVertexPointer(2, GL_FLOAT, 0, 0);
-  glDrawArrays(GL_LINE_LOOP, 0, __bordersSize);
-  
-  __bordersVBO->unbind();
-  
-#else
-  
-  glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x);
-  glDrawArrays(GL_LINE_LOOP, 0, __borders.size());
-  
-#endif
-  
-  checkGLErrors(HERE);
+Fir::setName(const QString& _n) {
+  __name = _n;
 }
 
 void
-Fir::drawTriangles() const {
-#ifndef CONFIG_NO_VBO
-
-  if (__trianglesSize) {
-    __bordersVBO->bind();
-    __trianglesVBO->bind();
-
-    glVertexPointer(2, GL_FLOAT, 0, 0);
-    glDrawElements(GL_TRIANGLES, __trianglesSize, GL_UNSIGNED_SHORT, 0);
-
-    __trianglesVBO->unbind();
-    __bordersVBO->unbind();
-  }
-
-#else
-
-  if (!__triangles.isEmpty()) {
-    glVertexPointer(2, GL_FLOAT, 0, &__borders[0].x);
-    glDrawElements(GL_TRIANGLES, __triangles.size(), GL_UNSIGNED_SHORT, &__triangles[0]);
-  }
-
-#endif
-
-  checkGLErrors(HERE);
+Fir::setCountry(const QString& _c) {
+  __country = _c;
 }
-
-GLuint
-Fir::__generateTip() const {
-  QString icao(__icao);
-
-  if (__oceanic) {
-    icao = icao.left(4) + " Oceanic";
-  }
-
-  icao = icao.simplified();
-
-  if (__textPosition.x == 0.0 && __textPosition.y == 0.0) {
-    __icaoTip = 0;
-    return __icaoTip;
-  }
-
-  QImage temp(MapWidget::getSingleton().firToolTipBackground());
-  QPainter painter(&temp);
-  painter.setRenderHint(QPainter::TextAntialiasing);
-  painter.setRenderHint(QPainter::SmoothPixmapTransform);
-  painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapWidget::getSingleton().firFont());
-  painter.setPen(MapWidget::getSingleton().firPen());
-  QRect rectangle(0, 4, 64, 24);
-  painter.drawText(rectangle, Qt::AlignCenter | Qt::TextWordWrap, icao);
-  __icaoTip = GlResourceManager::loadImage(temp);
-  return __icaoTip;
-}
-
-void
-Fir::__prepareVBO() {
-#ifndef CONFIG_NO_VBO
-  __bordersVBO = new VertexBufferObject(GL_ARRAY_BUFFER);
-  __bordersVBO->sendData(sizeof(Point) * __borders.size(), &__borders[0].x);
-
-  __bordersSize = __borders.size();
-  __borders.clear();
-
-  if (!__triangles.isEmpty()) {
-    __trianglesVBO = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-    __trianglesVBO->sendData(sizeof(unsigned short) * __triangles.size(), &__triangles[0]);
-
-    __trianglesSize = __triangles.size();
-    __triangles.clear();
-  } else {
-    __trianglesVBO = nullptr;
-  }
-
-#endif
-}
-
-

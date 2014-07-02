@@ -25,10 +25,39 @@ ControllerTableModel::ControllerTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}
 
 void
-ControllerTableModel::addStaff(const Controller* _c) {
-  beginInsertRows(QModelIndex(), rowCount(), rowCount());
-  __staff.push_back(_c);
-  endInsertRows();
+ControllerTableModel::add(const Controller* _c) {
+  Q_ASSERT(_c);
+  
+  if (!__staff.contains(_c)) {
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    __staff << _c;
+    endInsertRows();
+    
+    connect(_c,         SIGNAL(destroyed(QObject*)),
+            this,       SLOT(__autoRemove(QObject*)), Qt::DirectConnection);
+  }
+}
+
+void
+ControllerTableModel::remove(const Controller* _c) {
+  Q_ASSERT(_c);
+  
+  for (int i = 0; i < __staff.size(); ++i) {
+    if (__staff[i] == _c) {
+      beginRemoveRows(QModelIndex(), i, i);
+      __staff.removeAt(i);
+      endRemoveRows();
+      
+      return;
+    }
+  }
+  
+  Q_ASSERT_X(false, "ControllerTableModel", "The ATC does not exist in the model");
+}
+
+bool
+ControllerTableModel::contains(const Controller* _c) const {
+  return __staff.contains(_c);
 }
 
 void
@@ -44,7 +73,7 @@ ControllerTableModel::findAtcByCallsign(const QString& _callsign) const {
     if (c->callsign() == _callsign)
       return c;
   
-  return NULL;
+  return nullptr;
 }
 
 int
@@ -141,4 +170,10 @@ ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
   endResetModel();
   
   emit sorted();
+}
+
+void
+ControllerTableModel::__autoRemove(QObject* _object) {
+  Q_ASSERT(_object);
+  remove(static_cast<const Controller*>(_object));
 }

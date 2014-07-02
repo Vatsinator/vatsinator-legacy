@@ -26,7 +26,6 @@
 
 class AirportTracker;
 class HomeLocation;
-class FlightTracker;
 class ModelMatcher;
 class VatbookHandler;
 
@@ -40,17 +39,12 @@ public:
   ModuleManager();
   virtual ~ModuleManager();
   
-  void init();
-  
 public slots:
+  void init();
   void updateData();
-
-private slots:
-  void __initAfterGL();
 
 private:
   AirportTracker* __airportTracker;
-  FlightTracker*  __flightTracker;
   HomeLocation*   __homeLocation;
   ModelMatcher*   __modelsMatcher;
   VatbookHandler* __vatbookHandler;

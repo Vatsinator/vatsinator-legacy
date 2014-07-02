@@ -21,7 +21,7 @@
 #define CONTROLLERTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <QVector>
+#include <QList>
 
 #include "vatsimdata/client/controller.h"
 
@@ -47,7 +47,9 @@ public:
   
   explicit ControllerTableModel(QObject* = 0);
 
-  void addStaff(const Controller*);
+  void add(const Controller*);
+  void remove(const Controller*);
+  bool contains(const Controller*) const;
   void clear();
   const Controller* findAtcByCallsign(const QString&) const;
 
@@ -57,11 +59,13 @@ public:
   QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
   void sort(int, Qt::SortOrder = Qt::AscendingOrder);
 
-  inline const QVector<const Controller*> &
-  staff() const { return __staff; }
+  inline const QList<const Controller*>& staff() const { return __staff; }
+  
+private slots:
+  void __autoRemove(QObject*);
 
 private:
-  QVector<const Controller*> __staff;
+  QList<const Controller*> __staff;
 
 };
 
