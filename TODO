@@ -4,3 +4,18 @@
 * Extended ATC
 * Home-location
 * Flights nearby
+* Data files should use JSON format
+* Old versions config updater
+* Data parser (separate class)
+* Qt5 compat
+
+Due to the new engine:
+* Make FlightTracker works
+* Show UIRs
+* Support Non-VBO configs
+
+
+== TODO for later versions ==
+* Dynamic map (plugin format)
+* Chart links
+* Android port (depends on Qt5 port)
