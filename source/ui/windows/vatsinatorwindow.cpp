@@ -23,6 +23,7 @@
 # include "debugging/debugwindow.h"
 #endif
 
+#include "events/mouselonlatevent.h"
 #include "modules/homelocation.h"
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/atclistwindow.h"
@@ -135,14 +136,12 @@ VatsinatorWindow::infoBarUpdate() {
   );
 }
 
-void
-VatsinatorWindow::positionBoxUpdate(qreal _lon, qreal _lat) {
-  PositionBox->setText(QString("%1 %2 %3 %4").arg(
-    _lat > 0 ? "N" : "S",
-    QString::number(qAbs(_lat), 'g', 6),
-    _lon < 0 ? "W" : "E",
-    QString::number(qAbs(_lon), 'g', 6)
-  ));
+bool
+VatsinatorWindow::event(QEvent* _e) {
+  if (_e->type() == MouseLonLat)
+    return mouseLonLatMoveEvent(dynamic_cast<MouseLonLatEvent*>(_e));
+  else
+    return QMainWindow::event(_e);
 }
 
 void
@@ -154,6 +153,18 @@ VatsinatorWindow::closeEvent(QCloseEvent*) {
 void
 VatsinatorWindow::showEvent(QShowEvent*) {
   __restoreWindowGeometry();
+}
+
+bool
+VatsinatorWindow::mouseLonLatMoveEvent(MouseLonLatEvent* _event) {
+  PositionBox->setText(QString("%1 %2 %3 %4").arg(
+    _event->lonLat().latitude() > 0 ? "N" : "S",
+    QString::number(qAbs(_event->lonLat().latitude()), 'g', 6),
+    _event->lonLat().longitude() < 0 ? "W" : "E",
+    QString::number(qAbs(_event->lonLat().longitude()), 'g', 6)
+  ));
+  
+  return true;
 }
 
 void

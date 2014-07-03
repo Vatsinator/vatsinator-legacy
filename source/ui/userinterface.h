@@ -53,15 +53,44 @@ public:
   UserInterface(QObject* = nullptr);
   virtual ~UserInterface();
   
-public:
+  /**
+   * Initializes UI components.
+   */
   void init();
   
+  /**
+   * @return Instance of the "About Vatsinator" window.
+   */
   AboutWindow* aboutWindow();
+  
+  /**
+   * @return Instance of the "Atc list" window.
+   */
   AtcListWindow* atcListWindow();
+  
+  /**
+   * @return Instance of the "VatsinatorDatabase" window.
+   */
   DatabaseWindow* databaseWindow();
+  
+  /**
+   * @return Instance of the "Flight list" window.
+   */
   FlightListWindow* flightListWindow();
+  
+  /**
+   * @return Instance of the "METARs" window.
+   */
   MetarsWindow* metarsWindow();
+  
+  /**
+   * @return Instance of the settings window.
+   */
   SettingsWindow* settingsWindow();
+  
+  /**
+   * @return Instance of the main Vatsinator window.
+   */
   VatsinatorWindow* mainWindow();
   
 public slots:

@@ -233,7 +233,7 @@ private:
     
   private:
     QPoint  __screenPosition;
-    QPointF __geoPosition;
+    LonLat  __geoPosition;
   } __mousePosition;
   
   QPoint __lastClickPosition;

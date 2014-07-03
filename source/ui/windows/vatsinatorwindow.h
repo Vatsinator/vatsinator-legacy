@@ -27,6 +27,7 @@
 
 class QLabel;
 class QProgressBar;
+class MouseLonLatEvent;
 
 class VatsinatorWindow :
     public QMainWindow,
@@ -50,21 +51,17 @@ public:
   void infoBarUpdate();
   
   /**
-   * Updates the global coordinates in the right-bottom of the window.
-   * @param longitude
-   * @param latitude
+   * Custom event handler.
    */
-  void positionBoxUpdate(qreal, qreal);
+  bool event(QEvent*) override;
   
-  inline MapWidget*
-  mapWidget() { return MapDisplay; }
-
-  inline QProgressBar*
-  progressBar() { return __progressBar; }
+  inline MapWidget* mapWidget() { return MapDisplay; }
+  inline QProgressBar* progressBar() { return __progressBar; }
   
 protected:
   void closeEvent(QCloseEvent*) override;
   void showEvent(QShowEvent*) override;
+  virtual bool mouseLonLatMoveEvent(MouseLonLatEvent*);
   
 private:
   void __storeWindowGeometry();

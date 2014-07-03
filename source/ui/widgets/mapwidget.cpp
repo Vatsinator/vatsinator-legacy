@@ -21,6 +21,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
+#include "events/mouselonlatevent.h"
 #include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/airportitem.h"
@@ -617,7 +618,9 @@ MapWidget::MousePosition::update(const QPoint& _pos) {
   __screenPosition = _pos;
   __geoPosition = MapWidget::getSingleton().mapToLonLat(_pos);
   
-  vApp()->userInterface()->mainWindow()->positionBoxUpdate(__geoPosition.x(), __geoPosition.y());
+  MouseLonLatEvent* e = new MouseLonLatEvent(__geoPosition);
+  qApp->notify(vApp()->userInterface()->mainWindow(), e);
+  delete e;
 }
 
 qreal

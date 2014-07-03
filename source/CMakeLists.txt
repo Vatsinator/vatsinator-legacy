@@ -22,6 +22,7 @@ set (vatsinator_MOC_SRCS
 
 set (vatsinator_SUBDIRS
     db
+    events
     glutils
     modules
     network
