@@ -138,7 +138,7 @@ VatsinatorWindow::infoBarUpdate() {
 
 bool
 VatsinatorWindow::event(QEvent* _e) {
-  if (_e->type() == MouseLonLat)
+  if (_e->type() == Event::MouseLonLat)
     return mouseLonLatMoveEvent(dynamic_cast<MouseLonLatEvent*>(_e));
   else
     return QMainWindow::event(_e);

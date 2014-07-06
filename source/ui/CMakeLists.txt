@@ -67,6 +67,7 @@ set (ui_SRCS
     map/mapconfig.cpp
     map/mapitem.cpp
     map/mapscene.cpp
+    map/mapstate.cpp
     map/moveanimation.cpp
     map/worldpolygon.cpp
     

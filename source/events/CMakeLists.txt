@@ -1,6 +1,7 @@
 vatsinator_start_subdirectory (events)
 
 set (events_SRCS
+    mapevent.cpp
     mouselonlatevent.cpp
     types.cpp
 )

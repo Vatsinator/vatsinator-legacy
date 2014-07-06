@@ -20,4 +20,9 @@
 #include <QEvent>
 #include "types.h"
 
+namespace Event {
+
 const QEvent::Type MouseLonLat = static_cast<QEvent::Type>(QEvent::registerEventType());
+const QEvent::Type Map = static_cast<QEvent::Type>(QEvent::registerEventType());
+
+}

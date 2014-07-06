@@ -25,7 +25,14 @@
  */
 #include <QEvent>
 
+namespace Event {
+
 // MouseLonLatEvent
 extern const QEvent::Type MouseLonLat;
+
+// MapEvent
+extern const QEvent::Type Map;
+
+}
 
 #endif // TYPES_H

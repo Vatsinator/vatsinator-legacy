@@ -23,5 +23,5 @@
 #include "defines.h"
 
 MouseLonLatEvent::MouseLonLatEvent(const LonLat& _p) :
-    QEvent(MouseLonLat),
+    QEvent(Event::MouseLonLat),
     __lonLat(_p) {}

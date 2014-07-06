@@ -1,5 +1,5 @@
 /*
- * mouselonlatevent.h
+ * mapevent.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,33 +17,9 @@
  *
  */
 
-#ifndef MOUSELONLATEVENT_H
-#define MOUSELONLATEVENT_H
+#include "mapevent.h"
+#include "defines.h"
 
-#include <QEvent>
-
-#include "vatsimdata/lonlat.h"
-#include "events/types.h"
-
-/**
- * The MouseLonLatEvent class is used to indicate events of mouse that
- * are connected with longitude and latitude change. It is used by MapWidget
- * class to notify mouse move events on the map.
- */
-class MouseLonLatEvent : public QEvent {
-
-public:
-  MouseLonLatEvent(const LonLat&);
-  
-  /**
-   * Gets the current position of the mouse, mapped to longitude and latitude
-   * coordinates.
-   */
-  inline const LonLat& lonLat() const { return __lonLat; }
-
-private:
-  LonLat __lonLat;
-  
-};
-
-#endif // MOUSELONLATEVENT_H
+MapEvent::MapEvent(const MapState& _state) :
+    QEvent(Event::Map),
+    __state(_state) {}

@@ -21,6 +21,7 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "events/mapevent.h"
 #include "ui/map/abstractanimation.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/approachcircleitem.h"
@@ -74,8 +75,8 @@ MapScene::startAnimation(AbstractAnimation* _animation) {
   __animation = _animation;
   
   __animation->setParent(this);
-  __animation->setPosition(__widget->center());
-  __animation->setZoom(__widget->zoom());
+  __animation->setPosition(__widget->state().center());
+  __animation->setZoom(__widget->state().zoom());
   connect(__animation,  SIGNAL(step()),
           this,         SLOT(__animationStep()));
   connect(__animation,  SIGNAL(stopped()),
@@ -128,13 +129,22 @@ MapScene::__updateItems() {
 void
 MapScene::__animationStep() {
   Q_ASSERT(__animation);
+  
+  MapState state(__widget->state());
+  
   if (!(__animation->flags() & AbstractAnimation::NoPositionOverride))
-    __widget->setCenter(__animation->position());
+    state.setCenter(__animation->position());
   
   if (!(__animation->flags() & AbstractAnimation::NoZoomOverride))
-    __widget->setZoom(__animation->zoom());
+    state.setZoom(__animation->zoom());
   
-  __widget->redraw();
+  MapEvent e(state);
+  bool accepted = qApp->notify(__widget, &e);
+  if (!accepted) {
+    __animation->abort();
+    __animation->deleteLater();
+    __animation = nullptr;
+  }
 }
 
 void

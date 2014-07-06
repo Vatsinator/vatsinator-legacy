@@ -29,6 +29,7 @@ MoveAnimation::MoveAnimation(QObject* _parent): AbstractAnimation(_parent) {
 void
 MoveAnimation::setTarget(const LonLat& _t) {
   __target = _t;
+  __target.ry() *= -1;
 }
 
 void MoveAnimation::stepEvent() {

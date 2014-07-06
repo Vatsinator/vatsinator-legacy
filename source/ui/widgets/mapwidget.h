@@ -22,12 +22,14 @@
 
 #include <QGLWidget>
 
+#include "ui/map/mapstate.h"
 #include "vatsimdata/lonlat.h"
 #include "singleton.h"
 
 class Airport;
 class Client;
 class Fir;
+class MapEvent;
 class MapItem;
 class MapScene;
 class Pilot;
@@ -92,10 +94,13 @@ public:
    */
   bool onScreen(const QPointF&);
   
-  LonLat center() const;
+  /**
+   * Captures map events.
+   */
+  bool event(QEvent*) override;
   
   inline MapScene* scene() { return __scene; }
-  inline int zoom() const { return __zoom; }
+  inline const MapState state() const { return __state; }
   
 public slots:
   
@@ -114,18 +119,12 @@ protected:
   void mouseReleaseEvent(QMouseEvent*) override;
   void mouseMoveEvent(QMouseEvent*) override;
   
+  /**
+   * Event fired when the underlying scene decides to change the map state.
+   */
+  bool stateChangeEvent(MapEvent*);
+  
 private:
-  
-  /**
-   * Used by MapScene only.
-   */
-  void setCenter(const LonLat&);
-  
-  /**
-   * Used by MapScene only.
-   */
-  void setZoom(int);
-  
   void __drawWorld();
   void __drawFirs();
   void __drawAirports();
@@ -172,9 +171,6 @@ private:
   /* Current offset */
   GLfloat __xOffset;
   
-  /* Global coordinates of the center point of the map */
-  LonLat __center;
-  
   /* Stores screen rectangle */
   qreal __rangeX;
   qreal __rangeY;
@@ -189,15 +185,15 @@ private:
   /*Actual Zoom level*/
   int __actualZoom;
   
-  /* Zoom factor */
-  float   __zoom;
-  
+  /* Current map state */
+  MapState __state;
   
   /**
    * This class handles mouse position on the screen.
    */
   class MousePosition {
   public:
+    MousePosition();
     
     /**
      * Updates the mouse position from location on the widget (as
@@ -218,22 +214,29 @@ private:
     qreal geoDistance(const LonLat&);
     
     /**
+     * Sets the mouse down status.
+     */
+    void setDown(bool);
+    
+    /**
      * Position within the widget.
      */
-    inline const QPoint& screenPosition() const {
-      return __screenPosition;
-    }
+    inline const QPoint& screenPosition() const { return __screenPosition; }
     
     /**
      * Latitude/longitude that the mouse cursor currently points at.
      */
-    inline const QPointF& geoPosition() const {
-      return __geoPosition;
-    }
+    inline const QPointF& geoPosition() const { return __geoPosition; }
+    
+    /**
+     * Indicates whether any of the mouse buttons is pressed or not.
+     */
+    inline bool down() const { return __down; }
     
   private:
     QPoint  __screenPosition;
     LonLat  __geoPosition;
+    bool    __down;
   } __mousePosition;
   
   QPoint __lastClickPosition;

@@ -1,5 +1,5 @@
 /*
- * mouselonlatevent.h
+ * mapstate.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,33 +17,34 @@
  *
  */
 
-#ifndef MOUSELONLATEVENT_H
-#define MOUSELONLATEVENT_H
+#include "mapstate.h"
+#include "defines.h"
 
-#include <QEvent>
+MapState::MapState() :
+    __center(0.0, 0.0),
+    __zoom(1.5f) {}
 
-#include "vatsimdata/lonlat.h"
-#include "events/types.h"
+void
+MapState::setCenter(const LonLat& _center) {
+  __center = _center;
+}
 
-/**
- * The MouseLonLatEvent class is used to indicate events of mouse that
- * are connected with longitude and latitude change. It is used by MapWidget
- * class to notify mouse move events on the map.
- */
-class MouseLonLatEvent : public QEvent {
+void
+MapState::setZoom(float _zoom) {
+  __zoom = _zoom;
+}
 
-public:
-  MouseLonLatEvent(const LonLat&);
-  
-  /**
-   * Gets the current position of the mouse, mapped to longitude and latitude
-   * coordinates.
-   */
-  inline const LonLat& lonLat() const { return __lonLat; }
+QDataStream&
+operator<<(QDataStream& _stream, const MapState& _state) {
+  _stream << _state.center() << _state.zoom();
+  return _stream;
+}
 
-private:
-  LonLat __lonLat;
-  
-};
-
-#endif // MOUSELONLATEVENT_H
+QDataStream&
+operator>>(QDataStream& _stream, MapState& _state) {
+  _stream >> _state.center();
+  float zoom;
+  _stream >> zoom;
+  _state.setZoom(zoom);
+  return _stream;
+}

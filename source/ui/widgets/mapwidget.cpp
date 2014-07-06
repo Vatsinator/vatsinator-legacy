@@ -21,6 +21,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
+#include "events/mapevent.h"
 #include "events/mouselonlatevent.h"
 #include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
@@ -44,9 +45,7 @@
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
     __xOffset(0.0),
-    __center(0.0, 0.0),
     __actualZoom(0),
-    __zoom(1.5f),
     __world(nullptr),
     __scene(nullptr) {
   
@@ -76,8 +75,8 @@ MapWidget::mapToLonLat(const QPoint& _point) {
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
-      static_cast<qreal>(_point.x() - (width() / 2)) * xFactor / static_cast<qreal>(__zoom) + __center.x(),
-      -(static_cast<qreal>(_point.y() - (height() / 2)) * yFactor / static_cast<qreal>(__zoom) + __center.y())
+      static_cast<qreal>(_point.x() - (width() / 2)) * xFactor / static_cast<qreal>(__state.zoom()) + __state.center().x(),
+      -(static_cast<qreal>(_point.y() - (height() / 2)) * yFactor / static_cast<qreal>(__state.zoom()) + __state.center().y())
     );
 }
 
@@ -87,8 +86,8 @@ MapWidget::scaleToLonLat(const QPoint& _point) {
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
-      static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(__zoom),
-      static_cast<qreal>(_point.y()) * yFactor / static_cast<qreal>(__zoom)
+      static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(__state.zoom()),
+      static_cast<qreal>(_point.y()) * yFactor / static_cast<qreal>(__state.zoom())
     );
 }
 
@@ -98,17 +97,17 @@ MapWidget::mapFromLonLat(const LonLat& _point) {
   static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPoint(
-      static_cast<int>((_point.x() - __center.x() + static_cast<qreal>(__xOffset)) * __zoom / xFactor) + (width() / 2),
-      static_cast<int>((-_point.y() - __center.y()) * __zoom / yFactor) + (height() / 2)
+      static_cast<int>((_point.x() - __state.center().x() + static_cast<qreal>(__xOffset)) * __state.zoom() / xFactor) + (width() / 2),
+      static_cast<int>((-_point.y() - __state.center().y()) * __state.zoom() / yFactor) + (height() / 2)
     );
 }
 
 QPointF
 MapWidget::glFromLonLat(const LonLat& _point) {
   return QPointF(
-      (_point.x() - __center.x() + static_cast<qreal>(__xOffset)) /
-          MapConfig::longitudeMax() * __zoom,
-      (_point.y() + __center.y()) / MapConfig::latitudeMax() * __zoom
+      (_point.x() - __state.center().x() + static_cast<qreal>(__xOffset)) /
+          MapConfig::longitudeMax() * __state.zoom(),
+      (_point.y() + __state.center().y()) / MapConfig::latitudeMax() * __state.zoom()
     );
 }
 
@@ -118,11 +117,12 @@ MapWidget::onScreen(const QPointF& _point) {
     _point.x() >= -__rangeX && _point.y() >= -__rangeY;
 }
 
-LonLat
-MapWidget::center() const {
-  LonLat c = __center;
-  c.ry() *= -1;
-  return std::move(c);
+bool
+MapWidget::event(QEvent* _e) {
+  if (_e->type() == Event::Map)
+    return stateChangeEvent(dynamic_cast<MapEvent*>(_e));
+  else
+    return QGLWidget::event(_e);
 }
 
 void
@@ -251,6 +251,7 @@ MapWidget::wheelEvent(QWheelEvent* _event) {
 void
 MapWidget::mousePressEvent(QMouseEvent* _event) {
   __mousePosition.update(_event->pos());
+  __mousePosition.setDown(true);
   QToolTip::hideText();
   
   if (_event->buttons() & Qt::LeftButton) {
@@ -270,6 +271,7 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
 void
 MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
   __mousePosition.update(_event->pos());
+  __mousePosition.setDown(false);
   setCursor(QCursor(Qt::ArrowCursor));
   
   if (__underMouse) {
@@ -287,35 +289,36 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
 void
 MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   if ((_event->buttons() & Qt::LeftButton) && !scene()->animation()) {
-    
     setCursor(QCursor(Qt::SizeAllCursor));
     
     QPoint diff = _event->pos() - __mousePosition.screenPosition();
-    __center -= scaleToLonLat(diff);
+    LonLat& center = __state.center();
+    center -= scaleToLonLat(diff);
     
-    __center.ry() = qBound(-90.0, __center.y(), 90.0);
-    if (__center.x() < -180.0)
-      __center.rx() += 360.0;
-    if (__center.x() > 180.0)
-      __center.rx() -= 360.0;
+    center.ry() = qBound(-90.0, center.y(), 90.0);
+    if (center.x() < -180.0)
+      center.rx() += 360.0;
+    if (center.x() > 180.0)
+      center.rx() -= 360.0;
     
     __updateOffsets();
   }
-  
   __mousePosition.update(_event->pos());
   updateGL();
   _event->accept();
 }
 
-void
-MapWidget::setCenter(const LonLat& _p) {
-  __center = _p;
-  __center.ry() *= -1;
-}
-
-void
-MapWidget::setZoom(int _i) {
-  __zoom = _i;
+bool
+MapWidget::stateChangeEvent(MapEvent* _event) {
+  if (!__mousePosition.down()) {
+    __state = _event->state();
+    _event->accept();
+    redraw();
+    return true;
+  } else {
+    _event->accept();
+    return false;
+  }
 }
 
 void
@@ -324,8 +327,8 @@ MapWidget::__drawWorld() {
   
   glPushMatrix();
     glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-    glScalef(__zoom, __zoom, 1.0f);
-    glTranslated(-__center.x(), __center.y(), 0.0);
+    glScalef(__state.zoom(), __state.zoom(), 1.0f);
+    glTranslated(-__state.center().x(), __state.center().y(), 0.0);
     
     glTranslatef(__xOffset, 0.0, zValue);
     
@@ -341,8 +344,8 @@ MapWidget::__drawFirs() {
   
   glPushMatrix();
     glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-    glScalef(__zoom, __zoom, 1.0f);
-    glTranslated(-__center.x(), __center.y(), 0.0);
+    glScalef(__state.zoom(), __state.zoom(), 1.0f);
+    glTranslated(-__state.center().x(), __state.center().y(), 0.0);
     glTranslatef(__xOffset, 0.0, unstaffedFirsZ);
     
     if (__settings.view.unstaffed_firs) {
@@ -400,7 +403,7 @@ MapWidget::__drawAirports() {
         QPointF p = glFromLonLat(item->position());
         if (onScreen(p)) {
           glPushMatrix();
-            glTranslated(p.x(), p.y(), emptyAirportsZ);
+            glTranslated(p.x(), -p.y(), emptyAirportsZ);
             item->drawIcon();
           glPopMatrix();
           
@@ -425,7 +428,7 @@ MapWidget::__drawAirports() {
             
             if (item->approachCircle()) {
               glPushMatrix();
-                glScalef(__zoom, __zoom, 0);
+                glScalef(__state.zoom(), __state.zoom(), 0);
                 item->approachCircle()->drawCircle();
               glPopMatrix();
             }
@@ -470,8 +473,8 @@ MapWidget::__drawLines() {
   if (__underMouse) {
     glPushMatrix();
       glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-      glScalef(__zoom, __zoom, 1.0f);
-      glTranslated(-__center.x(), __center.y(), 0.0);
+      glScalef(__state.zoom(), __state.zoom(), 1.0f);
+      glTranslated(-__state.center().x(), __state.center().y(), 0.0);
       glTranslatef(__xOffset, 0.0, linesZ);
       
       if (const FlightItem* pilot = dynamic_cast<const FlightItem*>(__underMouse)) {
@@ -490,9 +493,8 @@ MapWidget::__storeSettings() {
   
   settings.beginGroup("CameraSettings");
   
-  settings.setValue("zoomFactor", __zoom);
   settings.setValue("actualZoomCoefficient", __actualZoom);
-  settings.setValue("cameraPosition", QVariant::fromValue<LonLat>(__center));
+  settings.setValue("mapState", QVariant::fromValue<MapState>(__state));
   
   settings.endGroup();
 }
@@ -503,9 +505,8 @@ MapWidget::__restoreSettings() {
   
   settings.beginGroup("CameraSettings");
   
-  __zoom = settings.value("zoomFactor", 1.5f).toFloat();
   __actualZoom = settings.value("actualZoomCoefficient", 0).toInt();
-  __center = settings.value("cameraPosition", LonLat(0.0, 0.0)).value<LonLat>();
+  __state = settings.value("mapState", QVariant::fromValue<MapState>(MapState())).value<MapState>();
   
   settings.endGroup();
 }
@@ -515,10 +516,10 @@ MapWidget::__updateOffsets() {
   __offsets.clear();
   __offsets.append(0.0f);
   
-  if ((-1 - __center.x()) * __zoom > -__rangeX)
+  if ((-1 - __state.center().x()) * __state.zoom() > -__rangeX)
     __offsets.prepend(-360.0f);
   
-  if ((1 - __center.x()) * __zoom < __rangeX)
+  if ((1 - __state.center().x()) * __state.zoom() < __rangeX)
     __offsets.append(360.0f);
 }
 
@@ -536,9 +537,12 @@ MapWidget::__updateZoom(int _steps) {
   __actualZoom = qBound(0, __actualZoom, __actualZoomMaximum);
   
   // count value of closeup
-  __zoom = MapConfig::zoomMinimum() + MapConfig::zoomNormalizeCoef() *
+  __state.setZoom(
+      MapConfig::zoomMinimum() + MapConfig::zoomNormalizeCoef() *
       qPow(MapConfig::zoomBase() + (__settings.misc.zoom_coefficient * 0.01),
-           (__actualZoom));
+          (__actualZoom)
+        )
+      );
 }
 
 void
@@ -613,14 +617,15 @@ MapWidget::__showWindow(const MapItem* _item) {
   _item->showDetailsWindow();
 }
 
+MapWidget::MousePosition::MousePosition() : __down(false) {}
+
 void
 MapWidget::MousePosition::update(const QPoint& _pos) {
   __screenPosition = _pos;
   __geoPosition = MapWidget::getSingleton().mapToLonLat(_pos);
   
-  MouseLonLatEvent* e = new MouseLonLatEvent(__geoPosition);
-  qApp->notify(vApp()->userInterface()->mainWindow(), e);
-  delete e;
+  MouseLonLatEvent e(__geoPosition);
+  qApp->notify(vApp()->userInterface()->mainWindow(), &e);
 }
 
 qreal
@@ -637,4 +642,9 @@ MapWidget::MousePosition::geoDistance(const LonLat& _point) {
     qPow(_point.x() - __geoPosition.x(), 2) +
     qPow(_point.y() - __geoPosition.y(), 2)
   );
+}
+
+void
+MapWidget::MousePosition::setDown(bool _down) {
+  __down = _down;
 }
