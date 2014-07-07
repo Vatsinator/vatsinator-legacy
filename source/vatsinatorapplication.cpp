@@ -211,8 +211,7 @@ VatsinatorApplication::__initialize() {
 void
 VatsinatorApplication::VatsinatorStyle::polish(QWidget* _widget) {
 #ifdef Q_OS_DARWIN
-  QMenu* w = qobject_cast<QMenu*>(_widget);
-  if (!w && _widget->testAttribute(Qt::WA_MacNormalSize))
+  if (!qobject_cast<QMenu*>(_widget) && _widget->testAttribute(Qt::WA_MacNormalSize))
     _widget->setAttribute(Qt::WA_MacMiniSize);
 #endif
 }

@@ -104,7 +104,7 @@ AirportDetailsWindow::__updateModels() {
   ATCTable->setModel(__airport->staff());
   
   BookedATCTable->setModel(
-      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(__airport->data()->icao)));
+      VatbookHandler::getSingleton().notNullModel(QString::fromUtf8(__airport->data()->icao)));
 }
 
 void

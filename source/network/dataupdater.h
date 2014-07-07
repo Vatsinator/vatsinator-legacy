@@ -24,13 +24,11 @@
 
 class Unzipper;
 
+/**
+ * This class is responsible for synchronizing the local data
+ * with the VatsinatorDatabase server.
+ */
 class DataUpdater : public QObject {
-  
-  /**
-   * This class is responsible for synchronizing the local data
-   * with the VatsinatorDatabase server.
-   */
-  
   Q_OBJECT
   
 signals:

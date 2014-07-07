@@ -25,7 +25,6 @@
 #include "vatsimdata/client.h"
 
 class ClientDetailsAction : public QAction {
-
   Q_OBJECT
 
 signals:

@@ -22,12 +22,10 @@
 
 #include <QPushButton>
 
+/*
+ * Use this button to open an url in system browser.
+ */
 class UrlButton : public QPushButton {
-  
-  /*
-   * Use this button to open an url in system browser.
-   */
-  
   Q_OBJECT
   
 public:

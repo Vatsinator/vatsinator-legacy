@@ -23,7 +23,6 @@
 #include <QProgressBar>
 
 class FlightProgressWidget : public QProgressBar {
-  
     Q_OBJECT
 
 public:

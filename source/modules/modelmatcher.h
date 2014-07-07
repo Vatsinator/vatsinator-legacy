@@ -27,12 +27,11 @@
 
 #include "singleton.h"
 
+/**
+ * This class is responsible for matching user airplanes to 
+ * corresponding models.
+ */
 class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
-  
-  /**
-   * This class matches the models to the planes.
-   */
-  
   Q_OBJECT
   
 signals:

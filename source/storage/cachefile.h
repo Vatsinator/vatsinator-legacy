@@ -22,14 +22,12 @@
 
 #include <QFile>
 
+/*
+ * This class is used to store vatsinator data in cache file.
+ * It is used, for example, in order to store downloaded data
+ * between sessions.
+ */
 class CacheFile : public QFile {
-  
-  /*
-   * This class is used to store vatsinator data in cache file.
-   * It is used, for example, in order to store downloaded data
-   * between sessions.
-   */
-  
   Q_OBJECT
   
 public:

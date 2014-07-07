@@ -20,7 +20,7 @@
 #ifndef VATBOOKHANDLER_H
 #define VATBOOKHANDLER_H
 
-#include <QHash>
+#include <QMap>
 #include <QTimer>
 #include <QObject>
 #include <QString>
@@ -30,46 +30,44 @@
 class BookedAtcTableModel;
 class PlainTextDownloader;
 
+/**
+ * The VatbookHandler class integrates Vatsinator with the VATBOOK service.
+ * TODO Make booking plugin interface
+ */
 class VatbookHandler :
     public QObject,
-    public Singleton<VatbookHandler> {
-  
-  /*
-   * This class provides VATBOOK integration.
-   */
-  
+    public Singleton<VatbookHandler> {  
   Q_OBJECT
   
 public:
   
+  /**
+   * The default ctor.
+   */
   explicit VatbookHandler(QObject* = 0);
   virtual ~VatbookHandler();
   
-  inline BookedAtcTableModel *
-  getModel(const QString& _icao) {
-    return __bookings.value(_icao, NULL); 
-  }
+  /**
+   * Finds the model by given airport or FIR ICAO code.
+   */
+  BookedAtcTableModel* model(const QString&);
   
   /**
-   * If model does not exist, returns VatbookHandler::emptyBookedAtcTable,
-   * which is better for views, as NULL makes the headers disappear.
+   * If the model does not exist, this method returns just empty model
+   * (without any data), which is better for views, as _nullptr_ makes
+   * the headers disappear.
    */
-  inline BookedAtcTableModel *
-  getNotNullModel(const QString& _icao) {
-    return __bookings.value(_icao, VatbookHandler::emptyBookedAtcTable);
-  }
-  
-  static BookedAtcTableModel* emptyBookedAtcTable;
+  BookedAtcTableModel* notNullModel(const QString&);
   
 private:
   
   void __clear();
   void __parseData(const QString&);
   
-  /* This map contains pairs airport/fir icao - atcs */
-  QHash<QString, BookedAtcTableModel*> __bookings;
+  /* This map contains pairs airport/fir icao <-> atcs */
+  QMap<QString, BookedAtcTableModel*> __bookings;
   
-  PlainTextDownloader* __httpHandler;
+  PlainTextDownloader* __downloader;
   QTimer               __timer;
   
 private slots:

@@ -1,6 +1,6 @@
 /*
     userinterface.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,11 +42,6 @@ class SettingsWindow;
 class VatsinatorWindow;
 
 class UserInterface : public QObject, public Singleton<UserInterface> {
-
-  /*
-   * This class manager the Vatsinator's GUI.
-   */
-
   Q_OBJECT
 
 public:

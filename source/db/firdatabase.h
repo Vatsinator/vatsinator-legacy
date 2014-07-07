@@ -29,6 +29,9 @@
 #include "vatsimdata/fir.h"
 #include "singleton.h"
 
+/**
+ * A single raw fir header entry that exists in the database.
+ */
 #pragma pack(1)
 struct FirHeader {
   char  icao[8];
@@ -37,6 +40,9 @@ struct FirHeader {
   Point textPosition;
 };
 
+/**
+ * FirRecord consists of the basic info (header), borders and triangles.
+ */
 struct FirRecord {
   FirHeader header;
   
@@ -46,14 +52,21 @@ struct FirRecord {
 #pragma pack()
 
 
+/**
+ * The FirDatabase class is a layer between Vatsinator
+ * and the raw database file.
+ */
 class FirDatabase : public QObject, public Singleton<FirDatabase> {
-  
   Q_OBJECT
   
 signals:
   void fatal(QString);
 
 public:
+  
+  /**
+   * Default ctor.
+   */
   FirDatabase(QObject* = nullptr);
   
   /**
@@ -69,7 +82,14 @@ public:
    */
   const FirRecord* find(const QString&, bool = false);
 
+  /**
+   * Gives direct access to the vector of FIRs.
+   */
   inline QVector<FirRecord>& firs() { return __firs; }
+  
+  /**
+   * Gives direct access to the vector of FIRs.
+   */
   inline const QVector<FirRecord>& firs() const { return __firs; }
 
 private:

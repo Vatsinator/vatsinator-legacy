@@ -24,19 +24,17 @@
 
 #include "vatsimdata/lonlat.h"
 
+/**
+ * The base class for all map animations, like smooth move, zoom, etc.
+ * Each step is calculated in protected stepEvent() method. To stop
+ * the animation, use stopAnimation() function. Use position() and zoom()
+ * methods to obtain current map position and zoom and use setPosition()
+ * and setZoom() to set these values.
+ * The default interval is 20 milliseconds. This should give enough time
+ * to calculate the next step, keeping the animation smooth. To override
+ * this value, use setPrefferedInterval() method.
+ */
 class AbstractAnimation : public QObject {
-  
-  /**
-   * The base class for all map animations, like smooth move, zoom, etc.
-   * Each step is calculated in protected stepEvent() method. To stop
-   * the animation, use stopAnimation() function. Use position() and zoom()
-   * methods to obtain current map position and zoom and use setPosition()
-   * and setZoom() to set these values.
-   * The default interval is 20 milliseconds. This should give enough time
-   * to calculate the next step, keeping the animation smooth. To override
-   * this value, use setPrefferedInterval() method.
-   */
-  
   Q_OBJECT
 
 signals:

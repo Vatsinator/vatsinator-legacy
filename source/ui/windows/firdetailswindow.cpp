@@ -77,7 +77,7 @@ FirDetailsWindow::__updateModels() {
   ATCTable->setModel(__fir->staff());
   AirportsTable->setModel(__fir->airports());
   
-  BookedATCTable->setModel(VatbookHandler::getSingleton().getNotNullModel(__fir->icao()));
+  BookedATCTable->setModel(VatbookHandler::getSingleton().notNullModel(__fir->icao()));
 }
 
 void

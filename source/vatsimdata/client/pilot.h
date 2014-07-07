@@ -30,14 +30,16 @@
 class Airport;
 struct Point;
 
-class Pilot : public Client {
-  
+/**
+ * This class contains info about one particular pilot - his
+ * flight plan, actual position, plane, etc etc.
+ * Note that in Vatsinator we use both "Pilot" or "Flight" for the same class.
+ * This really needs to be fixed and we should stay consistent in our name
+ * conventions. But as for now, don't be surprised when you meet "Flight"
+ * anywhere in the code. It is about this exact class.
+ */
+class Pilot : public Client {  
   Q_OBJECT
-
-  /**
-   * This class contains info about one particular pilot - his
-   * flight plan, actual position, plane, etc etc.
-   */
 
 public:
   /* Types */

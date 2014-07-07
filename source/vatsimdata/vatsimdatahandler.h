@@ -45,15 +45,15 @@ class VatsinatorApplication;
 
 struct AirportRecord;
 
+/**
+ * The VatsimDataHandler class is generally responsible for handling all
+ * Vatsim specific data. Not only keeps it track of all connected clients,
+ * but it also downloads data automatically when needed, parses local files
+ * and provides some math functions.
+ */
 class VatsimDataHandler :
     public QObject,
     public Singleton<VatsimDataHandler> {
-
-  /*
-   * This class contains data about all connected clients, needed URLs
-   * and airports.
-   */
-
   Q_OBJECT
   
 signals:

@@ -24,13 +24,11 @@
 
 class AirportTableModel;
 
+/*
+ * This class is used to represent nicely the AirportTableModel in
+ * the QTableView format.
+ */
 class AirportTableView : public QTableView {
-  
-  /*
-   * This class is used to represent nicely the AirportTableModel in
-   * the QTableView format.
-   */
-  
   Q_OBJECT
   
 public:

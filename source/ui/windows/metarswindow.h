@@ -34,11 +34,6 @@ class MetarsWindow :
     public BaseWindow,
     private Ui::MetarsWindow {
 
-  /*
-   * This class handles our "METARs" window. Shown when Vatsinator->
-   * ->Metar is activated.
-   */
-
   Q_OBJECT
 
 public:

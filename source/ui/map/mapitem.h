@@ -26,12 +26,10 @@
 
 #include "vatsimdata/lonlat.h"
 
+/**
+ * MapItem is an interface for any object that exists on the map.
+ */
 class MapItem {
-  
-  /**
-   * MapItem is an interface for any object that exists on the map.
-   */
-  
 public:
   
   /**

@@ -32,12 +32,12 @@ class LonLat;
 class Pilot;
 class MapWidget;
 
+/**
+ * The MapScene class is responsible for managing all the map items, moving
+ * the map around (except situations when user moves it using mouse) and
+ * zooming it appropiately.
+ */
 class MapScene : public QObject {
-  
-  /**
-   * The MapScene class is responsible for managing all the map items.
-   */
-  
   Q_OBJECT
   
 signals:

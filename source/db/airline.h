@@ -39,20 +39,46 @@ signals:
 public:
   
   /**
-   * @param icao
-   * @param name
-   * @param country
-   * @param website
-   * @param logo
+   * @param icao Airline ICAO code.
+   * @param name Airline name.
+   * @param country Country where the airline comes from.
+   * @param website The current airline website.
+   * @param logo The logo url.
+   * @param parent QObject's parent.
    */
   Airline(QString, QString, QString, QString, QString, QObject* = nullptr);
   
+  /**
+   * Airline's logo is lazy-loaded. To have it fetched from the internet
+   * or loaded from cache, call this function.
+   * @sa logoFetched().
+   */
   void requestLogo();
-   
+  
+  /**
+   * Gets the airline ICAO code.
+   */
   inline const QString& icao() const { return __icao; }
+  
+  /**
+   * Gets the airline name.
+   */
   inline const QString& name() const { return __name; }
+  
+  /**
+   * Gets the country that the airline comes from.
+   */
   inline const QString& country() const { return __country; }
+  
+  /**
+   * Gets the airline website url.
+   */
   inline const QString& website() const { return __website; }
+  
+  /**
+   * Gets the airline logo image.
+   * @Note: This image is valid only after the logoFetched() signal is emitted.
+   */
   inline const QImage& logo() const { return __logo; }
   
 private slots:

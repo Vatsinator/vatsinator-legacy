@@ -32,7 +32,7 @@ BookedAtcTableModel::~BookedAtcTableModel() {
 }
 
 void
-BookedAtcTableModel::addStaff(const BookedController* _bc) {
+BookedAtcTableModel::add(const BookedController* _bc) {
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
   __staff.push_back(_bc);
   endInsertRows();

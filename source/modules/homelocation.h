@@ -25,12 +25,10 @@
 
 #include "singleton.h"
 
+/**
+ * TODO: remove
+ */
 class HomeLocation : public QObject, public Singleton<HomeLocation> {
-  
-  /*
-   * HomeLocation is used to store user's home location.
-   * Ok, that was pretty obvious.
-   */
   
   Q_OBJECT
   

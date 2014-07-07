@@ -24,6 +24,10 @@
 
 #include "ui/ui_apprestartdialog.h"
 
+/**
+ * Show dialog that lets the user decide whether he wants to restart
+ * the application or not.
+ */
 class AppRestartDialog :
     public QDialog,
     private Ui::AppRestartDialog {

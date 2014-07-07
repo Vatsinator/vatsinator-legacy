@@ -46,11 +46,6 @@ class VatsinatorApplication :
     public QApplication,
     public Singleton<VatsinatorApplication> {
 
-  /*
-   * This class handles the whole Vatsinator application and has
-   * only one instance.
-   */
-
   Q_OBJECT
   
 signals:

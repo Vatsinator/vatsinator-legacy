@@ -23,11 +23,10 @@
 #include <QString>
 #include <QDateTime>
 
+/**
+ * This is class that represents a single NOTAM message.
+ */
 class Notam {
-  
-  /**
-   * This is class that represents a single NOTAM message.
-   */
   
 public:
   

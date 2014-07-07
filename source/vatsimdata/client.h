@@ -27,13 +27,12 @@
 
 #include "vatsimdata/lonlat.h"
 
+/**
+ * Base class for all clients (Pilots and ATCs).
+ */
 class Client : public QObject {
   
   Q_OBJECT
-
-  /*
-   * Inherited by Pilot and Controller classes.
-   */
   
 signals:
   void updated();

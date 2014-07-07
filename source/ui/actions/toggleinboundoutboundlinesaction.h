@@ -25,7 +25,6 @@
 class Airport;
 
 class ToggleInboundOutboundLinesAction : public QAction {
-  
   Q_OBJECT
   
 public:
