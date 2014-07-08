@@ -22,6 +22,7 @@
 # include "debugging/debugwindow.h"
 #endif
 
+#include "events/notificationevent.h"
 #include "network/resourcemanager.h"
 #include "modules/homelocation.h"
 #include "storage/settingsmanager.h"
@@ -141,6 +142,15 @@ UserInterface::mainWindow() {
   return __vatsinatorWindow;
 }
 
+bool UserInterface::event(QEvent* _e) {
+  switch (_e->type()) {
+    case Event::Notification:
+      return notificationEvent(dynamic_cast<NotificationEvent*>(_e));
+    default:
+      return QObject::event(_e);
+  }
+}
+
 void
 UserInterface::fatal(const QString& _msg) {
   QMessageBox msgBox;
@@ -150,8 +160,6 @@ UserInterface::fatal(const QString& _msg) {
   VatsinatorApplication::log(qPrintable(_msg));
   
   msgBox.exec();
-  
-  VatsinatorApplication::terminate();
 }
 
 void
@@ -220,6 +228,22 @@ UserInterface::showDetailsWindow(const Fir* _f) {
   FirDetailsWindow* w = new FirDetailsWindow(_f);
   w->setAttribute(Qt::WA_DeleteOnClose);
   w->show();
+}
+
+bool
+UserInterface::notificationEvent(NotificationEvent* _event) {
+  switch (_event->gravity()) {
+    case NotificationEvent::Fatal:
+      fatal(_event->message());
+      QCoreApplication::exit(1);
+      break;
+      
+    case NotificationEvent::Warning:
+      warning(_event->message());
+      break;
+  }
+  
+  return true;
 }
 
 void

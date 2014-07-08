@@ -38,6 +38,7 @@ class Fir;
 class FlightListWindow;
 class Pilot;
 class MetarsWindow;
+class NotificationEvent;
 class SettingsWindow;
 class VatsinatorWindow;
 
@@ -88,11 +89,14 @@ public:
    */
   VatsinatorWindow* mainWindow();
   
+  /**
+   * Custom events handling.
+   */
+  bool event(QEvent*) override;
+  
 public slots:
   /**
    * Reports fatal error to user.
-   * After showing the error message box, the application
-   * will terminate.
    * 
    * @param msg Message to be shown.
    */
@@ -111,6 +115,9 @@ public slots:
   void showDetailsWindow(const Airport*);
   void showDetailsWindow(const Client*);
   void showDetailsWindow(const Fir*);
+  
+protected:
+  virtual bool notificationEvent(NotificationEvent*);
   
 private slots:
   void __statusError();

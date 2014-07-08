@@ -25,6 +25,7 @@
 #include <QMap>
 
 #include "singleton.h"
+#include "ui/notifiable.h"
 
 class Airline;
 
@@ -32,13 +33,8 @@ class Airline;
  * The AirlineDatabase class is a layer between Vatsinator and the raw
  * database file.
  */
-class AirlineDatabase : public QObject, public Singleton<AirlineDatabase> {
+class AirlineDatabase : public QObject, public Notifiable, public Singleton<AirlineDatabase> {
   Q_OBJECT
-  
-signals:
-  
-  /* Connected to UserInterface::warning() */
-  void warning(QString);
   
 public:
   

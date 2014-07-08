@@ -1,5 +1,5 @@
 /*
- * mapevent.cpp
+ * notificationevent.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,9 +17,10 @@
  *
  */
 
-#include "mapevent.h"
+#include "notificationevent.h"
 #include "defines.h"
 
-MapEvent::MapEvent(const MapState& _state) :
-    QEvent(static_cast<QEvent::Type>(Event::Type::Map)),
-    __state(_state) {}
+NotificationEvent::NotificationEvent(Gravity _gravity, QString _message) :
+    QEvent(static_cast<QEvent::Type>(Event::Type::Notification)),
+    __gravity(_gravity),
+    __message(std::move(_message)) {}

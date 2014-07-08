@@ -27,10 +27,7 @@
 #include "firdatabase.h"
 #include "defines.h"
 
-FirDatabase::FirDatabase(QObject* _parent) : QObject(_parent) {
-  connect(this,                                 SIGNAL(fatal(QString)),
-          UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
-}
+FirDatabase::FirDatabase(QObject* _parent) : QObject(_parent) {}
 
 void
 FirDatabase::init() {
@@ -60,8 +57,10 @@ FirDatabase::__readDatabase() {
   
   QFile db(FileManager::path("WorldFirs.db"));
   
-  if (!db.exists() || !db.open(QIODevice::ReadOnly))
-    emit fatal(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+  if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
+    notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    return;
+  }
 
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);

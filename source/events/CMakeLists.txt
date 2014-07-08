@@ -3,7 +3,7 @@ vatsinator_start_subdirectory (events)
 set (events_SRCS
     mapevent.cpp
     mouselonlatevent.cpp
-    types.cpp
+    notificationevent.cpp
 )
 
 vatsinator_subdirectory_sources (events "${events_SRCS}")

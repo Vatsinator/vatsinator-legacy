@@ -23,6 +23,7 @@
 #include <QVector>
 
 #include "singleton.h"
+#include "ui/notifiable.h"
 
 /*
  * This struct represents a single raw airport entry in the database file.
@@ -49,12 +50,9 @@ struct AirportRecord {
 /*
  * AirportDatabase is a layer between Vatsinator and the raw database.
  */
-class AirportDatabase : public QObject, public Singleton<AirportDatabase> {
+class AirportDatabase : public QObject, public Notifiable, public Singleton<AirportDatabase> {
   Q_OBJECT
   
-signals:
-  void fatal(QString);
-
 public:
 
   /**

@@ -119,10 +119,12 @@ MapWidget::onScreen(const QPointF& _point) {
 
 bool
 MapWidget::event(QEvent* _e) {
-  if (_e->type() == Event::Map)
-    return stateChangeEvent(dynamic_cast<MapEvent*>(_e));
-  else
-    return QGLWidget::event(_e);
+  switch (_e->type()) {
+    case Event::Map:
+      return stateChangeEvent(dynamic_cast<MapEvent*>(_e));
+    default:
+      return QGLWidget::event(_e);
+  }
 }
 
 void

@@ -24,23 +24,20 @@
 #include <QVector>
 
 #include "db/point.h"
-
+#include "ui/notifiable.h"
 #include "singleton.h"
 
 /**
  * The WorldMap class is a layer between the application and the database.
  * It contains global coastline as well as triangles.
  */
-class WorldMap : public QObject, public Singleton<WorldMap> {
+class WorldMap : public QObject, public Notifiable, public Singleton<WorldMap> {
   Q_OBJECT
 
   struct Polygon {
     QVector<Point>          borders;
     QVector<unsigned int>   triangles;
   };
-  
-signals:
-  void fatal(QString);
   
 public:
   

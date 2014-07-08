@@ -18,18 +18,13 @@
 
 #include <QtGui>
 
-#include "ui/userinterface.h"
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "worldmap.h"
 #include "defines.h"
 
-WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {
-  
-  connect(this,                                 SIGNAL(fatal(QString)),
-          UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
-}
+WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {}
 
 void
 WorldMap::init() {
@@ -39,8 +34,10 @@ WorldMap::init() {
 void WorldMap::__readDatabase() {
   QFile db(FileManager::path("WorldMap.db"));
   
-  if (!db.exists() || !db.open(QIODevice::ReadOnly))
-    emit fatal(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+  if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
+    notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    return;
+  }
 
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);

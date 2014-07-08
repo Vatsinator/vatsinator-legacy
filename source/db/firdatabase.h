@@ -25,7 +25,7 @@
 #include <QString>
 
 #include "db/point.h"
-
+#include "ui/notifiable.h"
 #include "vatsimdata/fir.h"
 #include "singleton.h"
 
@@ -56,12 +56,9 @@ struct FirRecord {
  * The FirDatabase class is a layer between Vatsinator
  * and the raw database file.
  */
-class FirDatabase : public QObject, public Singleton<FirDatabase> {
+class FirDatabase : public QObject, public Notifiable, public Singleton<FirDatabase> {
   Q_OBJECT
   
-signals:
-  void fatal(QString);
-
 public:
   
   /**

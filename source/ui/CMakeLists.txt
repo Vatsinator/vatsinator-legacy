@@ -37,6 +37,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
 )
 
 set (ui_SRCS
+    notifiable.cpp
     userinterface.cpp
     
     actions/actionmenuseparator.cpp
