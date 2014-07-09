@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "metaraction.h"
-#include "defines.h"
 
 MetarAction::MetarAction(const QString& _icao, QObject* _parent) :
     QAction(tr("%1 metar").arg(_icao), _parent),

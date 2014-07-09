@@ -23,7 +23,6 @@
 #include "vatsinatorapplication.h"
 
 #include "unzipper.h"
-#include "defines.h"
 
 Unzipper::Unzipper(QString _fn, QObject* _parent) :
     QObject(_parent),

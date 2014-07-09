@@ -22,14 +22,12 @@
 #include <qjson/parser.h>
 
 #include "storage/settingsmanager.h"
-
 #include "ui/dialogs/letsendstatsdialog.h"
-
+#include "config.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "statspurveyor.h"
-#include "defines.h"
 
 // send the startup report after 10 seconds
 static constexpr int StartDelay = 10 * 1000;

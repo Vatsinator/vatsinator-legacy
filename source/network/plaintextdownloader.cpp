@@ -19,10 +19,10 @@
 #include <QtGui>
 #include <QtNetwork>
 
+#include "config.h"
 #include "vatsinatorapplication.h"
 
 #include "plaintextdownloader.h"
-#include "defines.h"
 
 PlainTextDownloader::PlainTextDownloader(QProgressBar* _pb, QObject* _parent) :
     QObject(_parent),

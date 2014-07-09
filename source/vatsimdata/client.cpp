@@ -19,7 +19,6 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "client.h"
-#include "defines.h"
 
 /*
  * 0 callsign

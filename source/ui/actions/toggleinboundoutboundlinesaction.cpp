@@ -25,7 +25,6 @@
 #include "vatsimdata/airport.h"
 
 #include "toggleinboundoutboundlinesaction.h"
-#include "defines.h"
 
 ToggleInboundOutboundLinesAction::ToggleInboundOutboundLinesAction(
   const Airport* _ap, QObject* _parent) :

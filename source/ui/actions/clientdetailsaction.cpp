@@ -17,7 +17,6 @@
 */
 
 #include "clientdetailsaction.h"
-#include "defines.h"
 
 ClientDetailsAction::ClientDetailsAction(const Client* _client,
                                          const QString& _label,

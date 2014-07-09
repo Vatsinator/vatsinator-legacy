@@ -21,7 +21,6 @@
 #include "ui/widgets/mapwidget.h"
 
 #include "homelocation.h"
-#include "defines.h"
 
 HomeLocation::HomeLocation() :
     QObject() {

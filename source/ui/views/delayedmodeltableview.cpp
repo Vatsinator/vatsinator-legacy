@@ -20,7 +20,6 @@
 #include <QtGui>
 
 #include "delayedmodeltableview.h"
-#include "defines.h"
 
 DelayedModelTableView::DelayedModelTableView(QWidget* _parent) :
     QTableView(_parent),

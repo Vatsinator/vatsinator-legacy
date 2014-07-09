@@ -24,7 +24,6 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "metarswindow.h"
-#include "defines.h"
 
 MetarsWindow::MetarsWindow(QWidget* _parent) :
     BaseWindow(_parent),

@@ -22,15 +22,13 @@
 #include "network/dataupdater.h"
 #include "network/filedownloader.h"
 #include "network/plaintextdownloader.h"
-
 #include "storage/filemanager.h"
 #include "storage/settingsmanager.h"
-
+#include "config.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "resourcemanager.h"
-#include "defines.h"
 
 // start running after two seconds
 static const int StartDelay = 2 * 1000;

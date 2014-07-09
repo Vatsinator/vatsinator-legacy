@@ -79,7 +79,7 @@ public:
 #endif
     static void terminate();
 
-#ifdef NO_DEBUG
+#ifdef QT_NO_DEBUG
 
   inline static void
   log(const char*) {}

@@ -18,7 +18,6 @@
  */
 
 #include "mapevent.h"
-#include "defines.h"
 
 MapEvent::MapEvent(const MapState& _state) :
     QEvent(static_cast<QEvent::Type>(Event::Type::Map)),

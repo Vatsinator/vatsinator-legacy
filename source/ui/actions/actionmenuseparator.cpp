@@ -18,7 +18,6 @@
 
 
 #include "actionmenuseparator.h"
-#include "defines.h"
 
 ActionMenuSeparator::ActionMenuSeparator(const QString& _label, QObject* _parent) :
     QAction(_label, _parent) {

@@ -31,14 +31,6 @@ set (vatsinator_SUBDIRS
     vatsimdata
 )
 
-# We can't name it "debug" directory as it conflicts with cmake syntax
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-    set (vatsinator_SUBDIRS
-        debugging
-        ${vatsinator_SUBDIRS}
-    )
-endif (CMAKE_BUILD_TYPE MATCHES Debug)
-
 qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
 include (Macros)

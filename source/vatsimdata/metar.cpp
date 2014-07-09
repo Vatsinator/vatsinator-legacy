@@ -19,7 +19,6 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "metar.h"
-#include "defines.h"
 
 Metar::Metar() : __icao("ZZZZ") {}
 

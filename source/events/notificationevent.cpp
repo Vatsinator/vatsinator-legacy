@@ -18,7 +18,6 @@
  */
 
 #include "notificationevent.h"
-#include "defines.h"
 
 NotificationEvent::NotificationEvent(Gravity _gravity, QString _message) :
     QEvent(static_cast<QEvent::Type>(Event::Type::Notification)),

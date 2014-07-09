@@ -40,7 +40,6 @@
 #include "vatsinatorapplication.h"
 
 #include "mapwidget.h"
-#include "defines.h"
 
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),

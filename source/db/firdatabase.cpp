@@ -25,7 +25,6 @@
 #include "vatsinatorapplication.h"
 
 #include "firdatabase.h"
-#include "defines.h"
 
 FirDatabase::FirDatabase(QObject* _parent) : QObject(_parent) {}
 

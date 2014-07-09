@@ -18,7 +18,6 @@
 
 
 #include "firdetailsaction.h"
-#include "defines.h"
 
 FirDetailsAction::FirDetailsAction(const Fir* _f,
                                    const QString& _label,

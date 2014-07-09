@@ -23,7 +23,6 @@
 #include "vatsinatorapplication.h"
 
 #include "weatherforecastmodel.h"
-#include "defines.h"
 
 WeatherForecastModel::WeatherForecastModel(const QByteArray& _json, QObject* _parent) :
     QAbstractTableModel(_parent) {

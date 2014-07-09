@@ -42,7 +42,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airportdetailswindow.h"
-#include "defines.h"
 
 AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent) :
     BaseWindow(_parent),

@@ -19,35 +19,26 @@
 #include <QtCore>
 
 #include "storage/cachefile.h"
-
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
-
 #include "modules/modulemanager.h"
-
 #include "network/plaintextdownloader.h"
 #include "network/resourcemanager.h"
 #include "network/statspurveyor.h"
-
 #include "storage/languagemanager.h"
 #include "storage/settingsmanager.h"
-
 #include "ui/pages/miscellaneouspage.h"
-
 #include "ui/userinterface.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/windows/vatsinatorwindow.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
-
 #include "storage/filemanager.h"
 
 #include "vatsinatorapplication.h"
-#include "defines.h"
 
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
@@ -110,10 +101,6 @@ VatsinatorApplication::~VatsinatorApplication() {
   
   rmThread->wait();
   spThread->wait();
-
-#ifndef NO_DEBUG
-  DumpUnfreed();
-#endif
 }
 
 UserInterface*
@@ -152,7 +139,7 @@ VatsinatorApplication::terminate() {
   std::terminate();
 }
 
-#ifndef NO_DEBUG
+#ifdef QT_DEBUG
 
 void
 VatsinatorApplication::log(const char* _s) {

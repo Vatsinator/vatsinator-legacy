@@ -35,7 +35,6 @@
 #include "vatsinatorapplication.h"
 
 #include "flightitem.h"
-#include "defines.h"
 
 FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
     QObject(_parent),

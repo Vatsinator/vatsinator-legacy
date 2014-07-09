@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "bookedcontroller.h"
-#include "defines.h"
 
 /*
  * 0 Callsign

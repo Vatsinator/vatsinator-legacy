@@ -24,7 +24,6 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "databasewindow.h"
-#include "defines.h"
 
 DatabaseWindow::DatabaseWindow(QWidget* _parent) :
     BaseWindow(_parent) {

@@ -19,10 +19,10 @@
 #include <QtGui>
 #include <QtNetwork>
 
+#include "config.h"
 #include "vatsinatorapplication.h"
 
 #include "filedownloader.h"
-#include "defines.h"
 
 FileDownloader::FileDownloader(QProgressBar* _pb, QObject* _parent) :
     QObject(_parent),

@@ -23,7 +23,6 @@
 #include "vatsimdata/airport.h"
 
 #include "airportdetailsbutton.h"
-#include "defines.h"
 
 AirportDetailsButton::AirportDetailsButton(QWidget* _parent) :
     QPushButton("", _parent),

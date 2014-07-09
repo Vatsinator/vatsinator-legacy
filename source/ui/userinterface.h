@@ -25,10 +25,6 @@
 #include "ui/widgets/mapwidget.h"
 #include "singleton.h"
 
-#ifndef NO_DEBUG
-class DebugWindow;
-#endif
-
 class AboutWindow;
 class Airport;
 class AtcListWindow;
@@ -125,10 +121,6 @@ private slots:
   void __showNewVersionDialog();
   
 private:
-
-#ifndef NO_DEBUG
-  DebugWindow*  __debugWindow;
-#endif
 
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;

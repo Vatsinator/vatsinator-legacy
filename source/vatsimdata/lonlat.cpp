@@ -20,7 +20,6 @@
 #include <QtGlobal>
 
 #include "lonlat.h"
-#include "defines.h"
 
 LonLat::LonLat() : QPointF() {}
 

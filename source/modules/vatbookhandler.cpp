@@ -24,7 +24,6 @@
 #include "network/plaintextdownloader.h"
 
 #include "vatbookhandler.h"
-#include "defines.h"
 
 static const QString VatbookUrl = "http://vatbook.euroutepro.com/servinfo.asp";
 static const int RefreshInterval = 15 * 60000; // 15 min

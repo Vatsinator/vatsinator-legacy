@@ -24,7 +24,6 @@
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "flightlistwindow.h"
-#include "defines.h"
 
 FlightListWindow::FlightListWindow(QWidget* _parent) :
     BaseWindow(_parent) {

@@ -19,35 +19,27 @@
 
 #include <QGLWidget>
 
-#include "debugging/glerrors.h"
 #include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "glresourcemanager.h"
-#include "defines.h"
 
 GLuint
 GlResourceManager::loadImage(const QImage& _img) {
   GLuint pix;
   QImage final = QGLWidget::convertToGLFormat(_img);
   
-  glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
-  glGenTextures(1, &pix); checkGLErrors(HERE);
+  glEnable(GL_TEXTURE_2D);
+  glGenTextures(1, &pix);
   
-  glBindTexture(GL_TEXTURE_2D, pix); checkGLErrors(HERE);
+  glBindTexture(GL_TEXTURE_2D, pix);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(),
-               0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits()); checkGLErrors(HERE);
+               0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits());
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // GL_LINEAR causes the text
                                                                     // on the tooltip is blurred
                
   glBindTexture(GL_TEXTURE_2D, 0);
-               
-#ifndef NO_DEBUG
-  __imageMemory[pix] = static_cast<unsigned>(final.byteCount());
-  registerGPUMemoryAllocFunc(__imageMemory[pix]);
-  __textureCount += 1;
-#endif
                
   return pix;
 }
@@ -66,37 +58,21 @@ GlResourceManager::loadImage(const QString& _fName) {
   
   final = QGLWidget::convertToGLFormat(temp);
   
-  glEnable(GL_TEXTURE_2D); checkGLErrors(HERE);
-  glGenTextures(1, &pix); checkGLErrors(HERE);
+  glEnable(GL_TEXTURE_2D);
+  glGenTextures(1, &pix);
   
-  glBindTexture(GL_TEXTURE_2D, pix); checkGLErrors(HERE);
+  glBindTexture(GL_TEXTURE_2D, pix);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, final.width(), final.height(),
-               0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits()); checkGLErrors(HERE);
+               0, GL_RGBA, GL_UNSIGNED_BYTE, final.bits());
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   
   glBindTexture(GL_TEXTURE_2D, 0);
-  
-#ifndef NO_DEBUG
-  __imageMemory[pix] = static_cast<unsigned>(final.byteCount());
-  registerGPUMemoryAllocFunc(__imageMemory[pix]);
-  __textureCount += 1;
-#endif
   
   return pix;
 }
 
 void
 GlResourceManager::deleteImage(GLuint _img) {
-  glDeleteTextures(1, &_img); checkGLErrors(HERE);
-  
-#ifndef NO_DEBUG
-  unregisterGPUMemoryAllocFunc(__imageMemory[_img]);
-  __textureCount -= 1;
-#endif
+  glDeleteTextures(1, &_img);
 }
-
-#ifndef NO_DEBUG
-QMap<GLuint, unsigned> GlResourceManager::__imageMemory;
-unsigned GlResourceManager::__textureCount = 0;
-#endif

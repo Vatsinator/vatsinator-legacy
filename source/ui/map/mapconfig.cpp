@@ -20,7 +20,6 @@
 #include <QtGui>
 
 #include "mapconfig.h"
-#include "defines.h"
 
 const QGLFormat &
 MapConfig::glFormat() {

@@ -21,7 +21,6 @@
 #include "storage/settingsmanager.h"
 
 #include "abstractsettingspage.h"
-#include "defines.h"
 
 AbstractSettingsPage::AbstractSettingsPage(QWidget* _parent) :
   QWidget(_parent) {}

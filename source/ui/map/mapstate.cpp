@@ -18,7 +18,6 @@
  */
 
 #include "mapstate.h"
-#include "defines.h"
 
 MapState::MapState() :
     __center(0.0, 0.0),

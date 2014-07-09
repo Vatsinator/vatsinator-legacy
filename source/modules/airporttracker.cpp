@@ -28,7 +28,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airporttracker.h"
-#include "defines.h"
 
 AirportTracker::AirportTracker(QObject* _parent) :
     QObject(_parent),

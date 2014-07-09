@@ -22,8 +22,6 @@
 #include <QDebug>
 #include <QGLContext>
 
-#include "debugging/glerrors.h"
-
 #include "config.h"
 #if defined Q_OS_LINUX
 # include <GL/glx.h>
@@ -59,10 +57,6 @@ template <typename T>
 #endif
     
     Q_ASSERT(temp != nullptr);
-
-#ifndef NO_DEBUG
-    registerExtensionPointer(_procName, reinterpret_cast<long long unsigned>(temp));
-#endif
   
     return temp;
   }

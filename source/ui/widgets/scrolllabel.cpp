@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "scrolllabel.h"
-#include "defines.h"
 
 static const int SCROLL_LABEL_MARGIN = 5;
 

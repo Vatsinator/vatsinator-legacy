@@ -29,7 +29,6 @@
 #include "vatsinatorapplication.h"
 
 #include "atcdetailswindow.h"
-#include "defines.h"
 
 AtcDetailsWindow::AtcDetailsWindow(const Controller* _c, QWidget* _parent) :
     BaseWindow(_parent),

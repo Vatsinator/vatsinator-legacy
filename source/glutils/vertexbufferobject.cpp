@@ -19,14 +19,8 @@
 #include <QtGui>
 
 #include "glutils/glextensions.h"
-#include "debugging/glerrors.h"
 
 #include "vertexbufferobject.h"
-#include "defines.h"
-
-#ifndef NO_DEBUG
-unsigned VertexBufferObject::vboCount = 0;
-#endif
 
 VertexBufferObject::VertexBufferObject(GLenum _type):
     __type(_type),
@@ -42,33 +36,19 @@ VertexBufferObject::VertexBufferObject(GLenum _type):
   
   static_assert(enabled, "VBO disabled in this build config!");
   
-  glGenBuffers(1, &__vboID); checkGLErrors(HERE);
-  
-#ifndef NO_DEBUG
-  vboCount += 1;
-#endif
+  glGenBuffers(1, &__vboID);
 }
 
 VertexBufferObject::~VertexBufferObject() {
-  glDeleteBuffers(1, &__vboID); checkGLErrors(HERE);
-  
-#ifndef NO_DEBUG
-  unregisterGPUMemoryAllocFunc(__size);
-  vboCount -= 1;
-#endif
+  glDeleteBuffers(1, &__vboID);
 }
 
 void
 VertexBufferObject::sendData(unsigned _size, const void* _data) {
   bind();
 
-  glBufferData(__type, _size, NULL, GL_STATIC_DRAW); checkGLErrors(HERE);
-  glBufferSubData(__type, 0, _size, _data); checkGLErrors(HERE);
-
-#ifndef NO_DEBUG
-  registerGPUMemoryAllocFunc(_size);
-  __size = _size;
-#endif
+  glBufferData(__type, _size, NULL, GL_STATIC_DRAW);
+  glBufferSubData(__type, 0, _size, _data);
 
   unbind();
   
@@ -77,12 +57,12 @@ VertexBufferObject::sendData(unsigned _size, const void* _data) {
 
 void
 VertexBufferObject::bind() const {
-  glBindBuffer(__type, __vboID); checkGLErrors(HERE);
+  glBindBuffer(__type, __vboID);
 }
 
 void
 VertexBufferObject::unbind() const {
-  glBindBuffer(__type, 0); checkGLErrors(HERE);
+  glBindBuffer(__type, 0);
 }
 
 void

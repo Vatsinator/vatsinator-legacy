@@ -37,7 +37,6 @@
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "mapscene.h"
-#include "defines.h"
 
 MapScene::MapScene(QObject* parent) :
     QObject(parent),

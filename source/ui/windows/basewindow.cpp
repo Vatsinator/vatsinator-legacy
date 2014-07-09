@@ -24,7 +24,6 @@
 #include "vatsinatorapplication.h"
 
 #include "basewindow.h"
-#include "defines.h"
 
 BaseWindow::BaseWindow(QWidget* _parent, Qt::WindowFlags _f) :
   QWidget(_parent, _f),

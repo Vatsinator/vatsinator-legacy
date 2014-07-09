@@ -25,7 +25,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airlinedatabase.h"
-#include "defines.h"
 
 AirlineDatabase::AirlineDatabase(QObject* _parent) :
     QObject(_parent),

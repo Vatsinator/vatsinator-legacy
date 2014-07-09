@@ -26,7 +26,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airport.h"
-#include "defines.h"
 
 Airport::Airport(const QString& _icao) :
     __data(AirportDatabase::getSingleton().find(_icao)),

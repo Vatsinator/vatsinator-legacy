@@ -21,7 +21,6 @@
 #include "storage/filemanager.h"
 
 #include "languagemanager.h"
-#include "defines.h"
 
 #include "vatsinatorapplication.h"
 

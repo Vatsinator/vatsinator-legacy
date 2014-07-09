@@ -24,7 +24,6 @@
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "fir.h"
-#include "defines.h"
 
 Fir::Fir(const FirRecord* _data) :
      __data(_data),

@@ -20,7 +20,6 @@
 #include <QtGui>
 
 #include "apprestartdialog.h"
-#include "defines.h"
 
 AppRestartDialog::AppRestartDialog(QWidget* _parent) :
     QDialog(_parent) {

@@ -40,7 +40,6 @@
 #include "vatsimdata/models/notamlistmodel.h"
 
 #include "firdetailswindow.h"
-#include "defines.h"
 
 FirDetailsWindow::FirDetailsWindow(const Fir* _fir, QWidget* _parent) :
     BaseWindow(_parent),

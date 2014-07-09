@@ -22,7 +22,6 @@
 #include "vatsinatorapplication.h"
 
 #include "worldmap.h"
-#include "defines.h"
 
 WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {}
 

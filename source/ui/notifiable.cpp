@@ -24,7 +24,6 @@
 #include "vatsinatorapplication.h"
 
 #include "notifiable.h"
-#include "defines.h"
 
 void
 Notifiable::notifyError(const QString& _message) {

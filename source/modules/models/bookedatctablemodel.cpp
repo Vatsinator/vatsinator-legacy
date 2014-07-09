@@ -21,7 +21,6 @@
 #include "modules/vatbook/bookedcontroller.h"
 
 #include "bookedatctablemodel.h"
-#include "defines.h"
 
 BookedAtcTableModel::BookedAtcTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}

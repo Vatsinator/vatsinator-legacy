@@ -20,7 +20,6 @@
 #include <QtGui>
 
 #include "mappage.h"
-#include "defines.h"
 
 /* Default settings for MapPage */
 namespace DefaultSettings {

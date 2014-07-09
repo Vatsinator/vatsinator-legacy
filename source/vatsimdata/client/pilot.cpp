@@ -26,7 +26,6 @@
 #include "vatsinatorapplication.h"
 
 #include "pilot.h"
-#include "defines.h"
 
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"

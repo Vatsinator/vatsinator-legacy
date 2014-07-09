@@ -18,10 +18,6 @@
 
 #include <QtGui>
 
-#ifndef NO_DEBUG
-# include "debugging/debugwindow.h"
-#endif
-
 #include "events/notificationevent.h"
 #include "network/resourcemanager.h"
 #include "modules/homelocation.h"
@@ -49,13 +45,9 @@
 #include "vatsinatorapplication.h"
 
 #include "userinterface.h"
-#include "defines.h"
 
 UserInterface::UserInterface(QObject* _parent) :
     QObject(_parent),
-#ifndef NO_DEBUG
-    __debugWindow(nullptr),
-#endif
     __aboutWindow(nullptr),
     __metarsWindow(nullptr),
     __databaseWindow(nullptr),
@@ -72,18 +64,10 @@ UserInterface::~UserInterface() {
   delete __atcListWindow;
   delete __settingsWindow;
   delete __metarsWindow;
-
-#ifndef NO_DEBUG
-  delete __debugWindow;
-#endif
 }
 
 void
 UserInterface::init() {
-#ifndef NO_DEBUG
-  __debugWindow = new DebugWindow();
-#endif
-  
   __aboutWindow = new AboutWindow();
   __metarsWindow = new MetarsWindow();
   __databaseWindow = new DatabaseWindow();
@@ -102,7 +86,7 @@ UserInterface::init() {
 
 AboutWindow*
 UserInterface::aboutWindow() {
-  Q_ASSERT(__aboutWindow());
+  Q_ASSERT(__aboutWindow);
   return __aboutWindow;
 }
 

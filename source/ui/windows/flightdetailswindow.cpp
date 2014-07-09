@@ -32,7 +32,6 @@
 #include "vatsinatorapplication.h"
 
 #include "flightdetailswindow.h"
-#include "defines.h"
 
 FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) :
     BaseWindow(_parent),

@@ -25,7 +25,6 @@
 #include "vatsinatorapplication.h"
 
 #include "modelmatcher.h"
-#include "defines.h"
 
 ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
   connect(this,                                 SIGNAL(warning(QString)),

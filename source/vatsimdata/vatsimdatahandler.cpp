@@ -44,7 +44,6 @@
 #include "vatsinatorapplication.h"
 
 #include "vatsimdatahandler.h"
-#include "defines.h"
 
 using std::for_each;
 

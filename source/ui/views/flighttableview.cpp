@@ -23,7 +23,6 @@
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "flighttableview.h"
-#include "defines.h"
 
 FlightTableView::FlightTableView(QWidget* _parent) :
     QTableView(_parent) {}

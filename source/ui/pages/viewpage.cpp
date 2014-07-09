@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "viewpage.h"
-#include "defines.h"
 
 namespace DefaultSettings {
   static const bool PILOTS_CHECKBOX           = true;

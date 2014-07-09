@@ -23,7 +23,6 @@
 #include "ui/userinterface.h"
 
 #include "miscellaneouspage.h"
-#include "defines.h"
 
 /* Default settings for MiscellaneousPage */
 namespace DefaultSettings {
