@@ -41,6 +41,10 @@
 
 #include "mapwidget.h"
 
+#ifndef GL_MULTISAMPLE
+# define GL_MULTISAMPLE 0x809D
+#endif
+
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
     __xOffset(0.0),

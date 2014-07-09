@@ -49,7 +49,9 @@ WorldPolygon::paint() {
   __borders->unbind();
   __triangles->unbind();
 #else
-# error "Not implemented"
+  glVertexPointer(2, GL_FLOAT, 0, WorldMap::getSingleton().borders().constData());
+  glDrawElements(GL_TRIANGLES, WorldMap::getSingleton().triangles().size(), GL_UNSIGNED_INT,
+                 WorldMap::getSingleton().triangles().constData());
 #endif
 }
 

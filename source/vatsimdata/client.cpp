@@ -72,6 +72,8 @@ Client::Client(const QStringList& _data) :
     __position(_data[6].toFloat(), _data[5].toFloat()),
     __timestamp(VatsimDataHandler::getSingleton().currentTimestamp()) {}
 
+Client::~Client() {}
+
 void
 Client::update(const QStringList& _data) {
   __pid = _data[1].toUInt();

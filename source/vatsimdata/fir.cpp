@@ -36,6 +36,8 @@ Fir::Fir(const FirRecord* _data) :
   Q_ASSERT(__data);
 }
 
+Fir::~Fir() {}
+
 void
 Fir::addStaff(const Controller* _c) {
   __staff->add(_c);

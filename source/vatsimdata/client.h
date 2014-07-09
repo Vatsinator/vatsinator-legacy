@@ -51,6 +51,8 @@ public:
    */
   Client(const QStringList&);
   
+  virtual ~Client();
+  
   /**
    * Update the client from the _data_ given.
    * The _data_ is just an appropriate line from the data file, which
@@ -65,8 +67,6 @@ public:
    * @return True if the client was present in the last data update, otherwise false.
    */
   bool isOnline() const;
-  
-  virtual ~Client() = default;
 
   /**
    * The client's Vatsim PID.

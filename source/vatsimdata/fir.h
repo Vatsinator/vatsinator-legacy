@@ -45,7 +45,7 @@ public:
    */
   Fir(const FirRecord*);
   
-  virtual ~Fir() = default;
+  virtual ~Fir();
   
   /**
    * Records staff in the fir.

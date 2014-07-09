@@ -52,6 +52,8 @@ MapScene::MapScene(QObject* parent) :
           this,                                 SLOT(__setupItems()));
 }
 
+MapScene::~MapScene() {}
+
 void
 MapScene::trackFlight(const Pilot* _p) {
   __trackedFlight = _p;

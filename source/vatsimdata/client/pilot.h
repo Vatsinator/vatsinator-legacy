@@ -83,7 +83,7 @@ public:
    * @param prefiled Indicates whether the flight is only prefiled.
    */
   Pilot(const QStringList&, bool = false);
-  virtual ~Pilot() = default;
+  virtual ~Pilot();
   
   void update(const QStringList&);
   

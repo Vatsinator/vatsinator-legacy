@@ -58,7 +58,7 @@ else (CMAKE_BUILD_TYPE MATCHES Debug)
 endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 # set CXX_FLAGS
-set (CMAKE_CXX_FLAGS "-std=c++11")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall")
 
 # find version

@@ -50,7 +50,7 @@ signals:
 
 public:
   explicit MapScene(QObject* parent);
-  virtual ~MapScene() = default;
+  virtual ~MapScene();
   
   void trackFlight(const Pilot*);
   void cancelFlightTracking();
