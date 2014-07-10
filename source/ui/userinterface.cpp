@@ -101,7 +101,7 @@ UserInterface::init() {
 
 AboutWindow*
 UserInterface::aboutWindow() {
-  Q_ASSERT(__aboutWindow());
+  Q_ASSERT(__aboutWindow);
   return __aboutWindow;
 }
 

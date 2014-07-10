@@ -1,4 +1,7 @@
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+
+set (CMAKE_AUTOMOC ON)
+set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # exec file
 set (vatsinator_TARGET
@@ -14,10 +17,6 @@ endif (APPLE)
 set (vatsinator_SRCS
     netconfig.cpp
     vatsinatorapplication.cpp
-)
-
-set (vatsinator_MOC_SRCS
-    vatsinatorapplication.h
 )
 
 set (vatsinator_SUBDIRS
@@ -39,8 +38,6 @@ if (CMAKE_BUILD_TYPE MATCHES Debug)
     )
 endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
-qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
-
 include (Macros)
 if (CMAKE_COMPILER_IS_GNUCC)
     include (GccVersion)
@@ -51,16 +48,12 @@ if (CMAKE_COMPILER_IS_GNUCC)
     endif (NOT GCC_VERSION_47)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
-set (QT_USE_QTOPENGL TRUE)
-set (QT_USE_QTNETWORK TRUE)
-
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
+add_executable (${vatsinator_TARGET}
     main.cpp
     ${vatsinator_SRCS}
-    ${vatsinator_MOC_FILES}
 )
 
 # fix for older versions of qjson library
@@ -73,7 +66,11 @@ if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
 
     set (vatsinator_LIBS
-        ${QT_LIBRARIES}
+        Qt5::Widgets
+        Qt5::Network
+        Qt5::Xml
+        Qt5::Svg
+        Qt5::OpenGL
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
         ${QJSON_LIBRARIES}
@@ -110,7 +107,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
 )
 
 foreach (DIR ${vatsinator_SUBDIRS})
-    add_subdirectory (${DIR})
+   add_subdirectory (${DIR})
     add_dependencies (${vatsinator_TARGET}
         ${DIR}
     )
@@ -156,12 +153,12 @@ elseif (APPLE)
     
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
-    include (DeployQt4)
-    install_qt4_executable ("${vatsinator_TARGET}.app"
-        "" # qtplugins
-        "" # libs
-        "/usr/local/lib" # dirs
-    )
+    #include (DeployQt4)
+    #install_qt4_executable ("${vatsinator_TARGET}.app"
+    #    "" # qtplugins
+    #    "" # libs
+    #    "/usr/local/lib" # dirs
+    #)
     
 elseif (WIN32)
 
