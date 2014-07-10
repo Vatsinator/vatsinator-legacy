@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "controllertablemodel.h"
-#include "defines.h"
 
 ControllerTableModel::ControllerTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}

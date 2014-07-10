@@ -24,14 +24,12 @@
 
 class ControllerTableModel;
 
+/*
+ * This class is used to show all controllers in the nice, pretty
+ * table. To use it properly, the ControllerTableModel instance is
+ * needed.
+ */
 class ControllerTableView : public QTableView {
-  
-  /*
-   * This class is used to show all controllers in the nice, pretty
-   * table. To use it properly, the ControllerTableModel instance is
-   * needed.
-   */
-  
   Q_OBJECT
   
 public:

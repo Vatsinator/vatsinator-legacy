@@ -22,6 +22,10 @@
 
 #include <QtGlobal>
 
+/**
+ * This is a very primitive type, used just to describe a basic point,
+ * used by the databases.
+ */
 #pragma pack(1)
 struct Point {
   float x;

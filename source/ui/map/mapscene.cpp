@@ -37,7 +37,6 @@
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "mapscene.h"
-#include "defines.h"
 
 MapScene::MapScene(QObject* parent) :
     QObject(parent),
@@ -52,6 +51,8 @@ MapScene::MapScene(QObject* parent) :
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(initialized()),
           this,                                 SLOT(__setupItems()));
 }
+
+MapScene::~MapScene() {}
 
 void
 MapScene::trackFlight(const Pilot* _p) {

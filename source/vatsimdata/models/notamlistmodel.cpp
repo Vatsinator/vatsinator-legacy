@@ -20,7 +20,6 @@
 #include <QtGui>
 
 #include "notamlistmodel.h"
-#include "defines.h"
 
 NotamListModel::NotamListModel(QString _icao, QObject* _parent) :
   QAbstractTableModel(_parent),

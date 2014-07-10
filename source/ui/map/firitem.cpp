@@ -30,7 +30,6 @@
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "firitem.h"
-#include "defines.h"
 
 FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     QObject(_parent),

@@ -26,12 +26,6 @@
 #include "vatsimdata/client/controller.h"
 
 class ControllerTableModel : public QAbstractTableModel {
-
-  /* http://qt-project.org/doc/qt-4.8/qabstracttablemodel.html */
-  /*
-   * This model holds vector of logged-in controllers.
-   */
-
   Q_OBJECT
 
 signals:

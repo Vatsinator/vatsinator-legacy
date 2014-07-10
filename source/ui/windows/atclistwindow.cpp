@@ -24,7 +24,6 @@
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "atclistwindow.h"
-#include "defines.h"
 
 AtcListWindow::AtcListWindow(QWidget* _parent) :
     BaseWindow(_parent) {

@@ -26,7 +26,6 @@
 #include "vatsinatorapplication.h"
 
 #include "modulemanager.h"
-#include "defines.h"
 
 ModuleManager::ModuleManager() :
     __airportTracker(nullptr),

@@ -26,7 +26,6 @@
 #include "ui/userinterface.h"
 
 #include "settingswindow.h"
-#include "defines.h"
 
 SettingsWindow::SettingsWindow(QWidget* _parent) :
     BaseWindow(_parent) {

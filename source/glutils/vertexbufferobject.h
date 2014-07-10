@@ -44,19 +44,11 @@ public:
   inline unsigned
   length() const { return __length; }
 
-#ifndef NO_DEBUG
-  static unsigned vboCount;
-#endif
-
 private:
   GLuint __vboID;
   GLenum __type;
   unsigned __dataSize;
   unsigned __length;
-
-#ifndef NO_DEBUG
-  unsigned __size;
-#endif
 
 };
 

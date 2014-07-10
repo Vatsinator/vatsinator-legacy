@@ -1,6 +1,6 @@
 /*
     userinterface.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,10 +25,6 @@
 #include "ui/widgets/mapwidget.h"
 #include "singleton.h"
 
-#ifndef NO_DEBUG
-class DebugWindow;
-#endif
-
 class AboutWindow;
 class Airport;
 class AtcListWindow;
@@ -38,15 +34,11 @@ class Fir;
 class FlightListWindow;
 class Pilot;
 class MetarsWindow;
+class NotificationEvent;
 class SettingsWindow;
 class VatsinatorWindow;
 
 class UserInterface : public QObject, public Singleton<UserInterface> {
-
-  /*
-   * This class manager the Vatsinator's GUI.
-   */
-
   Q_OBJECT
 
 public:
@@ -93,11 +85,14 @@ public:
    */
   VatsinatorWindow* mainWindow();
   
+  /**
+   * Custom events handling.
+   */
+  bool event(QEvent*) override;
+  
 public slots:
   /**
    * Reports fatal error to user.
-   * After showing the error message box, the application
-   * will terminate.
    * 
    * @param msg Message to be shown.
    */
@@ -117,16 +112,15 @@ public slots:
   void showDetailsWindow(const Client*);
   void showDetailsWindow(const Fir*);
   
+protected:
+  virtual bool notificationEvent(NotificationEvent*);
+  
 private slots:
   void __statusError();
   void __dataError();
   void __showNewVersionDialog();
   
 private:
-
-#ifndef NO_DEBUG
-  DebugWindow*  __debugWindow;
-#endif
 
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;

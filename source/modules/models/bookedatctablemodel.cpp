@@ -21,7 +21,6 @@
 #include "modules/vatbook/bookedcontroller.h"
 
 #include "bookedatctablemodel.h"
-#include "defines.h"
 
 BookedAtcTableModel::BookedAtcTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}
@@ -32,7 +31,7 @@ BookedAtcTableModel::~BookedAtcTableModel() {
 }
 
 void
-BookedAtcTableModel::addStaff(const BookedController* _bc) {
+BookedAtcTableModel::add(const BookedController* _bc) {
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
   __staff.push_back(_bc);
   endInsertRows();

@@ -21,13 +21,10 @@
 
 #include "db/worldmap.h"
 
-#include "debugging/glerrors.h"
-
 #include "glutils/glextensions.h"
 #include "glutils/vertexbufferobject.h"
 
 #include "worldpolygon.h"
-#include "defines.h"
 
 WorldPolygon::WorldPolygon() {
   __createVbos();
@@ -48,12 +45,13 @@ WorldPolygon::paint() {
   
   glVertexPointer(2, GL_FLOAT, 0, 0);
   glDrawElements(GL_TRIANGLES, WorldMap::getSingleton().triangles().size(), GL_UNSIGNED_INT, 0);
-  checkGLErrors(HERE);
   
   __borders->unbind();
   __triangles->unbind();
 #else
-# error "Not implemented"
+  glVertexPointer(2, GL_FLOAT, 0, WorldMap::getSingleton().borders().constData());
+  glDrawElements(GL_TRIANGLES, WorldMap::getSingleton().triangles().size(), GL_UNSIGNED_INT,
+                 WorldMap::getSingleton().triangles().constData());
 #endif
 }
 

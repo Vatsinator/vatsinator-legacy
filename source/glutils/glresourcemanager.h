@@ -48,20 +48,6 @@ public:
    */
   static void deleteImage(GLuint);
   
-#ifndef NO_DEBUG
-  static inline unsigned
-  textureCount() {
-    return __textureCount;
-  }
-#endif
-  
-private:
-#ifndef NO_DEBUG
-  /* For memory tracking */
-  static QMap<GLuint, unsigned> __imageMemory;
-  static unsigned __textureCount;
-#endif
-  
 };
 
 #endif // GLRESOURCEMANAGER_H

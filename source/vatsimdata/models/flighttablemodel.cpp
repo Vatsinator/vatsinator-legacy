@@ -22,7 +22,6 @@
 #include "vatsimdata/airport.h"
 
 #include "flighttablemodel.h"
-#include "defines.h"
 
 FlightTableModel::FlightTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}

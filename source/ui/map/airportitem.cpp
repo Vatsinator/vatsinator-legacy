@@ -35,7 +35,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airportitem.h"
-#include "defines.h"
 
 AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     QObject(_parent),

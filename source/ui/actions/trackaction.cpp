@@ -22,7 +22,6 @@
 #include "ui/widgets/mapwidget.h"
 
 #include "trackaction.h"
-#include "defines.h"
 
 TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
     QAction(tr("Track this flight"), _parent),

@@ -24,12 +24,6 @@
 #include <QString>
 
 class MetarAction : public QAction {
-
-  /*
-   * We need this class to reprezent one "ZZZZ metar" action in
-   * OpenGLWidget submenu.
-   */
-
   Q_OBJECT
 
 signals:

@@ -27,7 +27,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airline.h"
-#include "defines.h"
 
 static const QString AirlineLogoCacheDir = 
   "airline-logos";

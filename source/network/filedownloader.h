@@ -29,15 +29,14 @@
 class QProgressBar;
 class QNetworkReply;
 
+/*
+ * Use this class to download files from the internet.
+ */
 class FileDownloader : public QObject {
-  
-  /*
-   * Use this class to download files from the internet.
-   */
-  
   Q_OBJECT
 
 signals:
+  
   /**
    * Emited when download is complete.
    * @param fileName Location of the downloaded file.
@@ -70,8 +69,10 @@ public:
    */
   QString fileNameForUrl(const QUrl&);
   
-  inline bool
-  anyTasksLeft() const { return !__urls.isEmpty(); }
+  /**
+   * Returns true if there are any queries scheduled.
+   */
+  inline bool anyTasksLeft() const { return !__urls.isEmpty(); }
   
 private:
   void __startRequest();

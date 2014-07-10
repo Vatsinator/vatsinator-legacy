@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "colorbutton.h"
-#include "defines.h"
 
 ColorButton::ColorButton(QWidget* _parent) :
     QPushButton("", _parent) {

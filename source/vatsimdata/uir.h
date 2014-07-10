@@ -27,6 +27,9 @@ class Controller;
 class ControllerTableModel;
 class Fir;
 
+/**
+ * Upper FIR.
+ */
 class Uir : public QObject {
   Q_OBJECT
   

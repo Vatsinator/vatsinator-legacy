@@ -25,16 +25,14 @@
 
 #include "singleton.h"
 
+/**
+ * This class is responsible for manipulating local resources.
+ * It checks whether Vatsinator is up-to-date or not, downloads
+ * updated data files, etc.
+ */
 class ResourceManager :
     public QObject,
     public Singleton<ResourceManager> {
-  
-  /**
-   * This class is responsible for manipulating local resources.
-   * It checks whether Vatsinator is up-to-date or not, downloads
-   * updated data files, etc.
-   */
-  
   Q_OBJECT
   
 public:

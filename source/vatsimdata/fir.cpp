@@ -24,7 +24,6 @@
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "fir.h"
-#include "defines.h"
 
 Fir::Fir(const FirRecord* _data) :
      __data(_data),
@@ -36,6 +35,8 @@ Fir::Fir(const FirRecord* _data) :
   
   Q_ASSERT(__data);
 }
+
+Fir::~Fir() {}
 
 void
 Fir::addStaff(const Controller* _c) {

@@ -40,7 +40,10 @@
 #include "vatsinatorapplication.h"
 
 #include "mapwidget.h"
-#include "defines.h"
+
+#ifndef GL_MULTISAMPLE
+# define GL_MULTISAMPLE 0x809D
+#endif
 
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
@@ -119,10 +122,12 @@ MapWidget::onScreen(const QPointF& _point) {
 
 bool
 MapWidget::event(QEvent* _e) {
-  if (_e->type() == Event::Map)
-    return stateChangeEvent(dynamic_cast<MapEvent*>(_e));
-  else
-    return QGLWidget::event(_e);
+  switch (_e->type()) {
+    case Event::Map:
+      return stateChangeEvent(dynamic_cast<MapEvent*>(_e));
+    default:
+      return QGLWidget::event(_e);
+  }
 }
 
 void

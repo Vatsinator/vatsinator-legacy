@@ -27,8 +27,7 @@
 class Metar {
   
   /**
-   * Class that represents one METAR report.
-   * TODO; METAR parsing.
+   * TODO METAR parsing.
    */
   
 public:

@@ -32,11 +32,10 @@ class Fir;
 class FlightTableModel;
 class Pilot;
 
+/*
+ * This is the class that represents the single airport.
+ */
 class Airport : public QObject {
-  
-  /*
-   * This is the class that represents the single airport.
-   */
   Q_OBJECT
 
 signals:

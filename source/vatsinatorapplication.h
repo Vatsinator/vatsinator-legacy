@@ -46,11 +46,6 @@ class VatsinatorApplication :
     public QApplication,
     public Singleton<VatsinatorApplication> {
 
-  /*
-   * This class handles the whole Vatsinator application and has
-   * only one instance.
-   */
-
   Q_OBJECT
   
 signals:
@@ -84,7 +79,7 @@ public:
 #endif
     static void terminate();
 
-#ifdef NO_DEBUG
+#ifdef QT_NO_DEBUG
 
   inline static void
   log(const char*) {}

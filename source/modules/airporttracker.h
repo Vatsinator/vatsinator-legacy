@@ -27,6 +27,9 @@
 
 class Airport;
 
+/**
+ * TODO: remove (deprecated)
+ */
 class AirportTracker :
      public QObject,
      public Singleton<AirportTracker> {

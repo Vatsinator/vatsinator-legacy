@@ -23,17 +23,15 @@
 #include <QObject>
 #include <QTimer>
 
+/**
+ * UpdateScheduler decides when to update Vatsim data.
+ * Instance of this class is used by VatsimDataHandler.
+ * 
+ * timeToUpdate() signal is emitted when the UpdateScheduler decides
+ * that it is time to update the data. The timer is then stopped and
+ * restarted when VatsimDataHandler emits vatsimDataUpdated() signal.
+ */
 class UpdateScheduler : public QObject {
-  
-  /**
-   * UpdateScheduler decides when to update Vatsim data.
-   * Instance of this class is used by VatsimDataHandler.
-   * 
-   * timeToUpdate() signal is emitted when the UpdateScheduler decides
-   * that it is time to update the data. The timer is then stopped and
-   * restarted when VatsimDataHandler emits vatsimDataUpdated() signal.
-   */
-  
   Q_OBJECT
   
 signals:

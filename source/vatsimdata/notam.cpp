@@ -18,7 +18,6 @@
  */
 
 #include "notam.h"
-#include "defines.h"
 
 Notam::Notam(QString _ident) :
      __ident(std::move(_ident)) {}

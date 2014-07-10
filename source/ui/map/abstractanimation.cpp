@@ -20,7 +20,6 @@
 #include <QtCore>
 
 #include "abstractanimation.h"
-#include "defines.h"
 
 AbstractAnimation::AbstractAnimation(QObject* _parent) :
     QObject(_parent),

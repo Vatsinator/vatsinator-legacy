@@ -23,7 +23,6 @@
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "controllertableview.h"
-#include "defines.h"
 
 ControllerTableView::ControllerTableView(QWidget* _parent) :
   QTableView(_parent) {}

@@ -22,26 +22,21 @@
 
 #include "db/airline.h"
 #include "storage/filemanager.h"
-#include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "airlinedatabase.h"
-#include "defines.h"
 
 AirlineDatabase::AirlineDatabase(QObject* _parent) :
     QObject(_parent),
     __airlineLogoUrl(),
-    __canFetch(false) {
-  connect(this,                                 SIGNAL(warning(QString)),
-          UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
-}
+    __canFetch(false) {}
 
 void
 AirlineDatabase::init() {
   QFile db(FileManager::path("data/airlines"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit warning(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
     return;
   }
 

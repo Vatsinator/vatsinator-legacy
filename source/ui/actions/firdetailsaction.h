@@ -25,7 +25,6 @@
 #include "vatsimdata/fir.h"
 
 class FirDetailsAction : public QAction {
-
   Q_OBJECT
 
 signals:

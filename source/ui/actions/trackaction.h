@@ -25,7 +25,6 @@
 class Pilot;
 
 class TrackAction : public QAction {
-
   Q_OBJECT
 
 signals:

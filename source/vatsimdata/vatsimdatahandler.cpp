@@ -44,7 +44,6 @@
 #include "vatsinatorapplication.h"
 
 #include "vatsimdatahandler.h"
-#include "defines.h"
 
 using std::for_each;
 
@@ -359,8 +358,10 @@ int
 VatsimDataHandler::pilotCount() const {
   int p = 0;
   for (Client* c: __clients.values()) {
-    if (dynamic_cast<Pilot*>(c))
-      p += 1;
+    if (Pilot* pp = dynamic_cast<Pilot*>(c)) {
+      if (!pp->isPrefiledOnly())
+        p += 1;
+    }
   }
   
   return p;

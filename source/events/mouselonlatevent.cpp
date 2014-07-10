@@ -20,8 +20,7 @@
 #include "events/types.h"
 
 #include "mouselonlatevent.h"
-#include "defines.h"
 
 MouseLonLatEvent::MouseLonLatEvent(const LonLat& _p) :
-    QEvent(Event::MouseLonLat),
+    QEvent(static_cast<QEvent::Type>(Event::Type::MouseLonLat)),
     __lonLat(_p) {}

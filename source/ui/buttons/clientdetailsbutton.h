@@ -26,7 +26,6 @@
 class Client;
 
 class ClientDetailsButton : public QPushButton {
-
   Q_OBJECT
   
 signals:

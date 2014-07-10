@@ -23,14 +23,12 @@
 #include <initializer_list>
 #include <QStackedWidget>
 
+/*
+ * This widget is used prior to display label that
+ * changes to progress bar, which is visible at the
+ * bottom-left corner of the main window.
+ */
 class ReplaceableWidget : public QStackedWidget {
-  
-  /*
-   * This widget is used prior to display label that
-   * changes to progress bar, which is visible at the
-   * bottom-left corner of the main window.
-   */
-  
   Q_OBJECT
   
 public:

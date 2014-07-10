@@ -19,7 +19,6 @@
 #include <QtGui>
 
 #include "replaceablewidget.h"
-#include "defines.h"
 
 ReplaceableWidget::ReplaceableWidget(QWidget* _parent) :
   QStackedWidget(_parent) {}

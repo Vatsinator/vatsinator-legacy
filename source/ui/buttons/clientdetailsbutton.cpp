@@ -21,7 +21,6 @@
 #include "vatsimdata/client.h"
 
 #include "clientdetailsbutton.h"
-#include "defines.h"
 
 ClientDetailsButton::ClientDetailsButton(const Client* _client,
                                          QWidget* _parent) :

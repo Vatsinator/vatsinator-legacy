@@ -26,7 +26,6 @@
 #include "vatsinatorapplication.h"
 
 #include "controller.h"
-#include "defines.h"
 
 QMap<int, QString> Controller::ratings;
 bool Controller::__ratingsInitialized = Controller::__initRatings();

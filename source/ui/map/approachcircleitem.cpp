@@ -24,7 +24,6 @@
 #include "vatsimdata/airport.h"
 
 #include "approachcircleitem.h"
-#include "defines.h"
 
 namespace {
   

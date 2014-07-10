@@ -24,6 +24,9 @@
 
 class QPushButton;
 
+/**
+ * This is the dialog that shows up when data fetch fails for any reason.
+ */
 class DataFetchErrorDialog :
     public QMessageBox {
   
@@ -32,18 +35,11 @@ class DataFetchErrorDialog :
 public:
   explicit DataFetchErrorDialog(QWidget* = 0);
   
-  inline QPushButton *
-  again() {
-    return __againButton;
-  }
+  inline QPushButton* again() { return __againButton; }
   
-  inline QPushButton *
-  keep() {
-    return __keepButton;
-  }
+  inline QPushButton* keep() { return __keepButton; }
   
 private:
-  
   QPushButton* __againButton;
   QPushButton* __keepButton;
   

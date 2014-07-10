@@ -28,11 +28,6 @@ class QFont;
 class QPixmap;
 
 class MapConfig {
-
-  /**
-   * This class provides static map configuration.
-   */
-  
 public:
   
   static constexpr qreal longitudeMax() {

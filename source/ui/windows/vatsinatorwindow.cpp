@@ -19,10 +19,6 @@
 
 #include <QtGui>
 
-#ifndef NO_DEBUG
-# include "debugging/debugwindow.h"
-#endif
-
 #include "events/mouselonlatevent.h"
 #include "modules/homelocation.h"
 #include "ui/windows/aboutwindow.h"
@@ -36,7 +32,6 @@
 #include "vatsinatorapplication.h"
 
 #include "vatsinatorwindow.h"
-#include "defines.h"
 
 VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
     QMainWindow(_parent) {
@@ -91,17 +86,6 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   __progressBar->setTextVisible(true);
   
   Replaceable->addWidgets({__statusBox, __progressBar});
-
-#ifndef NO_DEBUG
-  MenuHelp->addSeparator();
-
-  QAction* debugAction = new QAction("Debug...", this);
-
-  connect(debugAction,                    SIGNAL(triggered()),
-          DebugWindow::getSingletonPtr(), SLOT(show()));
-
-  MenuHelp->addAction(debugAction);
-#endif
   
   statusBarUpdate();
 }
@@ -138,10 +122,12 @@ VatsinatorWindow::infoBarUpdate() {
 
 bool
 VatsinatorWindow::event(QEvent* _e) {
-  if (_e->type() == Event::MouseLonLat)
-    return mouseLonLatMoveEvent(dynamic_cast<MouseLonLatEvent*>(_e));
-  else
-    return QMainWindow::event(_e);
+  switch (_e->type()) {
+    case Event::MouseLonLat:
+      return mouseLonLatMoveEvent(dynamic_cast<MouseLonLatEvent*>(_e));
+    default:
+      return QMainWindow::event(_e);
+  }
 }
 
 void

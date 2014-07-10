@@ -20,7 +20,6 @@
 #include <QtGui>
 
 #include "datafetcherrordialog.h"
-#include "defines.h"
 
 DataFetchErrorDialog::DataFetchErrorDialog(QWidget* _parent) :
     QMessageBox(_parent),

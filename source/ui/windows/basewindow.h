@@ -22,14 +22,12 @@
 
 #include <QWidget>
 
+/**
+ * BaseWindow is a base class for all Vatsinator's subwindows.
+ * It ensures that all windows open on the correct screen,
+ * in the correct place. Use it to gain consistent look'n'feel.
+ */
 class BaseWindow : public QWidget {
-  
-  /**
-   * BaseWindow is a base class for all Vatsinator's subwindows.
-   * It ensures that all windows open on the correct screen,
-   * in the correct place.
-   */
-  
   Q_OBJECT
   
 public:

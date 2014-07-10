@@ -22,7 +22,6 @@
 #include "netconfig.h"
 
 #include "newversiondialog.h"
-#include "defines.h"
 
 NewVersionDialog::NewVersionDialog(QWidget* _parent) :
     QDialog(_parent) {

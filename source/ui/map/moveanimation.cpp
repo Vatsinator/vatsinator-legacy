@@ -20,7 +20,6 @@
 #include <QtCore>
 
 #include "moveanimation.h"
-#include "defines.h"
 
 MoveAnimation::MoveAnimation(QObject* _parent): AbstractAnimation(_parent) {
   setFlags(NoZoomOverride);

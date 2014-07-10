@@ -25,40 +25,56 @@
 #include <QMap>
 
 #include "singleton.h"
+#include "ui/notifiable.h"
 
 class Airline;
 
-class AirlineDatabase : public QObject, public Singleton<AirlineDatabase> {
+/**
+ * The AirlineDatabase class is a layer between Vatsinator and the raw
+ * database file.
+ */
+class AirlineDatabase : public QObject, public Notifiable, public Singleton<AirlineDatabase> {
   Q_OBJECT
   
-signals:
-  
-  /* Connected to UserInterface::warning() */
-  void warning(QString);
-  
 public:
+  
+  /**
+   * The default constructor.
+   */
   AirlineDatabase(QObject* = nullptr);
-  virtual ~AirlineDatabase() = default;
   
   /**
    * Called by VatsinatorApplication only.
    */
   void init();
   
+  /**
+   * Searches for the airline record in the database.
+   * Returns nullptr if nothing could be found.
+   */
   Airline* find(const QString&);
+  
+  /**
+   * Searches for the airline record in the database.
+   * Returns nullptr if nothing could be found.
+   */
   const Airline* find(const QString&) const;
   
-  inline const QMap<QString, Airline*>& airlines() const {
-    return __airlines;
-  }
+  /**
+   * Gives direct access to the map. It stores
+   * ICAO code <-> record pointer pairs.
+   */
+  inline const QMap<QString, Airline*>& airlines() const { return __airlines; }
   
-  inline const QString& airlineLogoUrl() const {
-    return __airlineLogoUrl;
-  }
+  /**
+   * Returns the URL where airlies logos can be fetched from.
+   */
+  inline const QString& airlineLogoUrl() const { return __airlineLogoUrl; }
   
-  inline bool canFetch() const {
-    return __canFetch;
-  }
+  /**
+   * Indicates whether any airline logo can be fetched or not.
+   */
+  inline bool canFetch() const { return __canFetch; }
   
 private:
   

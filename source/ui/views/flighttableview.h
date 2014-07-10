@@ -24,14 +24,12 @@
 
 class FlightTableModel;
 
+/*
+ * This class is used to represent all of the flights in the table.
+ * It shows the list of flights, given via setModel() and draws a
+ * pretty details-button in each row.
+ */
 class FlightTableView : public QTableView {
-  
-  /*
-   * This class is used to represent all of the flights in the table.
-   * It shows the list of flights, given via setModel() and draws a
-   * pretty details-button in each row.
-   */
-  
   Q_OBJECT
   
 public:

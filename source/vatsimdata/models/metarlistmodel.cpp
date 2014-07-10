@@ -25,7 +25,6 @@
 #include "vatsinatorapplication.h"
 
 #include "metarlistmodel.h"
-#include "defines.h"
 
 // How to recognize unavailable metars.
 // This value represents the response returned by vatsim server

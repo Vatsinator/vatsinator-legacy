@@ -19,11 +19,10 @@
 #include <QtGui>
 
 #include "storage/cachefile.h"
-
+#include "config.h"
 #include "vatsinatorapplication.h"
 
 #include "storage/filemanager.h"
-#include "defines.h"
 
 static const QString LocalDataLocation =
     QDir::cleanPath(

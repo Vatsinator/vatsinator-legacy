@@ -21,7 +21,6 @@
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "uir.h"
-#include "defines.h"
 
 Uir::Uir(const QString& _icao, QObject* _parent) :
     QObject(_parent),

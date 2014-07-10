@@ -27,15 +27,13 @@
 
 class QNetworkReply;
 
+/**
+ * This class is used to send anonymous statistics to Vatsinator
+ * server.
+ */
 class StatsPurveyor :
     public QObject,
     public Singleton<StatsPurveyor> {
-
-  /**
-   * This class is used to send anonymous statistics to Vatsinator
-   * server.
-   */
-
   Q_OBJECT
   
 signals:

@@ -21,7 +21,6 @@
 #include "vatsinatorapplication.h"
 
 #include "cachefile.h"
-#include "defines.h"
 
 static const QString CacheDirectory =
     QDir::cleanPath(

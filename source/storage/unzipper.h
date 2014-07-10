@@ -23,15 +23,14 @@
 #include <QObject>
 #include <QStringList>
 
+/**
+ * The Unzipper class is useful when it comes to unzip any package harmlessy.
+ * It provides nice and easy to use interface and comes with error reporting.
+ * It is good idea to move the Unzipper to another thread, at least between
+ * executing unzip() method and capturing the unzipped() signal.
+ */
 class Unzipper : public QObject {
-  
-  /*
-   * This class is used to unzip any .zip package in the separate thread. 
-   */
-  
   Q_OBJECT
-  
-public:
 
 signals:
   /**
@@ -55,21 +54,44 @@ signals:
   
 public:
   
+  /**
+   * The cosntructor takes the absolute zip archive location.
+   */
   explicit Unzipper(QString, QObject* = 0);
+  
+  /**
+   * The default ctor.
+   */
   explicit Unzipper(QObject* = 0);
   
+  /**
+   * Sets the zip package location. This function has no efect when
+   * called after unzip() call.
+   */
   void setFileName(const QString&);
   
-  inline const QString &
-  fileName() const { return __fileName; }
+  /**
+   * Gets the zip archive location.
+   */
+  inline const QString& fileName() const { return __fileName; }
   
-  inline const QStringList &
-  fileList() const { return __fileList; }
+  /**
+   * Gets list of files that were already unzipped.
+   */
+  inline const QStringList& fileList() const { return __fileList; }
   
-  inline const QString &
-  targetDir() const { return __targetDir; }
+  /**
+   * Gets the directory location where the unzipped files go.
+   */
+  inline const QString& targetDir() const { return __targetDir; }
   
 public slots:
+  
+  /**
+   * Starts extracting files from the archive. After that, fileName() function
+   * has no effect, until the next execution of this method. The finished
+   * process is signalized by the unzipped() signal.
+   */
   void unzip();
   
 private:

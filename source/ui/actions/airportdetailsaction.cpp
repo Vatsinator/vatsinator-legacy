@@ -18,7 +18,6 @@
 
 
 #include "airportdetailsaction.h"
-#include "defines.h"
 
 AirportDetailsAction::AirportDetailsAction(const Airport* _ap,
                                            const QString& _label,

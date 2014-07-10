@@ -23,14 +23,13 @@
 #include <QVector>
 
 #include "singleton.h"
+#include "ui/notifiable.h"
 
+/*
+ * This struct represents a single raw airport entry in the database file.
+ */
 #pragma pack(1)
 struct AirportRecord {
-
-  /*
-   * This struct is compatible with utils/airportDBCreator.py script that
-   * generates the database.
-   */
 
   char  name[128];
   char  city[128];
@@ -48,17 +47,12 @@ struct AirportRecord {
 };
 #pragma pack()
 
-class AirportDatabase : public QObject, public Singleton<AirportDatabase> {
-
-  /*
-   * This class contains all needed info about airports.
-   */
-  
+/*
+ * AirportDatabase is a layer between Vatsinator and the raw database.
+ */
+class AirportDatabase : public QObject, public Notifiable, public Singleton<AirportDatabase> {
   Q_OBJECT
   
-signals:
-  void fatal(QString);
-
 public:
 
   /**
@@ -74,11 +68,18 @@ public:
   /**
    * Looks for the airport.
    * @param icao ICAO code.
-   * @return NULL if nothing found.
+   * @return nullptr if nothing found.
    */
   const AirportRecord* find(const QString&);
   
+  /**
+   * Gives direct access to the airpors vector.
+   */
   inline QVector<AirportRecord>& airports() { return __airports; }
+  
+  /**
+   * Gives direct access to the airports vector.
+   */
   inline const QVector<AirportRecord>& airports() const { return __airports; }
 
 private:

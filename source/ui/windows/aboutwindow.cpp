@@ -22,12 +22,11 @@
 #include "db/firdatabase.h"
 #include "storage/filemanager.h"
 #include "ui/userinterface.h"
+#include "config.h"
 
 #include "aboutwindow.h"
-#include "defines.h"
 #include "ui/about.h"
 #include "ui/license.h"
-
 
 AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   setupUi(this);

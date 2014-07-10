@@ -42,7 +42,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airportdetailswindow.h"
-#include "defines.h"
 
 AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent) :
     BaseWindow(_parent),
@@ -104,7 +103,7 @@ AirportDetailsWindow::__updateModels() {
   ATCTable->setModel(__airport->staff());
   
   BookedATCTable->setModel(
-      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(__airport->data()->icao)));
+      VatbookHandler::getSingleton().notNullModel(QString::fromUtf8(__airport->data()->icao)));
 }
 
 void

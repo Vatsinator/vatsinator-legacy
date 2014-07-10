@@ -1,6 +1,6 @@
 /*
     userinterface.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,10 +18,7 @@
 
 #include <QtGui>
 
-#ifndef NO_DEBUG
-# include "debugging/debugwindow.h"
-#endif
-
+#include "events/notificationevent.h"
 #include "network/resourcemanager.h"
 #include "modules/homelocation.h"
 #include "storage/settingsmanager.h"
@@ -48,13 +45,9 @@
 #include "vatsinatorapplication.h"
 
 #include "userinterface.h"
-#include "defines.h"
 
 UserInterface::UserInterface(QObject* _parent) :
     QObject(_parent),
-#ifndef NO_DEBUG
-    __debugWindow(nullptr),
-#endif
     __aboutWindow(nullptr),
     __metarsWindow(nullptr),
     __databaseWindow(nullptr),
@@ -71,18 +64,10 @@ UserInterface::~UserInterface() {
   delete __atcListWindow;
   delete __settingsWindow;
   delete __metarsWindow;
-
-#ifndef NO_DEBUG
-  delete __debugWindow;
-#endif
 }
 
 void
 UserInterface::init() {
-#ifndef NO_DEBUG
-  __debugWindow = new DebugWindow();
-#endif
-  
   __aboutWindow = new AboutWindow();
   __metarsWindow = new MetarsWindow();
   __databaseWindow = new DatabaseWindow();
@@ -141,6 +126,15 @@ UserInterface::mainWindow() {
   return __vatsinatorWindow;
 }
 
+bool UserInterface::event(QEvent* _e) {
+  switch (_e->type()) {
+    case Event::Notification:
+      return notificationEvent(dynamic_cast<NotificationEvent*>(_e));
+    default:
+      return QObject::event(_e);
+  }
+}
+
 void
 UserInterface::fatal(const QString& _msg) {
   QMessageBox msgBox;
@@ -150,8 +144,6 @@ UserInterface::fatal(const QString& _msg) {
   VatsinatorApplication::log(qPrintable(_msg));
   
   msgBox.exec();
-  
-  VatsinatorApplication::terminate();
 }
 
 void
@@ -220,6 +212,22 @@ UserInterface::showDetailsWindow(const Fir* _f) {
   FirDetailsWindow* w = new FirDetailsWindow(_f);
   w->setAttribute(Qt::WA_DeleteOnClose);
   w->show();
+}
+
+bool
+UserInterface::notificationEvent(NotificationEvent* _event) {
+  switch (_event->gravity()) {
+    case NotificationEvent::Fatal:
+      fatal(_event->message());
+      QCoreApplication::exit(1);
+      break;
+      
+    case NotificationEvent::Warning:
+      warning(_event->message());
+      break;
+  }
+  
+  return true;
 }
 
 void

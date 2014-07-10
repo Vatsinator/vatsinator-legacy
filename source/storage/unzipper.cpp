@@ -17,14 +17,12 @@
 */
 
 #include <QtCore>
-
 #include <quazip/quazip.h>
 #include <quazip/quazipfile.h>
 
 #include "vatsinatorapplication.h"
 
 #include "unzipper.h"
-#include "defines.h"
 
 Unzipper::Unzipper(QString _fn, QObject* _parent) :
     QObject(_parent),
@@ -32,7 +30,7 @@ Unzipper::Unzipper(QString _fn, QObject* _parent) :
 
 Unzipper::Unzipper(QObject* _parent) :
 #ifdef GCC_VERSION_47
-    Unzipper("", _parent) {}
+    Unzipper("", _parent) {} // yeah, I'm freak
 #else
     QObject(_parent),
     __fileName("") {}
@@ -46,8 +44,8 @@ Unzipper::setFileName(const QString& _fn) {
 void
 Unzipper::unzip() {
   if (__fileName.isEmpty()) {
-    VatsinatorApplication::log("Unzipper: error: file name not given!");
-    emit error("File name not given!");
+    VatsinatorApplication::log("Unzipper: error: file name not specified!");
+    emit error("File name not specified!");
     return;
   }
   

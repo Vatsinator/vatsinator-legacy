@@ -23,7 +23,6 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "updatescheduler.h"
-#include "defines.h"
 
 UpdateScheduler::UpdateScheduler(QObject* _parent): QObject(_parent) {
   __timer.setSingleShot(true);

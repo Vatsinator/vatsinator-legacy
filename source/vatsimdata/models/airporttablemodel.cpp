@@ -23,7 +23,6 @@
 #include "vatsimdata/client/controller.h"
 
 #include "airporttablemodel.h"
-#include "defines.h"
 
 AirportTableModel::AirportTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}

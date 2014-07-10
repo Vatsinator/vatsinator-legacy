@@ -25,7 +25,6 @@
 #include "vatsimdata/models/airporttablemodel.h"
 
 #include "airporttableview.h"
-#include "defines.h"
 
 AirportTableView::AirportTableView(QWidget* _parent) :
     QTableView(_parent) {}

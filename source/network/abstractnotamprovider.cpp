@@ -18,7 +18,6 @@
  */
 
 #include "abstractnotamprovider.h"
-#include "defines.h"
 
 QString
 AbstractNotamProvider::providerInfo() const {

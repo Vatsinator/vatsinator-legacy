@@ -19,7 +19,6 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "client.h"
-#include "defines.h"
 
 /*
  * 0 callsign
@@ -72,6 +71,8 @@ Client::Client(const QStringList& _data) :
     __onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
     __position(_data[6].toFloat(), _data[5].toFloat()),
     __timestamp(VatsimDataHandler::getSingleton().currentTimestamp()) {}
+
+Client::~Client() {}
 
 void
 Client::update(const QStringList& _data) {

@@ -29,6 +29,9 @@ class HomeLocation;
 class ModelMatcher;
 class VatbookHandler;
 
+/**
+ * TODO: remove
+ */
 class ModuleManager :
     public QObject,
     public Singleton<ModuleManager> {

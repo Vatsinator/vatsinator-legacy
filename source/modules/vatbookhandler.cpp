@@ -24,20 +24,20 @@
 #include "network/plaintextdownloader.h"
 
 #include "vatbookhandler.h"
-#include "defines.h"
 
-static const QString VATBOOK_URL = "http://vatbook.euroutepro.com/servinfo.asp";
-static const int REFRESH_INTERVAL = 15 * 60000; // 15 min
+static const QString VatbookUrl = "http://vatbook.euroutepro.com/servinfo.asp";
+static const int RefreshInterval = 15 * 60000; // 15 min
 
-BookedAtcTableModel* VatbookHandler::emptyBookedAtcTable = new BookedAtcTableModel();
+namespace {
+  BookedAtcTableModel* emptyBookedAtcTable = new BookedAtcTableModel();
+}
 
 VatbookHandler::VatbookHandler(QObject* _parent) : 
     QObject(_parent),
-    __httpHandler(new PlainTextDownloader()) {
+    __downloader(new PlainTextDownloader(nullptr, this)) {
   
-  connect(__httpHandler,    SIGNAL(finished(const QString&)),
+  connect(__downloader,    SIGNAL(finished(const QString&)),
           this,             SLOT(__dataFetched(const QString&)));
-  
   connect(&__timer,         SIGNAL(timeout()),
           this,             SLOT(__timeToUpdate()));
   
@@ -46,9 +46,18 @@ VatbookHandler::VatbookHandler(QObject* _parent) :
 
 VatbookHandler::~VatbookHandler() {
   __clear();
-  delete __httpHandler;
   
-  delete VatbookHandler::emptyBookedAtcTable;
+  delete emptyBookedAtcTable;
+}
+
+BookedAtcTableModel*
+VatbookHandler::model(const QString& _icao) {
+  return __bookings.value(_icao, nullptr);
+}
+
+BookedAtcTableModel*
+VatbookHandler::notNullModel(const QString& _icao) {
+   return __bookings.value(_icao, emptyBookedAtcTable);
 }
 
 void
@@ -83,7 +92,7 @@ VatbookHandler::__parseData(const QString& _data) {
       BookedController* bc = new BookedController(data);
       if (!__bookings.contains(bc->icao()))
         __bookings.insert(bc->icao(), new BookedAtcTableModel());
-      __bookings[bc->icao()]->addStaff(bc);
+      __bookings[bc->icao()]->add(bc);
     }
   }
 }
@@ -96,19 +105,19 @@ VatbookHandler::__dataFetched(const QString& _data) {
   __clear();
   __parseData(_data);
   
-  __timer.start(REFRESH_INTERVAL);
+  __timer.start(RefreshInterval);
 }
 
 void
 VatbookHandler::__handleError() {
   /* We actually should do nothing here - vatbook data should be
-   * downloaded silently, without user interrupting.
+   * downloaded silently, without interrupting the user.
    */
-  __timer.start(REFRESH_INTERVAL);
+  __timer.start(RefreshInterval);
 }
 
 void
 VatbookHandler::__timeToUpdate() {
-  __httpHandler->fetchData(VATBOOK_URL);
+  __downloader->fetchData(VatbookUrl);
 }
 

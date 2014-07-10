@@ -24,17 +24,17 @@
 
 #include "vatsimdata/models/notamlistmodel.h"
 
+/**
+ * This class is the interface for all NOTAMs providers.
+ * 
+ * Each NOTAM provider is responsible for creating new models when
+ * necessary, filling them in and giving access to them. User requests
+ * NOTAMs calling fetchNotam() method. Pointers are given by emiting
+ * notamReady() signal.
+ * 
+ * TODO Rename to NotamProviderInterface and make a plugin here.
+ */
 class AbstractNotamProvider : public QObject {
-  
-  /**
-   * This class is the interface for all NOTAMs providers.
-   * 
-   * Each NOTAM provider is responsible for creating new models when
-   * necessary, filling them in and giving access to them. User requests
-   * NOTAMs calling fetchNotam() method. Pointers are given by emiting
-   * notamReady() signal.
-   */
-  
   Q_OBJECT
   
 signals:

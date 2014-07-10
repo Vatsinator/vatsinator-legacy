@@ -29,13 +29,12 @@ class Airport;
 class Fir;
 class Uir;
 
+
+/*
+ * This class represents the ATC.
+ */
 class Controller : public Client {
-  
   Q_OBJECT
-  
-  /*
-   * This class represents the ATC.
-   */
 
 public:
   /* Types */

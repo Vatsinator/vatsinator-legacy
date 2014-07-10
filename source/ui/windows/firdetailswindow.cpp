@@ -40,7 +40,6 @@
 #include "vatsimdata/models/notamlistmodel.h"
 
 #include "firdetailswindow.h"
-#include "defines.h"
 
 FirDetailsWindow::FirDetailsWindow(const Fir* _fir, QWidget* _parent) :
     BaseWindow(_parent),
@@ -77,7 +76,7 @@ FirDetailsWindow::__updateModels() {
   ATCTable->setModel(__fir->staff());
   AirportsTable->setModel(__fir->airports());
   
-  BookedATCTable->setModel(VatbookHandler::getSingleton().getNotNullModel(__fir->icao()));
+  BookedATCTable->setModel(VatbookHandler::getSingleton().notNullModel(__fir->icao()));
 }
 
 void

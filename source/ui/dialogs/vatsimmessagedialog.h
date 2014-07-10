@@ -24,6 +24,9 @@
 
 #include "ui/ui_vatsimmessagedialog.h"
 
+/**
+ * Shows Vatsim message that comes after "msg0=" in status.txt.
+ */
 class VatsimMessageDialog :
     public QDialog,
     public Ui::VatsimMessageDialog {

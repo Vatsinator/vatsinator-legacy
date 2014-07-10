@@ -24,12 +24,14 @@
 #include <QVector>
 
 #include "db/point.h"
-
+#include "ui/notifiable.h"
 #include "singleton.h"
 
-class VertexBufferObject;
-
-class WorldMap : public QObject, public Singleton<WorldMap> {
+/**
+ * The WorldMap class is a layer between the application and the database.
+ * It contains global coastline as well as triangles.
+ */
+class WorldMap : public QObject, public Notifiable, public Singleton<WorldMap> {
   Q_OBJECT
 
   struct Polygon {
@@ -37,10 +39,11 @@ class WorldMap : public QObject, public Singleton<WorldMap> {
     QVector<unsigned int>   triangles;
   };
   
-signals:
-  void fatal(QString);
-  
 public:
+  
+  /**
+   * Default ctor.
+   */
   WorldMap(QObject* = nullptr);
   
   /**
@@ -48,7 +51,14 @@ public:
    */
   void init();
   
+  /**
+   * Gives direct access to the coastline.
+   */
   const QVector<Point>& borders() const { return __worldPolygon.borders; }
+  
+  /**
+   * Gives direct access to triangles that fill lands.
+   */
   const QVector<unsigned int>& triangles() const { return __worldPolygon.triangles; }
 
 private:

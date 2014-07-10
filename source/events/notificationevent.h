@@ -1,5 +1,5 @@
 /*
- * types.h
+ * notificationevent.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,51 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef NOTIFICATIONEVENT_H
+#define NOTIFICATIONEVENT_H
 
-/**
- * Define custom types here.
- */
 #include <QEvent>
+#include <QString>
 
-namespace Event {
+#include "events/types.h"
 
-enum Type {
+class NotificationEvent : public QEvent {
+
+public:
   
-  /* MouseLonLatEvent */
-  MouseLonLat = QEvent::User + 1,
+  enum Gravity {
+    
+    /* Fatal errors */
+    Fatal,
+    
+    /* Warnings */
+    Warning,
+    
+    /* Just info */
+    Information
+    
+  };
   
-  /* MapEvent */
-  Map,
+  /**
+   * This constructor takes the notification gravity and the notification
+   * message.
+   */
+  NotificationEvent(Gravity, QString);
   
-  /* NotificationEvent */
-  Notification
+  /**
+   * Gets the notification gravity.
+   */
+  inline Gravity gravity() const { return __gravity; }
+  
+  /**
+   * Gets the notification message.
+   */
+  inline const QString& message() const { return __message; }
+  
+private:
+  Gravity __gravity;
+  QString __message;
   
 };
 
-}
-
-#endif // TYPES_H
+#endif // NOTIFICATIONEVENT_H

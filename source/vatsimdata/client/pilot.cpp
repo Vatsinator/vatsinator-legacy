@@ -26,7 +26,6 @@
 #include "vatsinatorapplication.h"
 
 #include "pilot.h"
-#include "defines.h"
 
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
@@ -145,6 +144,8 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
   __fixupRoute();
   __discoverFlightPhase();
 }
+
+Pilot::~Pilot() {}
 
 void
 Pilot::update(const QStringList& _data) {
