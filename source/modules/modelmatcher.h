@@ -35,6 +35,8 @@ class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
   Q_OBJECT
   
 signals:
+  
+  /* TODO use NotificationEvent */
   void warning(QString);
 
 public:

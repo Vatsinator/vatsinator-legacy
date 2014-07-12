@@ -20,9 +20,7 @@
 #include "modules/homelocation.h"
 #include "modules/modelmatcher.h"
 #include "modules/vatbookhandler.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsinatorapplication.h"
 
 #include "modulemanager.h"

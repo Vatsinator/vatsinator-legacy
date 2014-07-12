@@ -192,7 +192,6 @@ StatsPurveyor::__parseResponse() {
 void
 StatsPurveyor::__nextRequest() {
   Q_ASSERT(!__requests.isEmpty());
-  Q_ASSERT(!__reply);
   
   VatsinatorApplication::log("StatsPurveyor: request: %s", qPrintable(__requests.head().url().toString()));
   

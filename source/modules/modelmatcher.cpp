@@ -19,6 +19,7 @@
 #include <QtWidgets>
 
 #include "glutils/glresourcemanager.h"
+#include "ui/widgets/mapwidget.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
@@ -31,7 +32,9 @@ ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
           UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
   
   __readModels();
-  __loadPixmaps();
+//   __loadPixmaps();
+  connect(MapWidget::getSingletonPtr(),         SIGNAL(glReady()),
+          this,                                 SLOT(__loadPixmaps()));
 }
 
 GLuint

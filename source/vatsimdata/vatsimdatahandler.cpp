@@ -652,10 +652,12 @@ VatsimDataHandler::__loadCachedData() {
 
 void
 VatsimDataHandler::__cleanupClients() {
-  for (auto c: __clients) {
-    if (!c->isOnline()) {
-      __clients.remove(c->callsign());
-      c->deleteLater();
+  for (auto it = __clients.begin(); it != __clients.end();) {
+    if (!it.value()->isOnline()) {
+      it.value()->deleteLater();
+      it = __clients.erase(it);
+    } else {
+      ++it;
     }
   }
 }

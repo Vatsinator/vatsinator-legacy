@@ -46,8 +46,8 @@ LanguageManager::getLanguageId(const QString& _locale) {
   return 0;
 }
 
-const
-QString& LanguageManager::getLocaleById(int _id) {
+const QString&
+LanguageManager::getLocaleById(int _id) {
   return __languages[_id].locale;
 }
 

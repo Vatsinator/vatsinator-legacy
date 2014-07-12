@@ -50,9 +50,9 @@ template <typename T>
  static inline T
  getProcAddress(const char* _procName) {
    T temp = NULL;
-#if defined Q_WS_X11
+#if defined Q_OS_LINUX
     temp = reinterpret_cast<T>(glXGetProcAddress(reinterpret_cast<const GLubyte*>(_procName)));
-#elif defined Q_WS_WIN
+#elif defined Q_OS_WIN32
     temp = reinterpret_cast<T>(wglGetProcAddress(_procName));
 #endif
     
