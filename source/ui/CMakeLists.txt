@@ -205,5 +205,3 @@ if (WIN32)
 endif (WIN32)
 
 vatsinator_end_subdirectory (ui)
-
-add_dependencies (ui debugging)
