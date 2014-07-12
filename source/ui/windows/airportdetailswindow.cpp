@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
 #include "modules/vatbookhandler.h"
@@ -61,8 +61,10 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
   connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
           this,                                 SLOT(__goToNotam(QModelIndex)));
   
-  ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
-  ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+//   for (int c = 0; c < ForecastView->horizontalHeader()->count(); ++c)
+    ForecastView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  
+  ForecastView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   NotamTableView->setErrorOnNoData(false);
 }
 

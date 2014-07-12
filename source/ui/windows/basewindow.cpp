@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"

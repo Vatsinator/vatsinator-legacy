@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "events/mouselonlatevent.h"
 #include "modules/homelocation.h"

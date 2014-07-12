@@ -40,7 +40,7 @@ include_directories(${Qt5Xml_INCLUDE_DIRS})
 
 find_package (OpenGL REQUIRED)
 find_package (QuaZip REQUIRED)
-#find_package (QJSON5 REQUIRED)
+find_package (QJSON REQUIRED)
 
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
@@ -68,6 +68,7 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 # set CXX_FLAGS
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG")
 set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall")
 
 # find version

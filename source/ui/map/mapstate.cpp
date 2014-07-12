@@ -17,6 +17,8 @@
  *
  */
 
+#include <QDataStream>
+
 #include "mapstate.h"
 
 MapState::MapState() :

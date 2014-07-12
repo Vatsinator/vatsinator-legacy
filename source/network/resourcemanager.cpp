@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "network/dataupdater.h"
 #include "network/filedownloader.h"

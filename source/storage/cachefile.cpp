@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "vatsinatorapplication.h"
 
@@ -24,7 +24,7 @@
 
 static const QString CacheDirectory =
     QDir::cleanPath(
-        QDesktopServices::storageLocation(QDesktopServices::CacheLocation)
+        QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
       % QDir::separator()
       % "Vatsinator"
     );

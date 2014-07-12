@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtNetwork>
 #include <qjson/parser.h>
 

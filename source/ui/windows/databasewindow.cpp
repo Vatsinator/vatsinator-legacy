@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"

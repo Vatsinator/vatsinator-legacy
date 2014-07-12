@@ -18,6 +18,7 @@
  */
 
 #include <QtGlobal>
+#include <QDataStream>
 
 #include "lonlat.h"
 

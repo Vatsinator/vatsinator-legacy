@@ -17,7 +17,7 @@
 */
 
 #include <algorithm>
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"

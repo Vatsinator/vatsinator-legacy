@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "storage/cachefile.h"
 #include "config.h"
@@ -26,7 +26,7 @@
 
 static const QString LocalDataLocation =
     QDir::cleanPath(
-        QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+        QStandardPaths::writableLocation(QStandardPaths::DataLocation)
       % QDir::separator()
       % "Vatsinator"
     ) % QDir::separator();

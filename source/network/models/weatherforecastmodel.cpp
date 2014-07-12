@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <qjson/parser.h>
 
 #include "vatsinatorapplication.h"

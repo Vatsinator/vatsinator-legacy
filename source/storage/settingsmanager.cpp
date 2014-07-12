@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "ui/pages/abstractsettingspage.h"
 #include "ui/windows/settingswindow.h"

@@ -139,7 +139,7 @@ VatsinatorApplication::terminate() {
   std::terminate();
 }
 
-#ifdef QT_DEBUG
+#ifndef QT_NO_DEBUG
 
 void
 VatsinatorApplication::log(const char* _s) {

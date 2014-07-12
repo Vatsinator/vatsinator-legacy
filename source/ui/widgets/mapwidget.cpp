@@ -18,7 +18,7 @@
  */
 
 #include <QtGlobal>
-#include <QtGui>
+#include <QtWidgets>
 #include <QtOpenGL>
 
 #include "events/mapevent.h"

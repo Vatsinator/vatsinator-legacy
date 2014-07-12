@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/userinterface.h"
