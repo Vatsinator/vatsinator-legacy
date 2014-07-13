@@ -62,6 +62,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __observers(0),
     __clientCount(0),
     __statusFileFetched(false),
+    __initialized(false),
     __downloader(new PlainTextDownloader()),
     __scheduler(new UpdateScheduler()),
     __notamProvider(nullptr) {
@@ -106,6 +107,7 @@ VatsimDataHandler::init() {
   __readFirFile(FileManager::path("data/fir"));
   __readUirFile(FileManager::path("data/uir"));
   
+  __initialized = true;
   emit initialized();
 }
 

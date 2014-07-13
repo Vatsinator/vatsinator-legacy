@@ -311,6 +311,11 @@ public:
    */
   inline bool statusFileFetched() const { return __statusFileFetched; }
   
+  /**
+   * Returns false before initialized() signal is emitted.
+   */
+  inline bool isInitialized() const { return __initialized; }
+  
   /* These pointers are used for empty views.
    * Giving the NULL pointer in setModel() removes headers. */
   static FlightTableModel* emptyFlightTable;
@@ -448,6 +453,9 @@ private:
   
   /* Indicates whether the status.txt file was already read or not */
   bool __statusFileFetched;
+  
+  /* False before initialized() method is called */
+  bool __initialized;
   
   PlainTextDownloader* __downloader;
   UpdateScheduler*     __scheduler;
