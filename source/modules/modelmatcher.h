@@ -25,17 +25,15 @@
 #include <QMap>
 #include <QtOpenGL>
 
+#include "ui/notifiable.h"
 #include "singleton.h"
 
 /**
  * This class is responsible for matching user airplanes to 
  * corresponding models.
  */
-class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
+class ModelMatcher : public QObject, public Notifiable, public Singleton<ModelMatcher> {
   Q_OBJECT
-  
-signals:
-  void warning(QString);
 
 public:
   /**
