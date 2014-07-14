@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <QtGui>
+#include <qjson/parser.h>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
@@ -453,34 +454,33 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(file.fileName()));
     return;
   }
   
-  while (!file.atEnd()) {
-    QString line = QString::fromUtf8(file.readLine()).simplified();
-    
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-    
-    QStringList data = line.split(' ');
-    QString& icao = data.front();
-    
-    Q_ASSERT(icao.length() == 4);
-    
-    for (int i = 1; i < data.length(); ++i) {
-      if (data[i][0] == '{') {
-        __aliases.insert(data[i].mid(1), icao);
-      } else if (data[i].toUpper() == data[i]) {
-        __aliases.insert(data[i], icao);
+  QJson::Parser parser;
+  bool ok;
+  
+  QVariant content = parser.parse(&file, &ok);
+  if (!ok) {
+    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+    return;
+  }
+  
+  auto list = content.toList();
+  for (QVariant& a: list) {
+    auto map = a.toMap();
+    QString target = map["target"].toString();
+    auto aList = map["alias"].toList();
+    for (QVariant& b: aList) {
+      if (b.canConvert<QString>()) {
+        __aliases.insert(target, b.toString());
+      } else {
+        auto aMap = b.toMap();
+        auto aaList = aMap["alias"].toList();
+        for (QVariant& c: aaList)
+          __aliases.insert(target, c.toString());
       }
-      /*
-       * TODO Read also named aliases (those in brackets) - they should be displayed
-       *      if used. For example, if you have:
-       *        LGGG {LGMD Makedonia}
-       *      then if user clicks on "LGGG" default name should be shown, otherwise
-       *      "Makedonia".
-       */
     }
   }
   

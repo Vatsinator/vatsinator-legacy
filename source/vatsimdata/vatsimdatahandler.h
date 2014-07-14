@@ -30,6 +30,7 @@
 #include <qmath.h>
 
 #include "vatsimdata/client.h"
+#include "ui/notifiable.h"
 #include "singleton.h"
 
 class AbstractNotamProvider;
@@ -53,6 +54,7 @@ struct AirportRecord;
  */
 class VatsimDataHandler :
     public QObject,
+    public Notifiable,
     public Singleton<VatsimDataHandler> {
   Q_OBJECT
   
