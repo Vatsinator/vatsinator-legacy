@@ -18,7 +18,7 @@
  */
 
 #include "db/firdatabase.h"
-#include "glutils/glresourcemanager.h"
+#include "glutils/texture.h"
 #include "glutils/vertexbufferobject.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/clientdetailsaction.h"
@@ -37,7 +37,7 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     __position(_fir->data()->header.textPosition.x, _fir->data()->header.textPosition.y),
     __borders(nullptr),
     __triangles(nullptr),
-    __label(0) {
+    __label(nullptr) {
   __prepareVbo();
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
@@ -48,7 +48,7 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
 
 FirItem::~FirItem() {
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
   
   if (__triangles)
     delete __triangles;
@@ -90,10 +90,10 @@ FirItem::drawLabel() const {
   if (!__label)
     __generateLabel();
   
-  glBindTexture(GL_TEXTURE_2D, __label);
+  __label->bind();
   glVertexPointer(2, GL_FLOAT, 0, labelRect);
   glDrawArrays(GL_QUADS, 0, 4);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  __label->unbind();
 }
 
 bool
@@ -179,7 +179,7 @@ FirItem::__generateLabel() const {
   static QRect labelRect(0, 4, 64, 24);
   
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
   
   QString icao(__fir->icao());
   if (__fir->isOceanic())
@@ -202,14 +202,14 @@ FirItem::__generateLabel() const {
   painter.setPen(color);
   
   painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);
-  __label = GlResourceManager::loadImage(temp);
+  __label = new Texture(temp);
 }
 
 void
 FirItem::__resetLabel() {
   if (__label) {
-    GlResourceManager::deleteImage(__label);
-    __label = 0;
+    delete __label;
+    __label = nullptr;
   }
 }
 

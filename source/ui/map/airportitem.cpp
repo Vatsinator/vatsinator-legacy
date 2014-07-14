@@ -18,7 +18,7 @@
  */
 
 #include "db/airportdatabase.h"
-#include "glutils/glresourcemanager.h"
+#include "glutils/texture.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/actionmenuseparator.h"
 #include "ui/actions/airportdetailsaction.h"
@@ -41,8 +41,8 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     __airport(_ap),
     __position(_ap->data()->longitude, _ap->data()->latitude),
     __approachCircle(nullptr),
-    __icon(0),
-    __label(0),
+    __icon(nullptr),
+    __label(nullptr),
     __linesReady(false) {
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
@@ -53,7 +53,7 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
 
 AirportItem::~AirportItem() {
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
 }
 
 void
@@ -68,10 +68,10 @@ AirportItem::drawIcon() const {
   if (!__icon)
     __makeIcon();
   
-  glBindTexture(GL_TEXTURE_2D, __icon);
+  __icon->bind();
   glVertexPointer(2, GL_FLOAT, 0, iconRect);
   glDrawArrays(GL_QUADS, 0, 4);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  __icon->unbind();
 }
 
 void
@@ -86,10 +86,10 @@ AirportItem::drawLabel() const {
   if (!__label)
     __generateLabel();
   
-  glBindTexture(GL_TEXTURE_2D, __label);
+  __label->bind();
   glVertexPointer(2, GL_FLOAT, 0, labelRect);
   glDrawArrays(GL_QUADS, 0, 4);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  __label->unbind();
 }
 
 void
@@ -245,7 +245,7 @@ AirportItem::__generateLabel() const {
   static QRect labelRect(8, 2, 48, 12);
   
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
   
   QString icao(data()->data()->icao);
   
@@ -259,20 +259,20 @@ AirportItem::__generateLabel() const {
   painter.setPen(MapConfig::airportPen());
   
   painter.drawText(labelRect, Qt::AlignCenter, icao);
-  __label = GlResourceManager::loadImage(temp);
+  __label = new Texture(temp);
 }
 
 void
 AirportItem::__reloadSettings() {
   if (__label) {
-    GlResourceManager::deleteImage(__label);
+    delete __label;
     __label = 0;
   }
 }
 
 void
 AirportItem::__invalidate() {
-  __icon = 0;
+  __icon = nullptr;
   
   if (__airport->facilities().testFlag(Controller::App)) {
     if (!__approachCircle)
@@ -296,34 +296,35 @@ AirportItem::IconKeeper::IconKeeper() :
 
 AirportItem::IconKeeper::~IconKeeper() {
   if (__emptyAirportIcon)
-    GlResourceManager::deleteImage(__emptyAirportIcon);
+    delete __emptyAirportIcon;
   
   if (__activeAirportIcon)
-    GlResourceManager::deleteImage(__activeAirportIcon);
+    delete __activeAirportIcon;
   
   if (__activeStaffedAirportIcon)
-    GlResourceManager::deleteImage(__activeStaffedAirportIcon);
+    delete __activeStaffedAirportIcon;
 }
 
-GLuint
-AirportItem::IconKeeper::emptyAirportIcon() {
+const Texture*
+AirportItem::IconKeeper::emptyAirportIcon() const {
   if (!__emptyAirportIcon)
-    __emptyAirportIcon = GlResourceManager::loadImage(MapConfig::emptyAirportIcon());
+    __emptyAirportIcon = new Texture(MapConfig::emptyAirportIcon());
   
   return __emptyAirportIcon;
 }
 
-GLuint
-AirportItem::IconKeeper::activeAirportIcon() {
+const Texture*
+AirportItem::IconKeeper::activeAirportIcon() const {
   if (!__activeAirportIcon)
-    __activeAirportIcon = GlResourceManager::loadImage(MapConfig::activeAirportIcon());
+    __activeAirportIcon = new Texture(MapConfig::activeAirportIcon());
   
   return __activeAirportIcon;
 }
 
-GLuint AirportItem::IconKeeper::activeStaffedAirportIcon() {
+const Texture*
+AirportItem::IconKeeper::activeStaffedAirportIcon() const {
   if (!__activeStaffedAirportIcon)
-    __activeStaffedAirportIcon = GlResourceManager::loadImage(MapConfig::activeStaffedAirportIcon());
+    __activeStaffedAirportIcon = new Texture(MapConfig::activeStaffedAirportIcon());
   
   return __activeStaffedAirportIcon;
 }

@@ -37,7 +37,7 @@ class Pilot;
  */
 class Airport : public QObject {
   Q_OBJECT
-
+  
 signals:
   void updated();
 
