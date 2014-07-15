@@ -27,8 +27,6 @@
 #include <QMap>
 #include <QMultiMap>
 
-#include <qmath.h>
-
 #include "vatsimdata/client.h"
 #include "ui/notifiable.h"
 #include "singleton.h"
@@ -42,6 +40,7 @@ class FlightTableModel;
 class Pilot;
 class PlainTextDownloader;
 class UpdateScheduler;
+class Uir;
 class VatsinatorApplication;
 
 struct AirportRecord;
@@ -175,6 +174,14 @@ public:
   Fir* findFir(const QString&, bool = false);
   
   /**
+   * Finds UIR that matches the given _icao_ code or any UIR that the given
+   * _icao_ is alias of.
+   * @param icao The UIR ICAO code.
+   * @return Pointer to the Uir instance or nullptr if nothing was found.
+   */
+  Uir* findUir(const QString&);
+  
+  /**
    * Finds alternate name for given ICAO. If nothing was found,
    * empty string is returned.
    * @param icao The ICAO code.
@@ -186,6 +193,11 @@ public:
    * @return List of all FIRs known by Vatsinator.
    */
   QList<Fir*> firs() const;
+  
+  /**
+   * @return List of all UIRs known by Vatsinator.
+   */
+  QList<Uir*> uirs() const;
 
   /**
    * @return Count of logged-in clients (pilots + controllers + observers).
@@ -414,27 +426,33 @@ private:
    * All connected clients
    * Callsign <-> instance pairs
    */
-  QMap<QString, Client*>        __clients;
+  QMap<QString, Client*> __clients;
   
   /*
    * List of only new clients, i.e. that showed up in the last update.
    */
-  QList<Client*>                __newClients;
+  QList<Client*> __newClients;
   
   /*
    * All airports, each instance wraps the record in the database.
    * ICAO <-> instance pairs
    */
-  QMap<QString, Airport*>       __airports;
+  QMap<QString, Airport*> __airports;
   
-  /**
+  /*
    * All FIRs, each instance wraps the record in the database.
    * ICAO <-> instance pairs
    */
-  QMultiMap<QString, Fir*>      __firs;
+  QMultiMap<QString, Fir*> __firs;
+  
+  /*
+   * UIRs are stored in a separate file.
+   * ICAO <-> instance pairs
+   */
+  QMap<QString, Uir*> __uirs;
   
   /* This is vector of data servers, obtained from the status file */
-  QVector<QString>  __dataServers;
+  QVector<QString> __dataServers;
   
   /* Map of ICAO aliases */
   QMultiMap<QString, QString> __aliases;

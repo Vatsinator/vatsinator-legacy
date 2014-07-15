@@ -22,6 +22,7 @@
 #include "network/statspurveyor.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
+#include "vatsimdata/uir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -121,15 +122,13 @@ Controller::__setMyIcaoAndFacility() {
       fir->addStaff(this);
       __makeDescription(fir);
     } else {
+      Uir* uir = VatsimDataHandler::getSingleton().findUir(__icao);
 
-// TODO
-//       Uir* uir = VatsimDataHandler::getSingleton().findUIR(__icao);
-// 
-//       if (uir) {
-//         uir->addStaff(this);
-//         __produceDescription(uir);
-//         return;
-//       }
+      if (uir) {
+        uir->addStaff(this);
+        __makeDescription(uir);
+        return;
+      }
       
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
       VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
@@ -150,19 +149,17 @@ Controller::__setMyIcaoAndFacility() {
       fir->addStaff(this);
       __makeDescription(fir);
     } else {
+      Uir* uir = VatsimDataHandler::getSingleton().findUir(icao);
+      if (uir) {
+        uir->addStaff(this);
+        __makeDescription(uir);
+        return;
+      }
+      
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
       VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
       __isOK = false;
     }
-
-// TODO
-//     Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
-// 
-//     if (uir) {
-//       uir->addStaff(this);
-//       __produceDescription(uir);
-//       return;
-//     }
     
   } else if (
     sections.back() == "APP" ||
@@ -210,7 +207,11 @@ Controller::__makeDescription(const Fir* _f) {
 void
 Controller::__makeDescription(const Uir* _u) {
   Q_ASSERT(_u);
-//   __description = _u->name();
+  QString aName = VatsimDataHandler::getSingleton().alternameName(_u->icao());
+  if (aName.isEmpty())
+    __description = _u->name();
+  else
+    __description = aName;
 }
 
 void

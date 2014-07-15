@@ -46,4 +46,3 @@ vatsinator_subdirectory_mocs (vatsimdata "${vatsimdata_MOC_SRCS}")
 vatsinator_end_subdirectory (vatsimdata)
 
 add_dependencies (vatsimdata ui)
-

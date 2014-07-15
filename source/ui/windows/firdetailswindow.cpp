@@ -73,6 +73,7 @@ FirDetailsWindow::__updateModels() {
   Q_ASSERT(__fir);
   
   FlightsTable->setModel(__fir->flights());
+  /* TODO Show UIR controllers here, too */
   ATCTable->setModel(__fir->staff());
   AirportsTable->setModel(__fir->airports());
   

@@ -348,6 +348,20 @@ VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
   return nullptr;
 }
 
+Uir*
+VatsimDataHandler::findUir(const QString& _icao) {
+  if (__uirs.contains(_icao))
+    return __uirs[_icao];
+  
+  QList<QString> keys = aliases().values(_icao);
+  for (const QString& k: keys) {
+    if (__uirs.contains(k))
+      return __uirs[k];
+  }
+  
+  return nullptr;
+}
+
 QString
 VatsimDataHandler::alternameName(const QString& _icao) {
   if (!__alternameNames.contains(_icao))
@@ -359,6 +373,11 @@ VatsimDataHandler::alternameName(const QString& _icao) {
 QList<Fir*>
 VatsimDataHandler::firs() const {
   return std::move(__firs.values());
+}
+
+QList<Uir*>
+VatsimDataHandler::uirs() const {
+  return std::move(__uirs.values());
 }
 
 int
@@ -604,13 +623,12 @@ VatsimDataHandler::__readUirFile(const QString& _fileName) {
         
         if (fir)
           uir->addFir(fir);
-        else
-          VatsinatorApplication::log("FIR %s could not be found!", data[i].toStdString().c_str());
       } else {
         uir->name().append(data[i] + " ");
       }
     }
     
+    __uirs.insert(uir->icao(), uir);
   }
   
   file.close();

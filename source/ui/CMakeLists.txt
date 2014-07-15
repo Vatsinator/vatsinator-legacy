@@ -70,6 +70,7 @@ set (ui_SRCS
     map/mapscene.cpp
     map/mapstate.cpp
     map/moveanimation.cpp
+    map/uiritem.cpp
     map/worldpolygon.cpp
     
     pages/abstractsettingspage.cpp
@@ -134,6 +135,7 @@ set (ui_MOC_SRCS
     map/flightitem.h
     map/mapscene.h
     map/moveanimation.h
+    map/uiritem.h
     
     pages/abstractsettingspage.h
     pages/mappage.h

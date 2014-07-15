@@ -40,6 +40,9 @@ Uir::addStaff(const Controller* _c) {
   connect(_c,           SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
+  
+  for (Fir* f: range())
+    f->addUirStaff(_c);
 }
 
 bool

@@ -124,6 +124,11 @@ FirItem::tooltipText() const {
     staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
   }
   
+  for (const Controller* c: data()->uirStaff()->staff()) {
+    staff.append("<br>");
+    staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
+  }
+  
   if (desc.isEmpty() && staff.isEmpty())
     return QString();
   else
@@ -144,6 +149,13 @@ FirItem::menu(QWidget* _parent) const {
   menu->addAction(showFir);
   
   for (const Controller* c: data()->staff()->staff()) {
+    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
+    connect(cda,                                SIGNAL(triggered(const Client*)),
+            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
+    menu->addAction(cda);
+  }
+  
+  for (const Controller* c: data()->uirStaff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
     connect(cda,                                SIGNAL(triggered(const Client*)),
             UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
@@ -195,10 +207,16 @@ FirItem::__generateLabel() const {
   
   painter.setFont(SM::get("map.fir_font").value<QFont>());
   
-  QColor color = __fir->isStaffed() ? 
-    SM::get("map.staffed_fir_borders_color").value<QColor>() :
-    SM::get("map.unstaffed_fir_borders_color").value<QColor>();
-    
+  QColor color;
+  if (__fir->isStaffed()) {
+    color = SM::get("map.staffed_fir_borders_color").value<QColor>();
+  } else {
+    if (__fir->uirStaff()->rowCount() > 0)
+      color = SM::get("map.staffed_uir_borders_color").value<QColor>();
+    else
+      color = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
+  }
+  
   painter.setPen(color);
   
   painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);

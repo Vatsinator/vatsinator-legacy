@@ -28,6 +28,7 @@
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/moveanimation.h"
+#include "ui/map/uiritem.h"
 #include "ui/widgets/mapwidget.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
@@ -85,6 +86,15 @@ MapScene::startAnimation(AbstractAnimation* _animation) {
   __animation->start();
 }
 
+FirItem*
+MapScene::findItemForFir(const Fir* _fir) {
+  for (FirItem* f: firItems())
+    if (f->data() == _fir)
+      return f;
+  
+  return nullptr;
+}
+
 void
 MapScene::moveSmoothly(const LonLat& _target) {
   MoveAnimation* a = new MoveAnimation(this);
@@ -109,6 +119,10 @@ MapScene::__setupItems() {
     if (f->data()->header.textPosition.x != 0.0 && f->data()->header.textPosition.y != 0.0) {
       __firItems << new FirItem(f, this);
     }
+  }
+  
+  for (const Uir* u: VatsimDataHandler::getSingleton().uirs()) {
+    __uirItems << new UirItem(u, this);
   }
   
   for (auto c: VatsimDataHandler::getSingleton().clients())
@@ -168,4 +182,3 @@ MapScene::__removeFlightItem() {
   
   Q_ASSERT_X(false, "MapScene", "The flight does not exist in the scene");
 }
-
