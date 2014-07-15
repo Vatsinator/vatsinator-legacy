@@ -62,6 +62,7 @@ signals:
   
   /**
    * All data is read.
+   * @sa isInitialized().
    */
   void initialized();
   
@@ -172,6 +173,14 @@ public:
    * @return Pointer to the Fir instance or nullptr if no matches.
    */
   Fir* findFir(const QString&, bool = false);
+  
+  /**
+   * Finds alternate name for given ICAO. If nothing was found,
+   * empty string is returned.
+   * @param icao The ICAO code.
+   * @return The alternate name.
+   */
+  QString alternameName(const QString&);
   
   /**
    * @return List of all FIRs known by Vatsinator.
@@ -427,8 +436,11 @@ private:
   /* This is vector of data servers, obtained from the status file */
   QVector<QString>  __dataServers;
   
-  /* This set contains list of aliases. Filled in by init() method */
+  /* Map of ICAO aliases */
   QMultiMap<QString, QString> __aliases;
+  
+  /* Map of alternate names for given ICAO */
+  QMap<QString, QString> __alternameNames;
   
   /* This is URL that we can obtain METAR from */
   QString   __metarUrl;

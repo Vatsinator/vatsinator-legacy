@@ -337,14 +337,23 @@ VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
   for (const QString& k: keys) {
     if (__firs.contains(k)) {
       QList<Fir*> values = __firs.values(k);
-      for (Fir* f: values)
+      for (Fir* f: values) {
         if (f->isOceanic() == _fss && f->hasValidPosition()) {
           return f;
         }
+      }
     }
   }
   
   return nullptr;
+}
+
+QString
+VatsimDataHandler::alternameName(const QString& _icao) {
+  if (!__alternameNames.contains(_icao))
+    return QString();
+  else
+    return __alternameNames[_icao];
 }
 
 QList<Fir*>
@@ -478,8 +487,11 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
       } else {
         auto aMap = b.toMap();
         auto aaList = aMap["alias"].toList();
-        for (QVariant& c: aaList)
+        QString name = aMap["name"].toString();
+        for (QVariant& c: aaList) {
           __aliases.insert(target, c.toString());
+          __alternameNames.insert(c.toString(), name);
+        }
       }
     }
   }

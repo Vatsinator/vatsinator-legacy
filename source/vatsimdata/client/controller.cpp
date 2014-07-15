@@ -200,7 +200,11 @@ Controller::__setMyIcaoAndFacility() {
 void
 Controller::__makeDescription(const Fir* _f) {
   Q_ASSERT(_f);
-  __description = _f->name();
+  QString aName = VatsimDataHandler::getSingleton().alternameName(_f->icao());
+  if (aName.isEmpty())
+    __description = _f->name();
+  else
+    __description = aName;
 }
 
 void
