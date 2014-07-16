@@ -562,21 +562,29 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(_fName));
     return;
   }
   
-  while (!file.atEnd()) {
-     QString line = QString::fromUtf8(file.readLine()).simplified();
-    
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-    
-    QString icao = line.section(' ', 0, 0);
+  QJson::Parser parser;
+  bool ok;
+  
+  QVariant content = parser.parse(&file, &ok);
+  if (!ok) {
+    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+    return;
+  }
+  
+  auto list = content.toList();
+  
+  for (QVariant& c: list) {
+    auto map = c.toMap();
+    QString icao = map["icao"].toString();
+    QString name = map["name"].toString();
     
     Fir* currentFir = findFir(icao);
     if (currentFir) {
-      currentFir->setName(line.section(' ', 1));
+      currentFir->setName(name);
       
       /*
        * TODO Make this below more convenient, i.e. allow writing some kind of
@@ -593,7 +601,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     // look for some oceanic fir
     currentFir = findFir(icao, true);
     if (currentFir) {
-      currentFir->setName(line.section(' ', 1));
+      currentFir->setName(name);
       currentFir->setCountry(countries[icao.left(2)]);
       currentFir->fixupName();
     }
