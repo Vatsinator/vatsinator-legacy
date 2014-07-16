@@ -55,21 +55,17 @@ void
 ApproachCircleItem::drawCircle() const {
   if (__circle.isEmpty()) {
     __circle = makeCircle();
-    __circle.prepend(0.0f);
-    __circle.prepend(0.0f);
   }
   
-  if (__colors.isEmpty())
-    __fillColors();
+  if (!__color.isValid())
+    __getColor();
   
-  glEnableClientState(GL_COLOR_ARRAY);
-  
+  glLineWidth(2.0);
   glVertexPointer(2, GL_FLOAT, 0, __circle.constData());
-  glColorPointer(4, GL_FLOAT, 0, __colors.constData());
-  
-  glDrawArrays(GL_TRIANGLE_FAN, 0, __circle.size() / 2);
-  
-  glDisableClientState(GL_COLOR_ARRAY);
+  glColor4f(__color.redF(), __color.greenF(), __color.blueF(), 1.0f);
+  glDrawArrays(GL_LINES, 0, __circle.size() / 2);
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glLineWidth(1.0);
 }
 
 bool
@@ -96,19 +92,12 @@ void
 ApproachCircleItem::showDetailsWindow() const {}
 
 void
-ApproachCircleItem::__fillColors() const {
-  QColor outer = SM::get("map.approach_circle_color").value<QColor>();
-  QColor inner = outer.lighter();
-  
-  __colors << inner.redF() << inner.greenF() << inner.blueF() << 0.1f;
-  
-  for (int i = 2; i < __circle.size(); i += 2) {
-    __colors << outer.redF() << outer.greenF() << outer.blueF() << 0.5f;
-  }
+ApproachCircleItem::__getColor() const {
+  __color = SM::get("map.approach_circle_color").value<QColor>();
 }
 
 void ApproachCircleItem::__reloadSettings() {
-  __colors.clear();
+  __color = QColor();
 }
 
 QVector<GLfloat> ApproachCircleItem::__circle;
