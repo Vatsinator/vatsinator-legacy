@@ -30,7 +30,7 @@ namespace {
   QVector<GLfloat> makeCircle() {
     QVector<GLfloat> circle;
     
-    for (qreal angle = 0.0; angle <= (2 * M_PI); angle += 0.1) {
+    for (qreal angle = 0.0; angle < (2 * M_PI); angle += 0.1) {
       GLfloat x = qCos(angle) * 0.005;
       GLfloat y = qSin(angle) * 0.005;
       circle << x << y;
