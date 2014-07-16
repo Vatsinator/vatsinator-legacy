@@ -53,7 +53,9 @@ static const QString CacheFileName = "lastdata";
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
 ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
 
-static QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
+namespace {
+QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
+}
 
 
 VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
@@ -527,20 +529,25 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(_fName));
     return;
   }
   
-  while (!file.atEnd()) {
-     QString line = QString::fromUtf8(file.readLine()).simplified();
-    
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-    
-    countries.insert(
-              line.section(' ', -1),
-              line.section(' ', 0, -2)
-              );
+  QJson::Parser parser;
+  bool ok;
+  
+  QVariant content = parser.parse(&file, &ok);
+  if (!ok) {
+    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+    return;
+  }
+  
+  auto list = content.toList();
+  for (QVariant& c: list) {
+    auto map = c.toMap();
+    QString country = map["country"].toString();
+    QString code = map["code"].toString();
+    countries.insert(code, country);
   }
   
   file.close();
