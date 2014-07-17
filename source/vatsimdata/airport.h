@@ -57,8 +57,10 @@ public:
   
   /**
    * Counts flights that are about to take off.
+   * @param includePrefiled If false, this method will not count prefiled flights.
+   *    Default: true.
    */
-  unsigned countDepartures() const;
+  unsigned countDepartures(bool = true) const;
   
   /**
    * Counts flights that originate from the airport and are airborne

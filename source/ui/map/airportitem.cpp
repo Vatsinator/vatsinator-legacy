@@ -167,8 +167,8 @@ AirportItem::menu(QWidget* _parent) const {
   QMenu* menu = new QMenu(data()->data()->icao, _parent);
   
   AirportDetailsAction* showAp = new AirportDetailsAction(data(), tr("Airport details"), _parent);
-  connect(showAp,                               SIGNAL(triggered(const Airport*)),
-          UserInterface::getSingletonPtr(),     SLOT(showDetailsWindow(const Airport*)));
+  connect(showAp,                       SIGNAL(triggered(const Airport*)),
+          vApp()->userInterface(),      SLOT(showDetailsWindow(const Airport*)));
   menu->addAction(showAp);
   
   MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
@@ -183,9 +183,37 @@ AirportItem::menu(QWidget* _parent) const {
       
       for (const Controller* c: data()->staff()->staff()) {
         ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-        connect(cda,                                    SIGNAL(triggered(const Client*)),
-                UserInterface::getSingletonPtr(),       SLOT(showDetailsWindow(const Client*)));
+        connect(cda,                            SIGNAL(triggered(const Client*)),
+                vApp()->userInterface(),        SLOT(showDetailsWindow(const Client*)));
         menu->addAction(cda);
+      }
+    }
+    
+    if (data()->countArrivals() > 0) {
+      menu->addSeparator();
+      menu->addAction(new ActionMenuSeparator(tr("Arrivals"), _parent));
+      
+      for (const Pilot* p: data()->inbounds()->flights()) {
+        if (p->phase() == Pilot::Arrived) {
+          ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), _parent);
+          connect(cda,                          SIGNAL(triggered(const Client*)),
+                  vApp()->userInterface(),      SLOT(showDetailsWindow(const Client*)));
+          menu->addAction(cda);
+        }
+      }
+    }
+    
+    if (data()->countDepartures(false) > 0) {
+      menu->addSeparator();
+      menu->addAction(new ActionMenuSeparator(tr("Departures"), _parent));
+      
+      for (const Pilot* p: data()->outbounds()->flights()) {
+        if (!p->isPrefiledOnly() && p->phase() == Pilot::Departing) {
+          ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), _parent);
+          connect(cda,                          SIGNAL(triggered(const Client*)),
+                  vApp()->userInterface(),      SLOT(showDetailsWindow(const Client*)));
+          menu->addAction(cda);
+        }
       }
     }
   }

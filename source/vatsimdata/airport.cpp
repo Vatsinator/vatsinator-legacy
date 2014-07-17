@@ -54,12 +54,15 @@ Airport::~Airport() {
 }
 
 unsigned
-Airport::countDepartures() const {
+Airport::countDepartures(bool includePrefiled) const {
   unsigned i = 0;
   
-  for (const Pilot* p: __outbounds->flights())
-    if (p->phase() == Pilot::Departing)
-      i += 1;
+  for (const Pilot* p: __outbounds->flights()) {
+    if (p->phase() == Pilot::Departing) {
+      if (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled))
+        i += 1;
+    }
+  }
   
   return i;
 }
