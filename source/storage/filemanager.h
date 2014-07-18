@@ -44,6 +44,7 @@ public:
    * @sa staticPath()
    */
   enum StaticDir {
+    Plugins,
     Pixmaps,
     Translations
   };

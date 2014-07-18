@@ -22,13 +22,15 @@
 #include "modules/vatbookhandler.h"
 #include "modules/models/bookedatctablemodel.h"
 #include "network/abstractnotamprovider.h"
-#include "network/weatherforecast.h"
-#include "network/models/weatherforecastmodel.h"
+#include "plugins/weatherforecastinterface.h"
+#include "plugins/weatherforecastrequest.h"
+#include "plugins/weatherforecastreply.h"
 #include "storage/settingsmanager.h"
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
+#include "ui/widgets/weatherforecastwidget.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "vatsimdata/airport.h"
@@ -45,34 +47,24 @@
 
 AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent) :
     BaseWindow(_parent),
-    __airport(_ap),
-    __forecast(new WeatherForecast()) {
+    __airport(_ap) {
   setupUi(this);
   
   connect(qApp,                                 SIGNAL(aboutToQuit()),
           this,                                 SLOT(hide()));
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
-  connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
-          this,                                 SLOT(__updateForecast(WeatherForecastModel*)));
   connect(VatsimDataHandler::getSingletonPtr()->notamProvider(),
                                                 SIGNAL(notamReady(NotamListModel*)),
           this,                                 SLOT(__notamUpdate(NotamListModel*)));
   connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
           this,                                 SLOT(__goToNotam(QModelIndex)));
   
-  ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
-  ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
   NotamTableView->setErrorOnNoData(false);
+  WeatherForecastScrollArea->setWidget(new WeatherForecastWidget());
 }
 
-AirportDetailsWindow::~AirportDetailsWindow() {
-  delete __forecast;
-  
-  QAbstractItemModel* m = ForecastView->model();
-  if (m)
-    delete m;
-}
+AirportDetailsWindow::~AirportDetailsWindow() {}
 
 void
 AirportDetailsWindow::showEvent(QShowEvent* _event) {
@@ -80,13 +72,20 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   __updateModels();
   __adjustTables();
   
-  if (SM::get("network.weather_forecasts").toBool()) {
+  if (VatsimDataHandler::getSingleton().weatherForecast()) {
     ForecastGroup->setEnabled(true);
-    ForecastView->setModel(nullptr);
-    __forecast->fetchForecast(QString::fromUtf8(__airport->data()->city),
-                              QString::fromUtf8(__airport->data()->country));
+    
+    WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
+    request->setCity(QString::fromUtf8(__airport->data()->city));
+    request->setCountry(QString::fromUtf8(__airport->data()->country));
+    request->setPosition(__airport->position());
+    
+    WeatherForecastReply* reply = VatsimDataHandler::getSingleton().weatherForecast()->fetch(request);
+    connect(reply,      SIGNAL(finished()),
+            this,       SLOT(__updateForecast()));
   } else {
     ForecastGroup->setEnabled(false);
+//     ForecastView->setLoadingText(tr("No plugin selected"));
   }
   
   NotamTableView->setModel(nullptr);
@@ -154,12 +153,11 @@ AirportDetailsWindow::__adjustTables() {
 }
 
 void
-AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
-  QAbstractItemModel* m = ForecastView->model();
-  if (m)
-    m->deleteLater();
+AirportDetailsWindow::__updateForecast() {
+  WeatherForecastReply* r = qobject_cast<WeatherForecastReply*>(sender());
+  Q_ASSERT(r);
   
-  ForecastView->setModel(model);
+  qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget())->setData(r->data());
 }
 
 void

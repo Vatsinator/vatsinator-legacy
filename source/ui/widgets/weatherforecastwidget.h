@@ -1,5 +1,5 @@
 /*
- * types.h
+ * weatherforecastwidget.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,34 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef WEATHERFORECASTWIDGET_H
+#define WEATHERFORECASTWIDGET_H
 
-/**
- * Define custom types here.
- */
-#include <QEvent>
+#include <QWidget>
+#include <QVector>
 
-namespace Event {
+class WeatherData;
 
-enum Type {
+class WeatherForecastWidget : public QWidget {
+  Q_OBJECT
   
-  /* MouseLonLatEvent */
-  MouseLonLat = QEvent::User + 1,
+public:
+  WeatherForecastWidget(QWidget* = nullptr, Qt::WindowFlags = 0);
   
-  /* MapEvent */
-  Map,
+  void setData(const QVector<WeatherData*>);
   
-  /* NotificationEvent */
-  Notification,
+  QSize sizeHint() const override;
+  QSize minimumSizeHint() const override;
   
-  /* RequestFinishedEvent */
-  RequestFinished
+  inline int maxIconCount() const { return __maxIconCount; }
   
+protected:
+  void paintEvent(QPaintEvent*) override;
+  
+private:
+  QVector<WeatherData*> __data;
+  int __maxIconCount;
+
 };
 
-}
-
-#endif // TYPES_H
+#endif // WEATHERFORECASTWIDGET_H

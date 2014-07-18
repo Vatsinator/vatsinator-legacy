@@ -25,11 +25,13 @@
 #include "network/abstractnotamprovider.h"
 #include "network/euroutenotamprovider.h"
 #include "network/plaintextdownloader.h"
+#include "plugins/weatherforecastinterface.h"
 #include "modules/modulemanager.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
 #include "storage/cachefile.h"
+#include "storage/pluginmanager.h"
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
@@ -68,7 +70,8 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __initialized(false),
     __downloader(new PlainTextDownloader()),
     __scheduler(new UpdateScheduler()),
-    __notamProvider(nullptr) {
+    __notamProvider(nullptr),
+    __weatherForecast(nullptr) {
   
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(__slotUiCreated()));
@@ -80,6 +83,8 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
           this,                                     SLOT(requestDataUpdate()));
   connect(this,                                     SIGNAL(localDataBad(QString)),
           UserInterface::getSingletonPtr(),         SLOT(warning(QString)));
+  connect(SettingsManager::getSingletonPtr(),       SIGNAL(settingsChanged()),
+          this,                                     SLOT(__reloadWeatherForecast()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   
@@ -709,6 +714,7 @@ VatsimDataHandler::__cleanupClients() {
 
 void
 VatsimDataHandler::__slotUiCreated() {
+  
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
   
@@ -757,6 +763,28 @@ VatsimDataHandler::__handleFetchError() {
     }
   }
 }
+
+void
+VatsimDataHandler::__reloadWeatherForecast() {
+  QString desired = SM::get("network.weather_forecast_provider").toString();
+  if (desired != "None") {
+    if (!__weatherForecast || desired != __weatherForecast->providerName()) {
+      QList<WeatherForecastInterface*> weatherPlugins =
+          VatsinatorApplication::getSingleton().plugins()->plugins<WeatherForecastInterface>();
+      for (WeatherForecastInterface* w: weatherPlugins) {
+        if (w->providerName() == desired) {
+          __weatherForecast = w;
+          break;
+        }
+      }
+      Q_ASSERT(__weatherForecast->providerName() == desired);
+      VatsinatorApplication::log("Loaded weather forecast plugin: %s", qPrintable(__weatherForecast->providerName()));
+    }
+  } else {
+    __weatherForecast = nullptr;
+  }
+}
+
 
 VatsimDataHandler::RawClientData::RawClientData(const QString& _line) {
   line = _line.split(':');

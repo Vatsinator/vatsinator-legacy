@@ -1,5 +1,5 @@
 /*
- * types.h
+ * pluginmanager.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,22 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#include <QtCore>
 
-/**
- * Define custom types here.
- */
-#include <QEvent>
+#include "storage/filemanager.h"
 
-namespace Event {
+#include "pluginmanager.h"
 
-enum Type {
-  
-  /* MouseLonLatEvent */
-  MouseLonLat = QEvent::User + 1,
-  
-  /* MapEvent */
-  Map,
-  
-  /* NotificationEvent */
-  Notification,
-  
-  /* RequestFinishedEvent */
-  RequestFinished
-  
-};
+PluginManager::PluginManager(QObject* _parent): QObject(_parent) {}
 
+void
+PluginManager::loadPlugins() {
+  QDir pluginsDir(FileManager::staticPath(FileManager::Plugins));
+  
+  for (QString fileName: pluginsDir.entryList(QDir::Files)) {
+    QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+    QObject* plugin = loader.instance();
+    if (plugin)
+      __plugins << plugin;
+  }
 }
-
-#endif // TYPES_H

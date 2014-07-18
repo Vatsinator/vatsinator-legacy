@@ -1,5 +1,5 @@
 /*
- * types.h
+ * weatherforecastinterface.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,34 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef WEATHERFORECASTINTERFACE_H
+#define WEATHERFORECASTINTERFACE_H
 
-/**
- * Define custom types here.
- */
-#include <QEvent>
+#include <QObject>
+#include <QString>
+#include <QtPlugin>
 
-namespace Event {
+#include "plugins/weatherforecastrequest.h"
+#include "plugins/weatherforecastreply.h"
 
-enum Type {
+class WeatherForecastInterface : public QObject {
+  Q_OBJECT
+
+public:
   
-  /* MouseLonLatEvent */
-  MouseLonLat = QEvent::User + 1,
+  /**
+   * Gets the provider representative name.
+   */
+  virtual QString providerName() const = 0;
   
-  /* MapEvent */
-  Map,
-  
-  /* NotificationEvent */
-  Notification,
-  
-  /* RequestFinishedEvent */
-  RequestFinished
+  /**
+   * Begins fetching the weather forecast.
+   */
+  virtual WeatherForecastReply* fetch(WeatherForecastRequest* request) = 0;
   
 };
 
-}
+Q_DECLARE_INTERFACE(WeatherForecastInterface,
+                    "org.eu.vatsinator.Plugin.WeatherForecastInterface/1.0")
 
-#endif // TYPES_H
+#endif // WEATHERFORECASTINTERFACE_H

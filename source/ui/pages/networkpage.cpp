@@ -19,6 +19,10 @@
 
 #include <QtGui>
 
+#include "plugins/weatherforecastinterface.h"
+#include "storage/pluginmanager.h"
+#include "vatsinatorapplication.h"
+
 #include "networkpage.h"
 
 /* Default settings for NetworkPage */
@@ -28,14 +32,14 @@ namespace DefaultSettings {
   static const bool    METARS_REFRESH           = true;
   static const bool    CACHE_ENABLED            = true;
   static const bool    DATABASE_INTEGRATION     = true;
-  static const bool    WEATHER_FORECASTS        = true;
+  static const QString WEATHER_FORECASTS_PROVIDER = "";
 }
 
 NetworkPage::NetworkPage(QWidget* _parent) :
     AbstractSettingsPage(_parent) {
   setupUi(this);
-  connect(RefreshRateBox, SIGNAL(valueChanged(int)),
-          this,           SLOT(__updateRefreshRateLabel(int)));
+  connect(RefreshRateBox,       SIGNAL(valueChanged(int)),
+          this,                 SLOT(__updateRefreshRateLabel(int)));
   connect(AutoUpdaterCheckBox,  SIGNAL(stateChanged(int)),
           this,                 SLOT(__updateAutoUpdaterLocks(int)));
 }
@@ -62,7 +66,7 @@ NetworkPage::updateFromUi() const {
   setValue("cache_enabled", CachingCheckBox->isChecked());
   setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
+  setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->text());
 }
 
 void
@@ -81,8 +85,19 @@ NetworkPage::restore(QSettings& _s) {
     _s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
   DatabaseIntegrationCheckBox->setChecked(
     _s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
-  WeatherForecastCheckBox->setChecked(
-    _s.value("weather_forecasts", DefaultSettings::WEATHER_FORECASTS).toBool());
+  
+  QList<WeatherForecastInterface*> weatherPlugins =
+    VatsinatorApplication::getSingleton().plugins()->plugins<WeatherForecastInterface>();
+  QString weatherCurrent =
+    _s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
+  int i = 1;
+  for (WeatherForecastInterface* w: weatherPlugins) {
+    WeatherProviderListWidget->addItem(w->providerName());
+    if (weatherCurrent == w->providerName())
+      WeatherProviderListWidget->setCurrentRow(i);
+    
+    i += 1;
+  }
 }
 
 void
@@ -92,7 +107,7 @@ NetworkPage::save(QSettings& _s) {
   _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   _s.setValue("cache_enabled", CachingCheckBox->isChecked());
   _s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  _s.setValue("weather_forecasts", WeatherForecastCheckBox->isChecked());
+  _s.setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->text());
 }
 
 void

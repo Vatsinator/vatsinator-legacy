@@ -80,6 +80,13 @@ FileManager::moveToCache(const QString& _source, const QString& _destination) {
 QString
 FileManager::staticPath(FileManager::StaticDir _d) {
   switch (_d) {
+    case Plugins:
+#ifndef Q_OS_DARWIN
+      return QString(VATSINATOR_PREFIX) % "plugins";
+#else
+      return QCoreApplication::applicationDirPath() % "../Resources/plugins";
+#endif
+    
     case Pixmaps:
 #ifndef Q_OS_DARWIN
       return QString(VATSINATOR_PREFIX) % "pixmaps";

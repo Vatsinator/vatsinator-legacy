@@ -1,5 +1,5 @@
 /*
- * types.h
+ * requestfinishedevent.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,15 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef REQUESTFINISHEDEVENT_H
+#define REQUESTFINISHEDEVENT_H
 
-/**
- * Define custom types here.
- */
 #include <QEvent>
+#include "events/types.h"
 
-namespace Event {
-
-enum Type {
-  
-  /* MouseLonLatEvent */
-  MouseLonLat = QEvent::User + 1,
-  
-  /* MapEvent */
-  Map,
-  
-  /* NotificationEvent */
-  Notification,
-  
-  /* RequestFinishedEvent */
-  RequestFinished
-  
+class RequestFinishedEvent : public QEvent {
+public:
+  RequestFinishedEvent();
 };
 
-}
-
-#endif // TYPES_H
+#endif // REQUESTFINISHEDEVENT_H

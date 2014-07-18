@@ -147,6 +147,12 @@ if (NOT APPLE)
 endif (NOT APPLE)
 add_subdirectory (source)
 
+set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
+option (WITH_PLUGINS ON)
+if (WITH_PLUGINS)
+    add_subdirectory(plugins)
+endif (WITH_PLUGINS)
+
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")

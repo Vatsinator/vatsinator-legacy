@@ -1,6 +1,6 @@
 /*
     vatsinatorapplication.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 #include <QtCore>
 
-#include "storage/cachefile.h"
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
@@ -27,7 +26,9 @@
 #include "network/plaintextdownloader.h"
 #include "network/resourcemanager.h"
 #include "network/statspurveyor.h"
+#include "storage/cachefile.h"
 #include "storage/languagemanager.h"
+#include "storage/pluginmanager.h"
 #include "storage/settingsmanager.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/userinterface.h"
@@ -45,6 +46,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     __userInterface(new UserInterface()),
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager()),
+    __pluginManager(new PluginManager(this)),
     __airlineDatabase(new AirlineDatabase()),
     __airportDatabaase(new AirportDatabase()),
     __firDatabase(new FirDatabase()),
@@ -168,6 +170,9 @@ VatsinatorApplication::__initialize() {
   
   /* Read world map before UI */
   __worldMap->init();
+  
+  /* Load plugins */
+  __pluginManager->loadPlugins();
   
   /* Create windows */
   __userInterface->init();

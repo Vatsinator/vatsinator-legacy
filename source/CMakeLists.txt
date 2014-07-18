@@ -26,6 +26,7 @@ set (vatsinator_SUBDIRS
     glutils
     modules
     network
+    plugins
     storage
     ui
     vatsimdata
