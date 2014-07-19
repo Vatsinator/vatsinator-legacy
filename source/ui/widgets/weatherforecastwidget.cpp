@@ -107,6 +107,7 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
   for (const WeatherData* d: __data) {
     QRect dayRect(QPoint(i * width, 0), QSize(width, WeatherHeight));
     
+    /* Draw day of the week */
     QPen pen(QColor(Qt::black));
     pen.setWidth(3);
     p.setPen(pen);
@@ -119,6 +120,24 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     pen.setWidth(0);
     p.setPen(pen);
     
+    /* Draw temperatures */
+    /* TODO Choice between Celsius/Fahrenheit */
+    QString degreeSign = QString::fromWCharArray(L"\u00B0");
+    
+    QRect highRect(QPoint(), QSize(textRect.width(), textHeight));
+    highRect.moveTopLeft(textRect.bottomLeft());
+    QRect highBoundingRect;
+    p.drawText(highRect, Qt::AlignLeft, QString::number(d->high().celsius) + degreeSign, &highBoundingRect);
+    
+    QRect lowRect(QPoint(), QSize(textRect.width(), textHeight));
+    lowRect.moveTopLeft(highBoundingRect.topRight());
+    lowRect.moveLeft(lowRect.left() + 5);
+    
+    pen.setColor(Qt::darkGray);
+    p.setPen(pen);
+    p.drawText(lowRect, Qt::AlignLeft, QString::number(d->low().celsius) + degreeSign);
+    
+    /* Draw icon */
     QRect iconRect(QPoint(), QSize(IconWidth, IconHeight));
     iconRect.moveTopRight(dayRect.topRight());
     QPoint c = iconRect.center();
@@ -131,6 +150,7 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     pen.setColor(Qt::darkGray);
     p.setPen(pen);
     
+    /* Draw description */
     QRect descRect(QPoint(), QSize(dayRect.width(), textHeight * 3));
     descRect.moveTopRight(iconRect.bottomRight());
     c = descRect.center();
@@ -140,7 +160,10 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
       p.drawText(descRect, Qt::TextWordWrap, d->description());
     }
     
-    /* TODO draw temperatures here */
+    /* Draw the line that divides days */
+    pen.setColor(QColor(233, 233, 233));
+    p.setPen(pen);
+    p.drawLine(dayRect.topRight(), dayRect.bottomRight());
     
     i += 1;
     
