@@ -89,11 +89,6 @@
         <translation>Vatsinator to prosty monitor sieci Vatsim - pokazuje zalogowanych pilotów, kontrolerów oraz dostarcza wielu użytecznych informacji (jak np. raporty pogodowe, czy dane lotniska).</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
-        <source>(C) 2012-2013 Vatsinator Team&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</source>
-        <translation>(C) 2012-2013 Zespół Vatsinator&lt;br&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;vatsinator.eu.org&lt;/a&gt;</translation>
-    </message>
-    <message>
         <location filename="../ui/windows/aboutwindow.ui" line="207"/>
         <source>Changelog</source>
         <translation>Lista zmian</translation>
@@ -102,6 +97,11 @@
         <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
         <translation>O programie</translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2014 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
@@ -242,6 +242,16 @@
         <location filename="../ui/map/airportitem.cpp" line="182"/>
         <source>Controllers</source>
         <translation>Kontrolerzy</translation>
+    </message>
+    <message>
+        <location filename="../ui/map/airportitem.cpp" line="194"/>
+        <source>Arrivals</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/map/airportitem.cpp" line="208"/>
+        <source>Departures</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -590,12 +600,12 @@
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="85"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="86"/>
         <source>%1 - FIR details</source>
         <translation>%1 - szczegóły FIR</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="87"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="88"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - szczegóły ARTCC</translation>
     </message>
@@ -603,7 +613,7 @@
 <context>
     <name>FirItem</name>
     <message>
-        <location filename="../ui/map/firitem.cpp" line="139"/>
+        <location filename="../ui/map/firitem.cpp" line="144"/>
         <source>%1 details</source>
         <translation>Szczegóły %1</translation>
     </message>
@@ -1034,7 +1044,7 @@
 <context>
     <name>ModelMatcher</name>
     <message>
-        <location filename="../modules/modelmatcher.cpp" line="56"/>
+        <location filename="../modules/modelmatcher.cpp" line="58"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
         <translation>Plik %1 nie mógł zostać otwarty! Sprawdź jego uprawnienia lub przeinstaluj aplikację.</translation>
     </message>
@@ -1177,10 +1187,21 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="454"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="497"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="525"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="487"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="532"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="565"/>
+        <source>File %1 could not be opened! Please reinstall the application.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="496"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="541"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="574"/>
+        <source>File %1 contains errors. Please reinstall the application.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="622"/>
         <source>File %1 could not be opened!</source>
         <translation>Plik %1 nie mógł zostać otwarty!</translation>
     </message>
