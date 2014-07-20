@@ -32,6 +32,7 @@ public:
   WeatherForecastWidget(QWidget* = nullptr, Qt::WindowFlags = 0);
   
   void setData(const QVector<WeatherData*>);
+  void setMessage(const QString&);
   
   QSize sizeHint() const override;
   QSize minimumSizeHint() const override;
@@ -43,6 +44,7 @@ protected:
   
 private:
   QVector<WeatherData*> __data;
+  QString __message;
   int __maxIconCount;
 
 };

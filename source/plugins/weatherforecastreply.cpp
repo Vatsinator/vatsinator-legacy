@@ -17,7 +17,6 @@
  *
  */
 
-#include "events/requestfinishedevent.h"
 #include "plugins/weatherdata.h"
 #include "plugins/weatherforecastrequest.h"
 
@@ -27,7 +26,9 @@ WeatherForecastReply::WeatherForecastReply(
   WeatherForecastRequest* _request,
   QObject* _parent) :
       QObject(_parent),
-      __request(_request) {}
+      __request(_request),
+      __finished(false),
+      __error(NoError) {}
 
 WeatherForecastReply::~WeatherForecastReply() {
   delete __request;
@@ -39,18 +40,17 @@ WeatherForecastReply::appendWeatherData(WeatherData* _data) {
   __data << _data;
 }
 
-bool
-WeatherForecastReply::event(QEvent* _event) {
-  switch (_event->type()) {
-    case Event::Type::RequestFinished:
-      return requestFinishedEvent(static_cast<RequestFinishedEvent*>(_event));
-      
-    default:
-      return QObject::event(_event);
+void
+WeatherForecastReply::setFinished(bool _finished) {
+  if (_finished && !isFinished()) {
+    __finished = _finished;
+    emit finished();
+  } else {
+    __finished = _finished;
   }
 }
 
-bool
-WeatherForecastReply::requestFinishedEvent(RequestFinishedEvent*) {
-  emit finished();
+void
+WeatherForecastReply::setError(WeatherForecastReply::ForecastError _e) {
+  __error = _e;
 }

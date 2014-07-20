@@ -29,11 +29,28 @@ class WeatherForecastRequest;
 
 class WeatherForecastReply : public QObject {
   Q_OBJECT
+  Q_ENUMS(ForecastError)
   
 signals:
   void finished();
 
 public:
+  
+  /**
+   * Defines error that occured for that reply.
+   */
+  enum ForecastError {
+    
+    /* No error */
+    NoError,
+    
+    /* The weather forecast could not be found for the given location */
+    NotFoundError,
+    
+    /* A network error has occured */
+    NetworkError
+  };
+  
   explicit WeatherForecastReply(WeatherForecastRequest*, QObject* = nullptr);
   
   virtual ~WeatherForecastReply();
@@ -43,17 +60,29 @@ public:
    */
   void appendWeatherData(WeatherData*);
   
-  bool event(QEvent*) override;
+  /**
+   * Set isFinished() status to the given value.
+   * If true and the request was not finished before (isFinished() == false),
+   * the finished() signal will be emitted.
+   * @param finished
+   */
+  void setFinished(bool);
+  
+  /**
+   * Sets the error status to the given value.
+   */
+  void setError(ForecastError);
   
   inline const WeatherForecastRequest* request() const { return __request; }
   inline const QVector<WeatherData*>& data() const { return __data; }
-  
-protected:
-  virtual bool requestFinishedEvent(RequestFinishedEvent*);
+  inline bool isFinished() const { return __finished; }
+  inline ForecastError error() const { return __error; }
   
 private:
   WeatherForecastRequest* __request;
   QVector<WeatherData*> __data;
+  bool __finished;
+  ForecastError __error;
   
 };
 

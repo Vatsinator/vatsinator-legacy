@@ -21,13 +21,12 @@
 #include <QtNetwork>
 #include <qjson/parser.h>
 
-#include "events/requestfinishedevent.h"
 #include "plugins/weatherdata.h"
 
 #include "ultimateweatherforecasts.h"
 
 static const QString ApiUrl = "https://george-vustrey-weather.p.mashape.com/api.php?location=%1";
-static const QString ApiKey = "TYQpxtPIcBgle6dZSIZu5ZSfU4swcRsE";
+static const QString ApiKey = "NXOZbJJxNTmsh1dHGW16LoflT5N1p1jVGIbjsn4Z5b4xFu6VZT";
 
 namespace {
   
@@ -158,11 +157,12 @@ UltimateWeatherForecasts::__finishRequest() {
       
       r->appendWeatherData(data);
     }
+  } else {
+    r->setError(WeatherForecastReply::NetworkError);
   }
   
   __forecastReplies << r;
-  RequestFinishedEvent e;
-  qApp->notify(r, &e);
+  r->setFinished(true);
   
   __newRequest();
 }
@@ -177,6 +177,7 @@ void UltimateWeatherForecasts::__finished() {
       __reply->deleteLater();
       __reply = nullptr;
       __finishRequest();
+      __data.clear();
       break;
       
     case QNetworkReply::TimeoutError:
@@ -188,6 +189,7 @@ void UltimateWeatherForecasts::__finished() {
       __reply = __nam.get(request);
       connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
       connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
+      __data.clear();
       break;
     }
   }

@@ -25,7 +25,7 @@
 #include "weatherforecastwidget.h"
 
 /* Size of the single forecast card */
-constexpr int WeatherWidth = 170;
+constexpr int WeatherWidth = 150;
 constexpr int WeatherHeight = 130;
 
 namespace {
@@ -73,16 +73,29 @@ WeatherForecastWidget::WeatherForecastWidget(QWidget* _parent,
 void
 WeatherForecastWidget::setData(const QVector<WeatherData*> _data) {
   __data = _data;
+  updateGeometry();
+  update();
+}
+
+void
+WeatherForecastWidget::setMessage(const QString& _message) {
+  __message = _message;
   update();
 }
 
 QSize
 WeatherForecastWidget::sizeHint() const {
-  return QSize(__maxIconCount * WeatherWidth, WeatherHeight);
+  if (__data.isEmpty())
+    return QWidget::sizeHint();
+  else
+    return QSize(__maxIconCount * WeatherWidth, WeatherHeight);
 }
 
 QSize WeatherForecastWidget::minimumSizeHint() const {
-  return QSize(__maxIconCount * WeatherWidth, WeatherHeight);
+  if (__data.isEmpty())
+    return QWidget::minimumSizeHint();
+  else
+    return QSize(__maxIconCount * WeatherWidth, WeatherHeight);
 }
 
 void
@@ -95,6 +108,11 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
   p.setBackground(QBrush(Qt::white));
   p.fillRect(_event->rect(), p.background());
   p.setRenderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+  
+  if (!__message.isEmpty()) {
+    p.drawText(_event->rect(), Qt::AlignCenter | Qt::TextWordWrap, __message);
+    return;
+  }
   
   if (__data.isEmpty()) {
     return;
@@ -151,8 +169,9 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     p.setPen(pen);
     
     /* Draw description */
-    QRect descRect(QPoint(), QSize(dayRect.width(), textHeight * 3));
-    descRect.moveTopRight(iconRect.bottomRight());
+    QRect descRect(QPoint(), QSize(dayRect.width(), WeatherHeight));
+    descRect.setTop(iconRect.bottom());
+    descRect.moveRight(iconRect.right());
     c = descRect.center();
     descRect.setWidth(descRect.width() - 30);
     descRect.moveCenter(c);

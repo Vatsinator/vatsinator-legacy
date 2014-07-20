@@ -157,7 +157,22 @@ AirportDetailsWindow::__updateForecast() {
   WeatherForecastReply* r = qobject_cast<WeatherForecastReply*>(sender());
   Q_ASSERT(r);
   
-  qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget())->setData(r->data());
+  WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
+  Q_ASSERT(w);
+  
+  if (r->error() == WeatherForecastReply::NoError) {
+    w->setData(r->data());
+  } else {
+    switch (r->error()) {
+      case WeatherForecastReply::NotFoundError:
+        w->setMessage(tr("No forecast for %1, %2").arg(r->request()->country(), r->request()->city()));
+        break;
+        
+      case WeatherForecastReply::NetworkError:
+        w->setMessage(tr("Network error"));
+        break;
+    }
+  }
 }
 
 void
