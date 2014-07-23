@@ -1,5 +1,5 @@
 /*
- * types.h
+ * weatherforecastrequest.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,32 +17,22 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#include "weatherforecastrequest.h"
 
-/**
- * Define custom types here.
- */
-#include <QEvent>
+WeatherForecastRequest::WeatherForecastRequest(QString _airport) :
+    __airport(_airport) {}
 
-namespace Event {
-
-enum Type {
-  
-  /* MouseLonLatEvent */
-  MouseLonLat = QEvent::User + 1,
-  
-  /* MapEvent */
-  Map,
-  
-  /* NotificationEvent */
-  Notification,
-  
-  /* RequestFinishedEvent */
-  RequestFinished
-  
-};
-
+void
+WeatherForecastRequest::setPosition(const LonLat& _ll) {
+  __position = _ll;
 }
 
-#endif // TYPES_H
+void
+WeatherForecastRequest::setCountry(const QString& _country) {
+  __country = _country;
+}
+
+void
+WeatherForecastRequest::setCity(const QString& _city) {
+  __city = _city;
+}

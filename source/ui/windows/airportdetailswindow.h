@@ -28,7 +28,6 @@ class Airport;
 class Controller;
 class Pilot;
 class NotamListModel;
-class WeatherForecast;
 class WeatherForecastModel;
 
 class AirportDetailsWindow :
@@ -50,14 +49,13 @@ private:
   void __adjustTables();
   
 private slots:
-  void __updateForecast(WeatherForecastModel*);
+  void __updateForecast();
   void __handleShowClicked();
   void __notamUpdate(NotamListModel*);
   void __goToNotam(QModelIndex);
 
 private:
   const Airport*        __airport;
-  WeatherForecast*      __forecast;
 
 };
 

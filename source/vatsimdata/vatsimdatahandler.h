@@ -41,6 +41,7 @@ class Pilot;
 class PlainTextDownloader;
 class UpdateScheduler;
 class Uir;
+class WeatherForecastInterface;
 class VatsinatorApplication;
 
 struct AirportRecord;
@@ -328,6 +329,13 @@ public:
   inline const qint64& currentTimestamp() const {
       return __currentTimestamp;
   }
+  
+    /**
+   * Running instance of weather forecast provider, or nullptr if none.
+   */
+  inline WeatherForecastInterface* weatherForecast() {
+    return __weatherForecast;
+  }
 
   /**
    * Returns true if status.txt is already fetched & parsed.
@@ -420,6 +428,11 @@ private slots:
    */
   void __handleFetchError();
   
+  /**
+   * Reload forecast provider, if user chooses another one.
+   */
+  void __reloadWeatherForecast();
+  
 private:  
   
   /*
@@ -491,9 +504,9 @@ private:
   
   PlainTextDownloader* __downloader;
   UpdateScheduler*     __scheduler;
-  
-  AbstractNotamProvider* __notamProvider;
-  
+
+  AbstractNotamProvider*        __notamProvider;
+  WeatherForecastInterface*     __weatherForecast;
 };
 
 #endif // VATSIMDATAHANDLER_H
