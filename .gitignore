@@ -6,6 +6,7 @@ archives
 
 # ignore KDevelop files #
 *.kdev4
+.kdev_include_paths
 
 # ignore directory prefs #
 *.directory
