@@ -72,6 +72,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   __updateModels();
   __adjustTables();
   
+  WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   if (VatsimDataHandler::getSingleton().weatherForecast()) {
     ForecastGroup->setEnabled(true);
     
@@ -83,9 +84,14 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
     WeatherForecastReply* reply = VatsimDataHandler::getSingleton().weatherForecast()->fetch(request);
     connect(reply,      SIGNAL(finished()),
             this,       SLOT(__updateForecast()));
+    
+    if (SM::get("network.weather_temperature_units").toString() == "Celsius")
+      w->setCelsius();
+    else
+      w->setFahrenheit();
   } else {
     ForecastGroup->setEnabled(false);
-//     ForecastView->setLoadingText(tr("No plugin selected"));
+    w->setMessage(tr("No plugin selected"));
   }
   
   NotamTableView->setModel(nullptr);

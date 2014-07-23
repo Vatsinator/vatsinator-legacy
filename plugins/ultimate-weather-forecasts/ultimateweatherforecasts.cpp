@@ -149,10 +149,16 @@ UltimateWeatherForecasts::__finishRequest() {
         map["condition"].toString()
       );
       
-      WeatherData::Temperature high{map["high_celsius"].toInt(), map["high"].toInt()};
+      WeatherData::Temperature high{
+        map["high_celsius"].toInt(),
+        static_cast<int>(map["high"].toDouble())
+      };
       data->setHigh(high);
       
-      WeatherData::Temperature low{map["low_celsius"].toInt(), map["low"].toInt()};
+      WeatherData::Temperature low{
+        map["low_celsius"].toInt(),
+        static_cast<int>(map["low"].toDouble())
+      };
       data->setLow(low);
       
       r->appendWeatherData(data);

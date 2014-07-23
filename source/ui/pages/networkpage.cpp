@@ -33,6 +33,7 @@ namespace DefaultSettings {
   static const bool    CACHE_ENABLED            = true;
   static const bool    DATABASE_INTEGRATION     = true;
   static const QString WEATHER_FORECASTS_PROVIDER = "";
+  static const QString WEATHER_TEMPERATURE_UNITS  = "Celsius";
 }
 
 NetworkPage::NetworkPage(QWidget* _parent) :
@@ -67,6 +68,7 @@ NetworkPage::updateFromUi() const {
   setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
   setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->text());
+  setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
 }
 
 void
@@ -98,6 +100,26 @@ NetworkPage::restore(QSettings& _s) {
     
     i += 1;
   }
+  
+  QString units;
+  if (!_s.contains("weather_temperature_units")) {
+    /* In USA provide Fahrenheit by default */
+    if (QLocale::system().country() == QLocale::UnitedStates) {
+      units = "Fahrenheit";
+    } else {
+      units = DefaultSettings::WEATHER_TEMPERATURE_UNITS;
+    }
+  } else {
+    units = _s.value("weather_temperature_units", DefaultSettings::WEATHER_TEMPERATURE_UNITS).toString();
+  }
+  
+  if (units != "Celsius" && units != "Fahrenheit")
+    units = DefaultSettings::WEATHER_TEMPERATURE_UNITS;
+  
+  if (units == "Celsius")
+    CelsiusRadioButton->setChecked(true);
+  else
+    FahrenheitRadioButton->setChecked(true);
 }
 
 void
@@ -108,6 +130,7 @@ NetworkPage::save(QSettings& _s) {
   _s.setValue("cache_enabled", CachingCheckBox->isChecked());
   _s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
   _s.setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->text());
+  _s.setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
 }
 
 void

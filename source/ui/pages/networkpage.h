@@ -45,6 +45,7 @@ public:
    * cache_enabled:                     bool
    * database_integration:              bool
    * weather_forecast_provider:         string
+   * weather_temperature_units:         string {"Celsius", "Fahrenheit"}
    */
   void updateFromUi() const;
   

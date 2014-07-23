@@ -68,11 +68,15 @@ namespace {
 WeatherForecastWidget::WeatherForecastWidget(QWidget* _parent,
                                              Qt::WindowFlags _f) :
     QWidget(_parent, _f),
-    __maxIconCount(5) {}
+    __maxItemCount(0),
+    __celsius(true) {}
 
 void
 WeatherForecastWidget::setData(const QVector<WeatherData*> _data) {
   __data = _data;
+  if (__maxItemCount == 0)
+    __maxItemCount = __data.count();
+  
   updateGeometry();
   update();
 }
@@ -80,22 +84,42 @@ WeatherForecastWidget::setData(const QVector<WeatherData*> _data) {
 void
 WeatherForecastWidget::setMessage(const QString& _message) {
   __message = _message;
+  updateGeometry();
+  update();
+}
+
+void
+WeatherForecastWidget::setMaxItemCount(int _count) {
+  __maxItemCount = _count;
+  updateGeometry();
+  update();
+}
+
+void
+WeatherForecastWidget::setCelsius() {
+  __celsius = true;
+  update();
+}
+
+void
+WeatherForecastWidget::setFahrenheit() {
+  __celsius = false;
   update();
 }
 
 QSize
 WeatherForecastWidget::sizeHint() const {
-  if (__data.isEmpty())
+  if (__data.isEmpty() || !__message.isEmpty())
     return QWidget::sizeHint();
   else
-    return QSize(__maxIconCount * WeatherWidth, WeatherHeight);
+    return QSize(__maxItemCount * WeatherWidth, WeatherHeight);
 }
 
 QSize WeatherForecastWidget::minimumSizeHint() const {
-  if (__data.isEmpty())
+  if (__data.isEmpty() || !__message.isEmpty())
     return QWidget::minimumSizeHint();
   else
-    return QSize(__maxIconCount * WeatherWidth, WeatherHeight);
+    return QSize(__maxItemCount * WeatherWidth, WeatherHeight);
 }
 
 void
@@ -118,7 +142,7 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     return;
   }
   
-  int i = 0, iconCount = qMin(__maxIconCount, __data.size());
+  int i = 0, iconCount = qMin(__maxItemCount, __data.size());
   int width = QWidget::width() / iconCount;
   int textHeight = QApplication::fontMetrics().height();
   
@@ -139,13 +163,14 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     p.setPen(pen);
     
     /* Draw temperatures */
-    /* TODO Choice between Celsius/Fahrenheit */
     QString degreeSign = QString::fromWCharArray(L"\u00B0");
+    int high = __celsius ? d->high().celsius : d->high().fahrenheit;
+    int low = __celsius ? d->low().celsius : d->low().fahrenheit;
     
     QRect highRect(QPoint(), QSize(textRect.width(), textHeight));
     highRect.moveTopLeft(textRect.bottomLeft());
     QRect highBoundingRect;
-    p.drawText(highRect, Qt::AlignLeft, QString::number(d->high().celsius) + degreeSign, &highBoundingRect);
+    p.drawText(highRect, Qt::AlignLeft, QString::number(high) + degreeSign, &highBoundingRect);
     
     QRect lowRect(QPoint(), QSize(textRect.width(), textHeight));
     lowRect.moveTopLeft(highBoundingRect.topRight());
@@ -153,7 +178,7 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     
     pen.setColor(Qt::darkGray);
     p.setPen(pen);
-    p.drawText(lowRect, Qt::AlignLeft, QString::number(d->low().celsius) + degreeSign);
+    p.drawText(lowRect, Qt::AlignLeft, QString::number(low) + degreeSign);
     
     /* Draw icon */
     QRect iconRect(QPoint(), QSize(IconWidth, IconHeight));
