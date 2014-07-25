@@ -21,7 +21,6 @@
 #include "storage/filemanager.h"
 
 #include "languagemanager.h"
-#include "defines.h"
 
 #include "vatsinatorapplication.h"
 
@@ -47,8 +46,8 @@ LanguageManager::getLanguageId(const QString& _locale) {
   return 0;
 }
 
-const
-QString& LanguageManager::getLocaleById(int _id) {
+const QString&
+LanguageManager::getLocaleById(int _id) {
   return __languages[_id].locale;
 }
 

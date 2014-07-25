@@ -17,10 +17,9 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "vatsimmessagedialog.h"
-#include "defines.h"
 
 VatsimMessageDialog::VatsimMessageDialog(const QString& _message, QWidget* _parent) :
     QDialog(_parent),

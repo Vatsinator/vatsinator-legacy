@@ -16,13 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtNetwork>
 
+#include "config.h"
 #include "vatsinatorapplication.h"
 
 #include "plaintextdownloader.h"
-#include "defines.h"
 
 PlainTextDownloader::PlainTextDownloader(QProgressBar* _pb, QObject* _parent) :
     QObject(_parent),

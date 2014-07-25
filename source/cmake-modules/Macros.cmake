@@ -17,22 +17,22 @@ endmacro (vatsinator_subdirectory_sources)
 
 
 macro (vatsinator_subdirectory_mocs SUBDIR MOC_SRCS)
-    if (NOT "${MOC_SRCS}" STREQUAL "")
-        qt4_wrap_cpp (vatsinator_${SUBDIR}_MOC_FILES ${MOC_SRCS})
-    endif (NOT "${MOC_SRCS}" STREQUAL "")
+#    if (NOT "${MOC_SRCS}" STREQUAL "")
+#        qt5_wrap_cpp (vatsinator_${SUBDIR}_MOC_FILES ${MOC_SRCS})
+#    endif (NOT "${MOC_SRCS}" STREQUAL "")
 endmacro (vatsinator_subdirectory_mocs)
 
 
 macro (vatsinator_subdirectory_forms SUBDIR FORMS)
     if (NOT "${FORMS}" STREQUAL "")
-        qt4_wrap_ui (vatsinator_${SUBDIR}_FORMS_FILES ${FORMS})
+        qt5_wrap_ui (vatsinator_${SUBDIR}_FORMS_FILES ${FORMS})
     endif (NOT "${FORMS}" STREQUAL "")
 endmacro (vatsinator_subdirectory_forms)
 
 
 macro (vatsinator_subdirectory_resources SUBDIR QRCS)
     if (NOT "${QRCS}" STREQUAL "")
-        qt4_add_resources (vatsinator_${SUBDIR}_RESOURCES ${QRCS})
+        qt5_add_resources (vatsinator_${SUBDIR}_RESOURCES ${QRCS})
     endif (NOT "${QRCS}" STREQUAL "")
 endmacro (vatsinator_subdirectory_resources)
 
@@ -40,7 +40,6 @@ endmacro (vatsinator_subdirectory_resources)
 macro (vatsinator_end_subdirectory SUBDIR)
     add_library (${SUBDIR} STATIC
         ${vatsinator_${SUBDIR}_SOURCES}
-        ${vatsinator_${SUBDIR}_MOC_FILES}
         ${vatsinator_${SUBDIR}_FORMS_FILES}
         ${vatsinator_${SUBDIR}_RESOURCES}
     )

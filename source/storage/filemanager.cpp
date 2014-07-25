@@ -16,18 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "storage/cachefile.h"
-
+#include "config.h"
 #include "vatsinatorapplication.h"
 
 #include "storage/filemanager.h"
-#include "defines.h"
 
 static const QString LocalDataLocation =
     QDir::cleanPath(
-        QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+        QStandardPaths::writableLocation(QStandardPaths::DataLocation)
       % QDir::separator()
       % "Vatsinator"
     ) % QDir::separator();
@@ -63,6 +62,9 @@ FileManager::moveToCache(const QString& _source, const QString& _destination) {
   file.close();
   
   CacheFile oldCache(_destination);
+  QFileInfo info(oldCache);
+  QDir(info.path()).mkpath(".");
+  
   if (oldCache.exists())
     oldCache.remove();
   

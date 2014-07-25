@@ -1,6 +1,6 @@
 /*
     atclistwindow.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,13 +21,10 @@
 #define ATCLISTWINDOW_H
 
 #include "ui/windows/basewindow.h"
-
 #include "ui/ui_atclistwindow.h"
-#include "singleton.h"
 
 class AtcListWindow :
     public BaseWindow,
-    public Singleton<AtcListWindow>,
     private Ui::ATCListWindow {
 
   Q_OBJECT
@@ -36,10 +33,11 @@ public:
   AtcListWindow(QWidget* = nullptr);
 
 protected:
-  void resizeEvent(QResizeEvent*);
+  void resizeEvent(QResizeEvent*) override;
+  void showEvent(QShowEvent*) override;
 
 private:
-  void __setColumnsWidths();
+  void __resizeColumns();
 
 private slots:
   void __handleDoubleClicked(const QModelIndex&);

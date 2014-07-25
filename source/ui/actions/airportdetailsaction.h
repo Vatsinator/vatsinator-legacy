@@ -25,7 +25,6 @@
 #include "vatsimdata/airport.h"
 
 class AirportDetailsAction : public QAction {
-
   Q_OBJECT
 
 signals:

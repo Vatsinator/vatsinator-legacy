@@ -16,21 +16,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "storage/filemanager.h"
-#include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "airportdatabase.h"
-#include "defines.h"
 
-AirportDatabase::AirportDatabase(QObject* _parent) : QObject(_parent) {
-  connect(this,                                 SIGNAL(fatal(QString)),
-          UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
-  
-//   __readDatabase();
-  QtConcurrent::run(this, &AirportDatabase::__readDatabase);
+AirportDatabase::AirportDatabase(QObject* _parent) : QObject(_parent) {}
+
+void
+AirportDatabase::init() {
+  __readDatabase();
 }
 
 const AirportRecord *
@@ -53,8 +50,10 @@ AirportDatabase::__readDatabase() {
   
   QFile db(FileManager::path("WorldAirports.db"));
   
-  if (!db.exists() || !db.open(QIODevice::ReadOnly))
-    emit fatal(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+  if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
+    notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    return;
+  }
   
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);
@@ -67,5 +66,4 @@ AirportDatabase::__readDatabase() {
   db.read(reinterpret_cast<char*>(&__airports[0]), sizeof(AirportRecord) * size);
 
   db.close();
-
 }

@@ -16,10 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "metaraction.h"
-#include "defines.h"
 
 MetarAction::MetarAction(const QString& _icao, QObject* _parent) :
     QAction(tr("%1 metar").arg(_icao), _parent),

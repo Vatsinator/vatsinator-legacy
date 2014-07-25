@@ -35,18 +35,20 @@ public:
 
   void bind() const;
   void unbind() const;
-
-#ifndef NO_DEBUG
-  static unsigned vboCount;
-#endif
+  
+  void setLength(unsigned);
+  
+  inline unsigned
+  dataSize() const { return __dataSize; }
+  
+  inline unsigned
+  length() const { return __length; }
 
 private:
   GLuint __vboID;
   GLenum __type;
-
-#ifndef NO_DEBUG
-  unsigned __size;
-#endif
+  unsigned __dataSize;
+  unsigned __length;
 
 };
 

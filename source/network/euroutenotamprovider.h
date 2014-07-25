@@ -25,16 +25,14 @@
 
 #include "network/abstractnotamprovider.h"
 
+/**
+ * This is EUroute NOTAM provider class.
+ * http://notams.euroutepro.com/doc/
+ * 
+ * To avoid excessive downloads, the XML file is cached and
+ * fetched only once per 24h.
+ */
 class EurouteNotamProvider : public AbstractNotamProvider {
-  
-  /**
-   * This is EUroute NOTAM provider class.
-   * http://notams.euroutepro.com/doc/
-   * 
-   * To avoid excessive downloads, the XML file is cached and
-   * fetched only once per 24h.
-   */
-  
   Q_OBJECT
 
 public:

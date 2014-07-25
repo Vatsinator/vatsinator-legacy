@@ -16,12 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "vatsimdata/client.h"
 
 #include "clientdetailsbutton.h"
-#include "defines.h"
 
 ClientDetailsButton::ClientDetailsButton(const Client* _client,
                                          QWidget* _parent) :

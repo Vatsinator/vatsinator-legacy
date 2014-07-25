@@ -1,5 +1,5 @@
-# 
-#   Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+﻿# 
+#   Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -17,20 +17,22 @@
 
 project (vatsinator)
 
-cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
-
-if ("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VERSION_GREATER 2.8.10)
-  cmake_policy (SET CMP0020 OLD)
-endif ("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VERSION_GREATER 2.8.10)
+cmake_minimum_required (VERSION 3.0.0 FATAL_ERROR)
+cmake_policy (SET CMP0020 OLD)
+cmake_policy (SET CMP0028 NEW)
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
-# find necessary libs
-find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
+find_package (Qt5Core REQUIRED)
+find_package (Qt5Widgets REQUIRED)
+find_package (Qt5OpenGL REQUIRED)
+find_package (Qt5Xml REQUIRED)
+find_package (Qt5Svg REQUIRED)
+find_package (Qt5Network REQUIRED)
+
 find_package (OpenGL REQUIRED)
 find_package (QuaZip REQUIRED)
 find_package (QJSON REQUIRED)
-
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)
@@ -42,11 +44,19 @@ if (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
     string (REPLACE "-rdynamic" "" CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS})
 endif (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
 
+add_definitions(${Qt5Widgets_DEFINITIONS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+include_directories(
+	${Qt5Core_INCLUDE_DIRS}
+	${Qt5Widgets_INCLUDE_DIRS}
+	${Qt5OpenGL_INCLUDE_DIRS}
+	${Qt5Network_INCLUDE_DIRS}
+	${Qt5Xml_INCLUDE_DIRS}
+)
+
 if (MINGW)
     set (WIN32 1)
 endif (MINGW)
-
-include(${QT_USE_FILE})
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
@@ -66,9 +76,8 @@ elseif (MSVC)
 endif (CMAKE_COMPILER_IS_GNUCXX)
 
 if (CMAKE_BUILD_TYPE MATCHES Release)
-  add_definitions(-DNO_DEBUG)
+  add_definitions(-DQT_NO_DEBUG)
 endif (CMAKE_BUILD_TYPE MATCHES Release)
-
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -115,24 +124,38 @@ elseif (APPLE)
 elseif (WIN32)
     
     if (MINGW)
+
+        # find absolute path to QJson library
+        find_library (QJSON_LIBRARY
+            NAMES libqjson.dll
+        )
         
+        message (STATUS "Found QJson library: ${QJSON_LIBRARY}")
+ 
         # On native compilers, we should use DeployQt4 module, as it
         # works on Apple builds. However, it is not possible during
         # cross-compile.
+        # TODO Qt5 compat
+        get_target_property(QtCore_location Qt5::Core LOCATION)
+        get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
+        get_target_property(QtNetwork_location Qt5::Network LOCATION)
+        get_target_property(QtOpenGL_location Qt5::OpenGL LOCATION)
+        get_target_property(QtSvg_location Qt5::Svg LOCATION)
+        get_target_property(QtXml_location Qt5::Xml LOCATION)
+
         install (FILES
-            ${QT_LIBRARY_DIR}/libgcc_s_dw2-1.dll
-            ${QT_LIBRARY_DIR}/mingwm10.dll
-            ${QT_QTGUI_LIBRARY_RELEASE}
-            ${QT_QTCORE_LIBRARY_RELEASE}
-            ${QT_QTNETWORK_LIBRARY_RELEASE}
-            ${QT_QTOPENGL_LIBRARY_RELEASE}
-            ${QT_QTSVG_LIBRARY_RELEASE}
-            ${QT_QTXML_LIBRARY_RELEASE}
+            ${QtCore_location}
+            ${QtWidgets_location}
+            ${QtNetwork_location}
+            ${QtOpenGL_location}
+            ${QtSvg_location}
+            ${QtXml_location}
             ${QUAZIP_LIBRARIES}
             ${QJSON_LIBRARY}
             DESTINATION .
-        )
-          
+	)    
+    else (MINGW)
+    
     endif (MINGW)
     
     # Awesome NSIS packaging

@@ -24,12 +24,11 @@
 #include <QStaticText>
 #include <QTimer>
 
-class ScrollLabel : public QWidget {
   
-  /*
-   * Used as a replacement for QLabel, if the text inside is too long.
-   */
-  
+/*
+ * Used as a replacement for QLabel, if the text inside is too long.
+ */
+class ScrollLabel : public QWidget {  
   Q_OBJECT
   
 public:

@@ -26,7 +26,6 @@
 #include "vatsinatorapplication.h"
 
 #include "euroutenotamprovider.h"
-#include "defines.h"
 
 static const QString EurouteNotamXmlUrl = "http://notams.euroutepro.com/notams.xml";
 static const QString EurouteLink = "http://notams.euroutepro.com/doc/rss.php";

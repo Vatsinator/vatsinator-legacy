@@ -16,12 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "vatsinatorapplication.h"
 
 #include "urlbutton.h"
-#include "defines.h"
 
 UrlButton::UrlButton(const QString& _text, const QString& _url, QWidget* _parent) :
     QPushButton(_text, _parent),

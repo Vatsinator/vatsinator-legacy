@@ -16,16 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
-
 #include "vatsimdata/airport.h"
-
 #include "vatsimdata/client/controller.h"
 
 #include "airporttablemodel.h"
-#include "defines.h"
 
 AirportTableModel::AirportTableModel(QObject* _parent) :
     QAbstractTableModel(_parent) {}
@@ -136,22 +133,22 @@ AirportTableModel::__produceFacilities(int _row) const {
 
   QString result;
 
-  if (facilities.testFlag(Controller::APP))
+  if (facilities.testFlag(Controller::App))
     result += "APP ";
 
-  if (facilities.testFlag(Controller::DEP))
+  if (facilities.testFlag(Controller::Dep))
     result += "DEP ";
 
-  if (facilities.testFlag(Controller::TWR))
+  if (facilities.testFlag(Controller::Twr))
     result += "TWR ";
 
-  if (facilities.testFlag(Controller::GND))
+  if (facilities.testFlag(Controller::Gnd))
     result += "GND ";
 
-  if (facilities.testFlag(Controller::DEL))
+  if (facilities.testFlag(Controller::Del))
     result += "DEL ";
 
-  if (facilities.testFlag(Controller::ATIS))
+  if (facilities.testFlag(Controller::Atis))
     result += "ATIS ";
 
   return result.simplified();

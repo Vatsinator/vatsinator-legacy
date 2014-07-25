@@ -20,48 +20,51 @@
 #ifndef WORLDMAP_H
 #define WORLDMAP_H
 
-#include <QObject>
+#include <QCoreApplication>
 #include <QVector>
 
 #include "db/point.h"
-
+#include "ui/notifiable.h"
 #include "singleton.h"
 
-class VertexBufferObject;
-
-class WorldMap : public QObject, public Singleton<WorldMap> {
-
+/**
+ * The WorldMap class is a layer between the application and the database.
+ * It contains global coastline as well as triangles.
+ */
+class WorldMap : public QObject, public Notifiable, public Singleton<WorldMap> {
   Q_OBJECT
-
-  struct WorldMapVBO {
-    VertexBufferObject* border;
-    int                 borderSize;
-    VertexBufferObject* triangles;
-    int                 trianglesSize;
-  };
 
   struct Polygon {
     QVector<Point>          borders;
-    QVector<unsigned short> triangles;
-    WorldMapVBO             vbo;
+    QVector<unsigned int>   triangles;
   };
   
-signals:
-  void fatal(QString);
-  
 public:
+  
+  /**
+   * Default ctor.
+   */
   WorldMap(QObject* = nullptr);
-  virtual ~WorldMap();
-
-  void draw() const;
+  
+  /**
+   * Read by VatsinatorApplication only.
+   */
+  void init();
+  
+  /**
+   * Gives direct access to the coastline.
+   */
+  const QVector<Point>& borders() const { return __worldPolygon.borders; }
+  
+  /**
+   * Gives direct access to triangles that fill lands.
+   */
+  const QVector<unsigned int>& triangles() const { return __worldPolygon.triangles; }
 
 private:
   void __readDatabase();
 
   Polygon __worldPolygon;
-
-private slots:
-  void __init();
 
 
 };

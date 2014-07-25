@@ -17,10 +17,9 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "letsendstatsdialog.h"
-#include "defines.h"
 
 LetSendStatsDialog::LetSendStatsDialog(QWidget* _parent) :
     QDialog(_parent) {

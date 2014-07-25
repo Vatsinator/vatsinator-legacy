@@ -25,12 +25,10 @@
 
 class Airport;
 
+/*
+ * This model holds the vector of active airports.
+ */
 class AirportTableModel : public QAbstractTableModel {
-
-  /*
-   * This model holds the vector of active airports.
-   */
-
   Q_OBJECT
 
 public:

@@ -27,10 +27,10 @@
 
 class QLabel;
 class QProgressBar;
+class MouseLonLatEvent;
 
 class VatsinatorWindow :
     public QMainWindow,
-    public Singleton<VatsinatorWindow>,
     private Ui::VatsinatorWindow {
   
   Q_OBJECT
@@ -50,19 +50,19 @@ public:
    */
   void infoBarUpdate();
   
-  inline MapWidget*
-  mapWidget() { return MapDisplay; }
-
-  inline QProgressBar*
-  progressBar() { return __progressBar; }
-
-  inline QLabel*
-  positionBox() { return PositionBox; }
+  /**
+   * Custom event handler.
+   */
+  bool event(QEvent*) override;
+  
+  inline MapWidget* mapWidget() { return MapDisplay; }
+  inline QProgressBar* progressBar() { return __progressBar; }
   
 protected:
   void closeEvent(QCloseEvent*) override;
   void showEvent(QShowEvent*) override;
-
+  virtual bool mouseLonLatMoveEvent(MouseLonLatEvent*);
+  
 private:
   void __storeWindowGeometry();
   void __restoreWindowGeometry();

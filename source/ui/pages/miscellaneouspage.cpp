@@ -16,19 +16,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "storage/languagemanager.h"
 
 #include "ui/userinterface.h"
 
 #include "miscellaneouspage.h"
-#include "defines.h"
 
 /* Default settings for MiscellaneousPage */
 namespace DefaultSettings {
-  static const bool    ANTYALIASING     = false;
-  static const int     ZOOM_COEFFICIENT = 30;
   static const bool    SEND_STATS       = true;
   static const QString LANGUAGE         = QLocale::system().name().left(2);
 }
@@ -59,14 +56,11 @@ MiscellaneousPage::pageName() const {
 
 void
 MiscellaneousPage::updateFromUi() const {
-  setValue("has_antyaliasing",
-           AntyaliasingCheckBox->isChecked());
-  setValue("zoom_coefficient",
-           ZoomCoefficientSlider->value());
   setValue("send_statistics",
            StatsCheckBox->isChecked());
-  setValue("language",
-           LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
+  /* TODO fix LanguageManager instance below */
+//   setValue("language",
+//            LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
 }
 
 void
@@ -76,10 +70,6 @@ MiscellaneousPage::showEvent(QShowEvent*) {
 
 void
 MiscellaneousPage::restore(QSettings& _s) {
-  AntyaliasingCheckBox->setChecked(
-    _s.value("has_antyaliasing", DefaultSettings::ANTYALIASING).toBool());
-  ZoomCoefficientSlider->setValue(
-    _s.value("zoom_coefficient", DefaultSettings::ZOOM_COEFFICIENT).toInt());
   StatsCheckBox->setChecked(
     _s.value("send_statistics", DefaultSettings::SEND_STATS).toBool());
   LanguageComboBox->setCurrentIndex(
@@ -91,8 +81,6 @@ MiscellaneousPage::restore(QSettings& _s) {
 
 void
 MiscellaneousPage::save(QSettings& _s) {
-  _s.setValue("has_antyaliasing", AntyaliasingCheckBox->isChecked());
-  _s.setValue("zoom_coefficient", ZoomCoefficientSlider->value());
   _s.setValue("send_statistics", StatsCheckBox->isChecked());
   _s.setValue("language", LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
   

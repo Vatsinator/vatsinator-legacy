@@ -16,10 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
+#include <QStyleOptionButton>
+#include <QApplication>
+#include <qdrawutil.h>
 
 #include "colorbutton.h"
-#include "defines.h"
 
 ColorButton::ColorButton(QWidget* _parent) :
     QPushButton("", _parent) {

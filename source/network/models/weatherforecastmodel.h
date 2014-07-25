@@ -1,6 +1,6 @@
 /*
  * weatherforecastmodel.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,10 @@
 #include <QByteArray>
 #include <QVector>
 
+/**
+ * The WeatherForecastModel class is a model that keeps weather data.
+ */
 class WeatherForecastModel : public QAbstractTableModel {
-  
-  /**
-   * This is model for the weather forecast.
-   */
-  
   Q_OBJECT
   
 public:

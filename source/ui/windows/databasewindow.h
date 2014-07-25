@@ -1,6 +1,6 @@
 /*
  * databasewindow.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,11 @@
 #define DATABASEWINDOW_H
 
 #include "ui/windows/basewindow.h"
-
 #include "network/resourcemanager.h"
 #include "ui/ui_databasewindow.h"
-#include "singleton.h"
 
 class DatabaseWindow :
     public BaseWindow,
-    public Singleton<DatabaseWindow>,
     private Ui::DatabaseWindow {
   
   Q_OBJECT
@@ -37,6 +34,7 @@ public:
   DatabaseWindow(QWidget* = nullptr);
   
 private slots:
+  void __updateNumbers();
   void __updateDatabaseStatus(ResourceManager::VersionStatus);
   
 };

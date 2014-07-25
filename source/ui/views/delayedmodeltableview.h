@@ -23,15 +23,13 @@
 #include <QTableView>
 #include <QString>
 
+/**
+ * This view is designed for these models that do not come
+ * at once, i. e. have to be fetched from the internet before
+ * they can be shown. If the model is null, this view will
+ * show "Loading" message in the center of the view.
+ */
 class DelayedModelTableView : public QTableView {
-  
-  /**
-   * This view is designed for these models that do not come
-   * at once, i. e. have to be fetched from the internet before
-   * they can be shown. If the model is null, this view will
-   * show "Loading" message in the center of the view.
-   */
-  
   Q_OBJECT
   
 public:

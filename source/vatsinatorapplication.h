@@ -46,16 +46,18 @@ class VatsinatorApplication :
     public QApplication,
     public Singleton<VatsinatorApplication> {
 
-  /*
-   * This class handles the whole Vatsinator application and has
-   * only one instance.
-   */
-
   Q_OBJECT
   
 signals:
+  /**
+   * First emitted in the application. No objects are created yet.
+   */
+  void initializing();
+  
+  /**
+   * UserInterface is created (all windows).
+   */
   void uiCreated();
-  void glInitialized();
 
 public:
   /**
@@ -64,8 +66,9 @@ public:
   VatsinatorApplication(int&, char**);
 
   virtual ~VatsinatorApplication();
+  
+  UserInterface* userInterface();
 
-  static void emitGLInitialized();
   
   static const QFont& boldFont();
   static const QFont& h1Font();
@@ -76,7 +79,7 @@ public:
 #endif
     static void terminate();
 
-#ifdef NO_DEBUG
+#ifdef QT_NO_DEBUG
 
   inline static void
   log(const char*) {}
@@ -111,20 +114,25 @@ public:
 public slots:
   void restart();
   
-private:
-  void __emitGLInitialized();
+private slots:
+  
+  /**
+   * Initialize the application.
+   * This slot is connected to the initializing() signal.
+   */
+  void __initialize();
   
 private:
   
   UserInterface*       __userInterface;
   FileManager*         __fileManager;
+  SettingsManager*     __settingsManager;
   AirlineDatabase*     __airlineDatabase;
-  AirportDatabase*     __airportsData;
-  FirDatabase*         __firsData;
+  AirportDatabase*     __airportDatabaase;
+  FirDatabase*         __firDatabase;
   WorldMap*            __worldMap;
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;
-  SettingsManager*     __settingsManager;
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;
@@ -138,5 +146,9 @@ private:
   };
 
 };
+
+inline VatsinatorApplication* vApp() {
+  return qobject_cast<VatsinatorApplication*>(QCoreApplication::instance());
+}
 
 #endif // VATSINATORAPPLICATION_H

@@ -21,15 +21,11 @@
 #define ABOUTWINDOW_H
 
 #include "network/resourcemanager.h"
-
 #include "ui/windows/basewindow.h"
-
 #include "ui/ui_aboutwindow.h"
-#include "singleton.h"
 
 class AboutWindow :
     public BaseWindow,
-    public Singleton<AboutWindow>,
     private Ui::AboutWindow {
 
   Q_OBJECT

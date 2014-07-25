@@ -1,6 +1,6 @@
 /*
     trackaction.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,24 +16,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
-#include "modules/flighttracker.h"
+#include "ui/map/mapscene.h"
+#include "ui/widgets/mapwidget.h"
 
 #include "trackaction.h"
-#include "defines.h"
 
 TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
     QAction(tr("Track this flight"), _parent),
     __current(_pilot) {
+  
   setCheckable(true);
-  if (__current == FlightTracker::getSingleton().tracked())
+  if (__current == MapWidget::getSingleton().scene()->trackedFlight())
     setChecked(true);
 
-  connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
+  connect(this, SIGNAL(triggered()), SLOT(__handleTriggered()));
+  connect(MapWidget::getSingleton().scene(),    SIGNAL(flightTracked(const Pilot*)),
+          this,                                 SLOT(__updateChecked(const Pilot*)));
 }
 
 void
 TrackAction::__handleTriggered() {
-  emit triggered(__current);
+  MapWidget::getSingleton().scene()->trackFlight(__current);
+}
+
+void
+TrackAction::__updateChecked(const Pilot* _p) {
+  setChecked(_p == __current);
 }

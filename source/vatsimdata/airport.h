@@ -1,6 +1,6 @@
 /*
     airport.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,62 +20,129 @@
 #ifndef AIRPORT_H
 #define AIRPORT_H
 
+#include <QObject>
 #include <QString>
-#include <QtOpenGL>
-
-#include "vatsimdata/clickable.h"
+#include <QPair>
 
 #include "vatsimdata/client/controller.h"
 
 struct AirportRecord;
+class ControllerTableModel;
 class Fir;
+class FlightTableModel;
+class Pilot;
 
-class Airport : public Clickable {
-  
-  /*
-   * This is the interface for airport object.
-   * It represents an airport on the map - can be clicked
-   * or have the sub-menu.
-   * Inherited by ActiveAirport and EmptyAirport classes.
-   */
+/*
+ * This is the class that represents the single airport.
+ */
+class Airport : public QObject {
+  Q_OBJECT
+
+signals:
+  void updated();
 
 public:
+  
+  /**
+   * TODO: remove (deprecated).
+   */
   Airport(const QString&);
+  
+  /**
+   * @param data Record in the database.
+   */
   Airport(const AirportRecord*);
   
-  virtual ~Airport();
+  ~Airport();
   
-  virtual unsigned countDepartures() const = 0;
-  virtual unsigned countOutbounds() const = 0;
-  virtual unsigned countArrivals() const = 0;
-  virtual unsigned countInbounds() const = 0;
+  /**
+   * Counts flights that are about to take off.
+   */
+  unsigned countDepartures() const;
   
-  virtual bool hasApproach() const = 0;
-  virtual Controller::Facilities facilities() const = 0;
+  /**
+   * Counts flights that originate from the airport and are airborne
+   * or have just arrived.
+   */
+  unsigned countOutbounds() const;
   
-  virtual void drawLines() const = 0;
+  /**
+   * Counts flights that have just landed.
+   */
+  unsigned countArrivals() const;
   
-  virtual inline const AirportRecord *
-  data() const { return __data; }
+  /**
+   * Counts flights that fly towards the airport.
+   */
+  unsigned countInbounds() const;
   
-  inline Clickable::Type
-  objectType() const { return Clickable::AIRPORT; }
+  /**
+   * Returns OR-combined facilities that are available on the airport.
+   */
+  Controller::Facilities facilities() const;
   
-  inline GLuint
-  labelTip() const { return __labelTip ? __labelTip : __generateTip(); }
+  /**
+   * Adds new controller to the airport.
+   */
+  void addStaff(const Controller*);
   
-  inline Fir **
-  firs() { return __firs; }
+  /**
+   * Adds new inbound flight to the airport.
+   */
+  void addInbound(const Pilot*);
   
-protected:
-  Fir* __firs[2];
+  /**
+   * Adds new outbound flight to the airport.
+   */
+  void addOutbound(const Pilot*);
+  
+  /**
+   * @return True if the airport does not have any controllers or flights, otherwise false.
+   */
+  bool isEmpty() const;
+  
+  /**
+   * @return True if at least one ATC is available on the airport.
+   */
+  bool isStaffed() const;
+  
+  /**
+   * @return The airport's position.
+   */
+  LonLat position() const;
+  
+  /**
+   * @return Pointer to AirportRecord in the database.
+   */
+  inline const AirportRecord* data() const { return __data; }
+  
+  /**
+   * @return The airport ICAO code.
+   */
+  inline const QString& icao() const { return __icao; }
+  
+  /**
+   * @return Staff model of the airport.
+   */
+  inline ControllerTableModel* staff() const { return __staff; }
+  
+  /**
+   * @return Inbound flights for the airport.
+   */
+  inline FlightTableModel* inbounds() const { return __inbounds; }
+  
+  /**
+   * @return Outbound flights for the airport.
+   */
+  inline FlightTableModel* outbounds() const { return __outbounds; }
   
 private:
-  GLuint __generateTip() const;
+  const AirportRecord*  __data;
+  const QString         __icao;
   
-  const AirportRecord* __data;
-  
-  mutable GLuint __labelTip;
+  ControllerTableModel* __staff;
+  FlightTableModel*     __inbounds;
+  FlightTableModel*     __outbounds;
 
 };
 

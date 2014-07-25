@@ -17,10 +17,9 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "flightprogresswidget.h"
-#include "defines.h"
 
 FlightProgressWidget::FlightProgressWidget(QWidget* _parent) :
     QProgressBar(_parent) {

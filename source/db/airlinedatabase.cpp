@@ -18,54 +18,66 @@
  */
 
 #include <QtCore>
-#include <QRegExp>
+#include <qjson/parser.h>
 
+#include "db/airline.h"
 #include "storage/filemanager.h"
-#include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "airlinedatabase.h"
-#include "defines.h"
 
 AirlineDatabase::AirlineDatabase(QObject* _parent) :
-    QObject(_parent)
-#ifndef GCC_VERSION_47
-    , __nope("")
-#endif
-{
-  connect(this,                                 SIGNAL(warning(QString)),
-          UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
-  QtConcurrent::run(this, &AirlineDatabase::__init);
-}
-
-const QString
-AirlineDatabase::find(const QString& _key) {
-  return __airlines.value(_key, __nope);
-}
+    QObject(_parent),
+    __airlineLogoUrl(),
+    __canFetch(false) {}
 
 void
-AirlineDatabase::__init() {
+AirlineDatabase::init() {
   QFile db(FileManager::path("data/airlines"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit warning(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
     return;
   }
+
+  QJson::Parser parser;
+  bool ok;
   
-  static QRegExp rx("^(.{3})\\s(.+)$");
+  QVariant content = parser.parse(&db, &ok);
+  QVariantMap rootMap = content.toMap();
   
-  while (!db.atEnd()) {
-    QString line = db.readLine();
-    line = line.simplified();
-    
-    if (line.startsWith('#') || line.isEmpty())
-      continue;
-    
-    if (rx.indexIn(line) >= 0)
-      __airlines.insert(rx.cap(1), rx.cap(2));
-    else
-      VatsinatorApplication::log("AirlineDatabase: invalid entry: %s", qPrintable(line));
+  if (rootMap.contains("config")) {
+    QVariantMap config = rootMap["config"].toMap();
+    __airlineLogoUrl = config["airlinelogourl"].toString();
+    __canFetch = config["canfetch"].toInt() > 0;
+  }
+  
+  if (rootMap.contains("data")) {
+     QVariantList data = rootMap["data"].toList();
+     for (const QVariant& a: data) {
+       QVariantMap ad = a.toMap();
+       Airline* airline = new Airline(
+           ad["icao"].toString(),
+           ad["name"].toString(),
+           ad["country"].toString(),
+           ad["website"].toString(),
+           ad["logo"].toString(),
+           this
+         );
+       
+       __airlines.insert(airline->icao(), airline);
+     }
   }
   
   db.close();
+}
+
+Airline*
+AirlineDatabase::find(const QString& _icao) {
+  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
+}
+
+const Airline*
+AirlineDatabase::find(const QString& _icao) const {
+  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
 }

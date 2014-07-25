@@ -1,6 +1,6 @@
 /*
     controller.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,22 +16,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
-#include "db/firdatabase.h"
-
 #include "network/statspurveyor.h"
-
-#include "vatsimdata/airport/activeairport.h"
-
-#include "vatsimdata/uir.h"
+#include "vatsimdata/airport.h"
+#include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsinatorapplication.h"
 
 #include "controller.h"
-#include "defines.h"
 
 QMap<int, QString> Controller::ratings;
 bool Controller::__ratingsInitialized = Controller::__initRatings();
@@ -84,11 +78,22 @@ Controller::Controller(const QStringList& _data) :
     __frequency(_data[4]),
     __rating(_data[16].toInt()),
     __atis(_data[35]),
-    __airport(NULL),
+    __airport(nullptr),
     __isOK(true) {
   
   __cleanupAtis();
   __setMyIcaoAndFacility();
+}
+
+void
+Controller::update(const QStringList& _data) {
+  Client::update(_data);
+  __frequency = _data[4];
+  __rating = _data[16].toInt();
+  __atis = _data[35];
+  __cleanupAtis();
+  
+  emit updated();
 }
 
 void Controller::__cleanupAtis() {
@@ -103,97 +108,62 @@ void Controller::__cleanupAtis() {
 
 void
 Controller::__setMyIcaoAndFacility() {
-  QStringList sections = __callsign.split('_');
+  QStringList sections = callsign().split('_');
 
   if (sections.back() == "CTR") {
-    __facility = CTR;
-    __airport = NULL;
+    __facility = Ctr;
+    __airport = nullptr;
 
     __icao = sections.front();
-
-    Fir* fir = FirDatabase::getSingleton().find(__icao);
-
+    
+    Fir* fir = VatsimDataHandler::getSingleton().findFir(__icao);
     if (fir) {
       fir->addStaff(this);
-      __produceDescription(fir);
+      __makeDescription(fir);
     } else {
-      // handle USA three-letters callsigns
-      if (__icao.length() == 3) {
-        fir = FirDatabase::getSingleton().find("K" + __icao);
 
-        if (fir) {
-          fir->addStaff(this);
-          __produceDescription(fir);
-          return;
-        }
-      }
-
-      for (const QString& alias: VatsimDataHandler::getSingleton().aliases().values(__icao)) {
-        fir = FirDatabase::getSingleton().find(alias);
-
-        if (fir) {
-          fir->addStaff(this);
-          __produceDescription(fir);
-          return;
-        }
-      }
-
-      Uir* uir = VatsimDataHandler::getSingleton().findUIR(__icao);
-
-      if (uir) {
-        uir->addStaff(this);
-        __produceDescription(uir);
-        return;
-      }
-
-      VatsinatorApplication::log("FIR could not be matched for: %s.", __callsign.toStdString().c_str());
-
+// TODO
+//       Uir* uir = VatsimDataHandler::getSingleton().findUIR(__icao);
+// 
+//       if (uir) {
+//         uir->addStaff(this);
+//         __produceDescription(uir);
+//         return;
+//       }
+      
+      StatsPurveyor::getSingleton().reportNoAtc(callsign());
+      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+      __isOK = false;
     }
-
-    return;
   } else if (sections.back() == "FSS") {
-    __facility = FSS;
-    __airport = NULL;
+    __facility = Fss;
+    __airport = nullptr;
 
     QString& icao = sections.front();
 
-    Fir* fir = FirDatabase::getSingleton().find(icao, true);
+    Fir* fir = VatsimDataHandler::getSingleton().findFir(icao, true);
+    if (!fir) {
+      fir = VatsimDataHandler::getSingleton().findFir(icao, false);
+    }
 
     if (fir) {
       fir->addStaff(this);
-      __produceDescription(fir);
-      return;
+      __makeDescription(fir);
+    } else {
+      StatsPurveyor::getSingleton().reportNoAtc(callsign());
+      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+      __isOK = false;
     }
 
-    Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
-
-    if (uir) {
-      uir->addStaff(this);
-      __produceDescription(uir);
-      return;
-    }
-
-    fir = FirDatabase::getSingleton().find(icao);
-
-    if (fir) {
-      fir->addStaff(this);
-      __produceDescription(fir);
-      return;
-    }
-
-    for (QString & alias: VatsimDataHandler::getSingleton().aliases().values(icao)) {
-      fir = FirDatabase::getSingleton().find(alias, true);
-
-      if (fir) {
-        fir->addStaff(this);
-        __produceDescription(fir);
-        return;
-      }
-    }
-
-    VatsinatorApplication::log("FIR could not be matched for: %s.", __callsign.toStdString().c_str());
-
-    return;
+// TODO
+//     Uir* uir = VatsimDataHandler::getSingleton().findUIR(icao);
+// 
+//     if (uir) {
+//       uir->addStaff(this);
+//       __produceDescription(uir);
+//       return;
+//     }
+    
   } else if (
     sections.back() == "APP" ||
     sections.back() == "DEP" ||
@@ -202,109 +172,76 @@ Controller::__setMyIcaoAndFacility() {
     sections.back() == "DEL" ||
     sections.back() == "ATIS") {
     if (sections.back() == "APP")
-      __facility = APP;
+      __facility = App;
     else if (sections.back() == "DEP")
-      __facility = DEP;
+      __facility = Dep;
     else if (sections.back() == "TWR")
-      __facility = TWR;
+      __facility = Twr;
     else if (sections.back() == "GND")
-      __facility = GND;
+      __facility = Gnd;
     else if (sections.back() == "DEL")
-      __facility = DEL;
+      __facility = Del;
     else if (sections.back() == "ATIS")
-      __facility = ATIS;
+      __facility = Atis;
 
-    const AirportRecord* apShot = AirportDatabase::getSingleton().find(sections.front());
-
-    if (apShot) {
-      ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(sections.front());
+    Airport* ap = VatsimDataHandler::getSingleton().findAirport(sections.front());
+    if (ap) {
       ap->addStaff(this);
-      __airport = ap->data();
-      __produceDescription(__airport);
-      return;
+      __airport = ap;
+      __makeDescription(__airport);
     } else {
-      if (sections.front().length() == 3) {
-        // USA callsigns often are just three last letters of full airport ICAO code
-        QString alias = "K" + sections.front();
-        apShot = AirportDatabase::getSingleton().find(alias);
-
-        if (apShot) {
-          ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
-          ap->addStaff(this);
-          __airport = ap->data();
-          __produceDescription(__airport);
-          return;
-        }
-      }
-
-      for (QString & alias: VatsimDataHandler::getSingleton().aliases().values(sections.front())) {
-        apShot = AirportDatabase::getSingleton().find(alias);
-
-        if (apShot) {
-          ActiveAirport* ap = VatsimDataHandler::getSingleton().addActiveAirport(alias);
-          ap->addStaff(this);
-          __airport = ap->data();
-          __produceDescription(__airport);
-          return;
-        }
-      }
-
-      StatsPurveyor::getSingleton().reportNoAtc(__callsign);
-      VatsinatorApplication::log("Airport not found for %s.", qPrintable(__callsign));
+      StatsPurveyor::getSingleton().reportNoAtc(callsign());
+      VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
+      __isOK = false;
     }
-
-    return;
-
   }
-
-  __isOK = false;
 }
 
 void
-Controller::__produceDescription(const Fir* _f) {
+Controller::__makeDescription(const Fir* _f) {
   Q_ASSERT(_f);
   __description = _f->name();
 }
 
 void
-Controller::__produceDescription(const Uir* _u) {
+Controller::__makeDescription(const Uir* _u) {
   Q_ASSERT(_u);
-  __description = _u->name();
+//   __description = _u->name();
 }
 
 void
-Controller::__produceDescription(const AirportRecord* _ap) {
+Controller::__makeDescription(const Airport* _ap) {
   QString apName, fName; // airport name, facility name
 
   if (!_ap) {
     apName = "Unknown";
   } else {
-    if (qstrcmp(_ap->name, _ap->city) == 0)
-      apName = QString::fromUtf8(_ap->name);
+    if (qstrcmp(_ap->data()->name, _ap->data()->city) == 0)
+      apName = QString::fromUtf8(_ap->data()->name);
     else
       apName =
-        QString::fromUtf8(_ap->city) %
+        QString::fromUtf8(_ap->data()->city) %
         "/" %
-        QString::fromUtf8(_ap->name);
+        QString::fromUtf8(_ap->data()->name);
   }
 
   switch (__facility) {
-    case ATIS:
+    case Atis:
       fName = "ATIS";
       break;
-    case DEL:
+    case Del:
       fName = "Delivery";
       break;
-    case GND:
+    case Gnd:
       fName = "Ground";
       break;
-    case TWR:
+    case Twr:
       fName = "Tower";
       break;
-    case APP:
+    case App:
       fName = "Approach";
       break;
-    case DEP:
+    case Dep:
       fName = "Departure";
       break;
     default:

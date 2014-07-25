@@ -26,8 +26,10 @@
 #include "singleton.h"
 
 class Airport;
-class MapWidget;
 
+/**
+ * TODO: remove (deprecated)
+ */
 class AirportTracker :
      public QObject,
      public Singleton<AirportTracker> {
@@ -37,8 +39,6 @@ class AirportTracker :
 public:
   AirportTracker(QObject* = 0);
   virtual ~AirportTracker();
-  
-  void init();
   
   void updateData();
   
@@ -53,8 +53,6 @@ public:
    
    QMap< QString, const Airport* > __trackedAirports;
    bool __isInitialized;
-   
-   MapWidget*    __myMapWidget;
    
 private slots:
   void __toggleAirport(const Airport*);

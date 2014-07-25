@@ -17,14 +17,10 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
-#ifndef NO_DEBUG
-# include "debugging/debugwindow.h"
-#endif
-
+#include "events/mouselonlatevent.h"
 #include "modules/homelocation.h"
-
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/atclistwindow.h"
 #include "ui/windows/databasewindow.h"
@@ -32,13 +28,10 @@
 #include "ui/windows/metarswindow.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/userinterface.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsinatorapplication.h"
 
 #include "vatsinatorwindow.h"
-#include "defines.h"
 
 VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
     QMainWindow(_parent) {
@@ -47,37 +40,37 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(close()));
   
-  connect(ActionExit,                               SIGNAL(triggered()),
-          qApp,                                     SLOT(quit()));
-  connect(ActionAbout,                              SIGNAL(triggered()),
-          AboutWindow::getSingletonPtr(),           SLOT(show()));
-  connect(ActionMetar,                              SIGNAL(triggered()),
-          MetarsWindow::getSingletonPtr(),          SLOT(show()));
-  connect(ActionDatabase,                           SIGNAL(triggered()),
-          DatabaseWindow::getSingletonPtr(),        SLOT(show()));
-  connect(ActionRefresh,                            SIGNAL(triggered()),
-          VatsimDataHandler::getSingletonPtr(),     SLOT(requestDataUpdate()));
-  connect(ActionPreferences,                        SIGNAL(triggered()),
-          SettingsWindow::getSingletonPtr(),        SLOT(show()));
-  connect(ActionFlightList,                         SIGNAL(triggered()),
-          FlightListWindow::getSingletonPtr(),      SLOT(show()));
-  connect(ActionATCList,                            SIGNAL(triggered()),
-          AtcListWindow::getSingletonPtr(),         SLOT(show()));
-  connect(ActionHomeLocation,                       SIGNAL(triggered()),
-          HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
+  connect(ActionExit,                                   SIGNAL(triggered()),
+          qApp,                                         SLOT(quit()));
+  connect(ActionAbout,                                  SIGNAL(triggered()),
+          vApp()->userInterface()->aboutWindow(),       SLOT(show()));
+  connect(ActionMetar,                                  SIGNAL(triggered()),
+          vApp()->userInterface()->metarsWindow(),      SLOT(show()));
+  connect(ActionDatabase,                               SIGNAL(triggered()),
+          vApp()->userInterface()->databaseWindow(),    SLOT(show()));
+  connect(ActionRefresh,                                SIGNAL(triggered()),
+          VatsimDataHandler::getSingletonPtr(),         SLOT(requestDataUpdate()));
+  connect(ActionPreferences,                            SIGNAL(triggered()),
+          vApp()->userInterface()->settingsWindow(),    SLOT(show()));
+  connect(ActionFlightList,                             SIGNAL(triggered()),
+          vApp()->userInterface()->flightListWindow(),  SLOT(show()));
+  connect(ActionATCList,                                SIGNAL(triggered()),
+          vApp()->userInterface()->atcListWindow(),     SLOT(show()));
+//   connect(ActionHomeLocation,                       SIGNAL(triggered()),
+//           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
   
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataDownloading()),
-          this,                                     SLOT(__dataDownloading()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
-          this,                                     SLOT(__statusUpdated()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
-          this,                                     SLOT(__dataCorrupted()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
-          this,                                     SLOT(__dataUpdated()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
-          this,                                     SLOT(__dataCorrupted()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusUpdated()),
-          this,                                     SLOT(__enableRefreshAction()));
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimDataDownloading()),
+          this,                                         SLOT(__dataDownloading()));
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimStatusUpdated()),
+          this,                                         SLOT(__statusUpdated()));
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimStatusError()),
+          this,                                         SLOT(__dataCorrupted()));
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimDataUpdated()),
+          this,                                         SLOT(__dataUpdated()));
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimDataError()),
+          this,                                         SLOT(__dataCorrupted()));
+  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimStatusUpdated()),
+          this,                                         SLOT(__enableRefreshAction()));
   
 #ifdef Q_OS_DARWIN
   /* On Mac set main manu name to "Menu" in order not to have two
@@ -93,17 +86,6 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   __progressBar->setTextVisible(true);
   
   Replaceable->addWidgets({__statusBox, __progressBar});
-
-#ifndef NO_DEBUG
-  MenuHelp->addSeparator();
-
-  QAction* debugAction = new QAction("Debug...", this);
-
-  connect(debugAction,                    SIGNAL(triggered()),
-          DebugWindow::getSingletonPtr(), SLOT(show()));
-
-  MenuHelp->addAction(debugAction);
-#endif
   
   statusBarUpdate();
 }
@@ -138,6 +120,16 @@ VatsinatorWindow::infoBarUpdate() {
   );
 }
 
+bool
+VatsinatorWindow::event(QEvent* _e) {
+  switch (_e->type()) {
+    case Event::MouseLonLat:
+      return mouseLonLatMoveEvent(dynamic_cast<MouseLonLatEvent*>(_e));
+    default:
+      return QMainWindow::event(_e);
+  }
+}
+
 void
 VatsinatorWindow::closeEvent(QCloseEvent*) {
   __storeWindowGeometry();
@@ -147,6 +139,18 @@ VatsinatorWindow::closeEvent(QCloseEvent*) {
 void
 VatsinatorWindow::showEvent(QShowEvent*) {
   __restoreWindowGeometry();
+}
+
+bool
+VatsinatorWindow::mouseLonLatMoveEvent(MouseLonLatEvent* _event) {
+  PositionBox->setText(QString("%1 %2 %3 %4").arg(
+    _event->lonLat().latitude() > 0 ? "N" : "S",
+    QString::number(qAbs(_event->lonLat().latitude()), 'g', 6),
+    _event->lonLat().longitude() < 0 ? "W" : "E",
+    QString::number(qAbs(_event->lonLat().longitude()), 'g', 6)
+  ));
+  
+  return true;
 }
 
 void

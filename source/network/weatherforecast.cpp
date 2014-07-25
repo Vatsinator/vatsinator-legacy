@@ -20,12 +20,11 @@
 #include <QtNetwork>
 
 #include "network/models/weatherforecastmodel.h"
-
+#include "config.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "weatherforecast.h"
-#include "defines.h"
 
 static QString WeatherForecastApiUrl =
   QString(NetConfig::Vatsinator::apiUrl()) + QString("weatherforecast.php?location=%1");

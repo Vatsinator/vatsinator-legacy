@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "network/plaintextdownloader.h"
 
@@ -25,7 +25,6 @@
 #include "vatsinatorapplication.h"
 
 #include "metarlistmodel.h"
-#include "defines.h"
 
 // How to recognize unavailable metars.
 // This value represents the response returned by vatsim server
@@ -33,11 +32,11 @@
 static const QString NoMetarText = "No METAR available";
 
 
-MetarListModel::MetarListModel(PlainTextDownloader* _hh, QObject* _parent) :
+MetarListModel::MetarListModel(PlainTextDownloader* _ptd, QObject* _parent) :
     QAbstractListModel(_parent),
-    __downloader(_hh) {
-  connect(__downloader, SIGNAL(finished(QString)),
-          this,         SLOT(__readMetar(QString)));
+    __downloader(_ptd) {
+  connect(__downloader,         SIGNAL(finished(QString)),
+          this,                 SLOT(__readMetar(QString)));
 }
 
 void
@@ -153,6 +152,5 @@ MetarListModel::__readMetar(const QString& _metar) {
     __addMetar(oneMetar);
 
   __requests.dequeue();
-
   emit newMetarsAvailable();
 }

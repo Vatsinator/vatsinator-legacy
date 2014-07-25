@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
 
@@ -25,7 +25,6 @@
 #include "vatsimdata/airport.h"
 
 #include "toggleinboundoutboundlinesaction.h"
-#include "defines.h"
 
 ToggleInboundOutboundLinesAction::ToggleInboundOutboundLinesAction(
   const Airport* _ap, QObject* _parent) :

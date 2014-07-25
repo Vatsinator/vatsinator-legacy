@@ -16,10 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "scrolllabel.h"
-#include "defines.h"
 
 static const int SCROLL_LABEL_MARGIN = 5;
 

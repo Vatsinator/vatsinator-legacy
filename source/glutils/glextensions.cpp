@@ -22,8 +22,6 @@
 #include <QDebug>
 #include <QGLContext>
 
-#include "debugging/glerrors.h"
-
 #include "config.h"
 #if defined Q_OS_LINUX
 # include <GL/glx.h>
@@ -39,11 +37,11 @@
 typedef ptrdiff_t GLsizeiptr;
 typedef ptrdiff_t GLintptr;
 
-void (* glBindBuffer)    (GLenum, GLuint);
-void (* glBufferData)    (GLenum, int, const GLvoid*, GLenum);
-void (* glBufferSubData) (GLenum, GLintptr, GLsizeiptr, const GLvoid*);
-void (* glDeleteBuffers) (GLsizei, const GLuint*);
-void (* glGenBuffers)    (GLsizei, GLuint*);
+void(*glBindBuffer)    (GLenum, GLuint) = nullptr;
+void(*glBufferData)    (GLenum, int, const GLvoid*, GLenum) = nullptr;
+void(*glBufferSubData) (GLenum, GLintptr, GLsizeiptr, const GLvoid*) = nullptr;
+void(*glDeleteBuffers) (GLsizei, const GLuint*) = nullptr;
+void(*glGenBuffers)    (GLsizei, GLuint*) = nullptr;
 
 /*
  * Get extension pointer.
@@ -52,30 +50,29 @@ template <typename T>
  static inline T
  getProcAddress(const char* _procName) {
    T temp = NULL;
-#if defined Q_WS_X11
+#if defined Q_OS_LINUX
     temp = reinterpret_cast<T>(glXGetProcAddress(reinterpret_cast<const GLubyte*>(_procName)));
-#elif defined Q_WS_WIN
+#elif defined Q_OS_WIN32
     temp = reinterpret_cast<T>(wglGetProcAddress(_procName));
 #endif
     
-    Q_ASSERT(temp != nullptr);
-
-#ifndef NO_DEBUG
-    registerExtensionPointer(_procName, reinterpret_cast<long long unsigned>(temp));
-#endif
-  
+    Q_ASSERT(temp);
     return temp;
   }
 
 void
 initGLExtensionsPointers() {
   Q_ASSERT(QGLContext::currentContext()->isValid());
+  
+#define init_ext(val) val = getProcAddress<decltype(val)>(#val)
 
-  glBindBuffer = getProcAddress<decltype(glBindBuffer)>("glBindBuffer");
-  glBufferData = getProcAddress<decltype(glBufferData)>("glBufferData");
-  glBufferSubData = getProcAddress<decltype(glBufferSubData)>("glBufferSubData");
-  glDeleteBuffers = getProcAddress<decltype(glDeleteBuffers)>("glDeleteBuffers");
-  glGenBuffers = getProcAddress<decltype(glGenBuffers)>("glGenBuffers");
+  init_ext(glBindBuffer);
+  init_ext(glBufferData);
+  init_ext(glBufferSubData);
+  init_ext(glDeleteBuffers);
+  init_ext(glGenBuffers);
+  
+#undef init_ext
 }
 
 #endif // Q_WS_MAC

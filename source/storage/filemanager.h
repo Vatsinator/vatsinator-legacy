@@ -30,11 +30,10 @@
 
 class FileDownloader;
 
+/*
+ * This class stores vatsinator files' locations.
+ */
 class FileManager : public Singleton<FileManager> {
-  
-  /*
-   * This class stores vatsinator files' locations.
-   */
   
 public:
   

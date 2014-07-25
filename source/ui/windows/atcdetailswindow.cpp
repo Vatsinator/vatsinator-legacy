@@ -16,85 +16,69 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
 #include "ui/userinterface.h"
-
+#include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
-
 #include "vatsimdata/client/controller.h"
-
+#include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsinatorapplication.h"
 
 #include "atcdetailswindow.h"
-#include "defines.h"
 
-AtcDetailsWindow::AtcDetailsWindow(QWidget* _parent) :
-    BaseWindow(_parent) {
+AtcDetailsWindow::AtcDetailsWindow(const Controller* _c, QWidget* _parent) :
+    BaseWindow(_parent),
+    __atc(_c) {
   setupUi(this);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-
-  connect(ShowButton,                           SIGNAL(clicked()),
-          this,                                 SLOT(__handleShowClicked()));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__updateData()));
+  connect(qApp,                 SIGNAL(aboutToQuit()),
+          this,                 SLOT(hide()));
+  connect(ShowButton,           SIGNAL(clicked()),
+          this,                 SLOT(__handleClicked()));
+  connect(__atc,                SIGNAL(updated()),
+          this,                 SLOT(__updateLabels()));
 }
 
 void
-AtcDetailsWindow::show(const Client* _client) {
-  Q_ASSERT(dynamic_cast<const Controller*>(_client));
-  __current = dynamic_cast<const Controller*>(_client);
-  __currentCallsign = __current->callsign();
+AtcDetailsWindow::show() {
+  Q_ASSERT(__atc);
+  __updateLabels();
+  BaseWindow::show();
+}
 
-  setWindowTitle(tr("%1 - ATC details").arg(__current->callsign()));
+void
+AtcDetailsWindow::__updateLabels() {
+  setWindowTitle(tr("%1 - ATC details").arg(__atc->callsign()));
 
-  CallsignLabel->setText(__current->callsign());
-  FacilityLabel->setText(__current->description());
-  NameLabel->setText(__current->realName() + " (" + QString::number(__current->pid()) + ")");
-  FrequencyLabel->setText(__current->frequency());
-  RatingLabel->setText(Controller::ratings[__current->rating()]);
+  CallsignLabel->setText(__atc->callsign());
+  FacilityLabel->setText(__atc->description());
+  NameLabel->setText(QString("%1 (%2)").arg(__atc->realName(), QString::number(__atc->pid())));
+  FrequencyLabel->setText(__atc->frequency());
+  RatingLabel->setText(Controller::ratings[__atc->rating()]);
 
-  if (__current->airport())
-    AirportLabel->setText(static_cast<QString>(__current->airport()->icao) %
-                          " " %
-                          QString::fromUtf8(__current->airport()->name) %
-                          ", " %
-                          QString::fromUtf8(__current->airport()->city)
-                         );
+  if (__atc->airport())
+    AirportLabel->setText(QString("%1 %2, %3").arg(
+      QString(__atc->airport()->data()->icao),
+      QString::fromUtf8(__atc->airport()->data()->name),
+      QString::fromUtf8(__atc->airport()->data()->city)
+    ));
   else
     AirportLabel->setText(tr("N/A"));
 
-  ServerLabel->setText(__current->server());
-  TimeOnlineLabel->setText(__current->onlineFrom().toString("dd MMM yyyy, hh:mm"));
+  ServerLabel->setText(__atc->server());
+  TimeOnlineLabel->setText(__atc->onlineFrom().toString("dd MMM yyyy, hh:mm"));
 
-  AtisMessageField->setPlainText(__current->atis());
-
-  if (!isVisible())
-    QWidget::show();
-  else
-    activateWindow();
+  AtisMessageField->setPlainText(__atc->atis());
 }
 
 void
-AtcDetailsWindow::__updateData() {
-  __current = VatsimDataHandler::getSingleton().findAtc(__currentCallsign);
-  
-  if (!__current) {
-    __currentCallsign = "";
-    hide();
-  }
-}
-
-void
-AtcDetailsWindow::__handleShowClicked() {
-  Q_ASSERT(__current);
-  MapWidget::getSingleton().showClient(__current);
+AtcDetailsWindow::__handleClicked() {
+  Q_ASSERT(__atc);
+  MapWidget::getSingleton().scene()->moveSmoothly(__atc->position());
+  close();
 }
 

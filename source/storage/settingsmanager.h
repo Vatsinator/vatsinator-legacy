@@ -30,20 +30,18 @@
 class AbstractSettingsPage;
 class SettingsWindow;
 
+/**
+ * This class gives us access to global user configuration.
+ * Usage is pretty rich, so avoid it if unnesessary or store
+ * settings in local variables. You can use settingsChanged()
+ * signal to update needed settings.
+ * It works like this:
+ * SM::get("network.refresh_rate").toInt();
+ * SM is typedef for SettingsManager.
+ */
 class SettingsManager :
     public QObject,
     public Singleton<SettingsManager> {
-  
-  /*
-   * This class gives us access to global user configuration.
-   * Usage is pretty rich, so avoid it if unnesessary or store
-   * settings in local variables. You can use settingsChanged()
-   * signal to update needed settings.
-   * It works like this:
-   * SM::get("network.refresh_rate").toInt();
-   * SM is typedef for SettingsManager.
-   */
-
   Q_OBJECT
   
   friend class AbstractSettingsPage;
@@ -54,8 +52,6 @@ signals:
 public:
   SettingsManager(QObject* = 0);
   virtual ~SettingsManager();
-  
-  void init();
   
   /**
    * We need this to be accessible before all pages are created.
@@ -77,6 +73,9 @@ public:
    * @param pName Page name.
    */
   static void updateUi(const QString&);
+  
+public slots:
+  void init();
 
 private:
   

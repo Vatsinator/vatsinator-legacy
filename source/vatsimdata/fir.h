@@ -1,6 +1,6 @@
 /*
     fir.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,120 +20,97 @@
 #ifndef FIR_H
 #define FIR_H
 
-#include <QVector>
+#include <QObject>
+#include <QString>
 
-#include <qgl.h>
-
-#include "db/point.h"
-
-#include "vatsimdata/airport.h"
-#include "vatsimdata/clickable.h"
-
+class Airport;
 class AirportTableModel;
 class Controller;
 class ControllerTableModel;
 class FirDatabase;
 class FlightTableModel;
 class Pilot;
-class VertexBufferObject;
-struct FirHeader;
+struct FirRecord;
 
-class Fir : public Clickable {
-
+class Fir : public QObject {
+  Q_OBJECT
+  
+signals:
+  void updated();
+  
 public:
-  Fir();
+  
+  /**
+   * @param data Record in the database.
+   */
+  Fir(const FirRecord*);
+  
   virtual ~Fir();
-
-  inline Clickable::Type
-  objectType() const { return Clickable::FIR; }
-
+  
+  /**
+   * Records staff in the fir.
+   */
   void addStaff(const Controller*);
-  void addUirStaff(const Controller*);
-
+  
+  /**
+   * Records flight in the fir.
+   */
   void addFlight(const Pilot*);
-
+  
+  /**
+   * Adds Airport to the FIR.
+   */
   void addAirport(const Airport*);
-
-  void correctName();
-
-  void init();
-  void loadHeader(const FirHeader&);
-  void clear();
+  
+  /**
+   * Having the name set, this method suffixes it with "Oceanic" or "Center",
+   * appropriately.
+   */
+  void fixupName();
+  
+  /**
+   * @return True if any ATC is available (either this FIR or containing UIR).
+   */
   bool isStaffed() const;
-
-  void drawBorders() const;
-  void drawTriangles() const;
-
-  inline ControllerTableModel *
-  staffModel() const { return __staff; }
-
-  inline FlightTableModel *
-  flightsModel() const { return __flights; }
-
-  inline AirportTableModel *
-  airportsModel() const { return __airports; }
-
-  inline bool
-  hasUirStaff() const { return __uirStaffCount; }
-
-  inline const QString &
-  icao() const { return __icao; }
-
-  inline bool
-  isOceanic() const { return __oceanic; }
-
-  inline const Point &
-  textPosition() const { return __textPosition; }
-
-  inline const QString &
-  name() const { return __name; }
-
-  inline void
-  setName(const QString& _n) { __name = _n; }
-
-  inline const QString &
-  country() const { return __country; }
-
-  inline void
-  setCountry(const QString& _c) { __country = _c; }
-
-  inline GLuint
-  icaoTip() const { return __icaoTip ? __icaoTip : __generateTip(); }
-
-  inline QVector<Point> &
-  borders() { return __borders; }
-
-  inline QVector<unsigned short> &
-  triangles() { return __triangles; }
-
+  
+  /**
+   * @return True if there is no ATC controlling the FIR.
+   */
+  bool isEmpty() const;
+  
+  /**
+   * @return True is position is not equal to (0, 0).
+   */
+  bool hasValidPosition() const;
+  
+  void setName(const QString&);
+  void setCountry(const QString&);
+  
+  inline const FirRecord* data() const { return __data; }
+  
+  inline ControllerTableModel* staff() const { return __staff; }
+  inline FlightTableModel* flights() const { return __flights; }
+  inline AirportTableModel* airports() const { return __airports; }
+  
+  inline const QString& icao() const { return __icao; }
+  inline bool isOceanic() const { return __oceanic; }
+  
+  inline const QString& name() const { return __name; }
+  inline const QString& country() const { return __country; }
+  
 private:
+  
+  const FirRecord* __data;
 
-  GLuint __generateTip() const;
-  void __prepareVBO();
+  QString       __icao;
+  bool          __oceanic;
 
-  QString __icao;
-  bool __oceanic;
-  Point __externities[2];
-  Point __textPosition;
+  QString       __name;
+  QString       __country;
 
-  QString __name;
-  QString __country;
-  QVector<Point> __borders;
-  QVector<unsigned short> __triangles;
-
-  mutable GLuint __icaoTip;
-
-  ControllerTableModel*   __staff;
-  FlightTableModel*   __flights;
-  AirportTableModel*  __airports;
-
-  unsigned __uirStaffCount;
-
-  VertexBufferObject* __bordersVBO;
-  VertexBufferObject* __trianglesVBO;
-
-  unsigned  __bordersSize;
-  unsigned  __trianglesSize;
+  ControllerTableModel* __staff;
+  FlightTableModel*     __flights;
+  AirportTableModel*    __airports;
 };
 
 #endif // FIR_H

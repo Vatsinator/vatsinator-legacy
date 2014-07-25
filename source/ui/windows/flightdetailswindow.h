@@ -1,6 +1,6 @@
 /*
     flightdetailswindow.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,45 +16,37 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef FLIGHTDETAILSWINDOW_H
 #define FLIGHTDETAILSWINDOW_H
 
 #include "ui/windows/basewindow.h"
-
 #include "ui/ui_flightdetailswindow.h"
-#include "singleton.h"
 
-class Client;
 class Pilot;
 
-class FlightDetailsWindow :
-    public BaseWindow,
-    public Singleton< FlightDetailsWindow >,
-    private Ui::FlightDetailsWindow {
-
+class FlightDetailsWindow : public BaseWindow, private Ui::FlightDetailsWindow {
   Q_OBJECT
   
 signals:
   void flightTrackingStateChanged(const Pilot*, int);
 
 public:
-  FlightDetailsWindow(QWidget* = nullptr);
+  FlightDetailsWindow(const Pilot*, QWidget* = nullptr);
 
 public slots:
-  void show(const Client*);
+  void show();
   void stateHandle(int);
 
 private:
-  void __updateToFromButtons();
-
-  const Pilot*  __current;
-  QString   __currentCallsign;
-
+  void __updateButtons();
+  
 private slots:
-  void __updateData();
-  void __handleShowClicked();
+  void __updateLabels();
+  void __handleClicked();
+  void __airlineUpdated();
 
+private:
+  const Pilot*  __pilot;
 
 };
 

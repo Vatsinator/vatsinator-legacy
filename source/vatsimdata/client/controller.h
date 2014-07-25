@@ -1,6 +1,6 @@
 /*
     controller.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,28 +25,29 @@
 
 #include "vatsimdata/client.h"
 
-struct AirportRecord;
+class Airport;
 class Fir;
 class Uir;
 
+
+/*
+ * This class represents the ATC.
+ */
 class Controller : public Client {
-  
-  /*
-   * This class represents the ATC.
-   */
+  Q_OBJECT
 
 public:
   /* Types */
   enum Facility {
-    ATIS      = 0x1,
-    DEL       = 0x2,
-    GND       = 0x4,
-    TWR       = 0x8,
-    APP       = 0x10,
-    DEP       = 0x20,
-    CTR       = 0x40,
-    FSS       = 0x80,
-    OBS       = 0x100
+    Atis      = 0x1,
+    Del       = 0x2,
+    Gnd       = 0x4,
+    Twr       = 0x8,
+    App       = 0x10,
+    Dep       = 0x20,
+    Ctr       = 0x40,
+    Fss       = 0x80,
+    Obs       = 0x100
   };
   Q_DECLARE_FLAGS(Facilities, Facility);
   
@@ -55,35 +56,50 @@ public:
   
   Controller(const QStringList&);
   
+  void update(const QStringList&);
+  
   /**
-   * Reimplemented from Client::clientType().
+   * The frequency that the ATC currently operates on.
    */
-  inline Client::Type
-  clientType() const { return Client::ATC; }
+  inline const QString& frequency() const { return __frequency; }
   
-  inline const QString &
-  frequency() const { return __frequency; }
+  /**
+   * The client's rating index. Use Controller::ratings to get the
+   * real rating.
+   */
+  inline int rating() const { return __rating; }
   
-  inline int
-  rating() const { return __rating; }
+  /**
+   * The icao that the ATC controls. It can be airport or FIR icao.
+   */
+  inline const QString& icao() const { return __icao; }
   
-  inline const QString &
-  icao() const { return __icao; }
+  /**
+   * The current ATIS message.
+   */
+  inline const QString& atis() const { return __atis; }
   
-  inline const QString &
-  atis() const { return __atis; }
+  /**
+   * The airport that the Controller manages.
+   * Returns nullptr if the Controller manages Fir or is the Obs, for
+   * example.
+   */
+  inline const Airport* airport() const { return __airport; }
   
-  inline const AirportRecord *
-  airport() const { return __airport; }
+  /**
+   * The ATC's facility.
+   */
+  inline Controller::Facility facility() const { return __facility; }
   
-  inline Controller::Facility
-  facility() const { return __facility; }
+  /**
+   * Gets the ATC description, ie "New York approach".
+   */
+  inline const QString& description() const { return __description; }
   
-  inline const QString &
-  description() const { return __description; }
-  
-  inline bool
-  isOk() const { return __isOK; }
+  /**
+   * If isOk() returns false it means that
+   */
+  inline bool isOk() const { return __isOK; }
   
   
   /* Stores ATC ratings.
@@ -91,30 +107,24 @@ public:
    */
   static QMap<int, QString> ratings;
   
-protected:
-  QString              __frequency;
-  int                  __rating;
-  QString              __icao;
-  
-  QString              __atis;
-  
-  const AirportRecord* __airport;
-  
-  Controller::Facility __facility;
-  
-  QString              __description;
-  
-  bool                 __isOK;
-
 private:
   void __cleanupAtis();
   void __setMyIcaoAndFacility();
-  void __produceDescription(const Fir*);
-  void __produceDescription(const Uir*);
-  void __produceDescription(const AirportRecord*);
+  void __makeDescription(const Fir*);
+  void __makeDescription(const Uir*);
+  void __makeDescription(const Airport*);
 
   static bool __initRatings();
 
+  QString              __frequency;
+  int                  __rating;
+  QString              __icao;
+  QString              __atis;
+  const Airport*       __airport;
+  Controller::Facility __facility;
+  QString              __description;
+  bool                 __isOK;
+  
   static bool __ratingsInitialized;
 
 };

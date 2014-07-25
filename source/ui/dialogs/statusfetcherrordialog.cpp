@@ -17,10 +17,9 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "statusfetcherrordialog.h"
-#include "defines.h"
 
 StatusFetchErrorDialog::StatusFetchErrorDialog(QWidget* _parent) :
     QMessageBox(_parent) {

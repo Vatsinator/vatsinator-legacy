@@ -1,6 +1,6 @@
 /*
     bookedatctablemodel.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,9 @@
 
 class BookedController;
 
+/**
+ * The BookedAtcTableModel is a model that keeps bookings.
+ */
 class BookedAtcTableModel : public QAbstractTableModel {
   
   Q_OBJECT
@@ -36,7 +39,7 @@ public:
   explicit BookedAtcTableModel(QObject* = 0);
   virtual ~BookedAtcTableModel();
   
-  void addStaff(const BookedController*);
+  void add(const BookedController*);
   void clear();
   
   int rowCount(const QModelIndex& = QModelIndex()) const;

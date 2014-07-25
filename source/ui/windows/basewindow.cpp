@@ -17,12 +17,13 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "ui/windows/vatsinatorwindow.h"
+#include "ui/userinterface.h"
+#include "vatsinatorapplication.h"
 
 #include "basewindow.h"
-#include "defines.h"
 
 BaseWindow::BaseWindow(QWidget* _parent, Qt::WindowFlags _f) :
   QWidget(_parent, _f),
@@ -35,7 +36,7 @@ void BaseWindow::showEvent(QShowEvent*) {
         Qt::LeftToRight,
         Qt::AlignCenter,
         this->size(),
-        QDesktopWidget().screenGeometry(VatsinatorWindow::getSingletonPtr())
+        QDesktopWidget().screenGeometry(vApp()->userInterface()->mainWindow())
       )
     );
     

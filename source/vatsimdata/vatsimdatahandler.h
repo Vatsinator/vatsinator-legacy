@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,40 +25,43 @@
 #include <QString>
 #include <QVector>
 #include <QMap>
+#include <QMultiMap>
 
 #include <qmath.h>
 
+#include "vatsimdata/client.h"
 #include "singleton.h"
 
 class AbstractNotamProvider;
-class ActiveAirport;
 class Airport;
-class AirportDatabase;
 class Controller;
 class ControllerTableModel;
-class EmptyAirport;
-class FirDatabase;
+class Fir;
 class FlightTableModel;
 class Pilot;
 class PlainTextDownloader;
-class Uir;
 class UpdateScheduler;
 class VatsinatorApplication;
 
 struct AirportRecord;
 
+/**
+ * The VatsimDataHandler class is generally responsible for handling all
+ * Vatsim specific data. Not only keeps it track of all connected clients,
+ * but it also downloads data automatically when needed, parses local files
+ * and provides some math functions.
+ */
 class VatsimDataHandler :
     public QObject,
     public Singleton<VatsimDataHandler> {
-
-  /*
-   * This class contains data about all connected clients, needed URLs
-   * and airports.
-   */
-
   Q_OBJECT
   
 signals:
+  
+  /**
+   * All data is read.
+   */
+  void initialized();
   
   /**
    * Called when vatsim data starts to be downloaded.
@@ -94,79 +97,84 @@ public:
   /**
    * Default ctor.
    */
-  VatsimDataHandler();
-
+  VatsimDataHandler(QObject* = nullptr);
+  
   /**
    * Destructor deletes all pointers.
    */
   ~VatsimDataHandler();
   
   /**
-   * Parses the data files. Must be called after AirportsDatabase::init()
-   * and FirsDatabase::init().
+   * Parses the data files.
    */
   void init();
-
+  
   /**
-   * This function parses the raw "status.txt" file. That file is fetched
-   * by VatsinatorApplication class and given exactly here.
+   * This function parses the raw "status.txt" file.
    */
   void parseStatusFile(const QString&);
-
+  
   /**
-   * This function parses data file. Its URL can be obtained by getDataUrl()
-   * function and is choosen randomly from servers list.
-   * During parsing new Pilots, Controllers and Airports instances are
-   * created.
+   * This function parses the data file.
    */
   void parseDataFile(const QString&);
-
+  
   /**
    * Chooses randomly one of URLs and returns it.
    */
   const QString& getDataUrl() const;
-
+  
+  /**
+   * Creates the new model and populates it with all flights online.
+   */
+  FlightTableModel* flightTableModel() const;
+  
+  /**
+   * Creates the new model and populates it with all controllers online.
+   */
+  ControllerTableModel* controllerTableModel() const;
+  
   /**
    * Finds pilot by callsign and returns pointer. If not found, returns
-   * NULL.
+   * nullptr.
    * @param callsign Callsign of the pilot to be found.
-   * @return Const-pointer to the Pilot class instance or NULL.
+   * @return Const-pointer to the Pilot class instance or nullptr.
    */
   const Pilot* findPilot(const QString&) const;
   
   /**
    * Finds Controller by callsign and returns pointer. If not found,
-   * returns NULL.
+   * returns nullptr.
    * @param callsign Callsign of the controller to be found.
-   * @return Const-pointer to the Controller class instance or NULL.
+   * @return Const-pointer to the Controller class instance or nullptr.
    */
   const Controller* findAtc(const QString&) const;
-
-  /**
-   * Finds UIR by ICAO.
-   */
-  Uir* findUIR(const QString&);
-
-  /**
-   * Adds an airport to the ActiveAirports map (if it doesn't exist already).
-   * @param icao ICAO code of the airport to be added.
-   * @return Pointer to the ActiveAirport.
-   */
-  ActiveAirport* addActiveAirport(const QString&);
   
   /**
-   * Adds an inactive airport to the EmptyAirport map.
-   */
-  EmptyAirport* addEmptyAirport(const QString&);
-  EmptyAirport* addEmptyAirport(const AirportRecord*);
-  
-  /**
-   * Finds airport with particular ICAO.
+   * Finds airport with particular _icao_ code or any airport that the given
+   * _icao_ is alias of.
    * @param icao Airport ICAO code.
-   * @return Pointer to the Airport instance (can be ActiveAirport
-   *         or EmptyAirport pointer).
+   * @return Pointer to the Airport instance or nullptr if could not find.
    */
   Airport* findAirport(const QString&);
+  
+  /**
+   * @return List of all airports recognized by Vatsinator.
+   */
+  QList<Airport*> airports() const;
+  
+  /**
+   * Finds FIR that matches the given _icao_ code or any FIR that the given
+   * _icao_ is alias of.
+   * @param icao The FIR ICAO code.
+   * @return Pointer to the Fir instance or nullptr if no matches.
+   */
+  Fir* findFir(const QString&, bool = false);
+  
+  /**
+   * @return List of all FIRs known by Vatsinator.
+   */
+  QList<Fir*> firs() const;
 
   /**
    * @return Count of logged-in clients (pilots + controllers + observers).
@@ -194,6 +202,32 @@ public:
   AbstractNotamProvider* notamProvider();
   
   /**
+   * Calculates the distance between two points. The unit is undefined.
+   * 
+   * NOTE: If you need specific unit, i.e. nautical miles, use
+   * VatsimDataHandler::nmDistance() function.
+   * 
+   * @param lat1 Latitude of the first point.
+   * @param lon1 Longitude of the first point.
+   * @param lat2 Latitude of the second point.
+   * @param lon2 Longitude of the second point.
+   * @return Distance between these two points.
+   */
+  static qreal fastDistance(const qreal&, const qreal&, const qreal&, const qreal&);
+  
+  /**
+   * Calculates the distance between two points. The unit is undefined.
+   * 
+   * NOTE: If you need specific unit, i.e. nautical miles, use
+   * VatsimDataHandler::nmDistance() function.
+   * 
+   * @param a First point in the global coordinates.
+   * @param b Second point in the global coordinates.
+   * @return Distance between these two points.
+   */
+  static qreal fastDistance(const LonLat&, const LonLat&);
+  
+  /**
    * Calculates distance between two points, expressed in
    * nautical miles.
    * 
@@ -207,54 +241,75 @@ public:
    * @param lon1 Longitude of the first point.
    * @param lat2 Latitude of the second point.
    * @param lon2 Longitude of the second point.
-   * @return Distance between the two points.
+   * @return Distance between these two points.
    */
   static qreal nmDistance(const qreal&, const qreal&, const qreal&, const qreal&);
+  
+  /**
+   * Calculates distance between two points, expressed in
+   * nautical miles.
+   * 
+   * NOTE: If you don't need the distance specifically in nautical miles
+   * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+   * instead, as it is a lot quicker.
+   * 
+   * NOTE: All coordinates must be in radians.
+   * 
+   * @param a First point.
+   * @param b Second point.
+   * @return Distance between these two points.
+   */
+  static qreal nmDistance(const LonLat&, const LonLat&);
+  
+  /**
+   * Map (Callsign <-> instance pairs) of connected clients.
+   */
+  inline const QMap<QString, Client*>& clients() { return __clients; }
+  
+  /**
+   * List of only new clients, i.e. that showed up in the last update.
+   */
+  inline const QList<Client*>& newClients() { return __newClients; }
 
   /**
    * Returns an URL to where METARs can be fetched from.
    */
-  inline const QString &
-  metarUrl() const { return __metarUrl; }
+  inline const QString& metarUrl() const { return __metarUrl; }
 
   /**
-   * The following functions return const references to vectors of clients.
+   * Gives access to all aliases, stored in "data/alias" file.
    */
-  inline FlightTableModel*
-  flightsModel() { return __flights; }
-
-  inline ControllerTableModel*
-  atcModel() { return __atcs; }
-
-  inline const QVector<Uir*> &
-  uirs() const { return __uirs; }
-
-  inline const QMap<QString, ActiveAirport*> &
-  activeAirports() const { return __activeAirports; }
-  
-  inline const QMap<QString, EmptyAirport*> &
-  emptyAirports() const { return __emptyAirports; }
-
-  inline const QMultiMap<QString, QString> &
-  aliases() const { return __aliases; }
-  
-  inline int
-  reload() const { return __reload; }
-  
-  inline const QDateTime &
-  dateDataUpdated() const { return __dateVatsimDataUpdated; }
-
-  inline bool
-  statusFileFetched() const { return __statusFileFetched; }
-
-  inline static qreal
-  distance(const qreal& _ax, const qreal& _ay,
-               const qreal& _bx, const qreal& _by) {
-    return qSqrt(
-             qPow(_ax - _bx, 2) +
-             qPow(_ay - _by, 2)
-           );
+  inline const QMultiMap<QString, QString>& aliases() const {
+    return __aliases;
   }
+  
+  /**
+   * Time between data reloads, in minutes.
+   */
+  inline int reload() const { return __reload; }
+  
+  /**
+   * Returns last Vatsim data update date and time.
+   */
+  inline const QDateTime& dateDataUpdated() const {
+    return __dateVatsimDataUpdated;
+  }
+  
+  /**
+   * Current timestamp is updated every time VatsimDataHandler receives new
+   * data file and is guaranteed to be unique. Each client should contain
+   * its own copy of this variable and update it on every update() call.
+   * This way we can track outdated clients that are not longer logged-in
+   * to Vatsim, but still have place in Vatsinator memory.
+   */
+  inline const qint64& currentTimestamp() const {
+      return __currentTimestamp;
+  }
+
+  /**
+   * Returns true if status.txt is already fetched & parsed.
+   */
+  inline bool statusFileFetched() const { return __statusFileFetched; }
   
   /* These pointers are used for empty views.
    * Giving the NULL pointer in setModel() removes headers. */
@@ -272,11 +327,12 @@ public slots:
   
 private:
   
+  /**
+   * Sections of the data file. Each section is defined as "!SECTION:"
+   * For example:
+   *   !CLIENTS:
+   */
   enum DataSections {
-    /* Sections of the data file. Each section is defined as "!SECTION:"
-     * For example:
-     *   !CLIENTS:
-     */
     None,
     General,
     Clients,
@@ -284,23 +340,47 @@ private:
   };
   
   /**
-   * These functions read data files.
+   * Struct that keeps some raw info about client that we need during data file
+   * parsing process.
+   */
+  struct RawClientData {
+    RawClientData(const QString&);
+    
+    QStringList line;
+    bool valid;
+    QString callsign;
+    enum { Pilot, Atc } type;
+  };
+  
+  /**
+   * The following functions read data files.
    * @param fileName Location of the data file.
    */
   void __readAliasFile(const QString&);
   void __readCountryFile(const QString&);
   void __readFirFile(const QString&);
   void __readUirFile(const QString&);
+  
+  /**
+   * Loads classes that wrap database records.
+   */
+  void __initData();
 
   /**
-   * Removes all data, frees pointers
+   * Removes all data, frees pointers.
    */
   void __clearData();
   
   /**
-   * Loades cached data
+   * Loads data file stored in the cache.
    */
   void __loadCachedData();
+  
+  /**
+   * Goes through all the clients and checks whether they are still online
+   * or not. The check is based on the client's timestamp.
+   */
+  void __cleanupClients();
   
 private slots:
   void __slotUiCreated();
@@ -311,57 +391,69 @@ private slots:
    * If any file can't be fetched.
    */
   void __handleFetchError();
-      
-private:  
-
-  /* These are vectors of connected clients */
-  FlightTableModel*   __flights;
-  ControllerTableModel*   __atcs;
-
-  QVector<Uir*>   __uirs;
-
-  /* This is vector of data servers, obtained from status file */
-  QVector<QString>  __dataServers;
-
-  /* This set contains list of active airports, used later by OpenGLWidget */
-  QMap<QString, ActiveAirport*> __activeAirports;
   
-  /* Inactive airports (no staff, no flights) */
-  QMap<QString, EmptyAirport*> __emptyAirports;
-
+private:  
+  
+  /*
+   * All connected clients
+   * Callsign <-> instance pairs
+   */
+  QMap<QString, Client*>        __clients;
+  
+  /*
+   * List of only new clients, i.e. that showed up in the last update.
+   */
+  QList<Client*>                __newClients;
+  
+  /*
+   * All airports, each instance wraps the record in the database.
+   * ICAO <-> instance pairs
+   */
+  QMap<QString, Airport*>       __airports;
+  
+  /**
+   * All FIRs, each instance wraps the record in the database.
+   * ICAO <-> instance pairs
+   */
+  QMultiMap<QString, Fir*>      __firs;
+  
+  /* This is vector of data servers, obtained from the status file */
+  QVector<QString>  __dataServers;
+  
   /* This set contains list of aliases. Filled in by init() method */
   QMultiMap<QString, QString> __aliases;
-
+  
   /* This is URL that we can obtain METAR from */
   QString   __metarUrl;
-
+  
   /* And status.txt */
   QString   __statusUrl;
   
   /* Minutes to next reload, as stated in data file */
   int __reload;
-
+  
   /* Last time Vatsim data was refreshed.
-   * Get from data file.
+   * Got from data file.
    */
   QDateTime __dateVatsimDataUpdated;
-
+  
+  /* The timestamp is used to describe every data package, so clients can sync to this. */
+  qint64 __currentTimestamp;
+  
   /* Observer count */
-  int       __observers;
-
+  int __observers;
+  
+  /* Client cound */
+  int __clientCount;
+  
   /* Indicates whether the status.txt file was already read or not */
-  bool      __statusFileFetched;
-
-  AirportDatabase& __airports;
-  FirDatabase&     __firs;
+  bool __statusFileFetched;
   
   PlainTextDownloader* __downloader;
   UpdateScheduler*     __scheduler;
   
   AbstractNotamProvider* __notamProvider;
-
+  
 };
-
-typedef QMap<QString, ActiveAirport*> AirportMap;
 
 #endif // VATSIMDATAHANDLER_H

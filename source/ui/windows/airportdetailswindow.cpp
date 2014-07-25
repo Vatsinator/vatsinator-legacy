@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
 #include "modules/vatbookhandler.h"
@@ -27,38 +27,30 @@
 #include "storage/settingsmanager.h"
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
+#include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
-#include "vatsimdata/models/metarlistmodel.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "airportdetailswindow.h"
-#include "defines.h"
 
-AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
+AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent) :
     BaseWindow(_parent),
-    __currentICAO(""),
+    __airport(_ap),
     __forecast(new WeatherForecast()) {
   setupUi(this);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-  connect(MetarListModel::getSingletonPtr(),    SIGNAL(newMetarsAvailable()),
-          this,                                 SLOT(updateMetar()));
-  connect(MetarListModel::getSingletonPtr(),    SIGNAL(noMetar(QString)),
-          this,                                 SLOT(updateMetar(QString)));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__updateData()));
+  connect(qApp,                                 SIGNAL(aboutToQuit()),
+          this,                                 SLOT(hide()));
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
   connect(__forecast,                           SIGNAL(forecastReady(WeatherForecastModel*)),
@@ -69,8 +61,10 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* _parent) :
   connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
           this,                                 SLOT(__goToNotam(QModelIndex)));
   
-  ForecastView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);;
-  ForecastView->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+//   for (int c = 0; c < ForecastView->horizontalHeader()->count(); ++c)
+    ForecastView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+  
+  ForecastView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   NotamTableView->setErrorOnNoData(false);
 }
 
@@ -83,125 +77,55 @@ AirportDetailsWindow::~AirportDetailsWindow() {
 }
 
 void
-AirportDetailsWindow::show(const Airport* _ap) {
-  Q_ASSERT(_ap->data());
-
-  __currentICAO = _ap->data()->icao;
-  __current = _ap;
-
-  __fillLabels(_ap);
-  __updateModels(_ap);
+AirportDetailsWindow::showEvent(QShowEvent* _event) {
+  __fillLabels();
+  __updateModels();
   __adjustTables();
-
-  const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
-
-  if (m) {
-    MetarLabel->setText(m->metar());
-  } else {
-    MetarLabel->setText(tr("Fetching..."));
-    MetarListModel::getSingleton().fetchMetar(__currentICAO);
-  }
-
-  if (!isVisible()) {
-    QWidget::show();
-  } else {
-    activateWindow();
-  }
-
-  QAbstractItemModel* fvm = ForecastView->model();
-  if (fvm)
-    fvm->deleteLater();
   
   if (SM::get("network.weather_forecasts").toBool()) {
     ForecastGroup->setEnabled(true);
     ForecastView->setModel(nullptr);
-    __forecast->fetchForecast(QString::fromUtf8(_ap->data()->city),
-                              QString::fromUtf8(_ap->data()->country));
+    __forecast->fetchForecast(QString::fromUtf8(__airport->data()->city),
+                              QString::fromUtf8(__airport->data()->country));
   } else {
     ForecastGroup->setEnabled(false);
   }
   
   NotamTableView->setModel(nullptr);
-  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(__currentICAO);
+  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(QString(__airport->data()->icao));
   NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
+  
+  BaseWindow::showEvent(_event);
 }
 
 void
-AirportDetailsWindow::updateMetar() {
-  if (__currentICAO.isEmpty())
-    return;
-
-  const Metar* m = MetarListModel::getSingleton().find(__currentICAO);
-
-  if (m)
-    MetarLabel->setText(m->metar());
-}
-
-void
-AirportDetailsWindow::updateMetar(QString _icao) {
-  if (__currentICAO.isEmpty() || !isVisible())
-    return;
-  
-  if (_icao == __currentICAO)
-    MetarLabel->setText(tr("Sorry, no weather report for %1.").arg(__currentICAO));
-}
-
-void
-AirportDetailsWindow::__updateModels(const Airport* _ap) {
-  if (!_ap)
-    _ap = VatsimDataHandler::getSingleton().findAirport(__currentICAO);
-  
-  Q_ASSERT(_ap);
-  
-  __current = _ap;
-  
-  const ActiveAirport* aa = dynamic_cast<const ActiveAirport*>(_ap);
-  if (aa) {
-    InboundTable->setModel(aa->inboundsModel());
-    OutboundTable->setModel(aa->outboundsModel());
-    ATCTable->setModel(aa->staffModel());
-  } else {
-    InboundTable->setModel(VatsimDataHandler::emptyFlightTable);
-    OutboundTable->setModel(VatsimDataHandler::emptyFlightTable);
-    ATCTable->setModel(VatsimDataHandler::emptyControllerTable);
-  }
+AirportDetailsWindow::__updateModels() {
+  InboundTable->setModel(__airport->inbounds());
+  OutboundTable->setModel(__airport->outbounds());
+  ATCTable->setModel(__airport->staff());
   
   BookedATCTable->setModel(
-      VatbookHandler::getSingleton().getNotNullModel(QString::fromUtf8(_ap->data()->icao)));
+      VatbookHandler::getSingleton().notNullModel(QString::fromUtf8(__airport->data()->icao)));
 }
 
 void
-AirportDetailsWindow::__fillLabels(const Airport* _ap) {
-  setWindowTitle(tr("%1 - airport details").arg(_ap->data()->icao));
+AirportDetailsWindow::__fillLabels() {
+  setWindowTitle(tr("%1 - airport details").arg(__airport->data()->icao));
 
-  if (!static_cast<QString>(_ap->data()->iata).isEmpty())
-    CodesLabel->setText(
-      static_cast<QString>(_ap->data()->icao) %
-      "/" %
-      static_cast<QString>(_ap->data()->iata)
-    );
+  if (!QString(__airport->data()->iata).isEmpty())
+    CodesLabel->setText(QString("%1 / %2").arg(QString(__airport->data()->icao),
+                                               QString(__airport->data()->iata)));
   else
-    CodesLabel->setText(static_cast<QString>(_ap->data()->icao));
+    CodesLabel->setText(QString(__airport->data()->icao));
 
-  NameLabel->setText(
-    QString::fromUtf8(_ap->data()->name) %
-    ", " %
-    QString::fromUtf8(_ap->data()->city)
-
-#ifndef NO_DEBUG
-    //display FIR info only in debug mode
-    % " (" %
-    static_cast<QString>(_ap->data()->fir_a) % " & " %
-    static_cast<QString>(_ap->data()->fir_b) % " FIR)"
-#endif
-  );
+  NameLabel->setText(QString("%1, %2").arg(QString::fromUtf8(__airport->data()->name),
+                                           QString::fromUtf8(__airport->data()->city)));
 
   // fill "Airport info" tab
-  const AirportRecord* apData = _ap->data();
-  FullNameLabel->setText(QString::fromUtf8(apData->name));
-  CityLabel->setText(QString::fromUtf8(apData->city));
-  CountryLabel->setText(QString::fromUtf8(apData->country));
-  AltitudeLabel->setText(tr("%1 ft").arg(QString::number(apData->altitude)));
+  FullNameLabel->setText(QString::fromUtf8(__airport->data()->name));
+  CityLabel->setText(QString::fromUtf8(__airport->data()->city));
+  CountryLabel->setText(QString::fromUtf8(__airport->data()->country));
+  AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->data()->altitude)));
 }
 
 void
@@ -232,15 +156,6 @@ AirportDetailsWindow::__adjustTables() {
 }
 
 void
-AirportDetailsWindow::__updateData() {
-  if (__currentICAO.isEmpty() || !isVisible())
-    return;
-
-  __updateModels();
-  __adjustTables();
-}
-
-void
 AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
   QAbstractItemModel* m = ForecastView->model();
   if (m)
@@ -251,15 +166,15 @@ AirportDetailsWindow::__updateForecast(WeatherForecastModel* model) {
 
 void
 AirportDetailsWindow::__handleShowClicked() {
-  Q_ASSERT(__current);
-  MapWidget::getSingleton().showAirport(__current);
+  Q_ASSERT(__airport);
+  MapWidget::getSingleton().scene()->moveSmoothly(__airport->position());
+  close();
 }
 
 void
 AirportDetailsWindow::__notamUpdate(NotamListModel* _model) {
-  if (isVisible() && _model->icao() == __currentICAO) {
+  if (_model->icao() == QString(__airport->data()->icao))
     NotamTableView->setModel(_model);
-  }
 }
 
 void

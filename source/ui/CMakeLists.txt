@@ -37,6 +37,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
 )
 
 set (ui_SRCS
+    notifiable.cpp
     userinterface.cpp
     
     actions/actionmenuseparator.cpp
@@ -59,8 +60,20 @@ set (ui_SRCS
     dialogs/statusfetcherrordialog.cpp
     dialogs/vatsimmessagedialog.cpp
     
+    map/abstractanimation.cpp
+    map/airportitem.cpp
+    map/approachcircleitem.cpp
+    map/firitem.cpp
+    map/flightitem.cpp
+    map/mapconfig.cpp
+    map/mapitem.cpp
+    map/mapscene.cpp
+    map/mapstate.cpp
+    map/moveanimation.cpp
+    map/worldpolygon.cpp
+    
     pages/abstractsettingspage.cpp
-    pages/colorspage.cpp
+    pages/mappage.cpp
     pages/miscellaneouspage.cpp
     pages/networkpage.cpp
     pages/viewpage.cpp
@@ -114,8 +127,16 @@ set (ui_MOC_SRCS
     dialogs/statusfetcherrordialog.h
     dialogs/vatsimmessagedialog.h
     
+    map/abstractanimation.h
+    map/airportitem.h
+    map/approachcircleitem.h
+    map/firitem.h
+    map/flightitem.h
+    map/mapscene.h
+    map/moveanimation.h
+    
     pages/abstractsettingspage.h
-    pages/colorspage.h
+    pages/mappage.h
     pages/miscellaneouspage.h
     pages/networkpage.h
     pages/viewpage.h
@@ -152,7 +173,7 @@ set (ui_FORMS
     dialogs/newversiondialog.ui
     dialogs/vatsimmessagedialog.ui
     
-    pages/colorspage.ui
+    pages/mappage.ui
     pages/miscellaneouspage.ui
     pages/networkpage.ui
     pages/viewpage.ui
@@ -184,5 +205,3 @@ if (WIN32)
 endif (WIN32)
 
 vatsinator_end_subdirectory (ui)
-
-add_dependencies (ui debugging)

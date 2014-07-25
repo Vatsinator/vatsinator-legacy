@@ -1,387 +1,252 @@
 /*
-    mapwidget.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
-    Copyright (C) 2012       Jan Macheta janmacheta@gmail.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * mapwidget.h
+ * Copyright (C) 2013-2014  Michał Garapich <michal@garapich.pl>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 #ifndef MAPWIDGET_H
 #define MAPWIDGET_H
 
 #include <QGLWidget>
-#include <QMenu>
-#include <QLabel>
 
-#include "db/airportdatabase.h"
-#include "vatsimdata/vatsimdatahandler.h"
+#include "ui/map/mapstate.h"
+#include "vatsimdata/lonlat.h"
 #include "singleton.h"
 
-class AirportDetailsWindow;
-class AtcDetailsWindow;
-class Clickable;
+class Airport;
 class Client;
 class Fir;
-class FirDatabase;
-class FirDetailsWindow;
-class FlightDetailsWindow;
-class FlightTracker;
-class MetarsWindow;
+class MapEvent;
+class MapItem;
+class MapScene;
 class Pilot;
-class VatsinatorApplication;
-class WorldMap;
+class WorldPolygon;
 
-class MapWidget :
-    public QGLWidget,
-    public Singleton<MapWidget> {
-
-  /*
-   * We need this class to build our QGLWidget for UserInterface class.
-   */
-
+class MapWidget : public QGLWidget, public Singleton<MapWidget> {
+  
   Q_OBJECT
+  
+  friend class MapScene;
 
 signals:
-  /**
-   * Emitted when user clicks right mouse button on
-   * any pilot.
-   * @param pilot The pilot that user clicked on.
-   */
-  void contextMenuRequested(const Pilot*);
+  void glReady();
   
-  /**
-   * Emitted when user clicks right mouse button on
-   * any airport.
-   * @param airport The airport that user clicked on.
-   */
-  void contextMenuRequested(const Airport*);
+  void menuRequest(const MapItem*);
+  void menuRequest();
   
-  /**
-   * Emitted when user clicks right mouse button on
-   * any FIR.
-   * @param fir The FIR that user clicked.
-   */
-  void contextMenuRequested(const Fir*);
+  void windowRequest(const MapItem*);
   
-  /**
-   * Emitted when user clicks right mouse button in the middle
-   * of nowhere.
-   */
-  void contextMenuRequested();
-  
-  /**
-   * Emitted when user clicks left mouse button on
-   * any pilot.
-   * @param pilot The pilot that user clicked.
-   */
-  void flightDetailsWindowRequested(const Client*);
-  
-  /**
-   * Emitted when user clicks left mouse button on
-   * any airport.
-   * @param airport The airport that user clicked.
-   */
-  void airportDetailsWindowRequested(const Airport*);
-  
-  /**
-   * Emitted when user clicks left mouse button on
-   * any FIR.
-   * @param fir The FIR that user clicked.
-   */
-  void firDetailsWindowRequested(const Fir*);
-  
-  /**
-   * Emitted when user wants to track any plane.
-   * @param pilot Plane that user wants to track.
-   */
-  void flightTrackingRequested(const Pilot*);
-  
-  /**
-   * Emitted when user cancels the flight tracking,
-   * either by deselecting the check-box or by moving
-   * the map with mouse.
-   */
+  void flightTrackingRequest(const Pilot*);
   void flightTrackingCanceled();
   
-  /**
-   * Called when user toggles "Show airport inbound/outbound
-   * lines".
-   * @param airport The airport that action was taken on.
-   */
   void airportLinesToggled(const Airport*);
   
-  /**
-   * Called from resizeEvent().
-   */
-  void resized();
-
 public:
-  MapWidget(QWidget* = 0);
-
+  explicit MapWidget(QWidget* = 0);
   virtual ~MapWidget();
   
   /**
-   * Gets latitude and longitude of mouse position on the map.
-   * @param lat Stores latitude.
-   * @param lon Stores longitude.
+   * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
+   * maps them to longitude & latitude.
+   * 
+   * @param point The point on the screen.
+   * @return Global coordinates (longitude, latitude).
    */
-  void mouse2LatLon(qreal*, qreal*);
+  LonLat mapToLonLat(const QPoint&);
   
   /**
-   * Obtains default format, tweaks it and returns.
+   * Scales the given point (or distance) to the global
+   * coordinates system. It does not differ from the
+   * mapToLonLat() function except the fact that it 
+   * does not take into consideration the current map
+   * center point.
+   * 
+   * @param point The point (or the distance) in the window coordinates.
+   * @return Global coordinates (or the distance).
    */
-  static QGLFormat getFormat();
+  LonLat scaleToLonLat(const QPoint&);
   
   /**
-   * Color of font on pilots' tooltips.
+   * Calculates widget coordinates from the given lat-lon coordinates.
    */
-  const QColor& pilotPen() const;
+  QPoint mapFromLonLat(const LonLat&);
   
   /**
-   * Color of font on airports' tooltips. 
+   * Calculates OpenGL scene local coordinates from latitude/longitude.
    */
-  const QColor& airportPen() const;
+  QPointF glFromLonLat(const LonLat&);
   
   /**
-   * Color of font on firs' tooltips.
+   * Specifies whether the given point is visible on the screen or not.
    */
-  const QColor& firPen() const;
+  bool onScreen(const QPointF&);
   
-  /* For Pilot class */
-  inline const QImage &
-  pilotToolTipBackground() const { return __pilotLabel; }
-
-  inline const QFont &
-  pilotFont() const { return __pilotFont; }
-
-  /* For Airport class */
-  inline const QImage &
-  airportToolTipBackground() const { return __airportLabel; }
-
-  inline const QFont &
-  airportFont() const { return __airportFont; }
-
-  /* For Fir class */
-  inline const QImage &
-  firToolTipBackground() const { return __firLabel; }
-
-  inline const QFont &
-  firFont() const { return __firFont; }
-
-  inline bool
-  isInitialized() const { return __isInitialized; }
-
+  /**
+   * Captures map events.
+   */
+  bool event(QEvent*) override;
+  
+  inline MapScene* scene() { return __scene; }
+  inline const MapState state() const { return __state; }
+  
 public slots:
-  /**
-   * Sets the plane at the middle of the map.
-   * @param client Client to be shown.
-   */
-  void showClient(const Client*);
   
   /**
-   * Sets the airport at the middle of the map.
-   * @param airport Airport to be shown.
-   */
-  void showAirport(const Airport*);
-  
-  /**
-   * Sets the given point at the middle of the map.
-   * @param p Point (lat, lon).
-   */
-  void showPoint(const QPointF&);
-  
-  /**
-   * Hides the menu (if any), hides the tooltip
-   * and redraws the map.
+   * Closes all the menus, hides tooltip and updates.
    */
   void redraw();
-
+  
 protected:
-  /* Here we reimplement some functions that are needed for
-   * OpenGL to work properly. */
-  void initializeGL();
-  void paintGL();
-  void resizeGL(int, int);
-  void wheelEvent(QWheelEvent*);
-  void mousePressEvent(QMouseEvent*);
-  void mouseReleaseEvent(QMouseEvent*);
-  void mouseMoveEvent(QMouseEvent*);
-  void keyPressEvent(QKeyEvent*);
-  void keyReleaseEvent(QKeyEvent*);
-
-private slots:
-  void __loadNewSettings();
-  void __openContextMenu(const Pilot*);
-  void __openContextMenu(const Airport*);
-  void __openContextMenu(const Fir*);
-  void __openContextMenu();
-  void __slotUiCreated();
-
+  void initializeGL() override;
+  void paintGL() override;
+  void resizeGL(int, int) override;
+  
+  void wheelEvent(QWheelEvent*) override;
+  void mousePressEvent(QMouseEvent*) override;
+  void mouseReleaseEvent(QMouseEvent*) override;
+  void mouseMoveEvent(QMouseEvent*) override;
+  
+  /**
+   * Event fired when the underlying scene decides to change the map state.
+   */
+  bool stateChangeEvent(MapEvent*);
+  
 private:
-  enum PMMatrixMode {
-    /* Describes Projection Matrix mode */
-    AIRPORTS_PILOTS, WORLD
-  };
-
-  void __init();
-  void __prepareMatrix(PMMatrixMode, double = 0.0);
-
-#ifndef NO_DEBUG
-  void __drawMarks();
-#endif
-
-  /**
-   * Draws the world map.
-   */
-  void __drawWorld(double = 0.0);
+  void __drawWorld();
+  void __drawFirs();
+  void __drawAirports();
+  void __drawPilots();
+  void __drawLines();
   
-  /**
-   * Draws FIRs' borders.
-   */
-  void __drawFirBorders(double = 0.0);
-  
-  /**
-   * Draws UIRs' borders.
-   */
-  void __drawUirBorders(double);
-  
-  /**
-   * Draws FIRs' labels.
-   */
-  void __drawFirs(float = 0.0);
-  
-  /**
-   * Draws airports icons & labels.
-   */
-  void __drawAirports(float = 0.0);
-  
-  /**
-   * Draws pilots models & labels.
-   */
-  void __drawPilots(float = 0.0);
-  
-  /**
-   * Draws lines between pilots and airports.
-   */
-  void __drawLines(double = 0.0);
-  
-  /**
-   * Draws the mouse tooltip (QToolTip).
-   */
-  void __drawToolTip();
-
-  /**
-   * Switches the antyaliasing on/off.
-   */
-  void __setAntyaliasing(bool);
-
   void __storeSettings();
   void __restoreSettings();
+  
+  void __updateOffsets();
+  
+  /**
+   * Updates the zoom factor.
+   */
   void __updateZoom(int);
-
-  void __produceCircle();
   
-  float __distanceFromCamera(float, float);
-  void  __mapCoordinates(float, float, float*, float*);
-  QString __pilotToolTipText(const Pilot*);
-  QString __airportToolTipText(const Airport*);
-  QString __firToolTipText(const Fir*);
-  void  __drawPilotLabel(const Pilot*);
-  void  __drawPilotLabel(GLfloat, GLfloat, const Pilot*);
-  void  __drawAirportLabel(const Airport*);
-  void  __drawFirLabel(GLfloat, GLfloat, const Fir&);
-
-  bool  __isInitialized;
-
-  /* OpenGL's textures. */
-  GLuint  __apIcon;
-  GLuint  __apStaffedIcon;
-  GLuint  __apInactiveIcon;
-
-  /* Used by Pilot class */
-  QImage  __pilotLabel;
-  QFont   __pilotFont;
-
-  /* For Airport class */
-  QImage  __airportLabel;
-  QFont   __airportFont;
-
-  /* For Fir class */
-  QImage  __firLabel;
-  QFont   __firFont;
-
-  /* Approach circle array and vertices count */
-  GLfloat*  __circle;
-  unsigned  __circleCount;
-
-  /* Camera position x, y */
-  QPointF   __position;
+  /**
+   * Shows or hides the tooltip.
+   */
+  void __updateTooltip();
   
-  /*----------ZOOM HANDLING SECTION---------*/
-  /* Zoom factor */
-  float   __zoom;
-
-  /*Actual Zoom level*/
-  int   __actualZoom;
-
+  /**
+   * Checks whether the item is under the mouse.
+   * If it is, it is handled properly.
+   */
+  void __checkItem(const MapItem*);
+  
+  /**
+   * Based on user settings, checks whether the pilot's label should
+   * be drawn or not.
+   */
+  bool __shouldDrawPilotLabel(const MapItem*);
+  
+private slots:
+  void __reloadSettings();
+  void __showMenu(const MapItem*);
+  void __showWindow(const MapItem*);
+  
+private:
+  
+  /* To have the map repeated, we keep offsets */
+  QList<GLfloat> __offsets;
+  
+  /* Current offset */
+  GLfloat __xOffset;
+  
+  /* Stores screen rectangle */
+  qreal __rangeX;
+  qreal __rangeY;
+  
+  
   /* Zoom Coefficient to let users customize their zooming speed */
   /* Zoom Coefficient is defined in MiscellaneousPage */
 
   /* Minimum for __actualZoom not to exceed ZOOM_MAXIMUM value */
-  int  __actualZoomMaximum;
+  int __actualZoomMaximum;
   
-  /*----------ZOOM HANDLING SECTION END---------*/
+  /*Actual Zoom level*/
+  int __actualZoom;
   
-  /* Last mouse position */
-  QPoint  __lastMousePos;
-  QPoint  __recentlyClickedMousePos;
-
-  /* And last mouse position interpolated to ortho range */
-  QPointF __lastMousePosInterpolated;
-
-  /* Showing pilots' labels or not? */
-  bool  __keyPressed;
-
-  /* Stores window geometry */
-  int __winWidth;
-  int __winHeight;
-
-  /* Store glOrtho ranges */
-  GLdouble  __orthoRangeX;
-  GLdouble  __orthoRangeY;
-
-  /* Clickable object under mouse pointer */
-  const Clickable*  __underMouse;
-
-  /* To prevent the tooltip from being displayed in wrong moment */
-  bool  __contextMenuOpened;
-
-  /* Where to display latitude and longitude of mouse position */
-  QLabel*   __label;
-
-  /* Current context menu */
-  QMenu*    __menu;
-
-  /* Draw the map copy on the left or right */
-  bool    __drawLeft;
-  bool    __drawRight;
-  double  __360degreesMapped;
-
-  /* We keep some singleton pointers to have the code clean */
-  VatsimDataHandler&        __data;
-  const AirportMap&        __airports;
+  /* Current map state */
+  MapState __state;
+  
+  /**
+   * This class handles mouse position on the screen.
+   */
+  class MousePosition {
+  public:
+    MousePosition();
+    
+    /**
+     * Updates the mouse position from location on the widget (as
+     * it is given by Qt).
+     */
+    void update(const QPoint&);
+    
+    /**
+     * Quickly calculates distance between the given point and mouse cursor
+     * position on the screen, _in pixels_.
+     */
+    qreal screenDistance(const QPoint&);
+    
+    /**
+     * Calculates distance between the point on the globe (lat-lon) and
+     * the mouse cursor position.
+     */
+    qreal geoDistance(const LonLat&);
+    
+    /**
+     * Sets the mouse down status.
+     */
+    void setDown(bool);
+    
+    /**
+     * Position within the widget.
+     */
+    inline const QPoint& screenPosition() const { return __screenPosition; }
+    
+    /**
+     * Latitude/longitude that the mouse cursor currently points at.
+     */
+    inline const QPointF& geoPosition() const { return __geoPosition; }
+    
+    /**
+     * Indicates whether any of the mouse buttons is pressed or not.
+     */
+    inline bool down() const { return __down; }
+    
+  private:
+    QPoint  __screenPosition;
+    LonLat  __geoPosition;
+    bool    __down;
+  } __mousePosition;
+  
+  QPoint __lastClickPosition;
+  const MapItem* __underMouse;
+  
+  /* World map drawer */
+  WorldPolygon* __world;
+  
+  /* Scene handler */
+  MapScene* __scene;
   
   /* Structs below store settings locally to avoid expensive SM::get() calling. */
   struct {

@@ -1,6 +1,6 @@
 /*
     firdetailswindow.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
@@ -40,10 +40,10 @@
 #include "vatsimdata/models/notamlistmodel.h"
 
 #include "firdetailswindow.h"
-#include "defines.h"
 
-FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
-    BaseWindow(_parent) {
+FirDetailsWindow::FirDetailsWindow(const Fir* _fir, QWidget* _parent) :
+    BaseWindow(_parent),
+    __fir(_fir) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -56,47 +56,42 @@ FirDetailsWindow::FirDetailsWindow(QWidget* _parent) :
 }
 
 void
-FirDetailsWindow::show(const Fir* _f) {
-  __currentICAO = _f->icao();
-
-  __fillLabels(_f);
-  __updateModels(_f);
+FirDetailsWindow::show() {
+  __fillLabels();
+  __updateModels();
   __adjustTables();
 
-  if (isVisible())
-    activateWindow();
-  else
-    QWidget::show();
+  QWidget::show();
   
   NotamTableView->setModel(nullptr);
-  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(__currentICAO);
+  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(__fir->icao());
   NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
 }
 
 void
-FirDetailsWindow::__updateModels(const Fir* _f) {
-  Q_ASSERT(_f);
+FirDetailsWindow::__updateModels() {
+  Q_ASSERT(__fir);
   
-  FlightsTable->setModel(_f->flightsModel());
-  ATCTable->setModel(_f->staffModel());
-  AirportsTable->setModel(_f->airportsModel());
+  FlightsTable->setModel(__fir->flights());
+  ATCTable->setModel(__fir->staff());
+  AirportsTable->setModel(__fir->airports());
   
-  BookedATCTable->setModel(VatbookHandler::getSingleton().getNotNullModel(_f->icao()));
+  BookedATCTable->setModel(VatbookHandler::getSingleton().notNullModel(__fir->icao()));
 }
 
 void
-FirDetailsWindow::__fillLabels(const Fir* _f) {
-  if (_f->country() != "USA")
-    setWindowTitle(tr("%1 - FIR details").arg(_f->icao()));
+FirDetailsWindow::__fillLabels() {
+  if (__fir->country() != "USA")
+    setWindowTitle(tr("%1 - FIR details").arg(__fir->icao()));
   else
-    setWindowTitle(tr("%1 - ARTCC details").arg(_f->icao()));
+    setWindowTitle(tr("%1 - ARTCC details").arg(__fir->icao()));
 
-  if (!_f->isOceanic())
-    ICAOLabel->setText(_f->icao());
+  if (!__fir->isOceanic())
+    ICAOLabel->setText(__fir->icao());
   else
-    ICAOLabel->setText(_f->icao() + " Oceanic");
+    ICAOLabel->setText(__fir->icao() + " Oceanic");
 
-  NameLabel->setText(_f->name());
+  NameLabel->setText(__fir->name());
 }
 
 void
@@ -125,7 +120,7 @@ FirDetailsWindow::__adjustTables() {
 
 void
 FirDetailsWindow::__notamUpdate(NotamListModel* _model) {
-  if (isVisible() && _model->icao() == __currentICAO) {
+  if (_model->icao() == __fir->icao()) {
     NotamTableView->setModel(_model);
   }
 }

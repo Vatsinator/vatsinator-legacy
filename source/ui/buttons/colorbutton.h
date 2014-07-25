@@ -22,14 +22,12 @@
 
 #include <QPushButton>
 
+/*
+ * We need to subclass the QPushButton in order to make a nice
+ * colorful button for Settings Window.
+ * The idea was taken from KColorButton of KDEui.
+ */
 class ColorButton : public QPushButton {
-
-  /*
-   * We need to subclass the QPushButton in order to make a nice
-   * colorful button for Settings Window.
-   * The idea was taken from KColorButton of KDEui.
-   */
-
   Q_OBJECT
 
 public:

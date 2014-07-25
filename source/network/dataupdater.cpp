@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtNetwork>
 
 #include "network/filedownloader.h"
@@ -29,7 +29,6 @@
 #include "vatsinatorapplication.h"
 
 #include "dataupdater.h"
-#include "defines.h"
 
 static const QString PackageUrl = QString(NetConfig::Vatsinator::repoUrl()) % QString("packages/latest.zip");
 static const QString ManifestUrl = QString(NetConfig::Vatsinator::repoUrl()) % QString("packages/Manifest");

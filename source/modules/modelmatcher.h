@@ -27,15 +27,16 @@
 
 #include "singleton.h"
 
+/**
+ * This class is responsible for matching user airplanes to 
+ * corresponding models.
+ */
 class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
-  
-  /**
-   * This class matches the models to the planes.
-   */
-  
   Q_OBJECT
   
 signals:
+  
+  /* TODO use NotificationEvent */
   void warning(QString);
 
 public:
@@ -45,20 +46,21 @@ public:
   ModelMatcher(QObject* = nullptr);
 
   /**
-   * Loads the pixmaps.
-   */
-  void init();
-
-  /**
    * @param acft Aircraft code that comes from the flight plan.
    * @return Model's texture ID.
    */
   GLuint matchMyModel(const QString&);
+  
+private:
+  void __readModels();
+  
+private slots:
+  void __loadPixmaps();
 
 private:
 
-  QMap< QString, QString > __modelsFiles;
-  QMap< QString, GLuint >  __modelsPixmaps;
+  QMap<QString, QString> __modelsFiles;
+  QMap<QString, GLuint>  __modelsPixmaps;
 
 
 };

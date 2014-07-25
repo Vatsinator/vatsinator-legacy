@@ -1,6 +1,6 @@
 /*
     uir.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,21 +17,15 @@
 */
 
 #include "vatsimdata/fir.h"
-
 #include "vatsimdata/client/controller.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 
 #include "uir.h"
-#include "defines.h"
 
-Uir::Uir(const QString& _icao) :
+Uir::Uir(const QString& _icao, QObject* _parent) :
+    QObject(_parent),
     __icao(_icao),
-    __staff(new ControllerTableModel()) {}
-    
-Uir::~Uir() {
-  delete __staff;
-}
+    __staff(new ControllerTableModel(this)) {}
 
 void
 Uir::addFir(Fir* _f) {
@@ -40,15 +34,12 @@ Uir::addFir(Fir* _f) {
 
 void
 Uir::addStaff(const Controller* _c) {
-  for (Fir * f: __range)
-    f->addUirStaff(_c);
-  
-  __staff->addStaff(_c);
-}
-
-void
-Uir::clear() {
-  __staff->clear();
+  __staff->add(_c);
+  connect(_c,           SIGNAL(updated()),
+          this,         SIGNAL(updated()));
+  connect(_c,           SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
 }
 
 bool

@@ -1,4 +1,7 @@
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+
+set (CMAKE_AUTOMOC ON)
+set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # exec file
 set (vatsinator_TARGET
@@ -16,12 +19,9 @@ set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
 
-set (vatsinator_MOC_SRCS
-    vatsinatorapplication.h
-)
-
 set (vatsinator_SUBDIRS
     db
+    events
     glutils
     modules
     network
@@ -29,16 +29,6 @@ set (vatsinator_SUBDIRS
     ui
     vatsimdata
 )
-
-# We can't name it "debug" directory as it conflicts with cmake syntax
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-    set (vatsinator_SUBDIRS
-        debugging
-        ${vatsinator_SUBDIRS}
-    )
-endif (CMAKE_BUILD_TYPE MATCHES Debug)
-
-qt4_wrap_cpp (vatsinator_MOC_FILES ${vatsinator_MOC_SRCS})
 
 include (Macros)
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -50,16 +40,12 @@ if (CMAKE_COMPILER_IS_GNUCC)
     endif (NOT GCC_VERSION_47)
 endif (CMAKE_COMPILER_IS_GNUCC)
 
-set (QT_USE_QTOPENGL TRUE)
-set (QT_USE_QTNETWORK TRUE)
-
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
+add_executable (${vatsinator_TARGET} WIN32
     main.cpp
     ${vatsinator_SRCS}
-    ${vatsinator_MOC_FILES}
 )
 
 # fix for older versions of qjson library
@@ -72,7 +58,11 @@ if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
 
     set (vatsinator_LIBS
-        ${QT_LIBRARIES}
+        Qt5::Widgets
+        Qt5::Network
+        Qt5::Xml
+        Qt5::Svg
+        Qt5::OpenGL
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
         ${QJSON_LIBRARIES}
@@ -90,11 +80,12 @@ else (WIN32)
     set (vatsinator_PREFIX "")
 
     set (vatsinator_LIBS
-        ${OPENGL_gl_LIBRARY}
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTGUI_LIBRARY}
-        ${QT_QTOPENGL_LIBRARY}
-        ${QT_QTNETWORK_LIBRARY}
+        Qt5::Widgets
+        Qt5::Network
+        Qt5::Xml
+        Qt5::Svg
+        Qt5::OpenGL
+        ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
         ${QJSON_LIBRARIES}
     )
@@ -104,15 +95,14 @@ else (WIN32)
         mingw32
         ${vatsinator_LIBS}
       )
+	  # disable VBO on Win32 build - Vatsinator doesn't handle it properly
+	  set (CONFIG_NO_VBO 1)
     elseif (MSVC)
       set (vatsinator_LIBS
         ${vatsinator_LIBS}
-        ${QT_QTIMAIN_LIBRARY}
+        Qt5::WinMain
       )
     endif (MINGW)
-  
-  # disable VBO on Win32 build - Vatsinator doesn't handle it properly
-  set (CONFIG_NO_VBO 1)
 endif (LINUX)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
@@ -120,7 +110,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
 )
 
 foreach (DIR ${vatsinator_SUBDIRS})
-    add_subdirectory (${DIR})
+   add_subdirectory (${DIR})
     add_dependencies (${vatsinator_TARGET}
         ${DIR}
     )
@@ -149,8 +139,9 @@ endif (APPLE)
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
-get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATION)
-get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
+#get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATION)
+#get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
+set (vatsinator_EXECUTABLE vatsinator.exe)
 
 
 if (LINUX)
@@ -173,12 +164,12 @@ elseif (APPLE)
     
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
-    include (DeployQt4)
-    install_qt4_executable ("${vatsinator_TARGET}.app"
-        "" # qtplugins
-        "" # libs
-        "/usr/local/lib" # dirs
-    )
+    #include (DeployQt4)
+    #install_qt4_executable ("${vatsinator_TARGET}.app"
+    #    "" # qtplugins
+    #    "" # libs
+    #    "/usr/local/lib" # dirs
+    #)
     
 elseif (WIN32)
 
@@ -187,12 +178,18 @@ elseif (WIN32)
     if (MSVC)
       get_property (qjson_LIBRARY TARGET qjson PROPERTY IMPORTED_LOCATION_RELEASE)
       get_filename_component (QJSON_LIBRARY_DIR ${qjson_LIBRARY} PATH)
+	
+	    if (NOT QT_QMAKE_EXECUTABLE)
+			get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+		endif (NOT QT_QMAKE_EXECUTABLE)
+		exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
+			OUTPUT_VARIABLE QT_INSTALL_LIBS)
       
-      include (DeployQt4)
-      install_qt4_executable ("${vatsinator_EXECUTABLE}"
+      include (DeployQt5)
+      install_qt5_executable ("${vatsinator_EXECUTABLE}"
           "" # qtplugins
           "" # libs
-          "${QUAZIP_LIBRARY_DIR};${QJSON_LIBRARY_DIR}"
+          "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR};${QJSON_LIBRARY_DIR}"
         )
     endif (MSVC)
     

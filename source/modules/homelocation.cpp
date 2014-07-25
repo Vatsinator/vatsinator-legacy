@@ -16,12 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "ui/widgets/mapwidget.h"
 
 #include "homelocation.h"
-#include "defines.h"
 
 HomeLocation::HomeLocation() :
     QObject() {
@@ -39,10 +38,10 @@ HomeLocation::~HomeLocation() {
 
 void
 HomeLocation::set() {
-  qreal lat, lon;
-  MapWidget::getSingleton().mouse2LatLon(&lat, &lon);
-  __homeLocation.setX(lon);
-  __homeLocation.setY(lat);
+//   qreal lat, lon;
+//   MapWidget::getSingleton().mouse2LatLon(&lat, &lon);
+//   __homeLocation.setX(lon);
+//   __homeLocation.setY(lat);
 }
 
 void
@@ -52,7 +51,7 @@ HomeLocation::set(const QPointF& _p) {
 
 void
 HomeLocation::showOnMap() {
-  MapWidget::getSingleton().showPoint(__homeLocation);
+//   MapWidget::getSingleton().showPoint(__homeLocation);
 }
 
 void

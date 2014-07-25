@@ -16,21 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-
 #include "storage/filemanager.h"
-
 #include "ui/userinterface.h"
+#include "config.h"
 
 #include "aboutwindow.h"
-#include "defines.h"
-
 #include "ui/about.h"
 #include "ui/license.h"
-
 
 AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   setupUi(this);

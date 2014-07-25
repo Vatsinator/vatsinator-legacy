@@ -17,19 +17,17 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtNetwork>
 #include <qjson/parser.h>
 
 #include "storage/settingsmanager.h"
-
 #include "ui/dialogs/letsendstatsdialog.h"
-
+#include "config.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
 #include "statspurveyor.h"
-#include "defines.h"
 
 // send the startup report after 10 seconds
 static const int StartDelay = 10 * 1000;
@@ -121,6 +119,7 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
   QSettings s;
   if (!s.contains("Decided/stats")) {
     LetSendStatsDialog* dialog = new LetSendStatsDialog();
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
     connect(dialog,     SIGNAL(accepted()),
             this,       SLOT(__statsAccepted()));
     connect(dialog,     SIGNAL(rejected()),
@@ -193,7 +192,6 @@ StatsPurveyor::__parseResponse() {
 void
 StatsPurveyor::__nextRequest() {
   Q_ASSERT(!__requests.isEmpty());
-  Q_ASSERT(!__reply);
   
   VatsinatorApplication::log("StatsPurveyor: request: %s", qPrintable(__requests.head().url().toString()));
   
@@ -217,7 +215,6 @@ StatsPurveyor::__statsAccepted() {
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", true);
   QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
-  sender()->deleteLater();
   
   SM::updateUi("misc");
 }
@@ -227,7 +224,6 @@ StatsPurveyor::__statsRejected() {
   QSettings s;
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", false);
-  sender()->deleteLater();
   
   SM::updateUi("misc");
 }

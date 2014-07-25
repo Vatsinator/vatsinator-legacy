@@ -1,6 +1,6 @@
 /*
     userinterface.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,42 +25,74 @@
 #include "ui/widgets/mapwidget.h"
 #include "singleton.h"
 
-#ifndef NO_DEBUG
-class DebugWindow;
-#endif
-
 class AboutWindow;
-class AirportDetailsWindow;
-class AtcDetailsWindow;
+class Airport;
 class AtcListWindow;
+class Client;
 class DatabaseWindow;
-class FirDetailsWindow;
-class FlightDetailsWindow;
+class Fir;
 class FlightListWindow;
+class Pilot;
 class MetarsWindow;
+class NotificationEvent;
 class SettingsWindow;
 class VatsinatorWindow;
 
 class UserInterface : public QObject, public Singleton<UserInterface> {
-
-  /*
-   * This class manager the Vatsinator's GUI.
-   */
-
   Q_OBJECT
 
 public:
-  UserInterface();
+  UserInterface(QObject* = nullptr);
   virtual ~UserInterface();
   
-public:
+  /**
+   * Initializes UI components.
+   */
   void init();
+  
+  /**
+   * @return Instance of the "About Vatsinator" window.
+   */
+  AboutWindow* aboutWindow();
+  
+  /**
+   * @return Instance of the "Atc list" window.
+   */
+  AtcListWindow* atcListWindow();
+  
+  /**
+   * @return Instance of the "VatsinatorDatabase" window.
+   */
+  DatabaseWindow* databaseWindow();
+  
+  /**
+   * @return Instance of the "Flight list" window.
+   */
+  FlightListWindow* flightListWindow();
+  
+  /**
+   * @return Instance of the "METARs" window.
+   */
+  MetarsWindow* metarsWindow();
+  
+  /**
+   * @return Instance of the settings window.
+   */
+  SettingsWindow* settingsWindow();
+  
+  /**
+   * @return Instance of the main Vatsinator window.
+   */
+  VatsinatorWindow* mainWindow();
+  
+  /**
+   * Custom events handling.
+   */
+  bool event(QEvent*) override;
   
 public slots:
   /**
    * Reports fatal error to user.
-   * After showing the error message box, the application
-   * will terminate.
    * 
    * @param msg Message to be shown.
    */
@@ -75,7 +107,14 @@ public slots:
   
   void showAppRestartDialog();
   void showVatsimMessage(const QString&);
-
+  
+  void showDetailsWindow(const Airport*);
+  void showDetailsWindow(const Client*);
+  void showDetailsWindow(const Fir*);
+  
+protected:
+  virtual bool notificationEvent(NotificationEvent*);
+  
 private slots:
   void __statusError();
   void __dataError();
@@ -83,18 +122,10 @@ private slots:
   
 private:
 
-#ifndef NO_DEBUG
-  DebugWindow*  __debugWindow;
-#endif
-
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;
-  AirportDetailsWindow* __airportDetailsWindow;
   DatabaseWindow*       __databaseWindow;
-  FirDetailsWindow*     __firDetailsWindow;
-  AtcDetailsWindow*     __atcDetailsWindow;
   AtcListWindow*        __atcListWindow;
-  FlightDetailsWindow*  __flightDetailsWindow;
   FlightListWindow*     __flightsListWindow;
   SettingsWindow*       __settingsWindow;
   VatsinatorWindow*     __vatsinatorWindow;

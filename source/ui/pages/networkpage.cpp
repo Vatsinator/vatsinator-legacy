@@ -17,10 +17,9 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "networkpage.h"
-#include "defines.h"
 
 /* Default settings for NetworkPage */
 namespace DefaultSettings {

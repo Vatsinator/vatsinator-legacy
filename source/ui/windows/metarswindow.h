@@ -24,7 +24,6 @@
 
 #include "ui/windows/basewindow.h"
 #include "ui/ui_metarswindow.h"
-#include "singleton.h"
 #include "vatsimdata/metar.h"
 
 class VatsimDataHandler;
@@ -33,13 +32,7 @@ class MetarListModel;
 
 class MetarsWindow :
     public BaseWindow,
-    public Singleton<MetarsWindow>,
     private Ui::MetarsWindow {
-
-  /*
-   * This class handles our "METARs" window. Shown when Vatsinator->
-   * ->Metar is activated.
-   */
 
   Q_OBJECT
 

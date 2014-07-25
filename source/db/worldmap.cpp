@@ -16,132 +16,42 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
-#include "glutils/vertexbufferobject.h"
-#include "glutils/glextensions.h"
-#include "debugging/glerrors.h"
-#include "ui/userinterface.h"
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "worldmap.h"
-#include "defines.h"
 
-WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {
-  
-  connect(this,                                 SIGNAL(fatal(QString)),
-          UserInterface::getSingletonPtr(),     SLOT(fatal(QString)));
-  
-//   __readDatabase();
-  QtConcurrent::run(this, &WorldMap::__readDatabase);
-  
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
-          this,                                     SLOT(__init()),
-          Qt::DirectConnection);
-}
-
-WorldMap::~WorldMap() {
-#ifndef CONFIG_NO_VBO
-  delete __worldPolygon.vbo.border;
-  delete __worldPolygon.vbo.triangles;
-#endif
-}
+WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {}
 
 void
-WorldMap::draw() const {
-#ifndef CONFIG_NO_VBO
-  __worldPolygon.vbo.border->bind();
-  __worldPolygon.vbo.triangles->bind();
-
-  glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
-  glDrawElements(GL_TRIANGLES, __worldPolygon.vbo.trianglesSize, GL_UNSIGNED_SHORT, 0); checkGLErrors(HERE);
-
-  __worldPolygon.vbo.triangles->unbind();
-  __worldPolygon.vbo.border->unbind();
-#else
-  glVertexPointer(2, GL_FLOAT, 0, &__worldPolygon.borders[0].x); checkGLErrors(HERE);
-  glDrawElements(GL_TRIANGLES, __worldPolygon.triangles.size(), GL_UNSIGNED_SHORT,
-                 &__worldPolygon.triangles[0]); checkGLErrors(HERE);
-#endif
+WorldMap::init() {
+  __readDatabase();
 }
 
 void WorldMap::__readDatabase() {
   QFile db(FileManager::path("WorldMap.db"));
   
-  if (!db.exists() || !db.open(QIODevice::ReadOnly))
-    emit fatal(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+  if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
+    notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    return;
+  }
 
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);
-  db.seek(4);
-
-  VatsinatorApplication::log("World map polygons: %i.", size);
-
-  QVector<Polygon> polygons;
-
-  polygons.resize(size);
-  unsigned allTogether = 0;
-
-  for (int i = 0; i < size; ++i) {
-    int counting;
-    db.read(reinterpret_cast<char*>(&counting), 4);
-
-    if (counting) {
-      polygons[i].borders.resize(counting);
-      db.read(reinterpret_cast<char*>(&polygons[i].borders[0].x), sizeof(Point) * counting);
-      allTogether += counting;
-    }
-
-    db.read(reinterpret_cast<char*>(&counting), 4);
-
-    if (counting) {
-      polygons[i].triangles.resize(counting);
-      db.read(reinterpret_cast<char*>(&polygons[i].triangles[0]), sizeof(unsigned short) * counting);
-    }
-
+  
+  if (size) {
+    __worldPolygon.borders.resize(size);
+    db.read(reinterpret_cast<char*>(__worldPolygon.borders.data()), sizeof(Point) * size);
   }
-
-  VatsinatorApplication::log("World map coords: %u.", allTogether);
+  
+  db.read(reinterpret_cast<char*>(&size), 4);
+  if (size) {
+    size *= 3;
+    __worldPolygon.triangles.resize(size);
+    db.read(reinterpret_cast<char*>(__worldPolygon.triangles.data()), sizeof(unsigned int) * size);
+  }
 
   db.close();
-
-  /* Move all the polygons to one polygon */
-  int offset = 0;
-
-  for (Polygon& p: polygons) {
-    for (const Point& pt: p.borders)
-      __worldPolygon.borders.push_back(pt);
-
-    for (const unsigned short c: p.triangles)
-      __worldPolygon.triangles.push_back(c + offset);
-
-    offset += p.borders.size();
-  }
-
 }
-
-void
-WorldMap::__init() {
-#ifndef CONFIG_NO_VBO
-  VatsinatorApplication::log("Preparing VBOs for WorldMap...");
-
-  __worldPolygon.vbo.border = new VertexBufferObject(GL_ARRAY_BUFFER);
-  __worldPolygon.vbo.border->sendData(sizeof(Point) * __worldPolygon.borders.size(),
-                                      &__worldPolygon.borders[0].x);
-
-  __worldPolygon.vbo.borderSize = __worldPolygon.borders.size();
-  __worldPolygon.borders.clear();
-
-  __worldPolygon.vbo.triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-  __worldPolygon.vbo.triangles->sendData(sizeof(unsigned short) * __worldPolygon.triangles.size(),
-                                         &__worldPolygon.triangles[0]);
-
-  __worldPolygon.vbo.trianglesSize = __worldPolygon.triangles.size();
-  __worldPolygon.triangles.clear();
-
-  VatsinatorApplication::log("WorldMap's VBOs ready.");
-#endif
-}
-
-

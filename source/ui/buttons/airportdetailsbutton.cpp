@@ -16,22 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
-#include "ui/windows/airportdetailswindow.h"
+#include "ui/userinterface.h"
 
 #include "vatsimdata/airport.h"
 
 #include "airportdetailsbutton.h"
-#include "defines.h"
 
 AirportDetailsButton::AirportDetailsButton(QWidget* _parent) :
     QPushButton("", _parent),
     __current(NULL) {
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
   // we assume that autoconnect is on
-  connect(this,                                     SIGNAL(clicked(const Airport*)),
-          AirportDetailsWindow::getSingletonPtr(),  SLOT(show(const Airport*)));
+  connect(this,                                 SIGNAL(clicked(const Airport*)),
+          UserInterface::getSingletonPtr(),     SLOT(showDetailsWindow(const Airport*)));
 }
 
 AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
@@ -44,15 +43,15 @@ AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
 
   if (_autoconnect)
-    connect(this,                                     SIGNAL(clicked(const Airport*)),
-            AirportDetailsWindow::getSingletonPtr(),  SLOT(show(const Airport*)));
+    connect(this,                               SIGNAL(clicked(const Airport*)),
+            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Airport*)));
 }
 
 void
 AirportDetailsButton::setAirportPointer(const Airport* _ap) {
   __current = _ap;
-  setEnabled(_ap != NULL);
-  setFlat(_ap == NULL);
+  setEnabled(_ap != nullptr);
+  setFlat(_ap == nullptr);
 }
 
 void

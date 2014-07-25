@@ -25,7 +25,6 @@
 class Airport;
 
 class AirportDetailsButton : public QPushButton {
-
   Q_OBJECT
 
 signals:
