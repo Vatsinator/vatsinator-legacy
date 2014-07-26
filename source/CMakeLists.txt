@@ -95,14 +95,14 @@ else (WIN32)
         mingw32
         ${vatsinator_LIBS}
       )
-	  # disable VBO on Win32 build - Vatsinator doesn't handle it properly
-	  set (CONFIG_NO_VBO 1)
     elseif (MSVC)
       set (vatsinator_LIBS
         ${vatsinator_LIBS}
         Qt5::WinMain
       )
     endif (MINGW)
+	# disable VBO on Win32 build - Vatsinator doesn't handle it properly
+	  set (CONFIG_NO_VBO 1)
 endif (LINUX)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in

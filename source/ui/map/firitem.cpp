@@ -17,6 +17,7 @@
  *
  */
 
+#include "config.h"
 #include "db/firdatabase.h"
 #include "glutils/glresourcemanager.h"
 #include "glutils/vertexbufferobject.h"
@@ -50,24 +51,37 @@ FirItem::~FirItem() {
   if (__label)
     GlResourceManager::deleteImage(__label);
   
+#ifndef CONFIG_NO_VBO
   if (__triangles)
     delete __triangles;
   
   delete __borders;
+#endif
 }
 
 void
 FirItem::drawBorders() const {
+#ifdef CONFIG_NO_VBO
+  glVertexPointer(2, GL_FLOAT, 0, __fir->data()->borders.constData());
+  glDrawArrays(GL_LINE_LOOP, 0, __fir->data()->borders.size());
+#else
   __borders->bind();
   
   glVertexPointer(2, GL_FLOAT, 0, 0);
   glDrawArrays(GL_LINE_LOOP, 0, __borders->length());
   
   __borders->unbind();
+#endif
 }
 
 void
 FirItem::drawBackground() const {
+#ifdef CONFIG_NO_VBO
+  if (!__fir->data()->triangles.isEmpty()) {
+    glVertexPointer(2, GL_FLOAT, 0, __fir->data()->borders.constData());
+    glDrawElements(GL_TRIANGLES, __fir->data()->triangles.size(), GL_UNSIGNED_SHORT, __fir->data()->triangles.constData());
+  }
+#else
   __borders->bind();
   __triangles->bind();
   
@@ -76,6 +90,7 @@ FirItem::drawBackground() const {
   
   __triangles->unbind();
   __borders->unbind();
+#endif
 }
 
 void
@@ -160,6 +175,7 @@ FirItem::showDetailsWindow() const {
 
 void
 FirItem::__prepareVbo() {
+#ifndef CONFIG_NO_VBO
   auto& borders = __fir->data()->borders;
   auto& triangles = __fir->data()->triangles;
   
@@ -172,6 +188,7 @@ FirItem::__prepareVbo() {
     __triangles->sendData(triangles.size() * sizeof(triangles[0]), &triangles[0]);
     __triangles->setLength(triangles.size());
   }
+#endif
 }
 
 void
