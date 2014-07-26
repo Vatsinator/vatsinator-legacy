@@ -26,11 +26,13 @@
 class AbstractAnimation;
 class AirportItem;
 class Controller;
+class Fir;
 class FirItem;
 class FlightItem;
 class LonLat;
 class Pilot;
 class MapWidget;
+class UirItem;
 
 /**
  * The MapScene class is responsible for managing all the map items, moving
@@ -64,6 +66,12 @@ public:
    */
   void startAnimation(AbstractAnimation*);
   
+  /**
+   * Finds FirItem instance that handles the given Fir.
+   * @return nullptr if no such FirItem could be found.
+   */
+  FirItem* findItemForFir(const Fir*);
+  
   inline const QList<FirItem*>& firItems() const {
     return __firItems;
   }
@@ -74,6 +82,10 @@ public:
   
   inline const QList<FlightItem*>& flightItems() const {
     return __flightItems;
+  }
+  
+  inline const QList<UirItem*>& uirItems() const {
+    return __uirItems;
   }
   
   inline const Pilot* trackedFlight() const {
@@ -111,6 +123,7 @@ private:
   QList<FirItem*>               __firItems;
   QList<AirportItem*>           __airportItems;
   QList<FlightItem*>            __flightItems;
+  QList<UirItem*>               __uirItems;
   
   const Pilot* __trackedFlight;
   

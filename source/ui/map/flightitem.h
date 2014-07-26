@@ -25,6 +25,7 @@
 #include "ui/map/mapitem.h"
 
 class Pilot;
+class Texture;
 
 class FlightItem : public QObject, public MapItem {
   Q_OBJECT
@@ -68,8 +69,8 @@ private:
   const Pilot*  __pilot;
   LonLat        __position;
   
-  mutable GLuint        __model;
-  mutable GLuint        __label;
+  mutable const Texture* __model;
+  mutable Texture*       __label;
   
   mutable struct {
     QVector<GLfloat>    coords;

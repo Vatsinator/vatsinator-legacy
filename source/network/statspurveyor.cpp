@@ -23,6 +23,7 @@
 
 #include "storage/settingsmanager.h"
 #include "ui/dialogs/letsendstatsdialog.h"
+#include "vatsimdata/vatsimdatahandler.h"
 #include "config.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
@@ -36,8 +37,8 @@ static const int StartDelay = 10 * 1000;
 static const int RetryDelay = 60 * 1000;
 
 // request urls
-static const QString STARTUP_PATH = "startup.php?version=%1&os=%2";
-static const QString NOATC_PATH = "noatc.php?atc=%1";
+static const QString StartupPath = "startup.php?version=%1&os=%2";
+static const QString NoAtcPath = "noatc.php?atc=%1";
 
 namespace {
   
@@ -140,9 +141,9 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
 
 StatsPurveyor::~StatsPurveyor() {}
 
-void
+void 
 StatsPurveyor::reportStartup() {
-  QString url = QString(NetConfig::Vatsinator::statsUrl()) % STARTUP_PATH;
+  QString url = QString(NetConfig::Vatsinator::statsUrl()) % StartupPath;
   QNetworkRequest request(url.arg(VATSINATOR_VERSION, osString()));
   
   __enqueueRequest(request);
@@ -150,7 +151,11 @@ StatsPurveyor::reportStartup() {
 
 void
 StatsPurveyor::reportNoAtc(const QString& _atc) {
-  QString url = QString(NetConfig::Vatsinator::statsUrl()) % NOATC_PATH;
+  /* Discard no-atc reports before data is read */
+  if (!VatsimDataHandler::getSingleton().isInitialized())
+    return;
+  
+  QString url = QString(NetConfig::Vatsinator::statsUrl()) % NoAtcPath;
   QNetworkRequest request(url.arg(_atc));
   
   __enqueueRequest(request);

@@ -31,6 +31,7 @@
 #include "ui/map/flightitem.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
+#include "ui/map/uiritem.h"
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
@@ -207,6 +208,7 @@ MapWidget::paintGL() {
     __xOffset = o;
     
     __drawWorld();
+    __drawUirs();
     __drawFirs();
     __drawAirports();
     __drawPilots();
@@ -394,6 +396,43 @@ MapWidget::__drawFirs() {
       __checkItem(item);
       }
     }
+  }
+}
+
+void
+MapWidget::__drawUirs() {
+  static constexpr GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
+  
+  if (__settings.view.staffed_firs) {
+    glPushMatrix();
+      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
+      glScalef(__state.zoom(), __state.zoom(), 1.0f);
+      glTranslated(-__state.center().x(), __state.center().y(), 0.0);
+      glTranslatef(__xOffset, 0.0, staffedUirsZ);
+      
+      qglColor(__settings.colors.staffed_uir_borders);
+      glLineWidth(3.0);
+      for (const UirItem* item: __scene->uirItems()) {
+        if (item->needsDrawing()) {
+          for (const FirItem* f: item->firItems()) {
+            if (f->data()->isEmpty())
+              f->drawBorders();
+          }
+        }
+      }
+      
+      glLineWidth(1.0);
+      
+      qglColor(__settings.colors.staffed_fir_background);
+      for (const UirItem* item: __scene->uirItems()) {
+        if (item->needsDrawing()) {
+          for (const FirItem* f: item->firItems()) {
+            if (f->data()->isEmpty())
+              f->drawBackground();
+          }
+        }
+      }
+    glPopMatrix();
   }
 }
 

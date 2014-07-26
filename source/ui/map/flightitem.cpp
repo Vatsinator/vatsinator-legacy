@@ -20,7 +20,7 @@
 #include <QtCore>
 
 #include "db/airportdatabase.h"
-#include "glutils/glresourcemanager.h"
+#include "glutils/texture.h"
 #include "modules/modelmatcher.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/clientdetailsaction.h"
@@ -40,8 +40,8 @@ FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
     QObject(_parent),
     __pilot(_pilot),
     __position(_pilot->position()),
-    __model(0),
-    __label(0),
+    __model(nullptr),
+    __label(nullptr),
     __linesReady(false) {
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings())); 
@@ -51,7 +51,7 @@ FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
 
 FlightItem::~FlightItem() {
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
 }
 
 void
@@ -69,7 +69,7 @@ FlightItem::drawModel() const {
   glPushMatrix();
     glRotatef(static_cast<GLfloat>(data()->heading()), 0, 0, -1);
     glVertexPointer(2, GL_FLOAT, 0, modelRect);
-    glBindTexture(GL_TEXTURE_2D, __model);
+    __model->bind();
     glDrawArrays(GL_QUADS, 0, 4);
   glPopMatrix();
 }
@@ -86,10 +86,10 @@ FlightItem::drawLabel() const {
   if (!__label)
     __generateLabel();
   
-  glBindTexture(GL_TEXTURE_2D, __label);
+  __label->bind();
   glVertexPointer(2, GL_FLOAT, 0, labelRect);
   glDrawArrays(GL_QUADS, 0, 4);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  __label->unbind();
 }
 
 void
@@ -208,7 +208,7 @@ FlightItem::__generateLabel() const {
   static QRect labelRect(28, 10, 73, 13);
   
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
   
   QString callsign(data()->callsign());
   
@@ -222,7 +222,7 @@ FlightItem::__generateLabel() const {
   painter.setPen(MapConfig::pilotPen());
   
   painter.drawText(labelRect, Qt::AlignCenter, callsign);
-  __label = GlResourceManager::loadImage(temp);
+  __label = new Texture(temp);
 }
 
 void
@@ -247,7 +247,7 @@ FlightItem::__matchModel() const {
 void
 FlightItem::__reloadSettings() {
   if (__label) {
-    GlResourceManager::deleteImage(__label);
+    delete __label;
     __label = 0;
   }
   
@@ -259,7 +259,7 @@ void
 FlightItem::__invalidate() {
   __position = __pilot->position();
   
-  __model = 0;
+  __model = nullptr;
   
   __linesReady = false;
   __otpLine.coords.clear();

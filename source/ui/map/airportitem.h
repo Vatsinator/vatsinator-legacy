@@ -28,6 +28,7 @@
 
 class Airport;
 class ApproachCircleItem;
+class Texture;
 
 class AirportItem : public QObject, public MapItem {
   Q_OBJECT
@@ -65,8 +66,8 @@ private:
   LonLat                __position;
   ApproachCircleItem*   __approachCircle;
   
-  mutable GLuint        __icon;
-  mutable GLuint        __label;
+  mutable const Texture* __icon;
+  mutable Texture*       __label;
   
   mutable struct {
     QVector<GLfloat>    coords;
@@ -83,14 +84,14 @@ private:
     IconKeeper();
     ~IconKeeper();
     
-    GLuint emptyAirportIcon();
-    GLuint activeAirportIcon();
-    GLuint activeStaffedAirportIcon();
+    const Texture* emptyAirportIcon() const;
+    const Texture* activeAirportIcon() const;
+    const Texture* activeStaffedAirportIcon() const;
     
   private:
-    GLuint __emptyAirportIcon;
-    GLuint __activeAirportIcon;
-    GLuint __activeStaffedAirportIcon;
+    mutable Texture* __emptyAirportIcon;
+    mutable Texture* __activeAirportIcon;
+    mutable Texture* __activeStaffedAirportIcon;
     
   };
   

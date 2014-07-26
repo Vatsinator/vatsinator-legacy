@@ -127,6 +127,7 @@ protected:
 private:
   void __drawWorld();
   void __drawFirs();
+  void __drawUirs();
   void __drawAirports();
   void __drawPilots();
   void __drawLines();

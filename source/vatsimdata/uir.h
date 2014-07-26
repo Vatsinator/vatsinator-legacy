@@ -21,7 +21,7 @@
 #define UIR_H
 
 #include <QObject>
-#include <QVector>
+#include <QList>
 
 class Controller;
 class ControllerTableModel;
@@ -57,7 +57,7 @@ public:
    */
   bool isEmpty() const;
   
-  inline const QVector<Fir*>& range() const { return __range; }
+  inline const QList<Fir*>& range() const { return __range; }
   inline const ControllerTableModel* staff() const { return __staff; }
   inline const QString& icao() const { return __icao; }
   inline const QString& name() const { return __name; }
@@ -67,7 +67,7 @@ private:
   QString __icao;
   QString __name;
   
-  QVector<Fir*>         __range;
+  QList<Fir*>         __range;
   ControllerTableModel* __staff;
 
 };

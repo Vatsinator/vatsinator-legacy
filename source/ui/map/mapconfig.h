@@ -91,14 +91,15 @@ public:
   enum MapLayers {
     WorldMap = 1,
     UnstaffedFirs = 2,
-    StaffedFirs = 3,
+    StaffedUirs = 3,
+    StaffedFirs = 4,
     
-    EmptyAirports = 5,
-    ActiveAirports = 6,
+    EmptyAirports = 6,
+    ActiveAirports = 7,
     
-    Lines = 8,
+    Lines = 9,
     
-    Pilots = 10,
+    Pilots = 11,
     
     Count
   };

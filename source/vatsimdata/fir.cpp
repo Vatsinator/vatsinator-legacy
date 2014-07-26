@@ -30,6 +30,7 @@ Fir::Fir(const FirRecord* _data) :
      __icao(QString::fromUtf8(_data->header.icao)),
      __oceanic(_data->header.oceanic),
      __staff(new ControllerTableModel(this)),
+     __uirStaff(new ControllerTableModel(this)),
      __flights(new FlightTableModel(this)),
      __airports(new AirportTableModel(this)) {
   
@@ -41,6 +42,16 @@ Fir::~Fir() {}
 void
 Fir::addStaff(const Controller* _c) {
   __staff->add(_c);
+  connect(_c,           SIGNAL(updated()),
+          this,         SIGNAL(updated()));
+  connect(_c,           SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
+  emit updated();
+}
+
+void
+Fir::addUirStaff(const Controller* _c) {
+  __uirStaff->add(_c);
   connect(_c,           SIGNAL(updated()),
           this,         SIGNAL(updated()));
   connect(_c,           SIGNAL(destroyed(QObject*)),

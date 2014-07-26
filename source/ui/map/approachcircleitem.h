@@ -45,7 +45,7 @@ public:
   inline const Airport* data() const { return __airport; }
   
 private:
-  void __fillColors() const;
+  void __getColor() const;
   
 private slots:
   void __reloadSettings();
@@ -53,7 +53,7 @@ private slots:
 private:
   const Airport*                __airport;
   LonLat                        __position;
-  mutable QVector<GLfloat>      __colors;
+  mutable QColor                __color;
   
   static QVector<GLfloat>       __circle;
   

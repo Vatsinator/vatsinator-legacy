@@ -22,34 +22,34 @@
 
 #include <QObject>
 #include <QString>
+#include <QList>
 #include <QMap>
-#include <QtOpenGL>
 
+#include "ui/notifiable.h"
 #include "singleton.h"
+
+class Texture;
 
 /**
  * This class is responsible for matching user airplanes to 
  * corresponding models.
  */
-class ModelMatcher : public QObject, public Singleton<ModelMatcher> {
+class ModelMatcher : public QObject, public Notifiable, public Singleton<ModelMatcher> {
   Q_OBJECT
-  
-signals:
-  
-  /* TODO use NotificationEvent */
-  void warning(QString);
 
 public:
   /**
    * Reads the models.dat file.
    */
   ModelMatcher(QObject* = nullptr);
+  
+  virtual ~ModelMatcher();
 
   /**
    * @param acft Aircraft code that comes from the flight plan.
    * @return Model's texture ID.
    */
-  GLuint matchMyModel(const QString&);
+  const Texture* matchMyModel(const QString&) const;
   
 private:
   void __readModels();
@@ -59,9 +59,9 @@ private slots:
 
 private:
 
-  QMap<QString, QString> __modelsFiles;
-  QMap<QString, GLuint>  __modelsPixmaps;
-
+  QMap<QString, QString>  __modelsFiles;
+  QMap<QString, Texture*> __modelsPixmaps;
+  QList<Texture*>         __pixmaps;
 
 };
 
