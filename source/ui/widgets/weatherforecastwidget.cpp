@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "plugins/weatherdata.h"
 #include "vatsinatorapplication.h"
@@ -25,8 +25,8 @@
 #include "weatherforecastwidget.h"
 
 /* Size of the single forecast card */
-constexpr int WeatherWidth = 150;
-constexpr int WeatherHeight = 130;
+Q_DECL_CONSTEXPR int WeatherWidth = 150;
+Q_DECL_CONSTEXPR int WeatherHeight = 130;
 
 namespace {
   QString iconForCondition(WeatherData::Condition _condition) {
@@ -125,8 +125,8 @@ QSize WeatherForecastWidget::minimumSizeHint() const {
 void
 WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
   /* Weather icon size */
-  constexpr int IconWidth = 50;
-  constexpr int IconHeight = 50;
+  Q_DECL_CONSTEXPR int IconWidth = 50;
+  Q_DECL_CONSTEXPR int IconHeight = 50;
   
   QPainter p(this);
   p.setBackground(QBrush(Qt::white));
@@ -150,7 +150,7 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     QRect dayRect(QPoint(i * width, 0), QSize(width, WeatherHeight));
     
     /* Draw day of the week */
-    QPen pen(QColor(Qt::black));
+    QPen pen(QColor(0, 0, 0));
     pen.setWidth(3);
     p.setPen(pen);
     

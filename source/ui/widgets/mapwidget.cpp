@@ -401,7 +401,7 @@ MapWidget::__drawFirs() {
 
 void
 MapWidget::__drawUirs() {
-  static constexpr GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
+  static Q_DECL_CONSTEXPR GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
   
   if (__settings.view.staffed_firs) {
     glPushMatrix();

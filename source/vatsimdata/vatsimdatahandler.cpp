@@ -17,7 +17,7 @@
 */
 
 #include <algorithm>
-#include <QtGui>
+#include <QtWidgets>
 #include <qjson/parser.h>
 
 #include "db/airportdatabase.h"
@@ -453,7 +453,7 @@ VatsimDataHandler::nmDistance(
     const qreal& _lat2, const qreal& _lon2) {
   
   /* http://www.movable-type.co.uk/scripts/latlong.html */
-  static constexpr qreal R = 3440.06479191; // nm
+  static Q_DECL_CONSTEXPR qreal R = 3440.06479191; // nm
   
   return qAcos(
       qSin(_lat1) * qSin(_lat2) +
@@ -465,7 +465,7 @@ VatsimDataHandler::nmDistance(
 qreal
 VatsimDataHandler::nmDistance(const LonLat& _a, const LonLat& _b) {
   /* http://www.movable-type.co.uk/scripts/latlong.html */
-  static constexpr qreal R = 3440.06479191; // nm
+  static Q_DECL_CONSTEXPR qreal R = 3440.06479191; // nm
   
   return qAcos(
       qSin(_a.latitude()) * qSin(_b.latitude()) +
@@ -704,10 +704,13 @@ VatsimDataHandler::__loadCachedData() {
 
 void
 VatsimDataHandler::__cleanupClients() {
-  for (auto c: __clients) {
-    if (!c->isOnline()) {
-      __clients.remove(c->callsign());
-      c->deleteLater();
+  auto c = __clients.begin();
+  while (c != __clients.end()) {
+    if (!c.value()->isOnline()) {
+      c.value()->deleteLater();
+      c = __clients.erase(c);
+    } else {
+      ++c;
     }
   }
 }

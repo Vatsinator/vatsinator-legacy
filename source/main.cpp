@@ -16,12 +16,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtCore>
 #include "ui/map/mapstate.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
 
 int main(int argc, char** argv) {
+  Q_INIT_RESOURCE(imgs);
+  Q_INIT_RESOURCE(weather);
   QApplication::setApplicationName("Vatsinator");
   QApplication::setOrganizationName("VatsinatorTeam");
   QApplication::setApplicationVersion(VATSINATOR_VERSION);
