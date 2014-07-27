@@ -95,6 +95,17 @@ MapScene::findItemForFir(const Fir* _fir) {
   return nullptr;
 }
 
+QList<const MapItem*>
+MapScene::items(const QRectF& _rect) const {
+  QList<const MapItem*> result;
+  for (const FlightItem* f: __flightItems) {
+    if (_rect.contains(f->position()))
+      result << f;
+  }
+  
+  return result;
+}
+
 void
 MapScene::moveSmoothly(const LonLat& _target) {
   MoveAnimation* a = new MoveAnimation(this);

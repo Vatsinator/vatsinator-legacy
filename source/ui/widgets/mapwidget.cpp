@@ -25,6 +25,7 @@
 #include "events/mouselonlatevent.h"
 #include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
+#include "ui/actions/clientdetailsaction.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
@@ -37,6 +38,7 @@
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
+#include "vatsimdata/client/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -59,6 +61,7 @@ MapWidget::MapWidget(QWidget* _parent) :
           this,                                 SLOT(__reloadSettings()));
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
+  connect(this, SIGNAL(menuRequest()), SLOT(__showMenu()));
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
   
   setAutoBufferSwap(true);
@@ -652,6 +655,30 @@ MapWidget::__reloadSettings() {
 void
 MapWidget::__showMenu(const MapItem* _item) {  
   QMenu* menu = _item->menu(this);
+  menu->exec(mapToGlobal(__mousePosition.screenPosition()));
+  delete menu;
+}
+
+void
+MapWidget::__showMenu() {
+  QRectF rect(QPointF(), QSize(1.0f, 1.0f));
+  rect.moveCenter(__mousePosition.geoPosition());
+  QList<const MapItem*> items = scene()->items(rect);
+  
+  QMenu* menu = new QMenu(tr("Flights nearby"), this);
+  
+  for (const MapItem* item: items) {
+    if (const FlightItem* f = dynamic_cast<const FlightItem*>(item)) {
+      if (f->data()->isPrefiledOnly())
+        continue;
+      
+      ClientDetailsAction* action = new ClientDetailsAction(f->data(), f->data()->callsign(), this);
+      connect(action,                   SIGNAL(triggered(const Client*)),
+              vApp()->userInterface(),  SLOT(showDetailsWindow(const Client*)));
+      menu->addAction(action);
+    }
+  }
+  
   menu->exec(mapToGlobal(__mousePosition.screenPosition()));
   delete menu;
 }

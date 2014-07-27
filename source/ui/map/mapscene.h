@@ -23,12 +23,14 @@
 #include <QObject>
 #include <QList>
 
+class QRectF;
 class AbstractAnimation;
 class AirportItem;
 class Controller;
 class Fir;
 class FirItem;
 class FlightItem;
+class MapItem;
 class LonLat;
 class Pilot;
 class MapWidget;
@@ -71,6 +73,11 @@ public:
    * @return nullptr if no such FirItem could be found.
    */
   FirItem* findItemForFir(const Fir*);
+  
+  /**
+   * Finds all visible items that are inside the given _rect_.
+   */
+  QList<const MapItem*> items(const QRectF&) const;
   
   inline const QList<FirItem*>& firItems() const {
     return __firItems;
