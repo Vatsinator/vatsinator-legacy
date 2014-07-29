@@ -26,7 +26,7 @@ endif ("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VE
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
 # find necessary libs
-find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtOpenGL QtXml QtSvg QtNetwork REQUIRED)
+find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtOpenGL QtXml QtNetwork REQUIRED)
 find_package (OpenGL REQUIRED)
 find_package (QuaZip REQUIRED)
 find_package (QJSON REQUIRED)
@@ -124,7 +124,6 @@ elseif (WIN32)
             ${QT_QTCORE_LIBRARY_RELEASE}
             ${QT_QTNETWORK_LIBRARY_RELEASE}
             ${QT_QTOPENGL_LIBRARY_RELEASE}
-            ${QT_QTSVG_LIBRARY_RELEASE}
             ${QT_QTXML_LIBRARY_RELEASE}
             ${QUAZIP_LIBRARIES}
             ${QJSON_LIBRARY}
