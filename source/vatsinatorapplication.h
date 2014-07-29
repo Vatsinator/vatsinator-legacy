@@ -74,10 +74,6 @@ public:
     return __pluginManager;
   }
   
-  static const QFont& boldFont();
-  static const QFont& h1Font();
-  static const QFont& h2Font();
-  
 #ifdef GCC_VERSION_48
   [[noreturn]]
 #endif
@@ -143,12 +139,6 @@ private:
   StatsPurveyor*       __statsPurveyor;
   
   static QMutex        __mutex; /* For stdout */
-
-  /* Proxy style to have widgets looking nice on Mac */
-  class VatsinatorStyle : public QProxyStyle {
-  public:
-      void polish(QWidget*) override;
-  };
 
 };
 
