@@ -27,8 +27,7 @@
 #include "plugins/weatherforecastrequest.h"
 #include "plugins/weatherforecastreply.h"
 
-class WeatherForecastInterface : public QObject {
-  Q_OBJECT
+class WeatherForecastInterface {
 
 public:
   
@@ -45,6 +44,6 @@ public:
 };
 
 Q_DECLARE_INTERFACE(WeatherForecastInterface,
-                    "org.eu.vatsinator.Plugin.WeatherForecastInterface/1.0")
+                    "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
 
 #endif // WEATHERFORECASTINTERFACE_H

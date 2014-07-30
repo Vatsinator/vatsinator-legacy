@@ -141,7 +141,7 @@ MapWidget::redraw() {
   if (cursor().shape() != Qt::SizeAllCursor)
     setCursor(QCursor(Qt::ArrowCursor));
   
-  updateGL();
+  update();
 }
 
 void
@@ -246,14 +246,14 @@ MapWidget::resizeGL(int _width, int _height) {
   
   __updateOffsets();
   
-  updateGL();
+  update();
 }
 
 void
 MapWidget::wheelEvent(QWheelEvent* _event) {
   __updateZoom(_event->delta() / 120);
   __updateOffsets();
-  updateGL();
+  update();
   
   _event->accept();
 }
@@ -314,7 +314,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     __updateOffsets();
   }
   __mousePosition.update(_event->pos());
-  updateGL();
+  update();
   _event->accept();
 }
 

@@ -32,7 +32,8 @@ PluginManager::loadPlugins() {
   for (QString fileName: pluginsDir.entryList(QDir::Files)) {
     QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
     QObject* plugin = loader.instance();
-    if (plugin)
+    if (plugin) {
       __plugins << plugin;
+    }
   }
 }

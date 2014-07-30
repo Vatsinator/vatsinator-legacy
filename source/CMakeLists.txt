@@ -62,7 +62,6 @@ if (LINUX)
         Qt5::Widgets
         Qt5::Network
         Qt5::Xml
-        Qt5::Svg
         Qt5::OpenGL
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}

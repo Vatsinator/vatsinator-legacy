@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "plugins/weatherdata.h"
 #include "vatsinatorapplication.h"

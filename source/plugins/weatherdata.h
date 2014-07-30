@@ -46,7 +46,7 @@ public:
     Breezy,
     Windy,
   };
-  Q_ENUMS(WeatherForecastModel::Condition);
+  Q_ENUMS(WeatherData::Condition);
   
   struct Temperature {
     int celsius;
