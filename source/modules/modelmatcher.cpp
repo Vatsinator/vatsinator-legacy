@@ -19,6 +19,7 @@
 #include <QtWidgets>
 
 #include "glutils/glresourcemanager.h"
+#include "ui/widgets/mapwidget.h"
 #include "glutils/texture.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"

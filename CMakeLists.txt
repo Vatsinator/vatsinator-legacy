@@ -17,9 +17,12 @@
 
 project (vatsinator)
 
-cmake_minimum_required (VERSION 3.0.0 FATAL_ERROR)
+cmake_minimum_required (VERSION 2.8.11 FATAL_ERROR)
 cmake_policy (SET CMP0020 OLD)
-cmake_policy (SET CMP0028 NEW)
+
+if (POLICY CMP0028)
+  cmake_policy (SET CMP0028 NEW)
+endif (POLICY CMP0028)
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
@@ -27,12 +30,17 @@ find_package (Qt5Core REQUIRED)
 find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL REQUIRED)
 find_package (Qt5Xml REQUIRED)
-find_package (Qt5Svg REQUIRED)
 find_package (Qt5Network REQUIRED)
-
 find_package (OpenGL REQUIRED)
 find_package (QuaZip REQUIRED)
 find_package (QJSON REQUIRED)
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+include_directories(${Qt5Core_INCLUDE_DIRS})
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+include_directories(${Qt5OpenGL_INCLUDE_DIRS})
+include_directories(${Qt5Network_INCLUDE_DIRS})
+include_directories(${Qt5Xml_INCLUDE_DIRS})
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)
@@ -140,15 +148,14 @@ elseif (WIN32)
         get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
         get_target_property(QtNetwork_location Qt5::Network LOCATION)
         get_target_property(QtOpenGL_location Qt5::OpenGL LOCATION)
-        get_target_property(QtSvg_location Qt5::Svg LOCATION)
         get_target_property(QtXml_location Qt5::Xml LOCATION)
 
         install (FILES
+
             ${QtCore_location}
             ${QtWidgets_location}
             ${QtNetwork_location}
             ${QtOpenGL_location}
-            ${QtSvg_location}
             ${QtXml_location}
             ${QUAZIP_LIBRARIES}
             ${QJSON_LIBRARY}

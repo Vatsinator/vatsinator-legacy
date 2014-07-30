@@ -146,7 +146,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="111"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="116"/>
         <source>%1 - airport details</source>
         <translation>%1 - detalhes do aeroporto</translation>
     </message>
@@ -201,24 +201,39 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="583"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="563"/>
         <source>NOTAM</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="699"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="679"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="680"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="660"/>
         <source>Show</source>
         <translation>Mostrar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="126"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="94"/>
+        <source>No plugin selected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="131"/>
         <source>%1 ft</source>
         <translation>%1 ft</translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="174"/>
+        <source>No forecast for %1, %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="178"/>
+        <source>Network error</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -246,12 +261,12 @@
     <message>
         <location filename="../ui/map/airportitem.cpp" line="194"/>
         <source>Arrivals</source>
-        <translation type="unfinished"/>
+        <translation>Chegadas</translation>
     </message>
     <message>
         <location filename="../ui/map/airportitem.cpp" line="208"/>
         <source>Departures</source>
-        <translation type="unfinished"/>
+        <translation>Partidas</translation>
     </message>
 </context>
 <context>
@@ -1054,7 +1069,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
-        <location filename="../ui/pages/networkpage.cpp" line="45"/>
+        <location filename="../ui/pages/networkpage.cpp" line="50"/>
         <source>Network</source>
         <translation type="unfinished"/>
     </message>
@@ -1109,17 +1124,33 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="272"/>
-        <source>Weather forecasts</source>
+        <location filename="../ui/pages/networkpage.ui" line="269"/>
+        <source>Wea&amp;ther forecast provider</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="287"/>
-        <source>Uncheck to disable weather forecasts</source>
+        <location filename="../ui/pages/networkpage.ui" line="279"/>
+        <source>None</source>
+        <extracomment>&amp;Label for &quot;no weather forecast provider&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="305"/>
+        <source>Units:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="312"/>
+        <source>Celsius</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="322"/>
+        <source>Fahrenheit</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../ui/pages/networkpage.cpp" line="100"/>
+        <location filename="../ui/pages/networkpage.cpp" line="138"/>
         <source>minute(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -1187,21 +1218,21 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="487"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="532"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="565"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="492"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="537"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="570"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro %1 não pode ser aberto! Por favor re-instale a aplicação.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="496"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="541"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="574"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="501"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="546"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="579"/>
         <source>File %1 contains errors. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="622"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="627"/>
         <source>File %1 could not be opened!</source>
         <translation>O ficheiro %1 não pode ser aberto!</translation>
     </message>

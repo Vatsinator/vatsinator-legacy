@@ -174,7 +174,8 @@ void
 StatsPurveyor::__parseResponse() {
   QJson::Parser parser;
   bool ok;
-  QVariantMap content = parser.parse(__reply, &ok).toMap();
+  QByteArray data = __reply->readAll();
+  QVariantMap content = parser.parse(data, &ok).toMap();
   if (ok && __reply->error() == QNetworkReply::NoError) {
     int result = content["result"].toInt();
     if (result > 0) {

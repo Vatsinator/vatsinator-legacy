@@ -10,7 +10,6 @@ vatsinator_subdirectory_sources (plugins "${plugins_SRCS}")
 
 set (plugins_MOC_SRCS
     weatherdata.h
-    weatherforecastinterface.h
     weatherforecastreply.h
 )
 

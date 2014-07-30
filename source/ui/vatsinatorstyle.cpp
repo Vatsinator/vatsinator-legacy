@@ -1,5 +1,5 @@
 /*
- * weatherforecastinterface.h
+ * vatsinatorstyle.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,33 +17,37 @@
  *
  */
 
-#ifndef WEATHERFORECASTINTERFACE_H
-#define WEATHERFORECASTINTERFACE_H
+#include "vatsinatorstyle.h"
 
-#include <QObject>
-#include <QString>
-#include <QtPlugin>
+QFont
+VatsinatorStyle::boldFont() {
+  QFont font;
+  font.setBold(true);
+  return font;
+}
 
-#include "plugins/weatherforecastrequest.h"
-#include "plugins/weatherforecastreply.h"
+QFont
+VatsinatorStyle::h1Font() {
+  QFont font;
+  int size = font.pointSize() + 4;
+  font.setPointSize(size);
+  font.setBold(true);
+  return font;
+}
 
-class WeatherForecastInterface {
+QFont
+VatsinatorStyle::h2Font() {
+  QFont font;
+  int size = font.pointSize() + 2;
+  font.setPointSize(size);
+  font.setBold(true);
+  return font;
+}
 
-public:
-  
-  /**
-   * Gets the provider representative name.
-   */
-  virtual QString providerName() const = 0;
-  
-  /**
-   * Begins fetching the weather forecast.
-   */
-  virtual WeatherForecastReply* fetch(WeatherForecastRequest* request) = 0;
-  
-};
-
-Q_DECLARE_INTERFACE(WeatherForecastInterface,
-                    "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
-
-#endif // WEATHERFORECASTINTERFACE_H
+#ifdef Q_OS_MAC
+void
+VatsinatorStyle::polish(QWidget* _widget) {
+  if (!qobject_cast<QMenu*>(_widget) && _widget->testAttribute(Qt::WA_MacNormalSize))
+    _widget->setAttribute(Qt::WA_MacMiniSize);
+}
+#endif

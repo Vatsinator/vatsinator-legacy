@@ -100,7 +100,7 @@ public:
   bool event(QEvent*) override;
   
   inline MapScene* scene() { return __scene; }
-  inline const MapState state() const { return __state; }
+  inline const MapState& state() const { return __state; }
   
 public slots:
   
@@ -162,6 +162,7 @@ private:
 private slots:
   void __reloadSettings();
   void __showMenu(const MapItem*);
+  void __showMenu();
   void __showWindow(const MapItem*);
   
 private:

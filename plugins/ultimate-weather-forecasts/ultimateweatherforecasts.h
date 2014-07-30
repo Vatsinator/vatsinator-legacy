@@ -35,8 +35,9 @@ class WeatherForecastRequest;
  * Forecasts API, hosted on mashape.com.
  * https://www.mashape.com/george-vustrey/ultimate-weather-forecasts
  */
-class UltimateWeatherForecasts : public WeatherForecastInterface {
+class UltimateWeatherForecasts : public QObject, public WeatherForecastInterface {
   Q_OBJECT
+  Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.WeatherForecastInterface" FILE "ultimateweatherforecasts.json")
   Q_INTERFACES(WeatherForecastInterface)
 
 public:

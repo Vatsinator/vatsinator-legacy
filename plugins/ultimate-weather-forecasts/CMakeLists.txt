@@ -1,4 +1,4 @@
-qt4_wrap_cpp(uwf_MOCS ultimateweatherforecasts.h)
+qt5_wrap_cpp(uwf_MOCS ultimateweatherforecasts.h)
 set (QT_USE_QTNETWORK TRUE)
 
 add_definitions(-DQT_PLUGIN)

@@ -39,6 +39,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
 set (ui_SRCS
     notifiable.cpp
     userinterface.cpp
+    vatsinatorstyle.cpp
     
     actions/actionmenuseparator.cpp
     actions/airportdetailsaction.cpp
@@ -108,6 +109,7 @@ vatsinator_subdirectory_sources (ui "${ui_SRCS}")
 
 set (ui_MOC_SRCS
     userinterface.h
+    vatsinatorstyle.h
     
     actions/actionmenuseparator.h
     actions/airportdetailsaction.h

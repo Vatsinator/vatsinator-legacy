@@ -32,6 +32,7 @@
 #include "storage/settingsmanager.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/userinterface.h"
+#include "ui/vatsinatorstyle.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -72,9 +73,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   connect(qApp,         SIGNAL(aboutToQuit()),
           tr,           SLOT(deleteLater()));
   
-#ifdef Q_OS_DARWIN
   setStyle(new VatsinatorStyle());
-#endif
   
   connect(this, SIGNAL(initializing()), SLOT(__initialize()));
   emit initializing();
@@ -109,31 +108,6 @@ UserInterface*
 VatsinatorApplication::userInterface() {
   Q_ASSERT(__userInterface);
   return __userInterface;
-}
-
-const QFont &
-VatsinatorApplication::boldFont() {
-  static QFont font;
-  font.setBold(true);
-  return font;
-}
-
-const QFont &
-VatsinatorApplication::h1Font() {
-  static QFont font;
-  static int size = font.pointSize() + 4;
-  font.setPointSize(size);
-  font.setBold(true);
-  return font;
-}
-
-const QFont &
-VatsinatorApplication::h2Font() {
-  static QFont font;
-  static int size = font.pointSize() + 2;
-  font.setPointSize(size);
-  font.setBold(true);
-  return font;
 }
 
 void
@@ -198,14 +172,6 @@ VatsinatorApplication::__initialize() {
   
   /* Read data files only after databases are ready */
   __vatsimData->init();
-}
-
-void
-VatsinatorApplication::VatsinatorStyle::polish(QWidget* _widget) {
-#ifdef Q_OS_DARWIN
-  if (!qobject_cast<QMenu*>(_widget) && _widget->testAttribute(Qt::WA_MacNormalSize))
-    _widget->setAttribute(Qt::WA_MacMiniSize);
-#endif
 }
 
 QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

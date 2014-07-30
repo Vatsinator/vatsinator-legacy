@@ -1,5 +1,5 @@
 /*
- * weatherforecastinterface.h
+ * vatsinatorstyle.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,33 +17,25 @@
  *
  */
 
-#ifndef WEATHERFORECASTINTERFACE_H
-#define WEATHERFORECASTINTERFACE_H
+#ifndef VATSINATORSTYLE_H
+#define VATSINATORSTYLE_H
 
-#include <QObject>
-#include <QString>
-#include <QtPlugin>
+#include <QProxyStyle>
+#include <QFont>
 
-#include "plugins/weatherforecastrequest.h"
-#include "plugins/weatherforecastreply.h"
-
-class WeatherForecastInterface {
+class VatsinatorStyle : public QProxyStyle {
+  Q_OBJECT
 
 public:
   
-  /**
-   * Gets the provider representative name.
-   */
-  virtual QString providerName() const = 0;
+  QFont boldFont();
+  QFont h1Font();
+  QFont h2Font();
   
-  /**
-   * Begins fetching the weather forecast.
-   */
-  virtual WeatherForecastReply* fetch(WeatherForecastRequest* request) = 0;
+#ifdef Q_OS_MAC
+  void polish(QWidget*) override;
+#endif
   
 };
 
-Q_DECLARE_INTERFACE(WeatherForecastInterface,
-                    "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
-
-#endif // WEATHERFORECASTINTERFACE_H
+#endif // VATSINATORSTYLE_H

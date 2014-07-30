@@ -200,5 +200,3 @@ void UltimateWeatherForecasts::__finished() {
     }
   }
 }
-
-Q_EXPORT_PLUGIN2(ultimateweatherforecasts, UltimateWeatherForecasts)
