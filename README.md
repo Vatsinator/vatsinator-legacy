@@ -1,4 +1,4 @@
-![Vatsinator](http://vatsinator.org/images/header.jpg)
+![Vatsinator](http://vatsinator.eu.org/images/header.jpg)
 
 **Vatsinator** is an open-source Vatsim network monitor. It shows logged-in pilots and controllers, provides weather and airport information. Vatsinator is designed to be quick and handy, in order to be useful on desktops (when not flying) and note/netbooks (during flight).
 
