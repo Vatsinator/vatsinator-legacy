@@ -18,7 +18,7 @@
  */
 
 #include "db/firdatabase.h"
-#include "glutils/glresourcemanager.h"
+#include "glutils/texture.h"
 #include "glutils/vertexbufferobject.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/clientdetailsaction.h"
@@ -37,7 +37,7 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     __position(_fir->data()->header.textPosition.x, _fir->data()->header.textPosition.y),
     __borders(nullptr),
     __triangles(nullptr),
-    __label(0) {
+    __label(nullptr) {
   __prepareVbo();
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
@@ -48,7 +48,7 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
 
 FirItem::~FirItem() {
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
   
   if (__triangles)
     delete __triangles;
@@ -90,10 +90,10 @@ FirItem::drawLabel() const {
   if (!__label)
     __generateLabel();
   
-  glBindTexture(GL_TEXTURE_2D, __label);
+  __label->bind();
   glVertexPointer(2, GL_FLOAT, 0, labelRect);
   glDrawArrays(GL_QUADS, 0, 4);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  __label->unbind();
 }
 
 bool
@@ -124,6 +124,11 @@ FirItem::tooltipText() const {
     staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
   }
   
+  for (const Controller* c: data()->uirStaff()->staff()) {
+    staff.append("<br>");
+    staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
+  }
+  
   if (desc.isEmpty() && staff.isEmpty())
     return QString();
   else
@@ -144,6 +149,13 @@ FirItem::menu(QWidget* _parent) const {
   menu->addAction(showFir);
   
   for (const Controller* c: data()->staff()->staff()) {
+    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
+    connect(cda,                                SIGNAL(triggered(const Client*)),
+            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
+    menu->addAction(cda);
+  }
+  
+  for (const Controller* c: data()->uirStaff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
     connect(cda,                                SIGNAL(triggered(const Client*)),
             UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
@@ -179,7 +191,7 @@ FirItem::__generateLabel() const {
   static QRect labelRect(0, 4, 64, 24);
   
   if (__label)
-    GlResourceManager::deleteImage(__label);
+    delete __label;
   
   QString icao(__fir->icao());
   if (__fir->isOceanic())
@@ -195,21 +207,27 @@ FirItem::__generateLabel() const {
   
   painter.setFont(SM::get("map.fir_font").value<QFont>());
   
-  QColor color = __fir->isStaffed() ? 
-    SM::get("map.staffed_fir_borders_color").value<QColor>() :
-    SM::get("map.unstaffed_fir_borders_color").value<QColor>();
-    
+  QColor color;
+  if (__fir->isStaffed()) {
+    color = SM::get("map.staffed_fir_borders_color").value<QColor>();
+  } else {
+    if (__fir->uirStaff()->rowCount() > 0)
+      color = SM::get("map.staffed_uir_borders_color").value<QColor>();
+    else
+      color = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
+  }
+  
   painter.setPen(color);
   
   painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);
-  __label = GlResourceManager::loadImage(temp);
+  __label = new Texture(temp);
 }
 
 void
 FirItem::__resetLabel() {
   if (__label) {
-    GlResourceManager::deleteImage(__label);
-    __label = 0;
+    delete __label;
+    __label = nullptr;
   }
 }
 

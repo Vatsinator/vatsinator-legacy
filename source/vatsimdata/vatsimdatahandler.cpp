@@ -18,17 +18,20 @@
 
 #include <algorithm>
 #include <QtWidgets>
+#include <qjson/parser.h>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "network/abstractnotamprovider.h"
 #include "network/euroutenotamprovider.h"
 #include "network/plaintextdownloader.h"
+#include "plugins/weatherforecastinterface.h"
 #include "modules/modulemanager.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
 #include "storage/cachefile.h"
+#include "storage/pluginmanager.h"
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
@@ -52,7 +55,9 @@ static const QString CacheFileName = "lastdata";
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
 ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
 
-static QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
+namespace {
+QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
+}
 
 
 VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
@@ -62,9 +67,11 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __observers(0),
     __clientCount(0),
     __statusFileFetched(false),
+    __initialized(false),
     __downloader(new PlainTextDownloader()),
     __scheduler(new UpdateScheduler()),
-    __notamProvider(nullptr) {
+    __notamProvider(nullptr),
+    __weatherForecast(nullptr) {
   
   connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
           this,                                     SLOT(__slotUiCreated()));
@@ -76,6 +83,8 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
           this,                                     SLOT(requestDataUpdate()));
   connect(this,                                     SIGNAL(localDataBad(QString)),
           UserInterface::getSingletonPtr(),         SLOT(warning(QString)));
+  connect(SettingsManager::getSingletonPtr(),       SIGNAL(settingsChanged()),
+          this,                                     SLOT(__reloadWeatherForecast()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   
@@ -106,6 +115,7 @@ VatsimDataHandler::init() {
   __readFirFile(FileManager::path("data/fir"));
   __readUirFile(FileManager::path("data/uir"));
   
+  __initialized = true;
   emit initialized();
 }
 
@@ -334,19 +344,47 @@ VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
   for (const QString& k: keys) {
     if (__firs.contains(k)) {
       QList<Fir*> values = __firs.values(k);
-      for (Fir* f: values)
+      for (Fir* f: values) {
         if (f->isOceanic() == _fss && f->hasValidPosition()) {
           return f;
         }
+      }
     }
   }
   
   return nullptr;
 }
 
+Uir*
+VatsimDataHandler::findUir(const QString& _icao) {
+  if (__uirs.contains(_icao))
+    return __uirs[_icao];
+  
+  QList<QString> keys = aliases().values(_icao);
+  for (const QString& k: keys) {
+    if (__uirs.contains(k))
+      return __uirs[k];
+  }
+  
+  return nullptr;
+}
+
+QString
+VatsimDataHandler::alternameName(const QString& _icao) {
+  if (!__alternameNames.contains(_icao))
+    return QString();
+  else
+    return __alternameNames[_icao];
+}
+
 QList<Fir*>
 VatsimDataHandler::firs() const {
   return std::move(__firs.values());
+}
+
+QList<Uir*>
+VatsimDataHandler::uirs() const {
+  return std::move(__uirs.values());
 }
 
 int
@@ -451,34 +489,36 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(file.fileName()));
     return;
   }
   
-  while (!file.atEnd()) {
-    QString line = QString::fromUtf8(file.readLine()).simplified();
-    
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-    
-    QStringList data = line.split(' ');
-    QString& icao = data.front();
-    
-    Q_ASSERT(icao.length() == 4);
-    
-    for (int i = 1; i < data.length(); ++i) {
-      if (data[i][0] == '{') {
-        __aliases.insert(data[i].mid(1), icao);
-      } else if (data[i].toUpper() == data[i]) {
-        __aliases.insert(data[i], icao);
+  QJson::Parser parser;
+  bool ok;
+  
+  QVariant content = parser.parse(&file, &ok);
+  if (!ok) {
+    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+    return;
+  }
+  
+  auto list = content.toList();
+  for (QVariant& a: list) {
+    auto map = a.toMap();
+    QString target = map["target"].toString();
+    auto aList = map["alias"].toList();
+    for (QVariant& b: aList) {
+      if (b.canConvert<QString>()) {
+        __aliases.insert(target, b.toString());
+      } else {
+        auto aMap = b.toMap();
+        auto aaList = aMap["alias"].toList();
+        QString name = aMap["name"].toString();
+        for (QVariant& c: aaList) {
+          __aliases.insert(target, c.toString());
+          __alternameNames.insert(c.toString(), name);
+        }
       }
-      /*
-       * TODO Read also named aliases (those in brackets) - they should be displayed
-       *      if used. For example, if you have:
-       *        LGGG {LGMD Makedonia}
-       *      then if user clicks on "LGGG" default name should be shown, otherwise
-       *      "Makedonia".
-       */
     }
   }
   
@@ -494,20 +534,25 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(_fName));
     return;
   }
   
-  while (!file.atEnd()) {
-     QString line = QString::fromUtf8(file.readLine()).simplified();
-    
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-    
-    countries.insert(
-              line.section(' ', -1),
-              line.section(' ', 0, -2)
-              );
+  QJson::Parser parser;
+  bool ok;
+  
+  QVariant content = parser.parse(&file, &ok);
+  if (!ok) {
+    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+    return;
+  }
+  
+  auto list = content.toList();
+  for (QVariant& c: list) {
+    auto map = c.toMap();
+    QString country = map["country"].toString();
+    QString code = map["code"].toString();
+    countries.insert(code, country);
   }
   
   file.close();
@@ -522,21 +567,29 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(_fName));
     return;
   }
   
-  while (!file.atEnd()) {
-     QString line = QString::fromUtf8(file.readLine()).simplified();
-    
-    if (line[0] == '#' || line.isEmpty())
-      continue;
-    
-    QString icao = line.section(' ', 0, 0);
+  QJson::Parser parser;
+  bool ok;
+  
+  QVariant content = parser.parse(&file, &ok);
+  if (!ok) {
+    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+    return;
+  }
+  
+  auto list = content.toList();
+  
+  for (QVariant& c: list) {
+    auto map = c.toMap();
+    QString icao = map["icao"].toString();
+    QString name = map["name"].toString();
     
     Fir* currentFir = findFir(icao);
     if (currentFir) {
-      currentFir->setName(line.section(' ', 1));
+      currentFir->setName(name);
       
       /*
        * TODO Make this below more convenient, i.e. allow writing some kind of
@@ -553,7 +606,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     // look for some oceanic fir
     currentFir = findFir(icao, true);
     if (currentFir) {
-      currentFir->setName(line.section(' ', 1));
+      currentFir->setName(name);
       currentFir->setCountry(countries[icao.left(2)]);
       currentFir->fixupName();
     }
@@ -590,13 +643,12 @@ VatsimDataHandler::__readUirFile(const QString& _fileName) {
         
         if (fir)
           uir->addFir(fir);
-        else
-          VatsinatorApplication::log("FIR %s could not be found!", data[i].toStdString().c_str());
       } else {
         uir->name().append(data[i] + " ");
       }
     }
     
+    __uirs.insert(uir->icao(), uir);
   }
   
   file.close();
@@ -664,6 +716,7 @@ VatsimDataHandler::__cleanupClients() {
 
 void
 VatsimDataHandler::__slotUiCreated() {
+  
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
   
@@ -712,6 +765,28 @@ VatsimDataHandler::__handleFetchError() {
     }
   }
 }
+
+void
+VatsimDataHandler::__reloadWeatherForecast() {
+  QString desired = SM::get("network.weather_forecast_provider").toString();
+  if (desired != "None") {
+    if (!__weatherForecast || desired != __weatherForecast->providerName()) {
+      QList<WeatherForecastInterface*> weatherPlugins =
+          VatsinatorApplication::getSingleton().plugins()->plugins<WeatherForecastInterface>();
+      for (WeatherForecastInterface* w: weatherPlugins) {
+        if (w->providerName() == desired) {
+          __weatherForecast = w;
+          break;
+        }
+      }
+      Q_ASSERT(__weatherForecast->providerName() == desired);
+      VatsinatorApplication::log("Loaded weather forecast plugin: %s", qPrintable(__weatherForecast->providerName()));
+    }
+  } else {
+    __weatherForecast = nullptr;
+  }
+}
+
 
 VatsimDataHandler::RawClientData::RawClientData(const QString& _line) {
   line = _line.split(':');

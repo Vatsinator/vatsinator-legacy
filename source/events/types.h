@@ -36,7 +36,10 @@ enum Type {
   Map,
   
   /* NotificationEvent */
-  Notification
+  Notification,
+  
+  /* RequestFinishedEvent */
+  RequestFinished
   
 };
 

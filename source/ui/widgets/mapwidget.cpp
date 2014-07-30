@@ -25,17 +25,20 @@
 #include "events/mouselonlatevent.h"
 #include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
+#include "ui/actions/clientdetailsaction.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
+#include "ui/map/uiritem.h"
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
+#include "vatsimdata/client/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -58,6 +61,7 @@ MapWidget::MapWidget(QWidget* _parent) :
           this,                                 SLOT(__reloadSettings()));
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
+  connect(this, SIGNAL(menuRequest()), SLOT(__showMenu()));
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
   
   setAutoBufferSwap(true);
@@ -207,6 +211,7 @@ MapWidget::paintGL() {
     __xOffset = o;
     
     __drawWorld();
+    __drawUirs();
     __drawFirs();
     __drawAirports();
     __drawPilots();
@@ -394,6 +399,43 @@ MapWidget::__drawFirs() {
       __checkItem(item);
       }
     }
+  }
+}
+
+void
+MapWidget::__drawUirs() {
+  static constexpr GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
+  
+  if (__settings.view.staffed_firs) {
+    glPushMatrix();
+      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
+      glScalef(__state.zoom(), __state.zoom(), 1.0f);
+      glTranslated(-__state.center().x(), __state.center().y(), 0.0);
+      glTranslatef(__xOffset, 0.0, staffedUirsZ);
+      
+      qglColor(__settings.colors.staffed_uir_borders);
+      glLineWidth(3.0);
+      for (const UirItem* item: __scene->uirItems()) {
+        if (item->needsDrawing()) {
+          for (const FirItem* f: item->firItems()) {
+            if (f->data()->isEmpty())
+              f->drawBorders();
+          }
+        }
+      }
+      
+      glLineWidth(1.0);
+      
+      qglColor(__settings.colors.staffed_fir_background);
+      for (const UirItem* item: __scene->uirItems()) {
+        if (item->needsDrawing()) {
+          for (const FirItem* f: item->firItems()) {
+            if (f->data()->isEmpty())
+              f->drawBackground();
+          }
+        }
+      }
+    glPopMatrix();
   }
 }
 
@@ -613,6 +655,30 @@ MapWidget::__reloadSettings() {
 void
 MapWidget::__showMenu(const MapItem* _item) {  
   QMenu* menu = _item->menu(this);
+  menu->exec(mapToGlobal(__mousePosition.screenPosition()));
+  delete menu;
+}
+
+void
+MapWidget::__showMenu() {
+  QRectF rect(QPointF(), QSize(1.0f, 1.0f));
+  rect.moveCenter(__mousePosition.geoPosition());
+  QList<const MapItem*> items = scene()->items(rect);
+  
+  QMenu* menu = new QMenu(tr("Flights nearby"), this);
+  
+  for (const MapItem* item: items) {
+    if (const FlightItem* f = dynamic_cast<const FlightItem*>(item)) {
+      if (f->data()->isPrefiledOnly())
+        continue;
+      
+      ClientDetailsAction* action = new ClientDetailsAction(f->data(), f->data()->callsign(), this);
+      connect(action,                   SIGNAL(triggered(const Client*)),
+              vApp()->userInterface(),  SLOT(showDetailsWindow(const Client*)));
+      menu->addAction(action);
+    }
+  }
+  
   menu->exec(mapToGlobal(__mousePosition.screenPosition()));
   delete menu;
 }

@@ -7,12 +7,10 @@
 * Data files should use JSON format
 * Old versions config updater
 * Data parser (separate class)
-* Qt5 compat
+* Optimize OpenGL engine (use k-d tree, optimize textures)
 
 Due to the new engine:
 * Make FlightTracker works
-* Show UIRs
-* Support Non-VBO configs
 
 
 == TODO for later versions ==

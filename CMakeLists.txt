@@ -23,12 +23,10 @@ cmake_policy (SET CMP0028 NEW)
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
-# try to find Qt5 first
 find_package (Qt5Core REQUIRED)
 find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL REQUIRED)
 find_package (Qt5Xml REQUIRED)
-find_package (Qt5Svg REQUIRED)
 find_package (Qt5Network REQUIRED)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
@@ -132,15 +130,14 @@ elseif (WIN32)
         get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
         get_target_property(QtNetwork_location Qt5::Network LOCATION)
         get_target_property(QtOpenGL_location Qt5::OpenGL LOCATION)
-        get_target_property(QtSvg_location Qt5::Svg LOCATION)
         get_target_property(QtXml_location Qt5::Xml LOCATION)
 
         install (FILES
+
             ${QtCore_location}
             ${QtWidgets_location}
             ${QtNetwork_location}
             ${QtOpenGL_location}
-            ${QtSvg_location}
             ${QtXml_location}
             ${QUAZIP_LIBRARIES}
             ${QJSON_LIBRARY}
@@ -162,6 +159,12 @@ if (NOT APPLE)
     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
 add_subdirectory (source)
+
+set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
+option (WITH_PLUGINS ON)
+if (WITH_PLUGINS)
+    add_subdirectory(plugins)
+endif (WITH_PLUGINS)
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")

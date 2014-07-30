@@ -20,12 +20,12 @@
 #ifndef FIRITEM_H
 #define FIRITEM_H
 
-#include <QtOpenGL>
 #include <QObject>
 
 #include "ui/map/mapitem.h"
 
 class Fir;
+class Texture;
 class VertexBufferObject;
 
 class FirItem : public QObject, public MapItem {
@@ -67,7 +67,7 @@ private:
   VertexBufferObject* __borders;
   VertexBufferObject* __triangles;
   
-  mutable GLuint __label;
+  mutable Texture* __label;
   
 };
 

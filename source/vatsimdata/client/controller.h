@@ -97,7 +97,9 @@ public:
   inline const QString& description() const { return __description; }
   
   /**
-   * If isOk() returns false it means that
+   * If isOk() returns false it means that the controller could not be
+   * assigned any facility nor airport and therefore needs to be
+   * removed.
    */
   inline bool isOk() const { return __isOK; }
   

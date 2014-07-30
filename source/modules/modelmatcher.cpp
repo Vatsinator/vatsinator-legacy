@@ -20,6 +20,7 @@
 
 #include "glutils/glresourcemanager.h"
 #include "ui/widgets/mapwidget.h"
+#include "glutils/texture.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
@@ -28,17 +29,18 @@
 #include "modelmatcher.h"
 
 ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
-  connect(this,                                 SIGNAL(warning(QString)),
-          UserInterface::getSingletonPtr(),     SLOT(warning(QString)));
-  
   __readModels();
 //   __loadPixmaps();
   connect(MapWidget::getSingletonPtr(),         SIGNAL(glReady()),
           this,                                 SLOT(__loadPixmaps()));
 }
 
-GLuint
-ModelMatcher::matchMyModel(const QString& _acft) {
+ModelMatcher::~ModelMatcher() {
+  qDeleteAll(__pixmaps);
+}
+
+const Texture*
+ModelMatcher::matchMyModel(const QString& _acft) const {
   if (_acft.isEmpty())
     return __modelsPixmaps["ZZZZ"];
   
@@ -56,7 +58,7 @@ ModelMatcher::__readModels() {
   QFile modelsFile(FileManager::path("data/model"));
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit warning(tr("File %1 could not be opened! Check file permissions or reinstall the application.").arg(modelsFile.fileName()));
+    notifyWarning(tr("File %1 could not be opened! Check file permissions or reinstall the application.").arg(modelsFile.fileName()));
     return;
   }
 
@@ -74,16 +76,16 @@ ModelMatcher::__readModels() {
 
 void
 ModelMatcher::__loadPixmaps() {
-  QMap<QString, GLuint> pixmapsLoaded;
+  QMap<QString, Texture*> pixmapsLoaded;
   QString path(FileManager::staticPath(FileManager::Pixmaps));
-
-  pixmapsLoaded.insert("1p", GlResourceManager::loadImage(path % "/1p32.png"));
-  pixmapsLoaded.insert("2p", GlResourceManager::loadImage(path % "/2p32.png"));
-  pixmapsLoaded.insert("4p", GlResourceManager::loadImage(path % "/4p32.png"));
-  pixmapsLoaded.insert("2j", GlResourceManager::loadImage(path % "/2j32.png"));
-  pixmapsLoaded.insert("3j", GlResourceManager::loadImage(path % "/3j32.png"));
-  pixmapsLoaded.insert("4j", GlResourceManager::loadImage(path % "/4j32.png"));
-  pixmapsLoaded.insert("conc", GlResourceManager::loadImage(path % "/conc32.png"));
+  QList<QString> models = { "1p", "2p", "4p", "2j", "3j", "4j", "conc" };
+  
+  for (const QString& s: models) {
+    QString mPath = path % QDir::separator() % s % "32.png";
+    Texture* t = new Texture(mPath);
+    __pixmaps << t;
+    pixmapsLoaded.insert(s, t);
+  }
 
   for (auto it = __modelsFiles.begin(); it != __modelsFiles.end(); ++it) {
     Q_ASSERT(pixmapsLoaded.contains(it.value()));

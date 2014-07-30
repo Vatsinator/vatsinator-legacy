@@ -1,6 +1,6 @@
 /*
     vatsinatorapplication.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ class FileManager;
 class FirDatabase;
 class LanguageManager;
 class ModuleManager;
+class PluginManager;
 class ResourceManager;
 class SettingsManager;
 class StatsPurveyor;
@@ -68,11 +69,10 @@ public:
   virtual ~VatsinatorApplication();
   
   UserInterface* userInterface();
-
   
-  static const QFont& boldFont();
-  static const QFont& h1Font();
-  static const QFont& h2Font();
+  inline const PluginManager* plugins() const {
+    return __pluginManager;
+  }
   
 #ifdef GCC_VERSION_48
   [[noreturn]]
@@ -127,6 +127,7 @@ private:
   UserInterface*       __userInterface;
   FileManager*         __fileManager;
   SettingsManager*     __settingsManager;
+  PluginManager*       __pluginManager;
   AirlineDatabase*     __airlineDatabase;
   AirportDatabase*     __airportDatabaase;
   FirDatabase*         __firDatabase;
@@ -138,12 +139,6 @@ private:
   StatsPurveyor*       __statsPurveyor;
   
   static QMutex        __mutex; /* For stdout */
-
-  /* Proxy style to have widgets looking nice on Mac */
-  class VatsinatorStyle : public QProxyStyle {
-  public:
-      void polish(QWidget*) override;
-  };
 
 };
 

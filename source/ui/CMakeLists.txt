@@ -39,6 +39,7 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
 set (ui_SRCS
     notifiable.cpp
     userinterface.cpp
+    vatsinatorstyle.cpp
     
     actions/actionmenuseparator.cpp
     actions/airportdetailsaction.cpp
@@ -70,6 +71,7 @@ set (ui_SRCS
     map/mapscene.cpp
     map/mapstate.cpp
     map/moveanimation.cpp
+    map/uiritem.cpp
     map/worldpolygon.cpp
     
     pages/abstractsettingspage.cpp
@@ -87,6 +89,7 @@ set (ui_SRCS
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
+    widgets/weatherforecastwidget.cpp
     
     windows/aboutwindow.cpp
     windows/airportdetailswindow.cpp
@@ -106,6 +109,7 @@ vatsinator_subdirectory_sources (ui "${ui_SRCS}")
 
 set (ui_MOC_SRCS
     userinterface.h
+    vatsinatorstyle.h
     
     actions/actionmenuseparator.h
     actions/airportdetailsaction.h
@@ -134,6 +138,7 @@ set (ui_MOC_SRCS
     map/flightitem.h
     map/mapscene.h
     map/moveanimation.h
+    map/uiritem.h
     
     pages/abstractsettingspage.h
     pages/mappage.h
@@ -150,6 +155,7 @@ set (ui_MOC_SRCS
     widgets/mapwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h
+    widgets/weatherforecastwidget.h
     
     windows/aboutwindow.h
     windows/airportdetailswindow.h

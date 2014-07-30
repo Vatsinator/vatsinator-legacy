@@ -53,6 +53,13 @@ public:
   void addStaff(const Controller*);
   
   /**
+   * Records UIR staff in the fir.
+   * The UIR staff is not taken into account when isStaffed() and
+   * isEmpty() methods are called.
+   */
+  void addUirStaff(const Controller*);
+  
+  /**
    * Records flight in the fir.
    */
   void addFlight(const Pilot*);
@@ -89,6 +96,7 @@ public:
   inline const FirRecord* data() const { return __data; }
   
   inline ControllerTableModel* staff() const { return __staff; }
+  inline ControllerTableModel* uirStaff() const { return __uirStaff; }
   inline FlightTableModel* flights() const { return __flights; }
   inline AirportTableModel* airports() const { return __airports; }
   
@@ -109,6 +117,7 @@ private:
   QString       __country;
 
   ControllerTableModel* __staff;
+  ControllerTableModel* __uirStaff;
   FlightTableModel*     __flights;
   AirportTableModel*    __airports;
 };
