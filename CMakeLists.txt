@@ -35,6 +35,11 @@ find_package (OpenGL REQUIRED)
 find_package (QuaZip REQUIRED)
 find_package (QJSON REQUIRED)
 
+# fix for older versions of qjson library
+if (qjson_LIBRARIES)
+    set (QJSON_LIBRARIES ${qjson_LIBRARIES})
+endif (qjson_LIBRARIES)
+
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 include_directories(${Qt5Core_INCLUDE_DIRS})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})

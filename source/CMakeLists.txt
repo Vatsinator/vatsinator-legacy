@@ -49,11 +49,6 @@ add_executable (${vatsinator_TARGET} WIN32
     ${vatsinator_SRCS}
 )
 
-# fix for older versions of qjson library
-if (qjson_LIBRARIES)
-    set (QJSON_LIBRARIES ${qjson_LIBRARIES})
-endif (qjson_LIBRARIES)
-
 # Set PREFIX for defines.h and necessary libs
 if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
@@ -83,7 +78,6 @@ else (WIN32)
         Qt5::Widgets
         Qt5::Network
         Qt5::Xml
-        Qt5::Svg
         Qt5::OpenGL
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
