@@ -108,6 +108,7 @@ endif (NOT vatsinator_VERSION)
 
 include (VatsinatorInstall)
 add_subdirectory(resources)
+add_subdirectory(dist)
 
 # Platform-specific actions
 if (LINUX)
@@ -123,8 +124,6 @@ if (LINUX)
 
     # Spec file
     option (WITH_RPM OFF)
-    
-    add_subdirectory (dist)
 
 elseif (APPLE)
     

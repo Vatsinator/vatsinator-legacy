@@ -205,9 +205,4 @@ set (ui_QRCS
 
 vatsinator_subdirectory_resources (ui "${ui_QRCS}")
 
-# icon for Windows
-if (WIN32)
-    vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
-endif (WIN32)
-
 vatsinator_end_subdirectory (ui)

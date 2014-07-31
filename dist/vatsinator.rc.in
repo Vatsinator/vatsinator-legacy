@@ -1,7 +1,7 @@
 vatsinator ICON "icon.ico"
 1 VERSIONINFO
-FILEVERSION 1,0,0,0
-PRODUCTVERSION 1,0,0,0
+FILEVERSION ${vatsinator_VERSION_WINDRES},0,0
+PRODUCTVERSION ${vatsinator_VERSION_WINDRES},0,0
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
@@ -9,12 +9,12 @@ BEGIN
     BEGIN
       VALUE "CompanyName", "VatsinatorTeam"
       VALUE "FileDescription", "A simple Vatsim monitor"
-      VALUE "FileVersion", "1.0-9dc2313f9c-git"
+      VALUE "FileVersion", "${vatsinator_VERSION}"
       VALUE "InternalName", "vatsinator"
       VALUE "LegalCopyright", "VatsinatorTeam"
       VALUE "OriginalFilename", "vatsinator.exe"
       VALUE "ProductName", "Vatsinator"
-      VALUE "ProductVersion", "1.0-9dc2313f9c-git"
+      VALUE "ProductVersion", "${vatsinator_VERSION}"
     END
   END
 

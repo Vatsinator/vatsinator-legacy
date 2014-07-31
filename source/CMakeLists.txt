@@ -19,6 +19,12 @@ set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
 
+# icon for Windows
+if (WIN32)
+    set (vatsinator_SRCS ${vatsinator_SRCS}
+		${PROJECT_SOURCE_DIR}/dist/vatsinator.rc)
+endif (WIN32)
+
 set (vatsinator_SUBDIRS
     db
     events
