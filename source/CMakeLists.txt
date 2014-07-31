@@ -170,21 +170,30 @@ elseif (WIN32)
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
     if (MSVC)
-      get_property (qjson_LIBRARY TARGET qjson PROPERTY IMPORTED_LOCATION_RELEASE)
-      get_filename_component (QJSON_LIBRARY_DIR ${qjson_LIBRARY} PATH)
+		set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
+		include(InstallRequiredSystemLibraries)
+		
+		get_property (qjson_LIBRARY TARGET qjson PROPERTY IMPORTED_LOCATION_RELEASE)
+		get_filename_component (QJSON_LIBRARY_DIR ${qjson_LIBRARY} PATH)
 	
 	    if (NOT QT_QMAKE_EXECUTABLE)
 			get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 		endif (NOT QT_QMAKE_EXECUTABLE)
+		
 		exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
 			OUTPUT_VARIABLE QT_INSTALL_LIBS)
-      
-      include (DeployQt5)
-      install_qt5_executable ("${vatsinator_EXECUTABLE}"
-          "" # qtplugins
-          "" # libs
-          "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR};${QJSON_LIBRARY_DIR}"
-        )
+		exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
+			OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
+	  
+		# setup path to qwindows.dll
+		set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
+		
+		include (DeployQt5)
+		install_qt5_executable ("${vatsinator_EXECUTABLE}"
+			"${QT_QWINDOWS_PLUGIN}" # qtplugins
+			"" # libs
+			"${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR};${QJSON_LIBRARY_DIR}" # dirs
+		)
     endif (MSVC)
     
 endif (LINUX)
