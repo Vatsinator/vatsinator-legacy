@@ -30,7 +30,8 @@
 
 ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
   __readModels();
-  __loadPixmaps();
+  connect(MapWidget::getSingletonPtr(), SIGNAL(glReady()),
+          this,                         SLOT(__loadPixmaps()));
 }
 
 ModelMatcher::~ModelMatcher() {
