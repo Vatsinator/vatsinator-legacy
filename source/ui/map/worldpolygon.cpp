@@ -17,7 +17,12 @@
  *
  */
 
-#include <QtOpenGL>
+#include <QtGlobal>
+
+#ifdef Q_OS_ANDROID
+# include <GLES/gl.h>
+#endif
+
 
 #include "db/worldmap.h"
 #include "ui/map/maprenderer.h"

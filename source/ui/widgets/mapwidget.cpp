@@ -21,6 +21,11 @@
 #include <QtWidgets>
 #include <QtOpenGL>
 
+
+#ifdef Q_OS_ANDROID
+# include <GLES/gl.h>
+#endif
+
 #include "db/airportdatabase.h"
 #include "events/mouselonlatevent.h"
 #include "storage/settingsmanager.h"
@@ -52,7 +57,6 @@ MapWidget::MapWidget(QWidget* parent) :
     QGLWidget (MapConfig::glFormat(), parent),
     __renderer (nullptr)
 {
-
     setAttribute (Qt::WA_NoSystemBackground);
     setAttribute (Qt::WA_OpaquePaintEvent);
     setAttribute (Qt::WA_AcceptTouchEvents);

@@ -20,6 +20,10 @@
 #include <QtCore>
 #include <QtOpenGL>
 
+#ifdef Q_OS_ANDROID
+# include <GLES/gl.h>
+#endif
+
 #include "db/firdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"

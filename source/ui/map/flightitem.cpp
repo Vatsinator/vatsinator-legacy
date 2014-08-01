@@ -19,6 +19,10 @@
 
 #include <QtCore>
 
+#ifdef Q_OS_ANDROID
+# include <GLES/gl.h>
+#endif
+
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"

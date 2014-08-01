@@ -63,7 +63,7 @@ endif ()
 
 if (LINUX)
   set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
-elseif (APPLE OR WIN32)
+elseif (APPLE OR WIN32 OR ANDROID)
   set (vatsinator_PREFIX "")
 endif ()
 
