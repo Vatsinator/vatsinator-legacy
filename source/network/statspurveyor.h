@@ -28,38 +28,55 @@
 class QNetworkReply;
 
 /**
- * This class is used to send anonymous statistics to Vatsinator
- * server.
+ * This class is used to send anonymous statistics to Vatsinator servers.
+ * If user does not want to send any stats, requests will be quietly dropped.
+ * If user did not make any decision yet, requests will be queued and sent
+ * when he accepts them. Otherwise requests will be sent as soon as possible.
+ * All functions are thread-safe.
  */
 class StatsPurveyor :
     public QObject,
     public Singleton<StatsPurveyor> {
   Q_OBJECT
-  
+  Q_ENUMS(UserDecision)
+
 signals:
   
   /**
-   * Emited when new request is enqueued.
+   * Emitted when new reuqest is enqueued.
    */
   void newRequest();
 
 public:
+  
+  /**
+   * Describes user choice.
+   */
+  enum UserDecision {
+    Accepted,
+    Declined,
+    NotYetMade
+  };
+  
   explicit StatsPurveyor(QObject* = 0);
   virtual ~StatsPurveyor();
+  
+  inline UserDecision userDecision() const { return __userDecision; }
   
 public slots:
   
   /**
-   * Reports application startup.
+   * Reports application startup; invoked automatically.
    */
   void reportStartup();
   
   /**
-   * If an ATC has unknown callsign, we should report it.
+   * Use this function to report unrecognized ATC callsigns.
    */
   void reportNoAtc(const QString&);
 
 private:
+  
   void __enqueueRequest(const QNetworkRequest&);
   
 private slots:
@@ -91,6 +108,7 @@ private slots:
   void __nextIfFree();
   
 private:
+  UserDecision __userDecision;
   
   /* networkAccessible = NotAccessible when user disables stats */
   QNetworkAccessManager __nam;
