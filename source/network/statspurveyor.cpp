@@ -124,7 +124,9 @@ QString osString()
         default:
             return "Mac OS X";
     }
-    
+#elif defined Q_OS_ANDROID
+    /* TODO Get android version */
+    return "Android";
 #else
 # warning "Define operating system string here"
     return "Unknown";

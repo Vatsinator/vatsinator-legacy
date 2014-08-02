@@ -94,17 +94,21 @@ FileManager::staticPath(FileManager::StaticDir directory)
 {
     switch (directory) {
         case Plugins:
-#ifndef Q_OS_DARWIN
-            return QStringLiteral(VATSINATOR_PREFIX) % QStringLiteral("plugins");
-#else
+#if defined Q_OS_ANDROID
+            return QStringLiteral("assets:/plugins");
+#elif defined Q_OS_DARWIN
             return QCoreApplication::applicationDirPath() % QStringLiteral("../Resources/plugins");
+#else
+            return QStringLiteral(VATSINATOR_PREFIX) % QStringLiteral("plugins");
 #endif
             
         case Translations:
-#ifndef Q_OS_DARWIN
-            return QStringLiteral(VATSINATOR_PREFIX) % QStringLiteral("translations");
-#else
+#if defined Q_OS_ANDROID
+            return QStringLiteral("assets:/translations");
+#elif defined Q_OS_DARWIN
             return QCoreApplication::applicationDirPath() % QStringLiteral("/../Resources/translations");
+#else
+            return QStringLiteral(VATSINATOR_PREFIX) % QStringLiteral("translations");
 #endif
             
         default:
@@ -124,10 +128,12 @@ FileManager::path(const QString& fileName)
         return tryLocal.fileName();
     } else {
         return
-#ifndef Q_OS_DARWIN
-            QStringLiteral(VATSINATOR_PREFIX)
-#else // on MacOS look for the file in the bundle
+#if defined Q_OS_ANDROID
+            QStringLiteral("assets:/")
+#elif defined Q_OS_DARWIN // on MacOS look for the file in the bundle
             QCoreApplication::applicationDirPath() % QStringLiteral("/../Resources/")
+#else // on MacOS look for the file in the bundle
+            QStringLiteral(VATSINATOR_PREFIX)
 #endif
             % fileName;
     }
