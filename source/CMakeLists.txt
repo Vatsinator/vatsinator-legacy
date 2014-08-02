@@ -33,20 +33,37 @@ add_subdirectory (storage)
 add_subdirectory (ui)
 add_subdirectory (vatsimdata)
 
-add_executable (vatsinator MACOSX_BUNDLE WIN32
-  main.cpp
-  ${vatsinator_SRCS}
-  ${vatsinator_HEADERS}
-  $<TARGET_OBJECTS:db>
-  $<TARGET_OBJECTS:events>
-  $<TARGET_OBJECTS:network>
-  $<TARGET_OBJECTS:plugins>
-  $<TARGET_OBJECTS:storage>
-  $<TARGET_OBJECTS:ui>
-  $<TARGET_OBJECTS:vatsimdata>
-  
-  $<TARGET_OBJECTS:PolygonTriangulator>
-)
+if (ANDROID) # on Android we want to build library libvatsinator.so
+  add_library (vatsinator SHARED
+    main.cpp
+    ${vatsinator_SRCS}
+    ${vatsinator_HEADERS}
+    $<TARGET_OBJECTS:db>
+    $<TARGET_OBJECTS:events>
+    $<TARGET_OBJECTS:network>
+    $<TARGET_OBJECTS:plugins>
+    $<TARGET_OBJECTS:storage>
+    $<TARGET_OBJECTS:ui>
+    $<TARGET_OBJECTS:vatsimdata>
+    
+    $<TARGET_OBJECTS:PolygonTriangulator>
+  )
+else (ANDROID)
+  add_executable (vatsinator MACOSX_BUNDLE WIN32
+    main.cpp
+    ${vatsinator_SRCS}
+    ${vatsinator_HEADERS}
+    $<TARGET_OBJECTS:db>
+    $<TARGET_OBJECTS:events>
+    $<TARGET_OBJECTS:network>
+    $<TARGET_OBJECTS:plugins>
+    $<TARGET_OBJECTS:storage>
+    $<TARGET_OBJECTS:ui>
+    $<TARGET_OBJECTS:vatsimdata>
+    
+    $<TARGET_OBJECTS:PolygonTriangulator>
+  )
+endif ()
 
 target_link_libraries (vatsinator
   Qt5::Widgets
@@ -103,4 +120,6 @@ elseif (APPLE OR WIN32)
       "" # libs
       "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
   )
+elseif (ANDROID)
+  install (TARGETS vatsinator DESTINATION bin)
 endif ()

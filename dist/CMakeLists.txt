@@ -41,4 +41,9 @@ elseif (APPLE)
 
   install (FILES vatsinator.icns DESTINATION vatsinator.app/Contents/Resources)
   
+elseif (ANDROID)
+
+  # Android deploy scripts
+  add_subdirectory (android)
+  
 endif ()

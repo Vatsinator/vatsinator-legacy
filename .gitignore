@@ -31,3 +31,6 @@ CMakeLists.txt.user
 # doxygen-created docs
 doc
 
+# Android toolchain auto-generated directory
+libs
+

@@ -107,6 +107,11 @@ if (NOT vatsinator_UI_IMPLEMENTATION)
   endif (WIN32 OR LINUX OR APPLE)
 endif (NOT vatsinator_UI_IMPLEMENTATION)
 
+if (ANDROID)
+    set (vatsinator_ANDROID_APK ${CMAKE_BINARY_DIR}/vatsinator.apk)
+    set (CMAKE_INSTALL_PREFIX ${vatsinator_ANDROID_APK})
+endif (ANDROID)
+
 if (LINUX)
   set (vatsinator_INSTALL_DIR "share/vatsinator")
 elseif (WIN32)
@@ -132,23 +137,34 @@ endif ()
 
 add_subdirectory (dist)
 
-if (ANDROID)
-  find_program(ANT_LOCATION NAMES ant)
-  if (NOT ANT_LOCATION)
-    message(FATAL_ERROR "Could not find ant. Please install ant and add it to the search path.")
-  endif ()
-  
-  find_program(ANDROID_LOCATION NAMES android android.bat)
-  if (NOT ANDROID_LOCATION)
-    message(FATAL_ERROR "Could not find 'Android SDK and AVD Manager'. Please install the android sdk and add the <android-sdk>/tools directory to the search path.")
-  endif ()
-endif ()
-
 if (NOT APPLE)
   set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
 
 add_subdirectory (source)
+
+if (ANDROID)
+    get_target_property(QtCore_location Qt5::Core LOCATION)
+    get_target_property(QtGui_location Qt5::Gui LOCATION)
+    get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
+    get_target_property(QtNetwork_location Qt5::Network LOCATION)
+    get_target_property(QtOpenGL_location Qt5::OpenGL LOCATION)
+    get_target_property(QtXml_location Qt5::Xml LOCATION)
+    get_target_property(qjson_location qjson LOCATION)
+
+    install (FILES
+            ${QtCore_location}
+            ${QtGui_location}
+            ${QtWidgets_location}
+            ${QtNetwork_location}
+            ${QtOpenGL_location}
+            ${QtXml_location}
+            ${QUAZIP_LIBRARIES}
+            ${qjson_location}
+            DESTINATION libs/${ANDROID_ABI}
+        )
+    
+endif ()
 
 set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 

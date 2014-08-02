@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <array name="qt_sources">
+        <item>https://download.qt-project.org/ministro/android/qt5/qt-5.3</item>
+    </array>
+    
+    <array name="bundled_libs">
+        <item>quazip</item>
+        <item>qjson</item>
+    </array>
+
+    <array name="qt_libs">
+        <item>gnustl_shared</item>
+        <item>Qt5Core</item>
+        <item>Qt5Gui</item>
+        <item>Qt5Widgets</item>
+        <item>Qt5Xml</item>
+        <item>Qt5OpenGL</item>
+        <item>Qt5Network</item>
+    </array>
+
+    <array name="bundled_in_lib">
+        <item>libqtforandroid.so:plugins/platforms/android/libqtforandroid.so</item>
+        <item>libqeglfs.so:plugins/platforms/libqeglfs.so</item>
+        <item>libqminimal.so:plugins/platforms/libqminimal.so</item>
+        <item>libqminimalegl.so:plugins/platforms/libqminimalegl.so</item>
+        <item>libqoffscreen.so:plugins/platforms/libqoffscreen.so</item>
+        <item>libqevdevkeyboardplugin.so:plugins/generic/libqevdevkeyboardplugin.so</item>
+        <item>libqevdevmouseplugin.so:plugins/generic/libqevdevmouseplugin.so</item>
+        <item>libqevdevtabletplugin.so:plugins/generic/libqevdevtabletplugin.so</item>
+        <item>libqevdevtouchplugin.so:plugins/generic/libqevdevtouchplugin.so</item>
+<!--        <item>libplugins_imageformats_libqdds.so:plugins/imageformats/libqdds.so</item>
+        <item>libplugins_imageformats_libqgif.so:plugins/imageformats/libqgif.so</item>
+        <item>libplugins_imageformats_libqicns.so:plugins/imageformats/libqicns.so</item>
+        <item>libplugins_imageformats_libqico.so:plugins/imageformats/libqico.so</item>
+        <item>libplugins_imageformats_libqjp2.so:plugins/imageformats/libqjp2.so</item>
+        <item>libplugins_imageformats_libqjpeg.so:plugins/imageformats/libqjpeg.so</item>
+        <item>libplugins_imageformats_libqmng.so:plugins/imageformats/libqmng.so</item>
+        <item>libplugins_imageformats_libqtga.so:plugins/imageformats/libqtga.so</item>
+        <item>libplugins_imageformats_libqtiff.so:plugins/imageformats/libqtiff.so</item>
+        <item>libplugins_imageformats_libqwbmp.so:plugins/imageformats/libqwbmp.so</item>-->
+        <item>libqtaccessiblewidgets.so:plugins/accessible/libqtaccessiblewidgets.so</item>
+
+    </array>
+    <array name="bundled_in_assets">
+        
+    </array>
+
+</resources>
