@@ -10,18 +10,6 @@
     <height>400</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>800</width>
-    <height>400</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string notr="true">Vatsinator</string>
   </property>
@@ -148,7 +136,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="MenuVatsinator">
@@ -156,8 +144,8 @@
      <rect>
       <x>217</x>
       <y>159</y>
-      <width>169</width>
-      <height>234</height>
+      <width>159</width>
+      <height>216</height>
      </rect>
     </property>
     <property name="minimumSize">
