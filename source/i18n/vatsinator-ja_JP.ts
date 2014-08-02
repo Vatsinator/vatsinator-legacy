@@ -637,7 +637,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="148"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="151"/>
         <source>%1 - flight details</source>
         <translation>%1 - フライト詳細</translation>
     </message>
@@ -787,28 +787,28 @@
         <translation>閉じる</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="181"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
         <source>%1 feet</source>
         <translation>%1 フィート</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="182"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="200"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="203"/>
         <source>%1 kts</source>
         <translation>%1 ノット</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="186"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="189"/>
         <source>airborne</source>
         <translation>飛行中</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="188"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="191"/>
         <source>departing</source>
         <translation>出発</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="190"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="193"/>
         <source>arrived</source>
         <translation>到着</translation>
     </message>
@@ -969,6 +969,14 @@
         <location filename="../ui/pages/mappage.ui" line="437"/>
         <source>Pilot-to-destination line color:</source>
         <translation>飛行位置から到着空港までの線の表示色:</translation>
+    </message>
+</context>
+<context>
+    <name>MapWidget</name>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="668"/>
+        <source>Flights nearby</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
