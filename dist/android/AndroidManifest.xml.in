@@ -28,6 +28,7 @@
             <!--  Messages maps -->
         </activity>
     </application>
+    <uses-feature android:glEsVersion="0x00010001"></uses-feature>
     <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="19"/>
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 

@@ -75,7 +75,9 @@ target_link_libraries (vatsinator
 )
 
 if (APPLE)
-  target_link_libraries (vatsinator Qt5::MacExtras)
+    target_link_libraries (vatsinator Qt5::MacExtras)
+elseif (ANDROID)
+    target_link_libraries (vatsinator EGL GLESv1_CM)
 endif ()
 
 if (LINUX)
