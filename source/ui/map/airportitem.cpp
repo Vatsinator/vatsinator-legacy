@@ -19,10 +19,6 @@
 
 #include <QtGui>
 
-#ifdef Q_OS_ANDROID
-# include <GLES/gl.h>
-#endif
-
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/iconkeeper.h"
@@ -39,7 +35,6 @@
 #include "vatsinatorapplication.h"
 
 #include "airportitem.h"
-
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
@@ -185,9 +180,7 @@ AirportItem::drawFocused(QOpenGLShaderProgram* shader) const
         
     shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLines.color);
     shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLines.coords.constData(), 2);
-    glLineStipple(3, 0xF0F0); // dashed line
     glDrawArrays(GL_LINE_STRIP, 0, __ptdLines.coords.size() / 2);
-    glLineStipple(1, 0xFFFF);
 }
 
 QString

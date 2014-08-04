@@ -83,6 +83,7 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    QHash<int, QByteArray> roleNames() const override;
     
     /**
      * Gives direct access to all flights that the model contains.

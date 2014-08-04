@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <array name="qt_sources">
+        <item>https://download.qt-project.org/ministro/android/qt5/qt-5.4</item>
+    </array>
+    
+    <array name="bundled_libs">
+        <item>quazip</item>
+    </array>
+
+    <array name="qt_libs">
+        <item>gnustl_shared</item>
+        <item>Qt5Core</item>
+        <item>Qt5Gui</item>
+        <item>Qt5Network</item>
+        <item>Qt5Quick</item>
+        <item>Qt5Qml</item>
+    </array>
+
+    <array name="bundled_in_lib">
+@QT_ANDROID_XML_bundled_in_lib@
+    </array>
+    
+    <array name="bundled_in_assets">
+@QT_ANDROID_XML_bundled_in_assets@
+    </array>
+
+</resources>

@@ -56,15 +56,19 @@ MapRenderer::MapRenderer(QObject* parent) :
     __restoreSettings();
     
     glEnable(GL_MULTISAMPLE);
-    glEnable(GL_LINE_STIPPLE);
     
+#ifndef Q_OS_ANDROID
     glShadeModel(GL_SMOOTH);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_DEPTH_TEST);
+    
+    /* TODO Fix alpha on Android */
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.1f);
+#endif
+    
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     glClearColor(__scene->settings().colors.seas.redF(),
@@ -450,7 +454,7 @@ MapRenderer::__restoreSettings()
     settings.beginGroup("CameraSettings");
     
     __actualZoom = settings.value("actualZoomCoefficient", 0).toInt();
-    __zoom = settings.value("zoom", 1).toReal();
+    __zoom = settings.value("zoom", MapConfig::zoomDefault()).toReal();
     __center = settings.value("center", QVariant::fromValue<LonLat>(LonLat(0.0, 0.0))).value<LonLat>();
     
     settings.endGroup();

@@ -20,8 +20,6 @@
 #include <QtNetwork>
 
 #include "storage/settingsmanager.h"
-#include "ui/dialogs/letsendstatsdialog.h"
-#include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "config.h"
 #include "netconfig.h"

@@ -16,6 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtCore>
+
+#ifndef Q_OS_ANDROID
+# include <QProgressBar>
+#endif
+
 #include <QtNetwork>
 
 #include "config.h"

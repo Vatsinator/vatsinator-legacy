@@ -21,7 +21,11 @@
 #define MAPCONFIG_H
 
 #include <QtGlobal> // qreal
-#include <QGLFormat> // glFormat
+#include <QImage>
+
+#ifndef Q_OS_ANDROID
+# include <QGLFormat> // glFormat
+#endif
 
 class QColor;
 class QFont;
@@ -79,7 +83,19 @@ public:
         return 1.1;
     }
     
+    static Q_DECL_CONSTEXPR qreal zoomDefault()
+    {
+#ifdef Q_OS_ANDROID
+        return 3.0;
+#else
+        return 1.0;
+#endif
+    }
+    
+    /* TODO Qt 5.4 Remove */
+#ifndef Q_OS_ANDROID
     static const QGLFormat& glFormat();
+#endif
     
     static const QString& emptyAirportIcon();
     static const QString& activeAirportIcon();
@@ -115,7 +131,6 @@ public:
     };
     
     MapConfig() = delete;
-    
 };
 
 #endif // MAPCONFIG_H

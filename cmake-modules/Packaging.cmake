@@ -6,14 +6,14 @@ set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Vatsim monitor")
 
 # Platform-specific package setup
 if (LINUX)  
-  # Creates deb/rpm
-  include (PackagingLinux)
+    # Creates deb/rpm
+    include (PackagingLinux)
 elseif (APPLE)
-  # Creates dmg
-  include (PackagingOSX)
+    # Creates dmg
+    include (PackagingOSX)
 elseif (WIN32)
-  # NSIS installer
-  include (PackagingWin32)  
+    # NSIS installer
+    include (PackagingWin32)  
 endif ()
 
 include (CPack)

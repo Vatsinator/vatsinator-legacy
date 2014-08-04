@@ -26,7 +26,6 @@
 #include <QFile>
 #include <QUrl>
 
-class QProgressBar;
 class QNetworkReply;
 
 /**
@@ -53,53 +52,40 @@ signals:
     void error(QString error);
     
 public:
-    /**
-     * Creates new FileDownloader instance.
-     *
-     * \param pb ProgressBar that will be updated during file fetching.
-     * \param parent Passed to QObject.
-     * \todo Remove pb.
-     */
-    FileDownloader(QProgressBar* pb = 0, QObject* parent = nullptr);
-    
-    /**
-     * If the requests queue is empty, downloads the given file
-     * immediately. Otherwise, enqueues the url.
-     */
-    void fetch(const QUrl& url);
-    
-    /**
-     * Generates the temporary file name (with the absolute path)
-     * from the given url.
-     *
-     * \todo Move to private scope.
-     */
-    QString fileNameForUrl(const QUrl& url);
-    
-    /**
-     * Returns true if there are any queries left in the queue.
-     */
-    inline bool hasPendingTasks() const
-    {
-        return !__urls.isEmpty();
-    }
-    
-private:
-    void __startRequest();
-    
+  /**
+   * Creates new FileDownloader instance.
+   */
+  FileDownloader(QObject* = 0);
+  
+  /**
+   * If the requests queue is empty, downloads the given file
+   * immediately. Otherwise, enqueues the url.
+   */
+  void fetch(const QUrl&);
+  
+  /**
+   * Generates the temporary file name (with the absolute path)
+   * from the given url.
+   */
+  QString fileNameForUrl(const QUrl&);
+  
+  /**
+   * Returns true if there are any queries scheduled.
+   */
+  inline bool anyTasksLeft() const { return !__urls.isEmpty(); }
+
 private slots:
-    void __readyRead();
-    void __finished();
-    void __updateProgress(qint64 read, qint64 total);
-    
+  void __readyRead();
+  void __finished();
+  
 private:
-    QQueue<QUrl>   __urls;
-    QProgressBar*  __pb;
-    QFile          __output;
-    
-    QNetworkAccessManager __nam;
-    QNetworkReply*        __reply;
-    
+  void __startRequest();
+  
+  QQueue<QUrl>   __urls;
+  QFile          __output;
+  
+  QNetworkAccessManager __nam;
+  QNetworkReply*        __reply;
 };
 
 #endif // FILEDOWNLOADER_H

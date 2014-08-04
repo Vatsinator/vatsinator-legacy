@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
+#include <QtCore>
 #include <QtNetwork>
 
 #include "config.h"
@@ -24,9 +24,8 @@
 
 #include "filedownloader.h"
 
-FileDownloader::FileDownloader(QProgressBar* pb, QObject* parent) :
-    QObject(parent),
-    __pb(pb),
+FileDownloader::FileDownloader(QObject* _parent) :
+    QObject(_parent),
     __reply(nullptr) {}
 
 void
@@ -63,43 +62,35 @@ FileDownloader::fileNameForUrl(const QUrl& url)
 }
 
 void
-FileDownloader::__startRequest()
-{
-    if (__reply || !hasPendingTasks())
-        return;
-        
-    QUrl url = __urls.dequeue();
-    QString fileName = fileNameForUrl(url);
-    
-    if (fileName.isEmpty()) {
-        __startRequest();
-        return;
-    }
-    
-    __output.setFileName(fileName);
-    
-    if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-        emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()));
-        qCritical("FileDownloader: could not open file (%s) for writing!",
-                  qPrintable(__output.fileName()));
-        __startRequest();
-        return;
-    }
-    
-    QNetworkRequest request(url);
-    request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
-    __reply = __nam.get(request);
-    
-    connect(__reply,      SIGNAL(finished()),
-            this,         SLOT(__finished()));
-    connect(__reply,      SIGNAL(readyRead()),
-            this,         SLOT(__readyRead()));
-            
-    if (__pb) {
-        connect(__reply,    SIGNAL(downloadProgress(qint64, qint64)),
-                this,       SLOT(__updateProgress(qint64, qint64)));
-        __pb->setEnabled(true);
-    }
+FileDownloader::__startRequest() {
+  if (__reply || !anyTasksLeft())
+    return;
+  
+  QUrl url = __urls.dequeue();
+  QString fileName = fileNameForUrl(url);
+  
+  if (fileName.isEmpty()) {
+    __startRequest();
+    return;
+  }
+  
+  __output.setFileName(fileName);
+  if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+    emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()));
+    qCritical("FileDownloader: could not open file (%s) for writing!",
+              qPrintable(__output.fileName()));
+    __startRequest();
+    return;
+  }
+  
+  QNetworkRequest request(url);
+  request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
+  __reply = __nam.get(request);
+  
+  connect(__reply,      SIGNAL(finished()),
+          this,         SLOT(__finished()));
+  connect(__reply,      SIGNAL(readyRead()),
+          this,         SLOT(__readyRead()));
 }
 
 void
@@ -109,36 +100,23 @@ FileDownloader::__readyRead()
 }
 
 void
-FileDownloader::__finished()
-{
-    qint64 size = __output.size();
-    __output.close();
-    
-    if (__pb) {
-        __pb->reset();
-        __pb->setEnabled(false);
-    }
-    
-    if (__reply->error()) {
-        emit error(tr("Error downloading file: %1").arg(__reply->errorString()));
-        qCritical("FileDownloader: error downloading file: %s",
-                  qPrintable(__reply->errorString()));
-        QFile::remove(__output.fileName());
-    } else {
-        emit finished(QString(__output.fileName()));
-        qDebug("FileDownloader: file %s downloaded, size: %lli b",
-               qPrintable(__output.fileName()), size);
-    }
-    
-    __reply->deleteLater();
-    __reply = nullptr;
-    
-    __startRequest();
-}
-
-void
-FileDownloader::__updateProgress(qint64 read, qint64 total)
-{
-    __pb->setMaximum(total);
-    __pb->setValue(read);
+FileDownloader::__finished() {
+  qint64 size = __output.size();
+  __output.close();
+  
+  if (__reply->error()) {
+    emit error(tr("Error downloading file: %1").arg(__reply->errorString()));
+    qCritical("FileDownloader: error downloading file: %s",
+              qPrintable(__reply->errorString()));
+    QFile::remove(__output.fileName());
+  } else {
+    emit finished(QString(__output.fileName()));
+    qDebug("FileDownloader: file %s downloaded, size: %lli",
+              qPrintable(__output.fileName()), size);
+  }
+  
+  __reply->deleteLater();
+  __reply = nullptr;
+  
+  __startRequest();
 }

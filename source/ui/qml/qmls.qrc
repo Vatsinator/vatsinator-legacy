@@ -1,0 +1,23 @@
+<RCC>
+  <qresource prefix="qmls">
+    <file>AboutDialog.qml</file>
+    <file>FlightList.qml</file>
+    <file>FlightListDelegate.qml</file>
+    <file>main.qml</file>
+    <file>MainMenu.qml</file>
+    <file>MapControls.qml</file>
+    <file>MapPage.qml</file>
+    <file>MenuDrawer.qml</file>
+    <file>MenuListDelegate.qml</file>
+    <file>MenuModel.qml</file>
+    <file>SwipeHandler.qml</file>
+    <file>images/ic_menu_about.png</file>
+    <file>images/ic_menu_airports.png</file>
+    <file>images/ic_menu_atc.png</file>
+    <file>images/ic_menu_flights.png</file>
+    <file>images/ic_menu_refresh.png</file>
+    <file>images/ic_menu_settings.png</file>
+    <file>images/ic_drawer.png</file>
+    <file>images/overlay_search.png</file>
+  </qresource>
+</RCC>

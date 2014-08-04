@@ -17,12 +17,7 @@
  *
  */
 
-#include <QtCore>
-#include <QtOpenGL>
-
-#ifdef Q_OS_ANDROID
-# include <GLES/gl.h>
-#endif
+#include <QtGui>
 
 #include "db/firdatabase.h"
 #include "storage/settingsmanager.h"

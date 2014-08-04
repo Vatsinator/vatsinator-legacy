@@ -24,36 +24,49 @@ cmake_policy (SET CMP0020 NEW)
 
 # Double colon in target name means ALIAS or IMPORTED target.
 if (POLICY CMP0028)
-  cmake_policy (SET CMP0028 NEW)
+    cmake_policy (SET CMP0028 NEW)
 endif (POLICY CMP0028)
 
+# Disallow use of the LOCATION target property.
+if (POLICY CMP0026)
+    cmake_policy (SET CMP0026 OLD)
+endif (POLICY CMP0026)
+
 if (UNIX AND NOT APPLE AND NOT MINGW AND NOT ANDROID)
-  set (LINUX 1)
+    set (LINUX 1)
 endif ()
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
+
 find_package (Qt5Core REQUIRED)
-find_package (Qt5Widgets REQUIRED)
-find_package (Qt5OpenGL REQUIRED)
+find_package (Qt5Gui REQUIRED)
 find_package (Qt5Network REQUIRED)
 find_package (QuaZip REQUIRED)
 
-if (NOT ANDROID)
-  find_package (OpenGL REQUIRED)
-endif (NOT ANDROID)
-
-
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 include_directories (${Qt5Core_INCLUDE_DIRS})
-include_directories (${Qt5Widgets_INCLUDE_DIRS})
-include_directories (${Qt5OpenGL_INCLUDE_DIRS})
+include_directories (${Qt5Gui_INCLUDE_DIRS})
 include_directories (${Qt5Network_INCLUDE_DIRS})
 include_directories (${QUAZIP_INCLUDE_DIRS})
 
+if (ANDROID)
+    find_package (Qt5Quick REQUIRED)
+    include_directories(${Qt5Quick_INCLUDE_DIRS})
+else () # desktop
+    find_package (OpenGL REQUIRED)
+    
+    find_package (Qt5Widgets REQUIRED)
+    include_directories (${Qt5Widgets_INCLUDE_DIRS})
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+    
+    # TODO Qt 5.4: remove (QtOpenGLWidget)
+    find_package (Qt5OpenGL REQUIRED)
+    include_directories(${Qt5OpenGL_INCLUDE_DIRS})
+endif()
+
 if (APPLE)
-  find_package (Qt5MacExtras REQUIRED)
-  include_directories (${Qt5MacExtras_INCLUDE_DIRS})
+    find_package (Qt5MacExtras REQUIRED)
+    include_directories (${Qt5MacExtras_INCLUDE_DIRS})
 endif ()
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
@@ -98,79 +111,77 @@ if (NOT vatsinator_VERSION)
     endif (NOT "${GIT_SHA1}" STREQUAL "GITDIR-NOTFOUND")
 endif (NOT vatsinator_VERSION)
 
+if (LINUX)
+    set (vatsinator_INSTALL_DIR "share/vatsinator")
+elseif (WIN32)
+    set (vatsinator_INSTALL_DIR ".")
+elseif (APPLE)
+    set (vatsinator_INSTALL_DIR "vatsinator.app/Contents/Resources")
+elseif (ANDROID)
+    set (vatsinator_INSTALL_DIR "assets")
+endif()
+
 # specify user interface implementation
 if (NOT vatsinator_UI_IMPLEMENTATION)
   if (WIN32 OR LINUX OR APPLE) # use QtWidgets for desktop
     set (vatsinator_UI_IMPLEMENTATION "widgets")
   elseif (ANDROID) # use QtQuick for mobile
     set (vatsinator_UI_IMPLEMENTATION "quick")
-  endif (WIN32 OR LINUX OR APPLE)
-endif (NOT vatsinator_UI_IMPLEMENTATION)
+  endif ()
+endif ()
+
+if (NOT APPLE)
+    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif (NOT APPLE)
+
+add_subdirectory (source)
 
 if (ANDROID)
     set (vatsinator_ANDROID_APK ${CMAKE_BINARY_DIR}/vatsinator.apk)
     set (CMAKE_INSTALL_PREFIX ${vatsinator_ANDROID_APK})
 endif (ANDROID)
 
-if (LINUX)
-  set (vatsinator_INSTALL_DIR "share/vatsinator")
-elseif (WIN32)
-  set (vatsinator_INSTALL_DIR ".")
-elseif (APPLE)
-  set (vatsinator_INSTALL_DIR "vatsinator.app/Contents/Resources")
-endif()
 add_subdirectory (resources)
 
 include (Packaging)
 
 # Platform-specific actions
 if (LINUX)
-  # This sets up the "debian" directory
-  option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
-  if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
-    add_subdirectory (debian)
-  endif ()
-
-  # Spec file
-  option (WITH_RPM "Create RPM package" OFF)
+    # This sets up the "debian" directory
+    option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
+    if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
+        add_subdirectory (debian)
+    endif ()
+    
+    # Spec file
+    option (WITH_RPM "Create RPM package" OFF)
 endif ()
-
 add_subdirectory (dist)
-
-if (NOT APPLE)
-  set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-endif (NOT APPLE)
-
-add_subdirectory (source)
 
 if (ANDROID)
     get_target_property(QtCore_location Qt5::Core LOCATION)
     get_target_property(QtGui_location Qt5::Gui LOCATION)
-    get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
     get_target_property(QtNetwork_location Qt5::Network LOCATION)
-    get_target_property(QtOpenGL_location Qt5::OpenGL LOCATION)
-    get_target_property(QtXml_location Qt5::Xml LOCATION)
-    get_target_property(qjson_location qjson LOCATION)
+    get_target_property(QtQuick_location Qt5::Quick LOCATION)
+    get_target_property(QtQml_location Qt5::Qml LOCATION)
 
     install (FILES
             ${QtCore_location}
             ${QtGui_location}
-            ${QtWidgets_location}
             ${QtNetwork_location}
-            ${QtOpenGL_location}
             ${QtXml_location}
-            ${QUAZIP_LIBRARIES}
-            ${qjson_location}
+            ${QtQuick_location}
+            ${QtQml_location}
             DESTINATION libs/${ANDROID_ABI}
         )
     
+    get_filename_component (_quazip_fname ${QUAZIP_LIBRARIES} NAME)
+    get_filename_component (_quazip_realpath ${QUAZIP_LIBRARIES} REALPATH)
+    
+    install (FILES ${_quazip_realpath} DESTINATION libs/${ANDROID_ABI} RENAME ${_quazip_fname})
 endif ()
 
 set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
-
-if (WITH_PLUGINS)
-  add_subdirectory(plugins)
-endif ()
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
@@ -189,7 +200,7 @@ elseif (APPLE)
 elseif (WIN32)
   message (STATUS " * platform: Win32")
 elseif (ANDROID)
-  message (STATUS " * platform: Android")
+  message (STATUS " * platform: Android (${ANDROID_ABI})")
 else ()
   message (STATUS " * platform: Undefined")
 endif ()

@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtCore>
+#include <QtGui>
 
 #ifdef Q_OS_ANDROID
 # include <GLES/gl.h>
@@ -166,9 +166,7 @@ FlightItem::drawFocused(QOpenGLShaderProgram* shader) const
             
         shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLine.color);
         shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLine.coords.constData(), 2);
-        glLineStipple(3, 0xF0F0); // dashed line
         glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);
-        glLineStipple(1, 0xFFFF);
     }
 }
 

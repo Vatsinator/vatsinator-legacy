@@ -26,12 +26,9 @@
 #include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
 #include "plugins/weatherforecastinterface.h"
-#include "ui/pages/miscellaneouspage.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/models/metarlistmodel.h"
-#include "ui/windows/vatsinatorwindow.h"
-#include "ui/userinterface.h"
 #include "ui/widgetsuserinterface.h"
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
@@ -47,6 +44,10 @@
 #include "storage/filemanager.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
+
+#ifndef Q_OS_ANDROID
+# include "ui/windows/vatsinatorwindow.h"
+#endif
 
 #include "vatsimdatahandler.h"
 
@@ -89,6 +90,7 @@ T* selectPlugin()
 
 VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     QObject(parent),
+    __flights(new FlightTableModel(this)),
     __status(NetConfig::Vatsim::statusUrl()),
     __currentTimestamp(0),
     __observers(0),
@@ -145,19 +147,6 @@ VatsimDataHandler::dataUrl() const
         return __dataServers.at(qrand() % __dataServers.size());
     } else
         return __status;
-}
-
-FlightTableModel*
-VatsimDataHandler::flightTableModel() const
-{
-    FlightTableModel* model = new FlightTableModel();
-    
-    for (Client* c : __clients.values()) {
-        if (Pilot* p = qobject_cast<Pilot*>(c))
-            model->add(p);
-    }
-    
-    return model;
 }
 
 AtcTableModel*
@@ -696,6 +685,7 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
                 else {
                     __clients[pilot->callsign()] = pilot;
                     __newClients << pilot;
+                    __flights->add(pilot);
                 }
             }
         }

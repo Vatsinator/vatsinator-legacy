@@ -24,5 +24,14 @@ enum {
     
     UrlRole /**< Url attached to the object (QString or QUrl) */,
     MetarRole /**< Metar in the MetarListModel (Metar) */,
-    InstancePointerRole /**< Raw instance pointer (void*) */
+    InstancePointerRole /**< Raw instance pointer (void*) */,
+    
+    /* Clients */
+    CallsignRole /**< Client's callsign */,
+    RealNameRole /**< Client's name */,
+    
+    /* Flights */
+    AirportFromRole /**< Origin airport */,
+    AirportToRole /**< Destination airport */
+    
 };

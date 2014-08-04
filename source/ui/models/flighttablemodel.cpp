@@ -159,6 +159,18 @@ FlightTableModel::data(const QModelIndex& index, int role) const
             return QVariant::fromValue(reinterpret_cast<void*>(p));
         }
         
+        case CallsignRole:
+            return __flights.at(index.row())->callsign();
+            
+        case RealNameRole:
+            return __flights.at(index.row())->realName();
+            
+        case AirportFromRole:
+            return __flights.at(index.row())->route().origin;
+            
+        case AirportToRole:
+            return __flights.at(index.row())->route().destination;
+        
         default:
             return QVariant();
     }
@@ -254,6 +266,19 @@ FlightTableModel::sort(int column, Qt::SortOrder order)
     }
     
     endResetModel();
+}
+
+QHash<int, QByteArray>
+FlightTableModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+    
+    roles[CallsignRole] = "callsign";
+    roles[RealNameRole] = "real_name";
+    roles[AirportFromRole] = "airport_from";
+    roles[AirportToRole] = "airport_to";
+    
+    return roles;
 }
 
 void

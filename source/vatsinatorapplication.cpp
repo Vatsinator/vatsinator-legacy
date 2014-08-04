@@ -30,23 +30,28 @@
 #include "storage/cachefile.h"
 #include "storage/languagemanager.h"
 #include "storage/settingsmanager.h"
-#include "ui/pages/miscellaneouspage.h"
-#include "ui/userinterface.h"
 #include "ui/vatsinatorstyle.h"
-#include "ui/widgetsuserinterface.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/models/metarlistmodel.h"
-#include "ui/windows/settingswindow.h"
-#include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
 #include "config.h"
 
+#ifdef Q_OS_ANDROID
+# include "ui/quickuserinterface.h"
+#else
+# include "ui/widgetsuserinterface.h"
+#endif
+
 #include "vatsinatorapplication.h"
 
 VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
+#ifndef Q_OS_ANDROID
     QApplication(argc, argv),
+#else
+    QGuiApplication(argc, argv),
+#endif
     __userInterface(UserInterface::instantiate(this)),
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager(this)),
@@ -72,7 +77,9 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
     installTranslator(tr);
     
+#ifndef Q_OS_ANDROID
     setStyle(new VatsinatorStyle());
+#endif
     
     connect(this, &VatsinatorApplication::initializing, &VatsinatorApplication::__initialize);
     emit initializing();

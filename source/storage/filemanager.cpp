@@ -18,29 +18,18 @@
 
 #include <QtCore>
 
-#include "storage/cachefile.h"
 #include "config.h"
+#include "storage/cachefile.h"
 #include "vatsinatorapplication.h"
 
 #include "storage/filemanager.h"
 
-static const QString LocalDataLocation =
-    QDir::cleanPath(
-        QStandardPaths::writableLocation(QStandardPaths::DataLocation)
-        % QDir::separator()
-        % QStringLiteral("Vatsinator")
-    ) % QDir::separator();
-
-
 FileManager::FileManager()
-{
-    qDebug("FileManager: local data location: %s", qPrintable(LocalDataLocation));
-    
+{   
     // ensure that our data directory exists
-    QDir dir(LocalDataLocation);
+    QDir dir(localDataPath());
     
     if (!dir.exists()) {
-        qDebug("FileManager: creating directory %s", qPrintable(LocalDataLocation));
         dir.mkpath(".");
     }
 }
@@ -120,7 +109,7 @@ QString
 FileManager::path(const QString& fileName)
 {
 
-    QFile tryLocal(LocalDataLocation % fileName);
+    QFile tryLocal(localDataPath() % fileName);
     
     if (tryLocal.exists()) {
         qDebug("FileManager: file %s loaded from %s.",
@@ -128,6 +117,7 @@ FileManager::path(const QString& fileName)
         return tryLocal.fileName();
     } else {
         return
+        
 #if defined Q_OS_ANDROID
             QStringLiteral("assets:/")
 #elif defined Q_OS_DARWIN // on MacOS look for the file in the bundle
@@ -142,5 +132,12 @@ FileManager::path(const QString& fileName)
 QString
 FileManager::localDataPath()
 {
-    return LocalDataLocation;
+    static const QString Path =
+        QDir::cleanPath(
+            QStandardPaths::writableLocation(QStandardPaths::DataLocation)
+            % QDir::separator()
+            % QStringLiteral("Vatsinator")
+        ) % QDir::separator();
+
+    return Path;
 }

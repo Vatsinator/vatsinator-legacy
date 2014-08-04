@@ -21,7 +21,7 @@
 #define FLIGHTITEM_H
 
 #include <QObject>
-#include <QtOpenGL>
+#include <QtGui>
 #include "ui/map/mapitem.h"
 
 class Pilot;

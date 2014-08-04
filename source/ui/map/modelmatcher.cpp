@@ -16,10 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
+#include <QtCore>
 #include <QOpenGLTexture>
 
-#include "ui/widgets/mapwidget.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"

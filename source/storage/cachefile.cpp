@@ -1,6 +1,6 @@
 /*
     cachefile.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 #include <QtCore>
 
+#include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
 
 #include "cachefile.h"

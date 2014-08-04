@@ -149,14 +149,6 @@ public:
     const QUrl& dataUrl() const;
     
     /**
-     * Creates the new model and populates it with all flights that are online.
-     *
-     * \return The newly allocated and filled model; needs to be deleted afterwards.
-     * \sa controllerTableModel().
-     */
-    FlightTableModel* flightTableModel() const;
-    
-    /**
      * Creates the new model and populates it with all controllers that are online.
      *
      * \return The newly allocated and filled model; needs to be deleted afterwards.
@@ -271,6 +263,14 @@ public:
     inline const QList<Client*>& newClients()
     {
         return __newClients;
+    }
+    
+    /**
+     * Gives access to all flights.
+     */
+    inline FlightTableModel* flights()
+    {
+        return __flights;
     }
     
     /**
@@ -476,6 +476,8 @@ private:
      * List of only new clients, i.e. that showed up in the last update.
      */
     QList<Client*> __newClients;
+    
+    FlightTableModel* __flights;
     
     /**
      * List of clients marked as invalid.

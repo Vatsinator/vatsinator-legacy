@@ -20,8 +20,11 @@
 #ifndef VATSINATORSTYLE_H
 #define VATSINATORSTYLE_H
 
-#include <QProxyStyle>
-#include <QFont>
+#include <QtGlobal>
+#ifndef Q_OS_ANDROID
+
+# include <QProxyStyle>
+# include <QFont>
 
 /**
  * The VatsinatorStyle class is used to provide easy access to common
@@ -55,5 +58,7 @@ public:
     void polish(QWidget* widget) override;
     
 };
+
+#endif // Q_OS_ANDROID
 
 #endif // VATSINATORSTYLE_H

@@ -20,10 +20,16 @@
 #ifndef VATSINATORAPPLICATION_H
 #define VATSINATORAPPLICATION_H
 
-#include <QApplication>
+#include <QtGlobal>
+
+#ifndef Q_OS_ANDROID
+# include <QApplication>
+#else
+# include <QGuiApplication>
+#endif
+
 #include <QFont>
 #include <QMutex>
-#include <QProxyStyle>
 
 
 class AirlineDatabase;
@@ -46,9 +52,15 @@ class WorldMap;
  * in a convenient and simple way. It holds singleton instances and
  * controls whole application initialization process.
  */
-class VatsinatorApplication : public QApplication {
+class VatsinatorApplication : public
+#ifndef Q_OS_ANDROID
+    QApplication
+#else
+    QGuiApplication
+#endif
+{
     Q_OBJECT
-    
+  
 signals:
     /**
      * First signal emitted in the application.

@@ -39,33 +39,33 @@ namespace {
 /**
  * Moves the file.
  */
-bool moveFile(const QString& _oldLocation, const QString& _newLocation)
+bool moveFile(const QString& oldLocation, const QString& newLocation)
 {
-    QFile file(_oldLocation);
+    QFile file(oldLocation);
     
     if (!file.open(QIODevice::ReadWrite)) {
-        qCritical("DataUpdater: failed accessing file %s", qPrintable(_oldLocation));
+        qCritical("DataUpdater: failed accessing file %s", qPrintable(oldLocation));
         return false;
     }
     
     file.close();
     
-    QFile oldFile(_newLocation);
+    QFile oldFile(newLocation);
     
     if (oldFile.exists())
         oldFile.remove();
         
-    QFileInfo fileInfo = QFileInfo(_newLocation);
+    QFileInfo fileInfo = QFileInfo(newLocation);
     
     if (!QDir(fileInfo.path()).exists())
         QDir().mkpath(fileInfo.path());
         
-    bool result = file.rename(_newLocation);
+    bool result = file.rename(newLocation);
     
     if (result)
-        qDebug("DataUpdater: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+        qDebug("DataUpdater: moved file %s -> %s", qPrintable(oldLocation), qPrintable(newLocation));
     else
-        qCritical("DataUpdater: failed moving %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+        qCritical("DataUpdater: failed moving %s -> %s", qPrintable(oldLocation), qPrintable(newLocation));
         
     return result;
 }
@@ -74,10 +74,10 @@ bool moveFile(const QString& _oldLocation, const QString& _newLocation)
  * Removes the dir recursively.
  * http://stackoverflow.com/questions/11050977/removing-a-non-empty-folder-in-qt
  */
-bool removeDir(const QString& _dirName)
+bool removeDir(const QString& dirName)
 {
     bool result = true;
-    QDir dir(_dirName);
+    QDir dir(dirName);
     
     if (dir.exists()) {
         for (QFileInfo file : dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
@@ -93,15 +93,15 @@ bool removeDir(const QString& _dirName)
                 return result;
         }
         
-        result = dir.rmdir(_dirName);
+        result = dir.rmdir(dirName);
     }
     
     return result;
 }
 
-bool checksumMatches(const QString& _fileName, const QByteArray& _md5)
+bool checksumMatches(const QString& fileName, const QByteArray& md5)
 {
-    QFile file(_fileName);
+    QFile file(fileName);
     
     if (!file.open(QIODevice::ReadOnly))
         return false;
@@ -109,7 +109,7 @@ bool checksumMatches(const QString& _fileName, const QByteArray& _md5)
     auto hash = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
     file.close();
     
-    return hash == _md5;
+    return hash == md5;
 }
 
 }

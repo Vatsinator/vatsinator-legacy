@@ -1,5 +1,5 @@
 if (CMAKE_INSTALL_PREFIX MATCHES "/usr/local")
-  set (CMAKE_INSTALL_PREFIX "/Applications")
+    set (CMAKE_INSTALL_PREFIX "/Applications")
 endif ()
 
 set (vatsinator_BUNDLE source/${CMAKE_PROJECT_NAME}.app)

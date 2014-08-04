@@ -19,7 +19,6 @@
 #include <QtCore>
 
 #include "storage/abstractsettingsmodule.h"
-#include "ui/windows/settingswindow.h"
 #include "ui/userinterface.h"
 #include "vatsinatorapplication.h"
 
@@ -66,6 +65,14 @@ SettingsManager::get(const QString& s)
 void
 SettingsManager::updateUi(const QString& pageName)
 {
+    AbstractSettingsModule *m = vApp()->settingsManager()->__getPage(pageName);
+    
+#ifdef Q_OS_ANDROID
+    /* TODO Remove when Android settings are done */
+    if (!m)
+        return;
+#endif
+    
     Q_ASSERT_X(vApp()->settingsManager()->__getPage(pageName),
                qPrintable(QString("SettingsManager::updateUi(%1)").arg(pageName)),
                "No such page");

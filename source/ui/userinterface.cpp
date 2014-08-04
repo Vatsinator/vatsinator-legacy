@@ -1,6 +1,6 @@
 /*
     userinterface.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,9 +17,14 @@
 */
 
 #include "events/notificationevent.h"
-#include "ui/widgetsuserinterface.h"
-#include "config.h"
 #include "vatsinatorapplication.h"
+
+#ifdef Q_OS_ANDROID
+# include "ui/quickuserinterface.h"
+#else
+# include "ui/widgetsuserinterface.h"
+#endif
+
 
 #include "userinterface.h"
 
@@ -37,10 +42,10 @@ bool UserInterface::event(QEvent* event)
 UserInterface*
 UserInterface::instantiate(QObject* parent)
 {
-#if VATSINATOR_UI_IMPLEMENTATION == widgets
-    return new WidgetsUserInterface(parent);
+#ifdef Q_OS_ANDROID
+    return new QuickUserInterface(parent);
 #else
-# error "Not a valid UserInterface implementation"
+    return new WidgetsUserInterface(parent);
 #endif
 }
 

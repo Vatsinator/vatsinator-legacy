@@ -32,7 +32,6 @@
 #include "ui/map/flightitem.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/uiritem.h"
-#include "ui/widgets/mapwidget.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"

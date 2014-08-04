@@ -22,8 +22,8 @@
 #include "db/firdatabase.h"
 #include "storage/filemanager.h"
 #include "ui/userinterface.h"
-#include "config.h"
 #include "vatsinatorapplication.h"
+#include "config.h"
 
 #include "aboutwindow.h"
 #include "ui/about.h"
@@ -32,12 +32,8 @@ AboutWindow::AboutWindow(QWidget* parent) : BaseWindow(parent)
 {
     setupUi(this);
     
-    connect(qApp, SIGNAL(aboutToQuit()),
-            this, SLOT(hide()));
-    connect(vApp()->resourceManager(),
-            SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
-            this,
-            SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
+    connect(qApp, &QApplication::aboutToQuit, this, &AboutWindow::close);
+    connect(vApp()->resourceManager(), &ResourceManager::vatsinatorVersionChecked, this, &AboutWindow::__updateVersionStatus);
             
     AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
     VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));

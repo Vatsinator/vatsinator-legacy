@@ -16,9 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtCore>
 #include <QtPlugin>
 #include <QVariantAnimation>
+
 #include "network/resourcemanager.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
