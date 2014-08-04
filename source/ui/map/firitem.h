@@ -64,8 +64,8 @@ private:
   const Fir* __fir;
   LonLat     __position;
   
-  VertexBufferObject* __borders;
-  VertexBufferObject* __triangles;
+//   VertexBufferObject* __borders;
+//   VertexBufferObject* __triangles;
   
   mutable Texture* __label;
   

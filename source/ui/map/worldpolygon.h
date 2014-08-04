@@ -20,7 +20,8 @@
 #ifndef WORLDPOLYGON_H
 #define WORLDPOLYGON_H
 
-class VertexBufferObject;
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 
 class WorldPolygon {
   
@@ -31,10 +32,11 @@ public:
   void paint();
   
 private:
-  void __createVbos();
+  void __initializeBuffers();
   
-  VertexBufferObject* __borders;
-  VertexBufferObject* __triangles;
+  QOpenGLBuffer __borders;
+  QOpenGLBuffer __triangles;
+  QOpenGLVertexArrayObject __vaObject;
 
 };
 

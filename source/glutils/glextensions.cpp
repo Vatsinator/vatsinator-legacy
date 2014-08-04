@@ -1,6 +1,6 @@
 /*
     glextensions.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,11 +37,13 @@
 typedef ptrdiff_t GLsizeiptr;
 typedef ptrdiff_t GLintptr;
 
-void (* glBindBuffer)    (GLenum, GLuint);
-void (* glBufferData)    (GLenum, int, const GLvoid*, GLenum);
+void (* glBindBuffer) (GLenum, GLuint);
+void (* glBufferData) (GLenum, int, const GLvoid*, GLenum);
 void (* glBufferSubData) (GLenum, GLintptr, GLsizeiptr, const GLvoid*);
 void (* glDeleteBuffers) (GLsizei, const GLuint*);
-void (* glGenBuffers)    (GLsizei, GLuint*);
+void (* glGenBuffers) (GLsizei, GLuint*);
+void (* glVertexAttribPointer) (GLuint, GLint, GLenum, GLboolean, GLsizei, const GLvoid*);
+void (* glEnableVertexAttribArray) (GLuint);
 
 /*
  * Get extension pointer.
@@ -72,6 +74,8 @@ initGLExtensionsPointers() {
   init_ext(glBufferSubData);
   init_ext(glDeleteBuffers);
   init_ext(glGenBuffers);
+  init_ext(glVertexAttribPointer);
+  init_ext(glEnableVertexAttribArray);
   
 #undef init_ext
 }

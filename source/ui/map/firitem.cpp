@@ -17,9 +17,11 @@
  *
  */
 
+#include <QString>
+#include <QStringBuilder>
+
 #include "db/firdatabase.h"
 #include "glutils/texture.h"
-#include "glutils/vertexbufferobject.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/firdetailsaction.h"
@@ -35,8 +37,8 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     QObject(_parent),
     __fir(_fir),
     __position(_fir->data()->header.textPosition.x, _fir->data()->header.textPosition.y),
-    __borders(nullptr),
-    __triangles(nullptr),
+//     __borders(nullptr),
+//     __triangles(nullptr),
     __label(nullptr) {
   __prepareVbo();
   
@@ -49,33 +51,33 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
 FirItem::~FirItem() {
   if (__label)
     delete __label;
-  
+  /*
   if (__triangles)
     delete __triangles;
   
-  delete __borders;
+  delete __borders;*/
 }
 
 void
 FirItem::drawBorders() const {
-  __borders->bind();
-  
-  glVertexPointer(2, GL_FLOAT, 0, 0);
-  glDrawArrays(GL_LINE_LOOP, 0, __borders->length());
-  
-  __borders->unbind();
+//   __borders->bind();
+//   
+//   glVertexPointer(2, GL_FLOAT, 0, 0);
+//   glDrawArrays(GL_LINE_LOOP, 0, __borders->length());
+//   
+//   __borders->unbind();
 }
 
 void
 FirItem::drawBackground() const {
-  __borders->bind();
-  __triangles->bind();
-  
-  glVertexPointer(2, GL_FLOAT, 0, 0);
-  glDrawElements(GL_TRIANGLES, __triangles->length(), GL_UNSIGNED_SHORT, 0);
-  
-  __triangles->unbind();
-  __borders->unbind();
+//   __borders->bind();
+//   __triangles->bind();
+//   
+//   glVertexPointer(2, GL_FLOAT, 0, 0);
+//   glDrawElements(GL_TRIANGLES, __triangles->length(), GL_UNSIGNED_SHORT, 0);
+//   
+//   __triangles->unbind();
+//   __borders->unbind();
 }
 
 void
@@ -132,7 +134,7 @@ FirItem::tooltipText() const {
   if (desc.isEmpty() && staff.isEmpty())
     return QString();
   else
-    return QString("<p style='white-space:nowrap'><center>" % desc % staff % "</center></p>");
+    return QString("<p style='white-space:nowrap'><center>") % desc % staff % QString("</center></p>");
 }
 
 QMenu *
@@ -175,15 +177,15 @@ FirItem::__prepareVbo() {
   auto& borders = __fir->data()->borders;
   auto& triangles = __fir->data()->triangles;
   
-  __borders = new VertexBufferObject(GL_ARRAY_BUFFER);
-  __borders->sendData(borders.size() * sizeof(borders[0]), &borders[0]);
-  __borders->setLength(borders.size());
-  
-  if (!triangles.isEmpty()) {
-    __triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-    __triangles->sendData(triangles.size() * sizeof(triangles[0]), &triangles[0]);
-    __triangles->setLength(triangles.size());
-  }
+//   __borders = new VertexBufferObject(GL_ARRAY_BUFFER);
+//   __borders->sendData(borders.size() * sizeof(borders[0]), &borders[0]);
+//   __borders->setLength(borders.size());
+//   
+//   if (!triangles.isEmpty()) {
+//     __triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
+//     __triangles->sendData(triangles.size() * sizeof(triangles[0]), &triangles[0]);
+//     __triangles->setLength(triangles.size());
+//   }
 }
 
 void

@@ -315,6 +315,7 @@
  </customwidgets>
  <resources>
   <include location="../resources/imgs.qrc"/>
+  <include location="../resources/shaders.qrc"/>
  </resources>
  <connections/>
 </ui>

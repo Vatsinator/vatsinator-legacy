@@ -50,6 +50,8 @@
 
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
+    __program(nullptr),
+    __vertexLocation(0),
     __xOffset(0.0),
     __actualZoom(0),
     __world(nullptr),
@@ -147,29 +149,41 @@ MapWidget::redraw() {
 void
 MapWidget::initializeGL() {
   initGLExtensionsPointers();
+  
   emit glReady();
   
   __world = new WorldPolygon();
   __scene = new MapScene(this);
   
+  __program = new QOpenGLShaderProgram(this);
+  QOpenGLShader* vertex = new QOpenGLShader(QOpenGLShader::Vertex, __program);
+  vertex->compileSourceFile(":/shaders/identity.vert");
+  QOpenGLShader* fragment = new QOpenGLShader(QOpenGLShader::Fragment, __program);
+  fragment->compileSourceFile(":/shaders/identity.frag");
+  __program->addShader(vertex);
+  __program->addShader(fragment);
+ 
+  __program->bindAttributeLocation("vertex", __vertexLocation);
+  
+  __program->link();
+  __program->bind();
+  
+  __matrixLocation = __program->uniformLocation("matrix");
+  __colorLocation = __program->uniformLocation("color");
+  
+  __program->release();
+  
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_LINE_STIPPLE);
   
   glShadeModel(GL_SMOOTH);
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-  
-  glEnable(GL_TEXTURE_2D);
+//   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+//   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_ALPHA_TEST);
   glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
   
   /* For a really strong debug */
 //   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -184,48 +198,49 @@ MapWidget::paintGL() {
     1.0, 0.0
   };
   
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-
-  glOrtho(-__rangeX, __rangeX,
-          -__rangeY, __rangeY,
-          -static_cast<GLdouble>(MapConfig::MapLayers::Count), 1.0);
-  
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+  /* Prepare world transform matrix */
+  __worldTransform.setToIdentity();
+  __worldTransform.scale(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax());
+  __worldTransform.scale(__state.zoom(), __state.zoom());
+  __worldTransform.translate(-__state.center().x(), __state.center().y());
   
   qglColor(__settings.colors.seas);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
+//   glEnableClientState(GL_VERTEX_ARRAY);
+//   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//   glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
   
   qglClearColor(__settings.colors.seas);
   
   __underMouse = nullptr;
   
-  glBindTexture(GL_TEXTURE_2D, 0);
+//   glBindTexture(GL_TEXTURE_2D, 0);
   
+  __xOffset = __offsets.first();
+  __program->bind();
   for (GLfloat o: __offsets) {
-    __xOffset = o;
+    __worldTransform.translate(__xOffset, 0.0);
     
     __drawWorld();
-    __drawUirs();
-    __drawFirs();
-    __drawAirports();
-    __drawPilots();
+//     __drawUirs();
+//     __drawFirs();
+//     __drawAirports();
+//     __drawPilots();
+    
+    __xOffset = 360.0f;
   }
   
-  for (GLfloat o: __offsets) {
-    __xOffset = o;
-    __drawLines();
-  }
+//   for (GLfloat o: __offsets) {
+//     __xOffset = o;
+//     __drawLines();
+//   }
   
+//   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//   glDisableClientState(GL_VERTEX_ARRAY);
+  
+  __program->release();
   __xOffset = 0.0f;
-  
-  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-  glDisableClientState(GL_VERTEX_ARRAY);
   
   if (__underMouse) {
     setCursor(QCursor(Qt::PointingHandCursor));
@@ -243,6 +258,9 @@ MapWidget::resizeGL(int _width, int _height) {
   
   __rangeX = static_cast<qreal>(_width) / MapConfig::baseWindowWidth();
   __rangeY = static_cast<qreal>(_height) / MapConfig::baseWindowHeight();
+  
+  __projection.setToIdentity();
+  __projection.ortho(-__rangeX, __rangeX, -__rangeY, __rangeY, -static_cast<GLdouble>(MapConfig::MapLayers::Count), 1.0);
   
   __updateOffsets();
   
@@ -333,18 +351,12 @@ MapWidget::stateChangeEvent(MapEvent* _event) {
 
 void
 MapWidget::__drawWorld() {
-  static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+//   static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
   
-  glPushMatrix();
-    glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-    glScalef(__state.zoom(), __state.zoom(), 1.0f);
-    glTranslated(-__state.center().x(), __state.center().y(), 0.0);
-    
-    glTranslatef(__xOffset, 0.0, zValue);
-    
-    qglColor(__settings.colors.lands);
-    __world->paint();
-  glPopMatrix();
+  QMatrix4x4 mvp = __projection * __worldTransform;
+  __program->setUniformValue(__matrixLocation, mvp);
+  __program->setUniformValue(__colorLocation, __settings.colors.lands);
+  __world->paint();
 }
 
 void

@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="shaders">
+    <file>identity.frag</file>
+    <file>identity.vert</file>
+  </qresource>
+</RCC>

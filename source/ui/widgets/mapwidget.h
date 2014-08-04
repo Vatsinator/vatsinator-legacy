@@ -21,10 +21,13 @@
 #define MAPWIDGET_H
 
 #include <QGLWidget>
+#include <QMatrix4x4>
 
 #include "ui/map/mapstate.h"
 #include "vatsimdata/lonlat.h"
 #include "singleton.h"
+
+class QOpenGLShaderProgram;
 
 class Airport;
 class Client;
@@ -99,6 +102,7 @@ public:
    */
   bool event(QEvent*) override;
   
+  inline int vertexLocation() const { return __vertexLocation; }
   inline MapScene* scene() { return __scene; }
   inline const MapState& state() const { return __state; }
   
@@ -166,6 +170,20 @@ private slots:
   void __showWindow(const MapItem*);
   
 private:
+  
+  /* Shader program used to render everything */
+  QOpenGLShaderProgram* __program;
+  
+  /* Shader variable locations */
+  int __vertexLocation;
+  int __matrixLocation;
+  int __colorLocation;
+  
+  /* Projection matrix */
+  QMatrix4x4 __projection;
+  
+  /* Model-View matrices */
+  QMatrix4x4 __worldTransform;
   
   /* To have the map repeated, we keep offsets */
   QList<GLfloat> __offsets;

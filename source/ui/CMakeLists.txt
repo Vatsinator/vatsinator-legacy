@@ -201,6 +201,7 @@ vatsinator_subdirectory_forms (ui "${ui_FORMS}")
 
 set (ui_QRCS
     resources/imgs.qrc
+    resources/shaders.qrc
 )
 
 vatsinator_subdirectory_resources (ui "${ui_QRCS}")
