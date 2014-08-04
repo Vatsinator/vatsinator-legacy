@@ -103,6 +103,7 @@ public:
   bool event(QEvent*) override;
   
   inline int vertexLocation() const { return __vertexLocation; }
+  inline int texcoordLocation() const { return __texcoordLocation; }
   inline MapScene* scene() { return __scene; }
   inline const MapState& state() const { return __state; }
   
@@ -172,12 +173,16 @@ private slots:
 private:
   
   /* Shader program used to render everything */
-  QOpenGLShaderProgram* __program;
+  QOpenGLShaderProgram* __identityShader;
+  QOpenGLShaderProgram* __texturedShader;
   
   /* Shader variable locations */
-  int __vertexLocation;
-  int __matrixLocation;
-  int __colorLocation;
+  const int __vertexLocation;
+  const int __texcoordLocation;
+  int __identityMatrixLocation;
+  int __identityColorLocation;
+  int __texturedMatrixLocation;
+  int __texturedPositionLocation;
   
   /* Projection matrix */
   QMatrix4x4 __projection;

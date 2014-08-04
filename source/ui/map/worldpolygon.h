@@ -36,7 +36,8 @@ private:
   
   QOpenGLBuffer __borders;
   QOpenGLBuffer __triangles;
-  QOpenGLVertexArrayObject __vaObject;
+  QOpenGLVertexArrayObject __vao;
+  int __vertices;
 
 };
 

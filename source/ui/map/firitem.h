@@ -21,12 +21,15 @@
 #define FIRITEM_H
 
 #include <QObject>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLTexture>
 
 #include "ui/map/mapitem.h"
 
+class QOpenGLShaderProgram;
 class Fir;
 class Texture;
-class VertexBufferObject;
 
 class FirItem : public QObject, public MapItem {
   Q_OBJECT
@@ -39,7 +42,7 @@ public:
   
   void drawBorders() const;
   void drawBackground() const;
-  void drawLabel() const;
+  void drawLabel(QOpenGLShaderProgram*) const;
   
   /**
    * Label coordinates.
@@ -53,8 +56,8 @@ public:
   inline const Fir* data() const { return __fir; }
   
 private:
-  void __prepareVbo();
-  void __generateLabel() const;
+  void __initializeBuffers();
+  void __initializeLabel() const;
   
 private slots:
   void __resetLabel();
@@ -64,10 +67,13 @@ private:
   const Fir* __fir;
   LonLat     __position;
   
-//   VertexBufferObject* __borders;
-//   VertexBufferObject* __triangles;
+  QOpenGLBuffer __borders;
+  QOpenGLBuffer __triangles;
+  mutable QOpenGLVertexArrayObject __vaoBorders;
+  mutable QOpenGLVertexArrayObject __vaoTriangles;
+  int __bordersVertices, __trianglesVertices;
   
-  mutable Texture* __label;
+  mutable QOpenGLTexture __label;
   
 };
 

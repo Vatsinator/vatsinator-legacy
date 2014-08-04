@@ -2,5 +2,7 @@
   <qresource prefix="shaders">
     <file>identity.frag</file>
     <file>identity.vert</file>
+    <file>textured.frag</file>
+    <file>textured.vert</file>
   </qresource>
 </RCC>

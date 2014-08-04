@@ -50,8 +50,9 @@
 
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
-    __program(nullptr),
+    __identityShader(nullptr),
     __vertexLocation(0),
+    __texcoordLocation(1),
     __xOffset(0.0),
     __actualZoom(0),
     __world(nullptr),
@@ -155,30 +156,47 @@ MapWidget::initializeGL() {
   __world = new WorldPolygon();
   __scene = new MapScene(this);
   
-  __program = new QOpenGLShaderProgram(this);
-  QOpenGLShader* vertex = new QOpenGLShader(QOpenGLShader::Vertex, __program);
+  __identityShader = new QOpenGLShaderProgram(this);
+  QOpenGLShader* vertex = new QOpenGLShader(QOpenGLShader::Vertex, __identityShader);
   vertex->compileSourceFile(":/shaders/identity.vert");
-  QOpenGLShader* fragment = new QOpenGLShader(QOpenGLShader::Fragment, __program);
+  QOpenGLShader* fragment = new QOpenGLShader(QOpenGLShader::Fragment, __identityShader);
   fragment->compileSourceFile(":/shaders/identity.frag");
-  __program->addShader(vertex);
-  __program->addShader(fragment);
- 
-  __program->bindAttributeLocation("vertex", __vertexLocation);
+  __identityShader->addShader(vertex);
+  __identityShader->addShader(fragment);
   
-  __program->link();
-  __program->bind();
+  __identityShader->bindAttributeLocation("vertex", __vertexLocation);
   
-  __matrixLocation = __program->uniformLocation("matrix");
-  __colorLocation = __program->uniformLocation("color");
+  __identityShader->link();
+  __identityShader->bind();
+  __identityMatrixLocation = __identityShader->uniformLocation("matrix");
+  __identityColorLocation = __identityShader->uniformLocation("color");
+  __identityShader->release();
   
-  __program->release();
+  
+  __texturedShader = new QOpenGLShaderProgram(this);
+  vertex = new QOpenGLShader(QOpenGLShader::Vertex, __texturedShader);
+  vertex->compileSourceFile(":/shaders/textured.vert");
+  fragment = new QOpenGLShader(QOpenGLShader::Fragment, __texturedShader);
+  fragment->compileSourceFile(":/shaders/textured.frag");
+  __texturedShader->addShader(vertex);
+  __texturedShader->addShader(fragment);
+  
+  __texturedShader->bindAttributeLocation("vertex", __vertexLocation);
+  __texturedShader->bindAttributeLocation("texcoord", __texcoordLocation);
+  
+  __texturedShader->link();
+  __texturedShader->bind();
+  __texturedMatrixLocation = __texturedShader->uniformLocation("matrix");
+  __texturedPositionLocation = __texturedShader->uniformLocation("position");
+  __texturedShader->setUniformValue("texture", 0);
+  __texturedShader->release();
   
   glEnable(GL_MULTISAMPLE);
   glEnable(GL_LINE_STIPPLE);
   
   glShadeModel(GL_SMOOTH);
 //   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-//   glEnable(GL_TEXTURE_2D);
+  glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_ALPHA_TEST);
   glAlphaFunc(GL_GREATER, 0.1f);
@@ -191,12 +209,7 @@ MapWidget::initializeGL() {
 
 void
 MapWidget::paintGL() {
-  static const GLfloat textureCoords[] = {
-    0.0, 0.0,
-    0.0, 1.0,
-    1.0, 1.0,
-    1.0, 0.0
-  };
+  Q_ASSERT(glGetError() == 0);
   
   /* Prepare world transform matrix */
   __worldTransform.setToIdentity();
@@ -207,24 +220,17 @@ MapWidget::paintGL() {
   qglColor(__settings.colors.seas);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-//   glEnableClientState(GL_VERTEX_ARRAY);
-//   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-//   glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
-  
   qglClearColor(__settings.colors.seas);
   
   __underMouse = nullptr;
   
-//   glBindTexture(GL_TEXTURE_2D, 0);
-  
   __xOffset = __offsets.first();
-  __program->bind();
   for (GLfloat o: __offsets) {
     __worldTransform.translate(__xOffset, 0.0);
     
     __drawWorld();
-//     __drawUirs();
-//     __drawFirs();
+    __drawUirs();
+    __drawFirs();
 //     __drawAirports();
 //     __drawPilots();
     
@@ -236,10 +242,8 @@ MapWidget::paintGL() {
 //     __drawLines();
 //   }
   
-//   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//   glDisableClientState(GL_VERTEX_ARRAY);
-  
-  __program->release();
+  __texturedShader->disableAttributeArray(__texcoordLocation);
+  __texturedShader->disableAttributeArray(__vertexLocation);
   __xOffset = 0.0f;
   
   if (__underMouse) {
@@ -351,12 +355,15 @@ MapWidget::stateChangeEvent(MapEvent* _event) {
 
 void
 MapWidget::__drawWorld() {
-//   static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+  static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
-  __program->setUniformValue(__matrixLocation, mvp);
-  __program->setUniformValue(__colorLocation, __settings.colors.lands);
+  mvp.translate(QVector3D(0.0f, 0.0f, zValue));
+  __identityShader->bind();
+  __identityShader->setUniformValue(__identityMatrixLocation, mvp);
+  __identityShader->setUniformValue(__identityColorLocation, __settings.colors.lands);
   __world->paint();
+  __identityShader->release();
 }
 
 void
@@ -364,54 +371,60 @@ MapWidget::__drawFirs() {
   static constexpr GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
   static constexpr GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
   
-  glPushMatrix();
-    glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-    glScalef(__state.zoom(), __state.zoom(), 1.0f);
-    glTranslated(-__state.center().x(), __state.center().y(), 0.0);
-    glTranslatef(__xOffset, 0.0, unstaffedFirsZ);
+  QMatrix4x4 mvp = __projection * __worldTransform;
+  __identityShader->bind();
     
-    if (__settings.view.unstaffed_firs) {
-      qglColor(__settings.colors.unstaffed_fir_borders);
-      for (const FirItem* item: __scene->firItems()) {
-        if (item->data()->isEmpty())
-          item->drawBorders();
-      }
+  if (__settings.view.unstaffed_firs) {
+    mvp.translate(QVector3D(0.0f, 0.0f, unstaffedFirsZ));
+    __identityShader->setUniformValue(__identityMatrixLocation, mvp);
+    __identityShader->setUniformValue(__identityColorLocation, __settings.colors.unstaffed_fir_borders);
+    for (const FirItem* item: __scene->firItems()) {
+      if (item->data()->isEmpty())
+        item->drawBorders();
     }
+  }
+  
+  if (__settings.view.staffed_firs) {
+    mvp.translate(QVector3D(0.0f, 0.0f, __settings.view.unstaffed_firs ? staffedFirsZ - unstaffedFirsZ : staffedFirsZ));
+    __identityShader->setUniformValue(__identityMatrixLocation, mvp);
+    __identityShader->setUniformValue(__identityColorLocation, __settings.colors.staffed_fir_borders);
     
-    if (__settings.view.staffed_firs) {
-      glTranslatef(0.0, 0.0, staffedFirsZ - unstaffedFirsZ);
-      qglColor(__settings.colors.staffed_fir_borders);
-      glLineWidth(3.0);
-      for (const FirItem* item: __scene->firItems()) {
-        if (item->data()->isStaffed())
-          item->drawBorders();
-      }
-      
-      glLineWidth(1.0);
-      
-      qglColor(__settings.colors.staffed_fir_background);
-      for (const FirItem* item: __scene->firItems()) {
-        if (item->data()->isStaffed())
-          item->drawBackground();
-      }
+    glLineWidth(3.0);
+    for (const FirItem* item: __scene->firItems()) {
+      if (item->data()->isStaffed())
+        item->drawBorders();
     }
-  glPopMatrix();
+    glLineWidth(1.0);
+    
+    __identityShader->setUniformValue(__identityColorLocation, __settings.colors.staffed_fir_background);
+    for (const FirItem* item: __scene->firItems()) {
+      if (item->data()->isStaffed())
+        item->drawBackground();
+    }
+  }
+  
+  __identityShader->release();
   
   // draw labels
-  glColor4f(1.0, 1.0, 1.0, 1.0);
+  __texturedShader->bind();
+  __texturedShader->setUniformValue(__texturedMatrixLocation, __projection);
+  __texturedShader->enableAttributeArray(__texcoordLocation);
+  __texturedShader->enableAttributeArray(__vertexLocation);
+  
   for (const FirItem* item: __scene->firItems()) {
     if (item->needsDrawing()) {
       QPointF p = glFromLonLat(item->position());
       if (onScreen(p)) {
-        glPushMatrix();
-          glTranslated(p.x(), p.y(), staffedFirsZ + 1);
-          item->drawLabel();
-        glPopMatrix();
-        
-      __checkItem(item);
+        __texturedShader->setUniformValue(__texturedPositionLocation, p.x(), p.y());
+        item->drawLabel(__texturedShader);
+        __checkItem(item);
       }
     }
   }
+  
+  __texturedShader->disableAttributeArray(__texcoordLocation);
+  __texturedShader->disableAttributeArray(__vertexLocation);
+  __texturedShader->release();
 }
 
 void
@@ -419,35 +432,35 @@ MapWidget::__drawUirs() {
   static constexpr GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
   
   if (__settings.view.staffed_firs) {
-    glPushMatrix();
-      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-      glScalef(__state.zoom(), __state.zoom(), 1.0f);
-      glTranslated(-__state.center().x(), __state.center().y(), 0.0);
-      glTranslatef(__xOffset, 0.0, staffedUirsZ);
-      
-      qglColor(__settings.colors.staffed_uir_borders);
-      glLineWidth(3.0);
-      for (const UirItem* item: __scene->uirItems()) {
-        if (item->needsDrawing()) {
-          for (const FirItem* f: item->firItems()) {
-            if (f->data()->isEmpty())
-              f->drawBorders();
-          }
+    __identityShader->bind();
+    QMatrix4x4 mvp = __projection * __worldTransform;
+    mvp.translate(QVector3D(0.0f, 0.0f, staffedUirsZ));
+    
+    __identityShader->setUniformValue(__identityMatrixLocation, mvp);
+    __identityShader->setUniformValue(__identityColorLocation, __settings.colors.staffed_uir_borders);
+    
+    glLineWidth(3.0);
+    for (const UirItem* item: __scene->uirItems()) {
+      if (item->needsDrawing()) {
+        for (const FirItem* f: item->firItems()) {
+          if (f->data()->isEmpty())
+            f->drawBorders();
         }
       }
-      
-      glLineWidth(1.0);
-      
-      qglColor(__settings.colors.staffed_fir_background);
-      for (const UirItem* item: __scene->uirItems()) {
-        if (item->needsDrawing()) {
-          for (const FirItem* f: item->firItems()) {
-            if (f->data()->isEmpty())
-              f->drawBackground();
-          }
+    }
+    
+    glLineWidth(1.0);
+    
+    __identityShader->setUniformValue(__identityColorLocation, __settings.colors.staffed_uir_background);
+    for (const UirItem* item: __scene->uirItems()) {
+      if (item->needsDrawing()) {
+        for (const FirItem* f: item->firItems()) {
+          if (f->data()->isEmpty())
+            f->drawBackground();
         }
       }
-    glPopMatrix();
+    }
+    __identityShader->release();
   }
 }
 

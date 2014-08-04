@@ -35,25 +35,18 @@ WorldPolygon::WorldPolygon() :
 WorldPolygon::~WorldPolygon() {
   __triangles.destroy();
   __borders.destroy();
-  __vaObject.destroy();
+  __vao.destroy();
 }
 
 void
 WorldPolygon::paint() {
 #ifndef CONFIG_NO_VBO
-  __vaObject.bind();
-  Q_ASSERT(glGetError() == 0);
-  
-  glDrawElements(GL_TRIANGLES, WorldMap::getSingleton().triangles().size(), GL_UNSIGNED_INT, 0);
-  GLenum error = glGetError();
-  if (error == GL_INVALID_VALUE)
-    qDebug() << error;
-  Q_ASSERT(error == 0);
-  
-  __vaObject.release();
+  __vao.bind();
+  glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT, 0);
+  __vao.release();
 #else
   glVertexPointer(2, GL_FLOAT, 0, WorldMap::getSingleton().borders().constData());
-  glDrawElements(GL_TRIANGLES, WorldMap::getSingleton().triangles().size(), GL_UNSIGNED_INT,
+  glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT,
                  WorldMap::getSingleton().triangles().constData());
 #endif
 }
@@ -67,9 +60,6 @@ WorldPolygon::__initializeBuffers() {
   const QVector<unsigned int>& trianglesData = WorldMap::getSingleton().triangles();
   Q_ASSERT(!trianglesData.isEmpty());
   
-  __vaObject.create();
-  Q_ASSERT(__vaObject.isCreated());
-  
   __borders.create();
   Q_ASSERT(__borders.isCreated());
   __borders.setUsagePattern(QOpenGLBuffer::StaticDraw);
@@ -82,14 +72,17 @@ WorldPolygon::__initializeBuffers() {
   __triangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
   __triangles.bind();
   __triangles.allocate(trianglesData.constData(), sizeof(unsigned int) * trianglesData.size());
-  __borders.release();
+  __triangles.release();
   
-  __vaObject.bind();
+  __vao.create();
+  Q_ASSERT(__vao.isCreated());
+  __vao.bind();
   __borders.bind();
   __triangles.bind();
   glVertexAttribPointer(MapWidget::getSingleton().vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(MapWidget::getSingleton().vertexLocation());
-  __vaObject.release();
-  
+  __vao.release();
 #endif
+  
+  __vertices = WorldMap::getSingleton().triangles().size();
 }
