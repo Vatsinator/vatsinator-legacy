@@ -19,8 +19,8 @@
 #include <QtWidgets>
 
 #include "storage/languagemanager.h"
-
 #include "ui/userinterface.h"
+#include "vatsinatorapplication.h"
 
 #include "miscellaneouspage.h"
 
@@ -35,8 +35,8 @@ MiscellaneousPage::MiscellaneousPage(QWidget* _parent) :
   setupUi(this);
   LanguageComboBox->addItems(LanguageManager::getSingleton().allLanguages());
   
-  connect(this,                                 SIGNAL(languageChanged()),
-          UserInterface::getSingletonPtr(),     SLOT(showAppRestartDialog()));
+  connect(this,                         SIGNAL(languageChanged()),
+          vApp()->userInterface(),      SLOT(showAppRestartDialog()));
 }
 
 QString

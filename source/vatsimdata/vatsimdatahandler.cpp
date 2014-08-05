@@ -73,18 +73,18 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __notamProvider(nullptr),
     __weatherForecast(nullptr) {
   
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
-          this,                                     SLOT(__slotUiCreated()));
-  connect(__downloader,                             SIGNAL(finished(QString)),
-          this,                                     SLOT(__dataFetched(QString)));
-  connect(__downloader,                             SIGNAL(error()),
-          this,                                     SLOT(__handleFetchError()));
-  connect(__scheduler,                              SIGNAL(timeToUpdate()),
-          this,                                     SLOT(requestDataUpdate()));
-  connect(this,                                     SIGNAL(localDataBad(QString)),
-          UserInterface::getSingletonPtr(),         SLOT(warning(QString)));
-  connect(SettingsManager::getSingletonPtr(),       SIGNAL(settingsChanged()),
-          this,                                     SLOT(__reloadWeatherForecast()));
+  connect(vApp(),                               SIGNAL(uiCreated()),
+          this,                                 SLOT(__slotUiCreated()));
+  connect(__downloader,                         SIGNAL(finished(QString)),
+          this,                                 SLOT(__dataFetched(QString)));
+  connect(__downloader,                         SIGNAL(error()),
+          this,                                 SLOT(__handleFetchError()));
+  connect(__scheduler,                          SIGNAL(timeToUpdate()),
+          this,                                 SLOT(requestDataUpdate()));
+  connect(this,                                 SIGNAL(localDataBad(QString)),
+          vApp()->userInterface(),              SLOT(warning(QString)));
+  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+          this,                                 SLOT(__reloadWeatherForecast()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   
@@ -142,7 +142,7 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
       } else if (key == "url0") {
         __dataServers << value;
       } else if (key == "msg0") {
-        UserInterface::getSingleton().showVatsimMessage(value);
+        vApp()->userInterface()->showVatsimMessage(value);
       }
     }
   }

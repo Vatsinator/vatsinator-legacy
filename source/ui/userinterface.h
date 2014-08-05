@@ -22,9 +22,6 @@
 
 #include <QObject>
 
-#include "ui/widgets/mapwidget.h"
-#include "singleton.h"
-
 class AboutWindow;
 class Airport;
 class AtcListWindow;
@@ -38,7 +35,13 @@ class NotificationEvent;
 class SettingsWindow;
 class VatsinatorWindow;
 
-class UserInterface : public QObject, public Singleton<UserInterface> {
+/**
+ * The UserInterface is an abstract class that specifies common behaviour
+ * independent from the desktop mode. Views, notifications, etc. are different
+ * on desktop and on mobile platforms, but they should be handled properly
+ * in order to look native. 
+ */
+class UserInterface : public QObject {
   Q_OBJECT
 
 public:

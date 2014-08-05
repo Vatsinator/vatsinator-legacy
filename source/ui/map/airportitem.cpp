@@ -26,6 +26,7 @@
 #include "ui/actions/metaraction.h"
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/mapconfig.h"
+#include "ui/widgets/mapwidget.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
@@ -251,7 +252,7 @@ AirportItem::menu(QWidget* _parent) const {
 
 void
 AirportItem::showDetailsWindow() const {
-  UserInterface::getSingleton().showDetailsWindow(data());
+  vApp()->userInterface()->showDetailsWindow(data());
 }
 
 void

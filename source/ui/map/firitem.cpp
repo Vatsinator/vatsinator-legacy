@@ -26,10 +26,12 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/firdetailsaction.h"
 #include "ui/map/mapconfig.h"
+#include "ui/widgets/mapwidget.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "firitem.h"
 
@@ -149,21 +151,21 @@ FirItem::menu(QWidget* _parent) const {
       tr("%1 details").arg(data()->icao()),
       _parent
     );
-  connect(showFir,                              SIGNAL(triggered(const Fir*)),
-          UserInterface::getSingletonPtr(),     SLOT(showDetailsWindow(const Fir*)));
+  connect(showFir,                      SIGNAL(triggered(const Fir*)),
+          vApp()->userInterface(),      SLOT(showDetailsWindow(const Fir*)));
   menu->addAction(showFir);
   
   for (const Controller* c: data()->staff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-    connect(cda,                                SIGNAL(triggered(const Client*)),
-            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
+    connect(cda,                        SIGNAL(triggered(const Client*)),
+            vApp()->userInterface(),    SLOT(showDetailsWindow(const Client*)));
     menu->addAction(cda);
   }
   
   for (const Controller* c: data()->uirStaff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-    connect(cda,                                SIGNAL(triggered(const Client*)),
-            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
+    connect(cda,                        SIGNAL(triggered(const Client*)),
+            vApp()->userInterface(),    SLOT(showDetailsWindow(const Client*)));
     menu->addAction(cda);
   }
   
@@ -172,7 +174,7 @@ FirItem::menu(QWidget* _parent) const {
 
 void
 FirItem::showDetailsWindow() const {
-  UserInterface::getSingleton().showDetailsWindow(data());
+  vApp()->userInterface()->showDetailsWindow(data());
 }
 
 void

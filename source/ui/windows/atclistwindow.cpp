@@ -22,6 +22,7 @@
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "atclistwindow.h"
 
@@ -70,7 +71,7 @@ void
 AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 
-  UserInterface::getSingleton().showDetailsWindow(
+  vApp()->userInterface()->showDetailsWindow(
     (qobject_cast<const ControllerTableModel*>(_index.model()))->staff()[_index.row()]
   );
 }
