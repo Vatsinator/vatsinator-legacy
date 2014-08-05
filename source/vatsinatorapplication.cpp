@@ -149,8 +149,7 @@ VatsinatorApplication::__initialize() {
   __pluginManager->loadPlugins();
   
   /* Create windows */
-  __userInterface->init();
-  emit uiCreated();
+  __userInterface->initialize();
 
   /* show main window */
   userInterface()->mainWindow()->show();

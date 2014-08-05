@@ -23,6 +23,7 @@
 
 #include "storage/settingsmanager.h"
 #include "ui/dialogs/letsendstatsdialog.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "config.h"
 #include "netconfig.h"
@@ -119,8 +120,8 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
             this,       SLOT(__statsAccepted()));
     connect(dialog,     SIGNAL(rejected()),
             this,       SLOT(__statsRejected()));
-    connect(VatsinatorApplication::getSingletonPtr(),   SIGNAL(uiCreated()),
-            dialog,                                     SLOT(show()));
+    connect(vApp()->userInterface(),    SIGNAL(initialized()),
+            dialog,                     SLOT(show()));
     QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
   } else {
     bool accepted = s.value("Settings/misc/send_statistics", false).toBool();

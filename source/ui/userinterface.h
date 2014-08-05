@@ -43,15 +43,20 @@ class VatsinatorWindow;
  */
 class UserInterface : public QObject {
   Q_OBJECT
+  
+signals:
+  void initialized();
 
 public:
+  
   UserInterface(QObject* = nullptr);
   virtual ~UserInterface();
   
   /**
-   * Initializes UI components.
+   * Initializes UI components. Emits the initialized() signal when
+   * all classes are created.
    */
-  void init();
+  void initialize();
   
   /**
    * @return Instance of the "About Vatsinator" window.
@@ -94,33 +99,75 @@ public:
   bool event(QEvent*) override;
   
 public slots:
+  void showAppRestartDialog();
+  
   /**
-   * Reports fatal error to user.
-   * 
+   * Reports critical error to user.
+   * This should let user know that he has corrupted the application, his
+   * device is not supported, etc.
    * @param msg Message to be shown.
    */
   void fatal(const QString&);
   
   /**
    * Reports warning to user.
-   * 
+   * It should warn user about corrupted file that the application depends on,
+   * missing file, etc. User should just click "OK" and continue, not
+   * necessarily without errors.
    * @param msg Warning message.
    */
   void warning(const QString&);
   
-  void showAppRestartDialog();
+  /**
+   * Show Vatsim status fetch error notification.
+   * Status.txt file is fetched on the startup of Vatsinator. If the download
+   * process fails, it means that either Vatsim servers are not available at
+   * all or user does not have connection to the internet.
+   * Call vApp()->vatsimData()->requestDataUpdate() to retry.
+   */
+  void statusError();
+  
+  /**
+   * Show Vatsim data fetch error notification.
+   * When this function is called it means that Vatsinator tried a couple
+   * of times to refresh Vatsim status, but it was impossible or user choose
+   * manual data updates and the download process failed. Show the appropriate
+   * notification and let user decide whether he wants to retry the operation
+   * or keep the current data.
+   */
+  void dataError();
+  
+  /**
+   * Implements the Vatsim msg0 directive.
+   * User will be notified about something by Vatsim servers. The dialog should
+   * contain "do not show this message again" checkbox, which initial state is
+   * unchecked.
+   * @param msg Vatsim message that follows the msg0 directive.
+   */
   void showVatsimMessage(const QString&);
   
-  void showDetailsWindow(const Airport*);
-  void showDetailsWindow(const Client*);
-  void showDetailsWindow(const Fir*);
+  /**
+   * Show airport details.
+   * @param airport The Airport instance pointer.
+   */
+  void showDetails(const Airport*);
+  
+  /**
+   * Show client details.
+   * @param client The Client instance pointer.
+   */
+  void showDetails(const Client*);
+  
+  /**
+   * Show FIR details.
+   * @param fir The FIR instance pointer.
+   */
+  void showDetails(const Fir*);
   
 protected:
   virtual bool notificationEvent(NotificationEvent*);
   
 private slots:
-  void __statusError();
-  void __dataError();
   void __showNewVersionDialog();
   
 private:

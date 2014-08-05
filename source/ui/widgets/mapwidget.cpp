@@ -705,7 +705,7 @@ MapWidget::__showMenu() {
       
       ClientDetailsAction* action = new ClientDetailsAction(f->data(), f->data()->callsign(), this);
       connect(action,                   SIGNAL(triggered(const Client*)),
-              vApp()->userInterface(),  SLOT(showDetailsWindow(const Client*)));
+              vApp()->userInterface(),  SLOT(showDetails(const Client*)));
       menu->addAction(action);
     }
   }

@@ -63,7 +63,7 @@ ControllerTableView::__updateButtons(int _start, int _end) {
   for (int i = _start; i < _end; ++i) {
     ClientDetailsButton* dButton = new ClientDetailsButton(cModel->staff()[i]);
     connect(dButton,                    SIGNAL(clicked(const Client*)),
-            vApp()->userInterface(),    SLOT(showDetailsWindow(const Client*)));
+            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
     setIndexWidget(cModel->index(i, ControllerTableModel::Button), dButton);
   }
 }

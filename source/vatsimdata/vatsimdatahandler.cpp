@@ -73,7 +73,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __notamProvider(nullptr),
     __weatherForecast(nullptr) {
   
-  connect(vApp(),                               SIGNAL(uiCreated()),
+  connect(vApp()->userInterface(),              SIGNAL(initialized()),
           this,                                 SLOT(__slotUiCreated()));
   connect(__downloader,                         SIGNAL(finished(QString)),
           this,                                 SLOT(__dataFetched(QString)));
@@ -83,6 +83,10 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
           this,                                 SLOT(requestDataUpdate()));
   connect(this,                                 SIGNAL(localDataBad(QString)),
           vApp()->userInterface(),              SLOT(warning(QString)));
+  connect(this,                                 SIGNAL(vatsimStatusError()),
+          vApp()->userInterface(),              SLOT(statusError()));
+  connect(this,                                 SIGNAL(vatsimDataError()),
+          vApp()->userInterface(),              SLOT(dataError()));
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadWeatherForecast()));
   

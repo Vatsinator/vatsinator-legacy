@@ -152,20 +152,20 @@ FirItem::menu(QWidget* _parent) const {
       _parent
     );
   connect(showFir,                      SIGNAL(triggered(const Fir*)),
-          vApp()->userInterface(),      SLOT(showDetailsWindow(const Fir*)));
+          vApp()->userInterface(),      SLOT(showDetails(const Fir*)));
   menu->addAction(showFir);
   
   for (const Controller* c: data()->staff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
     connect(cda,                        SIGNAL(triggered(const Client*)),
-            vApp()->userInterface(),    SLOT(showDetailsWindow(const Client*)));
+            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
     menu->addAction(cda);
   }
   
   for (const Controller* c: data()->uirStaff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
     connect(cda,                        SIGNAL(triggered(const Client*)),
-            vApp()->userInterface(),    SLOT(showDetailsWindow(const Client*)));
+            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
     menu->addAction(cda);
   }
   
@@ -174,7 +174,7 @@ FirItem::menu(QWidget* _parent) const {
 
 void
 FirItem::showDetailsWindow() const {
-  vApp()->userInterface()->showDetailsWindow(data());
+  vApp()->userInterface()->showDetails(data());
 }
 
 void

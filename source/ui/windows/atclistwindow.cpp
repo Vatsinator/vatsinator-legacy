@@ -71,7 +71,7 @@ void
 AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 
-  vApp()->userInterface()->showDetailsWindow(
+  vApp()->userInterface()->showDetails(
     (qobject_cast<const ControllerTableModel*>(_index.model()))->staff()[_index.row()]
   );
 }

@@ -30,8 +30,8 @@
 
 SettingsManager::SettingsManager(QObject* _parent) :
     QObject(_parent) {
-  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(uiCreated()),
-          this,                                         SLOT(init()));
+  connect(vApp()->userInterface(),      SIGNAL(initialized()),
+          this,                         SLOT(init()));
 }
 
 SettingsManager::~SettingsManager() {

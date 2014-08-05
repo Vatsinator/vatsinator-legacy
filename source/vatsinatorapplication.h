@@ -54,11 +54,6 @@ signals:
    * First emitted in the application. No objects are created yet.
    */
   void initializing();
-  
-  /**
-   * UserInterface is created (all windows).
-   */
-  void uiCreated();
 
 public:
   /**
@@ -70,9 +65,9 @@ public:
   
   UserInterface* userInterface();
   
-  inline const PluginManager* plugins() const {
-    return __pluginManager;
-  }
+  inline const PluginManager* plugins() const { return __pluginManager; }
+  inline VatsimDataHandler* vatsimDataHandler() { return __vatsimData; }
+  inline const VatsimDataHandler* vatsimDataHandler() const { return __vatsimData; }
   
 #ifdef GCC_VERSION_48
   [[noreturn]]

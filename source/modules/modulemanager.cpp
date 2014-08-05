@@ -20,6 +20,7 @@
 #include "modules/homelocation.h"
 #include "modules/modelmatcher.h"
 #include "modules/vatbookhandler.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -30,8 +31,8 @@ ModuleManager::ModuleManager() :
     __homeLocation(nullptr),
     __modelsMatcher(nullptr),
     __vatbookHandler(nullptr) {
-  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(uiCreated()),
-          this,                                         SLOT(init()));
+  connect(vApp()->userInterface(),      SIGNAL(initialized()),
+          this,                         SLOT(init()));
 }
 
 ModuleManager::~ModuleManager() {

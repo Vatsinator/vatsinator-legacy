@@ -75,7 +75,7 @@ void
 FlightListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast<const FlightTableModel*>(_index.model()));
 
-  vApp()->userInterface()->showDetailsWindow(
+  vApp()->userInterface()->showDetails(
     (qobject_cast<const FlightTableModel*>(_index.model()))->flights()[_index.row()]
   );
 }

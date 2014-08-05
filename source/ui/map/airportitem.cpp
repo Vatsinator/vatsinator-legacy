@@ -197,7 +197,7 @@ AirportItem::menu(QWidget* _parent) const {
   
   AirportDetailsAction* showAp = new AirportDetailsAction(data(), tr("Airport details"), _parent);
   connect(showAp,                       SIGNAL(triggered(const Airport*)),
-          vApp()->userInterface(),      SLOT(showDetailsWindow(const Airport*)));
+          vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
   menu->addAction(showAp);
   
   MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
@@ -213,7 +213,7 @@ AirportItem::menu(QWidget* _parent) const {
       for (const Controller* c: data()->staff()->staff()) {
         ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
         connect(cda,                            SIGNAL(triggered(const Client*)),
-                vApp()->userInterface(),        SLOT(showDetailsWindow(const Client*)));
+                vApp()->userInterface(),        SLOT(showDetails(const Client*)));
         menu->addAction(cda);
       }
     }
@@ -226,7 +226,7 @@ AirportItem::menu(QWidget* _parent) const {
         if (p->phase() == Pilot::Arrived) {
           ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), _parent);
           connect(cda,                          SIGNAL(triggered(const Client*)),
-                  vApp()->userInterface(),      SLOT(showDetailsWindow(const Client*)));
+                  vApp()->userInterface(),      SLOT(showDetails(const Client*)));
           menu->addAction(cda);
         }
       }
@@ -240,7 +240,7 @@ AirportItem::menu(QWidget* _parent) const {
         if (!p->isPrefiledOnly() && p->phase() == Pilot::Departing) {
           ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), _parent);
           connect(cda,                          SIGNAL(triggered(const Client*)),
-                  vApp()->userInterface(),      SLOT(showDetailsWindow(const Client*)));
+                  vApp()->userInterface(),      SLOT(showDetails(const Client*)));
           menu->addAction(cda);
         }
       }
@@ -252,7 +252,7 @@ AirportItem::menu(QWidget* _parent) const {
 
 void
 AirportItem::showDetailsWindow() const {
-  vApp()->userInterface()->showDetailsWindow(data());
+  vApp()->userInterface()->showDetails(data());
 }
 
 void

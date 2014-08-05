@@ -182,7 +182,7 @@ FlightItem::menu(QWidget* _parent) const {
   
   ClientDetailsAction* showDetails = new ClientDetailsAction(data(), tr("Flight details"), _parent);
   connect(showDetails,                  SIGNAL(triggered(const Client*)),
-          vApp()->userInterface(),      SLOT(showDetailsWindow(const Client*)));
+          vApp()->userInterface(),      SLOT(showDetails(const Client*)));
   menu->addAction(showDetails);
   
   TrackAction* trackFlight = new TrackAction(data(), _parent);
@@ -209,7 +209,7 @@ FlightItem::menu(QWidget* _parent) const {
 
 void
 FlightItem::showDetailsWindow() const {
-  vApp()->userInterface()->showDetailsWindow(data());
+  vApp()->userInterface()->showDetails(data());
 }
 
 void

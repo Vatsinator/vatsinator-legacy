@@ -30,7 +30,7 @@ AirportDetailsButton::AirportDetailsButton(QWidget* _parent) :
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
   // we assume that autoconnect is on
   connect(this,                         SIGNAL(clicked(const Airport*)),
-          vApp()->userInterface(),      SLOT(showDetailsWindow(const Airport*)));
+          vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
 }
 
 AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
@@ -44,7 +44,7 @@ AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
 
   if (_autoconnect)
     connect(this,                       SIGNAL(clicked(const Airport*)),
-            vApp()->userInterface(),    SLOT(showDetailsWindow(const Airport*)));
+            vApp()->userInterface(),    SLOT(showDetails(const Airport*)));
 }
 
 void

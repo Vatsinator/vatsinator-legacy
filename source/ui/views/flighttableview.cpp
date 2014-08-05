@@ -66,7 +66,7 @@ FlightTableView::__updateButtons(int _start, int _end) {
     
     ClientDetailsButton* dButton = new ClientDetailsButton(fModel->flights()[i]);
     connect(dButton,                    SIGNAL(clicked(const Client*)),
-            vApp()->userInterface(),    SLOT(showDetailsWindow(const Client*)));
+            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
     setIndexWidget(fModel->index(i, FlightTableModel::Button), dButton);
   }
 }

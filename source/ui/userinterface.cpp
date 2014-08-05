@@ -67,7 +67,7 @@ UserInterface::~UserInterface() {
 }
 
 void
-UserInterface::init() {
+UserInterface::initialize() {
   __aboutWindow = new AboutWindow();
   __metarsWindow = new MetarsWindow();
   __databaseWindow = new DatabaseWindow();
@@ -76,12 +76,10 @@ UserInterface::init() {
   __settingsWindow = new SettingsWindow();
   __vatsinatorWindow = new VatsinatorWindow();
   
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataError()),
-          this,                                     SLOT(__dataError()));
-  connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimStatusError()),
-          this,                                     SLOT(__statusError()));
   connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
           this,                                     SLOT(__showNewVersionDialog()));
+  
+  emit initialized();
 }
 
 AboutWindow*
@@ -158,6 +156,22 @@ UserInterface::warning(const QString& _msg) {
 }
 
 void
+UserInterface::statusError() {
+  StatusFetchErrorDialog dialog;
+  dialog.exec();
+}
+
+void
+UserInterface::dataError() {
+  DataFetchErrorDialog dialog;
+  dialog.exec();
+  
+  if (dialog.clickedButton() == dialog.again()) {
+    vApp()->vatsimDataHandler()->requestDataUpdate();
+  }
+}
+
+void
 UserInterface::showAppRestartDialog() {
   AppRestartDialog* dialog = new AppRestartDialog();
   
@@ -188,14 +202,14 @@ UserInterface::showVatsimMessage(const QString& _msg) {
 }
 
 void
-UserInterface::showDetailsWindow(const Airport* _ap) {
+UserInterface::showDetails(const Airport* _ap) {
   AirportDetailsWindow* ap = new AirportDetailsWindow(_ap);
   ap->setAttribute(Qt::WA_DeleteOnClose);
   ap->show();
 }
 
 void
-UserInterface::showDetailsWindow(const Client* _c) {
+UserInterface::showDetails(const Client* _c) {
   if (const Pilot* p = dynamic_cast<const Pilot*>(_c)) {
     FlightDetailsWindow* w = new FlightDetailsWindow(p);
     w->setAttribute(Qt::WA_DeleteOnClose);
@@ -208,7 +222,7 @@ UserInterface::showDetailsWindow(const Client* _c) {
 }
 
 void
-UserInterface::showDetailsWindow(const Fir* _f) {
+UserInterface::showDetails(const Fir* _f) {
   FirDetailsWindow* w = new FirDetailsWindow(_f);
   w->setAttribute(Qt::WA_DeleteOnClose);
   w->show();
@@ -228,23 +242,6 @@ UserInterface::notificationEvent(NotificationEvent* _event) {
   }
   
   return true;
-}
-
-void
-UserInterface::__statusError() {
-  StatusFetchErrorDialog dialog;
-  dialog.exec();
-}
-
-void
-UserInterface::__dataError() {
-  DataFetchErrorDialog dialog;
-  dialog.exec();
-  
-  if (dialog.clickedButton() == dialog.again()) {
-    // TODO
-//     VatsinatorApplication::getSingleton().refreshData();
-  }
 }
 
 void
