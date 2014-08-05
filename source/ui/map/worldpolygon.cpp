@@ -79,8 +79,8 @@ WorldPolygon::__initializeBuffers() {
   __vao.bind();
   __borders.bind();
   __triangles.bind();
-  glVertexAttribPointer(MapWidget::getSingleton().vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(MapWidget::getSingleton().vertexLocation());
+  glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(MapWidget::vertexLocation());
   __vao.release();
 #endif
   

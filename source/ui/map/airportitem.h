@@ -39,8 +39,8 @@ public:
   
   virtual ~AirportItem();
   
-  void drawIcon() const;
-  void drawLabel() const;
+  void drawIcon(QOpenGLShaderProgram*) const;
+  void drawLabel(QOpenGLShaderProgram*) const;
   void drawLines() const;
   
   bool needsDrawing() const override;

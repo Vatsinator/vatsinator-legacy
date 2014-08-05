@@ -102,8 +102,15 @@ public:
    */
   bool event(QEvent*) override;
   
-  inline int vertexLocation() const { return __vertexLocation; }
-  inline int texcoordLocation() const { return __texcoordLocation; }
+  /**
+   * Vertex attribute location ("vertex").
+   */
+  inline static constexpr int vertexLocation() { return 0; }
+  
+  /**
+   * Texture coordinate location ("texcoord").
+   */
+  inline static constexpr int texcoordLocation() { return 1; }
   inline MapScene* scene() { return __scene; }
   inline const MapState& state() const { return __state; }
   
@@ -177,10 +184,9 @@ private:
   QOpenGLShaderProgram* __texturedShader;
   
   /* Shader variable locations */
-  const int __vertexLocation;
-  const int __texcoordLocation;
   int __identityMatrixLocation;
   int __identityColorLocation;
+  int __identityOffsetLocation;
   int __texturedMatrixLocation;
   int __texturedPositionLocation;
   
@@ -197,8 +203,8 @@ private:
   GLfloat __xOffset;
   
   /* Stores screen rectangle */
-  qreal __rangeX;
-  qreal __rangeY;
+  float __rangeX;
+  float __rangeY;
   
   
   /* Zoom Coefficient to let users customize their zooming speed */

@@ -63,6 +63,15 @@ FlightItem::drawModel() const {
      0.03, -0.03
   };
   
+  static const GLfloat textureCoords[] = {
+    0.0, 0.0,
+    0.0, 1.0,
+    1.0, 1.0,
+    1.0, 0.0
+  };
+  
+  glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
+  
   if (!__model)
     __matchModel();
   
@@ -76,20 +85,20 @@ FlightItem::drawModel() const {
 
 void
 FlightItem::drawLabel() const {
-  static const GLfloat labelRect[] = {
-    -0.16,  0.019,
-    -0.16,  0.12566666,
-     0.16,  0.12566666,
-     0.16,  0.019
-  };
-  
-  if (!__label)
-    __generateLabel();
-  
-  __label->bind();
-  glVertexPointer(2, GL_FLOAT, 0, labelRect);
-  glDrawArrays(GL_QUADS, 0, 4);
-  __label->unbind();
+//   static const GLfloat labelRect[] = {
+//     -0.16,  0.019,
+//     -0.16,  0.12566666,
+//      0.16,  0.12566666,
+//      0.16,  0.019
+//   };
+//   
+//   if (!__label)
+//     __generateLabel();
+//   
+//   __label->bind();
+//   glVertexPointer(2, GL_FLOAT, 0, labelRect);
+//   glDrawArrays(GL_QUADS, 0, 4);
+//   __label->unbind();
 }
 
 void

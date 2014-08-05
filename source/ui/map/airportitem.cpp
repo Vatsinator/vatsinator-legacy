@@ -57,38 +57,66 @@ AirportItem::~AirportItem() {
 }
 
 void
-AirportItem::drawIcon() const {
+AirportItem::drawIcon(QOpenGLShaderProgram* _shader) const {
   static const GLfloat iconRect[] = {
     -0.04, -0.02,
     -0.04,  0.06,
      0.04,  0.06,
-     0.04, -0.02
+     0.04,  0.06,
+     0.04, -0.02,
+    -0.04, -0.02
   };
+  
+  static const GLfloat textureCoords[] = {
+    0.0f, 0.0f,
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapWidget::vertexLocation(), iconRect, 2);
+  _shader->setUniformValue("texture", 0);
   
   if (!__icon)
     __makeIcon();
   
   __icon->bind();
-  glVertexPointer(2, GL_FLOAT, 0, iconRect);
-  glDrawArrays(GL_QUADS, 0, 4);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
   __icon->unbind();
 }
 
 void
-AirportItem::drawLabel() const {
+AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   static const GLfloat labelRect[] = {
     -0.08, -0.05333333,
     -0.08,  0,
      0.08,  0,
-     0.08, -0.05333333
+     0.08,  0,
+     0.08, -0.05333333,
+    -0.08, -0.05333333
   };
+  
+  static const GLfloat textureCoords[] = {
+    0.0f, 0.0f,
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapWidget::vertexLocation(), labelRect, 2);
+  _shader->setUniformValue("texture", 0);
   
   if (!__label)
     __generateLabel();
   
   __label->bind();
-  glVertexPointer(2, GL_FLOAT, 0, labelRect);
-  glDrawArrays(GL_QUADS, 0, 4);
+  glDrawArrays(GL_TRIANGLES, 0, 6);
   __label->unbind();
 }
 

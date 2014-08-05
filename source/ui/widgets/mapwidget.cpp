@@ -51,8 +51,6 @@
 MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent),
     __identityShader(nullptr),
-    __vertexLocation(0),
-    __texcoordLocation(1),
     __xOffset(0.0),
     __actualZoom(0),
     __world(nullptr),
@@ -164,14 +162,14 @@ MapWidget::initializeGL() {
   __identityShader->addShader(vertex);
   __identityShader->addShader(fragment);
   
-  __identityShader->bindAttributeLocation("vertex", __vertexLocation);
+  __identityShader->bindAttributeLocation("vertex", vertexLocation());
   
   __identityShader->link();
   __identityShader->bind();
   __identityMatrixLocation = __identityShader->uniformLocation("matrix");
   __identityColorLocation = __identityShader->uniformLocation("color");
+  __identityOffsetLocation = __identityShader->uniformLocation("offset");
   __identityShader->release();
-  
   
   __texturedShader = new QOpenGLShaderProgram(this);
   vertex = new QOpenGLShader(QOpenGLShader::Vertex, __texturedShader);
@@ -181,8 +179,8 @@ MapWidget::initializeGL() {
   __texturedShader->addShader(vertex);
   __texturedShader->addShader(fragment);
   
-  __texturedShader->bindAttributeLocation("vertex", __vertexLocation);
-  __texturedShader->bindAttributeLocation("texcoord", __texcoordLocation);
+  __texturedShader->bindAttributeLocation("vertex", vertexLocation());
+  __texturedShader->bindAttributeLocation("texcoord", texcoordLocation());
   
   __texturedShader->link();
   __texturedShader->bind();
@@ -195,13 +193,16 @@ MapWidget::initializeGL() {
   glEnable(GL_LINE_STIPPLE);
   
   glShadeModel(GL_SMOOTH);
-//   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_ALPHA_TEST);
   glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  qglClearColor(__settings.colors.seas);
   
   /* For a really strong debug */
 //   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -217,24 +218,19 @@ MapWidget::paintGL() {
   __worldTransform.scale(__state.zoom(), __state.zoom());
   __worldTransform.translate(-__state.center().x(), __state.center().y());
   
-  qglColor(__settings.colors.seas);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
   qglClearColor(__settings.colors.seas);
   
   __underMouse = nullptr;
   
-  __xOffset = __offsets.first();
   for (GLfloat o: __offsets) {
-    __worldTransform.translate(__xOffset, 0.0);
+    __xOffset = o;
     
     __drawWorld();
     __drawUirs();
     __drawFirs();
-//     __drawAirports();
+    __drawAirports();
 //     __drawPilots();
-    
-    __xOffset = 360.0f;
   }
   
 //   for (GLfloat o: __offsets) {
@@ -242,8 +238,6 @@ MapWidget::paintGL() {
 //     __drawLines();
 //   }
   
-  __texturedShader->disableAttributeArray(__texcoordLocation);
-  __texturedShader->disableAttributeArray(__vertexLocation);
   __xOffset = 0.0f;
   
   if (__underMouse) {
@@ -260,11 +254,11 @@ void
 MapWidget::resizeGL(int _width, int _height) {
   glViewport(0, 0, _width, _height);
   
-  __rangeX = static_cast<qreal>(_width) / MapConfig::baseWindowWidth();
-  __rangeY = static_cast<qreal>(_height) / MapConfig::baseWindowHeight();
+  __rangeX = static_cast<float>(_width) / MapConfig::baseWindowWidth();
+  __rangeY = static_cast<float>(_height) / MapConfig::baseWindowHeight();
   
   __projection.setToIdentity();
-  __projection.ortho(-__rangeX, __rangeX, -__rangeY, __rangeY, -static_cast<GLdouble>(MapConfig::MapLayers::Count), 1.0);
+  __projection.ortho(-__rangeX, __rangeX, -__rangeY, __rangeY, -static_cast<float>(MapConfig::MapLayers::Count), 1.0);
   
   __updateOffsets();
   
@@ -360,6 +354,7 @@ MapWidget::__drawWorld() {
   QMatrix4x4 mvp = __projection * __worldTransform;
   mvp.translate(QVector3D(0.0f, 0.0f, zValue));
   __identityShader->bind();
+  __identityShader->setUniformValue(__identityOffsetLocation, __xOffset);
   __identityShader->setUniformValue(__identityMatrixLocation, mvp);
   __identityShader->setUniformValue(__identityColorLocation, __settings.colors.lands);
   __world->paint();
@@ -373,6 +368,7 @@ MapWidget::__drawFirs() {
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   __identityShader->bind();
+  __identityShader->setUniformValue(__identityOffsetLocation, __xOffset);
     
   if (__settings.view.unstaffed_firs) {
     mvp.translate(QVector3D(0.0f, 0.0f, unstaffedFirsZ));
@@ -406,10 +402,12 @@ MapWidget::__drawFirs() {
   __identityShader->release();
   
   // draw labels
+  mvp = __projection;
+  mvp.translate(QVector3D(0.0f, 0.0f, staffedFirsZ + 1));
   __texturedShader->bind();
-  __texturedShader->setUniformValue(__texturedMatrixLocation, __projection);
-  __texturedShader->enableAttributeArray(__texcoordLocation);
-  __texturedShader->enableAttributeArray(__vertexLocation);
+  __texturedShader->setUniformValue(__texturedMatrixLocation, mvp);
+  __texturedShader->enableAttributeArray(texcoordLocation());
+  __texturedShader->enableAttributeArray(vertexLocation());
   
   for (const FirItem* item: __scene->firItems()) {
     if (item->needsDrawing()) {
@@ -422,8 +420,8 @@ MapWidget::__drawFirs() {
     }
   }
   
-  __texturedShader->disableAttributeArray(__texcoordLocation);
-  __texturedShader->disableAttributeArray(__vertexLocation);
+  __texturedShader->disableAttributeArray(texcoordLocation());
+  __texturedShader->disableAttributeArray(vertexLocation());
   __texturedShader->release();
 }
 
@@ -433,6 +431,7 @@ MapWidget::__drawUirs() {
   
   if (__settings.view.staffed_firs) {
     __identityShader->bind();
+    __identityShader->setUniformValue(__identityOffsetLocation, __xOffset);
     QMatrix4x4 mvp = __projection * __worldTransform;
     mvp.translate(QVector3D(0.0f, 0.0f, staffedUirsZ));
     
@@ -469,15 +468,20 @@ MapWidget::__drawAirports() {
   static constexpr GLfloat emptyAirportsZ = static_cast<GLfloat>(MapConfig::MapLayers::EmptyAirports);
   static constexpr GLfloat activeAirportsZ = static_cast<GLfloat>(MapConfig::MapLayers::ActiveAirports);
   
+  QMatrix4x4 mvp = __projection;
+  mvp.translate(0.0f, 0.0f, emptyAirportsZ);
+  __texturedShader->bind();
+  __texturedShader->setUniformValue(__texturedMatrixLocation, mvp);
+  __texturedShader->enableAttributeArray(texcoordLocation());
+  __texturedShader->enableAttributeArray(vertexLocation());
+  
   if (__settings.view.empty_airports) {
     for (const AirportItem* item: __scene->airportItems()) {
       if (item->data()->isEmpty() && item->needsDrawing()) {
         QPointF p = glFromLonLat(item->position());
         if (onScreen(p)) {
-          glPushMatrix();
-            glTranslated(p.x(), -p.y(), emptyAirportsZ);
-            item->drawIcon();
-          glPopMatrix();
+          __texturedShader->setUniformValue(__texturedPositionLocation, p.x(), p.y());
+          item->drawIcon(__texturedShader);
           
           __checkItem(item);
         }
@@ -485,33 +489,35 @@ MapWidget::__drawAirports() {
     }
   }
   
+  mvp.translate(0.0f, 0.0f, activeAirportsZ - emptyAirportsZ);
+  __texturedShader->setUniformValue(__texturedMatrixLocation, mvp);
   if (__settings.view.airports_layer) {
     for (const AirportItem* item: __scene->airportItems()) {
       if (item->data()->isStaffed() && item->needsDrawing()) {
         QPointF p = glFromLonLat(item->position());
         if (onScreen(p)) {
-          glPushMatrix();
-            glTranslated(p.x(), p.y(), activeAirportsZ);
-            
-            item->drawIcon();
-            
-            if (__settings.view.airport_labels)
-              item->drawLabel();
-            
-            if (item->approachCircle()) {
-              glPushMatrix();
-                glScalef(__state.zoom(), __state.zoom(), 0);
-                item->approachCircle()->drawCircle();
-              glPopMatrix();
-            }
+          __texturedShader->setUniformValue(__texturedPositionLocation, p.x(), p.y());
+          item->drawIcon(__texturedShader);
           
-          glPopMatrix();
+          if (__settings.view.airport_labels)
+            item->drawLabel(__texturedShader);
+          
+//           if (item->approachCircle()) {
+//             glPushMatrix();
+//               glScalef(__state.zoom(), __state.zoom(), 0);
+//               item->approachCircle()->drawCircle();
+//             glPopMatrix();
+//           }
           
           __checkItem(item);
         }
       }
     }
   }
+  
+  __texturedShader->disableAttributeArray(texcoordLocation());
+  __texturedShader->disableAttributeArray(vertexLocation());
+  __texturedShader->release();
 }
 
 void
