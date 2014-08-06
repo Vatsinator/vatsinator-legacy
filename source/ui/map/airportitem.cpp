@@ -18,7 +18,6 @@
  */
 
 #include "db/airportdatabase.h"
-#include "glutils/texture.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/actionmenuseparator.h"
 #include "ui/actions/airportdetailsaction.h"
@@ -42,7 +41,7 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     __position(_ap->data()->longitude, _ap->data()->latitude),
     __approachCircle(nullptr),
     __icon(nullptr),
-    __label(nullptr),
+    __label(QOpenGLTexture::Target2D),
     __linesReady(false) {
   
   connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
@@ -52,8 +51,7 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
 }
 
 AirportItem::~AirportItem() {
-  if (__label)
-    delete __label;
+  __label.destroy();
 }
 
 void
@@ -78,14 +76,13 @@ AirportItem::drawIcon(QOpenGLShaderProgram* _shader) const {
   
   _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
   _shader->setAttributeArray(MapWidget::vertexLocation(), iconRect, 2);
-  _shader->setUniformValue("texture", 0);
   
   if (!__icon)
-    __makeIcon();
+    __takeIcon();
   
   __icon->bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  __icon->unbind();
+  __icon->release();
 }
 
 void
@@ -112,12 +109,12 @@ AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   _shader->setAttributeArray(MapWidget::vertexLocation(), labelRect, 2);
   _shader->setUniformValue("texture", 0);
   
-  if (!__label)
-    __generateLabel();
+  if (!__label.isCreated())
+    __initializeLabel();
   
-  __label->bind();
+  __label.bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  __label->unbind();
+  __label.release();
 }
 
 void
@@ -255,7 +252,7 @@ AirportItem::showDetailsWindow() const {
 }
 
 void
-AirportItem::__makeIcon() const {
+AirportItem::__takeIcon() const {
   if (data()->isEmpty()) {
     __icon = __icons.emptyAirportIcon();
   } else {
@@ -297,11 +294,11 @@ AirportItem::__prepareLines() const {
 }
 
 void
-AirportItem::__generateLabel() const {
+AirportItem::__initializeLabel() const {
   static QRect labelRect(8, 2, 48, 12);
   
-  if (__label)
-    delete __label;
+  if (__label.isCreated())
+    __label.destroy();
   
   QString icao(data()->data()->icao);
   
@@ -315,15 +312,14 @@ AirportItem::__generateLabel() const {
   painter.setPen(MapConfig::airportPen());
   
   painter.drawText(labelRect, Qt::AlignCenter, icao);
-  __label = new Texture(temp);
+  __label.setData(temp.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+  __label.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
 }
 
 void
 AirportItem::__reloadSettings() {
-  if (__label) {
-    delete __label;
-    __label = 0;
-  }
+  if (__label.isCreated())
+    __label.destroy();
 }
 
 void
@@ -361,26 +357,32 @@ AirportItem::IconKeeper::~IconKeeper() {
     delete __activeStaffedAirportIcon;
 }
 
-const Texture*
-AirportItem::IconKeeper::emptyAirportIcon() const {
-  if (!__emptyAirportIcon)
-    __emptyAirportIcon = new Texture(MapConfig::emptyAirportIcon());
+QOpenGLTexture*
+AirportItem::IconKeeper::emptyAirportIcon() {
+  if (!__emptyAirportIcon) {
+    __emptyAirportIcon = new QOpenGLTexture(QImage(MapConfig::emptyAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+    __emptyAirportIcon->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+  }
   
   return __emptyAirportIcon;
 }
 
-const Texture*
-AirportItem::IconKeeper::activeAirportIcon() const {
-  if (!__activeAirportIcon)
-    __activeAirportIcon = new Texture(MapConfig::activeAirportIcon());
+QOpenGLTexture*
+AirportItem::IconKeeper::activeAirportIcon() {
+  if (!__activeAirportIcon) {
+    __activeAirportIcon = new QOpenGLTexture(QImage(MapConfig::activeAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+    __activeAirportIcon->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+  }
   
   return __activeAirportIcon;
 }
 
-const Texture*
-AirportItem::IconKeeper::activeStaffedAirportIcon() const {
-  if (!__activeStaffedAirportIcon)
-    __activeStaffedAirportIcon = new Texture(MapConfig::activeStaffedAirportIcon());
+QOpenGLTexture*
+AirportItem::IconKeeper::activeStaffedAirportIcon() {
+  if (!__activeStaffedAirportIcon) {
+    __activeStaffedAirportIcon = new QOpenGLTexture(QImage(MapConfig::activeStaffedAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+    __activeStaffedAirportIcon->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+  }
   
   return __activeStaffedAirportIcon;
 }

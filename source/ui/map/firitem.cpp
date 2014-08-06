@@ -76,7 +76,7 @@ FirItem::drawLabel(QOpenGLShaderProgram* _shader) const {
      0.08f,  0.05333333f,
      0.08f,  0.05333333f,
      0.08f, -0.05333333f,
-     -0.08f, -0.05333333f
+    -0.08f, -0.05333333f
   };
   
   static const GLfloat textureCoords[] = {
@@ -93,8 +93,6 @@ FirItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   
   _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
   _shader->setAttributeArray(MapWidget::vertexLocation(), labelRect, 2);
-//   glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, labelRect);
-  _shader->setUniformValue("texture", 0);
   
   __label.bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -201,6 +199,8 @@ FirItem::__initializeBuffers() {
   glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(MapWidget::vertexLocation());
   __vaoBorders.release();
+  __borders.release();
+  __triangles.release();
   
   __vaoTriangles.create();
   Q_ASSERT(__vaoTriangles.isCreated());
@@ -210,6 +210,8 @@ FirItem::__initializeBuffers() {
   glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(MapWidget::vertexLocation());
   __vaoTriangles.release();
+  __borders.release();
+  __triangles.release();
   
   __bordersVertices = borders.size();
   __trianglesVertices = triangles.size();
@@ -249,8 +251,8 @@ FirItem::__initializeLabel() const {
   painter.setPen(color);
   painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);
   
-  __label.create();
-  __label.setData(temp, QOpenGLTexture::DontGenerateMipMaps);
+  __label.setData(temp.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+  __label.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
 }
 
 void

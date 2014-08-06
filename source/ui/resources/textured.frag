@@ -1,6 +1,6 @@
 uniform sampler2D texture;
 
-varying lowp vec2 v_texcoord;
+varying mediump vec2 v_texcoord;
 
 void main()
 {
