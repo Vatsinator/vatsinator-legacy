@@ -27,6 +27,7 @@
 #include "ui/actions/metaraction.h"
 #include "ui/actions/trackaction.h"
 #include "ui/map/mapconfig.h"
+#include "ui/widgets/mapwidget.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/client/pilot.h"
