@@ -76,11 +76,11 @@ AirportItem::drawIcon(QOpenGLShaderProgram* _shader) const {
     0.0f, 0.0f
   };
   
-  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapWidget::vertexLocation(), iconRect, 2);
-  
   if (!__icon)
     __takeIcon();
+  
+  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapWidget::vertexLocation(), iconRect, 2);
   
   __icon->bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -109,7 +109,6 @@ AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   
   _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
   _shader->setAttributeArray(MapWidget::vertexLocation(), labelRect, 2);
-  _shader->setUniformValue("texture", 0);
   
   if (!__label.isCreated())
     __initializeLabel();
