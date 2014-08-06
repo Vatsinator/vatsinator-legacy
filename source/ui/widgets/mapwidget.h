@@ -32,6 +32,7 @@ class QOpenGLShaderProgram;
 class Airport;
 class Client;
 class Fir;
+class IconKeeper;
 class MapEvent;
 class MapItem;
 class MapScene;
@@ -111,6 +112,8 @@ public:
    * Texture coordinate location ("texcoord").
    */
   inline static constexpr int texcoordLocation() { return 1; }
+  
+  inline IconKeeper* icons() { return __iconKeeper; }
   inline MapScene* scene() { return __scene; }
   inline const MapState& state() const { return __state; }
   
@@ -275,6 +278,9 @@ private:
   
   /* World map drawer */
   WorldPolygon* __world;
+  
+  /* The IconKeeper instance */
+  IconKeeper* __iconKeeper;
   
   /* Scene handler */
   MapScene* __scene;

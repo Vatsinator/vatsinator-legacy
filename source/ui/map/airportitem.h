@@ -75,27 +75,6 @@ private:
   
   mutable bool  __linesReady;
   
-  /**
-   * Class that loads and keeps icons.
-   */
-  class IconKeeper {
-  public:
-    IconKeeper();
-    ~IconKeeper();
-    
-    QOpenGLTexture* emptyAirportIcon();
-    QOpenGLTexture* activeAirportIcon();
-    QOpenGLTexture* activeStaffedAirportIcon();
-    
-  private:
-    mutable QOpenGLTexture* __emptyAirportIcon;
-    mutable QOpenGLTexture* __activeAirportIcon;
-    mutable QOpenGLTexture* __activeStaffedAirportIcon;
-    
-  };
-  
-  static IconKeeper __icons;
-  
 };
 
 #endif // AIRPORTITEM_H

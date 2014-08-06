@@ -30,6 +30,7 @@
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
+#include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/uiritem.h"
@@ -54,6 +55,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __xOffset(0.0),
     __actualZoom(0),
     __world(nullptr),
+    __iconKeeper(nullptr),
     __scene(nullptr) {
   
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
@@ -74,6 +76,7 @@ MapWidget::~MapWidget() {
   __storeSettings();
   
   delete __scene;
+  delete __iconKeeper;
   delete __world;
 }
 
@@ -152,6 +155,7 @@ MapWidget::initializeGL() {
   emit glReady();
   
   __world = new WorldPolygon();
+  __iconKeeper = new IconKeeper();
   __scene = new MapScene(this);
   
   __identityShader = new QOpenGLShaderProgram(this);

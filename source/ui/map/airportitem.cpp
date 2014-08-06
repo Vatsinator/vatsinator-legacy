@@ -24,7 +24,9 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/metaraction.h"
 #include "ui/map/approachcircleitem.h"
+#include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
+#include "ui/widgets/mapwidget.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
@@ -254,12 +256,12 @@ AirportItem::showDetailsWindow() const {
 void
 AirportItem::__takeIcon() const {
   if (data()->isEmpty()) {
-    __icon = __icons.emptyAirportIcon();
+    __icon = MapWidget::getSingleton().icons()->emptyAirportIcon();
   } else {
     if (data()->staff()->staff().isEmpty()) {
-      __icon = __icons.activeAirportIcon();
+      __icon = MapWidget::getSingleton().icons()->activeAirportIcon();
     } else {
-      __icon = __icons.activeStaffedAirportIcon();
+      __icon = MapWidget::getSingleton().icons()->activeStaffedAirportIcon();
     }
   }
 }
@@ -340,51 +342,3 @@ AirportItem::__invalidate() {
   __otpLines.coords.clear();
   __ptdLines.coords.clear();
 }
-
-AirportItem::IconKeeper::IconKeeper() :
-    __emptyAirportIcon(0),
-    __activeAirportIcon(0),
-    __activeStaffedAirportIcon(0) {}
-
-AirportItem::IconKeeper::~IconKeeper() {
-  if (__emptyAirportIcon)
-    delete __emptyAirportIcon;
-  
-  if (__activeAirportIcon)
-    delete __activeAirportIcon;
-  
-  if (__activeStaffedAirportIcon)
-    delete __activeStaffedAirportIcon;
-}
-
-QOpenGLTexture*
-AirportItem::IconKeeper::emptyAirportIcon() {
-  if (!__emptyAirportIcon) {
-    __emptyAirportIcon = new QOpenGLTexture(QImage(MapConfig::emptyAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __emptyAirportIcon->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
-  }
-  
-  return __emptyAirportIcon;
-}
-
-QOpenGLTexture*
-AirportItem::IconKeeper::activeAirportIcon() {
-  if (!__activeAirportIcon) {
-    __activeAirportIcon = new QOpenGLTexture(QImage(MapConfig::activeAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __activeAirportIcon->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
-  }
-  
-  return __activeAirportIcon;
-}
-
-QOpenGLTexture*
-AirportItem::IconKeeper::activeStaffedAirportIcon() {
-  if (!__activeStaffedAirportIcon) {
-    __activeStaffedAirportIcon = new QOpenGLTexture(QImage(MapConfig::activeStaffedAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __activeStaffedAirportIcon->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
-  }
-  
-  return __activeStaffedAirportIcon;
-}
-
-AirportItem::IconKeeper AirportItem::__icons;
