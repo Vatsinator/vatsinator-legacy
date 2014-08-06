@@ -20,15 +20,14 @@
 #ifndef VIEWPAGE_H
 #define VIEWPAGE_H
 
-#include "ui/ui_viewpage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include <QWidget>
 
-class ViewPage :
-    public AbstractSettingsPage,
-    private Ui::ViewPage {
+#include "ui/ui_viewpage.h"
+#include "storage/abstractsettingspage.h"
+
+class ViewPage : public QWidget, public AbstractSettingsPage, private Ui::ViewPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(View)
   
 public:
 

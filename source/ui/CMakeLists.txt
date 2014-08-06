@@ -1,6 +1,3 @@
-# generate macros
-add_subdirectory (pages)
-
 vatsinator_start_subdirectory (ui)
 
 if (NOT vatsinator_ABOUT)
@@ -75,7 +72,6 @@ set (ui_SRCS
     map/uiritem.cpp
     map/worldpolygon.cpp
     
-    pages/abstractsettingspage.cpp
     pages/mappage.cpp
     pages/miscellaneouspage.cpp
     pages/networkpage.cpp
@@ -142,7 +138,6 @@ set (ui_MOC_SRCS
     map/moveanimation.h
     map/uiritem.h
     
-    pages/abstractsettingspage.h
     pages/mappage.h
     pages/miscellaneouspage.h
     pages/networkpage.h

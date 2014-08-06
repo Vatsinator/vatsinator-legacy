@@ -65,6 +65,7 @@ public:
   
   UserInterface* userInterface();
   
+  inline SettingsManager* settingsManager() { return __settingsManager; }
   inline const PluginManager* plugins() const { return __pluginManager; }
   inline VatsimDataHandler* vatsimDataHandler() { return __vatsimData; }
   inline const VatsimDataHandler* vatsimDataHandler() const { return __vatsimData; }

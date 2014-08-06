@@ -20,10 +20,14 @@
 
 #include "storage/languagemanager.h"
 #include "storage/settingsmanager.h"
-#include "ui/pages/abstractsettingspage.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/userinterface.h"
+#include "ui/pages/miscellaneouspage.h"
+#include "ui/pages/networkpage.h"
+#include "ui/pages/viewpage.h"
+#include "ui/pages/mappage.h"
+#include "vatsinatorapplication.h"
 
 #include "settingswindow.h"
 
@@ -31,24 +35,46 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
     BaseWindow(_parent) {
   setupUi(this);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-
-  connect(OKCancelButtonBox,    SIGNAL(clicked(QAbstractButton*)),
-          this,                 SLOT(__handleButton(QAbstractButton*)));
+  {
+    MiscellaneousPage* p = new MiscellaneousPage();
+    __addPage(p->listElement(), p->listIcon(), p);
+    vApp()->settingsManager()->addPage(p);
+  }
+  {
+    NetworkPage* p = new NetworkPage();
+    __addPage(p->listElement(), p->listIcon(), p);
+    vApp()->settingsManager()->addPage(p);
+  }
+  {
+    ViewPage* p = new ViewPage();
+    __addPage(p->listElement(), p->listIcon(), p);
+    vApp()->settingsManager()->addPage(p);
+  }
+  {
+    MapPage* p = new MapPage();
+    __addPage(p->listElement(), p->listIcon(), p);
+    vApp()->settingsManager()->addPage(p);
+  }
+  
+  connect(qApp,                                 SIGNAL(aboutToQuit()),
+          this,                                 SLOT(hide()));
+  connect(OKCancelButtonBox,                    SIGNAL(clicked(QAbstractButton*)),
+          this,                                 SLOT(__handleButton(QAbstractButton*)));
+  connect(this,                                 SIGNAL(settingsApplied()),
+          SettingsManager::getSingletonPtr(),   SLOT(saveSettings()));
+  connect(this,                                 SIGNAL(restoreDefaults()),
+          SettingsManager::getSingletonPtr(),   SLOT(restoreDefaults()));
 }
 
 void
-SettingsWindow::addPage(AbstractSettingsPage* _page) {
-  __pages << _page;
-  
+SettingsWindow::__addPage(const QString& _element, const QString& _icon, QWidget* _page) {
   QListWidgetItem *item = new QListWidgetItem(CategoryList);
   
-  QIcon listIcon(_page->listIcon());
+  QIcon listIcon(_icon);
   item->setIcon(listIcon);
   item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
   
-  item->setText(_page->listElement());
+  item->setText(_element);
   
   SwappingWidget->addWidget(_page);
   

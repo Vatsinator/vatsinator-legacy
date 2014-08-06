@@ -1,6 +1,6 @@
 /*
     settingsmanager.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef SETTINGSMANAGER_H
 #define SETTINGSMANAGER_H
 
@@ -25,10 +24,8 @@
 #include <QVariant>
 
 #include "singleton.h"
-#include "ui/pages/pagelist.h"
 
 class AbstractSettingsPage;
-class SettingsWindow;
 
 /**
  * This class gives us access to global user configuration.
@@ -39,9 +36,7 @@ class SettingsWindow;
  * SM::get("network.refresh_rate").toInt();
  * SM is typedef for SettingsManager.
  */
-class SettingsManager :
-    public QObject,
-    public Singleton<SettingsManager> {
+class SettingsManager : public QObject, public Singleton<SettingsManager> {
   Q_OBJECT
   
   friend class AbstractSettingsPage;
@@ -51,7 +46,11 @@ signals:
 
 public:
   SettingsManager(QObject* = 0);
-  virtual ~SettingsManager();
+  
+  /**
+   * Adds settings page.
+   */
+  void addPage(AbstractSettingsPage*);
   
   /**
    * We need this to be accessible before all pages are created.
@@ -75,7 +74,17 @@ public:
   static void updateUi(const QString&);
   
 public slots:
-  void init();
+  void initialize();
+  
+  /**
+   * Saves all settings to local config file.
+   */
+  void saveSettings();
+  
+  /**
+   * Clears all entries and then calls __restoreSettings().
+   */
+  void restoreDefaults();
 
 private:
   
@@ -93,20 +102,8 @@ private:
   
   AbstractSettingsPage* __getPage(const QString&) const;
   
-private slots:
-  
-  /**
-   * Saves all settings to local config file.
-   */
-  void __saveSettings();
-  
-  /**
-   * Clears all entries and then calls __restoreSettings().
-   */
-  void __restoreDefaults();
-  
 private:
-  AbstractSettingsPage* __pages[PageList::__count];
+  QList<AbstractSettingsPage*> __pages;
   
   QVariantHash __settings;
 

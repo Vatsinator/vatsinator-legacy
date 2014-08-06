@@ -1,6 +1,6 @@
 /*
     settingswindow.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,11 +26,9 @@
 #include "ui/ui_settingswindow.h"
 
 class AbstractSettingsPage;
+class QWidget;
 
-class SettingsWindow :
-    public BaseWindow,
-    private Ui::SettingsWindow {
-
+class SettingsWindow : public BaseWindow, private Ui::SettingsWindow {
   Q_OBJECT
   
 signals:
@@ -40,10 +38,8 @@ signals:
 public:
   SettingsWindow(QWidget* = nullptr);
   
-  void addPage(AbstractSettingsPage*);
-  
 private:
-  QVector<AbstractSettingsPage*> __pages;
+  void __addPage(const QString&, const QString&, QWidget*);
   
 private slots:
   void __handleButton(QAbstractButton*);

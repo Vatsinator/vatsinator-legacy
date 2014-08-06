@@ -19,15 +19,14 @@
 #ifndef MISCELLANEOUSPAGE_H
 #define MISCELLANEOUSPAGE_H
 
-#include "ui/ui_miscellaneouspage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include <QWidget>
 
-class MiscellaneousPage :
-    public AbstractSettingsPage,
-    private Ui::MiscellaneousPage {
+#include "ui/ui_miscellaneouspage.h"
+#include "storage/abstractsettingspage.h"
+
+class MiscellaneousPage : public QWidget, public AbstractSettingsPage, private Ui::MiscellaneousPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(Misc)
   
 signals:
   void languageChanged();

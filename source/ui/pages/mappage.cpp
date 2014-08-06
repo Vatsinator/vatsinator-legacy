@@ -39,7 +39,8 @@ namespace DefaultSettings {
   static const QColor PILOT_TO_DESTINATION_LINE_COLOR = { 133, 164, 164 };
 }
 
-MapPage::MapPage(QWidget* _parent) : AbstractSettingsPage(_parent) {
+MapPage::MapPage(QWidget* _parent) :
+    QWidget(_parent) {
   setupUi(this);
   
   connect(FirFontSelectionButton,       SIGNAL(clicked()),

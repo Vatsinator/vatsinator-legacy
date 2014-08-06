@@ -37,7 +37,7 @@ namespace DefaultSettings {
 
 
 ViewPage::ViewPage(QWidget* _parent) :
-    AbstractSettingsPage(_parent) {
+    QWidget(_parent) {
   setupUi(this);
   
   connect(ShowPilotsLabelsAlwaysCheckBox, SIGNAL(stateChanged(int)),

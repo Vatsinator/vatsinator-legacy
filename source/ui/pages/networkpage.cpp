@@ -37,7 +37,7 @@ namespace DefaultSettings {
 }
 
 NetworkPage::NetworkPage(QWidget* _parent) :
-    AbstractSettingsPage(_parent) {
+    QWidget(_parent) {
   setupUi(this);
   connect(RefreshRateBox,       SIGNAL(valueChanged(int)),
           this,                 SLOT(__updateRefreshRateLabel(int)));

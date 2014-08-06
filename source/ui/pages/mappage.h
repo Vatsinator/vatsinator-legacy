@@ -21,14 +21,14 @@
 #define MAPPAGE_H
 
 #include <QFont>
+#include <QWidget>
 
 #include "ui/ui_mappage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include "storage/abstractsettingspage.h"
 
-class MapPage : public AbstractSettingsPage, private Ui::MapPage {
+class MapPage : public QWidget, public AbstractSettingsPage, private Ui::MapPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(Map)
 
 public:
   MapPage(QWidget* = nullptr);

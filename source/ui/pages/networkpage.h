@@ -21,14 +21,11 @@
 #define NETWORKPAGE_H
 
 #include "ui/ui_networkpage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include "storage/abstractsettingspage.h"
 
-class NetworkPage :
-    public AbstractSettingsPage,
-    private Ui::NetworkPage {
+class NetworkPage : public QWidget, public AbstractSettingsPage, private Ui::NetworkPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(Network)
 
 public:
   NetworkPage(QWidget* = 0);
