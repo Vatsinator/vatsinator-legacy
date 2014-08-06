@@ -30,6 +30,7 @@
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
+#include "ui/widgetsuserinterface.h"
 #include "storage/cachefile.h"
 #include "storage/pluginmanager.h"
 #include "storage/settingsmanager.h"
@@ -724,7 +725,10 @@ VatsimDataHandler::__slotUiCreated() {
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
   
-  __downloader->setProgressBar(vApp()->userInterface()->mainWindow()->progressBar());
+  if (wui()) {
+    __downloader->setProgressBar(wui()->mainWindow()->progressBar());
+  }
+  
   __beginDownload();
 }
 

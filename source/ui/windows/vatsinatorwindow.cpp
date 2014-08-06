@@ -27,7 +27,7 @@
 #include "ui/windows/flightlistwindow.h"
 #include "ui/windows/metarswindow.h"
 #include "ui/windows/settingswindow.h"
-#include "ui/userinterface.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -40,22 +40,24 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(close()));
   
+  Q_ASSERT(wui());
+  
   connect(ActionExit,                                   SIGNAL(triggered()),
           qApp,                                         SLOT(quit()));
   connect(ActionAbout,                                  SIGNAL(triggered()),
-          vApp()->userInterface()->aboutWindow(),       SLOT(show()));
+          wui()->aboutWindow(),                         SLOT(show()));
   connect(ActionMetar,                                  SIGNAL(triggered()),
-          vApp()->userInterface()->metarsWindow(),      SLOT(show()));
+          wui()->metarsWindow(),                        SLOT(show()));
   connect(ActionDatabase,                               SIGNAL(triggered()),
-          vApp()->userInterface()->databaseWindow(),    SLOT(show()));
+          wui()->databaseWindow(),                        SLOT(show()));
   connect(ActionRefresh,                                SIGNAL(triggered()),
           VatsimDataHandler::getSingletonPtr(),         SLOT(requestDataUpdate()));
   connect(ActionPreferences,                            SIGNAL(triggered()),
-          vApp()->userInterface()->settingsWindow(),    SLOT(show()));
+          wui()->settingsWindow(),                      SLOT(show()));
   connect(ActionFlightList,                             SIGNAL(triggered()),
-          vApp()->userInterface()->flightListWindow(),  SLOT(show()));
+          wui()->flightListWindow(),                    SLOT(show()));
   connect(ActionATCList,                                SIGNAL(triggered()),
-          vApp()->userInterface()->atcListWindow(),     SLOT(show()));
+          wui()->atcListWindow(),                       SLOT(show()));
 //   connect(ActionHomeLocation,                       SIGNAL(triggered()),
 //           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
   

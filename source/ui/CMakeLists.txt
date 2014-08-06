@@ -36,7 +36,11 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
 set (ui_SRCS
     notifiable.cpp
     userinterface.cpp
+)
+
+set (widgets_SRCS
     vatsinatorstyle.cpp
+    widgetsuserinterface.cpp
     
     actions/actionmenuseparator.cpp
     actions/airportdetailsaction.cpp
@@ -103,10 +107,18 @@ set (ui_SRCS
 )
 
 vatsinator_subdirectory_sources (ui "${ui_SRCS}")
+if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+  vatsinator_subdirectory_sources (ui "${widgets_SRCS}")
+endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+
 
 set (ui_MOC_SRCS
     userinterface.h
+)
+
+set (widgets_MOC_SRCS
     vatsinatorstyle.h
+    widgetsuserinterface.h
     
     actions/actionmenuseparator.h
     actions/airportdetailsaction.h
@@ -169,8 +181,11 @@ set (ui_MOC_SRCS
 )
 
 vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
+if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+  vatsinator_subdirectory_mocs (ui "${widgets_MOC_SRCS}")
+endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 
-set (ui_FORMS
+set (widgets_FORMS
     dialogs/apprestartdialog.ui
     dialogs/letsendstatsdialog.ui
     dialogs/newversiondialog.ui
@@ -194,7 +209,9 @@ set (ui_FORMS
     windows/vatsinatorwindow.ui
 )
 
-vatsinator_subdirectory_forms (ui "${ui_FORMS}")
+if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+  vatsinator_subdirectory_forms (ui "${widgets_FORMS}")
+endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 
 set (ui_QRCS
     resources/imgs.qrc
@@ -204,8 +221,8 @@ set (ui_QRCS
 vatsinator_subdirectory_resources (ui "${ui_QRCS}")
 
 # icon for Windows
-if (WIN32)
-    vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
-endif (WIN32)
+if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets" AND WIN32)
+  vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
+endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets" AND WIN32)
 
 vatsinator_end_subdirectory (ui)

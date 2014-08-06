@@ -201,14 +201,14 @@ FlightItem::menu(QWidget* _parent) const {
   if (!data()->route().origin.isEmpty()) {
     MetarAction* ma = new MetarAction(data()->route().origin, _parent);
     connect(ma,                                         SIGNAL(triggered(QString)),
-            vApp()->userInterface()->metarsWindow(),    SLOT(show(QString)));
+            vApp()->userInterface(),                    SLOT(showMetar(QString)));
     menu->addAction(ma);
   }
   
   if (!data()->route().destination.isEmpty()) {
     MetarAction* ma = new MetarAction(data()->route().destination, _parent);
     connect(ma,                                         SIGNAL(triggered(QString)),
-            vApp()->userInterface()->metarsWindow(),    SLOT(show(QString)));
+            vApp()->userInterface(),                    SLOT(showMetar(QString)));
     menu->addAction(ma);
   }
   

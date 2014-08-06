@@ -36,7 +36,7 @@
 #include "ui/map/uiritem.h"
 #include "ui/map/worldpolygon.h"
 #include "ui/windows/vatsinatorwindow.h"
-#include "ui/userinterface.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/client/pilot.h"
@@ -746,7 +746,7 @@ MapWidget::MousePosition::update(const QPoint& _pos) {
   __geoPosition = MapWidget::getSingleton().mapToLonLat(_pos);
   
   MouseLonLatEvent e(__geoPosition);
-  qApp->notify(vApp()->userInterface()->mainWindow(), &e);
+  qApp->notify(wui()->mainWindow(), &e);
 }
 
 qreal

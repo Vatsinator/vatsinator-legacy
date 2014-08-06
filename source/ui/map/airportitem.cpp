@@ -199,7 +199,7 @@ AirportItem::menu(QWidget* _parent) const {
   
   MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
   connect(showMetar,                                    SIGNAL(triggered(QString)),
-          vApp()->userInterface()->metarsWindow(),      SLOT(show(QString)));
+          vApp()->userInterface(),                      SLOT(showMetar(QString)));
   menu->addAction(showMetar);
   
   if (!data()->isEmpty()) {

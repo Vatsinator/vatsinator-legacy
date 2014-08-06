@@ -17,8 +17,8 @@
 */
 
 #define VATSINATOR_VERSION "${vatsinator_VERSION}"
-
 #define VATSINATOR_PREFIX "${vatsinator_PREFIX}"
+#define VATSINATOR_UI_IMPLEMENTATION ${UI_IMPLEMENTATION}
 
 #cmakedefine CONFIG_NO_VBO
 

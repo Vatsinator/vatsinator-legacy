@@ -33,18 +33,20 @@
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/userinterface.h"
 #include "ui/vatsinatorstyle.h"
+#include "ui/widgetsuserinterface.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "storage/filemanager.h"
+#include "config.h"
 
 #include "vatsinatorapplication.h"
 
 VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
     QApplication(_argc, _argv),
-    __userInterface(new UserInterface()),
+    __userInterface(new VATSINATOR_UI_IMPLEMENTATION()),
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager()),
     __pluginManager(new PluginManager(this)),
@@ -150,9 +152,6 @@ VatsinatorApplication::__initialize() {
   
   /* Create windows */
   __userInterface->initialize();
-
-  /* show main window */
-  userInterface()->mainWindow()->show();
   
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);

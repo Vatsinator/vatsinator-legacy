@@ -22,18 +22,11 @@
 
 #include <QObject>
 
-class AboutWindow;
 class Airport;
-class AtcListWindow;
 class Client;
-class DatabaseWindow;
 class Fir;
-class FlightListWindow;
-class Pilot;
-class MetarsWindow;
+class QEvent;
 class NotificationEvent;
-class SettingsWindow;
-class VatsinatorWindow;
 
 /**
  * The UserInterface is an abstract class that specifies common behaviour
@@ -50,48 +43,13 @@ signals:
 public:
   
   UserInterface(QObject* = nullptr);
-  virtual ~UserInterface();
+  virtual ~UserInterface() = default;
   
   /**
-   * Initializes UI components. Emits the initialized() signal when
-   * all classes are created.
+   * Initializes UI components. Must emit the initialized() signal when
+   * all classes are instantiated.
    */
-  void initialize();
-  
-  /**
-   * @return Instance of the "About Vatsinator" window.
-   */
-  AboutWindow* aboutWindow();
-  
-  /**
-   * @return Instance of the "Atc list" window.
-   */
-  AtcListWindow* atcListWindow();
-  
-  /**
-   * @return Instance of the "VatsinatorDatabase" window.
-   */
-  DatabaseWindow* databaseWindow();
-  
-  /**
-   * @return Instance of the "Flight list" window.
-   */
-  FlightListWindow* flightListWindow();
-  
-  /**
-   * @return Instance of the "METARs" window.
-   */
-  MetarsWindow* metarsWindow();
-  
-  /**
-   * @return Instance of the settings window.
-   */
-  SettingsWindow* settingsWindow();
-  
-  /**
-   * @return Instance of the main Vatsinator window.
-   */
-  VatsinatorWindow* mainWindow();
+  virtual void initialize() = 0;
   
   /**
    * Custom events handling.
@@ -99,7 +57,6 @@ public:
   bool event(QEvent*) override;
   
 public slots:
-  void showAppRestartDialog();
   
   /**
    * Reports critical error to user.
@@ -107,7 +64,7 @@ public slots:
    * device is not supported, etc.
    * @param msg Message to be shown.
    */
-  void fatal(const QString&);
+  virtual void fatal(const QString&) = 0;
   
   /**
    * Reports warning to user.
@@ -116,7 +73,7 @@ public slots:
    * necessarily without errors.
    * @param msg Warning message.
    */
-  void warning(const QString&);
+  virtual void warning(const QString&) = 0;
   
   /**
    * Show Vatsim status fetch error notification.
@@ -125,7 +82,7 @@ public slots:
    * all or user does not have connection to the internet.
    * Call vApp()->vatsimData()->requestDataUpdate() to retry.
    */
-  void statusError();
+  virtual void statusError() = 0;
   
   /**
    * Show Vatsim data fetch error notification.
@@ -135,7 +92,7 @@ public slots:
    * notification and let user decide whether he wants to retry the operation
    * or keep the current data.
    */
-  void dataError();
+  virtual void dataError() = 0;
   
   /**
    * Implements the Vatsim msg0 directive.
@@ -144,42 +101,35 @@ public slots:
    * unchecked.
    * @param msg Vatsim message that follows the msg0 directive.
    */
-  void showVatsimMessage(const QString&);
+  virtual void showVatsimMessage(const QString&) = 0;
   
   /**
    * Show airport details.
    * @param airport The Airport instance pointer.
    */
-  void showDetails(const Airport*);
+  virtual void showDetails(const Airport*) = 0;
   
   /**
    * Show client details.
    * @param client The Client instance pointer.
    */
-  void showDetails(const Client*);
+  virtual void showDetails(const Client*) = 0;
   
   /**
    * Show FIR details.
    * @param fir The FIR instance pointer.
    */
-  void showDetails(const Fir*);
+  virtual void showDetails(const Fir*) = 0;
+  
+  /**
+   * Show airport METAR.
+   * @param metar The ICAO code of the airport.
+   */
+  virtual void showMetar(const QString&) = 0;
   
 protected:
   virtual bool notificationEvent(NotificationEvent*);
   
-private slots:
-  void __showNewVersionDialog();
-  
-private:
-
-  AboutWindow*          __aboutWindow;
-  MetarsWindow*         __metarsWindow;
-  DatabaseWindow*       __databaseWindow;
-  AtcListWindow*        __atcListWindow;
-  FlightListWindow*     __flightsListWindow;
-  SettingsWindow*       __settingsWindow;
-  VatsinatorWindow*     __vatsinatorWindow;
-
 };
 
 #endif // USERINTERFACE_H
