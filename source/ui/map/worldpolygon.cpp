@@ -60,28 +60,29 @@ WorldPolygon::__initializeBuffers() {
   const QVector<unsigned int>& trianglesData = WorldMap::getSingleton().triangles();
   Q_ASSERT(!trianglesData.isEmpty());
   
+  __vao.create();
+  Q_ASSERT(__vao.isCreated());
+  __vao.bind();
+  
   __borders.create();
   Q_ASSERT(__borders.isCreated());
   __borders.setUsagePattern(QOpenGLBuffer::StaticDraw);
   __borders.bind();
   __borders.allocate(bordersData.constData(), sizeof(Point) * bordersData.size());
-  __borders.release();
   
   __triangles.create();
   Q_ASSERT(__triangles.isCreated());
   __triangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
   __triangles.bind();
   __triangles.allocate(trianglesData.constData(), sizeof(unsigned int) * trianglesData.size());
-  __triangles.release();
   
-  __vao.create();
-  Q_ASSERT(__vao.isCreated());
-  __vao.bind();
   __borders.bind();
   __triangles.bind();
   glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(MapWidget::vertexLocation());
   __vao.release();
+  __borders.release();
+  __triangles.release();
 #endif
   
   __vertices = WorldMap::getSingleton().triangles().size();

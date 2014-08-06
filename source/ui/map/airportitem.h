@@ -28,7 +28,6 @@
 
 class Airport;
 class ApproachCircleItem;
-class Texture;
 
 class AirportItem : public QObject, public MapItem {
   Q_OBJECT
@@ -53,9 +52,9 @@ public:
   inline const ApproachCircleItem* approachCircle() const { return __approachCircle; }
   
 private:
-  void __makeIcon() const;
+  void __takeIcon() const;
   void __prepareLines() const;
-  void __generateLabel() const;
+  void __initializeLabel() const;
 
 private slots:
   void __reloadSettings();
@@ -66,8 +65,8 @@ private:
   LonLat                __position;
   ApproachCircleItem*   __approachCircle;
   
-  mutable const Texture* __icon;
-  mutable Texture*       __label;
+  mutable QOpenGLTexture* __icon;
+  mutable QOpenGLTexture  __label;
   
   mutable struct {
     QVector<GLfloat>    coords;
@@ -84,18 +83,18 @@ private:
     IconKeeper();
     ~IconKeeper();
     
-    const Texture* emptyAirportIcon() const;
-    const Texture* activeAirportIcon() const;
-    const Texture* activeStaffedAirportIcon() const;
+    QOpenGLTexture* emptyAirportIcon();
+    QOpenGLTexture* activeAirportIcon();
+    QOpenGLTexture* activeStaffedAirportIcon();
     
   private:
-    mutable Texture* __emptyAirportIcon;
-    mutable Texture* __activeAirportIcon;
-    mutable Texture* __activeStaffedAirportIcon;
+    mutable QOpenGLTexture* __emptyAirportIcon;
+    mutable QOpenGLTexture* __activeAirportIcon;
+    mutable QOpenGLTexture* __activeStaffedAirportIcon;
     
   };
   
-  static IconKeeper             __icons;
+  static IconKeeper __icons;
   
 };
 

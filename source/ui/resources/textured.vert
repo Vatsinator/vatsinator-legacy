@@ -4,7 +4,7 @@ attribute mediump vec2 texcoord;
 uniform highp vec2 position;
 uniform highp mat4 matrix;
 
-varying lowp vec2 v_texcoord;
+varying mediump vec2 v_texcoord;
 
 void main()
 {
