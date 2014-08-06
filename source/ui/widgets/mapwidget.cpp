@@ -555,6 +555,9 @@ MapWidget::__drawPilots() {
         }
       }
     }
+    
+    __texturedShader->setUniformValue(__texturedRotationLocation, 0.0f);
+    __texturedShader->release();
   }
 }
 
