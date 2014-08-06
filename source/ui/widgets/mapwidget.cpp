@@ -30,6 +30,7 @@
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
+#include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/uiritem.h"
@@ -54,6 +55,7 @@ MapWidget::MapWidget(QWidget* _parent) :
     __xOffset(0.0),
     __actualZoom(0),
     __world(nullptr),
+    __iconKeeper(nullptr),
     __scene(nullptr) {
   
   connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
@@ -74,6 +76,7 @@ MapWidget::~MapWidget() {
   __storeSettings();
   
   delete __scene;
+  delete __iconKeeper;
   delete __world;
 }
 
@@ -152,6 +155,7 @@ MapWidget::initializeGL() {
   emit glReady();
   
   __world = new WorldPolygon();
+  __iconKeeper = new IconKeeper();
   __scene = new MapScene(this);
   
   __identityShader = new QOpenGLShaderProgram(this);
@@ -186,6 +190,7 @@ MapWidget::initializeGL() {
   __texturedShader->bind();
   __texturedMatrixLocation = __texturedShader->uniformLocation("matrix");
   __texturedPositionLocation = __texturedShader->uniformLocation("position");
+  __texturedRotationLocation = __texturedShader->uniformLocation("rotation");
   __texturedShader->setUniformValue("texture", 0);
   __texturedShader->release();
   
@@ -230,13 +235,13 @@ MapWidget::paintGL() {
     __drawUirs();
     __drawFirs();
     __drawAirports();
-//     __drawPilots();
+    __drawPilots();
   }
   
-//   for (GLfloat o: __offsets) {
-//     __xOffset = o;
-//     __drawLines();
-//   }
+  for (GLfloat o: __offsets) {
+    __xOffset = o;
+    __drawLines();
+  }
   
   __xOffset = 0.0f;
   
@@ -501,7 +506,7 @@ MapWidget::__drawAirports() {
           
           if (__settings.view.airport_labels)
             item->drawLabel(__texturedShader);
-          
+          /* TODO */
 //           if (item->approachCircle()) {
 //             glPushMatrix();
 //               glScalef(__state.zoom(), __state.zoom(), 0);
@@ -525,19 +530,28 @@ MapWidget::__drawPilots() {
   static constexpr GLfloat pilotsZ = static_cast<GLfloat>(MapConfig::MapLayers::Pilots);
   
   if (__settings.view.pilots_layer) {
+    QMatrix4x4 mvp = __projection;
+    mvp.translate(0.0f, 0.0f, pilotsZ);
+    
+    __texturedShader->bind();
+    __texturedShader->setUniformValue(__texturedMatrixLocation, mvp);
+    __texturedShader->enableAttributeArray(texcoordLocation());
+    __texturedShader->enableAttributeArray(vertexLocation());
+    
     for (const FlightItem* item: __scene->flightItems()) {
       if (item->needsDrawing()) {
         QPointF p = glFromLonLat(item->position());
         if (onScreen(p)) {
-          glPushMatrix();
-            glTranslated(p.x(), p.y(), pilotsZ);
-            item->drawModel();
-            
-            __checkItem(item);
-            if (__shouldDrawPilotLabel(item))
-              item->drawLabel();
-            
-          glPopMatrix();
+          __texturedShader->setUniformValue(__texturedPositionLocation, p.x(), p.y());
+          __texturedShader->setUniformValue(__texturedRotationLocation, -qDegreesToRadians(static_cast<float>(item->data()->heading())));
+          item->drawModel(__texturedShader);
+          
+          __checkItem(item);
+          
+          if (__shouldDrawPilotLabel(item)) {
+            __texturedShader->setUniformValue(__texturedRotationLocation, 0.0f);
+            item->drawLabel(__texturedShader);
+          }
         }
       }
     }
@@ -549,19 +563,21 @@ MapWidget::__drawLines() {
   static constexpr GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
   
   if (__underMouse) {
-    glPushMatrix();
-      glScalef(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax(), 1.0f);
-      glScalef(__state.zoom(), __state.zoom(), 1.0f);
-      glTranslated(-__state.center().x(), __state.center().y(), 0.0);
-      glTranslatef(__xOffset, 0.0, linesZ);
-      
-      if (const FlightItem* pilot = dynamic_cast<const FlightItem*>(__underMouse)) {
-        pilot->drawLines(FlightItem::OriginToPilot | FlightItem::PilotToDestination);
-      } else if (const AirportItem* ap = dynamic_cast<const AirportItem*>(__underMouse)) {
-        ap->drawLines();
-      }
-      
-    glPopMatrix();
+    QMatrix4x4 mvp = __projection * __worldTransform;
+    mvp.translate(QVector3D(0.0f, 0.0f, linesZ));
+    
+    __identityShader->bind();
+    __texturedShader->enableAttributeArray(vertexLocation());
+    __identityShader->setUniformValue(__identityOffsetLocation, __xOffset);
+    __identityShader->setUniformValue(__identityMatrixLocation, mvp);
+    
+    if (const FlightItem* pilot = dynamic_cast<const FlightItem*>(__underMouse)) {
+      pilot->drawLines(FlightItem::OriginToPilot | FlightItem::PilotToDestination, __identityShader);
+    } else if (const AirportItem* ap = dynamic_cast<const AirportItem*>(__underMouse)) {
+      ap->drawLines();
+    }
+    
+    __identityShader->release();
   }
 }
 

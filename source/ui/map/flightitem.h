@@ -44,9 +44,9 @@ public:
   
   virtual ~FlightItem();
   
-  void drawModel() const;
-  void drawLabel() const;
-  void drawLines(LineTypes) const;
+  void drawModel(QOpenGLShaderProgram*) const;
+  void drawLabel(QOpenGLShaderProgram*) const;
+  void drawLines(LineTypes, QOpenGLShaderProgram*) const;
   
   bool needsDrawing() const override;
   const LonLat& position() const override;
@@ -57,7 +57,7 @@ public:
   inline const Pilot* data() const { return __pilot; }
   
 private:
-  void __generateLabel() const;
+  void __initializeLabel() const;
   void __prepareLines() const;
   void __matchModel() const;
   
@@ -70,7 +70,7 @@ private:
   LonLat        __position;
   
   mutable const Texture* __model;
-  mutable Texture*       __label;
+  mutable QOpenGLTexture __label;
   
   mutable struct {
     QVector<GLfloat>    coords;

@@ -66,6 +66,7 @@ set (ui_SRCS
     map/approachcircleitem.cpp
     map/firitem.cpp
     map/flightitem.cpp
+    map/iconkeeper.cpp
     map/mapconfig.cpp
     map/mapitem.cpp
     map/mapscene.cpp
@@ -136,6 +137,7 @@ set (ui_MOC_SRCS
     map/approachcircleitem.h
     map/firitem.h
     map/flightitem.h
+    map/iconkeeper.h
     map/mapscene.h
     map/moveanimation.h
     map/uiritem.h

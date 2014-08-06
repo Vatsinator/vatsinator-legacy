@@ -32,6 +32,7 @@ class QOpenGLShaderProgram;
 class Airport;
 class Client;
 class Fir;
+class IconKeeper;
 class MapEvent;
 class MapItem;
 class MapScene;
@@ -102,6 +103,12 @@ public:
    */
   bool event(QEvent*) override;
   
+  inline IconKeeper* icons() { return __iconKeeper; }
+  inline MapScene* scene() { return __scene; }
+  inline const MapState& state() const { return __state; }
+  
+  inline int identityColorLocation() const { return __identityColorLocation; }
+  
   /**
    * Vertex attribute location ("vertex").
    */
@@ -111,8 +118,6 @@ public:
    * Texture coordinate location ("texcoord").
    */
   inline static constexpr int texcoordLocation() { return 1; }
-  inline MapScene* scene() { return __scene; }
-  inline const MapState& state() const { return __state; }
   
 public slots:
   
@@ -189,6 +194,7 @@ private:
   int __identityOffsetLocation;
   int __texturedMatrixLocation;
   int __texturedPositionLocation;
+  int __texturedRotationLocation;
   
   /* Projection matrix */
   QMatrix4x4 __projection;
@@ -275,6 +281,9 @@ private:
   
   /* World map drawer */
   WorldPolygon* __world;
+  
+  /* The IconKeeper instance */
+  IconKeeper* __iconKeeper;
   
   /* Scene handler */
   MapScene* __scene;
