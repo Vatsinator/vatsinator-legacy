@@ -43,9 +43,7 @@ class UserInterface;
 class VatsimDataHandler;
 class WorldMap;
 
-class VatsinatorApplication :
-    public QApplication,
-    public Singleton<VatsinatorApplication> {
+class VatsinatorApplication : public QApplication {
 
   Q_OBJECT
   
@@ -65,10 +63,10 @@ public:
   
   UserInterface* userInterface();
   
-  inline SettingsManager* settingsManager() { return __settingsManager; }
-  inline const PluginManager* plugins() const { return __pluginManager; }
-  inline VatsimDataHandler* vatsimDataHandler() { return __vatsimData; }
-  inline const VatsimDataHandler* vatsimDataHandler() const { return __vatsimData; }
+  inline SettingsManager* settingsManager() { Q_ASSERT(__settingsManager); return __settingsManager; }
+  inline const PluginManager* plugins() const { Q_ASSERT(__pluginManager); return __pluginManager; }
+  inline VatsimDataHandler* vatsimDataHandler() { Q_ASSERT(__vatsimData); return __vatsimData; }
+  inline const VatsimDataHandler* vatsimDataHandler() const { Q_ASSERT(__vatsimData); return __vatsimData; }
   
 #ifdef GCC_VERSION_48
   [[noreturn]]

@@ -61,9 +61,9 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
   connect(OKCancelButtonBox,                    SIGNAL(clicked(QAbstractButton*)),
           this,                                 SLOT(__handleButton(QAbstractButton*)));
   connect(this,                                 SIGNAL(settingsApplied()),
-          SettingsManager::getSingletonPtr(),   SLOT(saveSettings()));
+          vApp()->settingsManager(),            SLOT(saveSettings()));
   connect(this,                                 SIGNAL(restoreDefaults()),
-          SettingsManager::getSingletonPtr(),   SLOT(restoreDefaults()));
+          vApp()->settingsManager(),            SLOT(restoreDefaults()));
 }
 
 void

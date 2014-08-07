@@ -19,6 +19,8 @@
 
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsimdata/uir.h"
 
@@ -28,7 +30,7 @@ UirItem::UirItem(const Uir* _uir, QObject* _parent) :
     QObject(_parent),
     __uir(_uir) {
   for (const Fir* f: data()->range()) {
-    FirItem* fi = MapWidget::getSingleton().scene()->findItemForFir(f);
+    FirItem* fi = wui()->mainWindow()->mapWidget()->scene()->findItemForFir(f);
     if (fi)
       __firItems << fi;
   }

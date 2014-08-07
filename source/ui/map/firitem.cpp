@@ -44,7 +44,7 @@ FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     __label(QOpenGLTexture::Target2D) {
   __initializeBuffers();
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__resetLabel()));
   connect(__fir,                                SIGNAL(updated()),
           this,                                 SLOT(__invalidate()));

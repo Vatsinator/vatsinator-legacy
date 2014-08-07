@@ -22,6 +22,7 @@
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
+#include "vatsinatorapplication.h"
 
 #include "approachcircleitem.h"
 
@@ -47,8 +48,8 @@ ApproachCircleItem::ApproachCircleItem(const Airport* _ap, QObject* _parent) :
     QObject(_parent),
     __position(_ap->data()->longitude, _ap->data()->latitude) {
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__reloadSettings()));
+  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
+          this,                         SLOT(__reloadSettings()));
 }
 
 void

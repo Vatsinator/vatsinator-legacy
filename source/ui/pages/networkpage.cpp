@@ -89,7 +89,7 @@ NetworkPage::restore(QSettings& _s) {
     _s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
   
   QList<WeatherForecastInterface*> weatherPlugins =
-    VatsinatorApplication::getSingleton().plugins()->plugins<WeatherForecastInterface>();
+    vApp()->plugins()->plugins<WeatherForecastInterface>();
   QString weatherCurrent =
     _s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
   int i = 1;

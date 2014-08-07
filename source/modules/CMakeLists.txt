@@ -1,8 +1,6 @@
 vatsinator_start_subdirectory (modules)
 
 set (modules_SRCS
-    airporttracker.cpp
-    homelocation.cpp
     modelmatcher.cpp
     modulemanager.cpp
     vatbookhandler.cpp
@@ -15,8 +13,6 @@ set (modules_SRCS
 vatsinator_subdirectory_sources (modules "${modules_SRCS}")
 
 set (modules_MOC_SRCS
-    airporttracker.h
-    homelocation.h
     modelmatcher.h
     modulemanager.h
     vatbookhandler.h

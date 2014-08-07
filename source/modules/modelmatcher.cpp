@@ -21,7 +21,8 @@
 #include "glutils/glresourcemanager.h"
 #include "ui/widgets/mapwidget.h"
 #include "glutils/texture.h"
-#include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
@@ -31,7 +32,7 @@
 ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
   __readModels();
 //   __loadPixmaps();
-  connect(MapWidget::getSingletonPtr(),         SIGNAL(glReady()),
+  connect(wui()->mainWindow()->mapWidget(),     SIGNAL(glReady()),
           this,                                 SLOT(__loadPixmaps()));
 }
 

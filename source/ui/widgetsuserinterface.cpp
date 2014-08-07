@@ -20,7 +20,6 @@
 #include <QtWidgets>
 
 #include "network/resourcemanager.h"
-#include "modules/homelocation.h"
 #include "storage/settingsmanager.h"
 #include "ui/dialogs/apprestartdialog.h"
 #include "ui/dialogs/datafetcherrordialog.h"
@@ -139,7 +138,7 @@ WidgetsUserInterface::fatal(const QString& _msg) {
   msgBox.setText(_msg);
   msgBox.setIcon(QMessageBox::Critical);
   
-  qFatal(qPrintable(_msg));
+  qFatal("%s", qPrintable(_msg));
   
   msgBox.exec();
 }
@@ -150,7 +149,7 @@ WidgetsUserInterface::warning(const QString& _msg) {
   msgBox.setText(_msg);
   msgBox.setIcon(QMessageBox::Warning);
   
-  qWarning(qPrintable(_msg));
+  qWarning("%s", qPrintable(_msg));
   
   msgBox.exec();
 }

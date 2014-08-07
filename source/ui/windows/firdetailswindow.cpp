@@ -38,6 +38,7 @@
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/notamlistmodel.h"
+#include "vatsinatorapplication.h"
 
 #include "firdetailswindow.h"
 
@@ -48,7 +49,7 @@ FirDetailsWindow::FirDetailsWindow(const Fir* _fir, QWidget* _parent) :
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  connect(VatsimDataHandler::getSingletonPtr()->notamProvider(),
+  connect(vApp()->vatsimDataHandler()->notamProvider(),
                                                 SIGNAL(notamReady(NotamListModel*)),
           this,                                 SLOT(__notamUpdate(NotamListModel*)));
   connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
@@ -64,8 +65,8 @@ FirDetailsWindow::show() {
   QWidget::show();
   
   NotamTableView->setModel(nullptr);
-  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(__fir->icao());
-  NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
+  vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__fir->icao());
+  NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
 }
 
 void

@@ -36,7 +36,7 @@ class AbstractSettingsPage;
  * SM::get("network.refresh_rate").toInt();
  * SM is typedef for SettingsManager.
  */
-class SettingsManager : public QObject, public Singleton<SettingsManager> {
+class SettingsManager : public QObject {
   Q_OBJECT
   
   friend class AbstractSettingsPage;

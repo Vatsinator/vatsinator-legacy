@@ -36,6 +36,7 @@
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/flighttablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "mapscene.h"
 
@@ -47,10 +48,10 @@ MapScene::MapScene(QObject* parent) :
   __widget = qobject_cast<MapWidget*>(parent);
   Q_ASSERT(__widget);
   
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__updateItems()));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(initialized()),
-          this,                                 SLOT(__setupItems()));
+  connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
+          this,                         SLOT(__updateItems()));
+  connect(vApp()->vatsimDataHandler(),  SIGNAL(initialized()),
+          this,                         SLOT(__setupItems()));
 }
 
 MapScene::~MapScene() {}
@@ -122,21 +123,21 @@ MapScene::__addFlightItem(const Pilot* _p) {
 
 void
 MapScene::__setupItems() {
-  for (const Airport* a: VatsimDataHandler::getSingleton().airports()) {
+  for (const Airport* a: vApp()->vatsimDataHandler()->airports()) {
     __airportItems << new AirportItem(a, this);
   }
   
-  for (const Fir* f: VatsimDataHandler::getSingleton().firs()) {
+  for (const Fir* f: vApp()->vatsimDataHandler()->firs()) {
     if (f->data()->header.textPosition.x != 0.0 && f->data()->header.textPosition.y != 0.0) {
       __firItems << new FirItem(f, this);
     }
   }
   
-  for (const Uir* u: VatsimDataHandler::getSingleton().uirs()) {
+  for (const Uir* u: vApp()->vatsimDataHandler()->uirs()) {
     __uirItems << new UirItem(u, this);
   }
   
-  for (auto c: VatsimDataHandler::getSingleton().clients())
+  for (auto c: vApp()->vatsimDataHandler()->clients())
     if (Pilot* p = dynamic_cast<Pilot*>(c)) {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
@@ -145,7 +146,7 @@ MapScene::__setupItems() {
 
 void
 MapScene::__updateItems() {
-  for (Client* c: VatsimDataHandler::getSingleton().newClients())
+  for (Client* c: vApp()->vatsimDataHandler()->newClients())
     if (Pilot* p = dynamic_cast<Pilot*>(c)) {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);

@@ -52,10 +52,7 @@ struct AirportRecord;
  * but it also downloads data automatically when needed, parses local files
  * and provides some math functions.
  */
-class VatsimDataHandler :
-    public QObject,
-    public Notifiable,
-    public Singleton<VatsimDataHandler> {
+class VatsimDataHandler : public QObject, public Notifiable {
   Q_OBJECT
   
 signals:

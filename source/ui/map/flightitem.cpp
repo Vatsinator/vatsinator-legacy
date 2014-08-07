@@ -29,7 +29,8 @@
 #include "ui/map/mapconfig.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/metarswindow.h"
-#include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -44,7 +45,7 @@ FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
     __model(nullptr),
     __label(QOpenGLTexture::Target2D),
     __linesReady(false) {
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings())); 
   connect(_pilot,                               SIGNAL(updated()),
           this,                                 SLOT(__invalidate()));
@@ -126,7 +127,7 @@ FlightItem::drawLines(LineTypes types, QOpenGLShaderProgram* _shader) const {
     if (!__otpLine.color.isValid())
       __otpLine.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
     
-    _shader->setUniformValue(MapWidget::getSingleton().identityColorLocation(), __otpLine.color);
+    _shader->setUniformValue(wui()->mainWindow()->mapWidget()->identityColorLocation(), __otpLine.color);
     _shader->setAttributeArray(MapWidget::vertexLocation(), __otpLine.coords.constData(), 2);
     glDrawArrays(GL_LINE_STRIP, 0, __otpLine.coords.size() / 2);
   }
@@ -135,7 +136,7 @@ FlightItem::drawLines(LineTypes types, QOpenGLShaderProgram* _shader) const {
     if (!__ptdLine.color.isValid())
       __ptdLine.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
     
-    _shader->setUniformValue(MapWidget::getSingleton().identityColorLocation(), __ptdLine.color);
+    _shader->setUniformValue(wui()->mainWindow()->mapWidget()->identityColorLocation(), __ptdLine.color);
     _shader->setAttributeArray(MapWidget::vertexLocation(), __ptdLine.coords.constData(), 2);
     glLineStipple(3, 0xF0F0); // dashed line
     glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);

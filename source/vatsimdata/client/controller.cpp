@@ -117,12 +117,12 @@ Controller::__setMyIcaoAndFacility() {
 
     __icao = sections.front();
     
-    Fir* fir = VatsimDataHandler::getSingleton().findFir(__icao);
+    Fir* fir = vApp()->vatsimDataHandler()->findFir(__icao);
     if (fir) {
       fir->addStaff(this);
       __makeDescription(fir);
     } else {
-      Uir* uir = VatsimDataHandler::getSingleton().findUir(__icao);
+      Uir* uir = vApp()->vatsimDataHandler()->findUir(__icao);
 
       if (uir) {
         uir->addStaff(this);
@@ -140,16 +140,16 @@ Controller::__setMyIcaoAndFacility() {
 
     QString& icao = sections.front();
 
-    Fir* fir = VatsimDataHandler::getSingleton().findFir(icao, true);
+    Fir* fir = vApp()->vatsimDataHandler()->findFir(icao, true);
     if (!fir) {
-      fir = VatsimDataHandler::getSingleton().findFir(icao, false);
+      fir = vApp()->vatsimDataHandler()->findFir(icao, false);
     }
 
     if (fir) {
       fir->addStaff(this);
       __makeDescription(fir);
     } else {
-      Uir* uir = VatsimDataHandler::getSingleton().findUir(icao);
+      Uir* uir = vApp()->vatsimDataHandler()->findUir(icao);
       if (uir) {
         uir->addStaff(this);
         __makeDescription(uir);
@@ -181,7 +181,7 @@ Controller::__setMyIcaoAndFacility() {
     else if (sections.back() == "ATIS")
       __facility = Atis;
 
-    Airport* ap = VatsimDataHandler::getSingleton().findAirport(sections.front());
+    Airport* ap = vApp()->vatsimDataHandler()->findAirport(sections.front());
     if (ap) {
       ap->addStaff(this);
       __airport = ap;
@@ -197,7 +197,7 @@ Controller::__setMyIcaoAndFacility() {
 void
 Controller::__makeDescription(const Fir* _f) {
   Q_ASSERT(_f);
-  QString aName = VatsimDataHandler::getSingleton().alternameName(_f->icao());
+  QString aName = vApp()->vatsimDataHandler()->alternameName(_f->icao());
   if (aName.isEmpty())
     __description = _f->name();
   else
@@ -207,7 +207,7 @@ Controller::__makeDescription(const Fir* _f) {
 void
 Controller::__makeDescription(const Uir* _u) {
   Q_ASSERT(_u);
-  QString aName = VatsimDataHandler::getSingleton().alternameName(_u->icao());
+  QString aName = vApp()->vatsimDataHandler()->alternameName(_u->icao());
   if (aName.isEmpty())
     __description = _u->name();
   else

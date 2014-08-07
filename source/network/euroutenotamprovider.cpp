@@ -41,9 +41,9 @@ namespace {
   }
 }
 
-EurouteNotamProvider::EurouteNotamProvider() {
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__checkXmlUpToDate()));
+EurouteNotamProvider::EurouteNotamProvider(QObject* _parent) : AbstractNotamProvider(_parent) {
+  connect(qobject_cast<VatsimDataHandler*>(parent()),   SIGNAL(vatsimDataUpdated()),
+          this,                                         SLOT(__checkXmlUpToDate()));
 }
 
 EurouteNotamProvider::~EurouteNotamProvider() {

@@ -48,7 +48,7 @@ FlightListWindow::showEvent(QShowEvent* _event) {
   if (auto m = FlightsTable->model())
     m->deleteLater();
   
-  FlightsTable->setModel(VatsimDataHandler::getSingleton().flightTableModel());
+  FlightsTable->setModel(vApp()->vatsimDataHandler()->flightTableModel());
   FlightsTable->hideColumn(FlightTableModel::Button);
   __resizeColumns();
   

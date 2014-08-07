@@ -39,7 +39,7 @@ class MapScene;
 class Pilot;
 class WorldPolygon;
 
-class MapWidget : public QGLWidget, public Singleton<MapWidget> {
+class MapWidget : public QGLWidget {
   
   Q_OBJECT
   

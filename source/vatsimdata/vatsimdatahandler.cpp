@@ -70,7 +70,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __statusFileFetched(false),
     __initialized(false),
     __downloader(new PlainTextDownloader()),
-    __scheduler(new UpdateScheduler()),
+    __scheduler(new UpdateScheduler(this)),
     __notamProvider(nullptr),
     __weatherForecast(nullptr) {
   
@@ -88,12 +88,12 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
           vApp()->userInterface(),              SLOT(statusError()));
   connect(this,                                 SIGNAL(vatsimDataError()),
           vApp()->userInterface(),              SLOT(dataError()));
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadWeatherForecast()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   
-  __notamProvider = new EurouteNotamProvider();
+  __notamProvider = new EurouteNotamProvider(this);
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
@@ -101,11 +101,7 @@ VatsimDataHandler::~VatsimDataHandler() {
   qDeleteAll(__airports);
   qDeleteAll(__firs);
   
-  if (__notamProvider)
-    delete __notamProvider;
-  
   delete __downloader;
-  delete __scheduler;
   
   delete VatsimDataHandler::emptyFlightTable;
   delete VatsimDataHandler::emptyControllerTable;
@@ -780,7 +776,7 @@ VatsimDataHandler::__reloadWeatherForecast() {
   if (desired != "None") {
     if (!__weatherForecast || desired != __weatherForecast->providerName()) {
       QList<WeatherForecastInterface*> weatherPlugins =
-          VatsinatorApplication::getSingleton().plugins()->plugins<WeatherForecastInterface>();
+          vApp()->plugins()->plugins<WeatherForecastInterface>();
       for (WeatherForecastInterface* w: weatherPlugins) {
         if (w->providerName() == desired) {
           __weatherForecast = w;

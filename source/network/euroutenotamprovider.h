@@ -36,7 +36,7 @@ class EurouteNotamProvider : public AbstractNotamProvider {
   Q_OBJECT
 
 public:
-  EurouteNotamProvider();
+  explicit EurouteNotamProvider(QObject* = nullptr);
   virtual ~EurouteNotamProvider();
   
   void fetchNotam(const QString&) override;

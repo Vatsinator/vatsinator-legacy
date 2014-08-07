@@ -132,8 +132,8 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
       __userDecision = Declined;
     }
     
-    connect(SettingsManager::getSingletonPtr(), SIGNAL(settingsChanged()),
-          this,                                 SLOT(__applySettings()));
+    connect(vApp()->settingsManager(),  SIGNAL(settingsChanged()),
+            this,                       SLOT(__applySettings()));
   }
   
   connect(this, SIGNAL(newRequest()), SLOT(__nextIfFree()));
@@ -155,7 +155,7 @@ StatsPurveyor::reportNoAtc(const QString& _atc) {
   static const QString NoAtcPath = "noatc.php?atc=%1";
   
   /* Discard no-atc reports before data is read */
-  if (!VatsimDataHandler::getSingleton().isInitialized())
+  if (!vApp()->vatsimDataHandler()->isInitialized())
     return;
   
   QString url = QString(NetConfig::Vatsinator::statsUrl()) % NoAtcPath;
@@ -237,8 +237,8 @@ StatsPurveyor::__statsAccepted() {
   
   SM::updateUi("misc");
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__applySettings()));
+  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
+          this,                         SLOT(__applySettings()));
   
   if (!__requests.isEmpty())
       __nextRequest();
@@ -253,8 +253,8 @@ StatsPurveyor::__statsRejected() {
   
   SM::updateUi("misc");
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__applySettings()));
+  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
+          this,                         SLOT(__applySettings()));
 }
 
 void

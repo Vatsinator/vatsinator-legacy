@@ -58,9 +58,9 @@ MapWidget::MapWidget(QWidget* _parent) :
     __iconKeeper(nullptr),
     __scene(nullptr) {
   
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
+  connect(vApp()->vatsimDataHandler(),          SIGNAL(vatsimDataUpdated()),
           this,                                 SLOT(redraw()));
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings()));
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
@@ -743,7 +743,7 @@ MapWidget::MousePosition::MousePosition() : __down(false) {}
 void
 MapWidget::MousePosition::update(const QPoint& _pos) {
   __screenPosition = _pos;
-  __geoPosition = MapWidget::getSingleton().mapToLonLat(_pos);
+  __geoPosition = wui()->mainWindow()->mapWidget()->mapToLonLat(_pos);
   
   MouseLonLatEvent e(__geoPosition);
   qApp->notify(wui()->mainWindow(), &e);

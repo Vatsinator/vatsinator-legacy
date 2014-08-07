@@ -24,8 +24,6 @@
 
 #include <QObject>
 
-class AirportTracker;
-class HomeLocation;
 class ModelMatcher;
 class VatbookHandler;
 
@@ -44,11 +42,8 @@ public:
   
 public slots:
   void init();
-  void updateData();
 
 private:
-  AirportTracker* __airportTracker;
-  HomeLocation*   __homeLocation;
   ModelMatcher*   __modelsMatcher;
   VatbookHandler* __vatbookHandler;
 };

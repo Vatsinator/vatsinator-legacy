@@ -28,7 +28,8 @@
 #include "ui/map/mapconfig.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/metarswindow.h"
-#include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -46,7 +47,7 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     __label(QOpenGLTexture::Target2D),
     __linesReady(false) {
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings()));
   connect(__airport,                            SIGNAL(updated()),
           this,                                 SLOT(__invalidate()));
@@ -255,12 +256,12 @@ AirportItem::showDetailsWindow() const {
 void
 AirportItem::__takeIcon() const {
   if (data()->isEmpty()) {
-    __icon = MapWidget::getSingleton().icons()->emptyAirportIcon();
+    __icon = wui()->mainWindow()->mapWidget()->icons()->emptyAirportIcon();
   } else {
     if (data()->staff()->staff().isEmpty()) {
-      __icon = MapWidget::getSingleton().icons()->activeAirportIcon();
+      __icon = wui()->mainWindow()->mapWidget()->icons()->activeAirportIcon();
     } else {
-      __icon = MapWidget::getSingleton().icons()->activeStaffedAirportIcon();
+      __icon = wui()->mainWindow()->mapWidget()->icons()->activeStaffedAirportIcon();
     }
   }
 }
