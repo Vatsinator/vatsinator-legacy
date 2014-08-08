@@ -25,7 +25,7 @@
 #include "ui/windows/basewindow.h"
 #include "ui/ui_settingswindow.h"
 
-class AbstractSettingsPage;
+class AbstractSettingsModule;
 class QWidget;
 
 class SettingsWindow : public BaseWindow, private Ui::SettingsWindow {

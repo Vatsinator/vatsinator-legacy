@@ -50,12 +50,12 @@ MiscellaneousPage::listIcon() const {
 }
 
 QString
-MiscellaneousPage::pageName() const {
+MiscellaneousPage::moduleId() const {
   return "misc";
 }
 
 void
-MiscellaneousPage::updateFromUi() const {
+MiscellaneousPage::update() const {
   setValue("send_statistics",
            StatsCheckBox->isChecked());
   /* TODO fix LanguageManager instance below */

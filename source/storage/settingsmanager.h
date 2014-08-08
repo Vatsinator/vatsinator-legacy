@@ -25,7 +25,7 @@
 
 #include "singleton.h"
 
-class AbstractSettingsPage;
+class AbstractSettingsModule;
 
 /**
  * This class gives us access to global user configuration.
@@ -39,7 +39,7 @@ class AbstractSettingsPage;
 class SettingsManager : public QObject {
   Q_OBJECT
   
-  friend class AbstractSettingsPage;
+  friend class AbstractSettingsModule;
 
 signals:
   void settingsChanged();
@@ -50,7 +50,7 @@ public:
   /**
    * Adds settings page.
    */
-  void addPage(AbstractSettingsPage*);
+  void addPage(AbstractSettingsModule*);
   
   /**
    * We need this to be accessible before all pages are created.
@@ -100,12 +100,20 @@ private:
    */
   void __restoreSettings();
   
-  AbstractSettingsPage* __getPage(const QString&) const;
+  /**
+   * Gets page by module id.
+   */
+  AbstractSettingsModule* __getPage(const QString&) const;
   
-private:
-  QList<AbstractSettingsPage*> __pages;
+  /**
+   * Fills the default settings map.
+   */
+  void __fillDefaults();
   
+  
+  QList<AbstractSettingsModule*> __pages;
   QVariantHash __settings;
+  QVariantHash __defaults;
 
 };
 

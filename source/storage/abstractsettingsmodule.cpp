@@ -20,26 +20,26 @@
 
 #include "storage/settingsmanager.h"
 
-#include "abstractsettingspage.h"
+#include "abstractsettingsmodule.h"
 
-AbstractSettingsPage::AbstractSettingsPage() {}
+AbstractSettingsModule::AbstractSettingsModule() {}
 
 void
-AbstractSettingsPage::restoreSettings(QSettings& _s) {
-  _s.beginGroup(pageName());
+AbstractSettingsModule::restoreSettings(QSettings& _s) {
+  _s.beginGroup(moduleId());
   restore(_s);
   _s.endGroup();
 }
 
 void
-AbstractSettingsPage::saveSettings(QSettings& _s) {
-  _s.beginGroup(pageName());
+AbstractSettingsModule::saveSettings(QSettings& _s) {
+  _s.beginGroup(moduleId());
   save(_s);
   _s.endGroup();
 }
 
 void
-AbstractSettingsPage::setValue(const QString& _key, QVariant&& _value) const {
-  SettingsManager::updateValue(pageName() % "." % _key,
+AbstractSettingsModule::setValue(const QString& _key, QVariant&& _value) const {
+  SettingsManager::updateValue(moduleId() % "." % _key,
                             std::forward<QVariant>(_value));
 }

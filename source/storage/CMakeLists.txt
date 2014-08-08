@@ -1,7 +1,7 @@
 vatsinator_start_subdirectory (storage)
 
 set (storage_SRCS
-    abstractsettingspage.cpp
+    abstractsettingsmodule.cpp
     cachefile.cpp
     filemanager.cpp
     languagemanager.cpp

@@ -62,12 +62,12 @@ MapPage::listIcon() const {
 }
 
 QString
-MapPage::pageName() const {
+MapPage::moduleId() const {
   return "map";
 }
 
 void
-MapPage::updateFromUi() const {
+MapPage::update() const {
   setValue("zoom_coefficient",
            ZoomCoefficientSlider->value());
   setValue("staffed_fir_borders_color",

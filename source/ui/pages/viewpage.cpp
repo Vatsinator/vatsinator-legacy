@@ -56,12 +56,12 @@ ViewPage::listIcon() const {
 }
 
 QString
-ViewPage::pageName() const {
+ViewPage::moduleId() const {
   return "view";
 }
 
 void
-ViewPage::updateFromUi() const {
+ViewPage::update() const {
   setValue("pilots_layer",
            PilotsCheckBox->isChecked());
   setValue("airports_layer",

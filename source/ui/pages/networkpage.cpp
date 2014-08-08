@@ -56,12 +56,12 @@ NetworkPage::listIcon() const {
 }
 
 QString
-NetworkPage::pageName() const {
+NetworkPage::moduleId() const {
   return "network";
 }
 
 void
-NetworkPage::updateFromUi() const {
+NetworkPage::update() const {
   setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
   setValue("refresh_rate", RefreshRateBox->value());
   setValue("cache_enabled", CachingCheckBox->isChecked());

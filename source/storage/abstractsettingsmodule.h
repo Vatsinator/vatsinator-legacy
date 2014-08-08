@@ -1,5 +1,5 @@
 /*
-    abstractsettingspage.h
+    abstractsettingsmodule.h
     Copyright (C) 2013-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
@@ -17,8 +17,8 @@
 */
 
 
-#ifndef ABSTRACTSETTINGSPAGE_H
-#define ABSTRACTSETTINGSPAGE_H
+#ifndef ABSTRACTSETTINGSMODULE_H
+#define ABSTRACTSETTINGSMODULE_H
 
 #include <QString>
 #include <QVariant>
@@ -27,37 +27,37 @@
 
 class QSettings;
 
-class AbstractSettingsPage {
+class AbstractSettingsModule {
   
   /*
-   * Subclass this class to create a single page in SettingsWindow. 
+   * Subclass this class to create a settings module
    */
   
 public:
   
-  AbstractSettingsPage();
+  AbstractSettingsModule();
   
   /**
-   * Name of the page that will appear in the list.
+   * Name of the module.
    */
   virtual QString listElement() const = 0;
   
   /**
-   * Icon path that will appear in the list.
+   * Icon path to identity the module.
    */
   virtual QString listIcon() const = 0;
   
   /**
-   * The page's name that will appear in SettingsManager's registry,
+   * The module's id that will appear in SettingsManager's registry,
    * before the dot.
    */
-  virtual QString pageName() const = 0;
+  virtual QString moduleId() const = 0;
   
   /**
-   * Puts all values that the page handles in the settingsmanager's
+   * Puts all values that the module handles in the settingsmanager's
    * map, using setValue().
    */
-  virtual void updateFromUi() const = 0;
+  virtual void update() const = 0;
   
   void restoreSettings(QSettings&);
   void saveSettings(QSettings&);
@@ -77,4 +77,4 @@ protected:
   
 };
 
-#endif // ABSTRACTSETTINGSPAGE_H
+#endif // ABSTRACTSETTINGSMODULE_H

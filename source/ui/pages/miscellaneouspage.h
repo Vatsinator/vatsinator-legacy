@@ -22,9 +22,9 @@
 #include <QWidget>
 
 #include "ui/ui_miscellaneouspage.h"
-#include "storage/abstractsettingspage.h"
+#include "storage/abstractsettingsmodule.h"
 
-class MiscellaneousPage : public QWidget, public AbstractSettingsPage, private Ui::MiscellaneousPage {
+class MiscellaneousPage : public QWidget, public AbstractSettingsModule, private Ui::MiscellaneousPage {
   
   Q_OBJECT
   
@@ -37,16 +37,14 @@ public:
   
   QString listElement() const;
   QString listIcon() const;
-  QString pageName() const;
+  QString moduleId() const;
   
   /**
    * @variables
-   * has_antyaliasing:  bool
-   * zoom_coefficient:  int
    * send_statistics:   bool
    * language:          QString
    */
-  void updateFromUi() const;
+  void update() const;
 
 protected:
   void showEvent(QShowEvent*) override;
