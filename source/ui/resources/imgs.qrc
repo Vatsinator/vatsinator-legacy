@@ -17,6 +17,13 @@
     <file>application-exit.png</file>
   </qresource>
   <qresource prefix="pixmaps">
+    <file>model_3j32.png</file>
+    <file>model_4j32.png</file>
+    <file>model_4p32.png</file>
+    <file>model_conc32.png</file>
+    <file>model_2j32.png</file>
+    <file>model_1p32.png</file>
+    <file>model_2p32.png</file>
     <file>airport_inactive.png</file>
     <file>airport.png</file>
     <file>airport_staffed.png</file>
