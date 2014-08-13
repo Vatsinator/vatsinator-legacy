@@ -8,18 +8,6 @@ set (vatsinator_RESOURCES
 vatsinator_install (
     "${vatsinator_RESOURCES}" "")
 
-set (vatsinator_RESOURCES_PIXMAPS
-    pixmaps/1p32.png
-    pixmaps/2p32.png
-    pixmaps/4p32.png
-    pixmaps/2j32.png
-    pixmaps/3j32.png
-    pixmaps/4j32.png
-    pixmaps/conc32.png)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES_PIXMAPS}" "/pixmaps")
-
 set (vatsinator_RESOURCES_DATA
     data/airlines
     data/alias

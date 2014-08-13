@@ -45,7 +45,6 @@ public:
    */
   enum StaticDir {
     Plugins,
-    Pixmaps,
     Translations
   };
   

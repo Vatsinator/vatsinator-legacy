@@ -1261,77 +1261,77 @@
 <context>
     <name>VatsinatorWindow</name>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="95"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="83"/>
         <source>Clients:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
         <source>&amp;Vatsinator</source>
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
         <source>&amp;Help</source>
         <translation>&amp;Yardım</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="184"/>
         <source>&amp;Settings</source>
         <translation>&amp;Ayarlar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="198"/>
         <source>Exit</source>
         <translation>Çıkış</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="213"/>
         <source>About</source>
         <translation>Hakkında</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
         <source>METARs...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="240"/>
         <source>Refresh</source>
         <translation>Yenile</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="263"/>
         <source>Flight list...</source>
         <translation>Uçuş listesi...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="268"/>
         <source>ATC list...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>Enable auto-updates</source>
         <translation>Otomatik güncellemeler aktif</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="287"/>
         <source>Show home location</source>
         <translation>Ev konumunu göster</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
         <source>Database...</source>
         <translation>Veritabanı...</translation>
     </message>

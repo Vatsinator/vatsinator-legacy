@@ -78,11 +78,10 @@ ModelMatcher::__readModels() {
 void
 ModelMatcher::__loadPixmaps() {
   QMap<QString, Texture*> pixmapsLoaded;
-  QString path(FileManager::staticPath(FileManager::Pixmaps));
   QList<QString> models = { "1p", "2p", "4p", "2j", "3j", "4j", "conc" };
   
   for (const QString& s: models) {
-    QString mPath = path % QDir::separator() % s % "32.png";
+    QString mPath = ":/pixmaps/model_" % s % "32.png";
     Texture* t = new Texture(mPath);
     __pixmaps << t;
     pixmapsLoaded.insert(s, t);

@@ -976,7 +976,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="668"/>
         <source>Flights nearby</source>
-        <translation type="unfinished"/>
+        <translation>周囲のフライト</translation>
     </message>
 </context>
 <context>
@@ -1261,77 +1261,77 @@
 <context>
     <name>VatsinatorWindow</name>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="95"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="83"/>
         <source>Clients:</source>
         <translation>クライアント:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
         <source>&amp;Vatsinator</source>
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
         <source>&amp;Help</source>
         <translation>&amp;ヘルプ</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="184"/>
         <source>&amp;Settings</source>
         <translation>&amp;設定</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="198"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="213"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
         <source>METARs...</source>
         <translation>METAR...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="240"/>
         <source>Refresh</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="263"/>
         <source>Flight list...</source>
         <translation>フライトリスト...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="268"/>
         <source>ATC list...</source>
         <translation>ATC リスト...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>Enable auto-updates</source>
         <translation>自動更新を有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="287"/>
         <source>Show home location</source>
         <translation>ホームを表示</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
         <source>Database...</source>
         <translation>データベース...</translation>
     </message>
