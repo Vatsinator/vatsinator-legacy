@@ -36,6 +36,18 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
 set (ui_SRCS
     notifiable.cpp
     userinterface.cpp
+    
+    map/airportitem.cpp
+    map/approachcircleitem.cpp
+    map/firitem.cpp
+    map/flightitem.cpp
+    map/iconkeeper.cpp
+    map/mapconfig.cpp
+    map/mapitem.cpp
+    map/maprenderer.cpp
+    map/mapscene.cpp
+    map/uiritem.cpp
+    map/worldpolygon.cpp
 )
 
 set (widgets_SRCS
@@ -61,18 +73,6 @@ set (widgets_SRCS
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
     dialogs/vatsimmessagedialog.cpp
-    
-    map/airportitem.cpp
-    map/approachcircleitem.cpp
-    map/firitem.cpp
-    map/flightitem.cpp
-    map/iconkeeper.cpp
-    map/mapconfig.cpp
-    map/mapitem.cpp
-    map/maprenderer.cpp
-    map/mapscene.cpp
-    map/uiritem.cpp
-    map/worldpolygon.cpp
     
     pages/mappage.cpp
     pages/miscellaneouspage.cpp
@@ -112,6 +112,15 @@ endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 
 set (ui_MOC_SRCS
     userinterface.h
+    
+    map/airportitem.h
+    map/approachcircleitem.h
+    map/firitem.h
+    map/flightitem.h
+    map/iconkeeper.h
+    map/maprenderer.h
+    map/mapscene.h
+    map/uiritem.h
 )
 
 set (widgets_MOC_SRCS
@@ -137,15 +146,6 @@ set (widgets_MOC_SRCS
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
     dialogs/vatsimmessagedialog.h
-    
-    map/airportitem.h
-    map/approachcircleitem.h
-    map/firitem.h
-    map/flightitem.h
-    map/iconkeeper.h
-    map/maprenderer.h
-    map/mapscene.h
-    map/uiritem.h
     
     pages/mappage.h
     pages/miscellaneouspage.h
