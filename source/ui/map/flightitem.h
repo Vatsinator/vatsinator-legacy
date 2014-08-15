@@ -52,8 +52,7 @@ public:
   bool needsDrawing() const override;
   const LonLat& position() const override;
   QString tooltipText() const override;
-  QMenu* menu(QWidget*) const override;
-  void showDetailsWindow() const override;
+  void showDetails() const override;
   
   inline const Pilot* data() const { return __pilot; }
   

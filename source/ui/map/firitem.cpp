@@ -23,8 +23,6 @@
 #include "glutils/glextensions.h"
 #include "glutils/texture.h"
 #include "storage/settingsmanager.h"
-#include "ui/actions/clientdetailsaction.h"
-#include "ui/actions/firdetailsaction.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/userinterface.h"
@@ -140,38 +138,8 @@ FirItem::tooltipText() const {
     return QString("<p style='white-space:nowrap'><center>") % desc % staff % QString("</center></p>");
 }
 
-QMenu *
-FirItem::menu(QWidget* _parent) const {
-  QMenu* menu = new QMenu(data()->icao(), _parent);
-  
-  FirDetailsAction* showFir = new FirDetailsAction(
-      data(),
-      tr("%1 details").arg(data()->icao()),
-      _parent
-    );
-  connect(showFir,                      SIGNAL(triggered(const Fir*)),
-          vApp()->userInterface(),      SLOT(showDetails(const Fir*)));
-  menu->addAction(showFir);
-  
-  for (const Controller* c: data()->staff()->staff()) {
-    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-    connect(cda,                        SIGNAL(triggered(const Client*)),
-            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
-    menu->addAction(cda);
-  }
-  
-  for (const Controller* c: data()->uirStaff()->staff()) {
-    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-    connect(cda,                        SIGNAL(triggered(const Client*)),
-            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
-    menu->addAction(cda);
-  }
-  
-  return menu;
-}
-
 void
-FirItem::showDetailsWindow() const {
+FirItem::showDetails() const {
   vApp()->userInterface()->showDetails(data());
 }
 

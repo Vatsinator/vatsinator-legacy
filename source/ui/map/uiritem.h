@@ -33,8 +33,7 @@ class UirItem : public QObject, public MapItem {
 public:
   UirItem(const Uir*, QObject* = nullptr);
   
-  void showDetailsWindow() const override;
-  QMenu* menu(QWidget*) const override;
+  void showDetails() const override;
   QString tooltipText() const override;
   const LonLat& position() const override;
   bool needsDrawing() const override;

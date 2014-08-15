@@ -24,9 +24,13 @@
 #include "vatsimdata/lonlat.h"
 
 class Airport;
+class AirportItem;
+class FirItem;
+class FlightItem;
 class Pilot;
 class MapItem;
 class MapRenderer;
+class QMenu;
 
 class MapWidget : public QGLWidget {
   
@@ -41,11 +45,6 @@ signals:
   void menuRequest();
   
   void windowRequest(const MapItem*);
-  
-  void flightTrackingRequest(const Pilot*);
-  void flightTrackingCanceled();
-  
-  void airportLinesToggled(const Airport*);
   
 public:
   explicit MapWidget(QWidget* = 0);
@@ -76,6 +75,21 @@ private:
    * Updates the zoom factor.
    */
   void __updateZoom(int);
+  
+  /**
+   * Creates right-mouse-click menu for an airport.
+   */
+  QMenu* __itemMenu(const AirportItem*);
+  
+  /**
+   * Creates right-mouse-click menu for a FIR.
+   */
+  QMenu* __itemMenu(const FirItem*);
+  
+  /**
+   * Creates right-mouse-click menu for a flight.
+   */
+  QMenu* __itemMenu(const FlightItem*);
 
 private slots:
   void __showMenu(const MapItem*);

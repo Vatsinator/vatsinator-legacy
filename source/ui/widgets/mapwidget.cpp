@@ -21,10 +21,18 @@
 #include <QtWidgets>
 #include <QtOpenGL>
 
+#include "db/airportdatabase.h"
 #include "events/mouselonlatevent.h"
 #include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
+#include "ui/actions/actionmenuseparator.h"
+#include "ui/actions/airportdetailsaction.h"
 #include "ui/actions/clientdetailsaction.h"
+#include "ui/actions/firdetailsaction.h"
+#include "ui/actions/metaraction.h"
+#include "ui/actions/trackaction.h"
+#include "ui/map/airportitem.h"
+#include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapitem.h"
@@ -33,6 +41,8 @@
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/client/pilot.h"
+#include "vatsimdata/models/controllertablemodel.h"
+#include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -165,9 +175,137 @@ MapWidget::__updateZoom(int _steps) {
   __renderer->updateZoom(_steps);
 }
 
+QMenu*
+MapWidget::__itemMenu(const AirportItem* _item) {
+  QMenu* menu = new QMenu(_item->data()->data()->icao, this);
+  
+  AirportDetailsAction* showAp = new AirportDetailsAction(_item->data(), tr("Airport details"), this);
+  connect(showAp,                       SIGNAL(triggered(const Airport*)),
+          vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
+  menu->addAction(showAp);
+  
+  MetarAction* showMetar = new MetarAction(_item->data()->data()->icao, this);
+  connect(showMetar,                                    SIGNAL(triggered(QString)),
+          vApp()->userInterface(),                      SLOT(showMetar(QString)));
+  menu->addAction(showMetar);
+  
+  if (!_item->data()->isEmpty()) {
+    if (!_item->data()->staff()->staff().isEmpty()) {
+      menu->addSeparator();
+      menu->addAction(new ActionMenuSeparator(tr("Controllers"), this));
+      
+      for (const Controller* c: _item->data()->staff()->staff()) {
+        ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), this);
+        connect(cda,                            SIGNAL(triggered(const Client*)),
+                vApp()->userInterface(),        SLOT(showDetails(const Client*)));
+        menu->addAction(cda);
+      }
+    }
+    
+    if (_item->data()->countArrivals() > 0) {
+      menu->addSeparator();
+      menu->addAction(new ActionMenuSeparator(tr("Arrivals"), this));
+      
+      for (const Pilot* p: _item->data()->inbounds()->flights()) {
+        if (p->phase() == Pilot::Arrived) {
+          ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), this);
+          connect(cda,                          SIGNAL(triggered(const Client*)),
+                  vApp()->userInterface(),      SLOT(showDetails(const Client*)));
+          menu->addAction(cda);
+        }
+      }
+    }
+    
+    if (_item->data()->countDepartures(false) > 0) {
+      menu->addSeparator();
+      menu->addAction(new ActionMenuSeparator(tr("Departures"), this));
+      
+      for (const Pilot* p: _item->data()->outbounds()->flights()) {
+        if (!p->isPrefiledOnly() && p->phase() == Pilot::Departing) {
+          ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), this);
+          connect(cda,                          SIGNAL(triggered(const Client*)),
+                  vApp()->userInterface(),      SLOT(showDetails(const Client*)));
+          menu->addAction(cda);
+        }
+      }
+    }
+  }
+  
+  return menu;
+}
+
+QMenu*
+MapWidget::__itemMenu(const FirItem* _item) {
+  QMenu* menu = new QMenu(_item->data()->icao(), this);
+  
+  FirDetailsAction* showFir = new FirDetailsAction(
+      _item->data(),
+      tr("%1 details").arg(_item->data()->icao()),
+      this
+    );
+  connect(showFir,                      SIGNAL(triggered(const Fir*)),
+          vApp()->userInterface(),      SLOT(showDetails(const Fir*)));
+  menu->addAction(showFir);
+  
+  for (const Controller* c: _item->data()->staff()->staff()) {
+    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), this);
+    connect(cda,                        SIGNAL(triggered(const Client*)),
+            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
+    menu->addAction(cda);
+  }
+  
+  for (const Controller* c: _item->data()->uirStaff()->staff()) {
+    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), this);
+    connect(cda,                        SIGNAL(triggered(const Client*)),
+            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
+    menu->addAction(cda);
+  }
+  
+  return menu;
+}
+
+QMenu*
+MapWidget::__itemMenu(const FlightItem* _item) {
+   QMenu* menu = new QMenu(_item->data()->callsign(), this);
+  
+  ClientDetailsAction* showDetails = new ClientDetailsAction(_item->data(), tr("Flight details"), this);
+  connect(showDetails,                  SIGNAL(triggered(const Client*)),
+          vApp()->userInterface(),      SLOT(showDetails(const Client*)));
+  menu->addAction(showDetails);
+  
+  TrackAction* trackFlight = new TrackAction(_item->data(), this);
+  menu->addAction(trackFlight);
+  
+  menu->addSeparator();
+
+  if (!_item->data()->route().origin.isEmpty()) {
+    MetarAction* ma = new MetarAction(_item->data()->route().origin, this);
+    connect(ma,                                         SIGNAL(triggered(QString)),
+            vApp()->userInterface(),                    SLOT(showMetar(QString)));
+    menu->addAction(ma);
+  }
+  
+  if (!_item->data()->route().destination.isEmpty()) {
+    MetarAction* ma = new MetarAction(_item->data()->route().destination, this);
+    connect(ma,                                         SIGNAL(triggered(QString)),
+            vApp()->userInterface(),                    SLOT(showMetar(QString)));
+    menu->addAction(ma);
+  }
+  
+  return menu;
+}
+
 void
-MapWidget::__showMenu(const MapItem* _item) {  
-  QMenu* menu = _item->menu(this);
+MapWidget::__showMenu(const MapItem* _item) {
+  QMenu* menu;
+  
+  if (const AirportItem* i = dynamic_cast<const AirportItem*>(_item))
+    menu = __itemMenu(i);
+  else if (const FirItem* i = dynamic_cast<const FirItem*>(_item))
+    menu = __itemMenu(i);
+  else if (const FlightItem* i = dynamic_cast<const FlightItem*>(_item))
+    menu = __itemMenu(i);
+  
   menu->exec(mapToGlobal(__mousePosition.screenPosition()));
   delete menu;
 }
@@ -198,7 +336,7 @@ MapWidget::__showMenu() {
 
 void
 MapWidget::__showWindow(const MapItem* _item) {
-  _item->showDetailsWindow();
+  _item->showDetails();
 }
 
 MapWidget::MousePosition::MousePosition() : __down(false) {}

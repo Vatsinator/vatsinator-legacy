@@ -23,9 +23,6 @@
 #include "glutils/texture.h"
 #include "modules/modelmatcher.h"
 #include "storage/settingsmanager.h"
-#include "ui/actions/clientdetailsaction.h"
-#include "ui/actions/metaraction.h"
-#include "ui/actions/trackaction.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
@@ -185,39 +182,8 @@ FlightItem::tooltipText() const {
     % "</center></p>");
 }
 
-QMenu *
-FlightItem::menu(QWidget* _parent) const {
-  QMenu* menu = new QMenu(data()->callsign(), _parent);
-  
-  ClientDetailsAction* showDetails = new ClientDetailsAction(data(), tr("Flight details"), _parent);
-  connect(showDetails,                  SIGNAL(triggered(const Client*)),
-          vApp()->userInterface(),      SLOT(showDetails(const Client*)));
-  menu->addAction(showDetails);
-  
-  TrackAction* trackFlight = new TrackAction(data(), _parent);
-  menu->addAction(trackFlight);
-  
-  menu->addSeparator();
-
-  if (!data()->route().origin.isEmpty()) {
-    MetarAction* ma = new MetarAction(data()->route().origin, _parent);
-    connect(ma,                                         SIGNAL(triggered(QString)),
-            vApp()->userInterface(),                    SLOT(showMetar(QString)));
-    menu->addAction(ma);
-  }
-  
-  if (!data()->route().destination.isEmpty()) {
-    MetarAction* ma = new MetarAction(data()->route().destination, _parent);
-    connect(ma,                                         SIGNAL(triggered(QString)),
-            vApp()->userInterface(),                    SLOT(showMetar(QString)));
-    menu->addAction(ma);
-  }
-  
-  return menu;
-}
-
 void
-FlightItem::showDetailsWindow() const {
+FlightItem::showDetails() const {
   vApp()->userInterface()->showDetails(data());
 }
 

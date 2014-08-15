@@ -84,13 +84,8 @@ ApproachCircleItem::tooltipText() const {
   return "";
 }
 
-QMenu *
-ApproachCircleItem::menu(QWidget*) const {
-  return nullptr;
-}
-
 void 
-ApproachCircleItem::showDetailsWindow() const {}
+ApproachCircleItem::showDetails() const {}
 
 void
 ApproachCircleItem::__getColor() const {

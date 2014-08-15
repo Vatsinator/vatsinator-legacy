@@ -36,12 +36,7 @@ UirItem::UirItem(const Uir* _uir, QObject* _parent) :
 }
 
 void
-UirItem::showDetailsWindow() const {}
-
-QMenu*
-UirItem::menu(QWidget*) const {
-  return nullptr;
-}
+UirItem::showDetails() const {}
 
 QString
 UirItem::tooltipText() const {
