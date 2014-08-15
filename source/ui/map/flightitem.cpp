@@ -27,10 +27,9 @@
 #include "ui/actions/metaraction.h"
 #include "ui/actions/trackaction.h"
 #include "ui/map/mapconfig.h"
-#include "ui/widgets/mapwidget.h"
-#include "ui/windows/metarswindow.h"
-#include "ui/windows/vatsinatorwindow.h"
-#include "ui/widgetsuserinterface.h"
+#include "ui/map/maprenderer.h"
+#include "ui/map/mapscene.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -40,6 +39,7 @@
 
 FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
     QObject(_parent),
+    __scene(qobject_cast<MapScene*>(_parent)),
     __pilot(_pilot),
     __position(_pilot->position()),
     __model(nullptr),
@@ -78,8 +78,8 @@ FlightItem::drawModel(QOpenGLShaderProgram* _shader) const {
   if (!__model)
     __matchModel();
   
-  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapWidget::vertexLocation(), modelRect, 2);
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), modelRect, 2);
   
 //     glRotatef(static_cast<GLfloat>(data()->heading()), 0, 0, -1);
   __model->bind();
@@ -107,8 +107,8 @@ FlightItem::drawLabel(QOpenGLShaderProgram* _shader) const {
     0.0f, 0.0f
   };
   
-  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapWidget::vertexLocation(), labelRect, 2);
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
   
   if (!__label.isCreated())
     __initializeLabel();
@@ -127,8 +127,8 @@ FlightItem::drawLines(LineTypes types, QOpenGLShaderProgram* _shader) const {
     if (!__otpLine.color.isValid())
       __otpLine.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
     
-    _shader->setUniformValue(wui()->mainWindow()->mapWidget()->identityColorLocation(), __otpLine.color);
-    _shader->setAttributeArray(MapWidget::vertexLocation(), __otpLine.coords.constData(), 2);
+    _shader->setUniformValue(__scene->renderer()->identityColorLocation(), __otpLine.color);
+    _shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLine.coords.constData(), 2);
     glDrawArrays(GL_LINE_STRIP, 0, __otpLine.coords.size() / 2);
   }
   
@@ -136,8 +136,8 @@ FlightItem::drawLines(LineTypes types, QOpenGLShaderProgram* _shader) const {
     if (!__ptdLine.color.isValid())
       __ptdLine.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
     
-    _shader->setUniformValue(wui()->mainWindow()->mapWidget()->identityColorLocation(), __ptdLine.color);
-    _shader->setAttributeArray(MapWidget::vertexLocation(), __ptdLine.coords.constData(), 2);
+    _shader->setUniformValue(__scene->renderer()->identityColorLocation(), __ptdLine.color);
+    _shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLine.coords.constData(), 2);
     glLineStipple(3, 0xF0F0); // dashed line
     glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);
     glLineStipple(1, 0xFFFF);

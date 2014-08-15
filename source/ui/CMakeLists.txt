@@ -62,7 +62,6 @@ set (widgets_SRCS
     dialogs/statusfetcherrordialog.cpp
     dialogs/vatsimmessagedialog.cpp
     
-    map/abstractanimation.cpp
     map/airportitem.cpp
     map/approachcircleitem.cpp
     map/firitem.cpp
@@ -70,9 +69,8 @@ set (widgets_SRCS
     map/iconkeeper.cpp
     map/mapconfig.cpp
     map/mapitem.cpp
+    map/maprenderer.cpp
     map/mapscene.cpp
-    map/mapstate.cpp
-    map/moveanimation.cpp
     map/uiritem.cpp
     map/worldpolygon.cpp
     
@@ -140,14 +138,13 @@ set (widgets_MOC_SRCS
     dialogs/statusfetcherrordialog.h
     dialogs/vatsimmessagedialog.h
     
-    map/abstractanimation.h
     map/airportitem.h
     map/approachcircleitem.h
     map/firitem.h
     map/flightitem.h
     map/iconkeeper.h
+    map/maprenderer.h
     map/mapscene.h
-    map/moveanimation.h
     map/uiritem.h
     
     pages/mappage.h

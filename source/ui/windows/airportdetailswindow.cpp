@@ -29,6 +29,7 @@
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/widgets/weatherforecastwidget.h"
@@ -185,7 +186,7 @@ AirportDetailsWindow::__updateForecast() {
 void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__airport);
-  wui()->mainWindow()->mapWidget()->scene()->moveSmoothly(__airport->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__airport->position());
   close();
 }
 

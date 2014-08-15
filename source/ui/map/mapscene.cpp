@@ -21,13 +21,11 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "events/mapevent.h"
-#include "ui/map/abstractanimation.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
-#include "ui/map/moveanimation.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/uiritem.h"
 #include "ui/widgets/mapwidget.h"
 #include "vatsimdata/client/controller.h"
@@ -40,13 +38,11 @@
 
 #include "mapscene.h"
 
-MapScene::MapScene(QObject* parent) :
-    QObject(parent),
-    __trackedFlight(nullptr),
-    __animation(nullptr) {
-  
-  __widget = qobject_cast<MapWidget*>(parent);
-  Q_ASSERT(__widget);
+MapScene::MapScene(QObject* _parent) :
+    QObject(_parent),
+    __renderer(qobject_cast<MapRenderer*>(parent())),
+    __trackedFlight(nullptr) {
+  Q_ASSERT(__renderer);
   
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
           this,                         SLOT(__updateItems()));
@@ -66,25 +62,6 @@ void
 MapScene::cancelFlightTracking() {
   __trackedFlight = nullptr;
   emit flightTracked(__trackedFlight);
-}
-
-void
-MapScene::startAnimation(AbstractAnimation* _animation) {
-  if (__animation) {
-    __animation->abort();
-    __animation->deleteLater();
-  }
-  
-  __animation = _animation;
-  
-  __animation->setParent(this);
-  __animation->setPosition(__widget->state().center());
-  __animation->setZoom(__widget->state().zoom());
-  connect(__animation,  SIGNAL(step()),
-          this,         SLOT(__animationStep()));
-  connect(__animation,  SIGNAL(stopped()),
-          this,         SLOT(__animationDestroy()));
-  __animation->start();
 }
 
 FirItem*
@@ -109,9 +86,7 @@ MapScene::items(const QRectF& _rect) const {
 
 void
 MapScene::moveSmoothly(const LonLat& _target) {
-  MoveAnimation* a = new MoveAnimation(this);
-  a->setTarget(_target);
-  startAnimation(a);
+  
 }
 
 void
@@ -151,33 +126,6 @@ MapScene::__updateItems() {
       if (p->phase() != Pilot::Arrived)
         __addFlightItem(p);
     }
-}
-
-void
-MapScene::__animationStep() {
-  Q_ASSERT(__animation);
-  
-  MapState state(__widget->state());
-  
-  if (!(__animation->flags() & AbstractAnimation::NoPositionOverride))
-    state.setCenter(__animation->position());
-  
-  if (!(__animation->flags() & AbstractAnimation::NoZoomOverride))
-    state.setZoom(__animation->zoom());
-  
-  MapEvent e(state);
-  bool accepted = qApp->notify(__widget, &e);
-  if (!accepted) {
-    __animation->abort();
-    __animation->deleteLater();
-    __animation = nullptr;
-  }
-}
-
-void
-MapScene::__animationDestroy() {
-  __animation->deleteLater();
-  __animation = nullptr;
 }
 
 void

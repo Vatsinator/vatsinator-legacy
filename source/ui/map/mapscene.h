@@ -24,7 +24,6 @@
 #include <QList>
 
 class QRectF;
-class AbstractAnimation;
 class AirportItem;
 class Controller;
 class Fir;
@@ -33,7 +32,7 @@ class FlightItem;
 class MapItem;
 class LonLat;
 class Pilot;
-class MapWidget;
+class MapRenderer;
 class UirItem;
 
 /**
@@ -53,20 +52,11 @@ signals:
   void flightTracked(const Pilot*);
 
 public:
-  explicit MapScene(QObject* parent);
+  explicit MapScene(QObject*);
   virtual ~MapScene();
   
   void trackFlight(const Pilot*);
   void cancelFlightTracking();
-  
-  /**
-   * Starts the given animation, aborting any currently running one.
-   * This function takes ownership over the given animation.
-   * NOTE: The animation can't be started yet. This function call start()
-   * on the instance.
-   * @param animation The map animation instance.
-   */
-  void startAnimation(AbstractAnimation*);
   
   /**
    * Finds FirItem instance that handles the given Fir.
@@ -78,6 +68,8 @@ public:
    * Finds all visible items that are inside the given _rect_.
    */
   QList<const MapItem*> items(const QRectF&) const;
+  
+  inline MapRenderer* renderer() { return __renderer; }
   
   inline const QList<FirItem*>& firItems() const {
     return __firItems;
@@ -99,10 +91,6 @@ public:
     return __trackedFlight;
   }
   
-  inline AbstractAnimation* animation() {
-    return __animation;
-  }
-  
 public slots:
   /**
    * Moves the map smoothly to the given point.
@@ -116,16 +104,13 @@ private:
 private slots:
   void __setupItems();
   void __updateItems();
-  void __animationStep();
-  void __animationDestroy();
-  
   /**
    * This slot is connected to every Pilot's destroyed() signal.
    */
   void __removeFlightItem();
   
 private:
-  MapWidget*    __widget;
+  MapRenderer* __renderer;
   
   QList<FirItem*>               __firItems;
   QList<AirportItem*>           __airportItems;
@@ -133,8 +118,6 @@ private:
   QList<UirItem*>               __uirItems;
   
   const Pilot* __trackedFlight;
-  
-  AbstractAnimation*    __animation;
   
 };
 

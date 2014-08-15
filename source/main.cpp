@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ui/map/mapstate.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
@@ -28,9 +27,6 @@ int main(int argc, char** argv) {
   
   qRegisterMetaType<LonLat>("LonLat");
   qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
-  
-  qRegisterMetaType<MapState>("MapState");
-  qRegisterMetaTypeStreamOperators<MapState>("MapState");
   
   return VatsinatorApplication(argc, argv).exec();
 }

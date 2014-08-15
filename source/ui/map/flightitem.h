@@ -25,6 +25,7 @@
 #include "ui/map/mapitem.h"
 
 class Pilot;
+class MapScene;
 class Texture;
 
 class FlightItem : public QObject, public MapItem {
@@ -66,6 +67,7 @@ private slots:
   void __invalidate();
   
 private:
+  MapScene*     __scene;
   const Pilot*  __pilot;
   LonLat        __position;
   

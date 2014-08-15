@@ -26,7 +26,7 @@
 #include "ui/actions/clientdetailsaction.h"
 #include "ui/actions/firdetailsaction.h"
 #include "ui/map/mapconfig.h"
-#include "ui/widgets/mapwidget.h"
+#include "ui/map/maprenderer.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -93,8 +93,8 @@ FirItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   if (!__label.isCreated())
     __initializeLabel();
   
-  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapWidget::vertexLocation(), labelRect, 2);
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
   
   __label.bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -198,8 +198,8 @@ FirItem::__initializeBuffers() {
   Q_ASSERT(__vaoBorders.isCreated());
   __vaoBorders.bind();
   __borders.bind();
-  glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(MapWidget::vertexLocation());
+  glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(MapRenderer::vertexLocation());
   __vaoBorders.release();
   __borders.release();
   __triangles.release();
@@ -209,8 +209,8 @@ FirItem::__initializeBuffers() {
   __vaoTriangles.bind();
   __borders.bind();
   __triangles.bind();
-  glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(MapWidget::vertexLocation());
+  glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(MapRenderer::vertexLocation());
   __vaoTriangles.release();
   __borders.release();
   __triangles.release();

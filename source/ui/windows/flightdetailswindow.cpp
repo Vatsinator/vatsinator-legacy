@@ -23,6 +23,7 @@
 #include "db/airportdatabase.h"
 #include "ui/userinterface.h"
 #include "ui/vatsinatorstyle.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
@@ -75,7 +76,7 @@ FlightDetailsWindow::show() {
   if (__pilot->isPrefiledOnly())
     return;
   
-  if (wui()->mainWindow()->mapWidget()->scene()->trackedFlight() == __pilot)
+  if (wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight() == __pilot)
     TrackFlightBox->setCheckState(Qt::Checked);
   else
     TrackFlightBox->setCheckState(Qt::Unchecked);
@@ -212,7 +213,7 @@ FlightDetailsWindow::__updateLabels() {
 void
 FlightDetailsWindow::__handleClicked() {
   Q_ASSERT(__pilot);
-  wui()->mainWindow()->mapWidget()->scene()->moveSmoothly(__pilot->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__pilot->position());
   close();
 }
 

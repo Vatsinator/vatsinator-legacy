@@ -28,6 +28,7 @@
 
 class Airport;
 class ApproachCircleItem;
+class MapScene;
 
 class AirportItem : public QObject, public MapItem {
   Q_OBJECT
@@ -61,6 +62,7 @@ private slots:
   void __invalidate();
   
 private:
+  MapScene*             __scene;
   const Airport*        __airport;
   LonLat                __position;
   ApproachCircleItem*   __approachCircle;

@@ -26,10 +26,9 @@
 #include "ui/map/approachcircleitem.h"
 #include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
-#include "ui/widgets/mapwidget.h"
-#include "ui/windows/metarswindow.h"
-#include "ui/windows/vatsinatorwindow.h"
-#include "ui/widgetsuserinterface.h"
+#include "ui/map/maprenderer.h"
+#include "ui/map/mapscene.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
@@ -40,6 +39,7 @@
 
 AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     QObject(_parent),
+    __scene(qobject_cast<MapScene*>(_parent)),
     __airport(_ap),
     __position(_ap->data()->longitude, _ap->data()->latitude),
     __approachCircle(nullptr),
@@ -80,8 +80,8 @@ AirportItem::drawIcon(QOpenGLShaderProgram* _shader) const {
   if (!__icon)
     __takeIcon();
   
-  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapWidget::vertexLocation(), iconRect, 2);
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), iconRect, 2);
   
   __icon->bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -108,8 +108,8 @@ AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
     0.0f, 0.0f
   };
   
-  _shader->setAttributeArray(MapWidget::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapWidget::vertexLocation(), labelRect, 2);
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
   
   if (!__label.isCreated())
     __initializeLabel();
@@ -256,12 +256,12 @@ AirportItem::showDetailsWindow() const {
 void
 AirportItem::__takeIcon() const {
   if (data()->isEmpty()) {
-    __icon = wui()->mainWindow()->mapWidget()->icons()->emptyAirportIcon();
+    __icon = __scene->renderer()->icons()->emptyAirportIcon();
   } else {
     if (data()->staff()->staff().isEmpty()) {
-      __icon = wui()->mainWindow()->mapWidget()->icons()->activeAirportIcon();
+      __icon = __scene->renderer()->icons()->activeAirportIcon();
     } else {
-      __icon = wui()->mainWindow()->mapWidget()->icons()->activeStaffedAirportIcon();
+      __icon = __scene->renderer()->icons()->activeStaffedAirportIcon();
     }
   }
 }

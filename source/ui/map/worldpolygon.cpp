@@ -22,7 +22,7 @@
 #include "db/worldmap.h"
 
 #include "glutils/glextensions.h"
-#include "ui/widgets/mapwidget.h"
+#include "ui/map/maprenderer.h"
 
 #include "worldpolygon.h"
 
@@ -78,8 +78,8 @@ WorldPolygon::__initializeBuffers() {
   
   __borders.bind();
   __triangles.bind();
-  glVertexAttribPointer(MapWidget::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(MapWidget::vertexLocation());
+  glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(MapRenderer::vertexLocation());
   __vao.release();
   __borders.release();
   __triangles.release();
