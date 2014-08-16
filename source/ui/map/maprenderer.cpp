@@ -85,7 +85,7 @@ MapRenderer::mapToLonLat(const QPoint& _point) {
   
   return LonLat(
       static_cast<qreal>(_point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
-      -(static_cast<qreal>(_point.y() - (__viewport.height() / 2)) * yFactor / static_cast<qreal>(zoom()) + center().y())
+      static_cast<qreal>(_point.y() - (__viewport.height() / 2)) * yFactor / static_cast<qreal>(zoom()) + center().y()
     );
 }
 
@@ -107,7 +107,7 @@ MapRenderer::mapFromLonLat(const LonLat& _point) {
   
   return QPoint(
       static_cast<int>((_point.x() - center().x() + static_cast<qreal>(__xOffset)) * zoom() / xFactor) + (__viewport.width() / 2),
-      static_cast<int>((-_point.y() - center().y()) * zoom() / yFactor) + (__viewport.height() / 2)
+      static_cast<int>((_point.y() - center().y()) * zoom() / yFactor) + (__viewport.height() / 2)
     );
 }
 
@@ -116,7 +116,7 @@ MapRenderer::glFromLonLat(const LonLat& _point) {
   return QPointF(
       (_point.x() - center().x() + static_cast<qreal>(__xOffset)) /
           MapConfig::longitudeMax() * zoom(),
-      (_point.y() + center().y()) / MapConfig::latitudeMax() * zoom()
+      (_point.y() - center().y()) / MapConfig::latitudeMax() * zoom()
     );
 }
 
@@ -134,6 +134,7 @@ MapRenderer::setZoom(int _zoom) {
 void
 MapRenderer::setCenter(const LonLat& _center) {
   __center = _center;
+  emit updated();
 }
 
 void
@@ -194,7 +195,7 @@ MapRenderer::paint() {
   __worldTransform.setToIdentity();
   __worldTransform.scale(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax());
   __worldTransform.scale(zoom(), zoom());
-  __worldTransform.translate(-center().x(), center().y());
+  __worldTransform.translate(-center().x(), -center().y());
   
   glClearColor(__settings.colors.seas.redF(), __settings.colors.seas.greenF(), __settings.colors.seas.blueF(), 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -240,7 +241,7 @@ MapRenderer::__drawFirs() {
   QMatrix4x4 mvp = __projection * __worldTransform;
   __identityProgram->bind();
   __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
-    
+  
   if (__settings.view.unstaffed_firs) {
     mvp.translate(QVector3D(0.0f, 0.0f, unstaffedFirsZ));
     __identityProgram->setUniformValue(__identityMatrixLocation, mvp);

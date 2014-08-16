@@ -38,6 +38,15 @@
 
 #include "mapscene.h"
 
+namespace {
+  QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress) {
+    return LonLat(
+      start.longitude() + (end.longitude() - start.longitude()) * progress,
+      start.latitude() + (end.latitude() - start.latitude()) * progress
+    );
+  }
+}
+
 MapScene::MapScene(QObject* _parent) :
     QObject(_parent),
     __renderer(qobject_cast<MapRenderer*>(parent())),
@@ -48,6 +57,8 @@ MapScene::MapScene(QObject* _parent) :
           this,                         SLOT(__updateItems()));
   connect(vApp()->vatsimDataHandler(),  SIGNAL(initialized()),
           this,                         SLOT(__setupItems()));
+  
+  qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
 }
 
 MapScene::~MapScene() {}
@@ -86,7 +97,16 @@ MapScene::items(const QRectF& _rect) const {
 
 void
 MapScene::moveSmoothly(const LonLat& _target) {
-  
+//   qDebug() << __renderer->center() << "->" << _target;
+//   TODO
+//   Why the hell it does not work?
+//   QPropertyAnimation* animation = new QPropertyAnimation(__renderer, "center");
+//   animation->setDuration(10000);
+//   animation->setStartValue(__renderer->center());
+//   animation->setEndValue(_target);
+//   
+//   animation->start(QAbstractAnimation::DeleteWhenStopped);
+  __renderer->setCenter(_target);
 }
 
 void

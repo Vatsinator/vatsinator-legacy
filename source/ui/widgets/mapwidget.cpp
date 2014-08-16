@@ -154,8 +154,9 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     setCursor(QCursor(Qt::SizeAllCursor));
     
     QPoint diff = _event->pos() - __mousePosition.screenPosition();
+    diff.rx() *= -1;
     LonLat center = __renderer->center();
-    center -= __renderer->scaleToLonLat(diff);
+    center += __renderer->scaleToLonLat(diff);
     
     center.ry() = qBound(-90.0, center.y(), 90.0);
     if (center.x() < -180.0)
