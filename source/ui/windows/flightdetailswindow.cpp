@@ -67,6 +67,8 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) 
           this,                 SLOT(__handleClicked()));
   connect(__pilot,              SIGNAL(updated()),
           this,                 SLOT(__updateLabels()));
+  connect(__pilot,              SIGNAL(invalid()),
+          this,                 SLOT(close()));
 }
 
 void

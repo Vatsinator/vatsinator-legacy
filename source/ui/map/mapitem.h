@@ -26,6 +26,8 @@
 
 #include "vatsimdata/lonlat.h"
 
+class QOpenGLShaderProgram;
+
 /**
  * MapItem is an interface for any object that exists on the map.
  */
@@ -33,14 +35,36 @@ class MapItem {
 public:
   
   /**
-   * Indicates whether the items needs to be drawn or not.
+   * Indicates whether the item is visible on the map.
    */
-  virtual bool needsDrawing() const = 0;
+  virtual bool isVisible() const = 0;
+  
+  /**
+   * Indicates whether the item's label should be drawn on the map.
+   * Note that returning false in this function does not mean drawlabel() will
+   * not be called.
+   */
+  virtual bool isLabelVisible() const = 0;
   
   /**
    * Position of the item, global coordinates.
    */
   virtual const LonLat& position() const = 0;
+  
+  /**
+   * Draws the specific item.
+   * For FlightItems it will be the airplane model.
+   * For AirportItems it will be the airport icon.
+   * For FirItems it will be the label.
+   * @param shader Shader that is in use during rendering the item.
+   */
+  virtual void drawItem(QOpenGLShaderProgram*) const = 0;
+  
+  /**
+   * Draws the item label.
+   * FirItem won't draw anything.
+   */
+  virtual void drawLabel(QOpenGLShaderProgram*) const = 0;
   
   /**
    * Tooltip text, shown when the item is mouseover'ed.

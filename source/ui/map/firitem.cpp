@@ -25,6 +25,7 @@
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
+#include "ui/map/mapscene.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -35,6 +36,7 @@
 
 FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     QObject(_parent),
+    __scene(qobject_cast<MapScene*>(_parent)),
     __fir(_fir),
     __position(_fir->data()->header.textPosition.x, _fir->data()->header.textPosition.y),
     __borders(QOpenGLBuffer::VertexBuffer),
@@ -68,8 +70,34 @@ FirItem::drawBackground() const {
   __vaoTriangles.release();
 }
 
+bool
+FirItem::isVisible() const {
+  if (position().isNull())
+    return false;
+  
+  if (data()->isEmpty())
+    return __scene->settings().view.unstaffed_firs;
+  else
+    return __scene->settings().view.staffed_firs;
+}
+
+bool
+FirItem::isLabelVisible() const {
+  if (data()->isEmpty())
+    return __scene->settings().view.unstaffed_firs;
+  else
+    return __scene->settings().view.staffed_firs;
+}
+
+const LonLat &
+FirItem::position() const {
+  return __position;
+}
+
 void
-FirItem::drawLabel(QOpenGLShaderProgram* _shader) const {
+FirItem::drawItem(QOpenGLShaderProgram* _shader) const {
+  static constexpr float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
+  
   static const GLfloat labelRect[] = {
     -0.08f, -0.05333333f,
     -0.08f,  0.05333333f,
@@ -93,20 +121,15 @@ FirItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   
   _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
   _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
+  _shader->setUniformValue(__scene->renderer()->programZLocation(), FirsZ);
   
   __label.bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  __label.release();
+//   __label.release();
 }
 
-bool
-FirItem::needsDrawing() const {
-  return !__position.isNull();
-}
-
-const LonLat &
-FirItem::position() const {
-  return __position;
+void FirItem::drawLabel(QOpenGLShaderProgram*) const {
+  
 }
 
 QString

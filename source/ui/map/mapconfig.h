@@ -47,9 +47,9 @@ public:
   }
   
   /* Distance between mouse and object that object is considered
-     to be under mouse. */
+     to be under mouse, in pixels. */
   static constexpr qreal mouseOnObject() {
-    return 10.0;
+    return 15.0;
   }
   
   /* User won't be able to zoom below this value */

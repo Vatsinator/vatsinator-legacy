@@ -26,6 +26,8 @@ LonLat::LonLat() : QPointF() {}
 
 LonLat::LonLat(const QPoint& _p): QPointF(_p) {}
 
+LonLat::LonLat(const QPointF& _p): QPointF(_p) {}
+
 LonLat::LonLat(qreal _lon, qreal _lat): QPointF(_lon, _lat) {}
 
 QDataStream &

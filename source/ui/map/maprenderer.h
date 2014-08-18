@@ -48,14 +48,6 @@ class MapRenderer : public QObject {
    * The center property represents the center of the map.
    */
   Q_PROPERTY(LonLat center READ center WRITE setCenter)
-  
-signals:
-  
-  /**
-   * Emited when one of the properties change and therefore the map needs to
-   * be redrawn.
-   */
-  void updated();
 
 public:
   
@@ -102,11 +94,6 @@ public:
    */
   QPointF glFromLonLat(const LonLat&);
   
-  /**
-   * Specifies whether the given point is visible on the screen or not.
-   */
-  bool onScreen(const QPointF&);
-  
   void setZoom(int);
   void setCenter(const LonLat&);
   
@@ -125,7 +112,9 @@ public:
   inline int zoom() const { return __zoom; }
   inline const LonLat& center() const { return __center; }
   
-  inline int identityColorLocation() const { return __identityColorLocation; }
+  inline int programColorLocation() const { return __identityColorLocation; }
+  inline int programZLocation() const { return __texturedZLocation; }
+  inline int programRotationLocation() const { return __texturedRotationLocation; }
   inline IconKeeper* icons() { return __iconKeeper; }
   inline MapScene* scene() { return __scene; }
   
@@ -146,8 +135,7 @@ private:
   void __drawWorld();
   void __drawFirs();
   void __drawUirs();
-  void __drawAirports();
-  void __drawPilots();
+  void __drawItems();
   void __drawLines();
   
   void __storeSettings();
@@ -156,20 +144,18 @@ private:
   void __createShaderPrograms();
   
   void __updateOffsets();
-  
-private slots:
-  void __reloadSettings();
+  void __updateScreen();
   
 private:
   
-  /**
-   * Based on user settings, checks whether the pilot's label should
-   * be drawn or not.
-   */
-  bool __shouldDrawPilotLabel(const MapItem*);
-  
   /* The current viewport */
   QSize __viewport;
+  
+  /* Geo coordinates of the current viewport */
+  QRectF __screen;
+  
+  /* Keeps items that are currently on the screen */
+  QList<const MapItem*> __items;
   
   /* The current zoom property */
   int __zoom;
@@ -207,6 +193,7 @@ private:
   int __texturedMatrixLocation;
   int __texturedPositionLocation;
   int __texturedRotationLocation;
+  int __texturedZLocation;
   
   /* Projection matrix */
   QMatrix4x4 __projection;
@@ -222,40 +209,6 @@ private:
   
   /*Actual Zoom level*/
   int __actualZoom;
-  
-  
-  /* Structs below store settings locally to avoid expensive SM::get() calls */
-  struct {
-    struct {
-      int zoom_coefficient;
-    } misc;
-    
-    struct {
-      QColor lands;
-      QColor seas;
-      QColor staffed_fir_borders;
-      QColor staffed_fir_background;
-      QColor staffed_uir_borders;
-      QColor staffed_uir_background;
-      QColor unstaffed_fir_borders;
-      QColor approach_circle;
-    } colors;
-    
-    struct {
-      bool airports_layer;
-      bool airport_labels;
-      bool pilots_layer;
-      bool staffed_firs;
-      bool unstaffed_firs;
-      bool empty_airports;
-      
-      struct {
-        bool always;
-        bool airport_related;
-        bool when_hovered;
-      } pilot_labels;
-    } view;
-  } __settings;
 
 };
 

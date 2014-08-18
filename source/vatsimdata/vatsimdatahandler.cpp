@@ -244,11 +244,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         if (!clientData.valid || clientData.type != RawClientData::Pilot)
           continue;
         
-        if (__clients.contains(clientData.callsign))
-          __clients[clientData.callsign]->deleteLater();
-        
-        Pilot* pilot = new Pilot(clientData.line, true);
-        __clients[pilot->callsign()] = pilot;
+        if (!__clients.contains(clientData.callsign)) {
+          Pilot* pilot = new Pilot(clientData.line, true);
+          __clients[pilot->callsign()] = pilot;
+        }
         
         break;
       } // DataSections::Prefile
@@ -705,10 +704,15 @@ VatsimDataHandler::__loadCachedData() {
 
 void
 VatsimDataHandler::__cleanupClients() {
+  qDeleteAll(__invalidClients);
+  __invalidClients.clear();
+  
   for (auto it = __clients.begin(); it != __clients.end();) {
     if (!it.value()->isOnline()) {
-      it.value()->deleteLater();
+      Client* c = it.value();
+      c->invalidate();
       it = __clients.erase(it);
+      __invalidClients << c;
     } else {
       ++it;
     }

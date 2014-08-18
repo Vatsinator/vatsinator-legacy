@@ -33,10 +33,13 @@ class UirItem : public QObject, public MapItem {
 public:
   UirItem(const Uir*, QObject* = nullptr);
   
+  bool isVisible() const override;
+  bool isLabelVisible() const override;
   void showDetails() const override;
   QString tooltipText() const override;
   const LonLat& position() const override;
-  bool needsDrawing() const override;
+  void drawItem(QOpenGLShaderProgram*) const override;
+  void drawLabel(QOpenGLShaderProgram*) const override;
   
   inline const Uir* data() const { return __uir; }
   inline const QList<FirItem*>& firItems() const {

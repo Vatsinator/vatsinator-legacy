@@ -98,6 +98,8 @@ endif (NOT vatsinator_UI_IMPLEMENTATION)
 include (VatsinatorInstall)
 add_subdirectory(resources)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
+
 # Platform-specific actions
 if (LINUX)
     

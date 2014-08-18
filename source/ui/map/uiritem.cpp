@@ -35,8 +35,20 @@ UirItem::UirItem(const Uir* _uir, QObject* _parent) :
   }
 }
 
+bool
+UirItem::isVisible() const {
+  return !data()->isEmpty();
+}
+
+bool
+UirItem::isLabelVisible() const {
+  return false;
+}
+
 void
-UirItem::showDetails() const {}
+UirItem::showDetails() const {
+  
+}
 
 QString
 UirItem::tooltipText() const {
@@ -49,7 +61,11 @@ UirItem::position() const {
   return ll;
 }
 
-bool
-UirItem::needsDrawing() const {
-  return !data()->isEmpty();
+void
+UirItem::drawItem(QOpenGLShaderProgram*) const {
+  
+}
+
+void UirItem::drawLabel(QOpenGLShaderProgram*) const {
+
 }

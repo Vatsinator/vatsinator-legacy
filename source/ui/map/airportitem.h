@@ -39,12 +39,13 @@ public:
   
   virtual ~AirportItem();
   
-  void drawIcon(QOpenGLShaderProgram*) const;
-  void drawLabel(QOpenGLShaderProgram*) const;
   void drawLines() const;
   
-  bool needsDrawing() const override;
+  bool isVisible() const override;
+  bool isLabelVisible() const override;
   const LonLat& position() const override;
+  void drawItem(QOpenGLShaderProgram*) const override;
+  void drawLabel(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   

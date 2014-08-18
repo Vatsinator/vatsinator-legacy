@@ -50,6 +50,8 @@ public:
   explicit MapWidget(QWidget* = 0);
   virtual ~MapWidget();
   
+  bool event(QEvent*) override;
+  
   inline MapRenderer* renderer() { return __renderer; }
   
 public slots:
@@ -70,6 +72,16 @@ protected:
   void mouseMoveEvent(QMouseEvent*) override;
   
 private:
+  
+  /**
+   * Gets item under the mouse cursor. Nullptr if nothing.
+   */
+  const MapItem* __underMouse();
+  
+  /**
+   * Gets item under the given point. nullptr if nothing.
+   */
+  const MapItem* __underMouse(const QPoint&);
   
   /**
    * Updates the zoom factor.
@@ -139,7 +151,7 @@ private:
     /**
      * Latitude/longitude that the mouse cursor currently points at.
      */
-    inline const QPointF& geoPosition() const { return __geoPosition; }
+    inline const LonLat& geoPosition() const { return __geoPosition; }
     
     /**
      * Indicates whether any of the mouse buttons is pressed or not.

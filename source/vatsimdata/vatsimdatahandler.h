@@ -443,6 +443,11 @@ private:
    */
   QList<Client*> __newClients;
   
+  /**
+   * List of clients marked as invalid.
+   */
+  QList<Client*> __invalidClients;
+  
   /*
    * All airports, each instance wraps the record in the database.
    * ICAO <-> instance pairs

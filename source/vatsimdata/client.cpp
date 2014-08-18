@@ -86,6 +86,11 @@ Client::update(const QStringList& _data) {
   __timestamp = vApp()->vatsimDataHandler()->currentTimestamp();
 }
 
+void
+Client::invalidate() {
+  emit invalid();
+}
+
 bool
 Client::isOnline() const {
   return __timestamp == vApp()->vatsimDataHandler()->currentTimestamp();

@@ -29,6 +29,7 @@
 
 class QOpenGLShaderProgram;
 class Fir;
+class MapScene;
 class Texture;
 
 class FirItem : public QObject, public MapItem {
@@ -42,13 +43,12 @@ public:
   
   void drawBorders() const;
   void drawBackground() const;
-  void drawLabel(QOpenGLShaderProgram*) const;
   
-  /**
-   * Label coordinates.
-   */
-  bool needsDrawing() const override;
+  bool isVisible() const override;
+  bool isLabelVisible() const override;
   const LonLat& position() const override;
+  void drawItem(QOpenGLShaderProgram*) const override;
+  void drawLabel(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   
@@ -63,6 +63,7 @@ private slots:
   void __invalidate();
   
 private:
+  MapScene*  __scene;
   const Fir* __fir;
   LonLat     __position;
   

@@ -54,68 +54,6 @@ AirportItem::~AirportItem() {
 }
 
 void
-AirportItem::drawIcon(QOpenGLShaderProgram* _shader) const {
-  static const GLfloat iconRect[] = {
-    -0.04, -0.02,
-    -0.04,  0.06,
-     0.04,  0.06,
-     0.04,  0.06,
-     0.04, -0.02,
-    -0.04, -0.02
-  };
-  
-  static const GLfloat textureCoords[] = {
-    0.0f, 0.0f,
-    0.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, 0.0f,
-    0.0f, 0.0f
-  };
-  
-  if (!__icon)
-    __takeIcon();
-  
-  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), iconRect, 2);
-  
-  __icon->bind();
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-  __icon->release();
-}
-
-void
-AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
-  static const GLfloat labelRect[] = {
-    -0.08, -0.05333333,
-    -0.08,  0,
-     0.08,  0,
-     0.08,  0,
-     0.08, -0.05333333,
-    -0.08, -0.05333333
-  };
-  
-  static const GLfloat textureCoords[] = {
-    0.0f, 0.0f,
-    0.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, 1.0f,
-    1.0f, 0.0f,
-    0.0f, 0.0f
-  };
-  
-  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
-  
-  if (!__label.isCreated())
-    __initializeLabel();
-  
-  __label.bind();
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-  __label.release();
-}
-
-void
 AirportItem::drawLines() const {
   if (!__linesReady)
     __prepareLines();
@@ -146,13 +84,91 @@ AirportItem::drawLines() const {
 }
 
 bool
-AirportItem::needsDrawing() const {
-  return !__position.isNull();
+AirportItem::isVisible() const {
+  Q_ASSERT(!__position.isNull());
+  
+  if (data()->isEmpty())
+    return __scene->settings().view.empty_airports;
+  else
+    return __scene->settings().view.airports_layer;
+}
+
+bool
+AirportItem::isLabelVisible() const {
+  return __scene->settings().view.airport_labels;
 }
 
 const LonLat &
 AirportItem::position() const {
   return __position;
+}
+
+void
+AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
+  static constexpr float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
+  
+  static const GLfloat iconRect[] = {
+    -0.04, -0.02,
+    -0.04,  0.06,
+     0.04,  0.06,
+     0.04,  0.06,
+     0.04, -0.02,
+    -0.04, -0.02
+  };
+  
+  static const GLfloat textureCoords[] = {
+    0.0f, 0.0f,
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  if (!__icon)
+    __takeIcon();
+  
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), iconRect, 2);
+  _shader->setUniformValue(__scene->renderer()->programZLocation(), ActiveAirportsZ);
+  
+  __icon->bind();
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+//   __icon->release();
+}
+
+void
+AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
+  static const GLfloat labelRect[] = {
+    -0.08, -0.05333333,
+    -0.08,  0,
+     0.08,  0,
+     0.08,  0,
+     0.08, -0.05333333,
+    -0.08, -0.05333333
+  };
+  
+  static const GLfloat textureCoords[] = {
+    0.0f, 0.0f,
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  if (data()->isEmpty())
+    return;
+  
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
+  
+  if (!__label.isCreated())
+    __initializeLabel();
+  
+  __label.bind();
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  __label.release();
 }
 
 QString
