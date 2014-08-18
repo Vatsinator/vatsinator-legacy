@@ -20,12 +20,11 @@
 #include <QtCore>
 
 #include "db/airportdatabase.h"
-#include "glutils/texture.h"
-#include "modules/modelmatcher.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
+#include "ui/map/modelmatcher.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/airport.h"
@@ -236,7 +235,7 @@ FlightItem::__prepareLines() const {
 
 void
 FlightItem::__matchModel() const {
-  __model = ModelMatcher::getSingleton().matchMyModel(__pilot->aircraft());
+  __model = __scene->renderer()->models()->matchMyModel(__pilot->aircraft());
 }
 
 void

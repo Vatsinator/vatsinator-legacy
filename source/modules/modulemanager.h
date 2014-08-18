@@ -24,7 +24,6 @@
 
 #include <QObject>
 
-class ModelMatcher;
 class VatbookHandler;
 
 /**
@@ -44,7 +43,6 @@ public slots:
   void init();
 
 private:
-  ModelMatcher*   __modelsMatcher;
   VatbookHandler* __vatbookHandler;
 };
 

@@ -21,6 +21,7 @@
 
 #include "plugins/weatherforecastinterface.h"
 #include "storage/pluginmanager.h"
+#include "ui/pages/pluginlistwidgetitem.h"
 #include "vatsinatorapplication.h"
 
 #include "networkpage.h"
@@ -32,7 +33,7 @@ namespace DefaultSettings {
   static const bool    METARS_REFRESH           = true;
   static const bool    CACHE_ENABLED            = true;
   static const bool    DATABASE_INTEGRATION     = true;
-  static const QString WEATHER_FORECASTS_PROVIDER = "";
+  static const QString WEATHER_FORECASTS_PROVIDER = "none";
   static const QString WEATHER_TEMPERATURE_UNITS  = "Celsius";
 }
 
@@ -67,7 +68,7 @@ NetworkPage::update() const {
   setValue("cache_enabled", CachingCheckBox->isChecked());
   setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->text());
+  setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->data(Qt::UserRole));
   setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
 }
 
@@ -87,18 +88,20 @@ NetworkPage::restore(QSettings& _s) {
     _s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
   DatabaseIntegrationCheckBox->setChecked(
     _s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
+  QString weatherCurrent =
+    _s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
+  
+  PluginListWidgetItem* none = new PluginListWidgetItem(tr("None"), WeatherProviderListWidget);
+  none->setData(Qt::UserRole, QString("none"));
+  WeatherProviderListWidget->setCurrentItem(none);
   
   QList<WeatherForecastInterface*> weatherPlugins =
     vApp()->plugins()->plugins<WeatherForecastInterface>();
-  QString weatherCurrent =
-    _s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
-  int i = 1;
+  
   for (WeatherForecastInterface* w: weatherPlugins) {
-    WeatherProviderListWidget->addItem(w->providerName());
-    if (weatherCurrent == w->providerName())
-      WeatherProviderListWidget->setCurrentRow(i);
-    
-    i += 1;
+    PluginListWidgetItem* item = new PluginListWidgetItem(w->providerName(), WeatherProviderListWidget);
+    if (weatherCurrent == item->data(Qt::UserRole).toString())
+      WeatherProviderListWidget->setCurrentItem(item);
   }
   
   QString units;
@@ -129,7 +132,7 @@ NetworkPage::save(QSettings& _s) {
   _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
   _s.setValue("cache_enabled", CachingCheckBox->isChecked());
   _s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  _s.setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->text());
+  _s.setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->data(Qt::UserRole));
   _s.setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
 }
 

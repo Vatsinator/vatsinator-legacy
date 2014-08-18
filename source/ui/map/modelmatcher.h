@@ -1,6 +1,6 @@
 /*
     modelmatcher.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,19 +22,19 @@
 
 #include <QObject>
 #include <QString>
-#include <QList>
 #include <QMap>
+#include <QPair>
+#include <QList>
 
 #include "ui/notifiable.h"
-#include "singleton.h"
 
-class Texture;
+class QOpenGLTexture;
 
 /**
  * This class is responsible for matching user airplanes to 
  * corresponding models.
  */
-class ModelMatcher : public QObject, public Notifiable, public Singleton<ModelMatcher> {
+class ModelMatcher : public QObject, public Notifiable {
   Q_OBJECT
 
 public:
@@ -49,19 +49,22 @@ public:
    * @param acft Aircraft code that comes from the flight plan.
    * @return Model's texture ID.
    */
-  const Texture* matchMyModel(const QString&) const;
+  QOpenGLTexture* matchMyModel(const QString&) const;
   
 private:
   void __readModels();
-  
-private slots:
   void __loadPixmaps();
 
 private:
-
-  QMap<QString, QString>  __modelsFiles;
-  QMap<QString, Texture*> __modelsPixmaps;
-  QList<Texture*>         __pixmaps;
+  /*
+   * Aircraft <-> id pairs
+   */
+  QList<QPair<QString, QString>> __modelsIds;
+  
+  /*
+   * Id <-> texture pairs
+   */
+  QMap<QString, QOpenGLTexture*> __modelsPixmaps;
 
 };
 

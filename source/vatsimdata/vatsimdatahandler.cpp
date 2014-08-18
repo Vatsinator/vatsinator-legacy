@@ -777,7 +777,8 @@ VatsimDataHandler::__handleFetchError() {
 void
 VatsimDataHandler::__reloadWeatherForecast() {
   QString desired = SM::get("network.weather_forecast_provider").toString();
-  if (desired != "None") {
+  /* TODO Plugin selection needs to be done better  */
+  if (desired != "none") {
     if (!__weatherForecast || desired != __weatherForecast->providerName()) {
       QList<WeatherForecastInterface*> weatherPlugins =
           vApp()->plugins()->plugins<WeatherForecastInterface>();

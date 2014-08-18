@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modules/modelmatcher.h"
 #include "modules/vatbookhandler.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -25,19 +24,16 @@
 #include "modulemanager.h"
 
 ModuleManager::ModuleManager() :
-    __modelsMatcher(nullptr),
     __vatbookHandler(nullptr) {
   connect(vApp()->userInterface(),      SIGNAL(initialized()),
           this,                         SLOT(init()));
 }
 
 ModuleManager::~ModuleManager() {
-  delete __modelsMatcher;
   delete __vatbookHandler;
 }
 
 void
 ModuleManager::init() {
-  __modelsMatcher = new ModelMatcher();
   __vatbookHandler = new VatbookHandler();
 }

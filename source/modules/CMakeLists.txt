@@ -1,7 +1,6 @@
 vatsinator_start_subdirectory (modules)
 
 set (modules_SRCS
-    modelmatcher.cpp
     modulemanager.cpp
     vatbookhandler.cpp
     
@@ -13,7 +12,6 @@ set (modules_SRCS
 vatsinator_subdirectory_sources (modules "${modules_SRCS}")
 
 set (modules_MOC_SRCS
-    modelmatcher.h
     modulemanager.h
     vatbookhandler.h
     

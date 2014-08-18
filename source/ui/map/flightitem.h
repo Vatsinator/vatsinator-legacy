@@ -26,7 +26,6 @@
 
 class Pilot;
 class MapScene;
-class Texture;
 
 class FlightItem : public QObject, public MapItem {
   Q_OBJECT
@@ -71,7 +70,7 @@ private:
   const Pilot*  __pilot;
   LonLat        __position;
   
-  mutable const Texture* __model;
+  mutable QOpenGLTexture* __model;
   mutable QOpenGLTexture __label;
   
   mutable struct {

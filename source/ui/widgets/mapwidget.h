@@ -39,7 +39,6 @@ class MapWidget : public QGLWidget {
   friend class MapScene;
 
 signals:
-  void glReady();
   
   void menuRequest(const MapItem*);
   void menuRequest();
