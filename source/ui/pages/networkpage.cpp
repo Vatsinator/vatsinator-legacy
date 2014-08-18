@@ -32,7 +32,7 @@ namespace DefaultSettings {
   static const bool    METARS_REFRESH           = true;
   static const bool    CACHE_ENABLED            = true;
   static const bool    DATABASE_INTEGRATION     = true;
-  static const QString WEATHER_FORECASTS_PROVIDER = "";
+  static const QString WEATHER_FORECASTS_PROVIDER = "None";
   static const QString WEATHER_TEMPERATURE_UNITS  = "Celsius";
 }
 
