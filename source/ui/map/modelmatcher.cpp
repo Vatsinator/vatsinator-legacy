@@ -17,6 +17,7 @@
 */
 
 #include <QtWidgets>
+#include <QOpenGLTexture>
 
 #include "glutils/glresourcemanager.h"
 #include "ui/widgets/mapwidget.h"
@@ -35,27 +36,30 @@ ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
 }
 
 ModelMatcher::~ModelMatcher() {
-  qDeleteAll(__pixmaps);
+  for (auto it: __modelsPixmaps) {
+    delete it;
+  }
 }
 
-const Texture*
+QOpenGLTexture*
 ModelMatcher::matchMyModel(const QString& _acft) const {
   if (_acft.isEmpty())
-    return __modelsPixmaps["ZZZZ"];
+    return __modelsPixmaps["1p"];
   
-  for (auto it = __modelsPixmaps.begin(); it != __modelsPixmaps.end(); ++it)
-    if (_acft.contains(it.key(), Qt::CaseInsensitive))
-      return it.value();
-
-  return __modelsPixmaps["ZZZZ"];
+  for (auto pair: __modelsIds) {
+    if (_acft.contains(pair.first)) {
+      return __modelsPixmaps[pair.second];
+    }
+  }
+  
+  return __modelsPixmaps["1p"];
 }
 
 void
 ModelMatcher::__readModels() {
-  __modelsFiles["ZZZZ"] = "1p"; // default
+  __modelsIds << qMakePair(QString("ZZZZ"), QString("1p"));
 
   QFile modelsFile(FileManager::path("data/model"));
-
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     notifyWarning(tr("File %1 could not be opened! Check file permissions or reinstall the application.").arg(modelsFile.fileName()));
     return;
@@ -68,25 +72,22 @@ ModelMatcher::__readModels() {
     if (line.startsWith('#') || line.isEmpty())
       continue;
 
-    auto splitted = line.split(' ');
-    __modelsFiles.insert(splitted[0], splitted[1]);
+    auto split = line.split(' ');
+    __modelsIds << qMakePair(split[0], split[1]);
   }
 }
 
 void
 ModelMatcher::__loadPixmaps() {
-  QMap<QString, Texture*> pixmapsLoaded;
-  QList<QString> models = { "1p", "2p", "4p", "2j", "3j", "4j", "conc" };
-  
-  for (const QString& s: models) {
-    QString mPath = ":/pixmaps/model_" % s % "32.png";
-    Texture* t = new Texture(mPath);
-    __pixmaps << t;
-    pixmapsLoaded.insert(s, t);
-  }
-
-  for (auto it = __modelsFiles.begin(); it != __modelsFiles.end(); ++it) {
-    Q_ASSERT(pixmapsLoaded.contains(it.value()));
-    __modelsPixmaps.insert(it.key(), pixmapsLoaded[it.value()]);
+  for (auto pair: __modelsIds) {
+    if (!__modelsPixmaps.contains(pair.second)) {
+      QString mPath = ":/pixmaps/model_" % pair.second % "32.png";
+      QImage model(mPath);
+      Q_ASSERT(!model.isNull());
+      QOpenGLTexture* t = new QOpenGLTexture(QOpenGLTexture::Target2D);
+      __modelsPixmaps.insert(pair.second, t);
+      t->setData(model.mirrored());
+      t->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+    }
   }
 }

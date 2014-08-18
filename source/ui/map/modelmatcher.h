@@ -22,12 +22,13 @@
 
 #include <QObject>
 #include <QString>
-#include <QList>
 #include <QMap>
+#include <QPair>
+#include <QList>
 
 #include "ui/notifiable.h"
 
-class Texture;
+class QOpenGLTexture;
 
 /**
  * This class is responsible for matching user airplanes to 
@@ -48,17 +49,22 @@ public:
    * @param acft Aircraft code that comes from the flight plan.
    * @return Model's texture ID.
    */
-  const Texture* matchMyModel(const QString&) const;
+  QOpenGLTexture* matchMyModel(const QString&) const;
   
 private:
   void __readModels();
   void __loadPixmaps();
 
 private:
-
-  QMap<QString, QString>  __modelsFiles;
-  QMap<QString, Texture*> __modelsPixmaps;
-  QList<Texture*>         __pixmaps;
+  /*
+   * Aircraft <-> id pairs
+   */
+  QList<QPair<QString, QString>> __modelsIds;
+  
+  /*
+   * Id <-> texture pairs
+   */
+  QMap<QString, QOpenGLTexture*> __modelsPixmaps;
 
 };
 

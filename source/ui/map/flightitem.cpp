@@ -20,7 +20,6 @@
 #include <QtCore>
 
 #include "db/airportdatabase.h"
-#include "glutils/texture.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
