@@ -28,6 +28,7 @@
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapitem.h"
 #include "ui/map/mapscene.h"
+#include "ui/map/modelmatcher.h"
 #include "ui/map/uiritem.h"
 #include "ui/map/worldpolygon.h"
 #include "vatsimdata/client/pilot.h"
@@ -46,6 +47,7 @@ MapRenderer::MapRenderer(QObject* _parent) :
     QObject(_parent),
     __world(new WorldPolygon()),
     __iconKeeper(new IconKeeper(this)),
+    __modelMatcher(new ModelMatcher(this)),
     __scene(new MapScene(this)) {
   
   __createShaderPrograms();

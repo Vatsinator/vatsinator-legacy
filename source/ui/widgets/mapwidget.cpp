@@ -100,10 +100,7 @@ MapWidget::redraw() {
 void
 MapWidget::initializeGL() {
   initGLExtensionsPointers();
-  
   __renderer = new MapRenderer();
-  
-  emit glReady();
 }
 
 void

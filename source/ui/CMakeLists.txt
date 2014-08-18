@@ -46,6 +46,7 @@ set (ui_SRCS
     map/mapitem.cpp
     map/maprenderer.cpp
     map/mapscene.cpp
+    map/modelmatcher.cpp
     map/uiritem.cpp
     map/worldpolygon.cpp
 )
@@ -120,6 +121,7 @@ set (ui_MOC_SRCS
     map/iconkeeper.h
     map/maprenderer.h
     map/mapscene.h
+    map/modelmatcher.h
     map/uiritem.h
 )
 
