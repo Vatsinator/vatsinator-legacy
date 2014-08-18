@@ -40,20 +40,13 @@ WorldPolygon::~WorldPolygon() {
 
 void
 WorldPolygon::paint() {
-#ifndef CONFIG_NO_VBO
   __vao.bind();
   glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT, 0);
   __vao.release();
-#else
-  glVertexPointer(2, GL_FLOAT, 0, WorldMap::getSingleton().borders().constData());
-  glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT,
-                 WorldMap::getSingleton().triangles().constData());
-#endif
 }
 
 void
 WorldPolygon::__initializeBuffers() {
-#ifndef CONFIG_NO_VBO
   const QVector<Point>& bordersData = WorldMap::getSingleton().borders();
   Q_ASSERT(!bordersData.isEmpty());
   
@@ -83,7 +76,6 @@ WorldPolygon::__initializeBuffers() {
   __vao.release();
   __borders.release();
   __triangles.release();
-#endif
   
   __vertices = WorldMap::getSingleton().triangles().size();
 }

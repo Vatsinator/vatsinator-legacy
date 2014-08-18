@@ -89,9 +89,6 @@ else (WIN32)
         ${QUAZIP_LIBRARIES}
         ${QJSON_LIBRARIES}
   )
-  
-  # disable VBO on Win32 build - MinGW doesn't handle it properly
-  set (CONFIG_NO_VBO 1)
 endif (LINUX)
 
 if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
