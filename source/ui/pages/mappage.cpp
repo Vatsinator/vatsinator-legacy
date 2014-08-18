@@ -39,7 +39,8 @@ namespace DefaultSettings {
   static const QColor PILOT_TO_DESTINATION_LINE_COLOR = { 133, 164, 164 };
 }
 
-MapPage::MapPage(QWidget* _parent) : AbstractSettingsPage(_parent) {
+MapPage::MapPage(QWidget* _parent) :
+    QWidget(_parent) {
   setupUi(this);
   
   connect(FirFontSelectionButton,       SIGNAL(clicked()),
@@ -61,12 +62,12 @@ MapPage::listIcon() const {
 }
 
 QString
-MapPage::pageName() const {
+MapPage::moduleId() const {
   return "map";
 }
 
 void
-MapPage::updateFromUi() const {
+MapPage::update() const {
   setValue("zoom_coefficient",
            ZoomCoefficientSlider->value());
   setValue("staffed_fir_borders_color",

@@ -101,9 +101,13 @@ else (WIN32)
         Qt5::WinMain
       )
     endif (MINGW)
-	# disable VBO on Win32 build - Vatsinator doesn't handle it properly
-	  set (CONFIG_NO_VBO 1)
 endif (LINUX)
+
+if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+  set (UI_IMPLEMENTATION "WidgetsUserInterface")
+else (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+  message(FATAL_ERROR "Known user interface implementations: widgets")
+endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/config.h

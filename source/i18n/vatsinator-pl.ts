@@ -218,7 +218,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="94"/>
         <source>No plugin selected</source>
-        <translation type="unfinished"/>
+        <translation>Brak wtyczki</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="131"/>
@@ -228,12 +228,12 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="174"/>
         <source>No forecast for %1, %2</source>
-        <translation type="unfinished"/>
+        <translation>Brak prognozy pogody dla lokalizacji %1, %2</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="178"/>
         <source>Network error</source>
-        <translation type="unfinished"/>
+        <translation>Błąd połączenia</translation>
     </message>
 </context>
 <context>
@@ -637,7 +637,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="148"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="151"/>
         <source>%1 - flight details</source>
         <translation>%1 - szczegóły lotu</translation>
     </message>
@@ -787,28 +787,28 @@
         <translation>Zamknij</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="181"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
         <source>%1 feet</source>
         <translation>%1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="182"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="200"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="203"/>
         <source>%1 kts</source>
         <translation>%1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="186"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="189"/>
         <source>airborne</source>
         <translation>w powietrzu</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="188"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="191"/>
         <source>departing</source>
         <translation>startuje</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="190"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="193"/>
         <source>arrived</source>
         <translation>wylądował</translation>
     </message>
@@ -972,6 +972,14 @@
     </message>
 </context>
 <context>
+    <name>MapWidget</name>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="668"/>
+        <source>Flights nearby</source>
+        <translation>Loty nieopodal</translation>
+    </message>
+</context>
+<context>
     <name>MetarAction</name>
     <message>
         <location filename="../ui/actions/metaraction.cpp" line="24"/>
@@ -1126,28 +1134,28 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="269"/>
         <source>Wea&amp;ther forecast provider</source>
-        <translation type="unfinished"/>
+        <translation>Dostawca prognozy pogody</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="279"/>
         <source>None</source>
         <extracomment>&amp;Label for &quot;no weather forecast provider&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Brak</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="305"/>
         <source>Units:</source>
-        <translation type="unfinished"/>
+        <translation>Jednostki:</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="312"/>
         <source>Celsius</source>
-        <translation type="unfinished"/>
+        <translation>Celsjusz</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="322"/>
         <source>Fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation>Fahrenheit</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/pages/networkpage.cpp" line="138"/>
@@ -1253,77 +1261,77 @@
 <context>
     <name>VatsinatorWindow</name>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="95"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="83"/>
         <source>Clients:</source>
         <translation>Klientów:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="170"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
         <source>&amp;Vatsinator</source>
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
         <source>&amp;Help</source>
         <translation>&amp;Pomoc</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="196"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="184"/>
         <source>&amp;Settings</source>
         <translation>&amp;Ustawienia</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="210"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="198"/>
         <source>Exit</source>
         <translation>Wyjście</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="213"/>
         <source>About</source>
         <translation>O programie</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="225"/>
         <source>METARs...</source>
         <translation>Depesze METAR...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="240"/>
         <source>Refresh</source>
         <translation>Odśwież</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="252"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="275"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="263"/>
         <source>Flight list...</source>
         <translation>Lista lotów...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="280"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="268"/>
         <source>ATC list...</source>
         <translation>Lista kontrolerów...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="291"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>Enable auto-updates</source>
         <translation>Automatyczne aktualizacje</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="287"/>
         <source>Show home location</source>
         <translation>Pokaż miejsce domowe</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="302"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="290"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="311"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="299"/>
         <source>Database...</source>
         <translation>Baza danych...</translation>
     </message>

@@ -36,11 +36,13 @@ public:
   
   void drawCircle() const;
   
-  bool needsDrawing() const override;
+  bool isVisible() const override;
+  bool isLabelVisible() const override;
   const LonLat& position() const override;
+  void drawItem(QOpenGLShaderProgram*) const override;
+  void drawLabel(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
-  QMenu* menu(QWidget*) const override;
-  void showDetailsWindow() const override;
+  void showDetails() const override;
   
   inline const Airport* data() const { return __airport; }
   

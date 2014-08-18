@@ -28,7 +28,7 @@
 
 class Airport;
 class ApproachCircleItem;
-class Texture;
+class MapScene;
 
 class AirportItem : public QObject, public MapItem {
   Q_OBJECT
@@ -39,35 +39,36 @@ public:
   
   virtual ~AirportItem();
   
-  void drawIcon() const;
-  void drawLabel() const;
   void drawLines() const;
   
-  bool needsDrawing() const override;
+  bool isVisible() const override;
+  bool isLabelVisible() const override;
   const LonLat& position() const override;
+  void drawItem(QOpenGLShaderProgram*) const override;
+  void drawLabel(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
-  QMenu* menu(QWidget*) const override;
-  void showDetailsWindow() const override;
+  void showDetails() const override;
   
   inline const Airport* data() const { return __airport; }
   inline const ApproachCircleItem* approachCircle() const { return __approachCircle; }
   
 private:
-  void __makeIcon() const;
+  void __takeIcon() const;
   void __prepareLines() const;
-  void __generateLabel() const;
+  void __initializeLabel() const;
 
 private slots:
   void __reloadSettings();
   void __invalidate();
   
 private:
+  MapScene*             __scene;
   const Airport*        __airport;
   LonLat                __position;
   ApproachCircleItem*   __approachCircle;
   
-  mutable const Texture* __icon;
-  mutable Texture*       __label;
+  mutable QOpenGLTexture* __icon;
+  mutable QOpenGLTexture  __label;
   
   mutable struct {
     QVector<GLfloat>    coords;
@@ -75,27 +76,6 @@ private:
   } __otpLines, __ptdLines; // OriginToPilot & PilotToDestination
   
   mutable bool  __linesReady;
-  
-  /**
-   * Class that loads and keeps icons.
-   */
-  class IconKeeper {
-  public:
-    IconKeeper();
-    ~IconKeeper();
-    
-    const Texture* emptyAirportIcon() const;
-    const Texture* activeAirportIcon() const;
-    const Texture* activeStaffedAirportIcon() const;
-    
-  private:
-    mutable Texture* __emptyAirportIcon;
-    mutable Texture* __activeAirportIcon;
-    mutable Texture* __activeStaffedAirportIcon;
-    
-  };
-  
-  static IconKeeper             __icons;
   
 };
 

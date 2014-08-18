@@ -17,108 +17,123 @@
  *
  */
 
+<<<<<<< HEAD
 #include "config.h"
+=======
+#include <QtCore>
+
+>>>>>>> misc/qt5
 #include "db/firdatabase.h"
+#include "glutils/glextensions.h"
 #include "glutils/texture.h"
-#include "glutils/vertexbufferobject.h"
 #include "storage/settingsmanager.h"
-#include "ui/actions/clientdetailsaction.h"
-#include "ui/actions/firdetailsaction.h"
 #include "ui/map/mapconfig.h"
+#include "ui/map/maprenderer.h"
+#include "ui/map/mapscene.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "firitem.h"
 
 FirItem::FirItem(const Fir* _fir, QObject* _parent) :
     QObject(_parent),
+    __scene(qobject_cast<MapScene*>(_parent)),
     __fir(_fir),
     __position(_fir->data()->header.textPosition.x, _fir->data()->header.textPosition.y),
-    __borders(nullptr),
-    __triangles(nullptr),
-    __label(nullptr) {
-  __prepareVbo();
+    __borders(QOpenGLBuffer::VertexBuffer),
+    __triangles(QOpenGLBuffer::IndexBuffer),
+    __label(QOpenGLTexture::Target2D) {
+  __initializeBuffers();
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__resetLabel()));
   connect(__fir,                                SIGNAL(updated()),
           this,                                 SLOT(__invalidate()));
 }
 
 FirItem::~FirItem() {
-  if (__label)
-    delete __label;
-  
-#ifndef CONFIG_NO_VBO
-  if (__triangles)
-    delete __triangles;
-  
-  delete __borders;
-#endif
+  __label.destroy();
+  __borders.destroy();
+  __triangles.destroy();
 }
 
 void
 FirItem::drawBorders() const {
-#ifdef CONFIG_NO_VBO
-  glVertexPointer(2, GL_FLOAT, 0, __fir->data()->borders.constData());
-  glDrawArrays(GL_LINE_LOOP, 0, __fir->data()->borders.size());
-#else
-  __borders->bind();
-  
-  glVertexPointer(2, GL_FLOAT, 0, 0);
-  glDrawArrays(GL_LINE_LOOP, 0, __borders->length());
-  
-  __borders->unbind();
-#endif
+  __vaoBorders.bind();
+  glDrawArrays(GL_LINE_LOOP, 0, __bordersVertices);
+  __vaoBorders.release();
 }
 
 void
 FirItem::drawBackground() const {
-#ifdef CONFIG_NO_VBO
-  if (!__fir->data()->triangles.isEmpty()) {
-    glVertexPointer(2, GL_FLOAT, 0, __fir->data()->borders.constData());
-    glDrawElements(GL_TRIANGLES, __fir->data()->triangles.size(), GL_UNSIGNED_SHORT, __fir->data()->triangles.constData());
-  }
-#else
-  __borders->bind();
-  __triangles->bind();
-  
-  glVertexPointer(2, GL_FLOAT, 0, 0);
-  glDrawElements(GL_TRIANGLES, __triangles->length(), GL_UNSIGNED_SHORT, 0);
-  
-  __triangles->unbind();
-  __borders->unbind();
-#endif
-}
-
-void
-FirItem::drawLabel() const {
-  static const GLfloat labelRect[] = {
-    -0.08f, -0.05333333f,
-    -0.08f,  0.05333333f,
-     0.08f,  0.05333333f,
-     0.08f, -0.05333333f
-  };
-  
-  if (!__label)
-    __generateLabel();
-  
-  __label->bind();
-  glVertexPointer(2, GL_FLOAT, 0, labelRect);
-  glDrawArrays(GL_QUADS, 0, 4);
-  __label->unbind();
+  __vaoTriangles.bind();
+  glDrawElements(GL_TRIANGLES, __trianglesVertices, GL_UNSIGNED_SHORT, 0);
+  __vaoTriangles.release();
 }
 
 bool
-FirItem::needsDrawing() const {
-  return !__position.isNull();
+FirItem::isVisible() const {
+  if (position().isNull())
+    return false;
+  
+  if (data()->isEmpty())
+    return __scene->settings().view.unstaffed_firs;
+  else
+    return __scene->settings().view.staffed_firs;
+}
+
+bool
+FirItem::isLabelVisible() const {
+  if (data()->isEmpty())
+    return __scene->settings().view.unstaffed_firs;
+  else
+    return __scene->settings().view.staffed_firs;
 }
 
 const LonLat &
 FirItem::position() const {
   return __position;
+}
+
+void
+FirItem::drawItem(QOpenGLShaderProgram* _shader) const {
+  static constexpr float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
+  
+  static const GLfloat labelRect[] = {
+    -0.08f, -0.05333333f,
+    -0.08f,  0.05333333f,
+     0.08f,  0.05333333f,
+     0.08f,  0.05333333f,
+     0.08f, -0.05333333f,
+    -0.08f, -0.05333333f
+  };
+  
+  static const GLfloat textureCoords[] = {
+    0.0f, 0.0f,
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  if (!__label.isCreated())
+    __initializeLabel();
+  
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
+  _shader->setUniformValue(__scene->renderer()->programZLocation(), FirsZ);
+  
+  __label.bind();
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+//   __label.release();
+}
+
+void FirItem::drawLabel(QOpenGLShaderProgram*) const {
+  
 }
 
 QString
@@ -147,68 +162,64 @@ FirItem::tooltipText() const {
   if (desc.isEmpty() && staff.isEmpty())
     return QString();
   else
-    return QString("<p style='white-space:nowrap'><center>" % desc % staff % "</center></p>");
-}
-
-QMenu *
-FirItem::menu(QWidget* _parent) const {
-  QMenu* menu = new QMenu(data()->icao(), _parent);
-  
-  FirDetailsAction* showFir = new FirDetailsAction(
-      data(),
-      tr("%1 details").arg(data()->icao()),
-      _parent
-    );
-  connect(showFir,                              SIGNAL(triggered(const Fir*)),
-          UserInterface::getSingletonPtr(),     SLOT(showDetailsWindow(const Fir*)));
-  menu->addAction(showFir);
-  
-  for (const Controller* c: data()->staff()->staff()) {
-    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-    connect(cda,                                SIGNAL(triggered(const Client*)),
-            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
-    menu->addAction(cda);
-  }
-  
-  for (const Controller* c: data()->uirStaff()->staff()) {
-    ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-    connect(cda,                                SIGNAL(triggered(const Client*)),
-            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Client*)));
-    menu->addAction(cda);
-  }
-  
-  return menu;
+    return QString("<p style='white-space:nowrap'><center>") % desc % staff % QString("</center></p>");
 }
 
 void
-FirItem::showDetailsWindow() const {
-  UserInterface::getSingleton().showDetailsWindow(data());
+FirItem::showDetails() const {
+  vApp()->userInterface()->showDetails(data());
 }
 
 void
-FirItem::__prepareVbo() {
-#ifndef CONFIG_NO_VBO
+FirItem::__initializeBuffers() {
   auto& borders = __fir->data()->borders;
   auto& triangles = __fir->data()->triangles;
   
-  __borders = new VertexBufferObject(GL_ARRAY_BUFFER);
-  __borders->sendData(borders.size() * sizeof(borders[0]), &borders[0]);
-  __borders->setLength(borders.size());
+  __borders.create();
+  Q_ASSERT(__borders.isCreated());
+  __borders.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  __borders.bind();
+  __borders.allocate(borders.constData(), sizeof(Point) * borders.size());
+  __borders.release();
   
-  if (!triangles.isEmpty()) {
-    __triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-    __triangles->sendData(triangles.size() * sizeof(triangles[0]), &triangles[0]);
-    __triangles->setLength(triangles.size());
-  }
-#endif
+  __triangles.create();
+  Q_ASSERT(__triangles.isCreated());
+  __triangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  __triangles.bind();
+  __triangles.allocate(triangles.constData(), sizeof(unsigned int) * triangles.size());
+  __triangles.release();
+  
+  __vaoBorders.create();
+  Q_ASSERT(__vaoBorders.isCreated());
+  __vaoBorders.bind();
+  __borders.bind();
+  glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(MapRenderer::vertexLocation());
+  __vaoBorders.release();
+  __borders.release();
+  __triangles.release();
+  
+  __vaoTriangles.create();
+  Q_ASSERT(__vaoTriangles.isCreated());
+  __vaoTriangles.bind();
+  __borders.bind();
+  __triangles.bind();
+  glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(MapRenderer::vertexLocation());
+  __vaoTriangles.release();
+  __borders.release();
+  __triangles.release();
+  
+  __bordersVertices = borders.size();
+  __trianglesVertices = triangles.size();
 }
 
 void
-FirItem::__generateLabel() const {
+FirItem::__initializeLabel() const {
   static QRect labelRect(0, 4, 64, 24);
   
-  if (__label)
-    delete __label;
+  if (__label.isCreated())
+    __label.destroy();
   
   QString icao(__fir->icao());
   if (__fir->isOceanic())
@@ -235,17 +246,16 @@ FirItem::__generateLabel() const {
   }
   
   painter.setPen(color);
-  
   painter.drawText(labelRect, Qt::AlignCenter | Qt::TextWordWrap, icao);
-  __label = new Texture(temp);
+  
+  __label.setData(temp.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+  __label.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
 }
 
 void
 FirItem::__resetLabel() {
-  if (__label) {
-    delete __label;
-    __label = nullptr;
-  }
+  if (__label.isCreated())
+    __label.destroy();
 }
 
 void

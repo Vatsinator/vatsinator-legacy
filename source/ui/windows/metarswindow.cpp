@@ -22,6 +22,7 @@
 #include "ui/userinterface.h"
 #include "vatsimdata/models/metarlistmodel.h"
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsinatorapplication.h"
 
 #include "metarswindow.h"
 
@@ -47,8 +48,8 @@ MetarsWindow::MetarsWindow(QWidget* _parent) :
           this,             SLOT(__handleTextChange(const QString&)));
   connect(__metarsHandler,  SIGNAL(newMetarsAvailable()),
           this,             SLOT(__handleNewMetars()));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(__enableButtons()));
+  connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
+          this,                         SLOT(__enableButtons()));
   
   FetchButton->setEnabled(false);
   MetarsDisplay->setModel(__metarsHandler);

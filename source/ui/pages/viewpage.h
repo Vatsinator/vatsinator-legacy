@@ -20,15 +20,14 @@
 #ifndef VIEWPAGE_H
 #define VIEWPAGE_H
 
-#include "ui/ui_viewpage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include <QWidget>
 
-class ViewPage :
-    public AbstractSettingsPage,
-    private Ui::ViewPage {
+#include "ui/ui_viewpage.h"
+#include "storage/abstractsettingsmodule.h"
+
+class ViewPage : public QWidget, public AbstractSettingsModule, private Ui::ViewPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(View)
   
 public:
 
@@ -36,7 +35,7 @@ public:
   
   QString listElement() const;
   QString listIcon() const;
-  QString pageName() const;
+  QString moduleId() const;
   
   /**
    * @variables
@@ -52,7 +51,7 @@ public:
    * 
    * airport_labels:                    bool
    */
-  void updateFromUi() const;
+  void update() const;
 
 protected:
   void restore(QSettings&);

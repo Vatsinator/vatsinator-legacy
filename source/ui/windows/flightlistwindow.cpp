@@ -19,9 +19,11 @@
 #include <QtWidgets>
 
 #include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/client/pilot.h"
 #include "vatsimdata/models/flighttablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "flightlistwindow.h"
 
@@ -46,7 +48,7 @@ FlightListWindow::showEvent(QShowEvent* _event) {
   if (auto m = FlightsTable->model())
     m->deleteLater();
   
-  FlightsTable->setModel(VatsimDataHandler::getSingleton().flightTableModel());
+  FlightsTable->setModel(vApp()->vatsimDataHandler()->flightTableModel());
   FlightsTable->hideColumn(FlightTableModel::Button);
   __resizeColumns();
   
@@ -73,7 +75,7 @@ void
 FlightListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast<const FlightTableModel*>(_index.model()));
 
-  UserInterface::getSingleton().showDetailsWindow(
+  vApp()->userInterface()->showDetails(
     (qobject_cast<const FlightTableModel*>(_index.model()))->flights()[_index.row()]
   );
 }

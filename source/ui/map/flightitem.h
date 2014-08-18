@@ -25,6 +25,7 @@
 #include "ui/map/mapitem.h"
 
 class Pilot;
+class MapScene;
 class Texture;
 
 class FlightItem : public QObject, public MapItem {
@@ -44,20 +45,20 @@ public:
   
   virtual ~FlightItem();
   
-  void drawModel() const;
-  void drawLabel() const;
-  void drawLines(LineTypes) const;
+  void drawLines(LineTypes, QOpenGLShaderProgram*) const;
   
-  bool needsDrawing() const override;
+  bool isVisible() const override;
+  bool isLabelVisible() const override;
   const LonLat& position() const override;
+  void drawItem(QOpenGLShaderProgram*) const override;
+  void drawLabel(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
-  QMenu* menu(QWidget*) const override;
-  void showDetailsWindow() const override;
+  void showDetails() const override;
   
   inline const Pilot* data() const { return __pilot; }
   
 private:
-  void __generateLabel() const;
+  void __initializeLabel() const;
   void __prepareLines() const;
   void __matchModel() const;
   
@@ -66,11 +67,12 @@ private slots:
   void __invalidate();
   
 private:
+  MapScene*     __scene;
   const Pilot*  __pilot;
   LonLat        __position;
   
   mutable const Texture* __model;
-  mutable Texture*       __label;
+  mutable QOpenGLTexture __label;
   
   mutable struct {
     QVector<GLfloat>    coords;

@@ -32,11 +32,6 @@
 static const qreal PilotToAirport = 0.1;
 
 namespace {
-
-  inline qreal deg2Rad(qreal deg) {
-    static const qreal PI = 3.14159265359;
-    return deg * PI / 180;
-  }
   
   /**
    * Checks whether the given line crosses the IDL or the Greenwich Meridian.
@@ -119,6 +114,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __groundSpeed(_data[8].toInt()),
     __squawk(_data[17]),
     __aircraft(_data[9]),
+    __oldPosition(Client::position()),
     __tas(_data[10].toInt()),
     __flightRules(_data[21] == "I" ? Ifr : Vfr),
     __std(QTime::fromString(_data[22], "hhmm")),
@@ -131,6 +127,8 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __origin(nullptr),
     __destination(nullptr),
     __prefiledOnly(_prefiled) {
+  
+//   Q_ASSERT(!position().isNull());
     
   // vatsim sometimes skips the 0 on the beginning
   if (__squawk.length() == 3)
@@ -149,8 +147,10 @@ Pilot::~Pilot() {}
 
 void
 Pilot::update(const QStringList& _data) {
+  __oldPosition = position();
   Client::update(_data);
   
+  __prefiledOnly = false;
   __altitude = _data[7].toInt();
   __groundSpeed = _data[8].toInt();
   __squawk = _data[17];
@@ -162,17 +162,21 @@ Pilot::update(const QStringList& _data) {
   __remarks = _data[29];
   __heading = _data[38].toUInt();
   __pressure = Pressure{ _data[39], _data[40] };
-  __route = Route{ _data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper() };
   
   __discoverFlightPhase();
   
-  // update airports if anything changed
+  // update airports if anything has changed
+  QString tOrigin(_data[11].toUpper());
+  QString tDestination(_data[13].toUpper());
   if (
-    !origin()      || origin()->icao() != __route.origin        ||
-    !destination() || destination()->icao() != __route.origin
-  )
+    !origin()      || origin()->icao() != tOrigin ||
+    !destination() || destination()->icao() != tDestination
+  ) {
+    __route = Route{ tOrigin, tDestination, _data[30], _data[12].toUpper() };
     __updateAirports();
-    __fixupRoute();
+  }
+  
+  __fixupRoute();
   
   if (__squawk.length() == 3)
     __squawk.prepend("0");
@@ -199,14 +203,14 @@ Pilot::eta() const {
   if (__eta.isValid())
     return __eta;
   
-  const Airport* to = VatsimDataHandler::getSingleton().findAirport(__route.destination);
+  const Airport* to = vApp()->vatsimDataHandler()->findAirport(__route.destination);
   if (to) {
     // calculate distance between pilot and destination airport
     qreal dist = VatsimDataHandler::nmDistance(
-        deg2Rad(position().latitude()),
-        deg2Rad(position().longitude()),
-        deg2Rad(to->data()->latitude),
-        deg2Rad(to->data()->longitude)
+        qDegreesToRadians(position().latitude()),
+        qDegreesToRadians(position().longitude()),
+        qDegreesToRadians(to->data()->latitude),
+        qDegreesToRadians(to->data()->longitude)
       );
     
     int secs = (dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0;
@@ -227,22 +231,22 @@ Pilot::progress() const {
     return 0;
   
   if (__progress == -1) {
-    const Airport* from = VatsimDataHandler::getSingleton().findAirport(__route.origin);
-    const Airport* to = VatsimDataHandler::getSingleton().findAirport(__route.destination);
+    const Airport* from = vApp()->vatsimDataHandler()->findAirport(__route.origin);
+    const Airport* to = vApp()->vatsimDataHandler()->findAirport(__route.destination);
     
     if (from && to) {
       qreal total = VatsimDataHandler::nmDistance(
-        deg2Rad(from->data()->latitude),
-        deg2Rad(from->data()->longitude),
-        deg2Rad(to->data()->latitude),
-        deg2Rad(to->data()->longitude)
+        qDegreesToRadians(from->data()->latitude),
+        qDegreesToRadians(from->data()->longitude),
+        qDegreesToRadians(to->data()->latitude),
+        qDegreesToRadians(to->data()->longitude)
       );
       
       qreal left = VatsimDataHandler::nmDistance(
-        deg2Rad(position().latitude()),
-        deg2Rad(position().longitude()),
-        deg2Rad(to->data()->latitude),
-        deg2Rad(to->data()->longitude)
+        qDegreesToRadians(position().latitude()),
+        qDegreesToRadians(position().longitude()),
+        qDegreesToRadians(to->data()->latitude),
+        qDegreesToRadians(to->data()->longitude)
       );
       
       __progress = 100 - (100 * left / total);
@@ -256,7 +260,7 @@ Pilot::progress() const {
 
 void Pilot::__updateAirports() {
   if (!__route.origin.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__route.origin);
+    Airport* ap = vApp()->vatsimDataHandler()->findAirport(__route.origin);
     if (ap) {
       ap->addOutbound(this);
       __origin = ap;
@@ -272,7 +276,7 @@ void Pilot::__updateAirports() {
   __route.waypoints << position();
   
   if (!__route.destination.isEmpty()) {
-    Airport* ap = VatsimDataHandler::getSingleton().findAirport(__route.destination);
+    Airport* ap = vApp()->vatsimDataHandler()->findAirport(__route.destination);
     if (ap) {
       ap->addInbound(this);
       __destination = ap;
@@ -335,7 +339,7 @@ Pilot::__discoverFlightPhase() {
       }
     
       __route.origin = QString(closest->icao);
-      Airport* ap = VatsimDataHandler::getSingleton().findAirport(__route.origin);
+      Airport* ap = vApp()->vatsimDataHandler()->findAirport(__route.origin);
       __origin = ap;
       
       if (ap) {

@@ -18,8 +18,11 @@
 
 #include <QtWidgets>
 
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 
 #include "trackaction.h"
 
@@ -28,17 +31,18 @@ TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
     __current(_pilot) {
   
   setCheckable(true);
-  if (__current == MapWidget::getSingleton().scene()->trackedFlight())
+  if (__current == wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight())
     setChecked(true);
 
   connect(this, SIGNAL(triggered()), SLOT(__handleTriggered()));
-  connect(MapWidget::getSingleton().scene(),    SIGNAL(flightTracked(const Pilot*)),
-          this,                                 SLOT(__updateChecked(const Pilot*)));
+  connect(wui()->mainWindow()->mapWidget()->renderer()->scene(),
+                  SIGNAL(flightTracked(const Pilot*)),
+          this,   SLOT(__updateChecked(const Pilot*)));
 }
 
 void
 TrackAction::__handleTriggered() {
-  MapWidget::getSingleton().scene()->trackFlight(__current);
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->trackFlight(__current);
 }
 
 void

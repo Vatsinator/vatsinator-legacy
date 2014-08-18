@@ -52,12 +52,8 @@ GlResourceManager::loadImage(const QString& _fName) {
   VatsinatorApplication::log("GlResourceManager: loading texture: %s...", _fName.toStdString().c_str());
   
   if (!temp.load(_fName)) {
-    if (!QFile(_fName).exists())
-      UserInterface::getSingleton().warning(
-        QString("Image %1 does not exist").arg(_fName));
-    else
-      UserInterface::getSingleton().warning(
-        QString("Image %1 could not be loaded").arg(_fName));
+    vApp()->userInterface()->warning(
+      QString("Image %1 could not be loaded").arg(_fName));
   }
   
   final = QGLWidget::convertToGLFormat(temp);

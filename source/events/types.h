@@ -32,9 +32,6 @@ enum Type {
   /* MouseLonLatEvent */
   MouseLonLat = QEvent::User + 1,
   
-  /* MapEvent */
-  Map,
-  
   /* NotificationEvent */
   Notification,
   

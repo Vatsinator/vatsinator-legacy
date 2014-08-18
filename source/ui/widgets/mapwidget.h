@@ -21,21 +21,18 @@
 #define MAPWIDGET_H
 
 #include <QGLWidget>
-
-#include "ui/map/mapstate.h"
 #include "vatsimdata/lonlat.h"
-#include "singleton.h"
 
 class Airport;
-class Client;
-class Fir;
-class MapEvent;
-class MapItem;
-class MapScene;
+class AirportItem;
+class FirItem;
+class FlightItem;
 class Pilot;
-class WorldPolygon;
+class MapItem;
+class MapRenderer;
+class QMenu;
 
-class MapWidget : public QGLWidget, public Singleton<MapWidget> {
+class MapWidget : public QGLWidget {
   
   Q_OBJECT
   
@@ -49,58 +46,13 @@ signals:
   
   void windowRequest(const MapItem*);
   
-  void flightTrackingRequest(const Pilot*);
-  void flightTrackingCanceled();
-  
-  void airportLinesToggled(const Airport*);
-  
 public:
   explicit MapWidget(QWidget* = 0);
   virtual ~MapWidget();
   
-  /**
-   * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
-   * maps them to longitude & latitude.
-   * 
-   * @param point The point on the screen.
-   * @return Global coordinates (longitude, latitude).
-   */
-  LonLat mapToLonLat(const QPoint&);
-  
-  /**
-   * Scales the given point (or distance) to the global
-   * coordinates system. It does not differ from the
-   * mapToLonLat() function except the fact that it 
-   * does not take into consideration the current map
-   * center point.
-   * 
-   * @param point The point (or the distance) in the window coordinates.
-   * @return Global coordinates (or the distance).
-   */
-  LonLat scaleToLonLat(const QPoint&);
-  
-  /**
-   * Calculates widget coordinates from the given lat-lon coordinates.
-   */
-  QPoint mapFromLonLat(const LonLat&);
-  
-  /**
-   * Calculates OpenGL scene local coordinates from latitude/longitude.
-   */
-  QPointF glFromLonLat(const LonLat&);
-  
-  /**
-   * Specifies whether the given point is visible on the screen or not.
-   */
-  bool onScreen(const QPointF&);
-  
-  /**
-   * Captures map events.
-   */
   bool event(QEvent*) override;
   
-  inline MapScene* scene() { return __scene; }
-  inline const MapState& state() const { return __state; }
+  inline MapRenderer* renderer() { return __renderer; }
   
 public slots:
   
@@ -119,23 +71,17 @@ protected:
   void mouseReleaseEvent(QMouseEvent*) override;
   void mouseMoveEvent(QMouseEvent*) override;
   
-  /**
-   * Event fired when the underlying scene decides to change the map state.
-   */
-  bool stateChangeEvent(MapEvent*);
-  
 private:
-  void __drawWorld();
-  void __drawFirs();
-  void __drawUirs();
-  void __drawAirports();
-  void __drawPilots();
-  void __drawLines();
   
-  void __storeSettings();
-  void __restoreSettings();
+  /**
+   * Gets item under the mouse cursor. Nullptr if nothing.
+   */
+  const MapItem* __underMouse();
   
-  void __updateOffsets();
+  /**
+   * Gets item under the given point. nullptr if nothing.
+   */
+  const MapItem* __underMouse(const QPoint&);
   
   /**
    * Updates the zoom factor.
@@ -143,52 +89,29 @@ private:
   void __updateZoom(int);
   
   /**
-   * Shows or hides the tooltip.
+   * Creates right-mouse-click menu for an airport.
    */
-  void __updateTooltip();
+  QMenu* __itemMenu(const AirportItem*);
   
   /**
-   * Checks whether the item is under the mouse.
-   * If it is, it is handled properly.
+   * Creates right-mouse-click menu for a FIR.
    */
-  void __checkItem(const MapItem*);
+  QMenu* __itemMenu(const FirItem*);
   
   /**
-   * Based on user settings, checks whether the pilot's label should
-   * be drawn or not.
+   * Creates right-mouse-click menu for a flight.
    */
-  bool __shouldDrawPilotLabel(const MapItem*);
-  
+  QMenu* __itemMenu(const FlightItem*);
+
 private slots:
-  void __reloadSettings();
   void __showMenu(const MapItem*);
   void __showMenu();
   void __showWindow(const MapItem*);
   
 private:
   
-  /* To have the map repeated, we keep offsets */
-  QList<GLfloat> __offsets;
+  MapRenderer* __renderer;
   
-  /* Current offset */
-  GLfloat __xOffset;
-  
-  /* Stores screen rectangle */
-  qreal __rangeX;
-  qreal __rangeY;
-  
-  
-  /* Zoom Coefficient to let users customize their zooming speed */
-  /* Zoom Coefficient is defined in MiscellaneousPage */
-
-  /* Minimum for __actualZoom not to exceed ZOOM_MAXIMUM value */
-  int __actualZoomMaximum;
-  
-  /*Actual Zoom level*/
-  int __actualZoom;
-  
-  /* Current map state */
-  MapState __state;
   
   /**
    * This class handles mouse position on the screen.
@@ -228,7 +151,7 @@ private:
     /**
      * Latitude/longitude that the mouse cursor currently points at.
      */
-    inline const QPointF& geoPosition() const { return __geoPosition; }
+    inline const LonLat& geoPosition() const { return __geoPosition; }
     
     /**
      * Indicates whether any of the mouse buttons is pressed or not.
@@ -242,46 +165,6 @@ private:
   } __mousePosition;
   
   QPoint __lastClickPosition;
-  const MapItem* __underMouse;
-  
-  /* World map drawer */
-  WorldPolygon* __world;
-  
-  /* Scene handler */
-  MapScene* __scene;
-  
-  /* Structs below store settings locally to avoid expensive SM::get() calling. */
-  struct {
-    struct {
-      int zoom_coefficient;
-    } misc;
-    
-    struct {
-      QColor lands;
-      QColor seas;
-      QColor staffed_fir_borders;
-      QColor staffed_fir_background;
-      QColor staffed_uir_borders;
-      QColor staffed_uir_background;
-      QColor unstaffed_fir_borders;
-      QColor approach_circle;
-    } colors;
-    
-    struct {
-      bool airports_layer;
-      bool airport_labels;
-      bool pilots_layer;
-      bool staffed_firs;
-      bool unstaffed_firs;
-      bool empty_airports;
-      
-      struct {
-        bool always;
-        bool airport_related;
-        bool when_hovered;
-      } pilot_labels;
-    } view;
-  } __settings;
 
 };
 

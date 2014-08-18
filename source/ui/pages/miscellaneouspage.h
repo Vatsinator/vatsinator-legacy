@@ -19,15 +19,14 @@
 #ifndef MISCELLANEOUSPAGE_H
 #define MISCELLANEOUSPAGE_H
 
-#include "ui/ui_miscellaneouspage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include <QWidget>
 
-class MiscellaneousPage :
-    public AbstractSettingsPage,
-    private Ui::MiscellaneousPage {
+#include "ui/ui_miscellaneouspage.h"
+#include "storage/abstractsettingsmodule.h"
+
+class MiscellaneousPage : public QWidget, public AbstractSettingsModule, private Ui::MiscellaneousPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(Misc)
   
 signals:
   void languageChanged();
@@ -38,16 +37,14 @@ public:
   
   QString listElement() const;
   QString listIcon() const;
-  QString pageName() const;
+  QString moduleId() const;
   
   /**
    * @variables
-   * has_antyaliasing:  bool
-   * zoom_coefficient:  int
    * send_statistics:   bool
    * language:          QString
    */
-  void updateFromUi() const;
+  void update() const;
 
 protected:
   void showEvent(QShowEvent*) override;

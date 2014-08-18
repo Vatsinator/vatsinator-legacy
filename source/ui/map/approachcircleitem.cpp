@@ -22,6 +22,7 @@
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
+#include "vatsinatorapplication.h"
 
 #include "approachcircleitem.h"
 
@@ -47,29 +48,35 @@ ApproachCircleItem::ApproachCircleItem(const Airport* _ap, QObject* _parent) :
     QObject(_parent),
     __position(_ap->data()->longitude, _ap->data()->latitude) {
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__reloadSettings()));
+  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
+          this,                         SLOT(__reloadSettings()));
 }
 
 void
 ApproachCircleItem::drawCircle() const {
-  if (__circle.isEmpty()) {
-    __circle = makeCircle();
-  }
-  
-  if (!__color.isValid())
-    __getColor();
-  
-  glLineWidth(2.0);
-  glVertexPointer(2, GL_FLOAT, 0, __circle.constData());
-  glColor4f(__color.redF(), __color.greenF(), __color.blueF(), 1.0f);
-  glDrawArrays(GL_LINES, 0, __circle.size() / 2);
-  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-  glLineWidth(1.0);
+  /* TODO */
+//   if (__circle.isEmpty()) {
+//     __circle = makeCircle();
+//   }
+//   
+//   if (!__color.isValid())
+//     __getColor();
+//   
+//   glLineWidth(2.0);
+//   glVertexPointer(2, GL_FLOAT, 0, __circle.constData());
+//   glColor4f(__color.redF(), __color.greenF(), __color.blueF(), 1.0f);
+//   glDrawArrays(GL_LINES, 0, __circle.size() / 2);
+//   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+//   glLineWidth(1.0);
 }
 
 bool
-ApproachCircleItem::needsDrawing() const {
+ApproachCircleItem::isVisible() const {
+  return false;
+}
+
+bool
+ApproachCircleItem::isLabelVisible() const {
   return false;
 }
 
@@ -78,18 +85,23 @@ ApproachCircleItem::position() const {
   return __position;
 }
 
+void
+ApproachCircleItem::drawItem(QOpenGLShaderProgram*) const {
+
+}
+
+void
+ApproachCircleItem::drawLabel(QOpenGLShaderProgram*) const {
+  
+}
+
 QString
 ApproachCircleItem::tooltipText() const {
   return "";
 }
 
-QMenu *
-ApproachCircleItem::menu(QWidget*) const {
-  return nullptr;
-}
-
 void 
-ApproachCircleItem::showDetailsWindow() const {}
+ApproachCircleItem::showDetails() const {}
 
 void
 ApproachCircleItem::__getColor() const {

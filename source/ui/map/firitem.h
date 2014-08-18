@@ -21,12 +21,16 @@
 #define FIRITEM_H
 
 #include <QObject>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLTexture>
 
 #include "ui/map/mapitem.h"
 
+class QOpenGLShaderProgram;
 class Fir;
+class MapScene;
 class Texture;
-class VertexBufferObject;
 
 class FirItem : public QObject, public MapItem {
   Q_OBJECT
@@ -39,35 +43,37 @@ public:
   
   void drawBorders() const;
   void drawBackground() const;
-  void drawLabel() const;
   
-  /**
-   * Label coordinates.
-   */
-  bool needsDrawing() const override;
+  bool isVisible() const override;
+  bool isLabelVisible() const override;
   const LonLat& position() const override;
+  void drawItem(QOpenGLShaderProgram*) const override;
+  void drawLabel(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
-  QMenu* menu(QWidget*) const override;
-  void showDetailsWindow() const override;
+  void showDetails() const override;
   
   inline const Fir* data() const { return __fir; }
   
 private:
-  void __prepareVbo();
-  void __generateLabel() const;
+  void __initializeBuffers();
+  void __initializeLabel() const;
   
 private slots:
   void __resetLabel();
   void __invalidate();
   
 private:
+  MapScene*  __scene;
   const Fir* __fir;
   LonLat     __position;
   
-  VertexBufferObject* __borders;
-  VertexBufferObject* __triangles;
+  QOpenGLBuffer __borders;
+  QOpenGLBuffer __triangles;
+  mutable QOpenGLVertexArrayObject __vaoBorders;
+  mutable QOpenGLVertexArrayObject __vaoTriangles;
+  int __bordersVertices, __trianglesVertices;
   
-  mutable Texture* __label;
+  mutable QOpenGLTexture __label;
   
 };
 

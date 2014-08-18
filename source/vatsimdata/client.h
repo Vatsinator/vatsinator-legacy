@@ -35,7 +35,20 @@ class Client : public QObject {
   Q_OBJECT
   
 signals:
+  
+  /**
+   * The update() signal is updated when the clients receives new data.
+   */
   void updated();
+  
+  /**
+   * The invalid() signal is emitted when the client logs out and this instance
+   * will be deleted soon.
+   * NOTE We cannot use destroyed() signal because sometimes we still need
+   * access to the client data, which is not available when destroyed() signal
+   * is emitted.
+   */
+  void invalid();
 
 public:
   
@@ -59,6 +72,13 @@ public:
    * is fetched from the internet.
    */
   virtual void update(const QStringList&);
+  
+  /**
+   * Marks this client as invalid; emits the invalid() signal.
+   * NOTE This function should not be called if you do not really know
+   * what you're doing.
+   */
+  virtual void invalidate();
   
   /**
    * Checks whether the client is still online or not.

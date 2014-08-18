@@ -22,6 +22,7 @@
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 #include "vatsimdata/vatsimdatahandler.h"
+#include "vatsinatorapplication.h"
 
 #include "databasewindow.h"
 
@@ -35,7 +36,7 @@ DatabaseWindow::DatabaseWindow(QWidget* _parent) :
           this,                                 SLOT(__updateDatabaseStatus(ResourceManager::VersionStatus)));
   connect(SyncDatabaseButton,                   SIGNAL(clicked()),
           ResourceManager::getSingletonPtr(),   SLOT(requestDatabaseSync()));
-  connect(VatsimDataHandler::getSingletonPtr(), SIGNAL(initialized()),
+  connect(vApp()->vatsimDataHandler(),          SIGNAL(initialized()),
           this,                                 SLOT(__updateNumbers()));
 }
 

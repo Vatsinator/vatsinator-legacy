@@ -30,6 +30,7 @@
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
+#include "ui/widgetsuserinterface.h"
 #include "storage/cachefile.h"
 #include "storage/pluginmanager.h"
 #include "storage/settingsmanager.h"
@@ -69,26 +70,30 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
     __statusFileFetched(false),
     __initialized(false),
     __downloader(new PlainTextDownloader()),
-    __scheduler(new UpdateScheduler()),
+    __scheduler(new UpdateScheduler(this)),
     __notamProvider(nullptr),
     __weatherForecast(nullptr) {
   
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(uiCreated()),
-          this,                                     SLOT(__slotUiCreated()));
-  connect(__downloader,                             SIGNAL(finished(QString)),
-          this,                                     SLOT(__dataFetched(QString)));
-  connect(__downloader,                             SIGNAL(error()),
-          this,                                     SLOT(__handleFetchError()));
-  connect(__scheduler,                              SIGNAL(timeToUpdate()),
-          this,                                     SLOT(requestDataUpdate()));
-  connect(this,                                     SIGNAL(localDataBad(QString)),
-          UserInterface::getSingletonPtr(),         SLOT(warning(QString)));
-  connect(SettingsManager::getSingletonPtr(),       SIGNAL(settingsChanged()),
-          this,                                     SLOT(__reloadWeatherForecast()));
+  connect(vApp()->userInterface(),              SIGNAL(initialized()),
+          this,                                 SLOT(__slotUiCreated()));
+  connect(__downloader,                         SIGNAL(finished(QString)),
+          this,                                 SLOT(__dataFetched(QString)));
+  connect(__downloader,                         SIGNAL(error()),
+          this,                                 SLOT(__handleFetchError()));
+  connect(__scheduler,                          SIGNAL(timeToUpdate()),
+          this,                                 SLOT(requestDataUpdate()));
+  connect(this,                                 SIGNAL(localDataBad(QString)),
+          vApp()->userInterface(),              SLOT(warning(QString)));
+  connect(this,                                 SIGNAL(vatsimStatusError()),
+          vApp()->userInterface(),              SLOT(statusError()));
+  connect(this,                                 SIGNAL(vatsimDataError()),
+          vApp()->userInterface(),              SLOT(dataError()));
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
+          this,                                 SLOT(__reloadWeatherForecast()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   
-  __notamProvider = new EurouteNotamProvider();
+  __notamProvider = new EurouteNotamProvider(this);
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
@@ -96,11 +101,7 @@ VatsimDataHandler::~VatsimDataHandler() {
   qDeleteAll(__airports);
   qDeleteAll(__firs);
   
-  if (__notamProvider)
-    delete __notamProvider;
-  
   delete __downloader;
-  delete __scheduler;
   
   delete VatsimDataHandler::emptyFlightTable;
   delete VatsimDataHandler::emptyControllerTable;
@@ -142,7 +143,7 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
       } else if (key == "url0") {
         __dataServers << value;
       } else if (key == "msg0") {
-        UserInterface::getSingleton().showVatsimMessage(value);
+        vApp()->userInterface()->showVatsimMessage(value);
       }
     }
   }
@@ -243,11 +244,10 @@ VatsimDataHandler::parseDataFile(const QString& _data) {
         if (!clientData.valid || clientData.type != RawClientData::Pilot)
           continue;
         
-        if (__clients.contains(clientData.callsign))
-          __clients[clientData.callsign]->deleteLater();
-        
-        Pilot* pilot = new Pilot(clientData.line, true);
-        __clients[pilot->callsign()] = pilot;
+        if (!__clients.contains(clientData.callsign)) {
+          Pilot* pilot = new Pilot(clientData.line, true);
+          __clients[pilot->callsign()] = pilot;
+        }
         
         break;
       } // DataSections::Prefile
@@ -704,11 +704,15 @@ VatsimDataHandler::__loadCachedData() {
 
 void
 VatsimDataHandler::__cleanupClients() {
-  auto c = __clients.begin();
-  while (c != __clients.end()) {
-    if (!c.value()->isOnline()) {
-      c.value()->deleteLater();
-      c = __clients.erase(c);
+  qDeleteAll(__invalidClients);
+  __invalidClients.clear();
+  
+  for (auto it = __clients.begin(); it != __clients.end();) {
+    if (!it.value()->isOnline()) {
+      Client* c = it.value();
+      c->invalidate();
+      it = __clients.erase(it);
+      __invalidClients << c;
     } else {
       ++c;
     }
@@ -721,7 +725,10 @@ VatsimDataHandler::__slotUiCreated() {
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
   
-  __downloader->setProgressBar(vApp()->userInterface()->mainWindow()->progressBar());
+  if (wui()) {
+    __downloader->setProgressBar(wui()->mainWindow()->progressBar());
+  }
+  
   __beginDownload();
 }
 
@@ -773,7 +780,7 @@ VatsimDataHandler::__reloadWeatherForecast() {
   if (desired != "None") {
     if (!__weatherForecast || desired != __weatherForecast->providerName()) {
       QList<WeatherForecastInterface*> weatherPlugins =
-          VatsinatorApplication::getSingleton().plugins()->plugins<WeatherForecastInterface>();
+          vApp()->plugins()->plugins<WeatherForecastInterface>();
       for (WeatherForecastInterface* w: weatherPlugins) {
         if (w->providerName() == desired) {
           __weatherForecast = w;

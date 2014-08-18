@@ -19,8 +19,8 @@
 #include <QtWidgets>
 
 #include "ui/userinterface.h"
-
 #include "vatsimdata/airport.h"
+#include "vatsinatorapplication.h"
 
 #include "airportdetailsbutton.h"
 
@@ -29,8 +29,8 @@ AirportDetailsButton::AirportDetailsButton(QWidget* _parent) :
     __current(NULL) {
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
   // we assume that autoconnect is on
-  connect(this,                                 SIGNAL(clicked(const Airport*)),
-          UserInterface::getSingletonPtr(),     SLOT(showDetailsWindow(const Airport*)));
+  connect(this,                         SIGNAL(clicked(const Airport*)),
+          vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
 }
 
 AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
@@ -43,8 +43,8 @@ AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
 
   if (_autoconnect)
-    connect(this,                               SIGNAL(clicked(const Airport*)),
-            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Airport*)));
+    connect(this,                       SIGNAL(clicked(const Airport*)),
+            vApp()->userInterface(),    SLOT(showDetails(const Airport*)));
 }
 
 void

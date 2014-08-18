@@ -22,18 +22,19 @@
 
 #include <QObject>
 #include <QList>
+#include <QColor>
+#include <spatial/point_multimap.hpp>
+#include "vatsimdata/lonlat.h"
 
 class QRectF;
-class AbstractAnimation;
 class AirportItem;
 class Controller;
 class Fir;
 class FirItem;
 class FlightItem;
 class MapItem;
-class LonLat;
 class Pilot;
-class MapWidget;
+class MapRenderer;
 class UirItem;
 
 /**
@@ -53,20 +54,51 @@ signals:
   void flightTracked(const Pilot*);
 
 public:
-  explicit MapScene(QObject* parent);
+  
+  /**
+   * The settings struct provides fast access to map-related settings.
+   * The MapScene class makes sure these settings are always up-to-date.
+   * SettingsManager::get() calls are pretty expensive, as there is always
+   * some casting from QVariant involved, thus this struct keeps everything
+   * here, updating it only when needed.
+   */
+  struct MapSettings {
+    struct {
+      int zoom_coefficient;
+    } misc;
+    
+    struct {
+      QColor lands;
+      QColor seas;
+      QColor staffed_fir_borders;
+      QColor staffed_fir_background;
+      QColor staffed_uir_borders;
+      QColor staffed_uir_background;
+      QColor unstaffed_fir_borders;
+      QColor approach_circle;
+    } colors;
+    
+    struct {
+      bool airports_layer;
+      bool airport_labels;
+      bool pilots_layer;
+      bool staffed_firs;
+      bool unstaffed_firs;
+      bool empty_airports;
+      
+      struct {
+        bool always;
+        bool airport_related;
+        bool when_hovered;
+      } pilot_labels;
+    } view;
+  };
+  
+  explicit MapScene(QObject*);
   virtual ~MapScene();
   
   void trackFlight(const Pilot*);
   void cancelFlightTracking();
-  
-  /**
-   * Starts the given animation, aborting any currently running one.
-   * This function takes ownership over the given animation.
-   * NOTE: The animation can't be started yet. This function call start()
-   * on the instance.
-   * @param animation The map animation instance.
-   */
-  void startAnimation(AbstractAnimation*);
   
   /**
    * Finds FirItem instance that handles the given Fir.
@@ -79,16 +111,15 @@ public:
    */
   QList<const MapItem*> items(const QRectF&) const;
   
+  /**
+   * Find nearest item to the given point.
+   */
+  const MapItem* nearest(const LonLat&);
+  
+  inline MapRenderer* renderer() { return __renderer; }
+  
   inline const QList<FirItem*>& firItems() const {
     return __firItems;
-  }
-  
-  inline const QList<AirportItem*>& airportItems() const {
-    return __airportItems;
-  }
-  
-  inline const QList<FlightItem*>& flightItems() const {
-    return __flightItems;
   }
   
   inline const QList<UirItem*>& uirItems() const {
@@ -99,9 +130,7 @@ public:
     return __trackedFlight;
   }
   
-  inline AbstractAnimation* animation() {
-    return __animation;
-  }
+  inline const MapSettings& settings() const { return __settings; }
   
 public slots:
   /**
@@ -116,25 +145,36 @@ private:
 private slots:
   void __setupItems();
   void __updateItems();
-  void __animationStep();
-  void __animationDestroy();
   
   /**
    * This slot is connected to every Pilot's destroyed() signal.
    */
   void __removeFlightItem();
   
+  /**
+   * Update flight position in the tree.
+   */
+  void __updateFlightItem();
+  
+  /**
+   * Updates locally-kept settings.
+   */
+  void __updateSettings();
+  
 private:
-  MapWidget*    __widget;
+  MapRenderer* __renderer;
+  
+  /**
+   * This map keeps FlightItems, AirportItems and FirItems.
+   */
+  spatial::point_multimap<2, LonLat, const MapItem*> __items;
   
   QList<FirItem*>               __firItems;
-  QList<AirportItem*>           __airportItems;
-  QList<FlightItem*>            __flightItems;
   QList<UirItem*>               __uirItems;
   
   const Pilot* __trackedFlight;
   
-  AbstractAnimation*    __animation;
+  MapSettings __settings;
   
 };
 

@@ -1,6 +1,6 @@
 /*
     glextensions.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,11 +31,13 @@
 typedef ptrdiff_t GLsizeiptr;
 typedef ptrdiff_t GLintptr;
 
-extern void (* glBindBuffer)    (GLenum, GLuint);
-extern void (* glBufferData)    (GLenum, int, const GLvoid*, GLenum);
+extern void (* glBindBuffer) (GLenum, GLuint);
+extern void (* glBufferData) (GLenum, int, const GLvoid*, GLenum);
 extern void (* glBufferSubData) (GLenum, GLintptr, GLsizeiptr, const GLvoid*);
 extern void (* glDeleteBuffers) (GLsizei, const GLuint*);
-extern void (* glGenBuffers)    (GLsizei, GLuint*);
+extern void (* glGenBuffers) (GLsizei, GLuint*);
+extern void (* glVertexAttribPointer) (GLuint, GLint, GLenum, GLboolean, GLsizei, const GLvoid*);
+extern void (* glEnableVertexAttribArray) (GLuint);
 
 void initGLExtensionsPointers();
 #endif // Q_WS_MAC

@@ -47,6 +47,8 @@ signals:
   
 public:
   
+  explicit AbstractNotamProvider(QObject* = nullptr);
+  
   /**
    * Requests NOTAM for the given ICAO. The ICAO can be either airport's
    * or FIR's.

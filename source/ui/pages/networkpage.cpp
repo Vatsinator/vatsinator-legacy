@@ -37,7 +37,7 @@ namespace DefaultSettings {
 }
 
 NetworkPage::NetworkPage(QWidget* _parent) :
-    AbstractSettingsPage(_parent) {
+    QWidget(_parent) {
   setupUi(this);
   connect(RefreshRateBox,       SIGNAL(valueChanged(int)),
           this,                 SLOT(__updateRefreshRateLabel(int)));
@@ -56,12 +56,12 @@ NetworkPage::listIcon() const {
 }
 
 QString
-NetworkPage::pageName() const {
+NetworkPage::moduleId() const {
   return "network";
 }
 
 void
-NetworkPage::updateFromUi() const {
+NetworkPage::update() const {
   setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
   setValue("refresh_rate", RefreshRateBox->value());
   setValue("cache_enabled", CachingCheckBox->isChecked());
@@ -89,7 +89,7 @@ NetworkPage::restore(QSettings& _s) {
     _s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
   
   QList<WeatherForecastInterface*> weatherPlugins =
-    VatsinatorApplication::getSingleton().plugins()->plugins<WeatherForecastInterface>();
+    vApp()->plugins()->plugins<WeatherForecastInterface>();
   QString weatherCurrent =
     _s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
   int i = 1;

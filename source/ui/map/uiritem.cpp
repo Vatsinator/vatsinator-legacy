@@ -18,7 +18,6 @@
  */
 
 #include "ui/map/mapscene.h"
-#include "ui/widgets/mapwidget.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsimdata/uir.h"
 
@@ -27,19 +26,28 @@
 UirItem::UirItem(const Uir* _uir, QObject* _parent) :
     QObject(_parent),
     __uir(_uir) {
+  
+  MapScene* scene = qobject_cast<MapScene*>(parent());
   for (const Fir* f: data()->range()) {
-    FirItem* fi = MapWidget::getSingleton().scene()->findItemForFir(f);
+    FirItem* fi = scene->findItemForFir(f);
     if (fi)
       __firItems << fi;
   }
 }
 
-void
-UirItem::showDetailsWindow() const {}
+bool
+UirItem::isVisible() const {
+  return !data()->isEmpty();
+}
 
-QMenu*
-UirItem::menu(QWidget*) const {
-  return nullptr;
+bool
+UirItem::isLabelVisible() const {
+  return false;
+}
+
+void
+UirItem::showDetails() const {
+  
 }
 
 QString
@@ -53,7 +61,11 @@ UirItem::position() const {
   return ll;
 }
 
-bool
-UirItem::needsDrawing() const {
-  return !data()->isEmpty();
+void
+UirItem::drawItem(QOpenGLShaderProgram*) const {
+  
+}
+
+void UirItem::drawLabel(QOpenGLShaderProgram*) const {
+
 }

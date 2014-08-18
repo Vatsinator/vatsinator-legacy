@@ -18,15 +18,12 @@
  */
 
 #include "db/airportdatabase.h"
-#include "glutils/texture.h"
 #include "storage/settingsmanager.h"
-#include "ui/actions/actionmenuseparator.h"
-#include "ui/actions/airportdetailsaction.h"
-#include "ui/actions/clientdetailsaction.h"
-#include "ui/actions/metaraction.h"
 #include "ui/map/approachcircleitem.h"
+#include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
-#include "ui/windows/metarswindow.h"
+#include "ui/map/maprenderer.h"
+#include "ui/map/mapscene.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client/pilot.h"
@@ -38,58 +35,22 @@
 
 AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     QObject(_parent),
+    __scene(qobject_cast<MapScene*>(_parent)),
     __airport(_ap),
     __position(_ap->data()->longitude, _ap->data()->latitude),
     __approachCircle(nullptr),
     __icon(nullptr),
-    __label(nullptr),
+    __label(QOpenGLTexture::Target2D),
     __linesReady(false) {
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
+  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings()));
   connect(__airport,                            SIGNAL(updated()),
           this,                                 SLOT(__invalidate()));
 }
 
 AirportItem::~AirportItem() {
-  if (__label)
-    delete __label;
-}
-
-void
-AirportItem::drawIcon() const {
-  static const GLfloat iconRect[] = {
-    -0.04f, -0.02f,
-    -0.04f,  0.06f,
-     0.04f,  0.06f,
-     0.04f, -0.02f
-  };
-  
-  if (!__icon)
-    __makeIcon();
-  
-  __icon->bind();
-  glVertexPointer(2, GL_FLOAT, 0, iconRect);
-  glDrawArrays(GL_QUADS, 0, 4);
-  __icon->unbind();
-}
-
-void
-AirportItem::drawLabel() const {
-  static const GLfloat labelRect[] = {
-    -0.08f, -0.05333333f,
-    -0.08f,  0.0f,
-     0.08f,  0.0f,
-     0.08f, -0.05333333f
-  };
-  
-  if (!__label)
-    __generateLabel();
-  
-  __label->bind();
-  glVertexPointer(2, GL_FLOAT, 0, labelRect);
-  glDrawArrays(GL_QUADS, 0, 4);
-  __label->unbind();
+  __label.destroy();
 }
 
 void
@@ -123,13 +84,91 @@ AirportItem::drawLines() const {
 }
 
 bool
-AirportItem::needsDrawing() const {
-  return !__position.isNull();
+AirportItem::isVisible() const {
+  Q_ASSERT(!__position.isNull());
+  
+  if (data()->isEmpty())
+    return __scene->settings().view.empty_airports;
+  else
+    return __scene->settings().view.airports_layer;
+}
+
+bool
+AirportItem::isLabelVisible() const {
+  return __scene->settings().view.airport_labels;
 }
 
 const LonLat &
 AirportItem::position() const {
   return __position;
+}
+
+void
+AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
+  static constexpr float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
+  
+  static const GLfloat iconRect[] = {
+    -0.04, -0.02,
+    -0.04,  0.06,
+     0.04,  0.06,
+     0.04,  0.06,
+     0.04, -0.02,
+    -0.04, -0.02
+  };
+  
+  static const GLfloat textureCoords[] = {
+    0.0f, 0.0f,
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  if (!__icon)
+    __takeIcon();
+  
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), iconRect, 2);
+  _shader->setUniformValue(__scene->renderer()->programZLocation(), ActiveAirportsZ);
+  
+  __icon->bind();
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+//   __icon->release();
+}
+
+void
+AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
+  static const GLfloat labelRect[] = {
+    -0.08, -0.05333333,
+    -0.08,  0,
+     0.08,  0,
+     0.08,  0,
+     0.08, -0.05333333,
+    -0.08, -0.05333333
+  };
+  
+  static const GLfloat textureCoords[] = {
+    0.0f, 0.0f,
+    0.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    1.0f, 0.0f,
+    0.0f, 0.0f
+  };
+  
+  if (data()->isEmpty())
+    return;
+  
+  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
+  
+  if (!__label.isCreated())
+    __initializeLabel();
+  
+  __label.bind();
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  __label.release();
 }
 
 QString
@@ -162,79 +201,20 @@ AirportItem::tooltipText() const {
   return QString("<p style='white-space:nowrap'><center>" % desc % staff % deparr % "</center></p>");
 }
 
-QMenu *
-AirportItem::menu(QWidget* _parent) const {
-  QMenu* menu = new QMenu(data()->data()->icao, _parent);
-  
-  AirportDetailsAction* showAp = new AirportDetailsAction(data(), tr("Airport details"), _parent);
-  connect(showAp,                       SIGNAL(triggered(const Airport*)),
-          vApp()->userInterface(),      SLOT(showDetailsWindow(const Airport*)));
-  menu->addAction(showAp);
-  
-  MetarAction* showMetar = new MetarAction(data()->data()->icao, _parent);
-  connect(showMetar,                                    SIGNAL(triggered(QString)),
-          vApp()->userInterface()->metarsWindow(),      SLOT(show(QString)));
-  menu->addAction(showMetar);
-  
-  if (!data()->isEmpty()) {
-    if (!data()->staff()->staff().isEmpty()) {
-      menu->addSeparator();
-      menu->addAction(new ActionMenuSeparator(tr("Controllers"), _parent));
-      
-      for (const Controller* c: data()->staff()->staff()) {
-        ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), _parent);
-        connect(cda,                            SIGNAL(triggered(const Client*)),
-                vApp()->userInterface(),        SLOT(showDetailsWindow(const Client*)));
-        menu->addAction(cda);
-      }
-    }
-    
-    if (data()->countArrivals() > 0) {
-      menu->addSeparator();
-      menu->addAction(new ActionMenuSeparator(tr("Arrivals"), _parent));
-      
-      for (const Pilot* p: data()->inbounds()->flights()) {
-        if (p->phase() == Pilot::Arrived) {
-          ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), _parent);
-          connect(cda,                          SIGNAL(triggered(const Client*)),
-                  vApp()->userInterface(),      SLOT(showDetailsWindow(const Client*)));
-          menu->addAction(cda);
-        }
-      }
-    }
-    
-    if (data()->countDepartures(false) > 0) {
-      menu->addSeparator();
-      menu->addAction(new ActionMenuSeparator(tr("Departures"), _parent));
-      
-      for (const Pilot* p: data()->outbounds()->flights()) {
-        if (!p->isPrefiledOnly() && p->phase() == Pilot::Departing) {
-          ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), _parent);
-          connect(cda,                          SIGNAL(triggered(const Client*)),
-                  vApp()->userInterface(),      SLOT(showDetailsWindow(const Client*)));
-          menu->addAction(cda);
-        }
-      }
-    }
-  }
-  
-  return menu;
+void
+AirportItem::showDetails() const {
+  vApp()->userInterface()->showDetails(data());
 }
 
 void
-AirportItem::showDetailsWindow() const {
-  UserInterface::getSingleton().showDetailsWindow(data());
-}
-
-void
-AirportItem::__makeIcon() const {
+AirportItem::__takeIcon() const {
   if (data()->isEmpty()) {
-    __icon = __icons.emptyAirportIcon();
+    __icon = __scene->renderer()->icons()->emptyAirportIcon();
   } else {
     if (data()->staff()->staff().isEmpty()) {
-      __icon = __icons.activeAirportIcon();
+      __icon = __scene->renderer()->icons()->activeAirportIcon();
     } else {
-      __icon = __icons.activeStaffedAirportIcon();
+      __icon = __scene->renderer()->icons()->activeStaffedAirportIcon();
     }
   }
 }
@@ -269,11 +249,11 @@ AirportItem::__prepareLines() const {
 }
 
 void
-AirportItem::__generateLabel() const {
+AirportItem::__initializeLabel() const {
   static QRect labelRect(8, 2, 48, 12);
   
-  if (__label)
-    delete __label;
+  if (__label.isCreated())
+    __label.destroy();
   
   QString icao(data()->data()->icao);
   
@@ -287,15 +267,14 @@ AirportItem::__generateLabel() const {
   painter.setPen(MapConfig::airportPen());
   
   painter.drawText(labelRect, Qt::AlignCenter, icao);
-  __label = new Texture(temp);
+  __label.setData(temp.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+  __label.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
 }
 
 void
 AirportItem::__reloadSettings() {
-  if (__label) {
-    delete __label;
-    __label = 0;
-  }
+  if (__label.isCreated())
+    __label.destroy();
 }
 
 void
@@ -316,45 +295,3 @@ AirportItem::__invalidate() {
   __otpLines.coords.clear();
   __ptdLines.coords.clear();
 }
-
-AirportItem::IconKeeper::IconKeeper() :
-    __emptyAirportIcon(0),
-    __activeAirportIcon(0),
-    __activeStaffedAirportIcon(0) {}
-
-AirportItem::IconKeeper::~IconKeeper() {
-  if (__emptyAirportIcon)
-    delete __emptyAirportIcon;
-  
-  if (__activeAirportIcon)
-    delete __activeAirportIcon;
-  
-  if (__activeStaffedAirportIcon)
-    delete __activeStaffedAirportIcon;
-}
-
-const Texture*
-AirportItem::IconKeeper::emptyAirportIcon() const {
-  if (!__emptyAirportIcon)
-    __emptyAirportIcon = new Texture(MapConfig::emptyAirportIcon());
-  
-  return __emptyAirportIcon;
-}
-
-const Texture*
-AirportItem::IconKeeper::activeAirportIcon() const {
-  if (!__activeAirportIcon)
-    __activeAirportIcon = new Texture(MapConfig::activeAirportIcon());
-  
-  return __activeAirportIcon;
-}
-
-const Texture*
-AirportItem::IconKeeper::activeStaffedAirportIcon() const {
-  if (!__activeStaffedAirportIcon)
-    __activeStaffedAirportIcon = new Texture(MapConfig::activeStaffedAirportIcon());
-  
-  return __activeStaffedAirportIcon;
-}
-
-AirportItem::IconKeeper AirportItem::__icons;

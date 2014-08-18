@@ -21,7 +21,8 @@
 #include "glutils/glresourcemanager.h"
 #include "ui/widgets/mapwidget.h"
 #include "glutils/texture.h"
-#include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
@@ -30,8 +31,9 @@
 
 ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
   __readModels();
-  connect(MapWidget::getSingletonPtr(), SIGNAL(glReady()),
-          this,                         SLOT(__loadPixmaps()));
+//   __loadPixmaps();
+  connect(wui()->mainWindow()->mapWidget(),     SIGNAL(glReady()),
+          this,                                 SLOT(__loadPixmaps()));
 }
 
 ModelMatcher::~ModelMatcher() {
@@ -76,11 +78,10 @@ ModelMatcher::__readModels() {
 void
 ModelMatcher::__loadPixmaps() {
   QMap<QString, Texture*> pixmapsLoaded;
-  QString path(FileManager::staticPath(FileManager::Pixmaps));
   QList<QString> models = { "1p", "2p", "4p", "2j", "3j", "4j", "conc" };
   
   for (const QString& s: models) {
-    QString mPath = path % QDir::separator() % s % "32.png";
+    QString mPath = ":/pixmaps/model_" % s % "32.png";
     Texture* t = new Texture(mPath);
     __pixmaps << t;
     pixmapsLoaded.insert(s, t);

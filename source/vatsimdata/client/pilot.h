@@ -119,6 +119,12 @@ public:
   inline const QString& aircraft() const { return __aircraft; }
   
   /**
+   * The position of the aircraft from previous update.
+   * If this is the first update, current position is kept.
+   */
+  inline const LonLat& oldPosition() const { return __oldPosition; }
+  
+  /**
    * The client's current True Air Speed, in knots.
    * @sa groundSpeed().
    */
@@ -210,6 +216,7 @@ private:
   int                   __groundSpeed;
   QString               __squawk;
   QString               __aircraft;
+  LonLat                __oldPosition;
   int                   __tas;
   Pilot::FlightRules    __flightRules;
   QTime                 __std; /* Scheduled Time of Departure  */

@@ -19,10 +19,9 @@
 #include <QtWidgets>
 
 #include "ui/buttons/airportdetailsbutton.h"
-
 #include "ui/userinterface.h"
-
 #include "vatsimdata/models/airporttablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "airporttableview.h"
 
@@ -54,8 +53,8 @@ AirportTableView::__updateButtons(int _start, int _end) {
 
   for (int i = _start; i < _end; ++i) {
     AirportDetailsButton* dButton = new AirportDetailsButton(apModel->airports()[i]);
-    connect(dButton,                            SIGNAL(clicked(const Airport*)),
-            UserInterface::getSingletonPtr(),   SLOT(showDetailsWindow(const Airport*)));
+    connect(dButton,                    SIGNAL(clicked(const Airport*)),
+            vApp()->userInterface(),    SLOT(showDetails(const Airport*)));
     setIndexWidget(apModel->index(i, AirportTableModel::Button), dButton);
   }
 }

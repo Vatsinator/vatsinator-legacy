@@ -4,7 +4,6 @@ set (glutils_SRCS
     glextensions.cpp
     glresourcemanager.cpp
     texture.cpp
-    vertexbufferobject.cpp
 )
 
 vatsinator_subdirectory_sources (glutils "${glutils_SRCS}")

@@ -21,21 +21,18 @@
 #define NETWORKPAGE_H
 
 #include "ui/ui_networkpage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include "storage/abstractsettingsmodule.h"
 
-class NetworkPage :
-    public AbstractSettingsPage,
-    private Ui::NetworkPage {
+class NetworkPage : public QWidget, public AbstractSettingsModule, private Ui::NetworkPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(Network)
 
 public:
   NetworkPage(QWidget* = 0);
   
   QString listElement() const;
   QString listIcon() const;
-  QString pageName() const;
+  QString moduleId() const;
   
   /**
    * @variables
@@ -47,7 +44,7 @@ public:
    * weather_forecast_provider:         string
    * weather_temperature_units:         string {"Celsius", "Fahrenheit"}
    */
-  void updateFromUi() const;
+  void update() const;
   
 protected:
   void restore(QSettings&);

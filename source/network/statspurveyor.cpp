@@ -23,6 +23,7 @@
 
 #include "storage/settingsmanager.h"
 #include "ui/dialogs/letsendstatsdialog.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "config.h"
 #include "netconfig.h"
@@ -35,10 +36,6 @@ static const int StartDelay = 10 * 1000;
 
 // if stats query failed, retry in 1 minute
 static const int RetryDelay = 60 * 1000;
-
-// request urls
-static const QString StartupPath = "startup.php?version=%1&os=%2";
-static const QString NoAtcPath = "noatc.php?atc=%1";
 
 namespace {
   
@@ -107,42 +104,46 @@ namespace {
   }
   
 }
-  
+
 
 StatsPurveyor::StatsPurveyor(QObject* _parent) :
     QObject(_parent),
+    __userDecision(NotYetMade),
     __nam(this),
     __reply(nullptr) {
-      
- /* Do not report stats until we read config file or user makes the decision */
-  __nam.setNetworkAccessible(QNetworkAccessManager::NotAccessible);
   
   QSettings s;
-  if (!s.contains("Decided/stats")) {
+  if (!s.contains("Decided/stats")) { // no decision made yet
     LetSendStatsDialog* dialog = new LetSendStatsDialog();
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     connect(dialog,     SIGNAL(accepted()),
             this,       SLOT(__statsAccepted()));
     connect(dialog,     SIGNAL(rejected()),
             this,       SLOT(__statsRejected()));
-    connect(VatsinatorApplication::getSingletonPtr(),   SIGNAL(uiCreated()),
-            dialog,                                     SLOT(show()));
-  } else {
-    /* In the meantime, settingsChanged() signal will be emited, so user's
-     * preferences will be honored. */
+    connect(vApp()->userInterface(),    SIGNAL(initialized()),
+            dialog,                     SLOT(show()));
     QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
+  } else {
+    bool accepted = s.value("Settings/misc/send_statistics", false).toBool();
+    if (accepted) {
+      __userDecision = Accepted;
+      QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
+    } else {
+      __userDecision = Declined;
+    }
+    
+    connect(vApp()->settingsManager(),  SIGNAL(settingsChanged()),
+            this,                       SLOT(__applySettings()));
   }
   
-  connect(SettingsManager::getSingletonPtr(),   SIGNAL(settingsChanged()),
-          this,                                 SLOT(__applySettings()));
-  connect(this,                                 SIGNAL(newRequest()),
-          this,                                 SLOT(__nextIfFree()));
+  connect(this, SIGNAL(newRequest()), SLOT(__nextIfFree()));
 }
 
 StatsPurveyor::~StatsPurveyor() {}
 
 void 
 StatsPurveyor::reportStartup() {
+  static const QString StartupPath = "startup.php?version=%1&os=%2";
   QString url = QString(NetConfig::Vatsinator::statsUrl()) % StartupPath;
   QNetworkRequest request(url.arg(VATSINATOR_VERSION, osString()));
   
@@ -151,8 +152,10 @@ StatsPurveyor::reportStartup() {
 
 void
 StatsPurveyor::reportNoAtc(const QString& _atc) {
+  static const QString NoAtcPath = "noatc.php?atc=%1";
+  
   /* Discard no-atc reports before data is read */
-  if (!VatsimDataHandler::getSingleton().isInitialized())
+  if (!vApp()->vatsimDataHandler()->isInitialized())
     return;
   
   QString url = QString(NetConfig::Vatsinator::statsUrl()) % NoAtcPath;
@@ -163,7 +166,7 @@ StatsPurveyor::reportNoAtc(const QString& _atc) {
 
 void
 StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
-  if (__nam.networkAccessible() == QNetworkAccessManager::NotAccessible)
+  if (__userDecision == Declined)
     return;
   
   __requests.enqueue(_request);
@@ -174,19 +177,23 @@ void
 StatsPurveyor::__parseResponse() {
   QJson::Parser parser;
   bool ok;
+  
+  /* We could pass __reploy to the parser constructor, but qjson has some problems with QIODevice* */
   QByteArray data = __reply->readAll();
-  QVariantMap content = parser.parse(data, &ok).toMap();
-  if (ok && __reply->error() == QNetworkReply::NoError) {
-    int result = content["result"].toInt();
+  QVariant content = parser.parse(data, &ok);
+  if (ok) {
+    QVariantMap map = content.toMap();
+    int result = map["result"].toInt();
     if (result > 0) {
       __requests.dequeue();
       __reply->deleteLater();
       __reply = nullptr;
-      if (!__requests.isEmpty())
-        __nextRequest(); 
     } else {
       Q_ASSERT_X(false, "StatsPurveyor", "Invalid query");
     }
+    
+    if (!__requests.isEmpty())
+        __nextRequest(); 
   } else {
     VatsinatorApplication::log("StatsPurveyor: query failed; retry in 1 minute...");
     QTimer::singleShot(RetryDelay, this, SLOT(__nextRequest()));
@@ -199,6 +206,9 @@ void
 StatsPurveyor::__nextRequest() {
   Q_ASSERT(!__requests.isEmpty());
   
+  if (__userDecision == NotYetMade)
+    return;
+  
   VatsinatorApplication::log("StatsPurveyor: request: %s", qPrintable(__requests.head().url().toString()));
   
   __reply = __nam.get(__requests.head());
@@ -209,29 +219,42 @@ StatsPurveyor::__nextRequest() {
 void
 StatsPurveyor::__applySettings() {
   bool sendStats = SM::get("misc.send_statistics").toBool();
-  if (sendStats)
-    __nam.setNetworkAccessible(QNetworkAccessManager::Accessible);
-  else
-    __nam.setNetworkAccessible(QNetworkAccessManager::NotAccessible);
+  if (sendStats) {
+    __userDecision = Accepted;
+    if (!__requests.isEmpty())
+      __nextRequest();
+  } else {
+    __userDecision = Declined;
+  }
 }
 
 void
 StatsPurveyor::__statsAccepted() {
+  __userDecision = Accepted;
   QSettings s;
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", true);
-  QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
   
   SM::updateUi("misc");
+  
+  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
+          this,                         SLOT(__applySettings()));
+  
+  if (!__requests.isEmpty())
+      __nextRequest();
 }
 
 void
 StatsPurveyor::__statsRejected() {
+  __userDecision = Declined;
   QSettings s;
   s.setValue("Decided/stats", true);
   s.setValue("Settings/misc/send_statistics", false);
   
   SM::updateUi("misc");
+  
+  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
+          this,                         SLOT(__applySettings()));
 }
 
 void

@@ -32,10 +32,11 @@ VatsimMessageDialog::VatsimMessageDialog(const QString& _message, QWidget* _pare
 void
 VatsimMessageDialog::hideEvent(QHideEvent*) {
   if (DoNotShowCheckBox->isChecked()) {
+    QString hash = QString::number(qHash(__message));
     QSettings s;
     s.beginGroup("VatsimMessages");
     
-    s.setValue(__message, true);
+    s.setValue(hash, true);
     
     s.endGroup();
   }

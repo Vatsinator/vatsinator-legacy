@@ -21,8 +21,11 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "ui/userinterface.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -78,7 +81,7 @@ AtcDetailsWindow::__updateLabels() {
 void
 AtcDetailsWindow::__handleClicked() {
   Q_ASSERT(__atc);
-  MapWidget::getSingleton().scene()->moveSmoothly(__atc->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__atc->position());
   close();
 }
 

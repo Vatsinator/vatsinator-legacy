@@ -26,8 +26,10 @@
 #include "plugins/weatherforecastrequest.h"
 #include "plugins/weatherforecastreply.h"
 #include "storage/settingsmanager.h"
-#include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/widgets/weatherforecastwidget.h"
@@ -54,7 +56,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
           this,                                 SLOT(hide()));
   connect(ShowButton,                           SIGNAL(clicked()),
           this,                                 SLOT(__handleShowClicked()));
-  connect(VatsimDataHandler::getSingletonPtr()->notamProvider(),
+  connect(vApp()->vatsimDataHandler()->notamProvider(),
                                                 SIGNAL(notamReady(NotamListModel*)),
           this,                                 SLOT(__notamUpdate(NotamListModel*)));
   connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
@@ -73,7 +75,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   __adjustTables();
   
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
-  if (VatsimDataHandler::getSingleton().weatherForecast()) {
+  if (vApp()->vatsimDataHandler()->weatherForecast()) {
     ForecastGroup->setEnabled(true);
     
     WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
@@ -81,7 +83,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
     request->setCountry(QString::fromUtf8(__airport->data()->country));
     request->setPosition(__airport->position());
     
-    WeatherForecastReply* reply = VatsimDataHandler::getSingleton().weatherForecast()->fetch(request);
+    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecast()->fetch(request);
     connect(reply,      SIGNAL(finished()),
             this,       SLOT(__updateForecast()));
     
@@ -95,8 +97,8 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   }
   
   NotamTableView->setModel(nullptr);
-  VatsimDataHandler::getSingleton().notamProvider()->fetchNotam(QString(__airport->data()->icao));
-  NotamProviderInfoLabel->setText(VatsimDataHandler::getSingleton().notamProvider()->providerInfo());
+  vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(QString(__airport->data()->icao));
+  NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
   
   BaseWindow::showEvent(_event);
 }
@@ -184,7 +186,7 @@ AirportDetailsWindow::__updateForecast() {
 void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__airport);
-  MapWidget::getSingleton().scene()->moveSmoothly(__airport->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__airport->position());
   close();
 }
 

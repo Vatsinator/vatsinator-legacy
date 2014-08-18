@@ -19,8 +19,8 @@
 #include <QtWidgets>
 
 #include "storage/languagemanager.h"
-
 #include "ui/userinterface.h"
+#include "vatsinatorapplication.h"
 
 #include "miscellaneouspage.h"
 
@@ -31,12 +31,12 @@ namespace DefaultSettings {
 }
 
 MiscellaneousPage::MiscellaneousPage(QWidget* _parent) :
-    AbstractSettingsPage(_parent) {
+    QWidget(_parent) {
   setupUi(this);
   LanguageComboBox->addItems(LanguageManager::getSingleton().allLanguages());
   
-  connect(this,                                 SIGNAL(languageChanged()),
-          UserInterface::getSingletonPtr(),     SLOT(showAppRestartDialog()));
+  connect(this,                         SIGNAL(languageChanged()),
+          vApp()->userInterface(),      SLOT(showAppRestartDialog()));
 }
 
 QString
@@ -50,12 +50,12 @@ MiscellaneousPage::listIcon() const {
 }
 
 QString
-MiscellaneousPage::pageName() const {
+MiscellaneousPage::moduleId() const {
   return "misc";
 }
 
 void
-MiscellaneousPage::updateFromUi() const {
+MiscellaneousPage::update() const {
   setValue("send_statistics",
            StatsCheckBox->isChecked());
   /* TODO fix LanguageManager instance below */

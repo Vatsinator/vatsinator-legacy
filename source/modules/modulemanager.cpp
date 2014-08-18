@@ -16,44 +16,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modules/airporttracker.h"
-#include "modules/homelocation.h"
 #include "modules/modelmatcher.h"
 #include "modules/vatbookhandler.h"
+#include "ui/userinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
 #include "modulemanager.h"
 
 ModuleManager::ModuleManager() :
-    __airportTracker(nullptr),
-    __homeLocation(nullptr),
     __modelsMatcher(nullptr),
     __vatbookHandler(nullptr) {
-  connect(VatsinatorApplication::getSingletonPtr(),     SIGNAL(uiCreated()),
-          this,                                         SLOT(init()));
+  connect(vApp()->userInterface(),      SIGNAL(initialized()),
+          this,                         SLOT(init()));
 }
 
 ModuleManager::~ModuleManager() {
-  delete __airportTracker;
-  delete __homeLocation;
   delete __modelsMatcher;
   delete __vatbookHandler;
 }
 
 void
 ModuleManager::init() {
-  __airportTracker = new AirportTracker();
-  __homeLocation = new HomeLocation();
   __modelsMatcher = new ModelMatcher();
   __vatbookHandler = new VatbookHandler();
-  
-  connect(VatsimDataHandler::getSingletonPtr(),         SIGNAL(vatsimDataUpdated()),
-          this,                                         SLOT(updateData()),
-          Qt::DirectConnection);
-}
-
-void
-ModuleManager::updateData() {
-  __airportTracker->updateData();
 }

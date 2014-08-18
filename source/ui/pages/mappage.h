@@ -21,21 +21,21 @@
 #define MAPPAGE_H
 
 #include <QFont>
+#include <QWidget>
 
 #include "ui/ui_mappage.h"
-#include "ui/pages/abstractsettingspage.h"
+#include "storage/abstractsettingsmodule.h"
 
-class MapPage : public AbstractSettingsPage, private Ui::MapPage {
+class MapPage : public QWidget, public AbstractSettingsModule, private Ui::MapPage {
   
   Q_OBJECT
-  DECLARE_SETTINGS_PAGE(Map)
 
 public:
   MapPage(QWidget* = nullptr);
   
   QString listElement() const override;
   QString listIcon() const override;
-  QString pageName() const override;
+  QString moduleId() const override;
   
   /**
    * @variables
@@ -54,7 +54,7 @@ public:
    * origin_to_pilot_line_color:        QColor
    * pilot_to_destination_line_color:   QColor
    */
-  void updateFromUi() const override;
+  void update() const override;
   
 protected:
   void restore(QSettings&) override;

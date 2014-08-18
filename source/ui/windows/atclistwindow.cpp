@@ -22,6 +22,7 @@
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
+#include "vatsinatorapplication.h"
 
 #include "atclistwindow.h"
 
@@ -46,7 +47,7 @@ AtcListWindow::showEvent(QShowEvent* _event) {
   if (auto m = ATCTable->model())
     m->deleteLater();
   
-  ATCTable->setModel(VatsimDataHandler::getSingleton().controllerTableModel());
+  ATCTable->setModel(vApp()->vatsimDataHandler()->controllerTableModel());
   ATCTable->hideColumn(ControllerTableModel::Button);
   __resizeColumns();
   
@@ -70,7 +71,7 @@ void
 AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
   Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
 
-  UserInterface::getSingleton().showDetailsWindow(
+  vApp()->userInterface()->showDetails(
     (qobject_cast<const ControllerTableModel*>(_index.model()))->staff()[_index.row()]
   );
 }

@@ -23,9 +23,12 @@
 #include "db/airportdatabase.h"
 #include "ui/userinterface.h"
 #include "ui/vatsinatorstyle.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/client/pilot.h"
@@ -64,6 +67,8 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) 
           this,                 SLOT(__handleClicked()));
   connect(__pilot,              SIGNAL(updated()),
           this,                 SLOT(__updateLabels()));
+  connect(__pilot,              SIGNAL(invalid()),
+          this,                 SLOT(close()));
 }
 
 void
@@ -73,7 +78,7 @@ FlightDetailsWindow::show() {
   if (__pilot->isPrefiledOnly())
     return;
   
-  if (MapWidget::getSingleton().scene()->trackedFlight() == __pilot)
+  if (wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight() == __pilot)
     TrackFlightBox->setCheckState(Qt::Checked);
   else
     TrackFlightBox->setCheckState(Qt::Unchecked);
@@ -210,7 +215,7 @@ FlightDetailsWindow::__updateLabels() {
 void
 FlightDetailsWindow::__handleClicked() {
   Q_ASSERT(__pilot);
-  MapWidget::getSingleton().scene()->moveSmoothly(__pilot->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__pilot->position());
   close();
 }
 
