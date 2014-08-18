@@ -714,7 +714,7 @@ VatsimDataHandler::__cleanupClients() {
       it = __clients.erase(it);
       __invalidClients << c;
     } else {
-      ++c;
+      ++it;
     }
   }
 }

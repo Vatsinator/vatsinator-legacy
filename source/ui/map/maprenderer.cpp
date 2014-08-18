@@ -81,8 +81,8 @@ MapRenderer::~MapRenderer() {
 
 LonLat
 MapRenderer::mapToLonLat(const QPoint& _point) {
-  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
       static_cast<qreal>(_point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
@@ -92,8 +92,8 @@ MapRenderer::mapToLonLat(const QPoint& _point) {
 
 LonLat
 MapRenderer::scaleToLonLat(const QPoint& _point) {
-  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
       static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(zoom()),
@@ -103,8 +103,8 @@ MapRenderer::scaleToLonLat(const QPoint& _point) {
 
 QPoint
 MapRenderer::mapFromLonLat(const LonLat& _point) {
-  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPoint(
       static_cast<int>((_point.x() - center().x()) * zoom() / xFactor) + (__viewport.width() / 2),
@@ -231,7 +231,7 @@ MapRenderer::paint() {
 
 void
 MapRenderer::__drawWorld() {
-  static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+  static Q_DECL_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   mvp.translate(QVector3D(0.0f, 0.0f, zValue));
@@ -245,8 +245,8 @@ MapRenderer::__drawWorld() {
 
 void
 MapRenderer::__drawFirs() {
-  static constexpr GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
-  static constexpr GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
+  static Q_DECL_CONSTEXPR GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
+  static Q_DECL_CONSTEXPR GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   __identityProgram->bind();
@@ -286,7 +286,7 @@ MapRenderer::__drawFirs() {
 
 void
 MapRenderer::__drawUirs() {
-  static constexpr GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
+  static Q_DECL_CONSTEXPR GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
   
   if (__scene->settings().view.staffed_firs) {
     __identityProgram->bind();
@@ -344,7 +344,7 @@ MapRenderer::__drawItems() {
 
 void
 MapRenderer::__drawLines() {
-  static constexpr GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
+  static Q_DECL_CONSTEXPR GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
   
 //   if (__underMouse) {
 //     QMatrix4x4 mvp = __projection * __worldTransform;

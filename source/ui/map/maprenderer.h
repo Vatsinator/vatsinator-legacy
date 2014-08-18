@@ -121,12 +121,12 @@ public:
   /**
    * Vertex attribute location ("vertex").
    */
-  inline static constexpr int vertexLocation() { return 0; }
+  inline static Q_DECL_CONSTEXPR int vertexLocation() { return 0; }
   
   /**
    * Texture coordinate location ("texcoord").
    */
-  inline static constexpr int texcoordLocation() { return 1; }
+  inline static Q_DECL_CONSTEXPR int texcoordLocation() { return 1; }
   
 public slots:
   void paint();

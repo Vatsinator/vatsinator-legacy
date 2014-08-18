@@ -17,12 +17,8 @@
  *
  */
 
-<<<<<<< HEAD
-#include "config.h"
-=======
 #include <QtCore>
 
->>>>>>> misc/qt5
 #include "db/firdatabase.h"
 #include "glutils/glextensions.h"
 #include "glutils/texture.h"
@@ -100,7 +96,7 @@ FirItem::position() const {
 
 void
 FirItem::drawItem(QOpenGLShaderProgram* _shader) const {
-  static constexpr float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
+  static Q_DECL_CONSTEXPR float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
   
   static const GLfloat labelRect[] = {
     -0.08f, -0.05333333f,

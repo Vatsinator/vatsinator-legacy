@@ -95,7 +95,7 @@ FlightItem::position() const {
 
 void
 FlightItem::drawItem(QOpenGLShaderProgram* _shader) const {
-  static constexpr float PilotsZ = static_cast<float>(MapConfig::MapLayers::Pilots);
+  static Q_DECL_CONSTEXPR float PilotsZ = static_cast<float>(MapConfig::MapLayers::Pilots);
   
   static const GLfloat modelRect[] = {
     -0.03, -0.03,

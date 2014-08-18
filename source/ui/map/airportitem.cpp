@@ -105,7 +105,7 @@ AirportItem::position() const {
 
 void
 AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
-  static constexpr float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
+  static Q_DECL_CONSTEXPR float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
   
   static const GLfloat iconRect[] = {
     -0.04, -0.02,
