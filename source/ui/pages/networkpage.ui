@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>662</width>
-    <height>470</height>
+    <height>452</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -272,13 +272,8 @@
          <item>
           <widget class="QListWidget" name="WeatherProviderListWidget">
            <property name="currentRow">
-            <number>0</number>
+            <number>-1</number>
            </property>
-           <item>
-            <property name="text">
-             <string extracomment="&amp;Label for &quot;no weather forecast provider&quot;">None</string>
-            </property>
-           </item>
           </widget>
          </item>
         </layout>

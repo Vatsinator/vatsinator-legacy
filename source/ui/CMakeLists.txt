@@ -78,6 +78,7 @@ set (widgets_SRCS
     pages/mappage.cpp
     pages/miscellaneouspage.cpp
     pages/networkpage.cpp
+    pages/pluginlistwidgetitem.cpp
     pages/viewpage.cpp
     
     views/airporttableview.cpp
