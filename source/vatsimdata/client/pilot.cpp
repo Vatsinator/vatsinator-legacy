@@ -29,7 +29,7 @@
 
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
-static constexpr qreal PilotToAirport = 0.1;
+static constexpr qreal PilotToAirport = 0.15;
 
 namespace {
   

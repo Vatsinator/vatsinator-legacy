@@ -53,13 +53,6 @@ public:
   
   inline MapRenderer* renderer() { return __renderer; }
   
-public slots:
-  
-  /**
-   * Closes all the menus, hides tooltip and updates.
-   */
-  void redraw();
-  
 protected:
   void initializeGL() override;
   void paintGL() override;

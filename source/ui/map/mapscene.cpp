@@ -132,6 +132,10 @@ MapScene::moveSmoothly(const LonLat& _target) {
 
 void
 MapScene::__addFlightItem(const Pilot* _p) {
+  /* TODO check why it can be null */
+  if (_p->position().isNull())
+    return;
+  
   connect(_p,           SIGNAL(invalid()),
           this,         SLOT(__removeFlightItem()));
   connect(_p,           SIGNAL(updated()),
@@ -203,9 +207,6 @@ MapScene::__updateFlightItem() {
     return;
   
   auto it = __items.find(p->oldPosition());
-  /* TODO assert below */
-//   if (it == __items.end())
-//     return;
   Q_ASSERT(it != __items.end());
   
   const MapItem* item = it->second;

@@ -69,3 +69,7 @@ UirItem::drawItem(QOpenGLShaderProgram*) const {
 void UirItem::drawLabel(QOpenGLShaderProgram*) const {
 
 }
+
+void UirItem::drawFocused(QOpenGLShaderProgram*) const {
+
+}

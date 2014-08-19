@@ -51,32 +51,6 @@ FlightItem::~FlightItem() {
   __label.destroy();
 }
 
-void
-FlightItem::drawLines(LineTypes types, QOpenGLShaderProgram* _shader) const {
-  if (!__linesReady)
-    __prepareLines();
-  
-  if (types.testFlag(OriginToPilot) && !__otpLine.coords.isEmpty()) {
-    if (!__otpLine.color.isValid())
-      __otpLine.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
-    
-    _shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLine.color);
-    _shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLine.coords.constData(), 2);
-    glDrawArrays(GL_LINE_STRIP, 0, __otpLine.coords.size() / 2);
-  }
-  
-  if (types.testFlag(PilotToDestination) && !__ptdLine.coords.isEmpty()) {
-    if (!__ptdLine.color.isValid())
-      __ptdLine.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
-    
-    _shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLine.color);
-    _shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLine.coords.constData(), 2);
-    glLineStipple(3, 0xF0F0); // dashed line
-    glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);
-    glLineStipple(1, 0xFFFF);
-  }
-}
-
 bool
 FlightItem::isVisible() const {
   return data()->phase() == Pilot::Airborne && !data()->isPrefiledOnly();
@@ -158,6 +132,32 @@ FlightItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   __label.bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
   __label.release();
+}
+
+void
+FlightItem::drawFocused(QOpenGLShaderProgram* _shader) const {
+  if (!__linesReady)
+    __prepareLines();
+  
+  if (!__otpLine.coords.isEmpty()) {
+    if (!__otpLine.color.isValid())
+      __otpLine.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
+    
+    _shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLine.color);
+    _shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLine.coords.constData(), 2);
+    glDrawArrays(GL_LINE_STRIP, 0, __otpLine.coords.size() / 2);
+  }
+  
+  if (!__ptdLine.coords.isEmpty()) {
+    if (!__ptdLine.color.isValid())
+      __ptdLine.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
+    
+    _shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLine.color);
+    _shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLine.coords.constData(), 2);
+    glLineStipple(3, 0xF0F0); // dashed line
+    glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);
+    glLineStipple(1, 0xFFFF);
+  }
 }
 
 QString

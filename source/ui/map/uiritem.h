@@ -40,6 +40,7 @@ public:
   const LonLat& position() const override;
   void drawItem(QOpenGLShaderProgram*) const override;
   void drawLabel(QOpenGLShaderProgram*) const override;
+  void drawFocused(QOpenGLShaderProgram*) const override;
   
   inline const Uir* data() const { return __uir; }
   inline const QList<FirItem*>& firItems() const {

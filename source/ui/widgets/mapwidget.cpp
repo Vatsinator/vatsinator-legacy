@@ -53,8 +53,8 @@ MapWidget::MapWidget(QWidget* _parent) :
   
   setAttribute(Qt::WA_NoSystemBackground);
   
-  connect(vApp()->vatsimDataHandler(),          SIGNAL(vatsimDataUpdated()),
-          this,                                 SLOT(redraw()));
+  connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
+          this,                         SLOT(update()));
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
   connect(this, SIGNAL(menuRequest()), SLOT(__showMenu()));
@@ -88,19 +88,11 @@ MapWidget::event(QEvent* _event) {
 }
 
 void
-MapWidget::redraw() {
-  QToolTip::hideText();
-  
-  if (cursor().shape() != Qt::SizeAllCursor)
-    setCursor(QCursor(Qt::ArrowCursor));
-  
-  update();
-}
-
-void
 MapWidget::initializeGL() {
   initGLExtensionsPointers();
   __renderer = new MapRenderer();
+  connect(__renderer,   SIGNAL(updated()),
+          this,         SLOT(update()), Qt::DirectConnection);
 }
 
 void
@@ -109,10 +101,11 @@ MapWidget::paintGL() {
   
   const MapItem* item = __underMouse();
   if (item) {
-    setCursor(QCursor(Qt::PointingHandCursor));
-//     QToolTip::showText(mapToGlobal(__mousePosition.screenPosition()), item->tooltipText());
+    if (cursor().shape() != Qt::SizeAllCursor)
+      setCursor(QCursor(Qt::PointingHandCursor));
+    
+    __renderer->drawFocused(item);
   } else {
-//     QToolTip::hideText();
     if (cursor().shape() != Qt::SizeAllCursor)
       setCursor(QCursor(Qt::ArrowCursor));
   }
@@ -121,14 +114,11 @@ MapWidget::paintGL() {
 void
 MapWidget::resizeGL(int _width, int _height) {
   __renderer->setViewport(QSize(_width, _height)); 
-  redraw();
 }
 
 void
 MapWidget::wheelEvent(QWheelEvent* _event) {
   __updateZoom(_event->delta() / 120);
-  redraw();
-  
   _event->accept();
 }
 
@@ -186,11 +176,12 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
       center.rx() -= 360.0;
     
     __renderer->setCenter(center);
+  } else {
+    update();
   }
   
   __mousePosition.update(_event->pos());
   
-  update();
   _event->accept();
 }
 
