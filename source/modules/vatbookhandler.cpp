@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
+#include <QtCore>
 
 #include "modules/models/bookedatctablemodel.h"
 #include "modules/vatbook/bookedcontroller.h"

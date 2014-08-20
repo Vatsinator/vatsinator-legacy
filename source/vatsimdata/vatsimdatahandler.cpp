@@ -17,7 +17,7 @@
 */
 
 #include <algorithm>
-#include <QtWidgets>
+#include <QtCore>
 #include <qjson/parser.h>
 
 #include "db/airportdatabase.h"

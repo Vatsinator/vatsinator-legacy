@@ -17,7 +17,7 @@
 */
 
 #include <algorithm>
-#include <QtWidgets>
+#include <QtCore>
 
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"

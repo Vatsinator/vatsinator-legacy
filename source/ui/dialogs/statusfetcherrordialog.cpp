@@ -17,8 +17,6 @@
  *
  */
 
-#include <QtWidgets>
-
 #include "statusfetcherrordialog.h"
 
 StatusFetchErrorDialog::StatusFetchErrorDialog(QWidget* _parent) :

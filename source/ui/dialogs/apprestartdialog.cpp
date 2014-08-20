@@ -17,8 +17,6 @@
  *
  */
 
-#include <QtWidgets>
-
 #include "apprestartdialog.h"
 
 AppRestartDialog::AppRestartDialog(QWidget* _parent) :

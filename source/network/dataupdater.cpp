@@ -17,7 +17,6 @@
  *
  */
 
-#include <QtWidgets>
 #include <QtNetwork>
 
 #include "network/filedownloader.h"
