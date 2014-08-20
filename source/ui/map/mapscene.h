@@ -112,9 +112,14 @@ public:
   QList<const MapItem*> items(const QRectF&) const;
   
   /**
-   * Find nearest item to the given point.
+   * Finds nearest item to the given point.
    */
   const MapItem* nearest(const LonLat&);
+  
+  /**
+   * Finds _n_ nearest items to the given point.
+   */
+  QList<const MapItem*> nearest(const LonLat&, int);
   
   inline MapRenderer* renderer() { return __renderer; }
   

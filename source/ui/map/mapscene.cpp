@@ -121,7 +121,7 @@ MapScene::items(const QRectF& _rect) const {
     }
   }
   
-  return result;
+  return std::move(result);
 }
 
 const MapItem*
@@ -131,9 +131,30 @@ MapScene::nearest(const LonLat& _target) {
    * and thus we cannot make this mehod const.
    */
   auto it = spatial::neighbor_begin(__items, _target);
-  while (!it->second->isVisible())
+  while (!it->second->isVisible()) {
     ++it;
+    Q_ASSERT(it != __items.end());
+  }
+  
   return it->second;
+}
+
+QList<const MapItem*>
+MapScene::nearest(const LonLat& _target, int _n) {
+  QList<const MapItem*> result;
+  auto it = spatial::neighbor_begin(__items, _target);
+  int c = 0;
+  
+  while (c < _n) {
+    if (it->second->isVisible()) {
+      result << it->second;
+      c += 1;
+    }
+    ++it;
+    Q_ASSERT(it != __items.end());
+  }
+  
+  return std::move(result);
 }
 
 void

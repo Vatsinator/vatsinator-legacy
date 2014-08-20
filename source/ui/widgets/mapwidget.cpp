@@ -52,12 +52,12 @@ MapWidget::MapWidget(QWidget* _parent) :
     QGLWidget(MapConfig::glFormat(), _parent) {
   
   setAttribute(Qt::WA_NoSystemBackground);
+  setAttribute(Qt::WA_OpaquePaintEvent);
   
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
           this,                         SLOT(update()));
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
-  connect(this, SIGNAL(menuRequest()), SLOT(__showMenu()));
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
   
   setAutoBufferSwap(true);
@@ -132,11 +132,7 @@ MapWidget::mousePressEvent(QMouseEvent* _event) {
     __lastClickPosition = _event->pos();
   } else if (_event->buttons() & Qt::RightButton) {
     const MapItem* item = __underMouse();
-    if (item) {
-      emit menuRequest(item);
-    } else {
-      emit menuRequest();
-    }
+    emit menuRequest(item);
   }
   
   _event->accept();
@@ -176,12 +172,9 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
       center.rx() -= 360.0;
     
     __renderer->setCenter(center);
-  } else {
-    update();
   }
-  
   __mousePosition.update(_event->pos());
-  
+  update();
   _event->accept();
 }
 
@@ -332,40 +325,68 @@ MapWidget::__itemMenu(const FlightItem* _item) {
   return menu;
 }
 
-void
-MapWidget::__showMenu(const MapItem* _item) {
-  QMenu* menu;
+QMenu*
+MapWidget::__itemMenu() {
+  // fetch 10 nearest items
+  QList<const MapItem*> items = __renderer->scene()->nearest(__mousePosition.geoPosition(), 10);
   
-  if (const AirportItem* i = dynamic_cast<const AirportItem*>(_item))
-    menu = __itemMenu(i);
-  else if (const FirItem* i = dynamic_cast<const FirItem*>(_item))
-    menu = __itemMenu(i);
-  else if (const FlightItem* i = dynamic_cast<const FlightItem*>(_item))
-    menu = __itemMenu(i);
+  QMenu* menu = new QMenu(tr("Nearby"), this);
   
-  menu->exec(mapToGlobal(__mousePosition.screenPosition()));
-  delete menu;
-}
-
-void
-MapWidget::__showMenu() {
-  QRectF rect(QPointF(), QSize(1.0f, 1.0f));
-  rect.moveCenter(__mousePosition.geoPosition());
-  QList<const MapItem*> items = __renderer->scene()->items(rect);
-  
-  QMenu* menu = new QMenu(tr("Flights nearby"), this);
+  // group fetched items
+  QList<const FlightItem*> flights;
+  QList<const AirportItem*> airports;
   
   for (const MapItem* item: items) {
     if (const FlightItem* f = dynamic_cast<const FlightItem*>(item)) {
-      if (f->data()->isPrefiledOnly())
-        continue;
-      
+      if (!f->data()->isPrefiledOnly())
+        flights << f;
+    } else if (const AirportItem* a = dynamic_cast<const AirportItem*>(item)) {
+      airports << a;
+    }
+  }
+  
+  if (flights.size() > 0) {
+    menu->addAction(new ActionMenuSeparator(tr("Flights"), this));
+    
+    for (const FlightItem* f: flights) {
       ClientDetailsAction* action = new ClientDetailsAction(f->data(), f->data()->callsign(), this);
       connect(action,                   SIGNAL(triggered(const Client*)),
               vApp()->userInterface(),  SLOT(showDetails(const Client*)));
       menu->addAction(action);
     }
   }
+  
+  if (flights.size() > 0 && airports.size() >0)
+    menu->addSeparator();
+  
+  if (airports.size() > 0) {
+    menu->addAction(new ActionMenuSeparator(tr("Airports"), this));
+    
+    for (const AirportItem* a: airports) {
+      AirportDetailsAction* action = new AirportDetailsAction(a->data(), a->data()->icao(), this);
+      connect(action,                   SIGNAL(triggered(const Airport*)),
+              vApp()->userInterface(),  SLOT(showDetails(const Airport*)));
+      menu->addAction(action);
+    }
+  }
+  
+  return menu;
+}
+
+void
+MapWidget::__showMenu(const MapItem* _item) {
+  QMenu* menu;
+  
+  if (!_item)
+    menu = __itemMenu();
+  else if (const AirportItem* i = dynamic_cast<const AirportItem*>(_item))
+    menu = __itemMenu(i);
+  else if (const FirItem* i = dynamic_cast<const FirItem*>(_item))
+    menu = __itemMenu(i);
+  else if (const FlightItem* i = dynamic_cast<const FlightItem*>(_item))
+    menu = __itemMenu(i);
+  else
+    Q_UNREACHABLE();
   
   menu->exec(mapToGlobal(__mousePosition.screenPosition()));
   delete menu;
