@@ -198,7 +198,7 @@ MapWidget::__underMouse() {
 
 const MapItem*
 MapWidget::__underMouse(const QPoint& _p) {
-  const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat(_p));
+  const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat(_p).bound());
   Q_ASSERT(closest);
    
   if (__mousePosition.screenDistance(__renderer->mapFromLonLat(closest->position())) > MapConfig::mouseOnObject())
@@ -381,7 +381,7 @@ MapWidget::MousePosition::MousePosition() : __down(false) {}
 void
 MapWidget::MousePosition::update(const QPoint& _pos) {
   __screenPosition = _pos;
-  __geoPosition = wui()->mainWindow()->mapWidget()->renderer()->mapToLonLat(_pos);
+  __geoPosition = wui()->mainWindow()->mapWidget()->renderer()->mapToLonLat(_pos).bound();
   
   MouseLonLatEvent e(__geoPosition);
   qApp->notify(wui()->mainWindow(), &e);

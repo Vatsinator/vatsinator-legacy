@@ -97,10 +97,30 @@ MapScene::items(const QRectF& _rect) const {
   QList<const MapItem*> result;
   
   for (auto it = spatial::region_cbegin(__items, _rect.bottomLeft(), _rect.topRight());
-      it != spatial::region_cend(__items, _rect.bottomLeft(), _rect.topRight()); ++it) {
-    if ((*it).second->isVisible())
-      result << (*it).second;
+       it != spatial::region_cend(__items, _rect.bottomLeft(), _rect.topRight()); ++it) {
+    if (it->second->isVisible())
+      result << it->second;
   }
+  
+  /* Handle cross-IDL queries */
+  if (_rect.right() > 180.0) {
+    QRectF more(QPointF(-180.0, _rect.top()), QSize(_rect.right() - 180.0, _rect.height()));
+    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
+         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
+      if (it->second->isVisible())
+        result << it->second;
+    }
+  }
+  
+  if (_rect.left() < -180.0) {
+    QRectF more(QPointF(_rect.left() + 360.0, _rect.top()), QPointF(180.0, _rect.bottom()));
+    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
+         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
+      if (it->second->isVisible())
+        result << it->second;
+    }
+  }
+  
   return result;
 }
 
@@ -111,9 +131,9 @@ MapScene::nearest(const LonLat& _target) {
    * and thus we cannot make this mehod const.
    */
   auto it = spatial::neighbor_begin(__items, _target);
-  while (!(*it).second->isVisible())
+  while (!it->second->isVisible())
     ++it;
-  return (*it).second;
+  return it->second;
 }
 
 void

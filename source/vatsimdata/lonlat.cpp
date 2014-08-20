@@ -30,6 +30,18 @@ LonLat::LonLat(const QPointF& _p): QPointF(_p) {}
 
 LonLat::LonLat(qreal _lon, qreal _lat): QPointF(_lon, _lat) {}
 
+LonLat
+LonLat::bound() const {
+  LonLat b(*this);
+  while (b.x() > 180.0)
+    b.rx() -= 360.0;
+  while (b.x() < -180.0)
+    b.rx() += 360.0;
+  
+  b.ry() = qBound(-90.0, b.y(), 90.0);
+  return std::move(b);
+}
+
 QDataStream &
 operator<<(QDataStream& _stream, const LonLat& _lonlat) {
   _stream << _lonlat.x() << _lonlat.y();

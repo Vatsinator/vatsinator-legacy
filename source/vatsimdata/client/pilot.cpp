@@ -174,9 +174,13 @@ Pilot::update(const QStringList& _data) {
   ) {
     __route = Route{ tOrigin, tDestination, _data[30], _data[12].toUpper() };
     __updateAirports();
+    __fixupRoute();
+  } else if (oldPosition() != position()) {
+    // update just the position
+    for (LonLat& p: __route.waypoints)
+      if (p == oldPosition())
+        p = position();
   }
-  
-  __fixupRoute();
   
   if (__squawk.length() == 3)
     __squawk.prepend("0");

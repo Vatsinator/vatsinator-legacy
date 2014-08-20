@@ -221,6 +221,8 @@ MapRenderer::paint() {
   if (__items.isEmpty())
     return;
   
+  __updateOffsets();
+  
   /* Prepare world transform matrix */
   __worldTransform.setToIdentity();
   __worldTransform.scale(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax());
