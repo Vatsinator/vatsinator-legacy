@@ -153,8 +153,13 @@ MapScene::moveSmoothly(const LonLat& _target) {
 void
 MapScene::__addFlightItem(const Pilot* _p) {
   /* TODO check why it can be null */
-  if (_p->position().isNull())
+  if (_p->position().isNull()) {
+    VatsinatorApplication::log("MapScene: %s position is null; o=%s, d=%s",
+                               qPrintable(_p->callsign()),
+                               qPrintable(_p->route().origin),
+                               qPrintable(_p->route().destination));
     return;
+  }
   
   connect(_p,           SIGNAL(invalid()),
           this,         SLOT(__removeFlightItem()));
