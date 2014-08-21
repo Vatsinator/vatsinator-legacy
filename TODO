@@ -7,7 +7,7 @@
 * Data files should use JSON format
 * Old versions config updater
 * Data parser (separate class)
-* Optimize OpenGL engine (use k-d tree, optimize textures)
+* Optimize OpenGL engine (optimize textures...)
 
 Due to the new engine:
 * Make FlightTracker works

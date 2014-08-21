@@ -30,7 +30,6 @@
 class QOpenGLShaderProgram;
 class Fir;
 class MapScene;
-class Texture;
 
 class FirItem : public QObject, public MapItem {
   Q_OBJECT
