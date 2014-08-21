@@ -24,6 +24,7 @@
 #include <QSize>
 #include <QColor>
 #include <QMatrix4x4>
+#include <QOpenGLFunctions>
 #include "vatsimdata/lonlat.h"
 
 class IconKeeper;
@@ -132,6 +133,7 @@ public:
   inline IconKeeper* icons() { return __iconKeeper; }
   inline ModelMatcher* models() { return __modelMatcher; }
   inline MapScene* scene() { return __scene; }
+  inline QOpenGLFunctions* opengl() { return __functions; }
   
   /**
    * Vertex attribute location ("vertex").
@@ -176,6 +178,9 @@ private:
   
   /* The center of the map */
   LonLat __center;
+  
+  /* OpenGL functions */
+  QOpenGLFunctions* __functions;
   
   /* World map drawer */
   WorldPolygon* __world;

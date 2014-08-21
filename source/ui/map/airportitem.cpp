@@ -78,12 +78,12 @@ AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
   static Q_DECL_CONSTEXPR float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
   
   static const GLfloat iconRect[] = {
-    -0.04, -0.02,
-    -0.04,  0.06,
-     0.04,  0.06,
-     0.04,  0.06,
-     0.04, -0.02,
-    -0.04, -0.02
+    -0.04f, -0.02f,
+    -0.04f,  0.06f,
+     0.04f,  0.06f,
+     0.04f,  0.06f,
+     0.04f, -0.02f,
+    -0.04f, -0.02f
   };
   
   static const GLfloat textureCoords[] = {

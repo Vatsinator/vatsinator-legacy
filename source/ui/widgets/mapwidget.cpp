@@ -30,7 +30,6 @@
 
 #include "db/airportdatabase.h"
 #include "events/mouselonlatevent.h"
-#include "glutils/glextensions.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/actionmenuseparator.h"
 #include "ui/actions/airportdetailsaction.h"
@@ -96,7 +95,6 @@ MapWidget::event(QEvent* _event) {
 
 void
 MapWidget::initializeGL() {
-  initGLExtensionsPointers();
   __renderer = new MapRenderer();
   connect(__renderer,   SIGNAL(updated()),
           this,         SLOT(update()), Qt::DirectConnection);

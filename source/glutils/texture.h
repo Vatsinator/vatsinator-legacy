@@ -26,26 +26,21 @@
 
 /**
  * The Texture class is responsible for handling a single OpenGL
- * texture in a most efficient way.
+ * texture.
+ * It is used as a substitute of QOpenGLTexture in Qt4 builds.
  */
 class Texture {
   
 public:
   
+  enum Target {
+    Target2D
+  };
+  
   /**
    * Create empty texture, with id = 0.
    */
-  Texture();
-  
-  /**
-   * Create a new texture from the given image.
-   */
-  Texture(const QImage&);
-  
-  /**
-   * Create a new texture from the given image path.
-   */
-  Texture(const QString&);
+  Texture(Target);
   
   /**
    * Destructor removes the texture from the memory.
@@ -55,16 +50,27 @@ public:
   /**
    * Binds the texture.
    */
-  void bind() const;
+  void bind();
+  
+  /**
+   * Destroys the underlying texture object.
+   */
+  void destroy();
   
   /**
    * Unbinds any texture.
    */
-  static void unbind();
+  static void release();
+  
+  inline bool isCreated() const { return __id; }
   
 private:
   GLuint __id;
 
 };
+
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+typedef Texture QOpenGLTexture
+#endif
 
 #endif // TEXTURE_H
