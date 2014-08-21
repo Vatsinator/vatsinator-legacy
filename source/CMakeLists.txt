@@ -1,5 +1,7 @@
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+include (Macros)
 
+# ignored with Qt4
 set (CMAKE_AUTOMOC ON)
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -31,16 +33,6 @@ set (vatsinator_SUBDIRS
     vatsimdata
 )
 
-include (Macros)
-if (CMAKE_COMPILER_IS_GNUCC)
-    include (GccVersion)
-        
-    # workaround for gcc <= 4.6
-    if (NOT GCC_VERSION_47)
-      add_definitions("-Doverride=" "")
-    endif (NOT GCC_VERSION_47)
-endif (CMAKE_COMPILER_IS_GNUCC)
-
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -54,15 +46,25 @@ if (qjson_LIBRARIES)
     set (QJSON_LIBRARIES ${qjson_LIBRARIES})
 endif (qjson_LIBRARIES)
 
-# Set PREFIX for defines.h and necessary libs
+
+if (${QT_VERSION} VERSION_LESS 5.0)
+  set (vatsinator_QT_LIBS
+    ${QT_LIBRARIES}
+  )
+else (${QT_VERSION} VERSION_LESS 5.0)
+  set (vatsinator_QT_LIBS
+    Qt5::Widgets
+    Qt5::Network
+    Qt5::Xml
+    Qt5::OpenGL
+  )
+endif (${QT_VERSION} VERSION_LESS 5.0)
+      
 if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
-
+    
     set (vatsinator_LIBS
-        Qt5::Widgets
-        Qt5::Network
-        Qt5::Xml
-        Qt5::OpenGL
+        ${vatsinator_QT_LIBS}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
         ${QJSON_LIBRARIES}
@@ -71,7 +73,7 @@ elseif (APPLE)
     set (vatsinator_PREFIX "")
 
     set (vatsinator_LIBS
-        ${QT_LIBRARIES}
+        ${vatsinator_QT_LIBS}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
         ${QJSON_LIBRARIES}

@@ -1,4 +1,8 @@
-qt5_wrap_cpp(uwf_MOCS ultimateweatherforecasts.h)
+if (${QT_VERSION} VERSION_LESS 5.0)
+  qt4_wrap_cpp(uwf_MOCS ultimateweatherforecasts.h)
+else (${QT_VERSION} VERSION_LESS 5.0)
+  qt5_wrap_cpp(uwf_MOCS ultimateweatherforecasts.h)
+endif (${QT_VERSION} VERSION_LESS 5.0)
 set (QT_USE_QTNETWORK TRUE)
 
 add_definitions(-DQT_PLUGIN)
