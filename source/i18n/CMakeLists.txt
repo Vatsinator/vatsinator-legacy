@@ -1,4 +1,6 @@
-find_package (Qt5LinguistTools REQUIRED)
+if (NOT ${QT_VERSION} VERSION_LESS 5.0)
+  find_package (Qt5LinguistTools REQUIRED) # qt5_add_translation
+endif (NOT ${QT_VERSION} VERSION_LESS 5.0)
 
 file (GLOB LANGUAGE_FILES
     "*.language")
@@ -17,14 +19,9 @@ foreach (LANG ${LANGUAGE_FILES})
 endforeach (LANG)
 
 if (NOT QT_TRANSLATIONS_DIR)
-  if (NOT QT_QMAKE_EXECUTABLE)
-    get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-  endif (NOT QT_QMAKE_EXECUTABLE)
   exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_TRANSLATIONS"
       OUTPUT_VARIABLE QT_TRANSLATIONS_DIR)
 endif (NOT QT_TRANSLATIONS_DIR)
-
-message (STATUS "Qt translations: ${QT_TRANSLATIONS_DIR}")
 
 # gather .ts files and qt translations
 set (TRANSLATION_SOURCES "")
@@ -48,7 +45,11 @@ foreach (LANG ${vatsinator_LANGUAGES})
   endif (NOT "en" STREQUAL "${LANG}")
 endforeach (LANG)
 
-qt5_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
+if (${QT_VERSION} VERSION_LESS 5.0)
+  qt4_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
+else (${QT_VERSION} VERSION_LESS 5.0)
+  qt5_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
+endif (${QT_VERSION} VERSION_LESS 5.0)
 
 add_custom_target (i18n DEPENDS ${vatsinator_TRANSLATIONS} ${qt_TRANSLATIONS})
 

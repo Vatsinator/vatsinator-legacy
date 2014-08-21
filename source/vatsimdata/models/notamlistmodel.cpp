@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtWidgets>
+#include <QtGui>
 
 #include "notamlistmodel.h"
 

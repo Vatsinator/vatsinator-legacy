@@ -17,8 +17,6 @@
  *
  */
 
-#include <QtWidgets>
-
 #include "netconfig.h"
 
 #include "newversiondialog.h"

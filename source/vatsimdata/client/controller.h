@@ -111,7 +111,7 @@ public:
   
 private:
   void __cleanupAtis();
-  void __setMyIcaoAndFacility();
+  void __recognizeDetails();
   void __makeDescription(const Fir*);
   void __makeDescription(const Uir*);
   void __makeDescription(const Airport*);

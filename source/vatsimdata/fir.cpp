@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
+#include <QtCore>
 
 #include "db/firdatabase.h"
 #include "vatsimdata/models/airporttablemodel.h"

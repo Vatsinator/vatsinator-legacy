@@ -30,7 +30,6 @@
 class QOpenGLShaderProgram;
 class Fir;
 class MapScene;
-class Texture;
 
 class FirItem : public QObject, public MapItem {
   Q_OBJECT
@@ -49,6 +48,7 @@ public:
   const LonLat& position() const override;
   void drawItem(QOpenGLShaderProgram*) const override;
   void drawLabel(QOpenGLShaderProgram*) const override;
+  void drawFocused(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   

@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
 #include <QtNetwork>
 
 #include "config.h"

@@ -34,6 +34,12 @@ public:
   LonLat(const QPointF&);
   LonLat(qreal, qreal);
   
+  /**
+   * Return this point, but fix its coordinates to be correct longitude
+   * and latitude.
+   */
+  LonLat bound() const;
+  
   inline qreal longitude() const { return QPointF::x(); }
   inline qreal latitude() const { return QPointF::y(); }
   
@@ -44,7 +50,7 @@ public:
   inline qreal operator [](int dim) const {
     Q_ASSERT(dim >= 0 && dim <= 1);
     return dim == 0 ? x() : y();
-  }
+  } 
 
 };
 Q_DECLARE_METATYPE(LonLat)

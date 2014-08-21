@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
+#include <QtCore>
 
 #include "db/airportdatabase.h"
 #include "network/statspurveyor.h"
@@ -83,7 +83,7 @@ Controller::Controller(const QStringList& _data) :
     __isOK(true) {
   
   __cleanupAtis();
-  __setMyIcaoAndFacility();
+  __recognizeDetails();
 }
 
 void
@@ -108,7 +108,7 @@ void Controller::__cleanupAtis() {
 }
 
 void
-Controller::__setMyIcaoAndFacility() {
+Controller::__recognizeDetails() {
   QStringList sections = callsign().split('_');
 
   if (sections.back() == "CTR") {
@@ -117,23 +117,21 @@ Controller::__setMyIcaoAndFacility() {
 
     __icao = sections.front();
     
-    Fir* fir = vApp()->vatsimDataHandler()->findFir(__icao);
-    if (fir) {
+    if (Fir* fir = vApp()->vatsimDataHandler()->findFir(__icao)) {
       fir->addStaff(this);
       __makeDescription(fir);
-    } else {
-      Uir* uir = vApp()->vatsimDataHandler()->findUir(__icao);
-
-      if (uir) {
-        uir->addStaff(this);
-        __makeDescription(uir);
-        return;
-      }
-      
-      StatsPurveyor::getSingleton().reportNoAtc(callsign());
-      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
-      __isOK = false;
+      return;
     }
+    
+    if (Uir* uir = vApp()->vatsimDataHandler()->findUir(__icao)) {
+      uir->addStaff(this);
+      __makeDescription(uir);
+      return;
+    }
+      
+    StatsPurveyor::getSingleton().reportNoAtc(callsign());
+    VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+    __isOK = false;
   } else if (sections.back() == "FSS") {
     __facility = Fss;
     __airport = nullptr;
@@ -148,19 +146,19 @@ Controller::__setMyIcaoAndFacility() {
     if (fir) {
       fir->addStaff(this);
       __makeDescription(fir);
-    } else {
-      Uir* uir = vApp()->vatsimDataHandler()->findUir(icao);
-      if (uir) {
-        uir->addStaff(this);
-        __makeDescription(uir);
-        return;
-      }
-      
-      StatsPurveyor::getSingleton().reportNoAtc(callsign());
-      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
-      __isOK = false;
+      return;
     }
     
+    Uir* uir = vApp()->vatsimDataHandler()->findUir(icao);
+    if (uir) {
+      uir->addStaff(this);
+      __makeDescription(uir);
+      return;
+    }
+    
+    StatsPurveyor::getSingleton().reportNoAtc(callsign());
+    VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+    __isOK = false;
   } else if (
     sections.back() == "APP" ||
     sections.back() == "DEP" ||
@@ -181,17 +179,18 @@ Controller::__setMyIcaoAndFacility() {
     else if (sections.back() == "ATIS")
       __facility = Atis;
 
-    Airport* ap = vApp()->vatsimDataHandler()->findAirport(sections.front());
-    if (ap) {
+    if (Airport* ap = vApp()->vatsimDataHandler()->findAirport(sections.front())) {
       ap->addStaff(this);
       __airport = ap;
       __makeDescription(__airport);
-    } else {
-      StatsPurveyor::getSingleton().reportNoAtc(callsign());
-      VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
-      __isOK = false;
+      return;
     }
+    
+    StatsPurveyor::getSingleton().reportNoAtc(callsign());
+    VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
   }
+  
+  __isOK = false;
 }
 
 void

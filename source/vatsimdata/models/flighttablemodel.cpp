@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
+#include <QtGui>
 
 #include "db/airportdatabase.h"
 #include "vatsimdata/airport.h"

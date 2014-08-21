@@ -17,8 +17,6 @@
  *
  */
 
-#include <QtWidgets>
-
 #include "datafetcherrordialog.h"
 
 DataFetchErrorDialog::DataFetchErrorDialog(QWidget* _parent) :

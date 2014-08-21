@@ -41,6 +41,7 @@ public:
   const LonLat& position() const override;
   void drawItem(QOpenGLShaderProgram*) const override;
   void drawLabel(QOpenGLShaderProgram*) const override;
+  void drawFocused(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   

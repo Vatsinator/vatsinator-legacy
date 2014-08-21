@@ -97,11 +97,31 @@ MapScene::items(const QRectF& _rect) const {
   QList<const MapItem*> result;
   
   for (auto it = spatial::region_cbegin(__items, _rect.bottomLeft(), _rect.topRight());
-      it != spatial::region_cend(__items, _rect.bottomLeft(), _rect.topRight()); ++it) {
-    if ((*it).second->isVisible())
-      result << (*it).second;
+       it != spatial::region_cend(__items, _rect.bottomLeft(), _rect.topRight()); ++it) {
+    if (it->second->isVisible())
+      result << it->second;
   }
-  return result;
+  
+  /* Handle cross-IDL queries */
+  if (_rect.right() > 180.0) {
+    QRectF more(QPointF(-180.0, _rect.top()), QSize(_rect.right() - 180.0, _rect.height()));
+    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
+         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
+      if (it->second->isVisible())
+        result << it->second;
+    }
+  }
+  
+  if (_rect.left() < -180.0) {
+    QRectF more(QPointF(_rect.left() + 360.0, _rect.top()), QPointF(180.0, _rect.bottom()));
+    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
+         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
+      if (it->second->isVisible())
+        result << it->second;
+    }
+  }
+  
+  return std::move(result);
 }
 
 const MapItem*
@@ -111,9 +131,30 @@ MapScene::nearest(const LonLat& _target) {
    * and thus we cannot make this mehod const.
    */
   auto it = spatial::neighbor_begin(__items, _target);
-  while (!(*it).second->isVisible())
+  while (!it->second->isVisible()) {
     ++it;
-  return (*it).second;
+    Q_ASSERT(it != __items.end());
+  }
+  
+  return it->second;
+}
+
+QList<const MapItem*>
+MapScene::nearest(const LonLat& _target, int _n) {
+  QList<const MapItem*> result;
+  auto it = spatial::neighbor_begin(__items, _target);
+  int c = 0;
+  
+  while (c < _n) {
+    if (it->second->isVisible()) {
+      result << it->second;
+      c += 1;
+    }
+    ++it;
+    Q_ASSERT(it != __items.end());
+  }
+  
+  return std::move(result);
 }
 
 void
@@ -132,6 +173,15 @@ MapScene::moveSmoothly(const LonLat& _target) {
 
 void
 MapScene::__addFlightItem(const Pilot* _p) {
+  /* TODO check why it can be null */
+  if (_p->position().isNull() || _p->position().x() == 0.0 || _p->position().y() == 0.0) {
+    VatsinatorApplication::log("MapScene: %s position is null; o=%s, d=%s",
+                               qPrintable(_p->callsign()),
+                               qPrintable(_p->route().origin),
+                               qPrintable(_p->route().destination));
+    return;
+  }
+  
   connect(_p,           SIGNAL(invalid()),
           this,         SLOT(__removeFlightItem()));
   connect(_p,           SIGNAL(updated()),
@@ -203,9 +253,6 @@ MapScene::__updateFlightItem() {
     return;
   
   auto it = __items.find(p->oldPosition());
-  /* TODO assert below */
-//   if (it == __items.end())
-//     return;
   Q_ASSERT(it != __items.end());
   
   const MapItem* item = it->second;

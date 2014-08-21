@@ -49,6 +49,14 @@ class MapRenderer : public QObject {
    * The center property represents the center of the map.
    */
   Q_PROPERTY(LonLat center READ center WRITE setCenter)
+  
+signals:
+  
+  /**
+   * One or more of the properties have changed and therefore the map needs
+   * to be re-rendered.
+   */
+  void updated();
 
 public:
   
@@ -95,6 +103,11 @@ public:
    */
   QPointF glFromLonLat(const LonLat&);
   
+  /**
+   * Draws the specified item's "under mouse" elements.
+   */
+  void drawFocused(const MapItem*);
+  
   void setZoom(int);
   void setCenter(const LonLat&);
   
@@ -138,7 +151,6 @@ private:
   void __drawFirs();
   void __drawUirs();
   void __drawItems();
-  void __drawLines();
   
   void __storeSettings();
   void __restoreSettings();

@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtWidgets>
+#include <QtCore>
 
 #include "vatsimmessagedialog.h"
 

@@ -95,6 +95,11 @@ ApproachCircleItem::drawLabel(QOpenGLShaderProgram*) const {
   
 }
 
+void
+ApproachCircleItem::drawFocused(QOpenGLShaderProgram*) const {
+
+}
+
 QString
 ApproachCircleItem::tooltipText() const {
   return "";

@@ -32,25 +32,17 @@ class FlightItem : public QObject, public MapItem {
 
 public:
   
-  /* Describes line type */
-  enum LineType {
-    OriginToPilot = 0x1,
-    PilotToDestination = 0x2
-  };
-  Q_DECLARE_FLAGS(LineTypes, LineType);
-  
   FlightItem(const Pilot*, QObject* = nullptr);
   FlightItem() = delete;
   
   virtual ~FlightItem();
-  
-  void drawLines(LineTypes, QOpenGLShaderProgram*) const;
   
   bool isVisible() const override;
   bool isLabelVisible() const override;
   const LonLat& position() const override;
   void drawItem(QOpenGLShaderProgram*) const override;
   void drawLabel(QOpenGLShaderProgram*) const override;
+  void drawFocused(QOpenGLShaderProgram*) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   
@@ -80,7 +72,5 @@ private:
   
   mutable bool  __linesReady;
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(FlightItem::LineTypes);
 
 #endif // FLIGHTITEM_H

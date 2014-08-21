@@ -132,6 +132,10 @@ void FirItem::drawLabel(QOpenGLShaderProgram*) const {
   
 }
 
+void FirItem::drawFocused(QOpenGLShaderProgram*) const {
+
+}
+
 QString
 FirItem::tooltipText() const {
   QString desc;

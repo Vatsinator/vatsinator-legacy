@@ -40,9 +40,18 @@ class MapWidget : public QGLWidget {
 
 signals:
   
+  /**
+   * The menuRequest() signal is emited when user clicks on the map with the
+   * right mouse button. If the cursor is over an item, the pointer is passed
+   * to this signal. It no item is under the mouse cursor, nullptr is passed.
+   */
   void menuRequest(const MapItem*);
-  void menuRequest();
   
+  /**
+   * The windowRequest() signal is emited when user clicks on the map with
+   * the left mouse button or if selects an appropriate option from the
+   * right-button click menu.
+   */
   void windowRequest(const MapItem*);
   
 public:
@@ -52,13 +61,6 @@ public:
   bool event(QEvent*) override;
   
   inline MapRenderer* renderer() { return __renderer; }
-  
-public slots:
-  
-  /**
-   * Closes all the menus, hides tooltip and updates.
-   */
-  void redraw();
   
 protected:
   void initializeGL() override;
@@ -88,23 +90,27 @@ private:
   void __updateZoom(int);
   
   /**
-   * Creates right-mouse-click menu for an airport.
+   * Creates submenu for an airport.
    */
   QMenu* __itemMenu(const AirportItem*);
   
   /**
-   * Creates right-mouse-click menu for a FIR.
+   * Creates submenu for a FIR.
    */
   QMenu* __itemMenu(const FirItem*);
   
   /**
-   * Creates right-mouse-click menu for a flight.
+   * Creates submenu for a flight.
    */
   QMenu* __itemMenu(const FlightItem*);
+  
+  /**
+   * Creates submenu for no item.
+   */
+  QMenu* __itemMenu();
 
 private slots:
   void __showMenu(const MapItem*);
-  void __showMenu();
   void __showWindow(const MapItem*);
   
 private:

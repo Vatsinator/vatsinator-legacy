@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtWidgets>
+#include <QtCore>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
@@ -29,7 +29,7 @@
 
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
-static const qreal PilotToAirport = 0.1;
+static constexpr qreal PilotToAirport = 0.15;
 
 namespace {
   
@@ -174,9 +174,13 @@ Pilot::update(const QStringList& _data) {
   ) {
     __route = Route{ tOrigin, tDestination, _data[30], _data[12].toUpper() };
     __updateAirports();
+    __fixupRoute();
+  } else if (oldPosition() != position()) {
+    // update just the position
+    for (LonLat& p: __route.waypoints)
+      if (p == oldPosition())
+        p = position();
   }
-  
-  __fixupRoute();
   
   if (__squawk.length() == 3)
     __squawk.prepend("0");

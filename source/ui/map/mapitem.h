@@ -63,8 +63,16 @@ public:
   /**
    * Draws the item label.
    * FirItem won't draw anything.
+   * @param shader Shader that is in use during rendering the item.
    */
   virtual void drawLabel(QOpenGLShaderProgram*) const = 0;
+  
+  /**
+   * Draws the item specific elements when it is under mouse.
+   * For FlightItems and AirportItems it means just rendering the lines.
+   * @param shader Shader that is in use during rendering the item.
+   */
+  virtual void drawFocused(QOpenGLShaderProgram*) const = 0;
   
   /**
    * Tooltip text, shown when the item is mouseover'ed.

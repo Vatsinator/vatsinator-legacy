@@ -26,14 +26,14 @@ endif (POLICY CMP0028)
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
-find_package (Qt5Core REQUIRED)
+option (FORCE_QT4 "Force building with Qt4 even if Qt5 is available" OFF)
+if (NOT FORCE_QT4)
+  find_package (Qt5Core QUIET)
+  if (Qt5Core_FOUND)
 find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL REQUIRED)
 find_package (Qt5Xml REQUIRED)
 find_package (Qt5Network REQUIRED)
-find_package (OpenGL REQUIRED)
-find_package (QuaZip REQUIRED)
-find_package (QJSON REQUIRED)
 
 # fix for older versions of qjson library
 if (qjson_LIBRARIES)
@@ -47,6 +47,22 @@ include_directories(${Qt5OpenGL_INCLUDE_DIRS})
 include_directories(${Qt5Network_INCLUDE_DIRS})
 include_directories(${Qt5Xml_INCLUDE_DIRS})
 
+    get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+  endif (Qt5Core_FOUND)
+endif (NOT FORCE_QT4)
+
+if (NOT Qt5Core_FOUND)
+  find_package (Qt4 4.8 COMPONENTS QtCore QtGui QtOpenGL QtXml QtNetwork REQUIRED)
+  include(${QT_USE_FILE})
+endif (NOT Qt5Core_FOUND)
+
+exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_VERSION"
+      OUTPUT_VARIABLE QT_VERSION)
+
+find_package (OpenGL REQUIRED)
+find_package (QuaZip REQUIRED)
+find_package (QJSON REQUIRED)
+
 if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)
 endif (UNIX AND NOT APPLE AND NOT MINGW)
@@ -56,16 +72,6 @@ if (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
     # As mingw doesn't know rdynamic, we want to remove this.
     string (REPLACE "-rdynamic" "" CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS})
 endif (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
-
-add_definitions(${Qt5Widgets_DEFINITIONS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-include_directories(
-	${Qt5Core_INCLUDE_DIRS}
-	${Qt5Widgets_INCLUDE_DIRS}
-	${Qt5OpenGL_INCLUDE_DIRS}
-	${Qt5Network_INCLUDE_DIRS}
-	${Qt5Xml_INCLUDE_DIRS}
-)
 
 if (MINGW)
     set (WIN32 1)
@@ -101,7 +107,6 @@ if (NOT vatsinator_VERSION)
     if (NOT "${GIT_SHA1}" STREQUAL "GITDIR-NOTFOUND")
         # shorten the sha
         string (SUBSTRING "${GIT_SHA1}" 0 10 GIT_HASH)
-        
         set (vatsinator_VERSION ${vatsinator_VERSION}-${GIT_HASH}-git)
     endif (NOT "${GIT_SHA1}" STREQUAL "GITDIR-NOTFOUND")
 endif (NOT vatsinator_VERSION)
@@ -128,13 +133,15 @@ if (LINUX)
     include (Packaging-linux)
     
     # This sets up the "debian" directory
-    option (WITH_DEBIAN OFF)
+    option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
     if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
         add_subdirectory (debian)
     endif (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
 
     # Spec file
     option (WITH_RPM OFF)
+    
+    add_subdirectory (dist)
 
 elseif (APPLE)
     
@@ -145,7 +152,7 @@ elseif (APPLE)
 elseif (WIN32)
     
     if (MINGW)
-
+        
         # find absolute path to QJson library
         find_library (QJSON_LIBRARY
             NAMES libqjson.dll
@@ -173,9 +180,12 @@ elseif (WIN32)
             ${QUAZIP_LIBRARIES}
             ${QJSON_LIBRARY}
             DESTINATION .
-	)    
+        ) 
+    
     else (MINGW)
     
+        message (FATAL_ERROR "Sorry, only MinGW is currently supported for Win32 builds")
+          
     endif (MINGW)
     
     # Awesome NSIS packaging
@@ -189,7 +199,7 @@ endif (NOT APPLE)
 add_subdirectory (source)
 
 set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
-option (WITH_PLUGINS ON)
+option (WITH_PLUGINS "Build plugins" ON)
 if (WITH_PLUGINS)
     add_subdirectory(plugins)
 endif (WITH_PLUGINS)
@@ -207,6 +217,7 @@ elseif (WIN32)
 else (LINUX)
     message (STATUS " * platform: Undefined")
 endif (LINUX)
+message (STATUS " * Qt version: ${QT_VERSION}")
 
 # uninstall target
 configure_file (
