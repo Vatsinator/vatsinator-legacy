@@ -151,43 +151,6 @@ elseif (APPLE)
 # builds for win32
 elseif (WIN32)
     
-    if (MINGW)
-        
-        # find absolute path to QJson library
-        find_library (QJSON_LIBRARY
-            NAMES libqjson.dll
-        )
-        
-        message (STATUS "Found QJson library: ${QJSON_LIBRARY}")
- 
-        # On native compilers, we should use DeployQt4 module, as it
-        # works on Apple builds. However, it is not possible during
-        # cross-compile.
-        # TODO Qt5 compat
-        get_target_property(QtCore_location Qt5::Core LOCATION)
-        get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
-        get_target_property(QtNetwork_location Qt5::Network LOCATION)
-        get_target_property(QtOpenGL_location Qt5::OpenGL LOCATION)
-        get_target_property(QtXml_location Qt5::Xml LOCATION)
-
-        install (FILES
-
-            ${QtCore_location}
-            ${QtWidgets_location}
-            ${QtNetwork_location}
-            ${QtOpenGL_location}
-            ${QtXml_location}
-            ${QUAZIP_LIBRARIES}
-            ${QJSON_LIBRARY}
-            DESTINATION .
-        ) 
-    
-    else (MINGW)
-    
-        message (FATAL_ERROR "Sorry, only MinGW is currently supported for Win32 builds")
-          
-    endif (MINGW)
-    
     # Awesome NSIS packaging
     include (Packaging-win32)
     
