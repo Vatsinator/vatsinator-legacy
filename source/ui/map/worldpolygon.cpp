@@ -20,13 +20,12 @@
 #include <QtOpenGL>
 
 #include "db/worldmap.h"
-
-#include "glutils/glextensions.h"
 #include "ui/map/maprenderer.h"
 
 #include "worldpolygon.h"
 
-WorldPolygon::WorldPolygon() :
+WorldPolygon::WorldPolygon(MapRenderer* _renderer) :
+    __renderer(_renderer),
     __borders(QOpenGLBuffer::VertexBuffer),
     __triangles(QOpenGLBuffer::IndexBuffer) {
   __initializeBuffers();
@@ -71,8 +70,8 @@ WorldPolygon::__initializeBuffers() {
   
   __borders.bind();
   __triangles.bind();
-  glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(MapRenderer::vertexLocation());
+  __renderer->opengl()->glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  __renderer->opengl()->glEnableVertexAttribArray(MapRenderer::vertexLocation());
   __vao.release();
   __borders.release();
   __triangles.release();

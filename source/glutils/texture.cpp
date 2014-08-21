@@ -21,28 +21,35 @@
 
 #include "texture.h"
 
-Texture::Texture() :
+Texture::Texture(Target) :
      __id(0) {}
 
-Texture::Texture(const QImage& _img) {
-  __id = GlResourceManager::loadImage(_img);
-}
-
-Texture::Texture(const QString& _path) {
-  __id = GlResourceManager::loadImage(_path);
-}
+// Texture::Texture(const QImage& _img) {
+//   __id = GlResourceManager::loadImage(_img);
+// }
+// 
+// Texture::Texture(const QString& _path) {
+//   __id = GlResourceManager::loadImage(_path);
+// }
 
 Texture::~Texture() {
-  GlResourceManager::deleteImage(__id);
-  __id = 0;
+  destroy();
 }
 
 void
-Texture::bind() const {
+Texture::bind() {
   glBindTexture(GL_TEXTURE_2D, __id);
 }
 
 void
-Texture::unbind() {
+Texture::destroy() {
+  if (__id) {
+    GlResourceManager::deleteImage(__id);
+    __id = 0;
+  }
+}
+
+void
+Texture::release() {
   glBindTexture(GL_TEXTURE_2D, 0);
 }

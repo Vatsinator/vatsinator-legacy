@@ -23,16 +23,20 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 
+class MapRenderer;
+
 class WorldPolygon {
   
 public:
-  WorldPolygon();
+  WorldPolygon(MapRenderer*);
   ~WorldPolygon();
   
   void paint();
   
 private:
   void __initializeBuffers();
+  
+  MapRenderer* __renderer;
   
   QOpenGLBuffer __borders;
   QOpenGLBuffer __triangles;

@@ -45,7 +45,8 @@
 
 MapRenderer::MapRenderer(QObject* _parent) :
     QObject(_parent),
-    __world(new WorldPolygon()),
+    __functions(new QOpenGLFunctions(QOpenGLContext::currentContext())),
+    __world(new WorldPolygon(this)),
     __iconKeeper(new IconKeeper(this)),
     __modelMatcher(new ModelMatcher(this)),
     __scene(new MapScene(this)) {
@@ -79,6 +80,7 @@ MapRenderer::MapRenderer(QObject* _parent) :
 
 MapRenderer::~MapRenderer() {
   __storeSettings();
+  delete __functions;
 }
 
 LonLat

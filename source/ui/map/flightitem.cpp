@@ -106,12 +106,12 @@ FlightItem::drawItem(QOpenGLShaderProgram* _shader) const {
 void
 FlightItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   static const GLfloat labelRect[] = {
-    -0.16,  0.019,
-    -0.16,  0.12566666,
-     0.16,  0.12566666,
-     0.16,  0.12566666,
-     0.16,  0.019,
-    -0.16,  0.019
+    -0.16f,  0.019f,
+    -0.16f,  0.12566666f,
+     0.16f,  0.12566666f,
+     0.16f,  0.12566666f,
+     0.16f,  0.019f,
+    -0.16f,  0.019f
   };
   
   static const GLfloat textureCoords[] = {
@@ -200,8 +200,7 @@ void
 FlightItem::__initializeLabel() const {
   static QRect labelRect(28, 10, 73, 13);
   
-  if (__label.isCreated())
-    __label.destroy();
+  __label.destroy();
   
   QString callsign(data()->callsign());
   
