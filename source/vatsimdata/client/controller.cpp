@@ -131,7 +131,7 @@ Controller::__setMyIcaoAndFacility() {
       }
       
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
-      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+      qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
       __isOK = false;
     }
   } else if (sections.back() == "FSS") {
@@ -157,7 +157,7 @@ Controller::__setMyIcaoAndFacility() {
       }
       
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
-      VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+      qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
       __isOK = false;
     }
     
@@ -188,7 +188,7 @@ Controller::__setMyIcaoAndFacility() {
       __makeDescription(__airport);
     } else {
       StatsPurveyor::getSingleton().reportNoAtc(callsign());
-      VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
+      qWarning("Airport not found for %s.", qPrintable(callsign()));
       __isOK = false;
     }
   }

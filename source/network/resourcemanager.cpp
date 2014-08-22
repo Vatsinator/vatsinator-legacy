@@ -91,10 +91,8 @@ void
 ResourceManager::__parseVersion(QString _versionString) {
   bool actual = __versionActual(QString(VATSINATOR_VERSION), _versionString);
   
-  VatsinatorApplication::log("ResourceManager: version(%1) %2 version(%3)",
-                             VATSINATOR_VERSION,
-                             actual ? ">=" : "<",
-                             qPrintable(_versionString.simplified()));
+  qDebug("ResourceManager: version(%s) %s version(%s)",
+         VATSINATOR_VERSION, actual ? ">=" : "<", qPrintable(_versionString.simplified()));
   
   if (!actual)
     emit outdated();
@@ -110,7 +108,7 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
   
   QFile manifest(FileManager::path(ManifestFileName));
   
-  VatsinatorApplication::log("ResourceManager: Manifest file: %s", qPrintable(manifest.fileName()));
+  qDebug("ResourceManager: Manifest file: %s", qPrintable(manifest.fileName()));
   
   if (manifest.open(QIODevice::ReadOnly)) {
     QDate today = QDate::currentDate();
@@ -154,6 +152,6 @@ ResourceManager::__databaseUpdated() {
 
 void
 ResourceManager::__databaseFailed() {
-  VatsinatorApplication::log("ResourceManager: failed updating the database!");
+  qCritical("ResourceManager: failed updating the database!");
   emit databaseStatusChanged(Outdated);
 }

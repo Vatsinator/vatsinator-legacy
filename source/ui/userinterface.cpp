@@ -141,7 +141,7 @@ UserInterface::fatal(const QString& _msg) {
   msgBox.setText(_msg);
   msgBox.setIcon(QMessageBox::Critical);
   
-  VatsinatorApplication::log(qPrintable(_msg));
+  qFatal("%s", qPrintable(_msg));
   
   msgBox.exec();
 }
@@ -152,7 +152,7 @@ UserInterface::warning(const QString& _msg) {
   msgBox.setText(_msg);
   msgBox.setIcon(QMessageBox::Warning);
   
-  VatsinatorApplication::log(qPrintable(_msg));
+  qCritical("%s", qPrintable(_msg));
   
   msgBox.exec();
 }

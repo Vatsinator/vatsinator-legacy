@@ -81,7 +81,5 @@ AirportTracker::__toggleAirport(const Airport* _ap) {
     __trackedAirports.remove(icao);
   else
     __trackedAirports.insert(icao, _ap);
-  
-  VatsinatorApplication::log("Airpor toggled: %s", qPrintable(icao));
 }
 

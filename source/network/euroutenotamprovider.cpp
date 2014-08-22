@@ -87,7 +87,7 @@ void
 EurouteNotamProvider::__readXmlHeader() {
   CacheFile file("euroute-notams.xml");
   if (!file.open()) {
-    VatsinatorApplication::log("EurouteNotamProvider: failed to open file %s for reading", qPrintable(file.fileName()));
+    qCritical("EurouteNotamProvider: failed to open file %s for reading", qPrintable(file.fileName()));
     __lastUpdate = QDateTime();
     return;
   }
@@ -101,9 +101,9 @@ EurouteNotamProvider::__readXmlHeader() {
       auto attrs = reader.attributes();
       if (attrs.hasAttribute("last_update")) {
         __lastUpdate = QDateTime::fromString(attrs.value("last_update").toString(), "yyyy-MM-dd hh:mm:ss");
-        VatsinatorApplication::log("EurouteNotamProvider: last update: %s", qPrintable(__lastUpdate.toString()));
+        qDebug("EurouteNotamProvider: last update: %s", qPrintable(__lastUpdate.toString()));
       } else {
-        VatsinatorApplication::log("EurouteNotamProvider: error: no last-update attribute");
+        qWarning("EurouteNotamProvider: error: no last-update attribute");
         __lastUpdate = QDateTime();
       }
       
@@ -114,7 +114,7 @@ EurouteNotamProvider::__readXmlHeader() {
   file.close();
   
   if (reader.hasError()) {
-    VatsinatorApplication::log("EurouteNotamProvider: error parsing XML file: %s", qPrintable(reader.errorString()));
+    qCritical("EurouteNotamProvider: error parsing XML file: %s", qPrintable(reader.errorString()));
     __lastUpdate = QDateTime();
   }
 }
@@ -123,7 +123,7 @@ void
 EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
   CacheFile file("euroute-notams.xml");
   if (!file.open()) {
-    VatsinatorApplication::log("EurouteNotamProvider: failed to open file %s for reading", qPrintable(file.fileName()));
+    qCritical("EurouteNotamProvider: failed to open file %s for reading", qPrintable(file.fileName()));
     return;
   }
   
