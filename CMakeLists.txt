@@ -30,23 +30,18 @@ option (FORCE_QT4 "Force building with Qt4 even if Qt5 is available" OFF)
 if (NOT FORCE_QT4)
   find_package (Qt5Core QUIET)
   if (Qt5Core_FOUND)
-find_package (Qt5Widgets REQUIRED)
-find_package (Qt5OpenGL REQUIRED)
-find_package (Qt5Xml REQUIRED)
-find_package (Qt5Network REQUIRED)
+    find_package (Qt5Widgets REQUIRED)
+    find_package (Qt5OpenGL REQUIRED)
+    find_package (Qt5Xml REQUIRED)
+    find_package (Qt5Network REQUIRED)
 
-# fix for older versions of qjson library
-if (qjson_LIBRARIES)
-    set (QJSON_LIBRARIES ${qjson_LIBRARIES})
-endif (qjson_LIBRARIES)
-
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-include_directories(${Qt5Core_INCLUDE_DIRS})
-include_directories(${Qt5Widgets_INCLUDE_DIRS})
-include_directories(${Qt5OpenGL_INCLUDE_DIRS})
-include_directories(${Qt5Network_INCLUDE_DIRS})
-include_directories(${Qt5Xml_INCLUDE_DIRS})
-
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+    include_directories(${Qt5Core_INCLUDE_DIRS})
+    include_directories(${Qt5Widgets_INCLUDE_DIRS})
+    include_directories(${Qt5OpenGL_INCLUDE_DIRS})
+    include_directories(${Qt5Network_INCLUDE_DIRS})
+    include_directories(${Qt5Xml_INCLUDE_DIRS})
+    
     get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
   endif (Qt5Core_FOUND)
 endif (NOT FORCE_QT4)
@@ -67,16 +62,6 @@ if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)
 endif (UNIX AND NOT APPLE AND NOT MINGW)
 
-if (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
-    # Cmake adds -rdynamic to compiler flags.
-    # As mingw doesn't know rdynamic, we want to remove this.
-    string (REPLACE "-rdynamic" "" CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS ${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS})
-endif (MINGW AND CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
-
-if (MINGW)
-    set (WIN32 1)
-endif (MINGW)
-
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
 # set CMAKE_BUILD_TYPE
@@ -93,7 +78,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 endif (CMAKE_COMPILER_IS_GNUCXX)
 
 if (CMAKE_BUILD_TYPE MATCHES Release)
-  add_definitions(-DQT_NO_DEBUG)
+  add_definitions(-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT)
 endif (CMAKE_BUILD_TYPE MATCHES Release)
 
 # find version
@@ -139,7 +124,7 @@ if (LINUX)
     endif (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
 
     # Spec file
-    option (WITH_RPM OFF)
+    option (WITH_RPM "Create RPM package" OFF)
     
     add_subdirectory (dist)
 

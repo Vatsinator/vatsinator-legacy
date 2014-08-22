@@ -52,14 +52,14 @@ FileDownloader::fileNameForUrl(const QUrl& _url) {
   
   if (!QDir(QDir::tempPath()).isReadable()) {
     emit error(tr("Temporary directory (%1) is not readable!").arg(QDir::tempPath()));
-    VatsinatorApplication::log("Temporary directory %s is not accessible!",
+    qWarning("Temporary directory %s is not accessible!",
                                qPrintable(QDir::tempPath()));
     return QString();
   }
   
   QString absPath = QDir::tempPath() % "/" % baseName;
   
-  VatsinatorApplication::log("FileDownloader: file %s will be downloaded to: %s", qPrintable(_url.toString()), qPrintable(absPath));
+  qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(_url.toString()), qPrintable(absPath));
   
   if (QFile::exists(absPath))
     QFile(absPath).remove();
@@ -83,8 +83,8 @@ FileDownloader::__startRequest() {
   __output.setFileName(fileName);
   if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
     emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()));
-    VatsinatorApplication::log("FileDownloader: could not open file (%1) for writing!",
-                               qPrintable(__output.fileName()));
+    qCritical("FileDownloader: could not open file (%s) for writing!",
+              qPrintable(__output.fileName()));
     __startRequest();
     return;
   }
@@ -122,14 +122,13 @@ FileDownloader::__finished() {
   
   if (__reply->error()) {
     emit error(tr("Error downloading file: %1").arg(__reply->errorString()));
-    VatsinatorApplication::log("FileDownloader: error downloading file: %s",
-                               qPrintable(__reply->errorString()));
+    qCritical("FileDownloader: error downloading file: %s",
+              qPrintable(__reply->errorString()));
     QFile::remove(__output.fileName());
   } else {
     emit finished(QString(__output.fileName()));
-    VatsinatorApplication::log("FileDownloader: file %s downloaded, size: %i",
-                               qPrintable(__output.fileName()),
-                               size);
+    qCritical("FileDownloader: file %s downloaded, size: %lli",
+              qPrintable(__output.fileName()), size);
   }
   
   __reply->deleteLater();

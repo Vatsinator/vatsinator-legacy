@@ -62,7 +62,7 @@ LanguageManager::__getInstalledLanguages() {
   for (const QString& l: locales) {
     QString locale = l.section('-', 1, 1).section('.', 0, 0);
     if (!descriptions.contains(locale + ".language")) {
-      VatsinatorApplication::log("Could not find description for %s.", qPrintable(locale));
+      qCritical("LanguageManager: could not find description for %s.", qPrintable(locale));
     }
     
     QFile descFile(FileManager::staticPath(FileManager::Translations) % "/" % locale % ".language");

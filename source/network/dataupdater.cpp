@@ -40,7 +40,7 @@ namespace {
   bool moveFile(const QString& _oldLocation, const QString& _newLocation) {
     QFile file(_oldLocation);
     if (!file.open(QIODevice::ReadWrite)) {
-      VatsinatorApplication::log("DataUpdater: failed accessing file %s", qPrintable(_oldLocation));
+      qCritical("DataUpdater: failed accessing file %s", qPrintable(_oldLocation));
       return false;
     }
     
@@ -56,9 +56,9 @@ namespace {
     
     bool result = file.rename(_newLocation);
     if (result)
-      VatsinatorApplication::log("DataUpdater: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+      qDebug("DataUpdater: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
     else
-      VatsinatorApplication::log("DataUpdater: failed moving %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+      qCritical("DataUpdater: failed moving %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
     
     return result;
   }
@@ -74,10 +74,10 @@ namespace {
     if (dir.exists()) {
       for (QFileInfo file: dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
         if (file.isDir()) {
-          VatsinatorApplication::log("DataUpdater: removing dir %s", qPrintable(file.absoluteFilePath()));
+          qDebug("DataUpdater: removing dir %s", qPrintable(file.absoluteFilePath()));
           result = removeDir(file.absoluteFilePath());
         } else {
-          VatsinatorApplication::log("DataUpdater: removing file %s", qPrintable(file.absoluteFilePath()));
+          qDebug("DataUpdater: removing file %s", qPrintable(file.absoluteFilePath()));
           result = QFile::remove(file.absoluteFilePath());
         }
         
@@ -130,7 +130,7 @@ DataUpdater::~DataUpdater() {
 
 void
 DataUpdater::update() {
-  VatsinatorApplication::log("DataUpdater: updating...");
+  qDebug("DataUpdater: updating...");
   
   FileDownloader* fd = new FileDownloader();
   
@@ -151,7 +151,7 @@ DataUpdater::__checksumsOk(const QString& _fileName) {
   QFile file(_fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    VatsinatorApplication::log("DataUpdater: cannot open %s for reading!", qPrintable(_fileName));
+    qWarning("DataUpdater: cannot open %s for reading", qPrintable(_fileName));
     return false;
   }
   
@@ -164,7 +164,7 @@ DataUpdater::__checksumsOk(const QString& _fileName) {
       continue;
     
     if (QRegExp("\\d{8}").exactMatch(line)) { // manifest date
-      VatsinatorApplication::log("DataUpdater: manifest date: %s", qPrintable(line));
+      qDebug("DataUpdater: manifest date: %s", qPrintable(line));
       continue;
     }
     
@@ -181,12 +181,12 @@ DataUpdater::__checksumsOk(const QString& _fileName) {
   
   for (const QString& f: __unzipper->fileList()) {
     if (!md5sums.contains(f)) {
-      VatsinatorApplication::log("DataUpdater: could not find the md5 sum for file %s!", qPrintable(f));
+      qCritical("DataUpdater: could not find the md5 sum for file %s!", qPrintable(f));
       return false;
     }
     
     if (!checksumMatches(__unzipper->targetDir() + f, md5sums[f].toUtf8())) {
-      VatsinatorApplication::log("DataUpdater: checksum failed for %s", qPrintable(f));
+      qCritical("DataUpdater: checksum failed for %s", qPrintable(f));
       return false;
     }
   }
@@ -220,13 +220,13 @@ DataUpdater::__unzipPackage(QString _fileName) {
 
 void
 DataUpdater::__fetchError(QString _error) {
-  VatsinatorApplication::log("DataUpdater: fetch error: %s", qPrintable(_error));
+  qWarning("DataUpdater: fetch error: %s", qPrintable(_error));
   emit failed();
 }
 
 void
 DataUpdater::__filesUnzipped() {
-  VatsinatorApplication::log("DataUpdater: files unzipped.");
+  qDebug("DataUpdater: files unzipped.");
   
   FileDownloader* fd = new FileDownloader();
   
@@ -244,7 +244,7 @@ DataUpdater::__filesUnzipped() {
 
 void
 DataUpdater::__unzipError(QString _errStr) {
-  VatsinatorApplication::log("DataUpdater: unzip error: %s", qPrintable(_errStr));
+  qCritical("DataUpdater: unzip error: %s", qPrintable(_errStr));
   emit failed();
 }
 

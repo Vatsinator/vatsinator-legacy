@@ -84,14 +84,14 @@ PlainTextDownloader::__finished() {
   }
   
   if (__reply->error() == QNetworkReply::NoError) {
-    VatsinatorApplication::log("PlainTextDownloader: %s: finished",
-                               qPrintable(__reply->url().toString()));
+    qDebug("PlainTextDownloader: %s: finished",
+           qPrintable(__reply->url().toString()));
     __data = __temp;
     emit finished(__data);
   } else {
-    VatsinatorApplication::log("PlainTextDownloader: %s: error (%s)",
-                               qPrintable(__reply->url().toString()),
-                               qPrintable(__reply->errorString()));
+    qWarning("PlainTextDownloader: %s: error (%s)",
+             qPrintable(__reply->url().toString()),
+             qPrintable(__reply->errorString()));
     
     emit error();
   }

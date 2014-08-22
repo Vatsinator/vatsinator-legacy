@@ -85,8 +85,9 @@ ModelMatcher::__loadPixmaps() {
       QImage model(mPath);
       Q_ASSERT(!model.isNull());
       QOpenGLTexture* t = new QOpenGLTexture(QOpenGLTexture::Target2D);
+      Q_CHECK_PTR(t);
       __modelsPixmaps.insert(pair.second, t);
-      t->setData(model.mirrored());
+      t->setData(model.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
       t->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
     }
   }

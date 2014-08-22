@@ -58,7 +58,7 @@ AirportDatabase::__readDatabase() {
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);
 
-  VatsinatorApplication::log("Airports to be read: %i.", size);
+  qDebug("Airports to be read: %i.", size);
 
   db.seek(4);
 

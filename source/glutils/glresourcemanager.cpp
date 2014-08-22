@@ -49,11 +49,11 @@ GlResourceManager::loadImage(const QString& _fName) {
   GLuint pix;
   QImage final, temp;
   
-  VatsinatorApplication::log("GlResourceManager: loading texture: %s...", _fName.toStdString().c_str());
+  qDebug("GlResourceManager: loading texture: %s...", qPrintable(_fName));
   
   if (!temp.load(_fName)) {
-    vApp()->userInterface()->warning(
-      QString("Image %1 could not be loaded").arg(_fName));
+    qCritical("Image %s could not be loaded", qPrintable(_fName));
+    return 0;
   }
   
   final = QGLWidget::convertToGLFormat(temp);

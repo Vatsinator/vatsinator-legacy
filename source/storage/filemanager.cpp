@@ -41,12 +41,12 @@ static const QString LocalDataLocation =
 
 
 FileManager::FileManager() {
-  VatsinatorApplication::log("FileManager: local data location: %s", qPrintable(LocalDataLocation));
+  qDebug("FileManager: local data location: %s", qPrintable(LocalDataLocation));
   
   // ensure that our data directory exists
   QDir dir(LocalDataLocation);
   if (!dir.exists()) {
-    VatsinatorApplication::log("FileManager: creating directory %s.", qPrintable(LocalDataLocation));
+    qDebug("FileManager: creating directory %s", qPrintable(LocalDataLocation));
     dir.mkpath(".");
   }
 }
@@ -63,7 +63,7 @@ bool
 FileManager::moveToCache(const QString& _source, const QString& _destination) {
   QFile file(_source);
   if (!file.open(QIODevice::ReadWrite)) {
-    VatsinatorApplication::log("FileManager: failed to access file %s", qPrintable(_source));
+    qWarning("FileManager: failed to access file %s", qPrintable(_source));
     return false;
   }
   
@@ -78,9 +78,9 @@ FileManager::moveToCache(const QString& _source, const QString& _destination) {
   
   bool result = file.rename(oldCache.fileName());
   if (result)
-    VatsinatorApplication::log("FileManager: cached file %s", qPrintable(_destination));
+    qDebug("FileManager: cached file %s", qPrintable(_destination));
   else
-    VatsinatorApplication::log("FileManager: failed caching file %s", qPrintable(_destination));
+    qWarning("FileManager: failed caching file %s", qPrintable(_destination));
   
   return result;
 }
@@ -113,9 +113,8 @@ FileManager::path(const QString& _f) {
   
   QFile tryLocal(LocalDataLocation % _f);
   if (tryLocal.exists()) {
-    VatsinatorApplication::log("FileManager: file %s loaded from %s.",
-                               qPrintable(_f),
-                               qPrintable(tryLocal.fileName()));
+    qDebug("FileManager: file %s loaded from %s.",
+           qPrintable(_f), qPrintable(tryLocal.fileName()));
     return tryLocal.fileName();
   } else {
     return
