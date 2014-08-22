@@ -175,10 +175,8 @@ void
 MapScene::__addFlightItem(const Pilot* _p) {
   /* TODO check why it can be null */
   if (_p->position().isNull() || _p->position().x() == 0.0 || _p->position().y() == 0.0) {
-    VatsinatorApplication::log("MapScene: %s position is null; o=%s, d=%s",
-                               qPrintable(_p->callsign()),
-                               qPrintable(_p->route().origin),
-                               qPrintable(_p->route().destination));
+    qWarning("MapScene: %s position is null; o=%s, d=%s",
+             qPrintable(_p->callsign()), qPrintable(_p->route().origin), qPrintable(_p->route().destination));
     return;
   }
   
