@@ -44,16 +44,17 @@ Unzipper::setFileName(const QString& _fn) {
 void
 Unzipper::unzip() {
   if (__fileName.isEmpty()) {
-    VatsinatorApplication::log("Unzipper: error: file name not specified!");
+    qCritical("Unzipper: error: file name not specified!");
     emit error("File name not specified!");
     return;
   }
   
   __fileList.clear();
   
-  VatsinatorApplication::log("Unzipper: unpacking archive %1", qPrintable(__fileName));
+  qDebug("Unzipper: unpacking archive %s", qPrintable(__fileName));
   QuaZip zip(__fileName);
   if (!zip.open(QuaZip::mdUnzip)) {
+    qCritical("Unzipper: could not open zip file %s", qPrintable(__fileName));
     emit error(QString("Could not open zip file: %1").arg(__fileName));
     return;
   }
@@ -65,7 +66,10 @@ Unzipper::unzip() {
   QDir tempDir(QDir::tempPath());
   QString targetSubDir("vatsinatordownload_" % QFileInfo(__fileName).fileName());
   if (!tempDir.mkdir(targetSubDir)) {
-    emit error(QString("Could not create temporary directory: %1/%2").arg(QDir::tempPath(), targetSubDir));
+    qCritical("Unzipper: could not create temporary directory %s/%s",
+              qPrintable(QDir::tempPath()), qPrintable(targetSubDir));
+    emit error(QString("Could not create temporary directory: %1/%2")
+        .arg(QDir::tempPath(), targetSubDir));
     return;
   }
   
@@ -77,20 +81,24 @@ Unzipper::unzip() {
     QString fName = file.getActualFileName();
     if (fName.endsWith('/')) { // a directory
       if (!tempDir.mkpath(fName)) {
+        qCritical("Unzipper: could not create directory %s/%s",
+                  qPrintable(tempDir.dirName()), qPrintable(fName));
         emit error(QString("Could not create directory: %1/%2").arg(tempDir.dirName(), fName));
         return;
       }
     } else { // regular file
-      VatsinatorApplication::log("Unzipper: extracting %1...", qPrintable(fName));
+      qDebug("Unzipper: extracting %s...", qPrintable(fName));
       emit progress(count, current, fName);
       
       if (!file.open(QIODevice::ReadOnly)) {
+        qCritical("Unzipper: could not access file %s", qPrintable(__fileName));
         emit error(QString("Could not access file %1").arg(__fileName));
         return;
       }
       
       QFile target(tempDir.path() % "/" % file.getActualFileName());
       if (!target.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        qCritical("Unzipper: could not access file %s", qPrintable(target.fileName()));
         emit error(QString("Could not access file %1").arg(target.fileName()));
       }
       target.write(file.readAll());

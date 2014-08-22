@@ -39,13 +39,13 @@ static const QString CacheDirectory =
 
 CacheFile::CacheFile(const QString& _fileName) :
     QFile(CacheDirectory % QDir::separator() % _fileName) {
-  VatsinatorApplication::log("Cache file location: %s", qPrintable(fileName()));
+  qDebug("Cache file location: %s", qPrintable(fileName()));
 }
 
 bool
 CacheFile::exists() const {
   if (!QDir(CacheDirectory).exists()) {
-    VatsinatorApplication::log("CacheFile: creating directory %s...", qPrintable(CacheDirectory));
+    qDebug("CacheFile: creating directory %s...", qPrintable(CacheDirectory));
     QDir().mkpath(CacheDirectory);
     return false;
   }
@@ -60,8 +60,7 @@ CacheFile::open(OpenMode _mode) {
   
   bool wasOpened = QFile::open(_mode);
   if (!wasOpened)
-    VatsinatorApplication::log("CacheFile: %s failed to open.", qPrintable(fileName()));
+    qWarning("CacheFile: %s failed to open.", qPrintable(fileName()));
   
   return wasOpened;
 }
-

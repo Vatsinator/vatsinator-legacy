@@ -73,38 +73,6 @@ public:
 #endif
     static void terminate();
 
-#ifdef QT_NO_DEBUG
-
-  inline static void
-  log(const char*) {}
-
-  template <typename T, typename... Args>
-  inline static void
-  log(const char*, T, Args...) {}
-
-#else
-
-  static void log(const char*);
-
-  template <typename T, typename... Args>
-  static void log(const char* _s, T _value, Args... _args) {
-    QMutexLocker l(&__mutex);
-    
-    while (*_s) {
-      if (*_s == '%' && *(++_s) != '%') {
-        std::cout << _value;
-        VatsinatorApplication::log(*_s ? ++_s : _s, _args...);
-        return;
-      }
-
-      std::cout << *_s++;
-    }
-
-    std::cout << std::endl;
-  }
-
-#endif
-
 public slots:
   void restart();
   

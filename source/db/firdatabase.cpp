@@ -64,7 +64,7 @@ FirDatabase::__readDatabase() {
   int size;
   db.read(reinterpret_cast<char*>(&size), 4);
   
-  VatsinatorApplication::log("Firs to be read: %i.", size);
+  qDebug("Firs to be read: %i.", size);
   __firs.resize(size);
   db.seek(4);
 

@@ -55,7 +55,7 @@ UrlButton::setUrl(const QString& _url) {
 void
 UrlButton::__openUrl() {
   if (__url.isEmpty())
-    VatsinatorApplication::log("UrlButton: empty url open requested");
+    qWarning("UrlButton: empty url open requested");
   else
     QDesktopServices::openUrl(__url);
 }

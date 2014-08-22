@@ -117,22 +117,6 @@ VatsinatorApplication::terminate() {
   std::terminate();
 }
 
-#ifndef QT_NO_DEBUG
-
-void
-VatsinatorApplication::log(const char* _s) {
-  QMutexLocker l(&__mutex);
-  
-  while (*_s) {
-    Q_ASSERT(!(*_s == '%' && *(++_s) != '%'));
-    std::cout << *_s++;
-  }
-
-  std::cout << std::endl;
-}
-
-#endif
-
 void
 VatsinatorApplication::restart() {
   /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
@@ -142,7 +126,7 @@ VatsinatorApplication::restart() {
 
 void
 VatsinatorApplication::__initialize() {
-  VatsinatorApplication::log("VatsinatorApplication: initializing");
+  qDebug("VatsinatorApplication: initializing");
   
   /* Read world map before UI */
   __worldMap->init();

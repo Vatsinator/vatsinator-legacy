@@ -43,7 +43,7 @@ Airline::Airline(QString _icao, QString _name, QString _country,
 void
 Airline::requestLogo() {
   if (!AirlineDatabase::getSingleton().canFetch()) {
-    VatsinatorApplication::log("Airline: can't fetch logo (%s): disabled", qPrintable(__icao));
+    qDebug("Airline: can't fetch logo (%s): disabled", qPrintable(__icao));
     return;
   }
   

@@ -130,7 +130,7 @@ Controller::__recognizeDetails() {
     }
       
     StatsPurveyor::getSingleton().reportNoAtc(callsign());
-    VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+    qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
     __isOK = false;
   } else if (sections.back() == "FSS") {
     __facility = Fss;
@@ -157,7 +157,7 @@ Controller::__recognizeDetails() {
     }
     
     StatsPurveyor::getSingleton().reportNoAtc(callsign());
-    VatsinatorApplication::log("FIR could not be matched for: %s.", qPrintable(callsign()));
+    qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
     __isOK = false;
   } else if (
     sections.back() == "APP" ||
@@ -187,7 +187,7 @@ Controller::__recognizeDetails() {
     }
     
     StatsPurveyor::getSingleton().reportNoAtc(callsign());
-    VatsinatorApplication::log("Airport not found for %s.", qPrintable(callsign()));
+    qWarning("Airport not found for %s.", qPrintable(callsign()));
   }
   
   __isOK = false;
