@@ -1,5 +1,5 @@
 /*
- * iconkeeper.h
+ * vertexarrayobject.h
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,34 +17,48 @@
  *
  */
 
-#ifndef ICONKEEPER_H
-#define ICONKEEPER_H
+#ifndef VERTEXARRAYOBJECT_H
+#define VERTEXARRAYOBJECT_H
 
-#include <QObject>
-#include "glutils/texture.h"
-
-/**
- * The IconKeeper class is responsible for managing some static icons
- * that are used by the map, such as airport icons. The icons are kept
- * in OpenGL texture format.
- */
-class IconKeeper : public QObject {
-  Q_OBJECT
+class VertexArrayObject {
 
 public:
+  inline VertexArrayObject();
   
-  explicit IconKeeper(QObject* = nullptr);
-  virtual ~IconKeeper();
+  inline ~VertexArrayObject();
   
-  Texture* emptyAirportIcon();
-  Texture* activeAirportIcon();
-  Texture* activeStaffedAirportIcon();
+  inline void create();
+  
+  inline void bind();
+  
+  inline void release();
+  
+  inline void destroy();
   
 private:
-  Texture __emptyAirportIcon;
-  Texture __activeAirportIcon;
-  Texture __activeStaffedAirportIcon;
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+  GLuint __id;
+#else
   
+#endif
 };
 
-#endif // ICONKEEPER_H
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0)) // Qt4 implementation
+VertexArrayObject::VertexArrayObject() : __id(0) {}
+
+VertexArrayObject::~VertexArrayObject() {
+  if (__id)
+    destroy();
+}
+
+void
+VertexArrayObject::create() {
+  
+}
+
+#else
+
+
+#endif
+
+#endif // VERTEXARRAYOBJECT_H

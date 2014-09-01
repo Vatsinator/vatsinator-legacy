@@ -20,57 +20,113 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <GL/gl.h>
-#include <QString>
+#include <QtOpenGL>
 #include <QImage>
+#include <QString>
+
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+# include "glutils/glresourcemanager.h"
+#endif
 
 /**
- * The Texture class is responsible for handling a single OpenGL
- * texture.
- * It is used as a substitute of QOpenGLTexture in Qt4 builds.
+ * The Texture interface provides a convenient way to manage OpenGL 2D textures.
+ * Under Qt5 its implementation uses QOpenGLTexture.
+ * When building against Qt4, own Vatsinator's implementation will be used.
  */
 class Texture {
   
 public:
   
-  enum Target {
-    Target2D
-  };
+  inline Texture();
   
   /**
-   * Create empty texture, with id = 0.
+   * Destructor frees the memory (destroy() can be called here).
    */
-  Texture(Target);
-  
-  /**
-   * Destructor removes the texture from the memory.
-   */
-  virtual ~Texture();
+  inline ~Texture();
   
   /**
    * Binds the texture.
    */
-  void bind();
+  inline void bind();
+  
+  /**
+   * Loads the texture to the memory from the given image data.
+   */
+  inline void load(const QImage&);
+  
+  /**
+   * Reads the image from the given path and loads it into the memory.
+   */
+  inline void load(const QString&);
   
   /**
    * Destroys the underlying texture object.
    */
-  void destroy();
+  inline void destroy();
   
   /**
-   * Unbinds any texture.
+   * Releases the texture.
    */
-  static void release();
+  inline void release();
   
-  inline bool isCreated() const { return __id; }
+  /**
+   * @return True if the underlying texture object is created and ready to use
+   * by OpenGL.
+   */
+  inline bool isCreated() const;
   
 private:
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
   GLuint __id;
+#else
+  
+#endif
 
 };
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-typedef Texture QOpenGLTexture
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0)) // Qt4 implementation
+Texture::Texture() : __id(0) {}
+
+Texture::~Texture() {
+  if (__id)
+    destroy();
+}
+
+void
+Texture::bind() {
+  Q_ASSERT(isCreated());
+  glBindTexture(GL_TEXTURE_2D, __id);
+}
+
+void
+Texture::load(const QImage& _img) {
+  __id = GlResourceManager::loadImage(_img);
+}
+
+void
+Texture::load(const QString& _path) {
+  __id = GlResourceManager::loadImage(_path);
+}
+
+void
+Texture::destroy() {
+  if (__id) {
+    GlResourceManager::deleteImage(__id);
+    __id = 0;
+  }
+}
+
+void
+Texture::release() {
+  glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+bool
+Texture::isCreated() const {
+  return __id != 0;
+}
+#else
+
 #endif
 
 #endif // TEXTURE_H

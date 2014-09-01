@@ -36,8 +36,7 @@ IconKeeper::~IconKeeper() {
 QOpenGLTexture*
 IconKeeper::emptyAirportIcon() {
   if (!__emptyAirportIcon.isCreated()) {
-    __emptyAirportIcon.setData(QImage(MapConfig::emptyAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __emptyAirportIcon.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+    __emptyAirportIcon.load(QImage(MapConfig::emptyAirportIcon()));
   }
   
   return &__emptyAirportIcon;
@@ -46,8 +45,7 @@ IconKeeper::emptyAirportIcon() {
 QOpenGLTexture*
 IconKeeper::activeAirportIcon() {
   if (!__activeAirportIcon.isCreated()) {
-    __activeAirportIcon.setData(QImage(MapConfig::activeAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __activeAirportIcon.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+    __activeAirportIcon.load(QImage(MapConfig::activeAirportIcon()));
   }
   
   return &__activeAirportIcon;
@@ -56,8 +54,7 @@ IconKeeper::activeAirportIcon() {
 QOpenGLTexture*
 IconKeeper::activeStaffedAirportIcon() {
   if (!__activeStaffedAirportIcon.isCreated()) {
-    __activeStaffedAirportIcon.setData(QImage(MapConfig::activeStaffedAirportIcon()).mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __activeStaffedAirportIcon.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+    __activeStaffedAirportIcon.load(QImage(MapConfig::activeStaffedAirportIcon()));
   }
   
   return &__activeStaffedAirportIcon;

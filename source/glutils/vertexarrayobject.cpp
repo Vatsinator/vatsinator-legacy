@@ -1,5 +1,5 @@
 /*
- * iconkeeper.h
+ * vertexarrayobject.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,34 +17,4 @@
  *
  */
 
-#ifndef ICONKEEPER_H
-#define ICONKEEPER_H
-
-#include <QObject>
-#include "glutils/texture.h"
-
-/**
- * The IconKeeper class is responsible for managing some static icons
- * that are used by the map, such as airport icons. The icons are kept
- * in OpenGL texture format.
- */
-class IconKeeper : public QObject {
-  Q_OBJECT
-
-public:
-  
-  explicit IconKeeper(QObject* = nullptr);
-  virtual ~IconKeeper();
-  
-  Texture* emptyAirportIcon();
-  Texture* activeAirportIcon();
-  Texture* activeStaffedAirportIcon();
-  
-private:
-  Texture __emptyAirportIcon;
-  Texture __activeAirportIcon;
-  Texture __activeStaffedAirportIcon;
-  
-};
-
-#endif // ICONKEEPER_H
+#include "vertexarrayobject.h"

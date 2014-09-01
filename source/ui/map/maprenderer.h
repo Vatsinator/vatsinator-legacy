@@ -24,7 +24,8 @@
 #include <QSize>
 #include <QColor>
 #include <QMatrix4x4>
-#include <QOpenGLFunctions>
+
+#include "ui/map/qtopenglcompat.h"
 #include "vatsimdata/lonlat.h"
 
 class IconKeeper;
@@ -32,7 +33,6 @@ class MapItem;
 class MapScene;
 class ModelMatcher;
 class WorldPolygon;
-class QOpenGLShaderProgram;
 
 /**
  * The MapRenderer class takes care of rendering the map.
