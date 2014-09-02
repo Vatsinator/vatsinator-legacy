@@ -20,11 +20,10 @@
 #ifndef AIRPORTITEM_H
 #define AIRPORTITEM_H
 
-#include <QtOpenGL>
+#include <QOpenGLTexture>
 #include <QObject>
 #include <QVector>
 
-#include "glutils/texture.h"
 #include "ui/map/mapitem.h"
 
 class Airport;
@@ -67,8 +66,8 @@ private:
   LonLat                __position;
   ApproachCircleItem*   __approachCircle;
   
-  mutable Texture* __icon;
-  mutable Texture  __label;
+  mutable QOpenGLTexture* __icon;
+  mutable QOpenGLTexture  __label;
   
   mutable struct {
     QVector<GLfloat>    coords;

@@ -24,7 +24,6 @@ set (vatsinator_SRCS
 set (vatsinator_SUBDIRS
     db
     events
-    glutils
     modules
     network
     plugins
@@ -46,19 +45,12 @@ if (qjson_LIBRARIES)
     set (QJSON_LIBRARIES ${qjson_LIBRARIES})
 endif (qjson_LIBRARIES)
 
-
-if (${QT_VERSION} VERSION_LESS 5.0)
-  set (vatsinator_QT_LIBS
-    ${QT_LIBRARIES}
-  )
-else (${QT_VERSION} VERSION_LESS 5.0)
-  set (vatsinator_QT_LIBS
+set (vatsinator_QT_LIBS
     Qt5::Widgets
     Qt5::Network
     Qt5::Xml
     Qt5::OpenGL
-  )
-endif (${QT_VERSION} VERSION_LESS 5.0)
+)
       
 if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")

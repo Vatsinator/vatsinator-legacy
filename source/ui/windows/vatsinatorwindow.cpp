@@ -17,13 +17,7 @@
  *
  */
 
-#include <QtGlobal>
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-# include <QtWidgets>
-#else
-# include <QtGui>
-#endif
+#include <QtWidgets>
 
 #include "events/mouselonlatevent.h"
 #include "ui/windows/aboutwindow.h"
@@ -81,7 +75,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   
 #ifdef Q_OS_DARWIN
   /* On Mac set main manu name to "Menu" in order not to have two
-     "Vatsinator"s on the menubar. */
+     "Vatsinators" on the menubar. */
   MenuVatsinator->setTitle(tr("&Menu"));
 #endif
   

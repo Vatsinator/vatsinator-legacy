@@ -21,9 +21,9 @@
 #define FIRITEM_H
 
 #include <QObject>
+#include <QOpenGLTexture>
 #include <QOpenGLVertexArrayObject>
 
-#include "ui/map/qtopenglcompat.h"
 #include "ui/map/mapitem.h"
 
 class QOpenGLShaderProgram;

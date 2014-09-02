@@ -23,19 +23,12 @@
 #include "cachefile.h"
 
 static const QString CacheDirectory =
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     QDir::cleanPath(
         QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
       % QDir::separator()
       % "Vatsinator"
     );
-#else
-    QDir::cleanPath(
-      QDesktopServices::storageLocation(QDesktopServices::CacheLocation)
-      % QDir::separator()
-      % "Vatsinator"
-    );
-#endif
+
 
 CacheFile::CacheFile(const QString& _fileName) :
     QFile(CacheDirectory % QDir::separator() % _fileName) {

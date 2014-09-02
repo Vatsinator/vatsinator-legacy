@@ -112,79 +112,6 @@ if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 
 
-set (ui_MOC_SRCS
-    userinterface.h
-    
-    map/airportitem.h
-    map/approachcircleitem.h
-    map/firitem.h
-    map/flightitem.h
-    map/iconkeeper.h
-    map/maprenderer.h
-    map/mapscene.h
-    map/modelmatcher.h
-    map/uiritem.h
-)
-
-set (widgets_MOC_SRCS
-    vatsinatorstyle.h
-    widgetsuserinterface.h
-    
-    actions/actionmenuseparator.h
-    actions/airportdetailsaction.h
-    actions/clientdetailsaction.h
-    actions/firdetailsaction.h
-    actions/metaraction.h
-    actions/toggleinboundoutboundlinesaction.h
-    actions/trackaction.h
-    
-    buttons/airportdetailsbutton.h
-    buttons/colorbutton.h
-    buttons/clientdetailsbutton.h
-    buttons/urlbutton.h
-    
-    dialogs/apprestartdialog.h
-    dialogs/datafetcherrordialog.h
-    dialogs/letsendstatsdialog.h
-    dialogs/newversiondialog.h
-    dialogs/statusfetcherrordialog.h
-    dialogs/vatsimmessagedialog.h
-    
-    pages/mappage.h
-    pages/miscellaneouspage.h
-    pages/networkpage.h
-    pages/viewpage.h
-    
-    views/airporttableview.h
-    views/controllertableview.h
-    views/delayedmodeltableview.h
-    views/flighttableview.h
-    
-    widgets/flightprogresswidget.h
-    widgets/mapwidget.h
-    widgets/replaceablewidget.h
-    widgets/scrolllabel.h
-    widgets/weatherforecastwidget.h
-    
-    windows/aboutwindow.h
-    windows/airportdetailswindow.h
-    windows/atcdetailswindow.h
-    windows/atclistwindow.h
-    windows/basewindow.h
-    windows/databasewindow.h
-    windows/firdetailswindow.h
-    windows/flightdetailswindow.h
-    windows/flightlistwindow.h
-    windows/metarswindow.h
-    windows/settingswindow.h
-    windows/vatsinatorwindow.h
-)
-
-vatsinator_subdirectory_mocs (ui "${ui_MOC_SRCS}")
-if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-  vatsinator_subdirectory_mocs (ui "${widgets_MOC_SRCS}")
-endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-
 set (widgets_FORMS
     dialogs/apprestartdialog.ui
     dialogs/letsendstatsdialog.ui
@@ -221,8 +148,8 @@ set (ui_QRCS
 vatsinator_subdirectory_resources (ui "${ui_QRCS}")
 
 # icon for Windows
-if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets" AND WIN32)
+if (WIN32)
   vatsinator_subdirectory_sources (ui "${PROJECT_SOURCE_DIR}/dist/vatsinator.rc")
-endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets" AND WIN32)
+endif (WIN32)
 
 vatsinator_end_subdirectory (ui)

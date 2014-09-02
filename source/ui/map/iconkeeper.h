@@ -21,7 +21,7 @@
 #define ICONKEEPER_H
 
 #include <QObject>
-#include "glutils/texture.h"
+#include <QOpenGLTexture>
 
 /**
  * The IconKeeper class is responsible for managing some static icons
@@ -36,14 +36,14 @@ public:
   explicit IconKeeper(QObject* = nullptr);
   virtual ~IconKeeper();
   
-  Texture* emptyAirportIcon();
-  Texture* activeAirportIcon();
-  Texture* activeStaffedAirportIcon();
+  QOpenGLTexture* emptyAirportIcon();
+  QOpenGLTexture* activeAirportIcon();
+  QOpenGLTexture* activeStaffedAirportIcon();
   
 private:
-  Texture __emptyAirportIcon;
-  Texture __activeAirportIcon;
-  Texture __activeStaffedAirportIcon;
+  QOpenGLTexture __emptyAirportIcon;
+  QOpenGLTexture __activeAirportIcon;
+  QOpenGLTexture __activeStaffedAirportIcon;
   
 };
 

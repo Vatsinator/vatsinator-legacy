@@ -25,19 +25,11 @@
 #include "storage/filemanager.h"
 
 static const QString LocalDataLocation =
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     QDir::cleanPath(
         QStandardPaths::writableLocation(QStandardPaths::DataLocation)
       % QDir::separator()
       % "Vatsinator"
     ) % QDir::separator();
-#else
-    QDir::cleanPath(
-      QDesktopServices::storageLocation(QDesktopServices::DataLocation)
-      % QDir::separator()
-      % "Vatsinator"
-    ) % QDir::separator();
-#endif
 
 
 FileManager::FileManager() {

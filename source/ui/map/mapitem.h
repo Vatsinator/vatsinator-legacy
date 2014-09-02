@@ -22,10 +22,10 @@
 
 #include <QPointF>
 #include <QString>
-#include <QMenu>
 
-#include "ui/map/qtopenglcompat.h"
 #include "vatsimdata/lonlat.h"
+
+class QOpenGLShaderProgram;
 
 /**
  * MapItem is an interface for any object that exists on the map.

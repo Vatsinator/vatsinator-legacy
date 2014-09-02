@@ -20,28 +20,7 @@ set (vatsimdata_SRCS
     models/metarlistmodel.cpp
     models/notamlistmodel.cpp
 )
-
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
-
-set (vatsimdata_MOC_SRCS
-    airport.h
-    client.h
-    fir.h
-    updatescheduler.h
-    uir.h
-    vatsimdatahandler.h
-    
-    client/controller.h
-    client/pilot.h
-    
-    models/airporttablemodel.h
-    models/controllertablemodel.h
-    models/flighttablemodel.h
-    models/metarlistmodel.h
-    models/notamlistmodel.h
-)
-
-vatsinator_subdirectory_mocs (vatsimdata "${vatsimdata_MOC_SRCS}")
 
 vatsinator_end_subdirectory (vatsimdata)
 

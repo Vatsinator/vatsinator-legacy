@@ -40,6 +40,7 @@ AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
     __position(_ap->data()->longitude, _ap->data()->latitude),
     __approachCircle(nullptr),
     __icon(nullptr),
+    __label(QOpenGLTexture::Target2D),
     __linesReady(false) {
   
   connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
@@ -258,7 +259,8 @@ AirportItem::__initializeLabel() const {
   painter.setPen(MapConfig::airportPen());
   
   painter.drawText(labelRect, Qt::AlignCenter, icao);
-  __label.load(temp.mirrored());
+  __label.setData(temp.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+  __label.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
 }
 
 void

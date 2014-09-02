@@ -17,15 +17,7 @@
  *
  */
 
-#include <QtGlobal>
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-# include <QtWidgets>
-#else
-# include <QtGui>
-# define Q_UNREACHABLE do {} while (false) // this macro is avail from Qt >= 5.0
-#endif
-
+#include <QtWidgets>
 #include <QtOpenGL>
 
 #include "db/airportdatabase.h"
