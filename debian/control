@@ -11,7 +11,6 @@ Build-Depends: debhelper (>= 8.0.0),
                libqt5opengl5-dev (>=5.2),
                qttools5-dev-tools (>=5.2),
                qt5-qmake (>=5.2),
-               libquazip1-qt5-dev,
                zlib1g-dev
 Standards-Version: 3.9.3
 Homepage: https://github.com/Garrappachc/Vatsinator
