@@ -174,7 +174,8 @@ StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
 void
 StatsPurveyor::__parseResponse() {
   QJsonParseError error;
-  QJsonDocument document = QJsonDocument::fromJson(__reply->readAll(), &error);
+  QByteArray data = __reply->readAll();
+  QJsonDocument document = QJsonDocument::fromJson(data, &error);
   
   if (error.error == QJsonParseError::NoError) {
     QJsonObject root = document.object();
@@ -184,7 +185,8 @@ StatsPurveyor::__parseResponse() {
       __reply->deleteLater();
       __reply = nullptr;
     } else {
-      Q_ASSERT_X(false, "StatsPurveyor", "Invalid query");
+      qFatal("Invalid query response; query: %s, response: %s",
+             qPrintable(__reply->request().url().toString()), data.constData());
     }
     
     if (!__requests.isEmpty())
