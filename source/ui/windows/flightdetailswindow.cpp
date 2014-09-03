@@ -215,7 +215,7 @@ FlightDetailsWindow::__updateLabels() {
 void
 FlightDetailsWindow::__handleClicked() {
   Q_ASSERT(__pilot);
-  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__pilot->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__pilot->position());
   close();
 }
 

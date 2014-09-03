@@ -186,7 +186,7 @@ AirportDetailsWindow::__updateForecast() {
 void
 AirportDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__airport);
-  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__airport->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__airport->position());
   close();
 }
 

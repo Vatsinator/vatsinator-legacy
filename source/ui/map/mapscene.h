@@ -142,7 +142,7 @@ public slots:
    * Moves the map smoothly to the given point.
    * @param p The target point.
    */
-  void moveSmoothly(const LonLat&);
+  void moveTo(const LonLat&);
   
 private:
   void __addFlightItem(const Pilot*);

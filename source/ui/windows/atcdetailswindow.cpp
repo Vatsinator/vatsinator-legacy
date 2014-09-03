@@ -81,7 +81,7 @@ AtcDetailsWindow::__updateLabels() {
 void
 AtcDetailsWindow::__handleClicked() {
   Q_ASSERT(__atc);
-  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveSmoothly(__atc->position());
+  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__atc->position());
   close();
 }
 
