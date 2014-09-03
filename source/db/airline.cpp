@@ -40,6 +40,14 @@ Airline::Airline(QString _icao, QString _name, QString _country,
     __website(_website),
     __logoUrl(_logo) {}
 
+Airline::Airline(const QJsonObject& _json, QObject* _parent) :
+    QObject(_parent),
+    __icao(_json["icao"].toString()),
+    __name(_json["name"].toString()),
+    __country(_json["country"].toString()),
+    __website(_json["website"].toString()),
+    __logoUrl(_json["logo"].toString()) {}
+
 void
 Airline::requestLogo() {
   if (!AirlineDatabase::getSingleton().canFetch()) {

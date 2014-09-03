@@ -18,7 +18,6 @@
  */
 
 #include <QtNetwork>
-#include <qjson/parser.h>
 
 #include "storage/settingsmanager.h"
 #include "ui/dialogs/letsendstatsdialog.h"
@@ -174,15 +173,12 @@ StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
 
 void
 StatsPurveyor::__parseResponse() {
-  QJson::Parser parser;
-  bool ok;
+  QJsonParseError error;
+  QJsonDocument document = QJsonDocument::fromJson(__reply->readAll(), &error);
   
-  /* We could pass __reploy to the parser constructor, but qjson has some problems with QIODevice* */
-  QByteArray data = __reply->readAll();
-  QVariant content = parser.parse(data, &ok);
-  if (ok) {
-    QVariantMap map = content.toMap();
-    int result = map["result"].toInt();
+  if (error.error == QJsonParseError::NoError) {
+    QJsonObject root = document.object();
+    int result = root["result"].toInt();
     if (result > 0) {
       __requests.dequeue();
       __reply->deleteLater();
@@ -194,7 +190,7 @@ StatsPurveyor::__parseResponse() {
     if (!__requests.isEmpty())
         __nextRequest(); 
   } else {
-    qWarning("StatsPurveyor: query failed; retry in 1 minute...");
+    qWarning("StatsPurveyor: query failed (%s); retry in 1 minute...", qPrintable(error.errorString()));
     QTimer::singleShot(RetryDelay, this, SLOT(__nextRequest()));
     __reply->deleteLater();
     __reply = nullptr;

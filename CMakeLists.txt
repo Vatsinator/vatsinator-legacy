@@ -46,7 +46,6 @@ exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_VERSION"
 
 find_package (OpenGL REQUIRED)
 find_package (QuaZip REQUIRED)
-find_package (QJSON REQUIRED)
 
 if (UNIX AND NOT APPLE AND NOT MINGW)
     set (LINUX 1)

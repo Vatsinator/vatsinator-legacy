@@ -40,11 +40,6 @@ add_executable (${vatsinator_TARGET}
     ${vatsinator_SRCS}
 )
 
-# fix for older versions of qjson library
-if (qjson_LIBRARIES)
-    set (QJSON_LIBRARIES ${qjson_LIBRARIES})
-endif (qjson_LIBRARIES)
-
 set (vatsinator_QT_LIBS
     Qt5::Widgets
     Qt5::Network
@@ -59,7 +54,6 @@ if (LINUX)
         ${vatsinator_QT_LIBS}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
-        ${QJSON_LIBRARIES}
     )
 elseif (APPLE)
     set (vatsinator_PREFIX "")
@@ -68,7 +62,6 @@ elseif (APPLE)
         ${vatsinator_QT_LIBS}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
-        ${QJSON_LIBRARIES}
     )
 else (WIN32)
     set (vatsinator_PREFIX "")
@@ -81,7 +74,6 @@ else (WIN32)
         ${QT_QTOPENGL_LIBRARY}
         ${QT_QTNETWORK_LIBRARY}
         ${QUAZIP_LIBRARIES}
-        ${QJSON_LIBRARIES}
   )
 endif (LINUX)
 

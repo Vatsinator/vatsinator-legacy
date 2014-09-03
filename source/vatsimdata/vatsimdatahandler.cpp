@@ -18,7 +18,6 @@
 
 #include <algorithm>
 #include <QtCore>
-#include <qjson/parser.h>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
@@ -493,28 +492,32 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
     return;
   }
   
-  QJson::Parser parser;
-  bool ok;
+  QJsonParseError error;
+  QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
   
-  QVariant content = parser.parse(&file, &ok);
-  if (!ok) {
-    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+   if (error.error != QJsonParseError::NoError) {
+    qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
+             qPrintable(file.fileName()), qPrintable(error.errorString()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(file.fileName()));
     return;
   }
   
-  auto list = content.toList();
-  for (QVariant& a: list) {
-    auto map = a.toMap();
-    QString target = map["target"].toString();
-    auto aList = map["alias"].toList();
-    for (QVariant& b: aList) {
-      if (b.canConvert<QString>()) {
+  Q_ASSERT(document.isArray());
+  QJsonArray array = document.array();
+  /* The ugliest loop I ever made */
+  for (const QJsonValueRef a: array) {
+    QJsonObject object = a.toObject();
+    QString target = object["target"].toString();
+    QJsonArray aliasArray = object["alias"].toArray();
+    for (const QJsonValueRef b: aliasArray) {
+      if (b.isString()) {
         __aliases.insert(target, b.toString());
-      } else {
-        auto aMap = b.toMap();
-        auto aaList = aMap["alias"].toList();
-        QString name = aMap["name"].toString();
-        for (QVariant& c: aaList) {
+      } else if (b.isObject()) {
+        QJsonObject aliasObject = b.toObject();
+        QString name = aliasObject["name"].toString();
+        
+        QJsonArray anotherArray = object["alias"].toArray();
+        for (const QJsonValueRef c: anotherArray) {
           __aliases.insert(target, c.toString());
           __alternameNames.insert(c.toString(), name);
         }
@@ -538,20 +541,22 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
     return;
   }
   
-  QJson::Parser parser;
-  bool ok;
+  QJsonParseError error;
+  QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
   
-  QVariant content = parser.parse(&file, &ok);
-  if (!ok) {
-    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+   if (error.error != QJsonParseError::NoError) {
+    qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
+             qPrintable(file.fileName()), qPrintable(error.errorString()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(file.fileName()));
     return;
   }
   
-  auto list = content.toList();
-  for (QVariant& c: list) {
-    auto map = c.toMap();
-    QString country = map["country"].toString();
-    QString code = map["code"].toString();
+  Q_ASSERT(document.isArray());
+  QJsonArray array = document.array();
+  for (const QJsonValueRef c: array) {
+    QJsonObject object = c.toObject();
+    QString country = object["country"].toString();
+    QString code = object["code"].toString();
     countries.insert(code, country);
   }
   
@@ -571,21 +576,23 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
     return;
   }
   
-  QJson::Parser parser;
-  bool ok;
+  QJsonParseError error;
+  QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
   
-  QVariant content = parser.parse(&file, &ok);
-  if (!ok) {
-    notifyWarning(tr("File %1 contains errors. Please reinstall the application.").arg(file.fileName()));
+  if (error.error != QJsonParseError::NoError) {
+    qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
+             qPrintable(file.fileName()), qPrintable(error.errorString()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(file.fileName()));
     return;
   }
   
-  auto list = content.toList();
+  Q_ASSERT(document.isArray());
+  QJsonArray array = document.array();
   
-  for (QVariant& c: list) {
-    auto map = c.toMap();
-    QString icao = map["icao"].toString();
-    QString name = map["name"].toString();
+  for (const QJsonValueRef c: array) {
+    QJsonObject object = c.toObject();
+    QString icao = object["icao"].toString();
+    QString name = object["name"].toString();
     
     Fir* currentFir = findFir(icao);
     if (currentFir) {

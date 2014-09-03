@@ -18,7 +18,6 @@
  */
 
 #include <QtCore>
-#include <qjson/parser.h>
 
 #include "db/airline.h"
 #include "storage/filemanager.h"
@@ -36,35 +35,31 @@ AirlineDatabase::init() {
   QFile db(FileManager::path("data/airlines"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(db.fileName()));
     return;
   }
 
-  QJson::Parser parser;
-  bool ok;
+  QJsonParseError error;
+  QJsonDocument document = QJsonDocument::fromJson(db.readAll(), &error);
   
-  QVariant content = parser.parse(&db, &ok);
-  QVariantMap rootMap = content.toMap();
+  if (error.error != QJsonParseError::NoError) {
+    qWarning("AirlineDatabase: the following error occured parsing %s: %s",
+             qPrintable(db.fileName()), qPrintable(error.errorString()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(db.fileName()));
+    return;
+  }
   
-  if (rootMap.contains("config")) {
-    QVariantMap config = rootMap["config"].toMap();
+  QJsonObject root = document.object();
+  if (root.contains("config")) {
+    QJsonObject config = root["config"].toObject();
     __airlineLogoUrl = config["airlinelogourl"].toString();
     __canFetch = config["canfetch"].toInt() > 0;
   }
   
-  if (rootMap.contains("data")) {
-     QVariantList data = rootMap["data"].toList();
-     for (const QVariant& a: data) {
-       QVariantMap ad = a.toMap();
-       Airline* airline = new Airline(
-           ad["icao"].toString(),
-           ad["name"].toString(),
-           ad["country"].toString(),
-           ad["website"].toString(),
-           ad["logo"].toString(),
-           this
-         );
-       
+  if (root.contains("data")) {
+     QJsonArray data = root["data"].toArray();
+     for (const QJsonValueRef a: data) {
+       Airline* airline = new Airline(a.toObject(), this);
        __airlines.insert(airline->icao(), airline);
      }
   }

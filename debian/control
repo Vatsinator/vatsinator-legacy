@@ -11,15 +11,14 @@ Build-Depends: debhelper (>= 8.0.0),
                libqt5opengl5-dev (>=5.2),
                qttools5-dev-tools (>=5.2),
                qt5-qmake (>=5.2),
-               libquazip-qt5-dev,
-               libqjson-dev,
+               libquazip1-qt5-dev,
                zlib1g-dev
 Standards-Version: 3.9.3
 Homepage: https://github.com/Garrappachc/Vatsinator
 
 Package: vatsinator
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libquazip1-qt5, libqjson0
+Depends: ${shlibs:Depends}, ${misc:Depends}, libquazip1-qt5
 Description: Simple Vatsim monitor
  Vatsinator is an open-source Vatsim network monitor. It shows
  logged-in pilots and controllers, provides weather and airport information.
