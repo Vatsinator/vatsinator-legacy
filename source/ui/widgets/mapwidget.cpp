@@ -168,6 +168,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     if (center.x() > 180.0)
       center.rx() -= 360.0;
     
+    __renderer->scene()->abortAnimation();
     __renderer->setCenter(center);
   }
   __mousePosition.update(_event->pos());
