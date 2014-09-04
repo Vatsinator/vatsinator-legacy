@@ -175,6 +175,19 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
   _event->accept();
 }
 
+void
+MapWidget::keyPressEvent(QKeyEvent* _event) {
+  switch (_event->key()) {
+    case Qt::Key_PageUp:
+    __updateZoom(1);
+    break;
+    
+  case Qt::Key_PageDown:
+    __updateZoom(-1);
+    break;
+  }
+}
+
 const MapItem*
 MapWidget::__underMouse() {
   const MapItem* closest = __renderer->scene()->nearest(__mousePosition.geoPosition());
