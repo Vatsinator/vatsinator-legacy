@@ -430,193 +430,243 @@
       <attribute name="title">
        <string>Flight details</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0" rowminimumheight="20,20,20,20,20,20,20,20,20,0">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="topMargin">
         <number>10</number>
        </property>
-       <property name="horizontalSpacing">
-        <number>5</number>
-       </property>
-       <item row="7" column="0">
-        <widget class="QLabel" name="SquawkLabelDesc">
+       <item>
+        <widget class="QLabel" name="PilotLabelDesc">
          <property name="text">
-          <string>Squawk:</string>
+          <string>Captain</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="AltitudeLabel">
-         <property name="text">
-          <string>feet</string>
+       <item>
+        <widget class="QLabel" name="PilotLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="GroundSpeedLabelDesc">
          <property name="text">
-          <string>Ground speed:</string>
+          <string/>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="GroundSpeedLabel">
-         <property name="text">
-          <string>kts</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="HeadingLabelDesc">
-         <property name="text">
-          <string>Heading:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
+       <item>
         <widget class="QLabel" name="AltitudeLabelDesc">
          <property name="text">
-          <string>Altitude:</string>
+          <string>Altitude</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="PilotLabelDesc">
-         <property name="maximumSize">
-          <size>
-           <width>120</width>
-           <height>16777215</height>
-          </size>
+       <item>
+        <widget class="QLabel" name="AltitudeLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
          <property name="text">
-          <string>Captain:</string>
+          <string>%1 feet</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="PilotLabel">
-         <property name="minimumSize">
-          <size>
-           <width>220</width>
-           <height>0</height>
-          </size>
+       <item>
+        <widget class="QLabel" name="GroundSpeedLabelDesc">
+         <property name="text">
+          <string>Ground speed</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="GroundSpeedLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
          <property name="text">
-          <string/>
+          <string>%1 kts</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item>
+        <widget class="QLabel" name="HeadingLabelDesc">
+         <property name="text">
+          <string>Heading</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="HeadingLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="CurrentStatusLabelDesc">
-         <property name="text">
-          <string>Current status:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QLabel" name="CurrentStatusLabel">
+       <item>
+        <widget class="QLabel" name="FlightPhaseLabelDesc">
+         <property name="text">
+          <string>Flight phase</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="FlightPhaseLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string/>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item>
         <widget class="QLabel" name="ServerLabelDesc">
          <property name="text">
-          <string>Server:</string>
+          <string>Server</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item>
         <widget class="QLabel" name="ServerLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string/>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item>
         <widget class="QLabel" name="TimeOnlineLabelDesc">
          <property name="text">
-          <string>Logged from:</string>
+          <string>Logged from</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item>
         <widget class="QLabel" name="TimeOnlineLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string/>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
-       <item row="7" column="1">
+       <item>
+        <widget class="QLabel" name="SquawkLabelDesc">
+         <property name="text">
+          <string>Squawk</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="SquawkLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string/>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
-       <item row="8" column="0">
+       <item>
         <widget class="QLabel" name="AltimeterLabelDesc">
          <property name="text">
-          <string>Baro:</string>
+          <string>Baro</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="8" column="1">
+       <item>
         <widget class="QLabel" name="AltimeterLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string notr="true">1013 / 2992</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
-       </item>
-       <item row="9" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>79</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>

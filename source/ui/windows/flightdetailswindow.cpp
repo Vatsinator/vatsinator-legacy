@@ -191,11 +191,11 @@ FlightDetailsWindow::__updateLabels() {
   HeadingLabel->setText(QString::number(__pilot->heading()));
 
   if (__pilot->phase() == Pilot::Airborne)
-    CurrentStatusLabel->setText(tr("airborne"));
+    FlightPhaseLabel->setText(tr("airborne"));
   else if (__pilot->phase() == Pilot::Departing)
-    CurrentStatusLabel->setText(tr("departing"));
+    FlightPhaseLabel->setText(tr("departing"));
   else
-    CurrentStatusLabel->setText(tr("arrived"));
+    FlightPhaseLabel->setText(tr("arrived"));
 
   ServerLabel->setText(__pilot->server());
   TimeOnlineLabel->setText(__pilot->onlineFrom().toString("dd MMM yyyy, hh:mm"));
