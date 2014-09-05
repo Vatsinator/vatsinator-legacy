@@ -127,14 +127,12 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __origin(nullptr),
     __destination(nullptr),
     __prefiledOnly(_prefiled) {
-  
-//   Q_ASSERT(!position().isNull());
     
   // vatsim sometimes skips the 0 on the beginning
   if (__squawk.length() == 3)
     __squawk.prepend("0");
   
-  if (__std.isValid() && __sta != QTime(0, 0)) {
+  if (__std.isValid() && __std != QTime(0, 0)) {
     __sta = QTime(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt());
   }
   
@@ -269,7 +267,7 @@ void Pilot::__updateAirports() {
       ap->addOutbound(this);
       __origin = ap;
       
-      if (__prefiledOnly) {
+      if (__prefiledOnly || !hasValidPosition()) {
         setPosition(LonLat(ap->data()->longitude, ap->data()->latitude));
       } else {
         __route.waypoints << LonLat(ap->data()->longitude, ap->data()->latitude);

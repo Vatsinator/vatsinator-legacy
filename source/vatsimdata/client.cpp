@@ -96,6 +96,11 @@ Client::isOnline() const {
   return __timestamp == vApp()->vatsimDataHandler()->currentTimestamp();
 }
 
+bool
+Client::hasValidPosition() const {
+  return !position().isNull() && position().x() != 0.0 && position().y() != 0.0;
+}
+
 void
 Client::setPosition(const LonLat& _position) {
   __position = _position;
