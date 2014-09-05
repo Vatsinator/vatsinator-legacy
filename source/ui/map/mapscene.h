@@ -26,6 +26,7 @@
 #include <spatial/point_multimap.hpp>
 #include "vatsimdata/lonlat.h"
 
+class QAbstractAnimation;
 class QRectF;
 class AirportItem;
 class Controller;
@@ -144,6 +145,12 @@ public slots:
    */
   void moveTo(const LonLat&);
   
+  /**
+   * Aborts the currently running animation.
+   * If no animation is being played, this function has no effect.
+   */
+  void abortAnimation();
+  
 private:
   void __addFlightItem(const Pilot*);
   
@@ -178,6 +185,7 @@ private:
   QList<UirItem*>               __uirItems;
   
   const Pilot* __trackedFlight;
+  QAbstractAnimation* __animation;
   
   MapSettings __settings;
   

@@ -46,7 +46,8 @@
 MapScene::MapScene(QObject* _parent) :
     QObject(_parent),
     __renderer(qobject_cast<MapRenderer*>(parent())),
-    __trackedFlight(nullptr) {
+    __trackedFlight(nullptr),
+    __animation(nullptr) {
   Q_ASSERT(__renderer);
   
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
@@ -148,11 +149,28 @@ MapScene::nearest(const LonLat& _target, int _n) {
 
 void
 MapScene::moveTo(const LonLat& _target) {
+  abortAnimation();
+  
   QPropertyAnimation* animation = new QPropertyAnimation(__renderer, "center");
   animation->setDuration(500);
   animation->setEndValue(QVariant::fromValue<LonLat>(_target));
   animation->setEasingCurve(QEasingCurve(QEasingCurve::InOutQuad));
-  animation->start(QAbstractAnimation::DeleteWhenStopped);
+  animation->start();
+  
+  __animation = animation;
+  connect(animation, &QPropertyAnimation::finished, [this]() {
+    __animation->deleteLater();
+    __animation = nullptr;
+  });
+}
+
+void
+MapScene::abortAnimation() {
+  if (__animation) {
+    __animation->stop();
+    __animation->deleteLater();
+    __animation = nullptr;
+  }
 }
 
 void
