@@ -44,6 +44,14 @@ VatsinatorStyle::h2Font() {
   return font;
 }
 
+QFont
+VatsinatorStyle::smallFont() {
+  QFont font;
+  int size = font.pointSize() - 2;
+  font.setPointSize(size);
+  return font;
+}
+
 #ifdef Q_OS_MAC
 void
 VatsinatorStyle::polish(QWidget* _widget) {

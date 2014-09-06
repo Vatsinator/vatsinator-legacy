@@ -19,12 +19,12 @@
 #ifndef FLIGHTDETAILSWINDOW_H
 #define FLIGHTDETAILSWINDOW_H
 
-#include "ui/windows/basewindow.h"
+#include <QWidget>
 #include "ui/ui_flightdetailswindow.h"
 
 class Pilot;
 
-class FlightDetailsWindow : public BaseWindow, private Ui::FlightDetailsWindow {
+class FlightDetailsWindow : public QWidget, private Ui::FlightDetailsWindow {
   Q_OBJECT
   
 signals:
@@ -33,16 +33,14 @@ signals:
 public:
   FlightDetailsWindow(const Pilot*, QWidget* = nullptr);
 
-public slots:
-  void show();
-  void stateHandle(int);
+protected:
+  virtual void showEvent(QShowEvent*) override;
 
 private:
-  void __updateButtons();
+  void __updateAirports();
   
 private slots:
-  void __updateLabels();
-  void __handleClicked();
+  void __updateInfo();
   void __airlineUpdated();
 
 private:

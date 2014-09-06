@@ -87,6 +87,7 @@ set (widgets_SRCS
     views/flighttableview.cpp
     
     widgets/flightprogresswidget.cpp
+    widgets/infolabel.cpp
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
