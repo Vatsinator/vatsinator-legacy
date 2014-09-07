@@ -20,7 +20,7 @@
 #include <QtWidgets>
 
 #include "plugins/weatherforecastinterface.h"
-#include "storage/pluginmanager.h"
+#include "storage/filemanager.h"
 #include "ui/pages/pluginlistwidgetitem.h"
 #include "vatsinatorapplication.h"
 
@@ -95,13 +95,21 @@ NetworkPage::restore(QSettings& _s) {
   none->setData(Qt::UserRole, QString("none"));
   WeatherProviderListWidget->setCurrentItem(none);
   
-  QList<WeatherForecastInterface*> weatherPlugins =
-    vApp()->plugins()->plugins<WeatherForecastInterface>();
-  
-  for (WeatherForecastInterface* w: weatherPlugins) {
-    PluginListWidgetItem* item = new PluginListWidgetItem(w->providerName(), WeatherProviderListWidget);
-    if (weatherCurrent == item->data(Qt::UserRole).toString())
-      WeatherProviderListWidget->setCurrentItem(item);
+  QDir pluginsDir(FileManager::staticPath(FileManager::Plugins));
+  for (QString fileName: pluginsDir.entryList(QDir::Files)) {
+    QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+    QJsonObject pluginData = loader.metaData();
+    if (pluginData["IID"].toString() == "org.eu.vatsinator.Vatsinator.WeatherForecastInterface") {
+      QJsonObject metaData = pluginData["MetaData"].toObject();
+      QString name = metaData["name"].toString();
+      QString providerName = metaData["provider_name"].toString();
+      
+      PluginListWidgetItem* item = new PluginListWidgetItem(providerName, WeatherProviderListWidget);
+      item->setData(Qt::UserRole, name);
+      
+      if (weatherCurrent == name)
+        WeatherProviderListWidget->setCurrentItem(item);
+    }
   }
   
   QString units;

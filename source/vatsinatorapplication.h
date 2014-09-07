@@ -65,7 +65,6 @@ public:
   
   inline UserInterface* userInterface() { Q_ASSERT(__userInterface); return __userInterface; }
   inline SettingsManager* settingsManager() { Q_ASSERT(__settingsManager); return __settingsManager; }
-  inline const PluginManager* plugins() const { Q_ASSERT(__pluginManager); return __pluginManager; }
   inline VatsimDataHandler* vatsimDataHandler() { Q_ASSERT(__vatsimData); return __vatsimData; }
   inline const VatsimDataHandler* vatsimDataHandler() const { Q_ASSERT(__vatsimData); return __vatsimData; }
   
@@ -90,7 +89,6 @@ private:
   UserInterface*       __userInterface;
   FileManager*         __fileManager;
   SettingsManager*     __settingsManager;
-  PluginManager*       __pluginManager;
   AirlineDatabase*     __airlineDatabase;
   AirportDatabase*     __airportDatabaase;
   FirDatabase*         __firDatabase;

@@ -5,7 +5,6 @@ set (storage_SRCS
     cachefile.cpp
     filemanager.cpp
     languagemanager.cpp
-    pluginmanager.cpp
     settingsmanager.cpp
     unzipper.cpp
 )

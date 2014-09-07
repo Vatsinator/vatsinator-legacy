@@ -31,7 +31,6 @@
 #include "ui/userinterface.h"
 #include "ui/widgetsuserinterface.h"
 #include "storage/cachefile.h"
-#include "storage/pluginmanager.h"
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
@@ -774,17 +773,22 @@ VatsimDataHandler::__reloadWeatherForecast() {
   QString desired = SM::get("network.weather_forecast_provider").toString();
   /* TODO Plugin selection needs to be done better  */
   if (desired != "none") {
-    if (!__weatherForecast || desired != __weatherForecast->providerName()) {
-      QList<WeatherForecastInterface*> weatherPlugins =
-          vApp()->plugins()->plugins<WeatherForecastInterface>();
-      for (WeatherForecastInterface* w: weatherPlugins) {
-        if (w->providerName() == desired) {
-          __weatherForecast = w;
+    QDir pluginsDir(FileManager::staticPath(FileManager::Plugins));
+    for (QString fileName: pluginsDir.entryList(QDir::Files)) {
+      QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+      QJsonObject pluginData = loader.metaData();
+      if (pluginData["IID"].toString() == "org.eu.vatsinator.Vatsinator.WeatherForecastInterface") {
+        QJsonObject metaData = pluginData["MetaData"].toObject();
+        QString name = metaData["name"].toString();
+        
+        if (desired == name) {
+          __weatherForecast = qobject_cast<WeatherForecastInterface*>(loader.instance());
+          Q_ASSERT(__weatherForecast);
+          qDebug("Loaded weather forecast plugin: %s",
+                 qPrintable(metaData["provider_name"].toString()));
           break;
         }
       }
-      Q_ASSERT(__weatherForecast->providerName() == desired);
-      qDebug("Loaded weather forecast plugin: %s", qPrintable(__weatherForecast->providerName()));
     }
   } else {
     __weatherForecast = nullptr;

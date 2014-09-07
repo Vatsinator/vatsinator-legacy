@@ -32,11 +32,6 @@ class WeatherForecastInterface {
 public:
   
   /**
-   * Gets the provider representative name.
-   */
-  virtual QString providerName() const = 0;
-  
-  /**
    * Begins fetching the weather forecast.
    */
   virtual WeatherForecastReply* fetch(WeatherForecastRequest* request) = 0;
