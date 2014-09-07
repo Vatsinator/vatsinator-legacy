@@ -43,7 +43,6 @@ class UltimateWeatherForecasts : public QObject, public WeatherForecastInterface
 public:
   UltimateWeatherForecasts();
   
-  QString providerName() const override;
   WeatherForecastReply* fetch(WeatherForecastRequest* request) override;
   
 private:

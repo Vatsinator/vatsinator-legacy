@@ -29,7 +29,7 @@
 FirDatabase::FirDatabase(QObject* _parent) : QObject(_parent) {}
 
 void
-FirDatabase::init() {
+FirDatabase::initialize() {
   __readDatabase();
 }
 

@@ -22,9 +22,7 @@
 PluginListWidgetItem::PluginListWidgetItem(const QString& _text,
                                            QListWidget* _parent,
                                            int _type):
-    QListWidgetItem(_text, _parent, _type),
-    __simplified(_text.toLower()) {
-  __simplified.replace(' ', QString());
+    QListWidgetItem(_text, _parent, _type) {
 }
 
 QVariant

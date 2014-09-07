@@ -18,7 +18,6 @@
  */
 
 #include <QtNetwork>
-#include <qjson/parser.h>
 
 #include "storage/settingsmanager.h"
 #include "ui/dialogs/letsendstatsdialog.h"
@@ -174,27 +173,26 @@ StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
 
 void
 StatsPurveyor::__parseResponse() {
-  QJson::Parser parser;
-  bool ok;
-  
-  /* We could pass __reploy to the parser constructor, but qjson has some problems with QIODevice* */
+  QJsonParseError error;
   QByteArray data = __reply->readAll();
-  QVariant content = parser.parse(data, &ok);
-  if (ok) {
-    QVariantMap map = content.toMap();
-    int result = map["result"].toInt();
+  QJsonDocument document = QJsonDocument::fromJson(data, &error);
+  
+  if (error.error == QJsonParseError::NoError) {
+    QJsonObject root = document.object();
+    int result = root["result"].toInt();
     if (result > 0) {
       __requests.dequeue();
       __reply->deleteLater();
       __reply = nullptr;
     } else {
-      Q_ASSERT_X(false, "StatsPurveyor", "Invalid query");
+      qFatal("Invalid query response; query: %s, response: %s",
+             qPrintable(__reply->request().url().toString()), data.constData());
     }
     
     if (!__requests.isEmpty())
         __nextRequest(); 
   } else {
-    qWarning("StatsPurveyor: query failed; retry in 1 minute...");
+    qWarning("StatsPurveyor: query failed (%s); retry in 1 minute...", qPrintable(error.errorString()));
     QTimer::singleShot(RetryDelay, this, SLOT(__nextRequest()));
     __reply->deleteLater();
     __reply = nullptr;

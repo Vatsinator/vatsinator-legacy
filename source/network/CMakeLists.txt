@@ -12,18 +12,6 @@ set (network_SRCS
 
 vatsinator_subdirectory_sources (network "${network_SRCS}")
 
-set (network_MOC_SRCS
-    abstractnotamprovider.h
-    dataupdater.h
-    euroutenotamprovider.h
-    filedownloader.h
-    plaintextdownloader.h
-    resourcemanager.h
-    statspurveyor.h
-)
-
-vatsinator_subdirectory_mocs (network "${network_MOC_SRCS}")
-
 vatsinator_end_subdirectory (network)
 
 add_dependencies (network ui)

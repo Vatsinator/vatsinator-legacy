@@ -43,19 +43,11 @@
 
 #include "mapscene.h"
 
-namespace {
-  QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress) {
-    return LonLat(
-      start.longitude() + (end.longitude() - start.longitude()) * progress,
-      start.latitude() + (end.latitude() - start.latitude()) * progress
-    );
-  }
-}
-
 MapScene::MapScene(QObject* _parent) :
     QObject(_parent),
     __renderer(qobject_cast<MapRenderer*>(parent())),
-    __trackedFlight(nullptr) {
+    __trackedFlight(nullptr),
+    __animation(nullptr) {
   Q_ASSERT(__renderer);
   
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
@@ -65,8 +57,6 @@ MapScene::MapScene(QObject* _parent) :
   connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
           this,                         SLOT(__updateSettings()));
   __updateSettings();
-  
-  qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
 }
 
 MapScene::~MapScene() {}
@@ -104,7 +94,7 @@ MapScene::items(const QRectF& _rect) const {
   
   /* Handle cross-IDL queries */
   if (_rect.right() > 180.0) {
-    QRectF more(QPointF(-180.0, _rect.top()), QSize(_rect.right() - 180.0, _rect.height()));
+    QRectF more(QPointF(-180.0, _rect.top()), QSizeF(_rect.right() - 180.0, _rect.height()));
     for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
          it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
       if (it->second->isVisible())
@@ -128,7 +118,7 @@ const MapItem*
 MapScene::nearest(const LonLat& _target) {
   /*
    * Dunno why, but neighbor_iterator doesn't work with const and operator++()
-   * and thus we cannot make this mehod const.
+   * and thus we cannot make this method const.
    */
   auto it = spatial::neighbor_begin(__items, _target);
   while (!it->second->isVisible()) {
@@ -158,23 +148,35 @@ MapScene::nearest(const LonLat& _target, int _n) {
 }
 
 void
-MapScene::moveSmoothly(const LonLat& _target) {
-//   qDebug() << __renderer->center() << "->" << _target;
-//   TODO
-//   Why the hell it does not work?
-//   QPropertyAnimation* animation = new QPropertyAnimation(__renderer, "center");
-//   animation->setDuration(10000);
-//   animation->setStartValue(__renderer->center());
-//   animation->setEndValue(_target);
-//   
-//   animation->start(QAbstractAnimation::DeleteWhenStopped);
-  __renderer->setCenter(_target);
+MapScene::moveTo(const LonLat& _target) {
+  abortAnimation();
+  
+  QPropertyAnimation* animation = new QPropertyAnimation(__renderer, "center");
+  animation->setDuration(500);
+  animation->setEndValue(QVariant::fromValue<LonLat>(_target));
+  animation->setEasingCurve(QEasingCurve(QEasingCurve::InOutQuad));
+  animation->start();
+  
+  __animation = animation;
+  connect(animation, &QPropertyAnimation::finished, [this]() {
+    __animation->deleteLater();
+    __animation = nullptr;
+  });
+}
+
+void
+MapScene::abortAnimation() {
+  if (__animation) {
+    __animation->stop();
+    __animation->deleteLater();
+    __animation = nullptr;
+  }
 }
 
 void
 MapScene::__addFlightItem(const Pilot* _p) {
   /* TODO check why it can be null */
-  if (_p->position().isNull() || _p->position().x() == 0.0 || _p->position().y() == 0.0) {
+  if (_p->position().isNull()) {
     qWarning("MapScene: %s position is null; o=%s, d=%s",
              qPrintable(_p->callsign()), qPrintable(_p->route().origin), qPrintable(_p->route().destination));
     return;

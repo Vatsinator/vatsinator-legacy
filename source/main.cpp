@@ -17,9 +17,20 @@
 */
 
 #include <QtCore>
+#include <QVariantAnimation>
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
+
+/**
+ * The interpolator for LonLat, so that it can be animated nicely, i.e. by MapScene.
+ */
+QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress) {
+  return LonLat(
+    start.longitude() + (end.longitude() - start.longitude()) * progress,
+    start.latitude() + (end.latitude() - start.latitude()) * progress
+  );
+}
 
 int main(int argc, char** argv) {
   Q_INIT_RESOURCE(imgs);
@@ -30,6 +41,7 @@ int main(int argc, char** argv) {
   
   qRegisterMetaType<LonLat>("LonLat");
   qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
+  qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
   
   return VatsinatorApplication(argc, argv).exec();
 }

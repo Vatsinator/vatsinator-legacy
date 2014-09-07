@@ -22,7 +22,6 @@
 
 #include <QPointF>
 #include <QString>
-#include <QMenu>
 
 #include "vatsimdata/lonlat.h"
 

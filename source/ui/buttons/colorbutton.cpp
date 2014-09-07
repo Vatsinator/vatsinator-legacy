@@ -16,15 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGlobal>
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-# include <QtWidgets>
-# include <qdrawutil.h>
-#else
-# include <QtGui>
-#endif
-
+#include <QtWidgets>
+#include <qdrawutil.h>
 #include <QApplication>
 
 #include "colorbutton.h"

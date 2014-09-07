@@ -49,6 +49,13 @@ public:
   Airline(QString, QString, QString, QString, QString, QObject* = nullptr);
   
   /**
+   * Constructs the airline from the JSON object.
+   * @param json The JSON object that contains all airline data
+   * @param parent QObject's parent.
+   */
+  Airline(const QJsonObject&, QObject* = nullptr);
+  
+  /**
    * Airline's logo is lazy-loaded. To have it fetched from the internet
    * or loaded from cache, call this function.
    * @sa logoFetched().

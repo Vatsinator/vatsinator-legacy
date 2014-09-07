@@ -26,7 +26,7 @@
 AirportDatabase::AirportDatabase(QObject* _parent) : QObject(_parent) {}
 
 void
-AirportDatabase::init() {
+AirportDatabase::initialize() {
   __readDatabase();
 }
 

@@ -1,7 +1,6 @@
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 include (Macros)
 
-# ignored with Qt4
 set (CMAKE_AUTOMOC ON)
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -23,14 +22,13 @@ set (vatsinator_SRCS
 
 # icon for Windows
 if (WIN32)
-    set (vatsinator_SRCS ${vatsinator_SRCS}
-		${PROJECT_SOURCE_DIR}/dist/vatsinator.rc)
+  set (vatsinator_SRCS ${vatsinator_SRCS}
+  ${PROJECT_SOURCE_DIR}/dist/vatsinator.rc)
 endif (WIN32)
 
 set (vatsinator_SUBDIRS
     db
     events
-    glutils
     modules
     network
     plugins
@@ -47,23 +45,12 @@ add_executable (${vatsinator_TARGET} WIN32
     ${vatsinator_SRCS}
 )
 
-# fix for older versions of qjson library
-if (qjson_LIBRARIES)
-    set (QJSON_LIBRARIES ${qjson_LIBRARIES})
-endif (qjson_LIBRARIES)
-
-if (${QT_VERSION} VERSION_LESS 5.0)
-  set (vatsinator_QT_LIBS
-    ${QT_LIBRARIES}
-  )
-else (${QT_VERSION} VERSION_LESS 5.0)
-  set (vatsinator_QT_LIBS
-        Qt5::Widgets
-        Qt5::Network
-        Qt5::Xml
-        Qt5::OpenGL
-  )
-endif (${QT_VERSION} VERSION_LESS 5.0)
+set (vatsinator_QT_LIBS
+    Qt5::Widgets
+    Qt5::Network
+    Qt5::Xml
+    Qt5::OpenGL
+)
       
 if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
@@ -72,7 +59,6 @@ if (LINUX)
         ${vatsinator_QT_LIBS}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
-        ${QJSON_LIBRARIES}
     )
 elseif (APPLE)
     set (vatsinator_PREFIX "")
@@ -81,18 +67,16 @@ elseif (APPLE)
         ${vatsinator_QT_LIBS}
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
-        ${QJSON_LIBRARIES}
     )
 else (WIN32)
     set (vatsinator_PREFIX "")
 
     set (vatsinator_LIBS
         ${vatsinator_QT_LIBS}
-		Qt5::WinMain
+        Qt5::WinMain
         ${OPENGL_LIBRARY}
         ${QUAZIP_LIBRARIES}
-        ${QJSON_LIBRARIES}
-  )
+    )
 endif (LINUX)
 
 if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
@@ -172,30 +156,23 @@ elseif (WIN32)
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
     if (MSVC)
-		set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
-		include(InstallRequiredSystemLibraries)
-		
-		get_property (qjson_LIBRARY TARGET qjson PROPERTY IMPORTED_LOCATION_RELEASE)
-		get_filename_component (QJSON_LIBRARY_DIR ${qjson_LIBRARY} PATH)
-	
-	    if (NOT QT_QMAKE_EXECUTABLE)
-			get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-		endif (NOT QT_QMAKE_EXECUTABLE)
-		
-		exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
-			OUTPUT_VARIABLE QT_INSTALL_LIBS)
-		exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
-			OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
-	  
-		# setup path to qwindows.dll
-		set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
-		
-		include (DeployQt5)
-		install_qt5_executable ("${vatsinator_EXECUTABLE}"
-			"${QT_QWINDOWS_PLUGIN}" # qtplugins
-			"" # libs
-			"${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR};${QJSON_LIBRARY_DIR}" # dirs
-		)
+        set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
+        include(InstallRequiredSystemLibraries)
+        
+        exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
+            OUTPUT_VARIABLE QT_INSTALL_LIBS)
+        exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
+            OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
+        
+        # setup path to qwindows.dll
+        set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
+        
+        include (DeployQt5)
+        install_qt5_executable ("${vatsinator_EXECUTABLE}"
+            "${QT_QWINDOWS_PLUGIN}" # qtplugins
+            "" # libs
+            "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
+        )
     endif (MSVC)
     
 endif (LINUX)

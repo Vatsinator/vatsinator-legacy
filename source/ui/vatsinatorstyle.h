@@ -23,14 +23,34 @@
 #include <QProxyStyle>
 #include <QFont>
 
+/**
+ * The VatsinatorStyle class is used to provide easy access to common
+ * for the whole application style hints.
+ */
 class VatsinatorStyle : public QProxyStyle {
   Q_OBJECT
 
 public:
   
+  /**
+   * Gets the default system font and makes it bold.
+   */
   QFont boldFont();
+  
+  /**
+   * Use this font to make large titles.
+   */
   QFont h1Font();
+  
+  /**
+   * Use this font to make captions.
+   */
   QFont h2Font();
+  
+  /**
+   * Gets the default system font and makes it a bit smaller.
+   */
+  QFont smallFont();
   
 #ifdef Q_OS_MAC
   void polish(QWidget*) override;

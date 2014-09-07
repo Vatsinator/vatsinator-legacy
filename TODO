@@ -3,17 +3,17 @@
 * Pilots that went offline airborne
 * Extended ATC
 * Home-location
-* Flights nearby
-* Data files should use JSON format
+* Data files should use JSON format (model, uir)
 * Old versions config updater
 * Data parser (separate class)
 * Optimize OpenGL engine (optimize textures...)
+* Drop qjson dependency (use Qt's own implementation)
+* *DetailsWindow redesign to provide better readability
 
 Due to the new engine:
-* Make FlightTracker works
-
+* Make trackers work (FlightTracker, AirportTracker)
+* Draw APP circles
 
 == TODO for later versions ==
 * Dynamic map (plugin format)
 * Chart links
-* Android port (depends on Qt5 port)

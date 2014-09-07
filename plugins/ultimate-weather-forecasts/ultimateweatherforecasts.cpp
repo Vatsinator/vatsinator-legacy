@@ -19,7 +19,6 @@
 
 #include <QtCore>
 #include <QtNetwork>
-#include <qjson/parser.h>
 
 #include "plugins/weatherdata.h"
 
@@ -93,10 +92,6 @@ namespace {
 UltimateWeatherForecasts::UltimateWeatherForecasts() :
     __reply(nullptr) {}
 
-QString UltimateWeatherForecasts::providerName() const {
-  return "Ultimate Weather Forecasts";
-}
-
 WeatherForecastReply* UltimateWeatherForecasts::fetch(
     WeatherForecastRequest* request) {
   
@@ -127,22 +122,21 @@ UltimateWeatherForecasts::__newRequest() {
 
 void
 UltimateWeatherForecasts::__finishRequest() {
-  QJson::Parser parser;
-  bool ok;
+  QJsonParseError error;
+  QJsonDocument document = QJsonDocument::fromJson(__data, &error);
   WeatherForecastReply* r = __pendingForecasts.dequeue();
   
-  QVariant content = parser.parse(__data, &ok);
-  if (ok) {
-    auto list = content.toList();
+  if (error.error == QJsonParseError::NoError) {
+    QJsonArray array = document.array();
     int i = 0;
-    for (QVariant& w: list) {
+    for (QJsonValueRef w: array) {
       i += 1;
       
       /* https://www.mashape.com/george-vustrey/ultimate-weather-forecasts/support/9 */
       if (i == 1)
         continue;
       
-      auto map = w.toMap();
+      QJsonObject map = w.toObject();
       WeatherData* data = new WeatherData(
         getLongDayName(map["day_of_week"].toString()),
         parseCondition(map["condition"].toString()),
@@ -150,14 +144,14 @@ UltimateWeatherForecasts::__finishRequest() {
       );
       
       WeatherData::Temperature high{
-        map["high_celsius"].toInt(),
-        static_cast<int>(map["high"].toDouble())
+        map["high_celsius"].toString().toInt(),
+        static_cast<int>(map["high"].toString().toDouble())
       };
       data->setHigh(high);
       
       WeatherData::Temperature low{
-        map["low_celsius"].toInt(),
-        static_cast<int>(map["low"].toDouble())
+        map["low_celsius"].toString().toInt(),
+        static_cast<int>(map["low"].toString().toDouble())
       };
       data->setLow(low);
       
@@ -198,5 +192,8 @@ void UltimateWeatherForecasts::__finished() {
       __data.clear();
       break;
     }
+    
+    default:
+      __newRequest();
   }
 }

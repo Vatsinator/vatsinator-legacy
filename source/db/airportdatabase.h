@@ -63,7 +63,7 @@ public:
   /**
    * Called by VatsinatorApplication only.
    */
-  void init();
+  void initialize();
   
   /**
    * Looks for the airport.

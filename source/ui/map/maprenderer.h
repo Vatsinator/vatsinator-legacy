@@ -24,7 +24,7 @@
 #include <QSize>
 #include <QColor>
 #include <QMatrix4x4>
-#include <QOpenGLFunctions>
+
 #include "vatsimdata/lonlat.h"
 
 class IconKeeper;
@@ -32,6 +32,7 @@ class MapItem;
 class MapScene;
 class ModelMatcher;
 class WorldPolygon;
+class QOpenGLFunctions;
 class QOpenGLShaderProgram;
 
 /**

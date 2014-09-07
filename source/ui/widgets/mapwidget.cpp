@@ -17,15 +17,7 @@
  *
  */
 
-#include <QtGlobal>
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-# include <QtWidgets>
-#else
-# include <QtGui>
-# define Q_UNREACHABLE do {} while (false) // this macro is avail from Qt >= 5.0
-#endif
-
+#include <QtWidgets>
 #include <QtOpenGL>
 
 #include "db/airportdatabase.h"
@@ -176,11 +168,25 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     if (center.x() > 180.0)
       center.rx() -= 360.0;
     
+    __renderer->scene()->abortAnimation();
     __renderer->setCenter(center);
   }
   __mousePosition.update(_event->pos());
   update();
   _event->accept();
+}
+
+void
+MapWidget::keyPressEvent(QKeyEvent* _event) {
+  switch (_event->key()) {
+    case Qt::Key_PageUp:
+    __updateZoom(1);
+    break;
+    
+  case Qt::Key_PageDown:
+    __updateZoom(-1);
+    break;
+  }
 }
 
 const MapItem*

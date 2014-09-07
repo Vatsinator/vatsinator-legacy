@@ -16,33 +16,16 @@ macro (vatsinator_subdirectory_sources SUBDIR SRCS)
 endmacro (vatsinator_subdirectory_sources)
 
 
-macro (vatsinator_subdirectory_mocs SUBDIR MOC_SRCS)
-  if (${QT_VERSION} VERSION_LESS 5.0)
-    if (NOT "${MOC_SRCS}" STREQUAL "")
-      qt4_wrap_cpp (vatsinator_${SUBDIR}_MOC_FILES ${MOC_SRCS})
-    endif (NOT "${MOC_SRCS}" STREQUAL "")
-  endif (${QT_VERSION} VERSION_LESS 5.0)
-endmacro (vatsinator_subdirectory_mocs)
-
-
 macro (vatsinator_subdirectory_forms SUBDIR FORMS)
   if (NOT "${FORMS}" STREQUAL "")
-    if (${QT_VERSION} VERSION_LESS 5.0)
-      qt4_wrap_ui (vatsinator_${SUBDIR}_FORMS_FILES ${FORMS})
-    else (${QT_VERSION} VERSION_LESS 5.0)
-      qt5_wrap_ui (vatsinator_${SUBDIR}_FORMS_FILES ${FORMS})
-    endif (${QT_VERSION} VERSION_LESS 5.0)
+    qt5_wrap_ui (vatsinator_${SUBDIR}_FORMS_FILES ${FORMS})
   endif (NOT "${FORMS}" STREQUAL "")
 endmacro (vatsinator_subdirectory_forms)
 
 
 macro (vatsinator_subdirectory_resources SUBDIR QRCS)
   if (NOT "${QRCS}" STREQUAL "")
-    if (${QT_VERSION} VERSION_LESS 5.0)
-      qt4_add_resources (vatsinator_${SUBDIR}_RESOURCES ${QRCS})
-    else (${QT_VERSION} VERSION_LESS 5.0)
-      qt5_add_resources (vatsinator_${SUBDIR}_RESOURCES ${QRCS})
-    endif (${QT_VERSION} VERSION_LESS 5.0)
+    qt5_add_resources (vatsinator_${SUBDIR}_RESOURCES ${QRCS})
   endif (NOT "${QRCS}" STREQUAL "")
 endmacro (vatsinator_subdirectory_resources)
 

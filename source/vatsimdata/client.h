@@ -87,6 +87,15 @@ public:
    * @return True if the client was present in the last data update, otherwise false.
    */
   bool isOnline() const;
+  
+  /**
+   * Checks whether VATSIM provided a correct client's position.
+   * Sometimes the given position is like (0, 90) or (0, 0), which is obviously
+   * wrong. It means that the actual client's position should be recognized
+   * i.e. by parsing the route. Use setPosition() to fixup the client's
+   * position coordinates.
+   */
+  bool hasValidPosition() const;
 
   /**
    * The client's Vatsim PID.

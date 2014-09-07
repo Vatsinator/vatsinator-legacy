@@ -21,9 +21,8 @@
 #define FIRITEM_H
 
 #include <QObject>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
 #include <QOpenGLTexture>
+#include <QOpenGLVertexArrayObject>
 
 #include "ui/map/mapitem.h"
 
