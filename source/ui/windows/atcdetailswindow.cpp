@@ -26,6 +26,7 @@
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
+#include "ui/vatsinatorstyle.h"
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -34,23 +35,47 @@
 #include "atcdetailswindow.h"
 
 AtcDetailsWindow::AtcDetailsWindow(const Controller* _c, QWidget* _parent) :
-    BaseWindow(_parent),
+    QWidget(_parent),
     __atc(_c) {
   setupUi(this);
   
-  connect(qApp,                 SIGNAL(aboutToQuit()),
-          this,                 SLOT(hide()));
-  connect(ShowButton,           SIGNAL(clicked()),
-          this,                 SLOT(__handleClicked()));
-  connect(__atc,                SIGNAL(updated()),
-          this,                 SLOT(__updateLabels()));
+  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  CallsignLabel->setFont(style->h1Font());
+  FacilityLabel->setFont(style->h2Font());
+  AtisMessageLabel->setFont(style->smallFont());
+  
+  NameLabel->setDescription(tr("Name"));
+  FrequencyLabel->setDescription(tr("Frequency"));
+  RatingLabel->setDescription(tr("Rating"));
+  AirportLabel->setDescription(tr("Airport"));
+  ServerLabel->setDescription(tr("Server"));
+  TimeOnlineLabel->setDescription(tr("Online from"));
+  
+  connect(qApp, &QCoreApplication::aboutToQuit, this, &AtcDetailsWindow::hide);
+  connect(__atc, &Controller::updated, this, &AtcDetailsWindow::__updateLabels);
+  
+  connect(ShowButton, &QPushButton::clicked, [this]() {
+    wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__atc->position());
+    close();
+  });
 }
 
 void
-AtcDetailsWindow::show() {
+AtcDetailsWindow::showEvent(QShowEvent* _event) {
   Q_ASSERT(__atc);
+  
+  if (!_event->spontaneous()) {
+    this->setGeometry(
+      QStyle::alignedRect(
+        Qt::LeftToRight,
+        Qt::AlignCenter,
+        this->size(),
+        QDesktopWidget().screenGeometry(wui()->mainWindow())
+      )
+    );
+  }
+  
   __updateLabels();
-  BaseWindow::show();
 }
 
 void
@@ -58,30 +83,23 @@ AtcDetailsWindow::__updateLabels() {
   setWindowTitle(tr("%1 - ATC details").arg(__atc->callsign()));
 
   CallsignLabel->setText(__atc->callsign());
-  FacilityLabel->setText(__atc->description());
-  NameLabel->setText(QString("%1 (%2)").arg(__atc->realName(), QString::number(__atc->pid())));
-  FrequencyLabel->setText(__atc->frequency());
-  RatingLabel->setText(Controller::ratings[__atc->rating()]);
+  
+  NameLabel->setValue(QString("%1 (%2)").arg(__atc->realName(), QString::number(__atc->pid())));
+  FrequencyLabel->setValue(__atc->frequency());
+  RatingLabel->setValue(Controller::ratings[__atc->rating()]);
 
   if (__atc->airport())
-    AirportLabel->setText(QString("%1 %2, %3").arg(
+    AirportLabel->setValue(QString("%1 %2, %3").arg(
       QString(__atc->airport()->data()->icao),
       QString::fromUtf8(__atc->airport()->data()->name),
       QString::fromUtf8(__atc->airport()->data()->city)
     ));
   else
-    AirportLabel->setText(tr("N/A"));
+    AirportLabel->setValue(tr("N/A"));
 
-  ServerLabel->setText(__atc->server());
-  TimeOnlineLabel->setText(__atc->onlineFrom().toString("dd MMM yyyy, hh:mm"));
+  FacilityLabel->setText(__atc->description());
+  ServerLabel->setValue(__atc->server());
+  TimeOnlineLabel->setValue(__atc->onlineFrom().toString("dd MMM yyyy, hh:mm"));
 
   AtisMessageField->setPlainText(__atc->atis());
 }
-
-void
-AtcDetailsWindow::__handleClicked() {
-  Q_ASSERT(__atc);
-  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__atc->position());
-  close();
-}
-

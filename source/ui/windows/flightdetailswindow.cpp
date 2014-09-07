@@ -70,7 +70,7 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) 
   HeadingLabel->setDescription(tr("Heading"));
   FlightPhaseLabel->setDescription(tr("Flight phase"));
   ServerLabel->setDescription(tr("Server"));
-  TimeOnlineLabel->setDescription(tr("Logged from"));
+  TimeOnlineLabel->setDescription(tr("Online from"));
   SquawkLabel->setDescription(tr("Squawk"));
   AltimeterLabel->setDescription(tr("Baro"));
   FlightRulesLabel->setDescription(tr("Flight rules"));
