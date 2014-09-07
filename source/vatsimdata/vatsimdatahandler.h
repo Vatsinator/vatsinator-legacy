@@ -87,11 +87,6 @@ signals:
    * Incomplete fetch or something like that.
    */
   void vatsimDataError();
-  
-  /**
-   * If local data is corrupted.
-   */
-  void localDataBad(QString);
 
 public:
   /**
@@ -107,7 +102,7 @@ public:
   /**
    * Parses the data files.
    */
-  void init();
+  void initialize();
   
   /**
    * This function parses the raw "status.txt" file.
@@ -397,12 +392,7 @@ private:
   /**
    * Loads classes that wrap database records.
    */
-  void __initData();
-
-  /**
-   * Removes all data, frees pointers.
-   */
-  void __clearData();
+  void __initializeData();
   
   /**
    * Loads data file stored in the cache.

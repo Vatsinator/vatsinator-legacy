@@ -46,7 +46,7 @@ public:
   /**
    * Called by VatsinatorApplication only.
    */
-  void init();
+  void initialize();
   
   /**
    * Searches for the airline record in the database.

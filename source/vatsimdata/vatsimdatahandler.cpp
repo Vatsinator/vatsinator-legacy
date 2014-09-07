@@ -48,8 +48,6 @@
 
 #include "vatsimdatahandler.h"
 
-using std::for_each;
-
 static const QString CacheFileName = "lastdata";
 
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
@@ -81,8 +79,6 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
           this,                                 SLOT(__handleFetchError()));
   connect(__scheduler,                          SIGNAL(timeToUpdate()),
           this,                                 SLOT(requestDataUpdate()));
-  connect(this,                                 SIGNAL(localDataBad(QString)),
-          vApp()->userInterface(),              SLOT(warning(QString)));
   connect(this,                                 SIGNAL(vatsimStatusError()),
           vApp()->userInterface(),              SLOT(statusError()));
   connect(this,                                 SIGNAL(vatsimDataError()),
@@ -96,7 +92,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
-  __clearData();
+  qDeleteAll(__clients);
   qDeleteAll(__airports);
   qDeleteAll(__firs);
   
@@ -107,8 +103,8 @@ VatsimDataHandler::~VatsimDataHandler() {
 }
 
 void
-VatsimDataHandler::init() {
-  __initData();
+VatsimDataHandler::initialize() {
+  __initializeData();
   
   __readCountryFile(FileManager::path("data/country"));
   __readAliasFile(FileManager::path("data/alias"));
@@ -488,7 +484,7 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(file.fileName()));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(file.fileName()));
     return;
   }
   
@@ -498,7 +494,7 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
    if (error.error != QJsonParseError::NoError) {
     qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
              qPrintable(file.fileName()), qPrintable(error.errorString()));
-    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(file.fileName()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the application.").arg(file.fileName()));
     return;
   }
   
@@ -537,7 +533,7 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(_fName));
     return;
   }
   
@@ -547,7 +543,7 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
    if (error.error != QJsonParseError::NoError) {
     qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
              qPrintable(file.fileName()), qPrintable(error.errorString()));
-    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(file.fileName()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the application.").arg(file.fileName()));
     return;
   }
   
@@ -572,7 +568,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   QFile file(_fName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened! Please reinstall the application.").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(_fName));
     return;
   }
   
@@ -582,7 +578,7 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
   if (error.error != QJsonParseError::NoError) {
     qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
              qPrintable(file.fileName()), qPrintable(error.errorString()));
-    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(file.fileName()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the application.").arg(file.fileName()));
     return;
   }
   
@@ -631,7 +627,7 @@ VatsimDataHandler::__readUirFile(const QString& _fileName) {
   QFile file(_fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    emit localDataBad(tr("File %1 could not be opened!").arg(_fileName));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(_fileName));
     return;
   }
   
@@ -664,8 +660,8 @@ VatsimDataHandler::__readUirFile(const QString& _fileName) {
 }
 
 void
-VatsimDataHandler::__initData() {
-  for_each(FirDatabase::getSingleton().firs().begin(),
+VatsimDataHandler::__initializeData() {
+  std::for_each(FirDatabase::getSingleton().firs().begin(),
     FirDatabase::getSingleton().firs().end(),
     [this](const FirRecord& fr) {
       Fir* f = new Fir(&fr);
@@ -673,20 +669,13 @@ VatsimDataHandler::__initData() {
     }
   );
   
-  for_each(AirportDatabase::getSingleton().airports().begin(),
+  std::for_each(AirportDatabase::getSingleton().airports().begin(),
     AirportDatabase::getSingleton().airports().end(),
     [this](const AirportRecord& ar) {
       Airport* a = new Airport(&ar);
       __airports.insert(a->icao(), a);
     }
   );
-}
-
-void
-VatsimDataHandler::__clearData() {
-  qDeleteAll(__clients);
-
-  __observers = 0;
 }
 
 void
@@ -728,7 +717,6 @@ VatsimDataHandler::__cleanupClients() {
 
 void
 VatsimDataHandler::__slotUiCreated() {
-  
   if (SM::get("network.cache_enabled").toBool() == true)
     __loadCachedData();
   

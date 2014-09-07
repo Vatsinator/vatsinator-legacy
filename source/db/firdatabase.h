@@ -69,7 +69,7 @@ public:
   /**
    * Called by VatsinatorApplication only.
    */
-  void init();
+  void initialize();
 
   /**
    * Finds FirHeader entry by given ICAO.

@@ -31,7 +31,7 @@ AirlineDatabase::AirlineDatabase(QObject* _parent) :
     __canFetch(false) {}
 
 void
-AirlineDatabase::init() {
+AirlineDatabase::initialize() {
   QFile db(FileManager::path("data/airlines"));
   
   if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {

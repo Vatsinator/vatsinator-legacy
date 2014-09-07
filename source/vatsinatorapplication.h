@@ -49,7 +49,9 @@ class VatsinatorApplication : public QApplication {
   
 signals:
   /**
-   * First emitted in the application. No objects are created yet.
+   * First signal emitted in the application.
+   * At this point, all singletons are already instantiated, but they
+   * are not initialized yet.
    */
   void initializing();
 
@@ -61,8 +63,7 @@ public:
 
   virtual ~VatsinatorApplication();
   
-  UserInterface* userInterface();
-  
+  inline UserInterface* userInterface() { Q_ASSERT(__userInterface); return __userInterface; }
   inline SettingsManager* settingsManager() { Q_ASSERT(__settingsManager); return __settingsManager; }
   inline const PluginManager* plugins() const { Q_ASSERT(__pluginManager); return __pluginManager; }
   inline VatsimDataHandler* vatsimDataHandler() { Q_ASSERT(__vatsimData); return __vatsimData; }

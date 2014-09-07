@@ -77,7 +77,7 @@ VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
   
   setStyle(new VatsinatorStyle());
   
-  connect(this, SIGNAL(initializing()), SLOT(__initialize()));
+  connect(this, &VatsinatorApplication::initializing, &VatsinatorApplication::__initialize);
   emit initializing();
 }
 
@@ -104,12 +104,6 @@ VatsinatorApplication::~VatsinatorApplication() {
   
   rmThread->wait();
   spThread->wait();
-}
-
-UserInterface*
-VatsinatorApplication::userInterface() {
-  Q_ASSERT(__userInterface);
-  return __userInterface;
 }
 
 void
@@ -148,12 +142,12 @@ VatsinatorApplication::__initialize() {
   spThread->start();
  
   /* Initialize everything else */
-  __airlineDatabase->init();
-  __airportDatabaase->init();
-  __firDatabase->init();
+  __airlineDatabase->initialize();
+  __airportDatabaase->initialize();
+  __firDatabase->initialize();
   
   /* Read data files only after databases are ready */
-  __vatsimData->init();
+  __vatsimData->initialize();
 }
 
 QMutex VatsinatorApplication::__mutex(QMutex::Recursive);
