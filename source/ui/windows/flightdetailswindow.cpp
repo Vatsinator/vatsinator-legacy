@@ -38,12 +38,14 @@
 #include "flightdetailswindow.h"
 
 FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) :
-    BaseWindow(_parent),
+    QWidget(_parent),
     __pilot(_pilot) {
   setupUi(this);
   
-  QFont smaller;
-  smaller.setPointSize(smaller.pointSize() - 2);
+  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  
+  /* Setup fonts fonts */
+  QFont smaller = style->smallFont();
   StdLabel->setFont(smaller);
   StdUtcLabel->setFont(smaller);
   StaLabel->setFont(smaller);
@@ -53,49 +55,69 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) 
   EtaLabel->setFont(smaller);
   EtaUtcLabel->setFont(smaller);
   
-  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  OriginLabel->setFont(smaller);
+  DestinationLabel->setFont(smaller);
+  RouteLabel->setFont(smaller);
+  RemarksLabel->setFont(smaller);
   
   CallsignLabel->setFont(style->h1Font());
   FromLabel->setFont(style->h2Font());
   ToLabel->setFont(style->h2Font());
   
-  connect(qApp,                 SIGNAL(aboutToQuit()),
-          this,                 SLOT(hide()));
-  connect(TrackFlightBox,       SIGNAL(stateChanged(int)),
-          this,                 SLOT(stateHandle(int)));
-  connect(ShowButton,           SIGNAL(clicked()),
-          this,                 SLOT(__handleClicked()));
-  connect(__pilot,              SIGNAL(updated()),
-          this,                 SLOT(__updateLabels()));
-  connect(__pilot,              SIGNAL(invalid()),
-          this,                 SLOT(close()));
+  PilotLabel->setDescription(tr("Pilot"));
+  AltitudeLabel->setDescription(tr("Altitude"));
+  GroundSpeedLabel->setDescription(tr("Ground speed"));
+  HeadingLabel->setDescription(tr("Heading"));
+  FlightPhaseLabel->setDescription(tr("Flight phase"));
+  ServerLabel->setDescription(tr("Server"));
+  TimeOnlineLabel->setDescription(tr("Online from"));
+  SquawkLabel->setDescription(tr("Squawk"));
+  AltimeterLabel->setDescription(tr("Baro"));
+  FlightRulesLabel->setDescription(tr("Flight rules"));
+  AircraftLabel->setDescription(tr("Aircraft"));
+  TrueAirSpeedLabel->setDescription(tr("TAS"));
+  CruiseAltitudeLabel->setDescription(tr("Cruise altitude"));
+  
+  connect(qApp, &QCoreApplication::aboutToQuit, this, &FlightDetailsWindow::hide);
+  connect(__pilot, &Pilot::updated, this, &FlightDetailsWindow::__updateInfo);
+  connect(__pilot, &Pilot::invalid, this, &FlightDetailsWindow::close);
+  
+  connect(ShowButton, &QPushButton::clicked, [this]() {
+    wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__pilot->position());
+    close();
+  });
+  
+  connect(TrackFlightBox, &QCheckBox::stateChanged, [this](int _state) {
+    emit flightTrackingStateChanged(__pilot, _state);
+  });
 }
 
 void
-FlightDetailsWindow::show() {
+FlightDetailsWindow::showEvent(QShowEvent* _event) {
   Q_ASSERT(__pilot);
   
-  if (__pilot->isPrefiledOnly())
-    return;
+  if (!_event->spontaneous()) {
+    this->setGeometry(
+      QStyle::alignedRect(
+        Qt::LeftToRight,
+        Qt::AlignCenter,
+        this->size(),
+        QDesktopWidget().screenGeometry(wui()->mainWindow())
+      )
+    );
+  }
   
   if (wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight() == __pilot)
     TrackFlightBox->setCheckState(Qt::Checked);
   else
     TrackFlightBox->setCheckState(Qt::Unchecked);
   
-  __updateLabels();
-  __updateButtons();
-  
-  BaseWindow::show();
+  __updateInfo();
+  __updateAirports();
 }
 
 void
-FlightDetailsWindow::stateHandle(int _state) {
-  emit flightTrackingStateChanged(__pilot, _state);
-}
-
-void
-FlightDetailsWindow::__updateButtons() {
+FlightDetailsWindow::__updateAirports() {
   if (!__pilot->route().origin.isEmpty()) {
     const Airport* ap = __pilot->origin();
     QString text = __pilot->route().origin;
@@ -137,22 +159,22 @@ FlightDetailsWindow::__updateButtons() {
           static_cast<QString>(" - ") %
           QString::fromUtf8(ap->data()->city));
 
-      ArrivalButton->setAirportPointer(ap);
+      DestinationButton->setAirportPointer(ap);
     } else {
-      ArrivalButton->setAirportPointer(nullptr);
+      DestinationButton->setAirportPointer(nullptr);
       ToCityLabel->setText("");
     }
 
-    ArrivalButton->setText(text);
+    DestinationButton->setText(text);
   } else {
-    ArrivalButton->setText("(unknown)");
-    ArrivalButton->setAirportPointer(NULL);
+    DestinationButton->setText("(unknown)");
+    DestinationButton->setAirportPointer(NULL);
     ToCityLabel->setText("");
   }
 }
 
 void
-FlightDetailsWindow::__updateLabels() {
+FlightDetailsWindow::__updateInfo() {
   setWindowTitle(tr("%1 - flight details").arg(__pilot->callsign()));
   CallsignLabel->setText(__pilot->callsign());
   
@@ -163,8 +185,7 @@ FlightDetailsWindow::__updateLabels() {
     
     if (myAirline->logo().isNull()) {
       AirlineLabel->setText(myAirline->name());
-      connect(myAirline,    SIGNAL(logoFetched()),
-              this,         SLOT(__airlineUpdated()));
+      connect(myAirline, &Airline::logoFetched, this, &FlightDetailsWindow::__airlineUpdated);
       myAirline->requestLogo();
     } else {
       AirlineLabel->setPixmap(QPixmap::fromImage(myAirline->logo()));
@@ -185,38 +206,30 @@ FlightDetailsWindow::__updateLabels() {
   PlannedArrivalTimeLabel->setText(__pilot->sta().isValid() ? __pilot->sta().toString("hh:mm") : "-");
   EstimatedArrivalTimeLabel->setText(__pilot->eta().isValid() ? __pilot->eta().toString("hh:mm") : "-");
 
-  PilotLabel->setText(QString("%1 (%2)").arg(__pilot->realName(), QString::number(__pilot->pid())));
-  AltitudeLabel->setText(tr("%1 feet").arg(QString::number(__pilot->altitude())));
-  GroundSpeedLabel->setText(tr("%1 kts").arg(QString::number(__pilot->groundSpeed())));
-  HeadingLabel->setText(QString::number(__pilot->heading()));
+  PilotLabel->setValue(QString("%1 (%2)").arg(__pilot->realName(), QString::number(__pilot->pid())));
+  AltitudeLabel->setValue(tr("%1 feet").arg(QString::number(__pilot->altitude())));
+  GroundSpeedLabel->setValue(tr("%1 kts").arg(QString::number(__pilot->groundSpeed())));
+  HeadingLabel->setValue(QString::number(__pilot->heading()));
 
   if (__pilot->phase() == Pilot::Airborne)
-    CurrentStatusLabel->setText(tr("airborne"));
+    FlightPhaseLabel->setValue(tr("airborne"));
   else if (__pilot->phase() == Pilot::Departing)
-    CurrentStatusLabel->setText(tr("departing"));
+    FlightPhaseLabel->setValue(tr("departing"));
   else
-    CurrentStatusLabel->setText(tr("arrived"));
+    FlightPhaseLabel->setValue(tr("arrived"));
 
-  ServerLabel->setText(__pilot->server());
-  TimeOnlineLabel->setText(__pilot->onlineFrom().toString("dd MMM yyyy, hh:mm"));
-  SquawkLabel->setText(__pilot->squawk());
-  AltimeterLabel->setText(__pilot->pressure().mb % " / " % __pilot->pressure().ihg);
+  ServerLabel->setValue(__pilot->server());
+  TimeOnlineLabel->setValue(__pilot->onlineFrom().toString("dd MMM yyyy, hh:mm"));
+  SquawkLabel->setValue(__pilot->squawk());
+  AltimeterLabel->setValue(__pilot->pressure().mb % " / " % __pilot->pressure().ihg);
 
-  FlightRulesLabel->setText((__pilot->flightRules() == Pilot::Ifr) ? "IFR" : "VFR");
-
-  AircraftLabel->setText(__pilot->aircraft());
-  TrueAirSpeedLabel->setText(tr("%1 kts").arg(QString::number(__pilot->tas())));
-  CruiseAltitude->setText(__pilot->route().altitude);
+  FlightRulesLabel->setValue((__pilot->flightRules() == Pilot::Ifr) ? "IFR" : "VFR");
+  AircraftLabel->setValue(__pilot->aircraft());
+  TrueAirSpeedLabel->setValue(tr("%1 kts").arg(QString::number(__pilot->tas())));
+  CruiseAltitudeLabel->setValue(__pilot->route().altitude);
 
   RouteField->setPlainText(__pilot->route().route);
   RemarksField->setPlainText(__pilot->remarks());
-}
-
-void
-FlightDetailsWindow::__handleClicked() {
-  Q_ASSERT(__pilot);
-  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__pilot->position());
-  close();
 }
 
 void

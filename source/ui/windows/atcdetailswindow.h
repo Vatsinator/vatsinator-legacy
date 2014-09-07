@@ -20,31 +20,26 @@
 #ifndef ATCDETAILSWINDOW_H
 #define ATCDETAILSWINDOW_H
 
-#include "ui/windows/basewindow.h"
+#include <QWidget>
 #include "ui/ui_atcdetailswindow.h"
 
 class Client;
 class Controller;
 
-class AtcDetailsWindow :
-    public BaseWindow,
-    private Ui::ATCDetailsWindow {
-
+class AtcDetailsWindow : public QWidget, private Ui::ATCDetailsWindow {
   Q_OBJECT
 
 public:
   AtcDetailsWindow(const Controller*, QWidget* = nullptr);
 
-public slots:
-  void show();
+protected:
+  virtual void showEvent(QShowEvent*) override;
 
 private:
   const Controller* __atc;
 
 private slots:
   void __updateLabels();
-  void __handleClicked();
-
 
 };
 
