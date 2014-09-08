@@ -6,9 +6,8 @@
 * Data files should use JSON format (model, uir)
 * Old versions config updater
 * Data parser (separate class)
-* Optimize OpenGL engine (optimize textures...)
-* Drop qjson dependency (use Qt's own implementation)
-* *DetailsWindow redesign to provide better readability
+* Optimize OpenGL engine (texture atlas...)
+* Search window
 
 Due to the new engine:
 * Make trackers work (FlightTracker, AirportTracker)
