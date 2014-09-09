@@ -50,7 +50,6 @@ private:
   
 private slots:
   void __updateForecast();
-  void __handleShowClicked();
   void __notamUpdate(NotamListModel*);
   void __goToNotam(QModelIndex);
 

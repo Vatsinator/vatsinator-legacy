@@ -67,7 +67,7 @@ namespace {
 
 WeatherForecastWidget::WeatherForecastWidget(QWidget* _parent,
                                              Qt::WindowFlags _f) :
-    QWidget(_parent, _f),
+    DelayedWidget(_parent, _f),
     __maxItemCount(0),
     __celsius(true) {}
 
@@ -124,6 +124,11 @@ QSize WeatherForecastWidget::minimumSizeHint() const {
 
 void
 WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
+  if (status() == Loading) {
+    DelayedWidget::paintEvent(_event);
+    return;
+  }
+  
   /* Weather icon size */
   constexpr int IconWidth = 50;
   constexpr int IconHeight = 50;

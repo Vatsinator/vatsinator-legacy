@@ -52,18 +52,25 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
     __airport(_ap) {
   setupUi(this);
   
-  connect(qApp,                                 SIGNAL(aboutToQuit()),
-          this,                                 SLOT(hide()));
-  connect(ShowButton,                           SIGNAL(clicked()),
-          this,                                 SLOT(__handleShowClicked()));
-  connect(vApp()->vatsimDataHandler()->notamProvider(),
-                                                SIGNAL(notamReady(NotamListModel*)),
-          this,                                 SLOT(__notamUpdate(NotamListModel*)));
-  connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
-          this,                                 SLOT(__goToNotam(QModelIndex)));
+  connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::hide);
+  connect(NotamTableView, &DelayedModelTableView::doubleClicked,
+          this, &AirportDetailsWindow::__goToNotam);
+  connect(vApp()->vatsimDataHandler()->notamProvider(), &AbstractNotamProvider::notamReady,
+          this, &AirportDetailsWindow::__notamUpdate);
+  
+  connect(ShowButton, &QPushButton::clicked, [this]() {
+    wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__airport->position());
+    close();
+  });
   
   NotamTableView->setErrorOnNoData(false);
-  WeatherForecastScrollArea->setWidget(new WeatherForecastWidget());
+  
+  WeatherForecastWidget* w = new WeatherForecastWidget();
+  
+  /* Animation */
+  QMovie* animation = new QMovie(":/animations/loader.gif");
+  w->setAnimation(animation);
+  WeatherForecastScrollArea->setWidget(w);
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {}
@@ -75,6 +82,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   __adjustTables();
   
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
+  
   if (vApp()->vatsimDataHandler()->weatherForecast()) {
     ForecastGroup->setEnabled(true);
     
@@ -97,7 +105,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   }
   
   NotamTableView->setModel(nullptr);
-  vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(QString(__airport->data()->icao));
+  vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__airport->icao());  
   NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
   
   BaseWindow::showEvent(_event);
@@ -168,6 +176,8 @@ AirportDetailsWindow::__updateForecast() {
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   Q_ASSERT(w);
   
+  w->setStatus(DelayedWidget::Finished);
+  
   if (r->error() == WeatherForecastReply::NoError) {
     w->setData(r->data());
   } else {
@@ -184,15 +194,8 @@ AirportDetailsWindow::__updateForecast() {
 }
 
 void
-AirportDetailsWindow::__handleShowClicked() {
-  Q_ASSERT(__airport);
-  wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__airport->position());
-  close();
-}
-
-void
 AirportDetailsWindow::__notamUpdate(NotamListModel* _model) {
-  if (_model->icao() == QString(__airport->data()->icao))
+  if (_model->icao() == __airport->icao())
     NotamTableView->setModel(_model);
 }
 

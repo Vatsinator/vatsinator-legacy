@@ -86,6 +86,7 @@ set (widgets_SRCS
     views/delayedmodeltableview.cpp
     views/flighttableview.cpp
     
+    widgets/delayedwidget.cpp
     widgets/flightprogresswidget.cpp
     widgets/infolabel.cpp
     widgets/mapwidget.cpp
