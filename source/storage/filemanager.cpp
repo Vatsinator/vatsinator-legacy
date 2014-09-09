@@ -28,7 +28,7 @@ static const QString LocalDataLocation =
     QDir::cleanPath(
         QStandardPaths::writableLocation(QStandardPaths::DataLocation)
       % QDir::separator()
-      % "Vatsinator"
+      % QStringLiteral("Vatsinator")
     ) % QDir::separator();
 
 
@@ -82,16 +82,16 @@ FileManager::staticPath(FileManager::StaticDir _d) {
   switch (_d) {
     case Plugins:
 #ifndef Q_OS_DARWIN
-      return QString(VATSINATOR_PREFIX) % "plugins";
+      return QStringLiteral(VATSINATOR_PREFIX) % QStringLiteral("plugins");
 #else
-      return QCoreApplication::applicationDirPath() % "../Resources/plugins";
+      return QCoreApplication::applicationDirPath() % QStringLiteral("../Resources/plugins");
 #endif
       
     case Translations:
 #ifndef Q_OS_DARWIN
-      return QString(VATSINATOR_PREFIX) % "translations";
+      return QStringLiteral(VATSINATOR_PREFIX) % QStringLiteral("translations");
 #else
-      return QCoreApplication::applicationDirPath() % "/../Resources/translations";
+      return QCoreApplication::applicationDirPath() % QStringLiteral("/../Resources/translations");
 #endif
     
     default:
@@ -111,9 +111,9 @@ FileManager::path(const QString& _f) {
   } else {
     return
 #ifndef Q_OS_DARWIN
-      static_cast<QString>(VATSINATOR_PREFIX)
+      QStringLiteral(VATSINATOR_PREFIX)
 #else // on MacOS look for the file in the bundle
-      QCoreApplication::applicationDirPath() % "/../Resources/"
+      QCoreApplication::applicationDirPath() % QStringLiteral("/../Resources/")
 #endif
       % _f;
   }

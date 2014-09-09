@@ -47,13 +47,13 @@
 
 #include "vatsimdatahandler.h"
 
-static const QString CacheFileName = "lastdata";
+static const QString CacheFileName = QStringLiteral("lastdata");
 
 FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
 ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
 
 namespace {
-QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
+  QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
 }
 
 
@@ -323,7 +323,7 @@ VatsimDataHandler::findAirport(const QString& _icao) {
 
 QList<Airport*>
 VatsimDataHandler::airports() const {
-  return std::move(__airports.values());
+  return qMove(__airports.values());
 }
 
 Fir*
@@ -373,12 +373,12 @@ VatsimDataHandler::alternameName(const QString& _icao) {
 
 QList<Fir*>
 VatsimDataHandler::firs() const {
-  return std::move(__firs.values());
+  return qMove(__firs.values());
 }
 
 QList<Uir*>
 VatsimDataHandler::uirs() const {
-  return std::move(__uirs.values());
+  return qMove(__uirs.values());
 }
 
 int
@@ -757,7 +757,7 @@ VatsimDataHandler::__handleFetchError() {
   if (__statusFileFetched) {
     emit vatsimDataError();
   } else {
-    if (__statusUrl != QString(NetConfig::Vatsim::backupStatusUrl())) {
+    if (__statusUrl != NetConfig::Vatsim::backupStatusUrl()) {
       /* Try the backup url */
       __statusUrl = NetConfig::Vatsim::backupStatusUrl();
       __beginDownload();

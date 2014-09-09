@@ -34,15 +34,13 @@
 static const int StartDelay = 2 * 1000;
 
 // manifest file name, both on local storage and on the server
-static const QString ManifestFileName = "Manifest";
+static const QString ManifestFileName = QStringLiteral("Manifest");
 
 // how many days to have the database updated
 static const int DaysToUpdate = 7;
 
 ResourceManager::ResourceManager(QObject* _parent) :
     QObject(_parent) {
-  
-  qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
   
   connect(this, SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
                 SLOT(__checkDatabase(ResourceManager::VersionStatus)));

@@ -28,8 +28,7 @@
 
 #include "airline.h"
 
-static const QString AirlineLogoCacheDir = 
-  "airline-logos";
+static const QString AirlineLogoCacheDir = QStringLiteral("airline-logos");
 
 Airline::Airline(QString _icao, QString _name, QString _country,
                  QString _website, QString _logo, QObject* _parent) :

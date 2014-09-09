@@ -26,7 +26,7 @@ static const QString CacheDirectory =
     QDir::cleanPath(
         QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
       % QDir::separator()
-      % "Vatsinator"
+      % QStringLiteral("Vatsinator")
     );
 
 

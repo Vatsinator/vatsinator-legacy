@@ -23,11 +23,11 @@
 
 NotamListModel::NotamListModel(QString _icao, QObject* _parent) :
   QAbstractTableModel(_parent),
-  __icao(std::move(_icao)) {}
+  __icao(qMove(_icao)) {}
 
 void
 NotamListModel::addNotam(Notam _notam) {
-  __notams << std::move(_notam);
+  __notams << qMove(_notam);
 }
 
 QVariant

@@ -25,5 +25,5 @@ NewVersionDialog::NewVersionDialog(QWidget* _parent) :
     QDialog(_parent) {
   setupUi(this);
   
-  DownloadButton->setUrl(QString(NetConfig::Vatsinator::homePageUrl()));
+  DownloadButton->setUrl(NetConfig::Vatsinator::homePageUrl());
 }

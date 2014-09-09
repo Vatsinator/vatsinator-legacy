@@ -17,6 +17,7 @@
 */
 
 #include <QVariantAnimation>
+#include "network/resourcemanager.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
@@ -39,6 +40,8 @@ int main(int argc, char** argv) {
   qRegisterMetaType<LonLat>("LonLat");
   qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
   qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
+  
+  qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
   
   return VatsinatorApplication(argc, argv).exec();
 }

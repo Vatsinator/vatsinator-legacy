@@ -146,5 +146,5 @@ Airport::isStaffed() const {
 
 LonLat
 Airport::position() const {
-  return std::move(LonLat(data()->longitude, data()->latitude));
+  return qMove(LonLat(data()->longitude, data()->latitude));
 }

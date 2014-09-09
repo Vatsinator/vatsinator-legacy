@@ -24,8 +24,10 @@
 
 #include "ultimateweatherforecasts.h"
 
-static const QString ApiUrl = "https://george-vustrey-weather.p.mashape.com/api.php?location=%1";
-static const QString ApiKey = "NXOZbJJxNTmsh1dHGW16LoflT5N1p1jVGIbjsn4Z5b4xFu6VZT";
+static const QString ApiUrl = 
+  QStringLiteral("https://george-vustrey-weather.p.mashape.com/api.php?location=%1");
+static const QString ApiKey =
+  QStringLiteral("NXOZbJJxNTmsh1dHGW16LoflT5N1p1jVGIbjsn4Z5b4xFu6VZT");
 
 namespace {
   
@@ -55,7 +57,7 @@ namespace {
       { QRegExp("^Rain and(.+)windy"), WeatherData::RainAndWind }
     });
     
-    return std::move(rc);
+    return qMove(rc);
   }
   
   WeatherData::Condition parseCondition(const QString& str) {

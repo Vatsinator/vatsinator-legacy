@@ -26,7 +26,7 @@
 
 Unzipper::Unzipper(QString _fn, QObject* _parent) :
     QObject(_parent),
-    __fileName(std::move(_fn)) {}
+    __fileName(qMove(_fn)) {}
 
 Unzipper::Unzipper(QObject* _parent) :
 #ifdef GCC_VERSION_47
