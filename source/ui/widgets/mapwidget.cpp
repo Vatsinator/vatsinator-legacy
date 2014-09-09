@@ -70,7 +70,7 @@ MapWidget::event(QEvent* _event) {
   switch (_event->type()) {
     case QEvent::ToolTip: {
       QHelpEvent* helpEvent = static_cast<QHelpEvent*>(_event);
-      const MapItem* item = __underMouse(helpEvent->pos());
+      const MapItem* item = __underPoint(helpEvent->pos());
       if (item) {
         QToolTip::showText(helpEvent->globalPos(), item->tooltipText());
       } else {
@@ -101,7 +101,7 @@ MapWidget::paintGL() {
     if (cursor().shape() != Qt::SizeAllCursor)
       setCursor(QCursor(Qt::PointingHandCursor));
     
-    __renderer->drawFocused(item);
+    __renderer->drawLines(item);
   } else {
     if (cursor().shape() != Qt::SizeAllCursor)
       setCursor(QCursor(Qt::ArrowCursor));
@@ -201,7 +201,7 @@ MapWidget::__underMouse() {
 }
 
 const MapItem*
-MapWidget::__underMouse(const QPoint& _p) {
+MapWidget::__underPoint(const QPoint& _p) {
   const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat(_p).bound());
   Q_ASSERT(closest);
    
