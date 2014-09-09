@@ -124,11 +124,6 @@ QSize WeatherForecastWidget::minimumSizeHint() const {
 
 void
 WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
-  if (status() == Loading) {
-    DelayedWidget::paintEvent(_event);
-    return;
-  }
-  
   /* Weather icon size */
   constexpr int IconWidth = 50;
   constexpr int IconHeight = 50;
@@ -136,6 +131,12 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
   QPainter p(this);
   p.setBackground(QBrush(Qt::white));
   p.fillRect(_event->rect(), p.background());
+  
+  if (status() == Loading) {
+    DelayedWidget::paintEvent(_event);
+    return;
+  }
+  
   p.setRenderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
   
   if (!__message.isEmpty()) {
