@@ -67,7 +67,7 @@ namespace {
 
 WeatherForecastWidget::WeatherForecastWidget(QWidget* _parent,
                                              Qt::WindowFlags _f) :
-    QWidget(_parent, _f),
+    DelayedWidget(_parent, _f),
     __maxItemCount(0),
     __celsius(true) {}
 
@@ -131,6 +131,12 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
   QPainter p(this);
   p.setBackground(QBrush(Qt::white));
   p.fillRect(_event->rect(), p.background());
+  
+  if (status() == Loading) {
+    DelayedWidget::paintEvent(_event);
+    return;
+  }
+  
   p.setRenderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
   
   if (!__message.isEmpty()) {

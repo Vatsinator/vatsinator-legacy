@@ -27,8 +27,10 @@
 
 #include "euroutenotamprovider.h"
 
-static const QString EurouteNotamXmlUrl = "http://notams.euroutepro.com/notams.xml";
-static const QString EurouteLink = "http://notams.euroutepro.com/doc/rss.php";
+static const QString EurouteNotamXmlUrl =
+    QStringLiteral("http://notams.euroutepro.com/notams.xml");
+static const QString EurouteLink =
+    QStringLiteral("http://notams.euroutepro.com/doc/rss.php");
 
 namespace {
   Notam::Type typeFromLetter(const QString& letter) {

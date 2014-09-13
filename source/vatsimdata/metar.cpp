@@ -23,7 +23,7 @@
 Metar::Metar() : __icao("ZZZZ") {}
 
 Metar::Metar(QString _icao, const QString& _metar) :
-    __icao(std::move(_icao)),
+    __icao(qMove(_icao)),
     __metar(_metar),
     __lastFetchTime(QDateTime::currentDateTimeUtc()) {}
 

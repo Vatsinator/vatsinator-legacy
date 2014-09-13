@@ -111,7 +111,7 @@ MapScene::items(const QRectF& _rect) const {
     }
   }
   
-  return std::move(result);
+  return qMove(result);
 }
 
 const MapItem*
@@ -144,7 +144,7 @@ MapScene::nearest(const LonLat& _target, int _n) {
     Q_ASSERT(it != __items.end());
   }
   
-  return std::move(result);
+  return qMove(result);
 }
 
 void

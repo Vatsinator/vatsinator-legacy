@@ -39,7 +39,7 @@ LonLat::bound() const {
     b.rx() += 360.0;
   
   b.ry() = qBound(-90.0, b.y(), 90.0);
-  return std::move(b);
+  return qMove(b);
 }
 
 QDataStream &

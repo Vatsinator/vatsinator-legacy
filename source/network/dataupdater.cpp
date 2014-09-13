@@ -29,8 +29,10 @@
 
 #include "dataupdater.h"
 
-static const QString PackageUrl = QString(NetConfig::Vatsinator::repoUrl()) % QString("packages/latest.zip");
-static const QString ManifestUrl = QString(NetConfig::Vatsinator::repoUrl()) % QString("packages/Manifest");
+static const QString PackageUrl =
+    NetConfig::Vatsinator::repoUrl() % QStringLiteral("packages/latest.zip");
+static const QString ManifestUrl =
+    NetConfig::Vatsinator::repoUrl() % QStringLiteral("packages/Manifest");
 
 namespace {
   

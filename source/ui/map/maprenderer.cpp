@@ -127,7 +127,7 @@ MapRenderer::glFromLonLat(const LonLat& _point) {
 
 void
 MapRenderer::drawFocused(const MapItem* _item) {
-  static Q_DECL_CONSTEXPR GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
+  static constexpr GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   mvp.translate(QVector3D(0.0f, 0.0f, linesZ));

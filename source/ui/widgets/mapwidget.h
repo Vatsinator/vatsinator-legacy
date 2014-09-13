@@ -83,7 +83,7 @@ private:
   /**
    * Gets item under the given point. nullptr if nothing.
    */
-  const MapItem* __underMouse(const QPoint&);
+  const MapItem* __underPoint(const QPoint&);
   
   /**
    * Updates the zoom factor.

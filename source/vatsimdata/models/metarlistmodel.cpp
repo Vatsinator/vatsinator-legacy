@@ -1,6 +1,6 @@
 /*
     metarlistmodel.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 // How to recognize unavailable metars.
 // This value represents the response returned by vatsim server
 // in case given METAR could not be found.
-static const QString NoMetarText = "No METAR available";
+static const QString NoMetarText = QStringLiteral("No METAR available");
 
 
 MetarListModel::MetarListModel(PlainTextDownloader* _ptd, QObject* _parent) :

@@ -108,7 +108,7 @@ public:
   /**
    * Draws the specified item's "under mouse" elements.
    */
-  void drawFocused(const MapItem*);
+  void drawLines(const MapItem*);
   
   void setZoom(int);
   void setCenter(const LonLat&);

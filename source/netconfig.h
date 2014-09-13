@@ -20,29 +20,27 @@
 #ifndef NETCONFIG_H
 #define NETCONFIG_H
 
+#include <QString>
+
 class NetConfig {
 public:
   
   class Vatsinator {
   public:
     
-    static const char* homePageUrl() {
-      return "http://vatsinator.eu.org/";
+    static QString homePageUrl() {
+      return QStringLiteral("http://vatsinator.eu.org/");
     }
   
-    static const char* repoUrl() {
-      return "http://repo.vatsinator.eu.org/";
+    static QString repoUrl() {
+      return QStringLiteral("http://repo.vatsinator.eu.org/");
     }
     
-    static const char* statsUrl() {
-      return "http://stats.vatsinator.eu.org/";
+    static QString statsUrl() {
+      return QStringLiteral("http://stats.vatsinator.eu.org/");
     }
     
-    static const char* apiUrl() {
-      return "http://api.vatsinator.eu.org/";
-    }
-    
-    static const int defaultRefreshRate() {
+    static constexpr int defaultRefreshRate() {
       return 3;
     }
   
@@ -51,15 +49,15 @@ public:
   class Vatsim {
   public:
     
-    static const char* statusUrl() {
-      return "http://status.vatsim.net/status.txt";
+    static QString statusUrl() {
+      return QStringLiteral("http://status.vatsim.net/status.txt");
     }
     
     /**
      * URL to copy of status.txt in case vatsim servers are out of order
      */
-    static const char* backupStatusUrl() {
-      return "http://repo.vatsinator.eu.org/status.txt";
+    static QString backupStatusUrl() {
+      return QStringLiteral("http://repo.vatsinator.eu.org/status.txt");
     }
     
   };

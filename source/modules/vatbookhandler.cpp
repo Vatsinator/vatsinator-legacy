@@ -25,7 +25,8 @@
 
 #include "vatbookhandler.h"
 
-static const QString VatbookUrl = "http://vatbook.euroutepro.com/servinfo.asp";
+static const QString VatbookUrl =
+    QStringLiteral("http://vatbook.euroutepro.com/servinfo.asp");
 static const int RefreshInterval = 15 * 60000; // 15 min
 
 namespace {

@@ -44,25 +44,25 @@ namespace {
 #ifdef Q_OS_WIN32
     switch (QSysInfo::WindowsVersion) {
       case QSysInfo::WV_32s:
-        return "Windows 3.1";
+        return QStringLiteral("Windows 3.1");
       case QSysInfo::WV_95:
-        return "Windows 95";
+        return QStringLiteral("Windows 95");
       case QSysInfo::WV_98:
-        return "Windows 98";
+        return QStringLiteral("Windows 98");
       case QSysInfo::WV_NT:
-        return "Windows NT";
+        return QStringLiteral("Windows NT");
       case QSysInfo::WV_2000:
-        return "Windows 2000";
+        return QStringLiteral("Windows 2000");
       case QSysInfo::WV_XP:
-        return "Windows XP";
+        return QStringLiteral("Windows XP");
       case QSysInfo::WV_2003:
-        return "Windows XP Professional x64";
+        return QStringLiteral("Windows XP Professional x64");
       case QSysInfo::WV_VISTA:
-        return "Windows Vista";
+        return QStringLiteral("Windows Vista");
       case QSysInfo::WV_WINDOWS7:
-        return "Windows 7";
+        return QStringLiteral("Windows 7");
       default:
-        return "Windows";
+        return QStringLiteral("Windows");
     }
 #elif defined Q_OS_LINUX
     /* On Linux we have to get distro name somehow, lets try lsb-release */
@@ -74,24 +74,26 @@ namespace {
       d.remove("\"");
       d = d.simplified();
       
-      return QString("Linux ") % d;
+      return QStringLiteral("Linux ") % d;
     } else {
-      return QString("Linux");
+      return QStringLiteral("Linux");
     }
-#elif defined Q_OS_DARWIN
+#elif defined Q_OS_MAC
     switch (QSysInfo::MacintoshVersion) {
       case QSysInfo::MV_10_3:
-        return "Mac OS X 10.3";
+        return QStringLiteral("Mac OS X 10.3");
       case QSysInfo::MV_10_4:
-        return "Mac OS X 10.4";
+        return QStringLiteral("Mac OS X 10.4");
       case QSysInfo::MV_10_5:
-        return "Mac OS X 10.5";
+        return QStringLiteral("Mac OS X 10.5");
       case QSysInfo::MV_10_6:
-        return "Mac OS X 10.6";
+        return QStringLiteral("Mac OS X 10.6");
       case QSysInfo::MV_10_7:
-        return "Mac OS X 10.7";
+        return QStringLiteral("Mac OS X 10.7");
       case QSysInfo::MV_10_8:
-        return "Mac OS X 10.8";
+        return QStringLiteral("Mac OS X 10.8");
+      case QSysInfo::MV_10_9:
+        return QStringLiteral("Mac OS X 10.9");
       default:
         return "Mac OS X";
     }
@@ -141,8 +143,8 @@ StatsPurveyor::~StatsPurveyor() {}
 
 void 
 StatsPurveyor::reportStartup() {
-  static const QString StartupPath = "startup.php?version=%1&os=%2";
-  QString url = QString(NetConfig::Vatsinator::statsUrl()) % StartupPath;
+  static const QString StartupPath = QStringLiteral("startup.php?version=%1&os=%2");
+  QString url = NetConfig::Vatsinator::statsUrl() % StartupPath;
   QNetworkRequest request(url.arg(VATSINATOR_VERSION, osString()));
   
   __enqueueRequest(request);
@@ -150,13 +152,13 @@ StatsPurveyor::reportStartup() {
 
 void
 StatsPurveyor::reportNoAtc(const QString& _atc) {
-  static const QString NoAtcPath = "noatc.php?atc=%1";
+  static const QString NoAtcPath = QStringLiteral("noatc.php?atc=%1");
   
   /* Discard no-atc reports before data is read */
   if (!vApp()->vatsimDataHandler()->isInitialized())
     return;
   
-  QString url = QString(NetConfig::Vatsinator::statsUrl()) % NoAtcPath;
+  QString url = NetConfig::Vatsinator::statsUrl() % NoAtcPath;
   QNetworkRequest request(url.arg(_atc));
   
   __enqueueRequest(request);

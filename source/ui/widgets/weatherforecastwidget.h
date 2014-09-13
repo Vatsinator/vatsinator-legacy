@@ -20,8 +20,8 @@
 #ifndef WEATHERFORECASTWIDGET_H
 #define WEATHERFORECASTWIDGET_H
 
-#include <QWidget>
 #include <QVector>
+#include "ui/widgets/delayedwidget.h"
 
 class WeatherData;
 
@@ -31,8 +31,9 @@ class WeatherData;
  * forecast data. This widget supports days of week, weather forecast icons,
  * temperatures (low and high) and condition descriptions display.
  */
-class WeatherForecastWidget : public QWidget {
+class WeatherForecastWidget : public DelayedWidget {
   Q_OBJECT
+  Q_PROPERTY(QString message READ message WRITE setMessage)
   
 public:
   WeatherForecastWidget(QWidget* = nullptr, Qt::WindowFlags = 0);
@@ -49,7 +50,7 @@ public:
    * Sets the message to be displayed instead of weather forecast. This can
    * be used i.e. to display the information that the forecast is currently
    * being downloaded from the internet.
-   * As long, as the message is not empty, the weather forecast will not
+   * As long as the message is not empty, the weather forecast will not
    * be drawn. To unset the message, simply call setMessage("").
    */
   void setMessage(const QString&);
