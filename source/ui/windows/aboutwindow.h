@@ -33,6 +33,9 @@ class AboutWindow :
 public:
   AboutWindow(QWidget* = nullptr);
   
+protected:
+  void showEvent(QShowEvent*) override;
+  
 private slots:
   
   /**
