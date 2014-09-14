@@ -36,7 +36,7 @@ InfoLabel::setDescription(const QString& _description) {
 
 void
 InfoLabel::setValue(const QString& _value) {
-  __value = _value;
+  __val = _value;
   updateGeometry();
 }
 

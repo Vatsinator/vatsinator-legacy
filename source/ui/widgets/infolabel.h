@@ -46,7 +46,7 @@ public:
   virtual QSize minimumSizeHint() const override;
   
   inline const QString& description() const { return __description; }
-  inline const QString& value() const { return __value; }
+  inline const QString& value() const { return __val; }
   inline const QFont& descriptionFont() const { return __descriptionFont; }
 
 protected:
@@ -54,7 +54,7 @@ protected:
 
 private:
   QString __description;
-  QString __value;
+  QString __val;
   QFont   __descriptionFont;
   
 };
