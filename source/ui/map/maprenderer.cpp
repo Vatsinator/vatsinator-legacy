@@ -408,11 +408,15 @@ MapRenderer::__createShaderPrograms() {
   
   __identityProgram->bindAttributeLocation("vertex", vertexLocation());
   
-  __identityProgram->link();
+  result = __identityProgram->link();
+  Q_ASSERT(result);
   __identityProgram->bind();
   __identityMatrixLocation = __identityProgram->uniformLocation("matrix");
+  Q_ASSERT(__identityMatrixLocation > 0);
   __identityColorLocation = __identityProgram->uniformLocation("color");
+  Q_ASSERT(__identityColorLocation > 0);
   __identityOffsetLocation = __identityProgram->uniformLocation("offset");
+  Q_ASSERT(__identityOffsetLocation > 0);
   __identityProgram->release();
   
   /* Create textured shader */
@@ -429,12 +433,18 @@ MapRenderer::__createShaderPrograms() {
   __texturedProgram->bindAttributeLocation("vertex", vertexLocation());
   __texturedProgram->bindAttributeLocation("texcoord", texcoordLocation());
   
-  __texturedProgram->link();
+  result = __texturedProgram->link();
+  Q_ASSERT(result);
+  
   __texturedProgram->bind();
   __texturedMatrixLocation = __texturedProgram->uniformLocation("matrix");
+  Q_ASSERT(__texturedMatrixLocation > 0);
   __texturedPositionLocation = __texturedProgram->uniformLocation("position");
+  Q_ASSERT(__texturedPositionLocation > 0);
   __texturedRotationLocation = __texturedProgram->uniformLocation("rotation");
+  Q_ASSERT(__texturedRotationLocation > 0);
   __texturedZLocation = __texturedProgram->uniformLocation("z");
+  Q_ASSERT(__texturedZLocation > 0);
   __texturedProgram->setUniformValue("texture", 0);
   __texturedProgram->release();
 }
