@@ -21,18 +21,6 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/about.h
 )
 
-if (NOT vatsinator_LICENSE)
-    file (READ ${CMAKE_SOURCE_DIR}/COPYING vatsinator_LICENSE)
-    string (REPLACE "<" "&lt;" vatsinator_LICENSE "${vatsinator_LICENSE}")
-    string (REPLACE ">" "&gt;" vatsinator_LICENSE "${vatsinator_LICENSE}")
-    string (REPLACE "\n" "<br>" vatsinator_LICENSE "${vatsinator_LICENSE}")
-    string (REPLACE "\"" "\\\"" vatsinator_LICENSE "${vatsinator_LICENSE}")
-endif (NOT vatsinator_LICENSE)
-
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/license.h.in
-    ${CMAKE_CURRENT_BINARY_DIR}/license.h
-)
-
 set (ui_SRCS
     notifiable.cpp
     userinterface.cpp
@@ -143,6 +131,7 @@ if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 
 set (ui_QRCS
+    resources/files.qrc
     resources/imgs.qrc
     resources/shaders.qrc
 )

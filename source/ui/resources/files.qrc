@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="about">
+    <file>COPYING</file>
+  </qresource>
+</RCC>

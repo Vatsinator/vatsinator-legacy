@@ -26,7 +26,6 @@
 
 #include "aboutwindow.h"
 #include "ui/about.h"
-#include "ui/license.h"
 
 AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
   setupUi(this);
@@ -39,13 +38,28 @@ AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
                 SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
   
   AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
-  LicenseField->setHtml("<pre>" % trUtf8(LICENSE_TEXT) % "</pre>");
   VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
   ChangelogField->setHtml("<pre>" % trUtf8(CHANGELOG_TEXT) % "</pre>");
   
   QFont titleFont = QApplication::font();
   titleFont.setPointSize(titleFont.pointSize() + 2);
   TitleLabel->setFont(titleFont);
+}
+
+void
+AboutWindow::showEvent(QShowEvent* _e) {
+  if (LicenseField->toPlainText().isEmpty()) {
+    QFile file(":/about/COPYING");
+    bool result = file.open(QIODevice::ReadOnly | QIODevice::Text);
+    Q_ASSERT(result);
+    
+    QString content = file.readAll();
+    file.close();
+    
+    LicenseField->setHtml("<pre>" % content.toHtmlEscaped() % "</pre>");
+  }
+  
+  BaseWindow::showEvent(_e);
 }
 
 void
@@ -61,5 +75,3 @@ AboutWindow::__updateVersionStatus(ResourceManager::VersionStatus _status) {
     VersionStatusLabel->setText(tr("outdated", "Vatsinator version indicator"));
   }
 }
-
-
