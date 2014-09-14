@@ -110,12 +110,12 @@ AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
 void
 AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   static const GLfloat labelRect[] = {
-    -0.08, -0.05333333,
-    -0.08,  0,
-     0.08,  0,
-     0.08,  0,
-     0.08, -0.05333333,
-    -0.08, -0.05333333
+    -0.08f, -0.05333333f,
+    -0.08f,  0.0f,
+     0.08f,  0.0f,
+     0.08f,  0.0f,
+     0.08f, -0.05333333f,
+    -0.08f, -0.05333333f
   };
   
   static const GLfloat textureCoords[] = {
