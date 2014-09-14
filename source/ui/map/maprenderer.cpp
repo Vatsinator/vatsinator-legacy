@@ -51,6 +51,7 @@ MapRenderer::MapRenderer(QObject* _parent) :
     __modelMatcher(new ModelMatcher(this)),
     __scene(new MapScene(this)) {
   
+  Q_ASSERT(QOpenGLShaderProgram::hasOpenGLShaderPrograms());
   __createShaderPrograms();
   __restoreSettings();
   
@@ -393,12 +394,15 @@ MapRenderer::__restoreSettings() {
 
 void
 MapRenderer::__createShaderPrograms() {
+  bool result;
   /* Create identity shader */
   __identityProgram = new QOpenGLShaderProgram(this);
   QOpenGLShader* vertex = new QOpenGLShader(QOpenGLShader::Vertex, __identityProgram);
-  vertex->compileSourceFile(":/shaders/identity.vert");
+  result = vertex->compileSourceFile(":/shaders/identity.vert");
+  Q_ASSERT(result);
   QOpenGLShader* fragment = new QOpenGLShader(QOpenGLShader::Fragment, __identityProgram);
-  fragment->compileSourceFile(":/shaders/identity.frag");
+  result = fragment->compileSourceFile(":/shaders/identity.frag");
+  Q_ASSERT(result);
   __identityProgram->addShader(vertex);
   __identityProgram->addShader(fragment);
   
@@ -414,9 +418,11 @@ MapRenderer::__createShaderPrograms() {
   /* Create textured shader */
   __texturedProgram = new QOpenGLShaderProgram(this);
   vertex = new QOpenGLShader(QOpenGLShader::Vertex, __texturedProgram);
-  vertex->compileSourceFile(":/shaders/textured.vert");
+  result = vertex->compileSourceFile(":/shaders/textured.vert");
+  Q_ASSERT(result);
   fragment = new QOpenGLShader(QOpenGLShader::Fragment, __texturedProgram);
-  fragment->compileSourceFile(":/shaders/textured.frag");
+  result = fragment->compileSourceFile(":/shaders/textured.frag");
+  Q_ASSERT(result);
   __texturedProgram->addShader(vertex);
   __texturedProgram->addShader(fragment);
   
