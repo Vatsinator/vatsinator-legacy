@@ -43,7 +43,7 @@ namespace spatial
   class euclidian
   {
     // Check that DistanceType is a fundamental floating point type
-    typedef typename enable_if<std::tr1::is_floating_point<DistanceType> >::type
+    typedef typename enable_if<std::is_floating_point<DistanceType> >::type
     check_concept_distance_type_is_floating_point;
 
   public:
@@ -141,7 +141,7 @@ namespace spatial
   class quadrance
   {
     // Check that DistanceType is a fundamental floating point type
-    typedef typename enable_if<std::tr1::is_arithmetic<DistanceType> >::type
+    typedef typename enable_if<std::is_arithmetic<DistanceType> >::type
     check_concept_distance_type_is_arithmetic;
 
   public:
@@ -236,7 +236,7 @@ namespace spatial
   class manhattan
   {
     // Check that DistanceType is a fundamental floating point type
-    typedef typename enable_if<std::tr1::is_arithmetic<DistanceType> >::type
+    typedef typename enable_if<std::is_arithmetic<DistanceType> >::type
     check_concept_distance_type_is_arithmetic;
 
   public:

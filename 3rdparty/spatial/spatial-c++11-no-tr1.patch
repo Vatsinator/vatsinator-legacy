@@ -1,0 +1,656 @@
+diff -apurN spatial-orig/bits/spatial_builtin.hpp spatial/bits/spatial_builtin.hpp
+--- spatial-orig/bits/spatial_builtin.hpp	2014-09-17 14:05:26.000000000 +0200
++++ spatial/bits/spatial_builtin.hpp	2014-09-17 14:13:12.981448701 +0200
+@@ -36,19 +36,19 @@ namespace spatial
+      */
+     ///@{
+     template <typename>
+-    struct is_compare_builtin_helper : std::tr1::false_type { };
++    struct is_compare_builtin_helper : std::false_type { };
+     template <typename Tp>
+     struct is_compare_builtin_helper<bracket_less<Tp> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     template <typename Tp>
+     struct is_compare_builtin_helper<paren_less<Tp> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     template <typename Tp>
+     struct is_compare_builtin_helper<iterator_less<Tp> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     template <typename Accessor, typename Tp>
+     struct is_compare_builtin_helper<accessor_less<Accessor, Tp> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     ///@}
+ 
+     /**
+@@ -155,26 +155,26 @@ namespace spatial
+     /**
+      *  Help to resolve whether the type used is a builtin difference or not.
+      *
+-     *  Inherits \c std::tr1::true_type if it is one of the built-in difference
+-     *  functors, \c std::tr1::false_type if it is not. Designed to be used with
++     *  Inherits \c std::true_type if it is one of the built-in difference
++     *  functors, \c std::false_type if it is not. Designed to be used with
+      *  \ref spatial::enable_if.
+      *
+      *  @{
+      */
+     template <typename>
+-    struct is_difference_builtin : std::tr1::false_type { };
++    struct is_difference_builtin : std::false_type { };
+     template <typename Tp, typename Unit>
+     struct is_difference_builtin<bracket_minus<Tp, Unit> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     template <typename Tp, typename Unit>
+     struct is_difference_builtin<paren_minus<Tp, Unit> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     template <typename Tp, typename Unit>
+     struct is_difference_builtin<iterator_minus<Tp, Unit> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     template <typename Accessor, typename Tp, typename Unit>
+     struct is_difference_builtin<accessor_minus<Accessor, Tp, Unit> >
+-      : std::tr1::true_type { };
++      : std::true_type { };
+     /**
+      *  @}
+      */
+diff -apurN spatial-orig/bits/spatial_euclidian_neighbor.hpp spatial/bits/spatial_euclidian_neighbor.hpp
+--- spatial-orig/bits/spatial_euclidian_neighbor.hpp	2014-09-02 20:02:17.000000000 +0200
++++ spatial/bits/spatial_euclidian_neighbor.hpp	2014-09-17 14:14:45.965145009 +0200
+@@ -43,7 +43,7 @@ namespace spatial
+     : public neighbor_iterator<Ct, euclidian<Ct, DistanceType, Diff> >
+   {
+     // Check that DistanceType is a fundamental floating point type
+-    typedef typename enable_if<std::tr1::is_floating_point<DistanceType> >::type
++    typedef typename enable_if<std::is_floating_point<DistanceType> >::type
+     check_concept_distance_type_is_floating_point;
+ 
+   public:
+@@ -63,7 +63,7 @@ namespace spatial
+     : public neighbor_iterator<const Ct, euclidian<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_floating_point<DistanceType> >
++    typedef enable_if<std::is_floating_point<DistanceType> >
+     check_concept_distance_type_is_floating_point;
+ 
+   public:
+@@ -109,7 +109,7 @@ namespace spatial
+     : public neighbor_iterator_pair<Ct, euclidian<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_floating_point<DistanceType> >
++    typedef enable_if<std::is_floating_point<DistanceType> >
+     check_concept_distance_type_is_floating_point;
+ 
+   public:
+@@ -136,7 +136,7 @@ namespace spatial
+   <const Ct, euclidian<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_floating_point<DistanceType> >
++    typedef enable_if<std::is_floating_point<DistanceType> >
+     check_concept_distance_type_is_floating_point;
+ 
+   public:
+@@ -412,7 +412,7 @@ namespace spatial
+   ///@{
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_floating_point<DistanceType>,
++  enable_if<std::is_floating_point<DistanceType>,
+             euclidian_neighbor_iterator<Ct, DistanceType, Diff> >::type
+   euclidian_neighbor_lower_bound
+   (Ct& container, const Diff& diff,
+@@ -425,7 +425,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_floating_point<DistanceType>,
++  enable_if<std::is_floating_point<DistanceType>,
+             euclidian_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   euclidian_neighbor_lower_bound
+   (const Ct& container, const Diff& diff,
+@@ -438,7 +438,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_floating_point<DistanceType>,
++  enable_if<std::is_floating_point<DistanceType>,
+             euclidian_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   euclidian_neighbor_clower_bound
+   (const Ct& container, const Diff& diff,
+@@ -462,7 +462,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_floating_point<DistanceType>::value,
++              && std::is_floating_point<DistanceType>::value,
+               euclidian_neighbor_iterator<Ct, DistanceType> >::type
+   euclidian_neighbor_lower_bound
+   (Ct& container,
+@@ -480,7 +480,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_floating_point<DistanceType>::value,
++              && std::is_floating_point<DistanceType>::value,
+               euclidian_neighbor_iterator<const Ct, DistanceType> >::type
+   euclidian_neighbor_lower_bound
+   (const Ct& container,
+@@ -498,7 +498,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_floating_point<DistanceType>::value,
++              && std::is_floating_point<DistanceType>::value,
+               euclidian_neighbor_iterator<const Ct, DistanceType> >::type
+   euclidian_neighbor_clower_bound
+   (const Ct& container,
+@@ -526,7 +526,7 @@ namespace spatial
+   ///@{
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_floating_point<DistanceType>,
++  enable_if<std::is_floating_point<DistanceType>,
+             euclidian_neighbor_iterator<Ct, DistanceType, Diff> >::type
+   euclidian_neighbor_upper_bound
+   (Ct& container, const Diff& diff,
+@@ -539,7 +539,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_floating_point<DistanceType>,
++  enable_if<std::is_floating_point<DistanceType>,
+             euclidian_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   euclidian_neighbor_upper_bound
+   (const Ct& container, const Diff& diff,
+@@ -552,7 +552,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_floating_point<DistanceType>,
++  enable_if<std::is_floating_point<DistanceType>,
+             euclidian_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   euclidian_neighbor_cupper_bound
+   (const Ct& container, const Diff& diff,
+@@ -576,7 +576,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_floating_point<DistanceType>::value,
++              && std::is_floating_point<DistanceType>::value,
+               euclidian_neighbor_iterator<Ct, DistanceType> >::type
+   euclidian_neighbor_upper_bound
+   (Ct& container,
+@@ -594,7 +594,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_floating_point<DistanceType>::value,
++              && std::is_floating_point<DistanceType>::value,
+               euclidian_neighbor_iterator<const Ct, DistanceType> >::type
+   euclidian_neighbor_upper_bound
+   (const Ct& container,
+@@ -612,7 +612,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_floating_point<DistanceType>::value,
++              && std::is_floating_point<DistanceType>::value,
+               euclidian_neighbor_iterator<const Ct, DistanceType> >::type
+   euclidian_neighbor_cupper_bound
+   (const Ct& container,
+diff -apurN spatial-orig/bits/spatial_manhattan_neighbor.hpp spatial/bits/spatial_manhattan_neighbor.hpp
+--- spatial-orig/bits/spatial_manhattan_neighbor.hpp	2014-09-02 20:02:17.000000000 +0200
++++ spatial/bits/spatial_manhattan_neighbor.hpp	2014-09-17 14:14:31.490957547 +0200
+@@ -43,7 +43,7 @@ namespace spatial
+     : public neighbor_iterator<Ct, manhattan<Ct, DistanceType, Diff> >
+   {
+     // Check that DistanceType is a fundamental arithmetic type
+-    typedef typename enable_if<std::tr1::is_arithmetic<DistanceType> >::type
++    typedef typename enable_if<std::is_arithmetic<DistanceType> >::type
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -63,7 +63,7 @@ namespace spatial
+     : public neighbor_iterator<const Ct, manhattan<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
++    typedef enable_if<std::is_arithmetic<DistanceType> >
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -109,7 +109,7 @@ namespace spatial
+     : public neighbor_iterator_pair<Ct, manhattan<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
++    typedef enable_if<std::is_arithmetic<DistanceType> >
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -136,7 +136,7 @@ namespace spatial
+   <const Ct, manhattan<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
++    typedef enable_if<std::is_arithmetic<DistanceType> >
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -412,7 +412,7 @@ namespace spatial
+   ///@{
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             manhattan_neighbor_iterator<Ct, DistanceType, Diff> >::type
+   manhattan_neighbor_lower_bound
+   (Ct& container, const Diff& diff,
+@@ -425,7 +425,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   manhattan_neighbor_lower_bound
+   (const Ct& container, const Diff& diff,
+@@ -438,7 +438,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   manhattan_neighbor_clower_bound
+   (const Ct& container, const Diff& diff,
+@@ -462,7 +462,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               manhattan_neighbor_iterator<Ct, DistanceType> >::type
+   manhattan_neighbor_lower_bound
+   (Ct& container,
+@@ -480,7 +480,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
+   manhattan_neighbor_lower_bound
+   (const Ct& container,
+@@ -498,7 +498,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
+   manhattan_neighbor_clower_bound
+   (const Ct& container,
+@@ -526,7 +526,7 @@ namespace spatial
+   ///@{
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             manhattan_neighbor_iterator<Ct, DistanceType, Diff> >::type
+   manhattan_neighbor_upper_bound
+   (Ct& container, const Diff& diff,
+@@ -539,7 +539,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   manhattan_neighbor_upper_bound
+   (const Ct& container, const Diff& diff,
+@@ -552,7 +552,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   manhattan_neighbor_cupper_bound
+   (const Ct& container, const Diff& diff,
+@@ -576,7 +576,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               manhattan_neighbor_iterator<Ct, DistanceType> >::type
+   manhattan_neighbor_upper_bound
+   (Ct& container,
+@@ -594,7 +594,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
+   manhattan_neighbor_upper_bound
+   (const Ct& container,
+@@ -612,7 +612,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
+   manhattan_neighbor_cupper_bound
+   (const Ct& container,
+diff -apurN spatial-orig/bits/spatial_math.hpp spatial/bits/spatial_math.hpp
+--- spatial-orig/bits/spatial_math.hpp	2014-09-17 14:05:26.000000000 +0200
++++ spatial/bits/spatial_math.hpp	2014-09-17 14:15:08.184923245 +0200
+@@ -37,7 +37,7 @@ namespace spatial
+      *  \throws negative_distance
+      */
+     template<typename Tp>
+-    inline typename enable_if<std::tr1::is_arithmetic<Tp> >::type
++    inline typename enable_if<std::is_arithmetic<Tp> >::type
+     check_positive_distance(Tp x)
+     {
+       if (x < Tp()) // Tp() == 0 by convention
+@@ -103,7 +103,7 @@ namespace spatial
+      *  define the numeric limits \c numeric_limits<Tp>::max() for that type.
+      */
+     template <typename Tp>
+-    inline typename enable_if<std::tr1::is_arithmetic<Tp>, Tp>::type
++    inline typename enable_if<std::is_arithmetic<Tp>, Tp>::type
+     check_positive_add(Tp x, Tp y)
+     {
+       // The additional bracket is to avoid conflict with MSVC min/max macros
+@@ -127,7 +127,7 @@ namespace spatial
+      *  computation with little efforts from their part.
+      */
+     template <typename Tp>
+-    inline typename enable_if<std::tr1::is_arithmetic<Tp>, Tp>::type
++    inline typename enable_if<std::is_arithmetic<Tp>, Tp>::type
+     check_square(Tp x)
+     {
+       Tp zero = Tp(); // get 0
+@@ -160,7 +160,7 @@ namespace spatial
+      *  type.
+      */
+     template <typename Tp>
+-    inline typename enable_if<std::tr1::is_arithmetic<Tp>, Tp>::type
++    inline typename enable_if<std::is_arithmetic<Tp>, Tp>::type
+     check_positive_mul(Tp x, Tp y)
+     {
+       Tp zero = Tp(); // get 0
+@@ -185,7 +185,7 @@ namespace spatial
+      *  plane orthogonal to the axis of dimension \c dim and passing by \c key.
+      */
+     template <typename Key, typename Difference, typename Unit>
+-    inline typename enable_if<std::tr1::is_floating_point<Unit>, Unit>::type
++    inline typename enable_if<std::is_floating_point<Unit>, Unit>::type
+     euclid_distance_to_plane
+     (dimension_type dim, Key origin, Key key, Difference diff)
+     {
+@@ -206,7 +206,7 @@ namespace spatial
+      *  overflow than the first form.
+      */
+     template <typename Key, typename Difference, typename Unit>
+-    inline typename enable_if<std::tr1::is_floating_point<Unit>, Unit>::type
++    inline typename enable_if<std::is_floating_point<Unit>, Unit>::type
+     euclid_distance_to_key
+     (dimension_type rank, Key origin, Key key, Difference diff)
+     {
+@@ -244,7 +244,7 @@ namespace spatial
+      *  \c key.
+      */
+     template <typename Key, typename Difference, typename Unit>
+-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
++    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
+     square_euclid_distance_to_plane
+     (dimension_type dim, Key origin, Key key, Difference diff)
+     {
+@@ -261,7 +261,7 @@ namespace spatial
+      *  \p key.
+      */
+     template <typename Key, typename Difference, typename Unit>
+-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
++    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
+     square_euclid_distance_to_key
+     (dimension_type rank, const Key& origin, const Key& key,
+      const Difference& diff)
+@@ -288,7 +288,7 @@ namespace spatial
+      *  \c key.
+      */
+     template <typename Key, typename Difference, typename Unit>
+-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
++    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
+     manhattan_distance_to_plane
+     (dimension_type dim, Key origin, Key key, Difference diff)
+     {
+@@ -303,7 +303,7 @@ namespace spatial
+      *  Compute the manhattan distance between \p origin and \p key.
+      */
+     template <typename Key, typename Difference, typename Unit>
+-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
++    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
+     manhattan_distance_to_key
+     (dimension_type rank, Key origin, Key key, Difference diff)
+     {
+diff -apurN spatial-orig/bits/spatial_quadrance_neighbor.hpp spatial/bits/spatial_quadrance_neighbor.hpp
+--- spatial-orig/bits/spatial_quadrance_neighbor.hpp	2014-09-02 20:02:17.000000000 +0200
++++ spatial/bits/spatial_quadrance_neighbor.hpp	2014-09-17 14:13:47.475488582 +0200
+@@ -43,7 +43,7 @@ namespace spatial
+     : public neighbor_iterator<Ct, quadrance<Ct, DistanceType, Diff> >
+   {
+     // Check that DistanceType is a fundamental arithmetic type
+-    typedef typename enable_if<std::tr1::is_arithmetic<DistanceType> >::type
++    typedef typename enable_if<std::is_arithmetic<DistanceType> >::type
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -63,7 +63,7 @@ namespace spatial
+     : public neighbor_iterator<const Ct, quadrance<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
++    typedef enable_if<std::is_arithmetic<DistanceType> >
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -109,7 +109,7 @@ namespace spatial
+     : public neighbor_iterator_pair<Ct, quadrance<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
++    typedef enable_if<std::is_arithmetic<DistanceType> >
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -136,7 +136,7 @@ namespace spatial
+   <const Ct, quadrance<Ct, DistanceType, Diff> >
+   {
+     // Some concept checking performed here
+-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
++    typedef enable_if<std::is_arithmetic<DistanceType> >
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -412,7 +412,7 @@ namespace spatial
+   ///@{
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             quadrance_neighbor_iterator<Ct, DistanceType, Diff> >::type
+   quadrance_neighbor_lower_bound
+   (Ct& container, const Diff& diff,
+@@ -425,7 +425,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             quadrance_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   quadrance_neighbor_lower_bound
+   (const Ct& container, const Diff& diff,
+@@ -438,7 +438,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             quadrance_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   quadrance_neighbor_clower_bound
+   (const Ct& container, const Diff& diff,
+@@ -462,7 +462,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               quadrance_neighbor_iterator<Ct, DistanceType> >::type
+   quadrance_neighbor_lower_bound
+   (Ct& container,
+@@ -480,7 +480,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               quadrance_neighbor_iterator<const Ct, DistanceType> >::type
+   quadrance_neighbor_lower_bound
+   (const Ct& container,
+@@ -498,7 +498,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               quadrance_neighbor_iterator<const Ct, DistanceType> >::type
+   quadrance_neighbor_clower_bound
+   (const Ct& container,
+@@ -526,7 +526,7 @@ namespace spatial
+   ///@{
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             quadrance_neighbor_iterator<Ct, DistanceType, Diff> >::type
+   quadrance_neighbor_upper_bound
+   (Ct& container, const Diff& diff,
+@@ -539,7 +539,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             quadrance_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   quadrance_neighbor_upper_bound
+   (const Ct& container, const Diff& diff,
+@@ -552,7 +552,7 @@ namespace spatial
+ 
+   template <typename Ct, typename Diff, typename DistanceType>
+   inline typename
+-  enable_if<std::tr1::is_arithmetic<DistanceType>,
++  enable_if<std::is_arithmetic<DistanceType>,
+             quadrance_neighbor_iterator<const Ct, DistanceType, Diff> >::type
+   quadrance_neighbor_cupper_bound
+   (const Ct& container, const Diff& diff,
+@@ -576,7 +576,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               quadrance_neighbor_iterator<Ct, DistanceType> >::type
+   quadrance_neighbor_upper_bound
+   (Ct& container,
+@@ -594,7 +594,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               quadrance_neighbor_iterator<const Ct, DistanceType> >::type
+   quadrance_neighbor_upper_bound
+   (const Ct& container,
+@@ -612,7 +612,7 @@ namespace spatial
+   template <typename Ct, typename DistanceType>
+   inline typename
+   enable_if_c<details::is_compare_builtin<Ct>::value
+-              && std::tr1::is_arithmetic<DistanceType>::value,
++              && std::is_arithmetic<DistanceType>::value,
+               quadrance_neighbor_iterator<const Ct, DistanceType> >::type
+   quadrance_neighbor_cupper_bound
+   (const Ct& container,
+diff -apurN spatial-orig/bits/spatial_template_member_swap.hpp spatial/bits/spatial_template_member_swap.hpp
+--- spatial-orig/bits/spatial_template_member_swap.hpp	2014-09-17 14:05:26.000000000 +0200
++++ spatial/bits/spatial_template_member_swap.hpp	2014-09-17 14:14:57.829876891 +0200
+@@ -15,7 +15,7 @@
+ #define SPATIAL_TEMPLATE_MEMBER_SWAP_HPP
+ 
+ #include <algorithm> // provides: ::std::swap
+-// provides: ::std::tr1::is_empty, std::tr1::false_type and std::tr1::true_type
++// provides: ::std::is_empty, std::false_type and std::true_type
+ #include "spatial_pull_tr1.hpp"
+ 
+ namespace spatial
+@@ -39,7 +39,7 @@ namespace spatial
+ 
+     template <typename Tp>
+     struct template_member_assign
+-      : template_member_assign_provider<std::tr1::is_empty<Tp>::value, Tp>
++      : template_member_assign_provider<std::is_empty<Tp>::value, Tp>
+     { };
+     ///@}
+ 
+@@ -63,7 +63,7 @@ namespace spatial
+ 
+     template <typename Tp>
+     struct template_member_swap
+-      : template_member_swap_provider<std::tr1::is_empty<Tp>::value, Tp>
++      : template_member_swap_provider<std::is_empty<Tp>::value, Tp>
+     { };
+     ///@}
+   }
+diff -apurN spatial-orig/metric.hpp spatial/metric.hpp
+--- spatial-orig/metric.hpp	2014-09-02 20:02:17.000000000 +0200
++++ spatial/metric.hpp	2014-09-17 14:15:22.166165240 +0200
+@@ -43,7 +43,7 @@ namespace spatial
+   class euclidian
+   {
+     // Check that DistanceType is a fundamental floating point type
+-    typedef typename enable_if<std::tr1::is_floating_point<DistanceType> >::type
++    typedef typename enable_if<std::is_floating_point<DistanceType> >::type
+     check_concept_distance_type_is_floating_point;
+ 
+   public:
+@@ -141,7 +141,7 @@ namespace spatial
+   class quadrance
+   {
+     // Check that DistanceType is a fundamental floating point type
+-    typedef typename enable_if<std::tr1::is_arithmetic<DistanceType> >::type
++    typedef typename enable_if<std::is_arithmetic<DistanceType> >::type
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:
+@@ -236,7 +236,7 @@ namespace spatial
+   class manhattan
+   {
+     // Check that DistanceType is a fundamental floating point type
+-    typedef typename enable_if<std::tr1::is_arithmetic<DistanceType> >::type
++    typedef typename enable_if<std::is_arithmetic<DistanceType> >::type
+     check_concept_distance_type_is_arithmetic;
+ 
+   public:

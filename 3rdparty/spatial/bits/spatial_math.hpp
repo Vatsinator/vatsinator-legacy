@@ -37,7 +37,7 @@ namespace spatial
      *  \throws negative_distance
      */
     template<typename Tp>
-    inline typename enable_if<std::tr1::is_arithmetic<Tp> >::type
+    inline typename enable_if<std::is_arithmetic<Tp> >::type
     check_positive_distance(Tp x)
     {
       if (x < Tp()) // Tp() == 0 by convention
@@ -103,7 +103,7 @@ namespace spatial
      *  define the numeric limits \c numeric_limits<Tp>::max() for that type.
      */
     template <typename Tp>
-    inline typename enable_if<std::tr1::is_arithmetic<Tp>, Tp>::type
+    inline typename enable_if<std::is_arithmetic<Tp>, Tp>::type
     check_positive_add(Tp x, Tp y)
     {
       // The additional bracket is to avoid conflict with MSVC min/max macros
@@ -127,7 +127,7 @@ namespace spatial
      *  computation with little efforts from their part.
      */
     template <typename Tp>
-    inline typename enable_if<std::tr1::is_arithmetic<Tp>, Tp>::type
+    inline typename enable_if<std::is_arithmetic<Tp>, Tp>::type
     check_square(Tp x)
     {
       Tp zero = Tp(); // get 0
@@ -160,7 +160,7 @@ namespace spatial
      *  type.
      */
     template <typename Tp>
-    inline typename enable_if<std::tr1::is_arithmetic<Tp>, Tp>::type
+    inline typename enable_if<std::is_arithmetic<Tp>, Tp>::type
     check_positive_mul(Tp x, Tp y)
     {
       Tp zero = Tp(); // get 0
@@ -185,7 +185,7 @@ namespace spatial
      *  plane orthogonal to the axis of dimension \c dim and passing by \c key.
      */
     template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<std::tr1::is_floating_point<Unit>, Unit>::type
+    inline typename enable_if<std::is_floating_point<Unit>, Unit>::type
     euclid_distance_to_plane
     (dimension_type dim, Key origin, Key key, Difference diff)
     {
@@ -206,7 +206,7 @@ namespace spatial
      *  overflow than the first form.
      */
     template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<std::tr1::is_floating_point<Unit>, Unit>::type
+    inline typename enable_if<std::is_floating_point<Unit>, Unit>::type
     euclid_distance_to_key
     (dimension_type rank, Key origin, Key key, Difference diff)
     {
@@ -244,7 +244,7 @@ namespace spatial
      *  \c key.
      */
     template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
+    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
     square_euclid_distance_to_plane
     (dimension_type dim, Key origin, Key key, Difference diff)
     {
@@ -261,7 +261,7 @@ namespace spatial
      *  \p key.
      */
     template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
+    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
     square_euclid_distance_to_key
     (dimension_type rank, const Key& origin, const Key& key,
      const Difference& diff)
@@ -288,7 +288,7 @@ namespace spatial
      *  \c key.
      */
     template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
+    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
     manhattan_distance_to_plane
     (dimension_type dim, Key origin, Key key, Difference diff)
     {
@@ -303,7 +303,7 @@ namespace spatial
      *  Compute the manhattan distance between \p origin and \p key.
      */
     template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<std::tr1::is_arithmetic<Unit>, Unit>::type
+    inline typename enable_if<std::is_arithmetic<Unit>, Unit>::type
     manhattan_distance_to_key
     (dimension_type rank, Key origin, Key key, Difference diff)
     {

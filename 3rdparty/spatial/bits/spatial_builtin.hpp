@@ -36,19 +36,19 @@ namespace spatial
      */
     ///@{
     template <typename>
-    struct is_compare_builtin_helper : std::tr1::false_type { };
+    struct is_compare_builtin_helper : std::false_type { };
     template <typename Tp>
     struct is_compare_builtin_helper<bracket_less<Tp> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     template <typename Tp>
     struct is_compare_builtin_helper<paren_less<Tp> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     template <typename Tp>
     struct is_compare_builtin_helper<iterator_less<Tp> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     template <typename Accessor, typename Tp>
     struct is_compare_builtin_helper<accessor_less<Accessor, Tp> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     ///@}
 
     /**
@@ -155,26 +155,26 @@ namespace spatial
     /**
      *  Help to resolve whether the type used is a builtin difference or not.
      *
-     *  Inherits \c std::tr1::true_type if it is one of the built-in difference
-     *  functors, \c std::tr1::false_type if it is not. Designed to be used with
+     *  Inherits \c std::true_type if it is one of the built-in difference
+     *  functors, \c std::false_type if it is not. Designed to be used with
      *  \ref spatial::enable_if.
      *
      *  @{
      */
     template <typename>
-    struct is_difference_builtin : std::tr1::false_type { };
+    struct is_difference_builtin : std::false_type { };
     template <typename Tp, typename Unit>
     struct is_difference_builtin<bracket_minus<Tp, Unit> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     template <typename Tp, typename Unit>
     struct is_difference_builtin<paren_minus<Tp, Unit> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     template <typename Tp, typename Unit>
     struct is_difference_builtin<iterator_minus<Tp, Unit> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     template <typename Accessor, typename Tp, typename Unit>
     struct is_difference_builtin<accessor_minus<Accessor, Tp, Unit> >
-      : std::tr1::true_type { };
+      : std::true_type { };
     /**
      *  @}
      */

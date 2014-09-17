@@ -43,7 +43,7 @@ namespace spatial
     : public neighbor_iterator<Ct, manhattan<Ct, DistanceType, Diff> >
   {
     // Check that DistanceType is a fundamental arithmetic type
-    typedef typename enable_if<std::tr1::is_arithmetic<DistanceType> >::type
+    typedef typename enable_if<std::is_arithmetic<DistanceType> >::type
     check_concept_distance_type_is_arithmetic;
 
   public:
@@ -63,7 +63,7 @@ namespace spatial
     : public neighbor_iterator<const Ct, manhattan<Ct, DistanceType, Diff> >
   {
     // Some concept checking performed here
-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
+    typedef enable_if<std::is_arithmetic<DistanceType> >
     check_concept_distance_type_is_arithmetic;
 
   public:
@@ -109,7 +109,7 @@ namespace spatial
     : public neighbor_iterator_pair<Ct, manhattan<Ct, DistanceType, Diff> >
   {
     // Some concept checking performed here
-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
+    typedef enable_if<std::is_arithmetic<DistanceType> >
     check_concept_distance_type_is_arithmetic;
 
   public:
@@ -136,7 +136,7 @@ namespace spatial
   <const Ct, manhattan<Ct, DistanceType, Diff> >
   {
     // Some concept checking performed here
-    typedef enable_if<std::tr1::is_arithmetic<DistanceType> >
+    typedef enable_if<std::is_arithmetic<DistanceType> >
     check_concept_distance_type_is_arithmetic;
 
   public:
@@ -412,7 +412,7 @@ namespace spatial
   ///@{
   template <typename Ct, typename Diff, typename DistanceType>
   inline typename
-  enable_if<std::tr1::is_arithmetic<DistanceType>,
+  enable_if<std::is_arithmetic<DistanceType>,
             manhattan_neighbor_iterator<Ct, DistanceType, Diff> >::type
   manhattan_neighbor_lower_bound
   (Ct& container, const Diff& diff,
@@ -425,7 +425,7 @@ namespace spatial
 
   template <typename Ct, typename Diff, typename DistanceType>
   inline typename
-  enable_if<std::tr1::is_arithmetic<DistanceType>,
+  enable_if<std::is_arithmetic<DistanceType>,
             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
   manhattan_neighbor_lower_bound
   (const Ct& container, const Diff& diff,
@@ -438,7 +438,7 @@ namespace spatial
 
   template <typename Ct, typename Diff, typename DistanceType>
   inline typename
-  enable_if<std::tr1::is_arithmetic<DistanceType>,
+  enable_if<std::is_arithmetic<DistanceType>,
             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
   manhattan_neighbor_clower_bound
   (const Ct& container, const Diff& diff,
@@ -462,7 +462,7 @@ namespace spatial
   template <typename Ct, typename DistanceType>
   inline typename
   enable_if_c<details::is_compare_builtin<Ct>::value
-              && std::tr1::is_arithmetic<DistanceType>::value,
+              && std::is_arithmetic<DistanceType>::value,
               manhattan_neighbor_iterator<Ct, DistanceType> >::type
   manhattan_neighbor_lower_bound
   (Ct& container,
@@ -480,7 +480,7 @@ namespace spatial
   template <typename Ct, typename DistanceType>
   inline typename
   enable_if_c<details::is_compare_builtin<Ct>::value
-              && std::tr1::is_arithmetic<DistanceType>::value,
+              && std::is_arithmetic<DistanceType>::value,
               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
   manhattan_neighbor_lower_bound
   (const Ct& container,
@@ -498,7 +498,7 @@ namespace spatial
   template <typename Ct, typename DistanceType>
   inline typename
   enable_if_c<details::is_compare_builtin<Ct>::value
-              && std::tr1::is_arithmetic<DistanceType>::value,
+              && std::is_arithmetic<DistanceType>::value,
               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
   manhattan_neighbor_clower_bound
   (const Ct& container,
@@ -526,7 +526,7 @@ namespace spatial
   ///@{
   template <typename Ct, typename Diff, typename DistanceType>
   inline typename
-  enable_if<std::tr1::is_arithmetic<DistanceType>,
+  enable_if<std::is_arithmetic<DistanceType>,
             manhattan_neighbor_iterator<Ct, DistanceType, Diff> >::type
   manhattan_neighbor_upper_bound
   (Ct& container, const Diff& diff,
@@ -539,7 +539,7 @@ namespace spatial
 
   template <typename Ct, typename Diff, typename DistanceType>
   inline typename
-  enable_if<std::tr1::is_arithmetic<DistanceType>,
+  enable_if<std::is_arithmetic<DistanceType>,
             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
   manhattan_neighbor_upper_bound
   (const Ct& container, const Diff& diff,
@@ -552,7 +552,7 @@ namespace spatial
 
   template <typename Ct, typename Diff, typename DistanceType>
   inline typename
-  enable_if<std::tr1::is_arithmetic<DistanceType>,
+  enable_if<std::is_arithmetic<DistanceType>,
             manhattan_neighbor_iterator<const Ct, DistanceType, Diff> >::type
   manhattan_neighbor_cupper_bound
   (const Ct& container, const Diff& diff,
@@ -576,7 +576,7 @@ namespace spatial
   template <typename Ct, typename DistanceType>
   inline typename
   enable_if_c<details::is_compare_builtin<Ct>::value
-              && std::tr1::is_arithmetic<DistanceType>::value,
+              && std::is_arithmetic<DistanceType>::value,
               manhattan_neighbor_iterator<Ct, DistanceType> >::type
   manhattan_neighbor_upper_bound
   (Ct& container,
@@ -594,7 +594,7 @@ namespace spatial
   template <typename Ct, typename DistanceType>
   inline typename
   enable_if_c<details::is_compare_builtin<Ct>::value
-              && std::tr1::is_arithmetic<DistanceType>::value,
+              && std::is_arithmetic<DistanceType>::value,
               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
   manhattan_neighbor_upper_bound
   (const Ct& container,
@@ -612,7 +612,7 @@ namespace spatial
   template <typename Ct, typename DistanceType>
   inline typename
   enable_if_c<details::is_compare_builtin<Ct>::value
-              && std::tr1::is_arithmetic<DistanceType>::value,
+              && std::is_arithmetic<DistanceType>::value,
               manhattan_neighbor_iterator<const Ct, DistanceType> >::type
   manhattan_neighbor_cupper_bound
   (const Ct& container,
