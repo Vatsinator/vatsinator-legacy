@@ -132,13 +132,20 @@ elseif (APPLE)
     )
     
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
+
+    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
+        OUTPUT_VARIABLE QT_INSTALL_LIBS)
+    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
+        OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
+    # setup path to libqcocoa.dylib
+    set (QT_QCOCOA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
     
-    #include (DeployQt4)
-    #install_qt4_executable ("${vatsinator_TARGET}.app"
-    #    "" # qtplugins
-    #    "" # libs
-    #    "/usr/local/lib" # dirs
-    #)
+    include (DeployQt5)
+    install_qt5_executable ("${vatsinator_TARGET}.app"
+        "${QT_QCOCOA_PLUGIN}" # qtplugins
+        "" # libs
+        "/usr/local/lib" # dirs
+    )
     
 elseif (WIN32)
 
