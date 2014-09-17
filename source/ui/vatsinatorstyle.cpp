@@ -17,6 +17,8 @@
  *
  */
 
+#include <QtWidgets>
+
 #include "vatsinatorstyle.h"
 
 QFont

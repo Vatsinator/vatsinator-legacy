@@ -156,7 +156,7 @@ WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
     QRect dayRect(QPoint(i * width, 0), QSize(width, WeatherHeight));
     
     /* Draw day of the week */
-    QPen pen(QColor(Qt::black));
+    QPen pen( (QColor(Qt::black)) );
     pen.setWidth(3);
     p.setPen(pen);
     
