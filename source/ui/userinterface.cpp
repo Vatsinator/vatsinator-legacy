@@ -25,12 +25,10 @@ UserInterface::UserInterface(QObject* _parent) :
     QObject(_parent) {}
 
 bool UserInterface::event(QEvent* _e) {
-  switch (_e->type()) {
-    case Event::Notification:
-      return notificationEvent(dynamic_cast<NotificationEvent*>(_e));
-    default:
-      return QObject::event(_e);
-  }
+  if (_e->type() == Event::Notification)
+    return notificationEvent(dynamic_cast<NotificationEvent*>(_e));
+  else
+    return QObject::event(_e);
 }
 
 bool

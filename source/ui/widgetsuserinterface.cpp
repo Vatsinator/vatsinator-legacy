@@ -19,10 +19,12 @@
 
 #include <QtWidgets>
 
+#include "events/decisionevent.h"
 #include "network/resourcemanager.h"
 #include "storage/settingsmanager.h"
 #include "ui/dialogs/apprestartdialog.h"
 #include "ui/dialogs/datafetcherrordialog.h"
+#include "ui/dialogs/letsendstatsdialog.h"
 #include "ui/dialogs/newversiondialog.h"
 #include "ui/dialogs/statusfetcherrordialog.h"
 #include "ui/dialogs/vatsimmessagedialog.h"
@@ -217,6 +219,26 @@ WidgetsUserInterface::showDetails(const Fir* _f) {
 void
 WidgetsUserInterface::showMetar(const QString& _icao) {
   metarsWindow()->show(_icao);
+}
+
+void
+WidgetsUserInterface::showStatsDialog() {
+  LetSendStatsDialog* dialog = new LetSendStatsDialog();
+  dialog->setAttribute(Qt::WA_DeleteOnClose);
+  
+  connect(dialog, &LetSendStatsDialog::accepted, []() {
+    DecisionEvent* e = new DecisionEvent("statistics", DecisionEvent::Accepted);
+    QCoreApplication::postEvent(vApp(), e);
+  });
+  
+  connect(dialog, &LetSendStatsDialog::rejected, []() {
+    DecisionEvent* e = new DecisionEvent("statistics", DecisionEvent::Declined);
+    QCoreApplication::postEvent(vApp(), e);
+  });
+  
+  dialog->show();
+  dialog->raise();
+  dialog->activateWindow();
 }
 
 void WidgetsUserInterface::__showNewVersionDialog() {

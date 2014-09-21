@@ -48,5 +48,9 @@ int main(int argc, char** argv) {
   
   qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
   
+  /* Defined in events/types.css */
+  extern void init_event_types();
+  init_event_types();
+  
   return VatsinatorApplication(argc, argv).exec();
 }

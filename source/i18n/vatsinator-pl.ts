@@ -49,7 +49,7 @@
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="43"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="41"/>
         <source>Version %1</source>
         <translation>Wersja %1</translation>
     </message>
@@ -84,13 +84,13 @@
         <translation>Licencja</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="71"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
         <translation>aktualna</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="61"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="75"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
         <translation>nieaktualna</translation>
@@ -280,12 +280,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="47"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nazwisko</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>Częstotliwość</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
@@ -295,7 +295,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
         <source>Airport</source>
-        <translation type="unfinished"/>
+        <translation>Lotnisko</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
@@ -740,7 +740,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="77"/>
         <source>Aircraft</source>
-        <translation type="unfinished"/>
+        <translation>Model</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
@@ -1231,7 +1231,7 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="570"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="629"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać otwarty. Przeinstaluj aplikację.</translation>
     </message>
     <message>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="496"/>

@@ -22,6 +22,7 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
+#include "events/decisionevent.h"
 #include "modules/modulemanager.h"
 #include "network/plaintextdownloader.h"
 #include "network/resourcemanager.h"
@@ -104,9 +105,28 @@ VatsinatorApplication::~VatsinatorApplication() {
   spThread->wait();
 }
 
+bool
+VatsinatorApplication::event(QEvent* _event) {
+  if (_event->type() == Event::Decision) {
+    userDecisionEvent(static_cast<DecisionEvent*>(_event));
+    return true;
+  } else {
+    return QApplication::event(_event);
+  }
+}
+
 void
 VatsinatorApplication::terminate() {
   std::terminate();
+}
+
+void
+VatsinatorApplication::userDecisionEvent(DecisionEvent* _event) {
+  if (_event->context() == QStringLiteral("statistics")) {
+    statsPurveyor()->setUserDecision(
+      _event->decision() == DecisionEvent::Accepted ? StatsPurveyor::Accepted : StatsPurveyor::Declined
+    );
+  }
 }
 
 void
@@ -143,6 +163,12 @@ VatsinatorApplication::__initialize() {
   
   /* Read data files only after databases are ready */
   __vatsimData->initialize();
+  
+  /* Initialize statistics */
+  QSettings s;
+  if (!s.contains("Decided/stats")) { // no decision made yet
+    __userInterface->showStatsDialog();
+  }
 }
 
 QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

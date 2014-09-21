@@ -49,7 +49,7 @@
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="43"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="41"/>
         <source>Version %1</source>
         <translation>バージョン %1</translation>
     </message>
@@ -84,13 +84,13 @@
         <translation>ライセンス</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="71"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
         <translation>最新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="61"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="75"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
         <translation>有効期限切れ</translation>
@@ -280,12 +280,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="47"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>周波数</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
@@ -295,7 +295,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
         <source>Airport</source>
-        <translation type="unfinished"/>
+        <translation>空港</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
@@ -740,7 +740,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="77"/>
         <source>Aircraft</source>
-        <translation type="unfinished"/>
+        <translation>機材</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>

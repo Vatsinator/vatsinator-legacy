@@ -1,5 +1,5 @@
 /*
- * notificationevent.cpp
+ * decisionevent.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,9 +17,11 @@
  *
  */
 
-#include "notificationevent.h"
+#include <QtCore>
 
-NotificationEvent::NotificationEvent(Gravity _gravity, QString _message) :
-    QEvent(static_cast<QEvent::Type>(Event::Notification)),
-    __gravity(_gravity),
-    __message(qMove(_message)) {}
+#include "decisionevent.h"
+
+DecisionEvent::DecisionEvent(QString _context, DecisionEvent::Decision _decision) :
+    QEvent(static_cast<QEvent::Type>(Event::Decision)),
+    __context(qMove(_context)),
+    __decision(_decision) {}

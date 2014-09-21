@@ -50,7 +50,7 @@
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="43"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="41"/>
         <source>Version %1</source>
         <translation>Versione %1</translation>
     </message>
@@ -85,13 +85,13 @@
         <translation>Licenza</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="57"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="71"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="61"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="75"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
         <translation type="unfinished"/>
