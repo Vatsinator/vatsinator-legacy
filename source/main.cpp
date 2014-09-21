@@ -34,6 +34,7 @@ QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progre
 }
 
 int main(int argc, char** argv) {
+  Q_INIT_RESOURCE(files);
   Q_INIT_RESOURCE(imgs);
   Q_INIT_RESOURCE(shaders);
   Q_INIT_RESOURCE(weather);
