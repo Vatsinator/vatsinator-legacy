@@ -116,11 +116,6 @@ VatsinatorApplication::event(QEvent* _event) {
 }
 
 void
-VatsinatorApplication::terminate() {
-  std::terminate();
-}
-
-void
 VatsinatorApplication::userDecisionEvent(DecisionEvent* _event) {
   if (_event->context() == QStringLiteral("statistics")) {
     statsPurveyor()->setUserDecision(
@@ -170,5 +165,3 @@ VatsinatorApplication::__initialize() {
     __userInterface->showStatsDialog();
   }
 }
-
-QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

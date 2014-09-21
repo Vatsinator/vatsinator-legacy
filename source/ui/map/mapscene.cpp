@@ -234,7 +234,12 @@ MapScene::__removeFlightItem() {
   Pilot* p = dynamic_cast<Pilot*>(sender());
   auto it = __items.find(p->position());
   Q_ASSERT(it != __items.end());
+  
   const FlightItem* citem = dynamic_cast<const FlightItem*>(it->second);
+  while (!citem && it->first == p->position()) {
+    ++it;
+    citem = dynamic_cast<const FlightItem*>(it->second);
+  }
   Q_ASSERT(citem);
   FlightItem* item = const_cast<FlightItem*>(citem);
   Q_ASSERT(item);
