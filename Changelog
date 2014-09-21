@@ -1,23 +1,30 @@
 Version 1.0
-  Release date:
+  Release date: 15.01.2015 (planned)
 
   Features:
     * Added Weather Forecasts
+    * Added NOTAMs
+    * Added VatsinatorDatabase integration
     * Added stats collecting
     * Added Japanese translation
     * Added flight times: STD, ATD, STA and ETA
     * Added flight progress widget
     * Added Airline display
+    * Added map animations
+    * Added "Nearby" menu
     * New world map
   
   Build system:
     * Added support for MacOS X
+    * Added support for Microsoft Visual Studio 2013
+    * Qt upgraded to version 5
     
   Miscellaneous:
     * Added "Network" page in settings window
-    * Better handling of network errors
+    * Better network errors handling
     * Implemented "moveto0" and "msg0" Vatsim directives
-    * Added UpdateScheduler
+    * New map engine
+    * New icon for empty airports
   
 Version 0.2.1
   Release date: 04.11.2013

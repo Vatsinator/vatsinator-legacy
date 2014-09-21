@@ -8,6 +8,7 @@
 * Data parser (separate class)
 * Optimize OpenGL engine (texture atlas...)
 * Search window
+* Better labels display
 
 Due to the new engine:
 * Make trackers work (FlightTracker, AirportTracker)
@@ -16,3 +17,4 @@ Due to the new engine:
 == TODO for later versions ==
 * Dynamic map (plugin format)
 * Chart links
+* VATSIM news widget
