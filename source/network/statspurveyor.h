@@ -23,7 +23,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QQueue>
-#include "singleton.h"
 
 class QNetworkReply;
 
@@ -34,11 +33,10 @@ class QNetworkReply;
  * when he accepts them. Otherwise requests will be sent as soon as possible.
  * All functions are thread-safe.
  */
-class StatsPurveyor :
-    public QObject,
-    public Singleton<StatsPurveyor> {
+class StatsPurveyor : public QObject {
   Q_OBJECT
   Q_ENUMS(UserDecision)
+  Q_PROPERTY(UserDecision userDecision READ userDecision WRITE setUserDecision)
 
 signals:
   
@@ -60,6 +58,8 @@ public:
   
   explicit StatsPurveyor(QObject* = 0);
   virtual ~StatsPurveyor();
+  
+  void setUserDecision(UserDecision);
   
   inline UserDecision userDecision() const { return __userDecision; }
   
@@ -95,12 +95,6 @@ private slots:
    * Honors user's settings.
    */
   void __applySettings();
-  
-  /**
-   * Connected to the LetSendStatsDialog.
-   */
-  void __statsAccepted();
-  void __statsRejected();
   
   /**
    * Starts new request if nothing is being sent at the moment.

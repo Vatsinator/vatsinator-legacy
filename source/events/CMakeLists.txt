@@ -1,6 +1,7 @@
 vatsinator_start_subdirectory (events)
 
 set (events_SRCS
+    decisionevent.cpp
     mouselonlatevent.cpp
     notificationevent.cpp
     types.cpp

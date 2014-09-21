@@ -1,5 +1,5 @@
 /*
- * types.h
+ * decisionevent.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,28 +17,11 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#include <QtCore>
 
-/**
- * Declare custom types here.
- */
-#include <QEvent>
+#include "decisionevent.h"
 
-namespace Event {
-  
-  /* MouseLonLatEvent */
-  extern int MouseLonLat;
-  
-  /* NotificationEvent */
-  extern int Notification;
-  
-  /* RequestFinishedEvent */
-  extern int RequestFinished;
-  
-  /* DecisionEvent */
-  extern int Decision;
-
-}
-
-#endif // TYPES_H
+DecisionEvent::DecisionEvent(QString _context, DecisionEvent::Decision _decision) :
+    QEvent(static_cast<QEvent::Type>(Event::Decision)),
+    __context(qMove(_context)),
+    __decision(_decision) {}
