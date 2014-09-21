@@ -1,5 +1,5 @@
 /*
- * types.h
+ * types.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,25 +17,21 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
-
-/**
- * Declare custom types here.
- */
-#include <QEvent>
+#include "types.h"
 
 namespace Event {
-  
-  /* MouseLonLatEvent */
-  extern int MouseLonLat;
-  
-  /* NotificationEvent */
-  extern int Notification;
-  
-  /* RequestFinishedEvent */
-  extern int RequestFinished;
+
+/**
+ * Define custom types here.
+ */
+int MouseLonLat;
+int Notification;
+int RequestFinished;
 
 }
 
-#endif // TYPES_H
+void init_event_types() {
+  Event::MouseLonLat = QEvent::registerEventType();
+  Event::Notification = QEvent::registerEventType();
+  Event::RequestFinished = QEvent::registerEventType();
+}
