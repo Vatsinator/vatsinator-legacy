@@ -113,6 +113,15 @@ public:
   QList<const MapItem*> items(const QRectF&) const;
   
   /**
+   * Executes the given function for each item found inside the given _rect_.
+   * This function can be more efficient than capturing all items by items()
+   * and executing the same code in _foreach_ loop.
+   * @param rect The bounding rectangle for items.
+   * @param function The function to execute on every item found.
+   */
+  void forEachItem(const QRectF&, std::function<void(const MapItem*)>) const;
+  
+  /**
    * Finds nearest item to the given point.
    */
   const MapItem* nearest(const LonLat&);
