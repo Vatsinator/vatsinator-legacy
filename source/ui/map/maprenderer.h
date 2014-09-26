@@ -171,9 +171,6 @@ private:
   /* Geo coordinates of the current viewport */
   QRectF __screen;
   
-  /* Keeps items that are currently on the screen */
-  QList<const MapItem*> __items;
-  
   /* The current zoom property */
   int __zoom;
   

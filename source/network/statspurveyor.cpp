@@ -61,6 +61,10 @@ namespace {
         return QStringLiteral("Windows Vista");
       case QSysInfo::WV_WINDOWS7:
         return QStringLiteral("Windows 7");
+      case QSysInfo::WV_WINDOWS8:
+        return QStringLiteral("Windows 8");
+      case QSysInfo::WV_WINDOWS8_1:
+        return QStringLiteral("Windows 8.1");
       default:
         return QStringLiteral("Windows");
     }
@@ -113,33 +117,40 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
     __reply(nullptr) {
   
   QSettings s;
-  if (!s.contains("Decided/stats")) { // no decision made yet
-    LetSendStatsDialog* dialog = new LetSendStatsDialog();
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    connect(dialog,     SIGNAL(accepted()),
-            this,       SLOT(__statsAccepted()));
-    connect(dialog,     SIGNAL(rejected()),
-            this,       SLOT(__statsRejected()));
-    connect(vApp()->userInterface(),    SIGNAL(initialized()),
-            dialog,                     SLOT(show()));
-    QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
-  } else {
+  if (s.contains("Decided/stats")) {
     bool accepted = s.value("Settings/misc/send_statistics", false).toBool();
     if (accepted) {
       __userDecision = Accepted;
-      QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
+      QTimer::singleShot(StartDelay, Qt::VeryCoarseTimer, this, SLOT(reportStartup()));
     } else {
       __userDecision = Declined;
     }
-    
-    connect(vApp()->settingsManager(),  SIGNAL(settingsChanged()),
-            this,                       SLOT(__applySettings()));
   }
   
-  connect(this, SIGNAL(newRequest()), SLOT(__nextIfFree()));
+  connect(this, &StatsPurveyor::newRequest, this, &StatsPurveyor::__nextIfFree);
+  connect(vApp()->settingsManager(), &SettingsManager::settingsChanged,
+          this, &StatsPurveyor::__applySettings);
 }
 
 StatsPurveyor::~StatsPurveyor() {}
+
+void
+StatsPurveyor::setUserDecision(StatsPurveyor::UserDecision _decision) {
+  __userDecision = _decision;
+  
+  QSettings s;
+  s.setValue("Decided/stats", true);
+  s.setValue("Settings/misc/send_statistics", __userDecision == Accepted);
+  SM::updateUi("misc");
+  
+  if (!__requests.isEmpty()) {
+    if (__userDecision == Accepted) {
+      __nextIfFree();
+    } else if (__userDecision == Declined) {
+      __requests.clear();
+    }
+  }
+}
 
 void 
 StatsPurveyor::reportStartup() {
@@ -211,8 +222,7 @@ StatsPurveyor::__nextRequest() {
   qDebug("StatsPurveyor: request: %s", qPrintable(__requests.head().url().toString()));
   
   __reply = __nam.get(__requests.head());
-  connect(__reply,      SIGNAL(finished()),
-          this,         SLOT(__parseResponse()));
+  connect(__reply, &QNetworkReply::finished, this, &StatsPurveyor::__parseResponse);
 }
 
 void
@@ -225,35 +235,6 @@ StatsPurveyor::__applySettings() {
   } else {
     __userDecision = Declined;
   }
-}
-
-void
-StatsPurveyor::__statsAccepted() {
-  __userDecision = Accepted;
-  QSettings s;
-  s.setValue("Decided/stats", true);
-  s.setValue("Settings/misc/send_statistics", true);
-  
-  SM::updateUi("misc");
-  
-  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
-          this,                         SLOT(__applySettings()));
-  
-  if (!__requests.isEmpty())
-      __nextRequest();
-}
-
-void
-StatsPurveyor::__statsRejected() {
-  __userDecision = Declined;
-  QSettings s;
-  s.setValue("Decided/stats", true);
-  s.setValue("Settings/misc/send_statistics", false);
-  
-  SM::updateUi("misc");
-  
-  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
-          this,                         SLOT(__applySettings()));
 }
 
 void

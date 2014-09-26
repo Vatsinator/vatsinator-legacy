@@ -96,11 +96,12 @@ public slots:
   void warning(const QString&) override;
   void statusError() override;
   void dataError() override;
-  void showVatsimMessage(const QString&);
-  void showDetails(const Airport*);
-  void showDetails(const Client*);
-  void showDetails(const Fir*);
-  void showMetar(const QString&);
+  void showVatsimMessage(const QString&) override;
+  void showDetails(const Airport*) override;
+  void showDetails(const Client*) override;
+  void showDetails(const Fir*) override;
+  void showMetar(const QString&) override;
+  void showStatsDialog() override;
   
 private slots:
   

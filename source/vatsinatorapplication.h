@@ -24,13 +24,12 @@
 #include <QFont>
 #include <QMutex>
 #include <QProxyStyle>
-#include <iostream>
 
-#include "singleton.h"
 
 class AirlineDatabase;
 class AirportDatabase;
 class CacheFile;
+class DecisionEvent;
 class FileManager;
 class FirDatabase;
 class LanguageManager;
@@ -63,15 +62,53 @@ public:
 
   virtual ~VatsinatorApplication();
   
-  inline UserInterface* userInterface() { Q_ASSERT(__userInterface); return __userInterface; }
-  inline SettingsManager* settingsManager() { Q_ASSERT(__settingsManager); return __settingsManager; }
-  inline VatsimDataHandler* vatsimDataHandler() { Q_ASSERT(__vatsimData); return __vatsimData; }
-  inline const VatsimDataHandler* vatsimDataHandler() const { Q_ASSERT(__vatsimData); return __vatsimData; }
+  /**
+   * Custom event handler.
+   */
+  bool event(QEvent*) override;
   
-#ifdef GCC_VERSION_48
-  [[noreturn]]
-#endif
-    static void terminate();
+  /**
+   * Gets the UserInterface singleton.
+   */
+  inline UserInterface* userInterface() {
+    Q_ASSERT(__userInterface);
+    return __userInterface;
+  }
+  
+  /**
+   * Gets the SettingsManager singleton.
+   */
+  inline SettingsManager* settingsManager() {
+    Q_ASSERT(__settingsManager);
+    return __settingsManager;
+  }
+  
+  /**
+   * Gets the VatsimDataHandler singleton.
+   */
+  inline VatsimDataHandler* vatsimDataHandler() {
+    Q_ASSERT(__vatsimData);
+    return __vatsimData;
+  }
+  
+  /**
+   * Gets the VatsimDataHandler singleton const pointer.
+   */
+  inline const VatsimDataHandler* vatsimDataHandler() const {
+    Q_ASSERT(__vatsimData);
+    return __vatsimData;
+  }
+  
+  /**
+   * Gets the StatsPurveyor singleton.
+   */
+  inline StatsPurveyor* statsPurveyor() {
+    Q_ASSERT(__statsPurveyor);
+    return __statsPurveyor;
+  }
+    
+protected:
+  virtual void userDecisionEvent(DecisionEvent*);
 
 public slots:
   void restart();
@@ -98,8 +135,6 @@ private:
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;
-  
-  static QMutex        __mutex; /* For stdout */
 
 };
 

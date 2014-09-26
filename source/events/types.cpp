@@ -1,5 +1,5 @@
 /*
- * notificationevent.cpp
+ * types.cpp
  * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,9 +17,23 @@
  *
  */
 
-#include "notificationevent.h"
+#include "types.h"
 
-NotificationEvent::NotificationEvent(Gravity _gravity, QString _message) :
-    QEvent(static_cast<QEvent::Type>(Event::Notification)),
-    __gravity(_gravity),
-    __message(qMove(_message)) {}
+namespace Event {
+
+/**
+ * Define custom types here.
+ */
+int MouseLonLat;
+int Notification;
+int RequestFinished;
+int Decision;
+
+}
+
+void init_event_types() {
+  Event::MouseLonLat = QEvent::registerEventType();
+  Event::Notification = QEvent::registerEventType();
+  Event::RequestFinished = QEvent::registerEventType();
+  Event::Decision = QEvent::registerEventType();
+}

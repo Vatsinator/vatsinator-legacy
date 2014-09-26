@@ -129,7 +129,7 @@ Controller::__recognizeDetails() {
       return;
     }
       
-    StatsPurveyor::getSingleton().reportNoAtc(callsign());
+    vApp()->statsPurveyor()->reportNoAtc(callsign());
     qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
     __isOK = false;
   } else if (sections.back() == "FSS") {
@@ -156,7 +156,7 @@ Controller::__recognizeDetails() {
       return;
     }
     
-    StatsPurveyor::getSingleton().reportNoAtc(callsign());
+    vApp()->statsPurveyor()->reportNoAtc(callsign());
     qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
     __isOK = false;
   } else if (
@@ -186,7 +186,7 @@ Controller::__recognizeDetails() {
       return;
     }
     
-    StatsPurveyor::getSingleton().reportNoAtc(callsign());
+    vApp()->statsPurveyor()->reportNoAtc(callsign());
     qWarning("Airport not found for %s.", qPrintable(callsign()));
   }
   

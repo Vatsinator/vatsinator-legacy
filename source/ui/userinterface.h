@@ -104,28 +104,35 @@ public slots:
   virtual void showVatsimMessage(const QString&) = 0;
   
   /**
-   * Show airport details.
+   * Shows airport details.
    * @param airport The Airport instance pointer.
    */
   virtual void showDetails(const Airport*) = 0;
   
   /**
-   * Show client details.
+   * Shows client details.
    * @param client The Client instance pointer.
    */
   virtual void showDetails(const Client*) = 0;
   
   /**
-   * Show FIR details.
+   * Shows FIR details.
    * @param fir The FIR instance pointer.
    */
   virtual void showDetails(const Fir*) = 0;
   
   /**
-   * Show airport METAR.
+   * Shows airport METAR.
    * @param metar The ICAO code of the airport.
    */
   virtual void showMetar(const QString&) = 0;
+  
+  /**
+   * Shows dialog that lets user decide whether he wants to send anonymous
+   * statistics or not. When user makes the decision, send a DecisionEvent
+   * to the VatsinatorApplication singleton.
+   */
+  virtual void showStatsDialog() = 0;
   
 protected:
   virtual bool notificationEvent(NotificationEvent*);
