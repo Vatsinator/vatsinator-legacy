@@ -106,12 +106,6 @@ public:
     Q_ASSERT(__statsPurveyor);
     return __statsPurveyor;
   }
-  
-  
-#ifdef GCC_VERSION_48
-  [[noreturn]]
-#endif
-    static void terminate();
     
 protected:
   virtual void userDecisionEvent(DecisionEvent*);
@@ -141,8 +135,6 @@ private:
   ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;
-  
-  static QMutex        __mutex; /* For stdout */
 
 };
 

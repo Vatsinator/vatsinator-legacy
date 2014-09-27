@@ -114,6 +114,34 @@ MapScene::items(const QRectF& _rect) const {
   return qMove(result);
 }
 
+void
+MapScene::forEachItem(const QRectF& _rect, std::function<void(const MapItem*)> _f) const {
+  for (auto it = spatial::region_cbegin(__items, _rect.bottomLeft(), _rect.topRight());
+       it != spatial::region_cend(__items, _rect.bottomLeft(), _rect.topRight()); ++it) {
+    if (it->second->isVisible())
+      _f(it->second);
+  }
+  
+  /* Handle cross-IDL queries */
+  if (_rect.right() > 180.0) {
+    QRectF more(QPointF(-180.0, _rect.top()), QSizeF(_rect.right() - 180.0, _rect.height()));
+    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
+         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
+      if (it->second->isVisible())
+        _f(it->second);
+    }
+  }
+  
+  if (_rect.left() < -180.0) {
+    QRectF more(QPointF(_rect.left() + 360.0, _rect.top()), QPointF(180.0, _rect.bottom()));
+    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
+         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
+      if (it->second->isVisible())
+        _f(it->second);
+    }
+  }
+}
+
 const MapItem*
 MapScene::nearest(const LonLat& _target) {
   /*
@@ -234,7 +262,12 @@ MapScene::__removeFlightItem() {
   Pilot* p = dynamic_cast<Pilot*>(sender());
   auto it = __items.find(p->position());
   Q_ASSERT(it != __items.end());
+  
   const FlightItem* citem = dynamic_cast<const FlightItem*>(it->second);
+  while (!citem && it->first == p->position()) {
+    ++it;
+    citem = dynamic_cast<const FlightItem*>(it->second);
+  }
   Q_ASSERT(citem);
   FlightItem* item = const_cast<FlightItem*>(citem);
   Q_ASSERT(item);

@@ -219,11 +219,6 @@ MapRenderer::paint() {
   if (__screen.isNull())
     return;
   
-  __items = scene()->items(__screen);
-  
-  if (__items.isEmpty())
-    return;
-  
   __updateOffsets();
   
   /* Prepare world transform matrix */
@@ -353,13 +348,13 @@ MapRenderer::__drawItems() {
   __texturedProgram->enableAttributeArray(texcoordLocation());
   __texturedProgram->enableAttributeArray(vertexLocation());
   
-  for (const MapItem* item: __items) {
+  scene()->forEachItem(__screen, [this](const MapItem* item) {
     QPointF p = glFromLonLat(item->position());
     __texturedProgram->setUniformValue(__texturedPositionLocation, p.x(), p.y());
     item->drawItem(__texturedProgram);
     if (item->isLabelVisible())
       item->drawLabel(__texturedProgram);
-  }
+  });
   
   __texturedProgram->disableAttributeArray(texcoordLocation());
   __texturedProgram->disableAttributeArray(vertexLocation());
