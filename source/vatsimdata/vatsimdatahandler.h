@@ -65,11 +65,6 @@ signals:
   void initialized();
   
   /**
-   * Called when vatsim data starts to be downloaded.
-   */
-  void vatsimDataDownloading();
-  
-  /**
    * Called after status.txt is parsed.
    */
   void vatsimStatusUpdated();
@@ -78,6 +73,11 @@ signals:
    * Status file could not be fetched correctly.
    */
   void vatsimStatusError();
+  
+  /**
+   * Called when vatsim data starts to be downloaded.
+   */
+  void vatsimDataDownloading();
   
   /**
    * Called when new data is already parsed.
@@ -102,26 +102,30 @@ public:
   
   /**
    * Parses the data files.
+   * Called by VatsinatorApplication only, once, at the very beginning.
    */
   void initialize();
   
   /**
    * This function parses the raw "status.txt" file.
+   * TODO Move to private scope.
    */
   void parseStatusFile(const QString&);
   
   /**
    * This function parses the data file.
+   * TODO Move to private scope.
    */
   void parseDataFile(const QString&);
   
   /**
    * Chooses randomly one of URLs and returns it.
+   * TODO move to private scope.
    */
   const QString& getDataUrl() const;
   
   /**
-   * Creates the new model and populates it with all flights online.
+   * Creates the new model and populates it with all flights that are online.
    */
   FlightTableModel* flightTableModel() const;
   
@@ -219,9 +223,69 @@ public:
   AbstractNotamProvider* notamProvider();
   
   /**
+   * Running instance of weather forecast provider, or nullptr if none.
+   */
+  WeatherForecastInterface* weatherForecastProvider();
+  
+  /**
    * Custom event handler.
    */
   bool event(QEvent*) override;
+  
+  /**
+   * Map (Callsign <-> instance pairs) of connected clients.
+   */
+  inline const QMap<QString, Client*>& clients() { return __clients; }
+  
+  /**
+   * List of only new clients, i.e. that showed up in the last update.
+   */
+  inline const QList<Client*>& newClients() { return __newClients; }
+
+  /**
+   * Returns an URL to where METARs can be fetched from.
+   */
+  inline const QString& metarUrl() const { return __metarUrl; }
+
+  /**
+   * Gives access to all aliases, stored in "data/alias" file.
+   */
+  inline const QMultiMap<QString, QString>& aliases() const {
+    return __aliases;
+  }
+  
+  /**
+   * Time between data reloads, in minutes.
+   */
+  inline int reload() const { return __reload; }
+  
+  /**
+   * Returns last Vatsim data update date and time.
+   */
+  inline const QDateTime& dateDataUpdated() const {
+    return __dateVatsimDataUpdated;
+  }
+  
+  /**
+   * Current timestamp is updated every time VatsimDataHandler receives new
+   * data file and is guaranteed to be unique. Each client should contain
+   * its own copy of this variable and update it on every update() call.
+   * This way we can track outdated clients that are not longer logged-in
+   * to Vatsim, but still have place in Vatsinator memory.
+   */
+  inline const qint64& currentTimestamp() const {
+      return __currentTimestamp;
+  }
+
+  /**
+   * Returns true if status.txt is already fetched & parsed.
+   */
+  inline bool statusFileFetched() const { return __statusFileFetched; }
+  
+  /**
+   * Returns false before initialized() signal is emitted.
+   */
+  inline bool isInitialized() const { return __initialized; }
   
   /**
    * Calculates the distance between two points. The unit is undefined.
@@ -283,73 +347,6 @@ public:
    */
   static qreal nmDistance(const LonLat&, const LonLat&);
   
-  /**
-   * Map (Callsign <-> instance pairs) of connected clients.
-   */
-  inline const QMap<QString, Client*>& clients() { return __clients; }
-  
-  /**
-   * List of only new clients, i.e. that showed up in the last update.
-   */
-  inline const QList<Client*>& newClients() { return __newClients; }
-
-  /**
-   * Returns an URL to where METARs can be fetched from.
-   */
-  inline const QString& metarUrl() const { return __metarUrl; }
-
-  /**
-   * Gives access to all aliases, stored in "data/alias" file.
-   */
-  inline const QMultiMap<QString, QString>& aliases() const {
-    return __aliases;
-  }
-  
-  /**
-   * Time between data reloads, in minutes.
-   */
-  inline int reload() const { return __reload; }
-  
-  /**
-   * Returns last Vatsim data update date and time.
-   */
-  inline const QDateTime& dateDataUpdated() const {
-    return __dateVatsimDataUpdated;
-  }
-  
-  /**
-   * Current timestamp is updated every time VatsimDataHandler receives new
-   * data file and is guaranteed to be unique. Each client should contain
-   * its own copy of this variable and update it on every update() call.
-   * This way we can track outdated clients that are not longer logged-in
-   * to Vatsim, but still have place in Vatsinator memory.
-   */
-  inline const qint64& currentTimestamp() const {
-      return __currentTimestamp;
-  }
-  
-    /**
-   * Running instance of weather forecast provider, or nullptr if none.
-   */
-  inline WeatherForecastInterface* weatherForecast() {
-    return __weatherForecast;
-  }
-
-  /**
-   * Returns true if status.txt is already fetched & parsed.
-   */
-  inline bool statusFileFetched() const { return __statusFileFetched; }
-  
-  /**
-   * Returns false before initialized() signal is emitted.
-   */
-  inline bool isInitialized() const { return __initialized; }
-  
-  /* These pointers are used for empty views.
-   * Giving the NULL pointer in setModel() removes headers. */
-  static FlightTableModel* emptyFlightTable;
-  static ControllerTableModel* emptyControllerTable;
-  
 public slots:
   
   /**
@@ -404,19 +401,33 @@ private:
   void __initializeData();
   
   /**
-   * Loads data file stored in the cache.
-   */
-  void __loadCachedData();
-  
-  /**
    * Goes through all the clients and checks whether they are still online
    * or not. The check is based on the client's timestamp.
    */
   void __cleanupClients();
   
 private slots:
+  /**
+   * Loads data file stored in the cache.
+   */
+  void __loadCachedData();
+  
+  /**
+   * Just after the UI is created, there are some things we should
+   * do right away. The data should be restored from cache, but
+   * only if databases are already initialized and the first download
+   * can be also started here.
+   */
   void __slotUiCreated();
+  
+  /**
+   * Starts the real data download process.
+   */
   void __beginDownload();
+  
+  /**
+   * The data file is fetched.
+   */
   void __dataFetched(QString);
   
   /**
@@ -425,7 +436,7 @@ private slots:
   void __handleFetchError();
   
   /**
-   * Reload forecast provider, if user chooses another one.
+   * Reload forecast provider when user chooses another one.
    */
   void __reloadWeatherForecast();
   

@@ -48,7 +48,14 @@ public:
    */
   inline const LonLat& position() const { return __position; }
   
+  /**
+   * Country name. City is always in the specified country.
+   */
   inline const QString& country() const { return __country; }
+  
+  /**
+   * City that the provider should fetch the weather forecast for.
+   */
   inline const QString& city() const { return __city; }
   
 private:

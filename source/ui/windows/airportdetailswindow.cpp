@@ -83,7 +83,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   
-  if (vApp()->vatsimDataHandler()->weatherForecast()) {
+  if (vApp()->vatsimDataHandler()->weatherForecastProvider()) {
     ForecastGroup->setEnabled(true);
     
     WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
@@ -91,9 +91,8 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
     request->setCountry(QString::fromUtf8(__airport->data()->country));
     request->setPosition(__airport->position());
     
-    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecast()->fetch(request);
-    connect(reply,      SIGNAL(finished()),
-            this,       SLOT(__updateForecast()));
+    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecastProvider()->fetch(request);
+    connect(reply, &WeatherForecastReply::finished, this, &AirportDetailsWindow::__updateForecast);
     
     if (SM::get("network.weather_temperature_units").toString() == "Celsius")
       w->setCelsius();

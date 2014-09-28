@@ -48,10 +48,11 @@
 
 #include "vatsimdatahandler.h"
 
+/**
+ * Name of the file in the cache directory that stores the recently
+ * downloaded data file.
+ */
 static const QString CacheFileName = QStringLiteral("lastdata");
-
-FlightTableModel* VatsimDataHandler::emptyFlightTable = new FlightTableModel();
-ControllerTableModel* VatsimDataHandler::emptyControllerTable = new ControllerTableModel();
 
 namespace {
   QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
@@ -97,9 +98,6 @@ VatsimDataHandler::~VatsimDataHandler() {
   qDeleteAll(__firs);
   
   delete __downloader;
-  
-  delete VatsimDataHandler::emptyFlightTable;
-  delete VatsimDataHandler::emptyControllerTable;
 }
 
 void
@@ -424,6 +422,11 @@ VatsimDataHandler::notamProvider() {
   return __notamProvider;
 }
 
+WeatherForecastInterface*
+VatsimDataHandler::weatherForecastProvider() {
+  return __weatherForecast;
+}
+
 bool
 VatsimDataHandler::event(QEvent* _event) {
   if (_event->type() == Event::Decision) {
@@ -696,6 +699,23 @@ VatsimDataHandler::__initializeData() {
 }
 
 void
+VatsimDataHandler::__cleanupClients() {
+  qDeleteAll(__invalidClients);
+  __invalidClients.clear();
+  
+  for (auto it = __clients.begin(); it != __clients.end();) {
+    if (!it.value()->isOnline()) {
+      Client* c = it.value();
+      c->invalidate();
+      it = __clients.erase(it);
+      __invalidClients << c;
+    } else {
+      ++it;
+    }
+  }
+}
+
+void
 VatsimDataHandler::__loadCachedData() {
   qDebug("VatsimDataHandler: loading data from cache...");
   
@@ -716,31 +736,18 @@ VatsimDataHandler::__loadCachedData() {
 }
 
 void
-VatsimDataHandler::__cleanupClients() {
-  qDeleteAll(__invalidClients);
-  __invalidClients.clear();
-  
-  for (auto it = __clients.begin(); it != __clients.end();) {
-    if (!it.value()->isOnline()) {
-      Client* c = it.value();
-      c->invalidate();
-      it = __clients.erase(it);
-      __invalidClients << c;
-    } else {
-      ++it;
-    }
-  }
-}
-
-void
 VatsimDataHandler::__slotUiCreated() {
-  if (SM::get("network.cache_enabled").toBool() == true)
+  bool cacheEnabled = SM::get("network.cache_enabled").toBool();
+  if (cacheEnabled && isInitialized())
     __loadCachedData();
+  else if (cacheEnabled)
+    connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
   
-  if (wui()) {
+  /* TODO Move the below to UserInterface */
+  if (wui())
     __downloader->setProgressBar(wui()->mainWindow()->progressBar());
-  }
   
+  /* The first download */
   __beginDownload();
 }
 
