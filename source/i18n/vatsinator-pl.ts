@@ -9,7 +9,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="71"/>
         <source>Atis message</source>
-        <translation type="unfinished"/>
+        <translation>Wiadomość ATIS</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="95"/>
@@ -290,7 +290,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Stopień</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
@@ -300,12 +300,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>Serwer</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="52"/>
         <source>Online from</source>
-        <translation type="unfinished"/>
+        <translation>Zalogowany od</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="83"/>
@@ -650,22 +650,22 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="491"/>
         <source>Origin</source>
-        <translation type="unfinished"/>
+        <translation>Lotnisko startu</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="511"/>
         <source>Destination</source>
-        <translation type="unfinished"/>
+        <translation>Lotnisko docelowe</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="528"/>
         <source>Route</source>
-        <translation type="unfinished"/>
+        <translation>Trasa</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="554"/>
         <source>Remarks</source>
-        <translation type="unfinished"/>
+        <translation>Przypisy</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="465"/>
@@ -690,52 +690,52 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="67"/>
         <source>Pilot</source>
-        <translation type="unfinished"/>
+        <translation>Pilot</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="68"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Wysokość</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
         <source>Ground speed</source>
-        <translation type="unfinished"/>
+        <translation>Ground speed</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="70"/>
         <source>Heading</source>
-        <translation type="unfinished"/>
+        <translation>Kurs</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="71"/>
         <source>Flight phase</source>
-        <translation type="unfinished"/>
+        <translation>Etap lotu</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="72"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>Serwer</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="73"/>
         <source>Online from</source>
-        <translation type="unfinished"/>
+        <translation>Połączony od</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
         <source>Squawk</source>
-        <translation type="unfinished"/>
+        <translation>Transponder</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="75"/>
         <source>Baro</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienie barometru</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
         <source>Flight rules</source>
-        <translation type="unfinished"/>
+        <translation>Zasady lotu</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="77"/>
@@ -745,12 +745,12 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
         <source>TAS</source>
-        <translation type="unfinished"/>
+        <translation>TAS</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="79"/>
         <source>Cruise altitude</source>
-        <translation type="unfinished"/>
+        <translation>Wysokość przelotowa</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="210"/>
@@ -1238,7 +1238,7 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="545"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="580"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 nie mógł zostać odczytany. Przeinstaluj aplikację.</translation>
     </message>
 </context>
 <context>
