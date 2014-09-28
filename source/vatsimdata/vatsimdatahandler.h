@@ -35,6 +35,7 @@ class AbstractNotamProvider;
 class Airport;
 class Controller;
 class ControllerTableModel;
+class DecisionEvent;
 class Fir;
 class FlightTableModel;
 class Pilot;
@@ -218,6 +219,11 @@ public:
   AbstractNotamProvider* notamProvider();
   
   /**
+   * Custom event handler.
+   */
+  bool event(QEvent*) override;
+  
+  /**
    * Calculates the distance between two points. The unit is undefined.
    * 
    * NOTE: If you need specific unit, i.e. nautical miles, use
@@ -352,6 +358,9 @@ public slots:
    * the new download is queued.
    */
   void requestDataUpdate();
+  
+protected:
+  virtual void userDecisionEvent(DecisionEvent*);
   
 private:
   

@@ -21,6 +21,7 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "events/decisionevent.h"
 #include "network/abstractnotamprovider.h"
 #include "network/euroutenotamprovider.h"
 #include "network/plaintextdownloader.h"
@@ -423,6 +424,16 @@ VatsimDataHandler::notamProvider() {
   return __notamProvider;
 }
 
+bool
+VatsimDataHandler::event(QEvent* _event) {
+  if (_event->type() == Event::Decision) {
+    userDecisionEvent(static_cast<DecisionEvent*>(_event));
+    return true;
+  } else {
+    return QObject::event(_event);
+  }
+}
+
 qreal
 VatsimDataHandler::fastDistance(
     const qreal& _lat1, const qreal& _lon1,
@@ -474,6 +485,13 @@ VatsimDataHandler::requestDataUpdate() {
     __downloader->abort();
   
   emit vatsimDataDownloading();
+}
+
+void
+VatsimDataHandler::userDecisionEvent(DecisionEvent* _event) {
+  if (_event->context() == QStringLiteral("data_fetch_error")) {
+    requestDataUpdate();
+  }
 }
 
 void

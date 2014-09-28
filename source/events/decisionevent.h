@@ -42,6 +42,11 @@ public:
     Accepted,
     
     /**
+     * User pressed "Try again" button.
+     */
+    TryAgain,
+    
+    /**
      * User pressed "No", "Decline" or something that indicates negative
      * decision.
      */
