@@ -56,6 +56,39 @@ struct AirportRecord;
 class VatsimDataHandler : public QObject, public Notifiable {
   Q_OBJECT
   
+  /**
+   * This property defines whether all data that is needed for the recognition
+   * mechanisms is loaded. If value of the property is false, functions like
+   * findAirport() or findFir() won't function properly.
+   */
+  Q_PROPERTY(bool initialized READ isInitialized NOTIFY initialized)
+  
+  /**
+   * Holds the number of connected VATSIM clients (pilotCount + atcCount + obsCount).
+   */
+  Q_PROPERTY(int clientCount READ clientCount)
+  
+  /**
+   * Holds the number of connected VATSIM pilots.
+   */
+  Q_PROPERTY(int pilotCount READ pilotCount)
+  
+  /**
+   * Holds the number of connected ATCs.
+   */
+  Q_PROPERTY(int atcCount READ atcCount)
+  
+  /**
+   * Holds the number of connected observers.
+   */
+  Q_PROPERTY(int obsCount READ obsCount)
+  
+  /**
+   * Date and time when the currently loaded data was fetched.
+   * TODO Rename it to something shorter.
+   */
+  Q_PROPERTY(QDateTime dateDataUpdated READ dateDataUpdated)
+  
 signals:
   
   /**
