@@ -85,6 +85,7 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) 
   connect(ShowButton, &QPushButton::clicked, [this]() {
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__pilot->position());
     close();
+    vApp()->userInterface()->ensureMainWindowIsActive();
   });
   
   connect(TrackFlightBox, &QCheckBox::stateChanged, [this](int _state) {

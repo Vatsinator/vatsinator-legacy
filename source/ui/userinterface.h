@@ -134,6 +134,13 @@ public slots:
    */
   virtual void showStatsDialog() = 0;
   
+  /**
+   * Makes sure that the main window of the application is visible and top-level.
+   * This function is called when user does some action that involves the map,
+   * but it is possible that the map is not a top-level window.
+   */
+  virtual void ensureMainWindowIsActive() = 0;
+  
 protected:
   virtual bool notificationEvent(NotificationEvent*);
   

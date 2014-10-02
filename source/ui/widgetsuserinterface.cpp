@@ -246,7 +246,14 @@ WidgetsUserInterface::showStatsDialog() {
   dialog->activateWindow();
 }
 
-void WidgetsUserInterface::__showNewVersionDialog() {
+void
+WidgetsUserInterface::ensureMainWindowIsActive() {
+  mainWindow()->show();
+  mainWindow()->activateWindow();
+}
+
+void
+WidgetsUserInterface::__showNewVersionDialog() {
   NewVersionDialog dialog(__vatsinatorWindow);
   dialog.exec();
 }

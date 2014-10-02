@@ -57,6 +57,7 @@ AtcDetailsWindow::AtcDetailsWindow(const Controller* _c, QWidget* _parent) :
   connect(ShowButton, &QPushButton::clicked, [this]() {
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__atc->position());
     close();
+    vApp()->userInterface()->ensureMainWindowIsActive();
   });
 }
 
