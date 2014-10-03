@@ -20,6 +20,7 @@
 #ifndef MAPSCENE_H
 #define MAPSCENE_H
 
+#include <functional>
 #include <QObject>
 #include <QList>
 #include <QColor>

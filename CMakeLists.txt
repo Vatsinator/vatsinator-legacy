@@ -54,7 +54,15 @@ endif (UNIX AND NOT APPLE AND NOT MINGW)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
-# set CMAKE_BUILD_TYPE
+# set configuration types (msvc)
+if (CMAKE_CONFIGURATION_TYPES)
+  set (CMAKE_CONFIGURATION_TYPES Debug Release)
+  set (CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
+    "Reset the configurations to what we actually need"
+    FORCE)
+endif()
+
+# set CMAKE_BUILD_TYPE (gcc/clang)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     set (CMAKE_BUILD_TYPE Debug)
 else (CMAKE_BUILD_TYPE MATCHES Debug)
@@ -66,10 +74,6 @@ if (CMAKE_COMPILER_IS_GNUCXX)
   set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x")
   set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
 endif (CMAKE_COMPILER_IS_GNUCXX)
-
-if (CMAKE_BUILD_TYPE MATCHES Release)
-  add_definitions(-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT)
-endif (CMAKE_BUILD_TYPE MATCHES Release)
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -145,7 +149,11 @@ endif (WITH_PLUGINS)
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
-message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+if (NOT CMAKE_CONFIGURATION_TYPES)
+	message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+else ()
+	message (STATUS " * configuration types: ${CMAKE_CONFIGURATION_TYPES}")
+endif ()
 if (LINUX)
     message (STATUS " * platform: Linux")
 elseif (APPLE)
