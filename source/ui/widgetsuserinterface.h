@@ -102,6 +102,7 @@ public slots:
   void showDetails(const Fir*) override;
   void showMetar(const QString&) override;
   void showStatsDialog() override;
+  void ensureMainWindowIsActive() override;
   
 private slots:
   

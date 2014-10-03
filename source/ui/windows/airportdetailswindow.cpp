@@ -61,6 +61,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
   connect(ShowButton, &QPushButton::clicked, [this]() {
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__airport->position());
     close();
+    vApp()->userInterface()->ensureMainWindowIsActive();
   });
   
   NotamTableView->setErrorOnNoData(false);
@@ -83,7 +84,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   
-  if (vApp()->vatsimDataHandler()->weatherForecast()) {
+  if (vApp()->vatsimDataHandler()->weatherForecastProvider()) {
     ForecastGroup->setEnabled(true);
     
     WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
@@ -91,9 +92,8 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
     request->setCountry(QString::fromUtf8(__airport->data()->country));
     request->setPosition(__airport->position());
     
-    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecast()->fetch(request);
-    connect(reply,      SIGNAL(finished()),
-            this,       SLOT(__updateForecast()));
+    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecastProvider()->fetch(request);
+    connect(reply, &WeatherForecastReply::finished, this, &AirportDetailsWindow::__updateForecast);
     
     if (SM::get("network.weather_temperature_units").toString() == "Celsius")
       w->setCelsius();
@@ -178,18 +178,18 @@ AirportDetailsWindow::__updateForecast() {
   
   w->setStatus(DelayedWidget::Finished);
   
-  if (r->error() == WeatherForecastReply::NoError) {
-    w->setData(r->data());
-  } else {
-    switch (r->error()) {
-      case WeatherForecastReply::NotFoundError:
-        w->setMessage(tr("No forecast for %1, %2").arg(r->request()->country(), r->request()->city()));
-        break;
-        
-      case WeatherForecastReply::NetworkError:
-        w->setMessage(tr("Network error"));
-        break;
-    }
+  switch (r->error()) {
+    case WeatherForecastReply::NotFoundError:
+      w->setMessage(tr("No forecast for %1, %2").arg(r->request()->country(), r->request()->city()));
+      break;
+      
+    case WeatherForecastReply::NetworkError:
+      w->setMessage(tr("Network error"));
+      break;
+    
+    case WeatherForecastReply::NoError:
+      w->setData(r->data());
+      break;
   }
 }
 

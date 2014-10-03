@@ -659,6 +659,9 @@
        <property name="text">
         <string>Show</string>
        </property>
+       <property name="icon">
+        <iconset theme="go-jump"/>
+       </property>
       </widget>
      </item>
      <item>

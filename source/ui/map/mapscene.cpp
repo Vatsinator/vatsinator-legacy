@@ -17,6 +17,7 @@
  *
  */
 
+#include <algorithm>
 #include <utility>
 #include <QtCore>
 #include <spatial/point_multimap.hpp>
@@ -210,10 +211,12 @@ MapScene::__addFlightItem(const Pilot* _p) {
     return;
   }
   
-  connect(_p,           SIGNAL(invalid()),
-          this,         SLOT(__removeFlightItem()));
-  connect(_p,           SIGNAL(updated()),
-          this,         SLOT(__updateFlightItem()));
+  connect(_p, &Pilot::invalid, this, &MapScene::__removeFlightItem);
+  connect(_p, &Pilot::updated, this, &MapScene::__updateFlightItem);
+  
+  qDebug("MapScene: new flight item for %s at position (%f, %f)",
+         qPrintable(_p->callsign()), _p->position().latitude(), _p->position().longitude());
+  
   FlightItem* item = new FlightItem(_p, this);
   Q_ASSERT(item->position() == _p->position());
   __items.insert(std::make_pair(item->position(), item));
@@ -223,6 +226,7 @@ void
 MapScene::__setupItems() {
   for (const Airport* a: vApp()->vatsimDataHandler()->airports()) {
     AirportItem* item = new AirportItem(a, this);
+    Q_ASSERT(item->position() == a->position());
     __items.insert(std::make_pair(item->position(), item));
   }
   
@@ -260,17 +264,24 @@ MapScene::__removeFlightItem() {
   Q_ASSERT(sender());
   
   Pilot* p = dynamic_cast<Pilot*>(sender());
-  auto it = __items.find(p->position());
-  Q_ASSERT(it != __items.end());
+  LonLat position = p->position();
+  if (!p->hasValidPosition())
+    position = p->oldPosition();
   
-  const FlightItem* citem = dynamic_cast<const FlightItem*>(it->second);
-  while (!citem && it->first == p->position()) {
-    ++it;
-    citem = dynamic_cast<const FlightItem*>(it->second);
-  }
+  qDebug("MapScene: removing %s from the map; position: (%f, %f)",
+         qPrintable(p->callsign()), position.latitude(), position.longitude());
+  
+  const FlightItem* citem = nullptr;
+  auto it = std::find_if(spatial::equal_begin(__items, position), spatial::equal_end(__items, position),
+                         [&citem, p](const std::pair<const LonLat, const MapItem*>& it) {
+    citem = dynamic_cast<const FlightItem*>(it.second);
+    return citem && citem->data() == p;
+  });
   Q_ASSERT(citem);
+  Q_ASSERT(citem->data() == p);
   FlightItem* item = const_cast<FlightItem*>(citem);
   Q_ASSERT(item);
+  
   item->deleteLater();
   __items.erase(it);
 }

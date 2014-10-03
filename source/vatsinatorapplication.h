@@ -106,6 +106,14 @@ public:
     Q_ASSERT(__statsPurveyor);
     return __statsPurveyor;
   }
+  
+  /**
+   * Gets the ResourceManager singleton.
+   */
+  inline ResourceManager* resourceManager() {
+    Q_ASSERT(__resourceManager);
+    return __resourceManager;
+  }
     
 protected:
   virtual void userDecisionEvent(DecisionEvent*);

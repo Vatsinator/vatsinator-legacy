@@ -70,8 +70,8 @@ WidgetsUserInterface::initialize() {
   __settingsWindow = new SettingsWindow();
   __vatsinatorWindow = new VatsinatorWindow();
   
-  connect(ResourceManager::getSingletonPtr(),       SIGNAL(outdated()),
-          this,                                     SLOT(__showNewVersionDialog()));
+  connect(vApp()->resourceManager(), &ResourceManager::outdated,
+          this, &WidgetsUserInterface::__showNewVersionDialog);
   
   emit initialized();
   
@@ -167,9 +167,14 @@ WidgetsUserInterface::dataError() {
   DataFetchErrorDialog dialog;
   dialog.exec();
   
-  if (dialog.clickedButton() == dialog.again()) {
-    vApp()->vatsimDataHandler()->requestDataUpdate();
-  }
+  DecisionEvent* e;
+  
+  if (dialog.clickedButton() == dialog.again())
+    e = new DecisionEvent("data_fetch_error", DecisionEvent::TryAgain);
+  else
+    e = new DecisionEvent("data_fetch_error", DecisionEvent::Declined);
+  
+  QCoreApplication::postEvent(vApp()->vatsimDataHandler(), e);
 }
 
 void
@@ -241,7 +246,14 @@ WidgetsUserInterface::showStatsDialog() {
   dialog->activateWindow();
 }
 
-void WidgetsUserInterface::__showNewVersionDialog() {
+void
+WidgetsUserInterface::ensureMainWindowIsActive() {
+  mainWindow()->show();
+  mainWindow()->activateWindow();
+}
+
+void
+WidgetsUserInterface::__showNewVersionDialog() {
   NewVersionDialog dialog(__vatsinatorWindow);
   dialog.exec();
 }
