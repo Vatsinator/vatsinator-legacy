@@ -45,7 +45,7 @@ class MapRenderer : public QObject {
    * The zoom property describes the current zoom of the map. The larger the
    * value is, the smaller range is visible.
    */
-  Q_PROPERTY(int zoom READ zoom WRITE setZoom)
+  Q_PROPERTY(qreal zoom READ zoom WRITE setZoom)
   
   /**
    * The center property represents the center of the map.
@@ -110,22 +110,17 @@ public:
    */
   void drawLines(const MapItem*);
   
-  void setZoom(int);
+  void setZoom(qreal);
   void setCenter(const LonLat&);
   
-  /**
-   * The difference between the updateZoom() and setZoom() methods is that
-   * updateZoom() updates the zoom property smoothly, i.e. it does some
-   * equations that consider the zoom coefficient specified by the user.
-   */
-  void updateZoom(int);
+  qreal zoomStep(int);
   
   /**
    * Updates the viewport of the scene.
    */
   void setViewport(const QSize&);
   
-  inline int zoom() const { return __zoom; }
+  inline qreal zoom() const { return __zoom; }
   inline const LonLat& center() const { return __center; }
   
   inline int programColorLocation() const { return __identityColorLocation; }
@@ -172,7 +167,7 @@ private:
   QRectF __screen;
   
   /* The current zoom property */
-  int __zoom;
+  qreal __zoom;
   
   /* The center of the map */
   LonLat __center;

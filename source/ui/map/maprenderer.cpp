@@ -146,7 +146,7 @@ MapRenderer::drawLines(const MapItem* _item) {
 }
 
 void
-MapRenderer::setZoom(int _zoom) {
+MapRenderer::setZoom(qreal _zoom) {
   __zoom = _zoom;
   __updateScreen();
   emit updated();
@@ -159,8 +159,8 @@ MapRenderer::setCenter(const LonLat& _center) {
   emit updated();
 }
 
-void
-MapRenderer::updateZoom(int _steps) {
+qreal
+MapRenderer::zoomStep(int _steps) {
   //count limiter for this function
   __actualZoomMaximum =
     qFloor(
@@ -184,7 +184,7 @@ MapRenderer::updateZoom(int _steps) {
   __actualZoom = qBound(0, __actualZoom, __actualZoomMaximum);
   
   // count value of closeup
-  setZoom(
+  return 
     MapConfig::zoomMinimum() + MapConfig::zoomNormalizeCoef() *
     qPow(
       MapConfig::zoomBase() +
@@ -192,8 +192,7 @@ MapRenderer::updateZoom(int _steps) {
         __scene->settings().misc.zoom_coefficient * 0.01
       ),
       __actualZoom
-    )
-  );
+    );
 }
 
 void
@@ -381,7 +380,7 @@ MapRenderer::__restoreSettings() {
   settings.beginGroup("CameraSettings");
   
   __actualZoom = settings.value("actualZoomCoefficient", 0).toInt();
-  __zoom = settings.value("zoom", 1).toInt();
+  __zoom = settings.value("zoom", 1).toReal();
   __center = settings.value("center", QVariant::fromValue<LonLat>(LonLat(0.0, 0.0))).value<LonLat>();
   
   settings.endGroup();

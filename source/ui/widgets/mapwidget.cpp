@@ -213,7 +213,8 @@ MapWidget::__underPoint(const QPoint& _p) {
 
 void
 MapWidget::__updateZoom(int _steps) {
-  __renderer->updateZoom(_steps);
+//   __renderer->updateZoom(_steps);
+  __renderer->scene()->zoomTo(__renderer->zoomStep(static_cast<qreal>(_steps)));
 }
 
 QMenu*
