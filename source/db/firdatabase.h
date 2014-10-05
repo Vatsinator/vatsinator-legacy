@@ -74,10 +74,9 @@ public:
   /**
    * Finds FirHeader entry by given ICAO.
    * @param icao ICAO code.
-   * @param fss If true, will find only FSS FIRs. Default: false
    * @return FIR if any found, otherwise NULL.
    */
-  const FirRecord* find(const QString&, bool = false);
+  const FirRecord* find(const QString&);
 
   /**
    * Gives direct access to the vector of FIRs.

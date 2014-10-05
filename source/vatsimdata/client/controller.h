@@ -49,7 +49,7 @@ public:
     Fss       = 0x80,
     Obs       = 0x100
   };
-  Q_DECLARE_FLAGS(Facilities, Facility);
+  Q_DECLARE_FLAGS(Facilities, Facility)
   
   /* Ctors */
   Controller() = delete;
@@ -131,6 +131,6 @@ private:
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Controller::Facilities);
+Q_DECLARE_OPERATORS_FOR_FLAGS(Controller::Facilities)
 
 #endif // CONTROLLER_H

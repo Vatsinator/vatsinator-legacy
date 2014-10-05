@@ -34,7 +34,7 @@ FirDatabase::initialize() {
 }
 
 const FirRecord *
-FirDatabase::find(const QString& _icao, bool _fss) {
+FirDatabase::find(const QString& _icao) {
   if (_icao == "ZZZZ")
     return nullptr;
   
