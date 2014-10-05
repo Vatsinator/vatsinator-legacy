@@ -181,7 +181,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="679"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="682"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -201,12 +201,12 @@
         <translation>%1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="186"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="183"/>
         <source>No forecast for %1, %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="190"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="187"/>
         <source>Network error</source>
         <translation type="unfinished"/>
     </message>
@@ -308,12 +308,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="83"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="84"/>
         <source>%1 - ATC details</source>
         <translation>%1 - Detalhes ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="98"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="99"/>
         <source>N/A</source>
         <translation>n/a</translation>
     </message>
@@ -614,7 +614,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="179"/>
         <source>%1 - flight details</source>
         <translation>%1 - Detalhes vôo</translation>
     </message>
@@ -753,28 +753,28 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="210"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="211"/>
         <source>%1 feet</source>
         <translation>%1 feet</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="211"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="228"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="212"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="229"/>
         <source>%1 kts</source>
         <translation>%1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="215"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="216"/>
         <source>airborne</source>
         <translation>no ar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="217"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="218"/>
         <source>departing</source>
         <translation>partida</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="219"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="220"/>
         <source>arrived</source>
         <translation>chegada</translation>
     </message>
@@ -1226,17 +1226,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="486"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="535"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="570"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="629"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="507"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="556"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="591"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="650"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="496"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="545"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="580"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="517"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="566"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="601"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
