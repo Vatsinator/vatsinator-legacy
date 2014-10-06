@@ -17,6 +17,7 @@
  *
  */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "notamlistmodel.h"
@@ -99,5 +100,5 @@ NotamListModel::sort(int _column, Qt::SortOrder _order) {
   if (_column != 0)
     return;
   
-  qSort(__notams.begin(), __notams.end());
+  std::sort(__notams.begin(), __notams.end());
 }

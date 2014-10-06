@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "db/airportdatabase.h"
@@ -177,75 +178,64 @@ FlightTableModel::headerData(int _section, Qt::Orientation _orientation, int _ro
 void
 FlightTableModel::sort(int _column, Qt::SortOrder _order) {
   beginResetModel();
-  
-  /**
-   * TODO
-   * Sort on MSVC
-   */
-  
-/*
+
   switch (_column) {
     case Callsign:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->callsign() < _b->callsign();
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->callsign() > _b->callsign();
-              }
-      );
+      if (_order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->callsign() < b->callsign();
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->callsign() > b->callsign();
+        });
       break;
       
     case Name:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->realName() < _b->realName();
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->realName() > _b->realName();
-              }
-      );
+      if (_order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->realName() < b->realName();
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->realName() > b->realName();
+        });
       break;
       
     case From:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().origin < _b->route().origin;
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().origin > _b->route().origin;
-              }
-      );
+      if (_order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->route().origin < b->route().origin;
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+        return a->route().origin > b->route().origin;
+        });
       break;
       
     case To:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().destination < _b->route().destination;
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().destination > _b->route().destination;
-              }
-      );
+      if (_order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->route().destination < b->route().destination;
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->route().destination > b->route().destination;
+        });
       break;
       
     case Aircraft:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->aircraft() < _b->aircraft();
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->aircraft() > _b->aircraft();
-              }
-      );
+      if (_order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->aircraft() < b->aircraft();
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->aircraft() > b->aircraft();
+        });
       break;
   }
-*/
+
   endResetModel();
   
   emit sorted();

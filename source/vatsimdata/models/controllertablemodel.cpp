@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtCore>
 
 #include "controllertablemodel.h"
@@ -138,40 +139,34 @@ ControllerTableModel::headerData(int _section, Qt::Orientation _orientation, int
 void
 ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
   beginResetModel();
-  
-  /**
-   * TODO
-   * Sort on MSVC
-   */
-  
-/*
+
   switch (_column) {
     case Callsign:
-      qSort(__staff.begin(), __staff.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->callsign() < _b->callsign();
-              } :
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->callsign() > _b->callsign();
-              }
-      );
+      if (_order == Qt::AscendingOrder) {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->callsign() < b->callsign();
+        });
+      } else {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->callsign() > b->callsign();
+        });
+      }
       
       break;
     case Name:
-      qSort(__staff.begin(), __staff.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->realName() < _b->realName();
-              } :
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->realName() > _b->realName();
-              }
-      );
+      if (_order == Qt::AscendingOrder) {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->realName() < b->realName();
+        });
+      } else {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->realName() > b->realName();
+        });
+      }
       
       break;
   }
-*/
+
   endResetModel();
   
   emit sorted();
