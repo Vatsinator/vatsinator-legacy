@@ -51,7 +51,6 @@ MapRenderer::MapRenderer(QObject* _parent) :
     __modelMatcher(new ModelMatcher(this)),
     __scene(new MapScene(this)) {
   
-  Q_ASSERT(QOpenGLShaderProgram::hasOpenGLShaderPrograms());
   __createShaderPrograms();
   __restoreSettings();
   
@@ -211,6 +210,16 @@ MapRenderer::setViewport(const QSize& _size) {
   __updateOffsets();
   __updateScreen();
   emit updated();
+}
+
+bool
+MapRenderer::supportsRequiredOpenGLFeatures() {
+  QOpenGLContext* context = QOpenGLContext::currentContext();
+  bool hasShaders = QOpenGLShaderProgram::hasOpenGLShaderPrograms();
+  bool hasVao = (context->surface()->format().version() >= qMakePair(3, 0)) ||
+    (context->hasExtension("GL_ARB_vertex_array_object") || context->hasExtension("GL_OES_vertex_array_object"));
+
+  return hasShaders && hasVao;
 }
 
 void

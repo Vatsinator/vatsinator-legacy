@@ -87,6 +87,11 @@ MapWidget::event(QEvent* _event) {
 
 void
 MapWidget::initializeGL() {
+  if (!MapRenderer::supportsRequiredOpenGLFeatures()) {
+    notifyError(tr("Your system does not support required OpenGL extensions. \
+                                      Please upgrade your graphic card driver."));
+  }
+
   __renderer = new MapRenderer();
   connect(__renderer,   SIGNAL(updated()),
           this,         SLOT(update()), Qt::DirectConnection);

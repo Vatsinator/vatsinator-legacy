@@ -21,6 +21,7 @@
 #define MAPWIDGET_H
 
 #include <QGLWidget>
+#include "ui/notifiable.h"
 #include "vatsimdata/lonlat.h"
 
 class Airport;
@@ -32,7 +33,7 @@ class MapItem;
 class MapRenderer;
 class QMenu;
 
-class MapWidget : public QGLWidget {
+class MapWidget : public QGLWidget, private Notifiable {
   
   Q_OBJECT
   

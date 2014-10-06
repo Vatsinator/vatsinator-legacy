@@ -145,6 +145,14 @@ public:
    * Texture coordinate location ("texcoord").
    */
   inline static Q_DECL_CONSTEXPR int texcoordLocation() { return 1; }
+
+  /**
+   * Checks whether client's machine supports required OpenGL extensions
+   * or not. The lowest require OpenGL profile is 2.1.
+   *
+   * \note This function should be called before the MapRenderer's constructor.
+   */
+  static bool supportsRequiredOpenGLFeatures();
   
 public slots:
   void paint();
