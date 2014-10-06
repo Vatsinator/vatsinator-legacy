@@ -123,7 +123,7 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
     __remarks(_data[29]),
     __heading(_data[38].toUInt()),
     __pressure({_data[39], _data[40]}),
-    __route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
+    __route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper(), {}}),
     __origin(nullptr),
     __destination(nullptr),
     __prefiledOnly(_prefiled) {
@@ -170,7 +170,7 @@ Pilot::update(const QStringList& _data) {
     !origin()      || origin()->icao() != tOrigin ||
     !destination() || destination()->icao() != tDestination
   ) {
-    __route = Route{ tOrigin, tDestination, _data[30], _data[12].toUpper() };
+    __route = Route{ tOrigin, tDestination, _data[30], _data[12].toUpper(), {} };
     __updateAirports();
     __fixupRoute();
   } else if (oldPosition() != position()) {

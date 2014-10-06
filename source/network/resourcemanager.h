@@ -49,7 +49,7 @@ public:
     Updating,
     CannotUpdate
   };
-  Q_ENUMS(ResourceManager::VersionStatus);
+  Q_ENUMS(ResourceManager::VersionStatus)
   
 signals:
   

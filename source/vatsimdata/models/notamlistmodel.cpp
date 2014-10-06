@@ -94,6 +94,8 @@ NotamListModel::columnCount(const QModelIndex&) const {
 
 void
 NotamListModel::sort(int _column, Qt::SortOrder _order) {
+  Q_UNUSED(_order);
+  
   if (_column != 0)
     return;
   

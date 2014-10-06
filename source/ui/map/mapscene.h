@@ -156,6 +156,13 @@ public slots:
   void moveTo(const LonLat&);
   
   /**
+   * Zooms smoothly to the given value.
+   * 
+   * \param zoom The target zoom value.
+   */
+  void zoomTo(qreal zoom);
+  
+  /**
    * Aborts the currently running animation.
    * If no animation is being played, this function has no effect.
    */

@@ -194,6 +194,23 @@ MapScene::moveTo(const LonLat& _target) {
 }
 
 void
+MapScene::zoomTo(qreal zoom) {
+  abortAnimation();
+  
+  QPropertyAnimation* animation = new QPropertyAnimation(__renderer, "zoom");
+  animation->setDuration(200);
+  animation->setEndValue(zoom);
+  animation->setEasingCurve(QEasingCurve(QEasingCurve::OutQuad));
+  animation->start();
+  
+  __animation = animation;
+  connect(animation, &QPropertyAnimation::finished, [this]() {
+    __animation->deleteLater();
+    __animation = nullptr;
+  });
+}
+
+void
 MapScene::abortAnimation() {
   if (__animation) {
     __animation->stop();
@@ -264,15 +281,13 @@ MapScene::__removeFlightItem() {
   Q_ASSERT(sender());
   
   Pilot* p = dynamic_cast<Pilot*>(sender());
-  LonLat position = p->position();
-  if (!p->hasValidPosition())
-    position = p->oldPosition();
   
   qDebug("MapScene: removing %s from the map; position: (%f, %f)",
-         qPrintable(p->callsign()), position.latitude(), position.longitude());
+         qPrintable(p->callsign()), p->position().latitude(), p->position().longitude());
   
   const FlightItem* citem = nullptr;
-  auto it = std::find_if(spatial::equal_begin(__items, position), spatial::equal_end(__items, position),
+  auto it = std::find_if(spatial::equal_begin(__items, p->position()),
+                         spatial::equal_end(__items, p->position()),
                          [&citem, p](const std::pair<const LonLat, const MapItem*>& it) {
     citem = dynamic_cast<const FlightItem*>(it.second);
     return citem && citem->data() == p;
@@ -288,19 +303,26 @@ MapScene::__removeFlightItem() {
 
 void
 MapScene::__updateFlightItem() {
+  Q_ASSERT(sender());
+  
   /*
    * As there is no rebalance() method, we need to remove the corresponding item
    * and insert it back again, with the updated position.
    */
   Pilot* p = dynamic_cast<Pilot*>(sender());
-  if (p->position() == p->oldPosition())
+  Q_ASSERT(p);
+  if (p->position() == p->oldPosition()) // position didn't change
     return;
   
-  auto it = __items.find(p->oldPosition());
-  Q_ASSERT(it != __items.end());
-  
+  auto it = std::find_if(spatial::equal_begin(__items, p->oldPosition()),
+                         spatial::equal_end(__items, p->oldPosition()),
+                         [p](const std::pair<const LonLat, const MapItem*>& it) {
+    const FlightItem* citem = dynamic_cast<const FlightItem*>(it.second);
+    return citem && citem->data() == p;
+  });
   const MapItem* item = it->second;
-  __items.erase(p->oldPosition());
+  Q_ASSERT(item);
+  __items.erase(it);
   __items.insert(std::make_pair(p->position(), item));
 }
 

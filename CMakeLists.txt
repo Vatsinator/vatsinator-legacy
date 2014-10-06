@@ -71,8 +71,9 @@ endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 # set CXX_FLAGS
 if (CMAKE_COMPILER_IS_GNUCXX)
-  set (CMAKE_CXX_FLAGS_RELEASE "-std=c++0x")
-  set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -std=c++0x")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
+	set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
 endif (CMAKE_COMPILER_IS_GNUCXX)
 
 # find version
