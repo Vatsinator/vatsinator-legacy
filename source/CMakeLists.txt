@@ -20,6 +20,11 @@ set (vatsinator_SRCS
     vatsinatorapplication.cpp
 )
 
+set (vatsinator_HEADERS
+		netconfig.h
+		vatsinatorapplication.h
+)
+
 # icon for Windows
 if (WIN32)
   set (vatsinator_SRCS ${vatsinator_SRCS}
@@ -43,6 +48,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_executable (${vatsinator_TARGET} WIN32
     main.cpp
     ${vatsinator_SRCS}
+		${vatsinator_HEADERS}
 )
 
 set (vatsinator_QT_LIBS
@@ -119,10 +125,8 @@ endif (APPLE)
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
-#get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATION)
-#get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
-set (vatsinator_EXECUTABLE vatsinator.exe)
-
+get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATION)
+get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
 
 if (LINUX)
 
@@ -155,24 +159,24 @@ elseif (WIN32)
 
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
     
-    if (MSVC)
-        set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
-        include(InstallRequiredSystemLibraries)
-        
-        exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
-            OUTPUT_VARIABLE QT_INSTALL_LIBS)
-        exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
-            OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
-        
-        # setup path to qwindows.dll
-        set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
-        
-        include (DeployQt5)
-        install_qt5_executable ("${vatsinator_EXECUTABLE}"
-            "${QT_QWINDOWS_PLUGIN}" # qtplugins
-            "" # libs
-            "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
-        )
-    endif (MSVC)
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
+    include(InstallRequiredSystemLibraries)
+    
+    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
+        OUTPUT_VARIABLE QT_INSTALL_LIBS)
+    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
+        OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
+    
+    # setup path to qwindows.dll
+		if (MSVC)
+			set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
+		endif ()
+    
+    include (DeployQt5)
+    install_qt5_executable ("${vatsinator_EXECUTABLE}"
+        "${QT_QWINDOWS_PLUGIN}" # qtplugins
+        "" # libs
+        "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
+    )
     
 endif (LINUX)

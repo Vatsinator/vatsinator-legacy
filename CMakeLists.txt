@@ -20,6 +20,11 @@ project (vatsinator)
 cmake_minimum_required (VERSION 2.8.11 FATAL_ERROR)
 cmake_policy (SET CMP0020 OLD)
 
+# Allow use of the LOCATION target property.
+if (POLICY CMP0026)
+	cmake_policy (SET CMP0026 OLD)
+endif (POLICY CMP0026)
+
 if (POLICY CMP0028)
   cmake_policy (SET CMP0028 NEW)
 endif (POLICY CMP0028)
