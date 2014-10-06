@@ -10,9 +10,14 @@ IF (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
 	SET(QUAZIP_FOUND TRUE)
 ELSE (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
 	IF (WIN32)
+		if (MSVC)
+			set (quazip_libname quazip.dll)
+		else ()
+			set (quazip_libname libquazip.dll)
+		endif ()
 		FIND_PATH(QUAZIP_LIBRARY_DIR
 			WIN32_DEBUG_POSTFIX d
-			NAMES quazip.dll
+			NAMES ${quazip_libname}
 			HINTS "C:/Programme/" "C:/Program Files" "C:/Qt"
 			PATH_SUFFIXES QuaZip/lib
 		)
