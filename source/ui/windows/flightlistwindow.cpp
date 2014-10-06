@@ -27,8 +27,8 @@
 
 #include "flightlistwindow.h"
 
-FlightListWindow::FlightListWindow(QWidget* _parent) :
-    BaseWindow(_parent) {
+FlightListWindow::FlightListWindow(QWidget* parent) :
+    BaseWindow(parent) {
   setupUi(this);
   
   connect(qApp,         SIGNAL(aboutToQuit()),
@@ -38,13 +38,13 @@ FlightListWindow::FlightListWindow(QWidget* _parent) :
 }
 
 void
-FlightListWindow::resizeEvent(QResizeEvent* _event) {
-  QWidget::resizeEvent(_event);
+FlightListWindow::resizeEvent(QResizeEvent* event) {
+  QWidget::resizeEvent(event);
   __resizeColumns();
 }
 
 void
-FlightListWindow::showEvent(QShowEvent* _event) {
+FlightListWindow::showEvent(QShowEvent* event) {
   if (auto m = FlightsTable->model())
     m->deleteLater();
   
@@ -52,7 +52,7 @@ FlightListWindow::showEvent(QShowEvent* _event) {
   FlightsTable->hideColumn(FlightTableModel::Button);
   __resizeColumns();
   
-  BaseWindow::showEvent(_event);
+  BaseWindow::showEvent(event);
 }
 
 void
@@ -72,10 +72,10 @@ FlightListWindow::__resizeColumns() {
 }
 
 void
-FlightListWindow::__handleDoubleClicked(const QModelIndex& _index) {
-  Q_ASSERT(qobject_cast<const FlightTableModel*>(_index.model()));
+FlightListWindow::__handleDoubleClicked(const QModelIndex& index) {
+  Q_ASSERT(qobject_cast<const FlightTableModel*>(index.model()));
 
   vApp()->userInterface()->showDetails(
-    (qobject_cast<const FlightTableModel*>(_index.model()))->flights()[_index.row()]
+    (qobject_cast<const FlightTableModel*>(index.model()))->flights()[index.row()]
   );
 }

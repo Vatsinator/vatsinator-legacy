@@ -28,7 +28,7 @@
 
 #include "modelmatcher.h"
 
-ModelMatcher::ModelMatcher(QObject* _parent) : QObject(_parent) {
+ModelMatcher::ModelMatcher(QObject* parent) : QObject(parent) {
   __readModels();
   __loadPixmaps();
 }
@@ -40,12 +40,12 @@ ModelMatcher::~ModelMatcher() {
 }
 
 QOpenGLTexture*
-ModelMatcher::matchMyModel(const QString& _acft) const {
-  if (_acft.isEmpty())
+ModelMatcher::matchMyModel(const QString& acft) const {
+  if (acft.isEmpty())
     return __modelsPixmaps["1p"];
   
   for (auto pair: __modelsIds) {
-    if (_acft.contains(pair.first)) {
+    if (acft.contains(pair.first)) {
       return __modelsPixmaps[pair.second];
     }
   }

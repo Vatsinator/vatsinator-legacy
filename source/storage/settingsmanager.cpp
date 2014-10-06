@@ -25,8 +25,8 @@
 
 #include "settingsmanager.h"
 
-SettingsManager::SettingsManager(QObject* _parent) :
-    QObject(_parent) {
+SettingsManager::SettingsManager(QObject* parent) :
+    QObject(parent) {
   connect(vApp()->userInterface(),      SIGNAL(initialized()),
           this,                         SLOT(initialize()));
   __fillDefaults();
@@ -34,8 +34,8 @@ SettingsManager::SettingsManager(QObject* _parent) :
 }
 
 void
-SettingsManager::addPage(AbstractSettingsModule* _page) {
-  __pages << _page;
+SettingsManager::addPage(AbstractSettingsModule* page) {
+  __pages << page;
 }
 
 QString
@@ -51,23 +51,23 @@ SettingsManager::earlyGetLocale() {
 }
 
 const QVariant &
-SettingsManager::get(const QString& _s) {
-  Q_ASSERT_X(vApp()->settingsManager()->__settings.contains(_s),
-             qPrintable(QString("SettingsManager::get(%1)").arg(_s)),
+SettingsManager::get(const QString& s) {
+  Q_ASSERT_X(vApp()->settingsManager()->__settings.contains(s),
+             qPrintable(QString("SettingsManager::get(%1)").arg(s)),
              "No such value");
   
-  return vApp()->settingsManager()->__settings[_s];
+  return vApp()->settingsManager()->__settings[s];
 }
 
 void
-SettingsManager::updateUi(const QString& _pName) {
-  Q_ASSERT_X(vApp()->settingsManager()->__getPage(_pName),
-             qPrintable(QString("SettingsManager::updateUi(%1)").arg(_pName)),
+SettingsManager::updateUi(const QString& pageName) {
+  Q_ASSERT_X(vApp()->settingsManager()->__getPage(pageName),
+             qPrintable(QString("SettingsManager::updateUi(%1)").arg(pageName)),
              "No such page");
   
   QSettings s;
   s.beginGroup("Settings");
-  vApp()->settingsManager()->__getPage(_pName)->restoreSettings(s);
+  vApp()->settingsManager()->__getPage(pageName)->restoreSettings(s);
   s.endGroup();
 }
 
@@ -105,8 +105,8 @@ SettingsManager::restoreDefaults() {
 }
 
 void
-SettingsManager::updateValue(QString&& _key, QVariant&& _value) {
-  vApp()->settingsManager()->__settings[_key] = _value;
+SettingsManager::updateValue(QString&& key, QVariant&& value) {
+  vApp()->settingsManager()->__settings[key] = value;
 }
 
 void
@@ -125,9 +125,9 @@ SettingsManager::__restoreSettings() {
 }
 
 AbstractSettingsModule *
-SettingsManager::__getPage(const QString& _s) const {
+SettingsManager::__getPage(const QString& s) const {
   for (AbstractSettingsModule* p: __pages)
-    if (p->moduleId() == _s)
+    if (p->moduleId() == s)
       return p;
   
   return nullptr;

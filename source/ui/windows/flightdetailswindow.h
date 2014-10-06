@@ -28,13 +28,13 @@ class FlightDetailsWindow : public QWidget, private Ui::FlightDetailsWindow {
   Q_OBJECT
   
 signals:
-  void flightTrackingStateChanged(const Pilot*, int);
+  void flightTrackingStateChanged(const Pilot* pilot, int state);
 
 public:
-  FlightDetailsWindow(const Pilot*, QWidget* = nullptr);
+  FlightDetailsWindow(const Pilot* pilot, QWidget* parent = nullptr);
 
 protected:
-  virtual void showEvent(QShowEvent*) override;
+  virtual void showEvent(QShowEvent* event) override;
 
 private:
   void __updateAirports();
@@ -44,7 +44,7 @@ private slots:
   void __airlineUpdated();
 
 private:
-  const Pilot*  __pilot;
+  const Pilot* __pilot;
 
 };
 

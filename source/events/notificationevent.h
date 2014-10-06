@@ -25,28 +25,33 @@
 
 #include "events/types.h"
 
+/**
+ * The NotificationEvent is used to indicate occurence of an event that
+ * requires user attention. It is mainly used by Notifiable class.
+ * 
+ * \sa Notifiable.
+ */
 class NotificationEvent : public QEvent {
 
 public:
   
+  /**
+   * Describes event severity.
+   */
   enum Gravity {
-    
-    /* Fatal errors */
-    Fatal,
-    
-    /* Warnings */
-    Warning,
-    
-    /* Just info */
-    Information
-    
+    Fatal,      /**< Critical events */
+    Warning,    /**< Warnings */
+    Information /**< Just normal Information */
   };
   
   /**
    * This constructor takes the notification gravity and the notification
    * message.
+   * 
+   * \param gravity Gravity of the notification.
+   * \param message Message to be passed to user.
    */
-  NotificationEvent(Gravity, QString);
+  NotificationEvent(Gravity gravity, QString message);
   
   /**
    * Gets the notification gravity.

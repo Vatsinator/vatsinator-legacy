@@ -25,71 +25,91 @@
 
 /**
  * The Airline class represents a single airline.
+ * To get the Airline instance, you can use AirlineDatabase::find() method.
+ * Airlines can have logos that are provided by the VatsinatorDatabase service.
+ * By default, the Airline instance won't have the logo fetched. To request
+ * the logo, call requestLogo() method. It will be then loaded from cache or
+ * downloaded from the internet. requestLogo() is asynchronous method; when
+ * the logo is loaded, logoFetched() signal will be emitted.
+ * 
+ * \sa AirlineDatabase and VatsimDataHandler.
  */
 class Airline : public QObject {
   Q_OBJECT
+  
+  /**
+   * Stores the airline ICAO code (3 letters).
+   */
+  Q_PROPERTY(QString icao READ icao)
+  
+  /**
+   * Stores the full airline name.
+   */
+  Q_PROPERTY(QString name READ name)
+  
+  /**
+   * Keeps the country that the airline comes from.
+   */
+  Q_PROPERTY(QString country READ country)
+  
+  /**
+   * Holds the URL of the airline's webpage.
+   */
+  Q_PROPERTY(QString website READ website)
+  
+  /**
+   * Holds the airline's logo.
+   * By default, the logo is empty (that is, logo().isNull() returns true).
+   * 
+   * \sa requestLogo().
+   */
+  Q_PROPERTY(QImage logo READ logo NOTIFY logoFetched)
   
 signals:
   
   /**
    * Emitted when logo is downloaded and loaded (if exists).
+   * 
+   * \sa requestLogo().
    */
   void logoFetched();
   
 public:
   
   /**
-   * @param icao Airline ICAO code.
-   * @param name Airline name.
-   * @param country Country where the airline comes from.
-   * @param website The current airline website.
-   * @param logo The logo url.
-   * @param parent QObject's parent.
+   * \param icao Airline ICAO code.
+   * \param name Airline name.
+   * \param country Country where the airline comes from.
+   * \param website The current airline website.
+   * \param logo The logo url.
+   * \param parent QObject's parent.
    */
-  Airline(QString, QString, QString, QString, QString, QObject* = nullptr);
+  Airline(QString icao, QString name, QString country, QString website,
+          QString logo, QObject* parent = nullptr);
   
   /**
    * Constructs the airline from the JSON object.
-   * @param json The JSON object that contains all airline data
-   * @param parent QObject's parent.
+   * \param json The JSON object that contains all airline data.
+   * \param parent QObject's parent.
    */
-  Airline(const QJsonObject&, QObject* = nullptr);
+  Airline(const QJsonObject& icao, QObject* parent = nullptr);
   
   /**
    * Airline's logo is lazy-loaded. To have it fetched from the internet
    * or loaded from cache, call this function.
-   * @sa logoFetched().
+   * 
+   * \sa logoFetched().
    */
   void requestLogo();
   
-  /**
-   * Gets the airline ICAO code.
-   */
   inline const QString& icao() const { return __icao; }
-  
-  /**
-   * Gets the airline name.
-   */
   inline const QString& name() const { return __name; }
-  
-  /**
-   * Gets the country that the airline comes from.
-   */
   inline const QString& country() const { return __country; }
-  
-  /**
-   * Gets the airline website url.
-   */
   inline const QString& website() const { return __website; }
-  
-  /**
-   * Gets the airline logo image.
-   * @Note: This image is valid only after the logoFetched() signal is emitted.
-   */
   inline const QImage& logo() const { return __logo; }
   
 private slots:
-  void __logoFetched(QString);
+  void __logoFetched(QString fileName);
   
 private:
   QString __icao;

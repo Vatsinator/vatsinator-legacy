@@ -33,17 +33,17 @@
 
 #include "flightitem.h"
 
-FlightItem::FlightItem(const Pilot* _pilot, QObject* _parent) :
-    QObject(_parent),
-    __scene(qobject_cast<MapScene*>(_parent)),
-    __pilot(_pilot),
-    __position(_pilot->position()),
+FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
+    QObject(parent),
+    __scene(qobject_cast<MapScene*>(parent)),
+    __pilot(pilot),
+    __position(pilot->position()),
     __model(nullptr),
     __label(QOpenGLTexture::Target2D),
     __linesReady(false) {
   connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings())); 
-  connect(_pilot,                               SIGNAL(updated()),
+  connect(pilot,                               SIGNAL(updated()),
           this,                                 SLOT(__invalidate()));
 }
 
@@ -67,7 +67,7 @@ FlightItem::position() const {
 }
 
 void
-FlightItem::drawItem(QOpenGLShaderProgram* _shader) const {
+FlightItem::drawItem(QOpenGLShaderProgram* shader) const {
   static constexpr float PilotsZ = static_cast<float>(MapConfig::MapLayers::Pilots);
   
   static const GLfloat modelRect[] = {
@@ -91,20 +91,20 @@ FlightItem::drawItem(QOpenGLShaderProgram* _shader) const {
   if (!__model)
     __matchModel();
   
-  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), modelRect, 2);
-  _shader->setUniformValue(__scene->renderer()->programRotationLocation(), -qDegreesToRadians(static_cast<float>(data()->heading())));
-  _shader->setUniformValue(__scene->renderer()->programZLocation(), PilotsZ);
+  shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  shader->setAttributeArray(MapRenderer::vertexLocation(), modelRect, 2);
+  shader->setUniformValue(__scene->renderer()->programRotationLocation(), -qDegreesToRadians(static_cast<float>(data()->heading())));
+  shader->setUniformValue(__scene->renderer()->programZLocation(), PilotsZ);
   
   __model->bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
   glBindTexture(GL_TEXTURE_2D, 0);
   
-  _shader->setUniformValue(__scene->renderer()->programRotationLocation(), 0.0f);
+  shader->setUniformValue(__scene->renderer()->programRotationLocation(), 0.0f);
 }
 
 void
-FlightItem::drawLabel(QOpenGLShaderProgram* _shader) const {
+FlightItem::drawLabel(QOpenGLShaderProgram* shader) const {
   static const GLfloat labelRect[] = {
     -0.16f,  0.019f,
     -0.16f,  0.12566666f,
@@ -123,8 +123,8 @@ FlightItem::drawLabel(QOpenGLShaderProgram* _shader) const {
     0.0f, 0.0f
   };
   
-  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
+  shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
   
   if (!__label.isCreated())
     __initializeLabel();
@@ -135,7 +135,7 @@ FlightItem::drawLabel(QOpenGLShaderProgram* _shader) const {
 }
 
 void
-FlightItem::drawFocused(QOpenGLShaderProgram* _shader) const {
+FlightItem::drawFocused(QOpenGLShaderProgram* shader) const {
   if (!__linesReady)
     __prepareLines();
   
@@ -143,8 +143,8 @@ FlightItem::drawFocused(QOpenGLShaderProgram* _shader) const {
     if (!__otpLine.color.isValid())
       __otpLine.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
     
-    _shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLine.color);
-    _shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLine.coords.constData(), 2);
+    shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLine.color);
+    shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLine.coords.constData(), 2);
     glDrawArrays(GL_LINE_STRIP, 0, __otpLine.coords.size() / 2);
   }
   
@@ -152,8 +152,8 @@ FlightItem::drawFocused(QOpenGLShaderProgram* _shader) const {
     if (!__ptdLine.color.isValid())
       __ptdLine.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
     
-    _shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLine.color);
-    _shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLine.coords.constData(), 2);
+    shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLine.color);
+    shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLine.coords.constData(), 2);
     glLineStipple(3, 0xF0F0); // dashed line
     glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);
     glLineStipple(1, 0xFFFF);

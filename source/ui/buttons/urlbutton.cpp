@@ -1,6 +1,6 @@
 /*
     urlbutton.cpp
-    Copyright (C) 2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,28 +22,28 @@
 
 #include "urlbutton.h"
 
-UrlButton::UrlButton(const QString& _text, const QString& _url, QWidget* _parent) :
-    QPushButton(_text, _parent),
-    __url(_url) {
+UrlButton::UrlButton(const QString& text, const QUrl& url, QWidget* parent) :
+    QPushButton(text, parent),
+    __url(url) {
   connect(this, SIGNAL(clicked()),
           this, SLOT(__openUrl()));
 }
 
-UrlButton::UrlButton(const QString& _text, QWidget* _parent) :
-    QPushButton(_text, _parent) {
+UrlButton::UrlButton(const QString& text, QWidget* parent) :
+    QPushButton(text, parent) {
   connect(this, SIGNAL(clicked()),
           this, SLOT(__openUrl()));
 }
 
-UrlButton::UrlButton(QWidget* _parent) :
-    QPushButton(_parent) {
+UrlButton::UrlButton(QWidget* parent) :
+    QPushButton(parent) {
   connect(this, SIGNAL(clicked()),
           this, SLOT(__openUrl()));
 }
 
 void
-UrlButton::setUrl(const QString& _url) {
-  __url = _url;
+UrlButton::setUrl(const QUrl& url) {
+  __url = url;
 }
 
 void

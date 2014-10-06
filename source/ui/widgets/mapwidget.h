@@ -32,46 +32,53 @@ class MapItem;
 class MapRenderer;
 class QMenu;
 
+/**
+ * The MapWidget class is a widget that is responsible for displaying
+ * the map. It contains its own MapRenderer instance which manages
+ * the render process; this widget handles all input events.
+ * 
+ * \sa MapRenderer.
+ */
 class MapWidget : public QGLWidget {
-  
   Q_OBJECT
-  
   friend class MapScene;
 
 signals:
-  
   /**
    * The menuRequest() signal is emited when user clicks on the map with the
    * right mouse button. If the cursor is over an item, the pointer is passed
    * to this signal. It no item is under the mouse cursor, nullptr is passed.
    */
-  void menuRequest(const MapItem*);
+  void menuRequest(const MapItem* item);
   
   /**
    * The windowRequest() signal is emited when user clicks on the map with
    * the left mouse button or if selects an appropriate option from the
    * right-button click menu.
    */
-  void windowRequest(const MapItem*);
+  void windowRequest(const MapItem* item);
   
 public:
-  explicit MapWidget(QWidget* = 0);
+  /**
+   * The default constrcutor passes _parent_ to QGLWidget.
+   */
+  explicit MapWidget(QWidget* parent = nullptr);
   virtual ~MapWidget();
   
-  bool event(QEvent*) override;
+  bool event(QEvent* event) override;
   
   inline MapRenderer* renderer() { return __renderer; }
   
 protected:
   void initializeGL() override;
   void paintGL() override;
-  void resizeGL(int, int) override;
+  void resizeGL(int width, int height) override;
   
-  void wheelEvent(QWheelEvent*) override;
-  void mousePressEvent(QMouseEvent*) override;
-  void mouseReleaseEvent(QMouseEvent*) override;
-  void mouseMoveEvent(QMouseEvent*) override;
-  void keyPressEvent(QKeyEvent*) override;
+  void wheelEvent(QWheelEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
+  void mouseReleaseEvent(QMouseEvent* event) override;
+  void mouseMoveEvent(QMouseEvent* event) override;
+  void keyPressEvent(QKeyEvent* event) override;
   
 private:
   
@@ -83,27 +90,27 @@ private:
   /**
    * Gets item under the given point. nullptr if nothing.
    */
-  const MapItem* __underPoint(const QPoint&);
+  const MapItem* __underPoint(const QPoint& point);
   
   /**
    * Updates the zoom factor.
    */
-  void __updateZoom(int);
+  void __updateZoom(int steps);
   
   /**
    * Creates submenu for an airport.
    */
-  QMenu* __itemMenu(const AirportItem*);
+  QMenu* __itemMenu(const AirportItem* item);
   
   /**
    * Creates submenu for a FIR.
    */
-  QMenu* __itemMenu(const FirItem*);
+  QMenu* __itemMenu(const FirItem* item);
   
   /**
    * Creates submenu for a flight.
    */
-  QMenu* __itemMenu(const FlightItem*);
+  QMenu* __itemMenu(const FlightItem* item);
   
   /**
    * Creates submenu for no item.
@@ -111,8 +118,8 @@ private:
   QMenu* __itemMenu();
 
 private slots:
-  void __showMenu(const MapItem*);
-  void __showWindow(const MapItem*);
+  void __showMenu(const MapItem* item);
+  void __showWindow(const MapItem* item);
   
 private:
   
@@ -130,24 +137,24 @@ private:
      * Updates the mouse position from location on the widget (as
      * it is given by Qt).
      */
-    void update(const QPoint&);
+    void update(const QPoint& pos);
     
     /**
      * Quickly calculates distance between the given point and mouse cursor
      * position on the screen, _in pixels_.
      */
-    qreal screenDistance(const QPoint&);
+    qreal screenDistance(const QPoint& point);
     
     /**
      * Calculates distance between the point on the globe (lat-lon) and
      * the mouse cursor position.
      */
-    qreal geoDistance(const LonLat&);
+    qreal geoDistance(const LonLat& point);
     
     /**
      * Sets the mouse down status.
      */
-    void setDown(bool);
+    void setDown(bool down);
     
     /**
      * Position within the widget.

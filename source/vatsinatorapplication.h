@@ -42,30 +42,37 @@ class UserInterface;
 class VatsimDataHandler;
 class WorldMap;
 
+/**
+ * The VatsinatorApplication wraps the whole Vatsinator instance
+ * in a convenient and simple way. It holds singleton instances and
+ * controls whole application initialization process.
+ */
 class VatsinatorApplication : public QApplication {
-
   Q_OBJECT
   
 signals:
   /**
    * First signal emitted in the application.
-   * At this point, all singletons are already instantiated, but they
-   * are not initialized yet.
+   * When this signal is emitted, all singletons are already instantiated,
+   * but they are not initialized yet.
    */
   void initializing();
 
 public:
   /**
-   * Constructor gives argc & argv to the QApplication.
+   * Constructor forwards argc & argv to the QApplication.
    */
-  VatsinatorApplication(int&, char**);
+  VatsinatorApplication(int& argc, char** argv);
 
+  /**
+   * Cleans the resources up.
+   */
   virtual ~VatsinatorApplication();
   
   /**
    * Custom event handler.
    */
-  bool event(QEvent*) override;
+  bool event(QEvent* event) override;
   
   /**
    * Gets the UserInterface singleton.
@@ -114,15 +121,46 @@ public:
     Q_ASSERT(__resourceManager);
     return __resourceManager;
   }
-    
-protected:
-  virtual void userDecisionEvent(DecisionEvent*);
+  
+  /**
+   * Gets the AirlineDatabase singleton.
+   */
+  inline AirlineDatabase* airlineDatabase() {
+    Q_ASSERT(__airlineDatabase);
+    return __airlineDatabase;
+  }
+  
+  /**
+   * Gets the AirportDatabase singleton.
+   */
+  inline AirportDatabase* airportDatabase() {
+    Q_ASSERT(__airlineDatabase);
+    return __airportDatabaase;
+  }
+  
+  /**
+   * Gets the FirDatabase singleton.
+   */
+  inline FirDatabase* firDatabase() {
+    Q_ASSERT(__firDatabase);
+    return __firDatabase;
+  }
 
 public slots:
+  /**
+   * Restarts the application.
+   */
   void restart();
   
-private slots:
+protected:
+  /**
+   * Handles the DecisionEvent.
+   * THe only recognized context here is "statistics" which indicates
+   * whether user agreed to send stats to Vatsinator servers or not.
+   */
+  virtual void userDecisionEvent(DecisionEvent* event);
   
+private slots:
   /**
    * Initialize the application.
    * This slot is connected to the initializing() signal.

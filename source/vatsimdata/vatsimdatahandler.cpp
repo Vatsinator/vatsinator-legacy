@@ -59,8 +59,8 @@ namespace {
 }
 
 
-VatsimDataHandler::VatsimDataHandler(QObject* _parent) :
-    QObject(_parent),
+VatsimDataHandler::VatsimDataHandler(QObject* parent) :
+    QObject(parent),
     __statusUrl(NetConfig::Vatsim::statusUrl()),
     __currentTimestamp(0),
     __observers(0),
@@ -114,10 +114,10 @@ VatsimDataHandler::initialize() {
 }
 
 void
-VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
+VatsimDataHandler::parseStatusFile(const QString& content) {
   static QRegExp rx("(msg0|url0|moveto0|metar0)=(.+)\\b");
   
-  QStringList tempList = _statusFile.split('\n', QString::SkipEmptyParts);
+  QStringList tempList = content.split('\n', QString::SkipEmptyParts);
   
   for (QString& temp: tempList) {
     if (temp.startsWith(';'))
@@ -151,12 +151,12 @@ VatsimDataHandler::parseStatusFile(const QString& _statusFile) {
 }
 
 void
-VatsimDataHandler::parseDataFile(const QString& _data) {
+VatsimDataHandler::parseDataFile(const QString& content) {
   static QRegExp rx("^\\b(UPDATE|RELOAD|CONNECTED CLIENTS)\\b\\s?=\\s?\\b(.+)\\b$");
 
-  qDebug("Data length: %i.", _data.length());
+  qDebug("Data length: %i.", content.length());
 
-  QStringList tempList = _data.split(QRegExp("\r?\n"), QString::SkipEmptyParts);  
+  QStringList tempList = content.split(QRegExp("\r?\n"), QString::SkipEmptyParts);  
   DataSections section = None;
   
   __currentTimestamp = QDateTime::currentMSecsSinceEpoch();
@@ -285,31 +285,29 @@ VatsimDataHandler::controllerTableModel() const {
 }
 
 const Pilot*
-VatsimDataHandler::findPilot(const QString& _callsign) const {
-  if (__clients.contains(_callsign)) {
-    return dynamic_cast<Pilot*>(__clients[_callsign]);
-  } else {
+VatsimDataHandler::findPilot(const QString& callsign) const {
+  if (__clients.contains(callsign))
+    return dynamic_cast<Pilot*>(__clients[callsign]);
+  else
     return nullptr;
-  }
 }
 
 const Controller*
-VatsimDataHandler::findAtc(const QString& _callsign) const {
-  if (__clients.contains(_callsign)) {
-    return dynamic_cast<Controller*>(__clients[_callsign]);
-  } else {
+VatsimDataHandler::findAtc(const QString& callsign) const {
+  if (__clients.contains(callsign))
+    return dynamic_cast<Controller*>(__clients[callsign]);
+  else
     return nullptr;
-  }
 }
 
 Airport*
-VatsimDataHandler::findAirport(const QString& _icao) {
-  if (__airports.contains(_icao)) {
-    return __airports[_icao];
+VatsimDataHandler::findAirport(const QString& icao) {
+  if (__airports.contains(icao)) {
+    return __airports[icao];
   } else {
-    QList<QString> keys = aliases().values(_icao);
-    if (_icao.length() < 4)
-      keys.prepend(QString("K") % _icao);
+    QList<QString> keys = __aliases.values(icao);
+    if (icao.length() < 4)
+      keys.prepend(QString("K") % icao);
     
     for (const QString& k: keys) {
       if (__airports.contains(k))
@@ -326,19 +324,19 @@ VatsimDataHandler::airports() const {
 }
 
 Fir*
-VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
-  QList<QString> keys = aliases().values(_icao);
-  if (_icao.length() >= 4)
-    keys.prepend(_icao);
+VatsimDataHandler::findFir(const QString& icao, bool fss) {
+  QList<QString> keys = __aliases.values(icao);
+  if (icao.length() >= 4)
+    keys.prepend(icao);
   else
     /* Handle USA 3-letter icao contraction */
-    keys.prepend(QString("K") % _icao);
+    keys.prepend(QString("K") % icao);
   
   for (const QString& k: keys) {
     if (__firs.contains(k)) {
       QList<Fir*> values = __firs.values(k);
       for (Fir* f: values) {
-        if (f->isOceanic() == _fss && f->hasValidPosition()) {
+        if (f->isOceanic() == fss && f->hasValidPosition()) {
           return f;
         }
       }
@@ -349,11 +347,11 @@ VatsimDataHandler::findFir(const QString& _icao, bool _fss) {
 }
 
 Uir*
-VatsimDataHandler::findUir(const QString& _icao) {
-  if (__uirs.contains(_icao))
-    return __uirs[_icao];
+VatsimDataHandler::findUir(const QString& icao) {
+  if (__uirs.contains(icao))
+    return __uirs[icao];
   
-  QList<QString> keys = aliases().values(_icao);
+  QList<QString> keys = __aliases.values(icao);
   for (const QString& k: keys) {
     if (__uirs.contains(k))
       return __uirs[k];
@@ -363,11 +361,11 @@ VatsimDataHandler::findUir(const QString& _icao) {
 }
 
 QString
-VatsimDataHandler::alternameName(const QString& _icao) {
-  if (!__alternameNames.contains(_icao))
+VatsimDataHandler::alternameName(const QString& icao) {
+  if (!__alternameNames.contains(icao))
     return QString();
   else
-    return __alternameNames[_icao];
+    return __alternameNames[icao];
 }
 
 QList<Fir*>
@@ -439,46 +437,46 @@ VatsimDataHandler::event(QEvent* _event) {
 
 qreal
 VatsimDataHandler::fastDistance(
-    const qreal& _lat1, const qreal& _lon1,
-    const qreal& _lat2, const qreal& _lon2) {
+    const qreal& lat1, const qreal& lon1,
+    const qreal& lat2, const qreal& lon2) {
   return qSqrt(
-    qPow(_lat1 - _lat2, 2) +
-    qPow(_lon1 - _lon2, 2)
+    qPow(lat1 - lat2, 2) +
+    qPow(lon1 - lon2, 2)
   );
 }
 
 qreal
-VatsimDataHandler::fastDistance(const LonLat& _a, const LonLat& _b) {
+VatsimDataHandler::fastDistance(const LonLat& a, const LonLat& b) {
   return qSqrt(
-    qPow(_a.latitude() - _b.latitude(), 2) +
-    qPow(_a.longitude() - _b.longitude(), 2)
+    qPow(a.latitude() - b.latitude(), 2) +
+    qPow(a.longitude() - b.longitude(), 2)
   );
 }
 
 qreal
 VatsimDataHandler::nmDistance(
-    const qreal& _lat1, const qreal& _lon1,
-    const qreal& _lat2, const qreal& _lon2) {
+    const qreal& lat1, const qreal& lon1,
+    const qreal& lat2, const qreal& lon2) {
   
   /* http://www.movable-type.co.uk/scripts/latlong.html */
   static constexpr qreal R = 3440.06479191; // nm
   
   return qAcos(
-      qSin(_lat1) * qSin(_lat2) +
-      qCos(_lat1) * qCos(_lat2) *
-      qCos(_lon2 - _lon1)
+      qSin(lat1) * qSin(lat2) +
+      qCos(lat1) * qCos(lat2) *
+      qCos(lon2 - lon1)
     ) * R;
 }
 
 qreal
-VatsimDataHandler::nmDistance(const LonLat& _a, const LonLat& _b) {
+VatsimDataHandler::nmDistance(const LonLat& a, const LonLat& b) {
   /* http://www.movable-type.co.uk/scripts/latlong.html */
   static constexpr qreal R = 3440.06479191; // nm
   
   return qAcos(
-      qSin(_a.latitude()) * qSin(_b.latitude()) +
-      qCos(_a.latitude()) * qCos(_b.latitude()) *
-      qCos(_b.longitude() - _a.longitude())
+      qSin(a.latitude()) * qSin(b.latitude()) +
+      qCos(a.latitude()) * qCos(b.latitude()) *
+      qCos(b.longitude() - a.longitude())
     ) * R;
 }
 
@@ -491,17 +489,18 @@ VatsimDataHandler::requestDataUpdate() {
 }
 
 void
-VatsimDataHandler::userDecisionEvent(DecisionEvent* _event) {
-  if (_event->context() == QStringLiteral("data_fetch_error")) {
+VatsimDataHandler::userDecisionEvent(DecisionEvent* event) {
+  if (event->context() == QStringLiteral("data_fetch_error") &&
+      event->decision() == DecisionEvent::TryAgain) {
     requestDataUpdate();
   }
 }
 
 void
-VatsimDataHandler::__readAliasFile(const QString& _fName) {
+VatsimDataHandler::__readAliasFile(const QString& fileName) {
   qDebug("Reading \"alias\" file...");
   
-  QFile file(_fName);
+  QFile file(fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(file.fileName()));
@@ -547,13 +546,13 @@ VatsimDataHandler::__readAliasFile(const QString& _fName) {
 }
 
 void
-VatsimDataHandler::__readCountryFile(const QString& _fName) {
+VatsimDataHandler::__readCountryFile(const QString& fileName) {
   qDebug("Reading \"country\" file...");
   
-  QFile file(_fName);
+  QFile file(fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(fileName));
     return;
   }
   
@@ -582,13 +581,13 @@ VatsimDataHandler::__readCountryFile(const QString& _fName) {
 }
 
 void
-VatsimDataHandler::__readFirFile(const QString& _fName) {
+VatsimDataHandler::__readFirFile(const QString& fileName) {
   qDebug("Reading \"fir\" file...");
   
-  QFile file(_fName);
+  QFile file(fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(_fName));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(fileName));
     return;
   }
   
@@ -641,13 +640,13 @@ VatsimDataHandler::__readFirFile(const QString& _fName) {
 }
 
 void
-VatsimDataHandler::__readUirFile(const QString& _fileName) {
+VatsimDataHandler::__readUirFile(const QString& fileName) {
   qDebug("Reading \"uir\" file...");
   
-  QFile file(_fileName);
+  QFile file(fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(_fileName));
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(fileName));
     return;
   }
   
@@ -681,17 +680,17 @@ VatsimDataHandler::__readUirFile(const QString& _fileName) {
 
 void
 VatsimDataHandler::__initializeData() {
-  std::for_each(FirDatabase::getSingleton().firs().begin(),
-    FirDatabase::getSingleton().firs().end(),
-    [this](const FirRecord& fr) {
+  std::for_each(vApp()->firDatabase()->firs().begin(),
+                vApp()->firDatabase()->firs().end(),
+                [this](const FirRecord& fr) {
       Fir* f = new Fir(&fr);
       __firs.insert(f->icao(), f);
     }
   );
   
-  std::for_each(AirportDatabase::getSingleton().airports().begin(),
-    AirportDatabase::getSingleton().airports().end(),
-    [this](const AirportRecord& ar) {
+  std::for_each(vApp()->airportDatabase()->airports().begin(),
+                vApp()->airportDatabase()->airports().end(),
+                [this](const AirportRecord& ar) {
       Airport* a = new Airport(&ar);
       __airports.insert(a->icao(), a);
     }
@@ -754,26 +753,26 @@ VatsimDataHandler::__slotUiCreated() {
 void
 VatsimDataHandler::__beginDownload() {
   qDebug("VatsimDataHandler: starting download.");
-  __downloader->fetchData(getDataUrl());
+  __downloader->fetch(getDataUrl());
 }
 
 void
-VatsimDataHandler::__dataFetched(QString _data) {
+VatsimDataHandler::__dataFetched(QString data) {
   if (__statusFileFetched) {
-    if (_data.isEmpty()) {
+    if (data.isEmpty()) {
       emit vatsimDataError();
       return;
     }
     
-    parseDataFile(_data);
+    parseDataFile(data);
     emit vatsimDataUpdated();
     
     if (SM::get("network.cache_enabled").toBool())
-      FileManager::cacheData(CacheFileName, _data);
+      FileManager::cacheData(CacheFileName, data);
     
     MetarListModel::getSingleton().updateAll();
   } else {
-    parseStatusFile(_data);
+    parseStatusFile(data);
   }
 }
 

@@ -1,6 +1,6 @@
 /*
  * resourcemanager.cpp
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,8 +39,8 @@ static const QString ManifestFileName = QStringLiteral("Manifest");
 // how many days to have the database updated
 static const int DaysToUpdate = 7;
 
-ResourceManager::ResourceManager(QObject* _parent) :
-    QObject(_parent) {
+ResourceManager::ResourceManager(QObject* parent) :
+    QObject(parent) {
   
   connect(this, SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
                 SLOT(__checkDatabase(ResourceManager::VersionStatus)));
@@ -56,9 +56,9 @@ ResourceManager::requestDatabaseSync() {
 }
 
 bool
-ResourceManager::__versionActual(const QString& _version1, const QString& _version2) {
-  auto ver1 = _version1.split(QRegExp("\\D+"));
-  auto ver2 = _version2.split(QRegExp("\\D+"));
+ResourceManager::__versionActual(const QString& version1, const QString& version2) {
+  auto ver1 = version1.split(QRegExp("\\D+"));
+  auto ver2 = version2.split(QRegExp("\\D+"));
   
   for (int i = 0; i < ver1.size() && i < ver2.size(); ++i) {
     if (ver1[i].toInt() < ver2[i].toInt())
@@ -82,15 +82,15 @@ ResourceManager::__fetchVersion() {
   connect(fetcher,    SIGNAL(error()),
           fetcher,    SLOT(deleteLater()));
   
-  fetcher->fetchData(QString(NetConfig::Vatsinator::repoUrl()) % "VERSION");
+  fetcher->fetch(QUrl(NetConfig::Vatsinator::repoUrl() % QStringLiteral("VERSION")));
 }
 
 void
-ResourceManager::__parseVersion(QString _versionString) {
-  bool actual = __versionActual(QString(VATSINATOR_VERSION), _versionString);
+ResourceManager::__parseVersion(QString version) {
+  bool actual = __versionActual(QString(VATSINATOR_VERSION), version);
   
   qDebug("ResourceManager: version(%s) %s version(%s)",
-         VATSINATOR_VERSION, actual ? ">=" : "<", qPrintable(_versionString.simplified()));
+         VATSINATOR_VERSION, actual ? ">=" : "<", qPrintable(version.simplified()));
   
   if (!actual)
     emit outdated();
@@ -99,8 +99,8 @@ ResourceManager::__parseVersion(QString _versionString) {
 }    
 
 void
-ResourceManager::__checkDatabase(ResourceManager::VersionStatus _status) {
-  if (_status == ResourceManager::Outdated) {
+ResourceManager::__checkDatabase(ResourceManager::VersionStatus status) {
+  if (status == ResourceManager::Outdated) {
     emit databaseStatusChanged(CannotUpdate);
   }
   

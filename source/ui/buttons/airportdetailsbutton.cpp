@@ -1,6 +1,6 @@
 /*
     airportdetailsbutton.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,34 +24,25 @@
 
 #include "airportdetailsbutton.h"
 
-AirportDetailsButton::AirportDetailsButton(QWidget* _parent) :
-    QPushButton("", _parent),
-    __current(NULL) {
+AirportDetailsButton::AirportDetailsButton(QWidget* parent) :
+    QPushButton(parent),
+    __current(nullptr) {
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
-  // we assume that autoconnect is on
-  connect(this,                         SIGNAL(clicked(const Airport*)),
-          vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
 }
 
-AirportDetailsButton::AirportDetailsButton(const Airport* _ap,
-                                     bool _autoconnect,
-                                     QWidget* _parent) :
-    QPushButton("", _parent),
-    __current(_ap) {
-  setIcon(QIcon(":/uiIcons/button-details.png"));
-  
+AirportDetailsButton::AirportDetailsButton(const Airport* airport, QWidget* parent) :
+    QPushButton(parent),
+    __current(airport) {
+//   setIcon(QIcon(":/uiIcons/button-details.png"));
+//   
   connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
-
-  if (_autoconnect)
-    connect(this,                       SIGNAL(clicked(const Airport*)),
-            vApp()->userInterface(),    SLOT(showDetails(const Airport*)));
 }
 
 void
-AirportDetailsButton::setAirportPointer(const Airport* _ap) {
-  __current = _ap;
-  setEnabled(_ap != nullptr);
-  setFlat(_ap == nullptr);
+AirportDetailsButton::setAirportPointer(const Airport* airport) {
+  __current = airport;
+  setEnabled(airport != nullptr);
+  setFlat(airport == nullptr);
 }
 
 void

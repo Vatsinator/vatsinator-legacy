@@ -24,25 +24,25 @@
 
 #include "infolabel.h"
 
-InfoLabel::InfoLabel(QWidget* _parent, Qt::WindowFlags _f) :
-    QWidget(_parent, _f),
+InfoLabel::InfoLabel(QWidget* parent, Qt::WindowFlags flags) :
+    QWidget(parent, flags),
     __descriptionFont(qobject_cast<VatsinatorStyle*>(vApp()->style())->smallFont()) {}
 
 void
-InfoLabel::setDescription(const QString& _description) {
-  __description = _description;
+InfoLabel::setDescription(const QString& description) {
+  __description = description;
   updateGeometry();
 }
 
 void
-InfoLabel::setValue(const QString& _value) {
-  __value = _value;
+InfoLabel::setValue(const QString& value) {
+  __value = value;
   updateGeometry();
 }
 
 void
-InfoLabel::setDescriptionFont(const QFont& _font) {
-  __descriptionFont = _font;
+InfoLabel::setDescriptionFont(const QFont& font) {
+  __descriptionFont = font;
   updateGeometry();
 }
 
@@ -69,17 +69,17 @@ InfoLabel::minimumSizeHint() const {
 }
 
 void
-InfoLabel::paintEvent(QPaintEvent* _e) {
+InfoLabel::paintEvent(QPaintEvent* event) {
   QPainter p(this);
   
   QFontMetrics descFm = QFontMetrics(__descriptionFont);
   QFontMetrics valueFm = fontMetrics();
   
-  QRect descRect(_e->rect().topLeft(), QSize(_e->rect().width(), descFm.height()));
+  QRect descRect(event->rect().topLeft(), QSize(event->rect().width(), descFm.height()));
   p.setFont(__descriptionFont);
   p.drawText(descRect, Qt::AlignCenter, description());
   
-  QRect valueRect(_e->rect().topLeft(), QSize(_e->rect().width(), valueFm.height()));
+  QRect valueRect(event->rect().topLeft(), QSize(event->rect().width(), valueFm.height()));
   valueRect.moveTop(descRect.bottom());
   p.setFont(font());
   p.drawText(valueRect, Qt::AlignCenter, value());

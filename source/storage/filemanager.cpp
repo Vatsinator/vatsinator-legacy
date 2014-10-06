@@ -44,24 +44,24 @@ FileManager::FileManager() {
 }
 
 void
-FileManager::cacheData(const QString& _fileName, const QString& _data) {
-  CacheFile cache(_fileName);
+FileManager::cacheData(const QString& fileName, const QString& data) {
+  CacheFile cache(fileName);
   cache.open(QIODevice::WriteOnly | QIODevice::Truncate);
-  cache.write(_data.toUtf8());
+  cache.write(data.toUtf8());
   cache.close();
 }
 
 bool
-FileManager::moveToCache(const QString& _source, const QString& _destination) {
-  QFile file(_source);
+FileManager::moveToCache(const QString& source, const QString& destination) {
+  QFile file(source);
   if (!file.open(QIODevice::ReadWrite)) {
-    qWarning("FileManager: failed to access file %s", qPrintable(_source));
+    qWarning("FileManager: failed to access file %s", qPrintable(source));
     return false;
   }
   
   file.close();
   
-  CacheFile oldCache(_destination);
+  CacheFile oldCache(destination);
   QFileInfo info(oldCache);
   QDir(info.path()).mkpath(".");
   
@@ -70,16 +70,16 @@ FileManager::moveToCache(const QString& _source, const QString& _destination) {
   
   bool result = file.rename(oldCache.fileName());
   if (result)
-    qDebug("FileManager: cached file %s", qPrintable(_destination));
+    qDebug("FileManager: cached file %s", qPrintable(destination));
   else
-    qWarning("FileManager: failed caching file %s", qPrintable(_destination));
+    qWarning("FileManager: failed caching file %s", qPrintable(destination));
   
   return result;
 }
 
 QString
-FileManager::staticPath(FileManager::StaticDir _d) {
-  switch (_d) {
+FileManager::staticPath(FileManager::StaticDir directory) {
+  switch (directory) {
     case Plugins:
 #ifndef Q_OS_DARWIN
       return QStringLiteral(VATSINATOR_PREFIX) % QStringLiteral("plugins");
@@ -101,12 +101,12 @@ FileManager::staticPath(FileManager::StaticDir _d) {
 }
 
 QString
-FileManager::path(const QString& _f) {
+FileManager::path(const QString& fileName) {
   
-  QFile tryLocal(LocalDataLocation % _f);
+  QFile tryLocal(LocalDataLocation % fileName);
   if (tryLocal.exists()) {
     qDebug("FileManager: file %s loaded from %s.",
-           qPrintable(_f), qPrintable(tryLocal.fileName()));
+           qPrintable(fileName), qPrintable(tryLocal.fileName()));
     return tryLocal.fileName();
   } else {
     return
@@ -115,7 +115,7 @@ FileManager::path(const QString& _f) {
 #else // on MacOS look for the file in the bundle
       QCoreApplication::applicationDirPath() % QStringLiteral("/../Resources/")
 #endif
-      % _f;
+      % fileName;
   }
 }
 

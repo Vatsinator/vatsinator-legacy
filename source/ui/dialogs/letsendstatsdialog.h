@@ -21,17 +21,17 @@
 #define LETSENDSTATSDIALOG_H
 
 #include <QDialog>
-
 #include "ui/ui_letsendstatsdialog.h"
 
-class LetSendStatsDialog :
-    public QDialog,
-    private Ui::LetSendStatsDialog {
-  
+/**
+ * The LetSendStatsDialog provides dialog that lets user decide whether
+ * he wants to send anonymous statistics or not.
+ */
+class LetSendStatsDialog : public QDialog, private Ui::LetSendStatsDialog {
   Q_OBJECT
 
 public:
-  explicit LetSendStatsDialog(QWidget* = 0);
+  explicit LetSendStatsDialog(QWidget* parent = nullptr);
 
 };
 

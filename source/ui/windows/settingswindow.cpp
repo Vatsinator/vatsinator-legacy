@@ -31,8 +31,8 @@
 
 #include "settingswindow.h"
 
-SettingsWindow::SettingsWindow(QWidget* _parent) :
-    BaseWindow(_parent) {
+SettingsWindow::SettingsWindow(QWidget* parent) :
+    BaseWindow(parent) {
   setupUi(this);
   
   {
@@ -67,27 +67,27 @@ SettingsWindow::SettingsWindow(QWidget* _parent) :
 }
 
 void
-SettingsWindow::__addPage(const QString& _element, const QString& _icon, QWidget* _page) {
+SettingsWindow::__addPage(const QString& element, const QString& icon, QWidget* page) {
   QListWidgetItem *item = new QListWidgetItem(CategoryList);
   
-  QIcon listIcon(_icon);
+  QIcon listIcon(icon);
   item->setIcon(listIcon);
   item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
   
-  item->setText(_element);
+  item->setText(element);
   
-  SwappingWidget->addWidget(_page);
+  SwappingWidget->addWidget(page);
   
   if (CategoryList->count() == 1)
     item->setSelected(true);
 }
 
 void
-SettingsWindow::__handleButton(QAbstractButton* _btn) {
-  if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == _btn)
+SettingsWindow::__handleButton(QAbstractButton* button) {
+  if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == button)
     emit restoreDefaults();
-  else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == _btn
-        || OKCancelButtonBox->button(QDialogButtonBox::Ok) == _btn)
+  else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == button
+        || OKCancelButtonBox->button(QDialogButtonBox::Ok) == button)
     emit settingsApplied();
 }
 

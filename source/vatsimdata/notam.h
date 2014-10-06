@@ -24,7 +24,7 @@
 #include <QDateTime>
 
 /**
- * This is class that represents a single NOTAM message.
+ * The NOTAM class represents a single NOTAM message.
  */
 class Notam {
   
@@ -49,37 +49,38 @@ public:
   };
   
   /**
-   * @param ident The NOTAM ident.
+   * \param ident The NOTAM ident.
    */
-  Notam(QString);
+  Notam(QString ident);
   
   /**
-   * @param ident The NOTAM ident.
-   * @param icao The NOTAM icao.
-   * @param notam The NOTAM message.
-   * @param url The URL where user can go to to see full message.
-   * @param from NOTAM effective from.
-   * @param to NOTAM effective to. Leave null if permament.
-   * @param diurnal NOTAM diurnal.
-   * @param cflag Effective to flag.
-   * @param type NOTAM type.
+   * \param ident The NOTAM ident.
+   * \param icao The NOTAM icao.
+   * \param notam The NOTAM message.
+   * \param url The URL where user can go to to see full message.
+   * \param from NOTAM effective from.
+   * \param to NOTAM effective to. Leave null if permament.
+   * \param diurnal NOTAM diurnal.
+   * \param cflag Effective to flag.
+   * \param type NOTAM type.
    */
-  Notam(QString, QString, QString, QString, QDateTime, QDateTime, QString, CFlag, Type);
+  Notam(QString ident, QString icao, QString notam, QString url,
+        QDateTime from, QDateTime to, QString diurnal, CFlag cflag, Type type);
   
-  void setIcao(const QString&);
-  void setNotam(const QString&);
-  void setUrl(const QString&);
-  void setFrom(const QDateTime&);
-  void setTo(const QDateTime&);
-  void setDiurnal(const QString&);
-  void setCflag(Notam::CFlag);
-  void setType(Notam::Type);
+  void setIcao(const QString& icao);
+  void setNotam(const QString& notam);
+  void setUrl(const QString& url);
+  void setFrom(const QDateTime& from);
+  void setTo(const QDateTime& to);
+  void setDiurnal(const QString& diurnal);
+  void setCflag(Notam::CFlag cflag);
+  void setType(Notam::Type type);
   
   /**
    * For sorting purposes.
    */
-  bool operator <(const Notam&) const;
-  bool operator >(const Notam&) const;
+  bool operator <(const Notam& other) const;
+  bool operator >(const Notam& other) const;
   
   /**
    * NOTAM ident.

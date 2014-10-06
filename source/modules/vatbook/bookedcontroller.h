@@ -25,31 +25,54 @@
 #include <QString>
 #include <QStringList>
 
+/**
+ * The BookedController class represents a single booking entry.
+ * All bookings are kept together in BookedAtcTableModel.
+ */
 class BookedController {
   
 public:
-  BookedController() = delete;
-  BookedController(const QStringList&);
+  /**
+   * Constructs the BookedController from the given data.
+   */
+  BookedController(const QStringList& data);
   
+  /**
+   * Gets the airport/FIR ICAO code.
+   */
   QString icao() const;
   
-  inline const QString &
-  callsign() const { return __callsign; }
+  /**
+   * Gets the booked client's callsign.
+   */
+  inline const QString& callsign() const { return __callsign; }
   
-  inline const QString &
-  realName() const { return __realName; }
+  /**
+   * Gets the booked client's real name.
+   */
+  inline const QString& realName() const { return __realName; }
   
-  inline bool
-  isTrainingSession() const { return __trainingSession; }
+  /**
+   * Returns true if the booking is planned as a training session.
+   */
+  inline bool isTrainingSession() const { return __trainingSession; }
   
-  inline const QDate &
-  dateBooked() const { return __dateBooked; }
+  /**
+   * Returns the day for which the booking is made.
+   */
+  inline const QDate& dateBooked() const { return __dateBooked; }
   
-  inline const QTime &
-  bookedFrom() const { return __bookedFrom; }
+  /**
+   * Gets the time when the client should log in.
+   */
+  inline const QTime& bookedFrom() const { return __bookedFrom; }
   
-  inline const QTime &
-  bookedTo() const { return __bookedTo; }
+  /**
+   * Gets the time of the session ending.
+   */
+  inline const QTime& bookedTo() const { return __bookedTo; }
+  
+  BookedController() = delete;
   
 private:
   QString __callsign;

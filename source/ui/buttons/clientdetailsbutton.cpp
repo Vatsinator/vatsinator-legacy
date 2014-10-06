@@ -1,6 +1,6 @@
 /*
     clientdetailsbutton.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,27 +22,20 @@
 
 #include "clientdetailsbutton.h"
 
-ClientDetailsButton::ClientDetailsButton(const Client* _client,
-                                         QWidget* _parent) :
-    QPushButton("", _parent),
-    __current(_client) {
+ClientDetailsButton::ClientDetailsButton(const Client* client,
+                                         QWidget* parent) :
+    QPushButton(parent),
+    __current(client) {
   
-  static const QIcon iIcon(":/uiIcons/button-details.png");
+//   static const QIcon iIcon(":/uiIcons/button-details.png");
+//   setIcon(iIcon);
   
-  setIcon(iIcon);
-  connect(this, SIGNAL(clicked()),
-          this, SLOT(__handleClicked()));
+  connect(this, &QPushButton::clicked, [this]() {
+    emit clicked(__current);
+  });
 }
 
 void
-ClientDetailsButton::setClient(const Client* _client) {
-  __current = _client;
+ClientDetailsButton::setClient(const Client* client) {
+  __current = client;
 }
-
-void
-ClientDetailsButton::__handleClicked() {
-  emit clicked(__current);
-}
-
-
-

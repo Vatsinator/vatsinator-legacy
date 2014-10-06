@@ -24,11 +24,11 @@
 
 LonLat::LonLat() : QPointF() {}
 
-LonLat::LonLat(const QPoint& _p): QPointF(_p) {}
+LonLat::LonLat(const QPoint& point): QPointF(point) {}
 
-LonLat::LonLat(const QPointF& _p): QPointF(_p) {}
+LonLat::LonLat(const QPointF& point): QPointF(point) {}
 
-LonLat::LonLat(qreal _lon, qreal _lat): QPointF(_lon, _lat) {}
+LonLat::LonLat(qreal longitude, qreal latitude): QPointF(longitude, latitude) {}
 
 LonLat
 LonLat::bound() const {
@@ -43,13 +43,13 @@ LonLat::bound() const {
 }
 
 QDataStream &
-operator<<(QDataStream& _stream, const LonLat& _lonlat) {
-  _stream << _lonlat.x() << _lonlat.y();
-  return _stream;
+operator<<(QDataStream& stream, const LonLat& lonlat) {
+  stream << lonlat.x() << lonlat.y();
+  return stream;
 }
 
 QDataStream &
-operator>>(QDataStream& _stream, LonLat& _lonlat) {
-  _stream >> _lonlat.rx() >> _lonlat.ry();
-  return _stream;
+operator>>(QDataStream& stream, LonLat& lonlat) {
+  stream >> lonlat.rx() >> lonlat.ry();
+  return stream;
 }

@@ -38,17 +38,17 @@ LanguageManager::allLanguages() {
 }
 
 int
-LanguageManager::getLanguageId(const QString& _locale) {
+LanguageManager::getLanguageId(const QString& locale) {
   for (LangInfo& li: __languages)
-    if (li.locale == _locale)
+    if (li.locale == locale)
       return li.id;
   
   return 0;
 }
 
 const QString&
-LanguageManager::getLocaleById(int _id) {
-  return __languages[_id].locale;
+LanguageManager::getLocaleById(int id) {
+  return __languages[id].locale;
 }
 
 void

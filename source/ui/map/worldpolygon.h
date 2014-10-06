@@ -25,12 +25,25 @@
 
 class MapRenderer;
 
+/**
+ * The WorldPolygon class stores the world map in OpenGL buffers and
+ * renders it when needed.
+ */
 class WorldPolygon {
   
 public:
-  WorldPolygon(MapRenderer*);
+  /**
+   * Fills the buffers with data. _renderer_ provides OpenGL rendering
+   * context.
+   */
+  WorldPolygon(MapRenderer* renderer);
+  
   ~WorldPolygon();
   
+  /**
+   * Renders the map.
+   * Only lands are being rendered; their color must be specified beforehand.
+   */
   void paint();
   
 private:

@@ -22,11 +22,10 @@
 
 #include "weatherforecastreply.h"
 
-WeatherForecastReply::WeatherForecastReply(
-  WeatherForecastRequest* _request,
-  QObject* _parent) :
-      QObject(_parent),
-      __request(_request),
+WeatherForecastReply::WeatherForecastReply(WeatherForecastRequest* request,
+                                           QObject* parent) :
+      QObject(parent),
+      __request(request),
       __finished(false),
       __error(NoError) {}
 
@@ -35,22 +34,22 @@ WeatherForecastReply::~WeatherForecastReply() {
 }
 
 void
-WeatherForecastReply::appendWeatherData(WeatherData* _data) {
-  _data->setParent(this);
-  __data << _data;
+WeatherForecastReply::appendWeatherData(WeatherData* data) {
+  data->setParent(this);
+  __data << data;
 }
 
 void
-WeatherForecastReply::setFinished(bool _finished) {
-  if (_finished && !isFinished()) {
-    __finished = _finished;
-    emit finished();
+WeatherForecastReply::setError(WeatherForecastReply::ForecastError error) {
+  __error = error;
+}
+
+void
+WeatherForecastReply::setFinished(bool finished) {
+  if (finished && !isFinished()) {
+    __finished = finished;
+    emit this->finished();
   } else {
-    __finished = _finished;
+    __finished = finished;
   }
-}
-
-void
-WeatherForecastReply::setError(WeatherForecastReply::ForecastError _e) {
-  __error = _e;
 }

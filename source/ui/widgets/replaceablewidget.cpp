@@ -20,12 +20,12 @@
 
 #include "replaceablewidget.h"
 
-ReplaceableWidget::ReplaceableWidget(QWidget* _parent) :
-  QStackedWidget(_parent) {}
+ReplaceableWidget::ReplaceableWidget(QWidget* parent) :
+  QStackedWidget(parent) {}
 
 void
-ReplaceableWidget::addWidgets(const std::initializer_list<QWidget*>& _wList) {
-  for (auto it: _wList)
+ReplaceableWidget::addWidgets(const std::initializer_list<QWidget*>& widgets) {
+  for (auto it: widgets)
     addWidget(it);
 }
 

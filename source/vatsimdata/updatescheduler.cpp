@@ -25,12 +25,12 @@
 
 #include "updatescheduler.h"
 
-UpdateScheduler::UpdateScheduler(QObject* _parent): QObject(_parent) {
+UpdateScheduler::UpdateScheduler(QObject* parent): QObject(parent) {
   __timer.setSingleShot(true);
   
   connect(&__timer,                     SIGNAL(timeout()),
           this,                         SIGNAL(timeToUpdate()));
-  connect(qobject_cast<VatsimDataHandler*>(parent()), 
+  connect(qobject_cast<VatsimDataHandler*>(parent), 
                                         SIGNAL(vatsimDataUpdated()),
           this,                         SLOT(__setupTimer()));
 }
@@ -38,7 +38,7 @@ UpdateScheduler::UpdateScheduler(QObject* _parent): QObject(_parent) {
 void
 UpdateScheduler::__setupTimer() {
   if (SM::get("network.auto_updater").toBool()) {
-    int rate = vApp()->vatsimDataHandler()->reload() * 1000 * 60;
+    int rate = vApp()->vatsimDataHandler()->timeToReload() * 1000 * 60;
     __timer.setInterval(rate);
   } else {
     int rate = SM::get("network.refresh_rate").toInt() * 1000 * 60;

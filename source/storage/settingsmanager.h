@@ -45,12 +45,12 @@ signals:
   void settingsChanged();
 
 public:
-  SettingsManager(QObject* = 0);
+  SettingsManager(QObject* parent = 0);
   
   /**
    * Adds settings page.
    */
-  void addPage(AbstractSettingsModule*);
+  void addPage(AbstractSettingsModule* page);
   
   /**
    * We need this to be accessible before all pages are created.
@@ -61,17 +61,19 @@ public:
   
   /**
    * Gives access to particular setting.
-   * @param s Page and variable name, glued by dot (.).
+   * 
+   * \param s Page and variable name, glued by dot (.).
    *    Example: SettingsManager::get("network.refresh_rate")
    */
-  static const QVariant& get(const QString&);
+  static const QVariant& get(const QString& s);
   
   /**
    * If any class modifies the QSettings directly, it should call
    * this method in order to have changes visible in the UI.
-   * @param pName Page name.
+   * 
+   * \param pageName Page name.
    */
-  static void updateUi(const QString&);
+  static void updateUi(const QString& page);
   
 public slots:
   void initialize();
@@ -90,10 +92,10 @@ private:
   
   /**
    * Sets the given value in the settings map.
-   * @param key Key of the value.
-   * @param value The value.
+   * \param key Key of the value.
+   * \param value The value.
    */
-  static void updateValue(QString&&, QVariant&&);
+  static void updateValue(QString&& key, QVariant&& value);
   
   /**
    * Reads config file, restores all settings.
@@ -103,7 +105,7 @@ private:
   /**
    * Gets page by module id.
    */
-  AbstractSettingsModule* __getPage(const QString&) const;
+  AbstractSettingsModule* __getPage(const QString& s) const;
   
   /**
    * Fills the default settings map.

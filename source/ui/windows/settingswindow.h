@@ -36,13 +36,13 @@ signals:
   void settingsApplied();
 
 public:
-  SettingsWindow(QWidget* = nullptr);
+  SettingsWindow(QWidget* parent = nullptr);
   
 private:
-  void __addPage(const QString&, const QString&, QWidget*);
+  void __addPage(const QString& element, const QString& icon, QWidget* page);
   
 private slots:
-  void __handleButton(QAbstractButton*);
+  void __handleButton(QAbstractButton* button);
 
 };
 

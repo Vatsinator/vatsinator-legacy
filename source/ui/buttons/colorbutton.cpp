@@ -1,6 +1,6 @@
 /*
     colorbutton.cpp
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,16 +22,16 @@
 
 #include "colorbutton.h"
 
-ColorButton::ColorButton(QWidget* _parent) :
-    QPushButton("", _parent) {
+ColorButton::ColorButton(QWidget* parent) :
+    QPushButton(parent) {
   connect(this, SIGNAL(clicked()),
           this, SLOT(__pickColor()));
 }
 
 void
-ColorButton::setColor(const QColor& _color) {
-  if (__current != _color) {
-    __current = _color;
+ColorButton::setColor(const QColor& color) {
+  if (__current != color) {
+    __current = color;
     update();
   }
 }
@@ -53,7 +53,9 @@ ColorButton::minimumSizeHint() const {
 }
 
 void
-ColorButton::paintEvent(QPaintEvent*) {
+ColorButton::paintEvent(QPaintEvent* event) {
+  Q_UNUSED(event);
+  
   // init painter and style
   QPainter painter(this);
   QStyle* style = QWidget::style();
@@ -93,12 +95,12 @@ ColorButton::paintEvent(QPaintEvent*) {
 }
 
 void
-ColorButton::__initStyleOptionButton(QStyleOptionButton* _btn) const {
-  _btn->initFrom(this);
-  _btn->state |= isDown() ? QStyle::State_Sunken : QStyle::State_Raised;
-  _btn->features = QStyleOptionButton::None;
-  _btn->text.clear();
-  _btn->icon = QIcon();
+ColorButton::__initStyleOptionButton(QStyleOptionButton* option) const {
+  option->initFrom(this);
+  option->state |= isDown() ? QStyle::State_Sunken : QStyle::State_Raised;
+  option->features = QStyleOptionButton::None;
+  option->text.clear();
+  option->icon = QIcon();
 }
 
 void

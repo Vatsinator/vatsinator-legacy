@@ -37,8 +37,8 @@ namespace DefaultSettings {
   static const QString WEATHER_TEMPERATURE_UNITS  = "Celsius";
 }
 
-NetworkPage::NetworkPage(QWidget* _parent) :
-    QWidget(_parent) {
+NetworkPage::NetworkPage(QWidget* parent) :
+    QWidget(parent) {
   setupUi(this);
   connect(RefreshRateBox,       SIGNAL(valueChanged(int)),
           this,                 SLOT(__updateRefreshRateLabel(int)));
@@ -73,23 +73,23 @@ NetworkPage::update() const {
 }
 
 void
-NetworkPage::restore(QSettings& _s) {
-  bool state = _s.value("auto_updater", DefaultSettings::AUTO_UPDATER).toBool();
+NetworkPage::restore(QSettings& s) {
+  bool state = s.value("auto_updater", DefaultSettings::AUTO_UPDATER).toBool();
   AutoUpdaterCheckBox->setChecked(state);
   __updateAutoUpdaterLocks(state ? Qt::Checked : Qt::Unchecked);
   
-  int val = _s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt();
+  int val = s.value("refresh_rate", DefaultSettings::REFRESH_RATE).toInt();
   RefreshRateBox->setValue(val);
   __updateRefreshRateLabel(val);
   
   RefreshMetarsCheckBox->setChecked(
-    _s.value("refresh_metars", DefaultSettings::METARS_REFRESH).toBool());
+    s.value("refresh_metars", DefaultSettings::METARS_REFRESH).toBool());
   CachingCheckBox->setChecked(
-    _s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
+    s.value("cache_enabled", DefaultSettings::CACHE_ENABLED).toBool());
   DatabaseIntegrationCheckBox->setChecked(
-    _s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
+    s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
   QString weatherCurrent =
-    _s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
+    s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
   
   PluginListWidgetItem* none = new PluginListWidgetItem(tr("None"), WeatherProviderListWidget);
   none->setData(Qt::UserRole, QString("none"));
@@ -113,7 +113,7 @@ NetworkPage::restore(QSettings& _s) {
   }
   
   QString units;
-  if (!_s.contains("weather_temperature_units")) {
+  if (!s.contains("weather_temperature_units")) {
     /* In USA provide Fahrenheit by default */
     if (QLocale::system().country() == QLocale::UnitedStates) {
       units = "Fahrenheit";
@@ -121,7 +121,7 @@ NetworkPage::restore(QSettings& _s) {
       units = DefaultSettings::WEATHER_TEMPERATURE_UNITS;
     }
   } else {
-    units = _s.value("weather_temperature_units", DefaultSettings::WEATHER_TEMPERATURE_UNITS).toString();
+    units = s.value("weather_temperature_units", DefaultSettings::WEATHER_TEMPERATURE_UNITS).toString();
   }
   
   if (units != "Celsius" && units != "Fahrenheit")
@@ -134,22 +134,22 @@ NetworkPage::restore(QSettings& _s) {
 }
 
 void
-NetworkPage::save(QSettings& _s) {
-  _s.setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
-  _s.setValue("refresh_rate", RefreshRateBox->value());
-  _s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
-  _s.setValue("cache_enabled", CachingCheckBox->isChecked());
-  _s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  _s.setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->data(Qt::UserRole));
-  _s.setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
+NetworkPage::save(QSettings& s) {
+  s.setValue("auto_updater", AutoUpdaterCheckBox->isChecked());
+  s.setValue("refresh_rate", RefreshRateBox->value());
+  s.setValue("refresh_metars", RefreshMetarsCheckBox->isChecked());
+  s.setValue("cache_enabled", CachingCheckBox->isChecked());
+  s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
+  s.setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->data(Qt::UserRole));
+  s.setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
 }
 
 void
-NetworkPage::__updateRefreshRateLabel(int _n) {
-  RefreshRateLabel->setText(tr("minute(s)", "", _n));
+NetworkPage::__updateRefreshRateLabel(int n) {
+  RefreshRateLabel->setText(tr("minute(s)", "", n));
 }
 
 void
-NetworkPage::__updateAutoUpdaterLocks(int _state) {
-  CustomUpdatesBox->setEnabled(_state == Qt::Checked ? false : true);
+NetworkPage::__updateAutoUpdaterLocks(int state) {
+  CustomUpdatesBox->setEnabled(state == Qt::Checked ? false : true);
 }

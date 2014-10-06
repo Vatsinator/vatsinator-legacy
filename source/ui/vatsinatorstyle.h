@@ -53,7 +53,7 @@ public:
   QFont smallFont();
   
 #ifdef Q_OS_MAC
-  void polish(QWidget*) override;
+  void polish(QWidget* widget) override;
 #endif
   
 };

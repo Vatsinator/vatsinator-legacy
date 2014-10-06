@@ -19,7 +19,7 @@
 
 #include "letsendstatsdialog.h"
 
-LetSendStatsDialog::LetSendStatsDialog(QWidget* _parent) :
-    QDialog(_parent) {
+LetSendStatsDialog::LetSendStatsDialog(QWidget* parent) :
+    QDialog(parent) {
   setupUi(this);
 }

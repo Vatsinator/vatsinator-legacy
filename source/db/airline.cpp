@@ -30,26 +30,26 @@
 
 static const QString AirlineLogoCacheDir = QStringLiteral("airline-logos");
 
-Airline::Airline(QString _icao, QString _name, QString _country,
-                 QString _website, QString _logo, QObject* _parent) :
-    QObject(_parent),
-    __icao(_icao),
-    __name(_name),
-    __country(_country),
-    __website(_website),
-    __logoUrl(_logo) {}
+Airline::Airline(QString icao, QString name, QString country,
+                 QString website, QString logo, QObject* parent) :
+    QObject(parent),
+    __icao(icao),
+    __name(name),
+    __country(country),
+    __website(website),
+    __logoUrl(logo) {}
 
-Airline::Airline(const QJsonObject& _json, QObject* _parent) :
-    QObject(_parent),
-    __icao(_json["icao"].toString()),
-    __name(_json["name"].toString()),
-    __country(_json["country"].toString()),
-    __website(_json["website"].toString()),
-    __logoUrl(_json["logo"].toString()) {}
+Airline::Airline(const QJsonObject& json, QObject* parent) :
+    QObject(parent),
+    __icao(json["icao"].toString()),
+    __name(json["name"].toString()),
+    __country(json["country"].toString()),
+    __website(json["website"].toString()),
+    __logoUrl(json["logo"].toString()) {}
 
 void
 Airline::requestLogo() {
-  if (!AirlineDatabase::getSingleton().canFetch()) {
+  if (!vApp()->airlineDatabase()->canFetchLogos()) {
     qDebug("Airline: can't fetch logo (%s): disabled", qPrintable(__icao));
     return;
   }
@@ -57,7 +57,7 @@ Airline::requestLogo() {
   if (__logoUrl.isEmpty())
     return;
   
-  QUrl url(AirlineDatabase::getSingleton().airlineLogoUrl() % __logoUrl);
+  QUrl url(vApp()->airlineDatabase()->airlineLogoUrl() % __logoUrl);
   QString fName = QFileInfo(url.path()).fileName();
   fName.prepend(AirlineLogoCacheDir % QDir::separator());
   
@@ -74,12 +74,12 @@ Airline::requestLogo() {
 }
 
 void
-Airline::__logoFetched(QString _fileName) {
+Airline::__logoFetched(QString fileName) {
   Q_ASSERT(sender());
   
-  __logo.load(_fileName, "PNG");
-  QString newFileName = AirlineLogoCacheDir % QDir::separator() % QFileInfo(_fileName).fileName();
-  FileManager::moveToCache(_fileName, newFileName);
+  __logo.load(fileName, "PNG");
+  QString newFileName = AirlineLogoCacheDir % QDir::separator() % QFileInfo(fileName).fileName();
+  FileManager::moveToCache(fileName, newFileName);
   emit logoFetched();
   
   sender()->deleteLater();

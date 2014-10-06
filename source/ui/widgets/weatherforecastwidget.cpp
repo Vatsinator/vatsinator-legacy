@@ -65,32 +65,17 @@ namespace {
   }
 }
 
-WeatherForecastWidget::WeatherForecastWidget(QWidget* _parent,
-                                             Qt::WindowFlags _f) :
-    DelayedWidget(_parent, _f),
+WeatherForecastWidget::WeatherForecastWidget(QWidget* parent) :
+    DelayedWidget(parent),
     __maxItemCount(0),
     __celsius(true) {}
 
 void
-WeatherForecastWidget::setData(const QVector<WeatherData*> _data) {
-  __data = _data;
+WeatherForecastWidget::setData(const QList<WeatherData*> data) {
+  __data = data;
   if (__maxItemCount == 0)
     __maxItemCount = __data.count();
   
-  updateGeometry();
-  update();
-}
-
-void
-WeatherForecastWidget::setMessage(const QString& _message) {
-  __message = _message;
-  updateGeometry();
-  update();
-}
-
-void
-WeatherForecastWidget::setMaxItemCount(int _count) {
-  __maxItemCount = _count;
   updateGeometry();
   update();
 }
@@ -104,6 +89,20 @@ WeatherForecastWidget::setCelsius() {
 void
 WeatherForecastWidget::setFahrenheit() {
   __celsius = false;
+  update();
+}
+
+void
+WeatherForecastWidget::setMessage(const QString& message) {
+  __message = message;
+  updateGeometry();
+  update();
+}
+
+void
+WeatherForecastWidget::setMaxItemCount(int count) {
+  __maxItemCount = count;
+  updateGeometry();
   update();
 }
 
@@ -123,24 +122,24 @@ QSize WeatherForecastWidget::minimumSizeHint() const {
 }
 
 void
-WeatherForecastWidget::paintEvent(QPaintEvent* _event) {
+WeatherForecastWidget::paintEvent(QPaintEvent* event) {
   /* Weather icon size */
   constexpr int IconWidth = 50;
   constexpr int IconHeight = 50;
   
   QPainter p(this);
   p.setBackground(QBrush(Qt::white));
-  p.fillRect(_event->rect(), p.background());
+  p.fillRect(event->rect(), p.background());
   
   if (status() == Loading) {
-    DelayedWidget::paintEvent(_event);
+    DelayedWidget::paintEvent(event);
     return;
   }
   
   p.setRenderHints(QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
   
   if (!__message.isEmpty()) {
-    p.drawText(_event->rect(), Qt::AlignCenter | Qt::TextWordWrap, __message);
+    p.drawText(event->rect(), Qt::AlignCenter | Qt::TextWordWrap, __message);
     return;
   }
   

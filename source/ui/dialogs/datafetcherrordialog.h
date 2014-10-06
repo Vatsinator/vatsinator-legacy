@@ -25,18 +25,28 @@
 class QPushButton;
 
 /**
- * This is the dialog that shows up when data fetch fails for any reason.
+ * The DataFetchErrorDialog is a dialog that shows up when Vatsinator
+ * fails to download the data file. User's decision can be verified i.e.
+ * by calling dialog.clickedButton() and comparing it either with again()
+ * or keep().
  */
-class DataFetchErrorDialog :
-    public QMessageBox {
-  
+class DataFetchErrorDialog : public QMessageBox {
   Q_OBJECT
 
 public:
-  explicit DataFetchErrorDialog(QWidget* = 0);
+  /**
+   * The default constructor passes _parent_ to QMessageBox's constructor.
+   */
+  explicit DataFetchErrorDialog(QWidget* parent = nullptr);
   
+  /**
+   * The again() button corresponds to "Try again" user's decision.
+   */
   inline QPushButton* again() { return __againButton; }
   
+  /**
+   * The keep() button corresponds to "Keep current data" user's decision.
+   */
   inline QPushButton* keep() { return __keepButton; }
   
 private:

@@ -33,11 +33,11 @@
 
 #include "airportitem.h"
 
-AirportItem::AirportItem(const Airport* _ap, QObject* _parent) :
-    QObject(_parent),
-    __scene(qobject_cast<MapScene*>(_parent)),
-    __airport(_ap),
-    __position(_ap->data()->longitude, _ap->data()->latitude),
+AirportItem::AirportItem(const Airport* airport, QObject* parent) :
+    QObject(parent),
+    __scene(qobject_cast<MapScene*>(parent)),
+    __airport(airport),
+    __position(airport->data()->longitude, airport->data()->latitude),
     __approachCircle(nullptr),
     __icon(nullptr),
     __label(QOpenGLTexture::Target2D),
@@ -74,7 +74,7 @@ AirportItem::position() const {
 }
 
 void
-AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
+AirportItem::drawItem(QOpenGLShaderProgram* shader) const {
   static constexpr float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
   
   static const GLfloat iconRect[] = {
@@ -98,9 +98,9 @@ AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
   if (!__icon)
     __takeIcon();
   
-  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), iconRect, 2);
-  _shader->setUniformValue(__scene->renderer()->programZLocation(), ActiveAirportsZ);
+  shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  shader->setAttributeArray(MapRenderer::vertexLocation(), iconRect, 2);
+  shader->setUniformValue(__scene->renderer()->programZLocation(), ActiveAirportsZ);
   
   __icon->bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -108,7 +108,7 @@ AirportItem::drawItem(QOpenGLShaderProgram* _shader) const {
 }
 
 void
-AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
+AirportItem::drawLabel(QOpenGLShaderProgram* shader) const {
   static const GLfloat labelRect[] = {
     -0.08f, -0.05333333f,
     -0.08f,  0.0f,
@@ -130,8 +130,8 @@ AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
   if (data()->isEmpty())
     return;
   
-  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
+  shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
   
   if (!__label.isCreated())
     __initializeLabel();
@@ -142,22 +142,22 @@ AirportItem::drawLabel(QOpenGLShaderProgram* _shader) const {
 }
 
 void
-AirportItem::drawFocused(QOpenGLShaderProgram* _shader) const {
+AirportItem::drawFocused(QOpenGLShaderProgram* shader) const {
   if (!__linesReady)
     __prepareLines();
   
   if (!__otpLines.color.isValid())
       __otpLines.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
 
-  _shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLines.color);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLines.coords.constData(), 2);
+  shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLines.color);
+  shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLines.coords.constData(), 2);
   glDrawArrays(GL_LINES, 0, __otpLines.coords.size() / 2);
   
   if (!__ptdLines.color.isValid())
     __ptdLines.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
   
-  _shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLines.color);  
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLines.coords.constData(), 2);
+  shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLines.color);  
+  shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLines.coords.constData(), 2);
   glLineStipple(3, 0xF0F0); // dashed line
   glDrawArrays(GL_LINE_STRIP, 0, __ptdLines.coords.size() / 2);
   glLineStipple(1, 0xFFFF);

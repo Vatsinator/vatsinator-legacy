@@ -41,7 +41,7 @@ MetarListModel::MetarListModel(PlainTextDownloader* _ptd, QObject* _parent) :
 
 void
 MetarListModel::fetchMetar(const QString& _icao) {
-  __downloader->fetchData(vApp()->vatsimDataHandler()->metarUrl() + "?id=" + _icao.toLower());
+  __downloader->fetch(vApp()->vatsimDataHandler()->metarUrl() + "?id=" + _icao.toLower());
   __requests.enqueue(_icao.simplified());
 }
 
@@ -86,7 +86,7 @@ MetarListModel::data(const QModelIndex& _index, int _role) const {
 
 bool
 MetarListModel::anyMetarsInQueue() const {
-  return __downloader->anyTasksLeft();
+  return __downloader->hasPendingTasks();
 }
 
 void

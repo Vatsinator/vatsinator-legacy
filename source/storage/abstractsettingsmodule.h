@@ -27,11 +27,8 @@
 
 class QSettings;
 
+
 class AbstractSettingsModule {
-  
-  /*
-   * Subclass this class to create a settings module
-   */
   
 public:
   
@@ -59,21 +56,21 @@ public:
    */
   virtual void update() const = 0;
   
-  void restoreSettings(QSettings&);
-  void saveSettings(QSettings&);
+  void restoreSettings(QSettings& settings);
+  void saveSettings(QSettings& settings);
   
 protected:
-  void setValue(const QString&, QVariant&&) const;
+  void setValue(const QString& key, QVariant&& value) const;
   
   /**
    * Restores user's settings.
    */
-  virtual void restore(QSettings&) = 0;
+  virtual void restore(QSettings& settings) = 0;
   
   /**
    * Saves user's settings.
    */
-  virtual void save(QSettings&) = 0;
+  virtual void save(QSettings& settings) = 0;
   
 };
 

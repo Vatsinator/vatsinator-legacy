@@ -47,8 +47,8 @@
 
 #include "widgetsuserinterface.h"
 
-WidgetsUserInterface::WidgetsUserInterface(QObject* _parent):
-    UserInterface(_parent) {}
+WidgetsUserInterface::WidgetsUserInterface(QObject* parent):
+    UserInterface(parent) {}
 
 WidgetsUserInterface::~WidgetsUserInterface() {
   delete __vatsinatorWindow;
@@ -135,23 +135,23 @@ WidgetsUserInterface::showAppRestartDialog() {
 }
 
 void
-WidgetsUserInterface::fatal(const QString& _msg) {
+WidgetsUserInterface::fatal(const QString& message) {
   QMessageBox msgBox;
-  msgBox.setText(_msg);
+  msgBox.setText(message);
   msgBox.setIcon(QMessageBox::Critical);
   
-  qFatal("%s", qPrintable(_msg));
+  qFatal("%s", qPrintable(message));
   
   msgBox.exec();
 }
 
 void
-WidgetsUserInterface::warning(const QString& _msg) {
+WidgetsUserInterface::warning(const QString& message) {
   QMessageBox msgBox;
-  msgBox.setText(_msg);
+  msgBox.setText(message);
   msgBox.setIcon(QMessageBox::Warning);
   
-  qWarning("%s", qPrintable(_msg));
+  qWarning("%s", qPrintable(message));
   
   msgBox.exec();
 }
@@ -178,13 +178,13 @@ WidgetsUserInterface::dataError() {
 }
 
 void
-WidgetsUserInterface::showVatsimMessage(const QString& _msg) {
-  QString hash = QString::number(qHash(_msg));
+WidgetsUserInterface::showVatsimMessage(const QString& message) {
+  QString hash = QString::number(qHash(message));
   QSettings s;
   if (s.value("VatsimMessages/" % hash, false).toBool())
     return;
   
-  VatsimMessageDialog* dialog = new VatsimMessageDialog(_msg);
+  VatsimMessageDialog* dialog = new VatsimMessageDialog(message);
   
   connect(dialog,       SIGNAL(finished(int)),
           dialog,       SLOT(deleteLater()));
@@ -195,19 +195,19 @@ WidgetsUserInterface::showVatsimMessage(const QString& _msg) {
 }
 
 void
-WidgetsUserInterface::showDetails(const Airport* _ap) {
-  AirportDetailsWindow* ap = new AirportDetailsWindow(_ap);
+WidgetsUserInterface::showDetails(const Airport* airport) {
+  AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
   ap->setAttribute(Qt::WA_DeleteOnClose);
   ap->show();
 }
 
 void
-WidgetsUserInterface::showDetails(const Client* _c) {
-  if (const Pilot* p = dynamic_cast<const Pilot*>(_c)) {
+WidgetsUserInterface::showDetails(const Client* client) {
+  if (const Pilot* p = dynamic_cast<const Pilot*>(client)) {
     FlightDetailsWindow* w = new FlightDetailsWindow(p);
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
-  } else if (const Controller* c = dynamic_cast<const Controller*>(_c)) {
+  } else if (const Controller* c = dynamic_cast<const Controller*>(client)) {
     AtcDetailsWindow* w = new AtcDetailsWindow(c);
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
@@ -215,15 +215,15 @@ WidgetsUserInterface::showDetails(const Client* _c) {
 }
 
 void
-WidgetsUserInterface::showDetails(const Fir* _f) {
-  FirDetailsWindow* w = new FirDetailsWindow(_f);
+WidgetsUserInterface::showDetails(const Fir* fir) {
+  FirDetailsWindow* w = new FirDetailsWindow(fir);
   w->setAttribute(Qt::WA_DeleteOnClose);
   w->show();
 }
 
 void
-WidgetsUserInterface::showMetar(const QString& _icao) {
-  metarsWindow()->show(_icao);
+WidgetsUserInterface::showMetar(const QString& metar) {
+  metarsWindow()->show(metar);
 }
 
 void

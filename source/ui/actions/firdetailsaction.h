@@ -1,6 +1,6 @@
 /*
     firdetailsaction.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,20 +21,27 @@
 #define FIRDETAILSACTION_H
 
 #include <QAction>
-
 #include "vatsimdata/fir.h"
 
+/**
+ * The FirDetailsAction represents a menu action that corresponds
+ * with the specified Fir instance.
+ */
 class FirDetailsAction : public QAction {
   Q_OBJECT
 
 signals:
-  void triggered(const Fir*);
+  /**
+   * Passed from QAction.
+   */
+  void triggered(const Fir* fir);
 
 public:
-  FirDetailsAction(const Fir*, const QString&, QObject*);
-
-private slots:
-  void __handleTriggered();
+  /**
+   * Creates new FirDetailsAction with the specified _fir_ and _label_.
+   * _parent_ is passed to the QAction's constructor.
+   */
+  FirDetailsAction(const Fir* fir, const QString& label, QObject* parent);
 
 private:
   const Fir* __current;

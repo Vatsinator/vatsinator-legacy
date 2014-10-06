@@ -1,6 +1,6 @@
 /*
     airportdetailsaction.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,20 +21,27 @@
 #define AIRPORTDETAILSACTION_H
 
 #include <QAction>
-
 #include "vatsimdata/airport.h"
 
+/**
+ * The AirportDetailsAction represents an action in menu that corresponds
+ * to the Airport class instance.
+ */
 class AirportDetailsAction : public QAction {
   Q_OBJECT
 
 signals:
-  void triggered(const Airport*);
+  /**
+   * The triggered() signal is forwarded from QAction's.
+   */
+  void triggered(const Airport* airport);
 
 public:
-  AirportDetailsAction(const Airport*, const QString&, QObject*);
-
-private slots:
-  void __handleTriggered();
+  /**
+   * Creates new action with the given _airport_, _label_ and _parent_.
+   */
+  AirportDetailsAction(const Airport* airport, const QString& label,
+                       QObject* parent);
 
 private:
   const Airport* __current;

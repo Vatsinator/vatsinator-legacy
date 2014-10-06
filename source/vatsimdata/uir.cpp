@@ -22,27 +22,27 @@
 
 #include "uir.h"
 
-Uir::Uir(const QString& _icao, QObject* _parent) :
-    QObject(_parent),
-    __icao(_icao),
+Uir::Uir(const QString& icao, QObject* parent) :
+    QObject(parent),
+    __icao(icao),
     __staff(new ControllerTableModel(this)) {}
 
 void
-Uir::addFir(Fir* _f) {
-  __range.push_back(_f);
+Uir::addFir(Fir* fir) {
+  __range.push_back(fir);
 }
 
 void
-Uir::addStaff(const Controller* _c) {
-  __staff->add(_c);
-  connect(_c,           SIGNAL(updated()),
+Uir::addStaff(const Controller* atc) {
+  __staff->add(atc);
+  connect(atc,           SIGNAL(updated()),
           this,         SIGNAL(updated()));
-  connect(_c,           SIGNAL(destroyed(QObject*)),
+  connect(atc,           SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
   
   for (Fir* f: range())
-    f->addUirStaff(_c);
+    f->addUirStaff(atc);
 }
 
 bool

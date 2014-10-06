@@ -23,16 +23,17 @@
 #include "storage/filemanager.h"
 #include "ui/userinterface.h"
 #include "config.h"
+#include "vatsinatorapplication.h"
 
 #include "aboutwindow.h"
 #include "ui/about.h"
 
-AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
+AboutWindow::AboutWindow(QWidget* parent) : BaseWindow(parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(hide()));
-  connect(ResourceManager::getSingletonPtr(),
+  connect(vApp()->resourceManager(),
                 SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
           this,
                 SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
@@ -47,7 +48,7 @@ AboutWindow::AboutWindow(QWidget* _parent) : BaseWindow(_parent) {
 }
 
 void
-AboutWindow::showEvent(QShowEvent* _e) {
+AboutWindow::showEvent(QShowEvent* event) {
   if (LicenseField->toPlainText().isEmpty()) {
     QFile file(":/about/COPYING");
     bool result = file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -59,13 +60,13 @@ AboutWindow::showEvent(QShowEvent* _e) {
     LicenseField->setHtml("<pre>" % content.toHtmlEscaped() % "</pre>");
   }
   
-  BaseWindow::showEvent(_e);
+  BaseWindow::showEvent(event);
 }
 
 void
-AboutWindow::__updateVersionStatus(ResourceManager::VersionStatus _status) {
+AboutWindow::__updateVersionStatus(ResourceManager::VersionStatus status) {
   QPalette p = VersionStatusLabel->palette();
-  if (_status == ResourceManager::Updated) {
+  if (status == ResourceManager::Updated) {
     p.setColor(QPalette::WindowText, Qt::darkGreen);
     VersionStatusLabel->setPalette(p);
     VersionStatusLabel->setText(tr("up-to-date", "Vatsinator version indicator"));

@@ -48,13 +48,13 @@ public:
   /**
    * Starts fetching the METAR.
    * After done, emits newMetarsAvailable().
-   * @param icao Airport ICAO code.
+   * \param icao Airport ICAO code.
    */
   void fetchMetar(const QString&);
 
   /**
    * Looks for the METAR.
-   * @param icao Airport ICAO code. NOTE: The code must be uppercase.
+   * \param icao Airport ICAO code. NOTE: The code must be uppercase.
    * @return Const ptr to found METAR or NULL.
    */
   const Metar* find(const QString&) const;

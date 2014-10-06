@@ -22,14 +22,14 @@
 
 Metar::Metar() : __icao("ZZZZ") {}
 
-Metar::Metar(QString _icao, const QString& _metar) :
-    __icao(qMove(_icao)),
-    __metar(_metar),
+Metar::Metar(const QString& icao, const QString& metar) :
+    __icao(icao),
+    __metar(metar),
     __lastFetchTime(QDateTime::currentDateTimeUtc()) {}
 
 void
-Metar::setMetar(const QString& _m) {
-  Q_ASSERT(_m.left(4) == __icao);
-  __metar = _m;
+Metar::setMetar(const QString& metar) {
+  Q_ASSERT(metar.left(4) == __icao);
+  __metar = metar;
   __lastFetchTime = QDateTime::currentDateTimeUtc();
 }

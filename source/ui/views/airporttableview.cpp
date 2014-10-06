@@ -25,33 +25,33 @@
 
 #include "airporttableview.h"
 
-AirportTableView::AirportTableView(QWidget* _parent) :
-    QTableView(_parent) {}
+AirportTableView::AirportTableView(QWidget* parent) :
+    QTableView(parent) {}
 
 void
-AirportTableView::setModel(AirportTableModel* _model) {
-  QTableView::setModel(_model);
+AirportTableView::setModel(AirportTableModel* model) {
+  QTableView::setModel(model);
   __updateButtons();
 }
 
 void
-AirportTableView::rowsInserted(const QModelIndex& _parent, int _start, int _end) {
-  QTableView::rowsInserted(_parent, _start, _end);
-  __updateButtons(_start, _end + 1);
+AirportTableView::rowsInserted(const QModelIndex& parent, int start, int end) {
+  QTableView::rowsInserted(parent, start, end);
+  __updateButtons(start, end + 1);
 }
 
 void
-AirportTableView::__updateButtons(int _start, int _end) {
+AirportTableView::__updateButtons(int start, int end) {
   const AirportTableModel* apModel = qobject_cast<const AirportTableModel*>(model());
   Q_ASSERT(apModel);
   
-  if (_start == -1)
-    _start = 0;
+  if (start == -1)
+    start = 0;
   
-  if (_end == -1)
-    _end = apModel->rowCount();
+  if (end == -1)
+    end = apModel->rowCount();
 
-  for (int i = _start; i < _end; ++i) {
+  for (int i = start; i < end; ++i) {
     AirportDetailsButton* dButton = new AirportDetailsButton(apModel->airports()[i]);
     connect(dButton,                    SIGNAL(clicked(const Airport*)),
             vApp()->userInterface(),    SLOT(showDetails(const Airport*)));

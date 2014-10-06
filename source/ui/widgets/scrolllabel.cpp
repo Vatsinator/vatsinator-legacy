@@ -20,7 +20,7 @@
 
 #include "scrolllabel.h"
 
-static const int SCROLL_LABEL_MARGIN = 5;
+static constexpr int ScrollLabelMargin = 5;
 
 ScrollLabel::ScrollLabel(QWidget* parent) :
     QWidget(parent),
@@ -32,21 +32,23 @@ ScrollLabel::ScrollLabel(QWidget* parent) :
 }
 
 void
-ScrollLabel::setText(const QString& _text) {
+ScrollLabel::setText(const QString& text) {
   QString temp(__text);
-  __text = _text;
+  __text = text;
   
   if (temp != __text)
     __updateText();
 }
 
 void
-ScrollLabel::paintEvent(QPaintEvent*) {
+ScrollLabel::paintEvent(QPaintEvent* event) {
   QPainter p(this);
   
-  p.drawStaticText(QPointF(SCROLL_LABEL_MARGIN - __textPosition,
+  p.drawStaticText(QPointF(ScrollLabelMargin - __textPosition,
                            (height() - __textSize.height()) / 2),
                    __staticText);
+  
+  Q_UNUSED(event);
 }
 
 void
@@ -61,7 +63,7 @@ ScrollLabel::__updateText() {
   __textSize = QSize(fontMetrics().width(__staticText.text()),
                      fontMetrics().height());
   
-  if (__textSize.width() + (SCROLL_LABEL_MARGIN * 2) > width())
+  if (__textSize.width() + (ScrollLabelMargin * 2) > width())
     __timer.start();
   
   update();
@@ -83,5 +85,3 @@ ScrollLabel::__timerTimeout() {
   
   update();
 }
-
-

@@ -25,17 +25,17 @@
 #include "ui/ui_apprestartdialog.h"
 
 /**
- * Show dialog that lets the user decide whether he wants to restart
- * the application or not.
+ * The AppRestartDialog is a dialog that lets user decide whether he wants
+ * to restart the application or not.
  */
-class AppRestartDialog :
-    public QDialog,
-    private Ui::AppRestartDialog {
-  
+class AppRestartDialog : public QDialog, private Ui::AppRestartDialog {
   Q_OBJECT
   
 public:
-  explicit AppRestartDialog(QWidget* = 0);
+  /**
+   * The default constructor passes _parent_ to QDialog's constructor.
+   */
+  explicit AppRestartDialog(QWidget* parent = nullptr);
 
 };
 

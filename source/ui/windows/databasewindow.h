@@ -24,18 +24,16 @@
 #include "network/resourcemanager.h"
 #include "ui/ui_databasewindow.h"
 
-class DatabaseWindow :
-    public BaseWindow,
-    private Ui::DatabaseWindow {
+class DatabaseWindow : public BaseWindow, private Ui::DatabaseWindow {
   
   Q_OBJECT
 
 public:
-  DatabaseWindow(QWidget* = nullptr);
+  DatabaseWindow(QWidget* parent = nullptr);
   
 private slots:
   void __updateNumbers();
-  void __updateDatabaseStatus(ResourceManager::VersionStatus);
+  void __updateDatabaseStatus(ResourceManager::VersionStatus status);
   
 };
 

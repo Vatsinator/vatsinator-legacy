@@ -21,42 +21,86 @@
 #define BOOKEDATCTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <QVector>
+#include <QList>
 
 class BookedController;
 
 /**
- * The BookedAtcTableModel is a model that keeps bookings.
+ * The BookedAtcTableModel is used to hold bookings.
+ * These bookings are displayed in AirportDetailsWindow and
+ * FirDetailsWindow.
  */
 class BookedAtcTableModel : public QAbstractTableModel {
-  
   Q_OBJECT
   
 signals:
+  /**
+   * Emited just after the model is sorted.
+   */
   void sorted();
   
 public:
-  explicit BookedAtcTableModel(QObject* = 0);
-  virtual ~BookedAtcTableModel();
-  
-  void add(const BookedController*);
-  void clear();
-  
-  int rowCount(const QModelIndex& = QModelIndex()) const;
-  int columnCount(const QModelIndex& = QModelIndex()) const;
-  QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
-  QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
-  void sort(int, Qt::SortOrder = Qt::AscendingOrder);
-  
+  /**
+   * The Column enum describes various columns in which the model data
+   * is displayed.
+   */
   enum Column {
-    Callsign  = 0,
-    Name      = 1,
-    Date      = 2,
-    Hours     = 3
+    Callsign  = 0, /**< Client's callsign */
+    Name      = 1, /**< Real name */
+    Date      = 2, /**< Date of booking */
+    Hours     = 3  /**< Hours of booking */
   };
   
+  /**
+   * Defaults constructor, passes _parent_ to QAbstractTableModel.
+   */
+  explicit BookedAtcTableModel(QObject* parent = nullptr);
+  
+  /**
+   * The destructor.
+   */
+  virtual ~BookedAtcTableModel();
+  
+  /**
+   * Adds the given booking to the model.
+   * 
+   * \param bc Item to be added; the model takes the ownership.
+   */
+  void add(const BookedController* bc);
+  
+  /**
+   * Clears the model.
+   */
+  void clear();
+  
+  /**
+   * \overload
+   */
+  int rowCount(const QModelIndex& = QModelIndex()) const override;
+  
+  /**
+   * \overload
+   */
+  int columnCount(const QModelIndex& = QModelIndex()) const override;
+  
+  /**
+   * \overload
+   */
+  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+  
+  /**
+   * \overload
+   */
+  QVariant headerData(int section, Qt::Orientation orientation,
+                      int role = Qt::DisplayRole) const override;
+  
+  /**
+   * \overload
+   */
+  void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+  
 private:
-  QVector<const BookedController*> __staff;
+  QList<const BookedController*> __staff;
   
 };
 

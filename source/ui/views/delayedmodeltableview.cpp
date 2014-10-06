@@ -21,36 +21,36 @@
 
 #include "delayedmodeltableview.h"
 
-DelayedModelTableView::DelayedModelTableView(QWidget* _parent) :
-    QTableView(_parent),
+DelayedModelTableView::DelayedModelTableView(QWidget* parent) :
+    QTableView(parent),
     __loadingText(tr("Loading...")),
     __errorText(tr("Error occured")),
     __errorOnNoData(true) {}
 
 void
-DelayedModelTableView::setLoadingText(const QString& _text) {
-  __loadingText = _text;
+DelayedModelTableView::setLoadingText(const QString& text) {
+  __loadingText = text;
 }
 
 void
-DelayedModelTableView::setErrorText(const QString& _text) {
-  __errorText = _text;
+DelayedModelTableView::setErrorText(const QString& text) {
+  __errorText = text;
 }
 
 void
-DelayedModelTableView::setErrorOnNoData(bool _eond) {
-  __errorOnNoData = _eond;
+DelayedModelTableView::setErrorOnNoData(bool value) {
+  __errorOnNoData = value;
 }
 
 void
-DelayedModelTableView::paintEvent(QPaintEvent* _e) {
+DelayedModelTableView::paintEvent(QPaintEvent* event) {
   if (model()) {
     if ((model()->rowCount() == 0 || model()->columnCount() == 0) && __errorOnNoData) {
       QPainter painter(viewport());
       painter.setPen(Qt::darkGray);
       painter.drawText(rect(), Qt::AlignCenter, __errorText);
     } else {
-      QTableView::paintEvent(_e);
+      QTableView::paintEvent(event);
     }
   } else {
     QPainter painter(viewport());

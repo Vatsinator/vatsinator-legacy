@@ -19,36 +19,36 @@
 
 #include "weatherdata.h"
 
-WeatherData::WeatherData(QObject* _parent) : QObject(_parent) {}
+WeatherData::WeatherData(QObject* parent) : QObject(parent) {}
 
-WeatherData::WeatherData(QString _day, WeatherData::Condition _c,
-                         QString _description, QObject* _parent) :
-    QObject(_parent),
-    __dayOfWeek(_day),
-    __condition(_c),
-    __description(_description) {}
+WeatherData::WeatherData(QString dayOfWeek, WeatherData::Condition condition,
+                         QString description, QObject* parent) :
+    QObject(parent),
+    __dayOfWeek(dayOfWeek),
+    __condition(condition),
+    __description(description) {}
 
 void
-WeatherData::setDayOfWeek(const QString& _day) {
-  __dayOfWeek = _day;
+WeatherData::setDayOfWeek(const QString& dayOfWeek) {
+  __dayOfWeek = dayOfWeek;
 }
 
 void
-WeatherData::setCondition(WeatherData::Condition _c) {
-  __condition = _c;
+WeatherData::setCondition(WeatherData::Condition condition) {
+  __condition = condition;
 }
 
 void
-WeatherData::setDescription(const QString& _description) {
-  __description = _description;
+WeatherData::setDescription(const QString& description) {
+  __description = description;
 }
 
 void
-WeatherData::setLow(const WeatherData::Temperature& _low) {
-  __low = _low;
+WeatherData::setLow(const WeatherData::Temperature& low) {
+  __low = low;
 }
 
 void
-WeatherData::setHigh(const WeatherData::Temperature& _high) {
-  __high = _high;
+WeatherData::setHigh(const WeatherData::Temperature& high) {
+  __high = high;
 }

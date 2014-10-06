@@ -24,28 +24,31 @@
 
 class ControllerTableModel;
 
-/*
- * This class is used to show all controllers in the nice, pretty
- * table. To use it properly, the ControllerTableModel instance is
+/**
+ * The ControllerTableView class is used to show all controllers in the nice,
+ * pretty table. To use it properly, the ControllerTableModel instance is
  * needed.
  */
 class ControllerTableView : public QTableView {
   Q_OBJECT
   
 public:
-  explicit ControllerTableView(QWidget* = 0);
+  /**
+   * The default constructor passes _parent_ to QTableView's.
+   */
+  explicit ControllerTableView(QWidget* parent = nullptr);
   
-  void setModel(ControllerTableModel*);
+  void setModel(ControllerTableModel* model);
   
 protected slots:
-  void rowsInserted(const QModelIndex&, int, int);
+  void rowsInserted(const QModelIndex& parent, int start, int end) override;
   
 private slots:
   /**
    * Re-sets buttons within given range.
    * If no range is given, whole view is updated.
    */
-  void __updateButtons(int = -1, int = -1);
+  void __updateButtons(int start = -1, int end = -1);
   
   
 };
