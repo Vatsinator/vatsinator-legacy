@@ -27,12 +27,21 @@
 class Pilot;
 class MapScene;
 
+/**
+ * The FlightItem class represents a single Pilot on the map.
+ */
 class FlightItem : public QObject, public MapItem {
   Q_OBJECT
 
 public:
-  
-  FlightItem(const Pilot*, QObject* = nullptr);
+  /**
+   * The constructor takes _pilot_ as a data provider of what to show
+   * on the map. Data is updated automatically.
+   * 
+   * \param pilot The flight to show on the map.
+   * \param parent Passed to QObject's constructor.
+   */
+  FlightItem(const Pilot* pilot, QObject* parent = nullptr);
   FlightItem() = delete;
   
   virtual ~FlightItem();
@@ -40,12 +49,16 @@ public:
   bool isVisible() const override;
   bool isLabelVisible() const override;
   const LonLat& position() const override;
-  void drawItem(QOpenGLShaderProgram*) const override;
-  void drawLabel(QOpenGLShaderProgram*) const override;
-  void drawFocused(QOpenGLShaderProgram*) const override;
+  void drawItem(QOpenGLShaderProgram* shader) const override;
+  void drawLabel(QOpenGLShaderProgram* shader) const override;
+  void drawFocused(QOpenGLShaderProgram* shader) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   
+  /**
+   * Gives direct access to the Pilot class instance that this item
+   * represents on the map.
+   */
   inline const Pilot* data() const { return __pilot; }
   
 private:

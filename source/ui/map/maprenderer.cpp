@@ -43,8 +43,8 @@
 # define GL_MULTISAMPLE 0x809D
 #endif
 
-MapRenderer::MapRenderer(QObject* _parent) :
-    QObject(_parent),
+MapRenderer::MapRenderer(QObject* parent) :
+    QObject(parent),
     __functions(new QOpenGLFunctions(QOpenGLContext::currentContext())),
     __world(new WorldPolygon(this)),
     __iconKeeper(new IconKeeper(this)),
@@ -89,8 +89,8 @@ MapRenderer::mapToLonLat(const QPoint& _point) {
   static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
-      static_cast<qreal>(_point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
-      -static_cast<qreal>(_point.y() - (__viewport.height() / 2)) * yFactor / static_cast<qreal>(zoom()) + center().y()
+      static_cast<qreal>(point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
+      -static_cast<qreal>(point.y() - (__viewport.height() / 2)) * yFactor / static_cast<qreal>(zoom()) + center().y()
     );
 }
 
@@ -100,8 +100,8 @@ MapRenderer::scaleToLonLat(const QPoint& _point) {
   static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
-      static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(zoom()),
-      static_cast<qreal>(_point.y()) * yFactor / static_cast<qreal>(zoom())
+      static_cast<qreal>(point.x()) * xFactor / static_cast<qreal>(zoom()),
+      static_cast<qreal>(point.y()) * yFactor / static_cast<qreal>(zoom())
     );
 }
 
@@ -111,17 +111,17 @@ MapRenderer::mapFromLonLat(const LonLat& _point) {
   static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPoint(
-      static_cast<int>((_point.x() - center().x()) * zoom() / xFactor) + (__viewport.width() / 2),
-      static_cast<int>((-_point.y() + center().y()) * zoom() / yFactor) + (__viewport.height() / 2)
+      static_cast<int>((point.x() - center().x()) * zoom() / xFactor) + (__viewport.width() / 2),
+      static_cast<int>((-point.y() + center().y()) * zoom() / yFactor) + (__viewport.height() / 2)
     );
 }
 
 QPointF
-MapRenderer::glFromLonLat(const LonLat& _point) {
+MapRenderer::glFromLonLat(const LonLat& point) {
   return QPointF(
-      (_point.x() - center().x() + static_cast<qreal>(__xOffset)) /
+      (point.x() - center().x() + static_cast<qreal>(__xOffset)) /
           MapConfig::longitudeMax() * zoom(),
-      (_point.y() - center().y()) / MapConfig::latitudeMax() * zoom()
+      (point.y() - center().y()) / MapConfig::latitudeMax() * zoom()
     );
 }
 
@@ -138,28 +138,28 @@ MapRenderer::drawLines(const MapItem* _item) {
   
   for (float o: __offsets) {
     __identityProgram->setUniformValue(__identityOffsetLocation, o);
-    _item->drawFocused(__identityProgram);
+    item->drawFocused(__identityProgram);
   }
   
   __identityProgram->release();
 }
 
 void
-MapRenderer::setZoom(qreal _zoom) {
-  __zoom = _zoom;
+MapRenderer::setZoom(qreal zoom) {
+  __zoom = zoom;
   __updateScreen();
   emit updated();
 }
 
 void
-MapRenderer::setCenter(const LonLat& _center) {
-  __center = _center;
+MapRenderer::setCenter(const LonLat& center) {
+  __center = center;
   __updateScreen();
   emit updated();
 }
 
 qreal
-MapRenderer::zoomStep(int _steps) {
+MapRenderer::zoomStep(int steps) {
   //count limiter for this function
   __actualZoomMaximum =
     qFloor(
@@ -177,7 +177,7 @@ MapRenderer::zoomStep(int _steps) {
     );
   
   //set the actual zoom level according to number of scroll wheel steps
-  __actualZoom += _steps;
+  __actualZoom += steps;
   
   //limiting range of zoom
   __actualZoom = qBound(0, __actualZoom, __actualZoomMaximum);
@@ -195,8 +195,8 @@ MapRenderer::zoomStep(int _steps) {
 }
 
 void
-MapRenderer::setViewport(const QSize& _size) {
-  __viewport = _size;
+MapRenderer::setViewport(const QSize& size) {
+  __viewport = size;
   
   glViewport(0, 0, __viewport.width(), __viewport.height());
   

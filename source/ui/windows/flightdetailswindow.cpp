@@ -37,9 +37,9 @@
 
 #include "flightdetailswindow.h"
 
-FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) :
-    QWidget(_parent),
-    __pilot(_pilot) {
+FlightDetailsWindow::FlightDetailsWindow(const Pilot* pilot, QWidget* parent) :
+    QWidget(parent),
+    __pilot(pilot) {
   setupUi(this);
   
   VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
@@ -82,6 +82,11 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) 
   connect(__pilot, &Pilot::updated, this, &FlightDetailsWindow::__updateInfo);
   connect(__pilot, &Pilot::invalid, this, &FlightDetailsWindow::close);
   
+  connect(OriginButton,                 SIGNAL(clicked(const Airport*)),
+          vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
+  connect(DestinationButton,            SIGNAL(clicked(const Airport*)),
+          vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
+  
   connect(ShowButton, &QPushButton::clicked, [this]() {
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__pilot->position());
     close();
@@ -94,10 +99,10 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* _pilot, QWidget* _parent) 
 }
 
 void
-FlightDetailsWindow::showEvent(QShowEvent* _event) {
+FlightDetailsWindow::showEvent(QShowEvent* event) {
   Q_ASSERT(__pilot);
   
-  if (!_event->spontaneous()) {
+  if (!event->spontaneous()) {
     this->setGeometry(
       QStyle::alignedRect(
         Qt::LeftToRight,
@@ -179,7 +184,7 @@ FlightDetailsWindow::__updateInfo() {
   setWindowTitle(tr("%1 - flight details").arg(__pilot->callsign()));
   CallsignLabel->setText(__pilot->callsign());
   
-  Airline* myAirline = AirlineDatabase::getSingleton().find(__pilot->callsign().left(3));
+  Airline* myAirline = vApp()->airlineDatabase()->find(__pilot->callsign().left(3));
   if (myAirline) {
     QString tooltip = QString("%1 (%2)").arg(myAirline->name(), myAirline->country());
     AirlineLabel->setToolTip(tooltip);

@@ -25,8 +25,8 @@
 
 #include "airlinedatabase.h"
 
-AirlineDatabase::AirlineDatabase(QObject* _parent) :
-    QObject(_parent),
+AirlineDatabase::AirlineDatabase(QObject* parent) :
+    QObject(parent),
     __airlineLogoUrl(),
     __canFetch(false) {}
 
@@ -68,11 +68,11 @@ AirlineDatabase::initialize() {
 }
 
 Airline*
-AirlineDatabase::find(const QString& _icao) {
-  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
+AirlineDatabase::find(const QString& icao) {
+  return __airlines.contains(icao) ? __airlines[icao] : nullptr;
 }
 
 const Airline*
-AirlineDatabase::find(const QString& _icao) const {
-  return __airlines.contains(_icao) ? __airlines[_icao] : nullptr;
+AirlineDatabase::find(const QString& icao) const {
+  return __airlines.contains(icao) ? __airlines[icao] : nullptr;
 }

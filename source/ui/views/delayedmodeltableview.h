@@ -24,20 +24,44 @@
 #include <QString>
 
 /**
- * This view is designed for these models that do not come
- * at once, i. e. have to be fetched from the internet before
- * they can be shown. If the model is null, this view will
- * show "Loading" message in the center of the view.
+ * This DeyaledModelTableView is designed for these models that do not come
+ * at once, i. e. have to be fetched from the internet before they can be
+ * shown. If the model is null, this view will show "Loading" message in
+ * the center of the view.
+ * 
+ * \sa DelayedWidget().
  */
 class DelayedModelTableView : public QTableView {
   Q_OBJECT
   
-public:
-  explicit DelayedModelTableView(QWidget* = nullptr);
+  /**
+   * This property holds text that is displayed during the model is being
+   * loaded.
+   */
+  Q_PROPERTY(QString loadingText READ loadingText WRITE setLoadingText)
   
-  void setLoadingText(const QString&);
-  void setErrorText(const QString&);
-  void setErrorOnNoData(bool);
+  /**
+   * This property holds an error message that is displayed when an error occurs.
+   * 
+   * \sa errorOnNoData.
+   */
+  Q_PROPERTY(QString errorText READ errorText WRITE setErrorText)
+  
+  /**
+   * If this property is set to true, an empty model (i.e. its either rowCount()
+   * or columnCount() return 0) will show error text.
+   */
+  Q_PROPERTY(bool errorOnNoData READ errorOnNoData WRITE setErrorOnNoData)
+  
+public:
+  /**
+   * The default constructor passes _parent_ to the QTableView's.
+   */
+  explicit DelayedModelTableView(QWidget* parent = nullptr);
+  
+  void setLoadingText(const QString& text);
+  void setErrorText(const QString& text);
+  void setErrorOnNoData(bool value);
   
   inline const QString& loadingText() const {
     return __loadingText;
@@ -52,7 +76,7 @@ public:
   }
 
 protected:
-  void paintEvent(QPaintEvent*) override;
+  void paintEvent(QPaintEvent* event) override;
 
 private:
   QString __loadingText;

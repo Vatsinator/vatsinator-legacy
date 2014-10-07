@@ -22,11 +22,15 @@
 
 #include <QProgressBar>
 
+/**
+ * The FlightProgressWidget is a simple class that wraps QProgressBar
+ * in order to show pilot's flight progress.
+ */
 class FlightProgressWidget : public QProgressBar {
     Q_OBJECT
 
 public:
-  explicit FlightProgressWidget(QWidget* = 0);
+  explicit FlightProgressWidget(QWidget* parent = nullptr);
 };
 
 #endif // FLIGHTPROGRESSWIDGET_H

@@ -32,8 +32,8 @@
 
 #include "vatsinatorwindow.h"
 
-VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
-    QMainWindow(_parent) {
+VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
+    QMainWindow(parent) {
   setupUi(this);
 
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -92,8 +92,8 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
 }
 
 void
-VatsinatorWindow::statusBarUpdate(const QString& _message, const QPalette& palette) {
-  if (_message.isEmpty()) {
+VatsinatorWindow::statusBarUpdate(const QString& message, const QPalette& palette) {
+  if (message.isEmpty()) {
     if (vApp()->vatsimDataHandler()->dateDataUpdated().isNull())
       __statusBox->setText(tr("Last update: never"));
     else
@@ -101,7 +101,7 @@ VatsinatorWindow::statusBarUpdate(const QString& _message, const QPalette& palet
           vApp()->vatsimDataHandler()->dateDataUpdated().toString("dd MMM yyyy, hh:mm")
         ));
   } else {
-    __statusBox->setText(_message);
+    __statusBox->setText(message);
   }
   
   __statusBox->setPalette(palette);
@@ -141,12 +141,12 @@ VatsinatorWindow::showEvent(QShowEvent*) {
 }
 
 bool
-VatsinatorWindow::mouseLonLatMoveEvent(MouseLonLatEvent* _event) {
+VatsinatorWindow::mouseLonLatMoveEvent(MouseLonLatEvent* event) {
   PositionBox->setText(QString("%1 %2 %3 %4").arg(
-    _event->lonLat().latitude() > 0 ? "N" : "S",
-    QString::number(qAbs(_event->lonLat().latitude()), 'g', 6),
-    _event->lonLat().longitude() < 0 ? "W" : "E",
-    QString::number(qAbs(_event->lonLat().longitude()), 'g', 6)
+    event->lonLat().latitude() > 0 ? "N" : "S",
+    QString::number(qAbs(event->lonLat().latitude()), 'g', 6),
+    event->lonLat().longitude() < 0 ? "W" : "E",
+    QString::number(qAbs(event->lonLat().longitude()), 'g', 6)
   ));
   
   return true;

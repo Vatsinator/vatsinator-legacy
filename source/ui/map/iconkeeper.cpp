@@ -21,8 +21,8 @@
 
 #include "iconkeeper.h"
 
-IconKeeper::IconKeeper(QObject* _parent) :
-    QObject(_parent),
+IconKeeper::IconKeeper(QObject* parent) :
+    QObject(parent),
     __emptyAirportIcon(QOpenGLTexture::Target2D),
     __activeAirportIcon(QOpenGLTexture::Target2D),
     __activeStaffedAirportIcon(QOpenGLTexture::Target2D) {}

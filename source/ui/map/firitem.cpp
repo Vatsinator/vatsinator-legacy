@@ -33,11 +33,11 @@
 
 #include "firitem.h"
 
-FirItem::FirItem(const Fir* _fir, QObject* _parent) :
-    QObject(_parent),
-    __scene(qobject_cast<MapScene*>(_parent)),
-    __fir(_fir),
-    __position(_fir->data()->header.textPosition.x, _fir->data()->header.textPosition.y),
+FirItem::FirItem(const Fir* fir, QObject* parent) :
+    QObject(parent),
+    __scene(qobject_cast<MapScene*>(parent)),
+    __fir(fir),
+    __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y),
     __borders(QOpenGLBuffer::VertexBuffer),
     __triangles(QOpenGLBuffer::IndexBuffer),
     __label(QOpenGLTexture::Target2D) {
@@ -94,8 +94,8 @@ FirItem::position() const {
 }
 
 void
-FirItem::drawItem(QOpenGLShaderProgram* _shader) const {
-  static Q_DECL_CONSTEXPR float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
+FirItem::drawItem(QOpenGLShaderProgram* shader) const {
+  static constexpr float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
   
   static const GLfloat labelRect[] = {
     -0.08f, -0.05333333f,
@@ -118,21 +118,21 @@ FirItem::drawItem(QOpenGLShaderProgram* _shader) const {
   if (!__label.isCreated())
     __initializeLabel();
   
-  _shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-  _shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
-  _shader->setUniformValue(__scene->renderer()->programZLocation(), FirsZ);
+  shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
+  shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
+  shader->setUniformValue(__scene->renderer()->programZLocation(), FirsZ);
   
   __label.bind();
   glDrawArrays(GL_TRIANGLES, 0, 6);
 //   __label.release();
 }
 
-void FirItem::drawLabel(QOpenGLShaderProgram*) const {
-  
+void FirItem::drawLabel(QOpenGLShaderProgram* shader) const {
+  Q_UNUSED(shader);
 }
 
-void FirItem::drawFocused(QOpenGLShaderProgram*) const {
-
+void FirItem::drawFocused(QOpenGLShaderProgram* shader) const {
+  Q_UNUSED(shader);
 }
 
 QString

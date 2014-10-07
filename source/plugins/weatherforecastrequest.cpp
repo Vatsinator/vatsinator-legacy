@@ -19,20 +19,20 @@
 
 #include "weatherforecastrequest.h"
 
-WeatherForecastRequest::WeatherForecastRequest(QString _airport) :
-    __airport(_airport) {}
+WeatherForecastRequest::WeatherForecastRequest(QString icao) :
+    __airport(icao) {}
 
 void
-WeatherForecastRequest::setPosition(const LonLat& _ll) {
-  __position = _ll;
+WeatherForecastRequest::setPosition(const LonLat& position) {
+  __position = position;
 }
 
 void
-WeatherForecastRequest::setCountry(const QString& _country) {
-  __country = _country;
+WeatherForecastRequest::setCountry(const QString& country) {
+  __country = country;
 }
 
 void
-WeatherForecastRequest::setCity(const QString& _city) {
-  __city = _city;
+WeatherForecastRequest::setCity(const QString& city) {
+  __city = city;
 }

@@ -54,8 +54,8 @@ VatsinatorStyle::smallFont() {
 
 #ifdef Q_OS_MAC
 void
-VatsinatorStyle::polish(QWidget* _widget) {
-  if (!qobject_cast<QMenu*>(_widget) && _widget->testAttribute(Qt::WA_MacNormalSize))
-    _widget->setAttribute(Qt::WA_MacMiniSize);
+VatsinatorStyle::polish(QWidget* widget) {
+  if (!qobject_cast<QMenu*>(widget) && widget->testAttribute(Qt::WA_MacNormalSize))
+    widget->setAttribute(Qt::WA_MacMiniSize);
 }
 #endif

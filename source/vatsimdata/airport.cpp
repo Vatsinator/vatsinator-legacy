@@ -27,9 +27,9 @@
 
 #include "airport.h"
 
-Airport::Airport(const QString& _icao) :
-    __data(AirportDatabase::getSingleton().find(_icao)),
-    __icao(_icao),
+Airport::Airport(const QString& icao) :
+    __data(vApp()->airportDatabase()->find(icao)),
+    __icao(icao),
     __staff(new ControllerTableModel()),
     __inbounds(new FlightTableModel()),
     __outbounds(new FlightTableModel()) {
@@ -37,8 +37,8 @@ Airport::Airport(const QString& _icao) :
   Q_ASSERT(__data);
 }
 
-Airport::Airport(const AirportRecord* _ap) :
-    __data(_ap),
+Airport::Airport(const AirportRecord* record) :
+    __data(record),
     __icao(__data->icao),
     __staff(new ControllerTableModel()),
     __inbounds(new FlightTableModel()),
@@ -99,32 +99,32 @@ Airport::facilities() const {
 }
 
 void
-Airport::addStaff(const Controller* _c) {
-  __staff->add(_c);
-  connect(_c,   SIGNAL(updated()),
+Airport::addStaff(const Controller* atc) {
+  __staff->add(atc);
+  connect(atc,  SIGNAL(updated()),
           this, SIGNAL(updated()));
-  connect(_c,   SIGNAL(destroyed(QObject*)),
+  connect(atc,  SIGNAL(destroyed(QObject*)),
           this, SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
 }
 
 void
-Airport::addInbound(const Pilot* _p) {
-  __inbounds->add(_p);
-  connect(_p,   SIGNAL(updated()),
-          this, SIGNAL(updated()));
-  connect(_p,   SIGNAL(destroyed(QObject*)),
-          this, SIGNAL(updated()), Qt::DirectConnection);
+Airport::addInbound(const Pilot* pilot) {
+  __inbounds->add(pilot);
+  connect(pilot,        SIGNAL(updated()),
+          this,         SIGNAL(updated()));
+  connect(pilot,        SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
 }
 
 void
-Airport::addOutbound(const Pilot* _p) {
-  __outbounds->add(_p);
-  connect(_p,   SIGNAL(updated()),
-          this, SIGNAL(updated()));
-  connect(_p,   SIGNAL(destroyed(QObject*)),
-          this, SIGNAL(updated()), Qt::DirectConnection);
+Airport::addOutbound(const Pilot* pilot) {
+  __outbounds->add(pilot);
+  connect(pilot,        SIGNAL(updated()),
+          this,         SIGNAL(updated()));
+  connect(pilot,        SIGNAL(destroyed(QObject*)),
+          this,         SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
 }
 

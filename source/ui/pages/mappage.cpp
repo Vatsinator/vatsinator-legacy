@@ -39,8 +39,8 @@ namespace DefaultSettings {
   static const QColor PILOT_TO_DESTINATION_LINE_COLOR = { 133, 164, 164 };
 }
 
-MapPage::MapPage(QWidget* _parent) :
-    QWidget(_parent) {
+MapPage::MapPage(QWidget* parent) :
+    QWidget(parent) {
   setupUi(this);
   
   connect(FirFontSelectionButton,       SIGNAL(clicked()),
@@ -101,52 +101,52 @@ MapPage::update() const {
 }
 
 void
-MapPage::restore(QSettings& _s) {
+MapPage::restore(QSettings& s) {
   ZoomCoefficientSlider->setValue(
-    _s.value("zoom_coefficient", DefaultSettings::ZOOM_COEFFICIENT).toInt());
+    s.value("zoom_coefficient", DefaultSettings::ZOOM_COEFFICIENT).toInt());
   StaffedFirColorButton->setColor(
-    _s.value("staffed_fir_borders_color", DefaultSettings::STAFFED_FIR_BORDERS_COLOR).value<QColor>());
+    s.value("staffed_fir_borders_color", DefaultSettings::STAFFED_FIR_BORDERS_COLOR).value<QColor>());
   StaffedFirColorAlphaBox->setValue(
-    _s.value("staffed_fir_alpha_color", DefaultSettings::STAFFED_FIR_BACKGROUND_ALPHA).toInt());
+    s.value("staffed_fir_alpha_color", DefaultSettings::STAFFED_FIR_BACKGROUND_ALPHA).toInt());
   UnstaffedFirColorButton->setColor(
-    _s.value("unstaffed_fir_borders_color", DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR).value<QColor>());
+    s.value("unstaffed_fir_borders_color", DefaultSettings::UNSTAFFED_FIR_BORDERS_COLOR).value<QColor>());
   StaffedUirColorButton->setColor(
-    _s.value("staffed_uir_borders_color", DefaultSettings::STAFFED_UIR_BORDERS_COLOR).value<QColor>());
+    s.value("staffed_uir_borders_color", DefaultSettings::STAFFED_UIR_BORDERS_COLOR).value<QColor>());
   StaffedUirColorAlphaBox->setValue(
-    _s.value("staffed_uir_alpha_color", DefaultSettings::STAFFED_UIR_BACKGROUND_ALPHA).toInt());
-  __firFont = _s.value("fir_font", DefaultSettings::FIR_FONT).value<QFont>();
-  __airportFont = _s.value("airport_font", DefaultSettings::AIRPORT_FONT).value<QFont>();
-  __pilotFont = _s.value("pilot_font", DefaultSettings::PILOT_FONT).value<QFont>();
+    s.value("staffed_uir_alpha_color", DefaultSettings::STAFFED_UIR_BACKGROUND_ALPHA).toInt());
+  __firFont = s.value("fir_font", DefaultSettings::FIR_FONT).value<QFont>();
+  __airportFont = s.value("airport_font", DefaultSettings::AIRPORT_FONT).value<QFont>();
+  __pilotFont = s.value("pilot_font", DefaultSettings::PILOT_FONT).value<QFont>();
   ApproachCircleColorButton->setColor(
-    _s.value("approach_circle_color", DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>());
+    s.value("approach_circle_color", DefaultSettings::APPROACH_CIRCLE_COLOR).value<QColor>());
   SeasColorButton->setColor(
-    _s.value("seas_color", DefaultSettings::SEAS_COLOR).value<QColor>());
+    s.value("seas_color", DefaultSettings::SEAS_COLOR).value<QColor>());
   LandsColorButton->setColor(
-    _s.value("lands_color", DefaultSettings::LANDS_COLOR).value<QColor>());
+    s.value("lands_color", DefaultSettings::LANDS_COLOR).value<QColor>());
   OriginToPilotLineColorButton->setColor(
-    _s.value("origin_to_pilot_line_color", DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR).value<QColor>());
+    s.value("origin_to_pilot_line_color", DefaultSettings::ORIGIN_TO_PILOT_LINE_COLOR).value<QColor>());
   PilotToDestinationLineColorButton->setColor(
-    _s.value("pilot_to_destination_line_color", DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR).value<QColor>());
+    s.value("pilot_to_destination_line_color", DefaultSettings::PILOT_TO_DESTINATION_LINE_COLOR).value<QColor>());
   
   __updateFontButtons();
 }
 
 void
-MapPage::save(QSettings& _s) {
-  _s.setValue("zoom_coefficient", ZoomCoefficientSlider->value());
-  _s.setValue("staffed_fir_borders_color", StaffedFirColorButton->color());
-  _s.setValue("staffed_fir_alpha_color", StaffedFirColorAlphaBox->value());
-  _s.setValue("unstaffed_fir_borders_color", UnstaffedFirColorButton->color());
-  _s.setValue("staffed_uir_borders_color", StaffedUirColorButton->color());
-  _s.setValue("staffed_uir_alpha_color", StaffedUirColorAlphaBox->value());
-  _s.setValue("fir_font", __firFont);
-  _s.setValue("airport_font", __airportFont);
-  _s.setValue("pilot_font", __pilotFont);
-  _s.setValue("approach_circle_color", ApproachCircleColorButton->color());
-  _s.setValue("seas_color", SeasColorButton->color());
-  _s.setValue("lands_color", LandsColorButton->color());
-  _s.setValue("origin_to_pilot_line_color", OriginToPilotLineColorButton->color());
-  _s.setValue("pilot_to_destination_line_color", PilotToDestinationLineColorButton->color());
+MapPage::save(QSettings& s) {
+  s.setValue("zoom_coefficient", ZoomCoefficientSlider->value());
+  s.setValue("staffed_fir_borders_color", StaffedFirColorButton->color());
+  s.setValue("staffed_fir_alpha_color", StaffedFirColorAlphaBox->value());
+  s.setValue("unstaffed_fir_borders_color", UnstaffedFirColorButton->color());
+  s.setValue("staffed_uir_borders_color", StaffedUirColorButton->color());
+  s.setValue("staffed_uir_alpha_color", StaffedUirColorAlphaBox->value());
+  s.setValue("fir_font", __firFont);
+  s.setValue("airport_font", __airportFont);
+  s.setValue("pilot_font", __pilotFont);
+  s.setValue("approach_circle_color", ApproachCircleColorButton->color());
+  s.setValue("seas_color", SeasColorButton->color());
+  s.setValue("lands_color", LandsColorButton->color());
+  s.setValue("origin_to_pilot_line_color", OriginToPilotLineColorButton->color());
+  s.setValue("pilot_to_destination_line_color", PilotToDestinationLineColorButton->color());
 }
 
 void

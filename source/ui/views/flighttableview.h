@@ -24,31 +24,34 @@
 
 class FlightTableModel;
 
-/*
- * This class is used to represent all of the flights in the table.
- * It shows the list of flights, given via setModel() and draws a
+/**
+ * The FlightTableView class is used to represent all of the flights in the
+ * table. It shows the list of flights, given via setModel() and draws a
  * pretty details-button in each row.
  */
 class FlightTableView : public QTableView {
   Q_OBJECT
   
 public:
-  explicit FlightTableView(QWidget* = 0);
+  /**
+   * The default constrcutor passes _parent_ to QTableView.
+   */
+  explicit FlightTableView(QWidget* parent = nullptr);
   
   /**
    * Sets buttons for the new model, handles sorted model.
    */
-  void setModel(FlightTableModel*);
+  void setModel(FlightTableModel* model);
   
 protected slots:
-  void rowsInserted(const QModelIndex&, int, int);
+  void rowsInserted(const QModelIndex& parent, int start, int end);
   
 private slots:
   /**
    * Re-sets buttons within given range.
    * If no range is given, whole view is updated.
    */
-  void __updateButtons(int = -1, int = -1);
+  void __updateButtons(int start = -1, int end = -1);
   
 };
 

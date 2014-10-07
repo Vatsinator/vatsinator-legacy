@@ -21,16 +21,18 @@
 
 #include "vatsimmessagedialog.h"
 
-VatsimMessageDialog::VatsimMessageDialog(const QString& _message, QWidget* _parent) :
-    QDialog(_parent),
-    __message(_message) {
+VatsimMessageDialog::VatsimMessageDialog(const QString& message, QWidget* parent) :
+    QDialog(parent),
+    __message(message) {
   setupUi(this);
   
-  VatsimMessageLabel->setText(_message);
+  VatsimMessageLabel->setText(message);
 }
 
 void
-VatsimMessageDialog::hideEvent(QHideEvent*) {
+VatsimMessageDialog::hideEvent(QHideEvent* event) {
+  Q_UNUSED(event);
+  
   if (DoNotShowCheckBox->isChecked()) {
     QString hash = QString::number(qHash(__message));
     QSettings s;

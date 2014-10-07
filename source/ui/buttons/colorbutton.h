@@ -1,6 +1,6 @@
 /*
     colorbutton.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,37 +22,44 @@
 
 #include <QPushButton>
 
-/*
- * We need to subclass the QPushButton in order to make a nice
- * colorful button for Settings Window.
- * The idea was taken from KColorButton of KDEui.
+/**
+ * The ColorButton provides easy way to show and let pick any color.
  */
 class ColorButton : public QPushButton {
   Q_OBJECT
 
-public:
-  ColorButton(QWidget* = 0);
-
-  void setColor(const QColor&);
+  /**
+   * This property holds the picked color.
+   */
+  Q_PROPERTY(QColor color READ color WRITE setColor)
   
-  virtual QSize sizeHint() const;
-  virtual QSize minimumSizeHint() const;
+public:
+  /**
+   * The default constrcutor passes _parent_ to QPushButton.
+   */
+  ColorButton(QWidget* parent = nullptr);
+  
+  void setColor(const QColor& color);
+  
+  QSize sizeHint() const override;
+  QSize minimumSizeHint() const override;
 
-  inline const QColor&
-  color() { return __current; }
+  inline const QColor& color() { return __current; }
   
 protected:
-  virtual void paintEvent(QPaintEvent*);
-
-private:
-  void __initStyleOptionButton(QStyleOptionButton*) const;
+  void paintEvent(QPaintEvent* event) override;
   
-  QColor  __current;
+private:
+  void __initStyleOptionButton(QStyleOptionButton* option) const;
 
 private slots:
-  /* Opens the color dialog in order to let the user pick the color */
+  /**
+   * Opens the color dialog in order to let the user pick the color
+   */
   void __pickColor();
 
+private:
+  QColor  __current;
 };
 
 #endif // COLORBUTTON_H

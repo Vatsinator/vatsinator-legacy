@@ -47,9 +47,9 @@
 
 #include "airportdetailswindow.h"
 
-AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent) :
-    BaseWindow(_parent),
-    __airport(_ap) {
+AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* parent) :
+    BaseWindow(parent),
+    __airport(airport) {
   setupUi(this);
   
   connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::hide);
@@ -77,7 +77,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
 AirportDetailsWindow::~AirportDetailsWindow() {}
 
 void
-AirportDetailsWindow::showEvent(QShowEvent* _event) {
+AirportDetailsWindow::showEvent(QShowEvent* event) {
   __fillLabels();
   __updateModels();
   __adjustTables();
@@ -108,7 +108,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__airport->icao());  
   NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
   
-  BaseWindow::showEvent(_event);
+  BaseWindow::showEvent(event);
 }
 
 void
@@ -194,14 +194,14 @@ AirportDetailsWindow::__updateForecast() {
 }
 
 void
-AirportDetailsWindow::__notamUpdate(NotamListModel* _model) {
-  if (_model->icao() == __airport->icao())
-    NotamTableView->setModel(_model);
+AirportDetailsWindow::__notamUpdate(NotamListModel* model) {
+  if (model->icao() == __airport->icao())
+    NotamTableView->setModel(model);
 }
 
 void
-AirportDetailsWindow::__goToNotam(QModelIndex _index) {
-  QString url = _index.data(Qt::UserRole).toString();
+AirportDetailsWindow::__goToNotam(QModelIndex index) {
+  QString url = index.data(Qt::UserRole).toString();
   if (!url.isEmpty())
     QDesktopServices::openUrl(url);
 }

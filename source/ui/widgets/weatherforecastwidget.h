@@ -20,7 +20,7 @@
 #ifndef WEATHERFORECASTWIDGET_H
 #define WEATHERFORECASTWIDGET_H
 
-#include <QVector>
+#include <QList>
 #include "ui/widgets/delayedwidget.h"
 
 class WeatherData;
@@ -33,69 +33,64 @@ class WeatherData;
  */
 class WeatherForecastWidget : public DelayedWidget {
   Q_OBJECT
+  
+  /**
+   * This property holds the message to be displayed instead of weather forecast.
+   * This can be used i.e. to display the information that the forecast is
+   * currently being downloaded from the internet.
+   * As long as the message is not empty, the weather forecast will not
+   * be drawn. To show the weather back, simply set value to the empty string.
+   */
   Q_PROPERTY(QString message READ message WRITE setMessage)
   
+  /**
+   * The maxItemCount property holds maximum weather forecast days
+   * that will be rendered. This is automatically set to data vector size,
+   * but can be easily overriden.
+   */
+  Q_PROPERTY(int maxItemCount READ maxItemCount WRITE setMaxItemCount)
+  
 public:
-  WeatherForecastWidget(QWidget* = nullptr, Qt::WindowFlags = 0);
+  /**
+   * The default constructor passes _parent_ to DelayedWidget.
+   */
+  WeatherForecastWidget(QWidget* parent = nullptr);
   
   /**
    * Sets weather forecast data.
    * Note that the data pointers must remain valid as long as the widget is
    * visible.
-   * @sa setData().
+   * 
+   * \sa setData().
    */
-  void setData(const QVector<WeatherData*>);
-  
-  /**
-   * Sets the message to be displayed instead of weather forecast. This can
-   * be used i.e. to display the information that the forecast is currently
-   * being downloaded from the internet.
-   * As long as the message is not empty, the weather forecast will not
-   * be drawn. To unset the message, simply call setMessage("").
-   */
-  void setMessage(const QString&);
-  
-  /**
-   * Sets max item count to the given value.
-   * @sa maxItemCount();
-   */
-  void setMaxItemCount(int);
+  void setData(const QList<WeatherData*> data);
   
   /**
    * Sets temperature units to Celsius.
    * Celsius is the default scale.
-   * @sa setFahrenheit().
+   * \sa setFahrenheit().
    */
   void setCelsius();
   
   /**
    * Sets temperature units to Fahrenheit.
-   * @sa setCelsius().
+   * \sa setCelsius().
    */
   void setFahrenheit();
+  
+  void setMessage(const QString& message);
+  inline const QString& message() const { return __message; }
+  void setMaxItemCount(int count);
+  inline int maxItemCount() const { return __maxItemCount; }
   
   QSize sizeHint() const override;
   QSize minimumSizeHint() const override;
   
-  /**
-   * Gets the message.
-   * @sa setMessage().
-   */
-  inline const QString& message() const { return __message; }
-  
-  /**
-   * maxItemCount is the property that holds maximum weather forecast days
-   * that will be rendered. This is automatically set to data vector size,
-   * but can be easily overriden.
-   * @sa setMaxItemCount().
-   */
-  inline int maxItemCount() const { return __maxItemCount; }
-  
 protected:
-  void paintEvent(QPaintEvent*) override;
+  void paintEvent(QPaintEvent* event) override;
   
 private:
-  QVector<WeatherData*> __data;
+  QList<WeatherData*> __data;
   QString __message;
   int __maxItemCount;
   bool __celsius;

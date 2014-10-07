@@ -39,17 +39,17 @@ class ModelMatcher : public QObject, public Notifiable {
 
 public:
   /**
-   * Reads the models.dat file.
+   * Reads the models.dat file. Passes _parent_ to the QObject's constructor.
    */
   ModelMatcher(QObject* = nullptr);
   
   virtual ~ModelMatcher();
 
   /**
-   * @param acft Aircraft code that comes from the flight plan.
-   * @return Model's texture ID.
+   * \param acft Aircraft code that comes from the flight plan.
+   * \return Model's texture; don't dare you delete it.
    */
-  QOpenGLTexture* matchMyModel(const QString&) const;
+  QOpenGLTexture* matchMyModel(const QString& acft) const;
   
 private:
   void __readModels();

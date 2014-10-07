@@ -1,6 +1,6 @@
 /*
     metaraction.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,15 +18,11 @@
 
 #include "metaraction.h"
 
-MetarAction::MetarAction(const QString& _icao, QObject* _parent) :
-    QAction(tr("%1 metar").arg(_icao), _parent),
-    __icao(_icao) {
-  connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
+MetarAction::MetarAction(const QString& icao, QObject* parent) :
+    QAction(tr("%1 metar").arg(icao), parent),
+    __icao(icao) {
+  
+  connect(this, &QAction::triggered, [this]() {
+    emit triggered(__icao);
+  });
 }
-
-void
-MetarAction::__handleTriggered() {
-  emit triggered(__icao);
-}
-
-

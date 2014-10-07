@@ -37,6 +37,8 @@ class QOpenGLShaderProgram;
 
 /**
  * The MapRenderer class takes care of rendering the map.
+ * 
+ * \sa MapItem and MapScene.
  */
 class MapRenderer : public QObject {
   Q_OBJECT
@@ -45,28 +47,31 @@ class MapRenderer : public QObject {
    * The zoom property describes the current zoom of the map. The larger the
    * value is, the smaller range is visible.
    */
-  Q_PROPERTY(qreal zoom READ zoom WRITE setZoom)
+  Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY updated)
   
   /**
    * The center property represents the center of the map.
    */
-  Q_PROPERTY(LonLat center READ center WRITE setCenter)
+  Q_PROPERTY(LonLat center READ center WRITE setCenter NOTIFY updated)
   
 signals:
-  
   /**
    * One or more of the properties have changed and therefore the map needs
    * to be re-rendered.
+   * 
+   * \note Connect to this signal using Qt::DirectConnection to keep
+   * it efficient.
    */
   void updated();
 
 public:
-  
   /**
    * The default constructor requires valid OpenGL context. All initialization
    * goes here.
+   * 
+   * \param parent Passed to the QObject's constructor.
    */
-  explicit MapRenderer(QObject* = 0);
+  explicit MapRenderer(QObject* parent = nullptr);
   
   /**
    * The destructor deletes shaders, frees buffers, etc. A valid OpenGL context
@@ -78,10 +83,10 @@ public:
    * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
    * maps them to longitude & latitude.
    * 
-   * @param point The point on the screen.
-   * @return Global coordinates (longitude, latitude).
+   * \param point The point on the screen.
+   * \return Global coordinates (longitude, latitude).
    */
-  LonLat mapToLonLat(const QPoint&);
+  LonLat mapToLonLat(const QPoint& point);
   
   /**
    * Scales the given point (or distance) to the global
@@ -90,45 +95,78 @@ public:
    * does not take into consideration the current map
    * center point.
    * 
-   * @param point The point (or the distance) in the window coordinates.
-   * @return Global coordinates (or the distance).
+   * \param point The point (or the distance) in the window coordinates.
+   * \return Global coordinates (or the distance).
    */
-  LonLat scaleToLonLat(const QPoint&);
+  LonLat scaleToLonLat(const QPoint& point);
   
   /**
    * Calculates widget coordinates from the given lat-lon coordinates.
    */
-  QPoint mapFromLonLat(const LonLat&);
+  QPoint mapFromLonLat(const LonLat& point);
   
   /**
    * Calculates OpenGL scene local coordinates from latitude/longitude.
    */
-  QPointF glFromLonLat(const LonLat&);
+  QPointF glFromLonLat(const LonLat& point);
   
   /**
    * Draws the specified item's "under mouse" elements.
    */
-  void drawLines(const MapItem*);
+  void drawLines(const MapItem* item);
   
-  void setZoom(qreal);
-  void setCenter(const LonLat&);
+  qreal zoomStep(int zoom);
+  void setZoom(qreal zoom);
+  void setCenter(const LonLat& center);
   
-  qreal zoomStep(int);
+  /**
+   * The difference between the updateZoom() and setZoom() methods is that
+   * updateZoom() updates the zoom property smoothly, i.e. it does some
+   * equations that consider the zoom coefficient specified by the user.
+   */
+  void updateZoom(int steps);
   
   /**
    * Updates the viewport of the scene.
    */
-  void setViewport(const QSize&);
+  void setViewport(const QSize& size);
   
   inline qreal zoom() const { return __zoom; }
   inline const LonLat& center() const { return __center; }
   
+  /**
+   * Gets the "color" attribute location in the shader program.
+   */
   inline int programColorLocation() const { return __identityColorLocation; }
+  
+  /**
+   * Gets the "z" attribute location in the shader program.
+   */
   inline int programZLocation() const { return __texturedZLocation; }
+  
+  /**
+   * Gets the "rotation" attribute in the shader program.
+   */
   inline int programRotationLocation() const { return __texturedRotationLocation; }
+  
+  /**
+   * Gets the running instance of IconKeeper.
+   */
   inline IconKeeper* icons() { return __iconKeeper; }
+  
+  /**
+   * Gets the running instance of ModelMatcher.
+   */
   inline ModelMatcher* models() { return __modelMatcher; }
+  
+  /**
+   * Gets the running instance of MapScene.
+   */
   inline MapScene* scene() { return __scene; }
+  
+  /**
+   * Keeps OpenGL extensions in one place.
+   */
   inline QOpenGLFunctions* opengl() { return __functions; }
   
   /**
@@ -150,6 +188,11 @@ public:
   static bool supportsRequiredOpenGLFeatures();
   
 public slots:
+  /**
+   * Paints the scene.
+   * A valid OpenGL context must be present at the time of
+   * calling this function.
+   */
   void paint();
   
 private:

@@ -1,6 +1,6 @@
 /*
     toggleinboundoutboundlinesaction.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,21 +24,32 @@
 
 class Airport;
 
+/**
+ * The action that corresponds to "Toggle inbout/outbound lines" option
+ * for Airport right-mouse-button-click menu.
+ * 
+ * \todo Make this action actually works.
+ */
 class ToggleInboundOutboundLinesAction : public QAction {
   Q_OBJECT
   
-public:
-  ToggleInboundOutboundLinesAction(const Airport*, QObject*);
+signals:
+  /**
+   * Passed from QAction.
+   * 
+   * \param airport Airport for which the option was toggled.
+   */
+  void triggered(const Airport* airport);
   
-private slots:
-  void __handleTriggered();
+public:
+  /**
+   * Creates new menu action for the specified _airport_.
+   * The _parent_ param is passed to QAction's constructor.
+   */
+  ToggleInboundOutboundLinesAction(const Airport* airport, QObject* parent);
   
 private:
   const Airport* __current;
-  
-signals:
-  void triggered(const Airport*);
-  
   
 };
 

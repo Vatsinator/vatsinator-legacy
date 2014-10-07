@@ -31,10 +31,10 @@ class AboutWindow :
   Q_OBJECT
 
 public:
-  AboutWindow(QWidget* = nullptr);
+  AboutWindow(QWidget* parent = nullptr);
   
 protected:
-  void showEvent(QShowEvent*) override;
+  void showEvent(QShowEvent* event) override;
   
 private slots:
   
@@ -43,7 +43,7 @@ private slots:
    * "outdated" warning, otherwise "up-to-date"
    * confirmation gets displayed.
    */
-  void __updateVersionStatus(ResourceManager::VersionStatus);
+  void __updateVersionStatus(ResourceManager::VersionStatus status);
 
 };
 

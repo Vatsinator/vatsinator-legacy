@@ -21,17 +21,18 @@
 #define NEWVERSIONDIALOG_H
 
 #include <QDialog>
-
 #include "ui/ui_newversiondialog.h"
 
-class NewVersionDialog :
-    public QDialog,
-    private Ui::NewVersionDialog {
+/**
+ * The NewVersionDialog is used to warn user about the new Vatsinator
+ * version available to download.
+ */
+class NewVersionDialog : public QDialog, private Ui::NewVersionDialog {
   
   Q_OBJECT
 
 public:
-  explicit NewVersionDialog(QWidget* = 0);
+  explicit NewVersionDialog(QWidget* parent = nullptr);
 
 };
 

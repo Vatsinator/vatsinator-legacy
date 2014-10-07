@@ -1,6 +1,6 @@
 /*
     toggleinboundoutboundlinesaction.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,18 +22,13 @@
 #include "toggleinboundoutboundlinesaction.h"
 
 ToggleInboundOutboundLinesAction::ToggleInboundOutboundLinesAction(
-  const Airport* _ap, QObject* _parent) :
-    QAction(tr("Toggle inbound/outbound lines"), _parent),
-    __current(_ap) {
+  const Airport* airport, QObject* parent) :
+    QAction(tr("Toggle inbound/outbound lines"), parent),
+    __current(airport) {
   setCheckable(true);
 //   if (AirportTracker::getSingleton().tracked().contains(QString(_ap->data()->icao)))
 //     setChecked(true);
-  
-  connect(this, SIGNAL(triggered()), this, SLOT(__handleTriggered()));
+  connect(this, &QAction::triggered, [this]() {
+    emit triggered(__current);
+  });
 }
-
-void
-ToggleInboundOutboundLinesAction::__handleTriggered() {
-  emit triggered(__current);
-}
-

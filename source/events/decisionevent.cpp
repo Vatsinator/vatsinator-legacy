@@ -21,7 +21,7 @@
 
 #include "decisionevent.h"
 
-DecisionEvent::DecisionEvent(QString _context, DecisionEvent::Decision _decision) :
+DecisionEvent::DecisionEvent(QString context, DecisionEvent::Decision decision) :
     QEvent(static_cast<QEvent::Type>(Event::Decision)),
-    __context(qMove(_context)),
-    __decision(_decision) {}
+    __context(qMove(context)),
+    __decision(decision) {}

@@ -31,7 +31,7 @@ class ApproachCircleItem : public QObject, public MapItem {
   Q_OBJECT
 
 public:
-  ApproachCircleItem(const Airport*, QObject* = nullptr);
+  ApproachCircleItem(const Airport* airport, QObject* parent = nullptr);
   ApproachCircleItem() = delete;
   
   void drawCircle() const;
@@ -39,9 +39,9 @@ public:
   bool isVisible() const override;
   bool isLabelVisible() const override;
   const LonLat& position() const override;
-  void drawItem(QOpenGLShaderProgram*) const override;
-  void drawLabel(QOpenGLShaderProgram*) const override;
-  void drawFocused(QOpenGLShaderProgram*) const override;
+  void drawItem(QOpenGLShaderProgram* shader) const override;
+  void drawLabel(QOpenGLShaderProgram* shader) const override;
+  void drawFocused(QOpenGLShaderProgram* shader) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   

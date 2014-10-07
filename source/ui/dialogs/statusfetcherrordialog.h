@@ -22,12 +22,16 @@
 
 #include <QMessageBox>
 
+/**
+ * The StatusFetchErrorDialog is used to tell user that Vatsinator
+ * was unable to fetch the status.txt file and therefore it is unable
+ * to continue.
+ */
 class StatusFetchErrorDialog : public QMessageBox {
-  
   Q_OBJECT
 
 public:
-  explicit StatusFetchErrorDialog(QWidget* = 0);
+  explicit StatusFetchErrorDialog(QWidget* parent = nullptr);
 
 };
 

@@ -19,8 +19,8 @@
 
 #include "statusfetcherrordialog.h"
 
-StatusFetchErrorDialog::StatusFetchErrorDialog(QWidget* _parent) :
-    QMessageBox(_parent) {
+StatusFetchErrorDialog::StatusFetchErrorDialog(QWidget* parent) :
+    QMessageBox(parent) {
   
   setText(tr("Vatsinator was unable to fetch the status.txt file."));
   setInformativeText(tr("It means that no data can be obtained at all. Check your "

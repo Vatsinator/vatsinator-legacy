@@ -1,6 +1,6 @@
 /*
     actionmenuseparator.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,14 +22,15 @@
 
 #include <QAction>
 
-/*
- * This is the disabled menu action that represents the section title.
+/**
+ * The ActionMenuSeparator is a menu action that can be used as
+ * a section title.
  */
 class ActionMenuSeparator : public QAction {
   Q_OBJECT
 
 public:
-  ActionMenuSeparator(const QString&, QObject*);
+  ActionMenuSeparator(const QString& label, QObject* parent);
 
 };
 

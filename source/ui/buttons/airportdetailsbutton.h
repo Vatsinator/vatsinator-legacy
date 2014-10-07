@@ -1,6 +1,6 @@
 /*
     airportdetailsbutton.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,17 +24,36 @@
 
 class Airport;
 
+/**
+ * The AirportDetailsButton class is a button that corresponds to the specified
+ * airport. When the button is clicked, the clicked() signal is emitted, so
+ * that connecting a slot to it is fairly easy.
+ */
 class AirportDetailsButton : public QPushButton {
   Q_OBJECT
 
 signals:
-  void clicked(const Airport*);
+  /**
+   * Passed from QPushButton.
+   */
+  void clicked(const Airport* airport);
 
 public:
-  AirportDetailsButton(QWidget* = 0);
-  AirportDetailsButton(const Airport*, bool = false, QWidget* = 0);
+  /**
+   * Creates a new AirportDetailsButton with _airport_ set to _nullptr_.
+   */
+  AirportDetailsButton(QWidget* parent = nullptr);
+  
+  /**
+   * Create a new AirportDetailsButton with the given _airport_ and
+   * _parent_ passed to QPushButton's constructor.
+   */
+  AirportDetailsButton(const Airport* airport, QWidget* parent = nullptr);
 
-  void setAirportPointer(const Airport*);
+  /**
+   * Sets the button's _airport_ to the given object.
+   */
+  void setAirportPointer(const Airport* airport);
 
 private slots:
   void __handleClicked();

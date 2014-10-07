@@ -32,9 +32,8 @@ class QOpenGLShaderProgram;
  */
 class MapItem {
 public:
-  
   /**
-   * Indicates whether the item is visible on the map.
+   * Indicates whether the item is visible on the map or not.
    */
   virtual bool isVisible() const = 0;
   
@@ -55,23 +54,26 @@ public:
    * For FlightItems it will be the airplane model.
    * For AirportItems it will be the airport icon.
    * For FirItems it will be the label.
-   * @param shader Shader that is in use during rendering the item.
+   * 
+   * \param shader Shader program that is in use during rendering the item.
    */
-  virtual void drawItem(QOpenGLShaderProgram*) const = 0;
+  virtual void drawItem(QOpenGLShaderProgram* shader) const = 0;
   
   /**
    * Draws the item label.
    * FirItem won't draw anything.
-   * @param shader Shader that is in use during rendering the item.
+   * 
+   * \param shader Shader program that is in use during rendering the item.
    */
-  virtual void drawLabel(QOpenGLShaderProgram*) const = 0;
+  virtual void drawLabel(QOpenGLShaderProgram* shader) const = 0;
   
   /**
    * Draws the item specific elements when it is under mouse.
    * For FlightItems and AirportItems it means just rendering the lines.
-   * @param shader Shader that is in use during rendering the item.
+   * 
+   * \param shader Shader program that is in use during rendering the item.
    */
-  virtual void drawFocused(QOpenGLShaderProgram*) const = 0;
+  virtual void drawFocused(QOpenGLShaderProgram* shader) const = 0;
   
   /**
    * Tooltip text, shown when the item is mouseover'ed.

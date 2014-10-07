@@ -24,11 +24,10 @@
 #include "storage/abstractsettingsmodule.h"
 
 class NetworkPage : public QWidget, public AbstractSettingsModule, private Ui::NetworkPage {
-  
   Q_OBJECT
 
 public:
-  NetworkPage(QWidget* = 0);
+  NetworkPage(QWidget* parent = nullptr);
   
   QString listElement() const;
   QString listIcon() const;
@@ -47,12 +46,12 @@ public:
   void update() const;
   
 protected:
-  void restore(QSettings&);
-  void save(QSettings&);
+  void restore(QSettings& s);
+  void save(QSettings& s);
   
 private slots:
-  void __updateRefreshRateLabel(int);
-  void __updateAutoUpdaterLocks(int);
+  void __updateRefreshRateLabel(int n);
+  void __updateAutoUpdaterLocks(int state);
 
 };
 

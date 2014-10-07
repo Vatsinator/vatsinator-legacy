@@ -30,8 +30,8 @@
 
 class FileDownloader;
 
-/*
- * This class stores vatsinator files' locations.
+/**
+ * The FileManager class stores Vatsinator files' locations.
  */
 class FileManager : public Singleton<FileManager> {
   
@@ -41,7 +41,8 @@ public:
    * Static directories contain files that are installed once
    * and can not be overriden by any of the updates, thus
    * they have static path.
-   * @sa staticPath()
+   * 
+   * \sa staticPath().
    */
   enum StaticDir {
     Plugins,
@@ -52,22 +53,24 @@ public:
   
   /**
    * Stores given data in local cache file.
-   * @param fileName File name. Only file name, not the full path.
-   * @param data Data to be saved.
+   * 
+   * \param fileName File name. Only file name, not the full path.
+   * \param data Data to be saved.
    */
-  static void cacheData(const QString&, const QString&);
+  static void cacheData(const QString& fileName, const QString& data);
   
   /**
    * Moves given file to cache.
-   * @param source Source file name, with the full path.
-   * @param destination Target file name, without the path.
+   * 
+   * \param source Source file name, with the full path.
+   * \param destination Target file name, without the path.
    */
-  static bool moveToCache(const QString&, const QString&);
+  static bool moveToCache(const QString& source, const QString& destination);
   
   /**
    * Gets static directory's location in the filesystem.
    */
-  static QString staticPath(StaticDir);
+  static QString staticPath(StaticDir directory);
   
   /**
    * Returns a real file location.
@@ -80,10 +83,9 @@ public:
    * Windows, for example, globally-scoped files are stored in Program Files
    * directory).
    * 
-   * @param fileName Name of the file.
-   *    storage, avoiding checking its existence.
+   * \param fileName Name of the file.
    */
-  static QString path(const QString&);
+  static QString path(const QString& fileName);
   
   /**
    * Returns path to where local data can be stored.

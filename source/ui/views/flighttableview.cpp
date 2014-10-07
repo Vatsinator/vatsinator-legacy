@@ -25,42 +25,42 @@
 
 #include "flighttableview.h"
 
-FlightTableView::FlightTableView(QWidget* _parent) :
-    QTableView(_parent) {}
+FlightTableView::FlightTableView(QWidget* parent) :
+    QTableView(parent) {}
 
 void
-FlightTableView::setModel(FlightTableModel* _model) {
+FlightTableView::setModel(FlightTableModel* model) {
   if (this->model()) {
     disconnect(this, SLOT(__updateButtons()));
   }
   
-  QTableView::setModel(_model);
+  QTableView::setModel(model);
   
   __updateButtons();
   
-  connect(_model,    SIGNAL(sorted()),
+  connect(model,    SIGNAL(sorted()),
           this,      SLOT(__updateButtons()));
 }
 
 void
-FlightTableView::rowsInserted(const QModelIndex& _parent, int _start, int _end) {
-  QTableView::rowsInserted(_parent, _start, _end);
-  __updateButtons(_start, _end + 1);
+FlightTableView::rowsInserted(const QModelIndex& parent, int start, int end) {
+  QTableView::rowsInserted(parent, start, end);
+  __updateButtons(start, end + 1);
 }
 
 void
-FlightTableView::__updateButtons(int _start, int _end) {
+FlightTableView::__updateButtons(int start, int end) {
   Q_ASSERT(model());
   const FlightTableModel* fModel = qobject_cast<const FlightTableModel*>(model());
   Q_ASSERT(fModel);
   
-  if (_start == -1)
-    _start = 0;
+  if (start == -1)
+    start = 0;
   
-  if (_end == -1)
-    _end = fModel->rowCount();
+  if (end == -1)
+    end = fModel->rowCount();
   
-  for (int i = _start; i < _end; ++i) {
+  for (int i = start; i < end; ++i) {
     if (fModel->flights()[i]->isPrefiledOnly())
       continue;
     

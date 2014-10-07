@@ -37,11 +37,11 @@ class AirportDetailsWindow :
   Q_OBJECT
 
 public:
-  AirportDetailsWindow(const Airport*, QWidget* = nullptr);
+  AirportDetailsWindow(const Airport* airport, QWidget* parent = nullptr);
   virtual ~AirportDetailsWindow();
   
 protected:
-  void showEvent(QShowEvent*) override;
+  void showEvent(QShowEvent* event) override;
 
 private:
   void __updateModels();
@@ -50,11 +50,11 @@ private:
   
 private slots:
   void __updateForecast();
-  void __notamUpdate(NotamListModel*);
-  void __goToNotam(QModelIndex);
+  void __notamUpdate(NotamListModel* model);
+  void __goToNotam(QModelIndex index);
 
 private:
-  const Airport*        __airport;
+  const Airport* __airport;
 
 };
 

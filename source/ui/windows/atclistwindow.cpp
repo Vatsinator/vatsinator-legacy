@@ -26,8 +26,8 @@
 
 #include "atclistwindow.h"
 
-AtcListWindow::AtcListWindow(QWidget* _parent) :
-    BaseWindow(_parent) {
+AtcListWindow::AtcListWindow(QWidget* parent) :
+    BaseWindow(parent) {
   setupUi(this);
   
   connect(qApp,         SIGNAL(aboutToQuit()),
@@ -37,13 +37,13 @@ AtcListWindow::AtcListWindow(QWidget* _parent) :
 }
 
 void
-AtcListWindow::resizeEvent(QResizeEvent* _event) {
-  QWidget::resizeEvent(_event);
+AtcListWindow::resizeEvent(QResizeEvent* event) {
+  QWidget::resizeEvent(event);
   __resizeColumns();
 }
 
 void
-AtcListWindow::showEvent(QShowEvent* _event) {
+AtcListWindow::showEvent(QShowEvent* event) {
   if (auto m = ATCTable->model())
     m->deleteLater();
   
@@ -51,7 +51,7 @@ AtcListWindow::showEvent(QShowEvent* _event) {
   ATCTable->hideColumn(ControllerTableModel::Button);
   __resizeColumns();
   
-  BaseWindow::showEvent(_event);
+  BaseWindow::showEvent(event);
 }
 
 void
@@ -68,11 +68,11 @@ AtcListWindow::__resizeColumns() {
 }
 
 void
-AtcListWindow::__handleDoubleClicked(const QModelIndex& _index) {
-  Q_ASSERT(qobject_cast< const ControllerTableModel* >(_index.model()));
+AtcListWindow::__handleDoubleClicked(const QModelIndex& index) {
+  Q_ASSERT(qobject_cast< const ControllerTableModel* >(index.model()));
 
   vApp()->userInterface()->showDetails(
-    (qobject_cast<const ControllerTableModel*>(_index.model()))->staff()[_index.row()]
+    (qobject_cast<const ControllerTableModel*>(index.model()))->staff()[index.row()]
   );
 }
 

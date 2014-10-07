@@ -30,9 +30,9 @@ static const QString CacheDirectory =
     );
 
 
-CacheFile::CacheFile(const QString& _fileName) :
-    QFile(CacheDirectory % QDir::separator() % _fileName) {
-  qDebug("Cache file location: %s", qPrintable(fileName()));
+CacheFile::CacheFile(const QString& fileName) :
+    QFile(CacheDirectory % QDir::separator() % fileName) {
+  qDebug("Cache file location: %s", qPrintable(fileName));
 }
 
 bool
@@ -47,11 +47,11 @@ CacheFile::exists() const {
 }
 
 bool
-CacheFile::open(OpenMode _mode) {
+CacheFile::open(OpenMode mode) {
   if (!QDir(CacheDirectory).exists())
     QDir().mkdir(CacheDirectory);
   
-  bool wasOpened = QFile::open(_mode);
+  bool wasOpened = QFile::open(mode);
   if (!wasOpened)
     qWarning("CacheFile: %s failed to open.", qPrintable(fileName()));
   

@@ -24,8 +24,8 @@
 
 #include "worldpolygon.h"
 
-WorldPolygon::WorldPolygon(MapRenderer* _renderer) :
-    __renderer(_renderer),
+WorldPolygon::WorldPolygon(MapRenderer* renderer) :
+    __renderer(renderer),
     __borders(QOpenGLBuffer::VertexBuffer),
     __triangles(QOpenGLBuffer::IndexBuffer) {
   __initializeBuffers();

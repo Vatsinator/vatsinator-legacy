@@ -23,11 +23,9 @@
 #include <QCoreApplication>
 #include <QVector>
 #include <QString>
-
 #include "db/point.h"
 #include "ui/notifiable.h"
 #include "vatsimdata/fir.h"
-#include "singleton.h"
 
 /**
  * A single raw fir header entry that exists in the database.
@@ -56,7 +54,7 @@ struct FirRecord {
  * The FirDatabase class is a layer between Vatsinator
  * and the raw database file.
  */
-class FirDatabase : public QObject, public Notifiable, public Singleton<FirDatabase> {
+class FirDatabase : public QObject, public Notifiable {
   Q_OBJECT
   
 public:
@@ -73,10 +71,11 @@ public:
 
   /**
    * Finds FirHeader entry by given ICAO.
-   * @param icao ICAO code.
-   * @return FIR if any found, otherwise NULL.
+   * 
+   * \param icao The lookup ICAO code.
+   * \return FIR if any found, otherwise _nullptr_.
    */
-  const FirRecord* find(const QString&);
+  const FirRecord* find(const QString& icao);
 
   /**
    * Gives direct access to the vector of FIRs.
