@@ -20,7 +20,7 @@
 
 #include "scrolllabel.h"
 
-static constexpr int ScrollLabelMargin = 5;
+static Q_DECL_CONSTEXPR int ScrollLabelMargin = 5;
 
 ScrollLabel::ScrollLabel(QWidget* parent) :
     QWidget(parent),

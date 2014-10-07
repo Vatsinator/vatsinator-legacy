@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "modules/vatbook/bookedcontroller.h"
@@ -120,57 +121,49 @@ BookedAtcTableModel::sort(int column, Qt::SortOrder order) {
   
   switch(column) {
     case Callsign:
-      qSort(__staff.begin(), __staff.end(),
-            order == Qt::AscendingOrder ?
-              [](const BookedController* _a, const BookedController* _b) -> bool {
-                return _a->callsign() < _b->callsign();
-              } :
-              [](const BookedController* _a, const BookedController* _b) -> bool {
-                return _a->callsign() > _b->callsign();
-              }
-      );
-      
+      if (order == Qt::AscendingOrder)
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return a->callsign() < b->callsign();
+        });
+      else
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return a->callsign() > b->callsign();
+        });
       break;
       
     case Name:
-      qSort(__staff.begin(), __staff.end(),
-            order == Qt::AscendingOrder ?
-              [](const BookedController* _a, const BookedController* _b) -> bool {
-                return _a->realName() < _b->realName();
-              } :
-              [](const BookedController* _a, const BookedController* _b) -> bool {
-                return _a->realName() > _b->realName();
-              }
-      );
-      
+      if (order == Qt::AscendingOrder)
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return a->realName() < b->realName();
+        });
+      else
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return a->realName() > b->realName();
+        });
       break;
       
     case Date:
-      qSort(__staff.begin(), __staff.end(),
-            order == Qt::AscendingOrder ?
-              [](const BookedController* _a, const BookedController* _b) -> bool {
-                return _a->dateBooked() < _b->dateBooked();
-              } :
-              [](const BookedController* _a, const BookedController* _b) -> bool {
-                return _a->dateBooked() > _b->dateBooked();
-              }
-      );
-      
+      if (order == Qt::AscendingOrder)
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return a->dateBooked() < b->dateBooked();
+        });
+      else
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return a->dateBooked() > b->dateBooked();
+        });
       break;
       
     case Hours:
-      qSort(__staff.begin(), __staff.end(),
-            order == Qt::AscendingOrder ?
-            [](const BookedController* _a, const BookedController* _b) -> bool {
-              return QDateTime(_a->dateBooked(), _a->bookedFrom()) <
-                  QDateTime(_b->dateBooked(), _b->bookedFrom());
-            } :
-            [](const BookedController* _a, const BookedController* _b) -> bool {
-              return QDateTime(_a->dateBooked(), _a->bookedFrom()) >
-                  QDateTime(_b->dateBooked(), _b->bookedFrom());
-            }
-      );
-      
+      if (order == Qt::AscendingOrder)
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return QDateTime(a->dateBooked(), a->bookedFrom()) <
+            QDateTime(b->dateBooked(), b->bookedFrom());
+        });
+      else
+        std::sort(__staff.begin(), __staff.end(), [] (const BookedController* a, const BookedController* b) {
+          return QDateTime(a->dateBooked(), a->bookedFrom()) <
+            QDateTime(b->dateBooked(), b->bookedFrom());
+        });
       break;
   }
   

@@ -84,7 +84,7 @@ MapRenderer::~MapRenderer() {
 }
 
 LonLat
-MapRenderer::mapToLonLat(const QPoint& _point) {
+MapRenderer::mapToLonLat(const QPoint& point) {
   static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
   static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
@@ -95,7 +95,7 @@ MapRenderer::mapToLonLat(const QPoint& _point) {
 }
 
 LonLat
-MapRenderer::scaleToLonLat(const QPoint& _point) {
+MapRenderer::scaleToLonLat(const QPoint& point) {
   static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
   static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
@@ -106,7 +106,7 @@ MapRenderer::scaleToLonLat(const QPoint& _point) {
 }
 
 QPoint
-MapRenderer::mapFromLonLat(const LonLat& _point) {
+MapRenderer::mapFromLonLat(const LonLat& point) {
   static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
   static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
@@ -126,7 +126,7 @@ MapRenderer::glFromLonLat(const LonLat& point) {
 }
 
 void
-MapRenderer::drawLines(const MapItem* _item) {
+MapRenderer::drawLines(const MapItem* item) {
   static Q_DECL_CONSTEXPR GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
