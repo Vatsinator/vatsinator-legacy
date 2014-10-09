@@ -132,25 +132,13 @@ public:
   FirItem* findItemForFir(const Fir* fir);
   
   /**
-   * Finds all visible items that are inside the given _rect_.
-   * \note If a specific function must be called for each item in the _rect_,
-   * please consider using forEachItem() method.
-   * 
-   * \param rect The bounding rectangle for items.
-   * \sa forEachItem().
-   */
-  QList<const MapItem*> items(const QRectF& rect) const;
-  
-  /**
    * Executes the given function for each item found inside the given _rect_.
-   * This function can be more efficient than capturing all items by items()
-   * and executing the same code in the _foreach_ loop.
    * 
    * \param rect The bounding rectangle for items.
    * \param function The function to execute on every item found.
-   * \sa items().
+   * 
    */
-  void forEachItem(const QRectF& rect, std::function<void(const MapItem*)> function) const;
+  void inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const;
   
   /**
    * Finds nearest item to the given _point_.
@@ -160,9 +148,13 @@ public:
   const MapItem* nearest(const LonLat& point);
   
   /**
-   * Finds _max_ nearest items to the given _point_.
+   * Executes the given function on maximum _max_ nearest items.
+   * 
+   * \param point The reference point.
+   * \param max Maximum number of items.
+   * \param function The function to be executed on every item.
    */
-  QList<const MapItem*> nearest(const LonLat& point, int max);
+  void nearTo(const LonLat& point, int max, std::function<void(const MapItem*)> function);
   
   /**
    * Gets the running instance of MapRenderer.

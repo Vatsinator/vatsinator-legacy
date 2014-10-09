@@ -343,23 +343,20 @@ MapWidget::__itemMenu(const FlightItem* item) {
 
 QMenu*
 MapWidget::__itemMenu() {
-  // fetch 10 nearest items
-  QList<const MapItem*> items = __renderer->scene()->nearest(__mousePosition.geoPosition(), 10);
-  
-  QMenu* menu = new QMenu(tr("Nearby"), this);
-  
   // group fetched items
   QList<const FlightItem*> flights;
   QList<const AirportItem*> airports;
   
-  for (const MapItem* item: items) {
+  __renderer->scene()->nearTo(__mousePosition.geoPosition(), 10, [&](const MapItem* item) {
     if (const FlightItem* f = dynamic_cast<const FlightItem*>(item)) {
       if (!f->data()->isPrefiledOnly())
         flights << f;
     } else if (const AirportItem* a = dynamic_cast<const AirportItem*>(item)) {
       airports << a;
     }
-  }
+  });
+  
+  QMenu* menu = new QMenu(tr("Nearby"), this);
   
   if (flights.size() > 0) {
     menu->addAction(new ActionMenuSeparator(tr("Flights"), this));

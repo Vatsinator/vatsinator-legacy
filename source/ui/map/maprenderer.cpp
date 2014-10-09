@@ -356,7 +356,7 @@ MapRenderer::__drawItems() {
   __texturedProgram->enableAttributeArray(texcoordLocation());
   __texturedProgram->enableAttributeArray(vertexLocation());
   
-  scene()->forEachItem(__screen, [this](const MapItem* item) {
+  scene()->inRect(__screen, [this](const MapItem* item) {
     QPointF p = glFromLonLat(item->position());
     __texturedProgram->setUniformValue(__texturedPositionLocation, p.x(), p.y());
     item->drawItem(__texturedProgram);

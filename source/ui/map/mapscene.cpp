@@ -83,40 +83,8 @@ MapScene::findItemForFir(const Fir* fir) {
   return nullptr;
 }
 
-QList<const MapItem*>
-MapScene::items(const QRectF& rect) const {
-  QList<const MapItem*> result;
-  
-  for (auto it = spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight());
-       it != spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()); ++it) {
-    if (it->second->isVisible())
-      result << it->second;
-  }
-  
-  /* Handle cross-IDL queries */
-  if (rect.right() > 180.0) {
-    QRectF more(QPointF(-180.0, rect.top()), QSizeF(rect.right() - 180.0, rect.height()));
-    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
-         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
-      if (it->second->isVisible())
-        result << it->second;
-    }
-  }
-  
-  if (rect.left() < -180.0) {
-    QRectF more(QPointF(rect.left() + 360.0, rect.top()), QPointF(180.0, rect.bottom()));
-    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
-         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
-      if (it->second->isVisible())
-        result << it->second;
-    }
-  }
-  
-  return qMove(result);
-}
-
 void
-MapScene::forEachItem(const QRectF& rect, std::function<void(const MapItem*)> function) const {
+MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const {
   for (auto it = spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight());
        it != spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()); ++it) {
     if (it->second->isVisible())
@@ -158,22 +126,18 @@ MapScene::nearest(const LonLat& point) {
   return it->second;
 }
 
-QList<const MapItem*>
-MapScene::nearest(const LonLat& point, int max) {
-  QList<const MapItem*> result;
+void
+MapScene::nearTo(const LonLat& point, int max, std::function<void(const MapItem*)> function) {
   auto it = spatial::neighbor_begin(__items, point);
   int c = 0;
   
-  while (c < max) {
+  while (c < max && it != __items.end()) {
     if (it->second->isVisible()) {
-      result << it->second;
+      function(it->second);
       c += 1;
     }
-    ++it;
-    Q_ASSERT(it != __items.end());
+    ++ it;
   }
-  
-  return qMove(result);
 }
 
 void
