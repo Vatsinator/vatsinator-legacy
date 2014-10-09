@@ -22,7 +22,7 @@ cmake_policy (SET CMP0020 OLD)
 
 # Allow use of the LOCATION target property.
 if (POLICY CMP0026)
-	cmake_policy (SET CMP0026 OLD)
+  cmake_policy (SET CMP0026 OLD)
 endif (POLICY CMP0026)
 
 if (POLICY CMP0028)
@@ -69,17 +69,17 @@ endif()
 
 # set CMAKE_BUILD_TYPE (gcc/clang)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
-    set (CMAKE_BUILD_TYPE Debug)
-else (CMAKE_BUILD_TYPE MATCHES Debug)
-    set (CMAKE_BUILD_TYPE Release)
-endif (CMAKE_BUILD_TYPE MATCHES Debug)
+  set (CMAKE_BUILD_TYPE Debug)
+else ()
+  set (CMAKE_BUILD_TYPE Release)
+endif ()
 
 # set CXX_FLAGS
 if (CMAKE_COMPILER_IS_GNUCXX)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-	set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
-	set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
-endif (CMAKE_COMPILER_IS_GNUCXX)
+  set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
+  set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
+endif ()
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -107,7 +107,6 @@ endif (NOT vatsinator_UI_IMPLEMENTATION)
 
 include (VatsinatorInstall)
 add_subdirectory(resources)
-add_subdirectory(dist)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 
@@ -150,7 +149,7 @@ set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 option (WITH_PLUGINS "Build plugins" ON)
 if (WITH_PLUGINS)
     add_subdirectory(plugins)
-endif (WITH_PLUGINS)
+endif ()
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
@@ -166,9 +165,9 @@ elseif (APPLE)
     message (STATUS " * platform: Apple")
 elseif (WIN32)
     message (STATUS " * platform: Win32")
-else (LINUX)
+else ()
     message (STATUS " * platform: Undefined")
-endif (LINUX)
+endif ()
 message (STATUS " * Qt version: ${QT_VERSION}")
 
 # uninstall target
@@ -191,5 +190,5 @@ if (DOXYGEN_FOUND)
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Generating documentation with Doxygen" VERBATIM
   )
-endif (DOXYGEN_FOUND)
+endif ()
 

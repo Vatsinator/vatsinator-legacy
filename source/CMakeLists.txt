@@ -6,30 +6,30 @@ set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # exec file
 set (vatsinator_TARGET
-    vatsinator
+  vatsinator
 )
 
 if (APPLE) # bundle looks better
   set (vatsinator_TARGET
-      Vatsinator
+    Vatsinator
   )
-endif (APPLE)
+endif ()
 
 set (vatsinator_SRCS
-    netconfig.cpp
-    vatsinatorapplication.cpp
+  netconfig.cpp
+  vatsinatorapplication.cpp
 )
 
 set (vatsinator_HEADERS
-		netconfig.h
-		vatsinatorapplication.h
+  netconfig.h
+  vatsinatorapplication.h
 )
 
 # icon for Windows
 if (WIN32)
   set (vatsinator_SRCS ${vatsinator_SRCS}
   ${PROJECT_SOURCE_DIR}/dist/vatsinator.rc)
-endif (WIN32)
+endif ()
 
 set (vatsinator_SUBDIRS
     db
@@ -48,7 +48,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_executable (${vatsinator_TARGET} WIN32
     main.cpp
     ${vatsinator_SRCS}
-		${vatsinator_HEADERS}
+    ${vatsinator_HEADERS}
 )
 
 set (vatsinator_QT_LIBS
@@ -88,7 +88,7 @@ endif (LINUX)
 if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
   set (UI_IMPLEMENTATION "WidgetsUserInterface")
 else (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-  message(FATAL_ERROR "Known user interface implementations: widgets")
+  message (FATAL_ERROR "Known user interface implementations: widgets")
 endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
@@ -168,9 +168,9 @@ elseif (WIN32)
         OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
     
     # setup path to qwindows.dll
-		if (MSVC)
-			set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
-		endif ()
+    if (MSVC)
+        set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
+    endif ()
     
     include (DeployQt5)
     install_qt5_executable ("${vatsinator_EXECUTABLE}"
