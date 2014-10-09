@@ -23,7 +23,7 @@
 #include <QAbstractTableModel>
 #include <QList>
 
-#include "vatsimdata/client/controller.h"
+#include "vatsimdata/controller.h"
 
 class ControllerTableModel : public QAbstractTableModel {
   Q_OBJECT

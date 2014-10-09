@@ -20,7 +20,7 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsinatorapplication.h"

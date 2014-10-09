@@ -41,8 +41,8 @@
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/client.h"
-#include "vatsimdata/client/controller.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/controller.h"
+#include "vatsimdata/pilot.h"
 #include "vatsinatorapplication.h"
 
 #include "widgetsuserinterface.h"

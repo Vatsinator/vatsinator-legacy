@@ -38,7 +38,7 @@
 #include "ui/map/mapscene.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/vatsimdatahandler.h"
