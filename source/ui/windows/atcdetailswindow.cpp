@@ -27,7 +27,7 @@
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
-#include "vatsimdata/client/controller.h"
+#include "vatsimdata/controller.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"

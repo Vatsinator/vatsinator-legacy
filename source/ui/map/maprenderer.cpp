@@ -31,7 +31,7 @@
 #include "ui/map/modelmatcher.h"
 #include "ui/map/uiritem.h"
 #include "ui/map/worldpolygon.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"

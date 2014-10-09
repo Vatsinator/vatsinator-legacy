@@ -31,7 +31,7 @@
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 

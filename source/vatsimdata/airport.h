@@ -24,7 +24,7 @@
 #include <QString>
 #include <QPair>
 
-#include "vatsimdata/client/controller.h"
+#include "vatsimdata/controller.h"
 
 struct AirportRecord;
 class ControllerTableModel;

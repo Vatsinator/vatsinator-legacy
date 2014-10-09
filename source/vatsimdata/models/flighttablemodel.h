@@ -23,7 +23,7 @@
 #include <QAbstractTableModel>
 #include <QList>
 
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 
 class FlightTableModel : public QAbstractTableModel {
   Q_OBJECT

@@ -19,7 +19,7 @@
 #include <QtWidgets>
 
 #include "ui/userinterface.h"
-#include "vatsimdata/client/controller.h"
+#include "vatsimdata/controller.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsinatorapplication.h"

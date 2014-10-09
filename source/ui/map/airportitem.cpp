@@ -26,7 +26,7 @@
 #include "ui/map/mapscene.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsinatorapplication.h"
