@@ -49,7 +49,7 @@
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="41"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="42"/>
         <source>Version %1</source>
         <translation>バージョン %1</translation>
     </message>
@@ -84,13 +84,13 @@
         <translation>ライセンス</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="71"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="72"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
         <translation>最新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="75"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="76"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
         <translation>有効期限切れ</translation>
@@ -112,7 +112,7 @@
 <context>
     <name>AirportDatabase</name>
     <message>
-        <location filename="../db/airportdatabase.cpp" line="54"/>
+        <location filename="../db/airportdatabase.cpp" line="56"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>ファイル %1 を開くことができません！プログラムを再インストールしてください。</translation>
     </message>
@@ -321,22 +321,22 @@
 <context>
     <name>BookedAtcTableModel</name>
     <message>
-        <location filename="../modules/models/bookedatctablemodel.cpp" line="107"/>
+        <location filename="../modules/models/bookedatctablemodel.cpp" line="106"/>
         <source>Callsign</source>
         <translation>コールサイン</translation>
     </message>
     <message>
-        <location filename="../modules/models/bookedatctablemodel.cpp" line="109"/>
+        <location filename="../modules/models/bookedatctablemodel.cpp" line="108"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="../modules/models/bookedatctablemodel.cpp" line="111"/>
+        <location filename="../modules/models/bookedatctablemodel.cpp" line="110"/>
         <source>Date</source>
         <translation>日付</translation>
     </message>
     <message>
-        <location filename="../modules/models/bookedatctablemodel.cpp" line="113"/>
+        <location filename="../modules/models/bookedatctablemodel.cpp" line="112"/>
         <source>Hours</source>
         <translation>時間</translation>
     </message>
@@ -344,7 +344,7 @@
 <context>
     <name>ColorButton</name>
     <message>
-        <location filename="../ui/buttons/colorbutton.cpp" line="107"/>
+        <location filename="../ui/buttons/colorbutton.cpp" line="109"/>
         <source>Select color</source>
         <translation>色選択</translation>
     </message>
@@ -406,17 +406,17 @@
 <context>
     <name>ControllerTableModel</name>
     <message>
-        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="128"/>
+        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="129"/>
         <source>Callsign</source>
         <translation>コールサイン</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="130"/>
+        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="131"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="132"/>
+        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="133"/>
         <source>Frequency</source>
         <translation>周波数</translation>
     </message>
@@ -562,7 +562,7 @@
 <context>
     <name>FirDatabase</name>
     <message>
-        <location filename="../db/firdatabase.cpp" line="60"/>
+        <location filename="../db/firdatabase.cpp" line="56"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>ファイル %1 を開くことができません！プログラムを再インストールしてください。</translation>
     </message>
@@ -614,7 +614,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="179"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
         <source>%1 - flight details</source>
         <translation>%1 - フライト詳細</translation>
     </message>
@@ -753,28 +753,28 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="211"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="216"/>
         <source>%1 feet</source>
         <translation>%1 フィート</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="212"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="229"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="217"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="234"/>
         <source>%1 kts</source>
         <translation>%1 ノット</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="216"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="221"/>
         <source>airborne</source>
         <translation>飛行中</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="218"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="223"/>
         <source>departing</source>
         <translation>出発</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="220"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="225"/>
         <source>arrived</source>
         <translation>到着</translation>
     </message>
@@ -809,32 +809,32 @@
 <context>
     <name>FlightTableModel</name>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="146"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="147"/>
         <source>Prefiled</source>
         <translation>ファイル済み</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="163"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="164"/>
         <source>Callsign</source>
         <translation>コールサイン</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="165"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="166"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="167"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="168"/>
         <source>From</source>
         <translation>出発空港</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="169"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="170"/>
         <source>To</source>
         <translation>到着空港</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="171"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="172"/>
         <source>Aircraft</source>
         <translation>機材</translation>
     </message>
@@ -935,47 +935,52 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="223"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="91"/>
+        <source>Your system does not support required OpenGL extensions.                                       Please upgrade your graphic card driver.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="229"/>
         <source>Airport details</source>
         <translation>空港詳細</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="236"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="242"/>
         <source>Controllers</source>
         <translation>管制官</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="248"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="254"/>
         <source>Arrivals</source>
         <translation>到着機</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="262"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="268"/>
         <source>Departures</source>
         <translation>出発機</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="284"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="289"/>
         <source>%1 details</source>
         <translation>%1 詳細</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="312"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="317"/>
         <source>Flight details</source>
         <translation>フライト詳細</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="344"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
         <source>Nearby</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="360"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="362"/>
         <source>Flights</source>
         <translation>フライト</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="374"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="376"/>
         <source>Airports</source>
         <translation>空港</translation>
     </message>
@@ -1226,17 +1231,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="507"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="556"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="591"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="650"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="506"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="555"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="590"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="649"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="517"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="566"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="601"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="516"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="565"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="600"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
