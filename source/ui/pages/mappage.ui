@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>509</width>
-    <height>521</height>
+    <height>545</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
           <item>
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Zooming intensivity:</string>
+             <string>Zooming intensity:</string>
             </property>
            </widget>
           </item>
