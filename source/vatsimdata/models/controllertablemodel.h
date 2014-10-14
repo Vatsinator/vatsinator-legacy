@@ -1,6 +1,6 @@
 /*
     controllertablemodel.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,10 +25,17 @@
 
 #include "vatsimdata/controller.h"
 
+/**
+ * The ControllerTableModel class is a model that keeps logged-in ATC clients.
+ */
 class ControllerTableModel : public QAbstractTableModel {
   Q_OBJECT
 
 signals:
+  /**
+   * This signal is emitted whenever user sorts the model.
+   * \todo Remove.
+   */
   void sorted();
 
 public:
@@ -39,24 +46,58 @@ public:
     Button    = 3
   };
   
-  explicit ControllerTableModel(QObject* = 0);
+  explicit ControllerTableModel(QObject* parent = nullptr);
 
-  void add(const Controller*);
-  void remove(const Controller*);
-  bool contains(const Controller*) const;
+  /**
+   * Adds new Controller to the model.
+   * When the client becomes inactive, the pointer is automatically removed.
+   * The model does not take ownership over the _atc_.
+   * 
+   * \param atc Controller instance to be added to the model.
+   * \sa remove().
+   */
+  void add(const Controller* atc);
+  
+  /**
+   * Removes the given client from the model.
+   * If the model does not contain _atc_, this function throws runtime error.
+   * 
+   * \param atc Controller instance pointer to be removed.
+   * \sa add() and contains().
+   */
+  void remove(const Controller* atc);
+  
+  /**
+   * Checks whether the model contains _atc_ or not.
+   */
+  bool contains(const Controller* atc) const;
+  
+  /**
+   * Empties the model.
+   * \todo Remove.
+   */
   void clear();
-  const Controller* findAtcByCallsign(const QString&) const;
+  
+  /**
+   * Looks for the given client. The complexity is linear.
+   * 
+   * \return Found client instance pointer or _nullptr_.
+   */
+  const Controller* findAtcByCallsign(const QString& callsign) const;
 
-  int rowCount(const QModelIndex& = QModelIndex()) const;
-  int columnCount(const QModelIndex& = QModelIndex()) const;
-  QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
-  QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
-  void sort(int, Qt::SortOrder = Qt::AscendingOrder);
+  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+  void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
 
+  /**
+   * Gives direct access to the list of clients.
+   */
   inline const QList<const Controller*>& staff() const { return __staff; }
   
 private slots:
-  void __autoRemove(QObject*);
+  void __autoRemove();
 
 private:
   QList<const Controller*> __staff;

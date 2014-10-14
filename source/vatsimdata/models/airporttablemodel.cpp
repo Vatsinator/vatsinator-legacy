@@ -1,6 +1,6 @@
 /*
     airporttablemodel.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,35 +24,44 @@
 
 #include "airporttablemodel.h"
 
-AirportTableModel::AirportTableModel(QObject* _parent) :
-    QAbstractTableModel(_parent) {}
+AirportTableModel::AirportTableModel(QObject* parent) :
+    QAbstractTableModel(parent) {}
 
 void
-AirportTableModel::addAirport(const Airport* _ap) {
+AirportTableModel::addAirport(const Airport* airport) {
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
-  __airports.push_back(_ap);
+  __airports.push_back(airport);
   endInsertRows();
 }
 
+void
+AirportTableModel::clear() {
+  beginResetModel();
+  __airports.clear();
+  endResetModel();
+}
+
 int
-AirportTableModel::rowCount(const QModelIndex&) const {
+AirportTableModel::rowCount(const QModelIndex& index) const {
+  Q_UNUSED(index);
   return __airports.size();
 }
 
 int
-AirportTableModel::columnCount(const QModelIndex&) const {
+AirportTableModel::columnCount(const QModelIndex& index) const {
+  Q_UNUSED(index);
   return 5;
 }
 
 QVariant
-AirportTableModel::data(const QModelIndex& _index, int _role) const {
-  if (!_index.isValid() || _index.row() >= rowCount() || _index.column() >= columnCount())
+AirportTableModel::data(const QModelIndex& index, int role) const {
+  if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount())
     return QVariant();
 
-  switch (_role) {
+  switch (role) {
     case Qt::TextAlignmentRole:
 
-      switch (_index.column()) {
+      switch (index.column()) {
         case Label:
           return QVariant();
         default:
@@ -60,18 +69,18 @@ AirportTableModel::data(const QModelIndex& _index, int _role) const {
       }
 
     case Qt::ToolTipRole:
-      return __arrivalsAndDepartures(_index.row());
+      return __arrivalsAndDepartures(index.row());
       
     case Qt::DisplayRole:
-      switch (_index.column()) {
+      switch (index.column()) {
         case Label:
-          return __produceLabel(_index.row());
+          return __produceLabel(index.row());
         case Facilities:
-          return __produceFacilities(_index.row());
+          return __produceFacilities(index.row());
         case Inbounds:
-          return QString::number(__airports[_index.row()]->countInbounds());
+          return QString::number(__airports[index.row()]->countInbounds());
         case Outbounds:
-          return QString::number(__airports[_index.row()]->countOutbounds());
+          return QString::number(__airports[index.row()]->countOutbounds());
         default:
           return QVariant();
       }
@@ -82,11 +91,11 @@ AirportTableModel::data(const QModelIndex& _index, int _role) const {
 }
 
 QVariant
-AirportTableModel::headerData(int _section, Qt::Orientation _orientation, int _role) const {
-  if (_section >= columnCount() || _orientation == Qt::Vertical || _role != Qt::DisplayRole)
+AirportTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+  if (section >= columnCount() || orientation == Qt::Vertical || role != Qt::DisplayRole)
     return QVariant();
 
-  switch (_section) {
+  switch (section) {
     case Label:
       return tr("Airport");
     case Facilities:
@@ -100,33 +109,26 @@ AirportTableModel::headerData(int _section, Qt::Orientation _orientation, int _r
   }
 }
 
-void
-AirportTableModel::clear() {
-  beginResetModel();
-  __airports.clear();
-  endResetModel();
-}
-
-inline QString
-AirportTableModel::__arrivalsAndDepartures(int _row) const {
+QString
+AirportTableModel::__arrivalsAndDepartures(int row) const {
   return
-    tr("Arrivals: %1").arg(QString::number(__airports[_row]->countArrivals())) %
+    tr("Arrivals: %1").arg(QString::number(__airports[row]->countArrivals())) %
     "<br>" %
-    tr("Departures: %1").arg(QString::number(__airports[_row]->countDepartures()));
+    tr("Departures: %1").arg(QString::number(__airports[row]->countDepartures()));
 }
 
-inline QString
-AirportTableModel::__produceLabel(int _row) const {
+QString
+AirportTableModel::__produceLabel(int row) const {
   return
     static_cast< QString >(" ") %
-    QString::fromUtf8(__airports[_row]->data()->icao) %
+    QString::fromUtf8(__airports[row]->data()->icao) %
     static_cast< QString >(" ") %
-    QString::fromUtf8(__airports[_row]->data()->city);
+    QString::fromUtf8(__airports[row]->data()->city);
 }
 
-inline QString
-AirportTableModel::__produceFacilities(int _row) const {
-  Controller::Facilities facilities = __airports[_row]->facilities();
+QString
+AirportTableModel::__produceFacilities(int row) const {
+  Controller::Facilities facilities = __airports[row]->facilities();
 
   if (!facilities)
     return "-";

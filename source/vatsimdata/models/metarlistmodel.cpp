@@ -19,9 +19,7 @@
 #include <QtCore>
 
 #include "network/plaintextdownloader.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
-
 #include "vatsinatorapplication.h"
 
 #include "metarlistmodel.h"
@@ -32,32 +30,32 @@
 static const QString NoMetarText = QStringLiteral("No METAR available");
 
 
-MetarListModel::MetarListModel(PlainTextDownloader* _ptd, QObject* _parent) :
-    QAbstractListModel(_parent),
-    __downloader(_ptd) {
+MetarListModel::MetarListModel(PlainTextDownloader* downloader, QObject* parent) :
+    QAbstractListModel(parent),
+    __downloader(downloader) {
   connect(__downloader,         SIGNAL(finished(QString)),
           this,                 SLOT(__readMetar(QString)));
 }
 
 void
-MetarListModel::fetchMetar(const QString& _icao) {
-  __downloader->fetch(vApp()->vatsimDataHandler()->metarUrl() + "?id=" + _icao.toLower());
-  __requests.enqueue(_icao.simplified());
+MetarListModel::fetchMetar(const QString& icao) {
+  __downloader->fetch(vApp()->vatsimDataHandler()->metarUrl() + "?id=" + icao.toLower());
+  __requests.enqueue(icao.simplified());
 }
 
-const Metar *
-MetarListModel::find(const QString& _key) const {
+const Metar*
+MetarListModel::find(const QString& icao) const {
   for (const Metar& m: __metarList)
-    if (m.icao() == _key)
+    if (m.icao() == icao)
       return &m;
 
   return nullptr;
 }
 
 const QModelIndex
-MetarListModel::modelIndexForMetar(const Metar* _m) const {
+MetarListModel::modelIndexForMetar(const Metar* metar) const {
   for (int i = 0; i < __metarList.size(); ++i) {
-    if (&__metarList.at(i) == _m)
+    if (&__metarList.at(i) == metar)
       return createIndex(i, 0);
   }
   
@@ -65,20 +63,21 @@ MetarListModel::modelIndexForMetar(const Metar* _m) const {
 }
 
 int
-MetarListModel::rowCount(const QModelIndex&) const {
+MetarListModel::rowCount(const QModelIndex& parent) const {
+  Q_UNUSED(parent);
   return __metarList.count();
 }
 
 QVariant
-MetarListModel::data(const QModelIndex& _index, int _role) const {
-  if (!_index.isValid() || _index.row() >= __metarList.size())
+MetarListModel::data(const QModelIndex& index, int role) const {
+  if (!index.isValid() || index.row() >= __metarList.size())
     return QVariant();
 
-  switch (_role) {
+  switch (role) {
     case Qt::DisplayRole:
-      return __metarList.at(_index.row()).metar();
+      return __metarList.at(index.row()).metar();
     case Qt::ToolTipRole:
-      return __metarList.at(_index.row()).lastFetchTime();
+      return __metarList.at(index.row()).lastFetchTime();
     default:
       return QVariant();
   }
@@ -104,28 +103,28 @@ MetarListModel::clear() {
 }
 
 void
-MetarListModel::__addMetar(const QString& _metar) {
+MetarListModel::__addMetar(const QString& metar) {
   for (Metar & m: __metarList) {
-    if (m.icao() == _metar.left(4)) {
-      m.setMetar(_metar);
+    if (m.icao() == metar.left(4)) {
+      m.setMetar(metar);
       return;
     }
   }
 
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
-  __metarList.push_back(Metar(_metar.left(4), _metar));
+  __metarList.push_back(Metar(metar.left(4), metar));
   endInsertRows();
 }
 
 bool
-MetarListModel::__matches(const QString& _word) {
-  return (_word.length() == 4) &&
-         (_word.startsWith(__requests.head(), Qt::CaseInsensitive));
+MetarListModel::__matches(const QString& word) {
+  return (word.length() == 4) &&
+         (word.startsWith(__requests.head(), Qt::CaseInsensitive));
 }
 
 void
-MetarListModel::__readMetar(const QString& _metar) {
-  QString metar = _metar.simplified();
+MetarListModel::__readMetar(const QString& metar) {
+  QString metar = metar.simplified();
 
   if (metar.isEmpty())
     return;
@@ -136,7 +135,6 @@ MetarListModel::__readMetar(const QString& _metar) {
   }
 
   QString oneMetar;
-
   for (const QString& word: metar.split(' ')) {
     if (__matches(word)) {
       if (!oneMetar.isEmpty())

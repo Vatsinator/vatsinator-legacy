@@ -1,6 +1,6 @@
 /*
     metarlistmodel.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,45 +28,54 @@
 
 class PlainTextDownloader;
 
-class MetarListModel :
-    public QAbstractListModel,
-    public Singleton<MetarListModel> {
-
-  /* TODO
-   * Split to MetarListModel & MetarUpdater
-   */
-
+/**
+ * The MetarListModel class is a model that keeps METAR reports.
+ * 
+ * \todo Split to MetarListModel and MetarUpdater.
+ */
+class MetarListModel : public QAbstractListModel, public Singleton<MetarListModel> {
   Q_OBJECT
 
 signals:
+  /**
+   * This signal is emitted whenever a new METAR report is available.
+   */
   void newMetarsAvailable();
-  void noMetar(QString);
+  
+  /**
+   * This signal is emitted in order to idicate that the requested METAR
+   * is unavailable.
+   */
+  void noMetar(QString icao);
 
 public:
-  MetarListModel(PlainTextDownloader*, QObject* = 0);
+  /**
+   * Constructs new MetarListModel instance that will use the given _downloader_.
+   * Passes _parent_ to QAbstractListModel.
+   */
+  MetarListModel(PlainTextDownloader* downloader, QObject* parent = 0);
 
   /**
    * Starts fetching the METAR.
-   * After done, emits newMetarsAvailable().
+   * After done, emits _newMetarsAvailable()_ signal.
    * \param icao Airport ICAO code.
    */
-  void fetchMetar(const QString&);
+  void fetchMetar(const QString& icao);
 
   /**
    * Looks for the METAR.
-   * \param icao Airport ICAO code. NOTE: The code must be uppercase.
-   * @return Const ptr to found METAR or NULL.
+   * \param icao Airport ICAO code. \note The code must be uppercase.
+   * \return Pointer to the found METAR instance or _nullptr_ if not found.
    */
-  const Metar* find(const QString&) const;
+  const Metar* find(const QString& icao) const;
   
   /**
    * Returns the model index for the given metar.
    */
-  const QModelIndex modelIndexForMetar(const Metar*) const;
+  const QModelIndex modelIndexForMetar(const Metar* metar) const;
 
-  /* Two QAbstractListModel-reimplemented functions */
-  int rowCount(const QModelIndex& = QModelIndex()) const;
-  QVariant data(const QModelIndex&, int) const;
+  int rowCount(const QModelIndex& parent = QModelIndex()) const;
+  QVariant data(const QModelIndex& index, int role) const;
   
   bool anyMetarsInQueue() const;
 
@@ -75,11 +84,11 @@ public slots:
   void clear();
 
 private:
-  void __addMetar(const QString&);
-  bool __matches(const QString&);
+  void __addMetar(const QString& metar);
+  bool __matches(const QString& word);
   
 private slots:
-  void __readMetar(const QString&);
+  void __readMetar(const QString& metar);
   
 private:
   QQueue<QString>       __requests;

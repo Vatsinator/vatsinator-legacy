@@ -39,7 +39,6 @@ class VatbookHandler : public QObject, public Singleton<VatbookHandler> {
   Q_OBJECT
   
 public:
-  
   /**
    * The default constructor passes _parent_ to QObject.
    */
