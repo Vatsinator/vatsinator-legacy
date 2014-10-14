@@ -195,7 +195,7 @@
          <item>
           <widget class="QLabel" name="StdLabel">
            <property name="toolTip">
-            <string extracomment="Shortcut expansion for &quot;STD&quot;">Sheduled Time of Departure</string>
+            <string extracomment="Shortcut expansion for &quot;STD&quot;">Scheduled Time of Departure</string>
            </property>
            <property name="text">
             <string notr="true">STD</string>
@@ -247,7 +247,7 @@
          <item>
           <widget class="QLabel" name="StaLabel">
            <property name="toolTip">
-            <string extracomment="Shortuct expansion for &quot;STA&quot;">Sheduled Time of Arrival</string>
+            <string extracomment="Shortuct expansion for &quot;STA&quot;">Scheduled Time of Arrival</string>
            </property>
            <property name="text">
             <string notr="true">STA</string>
@@ -596,7 +596,9 @@
         <string>Show</string>
        </property>
        <property name="icon">
-        <iconset theme="go-jump"/>
+        <iconset theme="go-jump">
+         <normaloff/>
+        </iconset>
        </property>
       </widget>
      </item>

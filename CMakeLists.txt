@@ -124,8 +124,6 @@ if (LINUX)
 
     # Spec file
     option (WITH_RPM "Create RPM package" OFF)
-    
-    add_subdirectory (dist)
 
 elseif (APPLE)
     
@@ -139,6 +137,8 @@ elseif (WIN32)
     include (Packaging-win32)
     
 endif (LINUX)
+
+add_subdirectory (dist)
 
 if (NOT APPLE)
     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
