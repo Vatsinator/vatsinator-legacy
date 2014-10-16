@@ -124,18 +124,18 @@ MetarListModel::__matches(const QString& word) {
 
 void
 MetarListModel::__readMetar(const QString& metar) {
-  QString metar = metar.simplified();
+  QString cleanMetar = metar.simplified();
 
-  if (metar.isEmpty())
+  if (cleanMetar.isEmpty())
     return;
 
-  if (metar.contains(NoMetarText)) {
+  if (cleanMetar.contains(NoMetarText)) {
     emit noMetar(__requests.dequeue());
     return;
   }
 
   QString oneMetar;
-  for (const QString& word: metar.split(' ')) {
+  for (const QString& word: cleanMetar.split(' ')) {
     if (__matches(word)) {
       if (!oneMetar.isEmpty())
         __addMetar(oneMetar);
