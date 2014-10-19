@@ -54,25 +54,35 @@ LanguageManager::getLocaleById(int id) {
 void
 LanguageManager::__getInstalledLanguages() {
   int currentId = 0;
+  QRegExp localeRegex(".+-(.[^.]+).+");
+  
   
   QDir translationsDir(FileManager::staticPath(FileManager::Translations));
   QStringList locales = translationsDir.entryList({"vatsinator-*.qm"});
   QStringList descriptions = translationsDir.entryList({"*.language"});
   
   for (const QString& l: locales) {
-    QString locale = l.section('-', 1, 1).section('.', 0, 0);
+    QString locale;
+    if (localeRegex.indexIn(l) == -1) {
+      qCritical("LanguageManager: the file %s does not have a valid name", qPrintable(l));
+      continue;
+    }
+    locale = localeRegex.cap(1);
+    
     if (!descriptions.contains(locale + ".language")) {
       qCritical("LanguageManager: could not find description for %s.", qPrintable(locale));
+      continue;
     }
     
     QFile descFile(FileManager::staticPath(FileManager::Translations) % "/" % locale % ".language");
-    if (!descFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!descFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      qWarning("Cannot open %s for reading", qPrintable(descFile.fileName()));
       continue;
+    }
     
     __languages.push_back({currentId, locale, QString::fromUtf8(descFile.readLine().simplified())});
     
     descFile.close();
-    
     currentId += 1;
   }
 }
