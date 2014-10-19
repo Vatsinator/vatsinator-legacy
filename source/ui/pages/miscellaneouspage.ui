@@ -51,7 +51,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Vatsinator needs to be restarted before changes&lt;br&gt;to the langugage settings will take effect.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator needs to be restarted before changes&lt;br/&gt;to the language settings will take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="indent">
          <number>5</number>
