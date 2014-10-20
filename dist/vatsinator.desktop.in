@@ -11,6 +11,10 @@ Icon=vatsinator
 
 
 # Translations
+Comment[de]=Ein einfacher Vatsim-Monitor
+GenericName[de]=Vatsim-Monitor
+Name[de]=Vatsinator
+Icon[de]=vatsinator
 Comment[ja_JP]=シンプルな Vatsim モニタ
 GenericName[ja_JP]=Vatsim モニタ
 Name[ja_JP]=Vatsinator

@@ -227,32 +227,32 @@
 <context>
     <name>AirportTableModel</name>
     <message>
-        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="91"/>
+        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="100"/>
         <source>Airport</source>
         <translation>Airport</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="93"/>
+        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="102"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="95"/>
+        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="104"/>
         <source>Inbound</source>
         <translation>Inbound</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="97"/>
+        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="106"/>
         <source>Outbound</source>
         <translation>Outbound</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="113"/>
+        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="115"/>
         <source>Arrivals: %1</source>
         <translation>Arrivals: %1</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="115"/>
+        <location filename="../vatsimdata/models/airporttablemodel.cpp" line="117"/>
         <source>Departures: %1</source>
         <translation>Departures: %1</translation>
     </message>
@@ -406,17 +406,17 @@
 <context>
     <name>ControllerTableModel</name>
     <message>
-        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="129"/>
+        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="130"/>
         <source>Callsign</source>
         <translation>Callsign</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="131"/>
+        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="132"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="133"/>
+        <location filename="../vatsimdata/models/controllertablemodel.cpp" line="134"/>
         <source>Frequency</source>
         <translation>Frequency</translation>
     </message>
@@ -624,18 +624,6 @@
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="198"/>
-        <source>Sheduled Time of Departure</source>
-        <extracomment>Shortcut expansion for &quot;STD&quot;</extracomment>
-        <translation>Sheduled Time of Departure</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="250"/>
-        <source>Sheduled Time of Arrival</source>
-        <extracomment>Shortuct expansion for &quot;STA&quot;</extracomment>
-        <translation>Sheduled Time of Arrival</translation>
-    </message>
-    <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="309"/>
         <source>Actual Time of Departure</source>
         <extracomment>Shortcut expansion for &quot;ATD&quot;</extracomment>
@@ -673,6 +661,18 @@
         <translation>Flight plan</translation>
     </message>
     <message>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="198"/>
+        <source>Scheduled Time of Departure</source>
+        <extracomment>Shortcut expansion for &quot;STD&quot;</extracomment>
+        <translation>Scheduled Time of Departure</translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="250"/>
+        <source>Scheduled Time of Arrival</source>
+        <extracomment>Shortuct expansion for &quot;STA&quot;</extracomment>
+        <translation>Scheduled Time of Arrival</translation>
+    </message>
+    <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="589"/>
         <source>Track this flight</source>
         <translation>Track this flight</translation>
@@ -683,7 +683,7 @@
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="606"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="608"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -809,32 +809,32 @@
 <context>
     <name>FlightTableModel</name>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="147"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="148"/>
         <source>Prefiled</source>
         <translation>Prefiled</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="164"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="165"/>
         <source>Callsign</source>
         <translation>Callsign</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="166"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="167"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="168"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="169"/>
         <source>From</source>
         <translation>From</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="170"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="171"/>
         <source>To</source>
         <translation>To</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="172"/>
+        <location filename="../vatsimdata/models/flighttablemodel.cpp" line="173"/>
         <source>Aircraft</source>
         <translation>Aircraft</translation>
     </message>
@@ -867,8 +867,8 @@
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="45"/>
-        <source>Zooming intensivity:</source>
-        <translation>Zooming intensivity:</translation>
+        <source>Zooming intensity:</source>
+        <translation>Zooming intensity:</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="75"/>
