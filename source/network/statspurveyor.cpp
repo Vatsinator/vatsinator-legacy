@@ -30,10 +30,10 @@
 #include "statspurveyor.h"
 
 // send the startup report after 10 seconds
-static constexpr int StartDelay = 10 * 1000;
+static const int StartDelay = 10 * 1000;
 
 // if stats query failed, retry in 1 minute
-static constexpr int RetryDelay = 60 * 1000;
+static const int RetryDelay = 60 * 1000;
 
 namespace {
   
@@ -61,6 +61,10 @@ namespace {
         return QStringLiteral("Windows Vista");
       case QSysInfo::WV_WINDOWS7:
         return QStringLiteral("Windows 7");
+      case QSysInfo::WV_WINDOWS8:
+        return QStringLiteral("Windows 8");
+      case QSysInfo::WV_WINDOWS8_1:
+        return QStringLiteral("Windows 8.1");
       default:
         return QStringLiteral("Windows");
     }
@@ -106,40 +110,47 @@ namespace {
 }
 
 
-StatsPurveyor::StatsPurveyor(QObject* _parent) :
-    QObject(_parent),
+StatsPurveyor::StatsPurveyor(QObject* parent) :
+    QObject(parent),
     __userDecision(NotYetMade),
     __nam(this),
     __reply(nullptr) {
   
   QSettings s;
-  if (!s.contains("Decided/stats")) { // no decision made yet
-    LetSendStatsDialog* dialog = new LetSendStatsDialog();
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    connect(dialog,     SIGNAL(accepted()),
-            this,       SLOT(__statsAccepted()));
-    connect(dialog,     SIGNAL(rejected()),
-            this,       SLOT(__statsRejected()));
-    connect(vApp()->userInterface(),    SIGNAL(initialized()),
-            dialog,                     SLOT(show()));
-    QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
-  } else {
+  if (s.contains("Decided/stats")) {
     bool accepted = s.value("Settings/misc/send_statistics", false).toBool();
     if (accepted) {
       __userDecision = Accepted;
-      QTimer::singleShot(StartDelay, this, SLOT(reportStartup()));
+      QTimer::singleShot(StartDelay, Qt::VeryCoarseTimer, this, SLOT(reportStartup()));
     } else {
       __userDecision = Declined;
     }
-    
-    connect(vApp()->settingsManager(),  SIGNAL(settingsChanged()),
-            this,                       SLOT(__applySettings()));
   }
   
-  connect(this, SIGNAL(newRequest()), SLOT(__nextIfFree()));
+  connect(this, &StatsPurveyor::newRequest, this, &StatsPurveyor::__nextIfFree);
+  connect(vApp()->settingsManager(), &SettingsManager::settingsChanged,
+          this, &StatsPurveyor::__applySettings);
 }
 
 StatsPurveyor::~StatsPurveyor() {}
+
+void
+StatsPurveyor::setUserDecision(StatsPurveyor::UserDecision decision) {
+  __userDecision = decision;
+  
+  QSettings s;
+  s.setValue("Decided/stats", true);
+  s.setValue("Settings/misc/send_statistics", __userDecision == Accepted);
+  SM::updateUi("misc");
+  
+  if (!__requests.isEmpty()) {
+    if (__userDecision == Accepted) {
+      __nextIfFree();
+    } else if (__userDecision == Declined) {
+      __requests.clear();
+    }
+  }
+}
 
 void 
 StatsPurveyor::reportStartup() {
@@ -151,7 +162,7 @@ StatsPurveyor::reportStartup() {
 }
 
 void
-StatsPurveyor::reportNoAtc(const QString& _atc) {
+StatsPurveyor::reportNoAtc(const QString& callsign) {
   static const QString NoAtcPath = QStringLiteral("noatc.php?atc=%1");
   
   /* Discard no-atc reports before data is read */
@@ -159,17 +170,17 @@ StatsPurveyor::reportNoAtc(const QString& _atc) {
     return;
   
   QString url = NetConfig::Vatsinator::statsUrl() % NoAtcPath;
-  QNetworkRequest request(url.arg(_atc));
+  QNetworkRequest request(url.arg(callsign));
   
   __enqueueRequest(request);
 }
 
 void
-StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
+StatsPurveyor::__enqueueRequest(const QNetworkRequest& request) {
   if (__userDecision == Declined)
     return;
   
-  __requests.enqueue(_request);
+  __requests.enqueue(request);
   emit newRequest();
 }
 
@@ -211,8 +222,7 @@ StatsPurveyor::__nextRequest() {
   qDebug("StatsPurveyor: request: %s", qPrintable(__requests.head().url().toString()));
   
   __reply = __nam.get(__requests.head());
-  connect(__reply,      SIGNAL(finished()),
-          this,         SLOT(__parseResponse()));
+  connect(__reply, &QNetworkReply::finished, this, &StatsPurveyor::__parseResponse);
 }
 
 void
@@ -225,35 +235,6 @@ StatsPurveyor::__applySettings() {
   } else {
     __userDecision = Declined;
   }
-}
-
-void
-StatsPurveyor::__statsAccepted() {
-  __userDecision = Accepted;
-  QSettings s;
-  s.setValue("Decided/stats", true);
-  s.setValue("Settings/misc/send_statistics", true);
-  
-  SM::updateUi("misc");
-  
-  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
-          this,                         SLOT(__applySettings()));
-  
-  if (!__requests.isEmpty())
-      __nextRequest();
-}
-
-void
-StatsPurveyor::__statsRejected() {
-  __userDecision = Declined;
-  QSettings s;
-  s.setValue("Decided/stats", true);
-  s.setValue("Settings/misc/send_statistics", false);
-  
-  SM::updateUi("misc");
-  
-  connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
-          this,                         SLOT(__applySettings()));
 }
 
 void

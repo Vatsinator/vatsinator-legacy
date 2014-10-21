@@ -3,16 +3,15 @@ vatsinator_start_subdirectory (vatsimdata)
 set (vatsimdata_SRCS
     airport.cpp
     client.cpp
+    controller.cpp
     fir.cpp
     lonlat.cpp
     metar.cpp
     notam.cpp
+    pilot.cpp
     uir.cpp
     updatescheduler.cpp
     vatsimdatahandler.cpp
-    
-    client/controller.cpp
-    client/pilot.cpp
     
     models/airporttablemodel.cpp
     models/controllertablemodel.cpp

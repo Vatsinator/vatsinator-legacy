@@ -30,17 +30,17 @@ class AtcListWindow :
   Q_OBJECT
 
 public:
-  AtcListWindow(QWidget* = nullptr);
+  AtcListWindow(QWidget* parent = nullptr);
 
 protected:
-  void resizeEvent(QResizeEvent*) override;
-  void showEvent(QShowEvent*) override;
+  void resizeEvent(QResizeEvent* event) override;
+  void showEvent(QShowEvent* event) override;
 
 private:
   void __resizeColumns();
 
 private slots:
-  void __handleDoubleClicked(const QModelIndex&);
+  void __handleDoubleClicked(const QModelIndex& index);
 
 
 };

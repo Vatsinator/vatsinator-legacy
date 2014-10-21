@@ -19,24 +19,24 @@
 
 #include "pluginlistwidgetitem.h"
 
-PluginListWidgetItem::PluginListWidgetItem(const QString& _text,
-                                           QListWidget* _parent,
-                                           int _type):
-    QListWidgetItem(_text, _parent, _type) {
+PluginListWidgetItem::PluginListWidgetItem(const QString& text,
+                                           QListWidget* parent,
+                                           int type):
+    QListWidgetItem(text, parent, type) {
 }
 
 QVariant
-PluginListWidgetItem::data(int _role) const {
-  if (_role == Qt::UserRole)
+PluginListWidgetItem::data(int role) const {
+  if (role == Qt::UserRole)
     return __simplified;
   else
-    return QListWidgetItem::data(_role);
+    return QListWidgetItem::data(role);
 }
 
 void
-PluginListWidgetItem::setData(int _role, const QVariant& _data) {
-  if (_role == Qt::UserRole)
-    __simplified = _data.toString();
+PluginListWidgetItem::setData(int role, const QVariant& data) {
+  if (role == Qt::UserRole)
+    __simplified = data.toString();
   else
-    QListWidgetItem::setData(_role, _data);
+    QListWidgetItem::setData(role, data);
 }

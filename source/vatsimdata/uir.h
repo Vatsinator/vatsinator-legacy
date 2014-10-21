@@ -38,22 +38,23 @@ signals:
 
 public:
   /**
-   * @param icao The ICAO code.
+   * \param icao The ICAO code.
+   * \param parent Passed to QObject's constructor.
    */
-  Uir(const QString&, QObject* = nullptr);
+  Uir(const QString& icao, QObject* parent = nullptr);
 
   /**
-   * @param fir FIR that the UIR is supposed to contain.
+   * \param fir FIR that the UIR is supposed to contain.
    */
-  void addFir(Fir*);
+  void addFir(Fir* fir);
 
   /**
-   * @param atc UIR controller.
+   * \param atc UIR controller.
    */
-  void addStaff(const Controller*);
+  void addStaff(const Controller* atc);
   
   /**
-   * @return True, if there is no ATC on position.
+   * \return True, if there is no ATC on position.
    */
   bool isEmpty() const;
   

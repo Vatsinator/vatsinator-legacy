@@ -42,14 +42,14 @@ class WorldMap : public QObject, public Notifiable, public Singleton<WorldMap> {
 public:
   
   /**
-   * Default ctor.
+   * Default constructor.
    */
-  WorldMap(QObject* = nullptr);
+  WorldMap(QObject* parent = nullptr);
   
   /**
    * Read by VatsinatorApplication only.
    */
-  void init();
+  void initialize();
   
   /**
    * Gives direct access to the coastline.

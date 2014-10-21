@@ -23,11 +23,11 @@
 
 #include "uiritem.h"
 
-UirItem::UirItem(const Uir* _uir, QObject* _parent) :
-    QObject(_parent),
-    __uir(_uir) {
+UirItem::UirItem(const Uir* uir, QObject* parent) :
+    QObject(parent),
+    __uir(uir) {
   
-  MapScene* scene = qobject_cast<MapScene*>(parent());
+  MapScene* scene = qobject_cast<MapScene*>(parent);
   for (const Fir* f: data()->range()) {
     FirItem* fi = scene->findItemForFir(f);
     if (fi)

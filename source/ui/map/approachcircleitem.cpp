@@ -44,9 +44,9 @@ namespace {
   
 }
 
-ApproachCircleItem::ApproachCircleItem(const Airport* _ap, QObject* _parent) :
-    QObject(_parent),
-    __position(_ap->data()->longitude, _ap->data()->latitude) {
+ApproachCircleItem::ApproachCircleItem(const Airport* airport, QObject* parent) :
+    QObject(parent),
+    __position(airport->data()->longitude, airport->data()->latitude) {
   
   connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
           this,                         SLOT(__reloadSettings()));
@@ -86,23 +86,23 @@ ApproachCircleItem::position() const {
 }
 
 void
-ApproachCircleItem::drawItem(QOpenGLShaderProgram*) const {
-
+ApproachCircleItem::drawItem(QOpenGLShaderProgram* shader) const {
+  Q_UNUSED(shader);
 }
 
 void
-ApproachCircleItem::drawLabel(QOpenGLShaderProgram*) const {
-  
+ApproachCircleItem::drawLabel(QOpenGLShaderProgram* shader) const {
+  Q_UNUSED(shader);
 }
 
 void
-ApproachCircleItem::drawFocused(QOpenGLShaderProgram*) const {
-
+ApproachCircleItem::drawFocused(QOpenGLShaderProgram* shader) const {
+  Q_UNUSED(shader);
 }
 
 QString
 ApproachCircleItem::tooltipText() const {
-  return "";
+  return QStringLiteral("");
 }
 
 void 

@@ -24,25 +24,37 @@
 
 #include "vatsimdata/notam.h"
 
+/**
+ * The NotamListModel class is used to keep NOTAMs.
+ * The model keeps NOTAMs only for one ICAO code.
+ */
 class NotamListModel : public QAbstractTableModel {
   Q_OBJECT
-
-public:
-  explicit NotamListModel(QString, QObject* = nullptr);
-  
-  void addNotam(Notam);
   
   /**
-   * Qt::UserRole returns notam url.
+   * This property holds the ICAO code of all the NOTAMs that the model
+   * keeps.
    */
-  QVariant data(const QModelIndex&, int) const override;
-  int rowCount(const QModelIndex&) const override;
-  int columnCount(const QModelIndex&) const override;
-  void sort(int, Qt::SortOrder = Qt::AscendingOrder) override;
+  Q_PROPERTY(QString icao READ icao)
+
+public:
+  /**
+   * Constructs new model for the given _icao_ code and passes _parent_
+   * to QAbstractTableModel.
+   */
+  explicit NotamListModel(QString icao, QObject* parent = nullptr);
   
-  inline const QString& icao() const {
-    return __icao;
-  }
+  /**
+   * Adds _notam_ to the model.
+   */
+  void addNotam(Notam notam);
+  
+  QVariant data(const QModelIndex& index, int role) const override;
+  int rowCount(const QModelIndex& parent) const override;
+  int columnCount(const QModelIndex& parent) const override;
+  void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+  
+  inline const QString& icao() const { return __icao; }
   
 private:
   QString       __icao;

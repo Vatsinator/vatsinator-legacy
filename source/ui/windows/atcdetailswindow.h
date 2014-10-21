@@ -30,10 +30,10 @@ class AtcDetailsWindow : public QWidget, private Ui::ATCDetailsWindow {
   Q_OBJECT
 
 public:
-  AtcDetailsWindow(const Controller*, QWidget* = nullptr);
+  AtcDetailsWindow(const Controller* atc, QWidget* parent = nullptr);
 
 protected:
-  virtual void showEvent(QShowEvent*) override;
+  virtual void showEvent(QShowEvent* event) override;
 
 private:
   const Controller* __atc;

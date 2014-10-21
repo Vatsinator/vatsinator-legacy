@@ -27,16 +27,16 @@
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
-#include "vatsimdata/client/controller.h"
+#include "vatsimdata/controller.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
 #include "atcdetailswindow.h"
 
-AtcDetailsWindow::AtcDetailsWindow(const Controller* _c, QWidget* _parent) :
-    QWidget(_parent),
-    __atc(_c) {
+AtcDetailsWindow::AtcDetailsWindow(const Controller* atc, QWidget* parent) :
+    QWidget(parent),
+    __atc(atc) {
   setupUi(this);
   
   VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
@@ -57,14 +57,15 @@ AtcDetailsWindow::AtcDetailsWindow(const Controller* _c, QWidget* _parent) :
   connect(ShowButton, &QPushButton::clicked, [this]() {
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__atc->position());
     close();
+    vApp()->userInterface()->ensureMainWindowIsActive();
   });
 }
 
 void
-AtcDetailsWindow::showEvent(QShowEvent* _event) {
+AtcDetailsWindow::showEvent(QShowEvent* event) {
   Q_ASSERT(__atc);
   
-  if (!_event->spontaneous()) {
+  if (!event->spontaneous()) {
     this->setGeometry(
       QStyle::alignedRect(
         Qt::LeftToRight,

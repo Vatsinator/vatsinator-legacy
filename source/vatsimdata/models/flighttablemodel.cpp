@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "db/airportdatabase.h"
@@ -23,28 +24,27 @@
 
 #include "flighttablemodel.h"
 
-FlightTableModel::FlightTableModel(QObject* _parent) :
-    QAbstractTableModel(_parent) {}
+FlightTableModel::FlightTableModel(QObject* parent) :
+    QAbstractTableModel(parent) {}
 
 void
-FlightTableModel::add(const Pilot* _p) {
-  Q_ASSERT(_p);
-  if (!__flights.contains(_p)) {
+FlightTableModel::add(const Pilot* pilot) {
+  Q_ASSERT(pilot);
+  if (!__flights.contains(pilot)) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    __flights << _p;
+    __flights << pilot;
     endInsertRows();
     
-    connect(_p,         SIGNAL(destroyed(QObject*)),
-            this,       SLOT(__autoRemove(QObject*)), Qt::DirectConnection);
+    connect(pilot, &Pilot::invalid, this, &FlightTableModel::__autoRemove);
   }
 }
 
 void
-FlightTableModel::remove(const Pilot* _p) {
-  Q_ASSERT(_p);
+FlightTableModel::remove(const Pilot* pilot) {
+  Q_ASSERT(pilot);
   
   for (int i = 0; i < __flights.size(); ++i) {
-    if (__flights[i] == _p) {
+    if (__flights[i] == pilot) {
       beginRemoveRows(QModelIndex(), i, i);
       __flights.removeAt(i);
       endRemoveRows();
@@ -53,12 +53,12 @@ FlightTableModel::remove(const Pilot* _p) {
     }
   }
   
-  Q_ASSERT_X(false, "FlightTableModel", "The flight does not exist in the model");
+  Q_UNREACHABLE();
 }
 
 bool
-FlightTableModel::contains(const Pilot* _p) {
-  return __flights.contains(_p);
+FlightTableModel::contains(const Pilot* pilot) {
+  return __flights.contains(pilot);
 }
 
 void
@@ -69,21 +69,23 @@ FlightTableModel::clear() {
 }
 
 const Pilot*
-FlightTableModel::findFlightByCallsign(const QString& _callsign) const {
+FlightTableModel::findFlightByCallsign(const QString& callsign) const {
   for (const Pilot* p: __flights)
-    if (p->callsign() == _callsign)
+    if (p->callsign() == callsign)
       return p;
 
   return nullptr;
 }
 
 int
-FlightTableModel::rowCount(const QModelIndex&) const {
+FlightTableModel::rowCount(const QModelIndex& parent) const {
+  Q_UNUSED(parent);
   return __flights.size();
 }
 
 int
-FlightTableModel::columnCount(const QModelIndex&) const {
+FlightTableModel::columnCount(const QModelIndex& parent) const {
+  Q_UNUSED(parent);
   /* 0 - callsign
    * 1 - name
    * 2 - from
@@ -95,17 +97,17 @@ FlightTableModel::columnCount(const QModelIndex&) const {
 }
 
 QVariant
-FlightTableModel::data(const QModelIndex& _index, int _role) const {
-  if (!_index.isValid() || _index.row() >= rowCount() || _index.column() >= columnCount())
+FlightTableModel::data(const QModelIndex& index, int role) const {
+  if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount())
     return QVariant();
 
-  switch (_role) {
+  switch (role) {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ToolTipRole:
-      return __flights[_index.row()]->realName();
+      return __flights[index.row()]->realName();
     case Qt::ForegroundRole:
-      if (__flights[_index.row()]->isPrefiledOnly())
+      if (__flights[index.row()]->isPrefiledOnly())
         return QBrush(QColor(Qt::gray));
       else
         return QVariant();
@@ -113,13 +115,13 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
     case Qt::DisplayRole:
       const Airport* ap;
 
-      switch (_index.column()) {
+      switch (index.column()) {
         case Callsign:
-          return __flights[_index.row()]->callsign();
+          return __flights[index.row()]->callsign();
         case Name:
-          return __flights[_index.row()]->realName();
+          return __flights[index.row()]->realName();
         case From:
-          ap = __flights[_index.row()]->origin();
+          ap = __flights[index.row()]->origin();
           if (ap)
             return QString(
                      QString::fromUtf8(ap->data()->icao) %
@@ -127,10 +129,10 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
                      QString::fromUtf8(ap->data()->city)
                    );
           else
-            return __flights[_index.row()]->route().origin;
+            return __flights[index.row()]->route().origin;
 
         case To:
-          ap = __flights[_index.row()]->destination();
+          ap = __flights[index.row()]->destination();
           if (ap)
             return QString(
                      QString::fromUtf8(ap->data()->icao) %
@@ -138,10 +140,10 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
                      QString::fromUtf8(ap->data()->city)
                    );
           else
-            return __flights[_index.row()]->route().destination;
+            return __flights[index.row()]->route().destination;
 
         case Aircraft:
-          return __flights[_index.row()]->aircraft();
+          return __flights[index.row()]->aircraft();
         case Button: // for non-prefiled-only this will be overriden by QPushButton widget
           return tr("Prefiled");
         default:
@@ -154,11 +156,11 @@ FlightTableModel::data(const QModelIndex& _index, int _role) const {
 }
 
 QVariant
-FlightTableModel::headerData(int _section, Qt::Orientation _orientation, int _role) const {
-  if (_section >= columnCount() || _orientation == Qt::Vertical || _role != Qt::DisplayRole)
+FlightTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+  if (section >= columnCount() || orientation == Qt::Vertical || role != Qt::DisplayRole)
     return QVariant();
 
-  switch (_section) {
+  switch (section) {
     case Callsign:
       return tr("Callsign");
     case Name:
@@ -175,68 +177,63 @@ FlightTableModel::headerData(int _section, Qt::Orientation _orientation, int _ro
 }
 
 void
-FlightTableModel::sort(int _column, Qt::SortOrder _order) {
+FlightTableModel::sort(int column, Qt::SortOrder order) {
   beginResetModel();
 
-  switch (_column) {
+  switch (column) {
     case Callsign:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->callsign() < _b->callsign();
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->callsign() > _b->callsign();
-              }
-      );
+      if (order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->callsign() < b->callsign();
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->callsign() > b->callsign();
+        });
       break;
       
     case Name:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->realName() < _b->realName();
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->realName() > _b->realName();
-              }
-      );
+      if (order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->realName() < b->realName();
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->realName() > b->realName();
+        });
       break;
       
     case From:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().origin < _b->route().origin;
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().origin > _b->route().origin;
-              }
-      );
+      if (order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->route().origin < b->route().origin;
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+        return a->route().origin > b->route().origin;
+        });
       break;
       
     case To:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().destination < _b->route().destination;
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->route().destination > _b->route().destination;
-              }
-      );
+      if (order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->route().destination < b->route().destination;
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->route().destination > b->route().destination;
+        });
       break;
       
     case Aircraft:
-      qSort(__flights.begin(), __flights.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->aircraft() < _b->aircraft();
-              } :
-              [](const Pilot* _a, const Pilot* _b) -> bool {
-                return _a->aircraft() > _b->aircraft();
-              }
-      );
+      if (order == Qt::AscendingOrder)
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->aircraft() < b->aircraft();
+        });
+      else
+        std::sort(__flights.begin(), __flights.end(), [] (const Pilot* a, const Pilot* b) {
+          return a->aircraft() > b->aircraft();
+        });
       break;
   }
 
@@ -246,7 +243,8 @@ FlightTableModel::sort(int _column, Qt::SortOrder _order) {
 }
 
 void
-FlightTableModel::__autoRemove(QObject* _object) {
-  Q_ASSERT(_object);
-  remove(static_cast<const Pilot*>(_object));
+FlightTableModel::__autoRemove() {
+  const Pilot* pilot = qobject_cast<const Pilot*>(sender());
+  Q_ASSERT(pilot);
+  remove(pilot);
 }

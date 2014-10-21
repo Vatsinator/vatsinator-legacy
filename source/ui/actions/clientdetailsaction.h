@@ -1,6 +1,6 @@
 /*
     clientdetailsaction.h
-    Copyright (C) 2012  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,20 +21,27 @@
 #define CLIENTDETAILSACTION_H
 
 #include <QAction>
-
 #include "vatsimdata/client.h"
 
+/**
+ * The ClientDetailsAction represents an action in the menu that corresponds
+ * to the specified Client.
+ */
 class ClientDetailsAction : public QAction {
   Q_OBJECT
 
 signals:
-  void triggered(const Client*);
+  /**
+   * Passed from QAction.
+   */
+  void triggered(const Client* client);
 
 public:
-  ClientDetailsAction(const Client*, const QString&, QObject*);
-
-private slots:
-  void __handleTriggered();
+  /**
+   * Creates new ClientDetailsAction with the specified _client_ and _label_.
+   * Passes _parent_ to QAction's constructor.
+   */
+  ClientDetailsAction(const Client* client, const QString& label, QObject* parent);
 
 private:
   const Client* __current;

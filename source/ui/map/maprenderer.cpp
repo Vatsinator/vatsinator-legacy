@@ -31,7 +31,7 @@
 #include "ui/map/modelmatcher.h"
 #include "ui/map/uiritem.h"
 #include "ui/map/worldpolygon.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -43,15 +43,14 @@
 # define GL_MULTISAMPLE 0x809D
 #endif
 
-MapRenderer::MapRenderer(QObject* _parent) :
-    QObject(_parent),
+MapRenderer::MapRenderer(QObject* parent) :
+    QObject(parent),
     __functions(new QOpenGLFunctions(QOpenGLContext::currentContext())),
     __world(new WorldPolygon(this)),
     __iconKeeper(new IconKeeper(this)),
     __modelMatcher(new ModelMatcher(this)),
     __scene(new MapScene(this)) {
   
-  Q_ASSERT(QOpenGLShaderProgram::hasOpenGLShaderPrograms());
   __createShaderPrograms();
   __restoreSettings();
   
@@ -85,50 +84,50 @@ MapRenderer::~MapRenderer() {
 }
 
 LonLat
-MapRenderer::mapToLonLat(const QPoint& _point) {
-  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+MapRenderer::mapToLonLat(const QPoint& point) {
+  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
-      static_cast<qreal>(_point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
-      -static_cast<qreal>(_point.y() - (__viewport.height() / 2)) * yFactor / static_cast<qreal>(zoom()) + center().y()
+      static_cast<qreal>(point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
+      -static_cast<qreal>(point.y() - (__viewport.height() / 2)) * yFactor / static_cast<qreal>(zoom()) + center().y()
     );
 }
 
 LonLat
-MapRenderer::scaleToLonLat(const QPoint& _point) {
-  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+MapRenderer::scaleToLonLat(const QPoint& point) {
+  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
-      static_cast<qreal>(_point.x()) * xFactor / static_cast<qreal>(zoom()),
-      static_cast<qreal>(_point.y()) * yFactor / static_cast<qreal>(zoom())
+      static_cast<qreal>(point.x()) * xFactor / static_cast<qreal>(zoom()),
+      static_cast<qreal>(point.y()) * yFactor / static_cast<qreal>(zoom())
     );
 }
 
 QPoint
-MapRenderer::mapFromLonLat(const LonLat& _point) {
-  static constexpr qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static constexpr qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+MapRenderer::mapFromLonLat(const LonLat& point) {
+  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPoint(
-      static_cast<int>((_point.x() - center().x()) * zoom() / xFactor) + (__viewport.width() / 2),
-      static_cast<int>((-_point.y() + center().y()) * zoom() / yFactor) + (__viewport.height() / 2)
+      static_cast<int>((point.x() - center().x()) * zoom() / xFactor) + (__viewport.width() / 2),
+      static_cast<int>((-point.y() + center().y()) * zoom() / yFactor) + (__viewport.height() / 2)
     );
 }
 
 QPointF
-MapRenderer::glFromLonLat(const LonLat& _point) {
+MapRenderer::glFromLonLat(const LonLat& point) {
   return QPointF(
-      (_point.x() - center().x() + static_cast<qreal>(__xOffset)) /
+      (point.x() - center().x() + static_cast<qreal>(__xOffset)) /
           MapConfig::longitudeMax() * zoom(),
-      (_point.y() - center().y()) / MapConfig::latitudeMax() * zoom()
+      (point.y() - center().y()) / MapConfig::latitudeMax() * zoom()
     );
 }
 
 void
-MapRenderer::drawLines(const MapItem* _item) {
-  static constexpr GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
+MapRenderer::drawLines(const MapItem* item) {
+  static Q_DECL_CONSTEXPR GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   mvp.translate(QVector3D(0.0f, 0.0f, linesZ));
@@ -139,28 +138,28 @@ MapRenderer::drawLines(const MapItem* _item) {
   
   for (float o: __offsets) {
     __identityProgram->setUniformValue(__identityOffsetLocation, o);
-    _item->drawFocused(__identityProgram);
+    item->drawFocused(__identityProgram);
   }
   
   __identityProgram->release();
 }
 
 void
-MapRenderer::setZoom(int _zoom) {
-  __zoom = _zoom;
+MapRenderer::setZoom(qreal zoom) {
+  __zoom = zoom;
   __updateScreen();
   emit updated();
 }
 
 void
-MapRenderer::setCenter(const LonLat& _center) {
-  __center = _center;
+MapRenderer::setCenter(const LonLat& center) {
+  __center = center;
   __updateScreen();
   emit updated();
 }
 
-void
-MapRenderer::updateZoom(int _steps) {
+qreal
+MapRenderer::zoomStep(int steps) {
   //count limiter for this function
   __actualZoomMaximum =
     qFloor(
@@ -178,13 +177,13 @@ MapRenderer::updateZoom(int _steps) {
     );
   
   //set the actual zoom level according to number of scroll wheel steps
-  __actualZoom += _steps;
+  __actualZoom += steps;
   
   //limiting range of zoom
   __actualZoom = qBound(0, __actualZoom, __actualZoomMaximum);
   
   // count value of closeup
-  setZoom(
+  return 
     MapConfig::zoomMinimum() + MapConfig::zoomNormalizeCoef() *
     qPow(
       MapConfig::zoomBase() +
@@ -192,13 +191,12 @@ MapRenderer::updateZoom(int _steps) {
         __scene->settings().misc.zoom_coefficient * 0.01
       ),
       __actualZoom
-    )
-  );
+    );
 }
 
 void
-MapRenderer::setViewport(const QSize& _size) {
-  __viewport = _size;
+MapRenderer::setViewport(const QSize& size) {
+  __viewport = size;
   
   glViewport(0, 0, __viewport.width(), __viewport.height());
   
@@ -213,15 +211,20 @@ MapRenderer::setViewport(const QSize& _size) {
   emit updated();
 }
 
+bool
+MapRenderer::supportsRequiredOpenGLFeatures() {
+  QOpenGLContext* context = QOpenGLContext::currentContext();
+  bool hasShaders = QOpenGLShaderProgram::hasOpenGLShaderPrograms();
+  bool hasVao = (context->surface()->format().version() >= qMakePair(3, 0)) ||
+    (context->hasExtension("GL_ARB_vertex_array_object") || context->hasExtension("GL_OES_vertex_array_object"));
+
+  return hasShaders && hasVao;
+}
+
 void
 MapRenderer::paint() {
 //   auto start = std::chrono::high_resolution_clock::now();
   if (__screen.isNull())
-    return;
-  
-  __items = scene()->items(__screen);
-  
-  if (__items.isEmpty())
     return;
   
   __updateOffsets();
@@ -255,7 +258,7 @@ MapRenderer::paint() {
 
 void
 MapRenderer::__drawWorld() {
-  static constexpr GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+  static Q_DECL_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   mvp.translate(QVector3D(0.0f, 0.0f, zValue));
@@ -269,8 +272,8 @@ MapRenderer::__drawWorld() {
 
 void
 MapRenderer::__drawFirs() {
-  static constexpr GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
-  static constexpr GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
+  static Q_DECL_CONSTEXPR GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
+  static Q_DECL_CONSTEXPR GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   __identityProgram->bind();
@@ -310,7 +313,7 @@ MapRenderer::__drawFirs() {
 
 void
 MapRenderer::__drawUirs() {
-  static constexpr GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
+  static Q_DECL_CONSTEXPR GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
   
   if (__scene->settings().view.staffed_firs) {
     __identityProgram->bind();
@@ -353,13 +356,13 @@ MapRenderer::__drawItems() {
   __texturedProgram->enableAttributeArray(texcoordLocation());
   __texturedProgram->enableAttributeArray(vertexLocation());
   
-  for (const MapItem* item: __items) {
+  scene()->inRect(__screen, [this](const MapItem* item) {
     QPointF p = glFromLonLat(item->position());
     __texturedProgram->setUniformValue(__texturedPositionLocation, p.x(), p.y());
     item->drawItem(__texturedProgram);
     if (item->isLabelVisible())
       item->drawLabel(__texturedProgram);
-  }
+  });
   
   __texturedProgram->disableAttributeArray(texcoordLocation());
   __texturedProgram->disableAttributeArray(vertexLocation());
@@ -386,7 +389,7 @@ MapRenderer::__restoreSettings() {
   settings.beginGroup("CameraSettings");
   
   __actualZoom = settings.value("actualZoomCoefficient", 0).toInt();
-  __zoom = settings.value("zoom", 1).toInt();
+  __zoom = settings.value("zoom", 1).toReal();
   __center = settings.value("center", QVariant::fromValue<LonLat>(LonLat(0.0, 0.0))).value<LonLat>();
   
   settings.endGroup();

@@ -23,19 +23,45 @@
 #include <QString>
 #include "vatsimdata/lonlat.h"
 
+/**
+ * The WeatherForecastRequest holds a request that can be sent via
+ * WeatherForecastInterface implementation.
+ * The requests are made for specified airports, one request per
+ * one airport. The WeatherForecastInterface implementation can use
+ * airport's ICAO code, geo position, country and city to provide
+ * the most accurate forecast.
+ */
 class WeatherForecastRequest {
   
 public:
-  
   /**
    * Creates a new weather forecast request for the given airport.
-   * @param airport The airport ICAO code.
+   * 
+   * \param icao The airport ICAO code.
+   * \sa airport().
    */
-  WeatherForecastRequest(QString);
+  WeatherForecastRequest(QString icao);
   
-  void setPosition(const LonLat&);
-  void setCountry(const QString&);
-  void setCity(const QString&);
+  /**
+   * Sets precise position of the region to be fetched the forecast for.
+   * 
+   * \sa position().
+   */
+  void setPosition(const LonLat& position);
+  
+  /**
+   * Sets _country_.
+   * 
+   * \sa country().
+   */
+  void setCountry(const QString& country);
+  
+  /**
+   * Sets _city_.
+   * 
+   * \sa city().
+   */
+  void setCity(const QString& city);
   
   /**
    * Specifies the airport the weather forecast is requested for.
@@ -48,7 +74,14 @@ public:
    */
   inline const LonLat& position() const { return __position; }
   
+  /**
+   * Country name. City is always in the specified country.
+   */
   inline const QString& country() const { return __country; }
+  
+  /**
+   * City that the provider should fetch the weather forecast for.
+   */
   inline const QString& city() const { return __city; }
   
 private:

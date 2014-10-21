@@ -24,3 +24,5 @@ dist/maketarball.sh
 
 # QtCreator stuff
 CMakeLists.txt.user
+*.aps
+*.rc

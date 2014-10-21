@@ -23,48 +23,52 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QQueue>
-#include "singleton.h"
 
 class QNetworkReply;
 
 /**
- * This class is used to send anonymous statistics to Vatsinator servers.
+ * The StatsPurveyor class is used to send anonymous statistics to Vatsinator servers.
  * If user does not want to send any stats, requests will be quietly dropped.
  * If user did not make any decision yet, requests will be queued and sent
  * when he accepts them. Otherwise requests will be sent as soon as possible.
  * All functions are thread-safe.
  */
-class StatsPurveyor :
-    public QObject,
-    public Singleton<StatsPurveyor> {
+class StatsPurveyor : public QObject {
   Q_OBJECT
   Q_ENUMS(UserDecision)
+  
+  /**
+   * Holds the user setting.
+   */
+  Q_PROPERTY(UserDecision userDecision READ userDecision WRITE setUserDecision)
 
 signals:
-  
   /**
    * Emitted when new reuqest is enqueued.
    */
   void newRequest();
 
 public:
-  
   /**
-   * Describes user choice.
+   * The UserDecision enum describes user choice.
    */
   enum UserDecision {
-    Accepted,
-    Declined,
-    NotYetMade
+    Accepted,   /**< User accepted statistics */
+    Declined,   /**< User declined sending anything */
+    NotYetMade  /**< User did not make the decision yet */
   };
   
-  explicit StatsPurveyor(QObject* = 0);
+  /**
+   * The default constructor passes _parent_ to QObject.
+   */
+  explicit StatsPurveyor(QObject* parent = nullptr);
+  
   virtual ~StatsPurveyor();
   
+  void setUserDecision(UserDecision decision);
   inline UserDecision userDecision() const { return __userDecision; }
   
 public slots:
-  
   /**
    * Reports application startup; invoked automatically.
    */
@@ -73,14 +77,13 @@ public slots:
   /**
    * Use this function to report unrecognized ATC callsigns.
    */
-  void reportNoAtc(const QString&);
+  void reportNoAtc(const QString& callsign);
 
 private:
   
-  void __enqueueRequest(const QNetworkRequest&);
+  void __enqueueRequest(const QNetworkRequest& request);
   
 private slots:
-  
   /**
    * Usually JSON-formatted response.
    */
@@ -95,12 +98,6 @@ private slots:
    * Honors user's settings.
    */
   void __applySettings();
-  
-  /**
-   * Connected to the LetSendStatsDialog.
-   */
-  void __statsAccepted();
-  void __statsRejected();
   
   /**
    * Starts new request if nothing is being sent at the moment.

@@ -27,12 +27,19 @@
 #include "plugins/weatherforecastrequest.h"
 #include "plugins/weatherforecastreply.h"
 
+/**
+ * WeatherForecastInterface is an interface for any service that
+ * is able to provide weather forecast data for Vatsinator.
+ * The weather forecast is displayed in the AirportDetailsWindow,
+ * in the Details tab.
+ */
 class WeatherForecastInterface {
 
 public:
-  
   /**
-   * Begins fetching the weather forecast.
+   * Starts fetching the weather forecast.
+   * \param requrest The instance of WeatherForecastRequest that provides
+   * information necessary to fetch data for the specified location.
    */
   virtual WeatherForecastReply* fetch(WeatherForecastRequest* request) = 0;
   

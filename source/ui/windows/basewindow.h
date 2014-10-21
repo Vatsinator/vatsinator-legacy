@@ -26,15 +26,18 @@
  * BaseWindow is a base class for all Vatsinator's subwindows.
  * It ensures that all windows open on the correct screen,
  * in the correct place. Use it to gain consistent look'n'feel.
+ * 
+ * \deprecated
+ * \todo Remove.
  */
 class BaseWindow : public QWidget {
   Q_OBJECT
   
 public:
-  BaseWindow(QWidget* = nullptr, Qt::WindowFlags = 0);
+  BaseWindow(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
 
 protected:
-  void showEvent(QShowEvent*);
+  void showEvent(QShowEvent* event);
   
 private:
   bool __windowSetup; /* Indicates whether the window paremeters

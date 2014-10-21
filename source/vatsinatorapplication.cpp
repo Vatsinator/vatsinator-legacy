@@ -22,6 +22,7 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
+#include "events/decisionevent.h"
 #include "modules/modulemanager.h"
 #include "network/plaintextdownloader.h"
 #include "network/resourcemanager.h"
@@ -43,8 +44,8 @@
 
 #include "vatsinatorapplication.h"
 
-VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
-    QApplication(_argc, _argv),
+VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
+    QApplication(argc, argv),
     __userInterface(new VATSINATOR_UI_IMPLEMENTATION()),
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager()),
@@ -104,9 +105,14 @@ VatsinatorApplication::~VatsinatorApplication() {
   spThread->wait();
 }
 
-void
-VatsinatorApplication::terminate() {
-  std::terminate();
+bool
+VatsinatorApplication::event(QEvent* event) {
+  if (event->type() == Event::Decision) {
+    userDecisionEvent(static_cast<DecisionEvent*>(event));
+    return true;
+  } else {
+    return QApplication::event(event);
+  }
 }
 
 void
@@ -116,12 +122,21 @@ VatsinatorApplication::restart() {
   QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
+
+void
+VatsinatorApplication::userDecisionEvent(DecisionEvent* event) {
+  if (event->context() == QStringLiteral("statistics")) {
+    statsPurveyor()->setUserDecision(
+      event->decision() == DecisionEvent::Accepted ? StatsPurveyor::Accepted : StatsPurveyor::Declined
+    );
+  }
+}
 void
 VatsinatorApplication::__initialize() {
   qDebug("VatsinatorApplication: initializing");
   
   /* Read world map before UI */
-  __worldMap->init();
+  __worldMap->initialize();
   
   /* Create windows */
   __userInterface->initialize();
@@ -143,6 +158,10 @@ VatsinatorApplication::__initialize() {
   
   /* Read data files only after databases are ready */
   __vatsimData->initialize();
+  
+  /* Initialize statistics */
+  QSettings s;
+  if (!s.contains("Decided/stats")) { // no decision made yet
+    __userInterface->showStatsDialog();
+  }
 }
-
-QMutex VatsinatorApplication::__mutex(QMutex::Recursive);

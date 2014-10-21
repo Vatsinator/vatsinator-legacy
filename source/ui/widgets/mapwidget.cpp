@@ -38,7 +38,7 @@
 #include "ui/map/mapscene.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -46,8 +46,8 @@
 
 #include "mapwidget.h"
 
-MapWidget::MapWidget(QWidget* _parent) :
-    QGLWidget(MapConfig::glFormat(), _parent) {
+MapWidget::MapWidget(QWidget* parent) :
+    QGLWidget(MapConfig::glFormat(), parent) {
   
   setAttribute(Qt::WA_NoSystemBackground);
   setAttribute(Qt::WA_OpaquePaintEvent);
@@ -66,27 +66,32 @@ MapWidget::~MapWidget() {
 }
 
 bool
-MapWidget::event(QEvent* _event) {
-  switch (_event->type()) {
+MapWidget::event(QEvent* event) {
+  switch (event->type()) {
     case QEvent::ToolTip: {
-      QHelpEvent* helpEvent = static_cast<QHelpEvent*>(_event);
+      QHelpEvent* helpEvent = static_cast<QHelpEvent*>(event);
       const MapItem* item = __underPoint(helpEvent->pos());
       if (item) {
         QToolTip::showText(helpEvent->globalPos(), item->tooltipText());
       } else {
         QToolTip::hideText();
-        _event->ignore();
+        event->ignore();
       }
       
       return true;
     }
     default:
-      return QGLWidget::event(_event);
+      return QGLWidget::event(event);
   }
 }
 
 void
 MapWidget::initializeGL() {
+  if (!MapRenderer::supportsRequiredOpenGLFeatures()) {
+    notifyError(tr("Your system does not support required OpenGL extensions. \
+                                      Please upgrade your graphic card driver."));
+  }
+
   __renderer = new MapRenderer();
   connect(__renderer,   SIGNAL(updated()),
           this,         SLOT(update()), Qt::DirectConnection);
@@ -109,35 +114,35 @@ MapWidget::paintGL() {
 }
 
 void
-MapWidget::resizeGL(int _width, int _height) {
-  __renderer->setViewport(QSize(_width, _height)); 
+MapWidget::resizeGL(int width, int height) {
+  __renderer->setViewport(QSize(width, height)); 
 }
 
 void
-MapWidget::wheelEvent(QWheelEvent* _event) {
-  __updateZoom(_event->delta() / 120);
-  _event->accept();
+MapWidget::wheelEvent(QWheelEvent* event) {
+  __updateZoom(event->delta() / 120);
+  event->accept();
 }
 
 void
-MapWidget::mousePressEvent(QMouseEvent* _event) {
-  __mousePosition.update(_event->pos());
+MapWidget::mousePressEvent(QMouseEvent* event) {
+  __mousePosition.update(event->pos());
   __mousePosition.setDown(true);
   QToolTip::hideText();
   
-  if (_event->buttons() & Qt::LeftButton) {
-    __lastClickPosition = _event->pos();
-  } else if (_event->buttons() & Qt::RightButton) {
+  if (event->buttons() & Qt::LeftButton) {
+    __lastClickPosition = event->pos();
+  } else if (event->buttons() & Qt::RightButton) {
     const MapItem* item = __underMouse();
     emit menuRequest(item);
   }
   
-  _event->accept();
+  event->accept();
 }
 
 void
-MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
-  __mousePosition.update(_event->pos());
+MapWidget::mouseReleaseEvent(QMouseEvent* event) {
+  __mousePosition.update(event->pos());
   __mousePosition.setDown(false);
   setCursor(QCursor(Qt::ArrowCursor));
   
@@ -149,15 +154,15 @@ MapWidget::mouseReleaseEvent(QMouseEvent* _event) {
     }
   }
   
-  _event->accept();
+  event->accept();
 }
 
 void
-MapWidget::mouseMoveEvent(QMouseEvent* _event) {
-  if (_event->buttons() & Qt::LeftButton) {
+MapWidget::mouseMoveEvent(QMouseEvent* event) {
+  if (event->buttons() & Qt::LeftButton) {
     setCursor(QCursor(Qt::SizeAllCursor));
     
-    QPoint diff = _event->pos() - __mousePosition.screenPosition();
+    QPoint diff = event->pos() - __mousePosition.screenPosition();
     diff.rx() *= -1;
     LonLat center = __renderer->center();
     center += __renderer->scaleToLonLat(diff);
@@ -171,14 +176,14 @@ MapWidget::mouseMoveEvent(QMouseEvent* _event) {
     __renderer->scene()->abortAnimation();
     __renderer->setCenter(center);
   }
-  __mousePosition.update(_event->pos());
+  __mousePosition.update(event->pos());
   update();
-  _event->accept();
+  event->accept();
 }
 
 void
-MapWidget::keyPressEvent(QKeyEvent* _event) {
-  switch (_event->key()) {
+MapWidget::keyPressEvent(QKeyEvent* event) {
+  switch (event->key()) {
     case Qt::Key_PageUp:
     __updateZoom(1);
     break;
@@ -201,8 +206,8 @@ MapWidget::__underMouse() {
 }
 
 const MapItem*
-MapWidget::__underPoint(const QPoint& _p) {
-  const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat(_p).bound());
+MapWidget::__underPoint(const QPoint& point) {
+  const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat(point).bound());
   Q_ASSERT(closest);
    
   if (__mousePosition.screenDistance(__renderer->mapFromLonLat(closest->position())) > MapConfig::mouseOnObject())
@@ -212,90 +217,90 @@ MapWidget::__underPoint(const QPoint& _p) {
 }
 
 void
-MapWidget::__updateZoom(int _steps) {
-  __renderer->updateZoom(_steps);
+MapWidget::__updateZoom(int steps) {
+//   __renderer->updateZoom(_steps);
+  __renderer->scene()->zoomTo(__renderer->zoomStep(static_cast<qreal>(steps)));
 }
 
 QMenu*
-MapWidget::__itemMenu(const AirportItem* _item) {
-  QMenu* menu = new QMenu(_item->data()->data()->icao, this);
+MapWidget::__itemMenu(const AirportItem* item) {
+  QMenu* menu = new QMenu(item->data()->data()->icao, this);
   
-  AirportDetailsAction* showAp = new AirportDetailsAction(_item->data(), tr("Airport details"), this);
+  AirportDetailsAction* showAp = new AirportDetailsAction(item->data(), tr("Airport details"), this);
   connect(showAp,                       SIGNAL(triggered(const Airport*)),
           vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
   menu->addAction(showAp);
   
-  MetarAction* showMetar = new MetarAction(_item->data()->data()->icao, this);
+  MetarAction* showMetar = new MetarAction(item->data()->data()->icao, this);
   connect(showMetar,                                    SIGNAL(triggered(QString)),
           vApp()->userInterface(),                      SLOT(showMetar(QString)));
   menu->addAction(showMetar);
   
-  if (!_item->data()->isEmpty()) {
-    if (!_item->data()->staff()->staff().isEmpty()) {
+  if (!item->data()->isEmpty()) {
+    if (!item->data()->staff()->staff().isEmpty()) {
       menu->addSeparator();
       menu->addAction(new ActionMenuSeparator(tr("Controllers"), this));
       
-      for (const Controller* c: _item->data()->staff()->staff()) {
+      for (const Controller* c: item->data()->staff()->staff()) {
         ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), this);
-        connect(cda,                            SIGNAL(triggered(const Client*)),
-                vApp()->userInterface(),        SLOT(showDetails(const Client*)));
+        connect(cda, SIGNAL(triggered(const Client*)),
+                vApp()->userInterface(), SLOT(showDetails(const Client*)));
         menu->addAction(cda);
       }
     }
     
-    if (_item->data()->countArrivals() > 0) {
+    if (item->data()->countArrivals() > 0) {
       menu->addSeparator();
       menu->addAction(new ActionMenuSeparator(tr("Arrivals"), this));
       
-      for (const Pilot* p: _item->data()->inbounds()->flights()) {
+      for (const Pilot* p: item->data()->inbounds()->flights()) {
         if (p->phase() == Pilot::Arrived) {
           ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), this);
-          connect(cda,                          SIGNAL(triggered(const Client*)),
-                  vApp()->userInterface(),      SLOT(showDetails(const Client*)));
+          connect(cda, SIGNAL(triggered(const Client*)),
+                  vApp()->userInterface(), SLOT(showDetails(const Client*)));
           menu->addAction(cda);
         }
       }
     }
     
-    if (_item->data()->countDepartures(false) > 0) {
+    if (item->data()->countDepartures(false) > 0) {
       menu->addSeparator();
       menu->addAction(new ActionMenuSeparator(tr("Departures"), this));
       
-      for (const Pilot* p: _item->data()->outbounds()->flights()) {
+      for (const Pilot* p: item->data()->outbounds()->flights()) {
         if (!p->isPrefiledOnly() && p->phase() == Pilot::Departing) {
           ClientDetailsAction* cda = new ClientDetailsAction(p, p->callsign(), this);
-          connect(cda,                          SIGNAL(triggered(const Client*)),
-                  vApp()->userInterface(),      SLOT(showDetails(const Client*)));
+          connect(cda, SIGNAL(triggered(const Client*)),
+                  vApp()->userInterface(), SLOT(showDetails(const Client*)));
           menu->addAction(cda);
         }
       }
     }
   }
-  
   return menu;
 }
 
 QMenu*
-MapWidget::__itemMenu(const FirItem* _item) {
-  QMenu* menu = new QMenu(_item->data()->icao(), this);
+MapWidget::__itemMenu(const FirItem* item) {
+  QMenu* menu = new QMenu(item->data()->icao(), this);
   
   FirDetailsAction* showFir = new FirDetailsAction(
-      _item->data(),
-      tr("%1 details").arg(_item->data()->icao()),
+      item->data(),
+      tr("%1 details").arg(item->data()->icao()),
       this
     );
   connect(showFir,                      SIGNAL(triggered(const Fir*)),
           vApp()->userInterface(),      SLOT(showDetails(const Fir*)));
   menu->addAction(showFir);
   
-  for (const Controller* c: _item->data()->staff()->staff()) {
+  for (const Controller* c: item->data()->staff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), this);
     connect(cda,                        SIGNAL(triggered(const Client*)),
             vApp()->userInterface(),    SLOT(showDetails(const Client*)));
     menu->addAction(cda);
   }
   
-  for (const Controller* c: _item->data()->uirStaff()->staff()) {
+  for (const Controller* c: item->data()->uirStaff()->staff()) {
     ClientDetailsAction* cda = new ClientDetailsAction(c, c->callsign(), this);
     connect(cda,                        SIGNAL(triggered(const Client*)),
             vApp()->userInterface(),    SLOT(showDetails(const Client*)));
@@ -306,28 +311,28 @@ MapWidget::__itemMenu(const FirItem* _item) {
 }
 
 QMenu*
-MapWidget::__itemMenu(const FlightItem* _item) {
-   QMenu* menu = new QMenu(_item->data()->callsign(), this);
+MapWidget::__itemMenu(const FlightItem* item) {
+   QMenu* menu = new QMenu(item->data()->callsign(), this);
   
-  ClientDetailsAction* showDetails = new ClientDetailsAction(_item->data(), tr("Flight details"), this);
+  ClientDetailsAction* showDetails = new ClientDetailsAction(item->data(), tr("Flight details"), this);
   connect(showDetails,                  SIGNAL(triggered(const Client*)),
           vApp()->userInterface(),      SLOT(showDetails(const Client*)));
   menu->addAction(showDetails);
   
-  TrackAction* trackFlight = new TrackAction(_item->data(), this);
+  TrackAction* trackFlight = new TrackAction(item->data(), this);
   menu->addAction(trackFlight);
   
   menu->addSeparator();
 
-  if (!_item->data()->route().origin.isEmpty()) {
-    MetarAction* ma = new MetarAction(_item->data()->route().origin, this);
+  if (!item->data()->route().origin.isEmpty()) {
+    MetarAction* ma = new MetarAction(item->data()->route().origin, this);
     connect(ma,                                         SIGNAL(triggered(QString)),
             vApp()->userInterface(),                    SLOT(showMetar(QString)));
     menu->addAction(ma);
   }
   
-  if (!_item->data()->route().destination.isEmpty()) {
-    MetarAction* ma = new MetarAction(_item->data()->route().destination, this);
+  if (!item->data()->route().destination.isEmpty()) {
+    MetarAction* ma = new MetarAction(item->data()->route().destination, this);
     connect(ma,                                         SIGNAL(triggered(QString)),
             vApp()->userInterface(),                    SLOT(showMetar(QString)));
     menu->addAction(ma);
@@ -338,23 +343,20 @@ MapWidget::__itemMenu(const FlightItem* _item) {
 
 QMenu*
 MapWidget::__itemMenu() {
-  // fetch 10 nearest items
-  QList<const MapItem*> items = __renderer->scene()->nearest(__mousePosition.geoPosition(), 10);
-  
-  QMenu* menu = new QMenu(tr("Nearby"), this);
-  
   // group fetched items
   QList<const FlightItem*> flights;
   QList<const AirportItem*> airports;
   
-  for (const MapItem* item: items) {
+  __renderer->scene()->nearTo(__mousePosition.geoPosition(), 10, [&](const MapItem* item) {
     if (const FlightItem* f = dynamic_cast<const FlightItem*>(item)) {
       if (!f->data()->isPrefiledOnly())
         flights << f;
     } else if (const AirportItem* a = dynamic_cast<const AirportItem*>(item)) {
       airports << a;
     }
-  }
+  });
+  
+  QMenu* menu = new QMenu(tr("Nearby"), this);
   
   if (flights.size() > 0) {
     menu->addAction(new ActionMenuSeparator(tr("Flights"), this));
@@ -385,16 +387,16 @@ MapWidget::__itemMenu() {
 }
 
 void
-MapWidget::__showMenu(const MapItem* _item) {
+MapWidget::__showMenu(const MapItem* item) {
   QMenu* menu;
   
-  if (!_item)
+  if (!item)
     menu = __itemMenu();
-  else if (const AirportItem* i = dynamic_cast<const AirportItem*>(_item))
+  else if (const AirportItem* i = dynamic_cast<const AirportItem*>(item))
     menu = __itemMenu(i);
-  else if (const FirItem* i = dynamic_cast<const FirItem*>(_item))
+  else if (const FirItem* i = dynamic_cast<const FirItem*>(item))
     menu = __itemMenu(i);
-  else if (const FlightItem* i = dynamic_cast<const FlightItem*>(_item))
+  else if (const FlightItem* i = dynamic_cast<const FlightItem*>(item))
     menu = __itemMenu(i);
   else
     Q_UNREACHABLE();
@@ -404,38 +406,38 @@ MapWidget::__showMenu(const MapItem* _item) {
 }
 
 void
-MapWidget::__showWindow(const MapItem* _item) {
-  _item->showDetails();
+MapWidget::__showWindow(const MapItem* item) {
+  item->showDetails();
 }
 
 MapWidget::MousePosition::MousePosition() : __down(false) {}
 
 void
-MapWidget::MousePosition::update(const QPoint& _pos) {
-  __screenPosition = _pos;
-  __geoPosition = wui()->mainWindow()->mapWidget()->renderer()->mapToLonLat(_pos).bound();
+MapWidget::MousePosition::update(const QPoint& pos) {
+  __screenPosition = pos;
+  __geoPosition = wui()->mainWindow()->mapWidget()->renderer()->mapToLonLat(pos).bound();
   
   MouseLonLatEvent e(__geoPosition);
   qApp->notify(wui()->mainWindow(), &e);
 }
 
 qreal
-MapWidget::MousePosition::screenDistance(const QPoint& _point) {
+MapWidget::MousePosition::screenDistance(const QPoint& point) {
   return qSqrt(
-    qPow(_point.x() - __screenPosition.x(), 2) +
-    qPow(_point.y() - __screenPosition.y(), 2)
+    qPow(point.x() - __screenPosition.x(), 2) +
+    qPow(point.y() - __screenPosition.y(), 2)
   );
 }
 
 qreal
-MapWidget::MousePosition::geoDistance(const LonLat& _point) {
+MapWidget::MousePosition::geoDistance(const LonLat& point) {
   return qSqrt(
-    qPow(_point.x() - __geoPosition.x(), 2) +
-    qPow(_point.y() - __geoPosition.y(), 2)
+    qPow(point.x() - __geoPosition.x(), 2) +
+    qPow(point.y() - __geoPosition.y(), 2)
   );
 }
 
 void
-MapWidget::MousePosition::setDown(bool _down) {
-  __down = _down;
+MapWidget::MousePosition::setDown(bool down) {
+  __down = down;
 }

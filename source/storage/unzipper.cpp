@@ -24,21 +24,21 @@
 
 #include "unzipper.h"
 
-Unzipper::Unzipper(QString _fn, QObject* _parent) :
-    QObject(_parent),
-    __fileName(qMove(_fn)) {}
+Unzipper::Unzipper(QString fileName, QObject* parent) :
+    QObject(parent),
+    __fileName(qMove(fileName)) {}
 
-Unzipper::Unzipper(QObject* _parent) :
+Unzipper::Unzipper(QObject* parent) :
 #ifdef GCC_VERSION_47
-    Unzipper("", _parent) {} // yeah, I'm freak
+    Unzipper("", parent) {} // yeah, I'm freak
 #else
-    QObject(_parent),
+    QObject(parent),
     __fileName("") {}
 #endif
 
 void
-Unzipper::setFileName(const QString& _fn) {
-    __fileName = _fn;
+Unzipper::setFileName(const QString& fileName) {
+    __fileName = fileName;
 }
 
 void

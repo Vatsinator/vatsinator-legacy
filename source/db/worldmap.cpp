@@ -23,10 +23,10 @@
 
 #include "worldmap.h"
 
-WorldMap::WorldMap(QObject* _parent) : QObject(_parent) {}
+WorldMap::WorldMap(QObject* parent) : QObject(parent) {}
 
 void
-WorldMap::init() {
+WorldMap::initialize() {
   __readDatabase();
 }
 

@@ -1,9 +1,0 @@
---- source/ui/resources ---
-
-This directory contains all the images needed for the ui to work properly and
-be beautiful. All icons that are included in the application should be placed
-here and attached to the .qrc file. The only exception are aircrafts pixmaps
-as they should be replaceable by user.
-Notice that pixmaps that are being rendered directly by OpenGL must be sized
-so their dimensions can be expressed as a power of two. This is due to old
-OpenGL implementations where non-POT textures are not rendered correctly.

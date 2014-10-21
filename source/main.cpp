@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtCore>
 #include <QVariantAnimation>
 #include "network/resourcemanager.h"
 #include "vatsimdata/lonlat.h"
@@ -33,6 +34,10 @@ QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progre
 }
 
 int main(int argc, char** argv) {
+  Q_INIT_RESOURCE(files);
+  Q_INIT_RESOURCE(imgs);
+  Q_INIT_RESOURCE(shaders);
+  Q_INIT_RESOURCE(weather);
   QApplication::setApplicationName("Vatsinator");
   QApplication::setOrganizationName("VatsinatorTeam");
   QApplication::setApplicationVersion(VATSINATOR_VERSION);
@@ -42,6 +47,10 @@ int main(int argc, char** argv) {
   qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
   
   qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
+  
+  /* Defined in events/types.css */
+  extern void init_event_types();
+  init_event_types();
   
   return VatsinatorApplication(argc, argv).exec();
 }

@@ -1,6 +1,6 @@
 /*
     plaintextdownloader.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,17 +23,22 @@
 
 #include "plaintextdownloader.h"
 
-PlainTextDownloader::PlainTextDownloader(QProgressBar* _pb, QObject* _parent) :
-    QObject(_parent),
-    __progressBar(_pb),
+PlainTextDownloader::PlainTextDownloader(QProgressBar* pb, QObject* parent) :
+    QObject(parent),
+    __progressBar(pb),
     __reply(nullptr) {}
 
 void
-PlainTextDownloader::fetchData(const QString& _url) {
-  __urls.enqueue(_url);
+PlainTextDownloader::fetch(const QUrl& url) {
+  __urls.enqueue(url);
 
   if (!__reply)
     __startRequest();
+}
+
+void
+PlainTextDownloader::setProgressBar(QProgressBar* pb) {
+  __progressBar = pb;
 }
 
 void
@@ -43,7 +48,7 @@ PlainTextDownloader::abort() {
     __reply->deleteLater();
     __reply = nullptr;
   
-    if (anyTasksLeft())
+    if (hasPendingTasks())
       __startRequest();
   }
 }
@@ -99,12 +104,12 @@ PlainTextDownloader::__finished() {
   __reply->deleteLater();
   __reply = nullptr;
   
-  if (anyTasksLeft())
+  if (hasPendingTasks())
     __startRequest();
 }
 
 void
-PlainTextDownloader::__updateProgress(qint64 _bRead, qint64 _bTotal) {
-  __progressBar->setMaximum(_bTotal);
-  __progressBar->setValue(_bRead);
+PlainTextDownloader::__updateProgress(qint64 read, qint64 total) {
+  __progressBar->setMaximum(total);
+  __progressBar->setValue(read);
 }

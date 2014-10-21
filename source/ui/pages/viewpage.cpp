@@ -36,8 +36,8 @@ namespace DefaultSettings {
 }
 
 
-ViewPage::ViewPage(QWidget* _parent) :
-    QWidget(_parent) {
+ViewPage::ViewPage(QWidget* parent) :
+    QWidget(parent) {
   setupUi(this);
   
   connect(ShowPilotsLabelsAlwaysCheckBox, SIGNAL(stateChanged(int)),
@@ -83,25 +83,25 @@ ViewPage::update() const {
 }
 
 void
-ViewPage::restore(QSettings& _s) {
+ViewPage::restore(QSettings& s) {
   PilotsCheckBox->setChecked(
-    _s.value("pilots_layer", DefaultSettings::PILOTS_CHECKBOX).toBool());
+    s.value("pilots_layer", DefaultSettings::PILOTS_CHECKBOX).toBool());
   AirportsCheckBox->setChecked(
-    _s.value("airports_layer", DefaultSettings::AIRPORTS_CHECKBOX).toBool());
+    s.value("airports_layer", DefaultSettings::AIRPORTS_CHECKBOX).toBool());
   StaffedFirsCheckBox->setChecked(
-    _s.value("staffed_firs", DefaultSettings::STAFFED_FIRS_CHECKBOX).toBool());
+    s.value("staffed_firs", DefaultSettings::STAFFED_FIRS_CHECKBOX).toBool());
   UnstaffedFirsCheckBox->setChecked(
-    _s.value("unstaffed_firs", DefaultSettings::UNSTAFFED_FIRS_CHECKBOX).toBool());
+    s.value("unstaffed_firs", DefaultSettings::UNSTAFFED_FIRS_CHECKBOX).toBool());
   InactiveAirportsCheckBox->setChecked(
-    _s.value("empty_airports", DefaultSettings::EMPTY_AIRPORTS_CHECKBOX).toBool());
+    s.value("empty_airports", DefaultSettings::EMPTY_AIRPORTS_CHECKBOX).toBool());
   ShowPilotsLabelsAlwaysCheckBox->setChecked(
-    _s.value("pilot_labels.always", DefaultSettings::ALWAYS_CHECKBOX).toBool());
+    s.value("pilot_labels.always", DefaultSettings::ALWAYS_CHECKBOX).toBool());
   ShowPilotsLabelsWhenHoveredCheckBox->setChecked(
-    _s.value("pilot_labels.when_hovered", DefaultSettings::WHEN_HOVERED_CHECKBOX).toBool());
+    s.value("pilot_labels.when_hovered", DefaultSettings::WHEN_HOVERED_CHECKBOX).toBool());
   ShowPilotsLabelsAirportRelatedCheckBox->setChecked(
-    _s.value("pilot_labels.airport_labels", DefaultSettings::AIRPORT_RELATED_CHECKBOX).toBool());
+    s.value("pilot_labels.airport_labels", DefaultSettings::AIRPORT_RELATED_CHECKBOX).toBool());
   
-  bool airportLabels = _s.value("airport_labels", DefaultSettings::AIRPORT_LABELS).toBool();
+  bool airportLabels = s.value("airport_labels", DefaultSettings::AIRPORT_LABELS).toBool();
   if (airportLabels)
     AlwaysRadioButton->setChecked(true);
   else
@@ -109,21 +109,21 @@ ViewPage::restore(QSettings& _s) {
 }
 
 void
-ViewPage::save(QSettings& _s) {
-  _s.setValue("pilots_layer", PilotsCheckBox->isChecked());
-  _s.setValue("airports_layer", AirportsCheckBox->isChecked());
-  _s.setValue("staffed_firs", StaffedFirsCheckBox->isChecked());
-  _s.setValue("unstaffed_firs", UnstaffedFirsCheckBox->isChecked());
-  _s.setValue("empty_airports", InactiveAirportsCheckBox->isChecked());
-  _s.setValue("pilot_labels.always", ShowPilotsLabelsAlwaysCheckBox->isChecked());
-  _s.setValue("pilot_labels.when_hovered", ShowPilotsLabelsWhenHoveredCheckBox->isChecked());
-  _s.setValue("pilot_labels.airport_related", ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
-  _s.setValue("airport_labels", AlwaysRadioButton->isChecked());
+ViewPage::save(QSettings& s) {
+  s.setValue("pilots_layer", PilotsCheckBox->isChecked());
+  s.setValue("airports_layer", AirportsCheckBox->isChecked());
+  s.setValue("staffed_firs", StaffedFirsCheckBox->isChecked());
+  s.setValue("unstaffed_firs", UnstaffedFirsCheckBox->isChecked());
+  s.setValue("empty_airports", InactiveAirportsCheckBox->isChecked());
+  s.setValue("pilot_labels.always", ShowPilotsLabelsAlwaysCheckBox->isChecked());
+  s.setValue("pilot_labels.when_hovered", ShowPilotsLabelsWhenHoveredCheckBox->isChecked());
+  s.setValue("pilot_labels.airport_related", ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
+  s.setValue("airport_labels", AlwaysRadioButton->isChecked());
 }
 
 void
-ViewPage::__handleAlwaysCheckBox(int _state) {
-  if (_state == Qt::Checked) {
+ViewPage::__handleAlwaysCheckBox(int state) {
+  if (state == Qt::Checked) {
     ShowPilotsLabelsAlwaysCheckBox->setCheckState(Qt::Checked);
     ShowPilotsLabelsWhenHoveredCheckBox->setCheckState(Qt::Checked);
     ShowPilotsLabelsAirportRelatedCheckBox->setCheckState(Qt::Checked);

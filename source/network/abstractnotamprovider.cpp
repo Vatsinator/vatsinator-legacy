@@ -19,8 +19,8 @@
 
 #include "abstractnotamprovider.h"
 
-AbstractNotamProvider::AbstractNotamProvider(QObject* _parent) :
-    QObject(_parent) {}
+AbstractNotamProvider::AbstractNotamProvider(QObject* parent) :
+    QObject(parent) {}
 
 QString
 AbstractNotamProvider::providerInfo() const {

@@ -19,7 +19,7 @@
 
 #include "apprestartdialog.h"
 
-AppRestartDialog::AppRestartDialog(QWidget* _parent) :
-    QDialog(_parent) {
+AppRestartDialog::AppRestartDialog(QWidget* parent) :
+    QDialog(parent) {
   setupUi(this);
 }

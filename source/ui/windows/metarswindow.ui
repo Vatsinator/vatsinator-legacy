@@ -24,7 +24,7 @@
    <item row="0" column="0">
     <widget class="QLineEdit" name="MetarICAO">
      <property name="toolTip">
-      <string>Type airport ICAO here to fetch METAR</string>
+      <string>Type airport ICAO code here to fetch METAR</string>
      </property>
      <property name="maxLength">
       <number>4</number>

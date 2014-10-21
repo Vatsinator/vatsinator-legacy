@@ -31,7 +31,7 @@ class UirItem : public QObject, public MapItem {
   Q_OBJECT
 
 public:
-  UirItem(const Uir*, QObject* = nullptr);
+  UirItem(const Uir* uir, QObject* parent = nullptr);
   
   bool isVisible() const override;
   bool isLabelVisible() const override;

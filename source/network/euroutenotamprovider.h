@@ -36,19 +36,30 @@ class EurouteNotamProvider : public AbstractNotamProvider {
   Q_OBJECT
 
 public:
-  explicit EurouteNotamProvider(QObject* = nullptr);
+  /**
+   * The default constructor passes _parent_ to AbstractNotamProvider.
+   */
+  explicit EurouteNotamProvider(QObject* parent = nullptr);
+  
   virtual ~EurouteNotamProvider();
   
-  void fetchNotam(const QString&) override;
+  /**
+   * \overload
+   */
+  void fetchNotam(const QString& icao) override;
+  
+  /**
+   * \overload
+   */
   QString providerInfo() const override;
   
 private:
   void __fetchXml();
   void __readXmlHeader();
-  void __fillNotamListModel(NotamListModel*);
+  void __fillNotamListModel(NotamListModel* model);
   
 private slots:
-  void __xmlReady(QString);
+  void __xmlReady(QString fileName);
   void __checkXmlUpToDate();
   
 private:

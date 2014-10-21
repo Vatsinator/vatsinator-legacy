@@ -26,18 +26,18 @@
 
 #include "databasewindow.h"
 
-DatabaseWindow::DatabaseWindow(QWidget* _parent) :
-    BaseWindow(_parent) {
+DatabaseWindow::DatabaseWindow(QWidget* parent) :
+    BaseWindow(parent) {
   setupUi(this);
   
   __updateDatabaseStatus(ResourceManager::Updated);
   
-  connect(ResourceManager::getSingletonPtr(),   SIGNAL(databaseStatusChanged(ResourceManager::VersionStatus)),
-          this,                                 SLOT(__updateDatabaseStatus(ResourceManager::VersionStatus)));
-  connect(SyncDatabaseButton,                   SIGNAL(clicked()),
-          ResourceManager::getSingletonPtr(),   SLOT(requestDatabaseSync()));
-  connect(vApp()->vatsimDataHandler(),          SIGNAL(initialized()),
-          this,                                 SLOT(__updateNumbers()));
+  connect(vApp()->resourceManager(), &ResourceManager::databaseStatusChanged,
+          this, &DatabaseWindow::__updateDatabaseStatus);
+  connect(SyncDatabaseButton, &QPushButton::clicked,
+          vApp()->resourceManager(), &ResourceManager::requestDatabaseSync);
+  connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::initialized,
+          this, &DatabaseWindow::__updateNumbers);
 }
 
 void
@@ -45,20 +45,20 @@ DatabaseWindow::__updateNumbers() {
   DatabaseInfoLabel->setText(
     tr(
       "Your local clone of Vatsinator Database contains %n airport(s)",
-      "The first part of the summary", AirportDatabase::getSingleton().airports().count()
+      "The first part of the summary", vApp()->airportDatabase()->airports().count()
     ) % " " %
     tr(
       "and %n airlines(s).",
-      "The second part of the summary", AirlineDatabase::getSingleton().airlines().size()
+      "The second part of the summary", vApp()->airlineDatabase()->airlines().size()
     )
   );
 }
 
 void
-DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus _status) {
+DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus status) {
   QPalette p = StatusLabel->palette();
   
-  switch (_status) {
+  switch (status) {
     case ResourceManager::Updated:
       p.setColor(QPalette::WindowText, Qt::darkGreen);
       StatusLabel->setPalette(p);
@@ -89,5 +89,5 @@ DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus _status) {
       break;
   }
   
-  UpdateDateLabel->setText(ResourceManager::getSingleton().lastUpdateDate().toString(Qt::ISODate));
+  UpdateDateLabel->setText(vApp()->resourceManager()->lastUpdateDate().toString(Qt::ISODate));
 }

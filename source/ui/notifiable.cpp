@@ -26,19 +26,19 @@
 #include "notifiable.h"
 
 void
-Notifiable::notifyError(const QString& _message) {
-  NotificationEvent* e = new NotificationEvent(NotificationEvent::Fatal, _message);
+Notifiable::notifyError(const QString& message) {
+  NotificationEvent* e = new NotificationEvent(NotificationEvent::Fatal, message);
   QCoreApplication::postEvent(vApp()->userInterface(), e, Qt::HighEventPriority);
 }
 
 void
-Notifiable::notifyWarning(const QString& _message) {
-  NotificationEvent* e = new NotificationEvent(NotificationEvent::Warning, _message);
+Notifiable::notifyWarning(const QString& message) {
+  NotificationEvent* e = new NotificationEvent(NotificationEvent::Warning, message);
   QCoreApplication::postEvent(vApp()->userInterface(), e);
 }
 
 void
-Notifiable::notifyInfo(const QString& _message) {
-  NotificationEvent* e = new NotificationEvent(NotificationEvent::Information, _message);
+Notifiable::notifyInfo(const QString& message) {
+  NotificationEvent* e = new NotificationEvent(NotificationEvent::Information, message);
   QCoreApplication::postEvent(vApp()->userInterface(), e);
 }

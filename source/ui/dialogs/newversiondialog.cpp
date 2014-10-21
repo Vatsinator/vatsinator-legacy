@@ -21,8 +21,8 @@
 
 #include "newversiondialog.h"
 
-NewVersionDialog::NewVersionDialog(QWidget* _parent) :
-    QDialog(_parent) {
+NewVersionDialog::NewVersionDialog(QWidget* parent) :
+    QDialog(parent) {
   setupUi(this);
   
   DownloadButton->setUrl(NetConfig::Vatsinator::homePageUrl());

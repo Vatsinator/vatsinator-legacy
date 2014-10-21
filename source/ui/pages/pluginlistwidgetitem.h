@@ -30,7 +30,8 @@
 class PluginListWidgetItem : public QListWidgetItem {
 
 public:
-  explicit PluginListWidgetItem(const QString&, QListWidget* = 0, int = Type);
+  explicit PluginListWidgetItem(const QString& text, QListWidget* parent = 0,
+                                int type = Type);
   
   QVariant data(int) const override;
   void setData(int, const QVariant&) override;

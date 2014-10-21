@@ -21,6 +21,6 @@
 
 #include "mouselonlatevent.h"
 
-MouseLonLatEvent::MouseLonLatEvent(const LonLat& _p) :
-    QEvent(static_cast<QEvent::Type>(Event::Type::MouseLonLat)),
-    __lonLat(_p) {}
+MouseLonLatEvent::MouseLonLatEvent(const LonLat& point) :
+    QEvent(static_cast<QEvent::Type>(Event::MouseLonLat)),
+    __lonLat(point) {}

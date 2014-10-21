@@ -24,22 +24,22 @@
 
 #include "filedownloader.h"
 
-FileDownloader::FileDownloader(QProgressBar* _pb, QObject* _parent) :
-    QObject(_parent),
-    __pb(_pb), 
+FileDownloader::FileDownloader(QProgressBar* pb, QObject* parent) :
+    QObject(parent),
+    __pb(pb), 
     __reply(nullptr) {}
 
 void
-FileDownloader::fetch(const QUrl& _url) {
-  __urls.enqueue(_url);
+FileDownloader::fetch(const QUrl& url) {
+  __urls.enqueue(url);
   
   if (!__reply)
     __startRequest();
 }
 
 QString
-FileDownloader::fileNameForUrl(const QUrl& _url) {
-  QString baseName = QFileInfo(_url.path()).fileName();
+FileDownloader::fileNameForUrl(const QUrl& url) {
+  QString baseName = QFileInfo(url.path()).fileName();
   
   Q_ASSERT(!baseName.isEmpty());
   
@@ -52,7 +52,7 @@ FileDownloader::fileNameForUrl(const QUrl& _url) {
   
   QString absPath = QDir::tempPath() % "/" % baseName;
   
-  qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(_url.toString()), qPrintable(absPath));
+  qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
   
   if (QFile::exists(absPath))
     QFile(absPath).remove();
@@ -62,7 +62,7 @@ FileDownloader::fileNameForUrl(const QUrl& _url) {
 
 void
 FileDownloader::__startRequest() {
-  if (__reply || !anyTasksLeft())
+  if (__reply || !hasPendingTasks())
     return;
   
   QUrl url = __urls.dequeue();
@@ -120,8 +120,8 @@ FileDownloader::__finished() {
     QFile::remove(__output.fileName());
   } else {
     emit finished(QString(__output.fileName()));
-    qCritical("FileDownloader: file %s downloaded, size: %lli",
-              qPrintable(__output.fileName()), size);
+    qDebug("FileDownloader: file %s downloaded, size: %lli b",
+           qPrintable(__output.fileName()), size);
   }
   
   __reply->deleteLater();
@@ -131,7 +131,7 @@ FileDownloader::__finished() {
 }
 
 void
-FileDownloader::__updateProgress(qint64 _read, qint64 _total) {
-  __pb->setMaximum(_total);
-  __pb->setValue(_read);
+FileDownloader::__updateProgress(qint64 read, qint64 total) {
+  __pb->setMaximum(total);
+  __pb->setValue(read);
 }

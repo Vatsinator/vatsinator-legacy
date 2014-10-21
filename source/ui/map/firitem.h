@@ -30,27 +30,50 @@ class QOpenGLShaderProgram;
 class Fir;
 class MapScene;
 
+/**
+ * The FirItem class represents a single FIR on the map.
+ * 
+ * In the case of FirItem, position() is a position of label. drawBackground()
+ * and drawBorders() methods are used directly by MapRenderer and they use
+ * VBOs and VAOs to draw a lot of triangles in the most efficient way.
+ */
 class FirItem : public QObject, public MapItem {
   Q_OBJECT
   
 public:
-  FirItem(const Fir*, QObject* = nullptr);
+  /**
+   * Constructs a new FirItem with the given _fir_. _parent_ is passed
+   * to QObject's constructor.
+   */
+  FirItem(const Fir* fir, QObject* parent = nullptr);
   FirItem() = delete;
   
   virtual ~FirItem();
   
+  /**
+   * Draws the FIR's borders using GL_LINE_LOOP.
+   * Color and line width must be set before calling this function.
+   */
   void drawBorders() const;
+  
+  /**
+   * Draws triangles that fill the background.
+   * Background color must be set before this function is called.
+   */
   void drawBackground() const;
   
   bool isVisible() const override;
   bool isLabelVisible() const override;
   const LonLat& position() const override;
-  void drawItem(QOpenGLShaderProgram*) const override;
-  void drawLabel(QOpenGLShaderProgram*) const override;
-  void drawFocused(QOpenGLShaderProgram*) const override;
+  void drawItem(QOpenGLShaderProgram* shader) const override;
+  void drawLabel(QOpenGLShaderProgram* shader) const override;
+  void drawFocused(QOpenGLShaderProgram* shader) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   
+  /**
+   * Gives direct access to the FIR that this item represents on the map.
+   */
   inline const Fir* data() const { return __fir; }
   
 private:

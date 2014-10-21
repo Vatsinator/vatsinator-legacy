@@ -21,92 +21,92 @@
 
 #include "notam.h"
 
-Notam::Notam(QString _ident) :
-     __ident(qMove(_ident)) {}
+Notam::Notam(QString ident) :
+     __ident(qMove(ident)) {}
 
-Notam::Notam(QString _ident, QString _icao, QString _notam, QString _url,
-             QDateTime _from, QDateTime _to, QString _diurnal,
-             Notam::CFlag _cflag, Notam::Type _type) :
-     __ident(qMove(_ident)),
-     __icao(qMove(_icao)),
-     __notam(qMove(_notam)),
-     __url(qMove(_url)),
-     __from(qMove(_from)),
-     __to(qMove(_to)),
-     __diurnal(qMove(_diurnal)),
-     __cflag(_cflag),
-     __type(_type) {}
+Notam::Notam(QString ident, QString icao, QString notam, QString url,
+             QDateTime from, QDateTime to, QString diurnal,
+             Notam::CFlag cflag, Notam::Type type) :
+     __ident(qMove(ident)),
+     __icao(qMove(icao)),
+     __notam(qMove(notam)),
+     __url(qMove(url)),
+     __from(qMove(from)),
+     __to(qMove(to)),
+     __diurnal(qMove(diurnal)),
+     __cflag(cflag),
+     __type(type) {}
 
 void
-Notam::setIcao(const QString& _icao) {
-  __icao = _icao;
+Notam::setIcao(const QString& icao) {
+  __icao = icao;
 }
 
 void
-Notam::setNotam(const QString& _notam) {
-  __notam = _notam;
+Notam::setNotam(const QString& notam) {
+  __notam = notam;
 }
 
 void
-Notam::setUrl(const QString& _url) {
-  __url = _url;
+Notam::setUrl(const QString& url) {
+  __url = url;
 }
 
 void
-Notam::setFrom(const QDateTime& _from) {
-  __from = _from;
+Notam::setFrom(const QDateTime& from) {
+  __from = from;
 }
 
 void
-Notam::setTo(const QDateTime& _to) {
-  __to = _to;
+Notam::setTo(const QDateTime& to) {
+  __to = to;
 }
 
 void
-Notam::setDiurnal(const QString& _diurnal) {
-  __diurnal = _diurnal;
+Notam::setDiurnal(const QString& diurnal) {
+  __diurnal = diurnal;
 }
 
 void
-Notam::setCflag(Notam::CFlag _cflag) {
-  __cflag = _cflag;
+Notam::setCflag(Notam::CFlag cflag) {
+  __cflag = cflag;
 }
 
 void
-Notam::setType(Notam::Type _type) {
-  __type = _type;
+Notam::setType(Notam::Type type) {
+  __type = type;
 }
 
 bool
-Notam::operator <(const Notam& _other) const {
-  if (__type == Cancellation && _other.type() != Cancellation)
+Notam::operator <(const Notam& other) const {
+  if (__type == Cancellation && other.type() != Cancellation)
     return false;
   
-  if (_other.type() == Cancellation && __type != Cancellation)
+  if (other.type() == Cancellation && __type != Cancellation)
     return true;
   
-  if (__cflag == Perm && _other.cflag() != Perm)
+  if (__cflag == Perm && other.cflag() != Perm)
     return false;
   
-  if (_other.cflag() == Perm && __cflag != Perm)
+  if (other.cflag() == Perm && __cflag != Perm)
     return true;
   
-  return __from > _other.from();
+  return __from > other.from();
 }
 
 bool
-Notam::operator >(const Notam& _other) const {
-  if (__type == Cancellation && _other.type() != Cancellation)
+Notam::operator >(const Notam& other) const {
+  if (__type == Cancellation && other.type() != Cancellation)
     return true;
   
-  if (_other.type() == Cancellation && __type != Cancellation)
+  if (other.type() == Cancellation && __type != Cancellation)
     return false;
   
-  if (__cflag == Perm && _other.cflag() != Perm)
+  if (__cflag == Perm && other.cflag() != Perm)
     return true;
   
-  if (_other.cflag() == Perm && __cflag != Perm)
+  if (other.cflag() == Perm && __cflag != Perm)
     return false;
   
-  return __from < _other.from();
+  return __from < other.from();
 }

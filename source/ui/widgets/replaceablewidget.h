@@ -23,8 +23,8 @@
 #include <initializer_list>
 #include <QStackedWidget>
 
-/*
- * This widget is used prior to display label that
+/**
+ * The ReplaceableWidget is used prior to display label that
  * changes to progress bar, which is visible at the
  * bottom-left corner of the main window.
  */
@@ -32,12 +32,15 @@ class ReplaceableWidget : public QStackedWidget {
   Q_OBJECT
   
 public:
-  ReplaceableWidget(QWidget* = 0);
+  /**
+   * Passes the _parent_ to QStackedWidget's constructor.
+   */
+  ReplaceableWidget(QWidget* parent = nullptr);
   
   /**
    * Adds given widgets.
    */
-  void addWidgets(const std::initializer_list<QWidget*>&);
+  void addWidgets(const std::initializer_list<QWidget*>& widgets);
   
   /**
    * Changes current widget to the next.

@@ -37,7 +37,7 @@ class FirDetailsWindow :
   Q_OBJECT
 
 public:
-  FirDetailsWindow(const Fir*, QWidget* = nullptr);
+  FirDetailsWindow(const Fir* fir, QWidget* parent = nullptr);
 
 public slots:
   void show();
@@ -48,8 +48,8 @@ private:
   void __adjustTables();
   
 private slots:
-  void __notamUpdate(NotamListModel*);
-  void __goToNotam(QModelIndex);
+  void __notamUpdate(NotamListModel* model);
+  void __goToNotam(QModelIndex index);
   
 private:
   const Fir* __fir;

@@ -36,14 +36,14 @@ class VatsinatorWindow :
   Q_OBJECT
 
 public:
-  explicit VatsinatorWindow(QWidget* = 0);
+  explicit VatsinatorWindow(QWidget* parent = nullptr);
   
   /**
    * Sets the specified message in the bottom-left bar corner
    * or puts simple "Last update" text.
-   * @param text If specified, this text will be shown.
+   * \param text If specified, this text will be shown.
    */
-  void statusBarUpdate(const QString& = "", const QPalette& = QPalette());
+  void statusBarUpdate(const QString& text = "", const QPalette& palette = QPalette());
   
   /**
    * The middle part of status bar - how many clients, etc etc.
@@ -53,15 +53,15 @@ public:
   /**
    * Custom event handler.
    */
-  bool event(QEvent*) override;
+  bool event(QEvent* event) override;
   
   inline MapWidget* mapWidget() { return MapDisplay; }
   inline QProgressBar* progressBar() { return __progressBar; }
   
 protected:
-  void closeEvent(QCloseEvent*) override;
-  void showEvent(QShowEvent*) override;
-  virtual bool mouseLonLatMoveEvent(MouseLonLatEvent*);
+  void closeEvent(QCloseEvent* event) override;
+  void showEvent(QShowEvent* event) override;
+  virtual bool mouseLonLatMoveEvent(MouseLonLatEvent* event);
   
 private:
   void __storeWindowGeometry();

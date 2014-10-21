@@ -22,9 +22,12 @@
 
 #include <QObject>
 
+/**
+ * The WeatherData class is used to represent weather for a single day of week.
+ */
 class WeatherData : public QObject {
   Q_OBJECT
-
+  
 public:
   /**
    * Each value of this enum corresponds to one icon that
@@ -46,28 +49,63 @@ public:
     Breezy,
     Windy,
   };
-  Q_ENUMS(WeatherData::Condition);
+  Q_ENUMS(WeatherData::Condition)
   
   struct Temperature {
     int celsius;
     int fahrenheit;
   };
   
-  explicit WeatherData(QObject* = nullptr);
+private:
+  /**
+   * Day of week.
+   * The value should be a log day name (e.g. "Monday", "Tuesday" instead
+   * of "Mon" and "Tue") and translated.
+   */
+  Q_PROPERTY(QString dayOfWeek READ dayOfWeek WRITE setDayOfWeek)
+  
+  /**
+   * Condition.
+   * Depending on the condition, different icon will be displayed in the widget.
+   */
+  Q_PROPERTY(Condition condition READ condition WRITE setCondition)
+  
+  /**
+   * The description provides more specific information about the forecast.
+   */
+  Q_PROPERTY(QString description READ description WRITE setDescription)
+  
+  /**
+   * The lowest expected temperature throughout the day.
+   */
+  Q_PROPERTY(Temperature low READ low WRITE setLow)
+  
+  /**
+   * The highest expected temperature throughout the day.
+   */
+  Q_PROPERTY(Temperature high READ high WRITE setHigh)
+
+public:
+  /**
+   * The default constrcutor passes _parent_ to QObject.
+   */
+  explicit WeatherData(QObject* parent = nullptr);
   
   /**
    * Constructs the WeatherData object from data given directly.
-   * @param dayOfWeek Day of week.
-   * @param condition Condition during the given day.
-   * @param description Description text (e.g. "Light rain in the morning").
+   * 
+   * \param dayOfWeek Day of week.
+   * \param condition Condition during the given day.
+   * \param description Description text (e.g. "Light rain in the morning").
    */
-  explicit WeatherData(QString, Condition, QString = QString(), QObject* = nullptr);
+  explicit WeatherData(QString dayOfWeek, Condition condition,
+                       QString description = QString(), QObject* parent = nullptr);
   
-  void setDayOfWeek(const QString&);
-  void setCondition(Condition);
-  void setDescription(const QString&);
-  void setLow(const Temperature&);
-  void setHigh(const Temperature&);
+  void setDayOfWeek(const QString& dayOfWeek);
+  void setCondition(Condition condition);
+  void setDescription(const QString& description);
+  void setLow(const Temperature& low);
+  void setHigh(const Temperature& high);
   
   inline const QString& dayOfWeek() const { return __dayOfWeek; }
   inline Condition condition() const { return __condition; }
@@ -83,5 +121,7 @@ private:
   Temperature __high;
   
 };
+
+Q_DECLARE_METATYPE(WeatherData::Temperature)
 
 #endif // WEATHERDATA_H

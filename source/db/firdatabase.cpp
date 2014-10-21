@@ -34,20 +34,16 @@ FirDatabase::initialize() {
 }
 
 const FirRecord *
-FirDatabase::find(const QString& _icao, bool _fss) {
-  if (_icao == "ZZZZ")
+FirDatabase::find(const QString& icao) {
+  if (icao == "ZZZZ")
     return nullptr;
   
-  auto result = std::lower_bound(__firs.begin(), __firs.end(), _icao,
-    [](const FirRecord& a, const QString& b) ->bool {
+  auto result = std::lower_bound(__firs.begin(), __firs.end(), icao,
+    [](const FirRecord& a, const QString& b) {
       return QString(a.header.icao) < b;
     });
   
-  if (_icao < QString(result->header.icao)) {
-    return nullptr;
-  } else {
-    return &(*result);
-  }
+  return icao < QString(result->header.icao) ? nullptr : result;
 }
 
 void

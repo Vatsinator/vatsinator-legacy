@@ -26,12 +26,11 @@
 #include "storage/abstractsettingsmodule.h"
 
 class ViewPage : public QWidget, public AbstractSettingsModule, private Ui::ViewPage {
-  
   Q_OBJECT
   
 public:
 
-  ViewPage(QWidget* = 0);
+  ViewPage(QWidget* parent = nullptr);
   
   QString listElement() const;
   QString listIcon() const;
@@ -54,11 +53,11 @@ public:
   void update() const;
 
 protected:
-  void restore(QSettings&);
-  void save(QSettings&);
+  void restore(QSettings& s);
+  void save(QSettings& s);
   
 private slots:
-  void __handleAlwaysCheckBox(int);
+  void __handleAlwaysCheckBox(int state);
   
 };
 

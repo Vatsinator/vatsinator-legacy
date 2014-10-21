@@ -38,16 +38,15 @@
  * 37 Booked from
  */
 
-BookedController::BookedController(const QStringList& _data) :
-    __callsign(_data[0]),
-    __realName(_data[2]),
-    __trainingSession(_data[4][0] == '1'),
-    __dateBooked(QDate::fromString(_data[16], "yyyyMMdd")),
-    __bookedFrom(QTime::fromString(_data[37], "hhmm")),
-    __bookedTo(QTime::fromString(_data[14], "hhmm")) {}
+BookedController::BookedController(const QStringList& data) :
+    __callsign(data[0]),
+    __realName(data[2]),
+    __trainingSession(data[4][0] == '1'),
+    __dateBooked(QDate::fromString(data[16], "yyyyMMdd")),
+    __bookedFrom(QTime::fromString(data[37], "hhmm")),
+    __bookedTo(QTime::fromString(data[14], "hhmm")) {}
 
 QString
 BookedController::icao() const {
   return __callsign.split('_').first();
 }
-    

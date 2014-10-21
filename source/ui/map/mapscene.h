@@ -20,6 +20,7 @@
 #ifndef MAPSCENE_H
 #define MAPSCENE_H
 
+#include <functional>
 #include <QObject>
 #include <QList>
 #include <QColor>
@@ -42,20 +43,21 @@ class UirItem;
  * The MapScene class is responsible for managing all the map items, moving
  * the map around (except situations when user moves it using mouse) and
  * zooming it appropiately.
+ * 
+ * \sa MapRenderer.
  */
 class MapScene : public QObject {
   Q_OBJECT
   
 signals:
-  
   /**
    * Emitted when user wants to track the flight.
-   * If the pointer is nullptr, it means user just cancelled flight tracking.
+   * If the pointer is nullptr, it means that user has just cancelled
+   * flight tracking.
    */
-  void flightTracked(const Pilot*);
+  void flightTracked(const Pilot* pilot);
 
 public:
-  
   /**
    * The settings struct provides fast access to map-related settings.
    * The MapScene class makes sure these settings are always up-to-date.
@@ -95,55 +97,110 @@ public:
     } view;
   };
   
-  explicit MapScene(QObject*);
+  /**
+   * Constructs new MapScene. Passes _parent_ to QObject's constructor.
+   */
+  explicit MapScene(QObject* parent);
+  
   virtual ~MapScene();
   
-  void trackFlight(const Pilot*);
+  /**
+   * Marks the specified pilot as tracked one.
+   * Tracked flight will be always displayed in the center of the map.
+   * It is used in order to keep track of the flight when user hides
+   * the main window. When this function is called, the flightTracked()
+   * signal will be emitted.
+   * If any flight was tracked before, it will be switched to _pilot_.
+   * The flight tracking can be cancelled by calling cancelFlightTracking()
+   * function.
+   * 
+   * \param pilot The pilot to be tracked on the map.
+   */
+  void trackFlight(const Pilot* pilot);
+  
+  /**
+   * Stops tracking any flight.
+   */
   void cancelFlightTracking();
   
   /**
    * Finds FirItem instance that handles the given Fir.
-   * @return nullptr if no such FirItem could be found.
+   * This function is linear in complexity.
+   * 
+   * \return nullptr if no such FirItem could be found.
    */
-  FirItem* findItemForFir(const Fir*);
+  FirItem* findItemForFir(const Fir* fir);
   
   /**
-   * Finds all visible items that are inside the given _rect_.
+   * Executes the given function for each item found inside the given _rect_.
+   * 
+   * \param rect The bounding rectangle for items.
+   * \param function The function to execute on every item found.
+   * 
    */
-  QList<const MapItem*> items(const QRectF&) const;
+  void inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const;
   
   /**
-   * Finds nearest item to the given point.
+   * Finds nearest item to the given _point_.
+   * 
+   * \note This item never returns _nullptr_.
    */
-  const MapItem* nearest(const LonLat&);
+  const MapItem* nearest(const LonLat& point);
   
   /**
-   * Finds _n_ nearest items to the given point.
+   * Executes the given function on maximum _max_ nearest items.
+   * 
+   * \param point The reference point.
+   * \param max Maximum number of items.
+   * \param function The function to be executed on every item.
    */
-  QList<const MapItem*> nearest(const LonLat&, int);
+  void nearTo(const LonLat& point, int max, std::function<void(const MapItem*)> function);
   
+  /**
+   * Gets the running instance of MapRenderer.
+   */
   inline MapRenderer* renderer() { return __renderer; }
   
+  /**
+   * Gets all FirItems that are attached to the scene.
+   */
   inline const QList<FirItem*>& firItems() const {
     return __firItems;
   }
   
+  /**
+   * Gets all UirItems that are attached to the scene.
+   */
   inline const QList<UirItem*>& uirItems() const {
     return __uirItems;
   }
   
+  /**
+   * Gets the currently tracked flight.
+   */
   inline const Pilot* trackedFlight() const {
     return __trackedFlight;
   }
   
+  /**
+   * Gives access to all settings in a pretty fast way.
+   */
   inline const MapSettings& settings() const { return __settings; }
   
 public slots:
   /**
    * Moves the map smoothly to the given point.
-   * @param p The target point.
+   * 
+   * \param target The target point.
    */
-  void moveTo(const LonLat&);
+  void moveTo(const LonLat& target);
+  
+  /**
+   * Zooms smoothly to the given value.
+   * 
+   * \param zoom The target zoom value.
+   */
+  void zoomTo(qreal zoom);
   
   /**
    * Aborts the currently running animation.

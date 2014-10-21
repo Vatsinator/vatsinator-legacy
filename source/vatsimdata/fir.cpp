@@ -25,10 +25,10 @@
 
 #include "fir.h"
 
-Fir::Fir(const FirRecord* _data) :
-     __data(_data),
-     __icao(QString::fromUtf8(_data->header.icao)),
-     __oceanic(_data->header.oceanic),
+Fir::Fir(const FirRecord* record) :
+     __data(record),
+     __icao(QString::fromUtf8(record->header.icao)),
+     __oceanic(record->header.oceanic),
      __staff(new ControllerTableModel(this)),
      __uirStaff(new ControllerTableModel(this)),
      __flights(new FlightTableModel(this)),
@@ -40,35 +40,35 @@ Fir::Fir(const FirRecord* _data) :
 Fir::~Fir() {}
 
 void
-Fir::addStaff(const Controller* _c) {
-  __staff->add(_c);
-  connect(_c,           SIGNAL(updated()),
+Fir::addStaff(const Controller* atc) {
+  __staff->add(atc);
+  connect(atc,           SIGNAL(updated()),
           this,         SIGNAL(updated()));
-  connect(_c,           SIGNAL(destroyed(QObject*)),
+  connect(atc,           SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
 }
 
 void
-Fir::addUirStaff(const Controller* _c) {
-  __uirStaff->add(_c);
-  connect(_c,           SIGNAL(updated()),
+Fir::addUirStaff(const Controller* atc) {
+  __uirStaff->add(atc);
+  connect(atc,           SIGNAL(updated()),
           this,         SIGNAL(updated()));
-  connect(_c,           SIGNAL(destroyed(QObject*)),
+  connect(atc,           SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
 }
 
 void
-Fir::addFlight(const Pilot* _p) {
-  __flights->add(_p);
-  connect(_p,           SIGNAL(destroyed(QObject*)),
+Fir::addFlight(const Pilot* pilot) {
+  __flights->add(pilot);
+  connect(pilot,           SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
 }
 
 void
-Fir::addAirport(const Airport* _ap) {
-  __airports->addAirport(_ap);
+Fir::addAirport(const Airport* airport) {
+  __airports->addAirport(airport);
 }
 
 void

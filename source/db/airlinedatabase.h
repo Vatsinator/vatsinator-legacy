@@ -23,17 +23,16 @@
 #include <QObject>
 #include <QString>
 #include <QMap>
-
-#include "singleton.h"
 #include "ui/notifiable.h"
 
 class Airline;
 
 /**
  * The AirlineDatabase class is a layer between Vatsinator and the raw
- * database file.
+ * database file. The database is automatically sunchronized with the
+ * VatsinatorDatabase instance by ResourceManager.
  */
-class AirlineDatabase : public QObject, public Notifiable, public Singleton<AirlineDatabase> {
+class AirlineDatabase : public QObject, public Notifiable {
   Q_OBJECT
   
 public:
@@ -41,40 +40,46 @@ public:
   /**
    * The default constructor.
    */
-  AirlineDatabase(QObject* = nullptr);
+  AirlineDatabase(QObject* parent = nullptr);
   
   /**
-   * Called by VatsinatorApplication only.
+   * Called by VatsinatorApplication only. Reads the database file.
    */
   void initialize();
   
   /**
-   * Searches for the airline record in the database.
-   * Returns nullptr if nothing could be found.
+   * Looks for the airline record in the database.
+   * 
+   * \param icao The lookup ICAO code of the target airline.
+   * \return Airline instance pointer or _nullptr_ if nothing could be found.
    */
-  Airline* find(const QString&);
+  Airline* find(const QString& icao);
   
   /**
-   * Searches for the airline record in the database.
-   * Returns nullptr if nothing could be found.
+   * Looks for the airline record in the database.
+   * 
+   * \param icao The lookup ICAO code of the target airline.
+   * \return Airline instance pointer or _nullptr_ if nothing could be found.
    */
-  const Airline* find(const QString&) const;
+  const Airline* find(const QString& icao) const;
   
   /**
-   * Gives direct access to the map. It stores
-   * ICAO code <-> record pointer pairs.
+   * Gives direct access to the map that stores ICAO code <-> instance pairs.
    */
   inline const QMap<QString, Airline*>& airlines() const { return __airlines; }
   
   /**
-   * Returns the URL where airlies logos can be fetched from.
+   * Provies the base URL for all airlines' logos.
+   * The URL is stored in the database file.
    */
   inline const QString& airlineLogoUrl() const { return __airlineLogoUrl; }
   
   /**
    * Indicates whether any airline logo can be fetched or not.
+   * To provide any tools of remote management, this property can be set to
+   * false in the database file. All airline logos won't be fetched then.
    */
-  inline bool canFetch() const { return __canFetch; }
+  inline bool canFetchLogos() const { return __canFetch; }
   
 private:
   

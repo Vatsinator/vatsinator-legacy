@@ -1,4 +1,4 @@
-# 
+﻿# 
 #   Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -19,6 +19,11 @@ project (vatsinator)
 
 cmake_minimum_required (VERSION 2.8.11 FATAL_ERROR)
 cmake_policy (SET CMP0020 OLD)
+
+# Allow use of the LOCATION target property.
+if (POLICY CMP0026)
+  cmake_policy (SET CMP0026 OLD)
+endif (POLICY CMP0026)
 
 if (POLICY CMP0028)
   cmake_policy (SET CMP0028 NEW)
@@ -54,17 +59,27 @@ endif (UNIX AND NOT APPLE AND NOT MINGW)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
-# set CMAKE_BUILD_TYPE
+# set configuration types (msvc)
+if (CMAKE_CONFIGURATION_TYPES)
+  set (CMAKE_CONFIGURATION_TYPES Debug Release)
+  set (CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
+    "Reset the configurations to what we actually need"
+    FORCE)
+endif()
+
+# set CMAKE_BUILD_TYPE (gcc/clang)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
-    set (CMAKE_BUILD_TYPE Debug)
-else (CMAKE_BUILD_TYPE MATCHES Debug)
-    set (CMAKE_BUILD_TYPE Release)
-endif (CMAKE_BUILD_TYPE MATCHES Debug)
+  set (CMAKE_BUILD_TYPE Debug)
+else ()
+  set (CMAKE_BUILD_TYPE Release)
+endif ()
 
 # set CXX_FLAGS
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
-set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall")
+if (CMAKE_COMPILER_IS_GNUCXX)
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
+  set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
+endif ()
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -109,7 +124,6 @@ if (LINUX)
 
     # Spec file
     option (WITH_RPM "Create RPM package" OFF)
-    add_subdirectory (dist)
 
 elseif (APPLE)
     
@@ -119,12 +133,12 @@ elseif (APPLE)
 # builds for win32
 elseif (WIN32)
     
-    # TODO merge misc/msvc-2012
-    
     # Awesome NSIS packaging
     include (Packaging-win32)
     
 endif (LINUX)
+
+add_subdirectory (dist)
 
 if (NOT APPLE)
     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
@@ -135,21 +149,25 @@ set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 option (WITH_PLUGINS "Build plugins" ON)
 if (WITH_PLUGINS)
     add_subdirectory(plugins)
-endif (WITH_PLUGINS)
+endif ()
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
-message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+if (NOT CMAKE_CONFIGURATION_TYPES)
+	message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+else ()
+	message (STATUS " * configuration types: ${CMAKE_CONFIGURATION_TYPES}")
+endif ()
 if (LINUX)
     message (STATUS " * platform: Linux")
 elseif (APPLE)
     message (STATUS " * platform: Apple")
 elseif (WIN32)
     message (STATUS " * platform: Win32")
-else (LINUX)
+else ()
     message (STATUS " * platform: Undefined")
-endif (LINUX)
+endif ()
 message (STATUS " * Qt version: ${QT_VERSION}")
 
 # uninstall target
@@ -163,3 +181,14 @@ add_custom_target (
     uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
+
+find_package (Doxygen QUIET)
+if (DOXYGEN_FOUND)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Generating documentation with Doxygen" VERBATIM
+  )
+endif ()
+

@@ -1,6 +1,6 @@
 /*
     metaraction.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,17 +23,27 @@
 #include <QAction>
 #include <QString>
 
+/**
+ * The MetarAction class represents an action that corresponds to the specified
+ * METAR report.
+ */
 class MetarAction : public QAction {
   Q_OBJECT
 
 signals:
-  void triggered(QString);
+  /**
+   * Passed from QAction.
+   * 
+   * \param metar The ICAO code of the airport.
+   */
+  void triggered(QString metar);
 
 public:
-  MetarAction(const QString&, QObject*);
-
-private slots:
-  void __handleTriggered();
+  /**
+   * Creates new menu action with the provided _icao_ code and the specified
+   * _parent_, which is passed to QAction's constructor.
+   */
+  MetarAction(const QString& icao, QObject* parent);
 
 private:
   QString __icao;

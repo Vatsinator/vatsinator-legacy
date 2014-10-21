@@ -1,6 +1,6 @@
 /*
     airporttablemodel.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,45 +21,57 @@
 #define AIRPORTTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <QVector>
+#include <QList>
 
 class Airport;
 
-/*
- * This model holds the vector of active airports.
+/**
+ * The AirportTableModel holds airports.
  */
 class AirportTableModel : public QAbstractTableModel {
   Q_OBJECT
 
 public:
-  explicit AirportTableModel(QObject* = 0);
+  /**
+   * The default constructor passes _parent_ to QAbstractTableModel.
+   */
+  explicit AirportTableModel(QObject* parent = nullptr);
 
-  void addAirport(const Airport*);
-
-  int rowCount(const QModelIndex& = QModelIndex()) const;
-  int columnCount(const QModelIndex& = QModelIndex()) const;
-  QVariant data(const QModelIndex&, int = Qt::DisplayRole) const;
-  QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const;
-
+  /**
+   * Adds new airport to the model.
+   */
+  void addAirport(const Airport* airport);
+  
+  /**
+   * Removes all pointers.
+   * \todo Remove.
+   */
   void clear();
 
-  inline const QVector<const Airport*> &
-  airports() const { return __airports; }
+  int rowCount(const QModelIndex& index = QModelIndex()) const override;
+  int columnCount(const QModelIndex& index = QModelIndex()) const override;
+  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+
+  /**
+   * Gives direct access to all airports.
+   */
+  inline const QList<const Airport*>& airports() const { return __airports; }
 
   enum Column {
-    Label   = 0,
+    Label       = 0,
     Facilities  = 1,
-    Outbounds = 2,
-    Inbounds  = 3,
-    Button    = 4
+    Outbounds   = 2,
+    Inbounds    = 3,
+    Button      = 4
   };
 
 private:
-  QString __arrivalsAndDepartures(int) const;
-  QString __produceLabel(int) const;
-  QString __produceFacilities(int) const;
+  QString __arrivalsAndDepartures(int row) const;
+  QString __produceLabel(int row) const;
+  QString __produceFacilities(int row) const;
 
-  QVector<const Airport*> __airports;
+  QList<const Airport*> __airports;
 
 
 };

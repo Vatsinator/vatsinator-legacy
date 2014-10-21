@@ -30,8 +30,8 @@ namespace DefaultSettings {
   static const QString LANGUAGE         = QLocale::system().name().left(2);
 }
 
-MiscellaneousPage::MiscellaneousPage(QWidget* _parent) :
-    QWidget(_parent) {
+MiscellaneousPage::MiscellaneousPage(QWidget* parent) :
+    QWidget(parent) {
   setupUi(this);
   LanguageComboBox->addItems(LanguageManager::getSingleton().allLanguages());
   
@@ -64,25 +64,26 @@ MiscellaneousPage::update() const {
 }
 
 void
-MiscellaneousPage::showEvent(QShowEvent*) {
+MiscellaneousPage::showEvent(QShowEvent* event) {
+  Q_UNUSED(event);
   __languageIndex = LanguageComboBox->currentIndex();
 }
 
 void
-MiscellaneousPage::restore(QSettings& _s) {
+MiscellaneousPage::restore(QSettings& s) {
   StatsCheckBox->setChecked(
-    _s.value("send_statistics", DefaultSettings::SEND_STATS).toBool());
+    s.value("send_statistics", DefaultSettings::SEND_STATS).toBool());
   LanguageComboBox->setCurrentIndex(
     LanguageManager::getSingleton().getLanguageId(
-      _s.value("language", DefaultSettings::LANGUAGE).toString()
+      s.value("language", DefaultSettings::LANGUAGE).toString()
     )
   );
 }
 
 void
-MiscellaneousPage::save(QSettings& _s) {
-  _s.setValue("send_statistics", StatsCheckBox->isChecked());
-  _s.setValue("language", LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
+MiscellaneousPage::save(QSettings& s) {
+  s.setValue("send_statistics", StatsCheckBox->isChecked());
+  s.setValue("language", LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
   
   if (__languageIndex != LanguageComboBox->currentIndex())
     emit languageChanged();
