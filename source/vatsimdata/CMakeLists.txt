@@ -2,10 +2,12 @@ vatsinator_start_subdirectory (vatsimdata)
 
 set (vatsimdata_SRCS
     abstractbookingprovider.cpp
+    abstractnotamprovider.cpp
     airport.cpp
     atcbooking.cpp
     client.cpp
     controller.cpp
+    euroutenotamprovider.cpp
     fir.cpp
     lonlat.cpp
     metar.cpp

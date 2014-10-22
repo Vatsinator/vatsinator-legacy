@@ -19,7 +19,6 @@
 #include <QtWidgets>
 
 #include "db/airportdatabase.h"
-#include "network/abstractnotamprovider.h"
 #include "plugins/weatherforecastinterface.h"
 #include "plugins/weatherforecastrequest.h"
 #include "plugins/weatherforecastreply.h"
@@ -34,6 +33,7 @@
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "vatsimdata/abstractbookingprovider.h"
+#include "vatsimdata/abstractnotamprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"

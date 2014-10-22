@@ -20,7 +20,6 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "network/abstractnotamprovider.h"
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
@@ -28,6 +27,7 @@
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "vatsimdata/abstractbookingprovider.h"
+#include "vatsimdata/abstractnotamprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/controller.h"
