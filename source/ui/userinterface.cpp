@@ -21,26 +21,26 @@
 
 #include "userinterface.h"
 
-UserInterface::UserInterface(QObject* _parent) :
-    QObject(_parent) {}
+UserInterface::UserInterface(QObject* parent) :
+    QObject(parent) {}
 
-bool UserInterface::event(QEvent* _e) {
-  if (_e->type() == Event::Notification)
-    return notificationEvent(dynamic_cast<NotificationEvent*>(_e));
+bool UserInterface::event(QEvent* event) {
+  if (event->type() == Event::Notification)
+    return notificationEvent(dynamic_cast<NotificationEvent*>(event));
   else
-    return QObject::event(_e);
+    return QObject::event(event);
 }
 
 bool
-UserInterface::notificationEvent(NotificationEvent* _event) {
-  switch (_event->gravity()) {
+UserInterface::notificationEvent(NotificationEvent* event) {
+  switch (event->gravity()) {
     case NotificationEvent::Fatal:
-      fatal(_event->message());
+      fatal(event->message());
       vApp()->exit(1);
       break;
       
     case NotificationEvent::Warning:
-      warning(_event->message());
+      warning(event->message());
       break;
   }
   

@@ -1,6 +1,6 @@
 /*
     controllertablemodel.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,33 +16,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtCore>
 
 #include "controllertablemodel.h"
 
-ControllerTableModel::ControllerTableModel(QObject* _parent) :
-    QAbstractTableModel(_parent) {}
+ControllerTableModel::ControllerTableModel(QObject* parent) :
+    QAbstractTableModel(parent) {}
 
 void
-ControllerTableModel::add(const Controller* _c) {
-  Q_ASSERT(_c);
+ControllerTableModel::add(const Controller* atc) {
+  Q_ASSERT(atc);
   
-  if (!__staff.contains(_c)) {
+  if (!__staff.contains(atc)) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    __staff << _c;
+    __staff << atc;
     endInsertRows();
     
-    connect(_c,         SIGNAL(destroyed(QObject*)),
-            this,       SLOT(__autoRemove(QObject*)), Qt::DirectConnection);
+    connect(atc, &Controller::invalid, this, &ControllerTableModel::__autoRemove);
   }
 }
 
 void
-ControllerTableModel::remove(const Controller* _c) {
-  Q_ASSERT(_c);
+ControllerTableModel::remove(const Controller* atc) {
+  Q_ASSERT(atc);
   
   for (int i = 0; i < __staff.size(); ++i) {
-    if (__staff[i] == _c) {
+    if (__staff[i] == atc) {
       beginRemoveRows(QModelIndex(), i, i);
       __staff.removeAt(i);
       endRemoveRows();
@@ -51,12 +51,12 @@ ControllerTableModel::remove(const Controller* _c) {
     }
   }
   
-  Q_ASSERT_X(false, "ControllerTableModel", "The ATC does not exist in the model");
+  Q_UNREACHABLE();
 }
 
 bool
-ControllerTableModel::contains(const Controller* _c) const {
-  return __staff.contains(_c);
+ControllerTableModel::contains(const Controller* atc) const {
+  return __staff.contains(atc);
 }
 
 void
@@ -67,21 +67,23 @@ ControllerTableModel::clear() {
 }
 
 const Controller *
-ControllerTableModel::findAtcByCallsign(const QString& _callsign) const {
+ControllerTableModel::findAtcByCallsign(const QString& callsign) const {
   for (const Controller* c: __staff)
-    if (c->callsign() == _callsign)
+    if (c->callsign() == callsign)
       return c;
   
   return nullptr;
 }
 
 int
-ControllerTableModel::rowCount(const QModelIndex& ) const {
+ControllerTableModel::rowCount(const QModelIndex& parent) const {
+  Q_UNUSED(parent);
   return __staff.size();
 }
 
 int
-ControllerTableModel::columnCount(const QModelIndex& ) const {
+ControllerTableModel::columnCount(const QModelIndex& parent) const {
+  Q_UNUSED(parent);
   /* 0 - callsign
    * 1 - name
    * 2 - freq
@@ -91,24 +93,24 @@ ControllerTableModel::columnCount(const QModelIndex& ) const {
 }
 
 QVariant
-ControllerTableModel::data(const QModelIndex& _index, int _role) const {
-  if (!_index.isValid() || _index.row() >= rowCount() || _index.column() >= columnCount())
+ControllerTableModel::data(const QModelIndex& index, int role) const {
+  if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount())
     return QVariant();
 
-  switch (_role) {
+  switch (role) {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ToolTipRole:
-      return Controller::ratings[__staff[_index.row()]->rating()];
+      return Controller::ratings[__staff[index.row()]->rating()];
     case Qt::DisplayRole:
 
-      switch (_index.column()) {
+      switch (index.column()) {
         case Callsign:
-          return __staff[_index.row()]->callsign();
+          return __staff[index.row()]->callsign();
         case Name:
-          return __staff[_index.row()]->realName();
+          return __staff[index.row()]->realName();
         case Frequency:
-          return __staff[_index.row()]->frequency();
+          return __staff[index.row()]->frequency();
         default:
           return QVariant();
       }
@@ -119,11 +121,11 @@ ControllerTableModel::data(const QModelIndex& _index, int _role) const {
 }
 
 QVariant
-ControllerTableModel::headerData(int _section, Qt::Orientation _orientation, int _role) const {
-  if (_section >= columnCount() || _orientation == Qt::Vertical || _role != Qt::DisplayRole)
+ControllerTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+  if (section >= columnCount() || orientation == Qt::Vertical || role != Qt::DisplayRole)
     return QVariant();
 
-  switch (_section) {
+  switch (section) {
     case 0:
       return tr("Callsign");
     case 1:
@@ -136,32 +138,32 @@ ControllerTableModel::headerData(int _section, Qt::Orientation _orientation, int
 }
 
 void
-ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
+ControllerTableModel::sort(int column, Qt::SortOrder order) {
   beginResetModel();
 
-  switch (_column) {
+  switch (column) {
     case Callsign:
-      qSort(__staff.begin(), __staff.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->callsign() < _b->callsign();
-              } :
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->callsign() > _b->callsign();
-              }
-      );
+      if (order == Qt::AscendingOrder) {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->callsign() < b->callsign();
+        });
+      } else {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->callsign() > b->callsign();
+        });
+      }
       
       break;
     case Name:
-      qSort(__staff.begin(), __staff.end(),
-            _order == Qt::AscendingOrder ?
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->realName() < _b->realName();
-              } :
-              [](const Controller* _a, const Controller* _b) -> bool {
-                return _a->realName() > _b->realName();
-              }
-      );
+      if (order == Qt::AscendingOrder) {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->realName() < b->realName();
+        });
+      } else {
+        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
+          return a->realName() > b->realName();
+        });
+      }
       
       break;
   }
@@ -172,7 +174,8 @@ ControllerTableModel::sort(int _column, Qt::SortOrder _order) {
 }
 
 void
-ControllerTableModel::__autoRemove(QObject* _object) {
-  Q_ASSERT(_object);
-  remove(static_cast<const Controller*>(_object));
+ControllerTableModel::__autoRemove() {
+  const Controller* c = qobject_cast<const Controller*>(sender());
+  Q_ASSERT(c);
+  remove(c);
 }

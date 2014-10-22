@@ -24,9 +24,9 @@
 
 #include "trackaction.h"
 
-TrackAction::TrackAction(const Pilot* _pilot, QObject* _parent) :
-    QAction(tr("Track this flight"), _parent),
-    __current(_pilot) {
+TrackAction::TrackAction(const Pilot* pilot, QObject* parent) :
+    QAction(tr("Track this flight"), parent),
+    __current(pilot) {
   
   setCheckable(true);
   if (__current == wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight())
@@ -44,6 +44,6 @@ TrackAction::__handleTriggered() {
 }
 
 void
-TrackAction::__updateChecked(const Pilot* _p) {
-  setChecked(_p == __current);
+TrackAction::__updateChecked(const Pilot* pilot) {
+  setChecked(pilot == __current);
 }

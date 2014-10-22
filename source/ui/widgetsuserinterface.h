@@ -44,67 +44,66 @@ class WidgetsUserInterface : public UserInterface {
   Q_OBJECT
   
 public:
-  explicit WidgetsUserInterface(QObject* = nullptr);
+  explicit WidgetsUserInterface(QObject* parent = nullptr);
   virtual ~WidgetsUserInterface();
   
   void initialize() override;
   
   /**
-   * @return Instance of the "About Vatsinator" window.
+   * \return Instance of the "About Vatsinator" window.
    */
   AboutWindow* aboutWindow();
   
   /**
-   * @return Instance of the "Atc list" window.
+   * \return Instance of the "Atc list" window.
    */
   AtcListWindow* atcListWindow();
   
   /**
-   * @return Instance of the "VatsinatorDatabase" window.
+   * \return Instance of the "VatsinatorDatabase" window.
    */
   DatabaseWindow* databaseWindow();
   
   /**
-   * @return Instance of the "Flight list" window.
+   * \return Instance of the "Flight list" window.
    */
   FlightListWindow* flightListWindow();
   
   /**
-   * @return Instance of the "METARs" window.
+   * \return Instance of the "METARs" window.
    */
   MetarsWindow* metarsWindow();
   
   /**
-   * @return Instance of the settings window.
+   * \return Instance of the settings window.
    */
   SettingsWindow* settingsWindow();
   
   /**
-   * @return Instance of the main Vatsinator window.
+   * \return Instance of the main Vatsinator window.
    */
   VatsinatorWindow* mainWindow();
   
 public slots:
-  
   /**
    * Shows the dialog that shows "Restart the application" dialog.
    * Called when user changes the language.
    */
   void showAppRestartDialog();
   
-  void fatal(const QString&) override;
-  void warning(const QString&) override;
+  void fatal(const QString& message) override;
+  void warning(const QString& message) override;
   void statusError() override;
   void dataError() override;
-  void showVatsimMessage(const QString&) override;
-  void showDetails(const Airport*) override;
-  void showDetails(const Client*) override;
-  void showDetails(const Fir*) override;
-  void showMetar(const QString&) override;
+  void showVatsimMessage(const QString& message) override;
+  void showDetails(const Airport* airport) override;
+  void showDetails(const Client* client) override;
+  void showDetails(const Fir* fir) override;
+  void showMetar(const QString& metar) override;
   void showStatsDialog() override;
+  void ensureMainWindowIsActive() override;
   
 private slots:
-  
   /**
    * Shows the dialog that notifies user about the new version available.
    * We do not need to implement this on Android - Play handles auto-updates

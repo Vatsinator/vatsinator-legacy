@@ -28,14 +28,42 @@
 #include "vatsimdata/lonlat.h"
 
 /**
- * Base class for all clients (Pilots and ATCs).
+ * The Client is a base class for all clients.
  */
 class Client : public QObject {
-  
   Q_OBJECT
   
-signals:
+  /**
+   * This property holds the client's Vatsim PID.
+   */
+  Q_PROPERTY(unsigned pid READ pid NOTIFY updated)
   
+  /**
+   * This property holds the client's callsign.
+   */
+  Q_PROPERTY(QString callsign READ callsign NOTIFY updated)
+  
+  /**
+   * This property holds the client's real name.
+   */
+  Q_PROPERTY(QString realName READ realName NOTIFY updated)
+  
+  /**
+   * The _server_ property keeps the server that the client is connected to.
+   */
+  Q_PROPERTY(QString server READ server NOTIFY updated)
+  
+  /**
+   * This property keeps date and time when the client went online.
+   */
+  Q_PROPERTY(QDateTime onlineFrom READ onlineFrom NOTIFY updated)
+  
+  /**
+   * This property holds current client's position.
+   */
+  Q_PROPERTY(LonLat position READ position NOTIFY updated)
+  
+signals:
   /**
    * The update() signal is updated when the clients receives new data.
    */
@@ -44,38 +72,36 @@ signals:
   /**
    * The invalid() signal is emitted when the client logs out and this instance
    * will be deleted soon.
-   * NOTE We cannot use destroyed() signal because sometimes we still need
+   * \note We cannot use destroyed() signal because sometimes we still need
    * access to the client data, which is not available when destroyed() signal
    * is emitted.
    */
   void invalid();
 
 public:
-  
   /**
    * Prevent from creating foo-clients.
    */
   Client() = delete;
   
   /**
-   * The data list. This can be, for example, one line
+   * Creates new Client from the data list. This can be, for example, one line
    * obtained from vatsim data servers, divided with ":".
-   * For more info see client.cpp file.
    */
-  Client(const QStringList&);
+  Client(const QStringList& data);
   
   virtual ~Client();
   
   /**
-   * Update the client from the _data_ given.
+   * Updates the client from the _data_ given.
    * The _data_ is just an appropriate line from the data file, which
    * is fetched from the internet.
    */
-  virtual void update(const QStringList&);
+  virtual void update(const QStringList& data);
   
   /**
    * Marks this client as invalid; emits the invalid() signal.
-   * NOTE This function should not be called if you do not really know
+   * \note This function should not be called if you do not really know
    * what you're doing.
    */
   virtual void invalidate();
@@ -84,7 +110,7 @@ public:
    * Checks whether the client is still online or not.
    * This method simply compares the local copy of timestamp with the current timestamp
    * of VatsimDataHandler instance.
-   * @return True if the client was present in the last data update, otherwise false.
+   * \return True if the client was present in the last data update, otherwise false.
    */
   bool isOnline() const;
   
@@ -97,38 +123,16 @@ public:
    */
   bool hasValidPosition() const;
 
-  /**
-   * The client's Vatsim PID.
-   */
+  
   inline unsigned pid() const { return __pid; }
-  
-  /**
-   * The client's callsign.
-   */
   inline const QString& callsign() const { return __callsign; }
-  
-  /**
-   * The client's real name.
-   */
   inline const QString& realName() const { return __realName; }
-  
-  /**
-   * The server that the client is connected to.
-   */
   inline const QString& server() const { return __server; }
-  
-  /**
-   * When the client went online.
-   */
   inline const QDateTime& onlineFrom() const { return __onlineFrom; }
-  
-  /**
-   * The current client's position.
-   */
   inline const LonLat& position() const { return __position; }
 
 protected:
-  void setPosition(const LonLat&);
+  void setPosition(const LonLat& position);
   
 private:
   /* Client data */

@@ -43,8 +43,8 @@ namespace {
   }
 }
 
-EurouteNotamProvider::EurouteNotamProvider(QObject* _parent) : AbstractNotamProvider(_parent) {
-  connect(qobject_cast<VatsimDataHandler*>(parent()),   SIGNAL(vatsimDataUpdated()),
+EurouteNotamProvider::EurouteNotamProvider(QObject* parent) : AbstractNotamProvider(parent) {
+  connect(qobject_cast<VatsimDataHandler*>(parent),     SIGNAL(vatsimDataUpdated()),
           this,                                         SLOT(__checkXmlUpToDate()));
 }
 
@@ -53,20 +53,20 @@ EurouteNotamProvider::~EurouteNotamProvider() {
 }
 
 void
-EurouteNotamProvider::fetchNotam(const QString& _icao) {
+EurouteNotamProvider::fetchNotam(const QString& icao) {
   if (!__lastUpdate.isValid()) {
     /* We don't have valid XML yet, lets wait for it */
-    __icaoRequest = _icao;
+    __icaoRequest = icao;
     return;
   }
   
-  if (__notamModels.contains(_icao)) {
-    emit notamReady(__notamModels[_icao]);
+  if (__notamModels.contains(icao)) {
+    emit notamReady(__notamModels[icao]);
     return;
   }
   
-  NotamListModel* nlm = new NotamListModel(_icao);
-  __notamModels.insert(_icao, nlm);
+  NotamListModel* nlm = new NotamListModel(icao);
+  __notamModels.insert(icao, nlm);
   __fillNotamListModel(nlm);
   emit notamReady(nlm);
 }
@@ -122,7 +122,7 @@ EurouteNotamProvider::__readXmlHeader() {
 }
 
 void
-EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
+EurouteNotamProvider::__fillNotamListModel(NotamListModel* model) {
   CacheFile file("euroute-notams.xml");
   if (!file.open()) {
     qCritical("EurouteNotamProvider: failed to open file %s for reading", qPrintable(file.fileName()));
@@ -136,7 +136,7 @@ EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
     if (token == QXmlStreamReader::StartElement && reader.name() == "notam") {
       auto attrs = reader.attributes();
       if (attrs.hasAttribute("ident") && attrs.hasAttribute("A") &&
-          attrs.value("A").toString() == _model->icao()) {
+          attrs.value("A").toString() == model->icao()) {
         
         QDateTime from = QDateTime::fromString(attrs.value("B").toString(), "yyyy-MM-dd hh:mm:ss");
         Notam::CFlag cflag = Notam::None;
@@ -150,7 +150,7 @@ EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
           cflag = Notam::Perm;
         }
         
-        _model->addNotam(Notam(
+        model->addNotam(Notam(
           attrs.value("ident").toString(),
           attrs.value("A").toString(),
           attrs.value("E").toString(),
@@ -165,12 +165,12 @@ EurouteNotamProvider::__fillNotamListModel(NotamListModel* _model) {
   }
   
   file.close();
-  _model->sort(0);
+  model->sort(0);
 }
 
 void
-EurouteNotamProvider::__xmlReady(QString _fileName) {
-  FileManager::moveToCache(_fileName, "euroute-notams.xml");
+EurouteNotamProvider::__xmlReady(QString fileName) {
+  FileManager::moveToCache(fileName, "euroute-notams.xml");
   __readXmlHeader();
   
   if (__lastUpdate.isValid() && !__icaoRequest.isEmpty()) {

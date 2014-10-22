@@ -30,43 +30,43 @@ class QPixmap;
 class MapConfig {
 public:
   
-  static constexpr qreal longitudeMax() {
+  static Q_DECL_CONSTEXPR qreal longitudeMax() {
     return 180.0;
   }
   
-  static constexpr qreal latitudeMax() {
+  static Q_DECL_CONSTEXPR qreal latitudeMax() {
     return 90.0;
   }
   
-  static constexpr int baseWindowWidth() {
+  static Q_DECL_CONSTEXPR int baseWindowWidth() {
     return 800;
   }
   
-  static constexpr int baseWindowHeight() {
+  static Q_DECL_CONSTEXPR int baseWindowHeight() {
     return 600;
   }
   
   /* Distance between mouse and object that object is considered
      to be under mouse, in pixels. */
-  static constexpr qreal mouseOnObject() {
+  static Q_DECL_CONSTEXPR qreal mouseOnObject() {
     return 15.0;
   }
   
   /* User won't be able to zoom below this value */
-  static constexpr int zoomMinimum() {
+  static Q_DECL_CONSTEXPR int zoomMinimum() {
     return 1;
   }
   
   /* User won't be able to zoom above this value */
-  static constexpr int zoomMaximum() {
+  static Q_DECL_CONSTEXPR int zoomMaximum() {
     return 1500;
   }
   
-  static constexpr qreal zoomNormalizeCoef() {
+  static Q_DECL_CONSTEXPR qreal zoomNormalizeCoef() {
     return 0.5;
   }
   
-  static constexpr qreal zoomBase() {
+  static Q_DECL_CONSTEXPR qreal zoomBase() {
     return 1.1;
   }
   

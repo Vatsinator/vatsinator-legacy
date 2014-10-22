@@ -21,11 +21,9 @@
 
 #include <QObject>
 #include <QVector>
-
-#include "singleton.h"
 #include "ui/notifiable.h"
 
-/*
+/**
  * This struct represents a single raw airport entry in the database file.
  */
 #pragma pack(1)
@@ -47,33 +45,38 @@ struct AirportRecord {
 };
 #pragma pack()
 
-/*
- * AirportDatabase is a layer between Vatsinator and the raw database.
+/**
+ * AirportDatabase is a layer between Vatsinator and the raw database file.
+ * It is adviced against using this class directly. It is easier to use
+ * VatsimDataHandler::findAirport() method that gives access to Airport
+ * instance and also handles aliases.
  */
-class AirportDatabase : public QObject, public Notifiable, public Singleton<AirportDatabase> {
+class AirportDatabase : public QObject, public Notifiable {
   Q_OBJECT
   
 public:
 
   /**
-   * Default ctor.
+   * Default constructor.
    */
-  AirportDatabase(QObject* = nullptr);
+  AirportDatabase(QObject* parent = nullptr);
   
   /**
    * Called by VatsinatorApplication only.
+   * Reads the database file.
    */
   void initialize();
   
   /**
    * Looks for the airport.
-   * @param icao ICAO code.
-   * @return nullptr if nothing found.
+   * 
+   * \param icao ICAO code.
+   * \return The AirportRecord instance or _nullptr_ if nothing was found.
    */
-  const AirportRecord* find(const QString&);
+  const AirportRecord* find(const QString& icao);
   
   /**
-   * Gives direct access to the airpors vector.
+   * Gives direct access to the airports vector.
    */
   inline QVector<AirportRecord>& airports() { return __airports; }
   
@@ -83,10 +86,6 @@ public:
   inline const QVector<AirportRecord>& airports() const { return __airports; }
 
 private:
-  
-  /**
-   * Reads the entire Airport database.
-   */
   void __readDatabase();
 
   QVector<AirportRecord> __airports;

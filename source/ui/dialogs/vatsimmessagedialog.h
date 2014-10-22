@@ -25,19 +25,17 @@
 #include "ui/ui_vatsimmessagedialog.h"
 
 /**
- * Shows Vatsim message that comes after "msg0=" in status.txt.
+ * The VatsimMessageDialog shows Vatsim message that comes after "msg0="
+ * in status.txt.
  */
-class VatsimMessageDialog :
-    public QDialog,
-    public Ui::VatsimMessageDialog {
-  
+class VatsimMessageDialog : public QDialog, public Ui::VatsimMessageDialog {
   Q_OBJECT
 
 public:
-    explicit VatsimMessageDialog(const QString&, QWidget* = 0);
+  explicit VatsimMessageDialog(const QString& message, QWidget* parent = nullptr);
     
 protected:
-  void hideEvent(QHideEvent*) override;
+  void hideEvent(QHideEvent* event) override;
   
 private:
   QString __message;

@@ -31,7 +31,7 @@ class MapPage : public QWidget, public AbstractSettingsModule, private Ui::MapPa
   Q_OBJECT
 
 public:
-  MapPage(QWidget* = nullptr);
+  MapPage(QWidget* parent = nullptr);
   
   QString listElement() const override;
   QString listIcon() const override;
@@ -57,8 +57,8 @@ public:
   void update() const override;
   
 protected:
-  void restore(QSettings&) override;
-  void save(QSettings&) override;
+  void restore(QSettings& s) override;
+  void save(QSettings& s) override;
   
 private:
   void __updateFontButtons();

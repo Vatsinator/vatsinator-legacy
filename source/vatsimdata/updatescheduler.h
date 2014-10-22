@@ -38,7 +38,7 @@ signals:
   void timeToUpdate();
   
 public:
-  explicit UpdateScheduler(QObject* = 0);
+  explicit UpdateScheduler(QObject* parent = 0);
   
 private slots:
   void __setupTimer();

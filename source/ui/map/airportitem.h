@@ -30,11 +30,18 @@ class Airport;
 class ApproachCircleItem;
 class MapScene;
 
+/**
+ * The AirportItem class represents a single airport on the map.
+ */
 class AirportItem : public QObject, public MapItem {
   Q_OBJECT
 
 public:
-  AirportItem(const Airport*, QObject* = nullptr);
+  /**
+   * Creates new AirportItem with the specified _airport_.
+   * _parent_ is passed to QObject's constructor.
+   */
+  AirportItem(const Airport* airport, QObject* parent = nullptr);
   AirportItem() = delete;
   
   virtual ~AirportItem();
@@ -42,13 +49,18 @@ public:
   bool isVisible() const override;
   bool isLabelVisible() const override;
   const LonLat& position() const override;
-  void drawItem(QOpenGLShaderProgram*) const override;
-  void drawLabel(QOpenGLShaderProgram*) const override;
-  void drawFocused(QOpenGLShaderProgram*) const override;
+  void drawItem(QOpenGLShaderProgram* shader) const override;
+  void drawLabel(QOpenGLShaderProgram* shader) const override;
+  void drawFocused(QOpenGLShaderProgram* shader) const override;
   QString tooltipText() const override;
   void showDetails() const override;
   
+  /**
+   * Gives direct access to the Airport object that this item represents
+   * on the map.
+   */
   inline const Airport* data() const { return __airport; }
+  
   inline const ApproachCircleItem* approachCircle() const { return __approachCircle; }
   
 private:

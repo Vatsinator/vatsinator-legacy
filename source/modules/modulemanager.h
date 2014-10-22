@@ -27,7 +27,7 @@
 class VatbookHandler;
 
 /**
- * TODO: remove
+ * \todo Remove.
  */
 class ModuleManager :
     public QObject,

@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtCore>
 
 #include "storage/filemanager.h"
@@ -23,20 +24,21 @@
 
 #include "airportdatabase.h"
 
-AirportDatabase::AirportDatabase(QObject* _parent) : QObject(_parent) {}
+AirportDatabase::AirportDatabase(QObject* parent) : QObject(parent) {}
 
 void
 AirportDatabase::initialize() {
   __readDatabase();
 }
 
-const AirportRecord *
-AirportDatabase::find(const QString& _key) {
-  for (const AirportRecord& a: __airports)
-    if (static_cast<QString>(a.icao) == _key)
-      return &a;
+const AirportRecord*
+AirportDatabase::find(const QString& key) {
+  auto result = std::find_if(__airports.begin(), __airports.end(),
+                             [&key](const AirportRecord& record) {
+    return QString(record.icao) == key;
+  });
   
-  return nullptr;
+  return result == __airports.end() ? nullptr : result;
 }
 
 void

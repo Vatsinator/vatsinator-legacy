@@ -25,16 +25,17 @@
 class Unzipper;
 
 /**
- * This class is responsible for synchronizing the local data
+ * The DataUpdater class is responsible for synchronizing the local data
  * with the VatsinatorDatabase server.
+ * 
+ * \todo Rename to DatabaseUpdater.
  */
 class DataUpdater : public QObject {
   Q_OBJECT
   
 signals:
-  
-  /*
-   * Emitted when files are downloaded, unzipped, checked and moved
+  /**
+   * Emitted after files are downloaded, unzipped, checked and moved
    * to the destination directory correctly.
    */
   void updated();
@@ -50,22 +51,28 @@ signals:
   void readyToUnzip();
 
 public:
-  explicit DataUpdater(QObject* = 0);
+  /**
+   * The default constructor passes _parent_ to QObject.
+   */
+  explicit DataUpdater(QObject* parent = nullptr);
+  
+  /**
+   * The destructor.
+   */
   virtual ~DataUpdater();
   
 public slots:
-  
   /**
-   * Begins the update.
+   * Begins the update process.
+   * This method is thread-safe.
    */
   void update();
   
 private:
-  
   /*
    * Checks if every file unzipped has the correct checksum.
    */
-  bool __checksumsOk(const QString&);
+  bool __checksumsOk(const QString& fileName);
   
   /**
    * Moves files from the temporary to the destination directory.
@@ -82,12 +89,12 @@ private slots:
   /**
    * Starts unzipping the package.
    */
-  void __unzipPackage(QString);
+  void __unzipPackage(QString fileName);
   
   /**
    * Handles fetch errors (package's or Manifest's).
    */
-  void __fetchError(QString);
+  void __fetchError(QString error);
   
   /**
    * Fetches the Manifest.
@@ -97,16 +104,15 @@ private slots:
   /**
    * Something went wrong with the zip package.
    */
-  void __unzipError(QString);
+  void __unzipError(QString error);
   
   /**
    * Manifest downloaded, check md5 sums of files in the package.
    */
-  void __checkManifest(QString);
+  void __checkManifest(QString fileName);
   
 private:
   Unzipper* __unzipper;
-  
 
 };
 

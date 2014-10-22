@@ -28,5 +28,13 @@ if (LINUX)
   
   # install icons
   add_subdirectory (linux-icons)
-  
+
+elseif (WIN32)
+
+  string (REPLACE "." "," vatsinator_VERSION_WINDRES ${vatsinator_VERSION})
+  string (REGEX REPLACE "-.*" "" vatsinator_VERSION_WINDRES ${vatsinator_VERSION_WINDRES})
+  configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator.rc.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/vatsinator.rc
+  )
+
 endif (LINUX)

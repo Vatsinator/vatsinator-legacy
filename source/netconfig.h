@@ -40,7 +40,7 @@ public:
       return QStringLiteral("http://stats.vatsinator.eu.org/");
     }
     
-    static constexpr int defaultRefreshRate() {
+    static Q_DECL_CONSTEXPR int defaultRefreshRate() {
       return 3;
     }
   

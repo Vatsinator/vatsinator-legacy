@@ -20,24 +20,13 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-/**
- * Declare custom types here.
- */
 #include <QEvent>
 
 namespace Event {
   
-  /* MouseLonLatEvent */
-  extern int MouseLonLat;
-  
-  /* NotificationEvent */
-  extern int Notification;
-  
-  /* RequestFinishedEvent */
-  extern int RequestFinished;
-  
-  /* DecisionEvent */
-  extern int Decision;
+  extern int MouseLonLat;       /**< Type for MouseLonLatEvent */
+  extern int Notification;      /**< Type for NotificationEvent */
+  extern int Decision;          /**< Type for DecisionEvent */
 
 }
 

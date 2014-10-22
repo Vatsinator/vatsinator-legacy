@@ -32,30 +32,35 @@
  * NOTAMs calling fetchNotam() method. Pointers are given by emiting
  * notamReady() signal.
  * 
- * TODO Rename to NotamProviderInterface and make a plugin here.
+ * \todo Rename to NotamProviderInterface and make a plugin here.
  */
 class AbstractNotamProvider : public QObject {
   Q_OBJECT
   
 signals:
-  
   /**
    * Signal emited when NOTAMs requested by fetchNotam() method are ready
    * to read.
+   * 
+   * \sa fetchNotam().
    */
-  void notamReady(NotamListModel*);
+  void notamReady(NotamListModel* model);
   
 public:
-  
-  explicit AbstractNotamProvider(QObject* = nullptr);
+  /**
+   * The default constructor passes _parent_ to QObject.
+   */
+  explicit AbstractNotamProvider(QObject* parent = nullptr);
   
   /**
-   * Requests NOTAM for the given ICAO. The ICAO can be either airport's
-   * or FIR's.
+   * Requests NOTAM for the given ICAO code. The ICAO can be either airport's
+   * or FIR's. When the NOTAM report is ready, notamReady() signal must
+   * be emitted.
    * 
-   * @param icao ICAO code.
+   * \param icao ICAO code.
+   * \sa notamReady().
    */
-  virtual void fetchNotam(const QString&) = 0;
+  virtual void fetchNotam(const QString& icao) = 0;
   
   /**
    * Description text for the provider.

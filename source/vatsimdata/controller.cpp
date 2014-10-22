@@ -74,11 +74,11 @@ bool Controller::__ratingsInitialized = Controller::__initRatings();
  * 39 QNH_iHg
  * 40 QNH_Mb
  */
-Controller::Controller(const QStringList& _data) :
-    Client(_data),
-    __frequency(_data[4]),
-    __rating(_data[16].toInt()),
-    __atis(_data[35]),
+Controller::Controller(const QStringList& data) :
+    Client(data),
+    __frequency(data[4]),
+    __rating(data[16].toInt()),
+    __atis(data[35]),
     __airport(nullptr),
     __isOK(true) {
   
@@ -87,11 +87,11 @@ Controller::Controller(const QStringList& _data) :
 }
 
 void
-Controller::update(const QStringList& _data) {
-  Client::update(_data);
-  __frequency = _data[4];
-  __rating = _data[16].toInt();
-  __atis = _data[35];
+Controller::update(const QStringList& data) {
+  Client::update(data);
+  __frequency = data[4];
+  __rating = data[16].toInt();
+  __atis = data[35];
   __cleanupAtis();
   
   emit updated();
@@ -194,39 +194,39 @@ Controller::__recognizeDetails() {
 }
 
 void
-Controller::__makeDescription(const Fir* _f) {
-  Q_ASSERT(_f);
-  QString aName = vApp()->vatsimDataHandler()->alternameName(_f->icao());
+Controller::__makeDescription(const Fir* fir) {
+  Q_ASSERT(fir);
+  QString aName = vApp()->vatsimDataHandler()->alternameName(fir->icao());
   if (aName.isEmpty())
-    __description = _f->name();
+    __description = fir->name();
   else
     __description = aName;
 }
 
 void
-Controller::__makeDescription(const Uir* _u) {
-  Q_ASSERT(_u);
-  QString aName = vApp()->vatsimDataHandler()->alternameName(_u->icao());
+Controller::__makeDescription(const Uir* uir) {
+  Q_ASSERT(uir);
+  QString aName = vApp()->vatsimDataHandler()->alternameName(uir->icao());
   if (aName.isEmpty())
-    __description = _u->name();
+    __description = uir->name();
   else
     __description = aName;
 }
 
 void
-Controller::__makeDescription(const Airport* _ap) {
+Controller::__makeDescription(const Airport* airport) {
   QString apName, fName; // airport name, facility name
 
-  if (!_ap) {
+  if (!airport) {
     apName = "Unknown";
   } else {
-    if (qstrcmp(_ap->data()->name, _ap->data()->city) == 0)
-      apName = QString::fromUtf8(_ap->data()->name);
+    if (qstrcmp(airport->data()->name, airport->data()->city) == 0)
+      apName = QString::fromUtf8(airport->data()->name);
     else
       apName =
-        QString::fromUtf8(_ap->data()->city) %
+        QString::fromUtf8(airport->data()->city) %
         "/" %
-        QString::fromUtf8(_ap->data()->name);
+        QString::fromUtf8(airport->data()->name);
   }
 
   switch (__facility) {
@@ -272,4 +272,3 @@ Controller::__initRatings() {
 
   return true;
 }
-

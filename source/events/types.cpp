@@ -26,7 +26,6 @@ namespace Event {
  */
 int MouseLonLat;
 int Notification;
-int RequestFinished;
 int Decision;
 
 }
@@ -34,6 +33,5 @@ int Decision;
 void init_event_types() {
   Event::MouseLonLat = QEvent::registerEventType();
   Event::Notification = QEvent::registerEventType();
-  Event::RequestFinished = QEvent::registerEventType();
   Event::Decision = QEvent::registerEventType();
 }

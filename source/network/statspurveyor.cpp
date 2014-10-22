@@ -30,10 +30,10 @@
 #include "statspurveyor.h"
 
 // send the startup report after 10 seconds
-static constexpr int StartDelay = 10 * 1000;
+static const int StartDelay = 10 * 1000;
 
 // if stats query failed, retry in 1 minute
-static constexpr int RetryDelay = 60 * 1000;
+static const int RetryDelay = 60 * 1000;
 
 namespace {
   
@@ -110,8 +110,8 @@ namespace {
 }
 
 
-StatsPurveyor::StatsPurveyor(QObject* _parent) :
-    QObject(_parent),
+StatsPurveyor::StatsPurveyor(QObject* parent) :
+    QObject(parent),
     __userDecision(NotYetMade),
     __nam(this),
     __reply(nullptr) {
@@ -135,8 +135,8 @@ StatsPurveyor::StatsPurveyor(QObject* _parent) :
 StatsPurveyor::~StatsPurveyor() {}
 
 void
-StatsPurveyor::setUserDecision(StatsPurveyor::UserDecision _decision) {
-  __userDecision = _decision;
+StatsPurveyor::setUserDecision(StatsPurveyor::UserDecision decision) {
+  __userDecision = decision;
   
   QSettings s;
   s.setValue("Decided/stats", true);
@@ -162,7 +162,7 @@ StatsPurveyor::reportStartup() {
 }
 
 void
-StatsPurveyor::reportNoAtc(const QString& _atc) {
+StatsPurveyor::reportNoAtc(const QString& callsign) {
   static const QString NoAtcPath = QStringLiteral("noatc.php?atc=%1");
   
   /* Discard no-atc reports before data is read */
@@ -170,17 +170,17 @@ StatsPurveyor::reportNoAtc(const QString& _atc) {
     return;
   
   QString url = NetConfig::Vatsinator::statsUrl() % NoAtcPath;
-  QNetworkRequest request(url.arg(_atc));
+  QNetworkRequest request(url.arg(callsign));
   
   __enqueueRequest(request);
 }
 
 void
-StatsPurveyor::__enqueueRequest(const QNetworkRequest& _request) {
+StatsPurveyor::__enqueueRequest(const QNetworkRequest& request) {
   if (__userDecision == Declined)
     return;
   
-  __requests.enqueue(_request);
+  __requests.enqueue(request);
   emit newRequest();
 }
 

@@ -25,8 +25,8 @@
 
 #include "basewindow.h"
 
-BaseWindow::BaseWindow(QWidget* _parent, Qt::WindowFlags _f) :
-  QWidget(_parent, _f),
+BaseWindow::BaseWindow(QWidget* parent, Qt::WindowFlags flags) :
+  QWidget(parent, flags),
   __windowSetup(false) {}
 
 void BaseWindow::showEvent(QShowEvent*) {

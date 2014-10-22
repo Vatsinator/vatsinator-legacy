@@ -24,27 +24,33 @@
 
 class AirportTableModel;
 
-/*
- * This class is used to represent nicely the AirportTableModel in
- * the QTableView format.
+/**
+ * The AirportTableView class is used to represent nicely the AirportTableModel
+ * in the QTableView format.
  */
 class AirportTableView : public QTableView {
   Q_OBJECT
   
 public:
-  explicit AirportTableView(QWidget* = 0);
+  /**
+   * Creates new AirportTableView, passes _parent_ to QTableView's constructor.
+   */
+  explicit AirportTableView(QWidget* parent = nullptr);  
   
-  void setModel(AirportTableModel*);
+  /**
+   * Sets _model_ to the given pointer.
+   */
+  void setModel(AirportTableModel* model);
     
 protected slots:
-  void rowsInserted(const QModelIndex&, int, int);
+  void rowsInserted(const QModelIndex& parent, int start, int end) override;
   
 private slots:
   /**
    * Re-sets buttons within given range.
    * If no range is given, whole view is updated.
    */
-  void __updateButtons(int = -1, int = -1);
+  void __updateButtons(int start = -1, int end = -1);
   
 };
 

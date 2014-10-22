@@ -31,15 +31,95 @@ class Airport;
 struct Point;
 
 /**
- * This class contains info about one particular pilot - his
- * flight plan, actual position, plane, etc etc.
- * Note that in Vatsinator we use both "Pilot" or "Flight" for the same class.
- * This really needs to be fixed and we should stay consistent in our name
- * conventions. But as for now, don't be surprised when you meet "Flight"
- * anywhere in the code. It is about this exact class.
+ * The Pilot class contains info about one particular pilot - his flight plan,
+ * actual position, plane, etc etc. Note that in Vatsinator we use both
+ * "Pilot" or "Flight" for the same class. This really needs to be fixed
+ * and we should stay consistent in our name conventions. But as for now,
+ * don't be surprised when you meet "Flight" anywhere in the code. It is
+ * about this exact class.
  */
 class Pilot : public Client {  
   Q_OBJECT
+  Q_ENUMS(FlightRules)
+  Q_ENUMS(Phase)
+  
+  /**
+   * This property keeps the Estimated Time of Arrival.
+   */
+  Q_PROPERTY(QTime eta READ eta)
+  
+  /**
+   * This property holds the flight progress [1-100].
+   */
+  Q_PROPERTY(int progress READ progress)
+  
+  /**
+   * This property keeps current altitude.
+   */
+  Q_PROPERTY(int altitude READ altitude)
+  
+  /**
+   * This property keeps client's ground speed, expressed in knots.
+   */
+  Q_PROPERTY(int groundSpeed READ groundSpeed)
+  
+  /**
+   * The client's squawk code.
+   * It's string, not int, as squawk might start with '0'.
+   */
+  Q_PROPERTY(QString squawk READ squawk)
+  
+  /**
+   * This property keeps the client's aircraft.
+   */
+  Q_PROPERTY(QString aircraft READ aircraft)
+  
+  /**
+   * The client's current True Air Speed, in knots.
+   */
+  Q_PROPERTY(int tas READ tas)
+  
+  /**
+   * The client's remarks.
+   */
+  Q_PROPERTY(QString remarks READ remarks)
+  
+  /**
+   * Scheduled Time of Departure.
+   */
+  Q_PROPERTY(QTime std READ std)
+  
+  /**
+   * Actual Time of Departure.
+   */
+  Q_PROPERTY(QTime atd READ atd)
+  
+  /**
+   * Scheduled Time of Arrival.
+   */
+  Q_PROPERTY(QTime sta READ sta)
+  
+  /**
+   * This property holds the client's current heading.
+   */
+  Q_PROPERTY(int heading READ heading)
+  
+  /**
+   * The client's current flight phase.
+   * Flight status is determined by the current altitude, speed and distance
+   * from airport (origin or destination).
+   * 
+   * \todo Climbing & descending status options.
+   */
+  Q_PROPERTY(Phase phase READ phase)
+  
+  /**
+   * Prefiled only means that client has prefiled the flight plan, but
+   * he did not log in yet.
+   * 
+   * \todo Handle prefiled flights properly.
+   */
+  Q_PROPERTY(bool prefiledOnly READ isPrefiledOnly)
 
 public:
   /* Types */
@@ -79,44 +159,14 @@ public:
   Pilot() = delete;
   
   /**
-   * @param list Data.
-   * @param prefiled Indicates whether the flight is only prefiled.
+   * This constructor instantiates new Pilot from the given _data_.
+   * \param data The data line.
+   * \param prefiled Indicates whether the flight is only prefiled.
    */
-  Pilot(const QStringList&, bool = false);
+  Pilot(const QStringList& data, bool prefiled = false);
   virtual ~Pilot();
   
-  void update(const QStringList&);
-  
-  /**
-   * Estimated Time of Arrival.
-   */
-  const QTime& eta() const;
-  
-  /**
-   * Progress [1-100].
-   */
-  int progress() const;
-  
-  /**
-   * The current altitude.
-   */
-  inline int altitude() const { return __altitude; }
-  
-  /**
-   * The client's ground speed, in knots.
-   */
-  inline int groundSpeed() const { return __groundSpeed; }
-  
-  /**
-   * The client's squawk code.
-   * It's string, not int, as squawk might start with '0'.
-   */
-  inline const QString& squawk() const { return __squawk; }
-  
-  /**
-   * The client's aircraft.
-   */
-  inline const QString& aircraft() const { return __aircraft; }
+  void update(const QStringList& data) override;
   
   /**
    * The position of the aircraft from previous update.
@@ -125,49 +175,9 @@ public:
   inline const LonLat& oldPosition() const { return __oldPosition; }
   
   /**
-   * The client's current True Air Speed, in knots.
-   * @sa groundSpeed().
-   */
-  inline int tas() const { return __tas; }
-  
-  /**
    * The client's flight rules - Ifr or Vfr.
    */
   inline const Pilot::FlightRules& flightRules() const { return __flightRules; }
-  
-  /**
-   * The client's remarks.
-   */
-  inline const QString& remarks() const { return __remarks; }
-  
-  /**
-   * Scheduled Time of Departure
-   */
-  inline const QTime& std() const { return __std; }
-  
-  /**
-   * Actual Time of Departure
-   */
-  inline const QTime& atd() const { return __atd; }
-  
-  /**
-   * Scheduled Time of Arrival
-   */
-  inline const QTime& sta() const { return __sta; }
-  
-  /**
-   * The client's current heading.
-   */
-  inline unsigned heading() const { return __heading; }
-  
-  /**
-   * The client's current flight phase.
-   * Flight status is determined by the current altitude, speed and distance
-   * from airport (origin or destination).
-   * 
-   * TODO Climbing & descending status options.
-   */
-  inline Pilot::Phase phase() const { return __phase; }
   
   /**
    * The client's baro setting.
@@ -181,19 +191,28 @@ public:
   inline const Pilot::Route& route() const { return __route; }
   
   /**
-   * @return Origin airport or nullptr if could not match any.
+   * \return Origin airport or nullptr if could not match any.
    */
   inline const Airport* origin() const { return __origin; }
   
   /**
-   * @return Destination airport or nullptr if could not match any.
+   * \return Destination airport or nullptr if could not match any.
    */
   inline const Airport* destination() const { return __destination; }
   
-  /**
-   * Prefiled only means that client has prefiled the flight plan, but
-   * he did not log in yet.
-   */
+  const QTime& eta() const;
+  int progress() const;
+  inline int altitude() const { return __altitude; }
+  inline int groundSpeed() const { return __groundSpeed; }
+  inline const QString& squawk() const { return __squawk; }
+  inline const QString& aircraft() const { return __aircraft; }
+  inline int tas() const { return __tas; }
+  inline const QString& remarks() const { return __remarks; }
+  inline const QTime& std() const { return __std; }
+  inline const QTime& atd() const { return __atd; }
+  inline const QTime& sta() const { return __sta; }
+  inline unsigned heading() const { return __heading; }
+  inline Pilot::Phase phase() const { return __phase; }
   inline bool isPrefiledOnly() const { return __prefiledOnly; }
 
 private:

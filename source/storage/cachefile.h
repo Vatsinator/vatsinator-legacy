@@ -22,8 +22,8 @@
 
 #include <QFile>
 
-/*
- * This class is used to store vatsinator data in cache file.
+/**
+ * The CacheFile class is used to store vatsinator data in cache file.
  * It is used, for example, in order to store downloaded data
  * between sessions.
  */
@@ -31,21 +31,20 @@ class CacheFile : public QFile {
   Q_OBJECT
   
 public:
-  
   /**
    * Default constructor.
    * 
-   * @param fileName Name of the file in the cache. Only file name, not
+   * \param fileName Name of the file in the cache. Only file name, not
    *    a full path.
    */
-  CacheFile(const QString&);
+  CacheFile(const QString& fileName);
   
   /**
    * NOTE: QFile::exists() is not virtual.
    */
   bool exists() const;
   
-  bool open(OpenMode  = QIODevice::ReadOnly | QIODevice::Text);
+  bool open(OpenMode mode = QIODevice::ReadOnly | QIODevice::Text);
   
 };
 

@@ -25,7 +25,6 @@
 #include "storage/abstractsettingsmodule.h"
 
 class MiscellaneousPage : public QWidget, public AbstractSettingsModule, private Ui::MiscellaneousPage {
-  
   Q_OBJECT
   
 signals:
@@ -33,7 +32,7 @@ signals:
   
 public:
   
-  MiscellaneousPage(QWidget* = 0);
+  MiscellaneousPage(QWidget* parent = nullptr);
   
   QString listElement() const;
   QString listIcon() const;
@@ -47,11 +46,12 @@ public:
   void update() const;
 
 protected:
-  void showEvent(QShowEvent*) override;
+  void showEvent(QShowEvent* event) override;
   
-  void restore(QSettings&);
-  void save(QSettings&);
+  void restore(QSettings& s);
+  void save(QSettings& s);
   
+private:
   int __languageIndex;
   
 };

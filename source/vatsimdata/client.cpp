@@ -64,24 +64,24 @@
  * 39 QNH_iHg
  * 40 QNH_Mb
  */
-Client::Client(const QStringList& _data) :
-    __pid(_data[1].toUInt()),
-    __callsign(_data[0]),
-    __realName(_data[2].simplified()),
-    __server(_data[14]),
-    __onlineFrom(QDateTime::fromString(_data[37], "yyyyMMddhhmmss")),
-    __position(_data[6].toFloat(), _data[5].toFloat()),
+Client::Client(const QStringList& data) :
+    __pid(data[1].toUInt()),
+    __callsign(data[0]),
+    __realName(data[2].simplified()),
+    __server(data[14]),
+    __onlineFrom(QDateTime::fromString(data[37], "yyyyMMddhhmmss")),
+    __position(data[6].toFloat(), data[5].toFloat()),
     __timestamp(vApp()->vatsimDataHandler()->currentTimestamp()) {}
 
 Client::~Client() {}
 
 void
-Client::update(const QStringList& _data) {
-  __pid = _data[1].toUInt();
-  __realName = _data[2].simplified();
-  __server = _data[14];
-  __onlineFrom = QDateTime::fromString(_data[37], "yyyyMMddhhmmss");
-  __position = LonLat(_data[6].toFloat(), _data[5].toFloat());
+Client::update(const QStringList& data) {
+  __pid = data[1].toUInt();
+  __realName = data[2].simplified();
+  __server = data[14];
+  __onlineFrom = QDateTime::fromString(data[37], "yyyyMMddhhmmss");
+  __position = LonLat(data[6].toFloat(), data[5].toFloat());
   
   __timestamp = vApp()->vatsimDataHandler()->currentTimestamp();
 }
@@ -102,7 +102,7 @@ Client::hasValidPosition() const {
 }
 
 void
-Client::setPosition(const LonLat& _position) {
-  __position = _position;
+Client::setPosition(const LonLat& position) {
+  __position = position;
 }
 

@@ -17,6 +17,7 @@
  *
  */
 
+#include <algorithm>
 #include <utility>
 #include <QtCore>
 #include <spatial/point_multimap.hpp>
@@ -33,8 +34,8 @@
 #include "ui/map/maprenderer.h"
 #include "ui/map/uiritem.h"
 #include "ui/widgets/mapwidget.h"
-#include "vatsimdata/client/controller.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/controller.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -43,9 +44,9 @@
 
 #include "mapscene.h"
 
-MapScene::MapScene(QObject* _parent) :
-    QObject(_parent),
-    __renderer(qobject_cast<MapRenderer*>(parent())),
+MapScene::MapScene(QObject* parent) :
+    QObject(parent),
+    __renderer(qobject_cast<MapRenderer*>(parent)),
     __trackedFlight(nullptr),
     __animation(nullptr) {
   Q_ASSERT(__renderer);
@@ -62,8 +63,8 @@ MapScene::MapScene(QObject* _parent) :
 MapScene::~MapScene() {}
 
 void
-MapScene::trackFlight(const Pilot* _p) {
-  __trackedFlight = _p;
+MapScene::trackFlight(const Pilot* pilot) {
+  __trackedFlight = pilot;
   emit flightTracked(__trackedFlight);
 }
 
@@ -74,81 +75,49 @@ MapScene::cancelFlightTracking() {
 }
 
 FirItem*
-MapScene::findItemForFir(const Fir* _fir) {
+MapScene::findItemForFir(const Fir* fir) {
   for (FirItem* f: firItems())
-    if (f->data() == _fir)
+    if (f->data() == fir)
       return f;
   
   return nullptr;
 }
 
-QList<const MapItem*>
-MapScene::items(const QRectF& _rect) const {
-  QList<const MapItem*> result;
-  
-  for (auto it = spatial::region_cbegin(__items, _rect.bottomLeft(), _rect.topRight());
-       it != spatial::region_cend(__items, _rect.bottomLeft(), _rect.topRight()); ++it) {
-    if (it->second->isVisible())
-      result << it->second;
-  }
-  
-  /* Handle cross-IDL queries */
-  if (_rect.right() > 180.0) {
-    QRectF more(QPointF(-180.0, _rect.top()), QSizeF(_rect.right() - 180.0, _rect.height()));
-    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
-         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
-      if (it->second->isVisible())
-        result << it->second;
-    }
-  }
-  
-  if (_rect.left() < -180.0) {
-    QRectF more(QPointF(_rect.left() + 360.0, _rect.top()), QPointF(180.0, _rect.bottom()));
-    for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
-         it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
-      if (it->second->isVisible())
-        result << it->second;
-    }
-  }
-  
-  return qMove(result);
-}
-
 void
-MapScene::forEachItem(const QRectF& _rect, std::function<void(const MapItem*)> _f) const {
-  for (auto it = spatial::region_cbegin(__items, _rect.bottomLeft(), _rect.topRight());
-       it != spatial::region_cend(__items, _rect.bottomLeft(), _rect.topRight()); ++it) {
+MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const {
+  for (auto it = spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight());
+       it != spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()); ++it) {
     if (it->second->isVisible())
-      _f(it->second);
+      function(it->second);
   }
   
   /* Handle cross-IDL queries */
-  if (_rect.right() > 180.0) {
-    QRectF more(QPointF(-180.0, _rect.top()), QSizeF(_rect.right() - 180.0, _rect.height()));
+  if (rect.right() > 180.0) {
+    QRectF more(QPointF(-180.0, rect.top()), QSizeF(rect.right() - 180.0, rect.height()));
     for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
          it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
       if (it->second->isVisible())
-        _f(it->second);
+        function(it->second);
     }
   }
   
-  if (_rect.left() < -180.0) {
-    QRectF more(QPointF(_rect.left() + 360.0, _rect.top()), QPointF(180.0, _rect.bottom()));
+  if (rect.left() < -180.0) {
+    QRectF more(QPointF(rect.left() + 360.0, rect.top()), QPointF(180.0, rect.bottom()));
     for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
          it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
       if (it->second->isVisible())
-        _f(it->second);
+        function(it->second);
     }
   }
 }
 
 const MapItem*
-MapScene::nearest(const LonLat& _target) {
+MapScene::nearest(const LonLat& point) {
   /*
    * Dunno why, but neighbor_iterator doesn't work with const and operator++()
-   * and thus we cannot make this method const.
+   * and thus we cannot make this method const :(
    */
-  auto it = spatial::neighbor_begin(__items, _target);
+  auto it = spatial::neighbor_begin(__items, point);
   while (!it->second->isVisible()) {
     ++it;
     Q_ASSERT(it != __items.end());
@@ -157,32 +126,45 @@ MapScene::nearest(const LonLat& _target) {
   return it->second;
 }
 
-QList<const MapItem*>
-MapScene::nearest(const LonLat& _target, int _n) {
-  QList<const MapItem*> result;
-  auto it = spatial::neighbor_begin(__items, _target);
+void
+MapScene::nearTo(const LonLat& point, int max, std::function<void(const MapItem*)> function) {
+  auto it = spatial::neighbor_begin(__items, point);
   int c = 0;
   
-  while (c < _n) {
+  while (c < max && it != __items.end()) {
     if (it->second->isVisible()) {
-      result << it->second;
+      function(it->second);
       c += 1;
     }
-    ++it;
-    Q_ASSERT(it != __items.end());
+    ++ it;
   }
-  
-  return qMove(result);
 }
 
 void
-MapScene::moveTo(const LonLat& _target) {
+MapScene::moveTo(const LonLat& target) {
   abortAnimation();
   
   QPropertyAnimation* animation = new QPropertyAnimation(__renderer, "center");
   animation->setDuration(500);
-  animation->setEndValue(QVariant::fromValue<LonLat>(_target));
+  animation->setEndValue(QVariant::fromValue<LonLat>(target));
   animation->setEasingCurve(QEasingCurve(QEasingCurve::InOutQuad));
+  animation->start();
+  
+  __animation = animation;
+  connect(animation, &QPropertyAnimation::finished, [this]() {
+    __animation->deleteLater();
+    __animation = nullptr;
+  });
+}
+
+void
+MapScene::zoomTo(qreal zoom) {
+  abortAnimation();
+  
+  QPropertyAnimation* animation = new QPropertyAnimation(__renderer, "zoom");
+  animation->setDuration(200);
+  animation->setEndValue(zoom);
+  animation->setEasingCurve(QEasingCurve(QEasingCurve::OutQuad));
   animation->start();
   
   __animation = animation;
@@ -202,20 +184,22 @@ MapScene::abortAnimation() {
 }
 
 void
-MapScene::__addFlightItem(const Pilot* _p) {
+MapScene::__addFlightItem(const Pilot* pilot) {
   /* TODO check why it can be null */
-  if (_p->position().isNull()) {
+  if (pilot->position().isNull()) {
     qWarning("MapScene: %s position is null; o=%s, d=%s",
-             qPrintable(_p->callsign()), qPrintable(_p->route().origin), qPrintable(_p->route().destination));
+             qPrintable(pilot->callsign()), qPrintable(pilot->route().origin), qPrintable(pilot->route().destination));
     return;
   }
   
-  connect(_p,           SIGNAL(invalid()),
-          this,         SLOT(__removeFlightItem()));
-  connect(_p,           SIGNAL(updated()),
-          this,         SLOT(__updateFlightItem()));
-  FlightItem* item = new FlightItem(_p, this);
-  Q_ASSERT(item->position() == _p->position());
+  connect(pilot, &Pilot::invalid, this, &MapScene::__removeFlightItem);
+  connect(pilot, &Pilot::updated, this, &MapScene::__updateFlightItem);
+  
+  qDebug("MapScene: new flight item for %s at position (%f, %f)",
+         qPrintable(pilot->callsign()), pilot->position().latitude(), pilot->position().longitude());
+  
+  FlightItem* item = new FlightItem(pilot, this);
+  Q_ASSERT(item->position() == pilot->position());
   __items.insert(std::make_pair(item->position(), item));
 }
 
@@ -223,6 +207,7 @@ void
 MapScene::__setupItems() {
   for (const Airport* a: vApp()->vatsimDataHandler()->airports()) {
     AirportItem* item = new AirportItem(a, this);
+    Q_ASSERT(item->position() == a->position());
     __items.insert(std::make_pair(item->position(), item));
   }
   
@@ -260,36 +245,48 @@ MapScene::__removeFlightItem() {
   Q_ASSERT(sender());
   
   Pilot* p = dynamic_cast<Pilot*>(sender());
-  auto it = __items.find(p->position());
-  Q_ASSERT(it != __items.end());
   
-  const FlightItem* citem = dynamic_cast<const FlightItem*>(it->second);
-  while (!citem && it->first == p->position()) {
-    ++it;
-    citem = dynamic_cast<const FlightItem*>(it->second);
-  }
+  qDebug("MapScene: removing %s from the map; position: (%f, %f)",
+         qPrintable(p->callsign()), p->position().latitude(), p->position().longitude());
+  
+  const FlightItem* citem = nullptr;
+  auto it = std::find_if(spatial::equal_begin(__items, p->position()),
+                         spatial::equal_end(__items, p->position()),
+                         [&citem, p](const std::pair<const LonLat, const MapItem*>& it) {
+    citem = dynamic_cast<const FlightItem*>(it.second);
+    return citem && citem->data() == p;
+  });
   Q_ASSERT(citem);
+  Q_ASSERT(citem->data() == p);
   FlightItem* item = const_cast<FlightItem*>(citem);
   Q_ASSERT(item);
+  
   item->deleteLater();
   __items.erase(it);
 }
 
 void
 MapScene::__updateFlightItem() {
+  Q_ASSERT(sender());
+  
   /*
    * As there is no rebalance() method, we need to remove the corresponding item
    * and insert it back again, with the updated position.
    */
   Pilot* p = dynamic_cast<Pilot*>(sender());
-  if (p->position() == p->oldPosition())
+  Q_ASSERT(p);
+  if (p->position() == p->oldPosition()) // position didn't change
     return;
   
-  auto it = __items.find(p->oldPosition());
-  Q_ASSERT(it != __items.end());
-  
+  auto it = std::find_if(spatial::equal_begin(__items, p->oldPosition()),
+                         spatial::equal_end(__items, p->oldPosition()),
+                         [p](const std::pair<const LonLat, const MapItem*>& it) {
+    const FlightItem* citem = dynamic_cast<const FlightItem*>(it.second);
+    return citem && citem->data() == p;
+  });
   const MapItem* item = it->second;
-  __items.erase(p->oldPosition());
+  Q_ASSERT(item);
+  __items.erase(it);
   __items.insert(std::make_pair(p->position(), item));
 }
 

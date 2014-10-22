@@ -24,24 +24,31 @@
 #include <QStaticText>
 #include <QTimer>
 
-  
-/*
- * Used as a replacement for QLabel, if the text inside is too long.
+/**
+ * The ScrollLabel is a widget that looks like QLabel but it scrolls text
+ * inside if it is too long to fit in it.
  */
 class ScrollLabel : public QWidget {  
   Q_OBJECT
   
-public:
-  explicit ScrollLabel(QWidget* parent = 0);
+  /**
+   * This property holds the text to be rendered.
+   */
+  Q_PROPERTY(QString text READ text WRITE setText)
   
-  inline const QString &
-  text() const { return __text; }
+public:
+  /**
+   * The default constructor passes _parent_ to QWidget.
+   */
+  explicit ScrollLabel(QWidget* parent = nullptr);
+  
+  inline const QString& text() const { return __text; }
   
 public slots:
-  void setText(const QString&);
+  void setText(const QString& text);
   
 protected:
-  void paintEvent(QPaintEvent*);
+  void paintEvent(QPaintEvent* event);
   
 private:
   void __updateText();

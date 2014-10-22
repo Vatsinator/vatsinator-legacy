@@ -19,8 +19,8 @@
 
 #include "datafetcherrordialog.h"
 
-DataFetchErrorDialog::DataFetchErrorDialog(QWidget* _parent) :
-    QMessageBox(_parent),
+DataFetchErrorDialog::DataFetchErrorDialog(QWidget* parent) :
+    QMessageBox(parent),
     __againButton(nullptr),
     __keepButton(nullptr) {
   

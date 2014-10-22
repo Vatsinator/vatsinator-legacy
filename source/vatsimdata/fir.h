@@ -32,6 +32,9 @@ class FlightTableModel;
 class Pilot;
 struct FirRecord;
 
+/**
+ * Keeps information about a single FIR.
+ */
 class Fir : public QObject {
   Q_OBJECT
   
@@ -41,33 +44,33 @@ signals:
 public:
   
   /**
-   * @param data Record in the database.
+   * \param record Record in the database.
    */
-  Fir(const FirRecord*);
+  Fir(const FirRecord* record);
   
   virtual ~Fir();
   
   /**
    * Records staff in the fir.
    */
-  void addStaff(const Controller*);
+  void addStaff(const Controller* atc);
   
   /**
    * Records UIR staff in the fir.
    * The UIR staff is not taken into account when isStaffed() and
    * isEmpty() methods are called.
    */
-  void addUirStaff(const Controller*);
+  void addUirStaff(const Controller* atc);
   
   /**
    * Records flight in the fir.
    */
-  void addFlight(const Pilot*);
+  void addFlight(const Pilot* pilot);
   
   /**
    * Adds Airport to the FIR.
    */
-  void addAirport(const Airport*);
+  void addAirport(const Airport* airport);
   
   /**
    * Having the name set, this method suffixes it with "Oceanic" or "Center",
@@ -76,22 +79,22 @@ public:
   void fixupName();
   
   /**
-   * @return True if any ATC is available (either this FIR or containing UIR).
+   * \return True if any ATC is available (either this FIR or containing UIR).
    */
   bool isStaffed() const;
   
   /**
-   * @return True if there is no ATC controlling the FIR.
+   * \return True if there is no ATC controlling the FIR.
    */
   bool isEmpty() const;
   
   /**
-   * @return True is position is not equal to (0, 0).
+   * \return True is position is not equal to (0, 0).
    */
   bool hasValidPosition() const;
   
-  void setName(const QString&);
-  void setCountry(const QString&);
+  void setName(const QString& name);
+  void setCountry(const QString& country);
   
   inline const FirRecord* data() const { return __data; }
   

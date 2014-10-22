@@ -33,14 +33,16 @@ namespace {
   BookedAtcTableModel* emptyBookedAtcTable = new BookedAtcTableModel();
 }
 
-VatbookHandler::VatbookHandler(QObject* _parent) : 
-    QObject(_parent),
+VatbookHandler::VatbookHandler(QObject* parent) : 
+    QObject(parent),
     __downloader(new PlainTextDownloader(nullptr, this)) {
   
-  connect(__downloader,    SIGNAL(finished(const QString&)),
-          this,             SLOT(__dataFetched(const QString&)));
-  connect(&__timer,         SIGNAL(timeout()),
-          this,             SLOT(__timeToUpdate()));
+  __timer.setTimerType(Qt::VeryCoarseTimer);
+  
+  connect(__downloader, SIGNAL(finished(const QString&)),
+          this,         SLOT(__dataFetched(const QString&)));
+  connect(&__timer,     SIGNAL(timeout()),
+          this,         SLOT(__timeToUpdate()));
   
   __timeToUpdate();
 }
@@ -52,13 +54,13 @@ VatbookHandler::~VatbookHandler() {
 }
 
 BookedAtcTableModel*
-VatbookHandler::model(const QString& _icao) {
-  return __bookings.value(_icao, nullptr);
+VatbookHandler::model(const QString& icao) {
+  return __bookings.value(icao, nullptr);
 }
 
 BookedAtcTableModel*
-VatbookHandler::notNullModel(const QString& _icao) {
-   return __bookings.value(_icao, emptyBookedAtcTable);
+VatbookHandler::notNullModel(const QString& icao) {
+   return __bookings.value(icao, emptyBookedAtcTable);
 }
 
 void
@@ -69,10 +71,10 @@ VatbookHandler::__clear() {
 }
 
 void
-VatbookHandler::__parseData(const QString& _data) {
+VatbookHandler::__parseData(const QString& data) {
   bool clientsSection = false;
   
-  for (QString& line: _data.split('\n', QString::SkipEmptyParts)) {
+  for (QString& line: data.split('\n', QString::SkipEmptyParts)) {
     if (line.startsWith(';'))
       continue;
     
@@ -99,12 +101,12 @@ VatbookHandler::__parseData(const QString& _data) {
 }
 
 void
-VatbookHandler::__dataFetched(const QString& _data) {
-  if (_data.isEmpty())
+VatbookHandler::__dataFetched(const QString& data) {
+  if (data.isEmpty())
     return;
   
   __clear();
-  __parseData(_data);
+  __parseData(data);
   
   __timer.start(RefreshInterval);
 }
@@ -119,6 +121,6 @@ VatbookHandler::__handleError() {
 
 void
 VatbookHandler::__timeToUpdate() {
-  __downloader->fetchData(VatbookUrl);
+  __downloader->fetch(VatbookUrl);
 }
 

@@ -33,7 +33,7 @@ class IconKeeper : public QObject {
 
 public:
   
-  explicit IconKeeper(QObject* = nullptr);
+  explicit IconKeeper(QObject* parent = nullptr);
   virtual ~IconKeeper();
   
   QOpenGLTexture* emptyAirportIcon();

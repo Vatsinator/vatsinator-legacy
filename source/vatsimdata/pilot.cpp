@@ -29,7 +29,7 @@
 
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
-static constexpr qreal PilotToAirport = 0.15;
+static Q_DECL_CONSTEXPR qreal PilotToAirport = 0.15;
 
 namespace {
   
@@ -108,32 +108,32 @@ namespace {
  * 39 QNH_iHg
  * 40 QNH_Mb
  */
-Pilot::Pilot(const QStringList& _data, bool _prefiled) :
-    Client(_data),
-    __altitude(_data[7].toInt()),
-    __groundSpeed(_data[8].toInt()),
-    __squawk(_data[17]),
-    __aircraft(_data[9]),
+Pilot::Pilot(const QStringList& data, bool prefiled) :
+    Client(data),
+    __altitude(data[7].toInt()),
+    __groundSpeed(data[8].toInt()),
+    __squawk(data[17]),
+    __aircraft(data[9]),
     __oldPosition(Client::position()),
-    __tas(_data[10].toInt()),
-    __flightRules(_data[21] == "I" ? Ifr : Vfr),
-    __std(QTime::fromString(_data[22], "hhmm")),
-    __atd(QTime::fromString(_data[23], "hhmm")),
+    __tas(data[10].toInt()),
+    __flightRules(data[21] == "I" ? Ifr : Vfr),
+    __std(QTime::fromString(data[22], "hhmm")),
+    __atd(QTime::fromString(data[23], "hhmm")),
     __progress(-1),
-    __remarks(_data[29]),
-    __heading(_data[38].toUInt()),
-    __pressure({_data[39], _data[40]}),
-    __route({_data[11].toUpper(), _data[13].toUpper(), _data[30], _data[12].toUpper()}),
+    __remarks(data[29]),
+    __heading(data[38].toUInt()),
+    __pressure({data[39], data[40]}),
+    __route({data[11].toUpper(), data[13].toUpper(), data[30], data[12].toUpper(), {}}),
     __origin(nullptr),
     __destination(nullptr),
-    __prefiledOnly(_prefiled) {
+    __prefiledOnly(prefiled) {
     
   // vatsim sometimes skips the 0 on the beginning
   if (__squawk.length() == 3)
     __squawk.prepend("0");
   
   if (__std.isValid() && __std != QTime(0, 0)) {
-    __sta = QTime(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt());
+    __sta = QTime(__std.hour() + data[24].toInt(), __std.minute() + data[25].toInt());
   }
   
   __updateAirports();
@@ -144,33 +144,33 @@ Pilot::Pilot(const QStringList& _data, bool _prefiled) :
 Pilot::~Pilot() {}
 
 void
-Pilot::update(const QStringList& _data) {
+Pilot::update(const QStringList& data) {
   __oldPosition = position();
-  Client::update(_data);
+  Client::update(data);
   
   __prefiledOnly = false;
-  __altitude = _data[7].toInt();
-  __groundSpeed = _data[8].toInt();
-  __squawk = _data[17];
-  __aircraft = _data[9];
-  __tas = _data[10].toInt();
-  __flightRules = _data[21] == "I" ? Ifr : Vfr;
-  __std = QTime::fromString(_data[22], "hhmm");
-  __atd = QTime::fromString(_data[23], "hhmm");
-  __remarks = _data[29];
-  __heading = _data[38].toUInt();
-  __pressure = Pressure{ _data[39], _data[40] };
+  __altitude = data[7].toInt();
+  __groundSpeed = data[8].toInt();
+  __squawk = data[17];
+  __aircraft = data[9];
+  __tas = data[10].toInt();
+  __flightRules = data[21] == "I" ? Ifr : Vfr;
+  __std = QTime::fromString(data[22], "hhmm");
+  __atd = QTime::fromString(data[23], "hhmm");
+  __remarks = data[29];
+  __heading = data[38].toUInt();
+  __pressure = Pressure{ data[39], data[40] };
   
   __discoverFlightPhase();
   
   // update airports if anything has changed
-  QString tOrigin(_data[11].toUpper());
-  QString tDestination(_data[13].toUpper());
+  QString tOrigin(data[11].toUpper());
+  QString tDestination(data[13].toUpper());
   if (
     !origin()      || origin()->icao() != tOrigin ||
     !destination() || destination()->icao() != tDestination
   ) {
-    __route = Route{ tOrigin, tDestination, _data[30], _data[12].toUpper() };
+    __route = Route{ tOrigin, tDestination, data[30], data[12].toUpper(), {}  };
     __updateAirports();
     __fixupRoute();
   } else if (oldPosition() != position()) {
@@ -184,7 +184,7 @@ Pilot::update(const QStringList& _data) {
     __squawk.prepend("0");
   
   if (__std.isValid() && __sta != QTime(0, 0))
-    __sta = QTime(__std.hour() + _data[24].toInt(), __std.minute() + _data[25].toInt());
+    __sta = QTime(__std.hour() + data[24].toInt(), __std.minute() + data[25].toInt());
   
   // invalidate eta
   __eta = QTime();
@@ -324,7 +324,7 @@ Pilot::__discoverFlightPhase() {
     const AirportRecord* closest = nullptr;
     qreal distance = 0.0;
     
-    for (const AirportRecord& ap: AirportDatabase::getSingleton().airports()) {
+    for (const AirportRecord& ap: vApp()->airportDatabase()->airports()) {
       qreal temp = VatsimDataHandler::fastDistance(ap.longitude, ap.latitude,
                              position().longitude(), position().latitude());
 

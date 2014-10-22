@@ -38,8 +38,8 @@
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/client/controller.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/controller.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "netconfig.h"
@@ -47,9 +47,9 @@
 
 #include "airportdetailswindow.h"
 
-AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent) :
-    BaseWindow(_parent),
-    __airport(_ap) {
+AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* parent) :
+    BaseWindow(parent),
+    __airport(airport) {
   setupUi(this);
   
   connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::hide);
@@ -61,6 +61,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
   connect(ShowButton, &QPushButton::clicked, [this]() {
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__airport->position());
     close();
+    vApp()->userInterface()->ensureMainWindowIsActive();
   });
   
   NotamTableView->setErrorOnNoData(false);
@@ -76,14 +77,14 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* _ap, QWidget* _parent)
 AirportDetailsWindow::~AirportDetailsWindow() {}
 
 void
-AirportDetailsWindow::showEvent(QShowEvent* _event) {
+AirportDetailsWindow::showEvent(QShowEvent* event) {
   __fillLabels();
   __updateModels();
   __adjustTables();
   
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   
-  if (vApp()->vatsimDataHandler()->weatherForecast()) {
+  if (vApp()->vatsimDataHandler()->weatherForecastProvider()) {
     ForecastGroup->setEnabled(true);
     
     WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
@@ -91,9 +92,8 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
     request->setCountry(QString::fromUtf8(__airport->data()->country));
     request->setPosition(__airport->position());
     
-    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecast()->fetch(request);
-    connect(reply,      SIGNAL(finished()),
-            this,       SLOT(__updateForecast()));
+    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecastProvider()->fetch(request);
+    connect(reply, &WeatherForecastReply::finished, this, &AirportDetailsWindow::__updateForecast);
     
     if (SM::get("network.weather_temperature_units").toString() == "Celsius")
       w->setCelsius();
@@ -108,7 +108,7 @@ AirportDetailsWindow::showEvent(QShowEvent* _event) {
   vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__airport->icao());  
   NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
   
-  BaseWindow::showEvent(_event);
+  BaseWindow::showEvent(event);
 }
 
 void
@@ -178,30 +178,30 @@ AirportDetailsWindow::__updateForecast() {
   
   w->setStatus(DelayedWidget::Finished);
   
-  if (r->error() == WeatherForecastReply::NoError) {
-    w->setData(r->data());
-  } else {
-    switch (r->error()) {
-      case WeatherForecastReply::NotFoundError:
-        w->setMessage(tr("No forecast for %1, %2").arg(r->request()->country(), r->request()->city()));
-        break;
-        
-      case WeatherForecastReply::NetworkError:
-        w->setMessage(tr("Network error"));
-        break;
-    }
+  switch (r->error()) {
+    case WeatherForecastReply::NotFoundError:
+      w->setMessage(tr("No forecast for %1, %2").arg(r->request()->country(), r->request()->city()));
+      break;
+      
+    case WeatherForecastReply::NetworkError:
+      w->setMessage(tr("Network error"));
+      break;
+    
+    case WeatherForecastReply::NoError:
+      w->setData(r->data());
+      break;
   }
 }
 
 void
-AirportDetailsWindow::__notamUpdate(NotamListModel* _model) {
-  if (_model->icao() == __airport->icao())
-    NotamTableView->setModel(_model);
+AirportDetailsWindow::__notamUpdate(NotamListModel* model) {
+  if (model->icao() == __airport->icao())
+    NotamTableView->setModel(model);
 }
 
 void
-AirportDetailsWindow::__goToNotam(QModelIndex _index) {
-  QString url = _index.data(Qt::UserRole).toString();
+AirportDetailsWindow::__goToNotam(QModelIndex index) {
+  QString url = index.data(Qt::UserRole).toString();
   if (!url.isEmpty())
     QDesktopServices::openUrl(url);
 }

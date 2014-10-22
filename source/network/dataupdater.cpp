@@ -106,8 +106,8 @@ namespace {
   
 }
 
-DataUpdater::DataUpdater(QObject* _parent) :
-    QObject(_parent),
+DataUpdater::DataUpdater(QObject* parent) :
+    QObject(parent),
     __unzipper(new Unzipper()) {
   
   /* Give the Unzipper its own thread */
@@ -149,11 +149,11 @@ DataUpdater::update() {
 }
 
 bool
-DataUpdater::__checksumsOk(const QString& _fileName) {
-  QFile file(_fileName);
+DataUpdater::__checksumsOk(const QString& fileName) {
+  QFile file(fileName);
   
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    qWarning("DataUpdater: cannot open %s for reading", qPrintable(_fileName));
+    qWarning("DataUpdater: cannot open %s for reading", qPrintable(fileName));
     return false;
   }
   
@@ -215,14 +215,14 @@ DataUpdater::__cleanup() {
 }
 
 void
-DataUpdater::__unzipPackage(QString _fileName) {
-  __unzipper->setFileName(_fileName);
+DataUpdater::__unzipPackage(QString fileName) {
+  __unzipper->setFileName(fileName);
   emit readyToUnzip();
 }
 
 void
-DataUpdater::__fetchError(QString _error) {
-  qWarning("DataUpdater: fetch error: %s", qPrintable(_error));
+DataUpdater::__fetchError(QString error) {
+  qWarning("DataUpdater: fetch error: %s", qPrintable(error));
   emit failed();
 }
 
@@ -245,14 +245,14 @@ DataUpdater::__filesUnzipped() {
 }
 
 void
-DataUpdater::__unzipError(QString _errStr) {
-  qCritical("DataUpdater: unzip error: %s", qPrintable(_errStr));
+DataUpdater::__unzipError(QString error) {
+  qCritical("DataUpdater: unzip error: %s", qPrintable(error));
   emit failed();
 }
 
 void
-DataUpdater::__checkManifest(QString _fileName) {
-  if (!__checksumsOk(_fileName)) {
+DataUpdater::__checkManifest(QString fileName) {
+  if (!__checksumsOk(fileName)) {
     __cleanup();
     emit failed();
     return;
@@ -264,7 +264,7 @@ DataUpdater::__checkManifest(QString _fileName) {
     return;
   }
   
-  moveFile(_fileName, FileManager::localDataPath() % "Manifest");
+  moveFile(fileName, FileManager::localDataPath() % "Manifest");
   __cleanup();
   emit updated();
 }

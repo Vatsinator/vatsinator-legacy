@@ -19,7 +19,7 @@
 
 #include "notificationevent.h"
 
-NotificationEvent::NotificationEvent(Gravity _gravity, QString _message) :
+NotificationEvent::NotificationEvent(Gravity gravity, QString message) :
     QEvent(static_cast<QEvent::Type>(Event::Notification)),
-    __gravity(_gravity),
-    __message(qMove(_message)) {}
+    __gravity(gravity),
+    __message(qMove(message)) {}

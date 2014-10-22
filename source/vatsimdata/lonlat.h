@@ -23,19 +23,39 @@
 #include <QPointF>
 #include <QMetaType>
 
+/**
+ * The LonLat class is a wrapper around QPointF to provide convenience
+ * handling global coordinates - latitude and longitude.
+ */
 class LonLat : public QPointF {
 
 public:
   friend QDataStream& operator<<(QDataStream&, const LonLat&);
   friend QDataStream& operator>>(QDataStream&, LonLat&);
   
+  /**
+   * The default constructor creates point (0.0, 0.0).
+   */
   LonLat();
-  LonLat(const QPoint&);
-  LonLat(const QPointF&);
-  LonLat(qreal, qreal);
   
   /**
-   * Return this point, but fix its coordinates to be correct longitude
+   * Creates new LonLat from the given point.
+   */
+  LonLat(const QPoint& point);
+  
+  /**
+   * Creates new LonLat from the given point.
+   */
+  LonLat(const QPointF& point);
+  
+  /**
+   * Creates new LonLat from the given coordinates - _longitude_
+   * and _latitude_.
+   */
+  LonLat(qreal longitude, qreal latitude);
+  
+  /**
+   * Returns this point, but bounds its coordinates to be correct longitude
    * and latitude.
    */
   LonLat bound() const;
@@ -55,7 +75,7 @@ public:
 };
 Q_DECLARE_METATYPE(LonLat)
 
-QDataStream& operator<<(QDataStream&, const LonLat&);
-QDataStream& operator>>(QDataStream&, LonLat&);
+QDataStream& operator<<(QDataStream& stream, const LonLat& lonlat);
+QDataStream& operator>>(QDataStream& stream, LonLat& lonlat);
 
 #endif // LONLAT_H

@@ -26,8 +26,8 @@
 
 #include "metarswindow.h"
 
-MetarsWindow::MetarsWindow(QWidget* _parent) :
-    BaseWindow(_parent),
+MetarsWindow::MetarsWindow(QWidget* parent) :
+    BaseWindow(parent),
     __awaited("") {
   setupUi(this);
   
@@ -69,11 +69,11 @@ MetarsWindow::show() {
 }
 
 void
-MetarsWindow::show(QString _icao) {
+MetarsWindow::show(QString icao) {
   QWidget::show();
   MetarICAO->setFocus();
   
-  __findAndSelectMetar(_icao);
+  __findAndSelectMetar(icao);
 }
 
 void
@@ -82,25 +82,25 @@ MetarsWindow::metarRequested() {
 }
 
 void
-MetarsWindow::keyPressEvent(QKeyEvent* _event) {
+MetarsWindow::keyPressEvent(QKeyEvent* event) {
   if (!MetarICAO->text().isEmpty() && MetarICAO->hasFocus() &&
-      (_event->key() == Qt::Key_Return || _event->key() == Qt::Key_Enter))
+      (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter))
     metarRequested();
   
-  QWidget::keyPressEvent(_event);
+  QWidget::keyPressEvent(event);
 }
 
 void
-MetarsWindow::__findAndSelectMetar(const QString& _icao, bool _fetchIfNotFound) {
-const Metar* m = __metarsHandler->find(_icao.toUpper());
+MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound) {
+const Metar* m = __metarsHandler->find(icao.toUpper());
   if (m) {
     const QModelIndex mi = __metarsHandler->modelIndexForMetar(m);
     MetarsDisplay->setCurrentIndex(mi);
     MetarsDisplay->scrollTo(mi);
   } else {
-    if (_fetchIfNotFound) {
-      __metarsHandler->fetchMetar(_icao);
-      __awaited = _icao;
+    if (fetchIfNotFound) {
+      __metarsHandler->fetchMetar(icao);
+      __awaited = icao;
     }
   }
   
@@ -108,8 +108,8 @@ const Metar* m = __metarsHandler->find(_icao.toUpper());
 }
 
 void
-MetarsWindow::__handleTextChange(const QString& _text) {
-  FetchButton->setEnabled(_text.length() != 0);
+MetarsWindow::__handleTextChange(const QString& text) {
+  FetchButton->setEnabled(text.length() != 0);
 }
 
 void

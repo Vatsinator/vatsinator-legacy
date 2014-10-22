@@ -17,27 +17,28 @@
  *
  */
 
+#include <algorithm>
 #include <QtGui>
 
 #include "notamlistmodel.h"
 
-NotamListModel::NotamListModel(QString _icao, QObject* _parent) :
-  QAbstractTableModel(_parent),
-  __icao(qMove(_icao)) {}
+NotamListModel::NotamListModel(QString icao, QObject* parent) :
+  QAbstractTableModel(parent),
+  __icao(qMove(icao)) {}
 
 void
-NotamListModel::addNotam(Notam _notam) {
-  __notams << qMove(_notam);
+NotamListModel::addNotam(Notam notam) {
+  __notams << qMove(notam);
 }
 
 QVariant
-NotamListModel::data(const QModelIndex& _index, int _role) const {
-  if (_index.column() != 0)
+NotamListModel::data(const QModelIndex& index, int role) const {
+  if (index.column() != 0)
     return QVariant();
   
-  const Notam& notam = __notams.at(_index.row());
+  const Notam& notam = __notams.at(index.row());
   
-  switch (_role) {
+  switch (role) {
     case Qt::DisplayRole:
       return QString("%1 %2 %3").arg(
           notam.icao(),
@@ -83,19 +84,20 @@ NotamListModel::data(const QModelIndex& _index, int _role) const {
 }
 
 int
-NotamListModel::rowCount(const QModelIndex&) const {
+NotamListModel::rowCount(const QModelIndex& parent) const {
+  Q_UNUSED(parent);
   return __notams.size();
 }
 
 int
-NotamListModel::columnCount(const QModelIndex&) const {
+NotamListModel::columnCount(const QModelIndex& parent) const {
+  Q_UNUSED(parent);
   return 1;
 }
 
 void
-NotamListModel::sort(int _column, Qt::SortOrder _order) {
-  if (_column != 0)
-    return;
-  
-  qSort(__notams.begin(), __notams.end());
+NotamListModel::sort(int column, Qt::SortOrder order) {
+  Q_UNUSED(order);
+  Q_UNUSED(column);
+  std::sort(__notams.begin(), __notams.end());
 }

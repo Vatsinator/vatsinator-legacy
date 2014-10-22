@@ -32,7 +32,6 @@
 class LanguageManager : public Singleton<LanguageManager> {
   
 public:
-  
   /**
    * The constructor looks for installed languages in Vatsinator
    * standard locations.
@@ -51,17 +50,19 @@ public:
   
   /**
    * Gets language unique ID.
-   * @param locale The language locale (e.g. pt, ja_JP).
-   * @sa getLocaleById().
+   * 
+   * \param locale The language locale (e.g. pt, ja_JP).
+   * \sa getLocaleById().
    */
-  int getLanguageId(const QString&);
+  int getLanguageId(const QString& locale);
   
   /**
    * Gets language name by the specific id.
-   * @param id The language unique id.
-   * @sa getLanguageId().
+   * 
+   * \param id The language unique id.
+   * \sa getLanguageId().
    */
-  const QString& getLocaleById(int);
+  const QString& getLocaleById(int id);
   
 private:
   struct LangInfo {

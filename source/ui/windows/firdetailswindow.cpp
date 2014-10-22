@@ -31,9 +31,9 @@
 #include "ui/windows/flightdetailswindow.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/client/controller.h"
+#include "vatsimdata/controller.h"
 #include "vatsimdata/fir.h"
-#include "vatsimdata/client/pilot.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/models/airporttablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
@@ -42,9 +42,9 @@
 
 #include "firdetailswindow.h"
 
-FirDetailsWindow::FirDetailsWindow(const Fir* _fir, QWidget* _parent) :
-    BaseWindow(_parent),
-    __fir(_fir) {
+FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
+    BaseWindow(parent),
+    __fir(fir) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -121,15 +121,15 @@ FirDetailsWindow::__adjustTables() {
 }
 
 void
-FirDetailsWindow::__notamUpdate(NotamListModel* _model) {
-  if (_model->icao() == __fir->icao()) {
-    NotamTableView->setModel(_model);
+FirDetailsWindow::__notamUpdate(NotamListModel* model) {
+  if (model->icao() == __fir->icao()) {
+    NotamTableView->setModel(model);
   }
 }
 
 void
-FirDetailsWindow::__goToNotam(QModelIndex _index) {
-  QString url = _index.data(Qt::UserRole).toString();
+FirDetailsWindow::__goToNotam(QModelIndex index) {
+  QString url = index.data(Qt::UserRole).toString();
   if (!url.isEmpty())
     QDesktopServices::openUrl(url);
 }

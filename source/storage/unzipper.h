@@ -35,11 +35,12 @@ class Unzipper : public QObject {
 signals:
   /**
    * Emited after next file is already unzipped.
-   * @param total Total amount of files in the package.
-   * @param unzipped Files already unzipped.
-   * @param nextFile Going-to-be-unzipped file name.
+   * 
+   * \param total Total amount of files in the package.
+   * \param unzipped Files already unzipped.
+   * \param nextFile Going-to-be-unzipped file name.
    */
-  void progress(int, int, QString);
+  void progress(int total, int unzipped, QString nextFile);
   
   /**
    * Emited when Unzipper is done with its job.
@@ -48,27 +49,26 @@ signals:
   
   /**
    * Emited then an error occurs.
-   * @param erStr Error string.
+   * \param error Error string.
    */
-  void error(QString);
+  void error(QString error);
   
 public:
-  
   /**
    * The cosntructor takes the absolute zip archive location.
    */
-  explicit Unzipper(QString, QObject* = 0);
+  explicit Unzipper(QString fileName, QObject* parent = nullptr);
   
   /**
    * The default ctor.
    */
-  explicit Unzipper(QObject* = 0);
+  explicit Unzipper(QObject* parent = nullptr);
   
   /**
    * Sets the zip package location. This function has no efect when
    * called after unzip() call.
    */
-  void setFileName(const QString&);
+  void setFileName(const QString& fileName);
   
   /**
    * Gets the zip archive location.

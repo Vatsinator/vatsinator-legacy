@@ -32,28 +32,23 @@ class DecisionEvent : public QEvent {
   
 public:
   /**
-   * Used decisions.
+   * The Decision enum describes user decisions.
    */
   enum Decision {
-    /**
-     * User pressed "OK", "Accept" or something that indicates any
-     * positive decision.
-     */
-    Accepted,
-    
-    /**
-     * User pressed "No", "Decline" or something that indicates negative
-     * decision.
-     */
-    Declined
+    Accepted,   /**< User pressed "OK", "Accept" or something that indicates
+                  a positive decision. */
+    TryAgain,   /**< User pressed "Try again" button. */
+    Declined    /**< User pressed "No", "Decline" or something that indicates
+                  a negative decision. */
   };
   
   /**
    * Creates a new DecisionEvent.
-   * @param context Describes a context where the particular decision was made.
-   * @param decision The decision that has been made.
+   * 
+   * \param context Describes a context where the particular decision was made.
+   * \param decision The decision that has been made.
    */
-  DecisionEvent(QString, Decision);
+  DecisionEvent(QString context, Decision decision);
   
   /**
    * Gets the decision context.

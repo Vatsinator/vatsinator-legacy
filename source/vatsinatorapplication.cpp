@@ -44,8 +44,8 @@
 
 #include "vatsinatorapplication.h"
 
-VatsinatorApplication::VatsinatorApplication(int& _argc, char** _argv) :
-    QApplication(_argc, _argv),
+VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
+    QApplication(argc, argv),
     __userInterface(new VATSINATOR_UI_IMPLEMENTATION()),
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager()),
@@ -106,21 +106,12 @@ VatsinatorApplication::~VatsinatorApplication() {
 }
 
 bool
-VatsinatorApplication::event(QEvent* _event) {
-  if (_event->type() == Event::Decision) {
-    userDecisionEvent(static_cast<DecisionEvent*>(_event));
+VatsinatorApplication::event(QEvent* event) {
+  if (event->type() == Event::Decision) {
+    userDecisionEvent(static_cast<DecisionEvent*>(event));
     return true;
   } else {
-    return QApplication::event(_event);
-  }
-}
-
-void
-VatsinatorApplication::userDecisionEvent(DecisionEvent* _event) {
-  if (_event->context() == QStringLiteral("statistics")) {
-    statsPurveyor()->setUserDecision(
-      _event->decision() == DecisionEvent::Accepted ? StatsPurveyor::Accepted : StatsPurveyor::Declined
-    );
+    return QApplication::event(event);
   }
 }
 
@@ -131,12 +122,21 @@ VatsinatorApplication::restart() {
   QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
+
+void
+VatsinatorApplication::userDecisionEvent(DecisionEvent* event) {
+  if (event->context() == QStringLiteral("statistics")) {
+    statsPurveyor()->setUserDecision(
+      event->decision() == DecisionEvent::Accepted ? StatsPurveyor::Accepted : StatsPurveyor::Declined
+    );
+  }
+}
 void
 VatsinatorApplication::__initialize() {
   qDebug("VatsinatorApplication: initializing");
   
   /* Read world map before UI */
-  __worldMap->init();
+  __worldMap->initialize();
   
   /* Create windows */
   __userInterface->initialize();

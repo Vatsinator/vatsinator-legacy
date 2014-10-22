@@ -25,42 +25,42 @@
 
 #include "controllertableview.h"
 
-ControllerTableView::ControllerTableView(QWidget* _parent) :
-  QTableView(_parent) {}
+ControllerTableView::ControllerTableView(QWidget* parent) :
+  QTableView(parent) {}
 
 void
-ControllerTableView::setModel(ControllerTableModel* _model) {
+ControllerTableView::setModel(ControllerTableModel* model) {
   if (this->model()) {
     disconnect(this, SLOT(__updateButtons()));
   }
   
-  QTableView::setModel(_model);
+  QTableView::setModel(model);
   
   __updateButtons();
   
-  connect(_model,    SIGNAL(sorted()),
-          this,      SLOT(__updateButtons()));
+  connect(model,        SIGNAL(sorted()),
+          this,         SLOT(__updateButtons()));
 }
 
 void
-ControllerTableView::rowsInserted(const QModelIndex& _parent, int _start, int _end) {
-  QTableView::rowsInserted(_parent, _start, _end);
-  __updateButtons(_start, _end + 1);
+ControllerTableView::rowsInserted(const QModelIndex& parent, int start, int end) {
+  QTableView::rowsInserted(parent, start, end);
+  __updateButtons(start, end + 1);
 }
 
 void
-ControllerTableView::__updateButtons(int _start, int _end) {
+ControllerTableView::__updateButtons(int start, int end) {
   Q_ASSERT(model());
   const ControllerTableModel* cModel = qobject_cast<const ControllerTableModel*>(model());
   Q_ASSERT(cModel);
   
-  if (_start == -1)
-    _start = 0;
+  if (start == -1)
+    start = 0;
   
-  if (_end == -1)
-    _end = cModel->rowCount();
+  if (end == -1)
+    end = cModel->rowCount();
   
-  for (int i = _start; i < _end; ++i) {
+  for (int i = start; i < end; ++i) {
     ClientDetailsButton* dButton = new ClientDetailsButton(cModel->staff()[i]);
     connect(dButton,                    SIGNAL(clicked(const Client*)),
             vApp()->userInterface(),    SLOT(showDetails(const Client*)));
