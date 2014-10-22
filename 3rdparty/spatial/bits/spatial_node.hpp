@@ -70,8 +70,10 @@ namespace spatial
 
       /**
        *  A pointer to the left child node of the current node. If we are at the
-       *  head, this pointer points to the left most node in the tree. If there are
-       *  no node to the left, the pointer is null.
+       *  head, this pointer will always points to the head: this is an
+       *  important property of the nodes that is exploited by the header()
+       *  function used in nearly every algorithm to identify the header
+       *  node. If there are no node to the left, the pointer is null.
        */
       Node* left;
 
@@ -85,6 +87,10 @@ namespace spatial
 
     /**
      *  Check if node is a header node.
+     *
+     *  This is done by checking that the left node points to itself. Only at
+     *  the head, should this be the case. This important propriety is a
+     *  convention of the library to identify the header node.
      */
     template <typename Link>
     inline bool header(const Node<Link>* x)
@@ -184,28 +190,6 @@ namespace spatial
     preorder_increment(const Node<Link>* x);
 
     /**
-     *  Returns the modulo of a node's heigth by a container's rank. This, in
-     *  effect, gives the current dimension along which the node's invarient is
-     *  evaluated.
-     *
-     *  If \c x points to the header, by convention the highest dimension for a
-     *  node invariant is returned.
-     *
-     *  \tparam Link A model of \linkmode.
-     *  \tparam Rank Either \static_rank or \dynamic_rank.
-     *  \param x A constant pointer to a node.
-     *  \param r The rank used in the container.
-     */
-    template <typename Link, typename Rank>
-    inline dimension_type
-    modulo(const Node<Link>* x, const Rank& r)
-    {
-      dimension_type d = r() - 1;
-      while(!header(x)) { d = incr_dim(r, d); x = x->parent; }
-      return d;
-    }
-
-    /**
      *  The category of invariants for a \kdtree node: strict or relaxed.
      *
      *  This tag is an indicator for one of the library's most central concepts:
@@ -236,6 +220,14 @@ namespace spatial
     struct relaxed_invariant_tag { };
     struct strict_invariant_tag { };
     ///@}
+
+    /**
+     *  For a given node, this function returns the invariant category of the node.
+     */
+    template <typename Link>
+    inline typename Link::invariant_category
+    invariant_category(const Node<Link>*)
+    { return typename Link::invariant_category(); }
 
     /**
      *  Define the link type for a Kdtree that contains the value member.

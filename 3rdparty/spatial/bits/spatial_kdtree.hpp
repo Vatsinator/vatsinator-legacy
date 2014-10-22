@@ -122,6 +122,16 @@ namespace spatial
       } _impl;
 
     private:
+      struct Maximum : key_compare
+      {
+        Maximum(const key_compare& key_comp, node_ptr node_)
+          : key_compare(key_comp), node(node_) { }
+        key_compare comp() const
+        { return static_cast<key_compare>(*this); }
+        node_ptr node;
+      };
+
+    private:
       // Internal accessors
       node_ptr get_header()
       { return static_cast<node_ptr>(&_impl._header()); }
@@ -257,9 +267,10 @@ namespace spatial
 
       /**
        *  Erase the node located at \c node with current dimension
-       *  \c node_dim.
+       *  \c node_dim. The function returns the node that was used to replace
+       *  the previous one, or null if no replacement was needed.
        */
-      void erase_node(dimension_type node_dim, node_ptr node);
+      node_ptr erase_node(dimension_type node_dim, node_ptr node);
 
     public:
       // Iterators standard interface
@@ -355,33 +366,6 @@ namespace spatial
        */
       size_type max_size() const
       { return _impl._header.base().max_size(); }
-
-      ///@{
-      /**
-       *  Find the first node that matches with \c key and returns an iterator
-       *  to it found, otherwise it returns an iterator to the element past the
-       *  end of the container.
-       *
-       *  Notice that this function returns an iterator only to one of the
-       *  elements with that key. To obtain the entire range of elements with a
-       *  given value, you can use \ref equal_range.
-       *
-       *  If this function is called on an empty container, returns an iterator
-       *  past the end of the container.
-       *
-       *  \fractime
-       *  \param key the value to be searched for.
-       *  \return An iterator to that value or an iterator to the element past
-       *  the end of the container.
-       */
-      iterator
-      find(const key_type& key)
-      { return equal_begin(*this, key); }
-
-      const_iterator
-      find(const key_type& key) const
-      { return equal_begin(*this, key); }
-      ///@}
 
     public:
       Kdtree()
@@ -543,6 +527,44 @@ namespace spatial
       template<typename InputIterator>
       void
       insert_rebalance(InputIterator first, InputIterator last);
+
+      ///@{
+      /**
+       *  Find the first node that matches with \c key and returns an iterator
+       *  to it found, otherwise it returns an iterator to the element past the
+       *  end of the container.
+       *
+       *  Notice that this function returns an iterator only to one of the
+       *  elements with that key. To obtain the entire range of elements with a
+       *  given value, you can use \ref equal_range.
+       *
+       *  If this function is called on an empty container, returns an iterator
+       *  past the end of the container.
+       *
+       *  \fractime
+       *  \param key the value to be searched for.
+       *  \return An iterator to that value or an iterator to the element past
+       *  the end of the container.
+       */
+      iterator
+      find(const key_type& key)
+      {
+        if (empty()) return end();
+        return iterator(preorder_first(get_root(), 0, rank(),
+                                       details::Equal<Self>(key_comp(), key))
+                        .first);
+      }
+
+      const_iterator
+      find(const key_type& key) const
+      {
+        if (empty()) return end();
+        return const_iterator(preorder_first(get_root(), 0, rank(),
+                                             details::Equal<Self>
+                                             (key_comp(), key))
+                              .first);
+      }
+      ///@}
 
       /**
        *  Deletes the node pointed to by the iterator.
@@ -1023,13 +1045,13 @@ namespace spatial
 
     template <typename Rank, typename Key, typename Value, typename Compare,
               typename Alloc>
-    inline void
+    inline typename Kdtree<Rank, Key, Value, Compare, Alloc>::node_ptr
     Kdtree<Rank, Key, Value, Compare, Alloc>::erase_node
     (dimension_type node_dim, node_ptr node)
     {
       SPATIAL_ASSERT_CHECK(node != 0);
       SPATIAL_ASSERT_CHECK(!header(node));
-      mapping_iterator<Self> candidate(*this, 0, 0, 0);
+      node_ptr first_swap = 0;
       while (node->right != 0 || node->left != 0)
         {
           // If there is nothing on the right, to preserve the invariant, we
@@ -1058,17 +1080,18 @@ namespace spatial
                     }
                 }
             }
-          candidate.node = node->right;
-          candidate.node_dim = incr_dim(rank(), node_dim);
-          candidate.mapping_dimension() = node_dim;
-          candidate = minimum_mapping(candidate);
-          if (get_rightmost() == candidate.node)
+          std::pair<node_ptr, dimension_type> candidate
+            = minimum_mapping(node->right, incr_dim(rank(), node_dim),
+                              rank(), node_dim, key_comp());
+          if (get_rightmost() == candidate.first)
             { set_rightmost(node); }
           if (get_leftmost() == node)
-            { set_leftmost(candidate.node); }
-          swap_node(candidate.node, node);
-                  node = candidate.node;
-          node_dim = candidate.node_dim;
+            { set_leftmost(candidate.first); }
+          if (first_swap == 0)
+            { first_swap = candidate.first; }
+          swap_node(candidate.first, node);
+          node = candidate.first;
+          node_dim = candidate.second;
         }
       SPATIAL_ASSERT_CHECK(node != 0);
       SPATIAL_ASSERT_CHECK(node->right == 0);
@@ -1097,6 +1120,7 @@ namespace spatial
                            ? (_impl._count() == 0) : true);
       destroy_node(node);
       SPATIAL_ASSERT_INVARIANT(*this);
+      return first_swap;
     }
 
     template <typename Rank, typename Key, typename Value, typename Compare,
@@ -1124,15 +1148,22 @@ namespace spatial
     Kdtree<Rank, Key, Value, Compare, Alloc>::erase
     (const key_type& key)
     {
+      if (empty()) return 0;
+      node_ptr node = get_root();
+      dimension_type dim;
+      details::Equal<Self> equal_query(key_comp(), key);
+      details::assign(node, dim,
+                      preorder_first(node, 0, rank(), equal_query));
+      if (header(node)) return 0;
       size_type cnt = 0;
-      while (true)
+      for (;;)
         {
-          if (empty()) break;
-          equal_iterator<Self> found = equal_begin(*this, key);
-          equal_iterator<Self> none = equal_end(*this, key);
-          if (found == none) break; // no node matching this key
-          erase_node(found.node_dim, found.node);
+          node_ptr tmp = erase_node(dim, node);
           ++cnt;
+          if (tmp == 0) break; // no further node to erase for sure!
+          details::assign(node, dim,
+                          preorder_first(tmp, dim, rank(), equal_query));
+          if (tmp->parent == node) break; // no more match
         }
       return cnt;
     }

@@ -65,7 +65,7 @@ namespace spatial
      */
     template<typename Rank>
     inline dimension_type
-    incr_dim(const Rank& rank, dimension_type node_dim)
+    incr_dim(Rank rank, dimension_type node_dim)
     { return (node_dim + 1) % rank(); }
 
     /**
@@ -76,8 +76,31 @@ namespace spatial
      */
     template<typename Rank>
     inline dimension_type
-    decr_dim(const Rank& rank, dimension_type node_dim)
-    { return node_dim ? node_dim - 1 : rank() - 1; }
+    decr_dim(Rank rank, dimension_type node_dim)
+    { return (rank() + node_dim - 1) % rank(); }
+
+
+    /**
+     *  Returns the modulo of a node's heigth by a container's rank. This, in
+     *  effect, gives the current dimension along which the node's invarient is
+     *  evaluated.
+     *
+     *  If \c x points to the header, by convention the highest dimension for a
+     *  node invariant is returned.
+     *
+     *  \tparam Link A model of \linkmode.
+     *  \tparam Rank Either \static_rank or \dynamic_rank.
+     *  \param x A constant pointer to a node.
+     *  \param r The rank used in the container.
+     */
+    template <typename Link, typename Rank>
+    inline dimension_type
+    modulo(const Node<Link>* x, Rank r)
+    {
+      dimension_type d = r() - 1;
+      while(!header(x)) { d = incr_dim(r, d); x = x->parent; }
+      return d;
+    }
   }
 }
 

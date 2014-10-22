@@ -145,7 +145,7 @@ public:
    * 
    * \note This item never returns _nullptr_.
    */
-  const MapItem* nearest(const LonLat& point);
+  const MapItem* nearest(const LonLat& point) const;
   
   /**
    * Executes the given function on maximum _max_ nearest items.
@@ -154,7 +154,7 @@ public:
    * \param max Maximum number of items.
    * \param function The function to be executed on every item.
    */
-  void nearTo(const LonLat& point, int max, std::function<void(const MapItem*)> function);
+  void nearTo(const LonLat& point, int max, std::function<void(const MapItem*)> function) const;
   
   /**
    * Gets the running instance of MapRenderer.

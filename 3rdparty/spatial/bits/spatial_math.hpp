@@ -149,7 +149,7 @@ namespace spatial
      *  This arithmetic check is only used when the macro
      *  SPATIAL_SAFER_ARITHMETICS is defined. Check that the multiplication of 2
      *  positive elements has not resulted into an arithmetic error such as
-     *  overflown.
+     *  an overflow.
      *
      *  This check will only work for 2 positive element x and y. This check is
      *  not the best check for arithmetic errors. There are ways to make it
