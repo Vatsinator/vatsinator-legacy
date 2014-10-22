@@ -26,7 +26,6 @@
 #include "network/euroutenotamprovider.h"
 #include "network/plaintextdownloader.h"
 #include "plugins/weatherforecastinterface.h"
-#include "modules/modulemanager.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/userinterface.h"
@@ -34,11 +33,12 @@
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
+#include "vatsimdata/controller.h"
 #include "vatsimdata/fir.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
-#include "vatsimdata/controller.h"
-#include "vatsimdata/pilot.h"
+#include "vatsimdata/vatbookbookingprovider.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/metarlistmodel.h"
@@ -70,6 +70,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __downloader(new PlainTextDownloader()),
     __scheduler(new UpdateScheduler(this)),
     __notamProvider(nullptr),
+    __bookingProvider(nullptr),
     __weatherForecast(nullptr) {
   
   connect(vApp()->userInterface(),              SIGNAL(initialized()),
@@ -90,6 +91,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   
   __notamProvider = new EurouteNotamProvider(this);
+  __bookingProvider = new VatbookBookingProvider(this);
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
@@ -414,10 +416,14 @@ VatsimDataHandler::obsCount() const {
 
 AbstractNotamProvider*
 VatsimDataHandler::notamProvider() {
-  if (__notamProvider == nullptr)
-    __notamProvider = new EurouteNotamProvider();
-  
+  Q_ASSERT(__notamProvider);
   return __notamProvider;
+}
+
+AbstractBookingProvider*
+VatsimDataHandler::bookingProvider() {
+  Q_ASSERT(__bookingProvider);
+  return __bookingProvider;
 }
 
 WeatherForecastInterface*

@@ -23,7 +23,6 @@
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
 #include "events/decisionevent.h"
-#include "modules/modulemanager.h"
 #include "network/plaintextdownloader.h"
 #include "network/resourcemanager.h"
 #include "network/statspurveyor.h"
@@ -55,7 +54,6 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     __worldMap(new WorldMap()),
     __vatsimData(new VatsimDataHandler()),
     __languageManager(new LanguageManager()),
-    __moduleManager(new ModuleManager()),
     __resourceManager(new ResourceManager()),
     __statsPurveyor(new StatsPurveyor()) {
  
@@ -91,7 +89,6 @@ VatsinatorApplication::~VatsinatorApplication() {
   spThread->quit();
   
   delete __settingsManager;
-  delete __moduleManager;
   delete __languageManager;
   delete __vatsimData;
   delete __airportDatabaase;
@@ -150,7 +147,7 @@ VatsinatorApplication::__initialize() {
   QThread* spThread = new QThread(this);
   __statsPurveyor->moveToThread(spThread);
   spThread->start();
- 
+  
   /* Initialize everything else */
   __airlineDatabase->initialize();
   __airportDatabaase->initialize();

@@ -19,8 +19,6 @@
 #include <QtWidgets>
 
 #include "db/airportdatabase.h"
-#include "modules/vatbookhandler.h"
-#include "modules/models/bookedatctablemodel.h"
 #include "network/abstractnotamprovider.h"
 #include "plugins/weatherforecastinterface.h"
 #include "plugins/weatherforecastrequest.h"
@@ -35,11 +33,13 @@
 #include "ui/widgets/weatherforecastwidget.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
+#include "vatsimdata/abstractbookingprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
+#include "vatsimdata/models/atcbookingtablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "netconfig.h"
@@ -117,8 +117,7 @@ AirportDetailsWindow::__updateModels() {
   OutboundTable->setModel(__airport->outbounds());
   ATCTable->setModel(__airport->staff());
   
-  BookedATCTable->setModel(
-      VatbookHandler::getSingleton().notNullModel(QString::fromUtf8(__airport->data()->icao)));
+  BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__airport->icao()));
 }
 
 void
@@ -162,10 +161,10 @@ AirportDetailsWindow::__adjustTables() {
   ATCTable->setColumnWidth(ControllerTableModel::Name, 350);
   ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
   
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Callsign, 150);
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Name, 300);
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Date, 150);
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Hours, 150);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Callsign, 150);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Name, 300);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Date, 150);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Hours, 150);
 }
 
 void
