@@ -9,12 +9,6 @@ set (vatsinator_TARGET
     vatsinator
 )
 
-if (APPLE) # bundle looks better
-  set (vatsinator_TARGET
-      Vatsinator
-  )
-endif (APPLE)
-
 set (vatsinator_SRCS
     netconfig.cpp
     vatsinatorapplication.cpp
@@ -34,7 +28,7 @@ set (vatsinator_SUBDIRS
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable (${vatsinator_TARGET}
+add_executable (${vatsinator_TARGET} MACOSX_BUNDLE
     main.cpp
     ${vatsinator_SRCS}
 )
@@ -120,17 +114,7 @@ if (LINUX)
 elseif (APPLE)
 
     # move all files to .app bundle
-    set (vatsinator_BUNDLE ${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_TARGET}.app)
-    
-    add_custom_command (TARGET ${vatsinator_TARGET} POST_BUILD
-        COMMAND mkdir ARGS -p
-        ${vatsinator_BUNDLE}/Contents/Resources/
-        COMMAND cp ARGS -R
-        ${MACOSX_BUNDLE_ICON} ${vatsinator_BUNDLE}/Contents/Resources/
-        COMMAND cp ARGS -R
-        ${CMAKE_BINARY_DIR}/vatsinator.resources/* ${vatsinator_BUNDLE}/Contents/Resources/
-    )
-    
+    set (vatsinator_BUNDLE ${vatsinator_TARGET}.app)
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
 
     exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
@@ -138,10 +122,10 @@ elseif (APPLE)
     exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
         OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
     # setup path to libqcocoa.dylib
-    set (QT_QCOCOA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
-    
+    set (QT_QCOCOA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)    
+
     include (DeployQt5)
-    install_qt5_executable ("${vatsinator_TARGET}.app"
+    install_qt5_executable ("${vatsinator_BUNDLE}"
         "${QT_QCOCOA_PLUGIN}" # qtplugins
         "" # libs
         "/usr/local/lib" # dirs
