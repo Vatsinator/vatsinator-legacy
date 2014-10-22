@@ -59,7 +59,7 @@ endif (UNIX AND NOT APPLE AND NOT MINGW)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
 
-# set configuration types (msvc)
+# set configuration types (msvc/xcode)
 if (CMAKE_CONFIGURATION_TYPES)
   set (CMAKE_CONFIGURATION_TYPES Debug Release)
   set (CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
@@ -67,7 +67,7 @@ if (CMAKE_CONFIGURATION_TYPES)
     FORCE)
 endif()
 
-# set CMAKE_BUILD_TYPE (gcc/clang)
+# set CMAKE_BUILD_TYPE (gcc)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
   set (CMAKE_BUILD_TYPE Debug)
 else ()
@@ -75,7 +75,7 @@ else ()
 endif ()
 
 # set CXX_FLAGS
-if (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
   set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
   set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")

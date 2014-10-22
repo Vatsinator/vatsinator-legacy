@@ -137,7 +137,7 @@ elseif (APPLE)
     exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
         OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
     # setup path to libqcocoa.dylib
-    set (QT_QCOCOA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)    
+    set (QT_QCOCOA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
 
     include (DeployQt5)
     install_qt5_executable ("${vatsinator_BUNDLE}"
