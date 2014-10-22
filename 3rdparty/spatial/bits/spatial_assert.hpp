@@ -248,6 +248,8 @@ namespace spatial
      const details::Node<details::Relaxed_kdtree_link<Key, Value> >* node,
      std::size_t depth)
     {
+      if (node->left)
+        assert_inspect_node(cmp, rank, o, node->left, depth + 1);
       for (std::size_t i = 0; i < depth; ++i) o << ".";
       if (header(node->parent)) o << "H";
       else if (node->parent->left == node) o << "L";
@@ -279,8 +281,6 @@ namespace spatial
         << std::flush
         << " key:" << details::const_key(node) << "}"
         << std::endl;
-      if (node->left)
-        assert_inspect_node(cmp, rank, o, node->left, depth + 1);
       if (node->right)
         assert_inspect_node(cmp, rank, o, node->right, depth + 1);
       return o;

@@ -29,7 +29,7 @@ namespace spatial
   struct accessor_minus
     : private Accessor // empty member optimization
   {
-    accessor_minus(const Accessor& accessor_ = Accessor())
+    accessor_minus(Accessor accessor_ = Accessor())
       : Accessor(accessor_)
     { }
 
@@ -127,7 +127,7 @@ namespace spatial
   struct accessor_less
     : private Accessor // empty member optimization
   {
-    accessor_less(const Accessor& access = Accessor())
+    accessor_less(Accessor access = Accessor())
       : Accessor(access)
     { }
 
