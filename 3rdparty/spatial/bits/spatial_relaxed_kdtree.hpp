@@ -999,7 +999,6 @@ namespace spatial
     ::erase_node
     (dimension_type node_dim, node_ptr node)
     {
-      typedef mapping_iterator<Self> mapping_iterator;
       SPATIAL_ASSERT_CHECK(node != 0);
       SPATIAL_ASSERT_CHECK(!header(node));
       // never ask to erase a single root node in this function
@@ -1007,35 +1006,34 @@ namespace spatial
       node_ptr parent = node->parent;
       while (node->right != 0 || node->left != 0)
         {
-          mapping_iterator candidate(*this, 0, 0, 0);
+          std::pair<node_ptr, dimension_type> candidate;
           if (node->left != 0
               && (node->right == 0
                   || const_link(node->right)->weight
                   < const_link(node->left)->weight))
             {
-              candidate.mapping_dimension() = node_dim;
-              candidate.node_dim = incr_dim(rank(), node_dim);
-              candidate.node = node->left;
-              candidate = maximum_mapping(candidate);
-              if (get_leftmost() == candidate.node)
+              candidate
+                = maximum_mapping(node->left, incr_dim(rank(), node_dim),
+                                  rank(), node_dim, key_comp());
+              if (get_leftmost() == candidate.first)
                 { set_leftmost(node); }
               if (get_rightmost() == node)
-                { set_rightmost(candidate.node); }
+                { set_rightmost(candidate.first); }
             }
           else
             {
-              candidate.mapping_dimension() = node_dim;
-              candidate.node_dim = incr_dim(rank(), node_dim);
-              candidate.node = node->right;
-              candidate = minimum_mapping(candidate);
-              if (get_rightmost() == candidate.node)
+              candidate
+                = minimum_mapping(node->right,
+                                  incr_dim(rank(), node_dim),
+                                  rank(), node_dim, key_comp());
+              if (get_rightmost() == candidate.first)
                 { set_rightmost(node); }
               if (get_leftmost() == node)
-                { set_leftmost(candidate.node); }
+                { set_leftmost(candidate.first); }
             }
-          swap_node(node, candidate.node);
-                  node = candidate.node;
-          node_dim = candidate.node_dim;
+          swap_node(node, candidate.first);
+          node = candidate.first;
+          node_dim = candidate.second;
         }
       SPATIAL_ASSERT_CHECK(!header(node));
       SPATIAL_ASSERT_CHECK(node != 0);
