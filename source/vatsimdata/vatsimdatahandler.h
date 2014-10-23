@@ -315,6 +315,12 @@ public:
    */
   inline bool isInitialized() const { return __initialized; }
   
+  /**
+   * Returns the instance of PlainTextDownloader that is used to download
+   * Vatsim data.
+   */
+  inline const PlainTextDownloader* downloader() const { return __downloader; }
+  
   int clientCount() const;
   int pilotCount() const;
   int atcCount() const;

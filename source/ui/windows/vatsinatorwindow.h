@@ -43,7 +43,7 @@ public:
    * or puts simple "Last update" text.
    * \param text If specified, this text will be shown.
    */
-  void statusBarUpdate(const QString& text = "", const QPalette& palette = QPalette());
+  void statusBarUpdate(const QString& text = QString(), const QPalette& palette = QPalette());
   
   /**
    * The middle part of status bar - how many clients, etc etc.
@@ -56,7 +56,6 @@ public:
   bool event(QEvent* event) override;
   
   inline MapWidget* mapWidget() { return MapDisplay; }
-  inline QProgressBar* progressBar() { return __progressBar; }
   
 protected:
   void closeEvent(QCloseEvent* event) override;
@@ -73,6 +72,7 @@ private slots:
   void __dataUpdated();
   void __dataCorrupted();
   void __enableRefreshAction();
+  void __updateProgress(qint64 read, qint64 total);
   
 private:  
   QLabel*       __statusBox;

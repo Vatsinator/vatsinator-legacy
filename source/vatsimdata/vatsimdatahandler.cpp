@@ -66,7 +66,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __clientCount(0),
     __statusFileFetched(false),
     __initialized(false),
-    __downloader(new PlainTextDownloader()),
+    __downloader(new PlainTextDownloader(this)),
     __scheduler(new UpdateScheduler(this)),
     __notamProvider(nullptr),
     __bookingProvider(nullptr),
@@ -97,8 +97,6 @@ VatsimDataHandler::~VatsimDataHandler() {
   qDeleteAll(__clients);
   qDeleteAll(__airports);
   qDeleteAll(__firs);
-  
-  delete __downloader;
 }
 
 void
@@ -746,10 +744,6 @@ VatsimDataHandler::__slotUiCreated() {
     __loadCachedData();
   else if (cacheEnabled)
     connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
-  
-  /* TODO Move the below to UserInterface */
-  if (wui())
-    __downloader->setProgressBar(wui()->mainWindow()->progressBar());
   
   /* The first download */
   __beginDownload();
