@@ -1,6 +1,6 @@
 /*
     flighttableview.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,57 +18,39 @@
 
 #include <QtWidgets>
 
-#include "ui/buttons/clientdetailsbutton.h"
-#include "ui/userinterface.h"
 #include "vatsimdata/models/flighttablemodel.h"
-#include "vatsinatorapplication.h"
 
 #include "flighttableview.h"
 
-FlightTableView::FlightTableView(QWidget* parent) :
-    QTableView(parent) {}
+FlightTableView::FlightTableView(QWidget* parent) : QTableView(parent) {}
 
 void
-FlightTableView::setModel(FlightTableModel* model) {
-  if (this->model()) {
-    disconnect(this, SLOT(__updateButtons()));
-  }
-  
+FlightTableView::setModel(QAbstractItemModel* model) {
   QTableView::setModel(model);
-  
-  __updateButtons();
-  
-  connect(model,    SIGNAL(sorted()),
-          this,      SLOT(__updateButtons()));
+//   __resizeColumns();
 }
 
 void
-FlightTableView::rowsInserted(const QModelIndex& parent, int start, int end) {
-  QTableView::rowsInserted(parent, start, end);
-  __updateButtons(start, end + 1);
+FlightTableView::resizeEvent(QResizeEvent* event) {
+//   __resizeColumns();
+  QTableView::resizeEvent(event);
 }
 
 void
-FlightTableView::__updateButtons(int start, int end) {
-  Q_ASSERT(model());
-  const FlightTableModel* fModel = qobject_cast<const FlightTableModel*>(model());
-  Q_ASSERT(fModel);
+FlightTableView::__resizeColumns() {
+  if (!model())
+    return;
   
-  if (start == -1)
-    start = 0;
+  int columnsVisible = 0;
+  for (int i = 0; i < model()->columnCount(); ++i) {
+    if (!isColumnHidden(i))
+      columnsVisible += 1;
+  }
   
-  if (end == -1)
-    end = fModel->rowCount();
+  int w = width() / columnsVisible;
   
-  for (int i = start; i < end; ++i) {
-    if (fModel->flights()[i]->isPrefiledOnly())
-      continue;
-    
-    ClientDetailsButton* dButton = new ClientDetailsButton(fModel->flights()[i]);
-    connect(dButton,                    SIGNAL(clicked(const Client*)),
-            vApp()->userInterface(),    SLOT(showDetails(const Client*)));
-    setIndexWidget(fModel->index(i, FlightTableModel::Button), dButton);
+  for (int i = 0; i < model()->columnCount(); ++i) {
+    if (!isColumnHidden(i))
+      setColumnWidth(i, w);
   }
 }
-
-

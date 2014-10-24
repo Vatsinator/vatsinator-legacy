@@ -13,6 +13,12 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>500</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>%1 - airport details</string>
   </property>
@@ -61,7 +67,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="FlightTableView" name="InboundTable">
+        <widget class="QTableView" name="InboundTable">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -132,7 +138,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="FlightTableView" name="OutboundTable">
+        <widget class="QTableView" name="OutboundTable">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -200,7 +206,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <widget class="ControllerTableView" name="ATCTable">
+        <widget class="QTableView" name="ATCTable">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -526,8 +532,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>498</width>
-                   <height>128</height>
+                   <width>494</width>
+                   <height>124</height>
                   </rect>
                  </property>
                 </widget>
@@ -660,7 +666,9 @@
         <string>Show</string>
        </property>
        <property name="icon">
-        <iconset theme="go-jump"/>
+        <iconset theme="go-jump">
+         <normaloff/>
+        </iconset>
        </property>
       </widget>
      </item>
@@ -688,16 +696,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>FlightTableView</class>
-   <extends>QTableView</extends>
-   <header>ui/views/flighttableview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>ControllerTableView</class>
-   <extends>QTableView</extends>
-   <header>ui/views/controllertableview.h</header>
-  </customwidget>
   <customwidget>
    <class>DelayedModelTableView</class>
    <extends>QTableView</extends>

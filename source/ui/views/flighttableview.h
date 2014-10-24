@@ -1,6 +1,6 @@
 /*
     flighttableview.h
-    Copyright (C) 2012-2013  michal@garapich.pl
+    Copyright (C) 2012-2014  michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,8 +26,7 @@ class FlightTableModel;
 
 /**
  * The FlightTableView class is used to represent all of the flights in the
- * table. It shows the list of flights, given via setModel() and draws a
- * pretty details-button in each row.
+ * table. It automatically resizes columns to be readable.
  */
 class FlightTableView : public QTableView {
   Q_OBJECT
@@ -38,20 +37,16 @@ public:
    */
   explicit FlightTableView(QWidget* parent = nullptr);
   
-  /**
-   * Sets buttons for the new model, handles sorted model.
-   */
-  void setModel(FlightTableModel* model);
+  void setModel(QAbstractItemModel* model) override;
   
-protected slots:
-  void rowsInserted(const QModelIndex& parent, int start, int end);
+protected:
+  void resizeEvent(QResizeEvent* event) override;
   
-private slots:
+private:
   /**
-   * Re-sets buttons within given range.
-   * If no range is given, whole view is updated.
+   * Calculates size of each column in order to fit perfectly in the view.
    */
-  void __updateButtons(int start = -1, int end = -1);
+  void __resizeColumns();
   
 };
 

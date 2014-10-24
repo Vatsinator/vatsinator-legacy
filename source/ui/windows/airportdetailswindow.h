@@ -1,6 +1,6 @@
 /*
     airportdetailswindow.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,8 +30,11 @@ class Pilot;
 class NotamListModel;
 class WeatherForecastModel;
 
-class AirportDetailsWindow :
-    public BaseWindow,
+/**
+ * The AirportDetailsWindow class represents a window that shows up when user
+ * clicks on airport icon
+ */
+class AirportDetailsWindow : public BaseWindow,
     private Ui::AirportDetailsWindow {
 
   Q_OBJECT
@@ -44,7 +47,6 @@ protected:
   void showEvent(QShowEvent* event) override;
 
 private:
-  void __updateModels();
   void __fillLabels();
   void __adjustTables();
   

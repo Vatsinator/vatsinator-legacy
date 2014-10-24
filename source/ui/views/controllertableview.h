@@ -1,6 +1,6 @@
 /*
     controllertableview.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,18 +37,6 @@ public:
    * The default constructor passes _parent_ to QTableView's.
    */
   explicit ControllerTableView(QWidget* parent = nullptr);
-  
-  void setModel(ControllerTableModel* model);
-  
-protected slots:
-  void rowsInserted(const QModelIndex& parent, int start, int end) override;
-  
-private slots:
-  /**
-   * Re-sets buttons within given range.
-   * If no range is given, whole view is updated.
-   */
-  void __updateButtons(int start = -1, int end = -1);
   
   
 };

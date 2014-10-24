@@ -48,7 +48,6 @@ AtcListWindow::showEvent(QShowEvent* event) {
     m->deleteLater();
   
   ATCTable->setModel(vApp()->vatsimDataHandler()->controllerTableModel());
-  ATCTable->hideColumn(ControllerTableModel::Button);
   __resizeColumns();
   
   BaseWindow::showEvent(event);

@@ -477,7 +477,7 @@ private slots:
   /**
    * If any file can't be fetched.
    */
-  void __handleFetchError();
+  void __handleFetchError(QString error);
   
   /**
    * Reload forecast provider when user chooses another one.
