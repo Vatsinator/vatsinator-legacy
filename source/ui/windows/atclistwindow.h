@@ -33,11 +33,7 @@ public:
   AtcListWindow(QWidget* parent = nullptr);
 
 protected:
-  void resizeEvent(QResizeEvent* event) override;
   void showEvent(QShowEvent* event) override;
-
-private:
-  void __resizeColumns();
 
 private slots:
   void __handleDoubleClicked(const QModelIndex& index);

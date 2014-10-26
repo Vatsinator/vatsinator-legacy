@@ -42,8 +42,7 @@ public:
   enum Column {
     Callsign  = 0,
     Name      = 1,
-    Frequency = 2,
-    Button    = 3
+    Frequency = 2
   };
   
   explicit ControllerTableModel(QObject* parent = nullptr);

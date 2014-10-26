@@ -20,6 +20,7 @@
 #include <QtWidgets>
 
 #include "events/mouselonlatevent.h"
+#include "network/plaintextdownloader.h"
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/atclistwindow.h"
 #include "ui/windows/databasewindow.h"
@@ -72,6 +73,9 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
           this,                         SLOT(__dataCorrupted()));
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimStatusUpdated()),
           this,                         SLOT(__enableRefreshAction()));
+  
+  connect(vApp()->vatsimDataHandler()->downloader(),    SIGNAL(progress(qint64,qint64)),
+          this,                                         SLOT(__updateProgress(qint64, qint64)));
   
 #ifdef Q_OS_DARWIN
   /* On Mac set main manu name to "Menu" in order not to have two
@@ -227,4 +231,10 @@ VatsinatorWindow::__dataCorrupted() {
 void
 VatsinatorWindow::__enableRefreshAction() {
   ActionRefresh->setEnabled(true);
+}
+
+void
+VatsinatorWindow::__updateProgress(qint64 read, qint64 total) {
+  __progressBar->setMaximum(total);
+  __progressBar->setValue(read);
 }

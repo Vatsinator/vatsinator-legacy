@@ -13,6 +13,12 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>500</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>%1 - airport details</string>
   </property>
@@ -61,7 +67,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="FlightTableView" name="InboundTable">
+        <widget class="QTableView" name="InboundTable">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -78,7 +84,7 @@
           <bool>false</bool>
          </property>
          <property name="selectionMode">
-          <enum>QAbstractItemView::NoSelection</enum>
+          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
@@ -98,20 +104,11 @@
          <property name="cornerButtonEnabled">
           <bool>false</bool>
          </property>
-         <attribute name="horizontalHeaderCascadingSectionResizes">
-          <bool>true</bool>
-         </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>30</number>
          </attribute>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderMinimumSectionSize">
-          <number>20</number>
-         </attribute>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
          </attribute>
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
@@ -132,7 +129,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="FlightTableView" name="OutboundTable">
+        <widget class="QTableView" name="OutboundTable">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -149,7 +146,7 @@
           <bool>false</bool>
          </property>
          <property name="selectionMode">
-          <enum>QAbstractItemView::NoSelection</enum>
+          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
@@ -169,17 +166,8 @@
          <property name="cornerButtonEnabled">
           <bool>false</bool>
          </property>
-         <attribute name="horizontalHeaderCascadingSectionResizes">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>30</number>
-         </attribute>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
          </attribute>
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
@@ -200,7 +188,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <widget class="ControllerTableView" name="ATCTable">
+        <widget class="QTableView" name="ATCTable">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -217,7 +205,7 @@
           <bool>false</bool>
          </property>
          <property name="selectionMode">
-          <enum>QAbstractItemView::NoSelection</enum>
+          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
@@ -237,17 +225,8 @@
          <property name="cornerButtonEnabled">
           <bool>false</bool>
          </property>
-         <attribute name="horizontalHeaderCascadingSectionResizes">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>30</number>
-         </attribute>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
-         </attribute>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
          </attribute>
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
@@ -285,7 +264,7 @@
           <bool>false</bool>
          </property>
          <property name="selectionMode">
-          <enum>QAbstractItemView::NoSelection</enum>
+          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
@@ -660,7 +639,9 @@
         <string>Show</string>
        </property>
        <property name="icon">
-        <iconset theme="go-jump"/>
+        <iconset theme="go-jump">
+         <normaloff/>
+        </iconset>
        </property>
       </widget>
      </item>
@@ -688,16 +669,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>FlightTableView</class>
-   <extends>QTableView</extends>
-   <header>ui/views/flighttableview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>ControllerTableView</class>
-   <extends>QTableView</extends>
-   <header>ui/views/controllertableview.h</header>
-  </customwidget>
   <customwidget>
    <class>DelayedModelTableView</class>
    <extends>QTableView</extends>

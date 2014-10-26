@@ -87,9 +87,8 @@ ControllerTableModel::columnCount(const QModelIndex& parent) const {
   /* 0 - callsign
    * 1 - name
    * 2 - freq
-   * 3 - button
    */
-  return 4;
+  return 3;
 }
 
 QVariant

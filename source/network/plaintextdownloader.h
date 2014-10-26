@@ -22,15 +22,12 @@
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QProgressBar>
 #include <QObject>
 #include <QQueue>
 #include <QUrl>
 
 /**
  * The PlainTextDownloader is used to download files directly into memory.
- * 
- * \todo Create progress signal.
  */
 class PlainTextDownloader : public QObject {
   Q_OBJECT
@@ -45,21 +42,24 @@ signals:
   
   /**
    * Emitted if a network error occured during the download process.
+   * 
+   * \param error The error information.
    */
-  void error();
+  void error(QString error);
   
   /**
-   * Emitted when user aborts the download.
+   * This signal is emitted in order to indicate the progress.
+   * 
+   * \param read Bytes read out of _total_.
+   * \param total Total bytes to be read.
    */
-  void aborted();
+  void progress(qint64 read, qint64 total);
 
 public:
   /**
-   * \todo Remove pb.
-   * 
-   * \param parent Passed to QObject.
+   * The default constructor passes _parent_ to QObject.
    */
-  PlainTextDownloader(QProgressBar* pb = 0, QObject* parent = nullptr);
+  PlainTextDownloader(QObject* parent = nullptr);
 
   /**
    * Enqueues the request.
@@ -68,22 +68,6 @@ public:
    * \param url URL to be downloaded.
    */
   void fetch(const QUrl& url);
-  
-  /**
-   * \deprecated
-   * Sets the given progress bar.
-   */
-  void setProgressBar(QProgressBar* pb);
-  
-  /**
-   * The progress bar to be updated on readyRead().
-   */
-  inline QProgressBar* progressBar() { return __progressBar; }
-  
-  /**
-   * The progress bar to be updated on readyRead().
-   */
-  inline const QProgressBar* progressBar() const { return __progressBar; }
   
   /**
    * Returns false if the queue is empty, otherwise true.
@@ -99,6 +83,7 @@ public slots:
   /**
    * Aborts the download.
    * If the queue is not empty, new request will be started immediately.
+   * The finished() signal will _not_ be emitted.
    */
   void abort();
 
@@ -108,11 +93,8 @@ private:
 private slots:
   void __readyRead();
   void __finished();
-  void __updateProgress(qint64 read, qint64 total);
   
 private:
-  QProgressBar*   __progressBar;
-
   QQueue<QUrl>    __urls;
 
   QString __temp;

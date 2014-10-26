@@ -29,7 +29,7 @@ BaseWindow::BaseWindow(QWidget* parent, Qt::WindowFlags flags) :
   QWidget(parent, flags),
   __windowSetup(false) {}
 
-void BaseWindow::showEvent(QShowEvent*) {
+void BaseWindow::showEvent(QShowEvent* event) {
   if (!__windowSetup) {
     this->setGeometry(
       QStyle::alignedRect(
@@ -42,5 +42,7 @@ void BaseWindow::showEvent(QShowEvent*) {
     
     __windowSetup = true;
   }
+  
+  QWidget::showEvent(event);
 }
 

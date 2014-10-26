@@ -1,6 +1,6 @@
 /*
     airportdetailswindow.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,6 +51,10 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
     BaseWindow(parent),
     __airport(airport) {
   setupUi(this);
+  InboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  OutboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  ATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
   connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::hide);
   connect(NotamTableView, &DelayedModelTableView::doubleClicked,
@@ -79,8 +83,18 @@ AirportDetailsWindow::~AirportDetailsWindow() {}
 void
 AirportDetailsWindow::showEvent(QShowEvent* event) {
   __fillLabels();
-  __updateModels();
-  __adjustTables();
+  
+  /* Set models */
+  InboundTable->setModel(__airport->inbounds());
+  OutboundTable->setModel(__airport->outbounds());
+  ATCTable->setModel(__airport->staff());
+  BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__airport->icao()));
+  
+  /* Hide obvious things */
+  InboundTable->hideColumn(FlightTableModel::Name);
+  InboundTable->hideColumn(FlightTableModel::To);
+  OutboundTable->hideColumn(FlightTableModel::Name);
+  OutboundTable->hideColumn(FlightTableModel::From);
   
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   
@@ -112,15 +126,6 @@ AirportDetailsWindow::showEvent(QShowEvent* event) {
 }
 
 void
-AirportDetailsWindow::__updateModels() {
-  InboundTable->setModel(__airport->inbounds());
-  OutboundTable->setModel(__airport->outbounds());
-  ATCTable->setModel(__airport->staff());
-  
-  BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__airport->icao()));
-}
-
-void
 AirportDetailsWindow::__fillLabels() {
   setWindowTitle(tr("%1 - airport details").arg(__airport->data()->icao));
 
@@ -141,40 +146,11 @@ AirportDetailsWindow::__fillLabels() {
 }
 
 void
-AirportDetailsWindow::__adjustTables() {
-  // make the table nice
-  InboundTable->hideColumn(FlightTableModel::Name);
-  InboundTable->hideColumn(FlightTableModel::To);
-
-  InboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  InboundTable->setColumnWidth(FlightTableModel::From, 350);
-  InboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-
-  OutboundTable->hideColumn(FlightTableModel::Name);
-  OutboundTable->hideColumn(FlightTableModel::From);
-
-  OutboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  OutboundTable->setColumnWidth(FlightTableModel::To, 350);
-  OutboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-
-  ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
-  ATCTable->setColumnWidth(ControllerTableModel::Name, 350);
-  ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
-  
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Callsign, 150);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Name, 300);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Date, 150);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Hours, 150);
-}
-
-void
 AirportDetailsWindow::__updateForecast() {
   WeatherForecastReply* r = qobject_cast<WeatherForecastReply*>(sender());
   Q_ASSERT(r);
-  
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   Q_ASSERT(w);
-  
   w->setStatus(DelayedWidget::Finished);
   
   switch (r->error()) {

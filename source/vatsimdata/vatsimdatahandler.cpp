@@ -66,7 +66,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __clientCount(0),
     __statusFileFetched(false),
     __initialized(false),
-    __downloader(new PlainTextDownloader()),
+    __downloader(new PlainTextDownloader(this)),
     __scheduler(new UpdateScheduler(this)),
     __notamProvider(nullptr),
     __bookingProvider(nullptr),
@@ -76,8 +76,8 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
           this,                                 SLOT(__slotUiCreated()));
   connect(__downloader,                         SIGNAL(finished(QString)),
           this,                                 SLOT(__dataFetched(QString)));
-  connect(__downloader,                         SIGNAL(error()),
-          this,                                 SLOT(__handleFetchError()));
+  connect(__downloader,                         SIGNAL(error(QString)),
+          this,                                 SLOT(__handleFetchError(QString)));
   connect(__scheduler,                          SIGNAL(timeToUpdate()),
           this,                                 SLOT(requestDataUpdate()));
   connect(this,                                 SIGNAL(vatsimStatusError()),
@@ -97,8 +97,6 @@ VatsimDataHandler::~VatsimDataHandler() {
   qDeleteAll(__clients);
   qDeleteAll(__airports);
   qDeleteAll(__firs);
-  
-  delete __downloader;
 }
 
 void
@@ -747,10 +745,6 @@ VatsimDataHandler::__slotUiCreated() {
   else if (cacheEnabled)
     connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
   
-  /* TODO Move the below to UserInterface */
-  if (wui())
-    __downloader->setProgressBar(wui()->mainWindow()->progressBar());
-  
   /* The first download */
   __beginDownload();
 }
@@ -782,7 +776,9 @@ VatsimDataHandler::__dataFetched(QString data) {
 }
 
 void
-VatsimDataHandler::__handleFetchError() {
+VatsimDataHandler::__handleFetchError(QString error) {
+  qWarning("Error downloading VATSIM data (%s)", qPrintable(error));
+  
   if (__statusFileFetched) {
     emit vatsimDataError();
   } else {

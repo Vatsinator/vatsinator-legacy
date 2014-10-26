@@ -62,8 +62,7 @@ public:
     Label       = 0,
     Facilities  = 1,
     Outbounds   = 2,
-    Inbounds    = 3,
-    Button      = 4
+    Inbounds    = 3
   };
 
 private:

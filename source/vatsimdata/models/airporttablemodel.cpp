@@ -50,7 +50,7 @@ AirportTableModel::rowCount(const QModelIndex& index) const {
 int
 AirportTableModel::columnCount(const QModelIndex& index) const {
   Q_UNUSED(index);
-  return 5;
+  return 4;
 }
 
 QVariant

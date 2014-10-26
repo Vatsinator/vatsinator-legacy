@@ -16,6 +16,7 @@ set (vatsinator_SRCS
 
 set (vatsinator_HEADERS
   netconfig.h
+  singleton.h
   vatsinatorapplication.h
 )
 

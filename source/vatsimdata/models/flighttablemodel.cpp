@@ -91,9 +91,8 @@ FlightTableModel::columnCount(const QModelIndex& parent) const {
    * 2 - from
    * 3 - to
    * 4 - aircraft
-   * 5 - button
    */
-  return 6;
+  return 5;
 }
 
 QVariant
@@ -144,8 +143,6 @@ FlightTableModel::data(const QModelIndex& index, int role) const {
 
         case Aircraft:
           return __flights[index.row()]->aircraft();
-        case Button: // for non-prefiled-only this will be overriden by QPushButton widget
-          return tr("Prefiled");
         default:
           return QVariant();
       }

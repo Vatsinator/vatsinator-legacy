@@ -45,8 +45,7 @@ public:
     Name        = 1,
     From        = 2,
     To          = 3,
-    Aircraft    = 4,
-    Button      = 5
+    Aircraft    = 4
   };
   
   /**

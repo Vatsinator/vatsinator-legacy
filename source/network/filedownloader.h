@@ -29,9 +29,11 @@
 class QProgressBar;
 class QNetworkReply;
 
-/*
+/**
  * The FileDownloader class is a convenience class that simplfies
  * downloading files from the internet.
+ * 
+ * \todo Add progress() signal.
  */
 class FileDownloader : public QObject {
   Q_OBJECT

@@ -34,7 +34,7 @@ namespace {
 VatbookBookingProvider::VatbookBookingProvider(QObject* parent) :
     AbstractBookingProvider(parent),
     __nullModel(new AtcBookingTableModel(this)),
-    __downloader(new PlainTextDownloader(nullptr, this)) {
+    __downloader(new PlainTextDownloader(this)) {
 
   __timer.setTimerType(Qt::VeryCoarseTimer);
   connect(&__timer, &QTimer::timeout, this, &VatbookBookingProvider::__update);

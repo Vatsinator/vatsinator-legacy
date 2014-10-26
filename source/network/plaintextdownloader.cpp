@@ -23,9 +23,8 @@
 
 #include "plaintextdownloader.h"
 
-PlainTextDownloader::PlainTextDownloader(QProgressBar* pb, QObject* parent) :
+PlainTextDownloader::PlainTextDownloader(QObject* parent) :
     QObject(parent),
-    __progressBar(pb),
     __reply(nullptr) {}
 
 void
@@ -34,11 +33,6 @@ PlainTextDownloader::fetch(const QUrl& url) {
 
   if (!__reply)
     __startRequest();
-}
-
-void
-PlainTextDownloader::setProgressBar(QProgressBar* pb) {
-  __progressBar = pb;
 }
 
 void
@@ -65,14 +59,9 @@ PlainTextDownloader::__startRequest() {
   
   __temp.clear(); 
 
-  connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
-  connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
-  
-  if (__progressBar) {
-    connect(__reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this,    SLOT(__updateProgress(qint64, qint64)));
-    __progressBar->setEnabled(true);
-  }
+  connect(__reply, &QNetworkReply::finished, this, &PlainTextDownloader::__finished);
+  connect(__reply, &QNetworkReply::readyRead, this, &PlainTextDownloader::__readyRead);
+  connect(__reply, &QNetworkReply::downloadProgress, this, &PlainTextDownloader::progress);
 }
 
 void
@@ -82,12 +71,6 @@ PlainTextDownloader::__readyRead() {
 
 void
 PlainTextDownloader::__finished() {
-  
-  if (__progressBar) {
-    __progressBar->reset();
-    __progressBar->setEnabled(false);
-  }
-  
   if (__reply->error() == QNetworkReply::NoError) {
     qDebug("PlainTextDownloader: %s: finished",
            qPrintable(__reply->url().toString()));
@@ -98,7 +81,7 @@ PlainTextDownloader::__finished() {
              qPrintable(__reply->url().toString()),
              qPrintable(__reply->errorString()));
     
-    emit error();
+    emit error(__reply->errorString());
   }
   
   __reply->deleteLater();
@@ -106,10 +89,4 @@ PlainTextDownloader::__finished() {
   
   if (hasPendingTasks())
     __startRequest();
-}
-
-void
-PlainTextDownloader::__updateProgress(qint64 read, qint64 total) {
-  __progressBar->setMaximum(total);
-  __progressBar->setValue(read);
 }
