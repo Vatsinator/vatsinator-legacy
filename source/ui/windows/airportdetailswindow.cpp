@@ -54,6 +54,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
   InboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   OutboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   ATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
   connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::hide);
   connect(NotamTableView, &DelayedModelTableView::doubleClicked,
@@ -82,7 +83,6 @@ AirportDetailsWindow::~AirportDetailsWindow() {}
 void
 AirportDetailsWindow::showEvent(QShowEvent* event) {
   __fillLabels();
-//   __adjustTables();
   
   /* Set models */
   InboundTable->setModel(__airport->inbounds());
@@ -143,33 +143,6 @@ AirportDetailsWindow::__fillLabels() {
   CityLabel->setText(QString::fromUtf8(__airport->data()->city));
   CountryLabel->setText(QString::fromUtf8(__airport->data()->country));
   AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->data()->altitude)));
-}
-
-void
-AirportDetailsWindow::__adjustTables() {
-  // make the table nice
-  InboundTable->hideColumn(FlightTableModel::Name);
-  InboundTable->hideColumn(FlightTableModel::To);
-
-  InboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  InboundTable->setColumnWidth(FlightTableModel::From, 350);
-  InboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-
-  OutboundTable->hideColumn(FlightTableModel::Name);
-  OutboundTable->hideColumn(FlightTableModel::From);
-
-  OutboundTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  OutboundTable->setColumnWidth(FlightTableModel::To, 350);
-  OutboundTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-
-  ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
-  ATCTable->setColumnWidth(ControllerTableModel::Name, 350);
-  ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
-  
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Callsign, 150);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Name, 300);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Date, 150);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Hours, 150);
 }
 
 void

@@ -30,6 +30,7 @@
 FlightListWindow::FlightListWindow(QWidget* parent) :
     BaseWindow(parent) {
   setupUi(this);
+  FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
   connect(qApp,         SIGNAL(aboutToQuit()),
           this,         SLOT(hide()));
@@ -38,36 +39,13 @@ FlightListWindow::FlightListWindow(QWidget* parent) :
 }
 
 void
-FlightListWindow::resizeEvent(QResizeEvent* event) {
-  QWidget::resizeEvent(event);
-  __resizeColumns();
-}
-
-void
 FlightListWindow::showEvent(QShowEvent* event) {
   if (auto m = FlightsTable->model())
     m->deleteLater();
   
   FlightsTable->setModel(vApp()->vatsimDataHandler()->flightTableModel());
-  __resizeColumns();
   
   BaseWindow::showEvent(event);
-}
-
-void
-FlightListWindow::__resizeColumns() {
-  static Q_DECL_CONSTEXPR int CallsignWidth = 100;
-  static Q_DECL_CONSTEXPR int AircraftWidth = 120;
-  
-  const int scrollbarWidth = qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-
-  int spaceLeft = FlightsTable->width() - CallsignWidth - AircraftWidth - scrollbarWidth;
-  spaceLeft /= 3;
-
-  FlightsTable->setColumnWidth(FlightTableModel::Callsign, CallsignWidth);
-  FlightsTable->setColumnWidth(FlightTableModel::Name, spaceLeft);
-  FlightsTable->setColumnWidth(FlightTableModel::From, spaceLeft);
-  FlightsTable->setColumnWidth(FlightTableModel::To, spaceLeft);
 }
 
 void

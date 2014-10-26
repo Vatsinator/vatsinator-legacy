@@ -29,6 +29,7 @@
 AtcListWindow::AtcListWindow(QWidget* parent) :
     BaseWindow(parent) {
   setupUi(this);
+  ATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
   connect(qApp,         SIGNAL(aboutToQuit()),
           this,         SLOT(hide()));
@@ -37,33 +38,13 @@ AtcListWindow::AtcListWindow(QWidget* parent) :
 }
 
 void
-AtcListWindow::resizeEvent(QResizeEvent* event) {
-  QWidget::resizeEvent(event);
-  __resizeColumns();
-}
-
-void
 AtcListWindow::showEvent(QShowEvent* event) {
   if (auto m = ATCTable->model())
     m->deleteLater();
   
   ATCTable->setModel(vApp()->vatsimDataHandler()->controllerTableModel());
-  __resizeColumns();
   
   BaseWindow::showEvent(event);
-}
-
-void
-AtcListWindow::__resizeColumns() {
-  static const int CallsignWidth = 100;
-  static const int FrequencyWidth = 120;
-  
-  const int scrollbarWidth = qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-
-  int spaceLeft = ATCTable->width() - CallsignWidth - FrequencyWidth - scrollbarWidth;
-
-  ATCTable->setColumnWidth(ControllerTableModel::Callsign, CallsignWidth);
-  ATCTable->setColumnWidth(ControllerTableModel::Name, spaceLeft);
 }
 
 void

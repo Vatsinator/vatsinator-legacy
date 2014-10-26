@@ -39,13 +39,11 @@ class FirDetailsWindow :
 public:
   FirDetailsWindow(const Fir* fir, QWidget* parent = nullptr);
 
-public slots:
-  void show();
+protected:
+  void showEvent(QShowEvent* event) override;
 
 private:
-  void __updateModels();
-  void __fillLabels();
-  void __adjustTables();
+  void __updateLabels();
   
 private slots:
   void __notamUpdate(NotamListModel* model);

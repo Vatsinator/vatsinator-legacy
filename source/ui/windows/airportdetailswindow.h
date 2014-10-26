@@ -48,7 +48,6 @@ protected:
 
 private:
   void __fillLabels();
-  void __adjustTables();
   
 private slots:
   void __updateForecast();

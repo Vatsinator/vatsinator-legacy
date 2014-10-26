@@ -69,10 +69,7 @@ set (widgets_SRCS
     pages/pluginlistwidgetitem.cpp
     pages/viewpage.cpp
     
-    views/airporttableview.cpp
-    views/controllertableview.cpp
     views/delayedmodeltableview.cpp
-    views/flighttableview.cpp
     
     widgets/delayedwidget.cpp
     widgets/flightprogresswidget.cpp

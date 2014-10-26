@@ -46,43 +46,42 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
     BaseWindow(parent),
     __fir(fir) {
   setupUi(this);
+  ATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  AirportsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
+  connect(qApp,                 SIGNAL(aboutToQuit()),
+          this,                 SLOT(hide()));
   connect(vApp()->vatsimDataHandler()->notamProvider(),
-                                                SIGNAL(notamReady(NotamListModel*)),
-          this,                                 SLOT(__notamUpdate(NotamListModel*)));
-  connect(NotamTableView,                       SIGNAL(doubleClicked(QModelIndex)),
-          this,                                 SLOT(__goToNotam(QModelIndex)));
+                                SIGNAL(notamReady(NotamListModel*)),
+          this,                 SLOT(__notamUpdate(NotamListModel*)));
+  connect(NotamTableView,       SIGNAL(doubleClicked(QModelIndex)),
+          this,                 SLOT(__goToNotam(QModelIndex)));
 }
 
 void
-FirDetailsWindow::show() {
-  __fillLabels();
-  __updateModels();
-  __adjustTables();
+FirDetailsWindow::showEvent(QShowEvent* event) {
+  __updateLabels();
 
-  QWidget::show();
-  
-  NotamTableView->setModel(nullptr);
-  vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__fir->icao());
-  NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
-}
-
-void
-FirDetailsWindow::__updateModels() {
-  Q_ASSERT(__fir);
-  
   FlightsTable->setModel(__fir->flights());
   /* TODO Show UIR controllers here, too */
   ATCTable->setModel(__fir->staff());
   AirportsTable->setModel(__fir->airports());
   
   BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__fir->icao()));
+  
+  FlightsTable->hideColumn(FlightTableModel::Name);
+  
+  NotamTableView->setModel(nullptr);
+  vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__fir->icao());
+  NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
+  
+  BaseWindow::showEvent(event);
 }
 
 void
-FirDetailsWindow::__fillLabels() {
+FirDetailsWindow::__updateLabels() {
   if (__fir->country() != "USA")
     setWindowTitle(tr("%1 - FIR details").arg(__fir->icao()));
   else
@@ -94,30 +93,6 @@ FirDetailsWindow::__fillLabels() {
     ICAOLabel->setText(__fir->icao() + " Oceanic");
 
   NameLabel->setText(__fir->name());
-}
-
-void
-FirDetailsWindow::__adjustTables() {
-  FlightsTable->hideColumn(FlightTableModel::Name);
-  
-  FlightsTable->setColumnWidth(FlightTableModel::Callsign, 150);
-  FlightsTable->setColumnWidth(FlightTableModel::From, 170);
-  FlightsTable->setColumnWidth(FlightTableModel::To, 170);
-  FlightsTable->setColumnWidth(FlightTableModel::Aircraft, 150);
-
-  ATCTable->setColumnWidth(ControllerTableModel::Callsign, 150);
-  ATCTable->setColumnWidth(ControllerTableModel::Name, 340);
-  ATCTable->setColumnWidth(ControllerTableModel::Frequency, 150);
-
-  AirportsTable->setColumnWidth(AirportTableModel::Label, 270);
-  AirportsTable->setColumnWidth(AirportTableModel::Facilities, 170);
-  AirportsTable->setColumnWidth(AirportTableModel::Outbounds, 100);
-  AirportsTable->setColumnWidth(AirportTableModel::Inbounds, 100);
-  
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Callsign, 150);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Name, 300);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Date, 150);
-  BookedATCTable->setColumnWidth(AtcBookingTableModel::Hours, 150);
 }
 
 void
