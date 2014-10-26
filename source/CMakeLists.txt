@@ -123,51 +123,27 @@ get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATIO
 get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
 
 if (LINUX)
-
     install (TARGETS ${vatsinator_TARGET} RUNTIME DESTINATION bin)
-    
-elseif (APPLE)
-
-    # move all files to .app bundle
-    set (vatsinator_BUNDLE ${vatsinator_TARGET}.app)
+elseif (APPLE OR WIN32)
     install (TARGETS ${vatsinator_TARGET} DESTINATION .)
-
-    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
-        OUTPUT_VARIABLE QT_INSTALL_LIBS)
-    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
-        OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
-    # setup path to libqcocoa.dylib
-    set (QT_QCOCOA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
-
-    include (DeployQt5)
-    install_qt5_executable ("${vatsinator_BUNDLE}"
-        "${QT_QCOCOA_PLUGIN}" # qtplugins
-        "" # libs
-        "/usr/local/lib" # dirs
-    )
-    
-elseif (WIN32)
-
-    install (TARGETS ${vatsinator_TARGET} DESTINATION .)
-    
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
     include(InstallRequiredSystemLibraries)
-    
+
+    if (APPLE)
+        set (QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
+    elseif (WIN32 AND MSVC)
+        set (QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
+    endif ()
+
     exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
         OUTPUT_VARIABLE QT_INSTALL_LIBS)
     exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
         OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
-    
-    # setup path to qwindows.dll
-    if (MSVC)
-        set (QT_QWINDOWS_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
-    endif ()
-    
+
     include (DeployQt5)
     install_qt5_executable ("${vatsinator_EXECUTABLE}"
-        "${QT_QWINDOWS_PLUGIN}" # qtplugins
+        "${QT_QCOCOA_PLUGIN}" # qtplugins
         "" # libs
         "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
     )
-    
-endif (LINUX)
+endif ()
