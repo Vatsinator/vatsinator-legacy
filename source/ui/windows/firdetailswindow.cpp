@@ -20,21 +20,21 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "modules/vatbookhandler.h"
-#include "modules/models/bookedatctablemodel.h"
-#include "network/abstractnotamprovider.h"
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
+#include "vatsimdata/abstractbookingprovider.h"
+#include "vatsimdata/abstractnotamprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/models/airporttablemodel.h"
+#include "vatsimdata/models/atcbookingtablemodel.h"
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 #include "vatsimdata/models/notamlistmodel.h"
@@ -78,7 +78,7 @@ FirDetailsWindow::__updateModels() {
   ATCTable->setModel(__fir->staff());
   AirportsTable->setModel(__fir->airports());
   
-  BookedATCTable->setModel(VatbookHandler::getSingleton().notNullModel(__fir->icao()));
+  BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__fir->icao()));
 }
 
 void
@@ -114,10 +114,10 @@ FirDetailsWindow::__adjustTables() {
   AirportsTable->setColumnWidth(AirportTableModel::Outbounds, 100);
   AirportsTable->setColumnWidth(AirportTableModel::Inbounds, 100);
   
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Callsign, 150);
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Name, 300);
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Date, 150);
-  BookedATCTable->setColumnWidth(BookedAtcTableModel::Hours, 150);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Callsign, 150);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Name, 300);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Date, 150);
+  BookedATCTable->setColumnWidth(AtcBookingTableModel::Hours, 150);
 }
 
 void

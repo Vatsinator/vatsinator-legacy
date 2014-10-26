@@ -1,9 +1,13 @@
 vatsinator_start_subdirectory (vatsimdata)
 
 set (vatsimdata_SRCS
+    abstractbookingprovider.cpp
+    abstractnotamprovider.cpp
     airport.cpp
+    atcbooking.cpp
     client.cpp
     controller.cpp
+    euroutenotamprovider.cpp
     fir.cpp
     lonlat.cpp
     metar.cpp
@@ -11,9 +15,11 @@ set (vatsimdata_SRCS
     pilot.cpp
     uir.cpp
     updatescheduler.cpp
+    vatbookbookingprovider.cpp
     vatsimdatahandler.cpp
     
     models/airporttablemodel.cpp
+    models/atcbookingtablemodel.cpp
     models/controllertablemodel.cpp
     models/flighttablemodel.cpp
     models/metarlistmodel.cpp

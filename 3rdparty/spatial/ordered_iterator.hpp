@@ -332,6 +332,20 @@ namespace spatial
 
   namespace details
   {
+    // Used to compare the bound against the node's key
+    template <typename Cmp, typename Key>
+    inline bool
+    order_less(const Cmp& cmp, dimension_type set_dim,
+               const Key& a, const Key& b)
+    {
+      for (dimension_type d = 0; d <= set_dim; ++d)
+        {
+          if (cmp(d, a, b)) return true;
+          if (cmp(d, b, a)) return false;
+        }
+      return false;
+    }
+
     // Specialization for iterators pointed to node using the relaxed
     // invariant.
     template<typename Container>

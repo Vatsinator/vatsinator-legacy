@@ -33,7 +33,6 @@ class DecisionEvent;
 class FileManager;
 class FirDatabase;
 class LanguageManager;
-class ModuleManager;
 class PluginManager;
 class ResourceManager;
 class SettingsManager;
@@ -178,7 +177,6 @@ private:
   WorldMap*            __worldMap;
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;
-  ModuleManager*       __moduleManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;
 

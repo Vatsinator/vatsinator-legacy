@@ -28,7 +28,6 @@ endif ()
 set (vatsinator_SUBDIRS
     db
     events
-    modules
     network
     plugins
     storage

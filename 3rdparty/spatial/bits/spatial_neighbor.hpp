@@ -306,8 +306,8 @@ namespace spatial
   template<typename Ct, typename Metric>
   class neighbor_iterator<const Ct, Metric>
     : public details::Const_bidirectional_iterator
-  <typename container_traits<Ct>::mode_type,
-   typename container_traits<Ct>::rank_type>
+      <typename container_traits<Ct>::mode_type,
+       typename container_traits<Ct>::rank_type>
   {
   private:
     typedef typename details::Const_bidirectional_iterator
@@ -327,7 +327,7 @@ namespace spatial
     //! The key type that is used as a target for the nearest neighbor search
     typedef typename container_traits<Ct>::key_type key_type;
 
-    //! Uninitialized iterator.
+    //! \empty
     neighbor_iterator() { }
 
     /**
@@ -416,28 +416,28 @@ namespace spatial
 
     //! Increments the iterator and returns the incremented value. Prefer to
     //! use this form in \c for loops.
-    neighbor_iterator<Ct, Metric>& operator++()
+    neighbor_iterator<const Ct, Metric>& operator++()
     { return increment_neighbor(*this); }
 
     //! Increments the iterator but returns the value of the iterator before
     //! the increment. Prefer to use the other form in \c for loops.
-    neighbor_iterator<Ct, Metric> operator++(int)
+    neighbor_iterator<const Ct, Metric> operator++(int)
     {
-      neighbor_iterator<Ct, Metric> x(*this);
+      neighbor_iterator<const Ct, Metric> x(*this);
       increment_neighbor(*this);
       return x;
     }
 
     //! Decrements the iterator and returns the decremented value. Prefer to
     //! use this form in \c for loops.
-    neighbor_iterator<Ct, Metric>& operator--()
+    neighbor_iterator<const Ct, Metric>& operator--()
     { return decrement_neighbor(*this); }
 
     //! Decrements the iterator but returns the value of the iterator before
     //! the decrement. Prefer to use the other form in \c for loops.
-    neighbor_iterator<Ct, Metric> operator--(int)
+    neighbor_iterator<const Ct, Metric> operator--(int)
     {
-      neighbor_iterator<Ct, Metric> x(*this);
+      neighbor_iterator<const Ct, Metric> x(*this);
       decrement_neighbor(*this);
       return x;
     }

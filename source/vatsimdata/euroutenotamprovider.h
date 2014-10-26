@@ -23,7 +23,7 @@
 #include <QDateTime>
 #include <QMap>
 
-#include "network/abstractnotamprovider.h"
+#include "vatsimdata/abstractnotamprovider.h"
 
 /**
  * This is EUroute NOTAM provider class.
@@ -43,14 +43,7 @@ public:
   
   virtual ~EurouteNotamProvider();
   
-  /**
-   * \overload
-   */
   void fetchNotam(const QString& icao) override;
-  
-  /**
-   * \overload
-   */
   QString providerInfo() const override;
   
 private:

@@ -31,6 +31,7 @@
 #include "ui/notifiable.h"
 #include "singleton.h"
 
+class AbstractBookingProvider;
 class AbstractNotamProvider;
 class Airport;
 class Controller;
@@ -256,6 +257,11 @@ public:
    * Running instance of notam provider.
    */
   AbstractNotamProvider* notamProvider();
+  
+  /**
+   * Running instance of bookings provider.
+   */
+  AbstractBookingProvider* bookingProvider();
   
   /**
    * Running instance of weather forecast provider, or _nullptr_ if user did
@@ -550,6 +556,7 @@ private:
   UpdateScheduler*     __scheduler;
 
   AbstractNotamProvider*        __notamProvider;
+  AbstractBookingProvider*      __bookingProvider;
   WeatherForecastInterface*     __weatherForecast;
 };
 

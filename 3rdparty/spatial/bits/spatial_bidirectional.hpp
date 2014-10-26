@@ -26,28 +26,30 @@ namespace spatial
      *  This template defines all the basic features of a bidirectional
      *  iterator for this library.
      *
-     *  \tparam Mode      A model of \linkmode.
+     *  \tparam Link      A model of \linkmode.
      *  \tparam Rank      The rank of the iterator.
      */
-    template <typename Mode, typename Rank>
+    template <typename Link, typename Rank>
     class Bidirectional_iterator : private Rank
     {
     public:
       //! The \c value_type can receive a copy of the reference pointed to be
       //! the iterator.
-      typedef typename mutate<typename Mode::value_type>::type value_type;
+      typedef typename mutate<typename Link::value_type>::type value_type;
       //! The reference type of the object pointed to by the iterator.
-      typedef typename Mode::value_type&           reference;
+      typedef typename Link::value_type&           reference;
       //! The pointer type of the object pointed to by the iterator.
-      typedef typename Mode::value_type*           pointer;
+      typedef typename Link::value_type*           pointer;
       //! The difference_type returned by the distance between 2 iterators.
       typedef std::ptrdiff_t                       difference_type;
       //! The iterator category that is always \c Bidirectional_iterator_tag.
       typedef std::bidirectional_iterator_tag      iterator_category;
       //! The type for the node pointed to by the iterator.
-      typedef typename Mode::node_ptr              node_ptr;
+      typedef typename Link::node_ptr              node_ptr;
       //! The type of rank used by the iterator.
       typedef Rank                                 rank_type;
+      //! The invariant category of the the iterator
+      typedef typename Link::invariant_category    invariant_category;
 
       //! Build an uninitialized iterator
       Bidirectional_iterator() { }
@@ -71,7 +73,7 @@ namespace spatial
        *
        *  \param x The iterator on the right.
        */
-      bool operator==(const Const_node_iterator<Mode>& x) const
+      bool operator==(const Const_node_iterator<Link>& x) const
       { return node == x.node; }
 
       /**
@@ -80,7 +82,7 @@ namespace spatial
        *
        *  \param x The iterator on the right.
        */
-      bool operator!=(const Const_node_iterator<Mode>& x) const
+      bool operator!=(const Const_node_iterator<Link>& x) const
       { return node != x.node; }
 
       ///@{
@@ -92,11 +94,11 @@ namespace spatial
        *  \warning When using this iterator as an argument to the erase function
        *  of the container, this iterator will get invalidated after erase.
        */
-      operator Node_iterator<Mode>() const
-      { return Node_iterator<Mode>(node); }
+      operator Node_iterator<Link>() const
+      { return Node_iterator<Link>(node); }
 
-      operator Const_node_iterator<Mode>() const
-      { return Const_node_iterator<Mode>(node); }
+      operator Const_node_iterator<Link>() const
+      { return Const_node_iterator<Link>(node); }
       ///@}
 
       /**
@@ -136,28 +138,30 @@ namespace spatial
      *  This template defines all the basic features of a bidirectional
      *  iterator for this library.
      *
-     *  \tparam Mode      A type that is a model of \linkmode.
+     *  \tparam Link      A type that is a model of \linkmode.
      *  \tparam Rank      The rank of the iterator.
      */
-    template <typename Mode, typename Rank>
+    template <typename Link, typename Rank>
     class Const_bidirectional_iterator : private Rank
     {
     public:
       //! The \c value_type can receive a copy of the reference pointed to be
       //! the iterator.
-      typedef typename mutate<typename Mode::value_type>::type value_type;
+      typedef typename mutate<typename Link::value_type>::type value_type;
       //! The reference type of the object pointed to by the iterator.
-      typedef const typename Mode::value_type&     reference;
+      typedef const typename Link::value_type&     reference;
       //! The pointer type of the object pointed to by the iterator.
-      typedef const typename Mode::value_type*     pointer;
+      typedef const typename Link::value_type*     pointer;
       //! The difference_type returned by the distance between 2 iterators.
       typedef std::ptrdiff_t                       difference_type;
       //! The iterator category that is always \c Bidirectional_iterator_tag.
       typedef std::bidirectional_iterator_tag      iterator_category;
       //! The type for the node pointed to by the iterator.
-      typedef typename Mode::const_node_ptr        node_ptr;
+      typedef typename Link::const_node_ptr        node_ptr;
       //! The type of rank used by the iterator.
       typedef Rank                                 rank_type;
+      //! The invariant category of the the iterator
+      typedef typename Link::invariant_category    invariant_category;
 
       //! Build an uninitialized iterator
       Const_bidirectional_iterator() { }
@@ -181,7 +185,7 @@ namespace spatial
        *
        *  \param x The iterator on the right.
        */
-      bool operator==(const Const_node_iterator<Mode>& x) const
+      bool operator==(const Const_node_iterator<Link>& x) const
       { return node == x.node; }
 
       /**
@@ -191,7 +195,7 @@ namespace spatial
        *
        *  \param x The iterator on the right.
        */
-      bool operator!=(const Const_node_iterator<Mode>& x) const
+      bool operator!=(const Const_node_iterator<Link>& x) const
       { return node != x.node; }
 
       /**
@@ -199,13 +203,13 @@ namespace spatial
        *  iterator. You can therefore use this iterator as an argument to the
        *  other function of the container that are working on iterators.
        */
-      operator Const_node_iterator<Mode>() const
-      { return Const_node_iterator<Mode>(node); }
+      operator Const_node_iterator<Link>() const
+      { return Const_node_iterator<Link>(node); }
 
       /**
        *  Return the current Rank type used by the iterator.
        */
-      const rank_type& rank() const { return static_cast<const Rank&>(*this); }
+      rank_type rank() const { return static_cast<const Rank>(*this); }
 
       /**
        *  Return the current number of dimensions given by the Rank of the
@@ -232,6 +236,7 @@ namespace spatial
        */
       dimension_type node_dim;
     };
+
   } // namespace details
 } // namespace spatial
 
