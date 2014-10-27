@@ -49,7 +49,7 @@ namespace spatial
     idle_box_multimap() { }
 
     explicit idle_box_multimap(const Compare& compare)
-      : base_type(details::Static_rank<Rank>())
+      : base_type(details::Static_rank<Rank>(), compare)
     { }
 
     idle_box_multimap(const Compare& compare, const Alloc& alloc)

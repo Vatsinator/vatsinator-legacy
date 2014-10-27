@@ -48,7 +48,7 @@ namespace spatial
     point_multiset() { }
 
     explicit point_multiset(const Compare& compare)
-      : base_type(details::Static_rank<Rank>())
+      : base_type(details::Static_rank<Rank>(), compare)
     { }
 
     point_multiset(const Compare& compare, const BalancingPolicy& balancing)
