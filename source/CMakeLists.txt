@@ -23,7 +23,7 @@ set (vatsinator_HEADERS
 # icon for Windows
 if (WIN32)
   set (vatsinator_SRCS ${vatsinator_SRCS}
-  ${PROJECT_SOURCE_DIR}/dist/vatsinator.rc)
+      ${PROJECT_SOURCE_DIR}/dist/vatsinator.rc)
 endif ()
 
 set (vatsinator_SUBDIRS
@@ -48,7 +48,6 @@ add_executable (${vatsinator_TARGET} MACOSX_BUNDLE WIN32
 set (vatsinator_QT_LIBS
     Qt5::Widgets
     Qt5::Network
-    Qt5::Xml
     Qt5::OpenGL
 )
       
@@ -119,31 +118,37 @@ endif (APPLE)
 
 target_link_libraries (${vatsinator_TARGET} ${vatsinator_LIBS})
 
-get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATION)
-get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
-
 if (LINUX)
-    install (TARGETS ${vatsinator_TARGET} RUNTIME DESTINATION bin)
+  # Qt is always already deployed on Linux
+  install (TARGETS ${vatsinator_TARGET} RUNTIME DESTINATION bin)
 elseif (APPLE OR WIN32)
-    install (TARGETS ${vatsinator_TARGET} DESTINATION .)
-    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
-    include(InstallRequiredSystemLibraries)
+  install (TARGETS ${vatsinator_TARGET} DESTINATION .)
 
-    if (APPLE)
-        set (QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
-    elseif (WIN32 AND MSVC)
-        set (QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
-    endif ()
+  exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
+    OUTPUT_VARIABLE QT_INSTALL_LIBS)
+  exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
+    OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
 
-    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
-        OUTPUT_VARIABLE QT_INSTALL_LIBS)
-    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
-        OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
+  if (APPLE)
+    set (QT_QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
+    set (vatsinator_EXECUTABLE ${vatsinator_TARGET}.app)
+  elseif (WIN32 AND MSVC)
+    set (QT_QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
+    get_property (vatsinator_EXECUTABLE TARGET ${vatsinator_TARGET} PROPERTY LOCATION)
+    get_filename_component (vatsinator_EXECUTABLE ${vatsinator_EXECUTABLE} NAME)
+  endif ()
 
-    include (DeployQt5)
-    install_qt5_executable ("${vatsinator_EXECUTABLE}"
-        "${QT_QCOCOA_PLUGIN}" # qtplugins
-        "" # libs
-        "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
-    )
+  set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
+  include(InstallRequiredSystemLibraries)
+
+  if (NOT QUAZIP_LIBRARY_DIR)
+    get_filename_component(QUAZIP_LIBRARY_DIR ${QUAZIP_LIBRARIES} DIRECTORY)
+  endif ()
+
+  include (DeployQt5)
+  install_qt5_executable ("${vatsinator_EXECUTABLE}"
+      "${QT_QPA_PLUGIN}" # qtplugins
+      "" # libs
+      "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
+  )
 endif ()

@@ -113,11 +113,10 @@ MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> functio
 
 const MapItem*
 MapScene::nearest(const LonLat& point) const {
-  /*
-   * Dunno why, but neighbor_iterator doesn't work with const and operator++()
-   * and thus we cannot make this method const :(
-   */
   auto it = spatial::neighbor_begin(__items, point);
+  if (it == __items.end())
+    return nullptr;
+  
   while (!it->second->isVisible()) {
     ++it;
     Q_ASSERT(it != __items.end());

@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
   Q_INIT_RESOURCE(imgs);
   Q_INIT_RESOURCE(shaders);
   Q_INIT_RESOURCE(weather);
+  
   QApplication::setApplicationName("Vatsinator");
   QApplication::setOrganizationName("VatsinatorTeam");
   QApplication::setApplicationVersion(VATSINATOR_VERSION);
@@ -48,7 +49,7 @@ int main(int argc, char** argv) {
   
   qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
   
-  /* Defined in events/types.css */
+  /* Defined in events/types.cpp */
   extern void init_event_types();
   init_event_types();
   

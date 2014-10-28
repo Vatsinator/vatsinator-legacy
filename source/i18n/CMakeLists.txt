@@ -2,7 +2,7 @@ find_package (Qt5LinguistTools REQUIRED) # qt5_add_translation
 
 file (GLOB LANGUAGE_FILES
     "*.language")
-vatsinator_install ("${LANGUAGE_FILES}" "/translations")
+install (FILES ${LANGUAGE_FILES} DESTINATION ${vatsinator_INSTALL_DIR}/translations)
 
 set (vatsinator_LANGUAGES "")
 
@@ -46,20 +46,10 @@ endforeach (LANG)
 qt5_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
 
 add_custom_target (i18n DEPENDS ${vatsinator_TRANSLATIONS} ${qt_TRANSLATIONS})
+install (FILES ${vatsinator_TRANSLATIONS} DESTINATION ${vatsinator_INSTALL_DIR}/translations)
+install (FILES ${qt_TRANSLATIONS} DESTINATION ${vatsinator_INSTALL_DIR}/translations)
 
-if (NOT APPLE)
-  vatsinator_install ("${vatsinator_TRANSLATIONS}" "/translations")
-  vatsinator_install ("${qt_TRANSLATIONS}" "/translations")
-else (NOT APPLE)
-
-  # vatisnator_install macro works only for existing files
-  add_custom_command (
-    TARGET i18n POST_BUILD
-    COMMAND cp ARGS -R ${vatsinator_TRANSLATIONS} ${qt_TRANSLATIONS}
-      ${CMAKE_BINARY_DIR}/vatsinator.resources/translations/
-    COMMENT "Copying files to the bundle..."
-    )
-  
+if (APPLE)  
   foreach (LANG ${vatsinator_LANGUAGES})
     add_custom_command (
       TARGET i18n POST_BUILD
@@ -72,6 +62,13 @@ else (NOT APPLE)
       ${CMAKE_CURRENT_SOURCE_DIR}/locversion.plist.in
       ${CMAKE_BINARY_DIR}/vatsinator.resources/${LANG}.lproj/locversion.plist
     )
+
+    install (
+      FILES
+        "${CMAKE_BINARY_DIR}/vatsinator.resources/${LANG}.lproj/locversion.plist"
+      DESTINATION
+        ${vatsinator_INSTALL_DIR}/${LANG}.lproj
+    )
     
   endforeach (LANG)
-endif (NOT APPLE)
+endif ()

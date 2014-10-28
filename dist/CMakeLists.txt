@@ -37,4 +37,8 @@ elseif (WIN32)
     ${CMAKE_CURRENT_SOURCE_DIR}/vatsinator.rc
   )
 
-endif (LINUX)
+elseif (APPLE)
+
+  install (FILES vatsinator.icns DESTINATION vatsinator.app/Contents/Resources)
+  
+endif ()

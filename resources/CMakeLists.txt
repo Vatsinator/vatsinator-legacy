@@ -1,20 +1,22 @@
-set (vatsinator_RESOURCES
-    ${CMAKE_SOURCE_DIR}/COPYING
-    Manifest
-    WorldAirports.db
-    WorldFirs.db
-    WorldMap.db)
+install (
+    FILES
+        ${CMAKE_SOURCE_DIR}/COPYING
+        Manifest
+        WorldAirports.db
+        WorldFirs.db
+        WorldMap.db
+    DESTINATION
+        ${vatsinator_INSTALL_DIR}
+)
 
-vatsinator_install (
-    "${vatsinator_RESOURCES}" "")
-
-set (vatsinator_RESOURCES_DATA
-    data/airlines
-    data/alias
-    data/country
-    data/fir
-    data/model
-    data/uir)
-
-vatsinator_install (
-    "${vatsinator_RESOURCES_DATA}" "/data")
+install(
+    FILES
+        data/airlines
+        data/alias
+        data/country
+        data/fir
+        data/model
+        data/uir
+    DESTINATION
+        ${vatsinator_INSTALL_DIR}/data
+)

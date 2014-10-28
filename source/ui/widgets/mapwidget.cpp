@@ -197,9 +197,8 @@ MapWidget::keyPressEvent(QKeyEvent* event) {
 const MapItem*
 MapWidget::__underMouse() {
   const MapItem* closest = __renderer->scene()->nearest(__mousePosition.geoPosition());
-  Q_ASSERT(closest);
    
-  if (__mousePosition.screenDistance(__renderer->mapFromLonLat(closest->position())) > MapConfig::mouseOnObject())
+  if (!closest || __mousePosition.screenDistance(__renderer->mapFromLonLat(closest->position())) > MapConfig::mouseOnObject())
     return nullptr;
   else
     return closest;

@@ -72,7 +72,7 @@ MapRenderer::MapRenderer(QObject* parent) :
                1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-  Q_ASSERT(glGetError() == 0);
+//  Q_ASSERT(glGetError() == 0);
   
   /* For a really strong debug */
 //   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -253,7 +253,7 @@ MapRenderer::paint() {
   __xOffset = 0.0f;
 //   auto end = std::chrono::high_resolution_clock::now();
 //   qDebug() << "MapRenderer::paint()" << std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count();
-  Q_ASSERT(glGetError() == 0);
+//  Q_ASSERT(glGetError() == 0);
 }
 
 void
