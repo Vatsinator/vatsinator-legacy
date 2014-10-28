@@ -45,7 +45,7 @@ namespace spatial
     idle_point_multimap() { }
 
     explicit idle_point_multimap(const Compare& compare)
-      : base_type(details::Static_rank<Rank>())
+      : base_type(details::Static_rank<Rank>(), compare)
     { }
 
     idle_point_multimap(const Compare& compare, const Alloc& alloc)

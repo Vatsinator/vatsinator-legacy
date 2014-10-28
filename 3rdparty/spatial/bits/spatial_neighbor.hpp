@@ -913,7 +913,7 @@ namespace spatial
   neighbor_cupper_bound(const Ct& container, const Metric& metric,
                         const typename container_traits<Ct>::key_type& target,
                         typename Metric::distance_type bound)
-  { return neighbor_upper_bound(container, metric, target); }
+  { return neighbor_upper_bound(container, metric, target, bound); }
   ///@}
 
   /**

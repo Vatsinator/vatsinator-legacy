@@ -50,7 +50,7 @@ namespace spatial
     box_multimap() { }
 
     explicit box_multimap(const Compare& compare)
-      : base_type(details::Static_rank<Rank>())
+      : base_type(details::Static_rank<Rank>(), compare)
     { }
 
     box_multimap(const Compare& compare, const BalancingPolicy& balancing)

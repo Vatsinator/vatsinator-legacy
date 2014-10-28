@@ -48,7 +48,7 @@ namespace spatial
     idle_box_multiset() { }
 
     explicit idle_box_multiset(const Compare& compare)
-      : base_type(details::Static_rank<Rank>())
+      : base_type(details::Static_rank<Rank>(), compare)
     { }
 
     idle_box_multiset(const Compare& compare, const Alloc& alloc)

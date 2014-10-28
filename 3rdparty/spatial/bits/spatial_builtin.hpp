@@ -14,7 +14,7 @@
 #ifndef SPATIAL_COMPARE_BUILTIN_HPP
 #define SPATIAL_COMPARE_BUILTIN_HPP
 
-#include "spatial_pull_tr1.hpp"
+#include "spatial_import_type_traits.hpp"
 
 namespace spatial
 {
@@ -36,19 +36,19 @@ namespace spatial
      */
     ///@{
     template <typename>
-    struct is_compare_builtin_helper : std::false_type { };
+    struct is_compare_builtin_helper : import::false_type { };
     template <typename Tp>
     struct is_compare_builtin_helper<bracket_less<Tp> >
-      : std::true_type { };
+      : import::true_type { };
     template <typename Tp>
     struct is_compare_builtin_helper<paren_less<Tp> >
-      : std::true_type { };
+      : import::true_type { };
     template <typename Tp>
     struct is_compare_builtin_helper<iterator_less<Tp> >
-      : std::true_type { };
+      : import::true_type { };
     template <typename Accessor, typename Tp>
     struct is_compare_builtin_helper<accessor_less<Accessor, Tp> >
-      : std::true_type { };
+      : import::true_type { };
     ///@}
 
     /**
@@ -155,26 +155,26 @@ namespace spatial
     /**
      *  Help to resolve whether the type used is a builtin difference or not.
      *
-     *  Inherits \c std::true_type if it is one of the built-in difference
-     *  functors, \c std::false_type if it is not. Designed to be used with
+     *  Inherits \c import::true_type if it is one of the built-in difference
+     *  functors, \c import::false_type if it is not. Designed to be used with
      *  \ref spatial::enable_if.
      *
      *  @{
      */
     template <typename>
-    struct is_difference_builtin : std::false_type { };
+    struct is_difference_builtin : import::false_type { };
     template <typename Tp, typename Unit>
     struct is_difference_builtin<bracket_minus<Tp, Unit> >
-      : std::true_type { };
+      : import::true_type { };
     template <typename Tp, typename Unit>
     struct is_difference_builtin<paren_minus<Tp, Unit> >
-      : std::true_type { };
+      : import::true_type { };
     template <typename Tp, typename Unit>
     struct is_difference_builtin<iterator_minus<Tp, Unit> >
-      : std::true_type { };
+      : import::true_type { };
     template <typename Accessor, typename Tp, typename Unit>
     struct is_difference_builtin<accessor_minus<Accessor, Tp, Unit> >
-      : std::true_type { };
+      : import::true_type { };
     /**
      *  @}
      */

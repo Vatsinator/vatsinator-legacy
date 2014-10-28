@@ -884,7 +884,7 @@ namespace spatial
     template <typename InputIterator>
     inline std::ptrdiff_t
     random_access_iterator_distance
-    (InputIterator first, InputIterator last, std::input_iterator_tag)
+    (InputIterator, InputIterator, std::input_iterator_tag)
     { return 0; }
 
     template <typename Rank, typename Key, typename Value, typename Compare,

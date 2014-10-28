@@ -52,7 +52,7 @@ namespace spatial
     box_multiset() { }
 
     explicit box_multiset(const Compare& compare)
-      : base_type(details::Static_rank<Rank>())
+      : base_type(details::Static_rank<Rank>(), compare)
     { }
 
     box_multiset(const Compare& compare, const BalancingPolicy& balancing)

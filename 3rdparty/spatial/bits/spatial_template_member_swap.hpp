@@ -15,8 +15,8 @@
 #define SPATIAL_TEMPLATE_MEMBER_SWAP_HPP
 
 #include <algorithm> // provides: ::std::swap
-// provides: ::std::is_empty, std::false_type and std::true_type
-#include "spatial_pull_tr1.hpp"
+// provides: import::is_empty, import::false_type and import::true_type
+#include "spatial_import_type_traits.hpp"
 
 namespace spatial
 {
@@ -39,7 +39,7 @@ namespace spatial
 
     template <typename Tp>
     struct template_member_assign
-      : template_member_assign_provider<std::is_empty<Tp>::value, Tp>
+      : template_member_assign_provider<import::is_empty<Tp>::value, Tp>
     { };
     ///@}
 
@@ -63,7 +63,7 @@ namespace spatial
 
     template <typename Tp>
     struct template_member_swap
-      : template_member_swap_provider<std::is_empty<Tp>::value, Tp>
+      : template_member_swap_provider<import::is_empty<Tp>::value, Tp>
     { };
     ///@}
   }

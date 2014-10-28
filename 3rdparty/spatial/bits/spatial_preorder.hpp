@@ -162,10 +162,7 @@ namespace spatial
                        const Query& query)
     {
       if (header(node))
-        {
-          node = node->parent;
-          return preorder_last(node, 0, rank, query);
-        }
+        { return preorder_last(node->parent, 0, rank, query); }
       SPATIAL_ASSERT_CHECK(node != 0);
       SPATIAL_ASSERT_CHECK(dim < rank());
       NodePtr copy_node = node;
