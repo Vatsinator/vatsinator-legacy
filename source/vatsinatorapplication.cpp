@@ -60,17 +60,13 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
   /* Set up translations */
   QString locale = SettingsManager::earlyGetLocale();
   
-  QTranslator* tr_qt = new QTranslator();
+  QTranslator* tr_qt = new QTranslator(this);
   tr_qt->load(QString("qt_") % locale, FileManager::staticPath(FileManager::Translations));
   installTranslator(tr_qt);
-  connect(qApp,         SIGNAL(aboutToQuit()),
-          tr_qt,        SLOT(deleteLater()));
   
-  QTranslator* tr = new QTranslator();
+  QTranslator* tr = new QTranslator(this);
   tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
   installTranslator(tr);
-  connect(qApp,         SIGNAL(aboutToQuit()),
-          tr,           SLOT(deleteLater()));
   
   setStyle(new VatsinatorStyle());
   
