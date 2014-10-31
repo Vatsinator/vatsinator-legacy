@@ -33,7 +33,7 @@ WorldMap::initialize() {
 void WorldMap::__readDatabase() {
   QFile db(FileManager::path("WorldMap.db"));
   
-  if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
+  if (!db.open(QIODevice::ReadOnly)) {
     notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
     return;
   }

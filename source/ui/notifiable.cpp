@@ -27,18 +27,21 @@
 
 void
 Notifiable::notifyError(const QString& message) {
+  qFatal("%s", qPrintable(message));
   NotificationEvent* e = new NotificationEvent(NotificationEvent::Fatal, message);
   QCoreApplication::postEvent(vApp()->userInterface(), e, Qt::HighEventPriority);
 }
 
 void
 Notifiable::notifyWarning(const QString& message) {
+  qWarning("%s", qPrintable(message));
   NotificationEvent* e = new NotificationEvent(NotificationEvent::Warning, message);
   QCoreApplication::postEvent(vApp()->userInterface(), e);
 }
 
 void
 Notifiable::notifyInfo(const QString& message) {
+  qDebug("%s", qPrintable(message));
   NotificationEvent* e = new NotificationEvent(NotificationEvent::Information, message);
   QCoreApplication::postEvent(vApp()->userInterface(), e);
 }

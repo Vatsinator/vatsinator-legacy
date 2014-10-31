@@ -215,8 +215,19 @@ bool
 MapRenderer::supportsRequiredOpenGLFeatures() {
   QOpenGLContext* context = QOpenGLContext::currentContext();
   bool hasShaders = QOpenGLShaderProgram::hasOpenGLShaderPrograms();
+  if (!hasShaders) {
+    qWarning("MapRenderer: Shaders not supported");
+  }
+  
   bool hasVao = (context->surface()->format().version() >= qMakePair(3, 0)) ||
-    (context->hasExtension("GL_ARB_vertex_array_object") || context->hasExtension("GL_OES_vertex_array_object"));
+    (
+      context->hasExtension("GL_ARB_vertex_array_object") ||
+      context->hasExtension("GL_OES_vertex_array_object") ||
+      context->hasExtension("GL_APPLE_vertex_array_object")
+    );
+  if (!hasVao) {
+    qWarning("MapRenderer: VAO not supported");
+  }
 
   return hasShaders && hasVao;
 }
