@@ -131,62 +131,62 @@
         <translation>Gelen</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="137"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="128"/>
         <source>Outbound</source>
         <translation>Giden</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="205"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="187"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="273"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="246"/>
         <source>Bookings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="335"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="308"/>
         <source>Airport info</source>
         <translation>Havalimanı bilgisi</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="367"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="340"/>
         <source>Airport name:</source>
         <translation>Havalimanı ismi:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="391"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="364"/>
         <source>City:</source>
         <translation>Şehir:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="415"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="388"/>
         <source>Country:</source>
         <translation>Ülke:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="442"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="415"/>
         <source>Altitude:</source>
         <translation>Yükseklik:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="501"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="474"/>
         <source>Weather forecast</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="569"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="542"/>
         <source>NOTAM</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="690"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="663"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="666"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="639"/>
         <source>Show</source>
         <translation>Göster</translation>
     </message>
@@ -201,12 +201,12 @@
         <translation>%1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="185"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="158"/>
         <source>No forecast for %1, %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="189"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="162"/>
         <source>Network error</source>
         <translation type="unfinished"/>
     </message>
@@ -280,22 +280,22 @@
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="98"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="100"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="102"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Tarih</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="104"/>
         <source>Hours</source>
-        <translation type="unfinished"/>
+        <translation>Saat</translation>
     </message>
 </context>
 <context>
@@ -570,42 +570,42 @@
 <context>
     <name>FirDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="69"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="57"/>
         <source>Flights</source>
         <translation>Uçuşlar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="132"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="116"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="195"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="175"/>
         <source>Bookings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="258"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="234"/>
         <source>Active airports</source>
         <translation>Aktif havalimanları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="318"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="290"/>
         <source>NOTAM</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="390"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="362"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="87"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="86"/>
         <source>%1 - FIR details</source>
         <translation>%1 - FIR(Uçuş bilgi bölgesi) detayları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="89"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="88"/>
         <source>%1 - ARTCC details</source>
         <translation type="unfinished"/>
     </message>
@@ -935,47 +935,47 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="229"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="228"/>
         <source>Airport details</source>
         <translation>Havalimanı detayları</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="242"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="241"/>
         <source>Controllers</source>
         <translation>Kontroller</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="254"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="253"/>
         <source>Arrivals</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="268"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="267"/>
         <source>Departures</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="289"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="288"/>
         <source>%1 details</source>
         <translation>%1 detayları</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="317"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="316"/>
         <source>Flight details</source>
         <translation>Uçuş detayları</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="358"/>
         <source>Nearby</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="362"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="361"/>
         <source>Flights</source>
         <translation>Uçuşlar</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="376"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
         <source>Airports</source>
         <translation>Havalimanları</translation>
     </message>

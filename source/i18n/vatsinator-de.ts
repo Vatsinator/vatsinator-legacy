@@ -131,69 +131,69 @@
         <translation>Ankommend</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="137"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="128"/>
         <source>Outbound</source>
         <translation>/Abfliegend</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="205"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="187"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="273"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="246"/>
         <source>Bookings</source>
         <translation>Buchungen</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="335"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="308"/>
         <source>Airport info</source>
         <translation>Flughafeninformation</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="367"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="340"/>
         <source>Airport name:</source>
         <translation>Flughafenname:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="391"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="364"/>
         <source>City:</source>
         <translation>Stadt:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="415"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="388"/>
         <source>Country:</source>
         <translation>Land:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="442"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="415"/>
         <source>Altitude:</source>
         <translation>Höhe:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="501"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="474"/>
         <source>Weather forecast</source>
         <translation>Wettervorhersage</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="569"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="542"/>
         <source>NOTAM</source>
         <translation>NOTAM</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="690"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="663"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="666"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="639"/>
         <source>Show</source>
         <translation>Anzeigen</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="118"/>
         <source>No plugin selected</source>
-        <translation type="unfinished"/>
+        <translation>Kein Plugin ausgewählt</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="145"/>
@@ -201,12 +201,12 @@
         <translation>%1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="185"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="158"/>
         <source>No forecast for %1, %2</source>
         <translation>Keine Vorhersage für %1, %2</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="189"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="162"/>
         <source>Network error</source>
         <translation>Netzwerkfehler</translation>
     </message>
@@ -280,22 +280,22 @@
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="98"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Rufzeichen</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="100"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="102"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Datum</translation>
     </message>
     <message>
         <location filename="../vatsimdata/models/atcbookingtablemodel.cpp" line="104"/>
         <source>Hours</source>
-        <translation type="unfinished"/>
+        <translation>Stunden</translation>
     </message>
 </context>
 <context>
@@ -570,42 +570,42 @@
 <context>
     <name>FirDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="69"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="57"/>
         <source>Flights</source>
         <translation>Flüge</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="132"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="116"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="195"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="175"/>
         <source>Bookings</source>
         <translation>Buchungen</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="258"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="234"/>
         <source>Active airports</source>
         <translation>Aktive Flughäfen</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="318"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="290"/>
         <source>NOTAM</source>
         <translation>NOTAM</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="390"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="362"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="87"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="86"/>
         <source>%1 - FIR details</source>
         <translation>%1 - FIR-Details</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="89"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="88"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - ARTCC-Details</translation>
     </message>
@@ -935,47 +935,47 @@
         <translation>Ihr System unterstützt nicht die erforderlichen OpenGL-Erweiterungen. Bitte aktualisieren Sie Ihren Grafikkartentreiber.</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="229"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="228"/>
         <source>Airport details</source>
         <translation>Flughafendetails</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="242"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="241"/>
         <source>Controllers</source>
         <translation>Fluglotsen</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="254"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="253"/>
         <source>Arrivals</source>
         <translation>Ankommende Flüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="268"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="267"/>
         <source>Departures</source>
         <translation>Abflüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="289"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="288"/>
         <source>%1 details</source>
         <translation>%1 Details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="317"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="316"/>
         <source>Flight details</source>
         <translation>Flugdetails</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="358"/>
         <source>Nearby</source>
         <translation>In der Nähe</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="362"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="361"/>
         <source>Flights</source>
         <translation>Flüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="376"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
         <source>Airports</source>
         <translation>Flughafen</translation>
     </message>
@@ -998,7 +998,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="27"/>
         <source>Type airport ICAO code here to fetch METAR</source>
-        <translation type="unfinished"/>
+        <translation>Geben Sie hier den ICAO-Code des Flughafens ein, um die METAR abzurufen</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="37"/>
@@ -1047,7 +1047,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="54"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator needs to be restarted before changes&lt;br/&gt;to the language settings will take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator muss neu gestartet werden, bevor&lt;br/&gt;Änderungen an den Spracheinstellungen wirksam werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="69"/>
@@ -1204,7 +1204,7 @@
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="26"/>
         <source>It means that no data can be obtained at all. Check your internet connection and the accessibility of Vatsim servers.</source>
-        <translation type="unfinished"/>
+        <translation>Es bedeutet, dass überhaupt keine Daten abgerufen werden können. Überprüfen Sie Ihre Internetverbindung und die Erreichbarkeit der Vatsim-Server.</translation>
     </message>
 </context>
 <context>
