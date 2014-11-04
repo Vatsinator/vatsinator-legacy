@@ -39,7 +39,6 @@
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/models/flighttablemodel.h"
 #include "vatsinatorapplication.h"
 
 #include "mapscene.h"

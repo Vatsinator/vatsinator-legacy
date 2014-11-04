@@ -25,10 +25,10 @@
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
+#include "ui/models/controllertablemodel.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/models/controllertablemodel.h"
 #include "vatsinatorapplication.h"
 
 #include "firitem.h"

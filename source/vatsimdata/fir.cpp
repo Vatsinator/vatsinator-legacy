@@ -19,9 +19,9 @@
 #include <QtCore>
 
 #include "db/firdatabase.h"
-#include "vatsimdata/models/airporttablemodel.h"
-#include "vatsimdata/models/controllertablemodel.h"
-#include "vatsimdata/models/flighttablemodel.h"
+#include "ui/models/airporttablemodel.h"
+#include "ui/models/controllertablemodel.h"
+#include "ui/models/flighttablemodel.h"
 
 #include "fir.h"
 

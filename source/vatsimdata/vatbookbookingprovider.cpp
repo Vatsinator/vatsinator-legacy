@@ -20,8 +20,8 @@
 #include <QtCore>
 
 #include "network/plaintextdownloader.h"
+#include "ui/models/atcbookingtablemodel.h"
 #include "vatsimdata/atcbooking.h"
-#include "vatsimdata/models/atcbookingtablemodel.h"
 
 #include "vatbookbookingprovider.h"
 

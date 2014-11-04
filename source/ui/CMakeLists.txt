@@ -36,6 +36,13 @@ set (ui_SRCS
   map/modelmatcher.cpp
   map/uiritem.cpp
   map/worldpolygon.cpp
+  
+  models/airporttablemodel.cpp
+  models/atcbookingtablemodel.cpp
+  models/controllertablemodel.cpp
+  models/flighttablemodel.cpp
+  models/metarlistmodel.cpp
+  models/notamlistmodel.cpp
 )
 
 set (ui_HEADERS
@@ -44,6 +51,13 @@ set (ui_HEADERS
   vatsinatorstyle.h
   widgetsuserinterface.h
   ${CMAKE_CURRENT_BINARY_DIR}/about.h
+  
+  models/airporttablemodel.h
+  models/atcbookingtablemodel.h
+  models/controllertablemodel.h
+  models/flighttablemodel.h
+  models/metarlistmodel.h
+  models/notamlistmodel.h
 )
 
 set (widgets_SRCS

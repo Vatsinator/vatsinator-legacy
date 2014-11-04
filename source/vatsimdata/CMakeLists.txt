@@ -17,13 +17,6 @@ set (vatsimdata_SRCS
   updatescheduler.cpp
   vatbookbookingprovider.cpp
   vatsimdatahandler.cpp
-  
-  models/airporttablemodel.cpp
-  models/atcbookingtablemodel.cpp
-  models/controllertablemodel.cpp
-  models/flighttablemodel.cpp
-  models/metarlistmodel.cpp
-  models/notamlistmodel.cpp
 )
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
@@ -44,13 +37,6 @@ set (vatsimdata_HEADERS
   updatescheduler.h
   vatbookbookingprovider.h
   vatsimdatahandler.h
-  
-  models/airporttablemodel.h
-  models/atcbookingtablemodel.h
-  models/controllertablemodel.h
-  models/flighttablemodel.h
-  models/metarlistmodel.h
-  models/notamlistmodel.h
 )
 vatsinator_subdirectory_headers (vatsimdata "${vatsimdata_HEADERS}")
 

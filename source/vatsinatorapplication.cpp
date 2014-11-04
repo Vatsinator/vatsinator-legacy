@@ -33,11 +33,11 @@
 #include "ui/userinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "ui/widgetsuserinterface.h"
+#include "ui/models/controllertablemodel.h"
+#include "ui/models/flighttablemodel.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/models/controllertablemodel.h"
-#include "vatsimdata/models/flighttablemodel.h"
 #include "storage/filemanager.h"
 #include "config.h"
 

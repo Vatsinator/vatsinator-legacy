@@ -24,11 +24,11 @@
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
+#include "ui/models/controllertablemodel.h"
+#include "ui/models/flighttablemodel.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/pilot.h"
-#include "vatsimdata/models/controllertablemodel.h"
-#include "vatsimdata/models/flighttablemodel.h"
 #include "vatsinatorapplication.h"
 
 #include "airportitem.h"

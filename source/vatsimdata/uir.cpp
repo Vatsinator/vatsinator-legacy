@@ -16,9 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "ui/models/controllertablemodel.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/controller.h"
-#include "vatsimdata/models/controllertablemodel.h"
 
 #include "uir.h"
 

@@ -19,9 +19,9 @@
 #include <QtWidgets>
 
 #include "ui/userinterface.h"
+#include "ui/models/controllertablemodel.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/vatsimdatahandler.h"
-#include "vatsimdata/models/controllertablemodel.h"
 #include "vatsinatorapplication.h"
 
 #include "atclistwindow.h"

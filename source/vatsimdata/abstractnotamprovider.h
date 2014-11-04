@@ -22,7 +22,7 @@
 
 #include <QObject>
 
-#include "vatsimdata/models/notamlistmodel.h"
+#include "ui/models/notamlistmodel.h"
 
 /**
  * This class is the interface for all NOTAMs providers.

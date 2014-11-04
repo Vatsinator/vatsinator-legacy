@@ -19,10 +19,10 @@
 #include <QtWidgets>
 
 #include "ui/userinterface.h"
+#include "ui/models/flighttablemodel.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/pilot.h"
-#include "vatsimdata/models/flighttablemodel.h"
 #include "vatsinatorapplication.h"
 
 #include "flightlistwindow.h"
