@@ -20,6 +20,7 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
+#include "ui/models/roles.h"
 #include "vatsimdata/airport.h"
 
 #include "flighttablemodel.h"
@@ -104,9 +105,9 @@ FlightTableModel::data(const QModelIndex& index, int role) const {
     case Qt::TextAlignmentRole:
       return Qt::AlignCenter;
     case Qt::ToolTipRole:
-      return __flights[index.row()]->realName();
+      return __flights.at(index.row())->realName();
     case Qt::ForegroundRole:
-      if (__flights[index.row()]->isPrefiledOnly())
+      if (__flights.at(index.row())->isPrefiledOnly())
         return QBrush(QColor(Qt::gray));
       else
         return QVariant();
@@ -116,36 +117,39 @@ FlightTableModel::data(const QModelIndex& index, int role) const {
 
       switch (index.column()) {
         case Callsign:
-          return __flights[index.row()]->callsign();
+          return __flights.at(index.row())->callsign();
         case Name:
-          return __flights[index.row()]->realName();
+          return __flights.at(index.row())->realName();
         case From:
-          ap = __flights[index.row()]->origin();
+          ap = __flights.at(index.row())->origin();
           if (ap)
-            return QString(
-                     QString::fromUtf8(ap->data()->icao) %
-                     " " %
+            return QStringLiteral("%1 %2").arg(
+                     QString::fromUtf8(ap->data()->icao),
                      QString::fromUtf8(ap->data()->city)
                    );
           else
-            return __flights[index.row()]->route().origin;
+            return __flights.at(index.row())->route().origin;
 
         case To:
-          ap = __flights[index.row()]->destination();
+          ap = __flights.at(index.row())->destination();
           if (ap)
-            return QString(
-                     QString::fromUtf8(ap->data()->icao) %
-                     " " %
+            return QStringLiteral("%1 %2").arg(
+                     QString::fromUtf8(ap->data()->icao),
                      QString::fromUtf8(ap->data()->city)
                    );
           else
-            return __flights[index.row()]->route().destination;
+            return __flights.at(index.row())->route().destination;
 
         case Aircraft:
-          return __flights[index.row()]->aircraft();
+          return __flights.at(index.row())->aircraft();
         default:
           return QVariant();
       }
+    
+    case InstancePointerRole: {
+      Pilot* p = const_cast<Pilot*>(__flights.at(index.row()));
+      return QVariant::fromValue(reinterpret_cast<void*>(p));
+    }
 
     default:
       return QVariant();
@@ -169,7 +173,7 @@ FlightTableModel::headerData(int section, Qt::Orientation orientation, int role)
     case Aircraft:
       return tr("Aircraft");
     default:
-      return "";
+      return QVariant();
   }
 }
 

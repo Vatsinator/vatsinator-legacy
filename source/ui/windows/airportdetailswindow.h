@@ -52,6 +52,7 @@ private:
 private slots:
   void __updateForecast();
   void __notamUpdate(NotamListModel* model);
+  void __showDetails(QModelIndex index);
   void __goToNotam(QModelIndex index);
 
 private:

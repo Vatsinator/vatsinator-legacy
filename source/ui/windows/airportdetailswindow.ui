@@ -188,7 +188,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
-        <widget class="QTableView" name="ATCTable">
+        <widget class="QTableView" name="AtcTable">
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOn</enum>
          </property>
@@ -505,8 +505,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>498</width>
-                   <height>128</height>
+                   <width>494</width>
+                   <height>124</height>
                   </rect>
                  </property>
                 </widget>

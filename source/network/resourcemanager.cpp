@@ -39,6 +39,7 @@ static const QString ManifestFileName = QStringLiteral("Manifest");
 // how many days to have the database updated
 static const int DaysToUpdate = 7;
 
+
 ResourceManager::ResourceManager(QObject* parent) :
     QObject(parent) {
   
@@ -79,7 +80,7 @@ ResourceManager::__fetchVersion() {
           this,       SLOT(__parseVersion(QString)));
   connect(fetcher,    SIGNAL(finished(QString)),
           fetcher,    SLOT(deleteLater()));
-  connect(fetcher,    SIGNAL(error()),
+  connect(fetcher,    SIGNAL(error(QString)),
           fetcher,    SLOT(deleteLater()));
   
   fetcher->fetch(QUrl(NetConfig::Vatsinator::repoUrl() % QStringLiteral("VERSION")));

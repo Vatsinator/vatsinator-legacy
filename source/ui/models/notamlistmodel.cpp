@@ -20,6 +20,8 @@
 #include <algorithm>
 #include <QtGui>
 
+#include "ui/models/roles.h"
+
 #include "notamlistmodel.h"
 
 NotamListModel::NotamListModel(QString icao, QObject* parent) :
@@ -75,7 +77,7 @@ NotamListModel::data(const QModelIndex& index, int role) const {
           return QVariant();
       }
     
-    case Qt::UserRole:
+    case UrlRole:
       return notam.url();
       
     default:

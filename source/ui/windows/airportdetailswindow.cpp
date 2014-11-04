@@ -31,6 +31,7 @@
 #include "ui/models/atcbookingtablemodel.h"
 #include "ui/models/controllertablemodel.h"
 #include "ui/models/flighttablemodel.h"
+#include "ui/models/roles.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/widgets/weatherforecastwidget.h"
 #include "ui/windows/atcdetailswindow.h"
@@ -53,10 +54,13 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
   setupUi(this);
   InboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   OutboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  ATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
   connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::hide);
+  connect(InboundTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
+  connect(OutboundTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
+  connect(AtcTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
   connect(NotamTableView, &DelayedModelTableView::doubleClicked,
           this, &AirportDetailsWindow::__goToNotam);
   connect(vApp()->vatsimDataHandler()->notamProvider(), &AbstractNotamProvider::notamReady,
@@ -69,7 +73,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
   });
   
   NotamTableView->setErrorOnNoData(false);
-  
+   
   WeatherForecastWidget* w = new WeatherForecastWidget();
   
   /* Animation */
@@ -87,7 +91,7 @@ AirportDetailsWindow::showEvent(QShowEvent* event) {
   /* Set models */
   InboundTable->setModel(__airport->inbounds());
   OutboundTable->setModel(__airport->outbounds());
-  ATCTable->setModel(__airport->staff());
+  AtcTable->setModel(__airport->staff());
   BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__airport->icao()));
   
   /* Hide obvious things */
@@ -175,8 +179,15 @@ AirportDetailsWindow::__notamUpdate(NotamListModel* model) {
 }
 
 void
+AirportDetailsWindow::__showDetails(QModelIndex index) {
+  Q_ASSERT(index.data(InstancePointerRole).isValid());
+  Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+  vApp()->userInterface()->showDetails(client);
+}
+
+void
 AirportDetailsWindow::__goToNotam(QModelIndex index) {
-  QString url = index.data(Qt::UserRole).toString();
+  QString url = index.data(UrlRole).toString();
   if (!url.isEmpty())
     QDesktopServices::openUrl(url);
 }
