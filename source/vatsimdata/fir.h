@@ -25,8 +25,8 @@
 
 class Airport;
 class AirportTableModel;
+class AtcTableModel;
 class Controller;
-class ControllerTableModel;
 class FirDatabase;
 class FlightTableModel;
 class Pilot;
@@ -98,8 +98,8 @@ public:
   
   inline const FirRecord* data() const { return __data; }
   
-  inline ControllerTableModel* staff() const { return __staff; }
-  inline ControllerTableModel* uirStaff() const { return __uirStaff; }
+  inline AtcTableModel* staff() const { return __staff; }
+  inline AtcTableModel* uirStaff() const { return __uirStaff; }
   inline FlightTableModel* flights() const { return __flights; }
   inline AirportTableModel* airports() const { return __airports; }
   
@@ -119,8 +119,8 @@ private:
   QString       __name;
   QString       __country;
 
-  ControllerTableModel* __staff;
-  ControllerTableModel* __uirStaff;
+  AtcTableModel* __staff;
+  AtcTableModel* __uirStaff;
   FlightTableModel*     __flights;
   AirportTableModel*    __airports;
 };

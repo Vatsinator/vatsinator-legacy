@@ -27,7 +27,7 @@
 #include "vatsimdata/controller.h"
 
 struct AirportRecord;
-class ControllerTableModel;
+class AtcTableModel;
 class Fir;
 class FlightTableModel;
 class Pilot;
@@ -126,7 +126,7 @@ public:
   /**
    * \return Staff model of the airport.
    */
-  inline ControllerTableModel* staff() const { return __staff; }
+  inline AtcTableModel* staff() const { return __staff; }
   
   /**
    * \return Inbound flights for the airport.
@@ -142,7 +142,7 @@ private:
   const AirportRecord*  __data;
   const QString         __icao;
   
-  ControllerTableModel* __staff;
+  AtcTableModel* __staff;
   FlightTableModel*     __inbounds;
   FlightTableModel*     __outbounds;
 

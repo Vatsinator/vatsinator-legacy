@@ -23,8 +23,8 @@
 #include <QObject>
 #include <QList>
 
+class AtcTableModel;
 class Controller;
-class ControllerTableModel;
 class Fir;
 
 /**
@@ -59,7 +59,7 @@ public:
   bool isEmpty() const;
   
   inline const QList<Fir*>& range() const { return __range; }
-  inline const ControllerTableModel* staff() const { return __staff; }
+  inline const AtcTableModel* staff() const { return __staff; }
   inline const QString& icao() const { return __icao; }
   inline const QString& name() const { return __name; }
   inline QString& name() { return __name; }
@@ -69,7 +69,7 @@ private:
   QString __name;
   
   QList<Fir*>         __range;
-  ControllerTableModel* __staff;
+  AtcTableModel* __staff;
 
 };
 

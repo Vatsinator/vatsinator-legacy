@@ -19,7 +19,8 @@
 #include <QtWidgets>
 
 #include "ui/userinterface.h"
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
+#include "ui/models/roles.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
@@ -29,30 +30,27 @@
 AtcListWindow::AtcListWindow(QWidget* parent) :
     BaseWindow(parent) {
   setupUi(this);
-  ATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
   connect(qApp,         SIGNAL(aboutToQuit()),
           this,         SLOT(hide()));
-  connect(ATCTable,     SIGNAL(doubleClicked(const QModelIndex&)),
+  connect(AtcTable,     SIGNAL(doubleClicked(const QModelIndex&)),
           this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
 }
 
 void
 AtcListWindow::showEvent(QShowEvent* event) {
-  if (auto m = ATCTable->model())
+  if (auto m = AtcTable->model())
     m->deleteLater();
   
-  ATCTable->setModel(vApp()->vatsimDataHandler()->controllerTableModel());
+  AtcTable->setModel(vApp()->vatsimDataHandler()->atcTableModel());
   
   BaseWindow::showEvent(event);
 }
 
 void
 AtcListWindow::__handleDoubleClicked(const QModelIndex& index) {
-  Q_ASSERT(qobject_cast< const ControllerTableModel* >(index.model()));
-
-  vApp()->userInterface()->showDetails(
-    (qobject_cast<const ControllerTableModel*>(index.model()))->staff()[index.row()]
-  );
+  Q_ASSERT(index.data(InstancePointerRole).isValid());
+  Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+  vApp()->userInterface()->showDetails(client);
 }
-

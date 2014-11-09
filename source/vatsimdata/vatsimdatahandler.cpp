@@ -25,7 +25,7 @@
 #include "network/plaintextdownloader.h"
 #include "plugins/weatherforecastinterface.h"
 #include "ui/pages/miscellaneouspage.h"
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/models/metarlistmodel.h"
 #include "ui/windows/vatsinatorwindow.h"
@@ -272,9 +272,9 @@ VatsimDataHandler::flightTableModel() const {
   return model;
 }
 
-ControllerTableModel*
-VatsimDataHandler::controllerTableModel() const {
-  ControllerTableModel* model = new ControllerTableModel();
+AtcTableModel*
+VatsimDataHandler::atcTableModel() const {
+  AtcTableModel* model = new AtcTableModel();
   for (Client* c: __clients.values()) {
     if (Controller* cc = dynamic_cast<Controller*>(c))
       model->add(cc);

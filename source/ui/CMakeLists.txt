@@ -39,7 +39,7 @@ set (ui_SRCS
   
   models/airporttablemodel.cpp
   models/atcbookingtablemodel.cpp
-  models/controllertablemodel.cpp
+  models/atctablemodel.cpp
   models/flighttablemodel.cpp
   models/metarlistmodel.cpp
   models/notamlistmodel.cpp
@@ -54,7 +54,7 @@ set (ui_HEADERS
   
   models/airporttablemodel.h
   models/atcbookingtablemodel.h
-  models/controllertablemodel.h
+  models/atctablemodel.h
   models/flighttablemodel.h
   models/metarlistmodel.h
   models/notamlistmodel.h

@@ -25,7 +25,7 @@
 #include "ui/buttons/airportdetailsbutton.h"
 #include "ui/models/airporttablemodel.h"
 #include "ui/models/atcbookingtablemodel.h"
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/models/notamlistmodel.h"
 #include "ui/windows/airportdetailswindow.h"

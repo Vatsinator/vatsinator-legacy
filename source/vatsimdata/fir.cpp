@@ -20,8 +20,9 @@
 
 #include "db/firdatabase.h"
 #include "ui/models/airporttablemodel.h"
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
+#include "vatsimdata/controller.h"
 
 #include "fir.h"
 
@@ -29,8 +30,8 @@ Fir::Fir(const FirRecord* record) :
      __data(record),
      __icao(QString::fromUtf8(record->header.icao)),
      __oceanic(record->header.oceanic),
-     __staff(new ControllerTableModel(this)),
-     __uirStaff(new ControllerTableModel(this)),
+     __staff(new AtcTableModel(this)),
+     __uirStaff(new AtcTableModel(this)),
      __flights(new FlightTableModel(this)),
      __airports(new AirportTableModel(this)) {
   
@@ -42,9 +43,9 @@ Fir::~Fir() {}
 void
 Fir::addStaff(const Controller* atc) {
   __staff->add(atc);
-  connect(atc,           SIGNAL(updated()),
+  connect(atc,          SIGNAL(updated()),
           this,         SIGNAL(updated()));
-  connect(atc,           SIGNAL(destroyed(QObject*)),
+  connect(atc,          SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
   emit updated();
 }

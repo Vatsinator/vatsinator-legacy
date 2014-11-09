@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/controller.h"
 
@@ -25,7 +25,7 @@
 Uir::Uir(const QString& icao, QObject* parent) :
     QObject(parent),
     __icao(icao),
-    __staff(new ControllerTableModel(this)) {}
+    __staff(new AtcTableModel(this)) {}
 
 void
 Uir::addFir(Fir* fir) {

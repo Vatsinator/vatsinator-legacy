@@ -33,7 +33,7 @@
 #include "ui/userinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "ui/widgetsuserinterface.h"
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/windows/vatsinatorwindow.h"

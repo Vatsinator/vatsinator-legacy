@@ -239,8 +239,6 @@ FlightTableModel::sort(int column, Qt::SortOrder order) {
   }
 
   endResetModel();
-  
-  emit sorted();
 }
 
 void

@@ -36,7 +36,7 @@
 #include "ui/map/mapitem.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"

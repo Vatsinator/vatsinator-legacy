@@ -30,16 +30,11 @@
  */
 class FlightTableModel : public QAbstractTableModel {
   Q_OBJECT
-  
-signals:
-  /**
-   * This signal is emitted whenever user sorts the model.
-   * \todo Remove.
-   */
-  void sorted();
 
 public:
-  /* Column numbers */
+  /**
+   * Column numbers
+   */
   enum Column {
     Callsign    = 0,
     Name        = 1,

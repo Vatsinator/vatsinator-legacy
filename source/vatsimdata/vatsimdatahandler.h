@@ -34,8 +34,8 @@
 class AbstractBookingProvider;
 class AbstractNotamProvider;
 class Airport;
+class AtcTableModel;
 class Controller;
-class ControllerTableModel;
 class DecisionEvent;
 class Fir;
 class FlightTableModel;
@@ -178,7 +178,7 @@ public:
    * \return The newly allocated and filled model; needs to be deleted afterwards.
    * \sa flightTableModel().
    */
-  ControllerTableModel* controllerTableModel() const;
+  AtcTableModel* atcTableModel() const;
   
   /**
    * Looks for pilot by callsign.

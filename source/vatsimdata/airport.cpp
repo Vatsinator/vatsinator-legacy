@@ -16,11 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <QtCore>
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "ui/models/controllertablemodel.h"
+#include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "vatsimdata/pilot.h"
 #include "vatsinatorapplication.h"
@@ -30,7 +31,7 @@
 Airport::Airport(const QString& icao) :
     __data(vApp()->airportDatabase()->find(icao)),
     __icao(icao),
-    __staff(new ControllerTableModel()),
+    __staff(new AtcTableModel()),
     __inbounds(new FlightTableModel()),
     __outbounds(new FlightTableModel()) {
   
@@ -40,7 +41,7 @@ Airport::Airport(const QString& icao) :
 Airport::Airport(const AirportRecord* record) :
     __data(record),
     __icao(__data->icao),
-    __staff(new ControllerTableModel()),
+    __staff(new AtcTableModel()),
     __inbounds(new FlightTableModel()),
     __outbounds(new FlightTableModel()) {
   
@@ -55,16 +56,11 @@ Airport::~Airport() {
 
 unsigned
 Airport::countDepartures(bool includePrefiled) const {
-  unsigned i = 0;
-  
-  for (const Pilot* p: __outbounds->flights()) {
-    if (p->phase() == Pilot::Departing) {
-      if (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled))
-        i += 1;
-    }
-  }
-  
-  return i;
+  return std::count_if(__outbounds->flights().begin(), __outbounds->flights().end(), 
+                       [includePrefiled](const Pilot* p) {
+                         return p->phase() == Pilot::Departing &&
+                          (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled));
+                       });
 }
 
 unsigned
@@ -74,13 +70,10 @@ Airport::countOutbounds() const {
 
 unsigned
 Airport::countArrivals() const {
-  unsigned i = 0;
-  
-  for (const Pilot* p: __inbounds->flights())
-    if (p->phase() == Pilot::Arrived)
-      i += 1;
-  
-  return i;
+  return std::count_if(__inbounds->flights().begin(), __inbounds->flights().end(),
+                       [](const Pilot* p) {
+                         return p->phase() == Pilot::Arrived;
+                       });
 }
 
 unsigned
