@@ -342,6 +342,24 @@
     </message>
 </context>
 <context>
+    <name>AtcTableModel</name>
+    <message>
+        <location filename="../ui/models/atctablemodel.cpp" line="121"/>
+        <source>Callsign</source>
+        <translation>Callsign</translation>
+    </message>
+    <message>
+        <location filename="../ui/models/atctablemodel.cpp" line="123"/>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <location filename="../ui/models/atctablemodel.cpp" line="125"/>
+        <source>Frequency</source>
+        <translation>Frequency</translation>
+    </message>
+</context>
+<context>
     <name>ColorButton</name>
     <message>
         <location filename="../ui/buttons/colorbutton.cpp" line="109"/>
@@ -401,24 +419,6 @@
         <location filename="../ui/pages/colorspage.ui" line="353"/>
         <source>Pilot-to-destination line color:</source>
         <translation>Pilot-to-destination line color:</translation>
-    </message>
-</context>
-<context>
-    <name>ControllerTableModel</name>
-    <message>
-        <location filename="../ui/models/controllertablemodel.cpp" line="129"/>
-        <source>Callsign</source>
-        <translation>Callsign</translation>
-    </message>
-    <message>
-        <location filename="../ui/models/controllertablemodel.cpp" line="131"/>
-        <source>Name</source>
-        <translation>Name</translation>
-    </message>
-    <message>
-        <location filename="../ui/models/controllertablemodel.cpp" line="133"/>
-        <source>Frequency</source>
-        <translation>Frequency</translation>
     </message>
 </context>
 <context>
