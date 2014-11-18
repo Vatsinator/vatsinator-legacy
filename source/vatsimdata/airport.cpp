@@ -23,36 +23,35 @@
 #include "db/firdatabase.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
+#include "vatsimdata/fir.h"
 #include "vatsimdata/pilot.h"
+#include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
 #include "airport.h"
 
-Airport::Airport(const QString& icao) :
-    __data(vApp()->airportDatabase()->find(icao)),
-    __icao(icao),
-    __staff(new AtcTableModel()),
-    __inbounds(new FlightTableModel()),
-    __outbounds(new FlightTableModel()) {
-  
-  Q_ASSERT(__data);
-}
-
 Airport::Airport(const AirportRecord* record) :
     __data(record),
     __icao(__data->icao),
-    __staff(new AtcTableModel()),
-    __inbounds(new FlightTableModel()),
-    __outbounds(new FlightTableModel()) {
+    __staff(new AtcTableModel(this)),
+    __inbounds(new FlightTableModel(this)),
+    __outbounds(new FlightTableModel(this)) {
   
   Q_ASSERT(__data);
+  
+  auto fillFir = [this](const QString& icao, bool isFss) {
+    Fir* f = vApp()->vatsimDataHandler()->findFir(icao, isFss);
+    if (f) {
+      f->addAirport(this);
+      __firs << f;
+    }
+  };
+  
+  fillFir(QString(__data->fir_a), __data->is_fir_a_oceanic);
+  fillFir(QString(__data->fir_b), __data->is_fir_b_oceanic);
 }
 
-Airport::~Airport() {
-  delete __staff;
-  delete __inbounds;
-  delete __outbounds;
-}
+Airport::~Airport() {}
 
 unsigned
 Airport::countDepartures(bool includePrefiled) const {
@@ -108,6 +107,10 @@ Airport::addInbound(const Pilot* pilot) {
           this,         SIGNAL(updated()));
   connect(pilot,        SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
+  
+  for (Fir* f: __firs)
+    f->addFlight(pilot);
+  
   emit updated();
 }
 
@@ -118,6 +121,10 @@ Airport::addOutbound(const Pilot* pilot) {
           this,         SIGNAL(updated()));
   connect(pilot,        SIGNAL(destroyed(QObject*)),
           this,         SIGNAL(updated()), Qt::DirectConnection);
+  
+  for (Fir* f: __firs)
+    f->addFlight(pilot);
+  
   emit updated();
 }
 

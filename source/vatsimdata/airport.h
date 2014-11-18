@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QString>
 #include <QPair>
+#include <QList>
 
 #include "vatsimdata/controller.h"
 
@@ -42,12 +43,6 @@ signals:
   void updated();
 
 public:
-  
-  /**
-   * \deprecated
-   */
-  Airport(const QString& icao);
-  
   /**
    * \param data Record in the database.
    */
@@ -139,12 +134,13 @@ public:
   inline FlightTableModel* outbounds() const { return __outbounds; }
   
 private:
-  const AirportRecord*  __data;
-  const QString         __icao;
+  const AirportRecord* __data;
+  const QString __icao;
   
   AtcTableModel* __staff;
-  FlightTableModel*     __inbounds;
-  FlightTableModel*     __outbounds;
+  FlightTableModel* __inbounds;
+  FlightTableModel* __outbounds;
+  QList<Fir*> __firs;
 
 };
 

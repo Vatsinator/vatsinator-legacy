@@ -62,13 +62,6 @@ FlightTableModel::contains(const Pilot* pilot) {
   return __flights.contains(pilot);
 }
 
-void
-FlightTableModel::clear() {
-  beginResetModel();
-  __flights.clear();
-  endResetModel();
-}
-
 const Pilot*
 FlightTableModel::findFlightByCallsign(const QString& callsign) const {
   for (const Pilot* p: __flights)

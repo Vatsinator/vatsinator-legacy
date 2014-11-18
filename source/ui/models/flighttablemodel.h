@@ -71,13 +71,6 @@ public:
   bool contains(const Pilot* pilot);
   
   /**
-   * Removes all pointers.
-   * 
-   * \todo Remove.
-   */
-  void clear();
-  
-  /**
    * Looks for the given pilot in the model.
    * 
    * \param callsign Callsign of the client to find.

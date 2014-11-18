@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtCore>
+#include <QtGui>
 
 #include "db/airportdatabase.h"
+#include "ui/models/roles.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/controller.h"
 
@@ -59,8 +60,13 @@ AirportTableModel::data(const QModelIndex& index, int role) const {
     return QVariant();
 
   switch (role) {
+    case Qt::ForegroundRole:
+      if (__airports.at(index.row())->isEmpty())
+        return QBrush(QColor(Qt::gray));
+      else
+        return QVariant();
+    
     case Qt::TextAlignmentRole:
-
       switch (index.column()) {
         case Label:
           return QVariant();
@@ -84,6 +90,11 @@ AirportTableModel::data(const QModelIndex& index, int role) const {
         default:
           return QVariant();
       }
+    
+    case InstancePointerRole: {
+      Airport* a = const_cast<Airport*>(__airports.at(index.row()));
+      return QVariant::fromValue(reinterpret_cast<void*>(a));
+    }
 
     default:
       return QVariant();

@@ -55,8 +55,9 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
   connect(qApp, &QCoreApplication::aboutToQuit, this, &FirDetailsWindow::close);
   connect(vApp()->vatsimDataHandler()->notamProvider(), &AbstractNotamProvider::notamReady,
           this, &FirDetailsWindow::__notamUpdate);
-  connect(AtcTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showDetails);
-  connect(FlightsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showDetails);
+  connect(AirportsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showAirportDetails);
+  connect(AtcTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
+  connect(FlightsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
   connect(NotamTableView, &DelayedModelTableView::doubleClicked, this, &FirDetailsWindow::__goToNotam);
 }
 
@@ -102,7 +103,14 @@ FirDetailsWindow::__notamUpdate(NotamListModel* model) {
 }
 
 void
-FirDetailsWindow::__showDetails(QModelIndex index) {
+FirDetailsWindow::__showAirportDetails(QModelIndex index) {
+  Q_ASSERT(index.data(InstancePointerRole).isValid());
+  Airport* const airport = reinterpret_cast<Airport* const>(index.data(InstancePointerRole).value<void*>());
+  vApp()->userInterface()->showDetails(airport);
+}
+
+void
+FirDetailsWindow::__showClientDetails(QModelIndex index) {
   Q_ASSERT(index.data(InstancePointerRole).isValid());
   Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
   vApp()->userInterface()->showDetails(client);
@@ -110,7 +118,7 @@ FirDetailsWindow::__showDetails(QModelIndex index) {
 
 void
 FirDetailsWindow::__goToNotam(QModelIndex index) {
-  QString url = index.data(Qt::UserRole).toString();
+  QString url = index.data(UrlRole).toString();
   if (!url.isEmpty())
     QDesktopServices::openUrl(url);
 }

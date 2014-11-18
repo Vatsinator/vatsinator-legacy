@@ -229,9 +229,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="ActiveAirportsTab">
+     <widget class="QWidget" name="AirportsTab">
       <attribute name="title">
-       <string>Active airports</string>
+       <string>Airports</string>
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
