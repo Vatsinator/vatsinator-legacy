@@ -20,6 +20,7 @@
 
 #include "ui/userinterface.h"
 #include "ui/models/flighttablemodel.h"
+#include "ui/models/roles.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/pilot.h"
@@ -50,9 +51,7 @@ FlightListWindow::showEvent(QShowEvent* event) {
 
 void
 FlightListWindow::__handleDoubleClicked(const QModelIndex& index) {
-  Q_ASSERT(qobject_cast<const FlightTableModel*>(index.model()));
-
-  vApp()->userInterface()->showDetails(
-    (qobject_cast<const FlightTableModel*>(index.model()))->flights()[index.row()]
-  );
+  Q_ASSERT(index.data(InstancePointerRole).isValid());
+  Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+  vApp()->userInterface()->showDetails(client);
 }

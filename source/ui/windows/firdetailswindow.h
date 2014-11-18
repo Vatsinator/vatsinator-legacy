@@ -47,6 +47,7 @@ private:
   
 private slots:
   void __notamUpdate(NotamListModel* model);
+  void __showDetails(QModelIndex index);
   void __goToNotam(QModelIndex index);
   
 private:

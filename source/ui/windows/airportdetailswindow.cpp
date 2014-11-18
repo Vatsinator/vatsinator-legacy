@@ -57,7 +57,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
   AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
-  connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::hide);
+  connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::close);
   connect(InboundTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
   connect(OutboundTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
   connect(AtcTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);

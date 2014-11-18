@@ -28,6 +28,7 @@
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/models/notamlistmodel.h"
+#include "ui/models/roles.h"
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
@@ -46,18 +47,17 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
     BaseWindow(parent),
     __fir(fir) {
   setupUi(this);
-  ATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   AirportsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
-  connect(qApp,                 SIGNAL(aboutToQuit()),
-          this,                 SLOT(hide()));
-  connect(vApp()->vatsimDataHandler()->notamProvider(),
-                                SIGNAL(notamReady(NotamListModel*)),
-          this,                 SLOT(__notamUpdate(NotamListModel*)));
-  connect(NotamTableView,       SIGNAL(doubleClicked(QModelIndex)),
-          this,                 SLOT(__goToNotam(QModelIndex)));
+  connect(qApp, &QCoreApplication::aboutToQuit, this, &FirDetailsWindow::close);
+  connect(vApp()->vatsimDataHandler()->notamProvider(), &AbstractNotamProvider::notamReady,
+          this, &FirDetailsWindow::__notamUpdate);
+  connect(AtcTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showDetails);
+  connect(FlightsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showDetails);
+  connect(NotamTableView, &DelayedModelTableView::doubleClicked, this, &FirDetailsWindow::__goToNotam);
 }
 
 void
@@ -66,9 +66,8 @@ FirDetailsWindow::showEvent(QShowEvent* event) {
 
   FlightsTable->setModel(__fir->flights());
   /* TODO Show UIR controllers here, too */
-  ATCTable->setModel(__fir->staff());
+  AtcTable->setModel(__fir->staff());
   AirportsTable->setModel(__fir->airports());
-  
   BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__fir->icao()));
   
   FlightsTable->hideColumn(FlightTableModel::Name);
@@ -100,6 +99,13 @@ FirDetailsWindow::__notamUpdate(NotamListModel* model) {
   if (model->icao() == __fir->icao()) {
     NotamTableView->setModel(model);
   }
+}
+
+void
+FirDetailsWindow::__showDetails(QModelIndex index) {
+  Q_ASSERT(index.data(InstancePointerRole).isValid());
+  Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+  vApp()->userInterface()->showDetails(client);
 }
 
 void
