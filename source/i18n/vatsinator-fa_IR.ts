@@ -227,32 +227,32 @@
 <context>
     <name>AirportTableModel</name>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="100"/>
+        <location filename="../ui/models/airporttablemodel.cpp" line="111"/>
         <source>Airport</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="102"/>
+        <location filename="../ui/models/airporttablemodel.cpp" line="113"/>
         <source>ATC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="104"/>
+        <location filename="../ui/models/airporttablemodel.cpp" line="115"/>
         <source>Inbound</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="106"/>
+        <location filename="../ui/models/airporttablemodel.cpp" line="117"/>
         <source>Outbound</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="115"/>
+        <location filename="../ui/models/airporttablemodel.cpp" line="126"/>
         <source>Arrivals: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="117"/>
+        <location filename="../ui/models/airporttablemodel.cpp" line="128"/>
         <source>Departures: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -586,7 +586,7 @@
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="234"/>
-        <source>Active airports</source>
+        <source>Airports</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -809,27 +809,27 @@
 <context>
     <name>FlightTableModel</name>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="166"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="159"/>
         <source>Callsign</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="168"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="161"/>
         <source>Name</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="170"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="163"/>
         <source>From</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="172"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="165"/>
         <source>To</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="174"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="167"/>
         <source>Aircraft</source>
         <translation type="unfinished"/>
     </message>
