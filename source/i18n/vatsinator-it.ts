@@ -589,7 +589,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="234"/>
         <source>Airports</source>
-        <translation type="unfinished"/>
+        <translation>Aereoporti</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="290"/>
