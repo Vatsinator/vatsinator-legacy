@@ -41,6 +41,7 @@
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
 #include "vatsimdata/vatbookbookingprovider.h"
+#include "vatsimdata/vatsimstatusdocument.h"
 #include "storage/filemanager.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
