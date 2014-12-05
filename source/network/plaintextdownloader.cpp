@@ -57,7 +57,7 @@ PlainTextDownloader::__startRequest() {
     return;
   }
   
-  __temp.clear(); 
+  __data.clear(); 
 
   connect(__reply, &QNetworkReply::finished, this, &PlainTextDownloader::__finished);
   connect(__reply, &QNetworkReply::readyRead, this, &PlainTextDownloader::__readyRead);
@@ -66,7 +66,7 @@ PlainTextDownloader::__startRequest() {
 
 void
 PlainTextDownloader::__readyRead() {
-  __temp.append(__reply->readAll());
+  __data.append(__reply->readAll());
 }
 
 void
@@ -74,8 +74,7 @@ PlainTextDownloader::__finished() {
   if (__reply->error() == QNetworkReply::NoError) {
     qDebug("PlainTextDownloader: %s: finished",
            qPrintable(__reply->url().toString()));
-    __data = __temp;
-    emit finished(__data);
+    emit finished();
   } else {
     qWarning("PlainTextDownloader: %s: error (%s)",
              qPrintable(__reply->url().toString()),

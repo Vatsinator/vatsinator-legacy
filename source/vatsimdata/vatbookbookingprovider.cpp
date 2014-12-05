@@ -96,7 +96,8 @@ VatbookBookingProvider::__update() {
 }
 
 void
-VatbookBookingProvider::__parseData(QString data) {
+VatbookBookingProvider::__parseData() {
+  QString data = __downloader->data();
   if (data.isEmpty())
     return;
   

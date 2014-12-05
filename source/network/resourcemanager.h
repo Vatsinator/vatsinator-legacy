@@ -101,7 +101,7 @@ private slots:
    * After fetching the new version string, parses it and displays
    * appropriate notification.
    */
-  void __parseVersion(QString version);
+  void __parseVersion();
   
   /**
    * Database sync will be checked only after the Vatsinator version

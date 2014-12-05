@@ -88,7 +88,7 @@ private:
   bool __matches(const QString& word);
   
 private slots:
-  void __readMetar(const QString& metar);
+  void __readMetar();
   
 private:
   QQueue<QString>       __requests;

@@ -43,7 +43,7 @@ private:
   
 private slots:
   void __update();
-  void __parseData(QString data);
+  void __parseData();
   
 private:
   QMap<QString, AtcBookingTableModel*> __bookings;

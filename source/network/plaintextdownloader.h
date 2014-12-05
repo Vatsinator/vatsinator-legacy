@@ -31,14 +31,18 @@
  */
 class PlainTextDownloader : public QObject {
   Q_OBJECT
+  
+  /**
+   * This property holds the contents of the downloaded file.
+   */
+  Q_PROPERTY(QByteArray data READ data)
 
 signals:
   /**
    * Emitted when download is complete.
-   * 
-   * \param data The fetch file content.
+   * Downloaded data can be accessed via data().
    */
-  void finished(QString data);
+  void finished();
   
   /**
    * Emitted if a network error occured during the download process.
@@ -63,11 +67,14 @@ public:
 
   /**
    * Enqueues the request.
+   * Previously stored data will be emptied.
    * If the queue is empty, the specified URL will be downloaded immediately.
    * 
    * \param url URL to be downloaded.
    */
   void fetch(const QUrl& url);
+  
+  inline const QByteArray& data() const { return __data; }
   
   /**
    * Returns false if the queue is empty, otherwise true.
@@ -96,12 +103,8 @@ private slots:
   
 private:
   QQueue<QUrl>    __urls;
-
-  QString __temp;
-  QString __data;
-
+  QByteArray __data;
   QNetworkAccessManager __nam;
-
   QNetworkReply*  __reply;
 
 };
