@@ -472,7 +472,7 @@ private slots:
   /**
    * The data file has been fetched.
    */
-  void __dataFetched(QString data);
+  void __dataFetched();
   
   /**
    * If any file can't be fetched.

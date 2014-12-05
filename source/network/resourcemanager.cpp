@@ -76,10 +76,8 @@ void
 ResourceManager::__fetchVersion() {
   PlainTextDownloader* fetcher = new PlainTextDownloader();
   
-  connect(fetcher,    SIGNAL(finished(QString)),
-          this,       SLOT(__parseVersion(QString)));
-  connect(fetcher,    SIGNAL(finished(QString)),
-          fetcher,    SLOT(deleteLater()));
+  connect(fetcher,    SIGNAL(finished()),
+          this,       SLOT(__parseVersion()));
   connect(fetcher,    SIGNAL(error(QString)),
           fetcher,    SLOT(deleteLater()));
   
@@ -87,7 +85,9 @@ ResourceManager::__fetchVersion() {
 }
 
 void
-ResourceManager::__parseVersion(QString version) {
+ResourceManager::__parseVersion() {
+  PlainTextDownloader* downloader = qobject_cast<PlainTextDownloader*>(sender());
+  QString version = downloader->data();
   bool actual = __versionActual(QString(VATSINATOR_VERSION), version);
   
   qDebug("ResourceManager: version(%s) %s version(%s)",
@@ -97,6 +97,7 @@ ResourceManager::__parseVersion(QString version) {
     emit outdated();
   
   emit vatsinatorVersionChecked(actual ? Updated : Outdated);
+  downloader->deleteLater();
 }    
 
 void

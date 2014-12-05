@@ -74,8 +74,8 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
   
   connect(vApp()->userInterface(),              SIGNAL(initialized()),
           this,                                 SLOT(__slotUiCreated()));
-  connect(__downloader,                         SIGNAL(finished(QString)),
-          this,                                 SLOT(__dataFetched(QString)));
+  connect(__downloader,                         SIGNAL(finished()),
+          this,                                 SLOT(__dataFetched()));
   connect(__downloader,                         SIGNAL(error(QString)),
           this,                                 SLOT(__handleFetchError(QString)));
   connect(__scheduler,                          SIGNAL(timeToUpdate()),
@@ -756,7 +756,9 @@ VatsimDataHandler::__beginDownload() {
 }
 
 void
-VatsimDataHandler::__dataFetched(QString data) {
+VatsimDataHandler::__dataFetched() {
+  QString data = __downloader->data();
+  
   if (__statusFileFetched) {
     if (data.isEmpty()) {
       emit vatsimDataError();

@@ -33,8 +33,8 @@ static const QString NoMetarText = QStringLiteral("No METAR available");
 MetarListModel::MetarListModel(PlainTextDownloader* downloader, QObject* parent) :
     QAbstractListModel(parent),
     __downloader(downloader) {
-  connect(__downloader,         SIGNAL(finished(QString)),
-          this,                 SLOT(__readMetar(QString)));
+  connect(__downloader,         SIGNAL(finished()),
+          this,                 SLOT(__readMetar()));
 }
 
 void
@@ -123,8 +123,8 @@ MetarListModel::__matches(const QString& word) {
 }
 
 void
-MetarListModel::__readMetar(const QString& metar) {
-  QString cleanMetar = metar.simplified();
+MetarListModel::__readMetar() {
+  QString cleanMetar = __downloader->data().simplified();
 
   if (cleanMetar.isEmpty())
     return;
