@@ -61,7 +61,7 @@ namespace {
 
 VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     QObject(parent),
-    __statusUrl(NetConfig::Vatsim::statusUrl()),
+    __status(NetConfig::Vatsim::statusUrl()),
     __currentTimestamp(0),
     __observers(0),
     __clientCount(0),
@@ -111,43 +111,6 @@ VatsimDataHandler::initialize() {
   
   __initialized = true;
   emit initialized();
-}
-
-void
-VatsimDataHandler::parseStatusFile(const QString& content) {
-  static QRegExp rx("(msg0|url0|moveto0|metar0)=(.+)\\b");
-  
-  QStringList tempList = content.split('\n', QString::SkipEmptyParts);
-  
-  for (QString& temp: tempList) {
-    if (temp.startsWith(';'))
-      continue;
-    
-    if (rx.indexIn(temp) >= 0) {
-      QString key = rx.cap(1);
-      QString value = rx.cap(2);
-      
-      if (key == "moveto0") {
-        __statusUrl = value;
-        __beginDownload();
-        return;
-      } else if (key == "metar0") {
-        __metarUrl = value;
-      } else if (key == "url0") {
-        __dataServers << value;
-      } else if (key == "msg0") {
-        vApp()->userInterface()->showVatsimMessage(value);
-      }
-    }
-  }
-  
-  if (__metarUrl.isEmpty() || __dataServers.empty()) {
-    emit vatsimStatusError();
-  } else {
-    __statusFileFetched = true;
-    emit vatsimStatusUpdated();
-    emit vatsimDataDownloading();
-  }
 }
 
 void
@@ -258,7 +221,7 @@ VatsimDataHandler::getDataUrl() const {
     qsrand(QTime::currentTime().msec());
     return __dataServers[qrand() % __dataServers.size()];
   } else {
-    return __statusUrl;
+    return __status;
   }
 }
 
@@ -774,7 +737,22 @@ VatsimDataHandler::__dataFetched() {
     
     MetarListModel::getSingleton().updateAll();
   } else {
-    parseStatusFile(data);
+    VatsimStatusDocument status(__downloader->data());
+    if (!status.isValid()) {
+      emit vatsimStatusError();
+    } else if (!status.moveTo().isEmpty()) {
+      __status = status.moveTo();
+      __beginDownload();
+    } else {
+      __metar = status.metar();
+      __dataServers = status.dataFileUrls();
+      if (!status.message().isEmpty())
+        vApp()->userInterface()->showVatsimMessage(status.message());
+      
+      __statusFileFetched = true;
+      emit vatsimStatusUpdated();
+      emit vatsimDataDownloading();
+    }
   }
 }
 
@@ -785,9 +763,9 @@ VatsimDataHandler::__handleFetchError(QString error) {
   if (__statusFileFetched) {
     emit vatsimDataError();
   } else {
-    if (__statusUrl != NetConfig::Vatsim::backupStatusUrl()) {
+    if (__status != NetConfig::Vatsim::backupStatusUrl()) {
       /* Try the backup url */
-      __statusUrl = NetConfig::Vatsim::backupStatusUrl();
+      __status = NetConfig::Vatsim::backupStatusUrl();
       __beginDownload();
     } else {
       /* We already tried - there is something else causing the error */

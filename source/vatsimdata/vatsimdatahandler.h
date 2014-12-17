@@ -25,6 +25,7 @@
 #include <QString>
 #include <QVector>
 #include <QMap>
+#include <QUrl>
 #include <QMultiMap>
 
 #include "vatsimdata/client.h"
@@ -139,14 +140,6 @@ public:
    * Called by VatsinatorApplication only, once, at the very beginning.
    */
   void initialize();
-  
-  /**
-   * This function parses the raw "status.txt" file.
-   * 
-   * \param content The file's contents.
-   * \todo Move to private scope.
-   */
-  void parseStatusFile(const QString& content);
   
   /**
    * This function parses the data file.
@@ -287,7 +280,7 @@ public:
   /**
    * Gets base URL for METAR reports to download.
    */
-  inline const QString& metarUrl() const { return __metarUrl; }
+  inline const QUrl& metar() const { return __metar; }
   
   /**
    * Time between data reloads, in minutes.
@@ -530,10 +523,10 @@ private:
   QMap<QString, QString> __alternameNames;
   
   /* This is URL that we can obtain METAR from */
-  QString   __metarUrl;
+  QUrl __metar;
   
   /* And status.txt */
-  QString   __statusUrl;
+  QUrl __status;
   
   /* Minutes to next reload, as stated in data file */
   int __reload;
