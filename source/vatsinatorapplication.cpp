@@ -100,12 +100,10 @@ VatsinatorApplication::~VatsinatorApplication() {
 
 bool
 VatsinatorApplication::event(QEvent* event) {
-  if (event->type() == Event::Decision) {
-    userDecisionEvent(static_cast<DecisionEvent*>(event));
-    return true;
-  } else {
+  if (event->type() == Event::Decision)
+    return userDecisionEvent(static_cast<DecisionEvent*>(event)), true;
+  else
     return QApplication::event(event);
-  }
 }
 
 void
