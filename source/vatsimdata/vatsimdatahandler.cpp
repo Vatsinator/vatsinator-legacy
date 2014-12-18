@@ -215,11 +215,11 @@ VatsimDataHandler::parseDataFile(const QString& content) {
   __cleanupClients();
 }
 
-const QString&
-VatsimDataHandler::getDataUrl() const {
+const QUrl&
+VatsimDataHandler::dataUrl() const {
   if (__statusFileFetched) {
     qsrand(QTime::currentTime().msec());
-    return __dataServers[qrand() % __dataServers.size()];
+    return __dataServers.at(qrand() % __dataServers.size());
   } else {
     return __status;
   }
@@ -716,7 +716,7 @@ VatsimDataHandler::__slotUiCreated() {
 void
 VatsimDataHandler::__beginDownload() {
   qDebug("VatsimDataHandler: starting download.");
-  __downloader->fetch(getDataUrl());
+  __downloader->fetch(dataUrl());
 }
 
 void

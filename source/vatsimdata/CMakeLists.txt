@@ -16,6 +16,7 @@ set (vatsimdata_SRCS
   uir.cpp
   updatescheduler.cpp
   vatbookbookingprovider.cpp
+  vatsimdatadocument.cpp
   vatsimdatahandler.cpp
   vatsimstatusdocument.cpp
 )
@@ -37,6 +38,7 @@ set (vatsimdata_HEADERS
   uir.h
   updatescheduler.h
   vatbookbookingprovider.h
+  vatsimdatadocument.h
   vatsimdatahandler.h
   vatsimstatusdocument.h
 )

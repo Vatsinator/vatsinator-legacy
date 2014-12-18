@@ -155,7 +155,7 @@ public:
    * \return The randomly chosen data file URL.
    * \todo Move to private scope.
    */
-  const QString& getDataUrl() const;
+  const QUrl& dataUrl() const;
   
   /**
    * Creates the new model and populates it with all flights that are online.
@@ -514,7 +514,7 @@ private:
   QMap<QString, Uir*> __uirs;
   
   /* This is vector of data servers, obtained from the status file */
-  QVector<QString> __dataServers;
+  QList<QUrl> __dataServers;
   
   /* Map of ICAO aliases */
   QMultiMap<QString, QString> __aliases;
