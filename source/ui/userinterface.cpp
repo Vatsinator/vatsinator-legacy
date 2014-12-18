@@ -17,6 +17,8 @@
 */
 
 #include "events/notificationevent.h"
+#include "ui/widgetsuserinterface.h"
+#include "config.h"
 #include "vatsinatorapplication.h"
 
 #include "userinterface.h"
@@ -29,6 +31,15 @@ bool UserInterface::event(QEvent* event) {
     return notificationEvent(dynamic_cast<NotificationEvent*>(event));
   else
     return QObject::event(event);
+}
+
+UserInterface*
+UserInterface::instantiate() {
+#if VATSINATOR_UI_IMPLEMENTATION == widgets
+  return new WidgetsUserInterface();
+#else
+# error "Not a valid UserInterface implementation"
+#endif
 }
 
 bool

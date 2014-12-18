@@ -45,7 +45,7 @@
 
 VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     QApplication(argc, argv),
-    __userInterface(new VATSINATOR_UI_IMPLEMENTATION()),
+    __userInterface(UserInterface::instantiate()),
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager()),
     __airlineDatabase(new AirlineDatabase()),

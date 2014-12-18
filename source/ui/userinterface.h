@@ -59,6 +59,11 @@ public:
    */
   bool event(QEvent* event) override;
   
+  /**
+   * Creates new instance of either of the implementations.
+   */
+  static UserInterface* instantiate();
+  
 public slots:
   /**
    * Reports critical error to user.

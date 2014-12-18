@@ -78,11 +78,10 @@ else (WIN32)
     )
 endif (LINUX)
 
-if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-  set (UI_IMPLEMENTATION "WidgetsUserInterface")
-else (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-  message (FATAL_ERROR "Known user interface implementations: widgets")
-endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+if (NOT vatsinator_UI_IMPLEMENTATION)
+  message (FATAL_ERROR "No valid user interface implementation specified")
+  message (STATUS "Known user interface implementations: widgets")
+endif ()
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/config.h
