@@ -45,9 +45,14 @@ FileManager::FileManager() {
 
 void
 FileManager::cacheData(const QString& fileName, const QString& data) {
+  cacheData(fileName, data.toUtf8());
+}
+
+void
+FileManager::cacheData(const QString& fileName, const QByteArray& data) {
   CacheFile cache(fileName);
   cache.open(QIODevice::WriteOnly | QIODevice::Truncate);
-  cache.write(data.toUtf8());
+  cache.write(data);
   cache.close();
 }
 

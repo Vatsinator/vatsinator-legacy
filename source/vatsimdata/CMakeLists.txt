@@ -16,7 +16,9 @@ set (vatsimdata_SRCS
   uir.cpp
   updatescheduler.cpp
   vatbookbookingprovider.cpp
+  vatsimdatadocument.cpp
   vatsimdatahandler.cpp
+  vatsimstatusdocument.cpp
 )
 vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
@@ -36,7 +38,9 @@ set (vatsimdata_HEADERS
   uir.h
   updatescheduler.h
   vatbookbookingprovider.h
+  vatsimdatadocument.h
   vatsimdatahandler.h
+  vatsimstatusdocument.h
 )
 vatsinator_subdirectory_headers (vatsimdata "${vatsimdata_HEADERS}")
 

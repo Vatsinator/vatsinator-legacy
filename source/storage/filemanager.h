@@ -60,6 +60,14 @@ public:
   static void cacheData(const QString& fileName, const QString& data);
   
   /**
+   * Stores given data in local cache file.
+   * 
+   * \param fileName File name. Only file name, not the full path.
+   * \param data Data to be saved.
+   */
+  static void cacheData(const QString& fileName, const QByteArray& data);
+  
+  /**
    * Moves given file to cache.
    * 
    * \param source Source file name, with the full path.

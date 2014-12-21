@@ -80,7 +80,7 @@ Controller::Controller(const QStringList& data) :
     __rating(data[16].toInt()),
     __atis(data[35]),
     __airport(nullptr),
-    __isOK(true) {
+    __valid(true) {
   
   __cleanupAtis();
   __recognizeDetails();
@@ -131,7 +131,7 @@ Controller::__recognizeDetails() {
       
     vApp()->statsPurveyor()->reportNoAtc(callsign());
     qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
-    __isOK = false;
+    __valid = false;
   } else if (sections.back() == "FSS") {
     __facility = Fss;
     __airport = nullptr;
@@ -158,7 +158,7 @@ Controller::__recognizeDetails() {
     
     vApp()->statsPurveyor()->reportNoAtc(callsign());
     qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
-    __isOK = false;
+    __valid = false;
   } else if (
     sections.back() == "APP" ||
     sections.back() == "DEP" ||
@@ -190,7 +190,7 @@ Controller::__recognizeDetails() {
     qWarning("Airport not found for %s.", qPrintable(callsign()));
   }
   
-  __isOK = false;
+  __valid = false;
 }
 
 void

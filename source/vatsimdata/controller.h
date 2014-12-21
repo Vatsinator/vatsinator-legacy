@@ -101,11 +101,10 @@ public:
   inline const Airport* airport() const { return __airport; }
   
   /**
-   * If isOk() returns false it means that the controller could not be
-   * assigned any facility nor airport and therefore needs to be
-   * removed.
+   * The return value of isValid() method indicates whether the controller
+   * could be assigned to any facility or airport or not.
    */
-  inline bool isOk() const { return __isOK; }
+  inline bool isValid() const { return __valid; }
   
   inline const QString& frequency() const { return __frequency; }
   inline const QString& icao() const { return __icao; }
@@ -134,7 +133,7 @@ private:
   const Airport*       __airport;
   Controller::Facility __facility;
   QString              __description;
-  bool                 __isOK;
+  bool                 __valid;
   
   static bool __ratingsInitialized;
 

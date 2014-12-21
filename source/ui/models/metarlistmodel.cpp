@@ -39,7 +39,7 @@ MetarListModel::MetarListModel(PlainTextDownloader* downloader, QObject* parent)
 
 void
 MetarListModel::fetchMetar(const QString& icao) {
-  __downloader->fetch(vApp()->vatsimDataHandler()->metarUrl() + "?id=" + icao.toLower());
+  __downloader->fetch(vApp()->vatsimDataHandler()->metar().toString() + "?id=" + icao.toLower());
   __requests.enqueue(icao.simplified());
 }
 

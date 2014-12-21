@@ -25,6 +25,7 @@
 #include <QString>
 #include <QVector>
 #include <QMap>
+#include <QUrl>
 #include <QMultiMap>
 
 #include "vatsimdata/client.h"
@@ -141,28 +142,12 @@ public:
   void initialize();
   
   /**
-   * This function parses the raw "status.txt" file.
-   * 
-   * \param content The file's contents.
-   * \todo Move to private scope.
-   */
-  void parseStatusFile(const QString& content);
-  
-  /**
-   * This function parses the data file.
-   * 
-   * \param content The file's contents.
-   * \todo Move to private scope.
-   */
-  void parseDataFile(const QString& content);
-  
-  /**
    * Chooses randomly one of the URLs.
    * 
    * \return The randomly chosen data file URL.
    * \todo Move to private scope.
    */
-  const QString& getDataUrl() const;
+  const QUrl& dataUrl() const;
   
   /**
    * Creates the new model and populates it with all flights that are online.
@@ -287,7 +272,7 @@ public:
   /**
    * Gets base URL for METAR reports to download.
    */
-  inline const QString& metarUrl() const { return __metarUrl; }
+  inline const QUrl& metar() const { return __metar; }
   
   /**
    * Time between data reloads, in minutes.
@@ -392,7 +377,6 @@ public:
   static qreal nmDistance(const LonLat& a, const LonLat& b);
   
 public slots:
-  
   /**
    * This is the safest method to refresh the Vatsim data.
    * If data is being already downloaded, it is aborted and
@@ -404,32 +388,6 @@ protected:
   virtual void userDecisionEvent(DecisionEvent* event);
   
 private:
-  
-  /**
-   * Sections of the data file. Each section is defined as "!SECTION:"
-   * For example:
-   *   !CLIENTS:
-   */
-  enum DataSections {
-    None,
-    General,
-    Clients,
-    Prefile
-  };
-  
-  /**
-   * Struct that keeps some raw info about client that we need during data file
-   * parsing process.
-   */
-  struct RawClientData {
-    RawClientData(const QString&);
-    
-    QStringList line;
-    bool valid;
-    QString callsign;
-    enum { Pilot, Atc } type;
-  };
-  
   /**
    * The following functions read data files.
    * \param fileName Location of the data file.
@@ -443,6 +401,11 @@ private:
    * Loads classes that wrap database records.
    */
   void __initializeData();
+  
+  /**
+   * Parses VATSIM data document.
+   */
+  void __parseDataDocument(const QByteArray& data, bool* ok);
   
   /**
    * Goes through all the clients and checks whether they are still online
@@ -521,7 +484,7 @@ private:
   QMap<QString, Uir*> __uirs;
   
   /* This is vector of data servers, obtained from the status file */
-  QVector<QString> __dataServers;
+  QList<QUrl> __dataServers;
   
   /* Map of ICAO aliases */
   QMultiMap<QString, QString> __aliases;
@@ -530,10 +493,10 @@ private:
   QMap<QString, QString> __alternameNames;
   
   /* This is URL that we can obtain METAR from */
-  QString   __metarUrl;
+  QUrl __metar;
   
   /* And status.txt */
-  QString   __statusUrl;
+  QUrl __status;
   
   /* Minutes to next reload, as stated in data file */
   int __reload;
