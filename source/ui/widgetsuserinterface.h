@@ -128,7 +128,7 @@ private:
  * implementation as well as check the current ui mode.
  */
 inline WidgetsUserInterface* wui() {
-  return dynamic_cast<WidgetsUserInterface*>(vApp()->userInterface());
+  return qobject_cast<WidgetsUserInterface*>(vApp()->userInterface());
 }
 
 #endif // WIDGETSUSERINTERFACE_H

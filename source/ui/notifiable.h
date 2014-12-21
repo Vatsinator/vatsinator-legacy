@@ -49,7 +49,7 @@ protected:
    * This type of notification tells user that something here is not O.K.
    * (like a file is missing) and he should fix it (by reinstalling the
    * application, for example), but the application can continue,
-   * as it is not the fatal error.
+   * as it is not the a error.
    * 
    * \param message Message to be shown in the warning dialog.
    */
@@ -62,7 +62,6 @@ protected:
    * \param message Message to be shown in the info dialog.
    */
   void notifyInfo(const QString& message);
-  
   
 };
 

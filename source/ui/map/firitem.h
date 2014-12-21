@@ -37,7 +37,7 @@ class MapScene;
  * and drawBorders() methods are used directly by MapRenderer and they use
  * VBOs and VAOs to draw a lot of triangles in the most efficient way.
  */
-class FirItem : public QObject, public MapItem {
+class FirItem : public MapItem {
   Q_OBJECT
   
 public:
@@ -45,7 +45,7 @@ public:
    * Constructs a new FirItem with the given _fir_. _parent_ is passed
    * to QObject's constructor.
    */
-  FirItem(const Fir* fir, QObject* parent = nullptr);
+  explicit FirItem(const Fir* fir, QObject* parent = nullptr);
   FirItem() = delete;
   
   virtual ~FirItem();

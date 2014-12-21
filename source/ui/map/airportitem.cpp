@@ -34,7 +34,7 @@
 #include "airportitem.h"
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
-    QObject(parent),
+    MapItem(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __airport(airport),
     __position(airport->data()->longitude, airport->data()->latitude),

@@ -128,7 +128,7 @@ FlightTableModel*
 VatsimDataHandler::flightTableModel() const {
   FlightTableModel* model = new FlightTableModel();
   for (Client* c: __clients.values()) {
-    if (Pilot* p = dynamic_cast<Pilot*>(c))
+    if (Pilot* p = qobject_cast<Pilot*>(c))
       model->add(p);
   }
   
@@ -139,7 +139,7 @@ AtcTableModel*
 VatsimDataHandler::atcTableModel() const {
   AtcTableModel* model = new AtcTableModel();
   for (Client* c: __clients.values()) {
-    if (Controller* cc = dynamic_cast<Controller*>(c))
+    if (Controller* cc = qobject_cast<Controller*>(c))
       model->add(cc);
   }
   
@@ -149,7 +149,7 @@ VatsimDataHandler::atcTableModel() const {
 const Pilot*
 VatsimDataHandler::findPilot(const QString& callsign) const {
   if (__clients.contains(callsign))
-    return dynamic_cast<Pilot*>(__clients[callsign]);
+    return qobject_cast<Pilot*>(__clients[callsign]);
   else
     return nullptr;
 }
@@ -157,7 +157,7 @@ VatsimDataHandler::findPilot(const QString& callsign) const {
 const Controller*
 VatsimDataHandler::findAtc(const QString& callsign) const {
   if (__clients.contains(callsign))
-    return dynamic_cast<Controller*>(__clients[callsign]);
+    return qobject_cast<Controller*>(__clients[callsign]);
   else
     return nullptr;
 }
@@ -249,7 +249,7 @@ int
 VatsimDataHandler::pilotCount() const {
   int p = 0;
   for (Client* c: __clients.values()) {
-    if (Pilot* pp = dynamic_cast<Pilot*>(c)) {
+    if (Pilot* pp = qobject_cast<Pilot*>(c)) {
       if (!pp->isPrefiledOnly())
         p += 1;
     }
@@ -262,7 +262,7 @@ int
 VatsimDataHandler::atcCount() const {
   int cc = 0;
   for (Client* c: __clients.values()) {
-    if (dynamic_cast<Controller*>(c))
+    if (qobject_cast<Controller*>(c))
       cc += 1;
   }
   
@@ -288,6 +288,7 @@ VatsimDataHandler::bookingProvider() {
 
 WeatherForecastInterface*
 VatsimDataHandler::weatherForecastProvider() {
+  Q_ASSERT(__weatherForecast);
   return __weatherForecast;
 }
 

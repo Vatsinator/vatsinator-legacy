@@ -45,7 +45,7 @@ namespace {
 }
 
 ApproachCircleItem::ApproachCircleItem(const Airport* airport, QObject* parent) :
-    QObject(parent),
+    MapItem(parent),
     __position(airport->data()->longitude, airport->data()->latitude) {
   
   connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),

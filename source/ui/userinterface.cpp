@@ -28,7 +28,7 @@ UserInterface::UserInterface(QObject* parent) :
 
 bool UserInterface::event(QEvent* event) {
   if (event->type() == Event::Notification)
-    return notificationEvent(dynamic_cast<NotificationEvent*>(event));
+    return notificationEvent(static_cast<NotificationEvent*>(event));
   else
     return QObject::event(event);
 }

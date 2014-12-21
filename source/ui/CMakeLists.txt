@@ -48,9 +48,19 @@ set (ui_SRCS
 set (ui_HEADERS
   notifiable.h
   userinterface.h
-  vatsinatorstyle.h
-  widgetsuserinterface.h
-  ${CMAKE_CURRENT_BINARY_DIR}/about.h
+  
+  map/airportitem.h
+  map/approachcircleitem.h
+  map/firitem.h
+  map/flightitem.h
+  map/iconkeeper.h
+  map/mapconfig.h
+  map/mapitem.h
+  map/maprenderer.h
+  map/mapscene.h
+  map/modelmatcher.h
+  map/uiritem.h
+  map/worldpolygon.h
   
   models/airporttablemodel.h
   models/atcbookingtablemodel.h

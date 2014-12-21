@@ -35,7 +35,7 @@
 #include "firitem.h"
 
 FirItem::FirItem(const Fir* fir, QObject* parent) :
-    QObject(parent),
+    MapItem(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
     __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y),

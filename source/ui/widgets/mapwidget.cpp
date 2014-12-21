@@ -347,10 +347,10 @@ MapWidget::__itemMenu() {
   QList<const AirportItem*> airports;
   
   __renderer->scene()->nearTo(__mousePosition.geoPosition(), 10, [&](const MapItem* item) {
-    if (const FlightItem* f = dynamic_cast<const FlightItem*>(item)) {
+    if (const FlightItem* f = qobject_cast<const FlightItem*>(item)) {
       if (!f->data()->isPrefiledOnly())
         flights << f;
-    } else if (const AirportItem* a = dynamic_cast<const AirportItem*>(item)) {
+    } else if (const AirportItem* a = qobject_cast<const AirportItem*>(item)) {
       airports << a;
     }
   });
@@ -389,13 +389,14 @@ void
 MapWidget::__showMenu(const MapItem* item) {
   QMenu* menu;
   
+  /* FIXME I don't like that part below */
   if (!item)
     menu = __itemMenu();
-  else if (const AirportItem* i = dynamic_cast<const AirportItem*>(item))
+  else if (const AirportItem* i = qobject_cast<const AirportItem*>(item))
     menu = __itemMenu(i);
-  else if (const FirItem* i = dynamic_cast<const FirItem*>(item))
+  else if (const FirItem* i = qobject_cast<const FirItem*>(item))
     menu = __itemMenu(i);
-  else if (const FlightItem* i = dynamic_cast<const FlightItem*>(item))
+  else if (const FlightItem* i = qobject_cast<const FlightItem*>(item))
     menu = __itemMenu(i);
   else
     Q_UNREACHABLE();

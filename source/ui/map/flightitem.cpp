@@ -34,7 +34,7 @@
 #include "flightitem.h"
 
 FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
-    QObject(parent),
+    MapItem(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __pilot(pilot),
     __position(pilot->position()),

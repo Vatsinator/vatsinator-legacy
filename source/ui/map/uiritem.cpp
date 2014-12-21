@@ -24,7 +24,7 @@
 #include "uiritem.h"
 
 UirItem::UirItem(const Uir* uir, QObject* parent) :
-    QObject(parent),
+    MapItem(parent),
     __uir(uir) {
   
   MapScene* scene = qobject_cast<MapScene*>(parent);

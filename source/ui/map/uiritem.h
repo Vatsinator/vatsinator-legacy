@@ -27,11 +27,11 @@
 class FirItem;
 class Uir;
 
-class UirItem : public QObject, public MapItem {
+class UirItem : public MapItem {
   Q_OBJECT
 
 public:
-  UirItem(const Uir* uir, QObject* parent = nullptr);
+  explicit UirItem(const Uir* uir, QObject* parent = nullptr);
   
   bool isVisible() const override;
   bool isLabelVisible() const override;

@@ -22,16 +22,21 @@
 
 #include <QPointF>
 #include <QString>
+#include <QObject>
 
 #include "vatsimdata/lonlat.h"
 
 class QOpenGLShaderProgram;
 
 /**
- * MapItem is an interface for any object that exists on the map.
+ * MapItem is a base class for any object that exists on the map.
  */
-class MapItem {
+class MapItem : public QObject {
+  Q_OBJECT
+  
 public:
+  explicit MapItem(QObject* parent = nullptr);
+  
   /**
    * Indicates whether the item is visible on the map or not.
    */

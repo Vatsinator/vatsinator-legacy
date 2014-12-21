@@ -203,11 +203,11 @@ WidgetsUserInterface::showDetails(const Airport* airport) {
 
 void
 WidgetsUserInterface::showDetails(const Client* client) {
-  if (const Pilot* p = dynamic_cast<const Pilot*>(client)) {
+  if (const Pilot* p = qobject_cast<const Pilot*>(client)) {
     FlightDetailsWindow* w = new FlightDetailsWindow(p);
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
-  } else if (const Controller* c = dynamic_cast<const Controller*>(client)) {
+  } else if (const Controller* c = qobject_cast<const Controller*>(client)) {
     AtcDetailsWindow* w = new AtcDetailsWindow(c);
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();

@@ -222,7 +222,7 @@ MapScene::__setupItems() {
   }
   
   for (auto c: vApp()->vatsimDataHandler()->clients())
-    if (Pilot* p = dynamic_cast<Pilot*>(c)) {
+    if (Pilot* p = qobject_cast<Pilot*>(c)) {
       /* TODO handle prefiled flights */
       if (p->phase() != Pilot::Arrived && !p->isPrefiledOnly())
         __addFlightItem(p);
@@ -232,7 +232,7 @@ MapScene::__setupItems() {
 void
 MapScene::__updateItems() {
   for (Client* c: vApp()->vatsimDataHandler()->newClients())
-    if (Pilot* p = dynamic_cast<Pilot*>(c)) {
+    if (Pilot* p = qobject_cast<Pilot*>(c)) {
       if (p->phase() != Pilot::Arrived && !p->isPrefiledOnly())
         __addFlightItem(p);
     }
@@ -241,8 +241,8 @@ MapScene::__updateItems() {
 void
 MapScene::__removeFlightItem() {
   Q_ASSERT(sender());
-  
-  Pilot* p = dynamic_cast<Pilot*>(sender());
+  Pilot* p = qobject_cast<Pilot*>(sender());
+  Q_ASSERT(p);
   
   qDebug("MapScene: removing %s from the map; position: (%f, %f)",
          qPrintable(p->callsign()), p->position().latitude(), p->position().longitude());
@@ -251,7 +251,7 @@ MapScene::__removeFlightItem() {
   auto it = std::find_if(spatial::equal_begin(__items, p->position()),
                          spatial::equal_end(__items, p->position()),
                          [&citem, p](const std::pair<const LonLat, const MapItem*>& it) {
-    citem = dynamic_cast<const FlightItem*>(it.second);
+    citem = qobject_cast<const FlightItem*>(it.second);
     return citem && citem->data() == p;
   });
   Q_ASSERT(citem);
@@ -271,7 +271,7 @@ MapScene::__updateFlightItem() {
    * As there is no rebalance() method, we need to remove the corresponding item
    * and insert it back again, with the updated position.
    */
-  Pilot* p = dynamic_cast<Pilot*>(sender());
+  Pilot* p = qobject_cast<Pilot*>(sender());
   Q_ASSERT(p);
   if (p->position() == p->oldPosition()) // position didn't change
     return;
@@ -279,7 +279,7 @@ MapScene::__updateFlightItem() {
   auto it = std::find_if(spatial::equal_begin(__items, p->oldPosition()),
                          spatial::equal_end(__items, p->oldPosition()),
                          [p](const std::pair<const LonLat, const MapItem*>& it) {
-    const FlightItem* citem = dynamic_cast<const FlightItem*>(it.second);
+    const FlightItem* citem = qobject_cast<const FlightItem*>(it.second);
     return citem && citem->data() == p;
   });
   const MapItem* item = it->second;

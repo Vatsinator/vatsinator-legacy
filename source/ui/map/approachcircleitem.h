@@ -27,11 +27,11 @@
 
 class Airport;
 
-class ApproachCircleItem : public QObject, public MapItem {
+class ApproachCircleItem : public MapItem {
   Q_OBJECT
 
 public:
-  ApproachCircleItem(const Airport* airport, QObject* parent = nullptr);
+  explicit ApproachCircleItem(const Airport* airport, QObject* parent = nullptr);
   ApproachCircleItem() = delete;
   
   void drawCircle() const;

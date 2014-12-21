@@ -33,15 +33,15 @@ class MapScene;
 /**
  * The AirportItem class represents a single airport on the map.
  */
-class AirportItem : public QObject, public MapItem {
+class AirportItem : public MapItem {
   Q_OBJECT
 
 public:
   /**
    * Creates new AirportItem with the specified _airport_.
-   * _parent_ is passed to QObject's constructor.
+   * _parent_ is passed to MapItem's constructor.
    */
-  AirportItem(const Airport* airport, QObject* parent = nullptr);
+  explicit AirportItem(const Airport* airport, QObject* parent = nullptr);
   AirportItem() = delete;
   
   virtual ~AirportItem();

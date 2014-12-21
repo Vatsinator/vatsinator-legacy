@@ -30,7 +30,7 @@ class MapScene;
 /**
  * The FlightItem class represents a single Pilot on the map.
  */
-class FlightItem : public QObject, public MapItem {
+class FlightItem : public MapItem {
   Q_OBJECT
 
 public:
@@ -41,7 +41,7 @@ public:
    * \param pilot The flight to show on the map.
    * \param parent Passed to QObject's constructor.
    */
-  FlightItem(const Pilot* pilot, QObject* parent = nullptr);
+  explicit FlightItem(const Pilot* pilot, QObject* parent = nullptr);
   FlightItem() = delete;
   
   virtual ~FlightItem();
