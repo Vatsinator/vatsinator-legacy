@@ -41,6 +41,7 @@
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
 #include "vatsimdata/vatbookbookingprovider.h"
+#include "vatsimdata/vatsimdatadocument.h"
 #include "vatsimdata/vatsimstatusdocument.h"
 #include "storage/filemanager.h"
 #include "netconfig.h"
@@ -111,108 +112,6 @@ VatsimDataHandler::initialize() {
   
   __initialized = true;
   emit initialized();
-}
-
-void
-VatsimDataHandler::parseDataFile(const QString& content) {
-  static QRegExp rx("^\\b(UPDATE|RELOAD|CONNECTED CLIENTS)\\b\\s?=\\s?\\b(.+)\\b$");
-
-  qDebug("Data length: %i.", content.length());
-
-  QStringList tempList = content.split(QRegExp("\r?\n"), QString::SkipEmptyParts);  
-  DataSections section = None;
-  
-  __currentTimestamp = QDateTime::currentMSecsSinceEpoch();
-  __newClients.clear();
-  __observers = 0;
-
-  for (QString& temp: tempList) {
-    if (temp.startsWith(';')) // comment
-      continue;
-
-    if (temp.startsWith('!')) {
-      section = None;
-      
-      if (temp.contains("GENERAL"))
-        section = DataSections::General;
-      else if (temp.contains("CLIENTS"))
-        section = DataSections::Clients;
-      else if (temp.contains("PREFILE"))
-        section = DataSections::Prefile;
-
-      continue;
-    }
-    
-    switch (section) {
-      case DataSections::General: {
-        if (rx.indexIn(temp) >= 0) {
-          QString key = rx.cap(1);
-          QString value = rx.cap(2);
-          
-          if (key == "UPDATE") {
-            __dateVatsimDataUpdated = QDateTime::fromString(
-              value, "yyyyMMddhhmmss");
-          } else if (key == "RELOAD") {
-            __reload = value.toInt();
-          } else if (key == "CONNECTED CLIENTS") {
-            __clientCount = value.toInt();
-          }
-        }
-        break;
-      } // DataSections::General
-    
-      case DataSections::Clients: {
-        RawClientData clientData = RawClientData(temp);
-        
-        if (!clientData.valid)
-          continue;
-        
-        if (__clients.contains(clientData.callsign)) {
-          Client* c = __clients[clientData.callsign];
-          c->update(clientData.line);
-        } else {
-          if (clientData.type == RawClientData::Atc) {
-            Controller* atc = new Controller(clientData.line);
-            
-            if (atc->isOk()) {
-              __clients[atc->callsign()] = atc;
-              __newClients << atc;
-            } else {
-              __observers += 1;
-              delete atc;
-            }
-          } else if (clientData.type == RawClientData::Pilot) {
-            Pilot* pilot = new Pilot(clientData.line);
-            if (pilot->position().isNull()) {
-              delete pilot; // skip unknown flights
-            } else {
-              __clients[pilot->callsign()] = pilot;
-              __newClients << pilot;
-            }
-          }
-        }
-        break;
-      } // DataSections::Clients
-    
-      case DataSections::Prefile: {
-        RawClientData clientData = RawClientData(temp);
-        
-        if (!clientData.valid || clientData.type != RawClientData::Pilot)
-          continue;
-        
-        if (!__clients.contains(clientData.callsign)) {
-          Pilot* pilot = new Pilot(clientData.line, true);
-          __clients[pilot->callsign()] = pilot;
-        }
-        
-        break;
-      } // DataSections::Prefile
-      
-      default: {}
-    } // switch (section)
-  } // for
-  
-  __cleanupClients();
 }
 
 const QUrl&
@@ -665,6 +564,62 @@ VatsimDataHandler::__initializeData() {
 }
 
 void
+VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok) {
+  VatsimDataDocument document(data);
+  if (!document.isValid()) {
+    *ok = false;
+    return;
+  }
+  
+  __dateVatsimDataUpdated = document.update();
+  __reload = document.reload();
+  __clientCount = document.connectedClients();
+  
+  /* Update timestamp to keep track of clients that logged off */
+  __currentTimestamp = QDateTime::currentMSecsSinceEpoch();
+  __newClients.clear();
+  __observers = 0;
+  
+  for (auto& c: document.clients()) {
+    if (__clients.contains(c.callsign)) {
+      __clients[c.callsign]->update(c.line);
+    } else {
+      if (c.type == VatsimDataDocument::ClientLine::Atc) {
+        Controller* atc = new Controller(c.line);
+        if (atc->isValid()) {
+          __clients[atc->callsign()] = atc;
+          __newClients << atc;
+        } else {
+          __observers += 1;
+          atc->deleteLater();
+        }
+      } else { // Pilot
+        Pilot* pilot = new Pilot(c.line);
+        if (pilot->position().isNull()) {
+          pilot->deleteLater();
+        } else {
+          __clients[pilot->callsign()] = pilot;
+          __newClients << pilot;
+        }
+      }
+    }
+  }
+  
+  for (auto& p: document.prefile()) {
+    if (p.type == VatsimDataDocument::ClientLine::Atc)
+      continue;
+    
+    if (!__clients.contains(p.callsign)) {
+      Pilot* pilot = new Pilot(p.line, true);
+      __clients[pilot->callsign()] = pilot;
+    }
+  }
+  
+  __cleanupClients();
+  *ok = true;
+}
+
+void
 VatsimDataHandler::__cleanupClients() {
   qDeleteAll(__invalidClients);
   __invalidClients.clear();
@@ -695,7 +650,7 @@ VatsimDataHandler::__loadCachedData() {
     
     QString data(file.readAll());
     file.close();
-    parseDataFile(data);
+//     parseDataFile(data);
   }
   
   qDebug("VatsimDataHandler: cache restored.");
@@ -715,27 +670,26 @@ VatsimDataHandler::__slotUiCreated() {
 
 void
 VatsimDataHandler::__beginDownload() {
-  qDebug("VatsimDataHandler: starting download.");
+  qDebug("VatsimDataHandler: starting download");
   __downloader->fetch(dataUrl());
 }
 
 void
 VatsimDataHandler::__dataFetched() {
-  QString data = __downloader->data();
-  
   if (__statusFileFetched) {
-    if (data.isEmpty()) {
+    bool ok;
+    __parseDataDocument(__downloader->data(), &ok);
+    
+    if (ok) {
+      emit vatsimDataUpdated();
+      if (SM::get("network.cache_enabled").toBool())
+        FileManager::cacheData(CacheFileName, __downloader->data());
+      
+      /* TODO Fix that shit below */
+      MetarListModel::getSingleton().updateAll();
+    } else {
       emit vatsimDataError();
-      return;
     }
-    
-    parseDataFile(data);
-    emit vatsimDataUpdated();
-    
-    if (SM::get("network.cache_enabled").toBool())
-      FileManager::cacheData(CacheFileName, data);
-    
-    MetarListModel::getSingleton().updateAll();
   } else {
     VatsimStatusDocument status(__downloader->data());
     if (!status.isValid()) {
@@ -751,6 +705,8 @@ VatsimDataHandler::__dataFetched() {
       
       __statusFileFetched = true;
       emit vatsimStatusUpdated();
+      
+      /* Start downloading data when status document is read */
       emit vatsimDataDownloading();
     }
   }
@@ -798,15 +754,5 @@ VatsimDataHandler::__reloadWeatherForecast() {
     }
   } else {
     __weatherForecast = nullptr;
-  }
-}
-
-
-VatsimDataHandler::RawClientData::RawClientData(const QString& _line) {
-  line = _line.split(':');
-  valid = line.size() == 42;
-  if (valid) {
-    callsign = line[0];
-    type = line[3] == "ATC" ? Atc : Pilot;
   }
 }

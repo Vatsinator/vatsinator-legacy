@@ -142,14 +142,6 @@ public:
   void initialize();
   
   /**
-   * This function parses the data file.
-   * 
-   * \param content The file's contents.
-   * \todo Move to private scope.
-   */
-  void parseDataFile(const QString& content);
-  
-  /**
    * Chooses randomly one of the URLs.
    * 
    * \return The randomly chosen data file URL.
@@ -385,7 +377,6 @@ public:
   static qreal nmDistance(const LonLat& a, const LonLat& b);
   
 public slots:
-  
   /**
    * This is the safest method to refresh the Vatsim data.
    * If data is being already downloaded, it is aborted and
@@ -397,32 +388,6 @@ protected:
   virtual void userDecisionEvent(DecisionEvent* event);
   
 private:
-  
-  /**
-   * Sections of the data file. Each section is defined as "!SECTION:"
-   * For example:
-   *   !CLIENTS:
-   */
-  enum DataSections {
-    None,
-    General,
-    Clients,
-    Prefile
-  };
-  
-  /**
-   * Struct that keeps some raw info about client that we need during data file
-   * parsing process.
-   */
-  struct RawClientData {
-    RawClientData(const QString&);
-    
-    QStringList line;
-    bool valid;
-    QString callsign;
-    enum { Pilot, Atc } type;
-  };
-  
   /**
    * The following functions read data files.
    * \param fileName Location of the data file.
@@ -436,6 +401,11 @@ private:
    * Loads classes that wrap database records.
    */
   void __initializeData();
+  
+  /**
+   * Parses VATSIM data document.
+   */
+  void __parseDataDocument(const QByteArray& data, bool* ok);
   
   /**
    * Goes through all the clients and checks whether they are still online

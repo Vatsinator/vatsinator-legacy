@@ -37,7 +37,7 @@ VatsimStatusDocument::__parse() {
   
   QStringList tempList = QString(__data).split('\n', QString::SkipEmptyParts);
   
-  for (QString& temp: tempList) {
+  for (auto& temp: tempList) {
     if (temp.startsWith(';'))
       continue;
     

@@ -25,12 +25,74 @@
 /**
  * The VatsimDataDocument class represents a single data file that is
  * being fetched periodically from the internet. It contains list of connected
- * clients and preflights.
+ * clients and prefiles.
  */
 class VatsimDataDocument : public QObject {
     Q_OBJECT
+    
+    /**
+     * Indicates whether the document is valid and parsed successfully.
+     */
+    Q_PROPERTY(bool valid READ isValid)
 
+public:
+  /**
+   * Struct that keeps some raw info about client that we need during data file
+   * parsing process.
+   */
+  struct ClientLine {
+    ClientLine(const QString& data);
+    
+    QStringList line; /**< Split line */
+    bool valid; /**< Indicates whether the line is correct or not  */
+    QString callsign; /**< Parsed client callsign */
+    enum { Pilot, Atc } type; /**< Parsed client type */
+  };
+  
+  VatsimDataDocument(QByteArray data, QObject* parent = nullptr);
+  
+  inline bool isValid() const { return __valid; }
+  
+  /**
+   * Time in minutes the data file will be updated.
+   */
+  inline int reload() const { return __reload; }
+  
+  /**
+   * The last date and time this document has been updated.
+   */
+  inline const QDateTime& update() const { return __update; }
+  
+  /**
+   * The number of clients currently connected.
+   */
+  inline int connectedClients() const { return __connectedClients; }
+  
+  /**
+   * Gives direct access to list of raw client data.
+   * Each client is guaranteed to be valid.
+   */
+  inline const QList<ClientLine>& clients() const { return __clients; }
+  
+  /**
+   * Gives direct access to list of prefiled flights.
+   * Each prefile is guaranteed to be valid.
+   */
+  inline const QList<ClientLine>& prefile() const { return __prefile; }
+  
 private:
+  void __parse();
+  
+  QByteArray __data;
+  bool __valid;
+  
+  int __version;
+  int __reload;
+  QDateTime __update;
+  int __connectedClients;
+  QList<ClientLine> __clients;
+  QList<ClientLine> __prefile;
+    
 };
 
 #endif // VATSIMDATADOCUMENT_H
