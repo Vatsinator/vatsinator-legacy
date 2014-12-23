@@ -57,6 +57,8 @@ MapWidget::MapWidget(QWidget* parent) :
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
+        
+  grabGesture(Qt::PinchGesture);
   
   setAutoBufferSwap(true);
 }
@@ -80,6 +82,10 @@ MapWidget::event(QEvent* event) {
       
       return true;
     }
+    
+    case QEvent::Gesture:
+      return gestureEvent(static_cast<QGestureEvent*>(event));
+    
     default:
       return QGLWidget::event(event);
   }
@@ -116,6 +122,22 @@ MapWidget::paintGL() {
 void
 MapWidget::resizeGL(int width, int height) {
   __renderer->setViewport(QSize(width, height)); 
+}
+
+bool
+MapWidget::gestureEvent(QGestureEvent* event) {
+    if (QGesture* pinch = event->gesture(Qt::PinchGesture))
+        pinchTriggered(static_cast<QPinchGesture*>(pinch));
+    return true;
+}
+
+void
+MapWidget::pinchTriggered(QPinchGesture* gesture) {
+    QPinchGesture::ChangeFlags changeFlags = gesture->changeFlags();
+    if (changeFlags & QPinchGesture::ScaleFactorChanged) {
+        qreal value = gesture->scaleFactor();
+        __renderer->setZoom(__renderer->zoom() + __renderer->zoom() * value);
+    }
 }
 
 void
