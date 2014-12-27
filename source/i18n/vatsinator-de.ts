@@ -1226,17 +1226,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="509"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="558"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="593"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="652"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="373"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="422"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="516"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>Datei %1 konnte nicht geöffnet werden! Bitte installieren Sie die Anwendung erneut.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="519"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="568"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="603"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="383"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="432"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="467"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>Datei %1 konnte nicht gelesen werden! Bitte installieren Sie die Anwendung erneut.</translation>
     </message>
