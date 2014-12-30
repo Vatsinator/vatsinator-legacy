@@ -288,7 +288,6 @@ VatsimDataHandler::bookingProvider() {
 
 WeatherForecastInterface*
 VatsimDataHandler::weatherForecastProvider() {
-  Q_ASSERT(__weatherForecast);
   return __weatherForecast;
 }
 

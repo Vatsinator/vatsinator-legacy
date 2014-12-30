@@ -32,6 +32,9 @@ class Pilot;
 class MapItem;
 class MapRenderer;
 class QMenu;
+class QGestureEvent;
+class QPanGesture;
+class QPinchGesture;
 
 class MapWidget : public QGLWidget, private Notifiable {  
   Q_OBJECT
@@ -67,6 +70,9 @@ protected:
   void initializeGL() override;
   void paintGL() override;
   void resizeGL(int width, int height) override;
+    
+  virtual bool gestureEvent(QGestureEvent* event);
+  virtual void pinchTriggered(QPinchGesture* gesture);
   
   void wheelEvent(QWheelEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
