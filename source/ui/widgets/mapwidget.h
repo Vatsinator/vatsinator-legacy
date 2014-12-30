@@ -33,6 +33,7 @@ class MapItem;
 class MapRenderer;
 class QMenu;
 class QGestureEvent;
+class QPanGesture;
 class QPinchGesture;
 
 class MapWidget : public QGLWidget, private Notifiable {  

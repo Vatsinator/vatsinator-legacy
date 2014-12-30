@@ -56,7 +56,7 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     __languageManager(new LanguageManager()),
     __resourceManager(new ResourceManager()),
     __statsPurveyor(new StatsPurveyor()) {
- 
+  
   /* Set up translations */
   QString locale = SettingsManager::earlyGetLocale();
   

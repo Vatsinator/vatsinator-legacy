@@ -83,6 +83,13 @@ if (NOT vatsinator_UI_IMPLEMENTATION)
   message (STATUS "Known user interface implementations: widgets")
 endif ()
 
+if (NOT VATSINATOR_ENABLE_GESTURES)
+  # gestures suppport disables mouse wheel map zooming
+  if (APPLE)
+    set (VATSINATOR_ENABLE_GESTURES 1)
+  endif()
+endif ()
+
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/config.h
 )

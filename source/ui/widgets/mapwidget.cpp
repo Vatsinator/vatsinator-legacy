@@ -17,6 +17,7 @@
  *
  */
 
+#include <QtGlobal>
 #include <QtWidgets>
 #include <QtOpenGL>
 
@@ -43,6 +44,7 @@
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
+#include "config.h"
 
 #include "mapwidget.h"
 
@@ -57,8 +59,11 @@ MapWidget::MapWidget(QWidget* parent) :
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
-        
+  
+#ifdef VATSINATOR_ENABLE_GESTURES
   grabGesture(Qt::PinchGesture);
+  grabGesture(Qt::PanGesture);
+#endif
   
   setAutoBufferSwap(true);
 }
@@ -83,8 +88,10 @@ MapWidget::event(QEvent* event) {
       return true;
     }
     
+#ifdef VATSINATOR_ENABLE_GESTURES
     case QEvent::Gesture:
       return gestureEvent(static_cast<QGestureEvent*>(event));
+#endif
     
     default:
       return QGLWidget::event(event);
@@ -126,23 +133,27 @@ MapWidget::resizeGL(int width, int height) {
 
 bool
 MapWidget::gestureEvent(QGestureEvent* event) {
-    if (QGesture* pinch = event->gesture(Qt::PinchGesture))
-        pinchTriggered(static_cast<QPinchGesture*>(pinch));
-    return true;
+  if (QGesture* pinch = event->gesture(Qt::PinchGesture))
+    pinchTriggered(static_cast<QPinchGesture*>(pinch));
+  return true;
 }
 
 void
 MapWidget::pinchTriggered(QPinchGesture* gesture) {
-    QPinchGesture::ChangeFlags changeFlags = gesture->changeFlags();
-    if (changeFlags & QPinchGesture::ScaleFactorChanged) {
-        qreal value = gesture->scaleFactor();
-        __renderer->setZoom(__renderer->zoom() + __renderer->zoom() * value);
-    }
+  QPinchGesture::ChangeFlags changeFlags = gesture->changeFlags();
+  if (changeFlags & QPinchGesture::ScaleFactorChanged) {
+    qreal value = gesture->scaleFactor() - gesture->lastScaleFactor();
+    __renderer->setZoom(qBound(static_cast<qreal>(MapConfig::zoomMinimum()),
+                               __renderer->zoom() + (__renderer->zoom() * value),
+                               static_cast<qreal>(MapConfig::zoomMaximum())));
+  }
 }
 
 void
 MapWidget::wheelEvent(QWheelEvent* event) {
+#ifndef VATSINATOR_ENABLE_GESTURES
   __updateZoom(event->delta() / 120);
+#endif
   event->accept();
 }
 
