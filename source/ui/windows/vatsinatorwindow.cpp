@@ -1,6 +1,6 @@
 /*
  * vatsinatorwindow.cpp
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,14 +28,16 @@
 #include "ui/windows/metarswindow.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/widgetsuserinterface.h"
+#include "ui/vatsinatorstyle.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
 #include "vatsinatorwindow.h"
 
 VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
-    QMainWindow(parent) {
+QMainWindow(parent) {
   setupUi(this);
+  MainGridLayout->setVerticalSpacing(0);
 
   connect(qApp, SIGNAL(aboutToQuit()),
           this, SLOT(close()));
@@ -77,14 +79,25 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
   connect(vApp()->vatsimDataHandler()->downloader(),    SIGNAL(progress(qint64,qint64)),
           this,                                         SLOT(__updateProgress(qint64, qint64)));
   
-#ifdef Q_OS_DARWIN
+#ifdef Q_OS_MAC
   /* On Mac set main manu name to "Menu" in order not to have two
      "Vatsinators" on the menubar. */
   MenuVatsinator->setTitle(tr("&Menu"));
+  
+  /* Set small font for the bottom status bar */
+  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  QFont statusBarFont = style->smallFont();
+  ClientsBox->setFont(statusBarFont);
+  PositionBox->setFont(statusBarFont);
 #endif
   
   __statusBox = new QLabel();
   __statusBox->setIndent(5);
+  __statusBox->setAlignment(Qt::AlignCenter);
+  
+#ifdef Q_OS_MAC
+  __statusBox->setFont(statusBarFont);
+#endif
   
   __progressBar = new QProgressBar();
   __progressBar->setValue(0);

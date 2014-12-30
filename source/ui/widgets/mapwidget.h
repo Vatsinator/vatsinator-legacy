@@ -70,7 +70,7 @@ protected:
   void initializeGL() override;
   void paintGL() override;
   void resizeGL(int width, int height) override;
-    
+  
   virtual bool gestureEvent(QGestureEvent* event);
   virtual void pinchTriggered(QPinchGesture* gesture);
   
