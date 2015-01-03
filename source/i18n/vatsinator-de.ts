@@ -930,52 +930,52 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="91"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="104"/>
         <source>Your system does not support required OpenGL extensions.                                       Please upgrade your graphic card driver.</source>
         <translation>Ihr System unterstützt nicht die erforderlichen OpenGL-Erweiterungen. Bitte aktualisieren Sie Ihren Grafikkartentreiber.</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="228"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="261"/>
         <source>Airport details</source>
         <translation>Flughafendetails</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="241"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="274"/>
         <source>Controllers</source>
         <translation>Fluglotsen</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="253"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="286"/>
         <source>Arrivals</source>
         <translation>Ankommende Flüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="267"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="300"/>
         <source>Departures</source>
         <translation>Abflüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="288"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="321"/>
         <source>%1 details</source>
         <translation>%1 Details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="316"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="349"/>
         <source>Flight details</source>
         <translation>Flugdetails</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="358"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="391"/>
         <source>Nearby</source>
         <translation>In der Nähe</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="361"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="394"/>
         <source>Flights</source>
         <translation>Flüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="408"/>
         <source>Airports</source>
         <translation>Flughafen</translation>
     </message>
@@ -1226,17 +1226,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="373"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="422"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="516"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="372"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="421"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="456"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="515"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>Datei %1 konnte nicht geöffnet werden! Bitte installieren Sie die Anwendung erneut.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="383"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="432"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="467"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="382"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="431"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>Datei %1 konnte nicht gelesen werden! Bitte installieren Sie die Anwendung erneut.</translation>
     </message>
