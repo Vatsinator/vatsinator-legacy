@@ -2,122 +2,144 @@
 <ui version="4.0">
  <class>MetarsWindow</class>
  <widget class="QWidget" name="MetarsWindow">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>723</width>
-    <height>336</height>
+    <height>233</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
-   <string>METARs</string>
+   <string>Weather reports</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLineEdit" name="MetarICAO">
-     <property name="toolTip">
-      <string>Type airport ICAO code here to fetch METAR</string>
-     </property>
-     <property name="maxLength">
-      <number>4</number>
-     </property>
-    </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="MetarIcaoEdit">
+       <property name="toolTip">
+        <string>Type airport ICAO code here to fetch METAR</string>
+       </property>
+       <property name="inputMask">
+        <string notr="true">NNNN</string>
+       </property>
+       <property name="maxLength">
+        <number>4</number>
+       </property>
+       <property name="placeholderText">
+        <string>Enter an ICAO code here</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="FetchButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Download METAR</string>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/imgs.qrc">
+         <normaloff>:/uiIcons/download.png</normaloff>:/uiIcons/download.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Return</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="RefreshAllButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>Refresh all</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/imgs.qrc">
+         <normaloff>:/uiIcons/refresh.png</normaloff>:/uiIcons/refresh.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ClearButton">
+       <property name="toolTip">
+        <string>Clear</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/imgs.qrc">
+         <normaloff>:/uiIcons/delete.png</normaloff>:/uiIcons/delete.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="TopLabel">
-     <property name="text">
-      <string>There are METARs that were fetched recently:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QPushButton" name="ClearButton">
-     <property name="text">
-      <string>   Clear   </string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QPushButton" name="RefreshAllButton">
+   <item>
+    <widget class="ResizableListView" name="MetarListView">
      <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Refresh all</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="3">
-    <widget class="QPushButton" name="CloseButton">
-     <property name="text">
-      <string>   Close   </string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="3">
-    <widget class="QPushButton" name="FetchButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Fetch metar</string>
-     </property>
-     <property name="shortcut">
-      <string>Return</string>
-     </property>
-     <property name="autoDefault">
       <bool>true</bool>
      </property>
-     <property name="default">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="4">
-    <widget class="QListView" name="MetarsDisplay">
-     <property name="enabled">
-      <bool>true</bool>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::CurrentChanged|QAbstractItemView::SelectedClicked</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ResizableListView</class>
+   <extends>QListView</extends>
+   <header>ui/views/resizablelistview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../resources/imgs.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>CloseButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MetarsWindow</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>680</x>
-     <y>319</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>361</x>
-     <y>167</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
