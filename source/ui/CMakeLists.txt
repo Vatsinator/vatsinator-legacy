@@ -101,6 +101,7 @@ set (widgets_SRCS
   pages/viewpage.cpp
   
   views/delayedmodeltableview.cpp
+  views/resizablelistview.cpp
   
   widgets/delayedwidget.cpp
   widgets/flightprogresswidget.cpp
@@ -155,6 +156,7 @@ set (widgets_HEADERS
   pages/viewpage.h
   
   views/delayedmodeltableview.h
+  views/resizablelistview.h
   
   widgets/delayedwidget.h
   widgets/flightprogresswidget.h

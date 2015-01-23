@@ -31,15 +31,24 @@
     </sizepolicy>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>1</number>
+    </property>
+    <property name="topMargin">
+     <number>1</number>
+    </property>
+    <property name="rightMargin">
+     <number>1</number>
+    </property>
+    <property name="bottomMargin">
      <number>1</number>
     </property>
     <item>
-     <layout class="QGridLayout" name="MainGridLayout">
+     <layout class="QGridLayout" name="MainGridLayout" rowstretch="1,0">
       <item row="1" column="0">
        <widget class="ReplaceableWidget" name="Replaceable" native="true">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -47,50 +56,22 @@
         <property name="minimumSize">
          <size>
           <width>300</width>
-          <height>13</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>13</height>
+          <height>0</height>
          </size>
         </property>
        </widget>
       </item>
-      <item row="1" column="4">
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2" colspan="2">
+      <item row="1" column="1" colspan="2">
        <widget class="QLabel" name="ClientsBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>13</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>13</height>
-         </size>
-        </property>
         <property name="text">
          <string>Clients:</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="6">
+      <item row="0" column="0" colspan="4">
        <widget class="MapWidget" name="MapDisplay" native="true">
         <property name="mouseTracking">
          <bool>true</bool>
@@ -100,10 +81,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="5">
+      <item row="1" column="3">
        <widget class="QLabel" name="PositionBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -111,24 +92,14 @@
         <property name="minimumSize">
          <size>
           <width>170</width>
-          <height>13</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>170</width>
-          <height>13</height>
+          <height>0</height>
          </size>
         </property>
         <property name="text">
          <string notr="true">N E</string>
         </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -150,8 +121,8 @@
      <rect>
       <x>217</x>
       <y>159</y>
-      <width>162</width>
-      <height>236</height>
+      <width>192</width>
+      <height>207</height>
      </rect>
     </property>
     <property name="minimumSize">

@@ -19,16 +19,16 @@
 #include <QtWidgets>
 
 #include "network/plaintextdownloader.h"
-#include "ui/userinterface.h"
 #include "ui/models/metarlistmodel.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
 #include "metarswindow.h"
 
 MetarsWindow::MetarsWindow(QWidget* parent) :
-    BaseWindow(parent),
-    __awaited("") {
+    QWidget(parent) {
   setupUi(this);
   
   connect(qApp, SIGNAL(aboutToQuit()),
@@ -44,7 +44,7 @@ MetarsWindow::MetarsWindow(QWidget* parent) :
           __metarsHandler,  SLOT(updateAll()));
   connect(ClearButton,      SIGNAL(clicked()),
           __metarsHandler,  SLOT(clear()));
-  connect(MetarICAO,        SIGNAL(textChanged(const QString&)),
+  connect(MetarIcaoEdit,    SIGNAL(textChanged(const QString&)),
           this,             SLOT(__handleTextChange(const QString&)));
   connect(__metarsHandler,  SIGNAL(newMetarsAvailable()),
           this,             SLOT(__handleNewMetars()));
@@ -52,9 +52,7 @@ MetarsWindow::MetarsWindow(QWidget* parent) :
           this,                         SLOT(__enableButtons()));
   
   FetchButton->setEnabled(false);
-  MetarsDisplay->setModel(__metarsHandler);
-  
-  MetarICAO->setFocus();
+  MetarListView->setModel(__metarsHandler);
 }
 
 MetarsWindow::~MetarsWindow() {
@@ -63,27 +61,42 @@ MetarsWindow::~MetarsWindow() {
 }
 
 void
-MetarsWindow::show() {
-  QWidget::show();
-  MetarICAO->setFocus();
-}
-
-void
 MetarsWindow::show(QString icao) {
   QWidget::show();
-  MetarICAO->setFocus();
-  
   __findAndSelectMetar(icao);
 }
 
 void
 MetarsWindow::metarRequested() {
-  __findAndSelectMetar(MetarICAO->text());
+  __findAndSelectMetar(MetarIcaoEdit->text());
+}
+
+void MetarsWindow::showEvent(QShowEvent* event) {
+  if (!event->spontaneous()) {
+    QRect rect = QDesktopWidget().screenGeometry(wui()->mainWindow());
+    int m = rect.height() / 4;
+    
+    rect.setTop(rect.top() + m);
+    rect.setBottom(rect.bottom() - m);
+    
+    this->setGeometry(
+      QStyle::alignedRect(
+        Qt::LeftToRight,
+        Qt::AlignTop | Qt::AlignHCenter,
+        this->size(),
+        rect
+      )
+    );
+    MetarListView->setMaximumHeight(m * 2);
+  }
+  MetarIcaoEdit->setFocus();
+  
+  QWidget::showEvent(event);
 }
 
 void
 MetarsWindow::keyPressEvent(QKeyEvent* event) {
-  if (!MetarICAO->text().isEmpty() && MetarICAO->hasFocus() &&
+  if (!MetarIcaoEdit->text().isEmpty() && MetarIcaoEdit->hasFocus() &&
       (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter))
     metarRequested();
   
@@ -92,11 +105,11 @@ MetarsWindow::keyPressEvent(QKeyEvent* event) {
 
 void
 MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound) {
-const Metar* m = __metarsHandler->find(icao.toUpper());
+  const Metar* m = __metarsHandler->find(icao.toUpper());
   if (m) {
     const QModelIndex mi = __metarsHandler->modelIndexForMetar(m);
-    MetarsDisplay->setCurrentIndex(mi);
-    MetarsDisplay->scrollTo(mi);
+    MetarListView->setCurrentIndex(mi);
+    MetarListView->scrollTo(mi);
   } else {
     if (fetchIfNotFound) {
       __metarsHandler->fetchMetar(icao);
@@ -104,7 +117,7 @@ const Metar* m = __metarsHandler->find(icao.toUpper());
     }
   }
   
-  MetarICAO->setText("");
+  MetarIcaoEdit->clear();
 }
 
 void

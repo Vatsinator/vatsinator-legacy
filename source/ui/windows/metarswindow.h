@@ -21,8 +21,8 @@
 #define METARSWINDOW_H
 
 #include <QVector>
+#include <QWidget>
 
-#include "ui/windows/basewindow.h"
 #include "ui/ui_metarswindow.h"
 #include "vatsimdata/metar.h"
 
@@ -33,7 +33,7 @@ class MetarListModel;
 /**
  * \todo Refactor.
  */
-class MetarsWindow : public BaseWindow, private Ui::MetarsWindow {
+class MetarsWindow : public QWidget, private Ui::MetarsWindow {
   Q_OBJECT
 
 public:
@@ -41,12 +41,12 @@ public:
   virtual ~MetarsWindow();
 
 public slots:
-  void show();
   void show(QString icao);
   void metarRequested();
   
 protected:
-  virtual void keyPressEvent(QKeyEvent* event);
+  void showEvent(QShowEvent* event);
+  void keyPressEvent(QKeyEvent* event);
 
 private:
   void __findAndSelectMetar(const QString& icao, bool fetchIfNotFound = true);

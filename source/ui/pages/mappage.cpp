@@ -42,6 +42,10 @@ namespace DefaultSettings {
 MapPage::MapPage(QWidget* parent) :
     QWidget(parent) {
   setupUi(this);
+      
+#ifdef Q_OS_MAC
+  layout()->setSpacing(0);
+#endif
   
   connect(FirFontSelectionButton,       SIGNAL(clicked()),
           this,                         SLOT(__showFirFontDialog()));
