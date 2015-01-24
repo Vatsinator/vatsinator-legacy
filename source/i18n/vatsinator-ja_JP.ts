@@ -368,60 +368,6 @@
     </message>
 </context>
 <context>
-    <name>ColorsPage</name>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="26"/>
-        <source>Colors</source>
-        <translation>色</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="45"/>
-        <source>Unstaffed FIR borders color:</source>
-        <translation>管制官がオフラインの FIR の境界色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="75"/>
-        <source>Staffed FIR background color:</source>
-        <translation>管制官がオンラインの FIR の背景色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="121"/>
-        <location filename="../ui/pages/colorspage.ui" line="200"/>
-        <source>Alpha channel:</source>
-        <translation>透明度:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="154"/>
-        <source>Staffed UIR background color:</source>
-        <translation>管制官がオンラインの UIR の背景色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="233"/>
-        <source>Approach circle color:</source>
-        <translation>アプローチを示す円の表示色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="263"/>
-        <source>Seas color:</source>
-        <translation>海洋の表示色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="293"/>
-        <source>Lands color:</source>
-        <translation>陸地の表示色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="323"/>
-        <source>Origin-to-pilot line color:</source>
-        <translation>出発空港から飛行位置までの線の表示色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/colorspage.ui" line="353"/>
-        <source>Pilot-to-destination line color:</source>
-        <translation>飛行位置から到着空港までの線の表示色:</translation>
-    </message>
-</context>
-<context>
     <name>DataFetchErrorDialog</name>
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="27"/>
@@ -855,74 +801,73 @@
 <context>
     <name>MapPage</name>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="26"/>
-        <location filename="../ui/pages/mappage.cpp" line="56"/>
+        <location filename="../ui/pages/mappage.cpp" line="60"/>
         <source>Map</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="45"/>
+        <location filename="../ui/pages/mappage.ui" line="22"/>
         <source>Zooming intensity:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="75"/>
+        <location filename="../ui/pages/mappage.ui" line="52"/>
         <source>Unstaffed FIR borders color:</source>
         <translation>管制官がオフラインの FIR の境界色:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="105"/>
+        <location filename="../ui/pages/mappage.ui" line="82"/>
         <source>Staffed FIR background color:</source>
         <translation>管制官がオンラインの FIR の背景色:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="151"/>
-        <location filename="../ui/pages/mappage.ui" line="230"/>
+        <location filename="../ui/pages/mappage.ui" line="128"/>
+        <location filename="../ui/pages/mappage.ui" line="207"/>
         <source>Alpha channel:</source>
         <translation>透明度:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="184"/>
+        <location filename="../ui/pages/mappage.ui" line="161"/>
         <source>Staffed UIR background color:</source>
         <translation>管制官がオンラインの UIR の背景色:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="263"/>
+        <location filename="../ui/pages/mappage.ui" line="240"/>
         <source>FIR font:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="281"/>
+        <location filename="../ui/pages/mappage.ui" line="258"/>
         <source>Airport font:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="299"/>
+        <location filename="../ui/pages/mappage.ui" line="276"/>
         <source>Pilot font:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="317"/>
+        <location filename="../ui/pages/mappage.ui" line="294"/>
         <source>Approach circle color:</source>
         <translation>アプローチを示す円の表示色:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="347"/>
+        <location filename="../ui/pages/mappage.ui" line="324"/>
         <source>Seas color:</source>
         <translation>海洋の表示色:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="377"/>
+        <location filename="../ui/pages/mappage.ui" line="354"/>
         <source>Lands color:</source>
         <translation>陸地の表示色:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="407"/>
+        <location filename="../ui/pages/mappage.ui" line="384"/>
         <source>Origin-to-pilot line color:</source>
         <translation>出発空港から飛行位置までの線の表示色:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="437"/>
+        <location filename="../ui/pages/mappage.ui" line="414"/>
         <source>Pilot-to-destination line color:</source>
         <translation>飛行位置から到着空港までの線の表示色:</translation>
     </message>
@@ -991,42 +936,37 @@
 <context>
     <name>MetarsWindow</name>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="17"/>
-        <source>METARs</source>
-        <translation>METAR</translation>
+        <location filename="../ui/windows/metarswindow.ui" line="20"/>
+        <source>Weather reports</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="27"/>
+        <location filename="../ui/windows/metarswindow.ui" line="35"/>
         <source>Type airport ICAO code here to fetch METAR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="37"/>
-        <source>There are METARs that were fetched recently:</source>
-        <translation>最近取得された METAR の一覧:</translation>
-    </message>
-    <message>
         <location filename="../ui/windows/metarswindow.ui" line="44"/>
-        <source>   Clear   </source>
-        <translation>クリア</translation>
+        <source>Enter an ICAO code here</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="54"/>
+        <source>Download METAR</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/metarswindow.ui" line="94"/>
+        <source>Clear</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/windows/metarswindow.ui" line="83"/>
         <source>Refresh all</source>
         <translation>すべて更新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="61"/>
-        <source>   Close   </source>
-        <translation>閉じる</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/metarswindow.ui" line="74"/>
-        <source>Fetch metar</source>
-        <translation>METAR を取得</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/metarswindow.ui" line="77"/>
+        <location filename="../ui/windows/metarswindow.ui" line="67"/>
         <source>Return</source>
         <translation>戻る</translation>
     </message>
@@ -1034,33 +974,32 @@
 <context>
     <name>MiscellaneousPage</name>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="26"/>
         <location filename="../ui/pages/miscellaneouspage.cpp" line="44"/>
         <source>Miscellaneous</source>
         <translation>その他</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="41"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="20"/>
         <source>Send anonymous statistics</source>
         <translation>匿名の統計データを送信する</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="54"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="111"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator needs to be restarted before changes&lt;br/&gt;to the language settings will take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="69"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="32"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
         <translation>有効の場合、統計データ (OS や使用時間、エラー情報など ) を Vatsinator サーバへ送信するようになります。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="84"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="70"/>
         <source>Language:</source>
         <translation>言語:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="132"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="45"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Vatsinator の個人情報保護に関する詳細について&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1077,64 +1016,73 @@
     <name>NetworkPage</name>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
-        <location filename="../ui/pages/networkpage.ui" line="20"/>
         <location filename="../ui/pages/networkpage.cpp" line="51"/>
         <source>Network</source>
         <translation>ネットワーク</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="90"/>
+        <location filename="../ui/pages/networkpage.ui" line="57"/>
         <source>Refresh data every</source>
         <translation>データ更新周期</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="210"/>
+        <location filename="../ui/pages/networkpage.ui" line="159"/>
         <source>Enable caching</source>
         <translation>キャッシュを有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="225"/>
+        <location filename="../ui/pages/networkpage.ui" line="174"/>
         <source>If enabled, Vatsinator will cache some downloaded data.</source>
         <translation>有効の場合、取得したデータをキャッシュします。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="141"/>
+        <location filename="../ui/pages/networkpage.ui" line="108"/>
         <source>Keep METARs updated</source>
         <translation>METAR を最新状態に保つ</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="32"/>
+        <location filename="../ui/pages/networkpage.ui" line="20"/>
         <source>Enable auto-updater</source>
         <translation>自動更新を有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="47"/>
+        <location filename="../ui/pages/networkpage.ui" line="35"/>
         <source>Auto-updater keeps all the data up-to-date automatically.</source>
         <translation>有効の場合、すべてのデータを自動的に最新状態に保ちます。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="75"/>
+        <location filename="../ui/pages/networkpage.ui" line="45"/>
         <source>Custom updates settings</source>
         <translation>カスタム更新設定</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="156"/>
+        <location filename="../ui/pages/networkpage.ui" line="123"/>
         <source>If enabled, all weather reports will be refreshed periodically.</source>
         <translation>有効の場合、すべての気象データを定期的に更新します。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="238"/>
+        <location filename="../ui/pages/networkpage.ui" line="187"/>
         <source>Enable automatic database updates</source>
         <translation>データベースの自動更新を有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="253"/>
+        <location filename="../ui/pages/networkpage.ui" line="202"/>
         <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
         <translation>有効の場合、&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator データベース&lt;/a&gt; と同期します。</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="269"/>
+        <location filename="../ui/pages/networkpage.ui" line="218"/>
         <source>Wea&amp;ther forecast provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="256"/>
+        <source>Ce&amp;lsius</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="266"/>
+        <source>Fah&amp;renheit</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1143,18 +1091,8 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="300"/>
+        <location filename="../ui/pages/networkpage.ui" line="249"/>
         <source>Units:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="307"/>
-        <source>Celsius</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="317"/>
-        <source>Fahrenheit</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
@@ -1257,97 +1195,97 @@
 <context>
     <name>VatsinatorWindow</name>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="89"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="67"/>
         <source>Clients:</source>
         <translation>クライアント:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="164"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="135"/>
         <source>&amp;Vatsinator</source>
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="184"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="155"/>
         <source>&amp;Help</source>
         <translation>&amp;ヘルプ</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="161"/>
         <source>&amp;Settings</source>
         <translation>&amp;設定</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="204"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="175"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="219"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="231"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="202"/>
         <source>METARs...</source>
         <translation>METAR...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="246"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="217"/>
         <source>Refresh</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="258"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="229"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="269"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="240"/>
         <source>Flight list...</source>
         <translation>フライトリスト...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="274"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="245"/>
         <source>ATC list...</source>
         <translation>ATC リスト...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="285"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="256"/>
         <source>Enable auto-updates</source>
         <translation>自動更新を有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="293"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
         <source>Show home location</source>
         <translation>ホームを表示</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="296"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="267"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="305"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="276"/>
         <source>Database...</source>
         <translation>データベース...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="83"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="85"/>
         <source>&amp;Menu</source>
         <translation>&amp;メニュー</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="102"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="115"/>
         <source>Last update: never</source>
         <translation>最終更新時刻: 未実施</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="104"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="117"/>
         <source>Last update: %1 UTC</source>
         <translation>最終更新時刻: %1 UTC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="118"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="131"/>
         <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
         <translation>クライアント: %1 (パイロット %2、ATC %3、オブザーバ %4)</translation>
     </message>
@@ -1355,71 +1293,74 @@
 <context>
     <name>ViewPage</name>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="26"/>
         <location filename="../ui/pages/viewpage.cpp" line="50"/>
         <source>View</source>
         <translation>表示</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="114"/>
+        <location filename="../ui/pages/viewpage.ui" line="22"/>
         <source>Show pilot labels:</source>
         <translation>パイロットのラベル表示:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="121"/>
-        <location filename="../ui/pages/viewpage.ui" line="175"/>
+        <location filename="../ui/pages/viewpage.ui" line="29"/>
         <source>Always</source>
         <translation>常時</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="131"/>
+        <location filename="../ui/pages/viewpage.ui" line="39"/>
         <source>When hovered</source>
         <translation>マウスカーソルを当てた時</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="141"/>
+        <location filename="../ui/pages/viewpage.ui" line="49"/>
         <source>Airport-related</source>
         <translation>関連する空港を選択した時</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="43"/>
+        <location filename="../ui/pages/viewpage.ui" line="76"/>
         <source>Display layers:</source>
         <translation>表示レイヤ:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="50"/>
+        <location filename="../ui/pages/viewpage.ui" line="83"/>
         <source>Pilots</source>
         <translation>パイロット</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="60"/>
+        <location filename="../ui/pages/viewpage.ui" line="93"/>
         <source>Airports</source>
         <translation>空港</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="70"/>
+        <location filename="../ui/pages/viewpage.ui" line="103"/>
         <source>Staffed FIRs</source>
         <translation>管制官がオンラインの FIR</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="80"/>
+        <location filename="../ui/pages/viewpage.ui" line="113"/>
         <source>Unstaffed FIRs</source>
         <translation>管制官がオフラインの FIR</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="90"/>
+        <location filename="../ui/pages/viewpage.ui" line="123"/>
         <source>Inactive airports</source>
         <translation>非アクティブな空港</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="168"/>
+        <location filename="../ui/pages/viewpage.ui" line="147"/>
         <source>Show airport labels:</source>
         <translation>空港のラベル表示:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="188"/>
-        <source>Never</source>
-        <translation>しない</translation>
+        <location filename="../ui/pages/viewpage.ui" line="154"/>
+        <source>A&amp;lways</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/viewpage.ui" line="164"/>
+        <source>Ne&amp;ver</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
