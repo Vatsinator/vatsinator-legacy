@@ -5,7 +5,6 @@
 * Home-location
 * Data files should use JSON format (model, uir)
 * Old versions config updater
-* Data parser (separate class)
 * Optimize OpenGL engine (texture atlas...)
 * Search window
 * Better labels display
