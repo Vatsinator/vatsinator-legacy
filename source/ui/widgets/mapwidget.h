@@ -74,9 +74,6 @@ protected:
   virtual bool gestureEvent(QGestureEvent* event);
   virtual void pinchTriggered(QPinchGesture* gesture);
   
-  virtual bool gestureEvent(QGestureEvent* event);
-  virtual void pinchTriggered(QPinchGesture* gesture);
-  
   void wheelEvent(QWheelEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
