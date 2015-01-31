@@ -938,7 +938,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="20"/>
         <source>Weather reports</source>
-        <translation type="unfinished"/>
+        <translation>Wetterberichte</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="35"/>
@@ -948,17 +948,17 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="44"/>
         <source>Enter an ICAO code here</source>
-        <translation type="unfinished"/>
+        <translation>Geben Sie hier einen ICAO-Code ein</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="54"/>
         <source>Download METAR</source>
-        <translation type="unfinished"/>
+        <translation>METAR herunterladen</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="94"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="83"/>
@@ -1078,12 +1078,12 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="256"/>
         <source>Ce&amp;lsius</source>
-        <translation type="unfinished"/>
+        <translation>Ce&amp;lsius</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="266"/>
         <source>Fah&amp;renheit</source>
-        <translation type="unfinished"/>
+        <translation>Fah&amp;renheit</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.cpp" line="94"/>
@@ -1355,12 +1355,12 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="154"/>
         <source>A&amp;lways</source>
-        <translation type="unfinished"/>
+        <translation>I&amp;mmer</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="164"/>
         <source>Ne&amp;ver</source>
-        <translation type="unfinished"/>
+        <translation>N&amp;ie</translation>
     </message>
 </context>
 <context>
