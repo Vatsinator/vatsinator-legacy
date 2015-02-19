@@ -99,7 +99,10 @@
          <string notr="true">N E</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="indent">
+         <number>6</number>
         </property>
        </widget>
       </item>

@@ -92,8 +92,8 @@ QMainWindow(parent) {
 #endif
   
   __statusBox = new QLabel();
-  __statusBox->setIndent(5);
-  __statusBox->setAlignment(Qt::AlignCenter);
+  __statusBox->setIndent(6);
+  __statusBox->setAlignment(Qt::AlignLeft);
   
 #ifdef Q_OS_MAC
   __statusBox->setFont(statusBarFont);
@@ -219,6 +219,7 @@ VatsinatorWindow::__restoreWindowGeometry() {
 void
 VatsinatorWindow::__dataDownloading() {
   Replaceable->setCurrentWidget(__progressBar);
+    __progressBar->setValue(0);
 }
 
 void
