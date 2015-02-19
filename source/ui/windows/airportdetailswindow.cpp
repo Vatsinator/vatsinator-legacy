@@ -36,6 +36,7 @@
 #include "ui/widgets/weatherforecastwidget.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
+#include "ui/vatsinatorstyle.h"
 #include "vatsimdata/abstractbookingprovider.h"
 #include "vatsimdata/abstractnotamprovider.h"
 #include "vatsimdata/airport.h"
@@ -52,6 +53,10 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
     BaseWindow(parent),
     __airport(airport) {
   setupUi(this);
+  
+  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  CodesLabel->setFont(style->h1Font());
+  
   InboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   OutboundTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
