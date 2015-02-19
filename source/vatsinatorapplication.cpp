@@ -113,7 +113,6 @@ VatsinatorApplication::restart() {
   QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
-
 void
 VatsinatorApplication::userDecisionEvent(DecisionEvent* event) {
   if (event->context() == QStringLiteral("statistics")) {
@@ -122,6 +121,7 @@ VatsinatorApplication::userDecisionEvent(DecisionEvent* event) {
     );
   }
 }
+
 void
 VatsinatorApplication::__initialize() {
   qDebug("VatsinatorApplication: initializing");

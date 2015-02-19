@@ -1,6 +1,6 @@
 /*
     atcdetailswindow.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@ AtcDetailsWindow::AtcDetailsWindow(const Controller* atc, QWidget* parent) :
   VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
   CallsignLabel->setFont(style->h1Font());
   FacilityLabel->setFont(style->h2Font());
-  AtisMessageLabel->setFont(style->smallFont());
   
   NameLabel->setDescription(tr("Name"));
   FrequencyLabel->setDescription(tr("Frequency"));

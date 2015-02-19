@@ -21,8 +21,23 @@
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0">
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>2</number>
+     </property>
      <item>
       <widget class="QLabel" name="CallsignLabel">
        <property name="text">
@@ -66,23 +81,40 @@
       <widget class="InfoLabel" name="TimeOnlineLabel" native="true"/>
      </item>
      <item>
-      <widget class="QLabel" name="AtisMessageLabel">
-       <property name="text">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
         <string>Atis message</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPlainTextEdit" name="AtisMessageField">
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
+       <property name="flat">
+        <bool>false</bool>
        </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="leftMargin">
+         <number>4</number>
+        </property>
+        <property name="topMargin">
+         <number>4</number>
+        </property>
+        <property name="rightMargin">
+         <number>4</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QPlainTextEdit" name="AtisMessageField">
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
@@ -90,12 +122,22 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QPushButton" name="ShowButton">
        <property name="text">
         <string>Show</string>
-       </property>
-       <property name="icon">
-        <iconset theme="go-jump"/>
        </property>
       </widget>
      </item>
@@ -103,6 +145,9 @@
       <widget class="QPushButton" name="CloseButton">
        <property name="text">
         <string>Close</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

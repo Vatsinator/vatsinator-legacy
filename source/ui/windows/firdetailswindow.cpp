@@ -32,6 +32,7 @@
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
+#include "ui/vatsinatorstyle.h"
 #include "vatsimdata/abstractbookingprovider.h"
 #include "vatsimdata/abstractnotamprovider.h"
 #include "vatsimdata/airport.h"
@@ -47,6 +48,10 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
     BaseWindow(parent),
     __fir(fir) {
   setupUi(this);
+  
+  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  ICAOLabel->setFont(style->h1Font());
+  
   AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   AirportsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);

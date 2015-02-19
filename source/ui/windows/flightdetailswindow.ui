@@ -442,7 +442,7 @@
    <item>
     <widget class="QTabWidget" name="InfoTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideMiddle</enum>
