@@ -93,7 +93,7 @@ QMainWindow(parent) {
   
   __statusBox = new QLabel();
   __statusBox->setIndent(6);
-  __statusBox->setAlignment(Qt::AlignLeft);
+  __statusBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
   
 #ifdef Q_OS_MAC
   __statusBox->setFont(statusBarFont);
