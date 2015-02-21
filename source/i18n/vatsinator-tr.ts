@@ -7,17 +7,17 @@
         <translation>ATC detayları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.ui" line="71"/>
+        <location filename="../ui/windows/atcdetailswindow.ui" line="86"/>
         <source>Atis message</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.ui" line="95"/>
+        <location filename="../ui/windows/atcdetailswindow.ui" line="140"/>
         <source>Show</source>
         <translation>Göster</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.ui" line="105"/>
+        <location filename="../ui/windows/atcdetailswindow.ui" line="147"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -121,92 +121,92 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="134"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="139"/>
         <source>%1 - airport details</source>
         <translation>%1 - havalimanı detayları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="66"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="93"/>
         <source>Inbound</source>
         <translation>Gelen</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="128"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="167"/>
         <source>Outbound</source>
         <translation>Giden</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="187"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="238"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="246"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="309"/>
         <source>Bookings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="308"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="383"/>
         <source>Airport info</source>
         <translation>Havalimanı bilgisi</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="340"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="427"/>
         <source>Airport name:</source>
         <translation>Havalimanı ismi:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="364"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="451"/>
         <source>City:</source>
         <translation>Şehir:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="388"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="475"/>
         <source>Country:</source>
         <translation>Ülke:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="415"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="502"/>
         <source>Altitude:</source>
         <translation>Yükseklik:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="474"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="561"/>
         <source>Weather forecast</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="542"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="641"/>
         <source>NOTAM</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="663"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="735"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.ui" line="639"/>
+        <location filename="../ui/windows/airportdetailswindow.ui" line="728"/>
         <source>Show</source>
         <translation>Göster</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="122"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="127"/>
         <source>No plugin selected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="149"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="154"/>
         <source>%1 ft</source>
         <translation>%1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="162"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="167"/>
         <source>No forecast for %1, %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="166"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="171"/>
         <source>Network error</source>
         <translation type="unfinished"/>
     </message>
@@ -301,42 +301,42 @@
 <context>
     <name>AtcDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="47"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="46"/>
         <source>Name</source>
         <translation>İsim</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="47"/>
         <source>Frequency</source>
         <translation>Frekans:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
         <source>Rating</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
         <source>Airport</source>
         <translation>Havalimanı</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
         <source>Server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="52"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
         <source>Online from</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="84"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="83"/>
         <source>%1 - ATC details</source>
         <translation>%1 - ATC detayları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="99"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="98"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -516,42 +516,42 @@
 <context>
     <name>FirDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="57"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="84"/>
         <source>Flights</source>
         <translation>Uçuşlar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="116"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="155"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="175"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="226"/>
         <source>Bookings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="234"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="297"/>
         <source>Airports</source>
         <translation>Havalimanları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="290"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="365"/>
         <source>NOTAM</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.ui" line="362"/>
+        <location filename="../ui/windows/firdetailswindow.ui" line="446"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="86"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="91"/>
         <source>%1 - FIR details</source>
         <translation>%1 - FIR(Uçuş bilgi bölgesi) detayları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="88"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="93"/>
         <source>%1 - ARTCC details</source>
         <translation type="unfinished"/>
     </message>
@@ -565,71 +565,71 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="431"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="452"/>
         <source>Flight details</source>
         <translation>Uçuş detayları</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="309"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="330"/>
         <source>Actual Time of Departure</source>
         <extracomment>Shortcut expansion for &quot;ATD&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="367"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="388"/>
         <source>Estimated Time of Arrival</source>
         <extracomment>Shortcut expansion for &quot;ETA&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="491"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="555"/>
         <source>Origin</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="511"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="627"/>
         <source>Destination</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="528"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="696"/>
         <source>Route</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="554"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="738"/>
         <source>Remarks</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="465"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="498"/>
         <source>Flight plan</source>
         <translation>Uçuş planı</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="198"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="219"/>
         <source>Scheduled Time of Departure</source>
         <extracomment>Shortcut expansion for &quot;STD&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="250"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="271"/>
         <source>Scheduled Time of Arrival</source>
         <extracomment>Shortuct expansion for &quot;STA&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="589"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="773"/>
         <source>Track this flight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="596"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="780"/>
         <source>Show</source>
         <translation>Göster</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="608"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="787"/>
         <source>Close</source>
         <translation>Kapat</translation>
     </message>
@@ -941,32 +941,32 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="35"/>
+        <location filename="../ui/windows/metarswindow.ui" line="41"/>
         <source>Type airport ICAO code here to fetch METAR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="44"/>
+        <location filename="../ui/windows/metarswindow.ui" line="47"/>
         <source>Enter an ICAO code here</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="54"/>
+        <location filename="../ui/windows/metarswindow.ui" line="60"/>
         <source>Download METAR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="94"/>
+        <location filename="../ui/windows/metarswindow.ui" line="100"/>
         <source>Clear</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="83"/>
+        <location filename="../ui/windows/metarswindow.ui" line="89"/>
         <source>Refresh all</source>
         <translation>Hepsini yenile</translation>
     </message>
     <message>
-        <location filename="../ui/windows/metarswindow.ui" line="67"/>
+        <location filename="../ui/windows/metarswindow.ui" line="73"/>
         <source>Return</source>
         <translation type="unfinished"/>
     </message>
@@ -1200,72 +1200,72 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="135"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="138"/>
         <source>&amp;Vatsinator</source>
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="155"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
         <source>&amp;Help</source>
         <translation>&amp;Yardım</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="161"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="164"/>
         <source>&amp;Settings</source>
         <translation>&amp;Ayarlar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="175"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
         <source>Exit</source>
         <translation>Çıkış</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="190"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="193"/>
         <source>About</source>
         <translation>Hakkında</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="202"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="205"/>
         <source>METARs...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="217"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="220"/>
         <source>Refresh</source>
         <translation>Yenile</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="229"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="232"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="240"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="243"/>
         <source>Flight list...</source>
         <translation>Uçuş listesi...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="245"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="248"/>
         <source>ATC list...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="256"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="259"/>
         <source>Enable auto-updates</source>
         <translation>Otomatik güncellemeler aktif</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="267"/>
         <source>Show home location</source>
         <translation>Ev konumunu göster</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="267"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="270"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="276"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
         <source>Database...</source>
         <translation>Veritabanı...</translation>
     </message>
