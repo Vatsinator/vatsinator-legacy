@@ -658,10 +658,9 @@ VatsimDataHandler::__loadCachedData() {
 
 void
 VatsimDataHandler::__slotUiCreated() {
-  bool cacheEnabled = SM::get("network.cache_enabled").toBool();
-  if (cacheEnabled && isInitialized())
+  if (isInitialized())
     __loadCachedData();
-  else if (cacheEnabled)
+  else
     connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
   
   /* The first download */
@@ -682,8 +681,7 @@ VatsimDataHandler::__dataFetched() {
     
     if (ok) {
       emit vatsimDataUpdated();
-      if (SM::get("network.cache_enabled").toBool())
-        FileManager::cacheData(CacheFileName, __downloader->data());
+      FileManager::cacheData(CacheFileName, __downloader->data());
       
       /* TODO Fix that shit below */
       MetarListModel::getSingleton().updateAll();

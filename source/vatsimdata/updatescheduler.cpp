@@ -25,6 +25,12 @@
 
 #include "updatescheduler.h"
 
+namespace {
+  inline Q_DECL_CONSTEXPR int minutesToMsec(int ms) {
+    return ms * 1000 * 60;
+  }
+}
+
 UpdateScheduler::UpdateScheduler(QObject* parent): QObject(parent) {
   __timer.setSingleShot(true);
   
@@ -37,13 +43,7 @@ UpdateScheduler::UpdateScheduler(QObject* parent): QObject(parent) {
 
 void
 UpdateScheduler::__setupTimer() {
-  if (SM::get("network.auto_updater").toBool()) {
-    int rate = vApp()->vatsimDataHandler()->timeToReload() * 1000 * 60;
-    __timer.setInterval(rate);
-  } else {
-    int rate = SM::get("network.refresh_rate").toInt() * 1000 * 60;
-    __timer.setInterval(rate);
-  }
-  
+  int rate = minutesToMsec(vApp()->vatsimDataHandler()->timeToReload());
+  __timer.setInterval(rate);
   __timer.start();
 }

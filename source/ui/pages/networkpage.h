@@ -35,10 +35,6 @@ public:
   
   /**
    * @variables
-   * auto_updater:                      bool
-   * refresh_rate:                      int
-   * refresh_metars:                    bool
-   * cache_enabled:                     bool
    * database_integration:              bool
    * weather_forecast_provider:         string
    * weather_temperature_units:         string {"Celsius", "Fahrenheit"}
@@ -48,10 +44,6 @@ public:
 protected:
   void restore(QSettings& s);
   void save(QSettings& s);
-  
-private slots:
-  void __updateRefreshRateLabel(int n);
-  void __updateAutoUpdaterLocks(int state);
 
 };
 

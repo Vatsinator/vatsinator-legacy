@@ -153,10 +153,6 @@ SettingsManager::__fillDefaults() {
   __defaults["misc.send_statistics"] = true;
   __defaults["misc.language"] = QLocale::system().name().left(2);
   
-  __defaults["network.auto_updater"] = true;
-  __defaults["network.refresh_rate"] = 3;
-  __defaults["network.refresh_metars"] = true;
-  __defaults["network.cache_enabled"] = true;
   __defaults["network.database_integration"] = true;
   __defaults["network.weather_forecast_provider"] = QString();
   __defaults["network.weather_temperature_units"] = "Celsius";
