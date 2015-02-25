@@ -1,6 +1,6 @@
 /*
  * networkpage.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,9 @@ class NetworkPage : public QWidget, public AbstractSettingsModule, private Ui::N
 public:
   NetworkPage(QWidget* parent = nullptr);
   
-  QString listElement() const;
-  QString listIcon() const;
-  QString moduleId() const;
+  QString listElement() const override;
+  QString listIcon() const override;
+  QString moduleId() const override;
   
   /**
    * @variables
@@ -42,8 +42,8 @@ public:
   void update() const;
   
 protected:
-  void restore(QSettings& s);
-  void save(QSettings& s);
+  void restore(QSettings& s, const QVariantHash& defaults) override;
+  void save(QSettings& s) override;
 
 };
 

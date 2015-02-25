@@ -1,6 +1,6 @@
 /*
     settingsmanager.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ SettingsManager::updateUi(const QString& pageName) {
   
   QSettings s;
   s.beginGroup("Settings");
-  vApp()->settingsManager()->__getPage(pageName)->restoreSettings(s);
+  vApp()->settingsManager()->__getPage(pageName)->restoreSettings(s, vApp()->settingsManager()->__defaults);
   s.endGroup();
 }
 
@@ -99,7 +99,7 @@ SettingsManager::restoreDefaults() {
   s.remove("");
   
   for (AbstractSettingsModule* p: __pages)
-    p->restoreSettings(s);
+    p->restoreSettings(s, __defaults);
   
   s.endGroup();
 }
@@ -115,7 +115,7 @@ SettingsManager::__restoreSettings() {
   s.beginGroup("Settings");
   
   for (AbstractSettingsModule* p: __pages) {
-    p->restoreSettings(s);
+    p->restoreSettings(s, __defaults);
     p->update();
   }
   
@@ -150,12 +150,17 @@ SettingsManager::__fillDefaults() {
   __defaults["map.origin_to_pilot_line_color"] = QColor(3, 116, 164);
   __defaults["map.pilot_to_destination_line_color"] = QColor(133, 164, 164);
   
+  __defaults["network.database_integration"] = true;
+  __defaults["network.weather_forecast_provider"] = "none";
+  
+  /* In USA provide Fahrenheit by default */
+  if (QLocale::system().country() == QLocale::UnitedStates)
+    __defaults["network.weather_temperature_units"] = "Fahrenheit";
+  else
+    __defaults["network.weather_temperature_units"] = "Celsius";
+  
   __defaults["misc.send_statistics"] = true;
   __defaults["misc.language"] = QLocale::system().name().left(2);
-  
-  __defaults["network.database_integration"] = true;
-  __defaults["network.weather_forecast_provider"] = QString();
-  __defaults["network.weather_temperature_units"] = "Celsius";
   
   __defaults["view.pilots_layer"] = true;
   __defaults["view.airports_layer"] = true;

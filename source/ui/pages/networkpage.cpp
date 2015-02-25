@@ -1,6 +1,6 @@
 /*
  * networkpage.cpp
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +26,6 @@
 
 #include "networkpage.h"
 
-/* Default settings for NetworkPage */
-namespace DefaultSettings {
-  static const bool    DATABASE_INTEGRATION     = true;
-  static const QString WEATHER_FORECASTS_PROVIDER = "none";
-  static const QString WEATHER_TEMPERATURE_UNITS  = "Celsius";
-}
-
 NetworkPage::NetworkPage(QWidget* parent) :
     QWidget(parent) {
   setupUi(this);
@@ -45,12 +38,12 @@ NetworkPage::listElement() const {
 
 QString
 NetworkPage::listIcon() const {
-  return ":/settings/preferences-network.png";
+  return QStringLiteral(":/settings/preferences-network.png");
 }
 
 QString
 NetworkPage::moduleId() const {
-  return "network";
+  return QStringLiteral("network");
 }
 
 void
@@ -61,11 +54,13 @@ NetworkPage::update() const {
 }
 
 void
-NetworkPage::restore(QSettings& s) {
+NetworkPage::restore(QSettings& s, const QVariantHash& defaults) {
+  QString id = moduleId() % ".";
+  
   DatabaseIntegrationCheckBox->setChecked(
-    s.value("database_integration", DefaultSettings::DATABASE_INTEGRATION).toBool());
+    s.value("database_integration", defaults[id % "database_integration"]).toBool());
   QString weatherCurrent =
-    s.value("weather_forecast_provider", DefaultSettings::WEATHER_FORECASTS_PROVIDER).toString();
+    s.value("weather_forecast_provider", defaults[id % "weather_forecast_provider"]).toString();
   
   PluginListWidgetItem* none = new PluginListWidgetItem(tr("None"), WeatherProviderListWidget);
   none->setData(Qt::UserRole, QString("none"));
@@ -89,19 +84,10 @@ NetworkPage::restore(QSettings& s) {
     }
   }
   
-  QString units;
-  if (!s.contains("weather_temperature_units")) {
-    /* In USA provide Fahrenheit by default */
-    if (QLocale::system().country() == QLocale::UnitedStates)
-      units = "Fahrenheit";
-    else
-      units = DefaultSettings::WEATHER_TEMPERATURE_UNITS;
-  } else {
-    units = s.value("weather_temperature_units", DefaultSettings::WEATHER_TEMPERATURE_UNITS).toString();
-  }
+  QString units = s.value("weather_temperature_units", defaults[id % "weather_temperature_units"]).toString();
   
   if (units != "Celsius" && units != "Fahrenheit")
-    units = DefaultSettings::WEATHER_TEMPERATURE_UNITS;
+    units = defaults[id % "weather_temperature_units"].toString();
   
   if (units == "Celsius")
     CelsiusRadioButton->setChecked(true);

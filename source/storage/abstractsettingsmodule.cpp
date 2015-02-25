@@ -25,9 +25,9 @@
 AbstractSettingsModule::AbstractSettingsModule() {}
 
 void
-AbstractSettingsModule::restoreSettings(QSettings& settings) {
+AbstractSettingsModule::restoreSettings(QSettings& settings, const QVariantHash& defaults) {
   settings.beginGroup(moduleId());
-  restore(settings);
+  restore(settings, defaults);
   settings.endGroup();
 }
 

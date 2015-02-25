@@ -1,6 +1,6 @@
 /*
  * mappage.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ public:
   void update() const override;
   
 protected:
-  void restore(QSettings& s) override;
+  void restore(QSettings& s, const QVariantHash& defaults) override;
   void save(QSettings& s) override;
   
 private:

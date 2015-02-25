@@ -1,6 +1,6 @@
 /*
     abstractsettingsmodule.h
-    Copyright (C) 2013-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ public:
    */
   virtual void update() const = 0;
   
-  void restoreSettings(QSettings& settings);
+  void restoreSettings(QSettings& settings, const QVariantHash& defaults);
   void saveSettings(QSettings& settings);
   
 protected:
@@ -65,7 +65,7 @@ protected:
   /**
    * Restores user's settings.
    */
-  virtual void restore(QSettings& settings) = 0;
+  virtual void restore(QSettings& settings, const QVariantHash& defaults) = 0;
   
   /**
    * Saves user's settings.

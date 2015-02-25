@@ -24,12 +24,6 @@
 
 #include "miscellaneouspage.h"
 
-/* Default settings for MiscellaneousPage */
-namespace DefaultSettings {
-  static const bool    SEND_STATS       = true;
-  static const QString LANGUAGE         = QLocale::system().name().left(2);
-}
-
 MiscellaneousPage::MiscellaneousPage(QWidget* parent) :
     QWidget(parent) {
   setupUi(this);
@@ -70,12 +64,13 @@ MiscellaneousPage::showEvent(QShowEvent* event) {
 }
 
 void
-MiscellaneousPage::restore(QSettings& s) {
+MiscellaneousPage::restore(QSettings& s, const QVariantHash& defaults) {
+  QString id = moduleId() % ".";
   StatsCheckBox->setChecked(
-    s.value("send_statistics", DefaultSettings::SEND_STATS).toBool());
+    s.value("send_statistics", defaults[id % "send_statistics"]).toBool());
   LanguageComboBox->setCurrentIndex(
     LanguageManager::getSingleton().getLanguageId(
-      s.value("language", DefaultSettings::LANGUAGE).toString()
+      s.value("language", defaults[id % "language"]).toString()
     )
   );
 }

@@ -20,22 +20,6 @@
 
 #include "viewpage.h"
 
-namespace DefaultSettings {
-  static const bool PILOTS_CHECKBOX           = true;
-  static const bool AIRPORTS_CHECKBOX         = true;
-  static const bool STAFFED_FIRS_CHECKBOX     = true;
-  static const bool UNSTAFFED_FIRS_CHECKBOX   = true;
-  static const bool DISPLAY_AIRPORT_LABELS    = true;
-  static const bool EMPTY_AIRPORTS_CHECKBOX   = false;
-
-  static const bool ALWAYS_CHECKBOX           = true;
-  static const bool WHEN_HOVERED_CHECKBOX     = true;
-  static const bool AIRPORT_RELATED_CHECKBOX  = true;
-  
-  static const bool AIRPORT_LABELS            = true;
-}
-
-
 ViewPage::ViewPage(QWidget* parent) :
     QWidget(parent) {
   setupUi(this);
@@ -83,25 +67,26 @@ ViewPage::update() const {
 }
 
 void
-ViewPage::restore(QSettings& s) {
+ViewPage::restore(QSettings& s, const QVariantHash& defaults) {
+  QString id = moduleId() % ".";
   PilotsCheckBox->setChecked(
-    s.value("pilots_layer", DefaultSettings::PILOTS_CHECKBOX).toBool());
+    s.value("pilots_layer", defaults[id % "pilots_layer"]).toBool());
   AirportsCheckBox->setChecked(
-    s.value("airports_layer", DefaultSettings::AIRPORTS_CHECKBOX).toBool());
+    s.value("airports_layer", defaults[id % "airports_layer"]).toBool());
   StaffedFirsCheckBox->setChecked(
-    s.value("staffed_firs", DefaultSettings::STAFFED_FIRS_CHECKBOX).toBool());
+    s.value("staffed_firs", defaults[id % "staffed_firs"]).toBool());
   UnstaffedFirsCheckBox->setChecked(
-    s.value("unstaffed_firs", DefaultSettings::UNSTAFFED_FIRS_CHECKBOX).toBool());
+    s.value("unstaffed_firs", defaults[id % "unstaffed_firs"]).toBool());
   InactiveAirportsCheckBox->setChecked(
-    s.value("empty_airports", DefaultSettings::EMPTY_AIRPORTS_CHECKBOX).toBool());
+    s.value("empty_airports", defaults[id % "empty_airports"]).toBool());
   ShowPilotsLabelsAlwaysCheckBox->setChecked(
-    s.value("pilot_labels.always", DefaultSettings::ALWAYS_CHECKBOX).toBool());
+    s.value("pilot_labels.always", defaults[id % "pilot_labels.always"]).toBool());
   ShowPilotsLabelsWhenHoveredCheckBox->setChecked(
-    s.value("pilot_labels.when_hovered", DefaultSettings::WHEN_HOVERED_CHECKBOX).toBool());
+    s.value("pilot_labels.when_hovered", defaults[id % "pilot_labels.when_hovered"]).toBool());
   ShowPilotsLabelsAirportRelatedCheckBox->setChecked(
-    s.value("pilot_labels.airport_labels", DefaultSettings::AIRPORT_RELATED_CHECKBOX).toBool());
+    s.value("pilot_labels.airport_labels", defaults[id % "pilot_labels.airport_labels"]).toBool());
   
-  bool airportLabels = s.value("airport_labels", DefaultSettings::AIRPORT_LABELS).toBool();
+  bool airportLabels = s.value("airport_labels", defaults[id % "airport_labels"]).toBool();
   if (airportLabels)
     AlwaysRadioButton->setChecked(true);
   else

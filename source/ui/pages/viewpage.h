@@ -32,9 +32,9 @@ public:
 
   ViewPage(QWidget* parent = nullptr);
   
-  QString listElement() const;
-  QString listIcon() const;
-  QString moduleId() const;
+  QString listElement() const override;
+  QString listIcon() const override;
+  QString moduleId() const override;
   
   /**
    * @variables
@@ -53,8 +53,8 @@ public:
   void update() const;
 
 protected:
-  void restore(QSettings& s);
-  void save(QSettings& s);
+  void restore(QSettings& s, const QVariantHash& defaults) override;
+  void save(QSettings& s) override;
   
 private slots:
   void __handleAlwaysCheckBox(int state);

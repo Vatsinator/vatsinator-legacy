@@ -31,12 +31,11 @@ signals:
   void languageChanged();
   
 public:
-  
   MiscellaneousPage(QWidget* parent = nullptr);
   
-  QString listElement() const;
-  QString listIcon() const;
-  QString moduleId() const;
+  QString listElement() const override;
+  QString listIcon() const override;
+  QString moduleId() const override;
   
   /**
    * @variables
@@ -48,8 +47,8 @@ public:
 protected:
   void showEvent(QShowEvent* event) override;
   
-  void restore(QSettings& s);
-  void save(QSettings& s);
+  void restore(QSettings& s, const QVariantHash& defaults) override;
+  void save(QSettings& s) override;
   
 private:
   int __languageIndex;
