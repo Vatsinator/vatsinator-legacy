@@ -35,6 +35,7 @@ class QMenu;
 class QGestureEvent;
 class QPanGesture;
 class QPinchGesture;
+class QSwipeGesture;
 
 class MapWidget : public QGLWidget, private Notifiable {  
   Q_OBJECT
@@ -178,6 +179,8 @@ private:
   } __mousePosition;
   
   QPoint __lastClickPosition;
+  
+  bool __usesGestures; /**< If true, wheel events will be ignored */
 
 };
 

@@ -24,5 +24,3 @@
 #cmakedefine GCC_VERSION_47
 #cmakedefine GCC_VERSION_46
 #cmakedefine GCC_VERSION_45
-
-#cmakedefine VATSINATOR_ENABLE_GESTURES

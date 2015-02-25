@@ -49,7 +49,8 @@
 #include "mapwidget.h"
 
 MapWidget::MapWidget(QWidget* parent) :
-    QGLWidget(MapConfig::glFormat(), parent) {
+    QGLWidget(MapConfig::glFormat(), parent),
+    __usesGestures(false) {
   
   setAttribute(Qt::WA_NoSystemBackground);
   setAttribute(Qt::WA_OpaquePaintEvent);
@@ -62,7 +63,6 @@ MapWidget::MapWidget(QWidget* parent) :
   
 #ifdef VATSINATOR_ENABLE_GESTURES
   grabGesture(Qt::PinchGesture);
-  grabGesture(Qt::PanGesture);
 #endif
   
   setAutoBufferSwap(true);
@@ -88,10 +88,8 @@ MapWidget::event(QEvent* event) {
       return true;
     }
     
-#ifdef VATSINATOR_ENABLE_GESTURES
     case QEvent::Gesture:
       return gestureEvent(static_cast<QGestureEvent*>(event));
-#endif
     
     default:
       return QGLWidget::event(event);
@@ -133,8 +131,13 @@ MapWidget::resizeGL(int width, int height) {
 
 bool
 MapWidget::gestureEvent(QGestureEvent* event) {
-  if (QGesture* pinch = event->gesture(Qt::PinchGesture))
+  if (QGesture* pinch = event->gesture(Qt::PinchGesture)) {
     pinchTriggered(static_cast<QPinchGesture*>(pinch));
+    event->accept(pinch);
+  }
+  
+  __usesGestures = true;
+  
   return true;
 }
 
@@ -151,9 +154,9 @@ MapWidget::pinchTriggered(QPinchGesture* gesture) {
 
 void
 MapWidget::wheelEvent(QWheelEvent* event) {
-#ifndef VATSINATOR_ENABLE_GESTURES
-  __updateZoom(event->delta() / 120);
-#endif
+  if (!__usesGestures)
+    __updateZoom(event->delta() / 120);
+  
   event->accept();
 }
 
