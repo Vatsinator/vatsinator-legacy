@@ -92,11 +92,10 @@ NetworkPage::restore(QSettings& s) {
   QString units;
   if (!s.contains("weather_temperature_units")) {
     /* In USA provide Fahrenheit by default */
-    if (QLocale::system().country() == QLocale::UnitedStates) {
+    if (QLocale::system().country() == QLocale::UnitedStates)
       units = "Fahrenheit";
-    } else {
+    else
       units = DefaultSettings::WEATHER_TEMPERATURE_UNITS;
-    }
   } else {
     units = s.value("weather_temperature_units", DefaultSettings::WEATHER_TEMPERATURE_UNITS).toString();
   }
