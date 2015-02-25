@@ -144,6 +144,14 @@ public:
     Q_ASSERT(__firDatabase);
     return __firDatabase;
   }
+  
+  /**
+   * Gets the PluginManager singleton.
+   */
+  inline PluginManager* pluginManager() {
+    Q_ASSERT(__pluginManager);
+    return __pluginManager;
+  }
 
 public slots:
   /**
@@ -177,6 +185,7 @@ private:
   WorldMap*            __worldMap;
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;
+  PluginManager*       __pluginManager;
   ResourceManager*     __resourceManager;
   StatsPurveyor*       __statsPurveyor;
 

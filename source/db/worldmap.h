@@ -47,7 +47,7 @@ public:
   WorldMap(QObject* parent = nullptr);
   
   /**
-   * Read by VatsinatorApplication only.
+   * Called by VatsinatorApplication only.
    */
   void initialize();
   

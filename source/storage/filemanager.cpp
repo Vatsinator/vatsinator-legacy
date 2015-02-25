@@ -100,8 +100,7 @@ FileManager::staticPath(FileManager::StaticDir directory) {
 #endif
     
     default:
-      Q_ASSERT_X(false, "getting static path", "No such file!");
-      return QString();
+      Q_UNREACHABLE();
   }
 }
 

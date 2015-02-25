@@ -44,6 +44,7 @@
 #include "vatsimdata/vatsimdatadocument.h"
 #include "vatsimdata/vatsimstatusdocument.h"
 #include "storage/filemanager.h"
+#include <storage/pluginmanager.h>
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
@@ -731,26 +732,8 @@ VatsimDataHandler::__handleFetchError(QString error) {
 void
 VatsimDataHandler::__reloadWeatherForecast() {
   QString desired = SM::get("network.weather_forecast_provider").toString();
-  /* TODO Plugin selection needs to be done better  */
-  if (desired != "none") {
-    QDir pluginsDir(FileManager::staticPath(FileManager::Plugins));
-    for (QString fileName: pluginsDir.entryList(QDir::Files)) {
-      QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-      QJsonObject pluginData = loader.metaData();
-      if (pluginData["IID"].toString() == "org.eu.vatsinator.Vatsinator.WeatherForecastInterface") {
-        QJsonObject metaData = pluginData["MetaData"].toObject();
-        QString name = metaData["name"].toString();
-        
-        if (desired == name) {
-          __weatherForecast = qobject_cast<WeatherForecastInterface*>(loader.instance());
-          Q_ASSERT(__weatherForecast);
-          qDebug("Loaded weather forecast plugin: %s",
-                 qPrintable(metaData["provider_name"].toString()));
-          break;
-        }
-      }
-    }
-  } else {
+  if (desired != "none")
+    __weatherForecast = vApp()->pluginManager()->load<WeatherForecastInterface>(desired);
+  else
     __weatherForecast = nullptr;
-  }
 }

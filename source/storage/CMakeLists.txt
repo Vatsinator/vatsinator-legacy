@@ -5,6 +5,7 @@ set (storage_SRCS
   cachefile.cpp
   filemanager.cpp
   languagemanager.cpp
+  pluginmanager.cpp
   settingsmanager.cpp
   unzipper.cpp
 )
@@ -15,6 +16,7 @@ set (storage_HEADERS
   cachefile.h
   filemanager.h
   languagemanager.h
+  pluginmanager.h
   settingsmanager.h
   unzipper.h
 )

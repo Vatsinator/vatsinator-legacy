@@ -125,6 +125,7 @@ AirportDetailsWindow::showEvent(QShowEvent* event) {
   } else {
     ForecastGroup->setEnabled(false);
     w->setMessage(tr("No plugin selected"));
+    w->setStatus(DelayedWidget::Finished);
   }
   
   NotamTableView->setModel(nullptr);
