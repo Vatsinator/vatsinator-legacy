@@ -9,6 +9,7 @@ add_definitions(-DQT_PLUGIN)
 add_definitions(-DQT_NO_DEBUG)
 
 add_library(ultimateweatherforecasts MODULE ultimateweatherforecasts.cpp)
+# target_link_libraries(ultimateweatherforecasts vatsinatorsdk)
 
 if (LINUX)
   install (TARGETS ultimateweatherforecasts DESTINATION share/vatsinator/plugins)

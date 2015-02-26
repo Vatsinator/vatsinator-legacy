@@ -17,17 +17,25 @@
 
 project (vatsinator)
 
-cmake_minimum_required (VERSION 2.8.11 FATAL_ERROR)
-cmake_policy (SET CMP0020 OLD)
+cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
+
+# Automatically link Qt executables to qtmain target on Windows
+cmake_policy (SET CMP0020 NEW)
 
 # Allow use of the LOCATION target property.
 if (POLICY CMP0026)
   cmake_policy (SET CMP0026 OLD)
 endif (POLICY CMP0026)
 
+# Double colon in target name means ALIAS or IMPORTED target.
 if (POLICY CMP0028)
   cmake_policy (SET CMP0028 NEW)
 endif (POLICY CMP0028)
+
+include (CMakeDependentOption)
+option (WITH_SDK "Build SDK" ON)
+cmake_dependent_option(WITH_PLUGINS "Build plugins" ON
+    "WITH_SDK" OFF)
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
@@ -117,54 +125,51 @@ add_subdirectory(resources)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 
 # Platform-specific actions
-if (LINUX)
-    
-    # This actually creates .deb
-    include (Packaging-linux)
-    
-    # This sets up the "debian" directory
-    option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
-    if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
-        add_subdirectory (debian)
-    endif (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
+if (LINUX)  
+  # This actually creates .deb
+  include (Packaging-linux)
+  
+  # This sets up the "debian" directory
+  option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
+  if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
+    add_subdirectory (debian)
+  endif (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
 
-    # Spec file
-    option (WITH_RPM "Create RPM package" OFF)
-
+  # Spec file
+  option (WITH_RPM "Create RPM package" OFF)
 elseif (APPLE)
-    
-    # For bundle creation
-    include (Packaging-darwin)
-
+  # For bundle creation
+  include (Packaging-darwin)
 # builds for win32
 elseif (WIN32)
-    
-    # Awesome NSIS packaging
-    include (Packaging-win32)
-    
+  # Awesome NSIS packaging
+  include (Packaging-win32)  
 endif (LINUX)
 
 add_subdirectory (dist)
 
 if (NOT APPLE)
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
+
 add_subdirectory (source)
 
 set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
-option (WITH_PLUGINS "Build plugins" ON)
+
 if (WITH_PLUGINS)
-    add_subdirectory(plugins)
+  add_subdirectory(plugins)
 endif ()
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
+
 if (NOT CMAKE_CONFIGURATION_TYPES)
-	message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+  message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 else ()
-	message (STATUS " * configuration types: ${CMAKE_CONFIGURATION_TYPES}")
+  message (STATUS " * configuration types: ${CMAKE_CONFIGURATION_TYPES}")
 endif ()
+
 if (LINUX)
     message (STATUS " * platform: Linux")
 elseif (APPLE)

@@ -1,5 +1,3 @@
-vatsinator_start_subdirectory (storage)
-
 set (storage_SRCS
   abstractsettingsmodule.cpp
   cachefile.cpp
@@ -9,7 +7,6 @@ set (storage_SRCS
   settingsmanager.cpp
   unzipper.cpp
 )
-vatsinator_subdirectory_sources (storage "${storage_SRCS}")
 
 set (storage_HEADERS
   abstractsettingsmodule.h
@@ -20,9 +17,10 @@ set (storage_HEADERS
   settingsmanager.h
   unzipper.h
 )
-vatsinator_subdirectory_headers (storage "${storage_HEADERS}")
 
-vatsinator_end_subdirectory (storage)
-
+add_library (storage OBJECT
+  ${storage_SRCS}
+  ${storage_HEADERS}
+)
 
 add_dependencies (storage ui)

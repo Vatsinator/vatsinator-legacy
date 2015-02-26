@@ -1,5 +1,3 @@
-vatsinator_start_subdirectory (vatsimdata)
-
 set (vatsimdata_SRCS
   abstractbookingprovider.cpp
   abstractnotamprovider.cpp
@@ -20,7 +18,6 @@ set (vatsimdata_SRCS
   vatsimdatahandler.cpp
   vatsimstatusdocument.cpp
 )
-vatsinator_subdirectory_sources (vatsimdata "${vatsimdata_SRCS}")
 
 set (vatsimdata_HEADERS
   abstractbookingprovider.h
@@ -42,8 +39,10 @@ set (vatsimdata_HEADERS
   vatsimdatahandler.h
   vatsimstatusdocument.h
 )
-vatsinator_subdirectory_headers (vatsimdata "${vatsimdata_HEADERS}")
 
-vatsinator_end_subdirectory (vatsimdata)
+add_library (vatsimdata OBJECT
+  ${vatsimdata_SRCS}
+  ${vatsimdata_HEADERS}
+)
 
 add_dependencies (vatsimdata ui)
