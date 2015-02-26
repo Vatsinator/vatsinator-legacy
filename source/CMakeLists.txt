@@ -1,4 +1,5 @@
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+include (Utils)
 
 set (CMAKE_AUTOMOC ON)
 set (CMAKE_AUTOUIC ON)
@@ -87,14 +88,8 @@ elseif (APPLE OR WIN32)
 
   exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
     OUTPUT_VARIABLE QT_INSTALL_LIBS)
-  exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
-    OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
-
-  if (APPLE)
-    set (QT_QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/libqcocoa.dylib)
-  elseif (WIN32 AND MSVC)
-    set (QT_QPA_PLUGIN ${QT_INSTALL_PLUGINS}/platforms/qwindows.dll)
-  endif ()
+    
+  get_platform_qpa_plugin (QT_QPA_PLUGIN)
 
   set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
   include(InstallRequiredSystemLibraries)
@@ -102,9 +97,11 @@ elseif (APPLE OR WIN32)
   if (NOT QUAZIP_LIBRARY_DIR)
     get_filename_component(QUAZIP_LIBRARY_DIR ${QUAZIP_LIBRARIES} DIRECTORY)
   endif ()
+  
+  get_target_location (EXECUTABLE vatsinator)
 
   include (DeployQt5)
-  install_qt5_executable ("$<TARGET_FILE:vatsinator>"
+  install_qt5_executable ("${EXECUTABLE}"
       "${QT_QPA_PLUGIN}" # qtplugins
       "" # libs
       "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs

@@ -185,12 +185,15 @@ set (ui_QRCS
 )
 qt5_add_resources (ui_RESOURCES ${ui_QRCS})
 
+if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
+  set (impl_SRCS ${widgets_SRCS})
+  set (impl_HEADERS ${widgets_HEADERS})
+endif ()
+
 add_library (ui OBJECT
   ${ui_SRCS}
   ${ui_HEADERS}
   ${ui_RESOURCES}
-  $<$<STREQUAL:${vatsinator_UI_IMPLEMENTATION},widgets>:
-    ${widgets_SRCS}
-    ${widgets_HEADERS}
-  >
+  ${impl_SRCS}
+  ${impl_HEADERS}
 )

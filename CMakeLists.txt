@@ -22,11 +22,6 @@ cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
 # Automatically link Qt executables to qtmain target on Windows
 cmake_policy (SET CMP0020 NEW)
 
-# Allow use of the LOCATION target property.
-if (POLICY CMP0026)
-  cmake_policy (SET CMP0026 OLD)
-endif (POLICY CMP0026)
-
 # Double colon in target name means ALIAS or IMPORTED target.
 if (POLICY CMP0028)
   cmake_policy (SET CMP0028 NEW)
