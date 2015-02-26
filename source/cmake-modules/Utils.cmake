@@ -16,10 +16,14 @@ macro (get_platform_qpa_plugin var)
 endmacro ()
 
 macro (get_target_location var target)
-  cmake_policy (PUSH)
-  cmake_policy (SET CMP0026 OLD)
-  get_target_property (${var} ${target} LOCATION)
-  cmake_policy (POP)
+  if (NOT APPLE)
+    cmake_policy (PUSH)
+    cmake_policy (SET CMP0026 OLD)
+    get_target_property (${var} ${target} LOCATION)
+    cmake_policy (POP)
+  else ()
+    set (${var} ${target}.app)
+  endif ()
 endmacro ()
 
 
