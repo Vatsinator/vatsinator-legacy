@@ -1,11 +1,6 @@
-if (NOT QT_QMAKE_EXECUTABLE)
-  get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-endif ()
-
 macro (get_platform_qpa_plugin var)
   if (NOT QT_INSTALL_PLUGINS)
-    exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS"
-      OUTPUT_VARIABLE QT_INSTALL_PLUGINS)
+    query_qmake (QT_INSTALL_PLUGINS QT_INSTALL_PLUGINS)
   endif ()
   
   if (APPLE)
@@ -25,5 +20,3 @@ macro (get_target_location var target)
     set (${var} ${target}.app)
   endif ()
 endmacro ()
-
-

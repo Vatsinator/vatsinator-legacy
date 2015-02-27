@@ -22,7 +22,7 @@ set (vatsinator_HEADERS
 
 # icon for Windows
 if (WIN32)
-  set (vatsinator_SRCS ${vatsinator_SRCS}
+  list (APPEND vatsinator_SRCS
       ${PROJECT_SOURCE_DIR}/dist/vatsinator.rc)
 endif ()
 
@@ -85,21 +85,19 @@ if (LINUX)
   install (TARGETS vatsinator RUNTIME DESTINATION bin)
 elseif (APPLE OR WIN32)
   install (TARGETS vatsinator DESTINATION .)
-
-  exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_BINS"
-    OUTPUT_VARIABLE QT_INSTALL_LIBS)
-    
-  get_platform_qpa_plugin (QT_QPA_PLUGIN)
-
+  
   set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ".")
   include(InstallRequiredSystemLibraries)
-
+  
+  query_qmake (QT_INSTALL_LIBS QT_INSTALL_BINS)
+  get_platform_qpa_plugin (QT_QPA_PLUGIN)
+  
   if (NOT QUAZIP_LIBRARY_DIR)
     get_filename_component(QUAZIP_LIBRARY_DIR ${QUAZIP_LIBRARIES} DIRECTORY)
   endif ()
   
   get_target_location (EXECUTABLE vatsinator)
-
+  
   include (DeployQt5)
   install_qt5_executable ("${EXECUTABLE}"
       "${QT_QPA_PLUGIN}" # qtplugins

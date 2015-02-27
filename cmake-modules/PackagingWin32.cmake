@@ -1,8 +1,4 @@
-#string (REPLACE "_" "." CPACK_PACKAGE_VERSION ${vatsinator_VERSION})
-
 set (CPACK_GENERATOR "NSIS")
-
-include (CPackDefaultOptions)
 
 set (CPACK_PACKAGE_FILE_NAME "VatsinatorSetup-${vatsinator_VERSION}")
 set (CPACK_PACKAGE_EXECUTABLES "vatsinator;Vatsinator")
@@ -32,5 +28,3 @@ set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
     Delete \\\"$DESKTOP\\\\Vatsinator.lnk\\\"
 ")
-
-include (CPack)
