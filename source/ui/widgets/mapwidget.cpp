@@ -61,9 +61,7 @@ MapWidget::MapWidget(QWidget* parent) :
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));
   
-#ifdef VATSINATOR_ENABLE_GESTURES
   grabGesture(Qt::PinchGesture);
-#endif
   
   setAutoBufferSwap(true);
 }
