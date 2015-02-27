@@ -1,5 +1,3 @@
-vatsinator_start_subdirectory (ui)
-
 if (NOT vatsinator_ABOUT)
   file (READ ${CMAKE_CURRENT_SOURCE_DIR}/resources/about vatsinator_ABOUT)
   string (REPLACE "\n" "" vatsinator_ABOUT "${vatsinator_ABOUT}")
@@ -180,47 +178,22 @@ set (widgets_HEADERS
   windows/vatsinatorwindow.h
 )
 
-vatsinator_subdirectory_sources (ui "${ui_SRCS}")
-vatsinator_subdirectory_headers (ui "${ui_HEADERS}")
+set (ui_QRCS
+  resources/files.qrc
+  resources/imgs.qrc
+  resources/shaders.qrc
+)
+qt5_add_resources (ui_RESOURCES ${ui_QRCS})
+
 if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-  vatsinator_subdirectory_sources (ui "${widgets_SRCS}")
-  vatsinator_subdirectory_headers (ui "${widgets_HEADERS}")
+  set (impl_SRCS ${widgets_SRCS})
+  set (impl_HEADERS ${widgets_HEADERS})
 endif ()
 
-
-set (widgets_FORMS
-    dialogs/apprestartdialog.ui
-    dialogs/letsendstatsdialog.ui
-    dialogs/newversiondialog.ui
-    dialogs/vatsimmessagedialog.ui
-    
-    pages/mappage.ui
-    pages/miscellaneouspage.ui
-    pages/networkpage.ui
-    pages/viewpage.ui
-
-    windows/aboutwindow.ui
-    windows/airportdetailswindow.ui
-    windows/atcdetailswindow.ui
-    windows/atclistwindow.ui
-    windows/databasewindow.ui
-    windows/firdetailswindow.ui
-    windows/flightdetailswindow.ui
-    windows/flightlistwindow.ui
-    windows/metarswindow.ui
-    windows/settingswindow.ui
-    windows/vatsinatorwindow.ui
+add_library (ui OBJECT
+  ${ui_SRCS}
+  ${ui_HEADERS}
+  ${ui_RESOURCES}
+  ${impl_SRCS}
+  ${impl_HEADERS}
 )
-
-if (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-  vatsinator_subdirectory_forms (ui "${widgets_FORMS}")
-endif (${vatsinator_UI_IMPLEMENTATION} MATCHES "widgets")
-
-set (ui_QRCS
-    resources/files.qrc
-    resources/imgs.qrc
-    resources/shaders.qrc
-)
-vatsinator_subdirectory_resources (ui "${ui_QRCS}")
-
-vatsinator_end_subdirectory (ui)

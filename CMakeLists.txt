@@ -1,5 +1,5 @@
 ﻿# 
-#   Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+#   Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -17,47 +17,47 @@
 
 project (vatsinator)
 
-cmake_minimum_required (VERSION 2.8.11 FATAL_ERROR)
-cmake_policy (SET CMP0020 OLD)
+cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
 
-# Allow use of the LOCATION target property.
-if (POLICY CMP0026)
-  cmake_policy (SET CMP0026 OLD)
-endif (POLICY CMP0026)
+# Automatically link Qt executables to qtmain target on Windows
+cmake_policy (SET CMP0020 NEW)
 
+# Double colon in target name means ALIAS or IMPORTED target.
 if (POLICY CMP0028)
   cmake_policy (SET CMP0028 NEW)
 endif (POLICY CMP0028)
 
+if (UNIX AND NOT APPLE AND NOT MINGW)
+  set (LINUX 1)
+endif ()
+
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
+
+include (CMakeDependentOption)
+option (WITH_SDK "Build SDK" ON)
+# Enable WITH_PLUGINS option only if WITH_SDK is also enabled
+cmake_dependent_option(WITH_PLUGINS "Build plugins" ON
+    "WITH_SDK" OFF)
 
 find_package (Qt5Core REQUIRED)
 find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL REQUIRED)
 find_package (Qt5Xml REQUIRED)
 find_package (Qt5Network REQUIRED)
-
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-include_directories(${Qt5Core_INCLUDE_DIRS})
-include_directories(${Qt5Widgets_INCLUDE_DIRS})
-include_directories(${Qt5OpenGL_INCLUDE_DIRS})
-include_directories(${Qt5Network_INCLUDE_DIRS})
-include_directories(${Qt5Xml_INCLUDE_DIRS})
-
-get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-
-exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_VERSION"
-      OUTPUT_VARIABLE QT_VERSION)
-
 find_package (OpenGL REQUIRED)
 find_package (QuaZip REQUIRED)
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+include_directories (${Qt5Core_INCLUDE_DIRS})
+include_directories (${Qt5Widgets_INCLUDE_DIRS})
+include_directories (${Qt5OpenGL_INCLUDE_DIRS})
+include_directories (${Qt5Network_INCLUDE_DIRS})
+include_directories (${Qt5Xml_INCLUDE_DIRS})
 include_directories (${QUAZIP_INCLUDE_DIRS})
 
-if (UNIX AND NOT APPLE AND NOT MINGW)
-    set (LINUX 1)
-endif (UNIX AND NOT APPLE AND NOT MINGW)
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules")
+include (QtUtils)
 
 # set configuration types (msvc/xcode)
 if (CMAKE_CONFIGURATION_TYPES)
@@ -67,7 +67,7 @@ if (CMAKE_CONFIGURATION_TYPES)
     FORCE)
 endif()
 
-# set CMAKE_BUILD_TYPE (gcc)
+# set CMAKE_BUILD_TYPE (makefiles)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
   set (CMAKE_BUILD_TYPE Debug)
 else ()
@@ -112,82 +112,72 @@ elseif (WIN32)
 elseif (APPLE)
   set (vatsinator_INSTALL_DIR "vatsinator.app/Contents/Resources")
 endif()
-add_subdirectory(resources)
+add_subdirectory (resources)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
+include (Packaging)
 
 # Platform-specific actions
 if (LINUX)
-    
-    # This actually creates .deb
-    include (Packaging-linux)
-    
-    # This sets up the "debian" directory
-    option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
-    if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
-        add_subdirectory (debian)
-    endif (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
+  # This sets up the "debian" directory
+  option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
+  if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
+    add_subdirectory (debian)
+  endif ()
 
-    # Spec file
-    option (WITH_RPM "Create RPM package" OFF)
-
-elseif (APPLE)
-    
-    # For bundle creation
-    include (Packaging-darwin)
-
-# builds for win32
-elseif (WIN32)
-    
-    # Awesome NSIS packaging
-    include (Packaging-win32)
-    
-endif (LINUX)
+  # Spec file
+  option (WITH_RPM "Create RPM package" OFF)
+endif ()
 
 add_subdirectory (dist)
 
 if (NOT APPLE)
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
+
 add_subdirectory (source)
 
 set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
-option (WITH_PLUGINS "Build plugins" ON)
+
 if (WITH_PLUGINS)
-    add_subdirectory(plugins)
+  add_subdirectory(plugins)
 endif ()
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
+
 if (NOT CMAKE_CONFIGURATION_TYPES)
-	message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+  message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 else ()
-	message (STATUS " * configuration types: ${CMAKE_CONFIGURATION_TYPES}")
+  message (STATUS " * configuration types: ${CMAKE_CONFIGURATION_TYPES}")
 endif ()
+
 if (LINUX)
-    message (STATUS " * platform: Linux")
+  message (STATUS " * platform: Linux")
 elseif (APPLE)
-    message (STATUS " * platform: Apple")
+  message (STATUS " * platform: Apple")
 elseif (WIN32)
-    message (STATUS " * platform: Win32")
+  message (STATUS " * platform: Win32")
 else ()
-    message (STATUS " * platform: Undefined")
+  message (STATUS " * platform: Undefined")
 endif ()
+
+query_qmake (QT_VERSION QT_VERSION)
 message (STATUS " * Qt version: ${QT_VERSION}")
 
 # uninstall target
 configure_file (
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+  IMMEDIATE @ONLY
 )
 
 add_custom_target (
-    uninstall
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+  uninstall
+  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
 )
 
+# doxygen documentation
 find_package (Doxygen QUIET)
 if (DOXYGEN_FOUND)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)

@@ -1,5 +1,3 @@
-vatsinator_start_subdirectory (db)
-
 set (db_SRCS
   airline.cpp
   airlinedatabase.cpp
@@ -7,7 +5,6 @@ set (db_SRCS
   firdatabase.cpp
   worldmap.cpp
 )
-vatsinator_subdirectory_sources (db "${db_SRCS}")
 
 set (db_HEADERS
   airline.h
@@ -17,7 +14,8 @@ set (db_HEADERS
   point.h
   worldmap.h
 )
-vatsinator_subdirectory_headers (db "${db_HEADERS}")
 
-vatsinator_end_subdirectory (db)
-
+add_library (db OBJECT
+  ${db_SRCS}
+  ${db_HEADERS}
+)

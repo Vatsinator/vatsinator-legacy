@@ -29,16 +29,11 @@ Unzipper::Unzipper(QString fileName, QObject* parent) :
     __fileName(qMove(fileName)) {}
 
 Unzipper::Unzipper(QObject* parent) :
-#ifdef GCC_VERSION_47
-    Unzipper("", parent) {} // yeah, I'm freak
-#else
-    QObject(parent),
-    __fileName("") {}
-#endif
+    Unzipper("", parent) {}
 
 void
 Unzipper::setFileName(const QString& fileName) {
-    __fileName = fileName;
+  __fileName = fileName;
 }
 
 void

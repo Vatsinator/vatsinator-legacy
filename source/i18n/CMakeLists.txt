@@ -17,8 +17,7 @@ foreach (LANG ${LANGUAGE_FILES})
 endforeach (LANG)
 
 if (NOT QT_TRANSLATIONS_DIR)
-  exec_program (${QT_QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_TRANSLATIONS"
-      OUTPUT_VARIABLE QT_TRANSLATIONS_DIR)
+  query_qmake (QT_TRANSLATIONS_DIR QT_INSTALL_TRANSLATIONS)
 endif (NOT QT_TRANSLATIONS_DIR)
 
 # gather .ts files and qt translations

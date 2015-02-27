@@ -20,7 +20,3 @@
 #define VATSINATOR_PREFIX "${vatsinator_PREFIX}"
 #define VATSINATOR_UI_IMPLEMENTATION ${vatsinator_UI_IMPLEMENTATION}
 
-#cmakedefine GCC_VERSION_48
-#cmakedefine GCC_VERSION_47
-#cmakedefine GCC_VERSION_46
-#cmakedefine GCC_VERSION_45

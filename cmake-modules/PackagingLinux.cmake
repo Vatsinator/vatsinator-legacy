@@ -4,9 +4,7 @@ elseif (WITH_RPM AND NOT WITH_DEBIAN)
     set (CPACK_GENERATOR "RPM")
 elseif (WITH_DEBIAN AND NOT WITH_RPM)
     set (CPACK_GENERATOR "DEB")
-endif (WITH_RPM AND WITH_DEBIAN)
-
-include (CPackDefaultOptions)
+endif ()
 
 string (REPLACE "_" "-" CPACK_PACKAGE_VERSION ${vatsinator_VERSION})
 
@@ -19,10 +17,10 @@ elseif (“${CMAKE_SYSTEM_PROCESSOR}” STREQUAL “i686”)
 else (“${CMAKE_SYSTEM_PROCESSOR}” STREQUAL “x86_64”)
     set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE ${CMAKE_SYSTEM_PROCESSOR})
     set (CPACK_RPM_PACKAGE_ARCHITECTURE ${CMAKE_SYSTEM_PROCESSOR})
-endif (“${CMAKE_SYSTEM_PROCESSOR}” STREQUAL “x86_64”)
+endif ()
 
 set (CPACK_DEBIAN_PACKAGE_NAME "vatsinator")
-set (CPACK_DEBIAN_PACKAGE_DEPENDS "libqt4-core (>=4.8), libqt4-gui (>=4.8), libqt4-opengl (>=4.8), libqt4-network (>=4.8), libquazip")
+set (CPACK_DEBIAN_PACKAGE_DEPENDS "libqt5widgets5 (>=5.3), libqt5opengl5 (>=5.3), libqt5network5 (>=5.3), libqt5xml5 (>=5.3), libquazip-qt5-1")
 set (CPACK_DEBIAN_PACKAGE_SECTION "web")
 set (CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
 
@@ -31,7 +29,4 @@ set (CPACK_RPM_PACKAGE_LICENSE GPLv3)
 set (CPACK_RPM_PACKAGE_GROUP Applications/Internet)
 set (CPACK_RPM_PACKAGE_VENDOR Vatsinator)
 set (CPACK_RPM_PACKAGE_DESCRIPTION "An open-source Vatsim monitor")
-set (CPACK_RPM_PACKAGE_REQUIRES "libqt4 >= 4.8, libqt4-x11 >= 4.8, libquazip1, libqjson0")
-
-include (CPack)
-
+set (CPACK_RPM_PACKAGE_REQUIRES "libQt5Widgets5 >= 5.3, libQt5OpenGL5 >= 5.3, libQt5Network5 >= 5.3, libQt5Xml5 >= 5.3, libquazip2")

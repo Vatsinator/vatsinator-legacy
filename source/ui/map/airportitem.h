@@ -23,6 +23,7 @@
 #include <QOpenGLTexture>
 #include <QObject>
 #include <QVector>
+#include <QColor>
 
 #include "ui/map/mapitem.h"
 

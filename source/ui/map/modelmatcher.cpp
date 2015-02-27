@@ -20,8 +20,6 @@
 #include <QOpenGLTexture>
 
 #include "ui/widgets/mapwidget.h"
-#include "ui/windows/vatsinatorwindow.h"
-#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "storage/filemanager.h"
 #include "vatsinatorapplication.h"
