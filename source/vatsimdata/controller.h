@@ -104,7 +104,7 @@ public:
    * The return value of isValid() method indicates whether the controller
    * could be assigned to any facility or airport or not.
    */
-  inline bool isValid() const { return __valid; }
+  inline bool isValid() const { return __isValid; }
   
   inline const QString& frequency() const { return __frequency; }
   inline const QString& icao() const { return __icao; }
@@ -133,7 +133,7 @@ private:
   const Airport*       __airport;
   Controller::Facility __facility;
   QString              __description;
-  bool                 __valid;
+  bool                 __isValid;
   
   static bool __ratingsInitialized;
 

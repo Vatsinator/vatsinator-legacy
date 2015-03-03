@@ -57,7 +57,7 @@ public:
    */
   inline const QByteArray& data() const { return __data; }
   
-  inline bool isValid() const { return __valid; }
+  inline bool isValid() const { return __isValid; }
   
   /**
    * URL where to retrieve metar.
@@ -79,7 +79,7 @@ private:
   void __parse();
   
   QByteArray __data;
-  bool __valid;
+  bool __isValid;
   
   QList<QUrl> __dataFileUrls;
   QList<QUrl> __serverListUrls;
