@@ -121,7 +121,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="139"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="140"/>
         <source>%1 - airport details</source>
         <translation type="unfinished"/>
     </message>
@@ -196,17 +196,17 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="154"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="155"/>
         <source>%1 ft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="167"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="168"/>
         <source>No forecast for %1, %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="171"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="172"/>
         <source>Network error</source>
         <translation type="unfinished"/>
     </message>
@@ -801,7 +801,7 @@
 <context>
     <name>MapPage</name>
     <message>
-        <location filename="../ui/pages/mappage.cpp" line="60"/>
+        <location filename="../ui/pages/mappage.cpp" line="42"/>
         <source>Map</source>
         <translation type="unfinished"/>
     </message>
@@ -875,52 +875,52 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="104"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="100"/>
         <source>Your system does not support required OpenGL extensions.                                       Please upgrade your graphic card driver.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="261"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="262"/>
         <source>Airport details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="274"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="275"/>
         <source>Controllers</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="286"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="287"/>
         <source>Arrivals</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="300"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="301"/>
         <source>Departures</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="321"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="322"/>
         <source>%1 details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="349"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
         <source>Flight details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="391"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="392"/>
         <source>Nearby</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="394"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="395"/>
         <source>Flights</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="408"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="409"/>
         <source>Airports</source>
         <translation type="unfinished"/>
     </message>
@@ -974,7 +974,7 @@
 <context>
     <name>MiscellaneousPage</name>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.cpp" line="44"/>
+        <location filename="../ui/pages/miscellaneouspage.cpp" line="38"/>
         <source>Miscellaneous</source>
         <translation type="unfinished"/>
     </message>
@@ -1007,7 +1007,7 @@
 <context>
     <name>ModelMatcher</name>
     <message>
-        <location filename="../ui/map/modelmatcher.cpp" line="62"/>
+        <location filename="../ui/map/modelmatcher.cpp" line="60"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
@@ -1016,89 +1016,44 @@
     <name>NetworkPage</name>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
-        <location filename="../ui/pages/networkpage.cpp" line="51"/>
+        <location filename="../ui/pages/networkpage.cpp" line="37"/>
         <source>Network</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="57"/>
-        <source>Refresh data every</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="159"/>
-        <source>Enable caching</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="174"/>
-        <source>If enabled, Vatsinator will cache some downloaded data.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="108"/>
-        <source>Keep METARs updated</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
-        <source>Enable auto-updater</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="35"/>
-        <source>Auto-updater keeps all the data up-to-date automatically.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="45"/>
-        <source>Custom updates settings</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="123"/>
-        <source>If enabled, all weather reports will be refreshed periodically.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="187"/>
         <source>Enable automatic database updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="202"/>
+        <location filename="../ui/pages/networkpage.ui" line="35"/>
         <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="218"/>
+        <location filename="../ui/pages/networkpage.ui" line="64"/>
         <source>Wea&amp;ther forecast provider</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="256"/>
+        <location filename="../ui/pages/networkpage.ui" line="102"/>
         <source>Ce&amp;lsius</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="266"/>
+        <location filename="../ui/pages/networkpage.ui" line="112"/>
         <source>Fah&amp;renheit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.cpp" line="94"/>
+        <location filename="../ui/pages/networkpage.cpp" line="66"/>
         <source>None</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="249"/>
+        <location filename="../ui/pages/networkpage.ui" line="95"/>
         <source>Units:</source>
         <translation type="unfinished"/>
-    </message>
-    <message numerus="yes">
-        <location filename="../ui/pages/networkpage.cpp" line="149"/>
-        <source>minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1164,17 +1119,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="372"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="421"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="456"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="515"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="373"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="422"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="516"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="382"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="431"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="383"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="432"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="467"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
@@ -1293,7 +1248,7 @@
 <context>
     <name>ViewPage</name>
     <message>
-        <location filename="../ui/pages/viewpage.cpp" line="50"/>
+        <location filename="../ui/pages/viewpage.cpp" line="34"/>
         <source>View</source>
         <translation type="unfinished"/>
     </message>
