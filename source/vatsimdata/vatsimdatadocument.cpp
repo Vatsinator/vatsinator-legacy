@@ -33,7 +33,7 @@ namespace {
 VatsimDataDocument::VatsimDataDocument(QByteArray data, QObject* parent) :
     QObject(parent),
     __data(qMove(data)),
-    __valid(false) {
+    __isValid(false) {
   __parse();
 }
 
@@ -128,7 +128,7 @@ VatsimDataDocument::__parse() {
   }
   
   if (__connectedClients == __clients.size())
-    __valid = true;
+    __isValid = true;
 }
 
 VatsimDataDocument::ClientLine::ClientLine(const QString& data) {

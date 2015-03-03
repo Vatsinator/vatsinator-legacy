@@ -24,7 +24,7 @@
 VatsimStatusDocument::VatsimStatusDocument(QByteArray data, QObject* parent) :
     QObject(parent),
     __data(qMove(data)),
-    __valid(false) {
+    __isValid(false) {
   __parse();
 }
 
@@ -52,7 +52,7 @@ VatsimStatusDocument::__parse() {
         __metar = value;
       } else if (key == "url0") {
         __dataFileUrls << qMove(QUrl(value));
-        __valid = true;
+        __isValid = true;
       } else if (key == "url1") {
         __serverListUrls << qMove(QUrl(value));
       } else if (key == "msg0") {

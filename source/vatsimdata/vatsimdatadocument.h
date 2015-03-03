@@ -51,7 +51,7 @@ public:
   
   VatsimDataDocument(QByteArray data, QObject* parent = nullptr);
   
-  inline bool isValid() const { return __valid; }
+  inline bool isValid() const { return __isValid; }
   
   /**
    * Time in minutes the data file will be updated.
@@ -84,7 +84,7 @@ private:
   void __parse();
   
   QByteArray __data;
-  bool __valid;
+  bool __isValid;
   
   int __version;
   int __reload;
