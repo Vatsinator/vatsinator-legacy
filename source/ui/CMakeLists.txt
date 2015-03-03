@@ -95,7 +95,6 @@ set (widgets_SRCS
   pages/mappage.cpp
   pages/miscellaneouspage.cpp
   pages/networkpage.cpp
-  pages/pluginlistwidgetitem.cpp
   pages/viewpage.cpp
   
   views/delayedmodeltableview.cpp
@@ -150,7 +149,6 @@ set (widgets_HEADERS
   pages/mappage.h
   pages/miscellaneouspage.h
   pages/networkpage.h
-  pages/pluginlistwidgetitem.h
   pages/viewpage.h
   
   views/delayedmodeltableview.h

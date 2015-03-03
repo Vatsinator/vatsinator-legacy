@@ -19,7 +19,7 @@
 #include <QtWidgets>
 
 #include "db/airportdatabase.h"
-#include "plugins/weatherforecastinterface.h"
+#include "network/weatherforecastdownloader.h"
 #include "plugins/weatherforecastrequest.h"
 #include "plugins/weatherforecastreply.h"
 #include "storage/settingsmanager.h"
@@ -106,27 +106,20 @@ AirportDetailsWindow::showEvent(QShowEvent* event) {
   OutboundTable->hideColumn(FlightTableModel::From);
   
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
+  if (SM::get("network.weather_temperature_units").toString() == "Celsius")
+    w->setCelsius();
+  else
+    w->setFahrenheit();
   
-  if (vApp()->vatsimDataHandler()->weatherForecastProvider()) {
-    ForecastGroup->setEnabled(true);
-    
-    WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
-    request->setCity(QString::fromUtf8(__airport->data()->city));
-    request->setCountry(QString::fromUtf8(__airport->data()->country));
-    request->setPosition(__airport->position());
-    
-    WeatherForecastReply* reply = vApp()->vatsimDataHandler()->weatherForecastProvider()->fetch(request);
-    connect(reply, &WeatherForecastReply::finished, this, &AirportDetailsWindow::__updateForecast);
-    
-    if (SM::get("network.weather_temperature_units").toString() == "Celsius")
-      w->setCelsius();
-    else
-      w->setFahrenheit();
-  } else {
-    ForecastGroup->setEnabled(false);
-    w->setMessage(tr("No plugin selected"));
-    w->setStatus(DelayedWidget::Finished);
-  }
+  WeatherForecastDownloader* wfd = new WeatherForecastDownloader(this);
+  connect(wfd, &WeatherForecastDownloader::finished, this, &AirportDetailsWindow::__updateForecast);
+  
+  WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
+  request->setCity(QString::fromUtf8(__airport->data()->city));
+  request->setCountry(QString::fromUtf8(__airport->data()->country));
+  request->setPosition(__airport->position());
+  
+  wfd->download(request);
   
   NotamTableView->setModel(nullptr);
   vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__airport->icao());  
@@ -156,26 +149,15 @@ AirportDetailsWindow::__fillLabels() {
 }
 
 void
-AirportDetailsWindow::__updateForecast() {
-  WeatherForecastReply* r = qobject_cast<WeatherForecastReply*>(sender());
-  Q_ASSERT(r);
+AirportDetailsWindow::__updateForecast(WeatherForecastReply* reply) {
   WeatherForecastWidget* w = qobject_cast<WeatherForecastWidget*>(WeatherForecastScrollArea->widget());
   Q_ASSERT(w);
   w->setStatus(DelayedWidget::Finished);
   
-  switch (r->error()) {
-    case WeatherForecastReply::NotFoundError:
-      w->setMessage(tr("No forecast for %1, %2").arg(r->request()->country(), r->request()->city()));
-      break;
-      
-    case WeatherForecastReply::NetworkError:
-      w->setMessage(tr("Network error"));
-      break;
-    
-    case WeatherForecastReply::NoError:
-      w->setData(r->data());
-      break;
-  }
+  if (reply->error() == WeatherForecastReply::NoError)
+    w->setData(reply->data());
+  else
+    w->setMessage(tr("Error"));
 }
 
 void

@@ -1,0 +1,2 @@
+add_library(ultimateweatherforecasts STATIC ultimateweatherforecasts.cpp)
+target_compile_definitions (ultimateweatherforecasts PRIVATE -DQT_STATICPLUGIN -DQT_PLUGIN)

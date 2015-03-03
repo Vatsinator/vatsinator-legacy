@@ -37,7 +37,7 @@ class WeatherForecastRequest;
  */
 class UltimateWeatherForecasts : public QObject, public WeatherForecastInterface {
   Q_OBJECT
-  Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.WeatherForecastInterface" FILE "ultimateweatherforecasts.json")
+  Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
   Q_INTERFACES(WeatherForecastInterface)
 
 public:

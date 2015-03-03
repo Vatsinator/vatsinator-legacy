@@ -21,3 +21,11 @@ add_library (plugins OBJECT
   ${plugins_HEADERS}
   ${plugins_RESOURCES}
 )
+
+add_subdirectory (ultimate-weather-forecasts)
+
+set (vatsinator_STATIC_PLUGINS
+  ultimateweatherforecasts
+  
+  PARENT_SCOPE
+)

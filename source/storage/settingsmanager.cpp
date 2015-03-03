@@ -151,7 +151,6 @@ SettingsManager::__fillDefaults() {
   __defaults["map.pilot_to_destination_line_color"] = QColor(133, 164, 164);
   
   __defaults["network.database_integration"] = true;
-  __defaults["network.weather_forecast_provider"] = "none";
   
   /* In USA provide Fahrenheit by default */
   if (QLocale::system().country() == QLocale::UnitedStates)

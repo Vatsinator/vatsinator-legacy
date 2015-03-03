@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtXml>
+#include <QtCore>
 
 #include "network/filedownloader.h"
 #include "storage/cachefile.h"

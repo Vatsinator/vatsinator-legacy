@@ -118,8 +118,8 @@ UltimateWeatherForecasts::__newRequest() {
   request.setRawHeader("X-Mashape-Authorization", ApiKey.toUtf8());
   
   __reply = __nam.get(request);
-  connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
-  connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
+  connect(__reply, &QNetworkReply::finished, this, &UltimateWeatherForecasts::__finished);
+  connect(__reply, &QNetworkReply::readyRead, this, &UltimateWeatherForecasts::__readyRead);
 }
 
 void
@@ -189,8 +189,8 @@ void UltimateWeatherForecasts::__finished() {
       
       __reply->deleteLater();
       __reply = __nam.get(request);
-      connect(__reply, SIGNAL(finished()), this, SLOT(__finished()));
-      connect(__reply, SIGNAL(readyRead()), this, SLOT(__readyRead()));
+      connect(__reply, &QNetworkReply::finished, this, &UltimateWeatherForecasts::__finished);
+      connect(__reply, &QNetworkReply::readyRead, this, &UltimateWeatherForecasts::__readyRead);
       __data.clear();
       break;
     }

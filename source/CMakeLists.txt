@@ -53,6 +53,7 @@ target_link_libraries (vatsinator
   Qt5::OpenGL
   ${OPENGL_LIBRARY}
   ${QUAZIP_LIBRARIES}
+  ${vatsinator_STATIC_PLUGINS}
 )
 
 if (LINUX)

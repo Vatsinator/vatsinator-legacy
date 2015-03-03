@@ -28,7 +28,7 @@ class Airport;
 class Controller;
 class Pilot;
 class NotamListModel;
-class WeatherForecastModel;
+class WeatherForecastReply;
 
 /**
  * The AirportDetailsWindow class represents a window that shows up when user
@@ -50,7 +50,7 @@ private:
   void __fillLabels();
   
 private slots:
-  void __updateForecast();
+  void __updateForecast(WeatherForecastReply* reply);
   void __notamUpdate(NotamListModel* model);
   void __showDetails(QModelIndex index);
   void __goToNotam(QModelIndex index);

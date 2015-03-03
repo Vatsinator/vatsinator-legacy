@@ -28,7 +28,6 @@
 #include "network/statspurveyor.h"
 #include "storage/cachefile.h"
 #include "storage/languagemanager.h"
-#include "storage/pluginmanager.h"
 #include "storage/settingsmanager.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/userinterface.h"
@@ -55,7 +54,6 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     __worldMap(new WorldMap()),
     __vatsimData(new VatsimDataHandler()),
     __languageManager(new LanguageManager()),
-    __pluginManager(new PluginManager(this)),
     __resourceManager(new ResourceManager()),
     __statsPurveyor(new StatsPurveyor()) {
   
@@ -127,9 +125,6 @@ VatsinatorApplication::userDecisionEvent(DecisionEvent* event) {
 void
 VatsinatorApplication::__initialize() {
   qDebug("VatsinatorApplication: initializing");
-  
-  /* Locate plugins */
-  __pluginManager->initialize();
   
   /* Read world map before UI */
   __worldMap->initialize();

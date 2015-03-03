@@ -21,8 +21,6 @@
 
 #include "plugins/weatherforecastinterface.h"
 #include "storage/filemanager.h"
-#include "storage/pluginmanager.h"
-#include "ui/pages/pluginlistwidgetitem.h"
 #include "vatsinatorapplication.h"
 
 #include "networkpage.h"
@@ -50,7 +48,6 @@ NetworkPage::moduleId() const {
 void
 NetworkPage::update() const {
   setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->data(Qt::UserRole));
   setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
 }
 
@@ -60,24 +57,6 @@ NetworkPage::restore(QSettings& s, const QVariantHash& defaults) {
   
   DatabaseIntegrationCheckBox->setChecked(
     s.value("database_integration", defaults[id % "database_integration"]).toBool());
-  QString weatherCurrent =
-    s.value("weather_forecast_provider", defaults[id % "weather_forecast_provider"]).toString();
-  
-  PluginListWidgetItem* none = new PluginListWidgetItem(tr("None"), WeatherProviderListWidget);
-  none->setData(Qt::UserRole, QString("none"));
-  WeatherProviderListWidget->setCurrentItem(none);
-  
-  auto providers = vApp()->pluginManager()->plugins("org.eu.vatsinator.Vatsinator.WeatherForecastInterface");
-  for (auto& name: providers) {
-    QJsonObject metaData = vApp()->pluginManager()->metadata(name);
-    QString providerName = metaData["provider_name"].toString();
-    
-    PluginListWidgetItem* item = new PluginListWidgetItem(providerName, WeatherProviderListWidget);
-      item->setData(Qt::UserRole, name);
-      
-      if (weatherCurrent == name)
-        WeatherProviderListWidget->setCurrentItem(item);
-  }
   
   QString units = s.value("weather_temperature_units", defaults[id % "weather_temperature_units"]).toString();
   if (units != "Celsius" && units != "Fahrenheit")
@@ -92,6 +71,5 @@ NetworkPage::restore(QSettings& s, const QVariantHash& defaults) {
 void
 NetworkPage::save(QSettings& s) {
   s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  s.setValue("weather_forecast_provider", WeatherProviderListWidget->currentItem()->data(Qt::UserRole));
   s.setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
 }

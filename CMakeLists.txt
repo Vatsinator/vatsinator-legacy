@@ -33,12 +33,6 @@ endif ()
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
-include (CMakeDependentOption)
-option (WITH_SDK "Build SDK" ON)
-# Enable WITH_PLUGINS option only if WITH_SDK is also enabled
-cmake_dependent_option(WITH_PLUGINS "Build plugins" ON
-    "WITH_SDK" OFF)
-
 find_package (Qt5Core REQUIRED)
 find_package (Qt5Widgets REQUIRED)
 find_package (Qt5OpenGL REQUIRED)

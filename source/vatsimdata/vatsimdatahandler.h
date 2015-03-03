@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,7 +44,6 @@ class Pilot;
 class PlainTextDownloader;
 class UpdateScheduler;
 class Uir;
-class WeatherForecastInterface;
 class VatsinatorApplication;
 
 struct AirportRecord;
@@ -249,12 +248,6 @@ public:
   AbstractBookingProvider* bookingProvider();
   
   /**
-   * Running instance of weather forecast provider, or _nullptr_ if user did
-   * not select any.
-   */
-  WeatherForecastInterface* weatherForecastProvider();
-  
-  /**
    * Custom event handler.
    */
   bool event(QEvent*) override;
@@ -442,11 +435,6 @@ private slots:
    */
   void __handleFetchError(QString error);
   
-  /**
-   * Reload forecast provider when user chooses another one.
-   */
-  void __reloadWeatherForecast();
-  
 private:  
   
   /*
@@ -526,7 +514,6 @@ private:
 
   AbstractNotamProvider*        __notamProvider;
   AbstractBookingProvider*      __bookingProvider;
-  WeatherForecastInterface*     __weatherForecast;
 };
 
 #endif // VATSIMDATAHANDLER_H

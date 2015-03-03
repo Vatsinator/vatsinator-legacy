@@ -4,6 +4,7 @@ set (network_SRCS
   plaintextdownloader.cpp
   resourcemanager.cpp
   statspurveyor.cpp
+  weatherforecastdownloader.cpp
 )
 
 set (network_HEADERS
@@ -12,6 +13,7 @@ set (network_HEADERS
   plaintextdownloader.h
   resourcemanager.h
   statspurveyor.h
+  weatherforecastdownloader.h
 )
 
 add_library (network OBJECT

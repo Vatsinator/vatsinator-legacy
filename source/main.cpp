@@ -17,11 +17,15 @@
 */
 
 #include <QtCore>
+#include <QtPlugin>
 #include <QVariantAnimation>
 #include "network/resourcemanager.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
+
+
+Q_IMPORT_PLUGIN(UltimateWeatherForecasts)
 
 /**
  * The interpolator for LonLat, so that it can be animated nicely, i.e. by MapScene.

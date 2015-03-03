@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,7 +44,6 @@
 #include "vatsimdata/vatsimdatadocument.h"
 #include "vatsimdata/vatsimstatusdocument.h"
 #include "storage/filemanager.h"
-#include <storage/pluginmanager.h>
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
 
@@ -72,8 +71,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __downloader(new PlainTextDownloader(this)),
     __scheduler(new UpdateScheduler(this)),
     __notamProvider(nullptr),
-    __bookingProvider(nullptr),
-    __weatherForecast(nullptr) {
+    __bookingProvider(nullptr) {
   
   connect(vApp()->userInterface(),              SIGNAL(initialized()),
           this,                                 SLOT(__slotUiCreated()));
@@ -87,8 +85,6 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
           vApp()->userInterface(),              SLOT(statusError()));
   connect(this,                                 SIGNAL(vatsimDataError()),
           vApp()->userInterface(),              SLOT(dataError()));
-  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
-          this,                                 SLOT(__reloadWeatherForecast()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
   
@@ -285,11 +281,6 @@ AbstractBookingProvider*
 VatsimDataHandler::bookingProvider() {
   Q_ASSERT(__bookingProvider);
   return __bookingProvider;
-}
-
-WeatherForecastInterface*
-VatsimDataHandler::weatherForecastProvider() {
-  return __weatherForecast;
 }
 
 bool
@@ -727,13 +718,4 @@ VatsimDataHandler::__handleFetchError(QString error) {
       emit vatsimStatusError();
     }
   }
-}
-
-void
-VatsimDataHandler::__reloadWeatherForecast() {
-  QString desired = SM::get("network.weather_forecast_provider").toString();
-  if (desired != "none")
-    __weatherForecast = vApp()->pluginManager()->load<WeatherForecastInterface>(desired);
-  else
-    __weatherForecast = nullptr;
 }
