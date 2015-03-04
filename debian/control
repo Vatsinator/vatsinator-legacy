@@ -5,6 +5,7 @@ Maintainer: Michał Garapich <michal@garapich.pl>
 Build-Depends: debhelper (>= 8.0.0),
                cmake (>=3.0),
                qtbase5-dev (>=5.3),
+               qttools5-dev (>=5.3),
                qttools5-dev-tools (>=5.3),
                libqt5opengl5-dev (>=5.3),
                libquazip-qt5-dev

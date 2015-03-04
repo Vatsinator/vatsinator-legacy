@@ -30,8 +30,8 @@ ELSE (QUAZIP_INCLUDE_DIRS AND QUAZIP_LIBRARIES)
 		pkg_check_modules(PC_QUAZIP quazip)
 		FIND_LIBRARY(QUAZIP_LIBRARIES
 			WIN32_DEBUG_POSTFIX d
-			NAMES quazip
-			HINTS /usr/lib /usr/lib64
+			NAMES quazip quazip-qt5
+			HINTS /usr/lib /usr/lib64 /usr/lib/x86_64-linux-gnu
 		)
 		FIND_PATH(QUAZIP_INCLUDE_DIR quazip.h
 			HINTS /usr/include /usr/local/include
