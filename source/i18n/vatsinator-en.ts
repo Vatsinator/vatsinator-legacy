@@ -121,7 +121,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="140"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="133"/>
         <source>%1 - airport details</source>
         <translation>%1 - airport details</translation>
     </message>
@@ -191,24 +191,14 @@
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="127"/>
-        <source>No plugin selected</source>
-        <translation>No plugin selected</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="155"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="148"/>
         <source>%1 ft</source>
         <translation>%1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="168"/>
-        <source>No forecast for %1, %2</source>
-        <translation>No forecast for %1, %2</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="172"/>
-        <source>Network error</source>
-        <translation>Network error</translation>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="160"/>
+        <source>Error</source>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -1016,7 +1006,7 @@
     <name>NetworkPage</name>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
-        <location filename="../ui/pages/networkpage.cpp" line="37"/>
+        <location filename="../ui/pages/networkpage.cpp" line="35"/>
         <source>Network</source>
         <translation>Network</translation>
     </message>
@@ -1031,29 +1021,19 @@
         <translation>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="64"/>
-        <source>Wea&amp;ther forecast provider</source>
-        <translation>Wea&amp;ther forecast provider</translation>
+        <location filename="../ui/pages/networkpage.ui" line="66"/>
+        <source>Weather forecast temperature units:</source>
+        <translation>Weather forecast temperature units:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="102"/>
+        <location filename="../ui/pages/networkpage.ui" line="73"/>
         <source>Ce&amp;lsius</source>
         <translation>Ce&amp;lsius</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="112"/>
+        <location filename="../ui/pages/networkpage.ui" line="83"/>
         <source>Fah&amp;renheit</source>
         <translation>Fah&amp;renheit</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.cpp" line="66"/>
-        <source>None</source>
-        <translation>None</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="95"/>
-        <source>Units:</source>
-        <translation>Units:</translation>
     </message>
 </context>
 <context>
@@ -1077,6 +1057,44 @@
         <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
         <source>Close</source>
         <translation>Close</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="77"/>
+        <source>Monday</source>
+        <translation>Monday</translation>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="79"/>
+        <source>Tuesday</source>
+        <translation>Tuesday</translation>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="81"/>
+        <source>Wednesday</source>
+        <translation>Wednesday</translation>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="83"/>
+        <source>Thursday</source>
+        <translation>Thursday</translation>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="85"/>
+        <source>Friday</source>
+        <translation>Friday</translation>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="87"/>
+        <source>Saturday</source>
+        <translation>Saturday</translation>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="89"/>
+        <source>Sunday</source>
+        <translation>Sunday</translation>
     </message>
 </context>
 <context>
@@ -1119,17 +1137,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="373"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="422"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="516"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="364"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="413"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="448"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="507"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>File %1 could not be opened. Please reinstall the application.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="383"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="432"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="467"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="374"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="458"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>File %1 could not be read. Please reinstall the application.</translation>
     </message>
@@ -1150,77 +1168,77 @@
 <context>
     <name>VatsinatorWindow</name>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="67"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="61"/>
         <source>Clients:</source>
         <translation>Clients:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="138"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="132"/>
         <source>&amp;Vatsinator</source>
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="152"/>
         <source>&amp;Help</source>
         <translation>&amp;Help</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="164"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
         <source>&amp;Settings</source>
         <translation>&amp;Settings</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="172"/>
         <source>Exit</source>
         <translation>Exit</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="193"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="187"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="205"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="199"/>
         <source>METARs...</source>
         <translation>METARs...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="220"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="214"/>
         <source>Refresh</source>
         <translation>Refresh</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="232"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="226"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="243"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
         <source>Flight list...</source>
         <translation>Flight list...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="248"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="242"/>
         <source>ATC list...</source>
         <translation>ATC list...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="259"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="253"/>
         <source>Enable auto-updates</source>
         <translation>Enable auto-updates</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="267"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="261"/>
         <source>Show home location</source>
         <translation>Show home location</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="270"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="273"/>
         <source>Database...</source>
         <translation>Database...</translation>
     </message>

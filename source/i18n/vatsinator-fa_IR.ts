@@ -121,7 +121,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="140"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="133"/>
         <source>%1 - airport details</source>
         <translation type="unfinished"/>
     </message>
@@ -191,23 +191,13 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="127"/>
-        <source>No plugin selected</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="155"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="148"/>
         <source>%1 ft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="168"/>
-        <source>No forecast for %1, %2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="172"/>
-        <source>Network error</source>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="160"/>
+        <source>Error</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1016,7 +1006,7 @@
     <name>NetworkPage</name>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
-        <location filename="../ui/pages/networkpage.cpp" line="37"/>
+        <location filename="../ui/pages/networkpage.cpp" line="35"/>
         <source>Network</source>
         <translation type="unfinished"/>
     </message>
@@ -1031,28 +1021,18 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="64"/>
-        <source>Wea&amp;ther forecast provider</source>
+        <location filename="../ui/pages/networkpage.ui" line="66"/>
+        <source>Weather forecast temperature units:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="102"/>
+        <location filename="../ui/pages/networkpage.ui" line="73"/>
         <source>Ce&amp;lsius</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="112"/>
+        <location filename="../ui/pages/networkpage.ui" line="83"/>
         <source>Fah&amp;renheit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.cpp" line="66"/>
-        <source>None</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="95"/>
-        <source>Units:</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1076,6 +1056,44 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
         <source>Close</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="77"/>
+        <source>Monday</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="79"/>
+        <source>Tuesday</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="81"/>
+        <source>Wednesday</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="83"/>
+        <source>Thursday</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="85"/>
+        <source>Friday</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="87"/>
+        <source>Saturday</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="89"/>
+        <source>Sunday</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1119,17 +1137,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="373"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="422"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="516"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="364"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="413"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="448"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="507"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="383"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="432"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="467"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="374"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="458"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
@@ -1150,77 +1168,77 @@
 <context>
     <name>VatsinatorWindow</name>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="67"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="61"/>
         <source>Clients:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="138"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="132"/>
         <source>&amp;Vatsinator</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="152"/>
         <source>&amp;Help</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="164"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="172"/>
         <source>Exit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="193"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="187"/>
         <source>About</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="205"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="199"/>
         <source>METARs...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="220"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="214"/>
         <source>Refresh</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="232"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="226"/>
         <source>Settings</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="243"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
         <source>Flight list...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="248"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="242"/>
         <source>ATC list...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="259"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="253"/>
         <source>Enable auto-updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="267"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="261"/>
         <source>Show home location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="270"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
         <source>Ctrl+H</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="279"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="273"/>
         <source>Database...</source>
         <translation type="unfinished"/>
     </message>
