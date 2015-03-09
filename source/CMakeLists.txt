@@ -60,7 +60,7 @@ if (LINUX)
   set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
 elseif (APPLE OR WIN32)
   set (vatsinator_PREFIX "")
-endif (LINUX)
+endif ()
 
 if (NOT vatsinator_UI_IMPLEMENTATION)
   message (FATAL_ERROR "No valid user interface implementation specified")

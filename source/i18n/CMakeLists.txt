@@ -18,7 +18,7 @@ endforeach (LANG)
 
 if (NOT QT_TRANSLATIONS_DIR)
   query_qmake (QT_TRANSLATIONS_DIR QT_INSTALL_TRANSLATIONS)
-endif (NOT QT_TRANSLATIONS_DIR)
+endif ()
 
 # gather .ts files and qt translations
 set (TRANSLATION_SOURCES "")
@@ -40,7 +40,7 @@ foreach (LANG ${vatsinator_LANGUAGES})
       message (WARNING "No Qt translation for ${LANG}!")
     endif (EXISTS ${QM_FILE})
   endif (NOT "en" STREQUAL "${LANG}")
-endforeach (LANG)
+endforeach ()
 
 qt5_add_translation (vatsinator_TRANSLATIONS ${TRANSLATION_SOURCES})
 
