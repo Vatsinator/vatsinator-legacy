@@ -198,7 +198,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="160"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fehler</translation>
     </message>
 </context>
 <context>
@@ -1025,7 +1025,7 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../ui/pages/networkpage.ui" line="66"/>
         <source>Weather forecast temperature units:</source>
-        <translation type="unfinished"/>
+        <translation>Wettervorhersage-Temperatureinheiten:</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="73"/>
@@ -1066,37 +1066,37 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="77"/>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>Montag</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="79"/>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>Dienstag</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="81"/>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>Mittwoch</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="83"/>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>Donnerstag</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="85"/>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>Freitag</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="87"/>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>Samstag</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="89"/>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>Sonntag</translation>
     </message>
 </context>
 <context>
