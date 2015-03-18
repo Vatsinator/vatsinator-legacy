@@ -78,7 +78,7 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* pilot, QWidget* parent) :
   TrueAirSpeedLabel->setDescription(tr("TAS"));
   CruiseAltitudeLabel->setDescription(tr("Cruise altitude"));
   
-  connect(qApp, &QCoreApplication::aboutToQuit, this, &FlightDetailsWindow::hide);
+  connect(qApp, &QCoreApplication::aboutToQuit, this, &FlightDetailsWindow::close);
   connect(__pilot, &Pilot::updated, this, &FlightDetailsWindow::__updateInfo);
   connect(__pilot, &Pilot::invalid, this, &FlightDetailsWindow::close);
   
@@ -88,6 +88,7 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* pilot, QWidget* parent) :
           vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
   
   connect(ShowButton, &QPushButton::clicked, [this]() {
+    wui()->mainWindow()->mapWidget()->renderer()->scene()->cancelFlightTracking();
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__pilot->position());
     close();
     vApp()->userInterface()->ensureMainWindowIsActive();
@@ -241,7 +242,7 @@ FlightDetailsWindow::__updateInfo() {
 void
 FlightDetailsWindow::__airlineUpdated() {
   Airline* a = qobject_cast<Airline*>(sender());
-  Q_CHECK_PTR(a);
+  Q_ASSERT(a);
   
   const QImage& logo = a->logo();
   if (!logo.isNull()) {

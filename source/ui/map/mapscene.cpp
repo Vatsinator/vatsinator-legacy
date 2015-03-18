@@ -56,20 +56,17 @@ MapScene::MapScene(QObject* parent) :
           this,                         SLOT(__setupItems()));
   connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
           this,                         SLOT(__updateSettings()));
+  connect(this, &MapScene::flightTracked, [this](const Pilot* p) {
+    if (p)
+      moveTo(p->position());
+  });
+  
   __updateSettings();
 }
-
-MapScene::~MapScene() {}
 
 void
 MapScene::trackFlight(const Pilot* pilot) {
   __trackedFlight = pilot;
-  emit flightTracked(__trackedFlight);
-}
-
-void
-MapScene::cancelFlightTracking() {
-  __trackedFlight = nullptr;
   emit flightTracked(__trackedFlight);
 }
 

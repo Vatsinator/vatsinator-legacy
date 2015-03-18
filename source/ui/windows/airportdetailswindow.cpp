@@ -72,6 +72,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
           this, &AirportDetailsWindow::__notamUpdate);
   
   connect(ShowButton, &QPushButton::clicked, [this]() {
+    wui()->mainWindow()->mapWidget()->renderer()->scene()->cancelFlightTracking();
     wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__airport->position());
     close();
     vApp()->userInterface()->ensureMainWindowIsActive();

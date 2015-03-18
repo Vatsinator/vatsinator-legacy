@@ -42,21 +42,13 @@ class UirItem;
 /**
  * The MapScene class is responsible for managing all the map items, moving
  * the map around (except situations when user moves it using mouse) and
- * zooming it appropiately.
+ * zooming it appropriately.
  * 
  * \sa MapRenderer.
  */
 class MapScene : public QObject {
   Q_OBJECT
   
-signals:
-  /**
-   * Emitted when user wants to track the flight.
-   * If the pointer is nullptr, it means that user has just cancelled
-   * flight tracking.
-   */
-  void flightTracked(const Pilot* pilot);
-
 public:
   /**
    * The settings struct provides fast access to map-related settings.
@@ -97,12 +89,21 @@ public:
     } view;
   };
   
+signals:
+  /**
+   * Emitted when user wants to track the flight.
+   * If the pointer is nullptr, it means that user has just cancelled
+   * flight tracking.
+   */
+  void flightTracked(const Pilot* pilot);
+
+public:
   /**
    * Constructs new MapScene. Passes _parent_ to QObject's constructor.
    */
   explicit MapScene(QObject* parent);
   
-  virtual ~MapScene();
+  virtual ~MapScene() = default;
   
   /**
    * Marks the specified pilot as tracked one.
@@ -120,8 +121,10 @@ public:
   
   /**
    * Stops tracking any flight.
+   * 
+   * This is the same as calling trackFlight() with _nullptr_.
    */
-  void cancelFlightTracking();
+  inline void cancelFlightTracking() { trackFlight(nullptr); }
   
   /**
    * Finds FirItem instance that handles the given Fir.
@@ -238,8 +241,8 @@ private:
    */
   spatial::point_multimap<2, LonLat, const MapItem*> __items;
   
-  QList<FirItem*>               __firItems;
-  QList<UirItem*>               __uirItems;
+  QList<FirItem*> __firItems;
+  QList<UirItem*> __uirItems;
   
   const Pilot* __trackedFlight;
   QAbstractAnimation* __animation;
