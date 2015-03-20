@@ -199,6 +199,7 @@ private:
   void __drawWorld();
   void __drawFirs();
   void __drawUirs();
+  void __drawApproachAreas();
   void __drawItems();
   
   void __storeSettings();

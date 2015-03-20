@@ -96,7 +96,7 @@ FirItem::position() const {
 
 void
 FirItem::drawItem(QOpenGLShaderProgram* shader) const {
-  static Q_DECL_CONSTEXPR float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
+  static Q_CONSTEXPR float FirsZ = static_cast<float>(MapConfig::MapLayers::StaffedFirs + 1);
   
   static const GLfloat labelRect[] = {
     -0.08f, -0.05333333f,
@@ -128,11 +128,13 @@ FirItem::drawItem(QOpenGLShaderProgram* shader) const {
 //   __label.release();
 }
 
-void FirItem::drawLabel(QOpenGLShaderProgram* shader) const {
+void
+FirItem::drawLabel(QOpenGLShaderProgram* shader) const {
   Q_UNUSED(shader);
 }
 
-void FirItem::drawFocused(QOpenGLShaderProgram* shader) const {
+void
+FirItem::drawFocused(QOpenGLShaderProgram* shader) const {
   Q_UNUSED(shader);
 }
 

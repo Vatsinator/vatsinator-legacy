@@ -44,12 +44,12 @@ MapPage::listElement() const {
 
 QString
 MapPage::listIcon() const {
-  return ":/settings/preferences-colors.png";
+  return QStringLiteral(":/settings/preferences-colors.png");
 }
 
 QString
 MapPage::moduleId() const {
-  return "map";
+  return QStringLiteral("map");
 }
 
 void

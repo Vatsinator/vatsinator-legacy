@@ -1,6 +1,6 @@
 /*
  * flightitem.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ FlightItem::position() const {
 
 void
 FlightItem::drawItem(QOpenGLShaderProgram* shader) const {
-  static Q_DECL_CONSTEXPR float PilotsZ = static_cast<float>(MapConfig::MapLayers::Pilots);
+  static Q_CONSTEXPR float PilotsZ = static_cast<float>(MapConfig::MapLayers::Pilots);
   
   static const GLfloat modelRect[] = {
     -0.03f, -0.03f,
@@ -163,7 +163,7 @@ FlightItem::drawFocused(QOpenGLShaderProgram* shader) const {
 QString
 FlightItem::tooltipText() const {
   QString callsign = data()->callsign();
-  QString desc = QString("%1 (%2)").arg(data()->realName(), data()->aircraft());
+  QString desc = QStringLiteral("%1 (%2)").arg(data()->realName(), data()->aircraft());
   
   QString from;
   const Airport* ap = data()->origin();

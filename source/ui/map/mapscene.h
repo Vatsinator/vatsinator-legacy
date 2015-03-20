@@ -29,6 +29,7 @@
 
 class QAbstractAnimation;
 class QRectF;
+class QSignalMapper;
 class AirportItem;
 class Controller;
 class Fir;
@@ -165,6 +166,13 @@ public:
   inline MapRenderer* renderer() { return __renderer; }
   
   /**
+   * Gives direct access to all airport items.
+   */
+  inline const QList<AirportItem*>& airportItems() const {
+    return __airportItems;
+  }
+  
+  /**
    * Gets all FirItems that are attached to the scene.
    */
   inline const QList<FirItem*>& firItems() const {
@@ -221,7 +229,7 @@ private slots:
   /**
    * This slot is connected to every Pilot's destroyed() signal.
    */
-  void __removeFlightItem();
+  void __removeFlightItem(QObject* object);
   
   /**
    * Update flight position in the tree.
@@ -241,6 +249,7 @@ private:
    */
   spatial::point_multimap<2, LonLat, const MapItem*> __items;
   
+  QList<AirportItem*> __airportItems;
   QList<FirItem*> __firItems;
   QList<UirItem*> __uirItems;
   
@@ -248,6 +257,8 @@ private:
   QAbstractAnimation* __animation;
   
   MapSettings __settings;
+  
+  QSignalMapper* __flightsMapper; /**< Maps Pilots to its iterators in the spatial map */
   
 };
 

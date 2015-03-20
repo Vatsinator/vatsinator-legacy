@@ -1,6 +1,6 @@
 /*
  * mapconfig.h
- * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,13 +93,14 @@ public:
     UnstaffedFirs = 2,
     StaffedUirs = 3,
     StaffedFirs = 4,
+    ApproachAreas = 5,
     
-    EmptyAirports = 6,
-    ActiveAirports = 7,
+    EmptyAirports = 7,
+    ActiveAirports = 8,
     
-    Lines = 9,
+    Lines = 10,
     
-    Pilots = 11,
+    Pilots = 12,
     
     Count
   };

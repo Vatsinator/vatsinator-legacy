@@ -85,8 +85,8 @@ MapRenderer::~MapRenderer() {
 
 LonLat
 MapRenderer::mapToLonLat(const QPoint& point) {
-  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  static Q_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
       static_cast<qreal>(point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
@@ -96,8 +96,8 @@ MapRenderer::mapToLonLat(const QPoint& point) {
 
 LonLat
 MapRenderer::scaleToLonLat(const QPoint& point) {
-  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  static Q_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return LonLat(
       static_cast<qreal>(point.x()) * xFactor / static_cast<qreal>(zoom()),
@@ -107,8 +107,8 @@ MapRenderer::scaleToLonLat(const QPoint& point) {
 
 QPoint
 MapRenderer::mapFromLonLat(const LonLat& point) {
-  static Q_DECL_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-  static Q_DECL_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
+  static Q_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
+  static Q_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
   
   return QPoint(
       static_cast<int>((point.x() - center().x()) * zoom() / xFactor) + (__viewport.width() / 2),
@@ -127,7 +127,7 @@ MapRenderer::glFromLonLat(const LonLat& point) {
 
 void
 MapRenderer::drawLines(const MapItem* item) {
-  static Q_DECL_CONSTEXPR GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
+  static Q_CONSTEXPR GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   mvp.translate(QVector3D(0.0f, 0.0f, linesZ));
@@ -258,6 +258,7 @@ MapRenderer::paint() {
     __drawWorld();
     __drawUirs();
     __drawFirs();
+    __drawApproachAreas();
     __drawItems();
   }
   
@@ -269,7 +270,7 @@ MapRenderer::paint() {
 
 void
 MapRenderer::__drawWorld() {
-  static Q_DECL_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+  static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   mvp.translate(QVector3D(0.0f, 0.0f, zValue));
@@ -283,8 +284,8 @@ MapRenderer::__drawWorld() {
 
 void
 MapRenderer::__drawFirs() {
-  static Q_DECL_CONSTEXPR GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
-  static Q_DECL_CONSTEXPR GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
+  static Q_CONSTEXPR GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
+  static Q_CONSTEXPR GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
   
   QMatrix4x4 mvp = __projection * __worldTransform;
   __identityProgram->bind();
@@ -324,11 +325,12 @@ MapRenderer::__drawFirs() {
 
 void
 MapRenderer::__drawUirs() {
-  static Q_DECL_CONSTEXPR GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
+  static Q_CONSTEXPR GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
   
   if (__scene->settings().view.staffed_firs) {
     __identityProgram->bind();
     __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
+    
     QMatrix4x4 mvp = __projection * __worldTransform;
     mvp.translate(QVector3D(0.0f, 0.0f, staffedUirsZ));
     
@@ -358,6 +360,28 @@ MapRenderer::__drawUirs() {
     }
     __identityProgram->release();
   }
+}
+
+void
+MapRenderer::__drawApproachAreas() {
+  static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::ApproachAreas);
+  
+  __identityProgram->bind();
+  __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
+  
+  QMatrix4x4 mvp = __projection * __worldTransform;
+  mvp.translate(QVector3D(0.0f, 0.0f, zValue));
+  
+  __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
+  __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.approach_circle);
+  
+  for (const AirportItem* item: __scene->airportItems()) {
+    if (item->data()->facilities().testFlag(Controller::App)) {
+      item->drawApproachArea();
+    }
+  }
+  
+  __identityProgram->release();
 }
 
 void

@@ -23,7 +23,6 @@ set (ui_SRCS
   userinterface.cpp
   
   map/airportitem.cpp
-  map/approachcircleitem.cpp
   map/firitem.cpp
   map/flightitem.cpp
   map/iconkeeper.cpp
@@ -48,7 +47,6 @@ set (ui_HEADERS
   userinterface.h
   
   map/airportitem.h
-  map/approachcircleitem.h
   map/firitem.h
   map/flightitem.h
   map/iconkeeper.h

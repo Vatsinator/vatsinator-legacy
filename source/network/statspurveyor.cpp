@@ -221,7 +221,8 @@ StatsPurveyor::__nextRequest() {
   
   qDebug("StatsPurveyor: request: %s", qPrintable(__requests.head().url().toString()));
   
-  __reply = __nam.get(__requests.head());
+  QNetworkRequest request = __requests.head();
+  __reply = __nam.get(request);
   connect(__reply, &QNetworkReply::finished, this, &StatsPurveyor::__parseResponse);
 }
 

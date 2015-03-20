@@ -28,7 +28,6 @@
 #include "db/firdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/airportitem.h"
-#include "ui/map/approachcircleitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/maprenderer.h"
@@ -47,15 +46,19 @@ MapScene::MapScene(QObject* parent) :
     QObject(parent),
     __renderer(qobject_cast<MapRenderer*>(parent)),
     __trackedFlight(nullptr),
-    __animation(nullptr) {
+    __animation(nullptr),
+    __flightsMapper(new QSignalMapper(this)) {
   Q_ASSERT(__renderer);
   
+  connect(__flightsMapper,              SIGNAL(mapped(QObject*)),
+          this,                         SLOT(__removeFlightItem(QObject*)));
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
           this,                         SLOT(__updateItems()));
   connect(vApp()->vatsimDataHandler(),  SIGNAL(initialized()),
           this,                         SLOT(__setupItems()));
   connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
           this,                         SLOT(__updateSettings()));
+  
   connect(this, &MapScene::flightTracked, [this](const Pilot* p) {
     if (p)
       moveTo(p->position());
@@ -187,15 +190,13 @@ MapScene::__addFlightItem(const Pilot* pilot) {
     return;
   }
   
-  connect(pilot, &Pilot::invalid, this, &MapScene::__removeFlightItem);
-  connect(pilot, &Pilot::updated, this, &MapScene::__updateFlightItem);
-  
-  qDebug("MapScene: new flight item for %s at position (%f, %f)",
-         qPrintable(pilot->callsign()), pilot->position().latitude(), pilot->position().longitude());
-  
   FlightItem* item = new FlightItem(pilot, this);
   Q_ASSERT(item->position() == pilot->position());
   __items.insert(std::make_pair(item->position(), item));
+  
+  __flightsMapper->setMapping(const_cast<Pilot*>(pilot), item);
+  connect(pilot, SIGNAL(invalid()), __flightsMapper, SLOT(map()));
+  connect(pilot, &Pilot::updated, this, &MapScene::__updateFlightItem);
 }
 
 void
@@ -204,6 +205,7 @@ MapScene::__setupItems() {
     AirportItem* item = new AirportItem(a, this);
     Q_ASSERT(item->position() == a->position());
     __items.insert(std::make_pair(item->position(), item));
+    __airportItems << item;
   }
   
   for (const Fir* f: vApp()->vatsimDataHandler()->firs()) {
@@ -236,25 +238,15 @@ MapScene::__updateItems() {
 }
 
 void
-MapScene::__removeFlightItem() {
-  Q_ASSERT(sender());
-  Pilot* p = qobject_cast<Pilot*>(sender());
-  Q_ASSERT(p);
-  
-  qDebug("MapScene: removing %s from the map; position: (%f, %f)",
-         qPrintable(p->callsign()), p->position().latitude(), p->position().longitude());
-  
-  const FlightItem* citem = nullptr;
-  auto it = std::find_if(spatial::equal_begin(__items, p->position()),
-                         spatial::equal_end(__items, p->position()),
-                         [&citem, p](const std::pair<const LonLat, const MapItem*>& it) {
-    citem = qobject_cast<const FlightItem*>(it.second);
-    return citem && citem->data() == p;
-  });
-  Q_ASSERT(citem);
-  Q_ASSERT(citem->data() == p);
-  FlightItem* item = const_cast<FlightItem*>(citem);
+MapScene::__removeFlightItem(QObject* object) {
+  FlightItem* item = qobject_cast<FlightItem*>(object);
   Q_ASSERT(item);
+  
+  auto it = std::find_if(spatial::equal_begin(__items, item->data()->position()),
+                         spatial::equal_end(__items, item->data()->position()),
+                         [item](const std::pair<const LonLat, const MapItem*>& it) {
+    return item == it.second;
+  });
   
   item->deleteLater();
   __items.erase(it);
@@ -297,6 +289,7 @@ MapScene::__updateSettings() {
   __settings.colors.staffed_uir_background = SM::get("map.staffed_uir_background_color").value<QColor>();
   __settings.colors.unstaffed_fir_borders = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
   __settings.colors.approach_circle = SM::get("map.approach_circle_color").value<QColor>();
+  __settings.colors.approach_circle.setAlpha(100);
   
   __settings.view.airports_layer = SM::get("view.airports_layer").toBool();
   __settings.view.airport_labels = SM::get("view.airport_labels").toBool();

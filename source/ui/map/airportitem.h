@@ -21,6 +21,8 @@
 #define AIRPORTITEM_H
 
 #include <QOpenGLTexture>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 #include <QObject>
 #include <QVector>
 #include <QColor>
@@ -47,6 +49,11 @@ public:
   
   virtual ~AirportItem();
   
+  /**
+   * Draws approach circle (or area, if provided).
+   */
+  void drawApproachArea() const;
+  
   bool isVisible() const override;
   bool isLabelVisible() const override;
   const LonLat& position() const override;
@@ -62,12 +69,11 @@ public:
    */
   inline const Airport* data() const { return __airport; }
   
-  inline const ApproachCircleItem* approachCircle() const { return __approachCircle; }
-  
 private:
   void __takeIcon() const;
   void __prepareLines() const;
   void __initializeLabel() const;
+  void __initializeApproachBuffer();
 
 private slots:
   void __reloadSettings();
@@ -75,19 +81,22 @@ private slots:
   
 private:
   MapScene*             __scene;
-  const Airport*        __airport;
+  const Airport*        __airport; /**< Data pointer */
   LonLat                __position;
-  ApproachCircleItem*   __approachCircle;
   
-  mutable QOpenGLTexture* __icon;
-  mutable QOpenGLTexture  __label;
+  mutable QOpenGLTexture* __icon; /**< Icon OpenGL texture */
+  mutable QOpenGLTexture  __label; /**< Label OpenGL texture */
   
   mutable struct {
     QVector<GLfloat>    coords;
     QColor              color;
-  } __otpLines, __ptdLines; // OriginToPilot & PilotToDestination
+  } __otpLines, __ptdLines; /**< OriginToPilot & PilotToDestination */
   
   mutable bool  __linesReady;
+  
+  mutable QOpenGLVertexArrayObject __vaoApproach;
+  QOpenGLBuffer __bufferApproach;
+  int __trianglesApproach;
   
 };
 

@@ -17,9 +17,10 @@
  *
  */
 
+#include <QtGui>
+
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
-#include "ui/map/approachcircleitem.h"
 #include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
@@ -33,15 +34,34 @@
 
 #include "airportitem.h"
 
+namespace {
+  QVector<GLfloat> makeCircle(GLfloat centerX, GLfloat centerY) {
+    QVector<GLfloat> circle;
+    
+    circle << centerX << centerY;
+    
+    for (qreal angle = 0.0; angle < (2 * M_PI); angle += 0.1) {
+      GLfloat x = qCos(angle) + centerX;
+      GLfloat y = 0.5f * qSin(angle) + centerY;
+      circle << x << y;
+    }
+    
+    circle << centerX + 1.0f << centerY;
+    
+    return qMove(circle);
+  }
+}
+
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __airport(airport),
     __position(airport->data()->longitude, airport->data()->latitude),
-    __approachCircle(nullptr),
     __icon(nullptr),
     __label(QOpenGLTexture::Target2D),
     __linesReady(false) {
+  
+  __initializeApproachBuffer();
   
   connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
           this,                                 SLOT(__reloadSettings()));
@@ -51,6 +71,13 @@ AirportItem::AirportItem(const Airport* airport, QObject* parent) :
 
 AirportItem::~AirportItem() {
   __label.destroy();
+}
+
+void
+AirportItem::drawApproachArea() const {
+  __vaoApproach.bind();
+  glDrawArrays(GL_TRIANGLE_FAN, 0, __trianglesApproach);
+  __vaoApproach.release();
 }
 
 bool
@@ -75,7 +102,7 @@ AirportItem::position() const {
 
 void
 AirportItem::drawItem(QOpenGLShaderProgram* shader) const {
-  static Q_DECL_CONSTEXPR float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
+  static Q_CONSTEXPR float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
   
   static const GLfloat iconRect[] = {
     -0.04f, -0.02f,
@@ -235,8 +262,6 @@ AirportItem::__prepareLines() const {
     }
   }
   
-  
-  
   __linesReady = true;
 }
 
@@ -264,6 +289,29 @@ AirportItem::__initializeLabel() const {
 }
 
 void
+AirportItem::__initializeApproachBuffer() {
+  auto circle = makeCircle(data()->position().x(), data()->position().y());
+  
+  __bufferApproach.create();
+  Q_ASSERT(__bufferApproach.isCreated());
+  __bufferApproach.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  __bufferApproach.bind();
+  __bufferApproach.allocate(circle.constData(), sizeof(GLfloat) * circle.size());
+  __bufferApproach.release();
+  
+  __vaoApproach.create();
+  Q_ASSERT(__vaoApproach.isCreated());
+  __vaoApproach.bind();
+  __bufferApproach.bind();
+  __scene->renderer()->opengl()->glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+  __scene->renderer()->opengl()->glEnableVertexAttribArray(MapRenderer::vertexLocation());
+  __vaoApproach.release();
+  __bufferApproach.release();
+  
+  __trianglesApproach = circle.size() / 2;
+}
+
+void
 AirportItem::__reloadSettings() {
   if (__label.isCreated())
     __label.destroy();
@@ -272,17 +320,6 @@ AirportItem::__reloadSettings() {
 void
 AirportItem::__invalidate() {
   __icon = nullptr;
-  
-  if (__airport->facilities().testFlag(Controller::App)) {
-    if (!__approachCircle)
-      __approachCircle = new ApproachCircleItem(data(), this);
-  } else {
-    if (__approachCircle) {
-      __approachCircle->deleteLater();
-      __approachCircle = nullptr;
-    }
-  }
-  
   __linesReady = false;
   __otpLines.coords.clear();
   __ptdLines.coords.clear();
