@@ -59,6 +59,11 @@
         <translation>Vatsinator to prosty monitor sieci Vatsim - pokazuje zalogowanych pilotów, kontrolerów oraz dostarcza wielu użytecznych informacji (jak np. raporty pogodowe, czy dane lotniska).</translation>
     </message>
     <message>
+        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../ui/windows/aboutwindow.ui" line="207"/>
         <source>Changelog</source>
         <translation>Lista zmian</translation>
@@ -67,11 +72,6 @@
         <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
         <translation>O programie</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2014 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2014 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
@@ -121,7 +121,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="133"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="134"/>
         <source>%1 - airport details</source>
         <translation>%1 - szczegóły lotniska</translation>
     </message>
@@ -191,25 +191,25 @@
         <translation>Pokaż</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="148"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="149"/>
         <source>%1 ft</source>
         <translation>%1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="160"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="161"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Błąd</translation>
     </message>
 </context>
 <context>
     <name>AirportItem</name>
     <message>
-        <location filename="../ui/map/airportitem.cpp" line="183"/>
+        <location filename="../ui/map/airportitem.cpp" line="210"/>
         <source>Departures: %1</source>
         <translation>Startują: %1</translation>
     </message>
     <message>
-        <location filename="../ui/map/airportitem.cpp" line="189"/>
+        <location filename="../ui/map/airportitem.cpp" line="216"/>
         <source>Arrivals: %1</source>
         <translation>Wylądowało: %1</translation>
     </message>
@@ -550,7 +550,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
         <source>%1 - flight details</source>
         <translation>%1 - szczegóły lotu</translation>
     </message>
@@ -689,28 +689,28 @@
         <translation>Wysokość przelotowa</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="216"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="217"/>
         <source>%1 feet</source>
         <translation>%1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="217"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="234"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="218"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="235"/>
         <source>%1 kts</source>
         <translation>%1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="221"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="222"/>
         <source>airborne</source>
         <translation>w powietrzu</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="223"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="224"/>
         <source>departing</source>
         <translation>startuje</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="225"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="226"/>
         <source>arrived</source>
         <translation>wylądował</translation>
     </message>
@@ -870,47 +870,47 @@
         <translation>Twój system nie wspiera wymaganych rozszerzeń OpenGL. Zaktualizuj sterownik karty graficznej.</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="262"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="266"/>
         <source>Airport details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="275"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="279"/>
         <source>Controllers</source>
         <translation>Kontrolerzy</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="287"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="291"/>
         <source>Arrivals</source>
         <translation>Przyloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="301"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="305"/>
         <source>Departures</source>
         <translation>Odloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="322"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="326"/>
         <source>%1 details</source>
         <translation>Szczegóły %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="354"/>
         <source>Flight details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="392"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="396"/>
         <source>Nearby</source>
         <translation>W pobliżu</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="395"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="399"/>
         <source>Flights</source>
         <translation>Loty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="409"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="413"/>
         <source>Airports</source>
         <translation>Lotniska</translation>
     </message>
@@ -928,27 +928,27 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="20"/>
         <source>Weather reports</source>
-        <translation type="unfinished"/>
+        <translation>Raporty pogodowe</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="41"/>
         <source>Type airport ICAO code here to fetch METAR</source>
-        <translation type="unfinished"/>
+        <translation>Podaj kod ICAO lotniska, dla którego ma zostać pobrany METAR</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="47"/>
         <source>Enter an ICAO code here</source>
-        <translation type="unfinished"/>
+        <translation>Podaj kod ICAO</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="60"/>
         <source>Download METAR</source>
-        <translation type="unfinished"/>
+        <translation>Pobierz raport METAR</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="100"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Wyczyść</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="89"/>
@@ -1023,17 +1023,17 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="66"/>
         <source>Weather forecast temperature units:</source>
-        <translation type="unfinished"/>
+        <translation>Jednostka temperatury:</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="73"/>
         <source>Ce&amp;lsius</source>
-        <translation type="unfinished"/>
+        <translation>Stopnie Celsjusza</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="83"/>
         <source>Fah&amp;renheit</source>
-        <translation type="unfinished"/>
+        <translation>Stopnie Fahrenheita</translation>
     </message>
 </context>
 <context>
@@ -1064,37 +1064,37 @@
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="77"/>
         <source>Monday</source>
-        <translation type="unfinished"/>
+        <translation>Poniedziałek</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="79"/>
         <source>Tuesday</source>
-        <translation type="unfinished"/>
+        <translation>Wtorek</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="81"/>
         <source>Wednesday</source>
-        <translation type="unfinished"/>
+        <translation>Środa</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="83"/>
         <source>Thursday</source>
-        <translation type="unfinished"/>
+        <translation>Czwartek</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="85"/>
         <source>Friday</source>
-        <translation type="unfinished"/>
+        <translation>Piątek</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="87"/>
         <source>Saturday</source>
-        <translation type="unfinished"/>
+        <translation>Sobota</translation>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="89"/>
         <source>Sunday</source>
-        <translation type="unfinished"/>
+        <translation>Niedziela</translation>
     </message>
 </context>
 <context>
@@ -1328,12 +1328,12 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="154"/>
         <source>A&amp;lways</source>
-        <translation type="unfinished"/>
+        <translation>Zawsze</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="164"/>
         <source>Ne&amp;ver</source>
-        <translation type="unfinished"/>
+        <translation>Nigdy</translation>
     </message>
 </context>
 <context>

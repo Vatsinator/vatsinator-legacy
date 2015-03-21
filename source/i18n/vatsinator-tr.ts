@@ -59,6 +59,11 @@
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../ui/windows/aboutwindow.ui" line="207"/>
         <source>Changelog</source>
         <translation type="unfinished"/>
@@ -67,11 +72,6 @@
         <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
         <translation>Hakkında</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2014 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
@@ -121,7 +121,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="133"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="134"/>
         <source>%1 - airport details</source>
         <translation>%1 - havalimanı detayları</translation>
     </message>
@@ -191,12 +191,12 @@
         <translation>Göster</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="148"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="149"/>
         <source>%1 ft</source>
         <translation>%1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="160"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="161"/>
         <source>Error</source>
         <translation type="unfinished"/>
     </message>
@@ -204,12 +204,12 @@
 <context>
     <name>AirportItem</name>
     <message>
-        <location filename="../ui/map/airportitem.cpp" line="183"/>
+        <location filename="../ui/map/airportitem.cpp" line="210"/>
         <source>Departures: %1</source>
         <translation>Gidenler: %1</translation>
     </message>
     <message>
-        <location filename="../ui/map/airportitem.cpp" line="189"/>
+        <location filename="../ui/map/airportitem.cpp" line="216"/>
         <source>Arrivals: %1</source>
         <translation>Gelenler: %1</translation>
     </message>
@@ -550,7 +550,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
         <source>%1 - flight details</source>
         <translation type="unfinished"/>
     </message>
@@ -689,28 +689,28 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="216"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="217"/>
         <source>%1 feet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="217"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="234"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="218"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="235"/>
         <source>%1 kts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="221"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="222"/>
         <source>airborne</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="223"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="224"/>
         <source>departing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="225"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="226"/>
         <source>arrived</source>
         <translation>geldi</translation>
     </message>
@@ -870,47 +870,47 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="262"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="266"/>
         <source>Airport details</source>
         <translation>Havalimanı detayları</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="275"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="279"/>
         <source>Controllers</source>
         <translation>Kontroller</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="287"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="291"/>
         <source>Arrivals</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="301"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="305"/>
         <source>Departures</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="322"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="326"/>
         <source>%1 details</source>
         <translation>%1 detayları</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="354"/>
         <source>Flight details</source>
         <translation>Uçuş detayları</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="392"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="396"/>
         <source>Nearby</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="395"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="399"/>
         <source>Flights</source>
         <translation>Uçuşlar</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="409"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="413"/>
         <source>Airports</source>
         <translation>Havalimanları</translation>
     </message>
