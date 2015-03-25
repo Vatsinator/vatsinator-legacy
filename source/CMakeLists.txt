@@ -45,6 +45,8 @@ add_executable (vatsinator MACOSX_BUNDLE WIN32
   $<TARGET_OBJECTS:storage>
   $<TARGET_OBJECTS:ui>
   $<TARGET_OBJECTS:vatsimdata>
+  
+  $<TARGET_OBJECTS:PolygonTriangulator>
 )
 
 target_link_libraries (vatsinator

@@ -42,6 +42,7 @@ class Fir;
 class FlightTableModel;
 class Pilot;
 class PlainTextDownloader;
+class Tma;
 class UpdateScheduler;
 class Uir;
 class VatsinatorApplication;
@@ -193,7 +194,7 @@ public:
   Airport* findAirport(const QString& icao);
   
   /**
-   * @return List of all airports recognized by Vatsinator.
+   * \return List of all airports recognized by Vatsinator.
    */
   QList<Airport*> airports() const;
   
@@ -217,6 +218,11 @@ public:
    * \sa findFir() and findAirport().
    */
   Uir* findUir(const QString& icao);
+  
+  /**
+   * Finds the requested TMA. If nothing was found, returns _nullptr_.
+   */
+  Tma* findTma(const QString& icao);
   
   /**
    * Finds alternate name for the given ICAO. If nothing was found,
@@ -389,6 +395,7 @@ private:
   void __readCountryFile(const QString& fileName);
   void __readFirFile(const QString& fileName);
   void __readUirFile(const QString& fileName);
+  void __readTmaFile(const QString& fileName);
   
   /**
    * Loads classes that wrap database records.
@@ -470,6 +477,12 @@ private:
    * ICAO <-> instance pairs
    */
   QMap<QString, Uir*> __uirs;
+  
+  /*
+   * TMAs are stored in data/tma file.
+   * ICAO <-> instance pairs
+   */
+  QMap<QString, Tma*> __tmas;
   
   /* This is vector of data servers, obtained from the status file */
   QList<QUrl> __dataServers;

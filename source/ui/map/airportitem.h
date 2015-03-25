@@ -73,7 +73,7 @@ private:
   void __takeIcon() const;
   void __prepareLines() const;
   void __initializeLabel() const;
-  void __initializeApproachBuffer();
+  void __initializeApproachBuffer() const;
 
 private slots:
   void __reloadSettings();
@@ -95,8 +95,9 @@ private:
   mutable bool  __linesReady;
   
   mutable QOpenGLVertexArrayObject __vaoApproach;
-  QOpenGLBuffer __bufferApproach;
-  int __trianglesApproach;
+  mutable QOpenGLBuffer __bufferApproachPoints;
+  mutable QOpenGLBuffer __bufferApproachTriangles;
+  mutable int __trianglesApproach;
   
 };
 

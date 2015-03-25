@@ -11,6 +11,7 @@ set (vatsimdata_SRCS
   metar.cpp
   notam.cpp
   pilot.cpp
+  tma.cpp
   uir.cpp
   updatescheduler.cpp
   vatbookbookingprovider.cpp
@@ -32,6 +33,7 @@ set (vatsimdata_HEADERS
   metar.h
   notam.h
   pilot.h
+  tma.h
   uir.h
   updatescheduler.h
   vatbookbookingprovider.h

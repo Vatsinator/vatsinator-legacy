@@ -1,1 +1,7 @@
-spatial: Spatial C++ Library http://spatial.sourceforge.net/tutorial.html
+spatial:
+  Spatial C++ Library
+  http://spatial.sourceforge.net/tutorial.html
+
+PolygonTriangulator:
+  Triangulates any (non-complex) 2D polygon
+  http://atlas.web.cern.ch/Atlas/GROUPS/COMPUTING/links/buildDirectory/AtlasAnalysis/17.7.90/graphics/VP1/VP1HEPVis/src/PolygonTriangulator.h
