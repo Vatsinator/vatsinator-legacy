@@ -49,11 +49,11 @@
 #include "mapwidget.h"
 
 MapWidget::MapWidget(QWidget* parent) :
-    QGLWidget(MapConfig::glFormat(), parent),
-    __usesGestures(false) {
+    QGLWidget(MapConfig::glFormat(), parent) {
   
   setAttribute(Qt::WA_NoSystemBackground);
   setAttribute(Qt::WA_OpaquePaintEvent);
+  setAttribute(Qt::WA_AcceptTouchEvents);
   
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
           this,                         SLOT(update()));
@@ -134,8 +134,6 @@ MapWidget::gestureEvent(QGestureEvent* event) {
     event->accept(pinch);
   }
   
-  __usesGestures = true;
-  
   return true;
 }
 
@@ -152,9 +150,7 @@ MapWidget::pinchTriggered(QPinchGesture* gesture) {
 
 void
 MapWidget::wheelEvent(QWheelEvent* event) {
-  if (!__usesGestures)
-    __updateZoom(event->delta() / 120);
-  
+  __updateZoom(event->delta() / 120);
   event->accept();
 }
 

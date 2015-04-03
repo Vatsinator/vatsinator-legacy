@@ -20,19 +20,7 @@
    <iconset resource="../resources/imgs.qrc">
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0">
-   <property name="spacing">
-    <number>10</number>
-   </property>
-   <property name="leftMargin">
-    <number>10</number>
-   </property>
-   <property name="rightMargin">
-    <number>10</number>
-   </property>
-   <property name="bottomMargin">
-    <number>2</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">

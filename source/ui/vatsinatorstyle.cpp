@@ -1,6 +1,6 @@
 /*
  * vatsinatorstyle.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,11 @@
  */
 
 #include <QtWidgets>
+
+#include "ui/windows/airportdetailswindow.h"
+#include "ui/windows/atcdetailswindow.h"
+#include "ui/windows/flightdetailswindow.h"
+#include "ui/windows/metarswindow.h"
 
 #include "vatsinatorstyle.h"
 
@@ -54,10 +59,22 @@ VatsinatorStyle::smallFont() {
   return font;
 }
 
-#ifdef Q_OS_MAC
 void
 VatsinatorStyle::polish(QWidget* widget) {
-  if (!qobject_cast<QMenu*>(widget) && widget->testAttribute(Qt::WA_MacNormalSize))
-    widget->setAttribute(Qt::WA_MacMiniSize);
-}
+#ifdef Q_OS_MAC
+  if (FlightDetailsWindow* w = dynamic_cast<FlightDetailsWindow*>(widget)) {
+    w->layout()->setContentsMargins(12, 12, 12, 2);
+  } else if (AtcDetailsWindow* w = dynamic_cast<AtcDetailsWindow*>(widget)) {
+    w->layout()->setContentsMargins(12, 12, 12, 2);
+  } else if (AirportDetailsWindow* w = dynamic_cast<AirportDetailsWindow*>(widget)) {
+    w->layout()->setContentsMargins(12, 12, 12, 2);
+  } else if (MetarsWindow* w = dynamic_cast<MetarsWindow*>(widget)) {
+    w->layout()->setContentsMargins(0, 4, 0, 0);
+    w->layout()->setSpacing(4);
+    QLayout* l = w->findChild<QLayout*>("MetarControlLayout");
+    Q_ASSERT(l);
+    l->setContentsMargins(12, 0, 12, 0);
+  }
+    
 #endif
+}

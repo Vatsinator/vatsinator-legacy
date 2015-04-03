@@ -179,8 +179,6 @@ private:
   } __mousePosition;
   
   QPoint __lastClickPosition;
-  
-  bool __usesGestures; /**< If true, wheel events will be ignored */
 
 };
 

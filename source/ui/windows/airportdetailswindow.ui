@@ -27,21 +27,6 @@
     <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="leftMargin">
-    <number>10</number>
-   </property>
-   <property name="topMargin">
-    <number>10</number>
-   </property>
-   <property name="rightMargin">
-    <number>10</number>
-   </property>
-   <property name="bottomMargin">
-    <number>2</number>
-   </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
