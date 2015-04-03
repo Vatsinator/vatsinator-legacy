@@ -53,6 +53,7 @@ AboutWindow::showEvent(QShowEvent* event) {
     QFile file(":/about/COPYING");
     bool result = file.open(QIODevice::ReadOnly | QIODevice::Text);
     Q_ASSERT(result);
+    Q_UNUSED(result);
     
     QString content = file.readAll();
     file.close();

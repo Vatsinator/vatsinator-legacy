@@ -53,6 +53,10 @@ UserInterface::notificationEvent(NotificationEvent* event) {
     case NotificationEvent::Warning:
       warning(event->message());
       break;
+    
+    case NotificationEvent::Information:
+      /* TODO */
+      break;
   }
   
   return true;
