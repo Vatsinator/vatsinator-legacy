@@ -54,6 +54,7 @@ MapWidget::MapWidget(QWidget* parent) :
   setAttribute(Qt::WA_NoSystemBackground);
   setAttribute(Qt::WA_OpaquePaintEvent);
   setAttribute(Qt::WA_AcceptTouchEvents);
+  setAttribute(Qt::WA_TouchPadAcceptSingleTouchEvents);
   
   connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
           this,                         SLOT(update()));
@@ -150,7 +151,9 @@ MapWidget::pinchTriggered(QPinchGesture* gesture) {
 
 void
 MapWidget::wheelEvent(QWheelEvent* event) {
-  __updateZoom(event->delta() / 120);
+  if (event->phase() == Qt::ScrollUpdate)
+    __updateZoom(event->delta() / 120);
+  
   event->accept();
 }
 

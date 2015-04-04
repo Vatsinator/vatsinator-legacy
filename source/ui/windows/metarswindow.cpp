@@ -53,6 +53,7 @@ MetarsWindow::MetarsWindow(QWidget* parent) :
   
   FetchButton->setEnabled(false);
   MetarListView->setModel(__metarsHandler);
+  MetarListView->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 MetarsWindow::~MetarsWindow() {

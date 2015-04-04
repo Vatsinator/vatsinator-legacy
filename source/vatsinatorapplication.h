@@ -68,11 +68,6 @@ public:
   virtual ~VatsinatorApplication();
   
   /**
-   * Custom event handler.
-   */
-  bool event(QEvent* event) override;
-  
-  /**
    * Gets the UserInterface singleton.
    */
   inline UserInterface* userInterface() {
@@ -151,6 +146,8 @@ public slots:
   void restart();
   
 protected:
+  void customEvent(QEvent* event) override;
+  
   /**
    * Handles the DecisionEvent.
    * THe only recognized context here is "statistics" which indicates

@@ -50,17 +50,13 @@ public:
    */
   void infoBarUpdate();
   
-  /**
-   * Custom event handler.
-   */
-  bool event(QEvent* event) override;
-  
   inline MapWidget* mapWidget() { return MapDisplay; }
   
 protected:
+  void customEvent(QEvent* event) override;
   void closeEvent(QCloseEvent* event) override;
   void showEvent(QShowEvent* event) override;
-  virtual bool mouseLonLatMoveEvent(MouseLonLatEvent* event);
+  virtual void mouseLonLatMoveEvent(MouseLonLatEvent* event);
   
 private:
   void __storeWindowGeometry();

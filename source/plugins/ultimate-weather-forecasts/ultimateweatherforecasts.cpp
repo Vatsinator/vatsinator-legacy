@@ -57,13 +57,13 @@ namespace {
       { QRegExp("^Rain and(.+)windy"), WeatherData::RainAndWind }
     });
     
-    return qMove(rc);
+    return rc;
   }
   
   WeatherData::Condition parseCondition(const QString& str) {
-    auto c = regexConditions();
+    static const auto c = regexConditions();
     
-    for (auto k: c) {
+    for (const auto& k: c) {
       if (k.regex.indexIn(str) != -1) {
         return k.condition;
       }
@@ -87,7 +87,7 @@ namespace {
       return QObject::tr("Saturday");
     if (name == "Sun")
       return QObject::tr("Sunday");
-    return "";
+    return QString();
   }
 }
 

@@ -138,12 +138,10 @@ VatsinatorWindow::infoBarUpdate() {
   );
 }
 
-bool
-VatsinatorWindow::event(QEvent* _e) {
-  if (_e->type() == Event::MouseLonLat)
-    return mouseLonLatMoveEvent(static_cast<MouseLonLatEvent*>(_e));
-  else
-    return QMainWindow::event(_e);
+void
+VatsinatorWindow::customEvent(QEvent* event) {
+  if (event->type() == Event::MouseLonLat)
+    mouseLonLatMoveEvent(static_cast<MouseLonLatEvent*>(event));
 }
 
 void
@@ -157,7 +155,7 @@ VatsinatorWindow::showEvent(QShowEvent*) {
   __restoreWindowGeometry();
 }
 
-bool
+void
 VatsinatorWindow::mouseLonLatMoveEvent(MouseLonLatEvent* event) {
   PositionBox->setText(QString("%1 %2 %3 %4").arg(
     event->lonLat().latitude() > 0 ? "N" : "S",
@@ -165,8 +163,6 @@ VatsinatorWindow::mouseLonLatMoveEvent(MouseLonLatEvent* event) {
     event->lonLat().longitude() < 0 ? "W" : "E",
     QString::number(qAbs(event->lonLat().longitude()), 'g', 6)
   ));
-  
-  return true;
 }
 
 void

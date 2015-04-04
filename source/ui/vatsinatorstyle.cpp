@@ -67,6 +67,7 @@ VatsinatorStyle::polish(QWidget* widget) {
   } else if (AtcDetailsWindow* w = dynamic_cast<AtcDetailsWindow*>(widget)) {
     w->layout()->setContentsMargins(12, 12, 12, 2);
   } else if (AirportDetailsWindow* w = dynamic_cast<AirportDetailsWindow*>(widget)) {
+    w->layout()->setSpacing(4);
     w->layout()->setContentsMargins(12, 12, 12, 2);
   } else if (MetarsWindow* w = dynamic_cast<MetarsWindow*>(widget)) {
     w->layout()->setContentsMargins(0, 4, 0, 0);

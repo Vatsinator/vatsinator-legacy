@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
   
   QCoreApplication::setApplicationName(QStringLiteral("Vatsinator"));
   QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
-  QCoreApplication::setApplicationVersion(VATSINATOR_VERSION);
+  QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
   QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
   
   qRegisterMetaType<LonLat>("LonLat");
