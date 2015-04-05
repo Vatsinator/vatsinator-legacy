@@ -30,7 +30,6 @@
 
 #include "vatsimdata/client.h"
 #include "ui/notifiable.h"
-#include "singleton.h"
 
 class AbstractBookingProvider;
 class AbstractNotamProvider;

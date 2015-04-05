@@ -22,7 +22,6 @@
 
 #include <QAbstractListModel>
 #include <QQueue>
-#include "singleton.h"
 
 #include "vatsimdata/metar.h"
 
@@ -33,7 +32,7 @@ class PlainTextDownloader;
  * 
  * \todo Split to MetarListModel and MetarUpdater.
  */
-class MetarListModel : public QAbstractListModel, public Singleton<MetarListModel> {
+class MetarListModel : public QAbstractListModel {
   Q_OBJECT
 
 signals:

@@ -84,10 +84,10 @@ public:
 private:
   
   /* ICAO <-> instance pairs */
-  QMap<QString, Airline*>       __airlines;
+  QMap<QString, Airline*>  __airlines;
   
-  QString       __airlineLogoUrl;
-  bool          __canFetch;
+  QString __airlineLogoUrl;
+  bool __canFetch;
 
 };
 

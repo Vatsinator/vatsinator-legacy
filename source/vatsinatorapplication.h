@@ -68,7 +68,7 @@ public:
   virtual ~VatsinatorApplication();
   
   /**
-   * Gets the UserInterface singleton.
+   * Gets the UserInterface instance.
    */
   inline UserInterface* userInterface() {
     Q_ASSERT(__userInterface);
@@ -76,7 +76,7 @@ public:
   }
   
   /**
-   * Gets the SettingsManager singleton.
+   * Gets the SettingsManager instance.
    */
   inline SettingsManager* settingsManager() {
     Q_ASSERT(__settingsManager);
@@ -84,7 +84,7 @@ public:
   }
   
   /**
-   * Gets the VatsimDataHandler singleton.
+   * Gets the VatsimDataHandler instance.
    */
   inline VatsimDataHandler* vatsimDataHandler() {
     Q_ASSERT(__vatsimData);
@@ -92,7 +92,7 @@ public:
   }
   
   /**
-   * Gets the VatsimDataHandler singleton const pointer.
+   * Gets the VatsimDataHandler instance const pointer.
    */
   inline const VatsimDataHandler* vatsimDataHandler() const {
     Q_ASSERT(__vatsimData);
@@ -100,7 +100,7 @@ public:
   }
   
   /**
-   * Gets the StatsPurveyor singleton.
+   * Gets the StatsPurveyor instance.
    */
   inline StatsPurveyor* statsPurveyor() {
     Q_ASSERT(__statsPurveyor);
@@ -108,7 +108,7 @@ public:
   }
   
   /**
-   * Gets the ResourceManager singleton.
+   * Gets the ResourceManager instance.
    */
   inline ResourceManager* resourceManager() {
     Q_ASSERT(__resourceManager);
@@ -116,7 +116,7 @@ public:
   }
   
   /**
-   * Gets the AirlineDatabase singleton.
+   * Gets the AirlineDatabase instance.
    */
   inline AirlineDatabase* airlineDatabase() {
     Q_ASSERT(__airlineDatabase);
@@ -124,7 +124,7 @@ public:
   }
   
   /**
-   * Gets the AirportDatabase singleton.
+   * Gets the AirportDatabase instance.
    */
   inline AirportDatabase* airportDatabase() {
     Q_ASSERT(__airlineDatabase);
@@ -132,11 +132,27 @@ public:
   }
   
   /**
-   * Gets the FirDatabase singleton.
+   * Gets the FirDatabase instance.
    */
   inline FirDatabase* firDatabase() {
     Q_ASSERT(__firDatabase);
     return __firDatabase;
+  }
+  
+  /**
+   * Gets the WorldMap instance.
+   */
+  inline WorldMap* worldMap() {
+    Q_ASSERT(__worldMap);
+    return __worldMap;
+  }
+  
+  /**
+   * Gets the LanguageManager instance.
+   */
+  inline LanguageManager* languageManager() {
+    Q_ASSERT(__languageManager);
+    return __languageManager;
   }
 
 public slots:

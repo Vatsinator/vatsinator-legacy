@@ -26,17 +26,14 @@
 #include <QDateTime>
 #include <QIODevice>
 
-#include "singleton.h"
-
 class FileDownloader;
 
 /**
  * The FileManager class stores Vatsinator files' locations.
  */
-class FileManager : public Singleton<FileManager> {
+class FileManager {
   
 public:
-  
   /**
    * Static directories contain files that are installed once
    * and can not be overriden by any of the updates, thus

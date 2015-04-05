@@ -112,7 +112,6 @@ private slots:
   void __showNewVersionDialog();
 
 private:
-
   AboutWindow*          __aboutWindow;
   MetarsWindow*         __metarsWindow;
   DatabaseWindow*       __databaseWindow;

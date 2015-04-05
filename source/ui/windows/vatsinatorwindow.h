@@ -22,7 +22,6 @@
 
 #include <QMainWindow>
 
-#include "singleton.h"
 #include "ui/ui_vatsinatorwindow.h"
 
 class QLabel;

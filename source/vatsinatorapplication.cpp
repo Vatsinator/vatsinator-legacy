@@ -47,12 +47,12 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     QApplication(argc, argv),
     __userInterface(UserInterface::instantiate()),
     __fileManager(new FileManager()),
-    __settingsManager(new SettingsManager()),
-    __airlineDatabase(new AirlineDatabase()),
-    __airportDatabaase(new AirportDatabase()),
-    __firDatabase(new FirDatabase()),
-    __worldMap(new WorldMap()),
-    __vatsimData(new VatsimDataHandler()),
+    __settingsManager(new SettingsManager(this)),
+    __airlineDatabase(new AirlineDatabase(this)),
+    __airportDatabaase(new AirportDatabase(this)),
+    __firDatabase(new FirDatabase(this)),
+    __worldMap(new WorldMap(this)),
+    __vatsimData(new VatsimDataHandler(this)),
     __languageManager(new LanguageManager()),
     __resourceManager(new ResourceManager()),
     __statsPurveyor(new StatsPurveyor()) {
@@ -77,21 +77,15 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
 VatsinatorApplication::~VatsinatorApplication() {
   
   QThread* rmThread = __resourceManager->thread();
-  __resourceManager->deleteLater();
+  delete __resourceManager;
   rmThread->quit();
 
   QThread* spThread = __statsPurveyor->thread();
-  __statsPurveyor->deleteLater();
+  delete __statsPurveyor;
   spThread->quit();
   
-  delete __settingsManager;
   delete __languageManager;
-  delete __vatsimData;
-  delete __airportDatabaase;
-  delete __firDatabase;
-  delete __worldMap;
   delete __userInterface;
-  delete __airlineDatabase;
   delete __fileManager;
   
   rmThread->wait();

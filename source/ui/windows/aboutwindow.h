@@ -37,7 +37,6 @@ protected:
   void showEvent(QShowEvent* event) override;
   
 private slots:
-  
   /**
    * If the version is outdated, it displays
    * "outdated" warning, otherwise "up-to-date"

@@ -19,7 +19,7 @@
 #include <QtWidgets>
 
 #include "storage/languagemanager.h"
-#include "ui/userinterface.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "miscellaneouspage.h"
@@ -27,10 +27,10 @@
 MiscellaneousPage::MiscellaneousPage(QWidget* parent) :
     QWidget(parent) {
   setupUi(this);
-  LanguageComboBox->addItems(LanguageManager::getSingleton().allLanguages());
-  
-  connect(this,                         SIGNAL(languageChanged()),
-          vApp()->userInterface(),      SLOT(showAppRestartDialog()));
+  LanguageComboBox->addItems(vApp()->languageManager()->allLanguages());
+
+  connect(this, &MiscellaneousPage::languageChanged,
+          wui(), &WidgetsUserInterface::showAppRestartDialog);
 }
 
 QString
@@ -40,12 +40,12 @@ MiscellaneousPage::listElement() const {
 
 QString
 MiscellaneousPage::listIcon() const {
-  return ":/settings/preferences-miscellaneous.png";
+  return QStringLiteral(":/settings/preferences-miscellaneous.png");
 }
 
 QString
 MiscellaneousPage::moduleId() const {
-  return "misc";
+  return QStringLiteral("misc");
 }
 
 void
@@ -69,7 +69,7 @@ MiscellaneousPage::restore(QSettings& s, const QVariantHash& defaults) {
   StatsCheckBox->setChecked(
     s.value("send_statistics", defaults[id % "send_statistics"]).toBool());
   LanguageComboBox->setCurrentIndex(
-    LanguageManager::getSingleton().getLanguageId(
+    vApp()->languageManager()->getLanguageId(
       s.value("language", defaults[id % "language"]).toString()
     )
   );
@@ -78,7 +78,7 @@ MiscellaneousPage::restore(QSettings& s, const QVariantHash& defaults) {
 void
 MiscellaneousPage::save(QSettings& s) {
   s.setValue("send_statistics", StatsCheckBox->isChecked());
-  s.setValue("language", LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
+  s.setValue("language", vApp()->languageManager()->getLocaleById(LanguageComboBox->currentIndex()));
   
   if (__languageIndex != LanguageComboBox->currentIndex())
     emit languageChanged();

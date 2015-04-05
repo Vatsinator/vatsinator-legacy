@@ -26,7 +26,7 @@
 
 #include "firdatabase.h"
 
-FirDatabase::FirDatabase(QObject* _parent) : QObject(_parent) {}
+FirDatabase::FirDatabase(QObject* parent) : QObject(parent) {}
 
 void
 FirDatabase::initialize() {

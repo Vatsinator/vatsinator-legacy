@@ -23,13 +23,11 @@
 #include <QStringList>
 #include <QVector>
 
-#include "singleton.h"
-
 /**
  * The LanguageManager class keeps track of translations installed on
  * the system.
  */
-class LanguageManager : public Singleton<LanguageManager> {
+class LanguageManager {
   
 public:
   /**

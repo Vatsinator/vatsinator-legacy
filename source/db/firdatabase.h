@@ -62,7 +62,7 @@ public:
   /**
    * Default ctor.
    */
-  FirDatabase(QObject* = nullptr);
+  FirDatabase(QObject* parent = nullptr);
   
   /**
    * Called by VatsinatorApplication only.

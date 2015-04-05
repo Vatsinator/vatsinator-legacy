@@ -21,6 +21,7 @@
 
 #include "db/worldmap.h"
 #include "ui/map/maprenderer.h"
+#include "vatsinatorapplication.h"
 
 #include "worldpolygon.h"
 
@@ -46,10 +47,11 @@ WorldPolygon::paint() {
 
 void
 WorldPolygon::__initializeBuffers() {
-  const QVector<Point>& bordersData = WorldMap::getSingleton().borders();
+  WorldMap* wm = vApp()->worldMap();
+  const QVector<Point>& bordersData = wm->borders();
   Q_ASSERT(!bordersData.isEmpty());
   
-  const QVector<unsigned int>& trianglesData = WorldMap::getSingleton().triangles();
+  const QVector<unsigned int>& trianglesData = wm->triangles();
   Q_ASSERT(!trianglesData.isEmpty());
   
   __vao.create();
@@ -76,5 +78,5 @@ WorldPolygon::__initializeBuffers() {
   __borders.release();
   __triangles.release();
   
-  __vertices = WorldMap::getSingleton().triangles().size();
+  __vertices = wm->triangles().size();
 }

@@ -23,8 +23,6 @@
 #include <QColor>
 #include <QVariant>
 
-#include "singleton.h"
-
 class AbstractSettingsModule;
 
 /**
@@ -45,7 +43,7 @@ signals:
   void settingsChanged();
 
 public:
-  SettingsManager(QObject* parent = 0);
+  SettingsManager(QObject* parent = nullptr);
   
   /**
    * Adds settings page.
