@@ -1,6 +1,6 @@
 /*
- * abstractnotamprovider.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * notamprovider.cpp
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
  *
  */
 
-#include "abstractnotamprovider.h"
+#include "notamprovider.h"
 
-AbstractNotamProvider::AbstractNotamProvider(QObject* parent) :
+NotamProvider::NotamProvider(QObject* parent) :
     QObject(parent) {}
 
 QString
-AbstractNotamProvider::providerInfo() const {
+NotamProvider::providerInfo() const {
   return QString();
 }

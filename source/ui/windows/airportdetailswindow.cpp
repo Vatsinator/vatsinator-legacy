@@ -20,6 +20,7 @@
 
 #include "db/airportdatabase.h"
 #include "network/weatherforecastdownloader.h"
+#include "plugins/notamprovider.h"
 #include "plugins/weatherforecastrequest.h"
 #include "plugins/weatherforecastreply.h"
 #include "storage/settingsmanager.h"
@@ -38,7 +39,6 @@
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/abstractbookingprovider.h"
-#include "vatsimdata/abstractnotamprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -68,7 +68,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
   connect(AtcTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
   connect(NotamTableView, &DelayedModelTableView::doubleClicked,
           this, &AirportDetailsWindow::__goToNotam);
-  connect(vApp()->vatsimDataHandler()->notamProvider(), &AbstractNotamProvider::notamReady,
+  connect(vApp()->vatsimDataHandler()->notamProvider(), &NotamProvider::notamReady,
           this, &AirportDetailsWindow::__notamUpdate);
   
   connect(ShowButton, &QPushButton::clicked, [this]() {

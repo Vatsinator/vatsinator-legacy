@@ -22,7 +22,7 @@
 
 #include <QAbstractTableModel>
 
-#include "vatsimdata/notam.h"
+#include "plugins/notam.h"
 
 /**
  * The NotamListModel class is used to keep NOTAMs.

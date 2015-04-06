@@ -1,15 +1,12 @@
 set (vatsimdata_SRCS
   abstractbookingprovider.cpp
-  abstractnotamprovider.cpp
   airport.cpp
   atcbooking.cpp
   client.cpp
   controller.cpp
-  euroutenotamprovider.cpp
   fir.cpp
   lonlat.cpp
   metar.cpp
-  notam.cpp
   pilot.cpp
   uir.cpp
   updatescheduler.cpp
@@ -21,16 +18,13 @@ set (vatsimdata_SRCS
 
 set (vatsimdata_HEADERS
   abstractbookingprovider.h
-  abstractnotamprovider.h
   airport.h
   atcbooking.h
   client.h
   controller.h
-  euroutenotamprovider.h
   fir.h
   lonlat.h
   metar.h
-  notam.h
   pilot.h
   uir.h
   updatescheduler.h

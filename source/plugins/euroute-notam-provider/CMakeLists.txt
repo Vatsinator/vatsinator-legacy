@@ -1,0 +1,4 @@
+add_library(euroutenotamprovider STATIC euroutenotamprovider.cpp)
+target_compile_definitions (euroutenotamprovider PRIVATE -DQT_STATICPLUGIN -DQT_PLUGIN)
+
+vatsinator_static_plugin (euroutenotamprovider EurouteNotamProvider)

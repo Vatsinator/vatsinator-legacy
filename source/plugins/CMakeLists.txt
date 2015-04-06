@@ -1,10 +1,16 @@
 set (plugins_SRCS
+  notam.cpp
+  notamlistmodel.cpp
+  notamprovider.cpp
   weatherdata.cpp
   weatherforecastreply.cpp
   weatherforecastrequest.cpp
 )
 
 set (plugins_HEADERS
+  notam.h
+  notamlistmodel.h
+  notamprovider.h
   weatherdata.h
   weatherforecastinterface.h
   weatherforecastreply.h
@@ -33,6 +39,7 @@ macro (vatsinator_static_plugin libname pluginname)
     PARENT_SCOPE)
 endmacro ()
 
+add_subdirectory (euroute-notam-provider)
 add_subdirectory (ultimate-weather-forecasts)
 
 set (vatsinator_STATIC_PLUGINS

@@ -1,6 +1,6 @@
 /*
  * euroutenotamprovider.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include <QDateTime>
 #include <QMap>
 
-#include "vatsimdata/abstractnotamprovider.h"
+#include "plugins/notamprovider.h"
 
 /**
  * This is EUroute NOTAM provider class.
@@ -32,12 +32,14 @@
  * To avoid excessive downloads, the XML file is cached and
  * fetched only once per 24h.
  */
-class EurouteNotamProvider : public AbstractNotamProvider {
+class EurouteNotamProvider : public NotamProvider {
   Q_OBJECT
+  Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.NotamProvider")
+  Q_INTERFACES(NotamProvider)
 
 public:
   /**
-   * The default constructor passes _parent_ to AbstractNotamProvider.
+   * The default constructor passes _parent_ to NotamProvider.
    */
   explicit EurouteNotamProvider(QObject* parent = nullptr);
   
@@ -56,7 +58,6 @@ private slots:
   void __checkXmlUpToDate();
   
 private:
-  
   QDateTime __lastUpdate;
   
   /* ICAO <-> model map */

@@ -1,6 +1,6 @@
 /*
- * abstractnotamprovider.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * notamprovider.h
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +17,23 @@
  *
  */
 
-#ifndef ABSTRACTNOTAMPROVIDER_H
-#define ABSTRACTNOTAMPROVIDER_H
+#ifndef NOTAMPROVIDER_H
+#define NOTAMPROVIDER_H
 
 #include <QObject>
+#include <QtPlugin>
 
-#include "ui/models/notamlistmodel.h"
+#include "plugins/notamlistmodel.h"
 
 /**
- * This class is the interface for all NOTAMs providers.
+ * This class is the interface for all NOTAM providers.
  * 
  * Each NOTAM provider is responsible for creating new models when
  * necessary, filling them in and giving access to them. User requests
  * NOTAMs calling fetchNotam() method. Pointers are given by emiting
  * notamReady() signal.
- * 
- * \todo Rename to NotamProviderInterface and make a plugin here.
  */
-class AbstractNotamProvider : public QObject {
+class NotamProvider : public QObject {
   Q_OBJECT
   
 signals:
@@ -50,7 +49,7 @@ public:
   /**
    * The default constructor passes _parent_ to QObject.
    */
-  explicit AbstractNotamProvider(QObject* parent = nullptr);
+  explicit NotamProvider(QObject* parent = nullptr);
   
   /**
    * Requests NOTAM for the given ICAO code. The ICAO can be either airport's
@@ -73,4 +72,7 @@ public:
   
 };
 
-#endif // ABSTRACTNOTAMPROVIDER_H
+Q_DECLARE_INTERFACE(NotamProvider,
+                    "org.eu.vatsinator.Vatsinator.NotamProvider")
+
+#endif // NOTAMPROVIDER_H

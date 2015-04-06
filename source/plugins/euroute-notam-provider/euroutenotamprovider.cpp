@@ -1,6 +1,6 @@
 /*
  * euroutenotamprovider.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,9 +43,11 @@ namespace {
   }
 }
 
-EurouteNotamProvider::EurouteNotamProvider(QObject* parent) : AbstractNotamProvider(parent) {
-  connect(qobject_cast<VatsimDataHandler*>(parent),     SIGNAL(vatsimDataUpdated()),
-          this,                                         SLOT(__checkXmlUpToDate()));
+EurouteNotamProvider::EurouteNotamProvider(QObject* parent) : NotamProvider(parent) {
+  qDebug("EUroute URL: %s", qPrintable(EurouteNotamXmlUrl));
+  connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated,
+          this, &EurouteNotamProvider::__checkXmlUpToDate);
+  __checkXmlUpToDate();
 }
 
 EurouteNotamProvider::~EurouteNotamProvider() {
@@ -79,8 +81,7 @@ EurouteNotamProvider::providerInfo() const {
 void
 EurouteNotamProvider::__fetchXml() {
   FileDownloader* fd = new FileDownloader();
-  connect(fd,   SIGNAL(finished(QString)),
-          this, SLOT(__xmlReady(QString)));
+  connect(fd, &FileDownloader::finished, this, &EurouteNotamProvider::__xmlReady);
   
   fd->fetch(EurouteNotamXmlUrl);
 }
@@ -170,6 +171,8 @@ EurouteNotamProvider::__fillNotamListModel(NotamListModel* model) {
 
 void
 EurouteNotamProvider::__xmlReady(QString fileName) {
+  Q_ASSERT(qobject_cast<FileDownloader*>(sender()));
+  
   FileManager::moveToCache(fileName, "euroute-notams.xml");
   __readXmlHeader();
   

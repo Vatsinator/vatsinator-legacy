@@ -23,6 +23,7 @@
 #include "db/firdatabase.h"
 #include "events/decisionevent.h"
 #include "network/plaintextdownloader.h"
+#include "plugins/notamprovider.h"
 #include "plugins/weatherforecastinterface.h"
 #include "ui/pages/miscellaneouspage.h"
 #include "ui/models/atctablemodel.h"
@@ -35,7 +36,6 @@
 #include "storage/settingsmanager.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/controller.h"
-#include "vatsimdata/euroutenotamprovider.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/uir.h"
@@ -70,7 +70,6 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __initialized(false),
     __downloader(new PlainTextDownloader(this)),
     __scheduler(new UpdateScheduler(this)),
-    __notamProvider(nullptr),
     __bookingProvider(nullptr) {
   
   connect(vApp()->userInterface(),              SIGNAL(initialized()),
@@ -87,8 +86,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
           vApp()->userInterface(),              SLOT(dataError()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
-  
-  __notamProvider = new EurouteNotamProvider(this);
+
   __bookingProvider = new VatbookBookingProvider(this);
 }
 
@@ -271,10 +269,29 @@ VatsimDataHandler::obsCount() const {
   return __observers;
 }
 
-AbstractNotamProvider*
+NotamProvider*
 VatsimDataHandler::notamProvider() {
-  Q_ASSERT(__notamProvider);
-  return __notamProvider;
+  static NotamProvider* notamProvider = []() -> NotamProvider* {
+    auto plugins = QPluginLoader::staticPlugins();
+    for (auto& p: plugins) {
+      QJsonObject pluginData = p.metaData();
+      if (!pluginData["IID"].isString())
+        continue;
+      
+      QString iid = pluginData["IID"].toString();
+      if (iid != "org.eu.vatsinator.Vatsinator.NotamProvider")
+        continue;
+      
+      NotamProvider* i = qobject_cast<NotamProvider*>(p.instance());
+      if (i) {
+        return i;
+      }
+    }
+    
+    return nullptr;
+  }();
+  
+  return notamProvider;
 }
 
 AbstractBookingProvider*

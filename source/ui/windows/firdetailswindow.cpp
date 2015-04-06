@@ -20,6 +20,8 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "plugins/notamprovider.h"
+#include "plugins/notamlistmodel.h"
 #include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
@@ -27,14 +29,12 @@
 #include "ui/models/atcbookingtablemodel.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
-#include "ui/models/notamlistmodel.h"
 #include "ui/models/roles.h"
 #include "ui/windows/airportdetailswindow.h"
 #include "ui/windows/atcdetailswindow.h"
 #include "ui/windows/flightdetailswindow.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/abstractbookingprovider.h"
-#include "vatsimdata/abstractnotamprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/controller.h"
@@ -58,7 +58,7 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
   FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   
   connect(qApp, &QCoreApplication::aboutToQuit, this, &FirDetailsWindow::close);
-  connect(vApp()->vatsimDataHandler()->notamProvider(), &AbstractNotamProvider::notamReady,
+  connect(vApp()->vatsimDataHandler()->notamProvider(), &NotamProvider::notamReady,
           this, &FirDetailsWindow::__notamUpdate);
   connect(AirportsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showAirportDetails);
   connect(AtcTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);

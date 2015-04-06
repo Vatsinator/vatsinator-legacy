@@ -32,13 +32,13 @@
 #include "ui/notifiable.h"
 
 class AbstractBookingProvider;
-class AbstractNotamProvider;
 class Airport;
 class AtcTableModel;
 class Controller;
 class DecisionEvent;
 class Fir;
 class FlightTableModel;
+class NotamProvider;
 class Pilot;
 class PlainTextDownloader;
 class UpdateScheduler;
@@ -239,7 +239,7 @@ public:
   /**
    * Running instance of notam provider.
    */
-  AbstractNotamProvider* notamProvider();
+  NotamProvider* notamProvider();
   
   /**
    * Running instance of bookings provider.
@@ -511,7 +511,6 @@ private:
   PlainTextDownloader* __downloader;
   UpdateScheduler*     __scheduler;
 
-  AbstractNotamProvider*        __notamProvider;
   AbstractBookingProvider*      __bookingProvider;
 };
 

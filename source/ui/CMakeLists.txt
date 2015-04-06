@@ -39,7 +39,6 @@ set (ui_SRCS
   models/atctablemodel.cpp
   models/flighttablemodel.cpp
   models/metarlistmodel.cpp
-  models/notamlistmodel.cpp
 )
 
 set (ui_HEADERS
@@ -63,7 +62,6 @@ set (ui_HEADERS
   models/atctablemodel.h
   models/flighttablemodel.h
   models/metarlistmodel.h
-  models/notamlistmodel.h
 )
 
 set (widgets_SRCS
