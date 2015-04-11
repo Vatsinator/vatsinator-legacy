@@ -472,7 +472,7 @@
 <context>
     <name>EurouteNotamProvider</name>
     <message>
-        <location filename="../vatsimdata/euroutenotamprovider.cpp" line="76"/>
+        <location filename="../plugins/euroute-notam-provider/euroutenotamprovider.cpp" line="78"/>
         <source>NOTAMs by &lt;a href=&quot;%1&quot;&gt;EUroute&lt;/a&gt;</source>
         <translation>Raporty NOTAM dostarcza &lt;a href=&quot;%1&quot;&gt;EUroute&lt;/a&gt;</translation>
     </message>
@@ -1137,17 +1137,17 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="364"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="413"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="448"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="507"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="381"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="430"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="465"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="524"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>Plik %1 nie mógł zostać otwarty. Przeinstaluj aplikację.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="374"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="423"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="458"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="391"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="440"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="475"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>Plik %1 nie mógł zostać odczytany. Przeinstaluj aplikację.</translation>
     </message>
