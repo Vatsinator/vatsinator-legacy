@@ -1,6 +1,6 @@
 /*
- * notamprovider.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * bookingprovider.h
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,28 @@
  *
  */
 
-#include "notamprovider.h"
+#ifndef BOOKINGPROVIDER_H
+#define BOOKINGPROVIDER_H
 
-NotamProvider::NotamProvider(QObject* parent) :
-    QObject(parent) {}
+#include <QtPlugin>
 
-QString
-NotamProvider::providerInfo() const {
-  return QString();
-}
+#include "plugins/atcbookingtablemodel.h"
+
+/**
+ * Interface for booking provider plugin.
+ */
+class BookingProvider {
+
+public:
+  /**
+   * This function returns a new model containing all bookings for the
+   * given FIR. If there are no bookings, this method returns an empty model.
+   */
+  virtual AtcBookingTableModel* bookings(const QString& icao) = 0;
+  
+};
+
+Q_DECLARE_INTERFACE(BookingProvider,
+                    "org.eu.vatsinator.Vatsinator.BookingProvider")
+
+#endif // BOOKINGPROVIDER_H

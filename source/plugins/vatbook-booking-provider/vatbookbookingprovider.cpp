@@ -20,8 +20,8 @@
 #include <QtCore>
 
 #include "network/plaintextdownloader.h"
-#include "ui/models/atcbookingtablemodel.h"
-#include "vatsimdata/atcbooking.h"
+#include "plugins/atcbookingtablemodel.h"
+#include "plugins/atcbooking.h"
 
 #include "vatbookbookingprovider.h"
 
@@ -32,7 +32,7 @@ namespace {
 }
 
 VatbookBookingProvider::VatbookBookingProvider(QObject* parent) :
-    AbstractBookingProvider(parent),
+    QObject(parent),
     __nullModel(new AtcBookingTableModel(this)),
     __downloader(new PlainTextDownloader(this)) {
 

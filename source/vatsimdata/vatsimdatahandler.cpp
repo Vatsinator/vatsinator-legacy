@@ -23,6 +23,7 @@
 #include "db/firdatabase.h"
 #include "events/decisionevent.h"
 #include "network/plaintextdownloader.h"
+#include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
 #include "plugins/weatherforecastinterface.h"
 #include "ui/pages/miscellaneouspage.h"
@@ -40,7 +41,6 @@
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
-#include "vatsimdata/vatbookbookingprovider.h"
 #include "vatsimdata/vatsimdatadocument.h"
 #include "vatsimdata/vatsimstatusdocument.h"
 #include "storage/filemanager.h"
@@ -57,6 +57,28 @@ static const QString CacheFileName = QStringLiteral("lastdata");
 
 namespace {
   QMap<QString, QString> countries; // used by __readCountryFile() and __readFirFile()
+  
+  template <typename T>
+  T* selectPlugin() {
+    QString iid(qobject_interface_iid<T*>());
+    auto plugins = QPluginLoader::staticPlugins();
+    for (auto& p: plugins) {
+      QJsonObject pluginData = p.metaData();
+      if (!pluginData["IID"].isString())
+        continue;
+      
+      QString iid = pluginData["IID"].toString();
+      if (iid != iid)
+        continue;
+      
+      T* i = qobject_cast<T*>(p.instance());
+      if (i) {
+        return i;
+      }
+    }
+    
+    return nullptr;
+  }
 }
 
 
@@ -69,8 +91,7 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __statusFileFetched(false),
     __initialized(false),
     __downloader(new PlainTextDownloader(this)),
-    __scheduler(new UpdateScheduler(this)),
-    __bookingProvider(nullptr) {
+    __scheduler(new UpdateScheduler(this)) {
   
   connect(vApp()->userInterface(),              SIGNAL(initialized()),
           this,                                 SLOT(__slotUiCreated()));
@@ -86,8 +107,6 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
           vApp()->userInterface(),              SLOT(dataError()));
   
   connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
-
-  __bookingProvider = new VatbookBookingProvider(this);
 }
 
 VatsimDataHandler::~VatsimDataHandler() {
@@ -271,33 +290,14 @@ VatsimDataHandler::obsCount() const {
 
 NotamProvider*
 VatsimDataHandler::notamProvider() {
-  static NotamProvider* notamProvider = []() -> NotamProvider* {
-    auto plugins = QPluginLoader::staticPlugins();
-    for (auto& p: plugins) {
-      QJsonObject pluginData = p.metaData();
-      if (!pluginData["IID"].isString())
-        continue;
-      
-      QString iid = pluginData["IID"].toString();
-      if (iid != "org.eu.vatsinator.Vatsinator.NotamProvider")
-        continue;
-      
-      NotamProvider* i = qobject_cast<NotamProvider*>(p.instance());
-      if (i) {
-        return i;
-      }
-    }
-    
-    return nullptr;
-  }();
-  
-  return notamProvider;
+  static NotamProvider* provider = selectPlugin<NotamProvider>();
+  return provider;
 }
 
-AbstractBookingProvider*
+BookingProvider*
 VatsimDataHandler::bookingProvider() {
-  Q_ASSERT(__bookingProvider);
-  return __bookingProvider;
+  static BookingProvider* provider = selectPlugin<BookingProvider>();
+  return provider;
 }
 
 bool

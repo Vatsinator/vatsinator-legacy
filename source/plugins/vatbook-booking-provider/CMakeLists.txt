@@ -1,0 +1,4 @@
+add_library(vatbookbookingprovider STATIC vatbookbookingprovider.cpp vatbookbookingprovider.h)
+target_compile_definitions (vatbookbookingprovider PRIVATE -DQT_STATICPLUGIN -DQT_PLUGIN)
+
+vatsinator_static_plugin (vatbookbookingprovider VatbookBookingProvider)

@@ -46,10 +46,7 @@ signals:
   void notamReady(NotamListModel* model);
   
 public:
-  /**
-   * The default constructor passes _parent_ to QObject.
-   */
-  explicit NotamProvider(QObject* parent = nullptr);
+  using QObject::QObject;
   
   /**
    * Requests NOTAM for the given ICAO code. The ICAO can be either airport's
@@ -65,10 +62,8 @@ public:
    * Description text for the provider.
    * This is rich-formatted text that can contain URL, image or anything
    * Qt can recognize in a QLabel.
-   * 
-   * Default implementation returns an empty string.
    */
-  virtual QString providerInfo() const;
+  virtual QString providerInfo() const = 0;
   
 };
 

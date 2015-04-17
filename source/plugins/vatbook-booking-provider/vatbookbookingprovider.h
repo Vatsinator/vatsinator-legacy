@@ -22,20 +22,23 @@
 
 #include <QMap>
 #include <QTimer>
-#include "vatsimdata/abstractbookingprovider.h"
+
+#include "plugins/bookingprovider.h"
 
 class PlainTextDownloader;
 
 /**
  * The VatbookBookingProvider class obtains bookings from the VATBOOK service.
  */
-class VatbookBookingProvider : public AbstractBookingProvider {
+class VatbookBookingProvider : public QObject, public BookingProvider {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.BookingProvider")
+    Q_INTERFACES(BookingProvider)
 
 public:
   explicit VatbookBookingProvider(QObject *parent = nullptr);
   
-  AtcBookingTableModel *bookings(const QString& icao) override;
+  AtcBookingTableModel* bookings(const QString& icao) override;
   
 private:
   void __addAtc(const QStringList& rawData);

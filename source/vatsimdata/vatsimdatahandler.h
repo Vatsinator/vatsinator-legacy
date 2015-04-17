@@ -31,9 +31,9 @@
 #include "vatsimdata/client.h"
 #include "ui/notifiable.h"
 
-class AbstractBookingProvider;
 class Airport;
 class AtcTableModel;
+class BookingProvider;
 class Controller;
 class DecisionEvent;
 class Fir;
@@ -244,7 +244,7 @@ public:
   /**
    * Running instance of bookings provider.
    */
-  AbstractBookingProvider* bookingProvider();
+  BookingProvider* bookingProvider();
   
   /**
    * Custom event handler.
@@ -510,8 +510,6 @@ private:
   
   PlainTextDownloader* __downloader;
   UpdateScheduler*     __scheduler;
-
-  AbstractBookingProvider*      __bookingProvider;
 };
 
 #endif // VATSIMDATAHANDLER_H

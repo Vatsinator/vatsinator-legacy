@@ -19,7 +19,7 @@
 
 #include <QtGui>
 
-#include "vatsimdata/atcbooking.h"
+#include "plugins/atcbooking.h"
 
 #include "atcbookingtablemodel.h"
 

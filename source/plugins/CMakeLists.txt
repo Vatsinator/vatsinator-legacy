@@ -1,13 +1,17 @@
 set (plugins_SRCS
+  atcbooking.cpp
+  atcbookingtablemodel.cpp
   notam.cpp
   notamlistmodel.cpp
-  notamprovider.cpp
   weatherdata.cpp
   weatherforecastreply.cpp
   weatherforecastrequest.cpp
 )
 
 set (plugins_HEADERS
+  atcbooking.h
+  atcbookingtablemodel.h
+  bookingprovider.h
   notam.h
   notamlistmodel.h
   notamprovider.h
@@ -41,6 +45,7 @@ endmacro ()
 
 add_subdirectory (euroute-notam-provider)
 add_subdirectory (ultimate-weather-forecasts)
+add_subdirectory (vatbook-booking-provider)
 
 set (vatsinator_STATIC_PLUGINS
   ${vatsinator_STATIC_PLUGINS}
