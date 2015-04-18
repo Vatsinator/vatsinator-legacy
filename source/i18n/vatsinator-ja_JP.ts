@@ -268,22 +268,22 @@
 <context>
     <name>AtcBookingTableModel</name>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="98"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="98"/>
         <source>Callsign</source>
         <translation>コールサイン</translation>
     </message>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="100"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="100"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="102"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="102"/>
         <source>Date</source>
         <translation>日付</translation>
     </message>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="104"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="104"/>
         <source>Hours</source>
         <translation>時間</translation>
     </message>

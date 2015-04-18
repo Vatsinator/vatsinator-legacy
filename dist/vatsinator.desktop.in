@@ -11,21 +11,25 @@ Icon=vatsinator
 
 
 # Translations
-Comment[de]=Ein einfacher Vatsim-Monitor
-GenericName[de]=Vatsim-Monitor
-Name[de]=Vatsinator
-Icon[de]=vatsinator
-Comment[ja_JP]=シンプルな Vatsim モニタ
-GenericName[ja_JP]=Vatsim モニタ
-Name[ja_JP]=Vatsinator
-Icon[ja_JP]=vatsinator
 Comment[pl]=Prosty monitor sieci Vatsim
 GenericName[pl]=Monitor sieci Vatsim
 Name[pl]=Vatsinator
 Icon[pl]=vatsinator
 Comment[pt]=Monitor da VATSIM
 Name[pt]=Vatsinator
+Comment[de]=Ein einfacher Vatsim-Monitor
+GenericName[de]=Vatsim-Monitor
+Name[de]=Vatsinator
+Icon[de]=vatsinator
+Comment[el]=Ένα απλό Vatsim μόνιτορ 
+GenericName[el]=Vatsim μόνιτορ 
+Name[el]=Vatsinator
+Icon[el]=vatsinator
 Comment[tr]=Basit Vatsim ekranı
 GenericName[tr]=Vatsim ekranı
 Name[tr]=Vatsinator
 Icon[tr]=vatsinator
+Comment[ja_JP]=シンプルな Vatsim モニタ
+GenericName[ja_JP]=Vatsim モニタ
+Name[ja_JP]=Vatsinator
+Icon[ja_JP]=vatsinator

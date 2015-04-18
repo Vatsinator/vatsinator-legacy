@@ -268,22 +268,22 @@
 <context>
     <name>AtcBookingTableModel</name>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="98"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="98"/>
         <source>Callsign</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="100"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="100"/>
         <source>Name</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="102"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="102"/>
         <source>Date</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/models/atcbookingtablemodel.cpp" line="104"/>
+        <location filename="../plugins/atcbookingtablemodel.cpp" line="104"/>
         <source>Hours</source>
         <translation type="unfinished"/>
     </message>
