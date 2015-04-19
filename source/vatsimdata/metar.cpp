@@ -23,13 +23,17 @@
 Metar::Metar() : __icao("ZZZZ") {}
 
 Metar::Metar(const QString& icao, const QString& metar) :
-    __icao(icao),
+    __icao(icao.toUpper()),
     __metar(metar),
     __lastFetchTime(QDateTime::currentDateTimeUtc()) {}
 
 void
 Metar::setMetar(const QString& metar) {
-  Q_ASSERT(metar.left(4) == __icao);
+  if (metar.left(4) != icao()) {
+    qWarning("Metar (%s) is not of ICAO %s!", qPrintable(metar), qPrintable(__icao));
+    return;
+  }
+  
   __metar = metar;
   __lastFetchTime = QDateTime::currentDateTimeUtc();
 }

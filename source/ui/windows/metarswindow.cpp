@@ -1,6 +1,6 @@
 /*
     metarswindow.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,8 +18,9 @@
 
 #include <QtWidgets>
 
-#include "network/plaintextdownloader.h"
+#include "network/metarupdater.h"
 #include "ui/models/metarlistmodel.h"
+#include "ui/models/roles.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -28,37 +29,21 @@
 #include "metarswindow.h"
 
 MetarsWindow::MetarsWindow(QWidget* parent) :
-    QWidget(parent) {
+    QWidget(parent),
+    __metars(new MetarListModel(this)),
+    __updater(new MetarUpdater(__metars, this)) {
   setupUi(this);
   
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-
-  __httpHandler = new PlainTextDownloader();
-
-  __metarsHandler = new MetarListModel(__httpHandler);
-
-  connect(FetchButton,      SIGNAL(clicked()),
-          this,             SLOT(metarRequested()));
-  connect(RefreshAllButton, SIGNAL(clicked()),
-          __metarsHandler,  SLOT(updateAll()));
-  connect(ClearButton,      SIGNAL(clicked()),
-          __metarsHandler,  SLOT(clear()));
-  connect(MetarIcaoEdit,    SIGNAL(textChanged(const QString&)),
-          this,             SLOT(__handleTextChange(const QString&)));
-  connect(__metarsHandler,  SIGNAL(newMetarsAvailable()),
-          this,             SLOT(__handleNewMetars()));
-  connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
-          this,                         SLOT(__enableButtons()));
+  connect(FetchButton, &QPushButton::clicked, this, &MetarsWindow::metarRequested);
+  connect(RefreshAllButton, &QPushButton::clicked, __updater, &MetarUpdater::update);
+  connect(ClearButton, &QPushButton::clicked, __metars, &MetarListModel::clear);
+  connect(MetarIcaoEdit, &QLineEdit::textChanged, this, &MetarsWindow::__handleTextChange);
+  connect(__metars,  &MetarListModel::rowsInserted, this, &MetarsWindow::__handleNewMetars);
+  connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated, this, &MetarsWindow::__enableButtons);
   
   FetchButton->setEnabled(false);
-  MetarListView->setModel(__metarsHandler);
+  MetarListView->setModel(__metars);
   MetarListView->setAttribute(Qt::WA_TranslucentBackground);
-}
-
-MetarsWindow::~MetarsWindow() {
-  delete __metarsHandler;
-  delete __httpHandler;
 }
 
 void
@@ -72,7 +57,8 @@ MetarsWindow::metarRequested() {
   __findAndSelectMetar(MetarIcaoEdit->text());
 }
 
-void MetarsWindow::showEvent(QShowEvent* event) {
+void
+MetarsWindow::showEvent(QShowEvent* event) {
   if (!event->spontaneous()) {
     QRect rect = QDesktopWidget().screenGeometry(wui()->mainWindow());
     int m = rect.height() / 4;
@@ -106,14 +92,13 @@ MetarsWindow::keyPressEvent(QKeyEvent* event) {
 
 void
 MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound) {
-  const Metar* m = __metarsHandler->find(icao.toUpper());
-  if (m) {
-    const QModelIndex mi = __metarsHandler->modelIndexForMetar(m);
-    MetarListView->setCurrentIndex(mi);
-    MetarListView->scrollTo(mi);
+  auto matches = __metars->match(__metars->index(0), MetarRole, icao, 1);
+  if (matches.length() > 0) {
+    MetarListView->setCurrentIndex(matches.first());
+    MetarListView->scrollTo(matches.first());
   } else {
     if (fetchIfNotFound) {
-      __metarsHandler->fetchMetar(icao);
+      __updater->fetch(icao);
       __awaited = icao;
     }
   }

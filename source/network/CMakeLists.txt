@@ -1,6 +1,7 @@
 set (network_SRCS
   dataupdater.cpp
   filedownloader.cpp
+  metarupdater.cpp
   plaintextdownloader.cpp
   resourcemanager.cpp
   statspurveyor.cpp
@@ -10,6 +11,7 @@ set (network_SRCS
 set (network_HEADERS
   dataupdater.h
   filedownloader.h
+  metarupdater.h
   plaintextdownloader.h
   resourcemanager.h
   statspurveyor.h

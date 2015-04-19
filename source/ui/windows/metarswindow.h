@@ -1,6 +1,6 @@
 /*
     metarswindow.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@
 #include "vatsimdata/metar.h"
 
 class VatsimDataHandler;
-class PlainTextDownloader;
 class MetarListModel;
+class MetarUpdater;
 
 /**
  * \todo Refactor.
@@ -38,7 +38,6 @@ class MetarsWindow : public QWidget, private Ui::MetarsWindow {
 
 public:
   MetarsWindow(QWidget* parent = nullptr);
-  virtual ~MetarsWindow();
 
 public slots:
   void show(QString icao);
@@ -57,8 +56,8 @@ private slots:
   void __enableButtons();
   
 private:
-  PlainTextDownloader* __httpHandler;
-  MetarListModel*      __metarsHandler;
+  MetarListModel* __metars;
+  MetarUpdater* __updater;
   
   /* Keeps the ICAO of the metar that user's waiting for */
   QString __awaited;

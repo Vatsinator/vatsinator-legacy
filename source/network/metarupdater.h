@@ -1,6 +1,6 @@
 /*
- * roles.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * metarupdater.h
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,37 @@
  *
  */
 
-#include <Qt>
+#ifndef METARUPDATER_H
+#define METARUPDATER_H
 
-enum {
-  UserRole = Qt::UserRole,
+#include <QObject>
+#include <QQueue>
+#include <QString>
+
+class PlainTextDownloader;
+class MetarListModel;
+
+class MetarUpdater : public QObject {
+  Q_OBJECT
+
+public:
+  MetarUpdater(MetarListModel* model, QObject* parent = nullptr);
   
-  UrlRole /**< Url attached to the object (QString or QUrl) */,
-  MetarRole /**< Metar in the MetarListModel (Metar) */,
-  InstancePointerRole /**< Raw instance pointer (void*) */
+public slots:
+  void fetch(QString icao);
+  void update();
+  
+protected:
+  void timerEvent(QTimerEvent* event) override;
+  
+private slots:
+  void __readMetars();
+  
+private:
+  MetarListModel* __metars;
+  PlainTextDownloader* __downloader;
+  QQueue<QString> __requests;
+  
 };
+
+#endif // METARUPDATER_H

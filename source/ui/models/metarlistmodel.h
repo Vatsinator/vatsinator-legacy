@@ -1,6 +1,6 @@
 /*
     metarlistmodel.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,76 +23,35 @@
 #include <QAbstractListModel>
 #include <QQueue>
 
-#include "vatsimdata/metar.h"
-
-class PlainTextDownloader;
+class Metar;
 
 /**
  * The MetarListModel class is a model that keeps METAR reports.
- * 
- * \todo Split to MetarListModel and MetarUpdater.
  */
 class MetarListModel : public QAbstractListModel {
   Q_OBJECT
 
-signals:
-  /**
-   * This signal is emitted whenever a new METAR report is available.
-   */
-  void newMetarsAvailable();
-  
-  /**
-   * This signal is emitted in order to idicate that the requested METAR
-   * is unavailable.
-   */
-  void noMetar(QString icao);
-
 public:
   /**
-   * Constructs new MetarListModel instance that will use the given _downloader_.
-   * Passes _parent_ to QAbstractListModel.
+   * The constructor passes _parent_ to _QAbstractListModel_.
    */
-  MetarListModel(PlainTextDownloader* downloader, QObject* parent = 0);
-
-  /**
-   * Starts fetching the METAR.
-   * After done, emits _newMetarsAvailable()_ signal.
-   * \param icao Airport ICAO code.
-   */
-  void fetchMetar(const QString& icao);
-
-  /**
-   * Looks for the METAR.
-   * \param icao Airport ICAO code. \note The code must be uppercase.
-   * \return Pointer to the found METAR instance or _nullptr_ if not found.
-   */
-  const Metar* find(const QString& icao) const;
+  MetarListModel(QObject* parent = nullptr);
   
-  /**
-   * Returns the model index for the given metar.
-   */
-  const QModelIndex modelIndexForMetar(const Metar* metar) const;
-
-  int rowCount(const QModelIndex& parent = QModelIndex()) const;
-  QVariant data(const QModelIndex& index, int role) const;
+  virtual ~MetarListModel();
   
-  bool anyMetarsInQueue() const;
-
+  void addOrUpdate(const QString& metar);
+  
+  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+  QVariant data(const QModelIndex& index, int role) const override;
+  QModelIndexList match(const QModelIndex& start, int role,
+                        const QVariant& value, int hits = 1,
+                        Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
+  
 public slots:
-  void updateAll();
   void clear();
-
-private:
-  void __addMetar(const QString& metar);
-  bool __matches(const QString& word);
-  
-private slots:
-  void __readMetar();
   
 private:
-  QQueue<QString>       __requests;
-  QList<Metar>          __metarList;
-  PlainTextDownloader*  __downloader;
+  QList<Metar*> __metars;
 
 };
 

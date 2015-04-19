@@ -691,9 +691,6 @@ VatsimDataHandler::__dataFetched() {
     if (ok) {
       emit vatsimDataUpdated();
       FileManager::cacheData(CacheFileName, __downloader->data());
-      
-      /* TODO Fix that shit below */
-//      MetarListModel::getSingleton().updateAll();
     } else {
       emit vatsimDataError();
     }
