@@ -1,6 +1,6 @@
 /*
  * maprenderer.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@
 #include "ui/map/mapscene.h"
 #include "ui/map/modelmatcher.h"
 #include "ui/map/uiritem.h"
-#include "ui/map/worldpolygon.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
@@ -46,7 +45,6 @@
 MapRenderer::MapRenderer(QObject* parent) :
     QObject(parent),
     __functions(new QOpenGLFunctions(QOpenGLContext::currentContext())),
-    __world(new WorldPolygon(this)),
     __iconKeeper(new IconKeeper(this)),
     __modelMatcher(new ModelMatcher(this)),
     __scene(new MapScene(this))
@@ -263,10 +261,7 @@ MapRenderer::paint()
     __worldTransform.scale(zoom(), zoom());
     __worldTransform.translate(-center().x(), -center().y());
     
-    glClearColor(__scene->settings().colors.seas.redF(),
-                 __scene->settings().colors.seas.greenF(),
-                 __scene->settings().colors.seas.blueF(),
-                 1.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     for (float o : __offsets) {
@@ -288,16 +283,16 @@ MapRenderer::paint()
 void
 MapRenderer::__drawWorld()
 {
-    static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
-    
-    QMatrix4x4 mvp = __projection * __worldTransform;
-    mvp.translate(QVector3D(0.0f, 0.0f, zValue));
-    __identityProgram->bind();
-    __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
-    __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
-    __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.lands);
-    __world->paint();
-    __identityProgram->release();
+//     static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+//     
+//     QMatrix4x4 mvp = __projection * __worldTransform;
+//     mvp.translate(QVector3D(0.0f, 0.0f, zValue));
+//     __identityProgram->bind();
+//     __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
+//     __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
+//     __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.lands);
+//     __world->paint();
+//     __identityProgram->release();
 }
 
 void

@@ -4,7 +4,6 @@ install (
         Manifest
         WorldAirports.db
         WorldFirs.db
-        WorldMap.db
     DESTINATION
         ${vatsinator_INSTALL_DIR}
 )

@@ -32,7 +32,6 @@ set (ui_SRCS
     map/mapscene.cpp
     map/modelmatcher.cpp
     map/uiritem.cpp
-    map/worldpolygon.cpp
     
     models/airporttablemodel.cpp
     models/atctablemodel.cpp
@@ -54,7 +53,6 @@ set (ui_HEADERS
     map/mapscene.h
     map/modelmatcher.h
     map/uiritem.h
-    map/worldpolygon.h
     
     models/airporttablemodel.h
     models/atctablemodel.h

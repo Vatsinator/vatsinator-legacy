@@ -1,6 +1,6 @@
 /*
     worldmap.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,13 +24,12 @@
 #include <QVector>
 
 #include "db/point.h"
-#include "ui/notifiable.h"
 
 /**
  * The WorldMap class is a layer between the application and the database.
  * It contains global coastline as well as triangles.
  */
-class WorldMap : public QObject, public Notifiable {
+class WorldMap : public QObject {
     Q_OBJECT
     
     struct Polygon {
@@ -39,14 +38,10 @@ class WorldMap : public QObject, public Notifiable {
     };
     
 public:
-
-    /**
-     * Default constructor.
-     */
     WorldMap(QObject* parent = nullptr);
     
     /**
-     * Called by VatsinatorApplication only.
+     * Reads the database.
      */
     void initialize();
     
@@ -70,8 +65,6 @@ private:
     void __readDatabase();
     
     Polygon __worldPolygon;
-    
-    
 };
 
 #endif // WORLDMAP_H

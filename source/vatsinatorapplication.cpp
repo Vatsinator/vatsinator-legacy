@@ -1,6 +1,6 @@
 /*
     vatsinatorapplication.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "db/worldmap.h"
 #include "events/decisionevent.h"
 #include "network/metarupdater.h"
 #include "network/plaintextdownloader.h"
@@ -59,7 +58,6 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     __airportDatabaase(new AirportDatabase(this)),
     __firDatabase(new FirDatabase(this)),
     __metarUpdater(new MetarUpdater(new MetarListModel(this), this)),
-    __worldMap(new WorldMap(this)),
     __vatsimData(new VatsimDataHandler(this)),
     __languageManager(new LanguageManager()),
     __resourceManager(new ResourceManager()),
@@ -131,9 +129,6 @@ void
 VatsinatorApplication::__initialize()
 {
     qDebug("VatsinatorApplication: initializing");
-    
-    /* Read world map before UI */
-    __worldMap->initialize();
     
     /* Create windows */
     __userInterface->initialize();

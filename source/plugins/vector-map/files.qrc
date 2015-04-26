@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="db">
+    <file>WorldMap.db</file>
+  </qresource>
+  <qresource prefix="shaders">
+    <file>identity.frag</file>
+    <file>identity.vert</file>
+  </qresource>
+</RCC>

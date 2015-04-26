@@ -3,7 +3,6 @@ set (db_SRCS
   airlinedatabase.cpp
   airportdatabase.cpp
   firdatabase.cpp
-  worldmap.cpp
 )
 
 set (db_HEADERS
@@ -12,7 +11,6 @@ set (db_HEADERS
   airportdatabase.h
   firdatabase.h
   point.h
-  worldmap.h
 )
 
 add_library (db OBJECT

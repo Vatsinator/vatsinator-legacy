@@ -1,6 +1,6 @@
 /*
     worldmap.cpp
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,9 +18,6 @@
 
 #include <QtCore>
 
-#include "storage/filemanager.h"
-#include "vatsinatorapplication.h"
-
 #include "worldmap.h"
 
 WorldMap::WorldMap(QObject* parent) : QObject(parent) {}
@@ -33,12 +30,10 @@ WorldMap::initialize()
 
 void WorldMap::__readDatabase()
 {
-    QFile db(FileManager::path("WorldMap.db"));
-    
-    if (!db.open(QIODevice::ReadOnly)) {
-        notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
-        return;
-    }
+    QFile db(":/db/WorldMap.db");
+    bool result = db.open(QIODevice::ReadOnly);
+    Q_ASSERT(result);
+    Q_UNUSED(result);
     
     int size;
     db.read(reinterpret_cast<char*>(&size), 4);

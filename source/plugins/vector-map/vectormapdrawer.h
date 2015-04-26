@@ -21,8 +21,14 @@
 #define VECTORMAPDRAWER_H
 
 #include <QObject>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 
 #include "plugins/mapdrawer.h"
+
+class QOpenGLShaderProgram;
+
+class WorldMap;
 
 /**
  * The VectorMapDrawer draws a vector, legacy map using data provided by
@@ -36,10 +42,37 @@ class VectorMapDrawer : public QObject, public MapDrawer {
 public:
     VectorMapDrawer(QObject* parent = nullptr);
     
+    virtual ~VectorMapDrawer();
+    
+    /**
+     * \copydoc MapDrawer::flags()
+     */
     MapDrawer::MapDrawerFlags flags() const override;
+    
+    /**
+     * \copydoc MapDrawer::initialize()
+     */
     void initialize() override;
+    
+    /**
+     * \copydoc MapDrawer::draw()
+     */
     void draw(const QRectF& screen, qreal zoom) override;
     
+private:
+    bool __buildShaders();
+    bool __initializeBuffers();
+    
+    WorldMap* __worldMap;
+    QOpenGLBuffer __borders;
+    QOpenGLBuffer __triangles;
+    QOpenGLVertexArrayObject __vao;
+    QOpenGLShaderProgram* __identityProgram;
+    
+    int __vertices;
+    
+    int __matrixLocation;
+    int __colorLocation;
 };
 
 #endif // VECTORMAPDRAWER_H
