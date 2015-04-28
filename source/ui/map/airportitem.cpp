@@ -1,6 +1,6 @@
 /*
  * airportitem.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,18 +40,17 @@ namespace {
   QVector<Point> makeCircle(GLfloat centerX, GLfloat centerY) {
     QVector<Point> circle;
     
-//     circle << Point{centerX, centerY};
-    circle << Point{0.0f, 0.0f};
+    circle << Point{centerX, centerY};
     
     for (qreal angle = 0.0; angle < (2 * M_PI); angle += 0.1) {
-      GLfloat x = qCos(angle)/* + centerX*/;
-      GLfloat y = 0.5f * qSin(angle)/* + centerY*/;
+      GLfloat x = qCos(angle) + centerX;
+      GLfloat y = 0.5f * qSin(angle) + centerY;
       circle << Point{x, y};
     }
     
-//     circle << Point{centerX + 1.0f, centerY};
+    circle << Point{centerX + 1.0f, centerY};
     
-    return qMove(circle);
+    return circle;
   }
   
   QVector<quint32> makeTriangles(const QVector<Point>& circle) {
@@ -61,7 +60,7 @@ namespace {
       triangles << 0 << i - 1 << i;
     }
     
-    return qMove(triangles);
+    return triangles;
   }
 }
 
@@ -74,12 +73,13 @@ AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     __position(airport->data()->longitude, airport->data()->latitude),
     __icon(nullptr),
     __label(QOpenGLTexture::Target2D),
-    __linesReady(false) {
+    __linesReady(false),
+    __bufferApproachPoints(QOpenGLBuffer::VertexBuffer),
+    __bufferApproachTriangles(QOpenGLBuffer::IndexBuffer),
+    __trianglesApproach(0) {
   
-  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
-          this,                                 SLOT(__reloadSettings()));
-  connect(__airport,                            SIGNAL(updated()),
-          this,                                 SLOT(__invalidate()));
+  connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &AirportItem::__reloadSettings);
+  connect(__airport, &Airport::updated, this, &AirportItem::__invalidate);
 }
 
 AirportItem::~AirportItem() {
@@ -321,6 +321,7 @@ AirportItem::__initializeApproachBuffer() const {
     points = tma->points();
     triangles = tma->triangles();
   } else {
+    qDebug("TMA for %s not found. Using default circle.", qPrintable(data()->icao()));
     points = makeCircle(data()->position().x(), data()->position().y());
     triangles = makeTriangles(points);
   }
