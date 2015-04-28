@@ -39,6 +39,7 @@
 #include "vatsimdata/controller.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/pilot.h"
+#include "vatsimdata/tma.h"
 #include "vatsimdata/uir.h"
 #include "vatsimdata/updatescheduler.h"
 #include "vatsimdata/vatsimdatadocument.h"
@@ -123,6 +124,7 @@ VatsimDataHandler::initialize() {
   __readAliasFile(FileManager::path("data/alias"));
   __readFirFile(FileManager::path("data/fir"));
   __readUirFile(FileManager::path("data/uir"));
+  __readTmaFile(FileManager::path("data/tma"));
   
   __initialized = true;
   emit initialized();
@@ -182,8 +184,8 @@ VatsimDataHandler::findAirport(const QString& icao) {
     return __airports[icao];
   } else {
     QList<QString> keys = __aliases.values(icao);
-    if (icao.length() < 4)
-      keys.prepend(QString("K") % icao);
+    if (icao.length() < 4) /* Handle USA aliases (JFK -> KJFK) */
+      keys.prepend(QStringLiteral("K") % icao);
     
     for (const QString& k: keys) {
       if (__airports.contains(k))
@@ -234,6 +236,11 @@ VatsimDataHandler::findUir(const QString& icao) {
   }
   
   return nullptr;
+}
+
+Tma*
+VatsimDataHandler::findTma(const QString& icao) {
+  return __tmas.value(icao, nullptr);
 }
 
 QString
@@ -334,7 +341,7 @@ VatsimDataHandler::nmDistance(
     const qreal& lat2, const qreal& lon2) {
   
   /* http://www.movable-type.co.uk/scripts/latlong.html */
-  static Q_DECL_CONSTEXPR qreal R = 3440.06479191; // nm
+  static Q_CONSTEXPR qreal R = 3440.06479191; // nm
   
   return qAcos(
       qSin(lat1) * qSin(lat2) +
@@ -346,7 +353,7 @@ VatsimDataHandler::nmDistance(
 qreal
 VatsimDataHandler::nmDistance(const LonLat& a, const LonLat& b) {
   /* http://www.movable-type.co.uk/scripts/latlong.html */
-  static Q_DECL_CONSTEXPR qreal R = 3440.06479191; // nm
+  static Q_CONSTEXPR qreal R = 3440.06479191; // nm
   
   return qAcos(
       qSin(a.latitude()) * qSin(b.latitude()) +
@@ -373,7 +380,7 @@ VatsimDataHandler::userDecisionEvent(DecisionEvent* event) {
 
 void
 VatsimDataHandler::__readAliasFile(const QString& fileName) {
-  qDebug("Reading \"alias\" file...");
+  qDebug("Reading %s...", qPrintable(fileName));
   
   QFile file(fileName);
   
@@ -416,13 +423,11 @@ VatsimDataHandler::__readAliasFile(const QString& fileName) {
   }
   
   file.close();
-  
-  qDebug("Finished reading \"alias\" file.");
 }
 
 void
 VatsimDataHandler::__readCountryFile(const QString& fileName) {
-  qDebug("Reading \"country\" file...");
+  qDebug("Reading %s...", qPrintable(fileName));
   
   QFile file(fileName);
   
@@ -451,13 +456,11 @@ VatsimDataHandler::__readCountryFile(const QString& fileName) {
   }
   
   file.close();
-  
-  qDebug("Finished reading \"country\" file.");
 }
 
 void
 VatsimDataHandler::__readFirFile(const QString& fileName) {
-  qDebug("Reading \"fir\" file...");
+  qDebug("Reading %s...", qPrintable(fileName));
   
   QFile file(fileName);
   
@@ -510,13 +513,11 @@ VatsimDataHandler::__readFirFile(const QString& fileName) {
   }
   
   file.close();
-  
-  qDebug("Finished reading \"fir\" file.");
 }
 
 void
 VatsimDataHandler::__readUirFile(const QString& fileName) {
-  qDebug("Reading \"uir\" file...");
+  qDebug("Reading %s...", qPrintable(fileName));
   
   QFile file(fileName);
   
@@ -549,8 +550,41 @@ VatsimDataHandler::__readUirFile(const QString& fileName) {
   }
   
   file.close();
+}
+
+void
+VatsimDataHandler::__readTmaFile(const QString& fileName) {
+  qDebug("Reading %s...", qPrintable(fileName));
   
-  qDebug("Finished reading \"uir\" file.");
+  QFile file(fileName);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(fileName));
+    return;
+  }
+  
+  QJsonParseError error;
+  QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
+  
+  if (error.error != QJsonParseError::NoError) {
+    qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
+             qPrintable(file.fileName()), qPrintable(error.errorString()));
+    notifyWarning(tr("File %1 could not be read. Please reinstall the application.").arg(file.fileName()));
+    return;
+  }
+  
+  Q_ASSERT(document.isObject());
+  QJsonObject object = document.object();
+  
+  auto keys = object.keys();
+  std::for_each(keys.begin(), keys.end(), [this, &object](const QString& key) {
+    auto value = object.value(key);
+    Q_ASSERT(value.isArray());;
+    auto array = value.toArray();
+    Tma* tma = new Tma(key, array, this);
+    __tmas.insert(key, tma);
+  });
+  
+  file.close();
 }
 
 void

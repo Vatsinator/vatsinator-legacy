@@ -51,8 +51,6 @@ Airport::Airport(const AirportRecord* record) :
   fillFir(QString(__data->fir_b), __data->is_fir_b_oceanic);
 }
 
-Airport::~Airport() {}
-
 unsigned
 Airport::countDepartures(bool includePrefiled) const {
   return std::count_if(__outbounds->flights().begin(), __outbounds->flights().end(), 

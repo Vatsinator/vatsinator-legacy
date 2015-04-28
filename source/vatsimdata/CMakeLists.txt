@@ -6,6 +6,7 @@ set (vatsimdata_SRCS
   lonlat.cpp
   metar.cpp
   pilot.cpp
+  tma.cpp
   uir.cpp
   updatescheduler.cpp
   vatsimdatadocument.cpp
@@ -21,6 +22,7 @@ set (vatsimdata_HEADERS
   lonlat.h
   metar.h
   pilot.h
+  tma.h
   uir.h
   updatescheduler.h
   vatsimdatadocument.h

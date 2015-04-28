@@ -1,6 +1,6 @@
 /*
  * airportitem.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,27 +30,41 @@
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/pilot.h"
+#include "vatsimdata/tma.h"
+#include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
 #include "airportitem.h"
 
 namespace {
-  QVector<GLfloat> makeCircle(GLfloat centerX, GLfloat centerY) {
-    QVector<GLfloat> circle;
+  QVector<Point> makeCircle(GLfloat centerX, GLfloat centerY) {
+    QVector<Point> circle;
     
-    circle << centerX << centerY;
+    circle << Point{centerX, centerY};
     
     for (qreal angle = 0.0; angle < (2 * M_PI); angle += 0.1) {
       GLfloat x = qCos(angle) + centerX;
       GLfloat y = 0.5f * qSin(angle) + centerY;
-      circle << x << y;
+      circle << Point{x, y};
     }
     
-    circle << centerX + 1.0f << centerY;
+    circle << Point{centerX + 1.0f, centerY};
     
-    return qMove(circle);
+    return circle;
+  }
+  
+  QVector<quint32> makeTriangles(const QVector<Point>& circle) {
+    QVector<quint32> triangles;
+    
+    for (int i = 2; i < circle.size(); ++i) {
+      triangles << 0 << i - 1 << i;
+    }
+    
+    return triangles;
   }
 }
+
+
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
@@ -59,14 +73,13 @@ AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     __position(airport->data()->longitude, airport->data()->latitude),
     __icon(nullptr),
     __label(QOpenGLTexture::Target2D),
-    __linesReady(false) {
+    __linesReady(false),
+    __bufferApproachPoints(QOpenGLBuffer::VertexBuffer),
+    __bufferApproachTriangles(QOpenGLBuffer::IndexBuffer),
+    __trianglesApproach(0) {
   
-  __initializeApproachBuffer();
-  
-  connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
-          this,                                 SLOT(__reloadSettings()));
-  connect(__airport,                            SIGNAL(updated()),
-          this,                                 SLOT(__invalidate()));
+  connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &AirportItem::__reloadSettings);
+  connect(__airport, &Airport::updated, this, &AirportItem::__invalidate);
 }
 
 AirportItem::~AirportItem() {
@@ -75,8 +88,11 @@ AirportItem::~AirportItem() {
 
 void
 AirportItem::drawApproachArea() const {
+  if (!__vaoApproach.isCreated())
+    __initializeApproachBuffer();
+  
   __vaoApproach.bind();
-  glDrawArrays(GL_TRIANGLE_FAN, 0, __trianglesApproach);
+  glDrawElements(GL_TRIANGLES, __trianglesApproach, GL_UNSIGNED_INT, 0);
   __vaoApproach.release();
 }
 
@@ -289,26 +305,56 @@ AirportItem::__initializeLabel() const {
 }
 
 void
-AirportItem::__initializeApproachBuffer() {
-  auto circle = makeCircle(data()->position().x(), data()->position().y());
+AirportItem::__initializeApproachBuffer() const {
+  QVector<Point> points;
+  QVector<quint32> triangles;
   
-  __bufferApproach.create();
-  Q_ASSERT(__bufferApproach.isCreated());
-  __bufferApproach.setUsagePattern(QOpenGLBuffer::StaticDraw);
-  __bufferApproach.bind();
-  __bufferApproach.allocate(circle.constData(), sizeof(GLfloat) * circle.size());
-  __bufferApproach.release();
+  Tma* tma = vApp()->vatsimDataHandler()->findTma(data()->icao());
+  if (tma) {
+    qDebug("TMA for %s found. Triangulating...", qPrintable(data()->icao()));
+    if (Q_UNLIKELY(!tma->isLoaded()))
+      tma->load();
+    
+    if (!tma->isTriangulated())
+      tma->triangulate();
+    
+    points = tma->points();
+    triangles = tma->triangles();
+  } else {
+    qDebug("TMA for %s not found. Using default circle.", qPrintable(data()->icao()));
+    points = makeCircle(data()->position().x(), data()->position().y());
+    triangles = makeTriangles(points);
+  }
+  
+  Q_ASSERT(points.size());
+  Q_ASSERT(triangles.size());
+  
+  __bufferApproachPoints.create();
+  Q_ASSERT(__bufferApproachPoints.isCreated());
+  __bufferApproachPoints.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  __bufferApproachPoints.bind();
+  __bufferApproachPoints.allocate(points.constData(), sizeof(Point) * points.size());
+  __bufferApproachPoints.release();
+  
+  __bufferApproachTriangles.create();
+  Q_ASSERT(__bufferApproachTriangles.isCreated());
+  __bufferApproachTriangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  __bufferApproachTriangles.bind();
+  __bufferApproachTriangles.allocate(triangles.constData(), sizeof(quint32) * triangles.size());
+  __bufferApproachTriangles.release();
   
   __vaoApproach.create();
   Q_ASSERT(__vaoApproach.isCreated());
   __vaoApproach.bind();
-  __bufferApproach.bind();
+  __bufferApproachPoints.bind();
+  __bufferApproachTriangles.bind();
   __scene->renderer()->opengl()->glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
   __scene->renderer()->opengl()->glEnableVertexAttribArray(MapRenderer::vertexLocation());
   __vaoApproach.release();
-  __bufferApproach.release();
+  __bufferApproachPoints.release();
+  __bufferApproachTriangles.release();
   
-  __trianglesApproach = circle.size() / 2;
+  __trianglesApproach = triangles.size();
 }
 
 void

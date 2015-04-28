@@ -265,7 +265,7 @@ MapRenderer::paint() {
   __xOffset = 0.0f;
 //   auto end = std::chrono::high_resolution_clock::now();
 //   qDebug() << "MapRenderer::paint()" << std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count();
-//  Q_ASSERT(glGetError() == 0);
+ Q_ASSERT(glGetError() == 0);
 }
 
 void

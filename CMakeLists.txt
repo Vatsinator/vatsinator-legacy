@@ -48,6 +48,7 @@ include_directories (${Qt5Network_INCLUDE_DIRS})
 include_directories (${QUAZIP_INCLUDE_DIRS})
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
+add_subdirectory (3rdparty)
 
 include (QtUtils)
 

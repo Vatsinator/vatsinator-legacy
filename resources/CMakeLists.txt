@@ -16,6 +16,7 @@ install(
         data/country
         data/fir
         data/model
+        data/tma
         data/uir
     DESTINATION
         ${vatsinator_INSTALL_DIR}/data

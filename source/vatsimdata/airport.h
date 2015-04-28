@@ -48,7 +48,7 @@ public:
    */
   Airport(const AirportRecord* record);
   
-  ~Airport();
+  ~Airport() = default;
   
   /**
    * Counts flights that are about to take off.
