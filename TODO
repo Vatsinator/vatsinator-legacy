@@ -1,7 +1,6 @@
 == TODO for version 1.0 ==
 
 * Pilots that went offline airborne
-* Extended ATC
 * Home-location
 * Data files should use JSON format (model, uir)
 * Old versions config updater
@@ -11,7 +10,6 @@
 
 Due to the new engine:
 * Make trackers work (FlightTracker, AirportTracker)
-* Draw APP circles
 
 == TODO for later versions ==
 * Dynamic map (plugin format)
