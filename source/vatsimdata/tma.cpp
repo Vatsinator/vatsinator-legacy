@@ -21,12 +21,13 @@
 #include <QtCore>
 #include "PolygonTriangulator/PolygonTriangulator.h"
 
+#include "vatsimdata/airport.h"
+
 #include "tma.h"
 
 Tma::Tma(QString icao, QObject* parent) :
     QObject(parent),
     __icao(qMove(icao)),
-    __loaded(false),
     __triangulated(false) {}
 
 Tma::Tma(QString icao, const QJsonArray& coords, QObject* parent) :
@@ -35,19 +36,13 @@ Tma::Tma(QString icao, const QJsonArray& coords, QObject* parent) :
 }
 
 void
-Tma::load() {
-  /* TODO Load coordinates on-demand */
-  Q_UNREACHABLE();
-}
-
-void
 Tma::triangulate() {
   auto start = std::chrono::high_resolution_clock::now();
   
   std::pair<std::vector<double>, std::vector<double>> coords;
   for (auto& p: __points) {
-    coords.first.push_back(p.x);
-    coords.second.push_back(p.y);
+    coords.first.push_back(static_cast<double>(p.x));
+    coords.second.push_back(static_cast<double>(p.y));
   }
   
   PolygonTriangulator triangulator(coords.first, coords.second);
@@ -57,7 +52,15 @@ Tma::triangulate() {
   }
   
   for (auto t: *triangulator.triangles()) {
-    __triangles << t.at(0) << t.at(1) << t.at(2);
+    /*
+     * Dunno why, but PolygonTriangulator returns indices counting from 1, not
+     * from 0.
+     * As we don't have extremely large and complex polygons, unsigned
+     * short is enough to store our indices.
+     */
+    __triangles << static_cast<quint16>(t.at(0)) - 1
+        << static_cast<quint16>(t.at(1)) - 1
+        << static_cast<quint16>(t.at(2)) - 1;
   }
   
   auto end = std::chrono::high_resolution_clock::now();
@@ -66,22 +69,37 @@ Tma::triangulate() {
   emit triangulated();
 }
 
+Tma*
+Tma::circle(const Airport* airport) {
+  Tma* tma = new Tma(QStringLiteral("ZZZZ"));
+  
+  tma->__points << Point { static_cast<float>(airport->position().x()), static_cast<float>(airport->position().y()) };
+  
+  for (qreal angle = 0.0; angle < (2 * M_PI); angle += 0.1) {
+    float x = qCos(angle) + airport->position().x();
+    float y = 0.5f * qSin(angle) + airport->position().y();
+    tma->__points << Point{x, y};
+  }
+  
+  tma->__points << Point { static_cast<float>(airport->position().x()) + 1.0f, static_cast<float>(airport->position().y()) };
+  
+  return tma;
+}
+
 void
 Tma::__load(const QJsonArray& coords) {
-  qreal x = qQNaN();
+  qreal y = qQNaN();
   
   for (const auto& value: coords) {
     Q_ASSERT(value.isDouble());
-    if (qIsNaN(x)) {
-      x = value.toDouble();
+    if (qIsNaN(y)) {
+      y = value.toDouble();
     } else {
-      double y = value.toDouble();
+      double x = value.toDouble();
       __points << Point{static_cast<float>(x), static_cast<float>(y)};
-      x = qQNaN();
+      y = qQNaN();
     }
   }
   
-  Q_ASSERT(qIsNaN(x));
-  __loaded = true;
-  emit loaded();
+  Q_ASSERT(qIsNaN(y));
 }

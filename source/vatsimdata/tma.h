@@ -24,40 +24,39 @@
 #include <QVector>
 #include "db/point.h"
 
+class Airport;
+
 class Tma : public QObject {
   Q_OBJECT
   
   Q_PROPERTY(QString icao READ icao)
-  Q_PROPERTY(bool loaded READ isLoaded NOTIFY loaded)
   Q_PROPERTY(bool triangulated READ isTriangulated NOTIFY triangulated)
   
 signals:
-  void loaded();
   void triangulated();
   
 public:
   Tma(QString icao, QObject* parent = nullptr);
   Tma(QString icao, const QJsonArray& coords, QObject* parent = nullptr);
   
-  void load();
   void triangulate();
   
+  static Tma* circle(const Airport* airport);
+  
   inline const QVector<Point>& points() const { return __points; }
-  inline const QVector<quint32>& triangles() const { return __triangles; }
+  inline const QVector<quint16>& triangles() const { return __triangles; }
   
   inline const QString& icao() const { return __icao; }
-  inline bool isLoaded() const { return __loaded; }
   inline bool isTriangulated() const { return __triangulated; }
   
 private:
   void __load(const QJsonArray& coords);
   
   QString __icao;
-  bool __loaded;
   bool __triangulated;
   
   QVector<Point> __points;
-  QVector<quint32> __triangles;
+  QVector<quint16> __triangles;
   
 };
 

@@ -36,35 +36,6 @@
 
 #include "airportitem.h"
 
-namespace {
-  QVector<Point> makeCircle(GLfloat centerX, GLfloat centerY) {
-    QVector<Point> circle;
-    
-    circle << Point{centerX, centerY};
-    
-    for (qreal angle = 0.0; angle < (2 * M_PI); angle += 0.1) {
-      GLfloat x = qCos(angle) + centerX;
-      GLfloat y = 0.5f * qSin(angle) + centerY;
-      circle << Point{x, y};
-    }
-    
-    circle << Point{centerX + 1.0f, centerY};
-    
-    return circle;
-  }
-  
-  QVector<quint32> makeTriangles(const QVector<Point>& circle) {
-    QVector<quint32> triangles;
-    
-    for (int i = 2; i < circle.size(); ++i) {
-      triangles << 0 << i - 1 << i;
-    }
-    
-    return triangles;
-  }
-}
-
-
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
@@ -92,7 +63,7 @@ AirportItem::drawApproachArea() const {
     __initializeApproachBuffer();
   
   __vaoApproach.bind();
-  glDrawElements(GL_TRIANGLES, __trianglesApproach, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, __trianglesApproach, GL_UNSIGNED_SHORT, 0);
   __vaoApproach.release();
 }
 
@@ -307,13 +278,11 @@ AirportItem::__initializeLabel() const {
 void
 AirportItem::__initializeApproachBuffer() const {
   QVector<Point> points;
-  QVector<quint32> triangles;
+  QVector<quint16> triangles;
   
   Tma* tma = vApp()->vatsimDataHandler()->findTma(data()->icao());
   if (tma) {
     qDebug("TMA for %s found. Triangulating...", qPrintable(data()->icao()));
-    if (Q_UNLIKELY(!tma->isLoaded()))
-      tma->load();
     
     if (!tma->isTriangulated())
       tma->triangulate();
@@ -322,8 +291,14 @@ AirportItem::__initializeApproachBuffer() const {
     triangles = tma->triangles();
   } else {
     qDebug("TMA for %s not found. Using default circle.", qPrintable(data()->icao()));
-    points = makeCircle(data()->position().x(), data()->position().y());
-    triangles = makeTriangles(points);
+    Tma* temp = Tma::circle(data());
+    if (!temp->isTriangulated())
+      temp->triangulate();
+    
+    points = temp->points();
+    triangles = temp->triangles();
+    
+    delete temp;
   }
   
   Q_ASSERT(points.size());
@@ -340,7 +315,7 @@ AirportItem::__initializeApproachBuffer() const {
   Q_ASSERT(__bufferApproachTriangles.isCreated());
   __bufferApproachTriangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
   __bufferApproachTriangles.bind();
-  __bufferApproachTriangles.allocate(triangles.constData(), sizeof(quint32) * triangles.size());
+  __bufferApproachTriangles.allocate(triangles.constData(), sizeof(quint16) * triangles.size());
   __bufferApproachTriangles.release();
   
   __vaoApproach.create();
