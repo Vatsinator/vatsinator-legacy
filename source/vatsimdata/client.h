@@ -101,7 +101,7 @@ public:
   
   /**
    * Marks this client as invalid; emits the invalid() signal.
-   * \note This function should not be called if you do not really know
+   * \note This function should not be called unless you really know
    * what you're doing.
    */
   virtual void invalidate();
