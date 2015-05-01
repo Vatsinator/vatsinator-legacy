@@ -40,10 +40,17 @@ MetarUpdater::MetarUpdater (MetarListModel* model, QObject* parent) :
 
 void
 MetarUpdater::fetch(QString icao) {
-  QString args = QStringLiteral("?id=%1").arg(icao.toLower());
-  QUrl url(vApp()->vatsimDataHandler()->metar().toString() % args);
-  __downloader->fetch(url);
-  __requests.enqueue(icao);
+  QUrl vatsimMetars = vApp()->vatsimDataHandler()->metar();
+  if (vatsimMetars.isEmpty()) {
+    qDebug("Vatsim status not read yet; postponing request");
+    __requests.enqueue(icao);
+  } else {
+    QUrlQuery query(QStringLiteral("id=%1").arg(icao.toLower()));
+    QUrl url(vatsimMetars);
+    url.setQuery(query);
+    __downloader->fetch(url);
+    __requests.enqueue(icao);
+  }
 }
 
 void

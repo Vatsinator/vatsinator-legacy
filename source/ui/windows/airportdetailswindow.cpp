@@ -19,6 +19,7 @@
 #include <QtWidgets>
 
 #include "db/airportdatabase.h"
+#include "network/metarupdater.h"
 #include "network/weatherforecastdownloader.h"
 #include "plugins/atcbookingtablemodel.h"
 #include "plugins/bookingprovider.h"
@@ -33,6 +34,7 @@
 #include "ui/map/mapscene.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
+#include "ui/models/metarlistmodel.h"
 #include "ui/models/roles.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/widgets/weatherforecastwidget.h"
@@ -43,6 +45,7 @@
 #include "vatsimdata/client.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/controller.h"
+#include "vatsimdata/metar.h"
 #include "vatsimdata/pilot.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
@@ -69,7 +72,7 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
   connect(NotamTableView, &DelayedModelTableView::doubleClicked,
           this, &AirportDetailsWindow::__goToNotam);
   connect(vApp()->vatsimDataHandler()->notamProvider(), &NotamProvider::notamReady,
-          this, &AirportDetailsWindow::__notamUpdate);
+          this, &AirportDetailsWindow::__updateNotam);
   
   connect(ShowButton, &QPushButton::clicked, [this]() {
     wui()->mainWindow()->mapWidget()->renderer()->scene()->cancelFlightTracking();
@@ -131,13 +134,14 @@ AirportDetailsWindow::showEvent(QShowEvent* event) {
 
 void
 AirportDetailsWindow::__fillLabels() {
-  setWindowTitle(tr("%1 - airport details").arg(__airport->data()->icao));
+  setWindowTitle(tr("%1 - airport details").arg(__airport->icao()));
 
-  if (!QString(__airport->data()->iata).isEmpty())
+  if (!QString(__airport->data()->iata).isEmpty()) {
     CodesLabel->setText(QString("%1 / %2").arg(QString(__airport->data()->icao),
                                                QString(__airport->data()->iata)));
-  else
+  } else {
     CodesLabel->setText(QString(__airport->data()->icao));
+  }
 
   NameLabel->setText(QString("%1, %2").arg(QString::fromUtf8(__airport->data()->name),
                                            QString::fromUtf8(__airport->data()->city)));
@@ -147,6 +151,19 @@ AirportDetailsWindow::__fillLabels() {
   CityLabel->setText(QString::fromUtf8(__airport->data()->city));
   CountryLabel->setText(QString::fromUtf8(__airport->data()->country));
   AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->data()->altitude)));
+  
+  // If METAR is available, set it. Otherwise, request it.
+  auto matches = vApp()->metarUpdater()->model()->match(
+      vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
+  if (matches.length() > 0) {
+    Metar metar = matches.first().data(MetarRole).value<Metar>();
+    MetarLabel->setText(metar.metar());
+  } else {
+    vApp()->metarUpdater()->fetch(__airport->icao());
+  }
+  
+  connect(vApp()->metarUpdater()->model(), &MetarListModel::dataChanged, this, &AirportDetailsWindow::__metarUpdated);
+  connect(vApp()->metarUpdater()->model(), &MetarListModel::rowsInserted, this, &AirportDetailsWindow::__metarUpdated);
 }
 
 void
@@ -162,7 +179,7 @@ AirportDetailsWindow::__updateForecast(WeatherForecastReply* reply) {
 }
 
 void
-AirportDetailsWindow::__notamUpdate(NotamListModel* model) {
+AirportDetailsWindow::__updateNotam(NotamListModel* model) {
   if (model->icao() == __airport->icao())
     NotamTableView->setModel(model);
 }
@@ -179,4 +196,16 @@ AirportDetailsWindow::__goToNotam(QModelIndex index) {
   QString url = index.data(UrlRole).toString();
   if (!url.isEmpty())
     QDesktopServices::openUrl(url);
+}
+
+void
+AirportDetailsWindow::__metarUpdated() {
+  auto matches = vApp()->metarUpdater()->model()->match(
+      vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
+  
+  if (matches.length() > 0) {
+    Metar metar = matches.first().data(MetarRole).value<Metar>();
+    if (metar.metar() != MetarLabel->text())
+      MetarLabel->setText(metar.metar());
+  }
 }

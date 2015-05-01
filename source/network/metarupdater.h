@@ -33,6 +33,8 @@ class MetarUpdater : public QObject {
 public:
   MetarUpdater(MetarListModel* model, QObject* parent = nullptr);
   
+  inline MetarListModel* model() { return __metars; }
+  
 public slots:
   void fetch(QString icao);
   void update();

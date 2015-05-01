@@ -23,6 +23,7 @@
 #include "db/firdatabase.h"
 #include "db/worldmap.h"
 #include "events/decisionevent.h"
+#include "network/metarupdater.h"
 #include "network/plaintextdownloader.h"
 #include "network/resourcemanager.h"
 #include "network/statspurveyor.h"
@@ -35,6 +36,7 @@
 #include "ui/widgetsuserinterface.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
+#include "ui/models/metarlistmodel.h"
 #include "ui/windows/settingswindow.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -51,6 +53,7 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     __airlineDatabase(new AirlineDatabase(this)),
     __airportDatabaase(new AirportDatabase(this)),
     __firDatabase(new FirDatabase(this)),
+    __metarUpdater(new MetarUpdater(new MetarListModel(this), this)),
     __worldMap(new WorldMap(this)),
     __vatsimData(new VatsimDataHandler(this)),
     __languageManager(new LanguageManager()),

@@ -29,20 +29,20 @@
 #include "metarswindow.h"
 
 MetarsWindow::MetarsWindow(QWidget* parent) :
-    QWidget(parent),
-    __metars(new MetarListModel(this)),
-    __updater(new MetarUpdater(__metars, this)) {
+    QWidget(parent) {
   setupUi(this);
   
+  MetarUpdater* updater = vApp()->metarUpdater();
+  
   connect(FetchButton, &QPushButton::clicked, this, &MetarsWindow::metarRequested);
-  connect(RefreshAllButton, &QPushButton::clicked, __updater, &MetarUpdater::update);
-  connect(ClearButton, &QPushButton::clicked, __metars, &MetarListModel::clear);
+  connect(RefreshAllButton, &QPushButton::clicked, updater, &MetarUpdater::update);
+  connect(ClearButton, &QPushButton::clicked, updater->model(), &MetarListModel::clear);
   connect(MetarIcaoEdit, &QLineEdit::textChanged, this, &MetarsWindow::__handleTextChange);
-  connect(__metars,  &MetarListModel::rowsInserted, this, &MetarsWindow::__handleNewMetars);
+  connect(updater->model(),  &MetarListModel::rowsInserted, this, &MetarsWindow::__handleNewMetars);
   connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated, this, &MetarsWindow::__enableButtons);
   
   FetchButton->setEnabled(false);
-  MetarListView->setModel(__metars);
+  MetarListView->setModel(updater->model());
   MetarListView->setAttribute(Qt::WA_TranslucentBackground);
 }
 
@@ -92,13 +92,15 @@ MetarsWindow::keyPressEvent(QKeyEvent* event) {
 
 void
 MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound) {
-  auto matches = __metars->match(__metars->index(0), MetarRole, icao, 1);
+  auto matches = vApp()->metarUpdater()->model()->match(
+      vApp()->metarUpdater()->model()->index(0), MetarRole, icao, 1);
+  
   if (matches.length() > 0) {
     MetarListView->setCurrentIndex(matches.first());
     MetarListView->scrollTo(matches.first());
   } else {
     if (fetchIfNotFound) {
-      __updater->fetch(icao);
+      vApp()->metarUpdater()->fetch(icao);
       __awaited = icao;
     }
   }

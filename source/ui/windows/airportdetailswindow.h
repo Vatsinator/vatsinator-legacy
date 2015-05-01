@@ -51,9 +51,10 @@ private:
   
 private slots:
   void __updateForecast(WeatherForecastReply* reply);
-  void __notamUpdate(NotamListModel* model);
+  void __updateNotam(NotamListModel* model);
   void __showDetails(QModelIndex index);
   void __goToNotam(QModelIndex index);
+  void __metarUpdated();
 
 private:
   const Airport* __airport;

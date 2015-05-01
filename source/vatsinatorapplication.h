@@ -33,6 +33,7 @@ class DecisionEvent;
 class FileManager;
 class FirDatabase;
 class LanguageManager;
+class MetarUpdater;
 class ResourceManager;
 class SettingsManager;
 class StatsPurveyor;
@@ -140,6 +141,14 @@ public:
   }
   
   /**
+   * Gets the MetarUpdater instance.
+   */
+  inline MetarUpdater* metarUpdater() {
+    Q_ASSERT(__metarUpdater);
+    return __metarUpdater;
+  }
+  
+  /**
    * Gets the WorldMap instance.
    */
   inline WorldMap* worldMap() {
@@ -186,6 +195,7 @@ private:
   AirlineDatabase*     __airlineDatabase;
   AirportDatabase*     __airportDatabaase;
   FirDatabase*         __firDatabase;
+  MetarUpdater*        __metarUpdater;
   WorldMap*            __worldMap;
   VatsimDataHandler*   __vatsimData;
   LanguageManager*     __languageManager;

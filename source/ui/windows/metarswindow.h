@@ -27,8 +27,6 @@
 #include "vatsimdata/metar.h"
 
 class VatsimDataHandler;
-class MetarListModel;
-class MetarUpdater;
 
 /**
  * \todo Refactor.
@@ -56,9 +54,6 @@ private slots:
   void __enableButtons();
   
 private:
-  MetarListModel* __metars;
-  MetarUpdater* __updater;
-  
   /* Keeps the ICAO of the metar that user's waiting for */
   QString __awaited;
 
