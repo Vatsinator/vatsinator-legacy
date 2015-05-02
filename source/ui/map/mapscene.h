@@ -244,10 +244,20 @@ private slots:
 private:
   MapRenderer* __renderer;
   
+  struct LonLatPointAccessor {
+    qreal operator() (spatial::dimension_type dim, const LonLat& p) const {
+      switch (dim) {
+        case 0: return p.x();
+        case 1: return p.y();
+        default: Q_UNREACHABLE();
+      }
+    }
+  };
+  
   /**
    * This map keeps FlightItems, AirportItems and FirItems.
    */
-  spatial::point_multimap<2, LonLat, const MapItem*> __items;
+  spatial::point_multimap<2, LonLat, const MapItem*, spatial::accessor_less<LonLatPointAccessor, LonLat>> __items;
   
   QList<AirportItem*> __airportItems;
   QList<FirItem*> __firItems;

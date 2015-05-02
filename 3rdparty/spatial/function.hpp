@@ -133,10 +133,6 @@ namespace spatial
   struct accessor_less
     : private Accessor // empty member optimization
   {
-    accessor_less(Accessor access = Accessor())
-      : Accessor(access)
-    { }
-
     bool
     operator() (dimension_type n, const Tp& x, const Tp& y) const
     {

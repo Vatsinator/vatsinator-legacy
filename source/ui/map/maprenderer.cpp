@@ -392,8 +392,7 @@ MapRenderer::__drawItems() {
   __texturedProgram->enableAttributeArray(vertexLocation());
   
   scene()->inRect(__screen, [this](const MapItem* item) {
-    QPointF p = glFromLonLat(item->position());
-    __texturedProgram->setUniformValue(__texturedPositionLocation, p.x(), p.y());
+    __texturedProgram->setUniformValue(__texturedPositionLocation, glFromLonLat(item->position()));
     item->drawItem(__texturedProgram);
     if (item->isLabelVisible())
       item->drawLabel(__texturedProgram);
