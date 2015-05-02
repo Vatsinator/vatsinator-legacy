@@ -121,7 +121,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="134"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="137"/>
         <source>%1 - airport details</source>
         <translation>%1 - λεπτομερειες αεροδρομιου</translation>
     </message>
@@ -191,12 +191,12 @@
         <translation>Εμφάνιση</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="149"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="153"/>
         <source>%1 ft</source>
         <translation>%1 ποδια</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="161"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="178"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
@@ -204,12 +204,12 @@
 <context>
     <name>AirportItem</name>
     <message>
-        <location filename="../ui/map/airportitem.cpp" line="210"/>
+        <location filename="../ui/map/airportitem.cpp" line="197"/>
         <source>Departures: %1</source>
         <translation>Αναχωρήσεις:: %1</translation>
     </message>
     <message>
-        <location filename="../ui/map/airportitem.cpp" line="216"/>
+        <location filename="../ui/map/airportitem.cpp" line="203"/>
         <source>Arrivals: %1</source>
         <translation>Αφίξεις: %1</translation>
     </message>
@@ -1137,17 +1137,19 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="381"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="430"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="465"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="524"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="388"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="435"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="468"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="525"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="561"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>Το αρχείο %1 δεν ήταν δυνατό να ανοιχτεί. Παρακαλούμε εγκαταστήστε ξανά την εφαρμογή.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="391"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="440"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="475"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="398"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="445"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="478"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="571"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>Το αρχείο %1 δεν μπορεσε να διαβάστει. Παρακαλούμε εγκαταστήστε ξανά την εφαρμογή.</translation>
     </message>
