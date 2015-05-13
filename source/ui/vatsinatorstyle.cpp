@@ -76,7 +76,7 @@ VatsinatorStyle::polish(QWidget* widget) {
     Q_ASSERT(l);
     l->setContentsMargins(12, 0, 12, 0);
   }
-    
+  
 #else
   Q_UNUSED(widget);
 #endif

@@ -25,6 +25,9 @@
 
 class NetworkPage : public QWidget, public AbstractSettingsModule, private Ui::NetworkPage {
   Q_OBJECT
+  
+signals:
+  void settingsChanged();
 
 public:
   NetworkPage(QWidget* parent = nullptr);

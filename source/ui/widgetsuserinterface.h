@@ -45,7 +45,6 @@ class WidgetsUserInterface : public UserInterface {
   
 public:
   explicit WidgetsUserInterface(QObject* parent = nullptr);
-  virtual ~WidgetsUserInterface();
   
   void initialize() override;
   

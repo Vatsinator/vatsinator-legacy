@@ -28,6 +28,10 @@
 NetworkPage::NetworkPage(QWidget* parent) :
     QWidget(parent) {
   setupUi(this);
+  
+  connect(DatabaseIntegrationCheckBox, &QCheckBox::stateChanged, this, &NetworkPage::settingsChanged);
+  connect(CelsiusRadioButton, &QRadioButton::toggled, this, &NetworkPage::settingsChanged);
+  // don't need Fahrenheit one
 }
 
 QString

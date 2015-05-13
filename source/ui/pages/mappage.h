@@ -27,8 +27,10 @@
 #include "storage/abstractsettingsmodule.h"
 
 class MapPage : public QWidget, public AbstractSettingsModule, private Ui::MapPage {
-  
   Q_OBJECT
+  
+signals:
+  void settingsChanged();
 
 public:
   MapPage(QWidget* parent = nullptr);

@@ -50,16 +50,6 @@
 WidgetsUserInterface::WidgetsUserInterface(QObject* parent):
     UserInterface(parent) {}
 
-WidgetsUserInterface::~WidgetsUserInterface() {
-  delete __vatsinatorWindow;
-  delete __aboutWindow;
-  delete __databaseWindow;
-  delete __flightsListWindow;
-  delete __atcListWindow;
-  delete __settingsWindow;
-  delete __metarsWindow;
-}
-
 void
 WidgetsUserInterface::initialize() {
   __aboutWindow = new AboutWindow();

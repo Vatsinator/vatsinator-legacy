@@ -34,9 +34,9 @@ bool UserInterface::event(QEvent* event) {
 }
 
 UserInterface*
-UserInterface::instantiate() {
+UserInterface::instantiate(QObject* parent) {
 #if VATSINATOR_UI_IMPLEMENTATION == widgets
-  return new WidgetsUserInterface();
+  return new WidgetsUserInterface(parent);
 #else
 # error "Not a valid UserInterface implementation"
 #endif

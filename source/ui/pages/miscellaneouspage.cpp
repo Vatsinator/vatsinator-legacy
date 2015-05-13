@@ -31,6 +31,8 @@ MiscellaneousPage::MiscellaneousPage(QWidget* parent) :
 
   connect(this, &MiscellaneousPage::languageChanged,
           wui(), &WidgetsUserInterface::showAppRestartDialog);
+
+  connect(StatsCheckBox, &QCheckBox::stateChanged, this, &MiscellaneousPage::settingsChanged);
 }
 
 QString

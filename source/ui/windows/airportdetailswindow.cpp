@@ -56,6 +56,8 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
     BaseWindow(parent),
     __airport(airport) {
   setupUi(this);
+        
+  setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
   
   VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
   CodesLabel->setFont(style->h1Font());

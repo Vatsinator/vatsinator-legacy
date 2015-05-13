@@ -19,7 +19,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
      <item row="0" column="0">
       <widget class="QListWidget" name="CategoryList">
        <property name="sizePolicy">
@@ -66,39 +66,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="2">
-      <widget class="QDialogButtonBox" name="OKCancelButtonBox">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item row="0" column="1" colspan="2">
       <widget class="QStackedWidget" name="SwappingWidget">
        <property name="enabled">
@@ -106,6 +73,16 @@
        </property>
        <property name="currentIndex">
         <number>-1</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QDialogButtonBox" name="OKCancelButtonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
+       </property>
+       <property name="centerButtons">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -130,38 +107,6 @@
     <hint type="destinationlabel">
      <x>343</x>
      <y>208</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>CategoryList</sender>
-   <signal>currentRowChanged(int)</signal>
-   <receiver>SwappingWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>104</x>
-     <y>193</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>445</x>
-     <y>193</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>OKCancelButtonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>SettingsWindow</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>473</x>
-     <y>517</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>343</x>
-     <y>267</y>
     </hint>
    </hints>
   </connection>

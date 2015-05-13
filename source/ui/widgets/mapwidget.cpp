@@ -49,15 +49,16 @@
 #include "mapwidget.h"
 
 MapWidget::MapWidget(QWidget* parent) :
-    QGLWidget(MapConfig::glFormat(), parent) {
+    QGLWidget(MapConfig::glFormat(), parent),
+    __renderer(nullptr) {
   
   setAttribute(Qt::WA_NoSystemBackground);
   setAttribute(Qt::WA_OpaquePaintEvent);
   setAttribute(Qt::WA_AcceptTouchEvents);
   setAttribute(Qt::WA_TouchPadAcceptSingleTouchEvents);
   
-  connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
-          this,                         SLOT(update()));
+  connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated, this, static_cast<void(MapWidget::*)()>(&MapWidget::update));
+  connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, static_cast<void(MapWidget::*)()>(&MapWidget::update));
   
   connect(this, SIGNAL(menuRequest(const MapItem*)), SLOT(__showMenu(const MapItem*)));
   connect(this, SIGNAL(windowRequest(const MapItem*)),  SLOT(__showWindow(const MapItem*)));

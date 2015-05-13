@@ -27,22 +27,60 @@
 
 class AbstractSettingsModule;
 class QWidget;
+class QMacToolBar;
+class QSignalMapper;
 
+/**
+ * Settings window lets the user customize Vatsinator.
+ *
+ * On Windows and Linux page list is displayed in a list view, on the
+ * left side. On OSX QMacToolBar is used to get the most native look.
+ * Moreover, OSX does not have "Accept/Save/Restore Defaults" buttons.
+ */
 class SettingsWindow : public BaseWindow, private Ui::SettingsWindow {
   Q_OBJECT
   
 signals:
+  /**
+   * User clicks _Restore Defaults_ button.
+   *
+   * This signal has no use on OSX.
+   */
   void restoreDefaults();
+  
+  /**
+   * Emited when user applies the settings.
+   *
+   * This signal is emitted on Windows and Linux when user clicks
+   * _Apply_/_OK_ button and on OSX when user closes the window.
+   */
   void settingsApplied();
+  
+  /**
+   * Emitted when user changes anything in the settings window.
+   *
+   * This signal makes use only on OSX, where settings are applied
+   * immediately. They are updated in SettingsManager, but are
+   * not saved to file until settingsApplied() is emitted.
+   */
+  void settingsChanged();
 
 public:
   SettingsWindow(QWidget* parent = nullptr);
   
+protected:
+  void closeEvent(QCloseEvent* event) override;
+
 private:
   void __addPage(const QString& element, const QString& icon, QWidget* page);
   
 private slots:
   void __handleButton(QAbstractButton* button);
+  void __resizeToMinimum();
+    
+private:
+  QMacToolBar* __macToolBar;
+  QSignalMapper* __macMapper;
 
 };
 

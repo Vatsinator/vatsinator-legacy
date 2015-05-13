@@ -33,6 +33,7 @@ ColorButton::setColor(const QColor& color) {
   if (__current != color) {
     __current = color;
     update();
+    emit colorChanged(__current);
   }
 }
 
@@ -109,10 +110,8 @@ ColorButton::__pickColor() {
   dialog->setWindowTitle(tr("Select color"));
 
   if (dialog->exec() == QDialog::Accepted)
-    __current = dialog->currentColor();
+    setColor(dialog->currentColor());
 
   delete dialog;
-
-  update();
 }
 

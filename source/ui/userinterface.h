@@ -62,7 +62,7 @@ public:
   /**
    * Creates new instance of either of the implementations.
    */
-  static UserInterface* instantiate();
+  static UserInterface* instantiate(QObject* parent);
   
 public slots:
   /**

@@ -77,6 +77,11 @@ public slots:
   void initialize();
   
   /**
+   * Updates settings, but does not save them yet.
+   */
+  void updateSettings();
+  
+  /**
    * Saves all settings to local config file.
    */
   void saveSettings();
@@ -87,7 +92,6 @@ public slots:
   void restoreDefaults();
 
 private:
-  
   /**
    * Sets the given value in the settings map.
    * \param key Key of the value.

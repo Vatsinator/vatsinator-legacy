@@ -47,6 +47,11 @@ include_directories (${Qt5OpenGL_INCLUDE_DIRS})
 include_directories (${Qt5Network_INCLUDE_DIRS})
 include_directories (${QUAZIP_INCLUDE_DIRS})
 
+if (APPLE)
+  find_package (Qt5MacExtras REQUIRED)
+  include_directories (${Qt5MacExtras_INCLUDE_DIRS})
+endif ()
+
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 add_subdirectory (3rdparty)
 

@@ -77,6 +77,15 @@ SettingsManager::initialize() {
 }
 
 void
+SettingsManager::updateSettings() {
+  for (AbstractSettingsModule* p: __pages) {
+    p->update();
+  }
+  
+  emit settingsChanged();
+}
+
+void
 SettingsManager::saveSettings() {
   QSettings s;
   s.beginGroup("Settings");

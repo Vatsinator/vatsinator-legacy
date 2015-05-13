@@ -28,8 +28,10 @@
 class ViewPage : public QWidget, public AbstractSettingsModule, private Ui::ViewPage {
   Q_OBJECT
   
+signals:
+  void settingsChanged();
+  
 public:
-
   ViewPage(QWidget* parent = nullptr);
   
   QString listElement() const override;

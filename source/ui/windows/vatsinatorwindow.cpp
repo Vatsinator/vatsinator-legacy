@@ -35,7 +35,7 @@
 #include "vatsinatorwindow.h"
 
 VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
-QMainWindow(parent) {
+    QMainWindow(parent) {
   setupUi(this);
   MainGridLayout->setVerticalSpacing(0);
 

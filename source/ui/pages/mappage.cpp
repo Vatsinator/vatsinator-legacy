@@ -21,20 +21,28 @@
 
 #include "mappage.h"
 
-MapPage::MapPage(QWidget* parent) :
-    QWidget(parent) {
+MapPage::MapPage(QWidget* parent) : QWidget(parent) {
   setupUi(this);
-      
+  
 #ifdef Q_OS_MAC
   layout()->setSpacing(0);
 #endif
   
-  connect(FirFontSelectionButton,       SIGNAL(clicked()),
-          this,                         SLOT(__showFirFontDialog()));
-  connect(AirportFontSelectionButton,   SIGNAL(clicked()),
-          this,                         SLOT(__showAirportFontDialog()));
-  connect(PilotFontSelectionButton,     SIGNAL(clicked()),
-          this,                         SLOT(__showPilotFontDialog()));
+  connect(FirFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showFirFontDialog);
+  connect(AirportFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showAirportFontDialog);
+  connect(PilotFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showPilotFontDialog);
+  
+  connect(ZoomCoefficientSlider, &QSlider::valueChanged, this, &MapPage::settingsChanged);
+  connect(StaffedFirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(UnstaffedFirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(StaffedUirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(ApproachCircleColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(SeasColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(LandsColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(OriginToPilotLineColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(PilotToDestinationLineColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
+  connect(StaffedFirColorAlphaBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MapPage::settingsChanged);
+  connect(StaffedUirColorAlphaBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MapPage::settingsChanged);
 }
 
 QString

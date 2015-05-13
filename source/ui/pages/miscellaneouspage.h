@@ -28,6 +28,7 @@ class MiscellaneousPage : public QWidget, public AbstractSettingsModule, private
   Q_OBJECT
   
 signals:
+  void settingsChanged();
   void languageChanged();
   
 public:

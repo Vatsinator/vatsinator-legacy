@@ -20,13 +20,23 @@
 
 #include "viewpage.h"
 
-ViewPage::ViewPage(QWidget* parent) :
-    QWidget(parent) {
+ViewPage::ViewPage(QWidget* parent) : QWidget(parent) {
   setupUi(this);
   
   connect(ShowPilotsLabelsAlwaysCheckBox, SIGNAL(stateChanged(int)),
           this,                           SLOT(__handleAlwaysCheckBox(int)));
   __handleAlwaysCheckBox(ShowPilotsLabelsAlwaysCheckBox->checkState());
+  
+  connect(ShowPilotsLabelsAlwaysCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(PilotsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(AirportsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(StaffedFirsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(UnstaffedFirsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(InactiveAirportsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(ShowPilotsLabelsAlwaysCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(ShowPilotsLabelsWhenHoveredCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(ShowPilotsLabelsAirportRelatedCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
+  connect(AlwaysRadioButton, &QRadioButton::toggled, this, &ViewPage::settingsChanged);
 }
 
 QString

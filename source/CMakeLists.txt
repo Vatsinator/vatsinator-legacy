@@ -52,6 +52,7 @@ target_link_libraries (vatsinator
   Qt5::Widgets
   Qt5::Network
   Qt5::OpenGL
+  Qt5::MacExtras
   ${OPENGL_LIBRARY}
   ${QUAZIP_LIBRARIES}
   ${vatsinator_STATIC_PLUGINS}

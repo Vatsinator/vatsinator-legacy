@@ -31,7 +31,10 @@ class ColorButton : public QPushButton {
   /**
    * This property holds the picked color.
    */
-  Q_PROPERTY(QColor color READ color WRITE setColor)
+  Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+  
+signals:
+  void colorChanged(QColor color);
   
 public:
   /**

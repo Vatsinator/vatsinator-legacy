@@ -47,7 +47,7 @@
 
 VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     QApplication(argc, argv),
-    __userInterface(UserInterface::instantiate()),
+    __userInterface(UserInterface::instantiate(this)),
     __fileManager(new FileManager()),
     __settingsManager(new SettingsManager(this)),
     __airlineDatabase(new AirlineDatabase(this)),
@@ -78,17 +78,15 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
 }
 
 VatsinatorApplication::~VatsinatorApplication() {
-  
   QThread* rmThread = __resourceManager->thread();
-  delete __resourceManager;
+  __resourceManager->deleteLater();
   rmThread->quit();
 
   QThread* spThread = __statsPurveyor->thread();
-  delete __statsPurveyor;
+  __statsPurveyor->deleteLater();
   spThread->quit();
   
   delete __languageManager;
-  delete __userInterface;
   delete __fileManager;
   
   rmThread->wait();
@@ -127,6 +125,14 @@ VatsinatorApplication::__initialize() {
   /* Create windows */
   __userInterface->initialize();
   
+  /* Initialize everything else */
+  __airlineDatabase->initialize();
+  __airportDatabaase->initialize();
+  __firDatabase->initialize();
+  
+  /* Read data files only after databases are ready */
+  __vatsimData->initialize();
+  
   /* Thread for ResourceManager */
   QThread* rmThread = new QThread(this);
   __resourceManager->moveToThread(rmThread);
@@ -136,14 +142,6 @@ VatsinatorApplication::__initialize() {
   QThread* spThread = new QThread(this);
   __statsPurveyor->moveToThread(spThread);
   spThread->start();
-  
-  /* Initialize everything else */
-  __airlineDatabase->initialize();
-  __airportDatabaase->initialize();
-  __firDatabase->initialize();
-  
-  /* Read data files only after databases are ready */
-  __vatsimData->initialize();
   
   /* Initialize statistics */
   QSettings s;
