@@ -52,11 +52,14 @@ target_link_libraries (vatsinator
   Qt5::Widgets
   Qt5::Network
   Qt5::OpenGL
-  Qt5::MacExtras
   ${OPENGL_LIBRARY}
   ${QUAZIP_LIBRARIES}
   ${vatsinator_STATIC_PLUGINS}
 )
+
+if (APPLE)
+  target_link_libraries (vatsinator Qt5::MacExtras)
+endif ()
 
 if (LINUX)
   set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
