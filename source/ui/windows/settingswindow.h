@@ -20,9 +20,9 @@
 #ifndef SETTINGSWINDOW_H
 #define SETTINGSWINDOW_H
 
+#include <QWidget>
 #include <QVector>
 
-#include "ui/windows/basewindow.h"
 #include "ui/ui_settingswindow.h"
 
 class AbstractSettingsModule;
@@ -37,7 +37,7 @@ class QSignalMapper;
  * left side. On OSX QMacToolBar is used to get the most native look.
  * Moreover, OSX does not have "Accept/Save/Restore Defaults" buttons.
  */
-class SettingsWindow : public BaseWindow, private Ui::SettingsWindow {
+class SettingsWindow : public QWidget, private Ui::SettingsWindow {
   Q_OBJECT
   
 signals:
@@ -69,6 +69,7 @@ public:
   SettingsWindow(QWidget* parent = nullptr);
   
 protected:
+  void showEvent(QShowEvent* event) override;
   void closeEvent(QCloseEvent* event) override;
 
 private:

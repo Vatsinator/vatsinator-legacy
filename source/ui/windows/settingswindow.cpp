@@ -31,11 +31,13 @@
 #include "ui/pages/networkpage.h"
 #include "ui/pages/viewpage.h"
 #include "ui/pages/mappage.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsinatorapplication.h"
 
 #include "settingswindow.h"
 
-SettingsWindow::SettingsWindow(QWidget* parent) : BaseWindow(parent) {
+SettingsWindow::SettingsWindow(QWidget* parent) : QWidget(parent) {
   setupUi(this);
   
   setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
@@ -57,12 +59,12 @@ SettingsWindow::SettingsWindow(QWidget* parent) : BaseWindow(parent) {
     setWindowTitle(item->text());
   });
   
-  connect(SwappingWidget, &QStackedWidget::currentChanged, this, &SettingsWindow::__resizeToMinimum);
 #else
-  connect(CategoryList, SIGNAL(currentRowChanged(int)), SwappingWidget, SLOT(setCurrentIndex(int)));
-  connect(OKCancelButtonBox,                    SIGNAL(clicked(QAbstractButton*)),
-          this,                                 SLOT(__handleButton(QAbstractButton*)));
+  connect(CategoryList, &QListWidget::currentRowChanged, SwappingWidget, &QStackedWidget::setCurrentIndex);
+  connect(OKCancelButtonBox, &QDialogButtonBox::clicked, this, &SettingsWindow::__handleButton);
 #endif
+  
+  connect(SwappingWidget, &QStackedWidget::currentChanged, this, &SettingsWindow::__resizeToMinimum);
   
   {
     MiscellaneousPage* p = new MiscellaneousPage();
@@ -103,6 +105,24 @@ SettingsWindow::SettingsWindow(QWidget* parent) : BaseWindow(parent) {
 }
 
 void
+SettingsWindow::showEvent(QShowEvent* event) {
+  if (!event->spontaneous()) {
+    __resizeToMinimum();
+    
+    this->setGeometry(
+      QStyle::alignedRect(
+        Qt::LeftToRight,
+        Qt::AlignCenter,
+        this->size(),
+        QDesktopWidget().screenGeometry(wui()->mainWindow())
+      )
+    );
+  }
+  
+  event->accept();
+}
+
+void
 SettingsWindow::closeEvent(QCloseEvent *event) {
 #ifdef Q_OS_MAC
   emit settingsApplied();
@@ -114,7 +134,11 @@ SettingsWindow::closeEvent(QCloseEvent *event) {
 void
 SettingsWindow::__addPage(const QString& element, const QString& icon, QWidget* page) {
   QIcon listIcon(icon);
+  
+#ifdef Q_OS_MAC
   page->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
+#endif
+  
   SwappingWidget->addWidget(page);
   
 #ifdef Q_OS_MAC
@@ -144,11 +168,14 @@ SettingsWindow::__addPage(const QString& element, const QString& icon, QWidget* 
 
 void
 SettingsWindow::__handleButton(QAbstractButton* button) {
-  if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == button)
+  if (OKCancelButtonBox->button(QDialogButtonBox::RestoreDefaults) == button) {
     emit restoreDefaults();
-  else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == button
-        || OKCancelButtonBox->button(QDialogButtonBox::Ok) == button)
+  } else if (OKCancelButtonBox->button(QDialogButtonBox::Apply) == button) {
     emit settingsApplied();
+  } else if (OKCancelButtonBox->button(QDialogButtonBox::Ok) == button) {
+    emit settingsApplied();
+    close();
+  }
 }
 
 void
@@ -159,8 +186,11 @@ SettingsWindow::__resizeToMinimum() {
     w->adjustSize();
   }
   
-  /* TODO Resize animation */
   SwappingWidget->adjustSize();
+  
+#ifdef Q_OS_MAC
+  /* TODO Resize animation */
   adjustSize();
+#endif
 }
 
