@@ -42,11 +42,15 @@ SettingsWindow::SettingsWindow(QWidget* parent) : BaseWindow(parent) {
   
 #ifdef Q_OS_MAC
   __macToolBar = new QMacToolBar(this);
+  layout()->removeWidget(CategoryList);
   CategoryList->setVisible(false);
+  layout()->removeWidget(OKCancelButtonBox);
   OKCancelButtonBox->setVisible(false);
   
+  setMinimumWidth(500);
+  
   __macMapper = new QSignalMapper(this);
-  connect(__macMapper, SIGNAL(mapped(int)), SwappingWidget, SLOT(setCurrentIndex(int)));
+  connect(__macMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped), SwappingWidget, &QStackedWidget::setCurrentIndex);
   
   connect(__macMapper, static_cast<void(QSignalMapper::*)(int)>(&QSignalMapper::mapped), [this](int i) {
     QMacToolBarItem* item = __macToolBar->items().at(i);
@@ -110,6 +114,7 @@ SettingsWindow::closeEvent(QCloseEvent *event) {
 void
 SettingsWindow::__addPage(const QString& element, const QString& icon, QWidget* page) {
   QIcon listIcon(icon);
+  page->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
   SwappingWidget->addWidget(page);
   
 #ifdef Q_OS_MAC
@@ -118,6 +123,7 @@ SettingsWindow::__addPage(const QString& element, const QString& icon, QWidget* 
   QMacToolBarItem* item = __macToolBar->addItem(listIcon, element);
   item->setSelectable(true);
   connect(item, SIGNAL(activated()), __macMapper, SLOT(map()));
+  
   __macMapper->setMapping(item, i);
   
   if (i == 0)
@@ -147,8 +153,14 @@ SettingsWindow::__handleButton(QAbstractButton* button) {
 
 void
 SettingsWindow::__resizeToMinimum() {
-  int w = width();
-  int h = minimumSizeHint().height();
-  resize(w, h);
+  for (int i = 0; i < SwappingWidget->count(); ++i) {
+    QWidget* w = SwappingWidget->widget(i);
+    w->setSizePolicy(QSizePolicy::Preferred, i == SwappingWidget->currentIndex() ? QSizePolicy::Preferred : QSizePolicy::Ignored);
+    w->adjustSize();
+  }
+  
+  /* TODO Resize animation */
+  SwappingWidget->adjustSize();
+  adjustSize();
 }
 

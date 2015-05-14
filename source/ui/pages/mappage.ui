@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>MapPage</class>
  <widget class="QWidget" name="MapPage">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>509</width>
-    <height>545</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string notr="true">Map</string>
   </property>

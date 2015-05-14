@@ -27,16 +27,9 @@ ViewPage::ViewPage(QWidget* parent) : QWidget(parent) {
           this,                           SLOT(__handleAlwaysCheckBox(int)));
   __handleAlwaysCheckBox(ShowPilotsLabelsAlwaysCheckBox->checkState());
   
-  connect(ShowPilotsLabelsAlwaysCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(PilotsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(AirportsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(StaffedFirsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(UnstaffedFirsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(InactiveAirportsCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(ShowPilotsLabelsAlwaysCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(ShowPilotsLabelsWhenHoveredCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(ShowPilotsLabelsAirportRelatedCheckBox, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
-  connect(AlwaysRadioButton, &QRadioButton::toggled, this, &ViewPage::settingsChanged);
+  auto checkBoxes = findChildren<QCheckBox*>();
+  for (QCheckBox* c: checkBoxes)
+    connect(c, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
 }
 
 QString
@@ -73,7 +66,7 @@ ViewPage::update() const {
   setValue("pilot_labels.airport_related",
            ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
   setValue("airport_labels",
-           AlwaysRadioButton->isChecked());
+           AirportLabelsCheckBox->isChecked());
 }
 
 void
@@ -95,12 +88,8 @@ ViewPage::restore(QSettings& s, const QVariantHash& defaults) {
     s.value("pilot_labels.when_hovered", defaults[id % "pilot_labels.when_hovered"]).toBool());
   ShowPilotsLabelsAirportRelatedCheckBox->setChecked(
     s.value("pilot_labels.airport_labels", defaults[id % "pilot_labels.airport_labels"]).toBool());
-  
-  bool airportLabels = s.value("airport_labels", defaults[id % "airport_labels"]).toBool();
-  if (airportLabels)
-    AlwaysRadioButton->setChecked(true);
-  else
-    NeverRadioButton->setChecked(true);
+  AirportLabelsCheckBox->setChecked(
+    s.value("airport_labels", defaults[id % "airport_labels"]).toBool());
 }
 
 void
@@ -113,7 +102,7 @@ ViewPage::save(QSettings& s) {
   s.setValue("pilot_labels.always", ShowPilotsLabelsAlwaysCheckBox->isChecked());
   s.setValue("pilot_labels.when_hovered", ShowPilotsLabelsWhenHoveredCheckBox->isChecked());
   s.setValue("pilot_labels.airport_related", ShowPilotsLabelsAirportRelatedCheckBox->isChecked());
-  s.setValue("airport_labels", AlwaysRadioButton->isChecked());
+  s.setValue("airport_labels", AirportLabelsCheckBox->isChecked());
 }
 
 void

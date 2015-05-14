@@ -20,13 +20,18 @@
 
 #include "storage/languagemanager.h"
 #include "ui/widgetsuserinterface.h"
+#include "ui/vatsinatorstyle.h"
 #include "vatsinatorapplication.h"
 
 #include "miscellaneouspage.h"
 
-MiscellaneousPage::MiscellaneousPage(QWidget* parent) :
-    QWidget(parent) {
+MiscellaneousPage::MiscellaneousPage(QWidget* parent) : QWidget(parent) {
   setupUi(this);
+  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  StatsDescriptionLabel->setFont(style->smallFont());
+  LanguageDescriptionLabel->setFont(style->smallFont());
+  PrivacyPolicyLabel->setFont(style->smallFont());
+  
   LanguageComboBox->addItems(vApp()->languageManager()->allLanguages());
 
   connect(this, &MiscellaneousPage::languageChanged,

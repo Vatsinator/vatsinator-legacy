@@ -19,19 +19,19 @@
 
 #include <QtWidgets>
 
-#include "plugins/weatherforecastinterface.h"
-#include "storage/filemanager.h"
+#include "ui/vatsinatorstyle.h"
 #include "vatsinatorapplication.h"
 
 #include "networkpage.h"
 
-NetworkPage::NetworkPage(QWidget* parent) :
-    QWidget(parent) {
+NetworkPage::NetworkPage(QWidget* parent) : QWidget(parent) {
   setupUi(this);
   
-  connect(DatabaseIntegrationCheckBox, &QCheckBox::stateChanged, this, &NetworkPage::settingsChanged);
-  connect(CelsiusRadioButton, &QRadioButton::toggled, this, &NetworkPage::settingsChanged);
-  // don't need Fahrenheit one
+  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+  VatsinatorDatabaseDescriptionLabel->setFont(style->smallFont());
+  
+  connect(DatabaseUpdatesCheckBox, &QCheckBox::stateChanged, this, &NetworkPage::settingsChanged);
+  connect(TemperatureUnitsComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &NetworkPage::settingsChanged);
 }
 
 QString
@@ -51,29 +51,29 @@ NetworkPage::moduleId() const {
 
 void
 NetworkPage::update() const {
-  setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
+  setValue("database_integration", DatabaseUpdatesCheckBox->isChecked());
+  setValue("weather_temperature_units", TemperatureUnitsComboBox->currentIndex() == 0 ? QStringLiteral("Celsius") : QStringLiteral("Fahrenheit"));
 }
 
 void
 NetworkPage::restore(QSettings& s, const QVariantHash& defaults) {
   QString id = moduleId() % ".";
   
-  DatabaseIntegrationCheckBox->setChecked(
+  DatabaseUpdatesCheckBox->setChecked(
     s.value("database_integration", defaults[id % "database_integration"]).toBool());
   
   QString units = s.value("weather_temperature_units", defaults[id % "weather_temperature_units"]).toString();
   if (units != "Celsius" && units != "Fahrenheit")
     units = defaults[id % "weather_temperature_units"].toString();
-  
-  if (units == "Celsius")
-    CelsiusRadioButton->setChecked(true);
+
+  if (units == QStringLiteral("Celsius"))
+    TemperatureUnitsComboBox->setCurrentIndex(0);
   else
-    FahrenheitRadioButton->setChecked(true);
+    TemperatureUnitsComboBox->setCurrentIndex(1);
 }
 
 void
 NetworkPage::save(QSettings& s) {
-  s.setValue("database_integration", DatabaseIntegrationCheckBox->isChecked());
-  s.setValue("weather_temperature_units", CelsiusRadioButton->isChecked() ? QString("Celsius") : QString("Fahrenheit"));
+  s.setValue("database_integration", DatabaseUpdatesCheckBox->isChecked());
+  s.setValue("weather_temperature_units", TemperatureUnitsComboBox->currentIndex() == 0 ? QStringLiteral("Celsius") : QStringLiteral("Fahrenheit"));
 }
