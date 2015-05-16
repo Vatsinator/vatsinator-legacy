@@ -121,7 +121,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="137"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="139"/>
         <source>%1 - airport details</source>
         <translation>%1 - λεπτομερειες αεροδρομιου</translation>
     </message>
@@ -191,12 +191,12 @@
         <translation>Εμφάνιση</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="153"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="155"/>
         <source>%1 ft</source>
         <translation>%1 ποδια</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="178"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="180"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
@@ -352,7 +352,7 @@
 <context>
     <name>ColorButton</name>
     <message>
-        <location filename="../ui/buttons/colorbutton.cpp" line="109"/>
+        <location filename="../ui/buttons/colorbutton.cpp" line="110"/>
         <source>Select color</source>
         <translation>Επιλογή χρώματος</translation>
     </message>
@@ -791,73 +791,73 @@
 <context>
     <name>MapPage</name>
     <message>
-        <location filename="../ui/pages/mappage.cpp" line="42"/>
+        <location filename="../ui/pages/mappage.cpp" line="50"/>
         <source>Map</source>
         <translation>Χάρτης</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="22"/>
+        <location filename="../ui/pages/mappage.ui" line="14"/>
         <source>Zooming intensity:</source>
         <translation>Μεγέθυνση έντασης:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="52"/>
+        <location filename="../ui/pages/mappage.ui" line="44"/>
         <source>Unstaffed FIR borders color:</source>
         <translation>Μη επανδρωμένο FIR χρώμα των συνόρων:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="82"/>
+        <location filename="../ui/pages/mappage.ui" line="74"/>
         <source>Staffed FIR background color:</source>
         <translation>Επανδρωμένο FIR χρώμα φόντου:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="128"/>
-        <location filename="../ui/pages/mappage.ui" line="207"/>
+        <location filename="../ui/pages/mappage.ui" line="120"/>
+        <location filename="../ui/pages/mappage.ui" line="199"/>
         <source>Alpha channel:</source>
         <translation>Κανάλι άλφα:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="161"/>
+        <location filename="../ui/pages/mappage.ui" line="153"/>
         <source>Staffed UIR background color:</source>
         <translation>Επανδρωμένο UIR χρώμα φόντου:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="240"/>
+        <location filename="../ui/pages/mappage.ui" line="232"/>
         <source>FIR font:</source>
         <translation>FIR γραμματοσειρά::</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="258"/>
+        <location filename="../ui/pages/mappage.ui" line="250"/>
         <source>Airport font:</source>
         <translation>Γραμματοσειρά αεροδρομίου:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="276"/>
+        <location filename="../ui/pages/mappage.ui" line="268"/>
         <source>Pilot font:</source>
         <translation>Γραμματοσειρά πιλότου:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="294"/>
+        <location filename="../ui/pages/mappage.ui" line="286"/>
         <source>Approach circle color:</source>
         <translation>Προσέγγιση κύκλου χρώματος:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="324"/>
+        <location filename="../ui/pages/mappage.ui" line="316"/>
         <source>Seas color:</source>
         <translation>Χρώμα θαλασσων:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="354"/>
+        <location filename="../ui/pages/mappage.ui" line="346"/>
         <source>Lands color:</source>
         <translation>Χρώμα στεριας:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="384"/>
+        <location filename="../ui/pages/mappage.ui" line="376"/>
         <source>Origin-to-pilot line color:</source>
         <translation>Χρωμα οριου στεριας:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="414"/>
+        <location filename="../ui/pages/mappage.ui" line="406"/>
         <source>Pilot-to-destination line color:</source>
         <translation>Χρωμα γραμμης πιλοτου-προορισμου:</translation>
     </message>
@@ -865,52 +865,52 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="101"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="102"/>
         <source>Your system does not support required OpenGL extensions.                                       Please upgrade your graphic card driver.</source>
         <translation>Το σύστημά σας δεν υποστηρίζει τις απαιτούμενες επεκτάσεις του OpenGL. Παρακαλούμε αναβαθμίστε το πρόγραμμα γραφικών της κάρτας σας.</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="265"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="266"/>
         <source>Airport details</source>
         <translation>Λεπτομερειες αεροδρομιου</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="278"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="279"/>
         <source>Controllers</source>
         <translation>Ελεγκτές</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="290"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="291"/>
         <source>Arrivals</source>
         <translation>Αφίξεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="304"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="305"/>
         <source>Departures</source>
         <translation>Αναχωρήσεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="325"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="326"/>
         <source>%1 details</source>
         <translation>%1 Λεπτομέρειες</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="353"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="354"/>
         <source>Flight details</source>
         <translation>Λεπτομέρειες της πτήσης</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="395"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="396"/>
         <source>Nearby</source>
         <translation>Μικρή απόσταση</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="398"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="399"/>
         <source>Flights</source>
         <translation>Πτήσεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="412"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="413"/>
         <source>Airports</source>
         <translation>Αεροδρόμια</translation>
     </message>
@@ -964,32 +964,32 @@
 <context>
     <name>MiscellaneousPage</name>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.cpp" line="38"/>
+        <location filename="../ui/pages/miscellaneouspage.cpp" line="45"/>
         <source>Miscellaneous</source>
         <translation>Διάφορα</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="20"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="76"/>
         <source>Send anonymous statistics</source>
         <translation>Αποστολή ανώνυμων στατιστικών</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="111"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator needs to be restarted before changes&lt;br/&gt;to the language settings will take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Το Vatsinator χρειάζεται επανεκκίνηση πριν οι αλλαγές &lt;br/&gt;των ρυθμίσεων γλώσσας τεθουν σε ισχύ.&lt;/p&gt;&lt;/ body&gt;&lt;/ html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="32"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="63"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
         <translation>Αν ενεργοποιηθεί, ορισμένα στοιχεία (όπως το λειτουργικό σύστημα, ο χρόνος της χρήσης της εφαρμογής, προειδοποιήσεις και σφάλματα) θα σταλθουν στους Vatsinator διακομιστές.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="70"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="40"/>
         <source>Language:</source>
         <translation>Γλώσσα:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/miscellaneouspage.ui" line="45"/>
+        <location filename="../ui/pages/miscellaneouspage.ui" line="83"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Μάθετε περισσότερα για την πολιτική προστασίας προσωπικών δεδομένων του Vatsinator/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1006,34 +1006,50 @@
     <name>NetworkPage</name>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="14"/>
-        <location filename="../ui/pages/networkpage.cpp" line="35"/>
+        <location filename="../ui/pages/networkpage.cpp" line="39"/>
         <source>Network</source>
         <translation>Δίκτυο</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
-        <source>Enable automatic database updates</source>
-        <translation>Ενεργοποίηση αυτόματων ενημερώσεων Βάσης δεδομένων</translation>
+        <source>Database updates</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="35"/>
+        <location filename="../ui/pages/networkpage.ui" line="30"/>
+        <source>Weather forecasts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="51"/>
+        <source>Celsius</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="56"/>
+        <source>Fahrenheit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="106"/>
+        <source>ATC bookings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="116"/>
+        <source>Download:</source>
+        <extracomment>Opens section in settings window, answers question &quot;What to download?&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/networkpage.ui" line="77"/>
         <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
         <translation>Επιτρέπει την &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;ενσωμάτωση&lt;/a&gt; της βάσης δεδομένων του Vatsinator.</translation>
     </message>
     <message>
-        <location filename="../ui/pages/networkpage.ui" line="66"/>
+        <location filename="../ui/pages/networkpage.ui" line="40"/>
         <source>Weather forecast temperature units:</source>
         <translation>Πρόγνωση καιρού μονάδες θερμοκρασίας:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="73"/>
-        <source>Ce&amp;lsius</source>
-        <translation>Κελσίου</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/networkpage.ui" line="83"/>
-        <source>Fah&amp;renheit</source>
-        <translation>Φαρενάιτ</translation>
     </message>
 </context>
 <context>
@@ -1268,74 +1284,64 @@
 <context>
     <name>ViewPage</name>
     <message>
-        <location filename="../ui/pages/viewpage.cpp" line="34"/>
+        <location filename="../ui/pages/viewpage.cpp" line="37"/>
         <source>View</source>
         <translation>Εμφάνιση</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="22"/>
+        <location filename="../ui/pages/viewpage.ui" line="111"/>
         <source>Show pilot labels:</source>
         <translation>Εμφάνιση ετικετών πιλοτου:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="29"/>
+        <location filename="../ui/pages/viewpage.ui" line="101"/>
         <source>Always</source>
         <translation>Πάντα</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="39"/>
+        <location filename="../ui/pages/viewpage.ui" line="131"/>
+        <source>Show airport labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/pages/viewpage.ui" line="141"/>
         <source>When hovered</source>
         <translation>Οταν κινήθηκε</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="49"/>
+        <location filename="../ui/pages/viewpage.ui" line="121"/>
         <source>Airport-related</source>
         <translation>Συσχετισμος με το αεροδρόμιο</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="76"/>
+        <location filename="../ui/pages/viewpage.ui" line="12"/>
         <source>Display layers:</source>
         <translation>Στρώματα οθόνης:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="83"/>
+        <location filename="../ui/pages/viewpage.ui" line="22"/>
         <source>Pilots</source>
         <translation>Πιλότοι</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="93"/>
+        <location filename="../ui/pages/viewpage.ui" line="91"/>
         <source>Airports</source>
         <translation>Αεροδρόμια</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="103"/>
+        <location filename="../ui/pages/viewpage.ui" line="64"/>
         <source>Staffed FIRs</source>
         <translation>Επανδρωμένα FIR</translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="113"/>
+        <location filename="../ui/pages/viewpage.ui" line="81"/>
         <source>Unstaffed FIRs</source>
         <translation>Μη επανδρωμένα FIR </translation>
     </message>
     <message>
-        <location filename="../ui/pages/viewpage.ui" line="123"/>
+        <location filename="../ui/pages/viewpage.ui" line="74"/>
         <source>Inactive airports</source>
         <translation>Ανενεργά αεροδρόμια</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/viewpage.ui" line="147"/>
-        <source>Show airport labels:</source>
-        <translation>Εμφάνιση ετικετών αεροδρομίου:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/viewpage.ui" line="154"/>
-        <source>A&amp;lways</source>
-        <translation>Πάντα</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/viewpage.ui" line="164"/>
-        <source>Ne&amp;ver</source>
-        <translation>Ποτε</translation>
     </message>
 </context>
 <context>
