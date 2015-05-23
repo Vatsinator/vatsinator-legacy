@@ -1015,33 +1015,33 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
         <source>Database updates</source>
-        <translation type="unfinished"/>
+        <translation>Datenbankaktualisierungen</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="30"/>
         <source>Weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>Wettervorhersagen</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="51"/>
         <source>Celsius</source>
-        <translation type="unfinished"/>
+        <translation>Celsius</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="56"/>
         <source>Fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation>Fahrenheit</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="106"/>
         <source>ATC bookings</source>
-        <translation type="unfinished"/>
+        <translation>ATC-Buchungen</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="116"/>
         <source>Download:</source>
         <extracomment>Opens section in settings window, answers question &quot;What to download?&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Herunterladen:</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="77"/>
@@ -1303,7 +1303,7 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>Show airport labels</source>
-        <translation type="unfinished"/>
+        <translation>Flughafenbezeichnungen anzeigen</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="141"/>

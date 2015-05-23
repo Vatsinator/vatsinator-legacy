@@ -1018,17 +1018,17 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="30"/>
         <source>Weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>Prognozy pogody</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="51"/>
         <source>Celsius</source>
-        <translation type="unfinished"/>
+        <translation>Celsjusz</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="56"/>
         <source>Fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation>Fahrenheit</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="106"/>

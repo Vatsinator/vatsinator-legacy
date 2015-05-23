@@ -1018,7 +1018,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="30"/>
         <source>Weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>気象予報</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="51"/>
