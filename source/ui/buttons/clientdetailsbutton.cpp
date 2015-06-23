@@ -23,19 +23,21 @@
 #include "clientdetailsbutton.h"
 
 ClientDetailsButton::ClientDetailsButton(const Client* client,
-                                         QWidget* parent) :
+        QWidget* parent) :
     QPushButton(parent),
-    __current(client) {
-  
-//   static const QIcon iIcon(":/uiIcons/button-details.png");
-//   setIcon(iIcon);
-  
-  connect(this, &QPushButton::clicked, [this]() {
-    emit clicked(__current);
-  });
+    __current(client)
+{
+
+    //   static const QIcon iIcon(":/uiIcons/button-details.png");
+    //   setIcon(iIcon);
+    
+    connect(this, &QPushButton::clicked, [this]() {
+        emit clicked(__current);
+    });
 }
 
 void
-ClientDetailsButton::setClient(const Client* client) {
-  __current = client;
+ClientDetailsButton::setClient(const Client* client)
+{
+    __current = client;
 }

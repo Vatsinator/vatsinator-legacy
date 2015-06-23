@@ -29,72 +29,75 @@
  * The FlightTableModel class is used to keep Flights (Pilots) in a model.
  */
 class FlightTableModel : public QAbstractTableModel {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  /**
-   * Column numbers
-   */
-  enum Column {
-    Callsign    = 0,
-    Name        = 1,
-    From        = 2,
-    To          = 3,
-    Aircraft    = 4
-  };
-  
-  /**
-   * The default constructor passes _parent_ to QAbstractTableModel.
-   */
-  explicit FlightTableModel(QObject* parent = nullptr);
-
-  /**
-   * Adds new flight to the model.
-   * When _pilot_ becomes inactive, he is automatically removed from the model.
-   * The model does not take ownership over _pilot_.
-   * 
-   * \sa remove().
-   */
-  void add(const Pilot* pilot);
-  
-  /**
-   * Removes the given _pilot_ from the model.
-   * The model must contain _pilot_, otherwise an error occurs.
-   * 
-   * \sa add() and remove().
-   */
-  void remove(const Pilot* pilot);
-  
-  /**
-   * Checks whether the model contains _pilot_ or not.
-   */
-  bool contains(const Pilot* pilot);
-  
-  /**
-   * Looks for the given pilot in the model.
-   * 
-   * \param callsign Callsign of the client to find.
-   * \return The Pilot instance or _nullptr_ if nothing was found.
-   */
-  const Pilot* findFlightByCallsign(const QString& callsign) const;
-
-  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-  void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
-  
-  /**
-   * Gives direct access to all flights that the model contains.
-   */
-  inline const QList<const Pilot*>& flights() const { return __flights; }
-  
+    /**
+     * Column numbers
+     */
+    enum Column {
+        Callsign    = 0,
+        Name        = 1,
+        From        = 2,
+        To          = 3,
+        Aircraft    = 4
+    };
+    
+    /**
+     * The default constructor passes _parent_ to QAbstractTableModel.
+     */
+    explicit FlightTableModel(QObject* parent = nullptr);
+    
+    /**
+     * Adds new flight to the model.
+     * When _pilot_ becomes inactive, he is automatically removed from the model.
+     * The model does not take ownership over _pilot_.
+     *
+     * \sa remove().
+     */
+    void add(const Pilot* pilot);
+    
+    /**
+     * Removes the given _pilot_ from the model.
+     * The model must contain _pilot_, otherwise an error occurs.
+     *
+     * \sa add() and remove().
+     */
+    void remove(const Pilot* pilot);
+    
+    /**
+     * Checks whether the model contains _pilot_ or not.
+     */
+    bool contains(const Pilot* pilot);
+    
+    /**
+     * Looks for the given pilot in the model.
+     *
+     * \param callsign Callsign of the client to find.
+     * \return The Pilot instance or _nullptr_ if nothing was found.
+     */
+    const Pilot* findFlightByCallsign(const QString& callsign) const;
+    
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    
+    /**
+     * Gives direct access to all flights that the model contains.
+     */
+    inline const QList<const Pilot*>& flights() const
+    {
+        return __flights;
+    }
+    
 private slots:
-  void __autoRemove();
-  
+    void __autoRemove();
+    
 private:
-  QList<const Pilot*> __flights;
-
+    QList<const Pilot*> __flights;
+    
 };
 
 #endif // FLIGHTTABLEMODEL_H

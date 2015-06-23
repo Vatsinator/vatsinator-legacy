@@ -1,0 +1,15 @@
+style=kr
+indent=spaces=4
+attach-namespaces
+attach-classes
+indent-switches
+indent-col1-comments
+break-blocks
+pad-oper
+fill-empty-lines
+align-pointer=type
+align-reference=type
+remove-brackets
+convert-tabs
+close-templates
+

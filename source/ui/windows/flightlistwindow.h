@@ -26,18 +26,18 @@
 class FlightListWindow :
     public BaseWindow,
     private Ui::FlightListWindow {
-
-  Q_OBJECT
-
+    
+    Q_OBJECT
+    
 public:
-  FlightListWindow(QWidget* parent = nullptr);
-
+    FlightListWindow(QWidget* parent = nullptr);
+    
 protected:
-  void showEvent(QShowEvent* event) override;
-
+    void showEvent(QShowEvent* event) override;
+    
 private slots:
-  void __handleDoubleClicked(const QModelIndex& index);
-
+    void __handleDoubleClicked(const QModelIndex& index);
+    
 };
 
 #endif // FLIGHTLISTWINDOW_H

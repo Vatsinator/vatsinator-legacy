@@ -28,12 +28,12 @@
  * version available to download.
  */
 class NewVersionDialog : public QDialog, private Ui::NewVersionDialog {
-  
-  Q_OBJECT
 
+    Q_OBJECT
+    
 public:
-  explicit NewVersionDialog(QWidget* parent = nullptr);
-
+    explicit NewVersionDialog(QWidget* parent = nullptr);
+    
 };
 
 #endif // NEWVERSIONDIALOG_H

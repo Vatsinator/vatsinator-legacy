@@ -36,70 +36,73 @@
 
 AtcDetailsWindow::AtcDetailsWindow(const Controller* atc, QWidget* parent) :
     QWidget(parent),
-    __atc(atc) {
-  setupUi(this);
-  
-  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
-  CallsignLabel->setFont(style->h1Font());
-  FacilityLabel->setFont(style->h2Font());
-  
-  NameLabel->setDescription(tr("Name"));
-  FrequencyLabel->setDescription(tr("Frequency"));
-  RatingLabel->setDescription(tr("Rating"));
-  AirportLabel->setDescription(tr("Airport"));
-  ServerLabel->setDescription(tr("Server"));
-  TimeOnlineLabel->setDescription(tr("Online from"));
-  
-  connect(qApp, &QCoreApplication::aboutToQuit, this, &AtcDetailsWindow::hide);
-  connect(__atc, &Controller::updated, this, &AtcDetailsWindow::__updateLabels);
-  
-  connect(ShowButton, &QPushButton::clicked, [this]() {
-    wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__atc->position());
-    close();
-    vApp()->userInterface()->ensureMainWindowIsActive();
-  });
+    __atc(atc)
+{
+    setupUi(this);
+    
+    VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+    CallsignLabel->setFont(style->h1Font());
+    FacilityLabel->setFont(style->h2Font());
+    
+    NameLabel->setDescription(tr("Name"));
+    FrequencyLabel->setDescription(tr("Frequency"));
+    RatingLabel->setDescription(tr("Rating"));
+    AirportLabel->setDescription(tr("Airport"));
+    ServerLabel->setDescription(tr("Server"));
+    TimeOnlineLabel->setDescription(tr("Online from"));
+    
+    connect(qApp, &QCoreApplication::aboutToQuit, this, &AtcDetailsWindow::hide);
+    connect(__atc, &Controller::updated, this, &AtcDetailsWindow::__updateLabels);
+    
+    connect(ShowButton, &QPushButton::clicked, [this]() {
+        wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__atc->position());
+        close();
+        vApp()->userInterface()->ensureMainWindowIsActive();
+    });
 }
 
 void
-AtcDetailsWindow::showEvent(QShowEvent* event) {
-  Q_ASSERT(__atc);
-  
-  if (!event->spontaneous()) {
-    this->setGeometry(
-      QStyle::alignedRect(
-        Qt::LeftToRight,
-        Qt::AlignCenter,
-        this->size(),
-        QDesktopWidget().screenGeometry(wui()->mainWindow())
-      )
-    );
-  }
-  
-  __updateLabels();
+AtcDetailsWindow::showEvent(QShowEvent* event)
+{
+    Q_ASSERT(__atc);
+    
+    if (!event->spontaneous()) {
+        this->setGeometry(
+            QStyle::alignedRect(
+                Qt::LeftToRight,
+                Qt::AlignCenter,
+                this->size(),
+                QDesktopWidget().screenGeometry(wui()->mainWindow())
+            )
+        );
+    }
+    
+    __updateLabels();
 }
 
 void
-AtcDetailsWindow::__updateLabels() {
-  setWindowTitle(tr("%1 - ATC details").arg(__atc->callsign()));
-
-  CallsignLabel->setText(__atc->callsign());
-  
-  NameLabel->setValue(QString("%1 (%2)").arg(__atc->realName(), QString::number(__atc->pid())));
-  FrequencyLabel->setValue(__atc->frequency());
-  RatingLabel->setValue(Controller::ratings[__atc->rating()]);
-
-  if (__atc->airport())
-    AirportLabel->setValue(QString("%1 %2, %3").arg(
-      QString(__atc->airport()->data()->icao),
-      QString::fromUtf8(__atc->airport()->data()->name),
-      QString::fromUtf8(__atc->airport()->data()->city)
-    ));
-  else
-    AirportLabel->setValue(tr("N/A"));
-
-  FacilityLabel->setText(__atc->description());
-  ServerLabel->setValue(__atc->server());
-  TimeOnlineLabel->setValue(__atc->onlineFrom().toString("dd MMM yyyy, hh:mm"));
-
-  AtisMessageField->setPlainText(__atc->atis());
+AtcDetailsWindow::__updateLabels()
+{
+    setWindowTitle(tr("%1 - ATC details").arg(__atc->callsign()));
+    
+    CallsignLabel->setText(__atc->callsign());
+    
+    NameLabel->setValue(QString("%1 (%2)").arg(__atc->realName(), QString::number(__atc->pid())));
+    FrequencyLabel->setValue(__atc->frequency());
+    RatingLabel->setValue(Controller::ratings[__atc->rating()]);
+    
+    if (__atc->airport())
+        AirportLabel->setValue(QString("%1 %2, %3").arg(
+                                   QString(__atc->airport()->data()->icao),
+                                   QString::fromUtf8(__atc->airport()->data()->name),
+                                   QString::fromUtf8(__atc->airport()->data()->city)
+                               ));
+    else
+        AirportLabel->setValue(tr("N/A"));
+        
+    FacilityLabel->setText(__atc->description());
+    ServerLabel->setValue(__atc->server());
+    TimeOnlineLabel->setValue(__atc->onlineFrom().toString("dd MMM yyyy, hh:mm"));
+    
+    AtisMessageField->setPlainText(__atc->atis());
 }

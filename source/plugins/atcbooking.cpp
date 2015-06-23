@@ -22,26 +22,32 @@
 AtcBooking::AtcBooking(QObject* parent): QObject(parent) {}
 
 void
-AtcBooking::setCallsign(const QString& callsign) {
-  __callsign = callsign;
+AtcBooking::setCallsign(const QString& callsign)
+{
+    __callsign = callsign;
 }
 
-void AtcBooking::setRealName(const QString& realName) {
-  __realName = realName;
+void AtcBooking::setRealName(const QString& realName)
+{
+    __realName = realName;
 }
 
-void AtcBooking::setTrainingSession(bool trainingSession) {
-  __trainingSession = trainingSession;
+void AtcBooking::setTrainingSession(bool trainingSession)
+{
+    __trainingSession = trainingSession;
 }
 
-void AtcBooking::setBookedDay(const QDate& bookedDay) {
-  __bookedDay = bookedDay;
+void AtcBooking::setBookedDay(const QDate& bookedDay)
+{
+    __bookedDay = bookedDay;
 }
 
-void AtcBooking::setTimeFrom(const QTime& timeFrom) {
-  __timeFrom = timeFrom;
+void AtcBooking::setTimeFrom(const QTime& timeFrom)
+{
+    __timeFrom = timeFrom;
 }
 
-void AtcBooking::setTimeTo(const QTime& timeTo) {
-  __timeTo = timeTo;
+void AtcBooking::setTimeTo(const QTime& timeTo)
+{
+    __timeTo = timeTo;
 }

@@ -30,32 +30,32 @@ class MapRenderer;
  * renders it when needed.
  */
 class WorldPolygon {
-  
-public:
-  /**
-   * Fills the buffers with data. _renderer_ provides OpenGL rendering
-   * context.
-   */
-  WorldPolygon(MapRenderer* renderer);
-  
-  ~WorldPolygon();
-  
-  /**
-   * Renders the map.
-   * Only lands are being rendered; their color must be specified beforehand.
-   */
-  void paint();
-  
-private:
-  void __initializeBuffers();
-  
-  MapRenderer* __renderer;
-  
-  QOpenGLBuffer __borders;
-  QOpenGLBuffer __triangles;
-  QOpenGLVertexArrayObject __vao;
-  int __vertices;
 
+public:
+    /**
+     * Fills the buffers with data. _renderer_ provides OpenGL rendering
+     * context.
+     */
+    WorldPolygon(MapRenderer* renderer);
+    
+    ~WorldPolygon();
+    
+    /**
+     * Renders the map.
+     * Only lands are being rendered; their color must be specified beforehand.
+     */
+    void paint();
+    
+private:
+    void __initializeBuffers();
+    
+    MapRenderer* __renderer;
+    
+    QOpenGLBuffer __borders;
+    QOpenGLBuffer __triangles;
+    QOpenGLVertexArrayObject __vao;
+    int __vertices;
+    
 };
 
 #endif // WORLDPOLYGON_H

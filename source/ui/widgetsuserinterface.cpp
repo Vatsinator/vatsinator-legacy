@@ -51,199 +51,221 @@ WidgetsUserInterface::WidgetsUserInterface(QObject* parent):
     UserInterface(parent) {}
 
 void
-WidgetsUserInterface::initialize() {
-  __aboutWindow = new AboutWindow();
-  __metarsWindow = new MetarsWindow();
-  __databaseWindow = new DatabaseWindow();
-  __atcListWindow = new AtcListWindow();
-  __flightsListWindow = new FlightListWindow();
-  __settingsWindow = new SettingsWindow();
-  __vatsinatorWindow = new VatsinatorWindow();
-  
-  connect(vApp()->resourceManager(), &ResourceManager::outdated,
-          this, &WidgetsUserInterface::__showNewVersionDialog);
-  
-  emit initialized();
-  
-  mainWindow()->show();
+WidgetsUserInterface::initialize()
+{
+    __aboutWindow = new AboutWindow();
+    __metarsWindow = new MetarsWindow();
+    __databaseWindow = new DatabaseWindow();
+    __atcListWindow = new AtcListWindow();
+    __flightsListWindow = new FlightListWindow();
+    __settingsWindow = new SettingsWindow();
+    __vatsinatorWindow = new VatsinatorWindow();
+    
+    connect(vApp()->resourceManager(), &ResourceManager::outdated,
+            this, &WidgetsUserInterface::__showNewVersionDialog);
+            
+    emit initialized();
+    
+    mainWindow()->show();
 }
 
 AboutWindow*
-WidgetsUserInterface::aboutWindow() {
-  Q_ASSERT(__aboutWindow);
-  return __aboutWindow;
+WidgetsUserInterface::aboutWindow()
+{
+    Q_ASSERT(__aboutWindow);
+    return __aboutWindow;
 }
 
 AtcListWindow*
-WidgetsUserInterface::atcListWindow() {
-  Q_ASSERT(__atcListWindow);
-  return __atcListWindow;
+WidgetsUserInterface::atcListWindow()
+{
+    Q_ASSERT(__atcListWindow);
+    return __atcListWindow;
 }
 
 DatabaseWindow*
-WidgetsUserInterface::databaseWindow() {
-  Q_ASSERT(__databaseWindow);
-  return __databaseWindow;
+WidgetsUserInterface::databaseWindow()
+{
+    Q_ASSERT(__databaseWindow);
+    return __databaseWindow;
 }
 
 FlightListWindow*
-WidgetsUserInterface::flightListWindow() {
-  Q_ASSERT(__flightsListWindow);
-  return __flightsListWindow;
+WidgetsUserInterface::flightListWindow()
+{
+    Q_ASSERT(__flightsListWindow);
+    return __flightsListWindow;
 }
 
 MetarsWindow*
-WidgetsUserInterface::metarsWindow() {
-  Q_ASSERT(__metarsWindow);
-  return __metarsWindow;
+WidgetsUserInterface::metarsWindow()
+{
+    Q_ASSERT(__metarsWindow);
+    return __metarsWindow;
 }
 
 SettingsWindow*
-WidgetsUserInterface::settingsWindow() {
-  Q_ASSERT(__settingsWindow);
-  return __settingsWindow;
+WidgetsUserInterface::settingsWindow()
+{
+    Q_ASSERT(__settingsWindow);
+    return __settingsWindow;
 }
 
 VatsinatorWindow*
-WidgetsUserInterface::mainWindow() {
-  Q_ASSERT(__vatsinatorWindow);
-  return __vatsinatorWindow;
+WidgetsUserInterface::mainWindow()
+{
+    Q_ASSERT(__vatsinatorWindow);
+    return __vatsinatorWindow;
 }
 
 void
-WidgetsUserInterface::showAppRestartDialog() {
-  AppRestartDialog* dialog = new AppRestartDialog();
-  
-  connect(dialog,       SIGNAL(accepted()),
-          vApp(),       SLOT(restart()));
-  connect(dialog,       SIGNAL(finished(int)),
-          dialog,       SLOT(deleteLater()));
-  
-  dialog->show();
-  dialog->raise();
-  dialog->activateWindow();  
+WidgetsUserInterface::showAppRestartDialog()
+{
+    AppRestartDialog* dialog = new AppRestartDialog();
+    
+    connect(dialog,       SIGNAL(accepted()),
+            vApp(),       SLOT(restart()));
+    connect(dialog,       SIGNAL(finished(int)),
+            dialog,       SLOT(deleteLater()));
+            
+    dialog->show();
+    dialog->raise();
+    dialog->activateWindow();
 }
 
 void
-WidgetsUserInterface::fatal(const QString& message) {
-  QMessageBox msgBox;
-  msgBox.setText(message);
-  msgBox.setIcon(QMessageBox::Critical);
-  
-  qFatal("%s", qPrintable(message));
-  
-  msgBox.exec();
+WidgetsUserInterface::fatal(const QString& message)
+{
+    QMessageBox msgBox;
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Critical);
+    
+    qFatal("%s", qPrintable(message));
+    
+    msgBox.exec();
 }
 
 void
-WidgetsUserInterface::warning(const QString& message) {
-  QMessageBox msgBox;
-  msgBox.setText(message);
-  msgBox.setIcon(QMessageBox::Warning);
-  
-  qWarning("%s", qPrintable(message));
-  
-  msgBox.exec();
+WidgetsUserInterface::warning(const QString& message)
+{
+    QMessageBox msgBox;
+    msgBox.setText(message);
+    msgBox.setIcon(QMessageBox::Warning);
+    
+    qWarning("%s", qPrintable(message));
+    
+    msgBox.exec();
 }
 
 void
-WidgetsUserInterface::statusError() {
-  StatusFetchErrorDialog dialog;
-  dialog.exec();
+WidgetsUserInterface::statusError()
+{
+    StatusFetchErrorDialog dialog;
+    dialog.exec();
 }
 
 void
-WidgetsUserInterface::dataError() {
-  DataFetchErrorDialog dialog;
-  dialog.exec();
-  
-  DecisionEvent* e;
-  
-  if (dialog.clickedButton() == dialog.again())
-    e = new DecisionEvent("data_fetch_error", DecisionEvent::TryAgain);
-  else
-    e = new DecisionEvent("data_fetch_error", DecisionEvent::Declined);
-  
-  QCoreApplication::postEvent(vApp()->vatsimDataHandler(), e);
+WidgetsUserInterface::dataError()
+{
+    DataFetchErrorDialog dialog;
+    dialog.exec();
+    
+    DecisionEvent* e;
+    
+    if (dialog.clickedButton() == dialog.again())
+        e = new DecisionEvent("data_fetch_error", DecisionEvent::TryAgain);
+    else
+        e = new DecisionEvent("data_fetch_error", DecisionEvent::Declined);
+        
+    QCoreApplication::postEvent(vApp()->vatsimDataHandler(), e);
 }
 
 void
-WidgetsUserInterface::showVatsimMessage(const QString& message) {
-  QString hash = QString::number(qHash(message));
-  QSettings s;
-  if (s.value("VatsimMessages/" % hash, false).toBool())
-    return;
-  
-  VatsimMessageDialog* dialog = new VatsimMessageDialog(message);
-  
-  connect(dialog,       SIGNAL(finished(int)),
-          dialog,       SLOT(deleteLater()));
-  
-  dialog->show();
-  dialog->raise();
-  dialog->activateWindow();
+WidgetsUserInterface::showVatsimMessage(const QString& message)
+{
+    QString hash = QString::number(qHash(message));
+    QSettings s;
+    
+    if (s.value("VatsimMessages/" % hash, false).toBool())
+        return;
+        
+    VatsimMessageDialog* dialog = new VatsimMessageDialog(message);
+    
+    connect(dialog,       SIGNAL(finished(int)),
+            dialog,       SLOT(deleteLater()));
+            
+    dialog->show();
+    dialog->raise();
+    dialog->activateWindow();
 }
 
 void
-WidgetsUserInterface::showDetails(const Airport* airport) {
-  AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
-  ap->setAttribute(Qt::WA_DeleteOnClose);
-  ap->show();
+WidgetsUserInterface::showDetails(const Airport* airport)
+{
+    AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
+    ap->setAttribute(Qt::WA_DeleteOnClose);
+    ap->show();
 }
 
 void
-WidgetsUserInterface::showDetails(const Client* client) {
-  if (const Pilot* p = qobject_cast<const Pilot*>(client)) {
-    FlightDetailsWindow* w = new FlightDetailsWindow(p);
+WidgetsUserInterface::showDetails(const Client* client)
+{
+    if (const Pilot* p = qobject_cast<const Pilot*>(client)) {
+        FlightDetailsWindow* w = new FlightDetailsWindow(p);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    } else if (const Controller* c = qobject_cast<const Controller*>(client)) {
+        AtcDetailsWindow* w = new AtcDetailsWindow(c);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    }
+}
+
+void
+WidgetsUserInterface::showDetails(const Fir* fir)
+{
+    FirDetailsWindow* w = new FirDetailsWindow(fir);
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
-  } else if (const Controller* c = qobject_cast<const Controller*>(client)) {
-    AtcDetailsWindow* w = new AtcDetailsWindow(c);
-    w->setAttribute(Qt::WA_DeleteOnClose);
-    w->show();
-  }
 }
 
 void
-WidgetsUserInterface::showDetails(const Fir* fir) {
-  FirDetailsWindow* w = new FirDetailsWindow(fir);
-  w->setAttribute(Qt::WA_DeleteOnClose);
-  w->show();
+WidgetsUserInterface::showMetar(const QString& metar)
+{
+    metarsWindow()->show(metar);
 }
 
 void
-WidgetsUserInterface::showMetar(const QString& metar) {
-  metarsWindow()->show(metar);
+WidgetsUserInterface::showStatsDialog()
+{
+    LetSendStatsDialog* dialog = new LetSendStatsDialog();
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    
+    connect(dialog, &LetSendStatsDialog::accepted, []() {
+        DecisionEvent* e = new DecisionEvent("statistics", DecisionEvent::Accepted);
+        QCoreApplication::postEvent(vApp(), e);
+    });
+    
+    connect(dialog, &LetSendStatsDialog::rejected, []() {
+        DecisionEvent* e = new DecisionEvent("statistics", DecisionEvent::Declined);
+        QCoreApplication::postEvent(vApp(), e);
+    });
+    
+    dialog->show();
+    dialog->raise();
+    dialog->activateWindow();
 }
 
 void
-WidgetsUserInterface::showStatsDialog() {
-  LetSendStatsDialog* dialog = new LetSendStatsDialog();
-  dialog->setAttribute(Qt::WA_DeleteOnClose);
-  
-  connect(dialog, &LetSendStatsDialog::accepted, []() {
-    DecisionEvent* e = new DecisionEvent("statistics", DecisionEvent::Accepted);
-    QCoreApplication::postEvent(vApp(), e);
-  });
-  
-  connect(dialog, &LetSendStatsDialog::rejected, []() {
-    DecisionEvent* e = new DecisionEvent("statistics", DecisionEvent::Declined);
-    QCoreApplication::postEvent(vApp(), e);
-  });
-  
-  dialog->show();
-  dialog->raise();
-  dialog->activateWindow();
+WidgetsUserInterface::ensureMainWindowIsActive()
+{
+    mainWindow()->show();
+    mainWindow()->activateWindow();
 }
 
 void
-WidgetsUserInterface::ensureMainWindowIsActive() {
-  mainWindow()->show();
-  mainWindow()->activateWindow();
-}
-
-void
-WidgetsUserInterface::__showNewVersionDialog() {
-  NewVersionDialog dialog(__vatsinatorWindow);
-  dialog.exec();
+WidgetsUserInterface::__showNewVersionDialog()
+{
+    NewVersionDialog dialog(__vatsinatorWindow);
+    dialog.exec();
 }

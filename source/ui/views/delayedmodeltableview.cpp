@@ -28,33 +28,36 @@ DelayedModelTableView::DelayedModelTableView(QWidget* parent) :
     __errorOnNoData(true) {}
 
 void
-DelayedModelTableView::setLoadingText(const QString& text) {
-  __loadingText = text;
+DelayedModelTableView::setLoadingText(const QString& text)
+{
+    __loadingText = text;
 }
 
 void
-DelayedModelTableView::setErrorText(const QString& text) {
-  __errorText = text;
+DelayedModelTableView::setErrorText(const QString& text)
+{
+    __errorText = text;
 }
 
 void
-DelayedModelTableView::setErrorOnNoData(bool value) {
-  __errorOnNoData = value;
+DelayedModelTableView::setErrorOnNoData(bool value)
+{
+    __errorOnNoData = value;
 }
 
 void
-DelayedModelTableView::paintEvent(QPaintEvent* event) {
-  if (model()) {
-    if ((model()->rowCount() == 0 || model()->columnCount() == 0) && __errorOnNoData) {
-      QPainter painter(viewport());
-      painter.setPen(Qt::darkGray);
-      painter.drawText(rect(), Qt::AlignCenter, __errorText);
+DelayedModelTableView::paintEvent(QPaintEvent* event)
+{
+    if (model()) {
+        if ((model()->rowCount() == 0 || model()->columnCount() == 0) && __errorOnNoData) {
+            QPainter painter(viewport());
+            painter.setPen(Qt::darkGray);
+            painter.drawText(rect(), Qt::AlignCenter, __errorText);
+        } else
+            QTableView::paintEvent(event);
     } else {
-      QTableView::paintEvent(event);
+        QPainter painter(viewport());
+        painter.setPen(Qt::darkGray);
+        painter.drawText(rect(), Qt::AlignCenter, __loadingText);
     }
-  } else {
-    QPainter painter(viewport());
-    painter.setPen(Qt::darkGray);
-    painter.drawText(rect(), Qt::AlignCenter, __loadingText);
-  }
 }

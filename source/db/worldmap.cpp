@@ -26,32 +26,35 @@
 WorldMap::WorldMap(QObject* parent) : QObject(parent) {}
 
 void
-WorldMap::initialize() {
-  __readDatabase();
+WorldMap::initialize()
+{
+    __readDatabase();
 }
 
-void WorldMap::__readDatabase() {
-  QFile db(FileManager::path("WorldMap.db"));
-  
-  if (!db.open(QIODevice::ReadOnly)) {
-    notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
-    return;
-  }
-
-  int size;
-  db.read(reinterpret_cast<char*>(&size), 4);
-  
-  if (size) {
-    __worldPolygon.borders.resize(size);
-    db.read(reinterpret_cast<char*>(__worldPolygon.borders.data()), sizeof(Point) * size);
-  }
-  
-  db.read(reinterpret_cast<char*>(&size), 4);
-  if (size) {
-    size *= 3;
-    __worldPolygon.triangles.resize(size);
-    db.read(reinterpret_cast<char*>(__worldPolygon.triangles.data()), sizeof(unsigned int) * size);
-  }
-
-  db.close();
+void WorldMap::__readDatabase()
+{
+    QFile db(FileManager::path("WorldMap.db"));
+    
+    if (!db.open(QIODevice::ReadOnly)) {
+        notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+        return;
+    }
+    
+    int size;
+    db.read(reinterpret_cast<char*>(&size), 4);
+    
+    if (size) {
+        __worldPolygon.borders.resize(size);
+        db.read(reinterpret_cast<char*>(__worldPolygon.borders.data()), sizeof(Point) * size);
+    }
+    
+    db.read(reinterpret_cast<char*>(&size), 4);
+    
+    if (size) {
+        size *= 3;
+        __worldPolygon.triangles.resize(size);
+        db.read(reinterpret_cast<char*>(__worldPolygon.triangles.data()), sizeof(unsigned int) * size);
+    }
+    
+    db.close();
 }

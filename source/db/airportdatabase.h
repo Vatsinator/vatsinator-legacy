@@ -29,19 +29,19 @@
 #pragma pack(1)
 struct AirportRecord {
 
-  char  name[128];
-  char  city[128];
-  char  country[128];
-  char  iata[8];
-  char  icao[8];
-  int   is_fir_a_oceanic;
-  char  fir_a[8];
-  int   is_fir_b_oceanic;
-  char  fir_b[8];
-  float latitude;
-  float longitude;
-  int   altitude;
-
+    char  name[128];
+    char  city[128];
+    char  country[128];
+    char  iata[8];
+    char  icao[8];
+    int   is_fir_a_oceanic;
+    char  fir_a[8];
+    int   is_fir_b_oceanic;
+    char  fir_b[8];
+    float latitude;
+    float longitude;
+    int   altitude;
+    
 };
 #pragma pack()
 
@@ -52,44 +52,50 @@ struct AirportRecord {
  * instance and also handles aliases.
  */
 class AirportDatabase : public QObject, public Notifiable {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
 
-  /**
-   * Default constructor.
-   */
-  AirportDatabase(QObject* parent = nullptr);
-  
-  /**
-   * Called by VatsinatorApplication only.
-   * Reads the database file.
-   */
-  void initialize();
-  
-  /**
-   * Looks for the airport.
-   * 
-   * \param icao ICAO code.
-   * \return The AirportRecord instance or _nullptr_ if nothing was found.
-   */
-  const AirportRecord* find(const QString& icao);
-  
-  /**
-   * Gives direct access to the airports vector.
-   */
-  inline QVector<AirportRecord>& airports() { return __airports; }
-  
-  /**
-   * Gives direct access to the airports vector.
-   */
-  inline const QVector<AirportRecord>& airports() const { return __airports; }
-
+    /**
+     * Default constructor.
+     */
+    AirportDatabase(QObject* parent = nullptr);
+    
+    /**
+     * Called by VatsinatorApplication only.
+     * Reads the database file.
+     */
+    void initialize();
+    
+    /**
+     * Looks for the airport.
+     *
+     * \param icao ICAO code.
+     * \return The AirportRecord instance or _nullptr_ if nothing was found.
+     */
+    const AirportRecord* find(const QString& icao);
+    
+    /**
+     * Gives direct access to the airports vector.
+     */
+    inline QVector<AirportRecord>& airports()
+    {
+        return __airports;
+    }
+    
+    /**
+     * Gives direct access to the airports vector.
+     */
+    inline const QVector<AirportRecord>& airports() const
+    {
+        return __airports;
+    }
+    
 private:
-  void __readDatabase();
-
-  QVector<AirportRecord> __airports;
-  
+    void __readDatabase();
+    
+    QVector<AirportRecord> __airports;
+    
 };
 
 #endif // AIRPORTDATABASE_H

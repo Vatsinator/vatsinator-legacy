@@ -31,29 +31,35 @@ class QPushButton;
  * or keep().
  */
 class DataFetchErrorDialog : public QMessageBox {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  /**
-   * The default constructor passes _parent_ to QMessageBox's constructor.
-   */
-  explicit DataFetchErrorDialog(QWidget* parent = nullptr);
-  
-  /**
-   * The again() button corresponds to "Try again" user's decision.
-   */
-  inline QPushButton* again() { return __againButton; }
-  
-  /**
-   * The keep() button corresponds to "Keep current data" user's decision.
-   */
-  inline QPushButton* keep() { return __keepButton; }
-  
+    /**
+     * The default constructor passes _parent_ to QMessageBox's constructor.
+     */
+    explicit DataFetchErrorDialog(QWidget* parent = nullptr);
+    
+    /**
+     * The again() button corresponds to "Try again" user's decision.
+     */
+    inline QPushButton* again()
+    {
+        return __againButton;
+    }
+    
+    /**
+     * The keep() button corresponds to "Keep current data" user's decision.
+     */
+    inline QPushButton* keep()
+    {
+        return __keepButton;
+    }
+    
 private:
-  QPushButton* __againButton;
-  QPushButton* __keepButton;
-  
-  
+    QPushButton* __againButton;
+    QPushButton* __keepButton;
+    
+    
 };
 
 #endif // DATAFETCHERRORDIALOG_H

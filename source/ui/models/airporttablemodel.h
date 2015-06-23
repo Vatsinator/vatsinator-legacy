@@ -29,50 +29,53 @@ class Airport;
  * The AirportTableModel holds airports.
  */
 class AirportTableModel : public QAbstractTableModel {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  /**
-   * The default constructor passes _parent_ to QAbstractTableModel.
-   */
-  explicit AirportTableModel(QObject* parent = nullptr);
-
-  /**
-   * Adds new airport to the model.
-   */
-  void addAirport(const Airport* airport);
-  
-  /**
-   * Removes all pointers.
-   * \todo Remove.
-   */
-  void clear();
-
-  int rowCount(const QModelIndex& index = QModelIndex()) const override;
-  int columnCount(const QModelIndex& index = QModelIndex()) const override;
-  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-
-  /**
-   * Gives direct access to all airports.
-   */
-  inline const QList<const Airport*>& airports() const { return __airports; }
-
-  enum Column {
-    Label       = 0,
-    Facilities  = 1,
-    Outbounds   = 2,
-    Inbounds    = 3
-  };
-
+    /**
+     * The default constructor passes _parent_ to QAbstractTableModel.
+     */
+    explicit AirportTableModel(QObject* parent = nullptr);
+    
+    /**
+     * Adds new airport to the model.
+     */
+    void addAirport(const Airport* airport);
+    
+    /**
+     * Removes all pointers.
+     * \todo Remove.
+     */
+    void clear();
+    
+    int rowCount(const QModelIndex& index = QModelIndex()) const override;
+    int columnCount(const QModelIndex& index = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    
+    /**
+     * Gives direct access to all airports.
+     */
+    inline const QList<const Airport*>& airports() const
+    {
+        return __airports;
+    }
+    
+    enum Column {
+        Label       = 0,
+        Facilities  = 1,
+        Outbounds   = 2,
+        Inbounds    = 3
+    };
+    
 private:
-  QString __arrivalsAndDepartures(int row) const;
-  QString __produceLabel(int row) const;
-  QString __produceFacilities(int row) const;
-
-  QList<const Airport*> __airports;
-
-
+    QString __arrivalsAndDepartures(int row) const;
+    QString __produceLabel(int row) const;
+    QString __produceFacilities(int row) const;
+    
+    QList<const Airport*> __airports;
+    
+    
 };
 
 #endif // AIRPORTTABLEMODEL_H

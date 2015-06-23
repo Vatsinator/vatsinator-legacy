@@ -28,51 +28,51 @@
  * the system.
  */
 class LanguageManager {
-  
+
 public:
-  /**
-   * The constructor looks for installed languages in Vatsinator
-   * standard locations.
-   * On Linux it is <prefix>/share/vatsinator/translations/
-   * On Windows it is C:/Program Files/Vatsinator/translations/
-   * On MacOS it is Vatsinator.app/Contents/Resources/translations
-   */
-  LanguageManager();
-  
-  /**
-   * Gets list of all installed languages.
-   * Each language is described by its .language file stored in
-   * the translations directory.
-   */
-  QStringList allLanguages();
-  
-  /**
-   * Gets language unique ID.
-   * 
-   * \param locale The language locale (e.g. pt, ja_JP).
-   * \sa getLocaleById().
-   */
-  int getLanguageId(const QString& locale);
-  
-  /**
-   * Gets language name by the specific id.
-   * 
-   * \param id The language unique id.
-   * \sa getLanguageId().
-   */
-  const QString& getLocaleById(int id);
-  
+    /**
+     * The constructor looks for installed languages in Vatsinator
+     * standard locations.
+     * On Linux it is <prefix>/share/vatsinator/translations/
+     * On Windows it is C:/Program Files/Vatsinator/translations/
+     * On MacOS it is Vatsinator.app/Contents/Resources/translations
+     */
+    LanguageManager();
+    
+    /**
+     * Gets list of all installed languages.
+     * Each language is described by its .language file stored in
+     * the translations directory.
+     */
+    QStringList allLanguages();
+    
+    /**
+     * Gets language unique ID.
+     *
+     * \param locale The language locale (e.g. pt, ja_JP).
+     * \sa getLocaleById().
+     */
+    int getLanguageId(const QString& locale);
+    
+    /**
+     * Gets language name by the specific id.
+     *
+     * \param id The language unique id.
+     * \sa getLanguageId().
+     */
+    const QString& getLocaleById(int id);
+    
 private:
-  struct LangInfo {
-    int         id;
-    QString     locale;
-    QString     description;
-  };
-  
-  void __getInstalledLanguages();
-  
-  QVector<LangInfo> __languages;
-  
+    struct LangInfo {
+        int         id;
+        QString     locale;
+        QString     description;
+    };
+    
+    void __getInstalledLanguages();
+    
+    QVector<LangInfo> __languages;
+    
 };
 
 #endif // LANGUAGEMANAGER_H

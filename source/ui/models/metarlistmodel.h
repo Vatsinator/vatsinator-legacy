@@ -29,30 +29,30 @@ class Metar;
  * The MetarListModel class is a model that keeps METAR reports.
  */
 class MetarListModel : public QAbstractListModel {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  /**
-   * The constructor passes _parent_ to _QAbstractListModel_.
-   */
-  MetarListModel(QObject* parent = nullptr);
-  
-  virtual ~MetarListModel();
-  
-  void addOrUpdate(const QString& metar);
-  
-  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-  QVariant data(const QModelIndex& index, int role) const override;
-  QModelIndexList match(const QModelIndex& start, int role,
-                        const QVariant& value, int hits = 1,
-                        Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
-  
+    /**
+     * The constructor passes _parent_ to _QAbstractListModel_.
+     */
+    MetarListModel(QObject* parent = nullptr);
+    
+    virtual ~MetarListModel();
+    
+    void addOrUpdate(const QString& metar);
+    
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role) const override;
+    QModelIndexList match(const QModelIndex& start, int role,
+                          const QVariant& value, int hits = 1,
+                          Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
+                          
 public slots:
-  void clear();
-  
+    void clear();
+    
 private:
-  QList<Metar*> __metars;
-
+    QList<Metar*> __metars;
+    
 };
 
 #endif // METARLISTMODEL_H

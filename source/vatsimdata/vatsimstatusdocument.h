@@ -35,58 +35,79 @@ class VatsimStatusDocument : public QObject {
      * This property specifies whether the status file is correct or not.
      */
     Q_PROPERTY(bool valid READ isValid)
-
+    
 public:
-  /**
-   * Creates the new document from the given _data_, which is file contents.
-   */
-  explicit VatsimStatusDocument(QByteArray data, QObject* parent = nullptr);
-  
-  /**
-   * URLs where complete data files are available (_url0_ directive).
-   */
-  inline const QList<QUrl>& dataFileUrls() const { return __dataFileUrls; }
-  
-  /**
-   * URLs where servers list data files are available (_url1_ directive).
-   */
-  inline const QList<QUrl>& serverListUrls() const { return __serverListUrls; }
-  
-  /**
-   * Returns data which was passed to the constructor.
-   */
-  inline const QByteArray& data() const { return __data; }
-  
-  inline bool isValid() const { return __isValid; }
-  
-  /**
-   * URL where to retrieve metar.
-   */
-  inline const QUrl& metar() const { return __metar; }
-  
-  /**
-   * Message to be displayed at application startup.
-   */
-  inline const QString& message() const { return __message; }
-  
-  /**
-   * URL where to retrieve a more updated status.txt file that overrides this
-   * one (_moveto0_ directive).
-   */
-  inline const QUrl& moveTo() const { return __moveTo; }
-  
+    /**
+     * Creates the new document from the given _data_, which is file contents.
+     */
+    explicit VatsimStatusDocument(QByteArray data, QObject* parent = nullptr);
+    
+    /**
+     * URLs where complete data files are available (_url0_ directive).
+     */
+    inline const QList<QUrl>& dataFileUrls() const
+    {
+        return __dataFileUrls;
+    }
+    
+    /**
+     * URLs where servers list data files are available (_url1_ directive).
+     */
+    inline const QList<QUrl>& serverListUrls() const
+    {
+        return __serverListUrls;
+    }
+    
+    /**
+     * Returns data which was passed to the constructor.
+     */
+    inline const QByteArray& data() const
+    {
+        return __data;
+    }
+    
+    inline bool isValid() const
+    {
+        return __isValid;
+    }
+    
+    /**
+     * URL where to retrieve metar.
+     */
+    inline const QUrl& metar() const
+    {
+        return __metar;
+    }
+    
+    /**
+     * Message to be displayed at application startup.
+     */
+    inline const QString& message() const
+    {
+        return __message;
+    }
+    
+    /**
+     * URL where to retrieve a more updated status.txt file that overrides this
+     * one (_moveto0_ directive).
+     */
+    inline const QUrl& moveTo() const
+    {
+        return __moveTo;
+    }
+    
 private:
-  void __parse();
-  
-  QByteArray __data;
-  bool __isValid;
-  
-  QList<QUrl> __dataFileUrls;
-  QList<QUrl> __serverListUrls;
-  QUrl __metar;
-  QString __message;
-  QUrl __moveTo;
-  
+    void __parse();
+    
+    QByteArray __data;
+    bool __isValid;
+    
+    QList<QUrl> __dataFileUrls;
+    QList<QUrl> __serverListUrls;
+    QUrl __metar;
+    QString __message;
+    QUrl __moveTo;
+    
 };
 
 #endif // VATSIMSTATUSDOCUMENT_H

@@ -34,41 +34,41 @@ class WeatherForecastRequest;
  * sequentially.
  */
 class WeatherForecastDownloader : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  /**
-   * Signal is emitted when weather forecast is downloaded.
-   */
-  void finished(WeatherForecastReply* reply);
-
+    /**
+     * Signal is emitted when weather forecast is downloaded.
+     */
+    void finished(WeatherForecastReply* reply);
+    
 public:
-  WeatherForecastDownloader(QObject* parent = nullptr);
-  
-  /**
-   * Tries to download the specified forecast using each plugin until at least
-   * one of them succeeds.
-   * 
-   * \param request Specifies desired weather forecast.
-   */
-  void download(WeatherForecastRequest* request);
-  
+    WeatherForecastDownloader(QObject* parent = nullptr);
+    
+    /**
+     * Tries to download the specified forecast using each plugin until at least
+     * one of them succeeds.
+     *
+     * \param request Specifies desired weather forecast.
+     */
+    void download(WeatherForecastRequest* request);
+    
 private:
-  void __useCurrentProvider();
-  
+    void __useCurrentProvider();
+    
 private slots:
-  void __replyFinished();
-  
+    void __replyFinished();
+    
 private:
-  
-  static void __initializeProviders();
-  
-  WeatherForecastRequest* __request;
-  QList<WeatherForecastInterface*>::iterator __currentProvider;
-  
-  static QList<WeatherForecastInterface*> __providers;
-  static bool __initialized;
-  
+
+    static void __initializeProviders();
+    
+    WeatherForecastRequest* __request;
+    QList<WeatherForecastInterface*>::iterator __currentProvider;
+    
+    static QList<WeatherForecastInterface*> __providers;
+    static bool __initialized;
+    
 };
 
 #endif // WEATHERFORECASTDOWNLOADER_H

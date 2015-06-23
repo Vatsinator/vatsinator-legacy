@@ -29,24 +29,24 @@
  * bottom-left corner of the main window.
  */
 class ReplaceableWidget : public QStackedWidget {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  /**
-   * Passes the _parent_ to QStackedWidget's constructor.
-   */
-  ReplaceableWidget(QWidget* parent = nullptr);
-  
-  /**
-   * Adds given widgets.
-   */
-  void addWidgets(const std::initializer_list<QWidget*>& widgets);
-  
-  /**
-   * Changes current widget to the next.
-   */
-  void next();
-  
+    /**
+     * Passes the _parent_ to QStackedWidget's constructor.
+     */
+    ReplaceableWidget(QWidget* parent = nullptr);
+    
+    /**
+     * Adds given widgets.
+     */
+    void addWidgets(const std::initializer_list<QWidget*>& widgets);
+    
+    /**
+     * Changes current widget to the next.
+     */
+    void next();
+    
 };
 
 #endif // REPLACEABLEWIDGET_H

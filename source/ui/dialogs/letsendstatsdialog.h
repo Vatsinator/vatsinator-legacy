@@ -28,11 +28,11 @@
  * he wants to send anonymous statistics or not.
  */
 class LetSendStatsDialog : public QDialog, private Ui::LetSendStatsDialog {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  explicit LetSendStatsDialog(QWidget* parent = nullptr);
-
+    explicit LetSendStatsDialog(QWidget* parent = nullptr);
+    
 };
 
 #endif // LETSENDSTATSDIALOG_H

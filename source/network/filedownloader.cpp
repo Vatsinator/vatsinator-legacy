@@ -26,112 +26,119 @@
 
 FileDownloader::FileDownloader(QProgressBar* pb, QObject* parent) :
     QObject(parent),
-    __pb(pb), 
+    __pb(pb),
     __reply(nullptr) {}
 
 void
-FileDownloader::fetch(const QUrl& url) {
-  __urls.enqueue(url);
-  
-  if (!__reply)
-    __startRequest();
+FileDownloader::fetch(const QUrl& url)
+{
+    __urls.enqueue(url);
+    
+    if (!__reply)
+        __startRequest();
 }
 
 QString
-FileDownloader::fileNameForUrl(const QUrl& url) {
-  QString baseName = QFileInfo(url.path()).fileName();
-  
-  Q_ASSERT(!baseName.isEmpty());
-  
-  if (!QDir(QDir::tempPath()).isReadable()) {
-    emit error(tr("Temporary directory (%1) is not readable!").arg(QDir::tempPath()));
-    qWarning("Temporary directory %s is not accessible!",
-                               qPrintable(QDir::tempPath()));
-    return QString();
-  }
-  
-  QString absPath = QDir::tempPath() % "/" % baseName;
-  
-  qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
-  
-  if (QFile::exists(absPath))
-    QFile(absPath).remove();
-  
-  return absPath;
+FileDownloader::fileNameForUrl(const QUrl& url)
+{
+    QString baseName = QFileInfo(url.path()).fileName();
+    
+    Q_ASSERT(!baseName.isEmpty());
+    
+    if (!QDir(QDir::tempPath()).isReadable()) {
+        emit error(tr("Temporary directory (%1) is not readable!").arg(QDir::tempPath()));
+        qWarning("Temporary directory %s is not accessible!",
+                 qPrintable(QDir::tempPath()));
+        return QString();
+    }
+    
+    QString absPath = QDir::tempPath() % "/" % baseName;
+    
+    qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
+    
+    if (QFile::exists(absPath))
+        QFile(absPath).remove();
+        
+    return absPath;
 }
 
 void
-FileDownloader::__startRequest() {
-  if (__reply || !hasPendingTasks())
-    return;
-  
-  QUrl url = __urls.dequeue();
-  QString fileName = fileNameForUrl(url);
-  
-  if (fileName.isEmpty()) {
+FileDownloader::__startRequest()
+{
+    if (__reply || !hasPendingTasks())
+        return;
+        
+    QUrl url = __urls.dequeue();
+    QString fileName = fileNameForUrl(url);
+    
+    if (fileName.isEmpty()) {
+        __startRequest();
+        return;
+    }
+    
+    __output.setFileName(fileName);
+    
+    if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()));
+        qCritical("FileDownloader: could not open file (%s) for writing!",
+                  qPrintable(__output.fileName()));
+        __startRequest();
+        return;
+    }
+    
+    QNetworkRequest request(url);
+    request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
+    __reply = __nam.get(request);
+    
+    connect(__reply,      SIGNAL(finished()),
+            this,         SLOT(__finished()));
+    connect(__reply,      SIGNAL(readyRead()),
+            this,         SLOT(__readyRead()));
+            
+    if (__pb) {
+        connect(__reply,    SIGNAL(downloadProgress(qint64, qint64)),
+                this,       SLOT(__updateProgress(qint64, qint64)));
+        __pb->setEnabled(true);
+    }
+}
+
+void
+FileDownloader::__readyRead()
+{
+    __output.write(__reply->readAll());
+}
+
+void
+FileDownloader::__finished()
+{
+    qint64 size = __output.size();
+    __output.close();
+    
+    if (__pb) {
+        __pb->reset();
+        __pb->setEnabled(false);
+    }
+    
+    if (__reply->error()) {
+        emit error(tr("Error downloading file: %1").arg(__reply->errorString()));
+        qCritical("FileDownloader: error downloading file: %s",
+                  qPrintable(__reply->errorString()));
+        QFile::remove(__output.fileName());
+    } else {
+        emit finished(QString(__output.fileName()));
+        qDebug("FileDownloader: file %s downloaded, size: %lli b",
+               qPrintable(__output.fileName()), size);
+    }
+    
+    __reply->deleteLater();
+    __reply = nullptr;
+    
     __startRequest();
-    return;
-  }
-  
-  __output.setFileName(fileName);
-  if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-    emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()));
-    qCritical("FileDownloader: could not open file (%s) for writing!",
-              qPrintable(__output.fileName()));
-    __startRequest();
-    return;
-  }
-  
-  QNetworkRequest request(url);
-  request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
-  __reply = __nam.get(request);
-  
-  connect(__reply,      SIGNAL(finished()),
-          this,         SLOT(__finished()));
-  connect(__reply,      SIGNAL(readyRead()),
-          this,         SLOT(__readyRead()));
-  
-  if (__pb) {
-    connect(__reply,    SIGNAL(downloadProgress(qint64,qint64)),
-            this,       SLOT(__updateProgress(qint64, qint64)));
-    __pb->setEnabled(true);
-  }
 }
 
 void
-FileDownloader::__readyRead() {
-  __output.write(__reply->readAll());
-}
-
-void
-FileDownloader::__finished() {
-  qint64 size = __output.size();
-  __output.close();
-  
-  if (__pb) {
-    __pb->reset();
-    __pb->setEnabled(false);
-  }
-  
-  if (__reply->error()) {
-    emit error(tr("Error downloading file: %1").arg(__reply->errorString()));
-    qCritical("FileDownloader: error downloading file: %s",
-              qPrintable(__reply->errorString()));
-    QFile::remove(__output.fileName());
-  } else {
-    emit finished(QString(__output.fileName()));
-    qDebug("FileDownloader: file %s downloaded, size: %lli b",
-           qPrintable(__output.fileName()), size);
-  }
-  
-  __reply->deleteLater();
-  __reply = nullptr;
-  
-  __startRequest();
-}
-
-void
-FileDownloader::__updateProgress(qint64 read, qint64 total) {
-  __pb->setMaximum(total);
-  __pb->setValue(read);
+FileDownloader::__updateProgress(qint64 read, qint64 total)
+{
+    __pb->setMaximum(total);
+    __pb->setValue(read);
 }

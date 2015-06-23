@@ -27,54 +27,54 @@
 #include "widgets/widgetsettingsmodule.h"
 
 class MapPage : public WidgetSettingsModule, private Ui::MapPage {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void settingsChanged();
-
+    void settingsChanged();
+    
 public:
-  MapPage(QWidget* parent = nullptr);
-  
-  QString listElement() const override;
-  QString listIcon() const override;
-  QString moduleId() const override;
-  
-  /**
-   * \variables
-   * zoom_coefficient:                  int
-   * staffed_fir_borders_color:         QColor
-   * staffed_fir_background_color:      QColor
-   * unstaffed_fir_borders_color:       QColor
-   * staffed_uir_borders_color:         QColor
-   * staffed_uir_background_color:      QColor
-   * fir_font:                          QFont
-   * airport_font:                      QFont
-   * pilot_font:                        QFont
-   * approach_circle_color:             QColor
-   * seas_color:                        QColor
-   * lands_color:                       QColor
-   * origin_to_pilot_line_color:        QColor
-   * pilot_to_destination_line_color:   QColor
-   */
-  void update() const override;
-  
+    MapPage(QWidget* parent = nullptr);
+    
+    QString listElement() const override;
+    QString listIcon() const override;
+    QString moduleId() const override;
+    
+    /**
+     * \variables
+     * zoom_coefficient:                  int
+     * staffed_fir_borders_color:         QColor
+     * staffed_fir_background_color:      QColor
+     * unstaffed_fir_borders_color:       QColor
+     * staffed_uir_borders_color:         QColor
+     * staffed_uir_background_color:      QColor
+     * fir_font:                          QFont
+     * airport_font:                      QFont
+     * pilot_font:                        QFont
+     * approach_circle_color:             QColor
+     * seas_color:                        QColor
+     * lands_color:                       QColor
+     * origin_to_pilot_line_color:        QColor
+     * pilot_to_destination_line_color:   QColor
+     */
+    void update() const override;
+    
 protected:
-  void restore(QSettings& s, const QVariantHash& defaults) override;
-  void save(QSettings& s) override;
-  
+    void restore(QSettings& s, const QVariantHash& defaults) override;
+    void save(QSettings& s) override;
+    
 private:
-  void __updateFontButtons();
-  
+    void __updateFontButtons();
+    
 private slots:
-  void __showFirFontDialog();
-  void __showAirportFontDialog();
-  void __showPilotFontDialog();
-  
+    void __showFirFontDialog();
+    void __showAirportFontDialog();
+    void __showPilotFontDialog();
+    
 private:
-  QFont __firFont;
-  QFont __airportFont;
-  QFont __pilotFont;
-  
+    QFont __firFont;
+    QFont __airportFont;
+    QFont __pilotFont;
+    
 };
 
 #endif // MAPPAGE_H

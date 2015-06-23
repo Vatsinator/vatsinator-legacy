@@ -26,25 +26,25 @@ class Pilot;
 
 /**
  * The TrackAction class is used to mark the given pilot as a tracked one.
- * 
+ *
  * \todo Implement.
  */
 class TrackAction : public QAction {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  void triggered(const Pilot* pilot);
-
+    void triggered(const Pilot* pilot);
+    
 public:
-  TrackAction(const Pilot* pilot, QObject* parent);
-
+    TrackAction(const Pilot* pilot, QObject* parent);
+    
 private slots:
-  void __handleTriggered();
-  void __updateChecked(const Pilot* pilot);
-
+    void __handleTriggered();
+    void __updateChecked(const Pilot* pilot);
+    
 private:
-  const Pilot* __current;
-
+    const Pilot* __current;
+    
 };
 
 #endif // TRACKACTION_H

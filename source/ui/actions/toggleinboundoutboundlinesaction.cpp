@@ -22,13 +22,14 @@
 #include "toggleinboundoutboundlinesaction.h"
 
 ToggleInboundOutboundLinesAction::ToggleInboundOutboundLinesAction(
-  const Airport* airport, QObject* parent) :
+    const Airport* airport, QObject* parent) :
     QAction(tr("Toggle inbound/outbound lines"), parent),
-    __current(airport) {
-  setCheckable(true);
-//   if (AirportTracker::getSingleton().tracked().contains(QString(_ap->data()->icao)))
-//     setChecked(true);
-  connect(this, &QAction::triggered, [this]() {
-    emit triggered(__current);
-  });
+    __current(airport)
+{
+    setCheckable(true);
+    //   if (AirportTracker::getSingleton().tracked().contains(QString(_ap->data()->icao)))
+    //     setChecked(true);
+    connect(this, &QAction::triggered, [this]() {
+        emit triggered(__current);
+    });
 }

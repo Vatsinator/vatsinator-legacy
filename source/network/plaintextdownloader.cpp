@@ -28,64 +28,68 @@ PlainTextDownloader::PlainTextDownloader(QObject* parent) :
     __reply(nullptr) {}
 
 void
-PlainTextDownloader::fetch(const QUrl& url) {
-  __urls.enqueue(url);
-
-  if (!__reply)
-    __startRequest();
+PlainTextDownloader::fetch(const QUrl& url)
+{
+    __urls.enqueue(url);
+    
+    if (!__reply)
+        __startRequest();
 }
 
 void
-PlainTextDownloader::abort() {
-  if (__reply) {
-    __reply->abort();
+PlainTextDownloader::abort()
+{
+    if (__reply) {
+        __reply->abort();
+        __reply->deleteLater();
+        __reply = nullptr;
+        
+        if (hasPendingTasks())
+            __startRequest();
+    }
+}
+
+void
+PlainTextDownloader::__startRequest()
+{
+    if (!__urls.isEmpty()) {
+        QNetworkRequest request(__urls.dequeue());
+        request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
+        __reply = __nam.get(request);
+    } else
+        return;
+        
+    __data.clear();
+    
+    connect(__reply, &QNetworkReply::finished, this, &PlainTextDownloader::__finished);
+    connect(__reply, &QNetworkReply::readyRead, this, &PlainTextDownloader::__readyRead);
+    connect(__reply, &QNetworkReply::downloadProgress, this, &PlainTextDownloader::progress);
+}
+
+void
+PlainTextDownloader::__readyRead()
+{
+    __data.append(__reply->readAll());
+}
+
+void
+PlainTextDownloader::__finished()
+{
+    if (__reply->error() == QNetworkReply::NoError) {
+        qDebug("PlainTextDownloader: %s: finished",
+               qPrintable(__reply->url().toString()));
+        emit finished();
+    } else {
+        qWarning("PlainTextDownloader: %s: error (%s)",
+                 qPrintable(__reply->url().toString()),
+                 qPrintable(__reply->errorString()));
+                 
+        emit error(__reply->errorString());
+    }
+    
     __reply->deleteLater();
     __reply = nullptr;
-  
-    if (hasPendingTasks())
-      __startRequest();
-  }
-}
-
-void
-PlainTextDownloader::__startRequest() {
-  if (!__urls.isEmpty()) {
-    QNetworkRequest request(__urls.dequeue());
-    request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
-    __reply = __nam.get(request);
-  } else {
-    return;
-  }
-  
-  __data.clear(); 
-
-  connect(__reply, &QNetworkReply::finished, this, &PlainTextDownloader::__finished);
-  connect(__reply, &QNetworkReply::readyRead, this, &PlainTextDownloader::__readyRead);
-  connect(__reply, &QNetworkReply::downloadProgress, this, &PlainTextDownloader::progress);
-}
-
-void
-PlainTextDownloader::__readyRead() {
-  __data.append(__reply->readAll());
-}
-
-void
-PlainTextDownloader::__finished() {
-  if (__reply->error() == QNetworkReply::NoError) {
-    qDebug("PlainTextDownloader: %s: finished",
-           qPrintable(__reply->url().toString()));
-    emit finished();
-  } else {
-    qWarning("PlainTextDownloader: %s: error (%s)",
-             qPrintable(__reply->url().toString()),
-             qPrintable(__reply->errorString()));
     
-    emit error(__reply->errorString());
-  }
-  
-  __reply->deleteLater();
-  __reply = nullptr;
-  
-  if (hasPendingTasks())
-    __startRequest();
+    if (hasPendingTasks())
+        __startRequest();
 }

@@ -25,81 +25,87 @@
 #include "notamlistmodel.h"
 
 NotamListModel::NotamListModel(QString icao, QObject* parent) :
-  QAbstractTableModel(parent),
-  __icao(qMove(icao)) {}
+    QAbstractTableModel(parent),
+    __icao(qMove(icao)) {}
 
 void
-NotamListModel::addNotam(Notam notam) {
-  __notams << qMove(notam);
+NotamListModel::addNotam(Notam notam)
+{
+    __notams << qMove(notam);
 }
 
 QVariant
-NotamListModel::data(const QModelIndex& index, int role) const {
-  if (index.column() != 0)
-    return QVariant();
-  
-  const Notam& notam = __notams.at(index.row());
-  
-  switch (role) {
-    case Qt::DisplayRole:
-      return QString("%1 %2 %3").arg(
-          notam.icao(),
-          notam.ident(),
-          notam.notam()
-        );
-      
-    case Qt::ToolTipRole: {
-      QString to;
-      if (notam.to().isValid()) {
-        to = notam.to().toString("yyyy-MM-dd hh:mm:ss");
-        if (notam.cflag() == Notam::Est)
-          to += " <strong>EST</strong>";
-      } else {
-        to = "<strong>PERM</strong>";
-      }
-      
-      if (!notam.diurnal().isEmpty())
-        to += "; " + notam.diurnal();
-      
-      return QString("<p style='white-space:nowrap'>Effective from %1 until %2</p>").arg(
-        notam.from().toString("yyyy-MM-dd hh:mm:ss"),
-        to
-      );
-    }
-    
-    case Qt::BackgroundRole:
-      switch (notam.type()) {
+NotamListModel::data(const QModelIndex& index, int role) const
+{
+    if (index.column() != 0)
+        return QVariant();
         
-        case Notam::Cancellation:
-          return QBrush(QColor(255, 177, 177));
-          
-        default:
-          return QVariant();
-      }
+    const Notam& notam = __notams.at(index.row());
     
-    case UrlRole:
-      return notam.url();
-      
-    default:
-      return QVariant();
-  }
+    switch (role) {
+        case Qt::DisplayRole:
+            return QString("%1 %2 %3").arg(
+                       notam.icao(),
+                       notam.ident(),
+                       notam.notam()
+                   );
+                   
+        case Qt::ToolTipRole: {
+            QString to;
+            
+            if (notam.to().isValid()) {
+                to = notam.to().toString("yyyy-MM-dd hh:mm:ss");
+                
+                if (notam.cflag() == Notam::Est)
+                    to += " <strong>EST</strong>";
+            } else
+                to = "<strong>PERM</strong>";
+                
+            if (!notam.diurnal().isEmpty())
+                to += "; " + notam.diurnal();
+                
+            return QString("<p style='white-space:nowrap'>Effective from %1 until %2</p>").arg(
+                       notam.from().toString("yyyy-MM-dd hh:mm:ss"),
+                       to
+                   );
+        }
+        
+        case Qt::BackgroundRole:
+            switch (notam.type()) {
+            
+                case Notam::Cancellation:
+                    return QBrush(QColor(255, 177, 177));
+                    
+                default:
+                    return QVariant();
+            }
+            
+        case UrlRole:
+            return notam.url();
+            
+        default:
+            return QVariant();
+    }
 }
 
 int
-NotamListModel::rowCount(const QModelIndex& parent) const {
-  Q_UNUSED(parent);
-  return __notams.size();
+NotamListModel::rowCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return __notams.size();
 }
 
 int
-NotamListModel::columnCount(const QModelIndex& parent) const {
-  Q_UNUSED(parent);
-  return 1;
+NotamListModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return 1;
 }
 
 void
-NotamListModel::sort(int column, Qt::SortOrder order) {
-  Q_UNUSED(order);
-  Q_UNUSED(column);
-  std::sort(__notams.begin(), __notams.end());
+NotamListModel::sort(int column, Qt::SortOrder order)
+{
+    Q_UNUSED(order);
+    Q_UNUSED(column);
+    std::sort(__notams.begin(), __notams.end());
 }

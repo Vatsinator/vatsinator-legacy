@@ -27,39 +27,46 @@
 
 /**
  * The Metar class represents a single METAR report.
- * 
+ *
  * \todo Parse METARs.
  */
 class Metar {
-  
+
 public:
-  /**
-   * Creates an empty report.
-   */
-  Metar();
-  
-  /**
-   * Creates new METAR for _icao_ with the given _metar_.
-   */
-  Metar(const QString& icao, const QString& metar = QString());
-  
-  /**
-   * Sets the METAR report to the given _metar_.
-   */
-  void setMetar(const QString& metar);
-  
-  inline const QString& icao() const { return __icao; }
-  inline const QString& metar() const { return __metar; }
-  
-  inline const QString lastFetchTime() const {
-    return __lastFetchTime.toString("dd MMM yyyy, hh:mm") % " UTC";
-  }
-  
+    /**
+     * Creates an empty report.
+     */
+    Metar();
+    
+    /**
+     * Creates new METAR for _icao_ with the given _metar_.
+     */
+    Metar(const QString& icao, const QString& metar = QString());
+    
+    /**
+     * Sets the METAR report to the given _metar_.
+     */
+    void setMetar(const QString& metar);
+    
+    inline const QString& icao() const
+    {
+        return __icao;
+    }
+    inline const QString& metar() const
+    {
+        return __metar;
+    }
+    
+    inline const QString lastFetchTime() const
+    {
+        return __lastFetchTime.toString("dd MMM yyyy, hh:mm") % " UTC";
+    }
+    
 private:
-  QString   __icao;
-  QString   __metar;
-  QDateTime __lastFetchTime;
-  
+    QString   __icao;
+    QString   __metar;
+    QDateTime __lastFetchTime;
+    
 };
 Q_DECLARE_METATYPE(Metar)
 

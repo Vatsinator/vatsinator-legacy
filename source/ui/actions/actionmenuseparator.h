@@ -27,11 +27,11 @@
  * a section title.
  */
 class ActionMenuSeparator : public QAction {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  ActionMenuSeparator(const QString& label, QObject* parent);
-
+    ActionMenuSeparator(const QString& label, QObject* parent);
+    
 };
 
 #endif // ACTIONMENUSEPARATOR_H

@@ -47,165 +47,177 @@ class WorldMap;
  * controls whole application initialization process.
  */
 class VatsinatorApplication : public QApplication {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  /**
-   * First signal emitted in the application.
-   * When this signal is emitted, all singletons are already instantiated,
-   * but they are not initialized yet.
-   */
-  void initializing();
-
+    /**
+     * First signal emitted in the application.
+     * When this signal is emitted, all singletons are already instantiated,
+     * but they are not initialized yet.
+     */
+    void initializing();
+    
 public:
-  /**
-   * Constructor forwards argc & argv to the QApplication.
-   */
-  VatsinatorApplication(int& argc, char** argv);
-
-  /**
-   * Cleans the resources up.
-   */
-  virtual ~VatsinatorApplication();
-  
-  /**
-   * Gets the UserInterface instance.
-   */
-  inline UserInterface* userInterface() {
-    Q_ASSERT(__userInterface);
-    return __userInterface;
-  }
-  
-  /**
-   * Gets the SettingsManager instance.
-   */
-  inline SettingsManager* settingsManager() {
-    Q_ASSERT(__settingsManager);
-    return __settingsManager;
-  }
-  
-  /**
-   * Gets the VatsimDataHandler instance.
-   */
-  inline VatsimDataHandler* vatsimDataHandler() {
-    Q_ASSERT(__vatsimData);
-    return __vatsimData;
-  }
-  
-  /**
-   * Gets the VatsimDataHandler instance const pointer.
-   */
-  inline const VatsimDataHandler* vatsimDataHandler() const {
-    Q_ASSERT(__vatsimData);
-    return __vatsimData;
-  }
-  
-  /**
-   * Gets the StatsPurveyor instance.
-   */
-  inline StatsPurveyor* statsPurveyor() {
-    Q_ASSERT(__statsPurveyor);
-    return __statsPurveyor;
-  }
-  
-  /**
-   * Gets the ResourceManager instance.
-   */
-  inline ResourceManager* resourceManager() {
-    Q_ASSERT(__resourceManager);
-    return __resourceManager;
-  }
-  
-  /**
-   * Gets the AirlineDatabase instance.
-   */
-  inline AirlineDatabase* airlineDatabase() {
-    Q_ASSERT(__airlineDatabase);
-    return __airlineDatabase;
-  }
-  
-  /**
-   * Gets the AirportDatabase instance.
-   */
-  inline AirportDatabase* airportDatabase() {
-    Q_ASSERT(__airlineDatabase);
-    return __airportDatabaase;
-  }
-  
-  /**
-   * Gets the FirDatabase instance.
-   */
-  inline FirDatabase* firDatabase() {
-    Q_ASSERT(__firDatabase);
-    return __firDatabase;
-  }
-  
-  /**
-   * Gets the MetarUpdater instance.
-   */
-  inline MetarUpdater* metarUpdater() {
-    Q_ASSERT(__metarUpdater);
-    return __metarUpdater;
-  }
-  
-  /**
-   * Gets the WorldMap instance.
-   */
-  inline WorldMap* worldMap() {
-    Q_ASSERT(__worldMap);
-    return __worldMap;
-  }
-  
-  /**
-   * Gets the LanguageManager instance.
-   */
-  inline LanguageManager* languageManager() {
-    Q_ASSERT(__languageManager);
-    return __languageManager;
-  }
-
+    /**
+     * Constructor forwards argc & argv to the QApplication.
+     */
+    VatsinatorApplication(int& argc, char** argv);
+    
+    /**
+     * Cleans the resources up.
+     */
+    virtual ~VatsinatorApplication();
+    
+    /**
+     * Gets the UserInterface instance.
+     */
+    inline UserInterface* userInterface()
+    {
+        Q_ASSERT(__userInterface);
+        return __userInterface;
+    }
+    
+    /**
+     * Gets the SettingsManager instance.
+     */
+    inline SettingsManager* settingsManager()
+    {
+        Q_ASSERT(__settingsManager);
+        return __settingsManager;
+    }
+    
+    /**
+     * Gets the VatsimDataHandler instance.
+     */
+    inline VatsimDataHandler* vatsimDataHandler()
+    {
+        Q_ASSERT(__vatsimData);
+        return __vatsimData;
+    }
+    
+    /**
+     * Gets the VatsimDataHandler instance const pointer.
+     */
+    inline const VatsimDataHandler* vatsimDataHandler() const
+    {
+        Q_ASSERT(__vatsimData);
+        return __vatsimData;
+    }
+    
+    /**
+     * Gets the StatsPurveyor instance.
+     */
+    inline StatsPurveyor* statsPurveyor()
+    {
+        Q_ASSERT(__statsPurveyor);
+        return __statsPurveyor;
+    }
+    
+    /**
+     * Gets the ResourceManager instance.
+     */
+    inline ResourceManager* resourceManager()
+    {
+        Q_ASSERT(__resourceManager);
+        return __resourceManager;
+    }
+    
+    /**
+     * Gets the AirlineDatabase instance.
+     */
+    inline AirlineDatabase* airlineDatabase()
+    {
+        Q_ASSERT(__airlineDatabase);
+        return __airlineDatabase;
+    }
+    
+    /**
+     * Gets the AirportDatabase instance.
+     */
+    inline AirportDatabase* airportDatabase()
+    {
+        Q_ASSERT(__airlineDatabase);
+        return __airportDatabaase;
+    }
+    
+    /**
+     * Gets the FirDatabase instance.
+     */
+    inline FirDatabase* firDatabase()
+    {
+        Q_ASSERT(__firDatabase);
+        return __firDatabase;
+    }
+    
+    /**
+     * Gets the MetarUpdater instance.
+     */
+    inline MetarUpdater* metarUpdater()
+    {
+        Q_ASSERT(__metarUpdater);
+        return __metarUpdater;
+    }
+    
+    /**
+     * Gets the WorldMap instance.
+     */
+    inline WorldMap* worldMap()
+    {
+        Q_ASSERT(__worldMap);
+        return __worldMap;
+    }
+    
+    /**
+     * Gets the LanguageManager instance.
+     */
+    inline LanguageManager* languageManager()
+    {
+        Q_ASSERT(__languageManager);
+        return __languageManager;
+    }
+    
 public slots:
-  /**
-   * Restarts the application.
-   */
-  void restart();
-  
+    /**
+     * Restarts the application.
+     */
+    void restart();
+    
 protected:
-  void customEvent(QEvent* event) override;
-  
-  /**
-   * Handles the DecisionEvent.
-   * THe only recognized context here is "statistics" which indicates
-   * whether user agreed to send stats to Vatsinator servers or not.
-   */
-  virtual void userDecisionEvent(DecisionEvent* event);
-  
+    void customEvent(QEvent* event) override;
+    
+    /**
+     * Handles the DecisionEvent.
+     * THe only recognized context here is "statistics" which indicates
+     * whether user agreed to send stats to Vatsinator servers or not.
+     */
+    virtual void userDecisionEvent(DecisionEvent* event);
+    
 private slots:
-  /**
-   * Initialize the application.
-   * This slot is connected to the initializing() signal.
-   */
-  void __initialize();
-  
+    /**
+     * Initialize the application.
+     * This slot is connected to the initializing() signal.
+     */
+    void __initialize();
+    
 private:
-  
-  UserInterface*       __userInterface;
-  FileManager*         __fileManager;
-  SettingsManager*     __settingsManager;
-  AirlineDatabase*     __airlineDatabase;
-  AirportDatabase*     __airportDatabaase;
-  FirDatabase*         __firDatabase;
-  MetarUpdater*        __metarUpdater;
-  WorldMap*            __worldMap;
-  VatsimDataHandler*   __vatsimData;
-  LanguageManager*     __languageManager;
-  ResourceManager*     __resourceManager;
-  StatsPurveyor*       __statsPurveyor;
-
+    UserInterface*       __userInterface;
+    FileManager*         __fileManager;
+    SettingsManager*     __settingsManager;
+    AirlineDatabase*     __airlineDatabase;
+    AirportDatabase*     __airportDatabaase;
+    FirDatabase*         __firDatabase;
+    MetarUpdater*        __metarUpdater;
+    WorldMap*            __worldMap;
+    VatsimDataHandler*   __vatsimData;
+    LanguageManager*     __languageManager;
+    ResourceManager*     __resourceManager;
+    StatsPurveyor*       __statsPurveyor;
+    
 };
 
-inline VatsinatorApplication* vApp() {
-  return qobject_cast<VatsinatorApplication*>(QCoreApplication::instance());
+inline VatsinatorApplication* vApp()
+{
+    return qobject_cast<VatsinatorApplication*>(QCoreApplication::instance());
 }
 
 #endif // VATSINATORAPPLICATION_H

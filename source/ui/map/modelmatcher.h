@@ -31,41 +31,41 @@
 class QOpenGLTexture;
 
 /**
- * This class is responsible for matching user airplanes to 
+ * This class is responsible for matching user airplanes to
  * corresponding models.
  */
 class ModelMatcher : public QObject, public Notifiable {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  /**
-   * Reads the models.dat file. Passes _parent_ to the QObject's constructor.
-   */
-  ModelMatcher(QObject* = nullptr);
-  
-  virtual ~ModelMatcher();
-
-  /**
-   * \param acft Aircraft code that comes from the flight plan.
-   * \return Model's texture; don't dare you delete it.
-   */
-  QOpenGLTexture* matchMyModel(const QString& acft) const;
-  
+    /**
+     * Reads the models.dat file. Passes _parent_ to the QObject's constructor.
+     */
+    ModelMatcher(QObject* = nullptr);
+    
+    virtual ~ModelMatcher();
+    
+    /**
+     * \param acft Aircraft code that comes from the flight plan.
+     * \return Model's texture; don't dare you delete it.
+     */
+    QOpenGLTexture* matchMyModel(const QString& acft) const;
+    
 private:
-  void __readModels();
-  void __loadPixmaps();
-
+    void __readModels();
+    void __loadPixmaps();
+    
 private:
-  /*
-   * Aircraft <-> id pairs
-   */
-  QList<QPair<QString, QString>> __modelsIds;
-  
-  /*
-   * Id <-> texture pairs
-   */
-  QMap<QString, QOpenGLTexture*> __modelsPixmaps;
-
+    /*
+     * Aircraft <-> id pairs
+     */
+    QList<QPair<QString, QString>> __modelsIds;
+    
+    /*
+     * Id <-> texture pairs
+     */
+    QMap<QString, QOpenGLTexture*> __modelsPixmaps;
+    
 };
 
 #endif // MODELMATCHER_H

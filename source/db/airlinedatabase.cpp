@@ -31,48 +31,53 @@ AirlineDatabase::AirlineDatabase(QObject* parent) :
     __canFetch(false) {}
 
 void
-AirlineDatabase::initialize() {
-  QFile db(FileManager::path("data/airlines"));
-  
-  if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(db.fileName()));
-    return;
-  }
-
-  QJsonParseError error;
-  QJsonDocument document = QJsonDocument::fromJson(db.readAll(), &error);
-  
-  if (error.error != QJsonParseError::NoError) {
-    qWarning("AirlineDatabase: the following error occured parsing %s: %s",
-             qPrintable(db.fileName()), qPrintable(error.errorString()));
-    notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(db.fileName()));
-    return;
-  }
-  
-  QJsonObject root = document.object();
-  if (root.contains("config")) {
-    QJsonObject config = root["config"].toObject();
-    __airlineLogoUrl = config["airlinelogourl"].toString();
-    __canFetch = config["canfetch"].toInt() > 0;
-  }
-  
-  if (root.contains("data")) {
-     QJsonArray data = root["data"].toArray();
-     for (const QJsonValueRef a: data) {
-       Airline* airline = new Airline(a.toObject(), this);
-       __airlines.insert(airline->icao(), airline);
-     }
-  }
-  
-  db.close();
+AirlineDatabase::initialize()
+{
+    QFile db(FileManager::path("data/airlines"));
+    
+    if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(db.fileName()));
+        return;
+    }
+    
+    QJsonParseError error;
+    QJsonDocument document = QJsonDocument::fromJson(db.readAll(), &error);
+    
+    if (error.error != QJsonParseError::NoError) {
+        qWarning("AirlineDatabase: the following error occured parsing %s: %s",
+                 qPrintable(db.fileName()), qPrintable(error.errorString()));
+        notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(db.fileName()));
+        return;
+    }
+    
+    QJsonObject root = document.object();
+    
+    if (root.contains("config")) {
+        QJsonObject config = root["config"].toObject();
+        __airlineLogoUrl = config["airlinelogourl"].toString();
+        __canFetch = config["canfetch"].toInt() > 0;
+    }
+    
+    if (root.contains("data")) {
+        QJsonArray data = root["data"].toArray();
+        
+        for (const QJsonValueRef a : data) {
+            Airline* airline = new Airline(a.toObject(), this);
+            __airlines.insert(airline->icao(), airline);
+        }
+    }
+    
+    db.close();
 }
 
 Airline*
-AirlineDatabase::find(const QString& icao) {
-  return __airlines.contains(icao) ? __airlines[icao] : nullptr;
+AirlineDatabase::find(const QString& icao)
+{
+    return __airlines.contains(icao) ? __airlines[icao] : nullptr;
 }
 
 const Airline*
-AirlineDatabase::find(const QString& icao) const {
-  return __airlines.contains(icao) ? __airlines[icao] : nullptr;
+AirlineDatabase::find(const QString& icao) const
+{
+    return __airlines.contains(icao) ? __airlines[icao] : nullptr;
 }

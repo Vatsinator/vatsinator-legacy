@@ -30,12 +30,12 @@
 class BookingProvider {
 
 public:
-  /**
-   * This function returns a new model containing all bookings for the
-   * given FIR. If there are no bookings, this method returns an empty model.
-   */
-  virtual AtcBookingTableModel* bookings(const QString& icao) = 0;
-  
+    /**
+     * This function returns a new model containing all bookings for the
+     * given FIR. If there are no bookings, this method returns an empty model.
+     */
+    virtual AtcBookingTableModel* bookings(const QString& icao) = 0;
+    
 };
 
 Q_DECLARE_INTERFACE(BookingProvider,

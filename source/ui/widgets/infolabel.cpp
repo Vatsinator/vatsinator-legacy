@@ -26,61 +26,67 @@
 
 InfoLabel::InfoLabel(QWidget* parent, Qt::WindowFlags flags) :
     QWidget(parent, flags),
-    __descriptionFont(qobject_cast<VatsinatorStyle*>(vApp()->style())->smallFont()) {}
+    __descriptionFont(qobject_cast<VatsinatorStyle * >(vApp()->style())->smallFont()) {}
 
 void
-InfoLabel::setDescription(const QString& description) {
-  __description = description;
-  updateGeometry();
+InfoLabel::setDescription(const QString& description)
+{
+    __description = description;
+    updateGeometry();
 }
 
 void
-InfoLabel::setValue(const QString& value) {
-  __val = value;
-  updateGeometry();
+InfoLabel::setValue(const QString& value)
+{
+    __val = value;
+    updateGeometry();
 }
 
 void
-InfoLabel::setDescriptionFont(const QFont& font) {
-  __descriptionFont = font;
-  updateGeometry();
+InfoLabel::setDescriptionFont(const QFont& font)
+{
+    __descriptionFont = font;
+    updateGeometry();
 }
 
 QSize
-InfoLabel::sizeHint() const {
-  QFontMetrics fm1 = QFontMetrics(__descriptionFont);
-  QFontMetrics fm2 = fontMetrics();
-  
-  return QSize(
-    qMax(fm1.width(description()), fm2.width(value())),
-    fm1.height() + fm2.height()
-  );
+InfoLabel::sizeHint() const
+{
+    QFontMetrics fm1 = QFontMetrics(__descriptionFont);
+    QFontMetrics fm2 = fontMetrics();
+    
+    return QSize(
+               qMax(fm1.width(description()), fm2.width(value())),
+               fm1.height() + fm2.height()
+           );
 }
 
 QSize
-InfoLabel::minimumSizeHint() const {
-  QFontMetrics fm1 = QFontMetrics(__descriptionFont);
-  QFontMetrics fm2 = fontMetrics();
-  
-  return QSize(
-    qMax(fm1.width(description()), fm2.width(value())),
-    fm1.height() + fm2.height()
-  );
+InfoLabel::minimumSizeHint() const
+{
+    QFontMetrics fm1 = QFontMetrics(__descriptionFont);
+    QFontMetrics fm2 = fontMetrics();
+    
+    return QSize(
+               qMax(fm1.width(description()), fm2.width(value())),
+               fm1.height() + fm2.height()
+           );
 }
 
 void
-InfoLabel::paintEvent(QPaintEvent* event) {
-  QPainter p(this);
-  
-  QFontMetrics descFm = QFontMetrics(__descriptionFont);
-  QFontMetrics valueFm = fontMetrics();
-  
-  QRect descRect(event->rect().topLeft(), QSize(event->rect().width(), descFm.height()));
-  p.setFont(__descriptionFont);
-  p.drawText(descRect, Qt::AlignCenter, description());
-  
-  QRect valueRect(event->rect().topLeft(), QSize(event->rect().width(), valueFm.height()));
-  valueRect.moveTop(descRect.bottom());
-  p.setFont(font());
-  p.drawText(valueRect, Qt::AlignCenter, value());
+InfoLabel::paintEvent(QPaintEvent* event)
+{
+    QPainter p(this);
+    
+    QFontMetrics descFm = QFontMetrics(__descriptionFont);
+    QFontMetrics valueFm = fontMetrics();
+    
+    QRect descRect(event->rect().topLeft(), QSize(event->rect().width(), descFm.height()));
+    p.setFont(__descriptionFont);
+    p.drawText(descRect, Qt::AlignCenter, description());
+    
+    QRect valueRect(event->rect().topLeft(), QSize(event->rect().width(), valueFm.height()));
+    valueRect.moveTop(descRect.bottom());
+    p.setFont(font());
+    p.drawText(valueRect, Qt::AlignCenter, value());
 }

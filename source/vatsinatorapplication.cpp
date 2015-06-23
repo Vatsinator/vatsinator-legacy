@@ -58,94 +58,100 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     __vatsimData(new VatsimDataHandler(this)),
     __languageManager(new LanguageManager()),
     __resourceManager(new ResourceManager()),
-    __statsPurveyor(new StatsPurveyor()) {
-  
-  /* Set up translations */
-  QString locale = SettingsManager::earlyGetLocale();
-  
-  QTranslator* tr_qt = new QTranslator(this);
-  tr_qt->load(QString("qt_") % locale, FileManager::staticPath(FileManager::Translations));
-  installTranslator(tr_qt);
-  
-  QTranslator* tr = new QTranslator(this);
-  tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
-  installTranslator(tr);
-  
-  setStyle(new VatsinatorStyle());
-  
-  connect(this, &VatsinatorApplication::initializing, &VatsinatorApplication::__initialize);
-  emit initializing();
+    __statsPurveyor(new StatsPurveyor())
+{
+
+    /* Set up translations */
+    QString locale = SettingsManager::earlyGetLocale();
+    
+    QTranslator* tr_qt = new QTranslator(this);
+    tr_qt->load(QString("qt_") % locale, FileManager::staticPath(FileManager::Translations));
+    installTranslator(tr_qt);
+    
+    QTranslator* tr = new QTranslator(this);
+    tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
+    installTranslator(tr);
+    
+    setStyle(new VatsinatorStyle());
+    
+    connect(this, &VatsinatorApplication::initializing, &VatsinatorApplication::__initialize);
+    emit initializing();
 }
 
-VatsinatorApplication::~VatsinatorApplication() {
-  QThread* rmThread = __resourceManager->thread();
-  __resourceManager->deleteLater();
-  rmThread->quit();
-
-  QThread* spThread = __statsPurveyor->thread();
-  __statsPurveyor->deleteLater();
-  spThread->quit();
-  
-  delete __languageManager;
-  delete __fileManager;
-  
-  rmThread->wait();
-  spThread->wait();
-}
-
-void
-VatsinatorApplication::restart() {
-  /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
-  qApp->quit();
-  QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+VatsinatorApplication::~VatsinatorApplication()
+{
+    QThread* rmThread = __resourceManager->thread();
+    __resourceManager->deleteLater();
+    rmThread->quit();
+    
+    QThread* spThread = __statsPurveyor->thread();
+    __statsPurveyor->deleteLater();
+    spThread->quit();
+    
+    delete __languageManager;
+    delete __fileManager;
+    
+    rmThread->wait();
+    spThread->wait();
 }
 
 void
-VatsinatorApplication::customEvent(QEvent *event) {
-  if (event->type() == Event::Decision)
-    userDecisionEvent(static_cast<DecisionEvent*>(event));
+VatsinatorApplication::restart()
+{
+    /* http://stackoverflow.com/questions/5129788/how-to-restart-my-own-qt-application */
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
 void
-VatsinatorApplication::userDecisionEvent(DecisionEvent* event) {
-  if (event->context() == QStringLiteral("statistics")) {
-    statsPurveyor()->setUserDecision(
-      event->decision() == DecisionEvent::Accepted ? StatsPurveyor::Accepted : StatsPurveyor::Declined
-    );
-  }
+VatsinatorApplication::customEvent(QEvent* event)
+{
+    if (event->type() == Event::Decision)
+        userDecisionEvent(static_cast<DecisionEvent*>(event));
 }
 
 void
-VatsinatorApplication::__initialize() {
-  qDebug("VatsinatorApplication: initializing");
-  
-  /* Read world map before UI */
-  __worldMap->initialize();
-  
-  /* Create windows */
-  __userInterface->initialize();
-  
-  /* Initialize everything else */
-  __airlineDatabase->initialize();
-  __airportDatabaase->initialize();
-  __firDatabase->initialize();
-  
-  /* Read data files only after databases are ready */
-  __vatsimData->initialize();
-  
-  /* Thread for ResourceManager */
-  QThread* rmThread = new QThread(this);
-  __resourceManager->moveToThread(rmThread);
-  rmThread->start();
-  
-  /* Thread for StatsPurveyor */
-  QThread* spThread = new QThread(this);
-  __statsPurveyor->moveToThread(spThread);
-  spThread->start();
-  
-  /* Initialize statistics */
-  QSettings s;
-  if (!s.contains("Decided/stats")) { // no decision made yet
-    __userInterface->showStatsDialog();
-  }
+VatsinatorApplication::userDecisionEvent(DecisionEvent* event)
+{
+    if (event->context() == QStringLiteral("statistics")) {
+        statsPurveyor()->setUserDecision(
+            event->decision() == DecisionEvent::Accepted ? StatsPurveyor::Accepted : StatsPurveyor::Declined
+        );
+    }
+}
+
+void
+VatsinatorApplication::__initialize()
+{
+    qDebug("VatsinatorApplication: initializing");
+    
+    /* Read world map before UI */
+    __worldMap->initialize();
+    
+    /* Create windows */
+    __userInterface->initialize();
+    
+    /* Initialize everything else */
+    __airlineDatabase->initialize();
+    __airportDatabaase->initialize();
+    __firDatabase->initialize();
+    
+    /* Read data files only after databases are ready */
+    __vatsimData->initialize();
+    
+    /* Thread for ResourceManager */
+    QThread* rmThread = new QThread(this);
+    __resourceManager->moveToThread(rmThread);
+    rmThread->start();
+    
+    /* Thread for StatsPurveyor */
+    QThread* spThread = new QThread(this);
+    __statsPurveyor->moveToThread(spThread);
+    spThread->start();
+    
+    /* Initialize statistics */
+    QSettings s;
+    
+    if (!s.contains("Decided/stats"))   // no decision made yet
+        __userInterface->showStatsDialog();
 }

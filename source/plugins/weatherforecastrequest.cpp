@@ -23,16 +23,19 @@ WeatherForecastRequest::WeatherForecastRequest(QString icao) :
     __airport(icao) {}
 
 void
-WeatherForecastRequest::setPosition(const LonLat& position) {
-  __position = position;
+WeatherForecastRequest::setPosition(const LonLat& position)
+{
+    __position = position;
 }
 
 void
-WeatherForecastRequest::setCountry(const QString& country) {
-  __country = country;
+WeatherForecastRequest::setCountry(const QString& country)
+{
+    __country = country;
 }
 
 void
-WeatherForecastRequest::setCity(const QString& city) {
-  __city = city;
+WeatherForecastRequest::setCity(const QString& city)
+{
+    __city = city;
 }

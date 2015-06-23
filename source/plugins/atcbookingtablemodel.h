@@ -29,39 +29,39 @@ class AtcBooking;
  */
 class AtcBookingTableModel : public QAbstractTableModel {
     Q_OBJECT
-
+    
 public:
-  /**
-   * The Column enum describes various columns in which the model data
-   * is displayed.
-   */
-  enum Column {
-    Callsign  = 0, /**< Client's callsign */
-    Name      = 1, /**< Real name */
-    Date      = 2, /**< Date of booking */
-    Hours     = 3  /**< Hours of booking */
-  };
-  
-  /**
-   * The default constructor passes _parent_ to QAbstractTableModel.
-   */
-  explicit AtcBookingTableModel(QObject* parent = nullptr);
-  
-  /**
-   * Adds a new booking to the model.
-   * The model takes ownership over the added item.
-   */
-  void add(AtcBooking* booking);
-  
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-  QVariant headerData(int section, Qt::Orientation orientation,
-                      int role = Qt::DisplayRole) const override;
-  void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
-  
+    /**
+     * The Column enum describes various columns in which the model data
+     * is displayed.
+     */
+    enum Column {
+        Callsign  = 0, /**< Client's callsign */
+        Name      = 1, /**< Real name */
+        Date      = 2, /**< Date of booking */
+        Hours     = 3  /**< Hours of booking */
+    };
+    
+    /**
+     * The default constructor passes _parent_ to QAbstractTableModel.
+     */
+    explicit AtcBookingTableModel(QObject* parent = nullptr);
+    
+    /**
+     * Adds a new booking to the model.
+     * The model takes ownership over the added item.
+     */
+    void add(AtcBooking* booking);
+    
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant headerData(int section, Qt::Orientation orientation,
+                        int role = Qt::DisplayRole) const override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    
 private:
-  QList<AtcBooking*> __bookings;
+    QList<AtcBooking*> __bookings;
 };
 
 #endif // ATCBOOKINGTABLEMODEL_H

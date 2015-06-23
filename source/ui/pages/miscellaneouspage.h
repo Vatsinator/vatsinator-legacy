@@ -25,35 +25,35 @@
 #include "storage/abstractsettingsmodule.h"
 
 class MiscellaneousPage : public QWidget, public AbstractSettingsModule, private Ui::MiscellaneousPage {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void settingsChanged();
-  void languageChanged();
-  
+    void settingsChanged();
+    void languageChanged();
+    
 public:
-  MiscellaneousPage(QWidget* parent = nullptr);
-  
-  QString listElement() const override;
-  QString listIcon() const override;
-  QString moduleId() const override;
-  
-  /**
-   * @variables
-   * send_statistics:   bool
-   * language:          QString
-   */
-  void update() const;
-
+    MiscellaneousPage(QWidget* parent = nullptr);
+    
+    QString listElement() const override;
+    QString listIcon() const override;
+    QString moduleId() const override;
+    
+    /**
+     * @variables
+     * send_statistics:   bool
+     * language:          QString
+     */
+    void update() const;
+    
 protected:
-  void showEvent(QShowEvent* event) override;
-  
-  void restore(QSettings& s, const QVariantHash& defaults) override;
-  void save(QSettings& s) override;
-  
+    void showEvent(QShowEvent* event) override;
+    
+    void restore(QSettings& s, const QVariantHash& defaults) override;
+    void save(QSettings& s) override;
+    
 private:
-  int __languageIndex;
-  
+    int __languageIndex;
+    
 };
 
 #endif // MISCELLANEOUSPAGE_H

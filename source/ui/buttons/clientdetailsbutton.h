@@ -30,25 +30,25 @@ class Client;
  * a button in order to show client's data.
  */
 class ClientDetailsButton : public QPushButton {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  /**
-   * Passed from QPushButton.
-   */
-  void clicked(const Client* client);
-
+    /**
+     * Passed from QPushButton.
+     */
+    void clicked(const Client* client);
+    
 public:
-  explicit ClientDetailsButton(const Client* client = nullptr, QWidget* parent = nullptr);
-  
-  /**
-   * Sets the button's pointer to the given value.
-   */
-  void setClient(const Client* client);
-
+    explicit ClientDetailsButton(const Client* client = nullptr, QWidget* parent = nullptr);
+    
+    /**
+     * Sets the button's pointer to the given value.
+     */
+    void setClient(const Client* client);
+    
 private:
-  const Client* __current;
-
+    const Client* __current;
+    
 };
 
 #endif // CLIENTDETAILSBUTTON_H

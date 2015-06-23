@@ -24,44 +24,50 @@
 
 class NetConfig {
 public:
-  
-  class Vatsinator {
-  public:
+
+    class Vatsinator {
+    public:
     
-    static QString homePageUrl() {
-      return QStringLiteral("http://vatsinator.eu.org/");
-    }
-  
-    static QString repoUrl() {
-      return QStringLiteral("http://repo.vatsinator.eu.org/");
-    }
+        static QString homePageUrl()
+        {
+            return QStringLiteral("http://vatsinator.eu.org/");
+        }
+        
+        static QString repoUrl()
+        {
+            return QStringLiteral("http://repo.vatsinator.eu.org/");
+        }
+        
+        static QString statsUrl()
+        {
+            return QStringLiteral("http://stats.vatsinator.eu.org/");
+        }
+        
+        static Q_DECL_CONSTEXPR int defaultRefreshRate()
+        {
+            return 3;
+        }
+        
+    };
     
-    static QString statsUrl() {
-      return QStringLiteral("http://stats.vatsinator.eu.org/");
-    }
+    class Vatsim {
+    public:
     
-    static Q_DECL_CONSTEXPR int defaultRefreshRate() {
-      return 3;
-    }
-  
-  };
-  
-  class Vatsim {
-  public:
+        static QString statusUrl()
+        {
+            return QStringLiteral("http://status.vatsim.net/status.txt");
+        }
+        
+        /**
+         * URL to copy of status.txt in case vatsim servers are out of order
+         */
+        static QString backupStatusUrl()
+        {
+            return QStringLiteral("http://repo.vatsinator.eu.org/status.txt");
+        }
+        
+    };
     
-    static QString statusUrl() {
-      return QStringLiteral("http://status.vatsim.net/status.txt");
-    }
-    
-    /**
-     * URL to copy of status.txt in case vatsim servers are out of order
-     */
-    static QString backupStatusUrl() {
-      return QStringLiteral("http://repo.vatsinator.eu.org/status.txt");
-    }
-    
-  };
-  
 };
 
 #endif // NETCONFIG_H

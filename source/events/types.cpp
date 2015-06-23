@@ -30,8 +30,9 @@ int Decision;
 
 }
 
-void init_event_types() {
-  Event::MouseLonLat = QEvent::registerEventType();
-  Event::Notification = QEvent::registerEventType();
-  Event::Decision = QEvent::registerEventType();
+void init_event_types()
+{
+    Event::MouseLonLat = QEvent::registerEventType();
+    Event::Notification = QEvent::registerEventType();
+    Event::Decision = QEvent::registerEventType();
 }

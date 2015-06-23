@@ -23,33 +23,36 @@
 #include "weatherforecastreply.h"
 
 WeatherForecastReply::WeatherForecastReply(WeatherForecastRequest* request,
-                                           QObject* parent) :
-      QObject(parent),
-      __request(request),
-      __finished(false),
-      __error(NoError) {}
+        QObject* parent) :
+    QObject(parent),
+    __request(request),
+    __finished(false),
+    __error(NoError) {}
 
-WeatherForecastReply::~WeatherForecastReply() {
-  delete __request;
+WeatherForecastReply::~WeatherForecastReply()
+{
+    delete __request;
 }
 
 void
-WeatherForecastReply::appendWeatherData(WeatherData* data) {
-  data->setParent(this);
-  __data << data;
+WeatherForecastReply::appendWeatherData(WeatherData* data)
+{
+    data->setParent(this);
+    __data << data;
 }
 
 void
-WeatherForecastReply::setError(WeatherForecastReply::ForecastError error) {
-  __error = error;
+WeatherForecastReply::setError(WeatherForecastReply::ForecastError error)
+{
+    __error = error;
 }
 
 void
-WeatherForecastReply::setFinished(bool finished) {
-  if (finished && !isFinished()) {
-    __finished = finished;
-    emit this->finished();
-  } else {
-    __finished = finished;
-  }
+WeatherForecastReply::setFinished(bool finished)
+{
+    if (finished && !isFinished()) {
+        __finished = finished;
+        emit this->finished();
+    } else
+        __finished = finished;
 }

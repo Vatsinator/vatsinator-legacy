@@ -33,62 +33,71 @@ class Airline;
  * VatsinatorDatabase instance by ResourceManager.
  */
 class AirlineDatabase : public QObject, public Notifiable {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  
-  /**
-   * The default constructor.
-   */
-  AirlineDatabase(QObject* parent = nullptr);
-  
-  /**
-   * Called by VatsinatorApplication only. Reads the database file.
-   */
-  void initialize();
-  
-  /**
-   * Looks for the airline record in the database.
-   * 
-   * \param icao The lookup ICAO code of the target airline.
-   * \return Airline instance pointer or _nullptr_ if nothing could be found.
-   */
-  Airline* find(const QString& icao);
-  
-  /**
-   * Looks for the airline record in the database.
-   * 
-   * \param icao The lookup ICAO code of the target airline.
-   * \return Airline instance pointer or _nullptr_ if nothing could be found.
-   */
-  const Airline* find(const QString& icao) const;
-  
-  /**
-   * Gives direct access to the map that stores ICAO code <-> instance pairs.
-   */
-  inline const QMap<QString, Airline*>& airlines() const { return __airlines; }
-  
-  /**
-   * Provies the base URL for all airlines' logos.
-   * The URL is stored in the database file.
-   */
-  inline const QString& airlineLogoUrl() const { return __airlineLogoUrl; }
-  
-  /**
-   * Indicates whether any airline logo can be fetched or not.
-   * To provide any tools of remote management, this property can be set to
-   * false in the database file. All airline logos won't be fetched then.
-   */
-  inline bool canFetchLogos() const { return __canFetch; }
-  
-private:
-  
-  /* ICAO <-> instance pairs */
-  QMap<QString, Airline*>  __airlines;
-  
-  QString __airlineLogoUrl;
-  bool __canFetch;
 
+    /**
+     * The default constructor.
+     */
+    AirlineDatabase(QObject* parent = nullptr);
+    
+    /**
+     * Called by VatsinatorApplication only. Reads the database file.
+     */
+    void initialize();
+    
+    /**
+     * Looks for the airline record in the database.
+     *
+     * \param icao The lookup ICAO code of the target airline.
+     * \return Airline instance pointer or _nullptr_ if nothing could be found.
+     */
+    Airline* find(const QString& icao);
+    
+    /**
+     * Looks for the airline record in the database.
+     *
+     * \param icao The lookup ICAO code of the target airline.
+     * \return Airline instance pointer or _nullptr_ if nothing could be found.
+     */
+    const Airline* find(const QString& icao) const;
+    
+    /**
+     * Gives direct access to the map that stores ICAO code <-> instance pairs.
+     */
+    inline const QMap<QString, Airline*>& airlines() const
+    {
+        return __airlines;
+    }
+    
+    /**
+     * Provies the base URL for all airlines' logos.
+     * The URL is stored in the database file.
+     */
+    inline const QString& airlineLogoUrl() const
+    {
+        return __airlineLogoUrl;
+    }
+    
+    /**
+     * Indicates whether any airline logo can be fetched or not.
+     * To provide any tools of remote management, this property can be set to
+     * false in the database file. All airline logos won't be fetched then.
+     */
+    inline bool canFetchLogos() const
+    {
+        return __canFetch;
+    }
+    
+private:
+
+    /* ICAO <-> instance pairs */
+    QMap<QString, Airline*>  __airlines;
+    
+    QString __airlineLogoUrl;
+    bool __canFetch;
+    
 };
 
 #endif // AIRLINEDATABASE_H

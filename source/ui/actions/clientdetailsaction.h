@@ -28,25 +28,25 @@
  * to the specified Client.
  */
 class ClientDetailsAction : public QAction {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  /**
-   * Passed from QAction.
-   */
-  void triggered(const Client* client);
-
+    /**
+     * Passed from QAction.
+     */
+    void triggered(const Client* client);
+    
 public:
-  /**
-   * Creates new ClientDetailsAction with the specified _client_ and _label_.
-   * Passes _parent_ to QAction's constructor.
-   */
-  ClientDetailsAction(const Client* client, const QString& label, QObject* parent);
-
+    /**
+     * Creates new ClientDetailsAction with the specified _client_ and _label_.
+     * Passes _parent_ to QAction's constructor.
+     */
+    ClientDetailsAction(const Client* client, const QString& label, QObject* parent);
+    
 private:
-  const Client* __current;
-
-
+    const Client* __current;
+    
+    
 };
 
 #endif // CLIENTDETAILSACTION_H

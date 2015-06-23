@@ -26,38 +26,41 @@
 UserInterface::UserInterface(QObject* parent) :
     QObject(parent) {}
 
-bool UserInterface::event(QEvent* event) {
-  if (event->type() == Event::Notification)
-    return notificationEvent(static_cast<NotificationEvent*>(event));
-  else
-    return QObject::event(event);
+bool UserInterface::event(QEvent* event)
+{
+    if (event->type() == Event::Notification)
+        return notificationEvent(static_cast<NotificationEvent*>(event));
+    else
+        return QObject::event(event);
 }
 
 UserInterface*
-UserInterface::instantiate(QObject* parent) {
+UserInterface::instantiate(QObject* parent)
+{
 #if VATSINATOR_UI_IMPLEMENTATION == widgets
-  return new WidgetsUserInterface(parent);
+    return new WidgetsUserInterface(parent);
 #else
 # error "Not a valid UserInterface implementation"
 #endif
 }
 
 bool
-UserInterface::notificationEvent(NotificationEvent* event) {
-  switch (event->gravity()) {
-    case NotificationEvent::Fatal:
-      fatal(event->message());
-      vApp()->exit(1);
-      break;
-      
-    case NotificationEvent::Warning:
-      warning(event->message());
-      break;
+UserInterface::notificationEvent(NotificationEvent* event)
+{
+    switch (event->gravity()) {
+        case NotificationEvent::Fatal:
+            fatal(event->message());
+            vApp()->exit(1);
+            break;
+            
+        case NotificationEvent::Warning:
+            warning(event->message());
+            break;
+            
+        case NotificationEvent::Information:
+            /* TODO */
+            break;
+    }
     
-    case NotificationEvent::Information:
-      /* TODO */
-      break;
-  }
-  
-  return true;
+    return true;
 }

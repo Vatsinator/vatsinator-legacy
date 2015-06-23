@@ -24,32 +24,37 @@
 
 UrlButton::UrlButton(const QString& text, const QUrl& url, QWidget* parent) :
     QPushButton(text, parent),
-    __url(url) {
-  connect(this, SIGNAL(clicked()),
-          this, SLOT(__openUrl()));
+    __url(url)
+{
+    connect(this, SIGNAL(clicked()),
+            this, SLOT(__openUrl()));
 }
 
 UrlButton::UrlButton(const QString& text, QWidget* parent) :
-    QPushButton(text, parent) {
-  connect(this, SIGNAL(clicked()),
-          this, SLOT(__openUrl()));
+    QPushButton(text, parent)
+{
+    connect(this, SIGNAL(clicked()),
+            this, SLOT(__openUrl()));
 }
 
 UrlButton::UrlButton(QWidget* parent) :
-    QPushButton(parent) {
-  connect(this, SIGNAL(clicked()),
-          this, SLOT(__openUrl()));
+    QPushButton(parent)
+{
+    connect(this, SIGNAL(clicked()),
+            this, SLOT(__openUrl()));
 }
 
 void
-UrlButton::setUrl(const QUrl& url) {
-  __url = url;
+UrlButton::setUrl(const QUrl& url)
+{
+    __url = url;
 }
 
 void
-UrlButton::__openUrl() {
-  if (__url.isEmpty())
-    qWarning("UrlButton: empty url open requested");
-  else
-    QDesktopServices::openUrl(__url);
+UrlButton::__openUrl()
+{
+    if (__url.isEmpty())
+        qWarning("UrlButton: empty url open requested");
+    else
+        QDesktopServices::openUrl(__url);
 }

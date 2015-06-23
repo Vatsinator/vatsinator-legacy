@@ -31,38 +31,38 @@
  * dialog should pop up.
  */
 class Notifiable {
-  
+
 protected:
-  
-  /**
-   * Tell user that a fatal error occured.
-   * This method will open an error dialog. You are likely to call
-   * QCoreApplication::quit() just after that, as fatal errors mean that
-   * the application just cannot continue its execution.
-   * 
-   * \param message Message to be shown in the error dialog.
-   */
-  void notifyError(const QString& message);
-  
-  /**
-   * Tell user that something went really wrong.
-   * This type of notification tells user that something here is not O.K.
-   * (like a file is missing) and he should fix it (by reinstalling the
-   * application, for example), but the application can continue,
-   * as it is not the a error.
-   * 
-   * \param message Message to be shown in the warning dialog.
-   */
-  void notifyWarning(const QString& message);
-  
-  /**
-   * Tell user something interesting that he should know about.
-   * There is no error nor warning, just the coffee is ready.
-   * 
-   * \param message Message to be shown in the info dialog.
-   */
-  void notifyInfo(const QString& message);
-  
+
+    /**
+     * Tell user that a fatal error occured.
+     * This method will open an error dialog. You are likely to call
+     * QCoreApplication::quit() just after that, as fatal errors mean that
+     * the application just cannot continue its execution.
+     *
+     * \param message Message to be shown in the error dialog.
+     */
+    void notifyError(const QString& message);
+    
+    /**
+     * Tell user that something went really wrong.
+     * This type of notification tells user that something here is not O.K.
+     * (like a file is missing) and he should fix it (by reinstalling the
+     * application, for example), but the application can continue,
+     * as it is not the a error.
+     *
+     * \param message Message to be shown in the warning dialog.
+     */
+    void notifyWarning(const QString& message);
+    
+    /**
+     * Tell user something interesting that he should know about.
+     * There is no error nor warning, just the coffee is ready.
+     *
+     * \param message Message to be shown in the info dialog.
+     */
+    void notifyInfo(const QString& message);
+    
 };
 
 #endif // NOTIFIABLE_H

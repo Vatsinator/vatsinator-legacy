@@ -29,14 +29,14 @@
  * to restart the application or not.
  */
 class AppRestartDialog : public QDialog, private Ui::AppRestartDialog {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  /**
-   * The default constructor passes _parent_ to QDialog's constructor.
-   */
-  explicit AppRestartDialog(QWidget* parent = nullptr);
-
+    /**
+     * The default constructor passes _parent_ to QDialog's constructor.
+     */
+    explicit AppRestartDialog(QWidget* parent = nullptr);
+    
 };
 
 #endif // APPRESTARTDIALOG_H

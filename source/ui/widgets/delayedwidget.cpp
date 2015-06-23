@@ -27,39 +27,44 @@ DelayedWidget::DelayedWidget(QWidget* _parent, Qt::WindowFlags _f) :
     __animation(nullptr) {}
 
 void
-DelayedWidget::setStatus(DelayedWidget::Status _status) {
-  __status = _status;
-  if (__animation && __animation->isValid()) {
-    if (_status == Loading)
-      __animation->start();
-    else
-      __animation->stop();
-  }
+DelayedWidget::setStatus(DelayedWidget::Status _status)
+{
+    __status = _status;
+    
+    if (__animation && __animation->isValid()) {
+        if (_status == Loading)
+            __animation->start();
+        else
+            __animation->stop();
+    }
 }
 
 void
-DelayedWidget::setAnimation(QMovie* _animation) {
-  __animation = _animation;
-  
-  if (_animation) {
-    connect(_animation, &QMovie::updated, this,
-            /* Many implementations of QWidget::update(), must be specific */
-            (void (DelayedWidget::*)())&DelayedWidget::update,
-            Qt::DirectConnection);
-    if (__status == Loading)
-      __animation->start();
-  }
+DelayedWidget::setAnimation(QMovie* _animation)
+{
+    __animation = _animation;
+    
+    if (_animation) {
+        connect(_animation, &QMovie::updated, this,
+                /* Many implementations of QWidget::update(), must be specific */
+                (void (DelayedWidget::*)())&DelayedWidget::update,
+                Qt::DirectConnection);
+                
+        if (__status == Loading)
+            __animation->start();
+    }
 }
 
 void
-DelayedWidget::paintEvent(QPaintEvent* _event) {
-  if (status() == Loading && __animation) {
-    QPainter p(this);
-    QPixmap pixmap = __animation->currentPixmap();
-    
-    QRect rect(QPoint(0, 0), pixmap.size());
-    rect.moveCenter(_event->rect().center());
-    
-    p.drawPixmap(rect, pixmap);
-  }
+DelayedWidget::paintEvent(QPaintEvent* _event)
+{
+    if (status() == Loading && __animation) {
+        QPainter p(this);
+        QPixmap pixmap = __animation->currentPixmap();
+        
+        QRect rect(QPoint(0, 0), pixmap.size());
+        rect.moveCenter(_event->rect().center());
+        
+        p.drawPixmap(rect, pixmap);
+    }
 }

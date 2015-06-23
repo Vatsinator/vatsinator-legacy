@@ -29,99 +29,100 @@
  * or not, downloads updated data files, etc.
  */
 class ResourceManager : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  /**
-   * The VersionStatus enum is used in version control.
-   * Vatsinator version indicator uses only the two values: Updated
-   * and Outdated, whilst the database sync indicator uses all of
-   * them.
-   */
-  enum VersionStatus {
-    Updated,            /**< Up-to-date */
-    Outdated,           /**< Needs update */
-    Updating,           /**< Is being updated right now */
-    CannotUpdate        /**< Cannot update because of a reason */
-  };
-  Q_ENUMS(ResourceManager::VersionStatus)
-  
-signals:
-  /**
-   * Emitted when it comes out that running instance of Vatsinator
-   * is outdated.
-   */
-  void outdated();
-  
-  /**
-   * Emitted after Vatsinator version has been checked.
-   */
-  void vatsinatorVersionChecked(ResourceManager::VersionStatus status);
-  
-  /**
-   * Emitted after database status has changed (i.e. Updated->Outdated->Updating->Updated).
-   */
-  void databaseStatusChanged(ResourceManager::VersionStatus status);
-  
-public:
-  /**
-   * The default constructor passes _parent_ to QObject.
-   */
-  explicit ResourceManager(QObject* parent = nullptr);
-  
-  virtual ~ResourceManager();
-  
-  /**
-   * Returns date of the last update.
-   */
-  inline const QDate& lastUpdateDate() const {
-    return __lastUpdateDate;
-  }
-  
-public slots:
-  /**
-   * If possible, synchronizes the database.
-   */
-  void requestDatabaseSync();
-
-private:
-  /**
-   * Returns true if _version1_ is equal or higher that _version2_.
-   */
-  bool __versionActual(const QString& version1, const QString& version2);
-
-private slots:
-  
-  /**
-   * Starts fetching the new version from Vatsinator repository.
-   */
-  void __fetchVersion();
-  
-  /**
-   * After fetching the new version string, parses it and displays
-   * appropriate notification.
-   */
-  void __parseVersion();
-  
-  /**
-   * Database sync will be checked only after the Vatsinator version
-   * is checked and if the current version is up-to-date.
-   */
-  void __checkDatabase(ResourceManager::VersionStatus status);
-  
     /**
-   * Starts the data updater.
-   */
-  void __syncDatabase();
-  
-  void __databaseUpdated();
-  void __databaseFailed();
-  
+     * The VersionStatus enum is used in version control.
+     * Vatsinator version indicator uses only the two values: Updated
+     * and Outdated, whilst the database sync indicator uses all of
+     * them.
+     */
+    enum VersionStatus {
+        Updated,            /**< Up-to-date */
+        Outdated,           /**< Needs update */
+        Updating,           /**< Is being updated right now */
+        CannotUpdate        /**< Cannot update because of a reason */
+    };
+    Q_ENUMS(ResourceManager::VersionStatus)
+    
+signals:
+    /**
+     * Emitted when it comes out that running instance of Vatsinator
+     * is outdated.
+     */
+    void outdated();
+    
+    /**
+     * Emitted after Vatsinator version has been checked.
+     */
+    void vatsinatorVersionChecked(ResourceManager::VersionStatus status);
+    
+    /**
+     * Emitted after database status has changed (i.e. Updated->Outdated->Updating->Updated).
+     */
+    void databaseStatusChanged(ResourceManager::VersionStatus status);
+    
+public:
+    /**
+     * The default constructor passes _parent_ to QObject.
+     */
+    explicit ResourceManager(QObject* parent = nullptr);
+    
+    virtual ~ResourceManager();
+    
+    /**
+     * Returns date of the last update.
+     */
+    inline const QDate& lastUpdateDate() const
+    {
+        return __lastUpdateDate;
+    }
+    
+public slots:
+    /**
+     * If possible, synchronizes the database.
+     */
+    void requestDatabaseSync();
+    
 private:
-  
-  /* The date of the last database update */
-  QDate __lastUpdateDate;
+    /**
+     * Returns true if _version1_ is equal or higher that _version2_.
+     */
+    bool __versionActual(const QString& version1, const QString& version2);
+    
+private slots:
 
+    /**
+     * Starts fetching the new version from Vatsinator repository.
+     */
+    void __fetchVersion();
+    
+    /**
+     * After fetching the new version string, parses it and displays
+     * appropriate notification.
+     */
+    void __parseVersion();
+    
+    /**
+     * Database sync will be checked only after the Vatsinator version
+     * is checked and if the current version is up-to-date.
+     */
+    void __checkDatabase(ResourceManager::VersionStatus status);
+    
+    /**
+    * Starts the data updater.
+    */
+    void __syncDatabase();
+    
+    void __databaseUpdated();
+    void __databaseFailed();
+    
+private:
+
+    /* The date of the last database update */
+    QDate __lastUpdateDate;
+    
 };
 
 #endif // RESOURCEMANAGER_H

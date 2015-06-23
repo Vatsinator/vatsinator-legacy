@@ -38,51 +38,51 @@ class QSignalMapper;
  * Moreover, OSX does not have "Accept/Save/Restore Defaults" buttons.
  */
 class SettingsWindow : public QWidget, private Ui::SettingsWindow {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  /**
-   * User clicks _Restore Defaults_ button.
-   *
-   * This signal has no use on OSX.
-   */
-  void restoreDefaults();
-  
-  /**
-   * Emited when user applies the settings.
-   *
-   * This signal is emitted on Windows and Linux when user clicks
-   * _Apply_/_OK_ button and on OSX when user closes the window.
-   */
-  void settingsApplied();
-  
-  /**
-   * Emitted when user changes anything in the settings window.
-   *
-   * This signal makes use only on OSX, where settings are applied
-   * immediately. They are updated in SettingsManager, but are
-   * not saved to file until settingsApplied() is emitted.
-   */
-  void settingsChanged();
-
+    /**
+     * User clicks _Restore Defaults_ button.
+     *
+     * This signal has no use on OSX.
+     */
+    void restoreDefaults();
+    
+    /**
+     * Emited when user applies the settings.
+     *
+     * This signal is emitted on Windows and Linux when user clicks
+     * _Apply_/_OK_ button and on OSX when user closes the window.
+     */
+    void settingsApplied();
+    
+    /**
+     * Emitted when user changes anything in the settings window.
+     *
+     * This signal makes use only on OSX, where settings are applied
+     * immediately. They are updated in SettingsManager, but are
+     * not saved to file until settingsApplied() is emitted.
+     */
+    void settingsChanged();
+    
 public:
-  SettingsWindow(QWidget* parent = nullptr);
-  
+    SettingsWindow(QWidget* parent = nullptr);
+    
 protected:
-  void showEvent(QShowEvent* event) override;
-  void closeEvent(QCloseEvent* event) override;
-
-private:
-  void __addPage(const QString& element, const QString& icon, QWidget* page);
-  
-private slots:
-  void __handleButton(QAbstractButton* button);
-  void __resizeToMinimum();
+    void showEvent(QShowEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
     
 private:
-  QMacToolBar* __macToolBar;
-  QSignalMapper* __macMapper;
-
+    void __addPage(const QString& element, const QString& icon, QWidget* page);
+    
+private slots:
+    void __handleButton(QAbstractButton* button);
+    void __resizeToMinimum();
+    
+private:
+    QMacToolBar* __macToolBar;
+    QSignalMapper* __macMapper;
+    
 };
 
 #endif // SETTINGSWINDOW_H

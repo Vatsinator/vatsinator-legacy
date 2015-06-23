@@ -28,42 +28,45 @@
  * The ScrollLabel is a widget that looks like QLabel but it scrolls text
  * inside if it is too long to fit in it.
  */
-class ScrollLabel : public QWidget {  
-  Q_OBJECT
-  
-  /**
-   * This property holds the text to be rendered.
-   */
-  Q_PROPERTY(QString text READ text WRITE setText)
-  
+class ScrollLabel : public QWidget {
+    Q_OBJECT
+    
+    /**
+     * This property holds the text to be rendered.
+     */
+    Q_PROPERTY(QString text READ text WRITE setText)
+    
 public:
-  /**
-   * The default constructor passes _parent_ to QWidget.
-   */
-  explicit ScrollLabel(QWidget* parent = nullptr);
-  
-  inline const QString& text() const { return __text; }
-  
+    /**
+     * The default constructor passes _parent_ to QWidget.
+     */
+    explicit ScrollLabel(QWidget* parent = nullptr);
+    
+    inline const QString& text() const
+    {
+        return __text;
+    }
+    
 public slots:
-  void setText(const QString& text);
-  
+    void setText(const QString& text);
+    
 protected:
-  void paintEvent(QPaintEvent* event);
-  
+    void paintEvent(QPaintEvent* event);
+    
 private:
-  void __updateText();
-  
-  QString     __text;
-  QStaticText __staticText;
-  QSize       __textSize;
-  
-  int         __textPosition;
-  
-  QTimer      __timer;
-  
+    void __updateText();
+    
+    QString     __text;
+    QStaticText __staticText;
+    QSize       __textSize;
+    
+    int         __textPosition;
+    
+    QTimer      __timer;
+    
 private slots:
-  void __timerTimeout();
-  
+    void __timerTimeout();
+    
 };
 
 #endif // SCROLLLABEL_H

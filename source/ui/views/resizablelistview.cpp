@@ -22,26 +22,29 @@
 ResizableListView::ResizableListView(QWidget* parent): QListView(parent) {}
 
 QSize
-ResizableListView::sizeHint() const {
-  if (!model()) {
-    return QSize(QListView::sizeHint().width(), 0);
-  }
-  
-  int h = 0;
-  for (int i = 0; i < model()->rowCount(); ++i)
-    h += sizeHintForRow(i);
-  
-  return QSize(QListView::sizeHint().width(), h);
+ResizableListView::sizeHint() const
+{
+    if (!model())
+        return QSize(QListView::sizeHint().width(), 0);
+        
+    int h = 0;
+    
+    for (int i = 0; i < model()->rowCount(); ++i)
+        h += sizeHintForRow(i);
+        
+    return QSize(QListView::sizeHint().width(), h);
 }
 
 void
-ResizableListView::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) {
-  QListView::rowsAboutToBeRemoved(parent, start, end);
-  updateGeometry();
+ResizableListView::rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end)
+{
+    QListView::rowsAboutToBeRemoved(parent, start, end);
+    updateGeometry();
 }
 
 void
-ResizableListView::rowsInserted(const QModelIndex& parent, int start, int end) {
-  QListView::rowsInserted(parent, start, end);
-  updateGeometry();
+ResizableListView::rowsInserted(const QModelIndex& parent, int start, int end)
+{
+    QListView::rowsInserted(parent, start, end);
+    updateGeometry();
 }

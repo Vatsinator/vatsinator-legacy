@@ -33,22 +33,25 @@
 class MouseLonLatEvent : public QEvent {
 
 public:
-  /**
-   * Constructs the new event from the given _point_.
-   * 
-   * \param point The point on the map.
-   */
-  MouseLonLatEvent(const LonLat& point);
-  
-  /**
-   * Gets the current position of the mouse, mapped to longitude and latitude
-   * coordinates.
-   */
-  inline const LonLat& lonLat() const { return __lonLat; }
-
+    /**
+     * Constructs the new event from the given _point_.
+     *
+     * \param point The point on the map.
+     */
+    MouseLonLatEvent(const LonLat& point);
+    
+    /**
+     * Gets the current position of the mouse, mapped to longitude and latitude
+     * coordinates.
+     */
+    inline const LonLat& lonLat() const
+    {
+        return __lonLat;
+    }
+    
 private:
-  LonLat __lonLat;
-  
+    LonLat __lonLat;
+    
 };
 
 #endif // MOUSELONLATEVENT_H

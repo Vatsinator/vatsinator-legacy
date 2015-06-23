@@ -29,29 +29,32 @@
 #include "flightlistwindow.h"
 
 FlightListWindow::FlightListWindow(QWidget* parent) :
-    BaseWindow(parent) {
-  setupUi(this);
-  FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  
-  connect(qApp,         SIGNAL(aboutToQuit()),
-          this,         SLOT(hide()));
-  connect(FlightsTable, SIGNAL(doubleClicked(const QModelIndex&)),
-          this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
+    BaseWindow(parent)
+{
+    setupUi(this);
+    FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    
+    connect(qApp,         SIGNAL(aboutToQuit()),
+            this,         SLOT(hide()));
+    connect(FlightsTable, SIGNAL(doubleClicked(const QModelIndex&)),
+            this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
 }
 
 void
-FlightListWindow::showEvent(QShowEvent* event) {
-  if (auto m = FlightsTable->model())
-    m->deleteLater();
-  
-  FlightsTable->setModel(vApp()->vatsimDataHandler()->flightTableModel());
-  
-  BaseWindow::showEvent(event);
+FlightListWindow::showEvent(QShowEvent* event)
+{
+    if (auto m = FlightsTable->model())
+        m->deleteLater();
+        
+    FlightsTable->setModel(vApp()->vatsimDataHandler()->flightTableModel());
+    
+    BaseWindow::showEvent(event);
 }
 
 void
-FlightListWindow::__handleDoubleClicked(const QModelIndex& index) {
-  Q_ASSERT(index.data(InstancePointerRole).isValid());
-  Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-  vApp()->userInterface()->showDetails(client);
+FlightListWindow::__handleDoubleClicked(const QModelIndex& index)
+{
+    Q_ASSERT(index.data(InstancePointerRole).isValid());
+    Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+    vApp()->userInterface()->showDetails(client);
 }

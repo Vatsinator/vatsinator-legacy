@@ -26,26 +26,26 @@
 /**
  * UpdateScheduler decides when to update Vatsim data.
  * Instance of this class is used by VatsimDataHandler.
- * 
+ *
  * timeToUpdate() signal is emitted when the UpdateScheduler decides
  * that it is time to update the data. The timer is then stopped and
  * restarted when VatsimDataHandler emits vatsimDataUpdated() signal.
  */
 class UpdateScheduler : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void timeToUpdate();
-  
+    void timeToUpdate();
+    
 public:
-  explicit UpdateScheduler(QObject* parent = 0);
-  
+    explicit UpdateScheduler(QObject* parent = 0);
+    
 private slots:
-  void __setupTimer();
-  
+    void __setupTimer();
+    
 private:
-  QTimer __timer;
-  
+    QTimer __timer;
+    
 };
 
 #endif // UPDATESCHEDULER_H

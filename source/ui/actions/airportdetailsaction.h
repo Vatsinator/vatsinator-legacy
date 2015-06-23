@@ -28,25 +28,25 @@
  * to the Airport class instance.
  */
 class AirportDetailsAction : public QAction {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  /**
-   * The triggered() signal is forwarded from QAction's.
-   */
-  void triggered(const Airport* airport);
-
+    /**
+     * The triggered() signal is forwarded from QAction's.
+     */
+    void triggered(const Airport* airport);
+    
 public:
-  /**
-   * Creates new action with the given _airport_, _label_ and _parent_.
-   */
-  AirportDetailsAction(const Airport* airport, const QString& label,
-                       QObject* parent);
-
+    /**
+     * Creates new action with the given _airport_, _label_ and _parent_.
+     */
+    AirportDetailsAction(const Airport* airport, const QString& label,
+                         QObject* parent);
+                         
 private:
-  const Airport* __current;
-
-
+    const Airport* __current;
+    
+    
 };
 
 #endif // AIRPORTDETAILSACTION_H

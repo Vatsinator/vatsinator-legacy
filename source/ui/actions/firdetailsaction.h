@@ -28,24 +28,24 @@
  * with the specified Fir instance.
  */
 class FirDetailsAction : public QAction {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  /**
-   * Passed from QAction.
-   */
-  void triggered(const Fir* fir);
-
+    /**
+     * Passed from QAction.
+     */
+    void triggered(const Fir* fir);
+    
 public:
-  /**
-   * Creates new FirDetailsAction with the specified _fir_ and _label_.
-   * _parent_ is passed to the QAction's constructor.
-   */
-  FirDetailsAction(const Fir* fir, const QString& label, QObject* parent);
-
+    /**
+     * Creates new FirDetailsAction with the specified _fir_ and _label_.
+     * _parent_ is passed to the QAction's constructor.
+     */
+    FirDetailsAction(const Fir* fir, const QString& label, QObject* parent);
+    
 private:
-  const Fir* __current;
-
+    const Fir* __current;
+    
 };
 
 #endif // FIRDETAILSACTION_H

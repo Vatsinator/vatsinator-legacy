@@ -36,93 +36,120 @@ struct FirRecord;
  * Keeps information about a single FIR.
  */
 class Fir : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void updated();
-  
+    void updated();
+    
 public:
-  
-  /**
-   * \param record Record in the database.
-   */
-  Fir(const FirRecord* record);
-  
-  virtual ~Fir();
-  
-  /**
-   * Records staff in the fir.
-   */
-  void addStaff(const Controller* atc);
-  
-  /**
-   * Records UIR staff in the fir.
-   * The UIR staff is not taken into account when isStaffed() and
-   * isEmpty() methods are called.
-   */
-  void addUirStaff(const Controller* atc);
-  
-  /**
-   * Records flight in the fir.
-   */
-  void addFlight(const Pilot* pilot);
-  
-  /**
-   * Adds Airport to the FIR.
-   */
-  void addAirport(const Airport* airport);
-  
-  /**
-   * Having the name set, this method suffixes it with "Oceanic" or "Center",
-   * appropriately.
-   */
-  void fixupName();
-  
-  /**
-   * \return True if any ATC is available (either this FIR or containing UIR).
-   */
-  bool isStaffed() const;
-  
-  /**
-   * \return True if there is no ATC controlling the FIR.
-   */
-  bool isEmpty() const;
-  
-  /**
-   * \return True is position is not equal to (0, 0).
-   */
-  bool hasValidPosition() const;
-  
-  void setName(const QString& name);
-  void setCountry(const QString& country);
-  
-  inline const FirRecord* data() const { return __data; }
-  
-  inline AtcTableModel* staff() const { return __staff; }
-  inline AtcTableModel* uirStaff() const { return __uirStaff; }
-  inline FlightTableModel* flights() const { return __flights; }
-  inline AirportTableModel* airports() const { return __airports; }
-  
-  inline const QString& icao() const { return __icao; }
-  inline bool isOceanic() const { return __oceanic; }
-  
-  inline const QString& name() const { return __name; }
-  inline const QString& country() const { return __country; }
-  
+
+    /**
+     * \param record Record in the database.
+     */
+    Fir(const FirRecord* record);
+    
+    virtual ~Fir();
+    
+    /**
+     * Records staff in the fir.
+     */
+    void addStaff(const Controller* atc);
+    
+    /**
+     * Records UIR staff in the fir.
+     * The UIR staff is not taken into account when isStaffed() and
+     * isEmpty() methods are called.
+     */
+    void addUirStaff(const Controller* atc);
+    
+    /**
+     * Records flight in the fir.
+     */
+    void addFlight(const Pilot* pilot);
+    
+    /**
+     * Adds Airport to the FIR.
+     */
+    void addAirport(const Airport* airport);
+    
+    /**
+     * Having the name set, this method suffixes it with "Oceanic" or "Center",
+     * appropriately.
+     */
+    void fixupName();
+    
+    /**
+     * \return True if any ATC is available (either this FIR or containing UIR).
+     */
+    bool isStaffed() const;
+    
+    /**
+     * \return True if there is no ATC controlling the FIR.
+     */
+    bool isEmpty() const;
+    
+    /**
+     * \return True is position is not equal to (0, 0).
+     */
+    bool hasValidPosition() const;
+    
+    void setName(const QString& name);
+    void setCountry(const QString& country);
+    
+    inline const FirRecord* data() const
+    {
+        return __data;
+    }
+    
+    inline AtcTableModel* staff() const
+    {
+        return __staff;
+    }
+    inline AtcTableModel* uirStaff() const
+    {
+        return __uirStaff;
+    }
+    inline FlightTableModel* flights() const
+    {
+        return __flights;
+    }
+    inline AirportTableModel* airports() const
+    {
+        return __airports;
+    }
+    
+    inline const QString& icao() const
+    {
+        return __icao;
+    }
+    inline bool isOceanic() const
+    {
+        return __oceanic;
+    }
+    
+    inline const QString& name() const
+    {
+        return __name;
+    }
+    inline const QString& country() const
+    {
+        return __country;
+    }
+    
 private:
-  
-  const FirRecord* __data;
 
-  QString       __icao;
-  bool          __oceanic;
-
-  QString       __name;
-  QString       __country;
-
-  AtcTableModel* __staff;
-  AtcTableModel* __uirStaff;
-  FlightTableModel*     __flights;
-  AirportTableModel*    __airports;
+    const FirRecord* __data;
+    
+    QString       __icao;
+    bool          __oceanic;
+    
+    QString       __name;
+    QString       __country;
+    
+    AtcTableModel* __staff;
+    AtcTableModel* __uirStaff;
+    FlightTableModel*     __flights;
+    AirportTableModel*    __airports;
 };
 
 #endif // FIR_H

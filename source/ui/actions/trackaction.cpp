@@ -26,24 +26,28 @@
 
 TrackAction::TrackAction(const Pilot* pilot, QObject* parent) :
     QAction(tr("Track this flight"), parent),
-    __current(pilot) {
-  
-  setCheckable(true);
-  if (__current == wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight())
-    setChecked(true);
+    __current(pilot)
+{
 
-  connect(this, SIGNAL(triggered()), SLOT(__handleTriggered()));
-  connect(wui()->mainWindow()->mapWidget()->renderer()->scene(),
-                  SIGNAL(flightTracked(const Pilot*)),
-          this,   SLOT(__updateChecked(const Pilot*)));
+    setCheckable(true);
+    
+    if (__current == wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight())
+        setChecked(true);
+        
+    connect(this, SIGNAL(triggered()), SLOT(__handleTriggered()));
+    connect(wui()->mainWindow()->mapWidget()->renderer()->scene(),
+            SIGNAL(flightTracked(const Pilot*)),
+            this,   SLOT(__updateChecked(const Pilot*)));
 }
 
 void
-TrackAction::__handleTriggered() {
-  wui()->mainWindow()->mapWidget()->renderer()->scene()->trackFlight(__current);
+TrackAction::__handleTriggered()
+{
+    wui()->mainWindow()->mapWidget()->renderer()->scene()->trackFlight(__current);
 }
 
 void
-TrackAction::__updateChecked(const Pilot* pilot) {
-  setChecked(pilot == __current);
+TrackAction::__updateChecked(const Pilot* pilot)
+{
+    setChecked(pilot == __current);
 }

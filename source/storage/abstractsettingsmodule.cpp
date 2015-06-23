@@ -25,21 +25,24 @@
 AbstractSettingsModule::AbstractSettingsModule() {}
 
 void
-AbstractSettingsModule::restoreSettings(QSettings& settings, const QVariantHash& defaults) {
-  settings.beginGroup(moduleId());
-  restore(settings, defaults);
-  settings.endGroup();
+AbstractSettingsModule::restoreSettings(QSettings& settings, const QVariantHash& defaults)
+{
+    settings.beginGroup(moduleId());
+    restore(settings, defaults);
+    settings.endGroup();
 }
 
 void
-AbstractSettingsModule::saveSettings(QSettings& settings) {
-  settings.beginGroup(moduleId());
-  save(settings);
-  settings.endGroup();
+AbstractSettingsModule::saveSettings(QSettings& settings)
+{
+    settings.beginGroup(moduleId());
+    save(settings);
+    settings.endGroup();
 }
 
 void
-AbstractSettingsModule::setValue(const QString& key, QVariant&& value) const {
-  SettingsManager::updateValue(moduleId() % "." % key,
-                            std::forward<QVariant>(value));
+AbstractSettingsModule::setValue(const QString& key, QVariant&& value) const
+{
+    SettingsManager::updateValue(moduleId() % "." % key,
+                                 std::forward<QVariant>(value));
 }

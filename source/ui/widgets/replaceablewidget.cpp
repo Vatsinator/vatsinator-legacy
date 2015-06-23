@@ -21,15 +21,17 @@
 #include "replaceablewidget.h"
 
 ReplaceableWidget::ReplaceableWidget(QWidget* parent) :
-  QStackedWidget(parent) {}
+    QStackedWidget(parent) {}
 
 void
-ReplaceableWidget::addWidgets(const std::initializer_list<QWidget*>& widgets) {
-  for (auto it: widgets)
-    addWidget(it);
+ReplaceableWidget::addWidgets(const std::initializer_list<QWidget*>& widgets)
+{
+    for (auto it : widgets)
+        addWidget(it);
 }
 
 void
-ReplaceableWidget::next() {
-  setCurrentIndex(currentIndex() >= count() - 1 ? 0 : currentIndex() + 1);
+ReplaceableWidget::next()
+{
+    setCurrentIndex(currentIndex() >= count() - 1 ? 0 : currentIndex() + 1);
 }

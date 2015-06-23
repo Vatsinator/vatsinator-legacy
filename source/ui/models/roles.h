@@ -20,9 +20,9 @@
 #include <Qt>
 
 enum {
-  UserRole = Qt::UserRole,
-  
-  UrlRole /**< Url attached to the object (QString or QUrl) */,
-  MetarRole /**< Metar in the MetarListModel (Metar) */,
-  InstancePointerRole /**< Raw instance pointer (void*) */
+    UserRole = Qt::UserRole,
+    
+    UrlRole /**< Url attached to the object (QString or QUrl) */,
+    MetarRole /**< Metar in the MetarListModel (Metar) */,
+    InstancePointerRole /**< Raw instance pointer (void*) */
 };

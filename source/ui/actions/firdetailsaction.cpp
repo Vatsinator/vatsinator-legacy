@@ -23,9 +23,10 @@ FirDetailsAction::FirDetailsAction(const Fir* fir,
                                    const QString& label,
                                    QObject* parent) :
     QAction(label, parent),
-    __current(fir) {
-  
-  connect(this, &QAction::triggered, [this]() {
-    emit triggered(__current);
-  });
+    __current(fir)
+{
+
+    connect(this, &QAction::triggered, [this]() {
+        emit triggered(__current);
+    });
 }

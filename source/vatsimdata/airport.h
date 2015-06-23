@@ -37,111 +37,126 @@ class Pilot;
  * The Airport class represents a single airport.
  */
 class Airport : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void updated();
-
+    void updated();
+    
 public:
-  /**
-   * \param data Record in the database.
-   */
-  Airport(const AirportRecord* record);
-  
-  ~Airport() = default;
-  
-  /**
-   * Counts flights that are about to take off.
-   * \param includePrefiled If false, this method will not count prefiled flights.
-   *    Default: true.
-   */
-  unsigned countDepartures(bool includePrefiled = true) const;
-  
-  /**
-   * Counts flights that originate from the airport and are airborne
-   * or have just arrived.
-   */
-  unsigned countOutbounds() const;
-  
-  /**
-   * Counts flights that have just landed.
-   */
-  unsigned countArrivals() const;
-  
-  /**
-   * Counts flights that fly towards the airport.
-   */
-  unsigned countInbounds() const;
-  
-  /**
-   * Returns OR-combined facilities that are available on the airport.
-   */
-  Controller::Facilities facilities() const;
-  
-  /**
-   * Adds new controller to the airport.
-   */
-  void addStaff(const Controller* atc);
-  
-  /**
-   * Adds new inbound flight to the airport.
-   */
-  void addInbound(const Pilot* pilot);
-  
-  /**
-   * Adds new outbound flight to the airport.
-   */
-  void addOutbound(const Pilot* pilot);
-  
-  /**
-   * \return True if the airport does not have any controllers or flights, otherwise false.
-   */
-  bool isEmpty() const;
-  
-  /**
-   * \return True if at least one ATC is available on the airport.
-   */
-  bool isStaffed() const;
-  
-  /**
-   * \return The airport's position.
-   */
-  LonLat position() const;
-  
-  /**
-   * \return Pointer to AirportRecord in the database.
-   */
-  inline const AirportRecord* data() const { return __data; }
-  
-  /**
-   * \return The airport ICAO code.
-   */
-  inline const QString& icao() const { return __icao; }
-  
-  /**
-   * \return Staff model of the airport.
-   */
-  inline AtcTableModel* staff() const { return __staff; }
-  
-  /**
-   * \return Inbound flights for the airport.
-   */
-  inline FlightTableModel* inbounds() const { return __inbounds; }
-  
-  /**
-   * \return Outbound flights for the airport.
-   */
-  inline FlightTableModel* outbounds() const { return __outbounds; }
-  
+    /**
+     * \param data Record in the database.
+     */
+    Airport(const AirportRecord* record);
+    
+    ~Airport() = default;
+    
+    /**
+     * Counts flights that are about to take off.
+     * \param includePrefiled If false, this method will not count prefiled flights.
+     *    Default: true.
+     */
+    unsigned countDepartures(bool includePrefiled = true) const;
+    
+    /**
+     * Counts flights that originate from the airport and are airborne
+     * or have just arrived.
+     */
+    unsigned countOutbounds() const;
+    
+    /**
+     * Counts flights that have just landed.
+     */
+    unsigned countArrivals() const;
+    
+    /**
+     * Counts flights that fly towards the airport.
+     */
+    unsigned countInbounds() const;
+    
+    /**
+     * Returns OR-combined facilities that are available on the airport.
+     */
+    Controller::Facilities facilities() const;
+    
+    /**
+     * Adds new controller to the airport.
+     */
+    void addStaff(const Controller* atc);
+    
+    /**
+     * Adds new inbound flight to the airport.
+     */
+    void addInbound(const Pilot* pilot);
+    
+    /**
+     * Adds new outbound flight to the airport.
+     */
+    void addOutbound(const Pilot* pilot);
+    
+    /**
+     * \return True if the airport does not have any controllers or flights, otherwise false.
+     */
+    bool isEmpty() const;
+    
+    /**
+     * \return True if at least one ATC is available on the airport.
+     */
+    bool isStaffed() const;
+    
+    /**
+     * \return The airport's position.
+     */
+    LonLat position() const;
+    
+    /**
+     * \return Pointer to AirportRecord in the database.
+     */
+    inline const AirportRecord* data() const
+    {
+        return __data;
+    }
+    
+    /**
+     * \return The airport ICAO code.
+     */
+    inline const QString& icao() const
+    {
+        return __icao;
+    }
+    
+    /**
+     * \return Staff model of the airport.
+     */
+    inline AtcTableModel* staff() const
+    {
+        return __staff;
+    }
+    
+    /**
+     * \return Inbound flights for the airport.
+     */
+    inline FlightTableModel* inbounds() const
+    {
+        return __inbounds;
+    }
+    
+    /**
+     * \return Outbound flights for the airport.
+     */
+    inline FlightTableModel* outbounds() const
+    {
+        return __outbounds;
+    }
+    
 private:
-  const AirportRecord* __data;
-  const QString __icao;
-  
-  AtcTableModel* __staff;
-  FlightTableModel* __inbounds;
-  FlightTableModel* __outbounds;
-  QList<Fir*> __firs;
-
+    const AirportRecord* __data;
+    const QString __icao;
+    
+    AtcTableModel* __staff;
+    FlightTableModel* __inbounds;
+    FlightTableModel* __outbounds;
+    QList<Fir*> __firs;
+    
 };
 
 #endif // AIRPORT_H

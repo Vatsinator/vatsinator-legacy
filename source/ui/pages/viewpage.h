@@ -26,21 +26,21 @@
 #include "widgets/widgetsettingsmodule.h"
 
 class ViewPage : public WidgetSettingsModule, private Ui::ViewPage {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void settingsChanged();
-  
+    void settingsChanged();
+    
 public:
-  ViewPage(QWidget* parent = nullptr);
-  
-  QString listElement() const override;
-  QString listIcon() const override;
-  QString moduleId() const override;
-
+    ViewPage(QWidget* parent = nullptr);
+    
+    QString listElement() const override;
+    QString listIcon() const override;
+    QString moduleId() const override;
+    
 private slots:
-  void __handleAlwaysCheckBox(int state);
-  
+    void __handleAlwaysCheckBox(int state);
+    
 };
 
 #endif // VIEWPAGE_H

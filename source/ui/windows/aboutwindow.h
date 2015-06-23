@@ -27,23 +27,23 @@
 class AboutWindow :
     public BaseWindow,
     private Ui::AboutWindow {
-
-  Q_OBJECT
-
+    
+    Q_OBJECT
+    
 public:
-  AboutWindow(QWidget* parent = nullptr);
-  
+    AboutWindow(QWidget* parent = nullptr);
+    
 protected:
-  void showEvent(QShowEvent* event) override;
-  
+    void showEvent(QShowEvent* event) override;
+    
 private slots:
-  /**
-   * If the version is outdated, it displays
-   * "outdated" warning, otherwise "up-to-date"
-   * confirmation gets displayed.
-   */
-  void __updateVersionStatus(ResourceManager::VersionStatus status);
-
+    /**
+     * If the version is outdated, it displays
+     * "outdated" warning, otherwise "up-to-date"
+     * confirmation gets displayed.
+     */
+    void __updateVersionStatus(ResourceManager::VersionStatus status);
+    
 };
 
 #endif // ABOUTWINDOW_H

@@ -31,59 +31,62 @@ class MapScene;
  * The FlightItem class represents a single Pilot on the map.
  */
 class FlightItem : public MapItem {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  /**
-   * The constructor takes _pilot_ as a data provider of what to show
-   * on the map. Data is updated automatically.
-   * 
-   * \param pilot The flight to show on the map.
-   * \param parent Passed to QObject's constructor.
-   */
-  explicit FlightItem(const Pilot* pilot, QObject* parent = nullptr);
-  FlightItem() = delete;
-  
-  virtual ~FlightItem();
-  
-  bool isVisible() const override;
-  bool isLabelVisible() const override;
-  const LonLat& position() const override;
-  void drawItem(QOpenGLShaderProgram* shader) const override;
-  void drawLabel(QOpenGLShaderProgram* shader) const override;
-  void drawFocused(QOpenGLShaderProgram* shader) const override;
-  QString tooltipText() const override;
-  void showDetails() const override;
-  
-  /**
-   * Gives direct access to the Pilot class instance that this item
-   * represents on the map.
-   */
-  inline const Pilot* data() const { return __pilot; }
-  
+    /**
+     * The constructor takes _pilot_ as a data provider of what to show
+     * on the map. Data is updated automatically.
+     *
+     * \param pilot The flight to show on the map.
+     * \param parent Passed to QObject's constructor.
+     */
+    explicit FlightItem(const Pilot* pilot, QObject* parent = nullptr);
+    FlightItem() = delete;
+    
+    virtual ~FlightItem();
+    
+    bool isVisible() const override;
+    bool isLabelVisible() const override;
+    const LonLat& position() const override;
+    void drawItem(QOpenGLShaderProgram* shader) const override;
+    void drawLabel(QOpenGLShaderProgram* shader) const override;
+    void drawFocused(QOpenGLShaderProgram* shader) const override;
+    QString tooltipText() const override;
+    void showDetails() const override;
+    
+    /**
+     * Gives direct access to the Pilot class instance that this item
+     * represents on the map.
+     */
+    inline const Pilot* data() const
+    {
+        return __pilot;
+    }
+    
 private:
-  void __initializeLabel() const;
-  void __prepareLines() const;
-  void __matchModel() const;
-  
+    void __initializeLabel() const;
+    void __prepareLines() const;
+    void __matchModel() const;
+    
 private slots:
-  void __reloadSettings();
-  void __invalidate();
-  
+    void __reloadSettings();
+    void __invalidate();
+    
 private:
-  MapScene*     __scene;
-  const Pilot*  __pilot;
-  LonLat        __position;
-  
-  mutable QOpenGLTexture* __model;
-  mutable QOpenGLTexture __label;
-  
-  mutable struct {
-    QVector<GLfloat>    coords;
-    QColor              color;
-  } __otpLine, __ptdLine; // OriginToPilot & PilotToDestination
-  
-  mutable bool  __linesReady;
+    MapScene*     __scene;
+    const Pilot*  __pilot;
+    LonLat        __position;
+    
+    mutable QOpenGLTexture* __model;
+    mutable QOpenGLTexture __label;
+    
+    mutable struct {
+        QVector<GLfloat>    coords;
+        QColor              color;
+    } __otpLine, __ptdLine; // OriginToPilot & PilotToDestination
+    
+    mutable bool  __linesReady;
 };
 
 #endif // FLIGHTITEM_H

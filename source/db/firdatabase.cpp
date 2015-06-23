@@ -29,60 +29,64 @@
 FirDatabase::FirDatabase(QObject* parent) : QObject(parent) {}
 
 void
-FirDatabase::initialize() {
-  __readDatabase();
+FirDatabase::initialize()
+{
+    __readDatabase();
 }
 
-const FirRecord *
-FirDatabase::find(const QString& icao) {
-  if (icao == "ZZZZ")
-    return nullptr;
-  
-  auto result = std::lower_bound(__firs.begin(), __firs.end(), icao,
-    [](const FirRecord& a, const QString& b) {
-      return QString(a.header.icao) < b;
+const FirRecord*
+FirDatabase::find(const QString& icao)
+{
+    if (icao == "ZZZZ")
+        return nullptr;
+        
+    auto result = std::lower_bound(__firs.begin(), __firs.end(), icao,
+    [](const FirRecord & a, const QString & b) {
+        return QString(a.header.icao) < b;
     });
-  
-  return icao < QString(result->header.icao) ? nullptr : result;
+    
+    return icao < QString(result->header.icao) ? nullptr : result;
 }
 
 void
-FirDatabase::__readDatabase() {
-  __firs.clear();
-  
-  QFile db(FileManager::path("WorldFirs.db"));
-  
-  if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
-    notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
-    return;
-  }
-
-  int size;
-  db.read(reinterpret_cast<char*>(&size), 4);
-  
-  qDebug("Firs to be read: %i.", size);
-  __firs.resize(size);
-  db.seek(4);
-
-  for (int i = 0; i < size; ++i) {
-    db.read(reinterpret_cast<char*>(&__firs[i].header), sizeof(FirHeader));
+FirDatabase::__readDatabase()
+{
+    __firs.clear();
     
-    int counting;
+    QFile db(FileManager::path("WorldFirs.db"));
     
-    db.read(reinterpret_cast<char*>(&counting), sizeof(int));
-    __firs[i].borders.resize(counting);
-    db.read(reinterpret_cast<char*>(__firs[i].borders.data()), sizeof(Point) * counting);
-
-    db.read(reinterpret_cast<char*>(&counting), sizeof(int));
-    if (counting > 0) {
-      __firs[i].triangles.resize(counting * 3);
-      db.read(reinterpret_cast<char*>(__firs[i].triangles.data()), 2 * counting * 3);
+    if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
+        notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+        return;
     }
-  }
-  
-  db.close();
-  
-  std::sort(__firs.begin(), __firs.end(), [](const FirRecord& a, const FirRecord& b) -> bool {
-    return QString(a.header.icao) < QString(b.header.icao);
-  });
+    
+    int size;
+    db.read(reinterpret_cast<char*>(&size), 4);
+    
+    qDebug("Firs to be read: %i.", size);
+    __firs.resize(size);
+    db.seek(4);
+    
+    for (int i = 0; i < size; ++i) {
+        db.read(reinterpret_cast<char*>(&__firs[i].header), sizeof(FirHeader));
+        
+        int counting;
+        
+        db.read(reinterpret_cast<char*>(&counting), sizeof(int));
+        __firs[i].borders.resize(counting);
+        db.read(reinterpret_cast<char*>(__firs[i].borders.data()), sizeof(Point) * counting);
+        
+        db.read(reinterpret_cast<char*>(&counting), sizeof(int));
+        
+        if (counting > 0) {
+            __firs[i].triangles.resize(counting * 3);
+            db.read(reinterpret_cast<char*>(__firs[i].triangles.data()), 2 * counting * 3);
+        }
+    }
+    
+    db.close();
+    
+    std::sort(__firs.begin(), __firs.end(), [](const FirRecord & a, const FirRecord & b) -> bool {
+        return QString(a.header.icao) < QString(b.header.icao);
+    });
 }

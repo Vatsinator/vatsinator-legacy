@@ -30,37 +30,37 @@ class Airport;
  * that connecting a slot to it is fairly easy.
  */
 class AirportDetailsButton : public QPushButton {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  /**
-   * Passed from QPushButton.
-   */
-  void clicked(const Airport* airport);
-
+    /**
+     * Passed from QPushButton.
+     */
+    void clicked(const Airport* airport);
+    
 public:
-  /**
-   * Creates a new AirportDetailsButton with _airport_ set to _nullptr_.
-   */
-  AirportDetailsButton(QWidget* parent = nullptr);
-  
-  /**
-   * Create a new AirportDetailsButton with the given _airport_ and
-   * _parent_ passed to QPushButton's constructor.
-   */
-  AirportDetailsButton(const Airport* airport, QWidget* parent = nullptr);
-
-  /**
-   * Sets the button's _airport_ to the given object.
-   */
-  void setAirportPointer(const Airport* airport);
-
+    /**
+     * Creates a new AirportDetailsButton with _airport_ set to _nullptr_.
+     */
+    AirportDetailsButton(QWidget* parent = nullptr);
+    
+    /**
+     * Create a new AirportDetailsButton with the given _airport_ and
+     * _parent_ passed to QPushButton's constructor.
+     */
+    AirportDetailsButton(const Airport* airport, QWidget* parent = nullptr);
+    
+    /**
+     * Sets the button's _airport_ to the given object.
+     */
+    void setAirportPointer(const Airport* airport);
+    
 private slots:
-  void __handleClicked();
-
+    void __handleClicked();
+    
 private:
-  const Airport* __current;
-
+    const Airport* __current;
+    
 };
 
 #endif // AIRPORTDETAILSBUTTON_H

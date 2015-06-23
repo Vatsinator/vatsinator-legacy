@@ -20,6 +20,7 @@
 #include "actionmenuseparator.h"
 
 ActionMenuSeparator::ActionMenuSeparator(const QString& label, QObject* parent) :
-    QAction(label, parent) {
-  setEnabled(false);
+    QAction(label, parent)
+{
+    setEnabled(false);
 }

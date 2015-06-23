@@ -36,13 +36,13 @@
 class WeatherForecastInterface {
 
 public:
-  /**
-   * Starts fetching the weather forecast.
-   * \param requrest The instance of WeatherForecastRequest that provides
-   * information necessary to fetch data for the specified location.
-   */
-  virtual WeatherForecastReply* fetch(WeatherForecastRequest* request) = 0;
-  
+    /**
+     * Starts fetching the weather forecast.
+     * \param requrest The instance of WeatherForecastRequest that provides
+     * information necessary to fetch data for the specified location.
+     */
+    virtual WeatherForecastReply* fetch(WeatherForecastRequest* request) = 0;
+    
 };
 
 Q_DECLARE_INTERFACE(WeatherForecastInterface,

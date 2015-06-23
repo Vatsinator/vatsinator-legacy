@@ -41,92 +41,93 @@ class VatsinatorWindow;
  * Widgets stands for QtWidgets module.
  */
 class WidgetsUserInterface : public UserInterface {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  explicit WidgetsUserInterface(QObject* parent = nullptr);
-  
-  void initialize() override;
-  
-  /**
-   * \return Instance of the "About Vatsinator" window.
-   */
-  AboutWindow* aboutWindow();
-  
-  /**
-   * \return Instance of the "Atc list" window.
-   */
-  AtcListWindow* atcListWindow();
-  
-  /**
-   * \return Instance of the "VatsinatorDatabase" window.
-   */
-  DatabaseWindow* databaseWindow();
-  
-  /**
-   * \return Instance of the "Flight list" window.
-   */
-  FlightListWindow* flightListWindow();
-  
-  /**
-   * \return Instance of the "METARs" window.
-   */
-  MetarsWindow* metarsWindow();
-  
-  /**
-   * \return Instance of the settings window.
-   */
-  SettingsWindow* settingsWindow();
-  
-  /**
-   * \return Instance of the main Vatsinator window.
-   */
-  VatsinatorWindow* mainWindow();
-  
+    explicit WidgetsUserInterface(QObject* parent = nullptr);
+    
+    void initialize() override;
+    
+    /**
+     * \return Instance of the "About Vatsinator" window.
+     */
+    AboutWindow* aboutWindow();
+    
+    /**
+     * \return Instance of the "Atc list" window.
+     */
+    AtcListWindow* atcListWindow();
+    
+    /**
+     * \return Instance of the "VatsinatorDatabase" window.
+     */
+    DatabaseWindow* databaseWindow();
+    
+    /**
+     * \return Instance of the "Flight list" window.
+     */
+    FlightListWindow* flightListWindow();
+    
+    /**
+     * \return Instance of the "METARs" window.
+     */
+    MetarsWindow* metarsWindow();
+    
+    /**
+     * \return Instance of the settings window.
+     */
+    SettingsWindow* settingsWindow();
+    
+    /**
+     * \return Instance of the main Vatsinator window.
+     */
+    VatsinatorWindow* mainWindow();
+    
 public slots:
-  /**
-   * Shows the dialog that shows "Restart the application" dialog.
-   * Called when user changes the language.
-   */
-  void showAppRestartDialog();
-  
-  void fatal(const QString& message) override;
-  void warning(const QString& message) override;
-  void statusError() override;
-  void dataError() override;
-  void showVatsimMessage(const QString& message) override;
-  void showDetails(const Airport* airport) override;
-  void showDetails(const Client* client) override;
-  void showDetails(const Fir* fir) override;
-  void showMetar(const QString& metar) override;
-  void showStatsDialog() override;
-  void ensureMainWindowIsActive() override;
-  
+    /**
+     * Shows the dialog that shows "Restart the application" dialog.
+     * Called when user changes the language.
+     */
+    void showAppRestartDialog();
+    
+    void fatal(const QString& message) override;
+    void warning(const QString& message) override;
+    void statusError() override;
+    void dataError() override;
+    void showVatsimMessage(const QString& message) override;
+    void showDetails(const Airport* airport) override;
+    void showDetails(const Client* client) override;
+    void showDetails(const Fir* fir) override;
+    void showMetar(const QString& metar) override;
+    void showStatsDialog() override;
+    void ensureMainWindowIsActive() override;
+    
 private slots:
-  /**
-   * Shows the dialog that notifies user about the new version available.
-   * We do not need to implement this on Android - Play handles auto-updates
-   * for us.
-   */
-  void __showNewVersionDialog();
-
+    /**
+     * Shows the dialog that notifies user about the new version available.
+     * We do not need to implement this on Android - Play handles auto-updates
+     * for us.
+     */
+    void __showNewVersionDialog();
+    
 private:
-  AboutWindow*          __aboutWindow;
-  MetarsWindow*         __metarsWindow;
-  DatabaseWindow*       __databaseWindow;
-  AtcListWindow*        __atcListWindow;
-  FlightListWindow*     __flightsListWindow;
-  SettingsWindow*       __settingsWindow;
-  VatsinatorWindow*     __vatsinatorWindow;
-  
+    AboutWindow*          __aboutWindow;
+    MetarsWindow*         __metarsWindow;
+    DatabaseWindow*       __databaseWindow;
+    AtcListWindow*        __atcListWindow;
+    FlightListWindow*     __flightsListWindow;
+    SettingsWindow*       __settingsWindow;
+    VatsinatorWindow*     __vatsinatorWindow;
+    
 };
 
 /**
  * You can use this function to access specific function of WidgetsUserInterface
  * implementation as well as check the current ui mode.
  */
-inline WidgetsUserInterface* wui() {
-  return qobject_cast<WidgetsUserInterface*>(vApp()->userInterface());
+inline WidgetsUserInterface* wui()
+{
+    return qobject_cast<WidgetsUserInterface*>(vApp()->userInterface());
 }
 
 #endif // WIDGETSUSERINTERFACE_H

@@ -20,12 +20,13 @@
 #include "airportdetailsaction.h"
 
 AirportDetailsAction::AirportDetailsAction(const Airport* airport,
-                                           const QString& label,
-                                           QObject* parent) :
+        const QString& label,
+        QObject* parent) :
     QAction(label, parent),
-    __current(airport) {
-  
-  connect(this, &QAction::triggered, [this]() {
-    emit triggered(__current);
-  });
+    __current(airport)
+{
+
+    connect(this, &QAction::triggered, [this]() {
+        emit triggered(__current);
+    });
 }

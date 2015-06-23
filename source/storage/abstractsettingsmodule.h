@@ -29,49 +29,49 @@ class QSettings;
 
 
 class AbstractSettingsModule {
-  
+
 public:
-  
-  AbstractSettingsModule();
-  
-  /**
-   * Name of the module.
-   */
-  virtual QString listElement() const = 0;
-  
-  /**
-   * Icon path to identity the module.
-   */
-  virtual QString listIcon() const = 0;
-  
-  /**
-   * The module's id that will appear in SettingsManager's registry,
-   * before the dot.
-   */
-  virtual QString moduleId() const = 0;
-  
-  /**
-   * Puts all values that the module handles in the SettingsManager's
-   * map, using setValue().
-   */
-  virtual void update() const = 0;
-  
-  void restoreSettings(QSettings& settings, const QVariantHash& defaults);
-  void saveSettings(QSettings& settings);
-  
+
+    AbstractSettingsModule();
+    
+    /**
+     * Name of the module.
+     */
+    virtual QString listElement() const = 0;
+    
+    /**
+     * Icon path to identity the module.
+     */
+    virtual QString listIcon() const = 0;
+    
+    /**
+     * The module's id that will appear in SettingsManager's registry,
+     * before the dot.
+     */
+    virtual QString moduleId() const = 0;
+    
+    /**
+     * Puts all values that the module handles in the SettingsManager's
+     * map, using setValue().
+     */
+    virtual void update() const = 0;
+    
+    void restoreSettings(QSettings& settings, const QVariantHash& defaults);
+    void saveSettings(QSettings& settings);
+    
 protected:
-  void setValue(const QString& key, QVariant&& value) const;
-  
-  /**
-   * Restores user's settings.
-   */
-  virtual void restore(QSettings& settings, const QVariantHash& defaults) = 0;
-  
-  /**
-   * Saves user's settings.
-   */
-  virtual void save(QSettings& settings) = 0;
-  
+    void setValue(const QString& key, QVariant&& value) const;
+    
+    /**
+     * Restores user's settings.
+     */
+    virtual void restore(QSettings& settings, const QVariantHash& defaults) = 0;
+    
+    /**
+     * Saves user's settings.
+     */
+    virtual void save(QSettings& settings) = 0;
+    
 };
 
 #endif // ABSTRACTSETTINGSMODULE_H

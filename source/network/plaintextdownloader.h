@@ -30,83 +30,92 @@
  * The PlainTextDownloader is used to download files directly into memory.
  */
 class PlainTextDownloader : public QObject {
-  Q_OBJECT
-  
-  /**
-   * This property holds the contents of the downloaded file.
-   */
-  Q_PROPERTY(QByteArray data READ data)
-
+    Q_OBJECT
+    
+    /**
+     * This property holds the contents of the downloaded file.
+     */
+    Q_PROPERTY(QByteArray data READ data)
+    
 signals:
-  /**
-   * Emitted when download is complete.
-   * Downloaded data can be accessed via data().
-   */
-  void finished();
-  
-  /**
-   * Emitted if a network error occured during the download process.
-   * 
-   * \param error The error information.
-   */
-  void error(QString error);
-  
-  /**
-   * This signal is emitted in order to indicate the progress.
-   * 
-   * \param read Bytes read out of _total_.
-   * \param total Total bytes to be read.
-   */
-  void progress(qint64 read, qint64 total);
-
+    /**
+     * Emitted when download is complete.
+     * Downloaded data can be accessed via data().
+     */
+    void finished();
+    
+    /**
+     * Emitted if a network error occured during the download process.
+     *
+     * \param error The error information.
+     */
+    void error(QString error);
+    
+    /**
+     * This signal is emitted in order to indicate the progress.
+     *
+     * \param read Bytes read out of _total_.
+     * \param total Total bytes to be read.
+     */
+    void progress(qint64 read, qint64 total);
+    
 public:
-  /**
-   * The default constructor passes _parent_ to QObject.
-   */
-  PlainTextDownloader(QObject* parent = nullptr);
-
-  /**
-   * Enqueues the request.
-   * Previously stored data will be emptied.
-   * If the queue is empty, the specified URL will be downloaded immediately.
-   * 
-   * \param url URL to be downloaded.
-   */
-  void fetch(const QUrl& url);
-  
-  inline const QByteArray& data() const { return __data; }
-  
-  /**
-   * Returns false if the queue is empty, otherwise true.
-   */
-  inline bool hasPendingTasks() const { return !__urls.isEmpty(); }
-  
-  /**
-   * Returns true if anything is being downloaded.
-   */
-  inline bool isWorking() const { return __reply != nullptr; }
-  
+    /**
+     * The default constructor passes _parent_ to QObject.
+     */
+    PlainTextDownloader(QObject* parent = nullptr);
+    
+    /**
+     * Enqueues the request.
+     * Previously stored data will be emptied.
+     * If the queue is empty, the specified URL will be downloaded immediately.
+     *
+     * \param url URL to be downloaded.
+     */
+    void fetch(const QUrl& url);
+    
+    inline const QByteArray& data() const
+    {
+        return __data;
+    }
+    
+    /**
+     * Returns false if the queue is empty, otherwise true.
+     */
+    inline bool hasPendingTasks() const
+    {
+        return !__urls.isEmpty();
+    }
+    
+    /**
+     * Returns true if anything is being downloaded.
+     */
+    inline bool isWorking() const
+    {
+        return __reply != nullptr;
+    }
+    
 public slots:
-  /**
-   * Aborts the download.
-   * If the queue is not empty, new request will be started immediately.
-   * The finished() signal will _not_ be emitted.
-   */
-  void abort();
-
+    /**
+     * Aborts the download.
+     * If the queue is not empty, new request will be started immediately.
+     * The finished() signal will _not_ be emitted.
+     */
+    void abort();
+    
 private:
-  void  __startRequest();
-  
+    void  __startRequest();
+    
 private slots:
-  void __readyRead();
-  void __finished();
-  
+    void __readyRead();
+    void __finished();
+    
 private:
-  QQueue<QUrl>    __urls;
-  QByteArray __data;
-  QNetworkAccessManager __nam;
-  QNetworkReply*  __reply;
-
+    QQueue<QUrl>    __urls;
+    QByteArray __data;
+    QNetworkAccessManager __nam;
+    QNetworkReply*  __reply;
+    
 };
 
 #endif // PLAINTEXTDOWNLOADERR_H

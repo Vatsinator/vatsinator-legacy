@@ -23,23 +23,25 @@
 
 VatsimMessageDialog::VatsimMessageDialog(const QString& message, QWidget* parent) :
     QDialog(parent),
-    __message(message) {
-  setupUi(this);
-  
-  VatsimMessageLabel->setText(message);
+    __message(message)
+{
+    setupUi(this);
+    
+    VatsimMessageLabel->setText(message);
 }
 
 void
-VatsimMessageDialog::hideEvent(QHideEvent* event) {
-  Q_UNUSED(event);
-  
-  if (DoNotShowCheckBox->isChecked()) {
-    QString hash = QString::number(qHash(__message));
-    QSettings s;
-    s.beginGroup("VatsimMessages");
+VatsimMessageDialog::hideEvent(QHideEvent* event)
+{
+    Q_UNUSED(event);
     
-    s.setValue(hash, true);
-    
-    s.endGroup();
-  }
+    if (DoNotShowCheckBox->isChecked()) {
+        QString hash = QString::number(qHash(__message));
+        QSettings s;
+        s.beginGroup("VatsimMessages");
+        
+        s.setValue(hash, true);
+        
+        s.endGroup();
+    }
 }

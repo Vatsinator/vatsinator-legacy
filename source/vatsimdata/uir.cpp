@@ -28,25 +28,28 @@ Uir::Uir(const QString& icao, QObject* parent) :
     __staff(new AtcTableModel(this)) {}
 
 void
-Uir::addFir(Fir* fir) {
-  __range.push_back(fir);
+Uir::addFir(Fir* fir)
+{
+    __range.push_back(fir);
 }
 
 void
-Uir::addStaff(const Controller* atc) {
-  __staff->add(atc);
-  connect(atc,           SIGNAL(updated()),
-          this,         SIGNAL(updated()));
-  connect(atc,           SIGNAL(destroyed(QObject*)),
-          this,         SIGNAL(updated()), Qt::DirectConnection);
-  emit updated();
-  
-  for (Fir* f: range())
-    f->addUirStaff(atc);
+Uir::addStaff(const Controller* atc)
+{
+    __staff->add(atc);
+    connect(atc,           SIGNAL(updated()),
+            this,         SIGNAL(updated()));
+    connect(atc,           SIGNAL(destroyed(QObject*)),
+            this,         SIGNAL(updated()), Qt::DirectConnection);
+    emit updated();
+    
+    for (Fir* f : range())
+        f->addUirStaff(atc);
 }
 
 bool
-Uir::isEmpty() const {
-  return __staff->staff().isEmpty();
+Uir::isEmpty() const
+{
+    return __staff->staff().isEmpty();
 }
 

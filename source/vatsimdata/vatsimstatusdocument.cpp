@@ -24,40 +24,41 @@
 VatsimStatusDocument::VatsimStatusDocument(QByteArray data, QObject* parent) :
     QObject(parent),
     __data(qMove(data)),
-    __isValid(false) {
-  __parse();
+    __isValid(false)
+{
+    __parse();
 }
 
 void
-VatsimStatusDocument::__parse() {
-  static QRegExp rx("(msg0|url0|url1|moveto0|metar0)=(.+)\\b");
-  
-  if (__data.isEmpty())
-    return;
-  
-  QStringList tempList = QString(__data).split('\n', QString::SkipEmptyParts);
-  
-  for (auto& temp: tempList) {
-    if (temp.startsWith(';'))
-      continue;
+VatsimStatusDocument::__parse()
+{
+    static QRegExp rx("(msg0|url0|url1|moveto0|metar0)=(.+)\\b");
     
-    if (rx.indexIn(temp) >= 0) {
-      QString key = rx.cap(1);
-      QString value = rx.cap(2);
-      
-      if (key == "moveto0") {
-        __moveTo = value;
+    if (__data.isEmpty())
         return;
-      } else if (key == "metar0") {
-        __metar = value;
-      } else if (key == "url0") {
-        __dataFileUrls << qMove(QUrl(value));
-        __isValid = true;
-      } else if (key == "url1") {
-        __serverListUrls << qMove(QUrl(value));
-      } else if (key == "msg0") {
-        __message = value;
-      }
+        
+    QStringList tempList = QString(__data).split('\n', QString::SkipEmptyParts);
+    
+    for (auto& temp : tempList) {
+        if (temp.startsWith(';'))
+            continue;
+            
+        if (rx.indexIn(temp) >= 0) {
+            QString key = rx.cap(1);
+            QString value = rx.cap(2);
+            
+            if (key == "moveto0") {
+                __moveTo = value;
+                return;
+            } else if (key == "metar0")
+                __metar = value;
+            else if (key == "url0") {
+                __dataFileUrls << qMove(QUrl(value));
+                __isValid = true;
+            } else if (key == "url1")
+                __serverListUrls << qMove(QUrl(value));
+            else if (key == "msg0")
+                __message = value;
+        }
     }
-  }
 }

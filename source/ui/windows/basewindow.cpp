@@ -26,23 +26,24 @@
 #include "basewindow.h"
 
 BaseWindow::BaseWindow(QWidget* parent, Qt::WindowFlags flags) :
-  QWidget(parent, flags),
-  __windowSetup(false) {}
+    QWidget(parent, flags),
+    __windowSetup(false) {}
 
-void BaseWindow::showEvent(QShowEvent* event) {
-  if (!__windowSetup) {
-    this->setGeometry(
-      QStyle::alignedRect(
-        Qt::LeftToRight,
-        Qt::AlignCenter,
-        this->size(),
-        QDesktopWidget().screenGeometry(wui()->mainWindow())
-      )
-    );
+void BaseWindow::showEvent(QShowEvent* event)
+{
+    if (!__windowSetup) {
+        this->setGeometry(
+            QStyle::alignedRect(
+                Qt::LeftToRight,
+                Qt::AlignCenter,
+                this->size(),
+                QDesktopWidget().screenGeometry(wui()->mainWindow())
+            )
+        );
+        
+        __windowSetup = true;
+    }
     
-    __windowSetup = true;
-  }
-  
-  QWidget::showEvent(event);
+    QWidget::showEvent(event);
 }
 

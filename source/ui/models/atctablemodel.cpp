@@ -28,143 +28,161 @@
 AtcTableModel::AtcTableModel(QObject* parent): QAbstractTableModel(parent) {}
 
 void
-AtcTableModel::add(const Controller* atc) {
-  Q_ASSERT(atc);
-  
-  if (!__staff.contains(atc)) {
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    __staff << atc;
-    endInsertRows();
+AtcTableModel::add(const Controller* atc)
+{
+    Q_ASSERT(atc);
     
-    connect(atc, &Controller::invalid, this, &AtcTableModel::__autoRemove);
-  }
+    if (!__staff.contains(atc)) {
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        __staff << atc;
+        endInsertRows();
+        
+        connect(atc, &Controller::invalid, this, &AtcTableModel::__autoRemove);
+    }
 }
 
 void
-AtcTableModel::remove(const Controller* atc) {
-  Q_ASSERT(atc);
-  
-  for (int i = 0; i < __staff.size(); ++i) {
-    if (__staff[i] == atc) {
-      beginRemoveRows(QModelIndex(), i, i);
-      __staff.removeAt(i);
-      endRemoveRows();
-      
-      return;
+AtcTableModel::remove(const Controller* atc)
+{
+    Q_ASSERT(atc);
+    
+    for (int i = 0; i < __staff.size(); ++i) {
+        if (__staff[i] == atc) {
+            beginRemoveRows(QModelIndex(), i, i);
+            __staff.removeAt(i);
+            endRemoveRows();
+            
+            return;
+        }
     }
-  }
-  
-  Q_UNREACHABLE();
+    
+    Q_UNREACHABLE();
 }
 
 bool
-AtcTableModel::contains(const Controller* atc) const {
-  return __staff.contains(atc);
+AtcTableModel::contains(const Controller* atc) const
+{
+    return __staff.contains(atc);
 }
 
 int
-AtcTableModel::rowCount(const QModelIndex& parent) const {
-  Q_UNUSED(parent);
-  return __staff.size();
+AtcTableModel::rowCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return __staff.size();
 }
 
 int
-AtcTableModel::columnCount(const QModelIndex& parent) const {
-  Q_UNUSED(parent);
-  /* 0 - callsign
-   * 1 - name
-   * 2 - frequency
-   */
-  return 3;
+AtcTableModel::columnCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    /* 0 - callsign
+     * 1 - name
+     * 2 - frequency
+     */
+    return 3;
 }
 
 QVariant
-AtcTableModel::data(const QModelIndex& index, int role) const {
-   if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount())
-    return QVariant();
-
-  switch (role) {
-    case Qt::TextAlignmentRole:
-      return Qt::AlignCenter;
-    case Qt::ToolTipRole:
-      return Controller::ratings[__staff.at(index.row())->rating()];
-    case Qt::DisplayRole:
-
-      switch (index.column()) {
-        case Callsign:
-          return __staff.at(index.row())->callsign();
-        case Name:
-          return __staff.at(index.row())->realName();
-        case Frequency:
-          return __staff.at(index.row())->frequency();
+AtcTableModel::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid() || index.row() >= rowCount() || index.column() >= columnCount())
+        return QVariant();
+        
+    switch (role) {
+        case Qt::TextAlignmentRole:
+            return Qt::AlignCenter;
+            
+        case Qt::ToolTipRole:
+            return Controller::ratings[__staff.at(index.row())->rating()];
+            
+        case Qt::DisplayRole:
+        
+            switch (index.column()) {
+                case Callsign:
+                    return __staff.at(index.row())->callsign();
+                    
+                case Name:
+                    return __staff.at(index.row())->realName();
+                    
+                case Frequency:
+                    return __staff.at(index.row())->frequency();
+                    
+                default:
+                    return QVariant();
+            }
+            
+        case InstancePointerRole: {
+            Controller* c = const_cast<Controller*>(__staff.at(index.row()));
+            return QVariant::fromValue(reinterpret_cast<void*>(c));
+        }
+        
         default:
-          return QVariant();
-      }
-    
-    case InstancePointerRole: {
-      Controller* c = const_cast<Controller*>(__staff.at(index.row()));
-      return QVariant::fromValue(reinterpret_cast<void*>(c));
+            return QVariant();
     }
-
-    default:
-      return QVariant();
-  }
 }
 
 QVariant
-AtcTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
-  if (section >= columnCount() || orientation == Qt::Vertical || role != Qt::DisplayRole)
-    return QVariant();
-
-  switch (section) {
-    case 0:
-      return tr("Callsign");
-    case 1:
-      return tr("Name");
-    case 2:
-      return tr("Frequency");
-    default:
-      return QVariant();
-  }
+AtcTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (section >= columnCount() || orientation == Qt::Vertical || role != Qt::DisplayRole)
+        return QVariant();
+        
+    switch (section) {
+        case 0:
+            return tr("Callsign");
+            
+        case 1:
+            return tr("Name");
+            
+        case 2:
+            return tr("Frequency");
+            
+        default:
+            return QVariant();
+    }
 }
 
 void
-AtcTableModel::sort(int column, Qt::SortOrder order) {
-  beginResetModel();
-
-  switch (column) {
-    case Callsign:
-      if (order == Qt::AscendingOrder) {
-        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
-          return a->callsign() < b->callsign();
-        });
-      } else {
-        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
-          return a->callsign() > b->callsign();
-        });
-      }
-      
-      break;
-    case Name:
-      if (order == Qt::AscendingOrder) {
-        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
-          return a->realName() < b->realName();
-        });
-      } else {
-        std::sort(__staff.begin(), __staff.end(), [] (const Controller* a, const Controller* b) {
-          return a->realName() > b->realName();
-        });
-      }
-      
-      break;
-  }
-
-  endResetModel();
+AtcTableModel::sort(int column, Qt::SortOrder order)
+{
+    beginResetModel();
+    
+    switch (column) {
+        case Callsign:
+            if (order == Qt::AscendingOrder) {
+                std::sort(__staff.begin(), __staff.end(), [] (const Controller * a, const Controller * b) {
+                    return a->callsign() < b->callsign();
+                });
+            } else {
+                std::sort(__staff.begin(), __staff.end(), [] (const Controller * a, const Controller * b) {
+                    return a->callsign() > b->callsign();
+                });
+            }
+            
+            break;
+            
+        case Name:
+            if (order == Qt::AscendingOrder) {
+                std::sort(__staff.begin(), __staff.end(), [] (const Controller * a, const Controller * b) {
+                    return a->realName() < b->realName();
+                });
+            } else {
+                std::sort(__staff.begin(), __staff.end(), [] (const Controller * a, const Controller * b) {
+                    return a->realName() > b->realName();
+                });
+            }
+            
+            break;
+    }
+    
+    endResetModel();
 }
 
 void
-AtcTableModel::__autoRemove() {
-  const Controller* c = qobject_cast<const Controller*>(sender());
-  Q_ASSERT(c);
-  remove(c);
+AtcTableModel::__autoRemove()
+{
+    const Controller* c = qobject_cast<const Controller*>(sender());
+    Q_ASSERT(c);
+    remove(c);
 }

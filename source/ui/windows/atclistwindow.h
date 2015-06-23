@@ -26,19 +26,19 @@
 class AtcListWindow :
     public BaseWindow,
     private Ui::ATCListWindow {
-
-  Q_OBJECT
-
+    
+    Q_OBJECT
+    
 public:
-  AtcListWindow(QWidget* parent = nullptr);
-
+    AtcListWindow(QWidget* parent = nullptr);
+    
 protected:
-  void showEvent(QShowEvent* event) override;
-
+    void showEvent(QShowEvent* event) override;
+    
 private slots:
-  void __handleDoubleClicked(const QModelIndex& index);
-
-
+    void __handleDoubleClicked(const QModelIndex& index);
+    
+    
 };
 
 #endif // ATCLISTWINDOW_H

@@ -32,71 +32,71 @@ class FileDownloader;
  * The FileManager class stores Vatsinator files' locations.
  */
 class FileManager {
-  
+
 public:
-  /**
-   * Static directories contain files that are installed once
-   * and can not be overriden by any of the updates, thus
-   * they have static path.
-   * 
-   * \sa staticPath().
-   */
-  enum StaticDir {
-    Plugins,
-    Translations
-  };
-  
-  FileManager();
-  
-  /**
-   * Stores given data in local cache file.
-   * 
-   * \param fileName File name. Only file name, not the full path.
-   * \param data Data to be saved.
-   */
-  static void cacheData(const QString& fileName, const QString& data);
-  
-  /**
-   * Stores given data in local cache file.
-   * 
-   * \param fileName File name. Only file name, not the full path.
-   * \param data Data to be saved.
-   */
-  static void cacheData(const QString& fileName, const QByteArray& data);
-  
-  /**
-   * Moves given file to cache.
-   * 
-   * \param source Source file name, with the full path.
-   * \param destination Target file name, without the path.
-   */
-  static bool moveToCache(const QString& source, const QString& destination);
-  
-  /**
-   * Gets static directory's location in the filesystem.
-   */
-  static QString staticPath(StaticDir directory);
-  
-  /**
-   * Returns a real file location.
-   * 
-   * Vatsinator can store its data files in two locations: at the global scope
-   * (i.e. /usr/share/vatsinator/ on Linux) and locally (after data update,
-   * for example ~/.local/share/vatsinator/). This function makes it not only
-   * transparent (every file can be stored in both locations, local files have
-   * got higher priority, however) but it also makes it cross-platform (on
-   * Windows, for example, globally-scoped files are stored in Program Files
-   * directory).
-   * 
-   * \param fileName Name of the file.
-   */
-  static QString path(const QString& fileName);
-  
-  /**
-   * Returns path to where local data can be stored.
-   */
-  static QString localDataPath();
-  
+    /**
+     * Static directories contain files that are installed once
+     * and can not be overriden by any of the updates, thus
+     * they have static path.
+     *
+     * \sa staticPath().
+     */
+    enum StaticDir {
+        Plugins,
+        Translations
+    };
+    
+    FileManager();
+    
+    /**
+     * Stores given data in local cache file.
+     *
+     * \param fileName File name. Only file name, not the full path.
+     * \param data Data to be saved.
+     */
+    static void cacheData(const QString& fileName, const QString& data);
+    
+    /**
+     * Stores given data in local cache file.
+     *
+     * \param fileName File name. Only file name, not the full path.
+     * \param data Data to be saved.
+     */
+    static void cacheData(const QString& fileName, const QByteArray& data);
+    
+    /**
+     * Moves given file to cache.
+     *
+     * \param source Source file name, with the full path.
+     * \param destination Target file name, without the path.
+     */
+    static bool moveToCache(const QString& source, const QString& destination);
+    
+    /**
+     * Gets static directory's location in the filesystem.
+     */
+    static QString staticPath(StaticDir directory);
+    
+    /**
+     * Returns a real file location.
+     *
+     * Vatsinator can store its data files in two locations: at the global scope
+     * (i.e. /usr/share/vatsinator/ on Linux) and locally (after data update,
+     * for example ~/.local/share/vatsinator/). This function makes it not only
+     * transparent (every file can be stored in both locations, local files have
+     * got higher priority, however) but it also makes it cross-platform (on
+     * Windows, for example, globally-scoped files are stored in Program Files
+     * directory).
+     *
+     * \param fileName Name of the file.
+     */
+    static QString path(const QString& fileName);
+    
+    /**
+     * Returns path to where local data can be stored.
+     */
+    static QString localDataPath();
+    
 };
 
 #endif // FILEMANAGER_H

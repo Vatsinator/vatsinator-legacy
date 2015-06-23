@@ -31,49 +31,52 @@ class MouseLonLatEvent;
 class VatsinatorWindow :
     public QMainWindow,
     private Ui::VatsinatorWindow {
-  
-  Q_OBJECT
-
+    
+    Q_OBJECT
+    
 public:
-  explicit VatsinatorWindow(QWidget* parent = nullptr);
-  
-  /**
-   * Sets the specified message in the bottom-left bar corner
-   * or puts simple "Last update" text.
-   * \param text If specified, this text will be shown.
-   */
-  void statusBarUpdate(const QString& text = QString(), const QPalette& palette = QPalette());
-  
-  /**
-   * The middle part of status bar - how many clients, etc etc.
-   */
-  void infoBarUpdate();
-  
-  inline MapWidget* mapWidget() { return MapDisplay; }
-  
+    explicit VatsinatorWindow(QWidget* parent = nullptr);
+    
+    /**
+     * Sets the specified message in the bottom-left bar corner
+     * or puts simple "Last update" text.
+     * \param text If specified, this text will be shown.
+     */
+    void statusBarUpdate(const QString& text = QString(), const QPalette& palette = QPalette());
+    
+    /**
+     * The middle part of status bar - how many clients, etc etc.
+     */
+    void infoBarUpdate();
+    
+    inline MapWidget* mapWidget()
+    {
+        return MapDisplay;
+    }
+    
 protected:
-  void customEvent(QEvent* event) override;
-  void closeEvent(QCloseEvent* event) override;
-  void showEvent(QShowEvent* event) override;
-  virtual void mouseLonLatMoveEvent(MouseLonLatEvent* event);
-  
+    void customEvent(QEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+    virtual void mouseLonLatMoveEvent(MouseLonLatEvent* event);
+    
 private:
-  void __storeWindowGeometry();
-  void __restoreWindowGeometry();
-  
+    void __storeWindowGeometry();
+    void __restoreWindowGeometry();
+    
 private slots:
-  void __dataDownloading();
-  void __statusUpdated();
-  void __dataUpdated();
-  void __dataCorrupted();
-  void __enableRefreshAction();
-  void __updateProgress(qint64 read, qint64 total);
-  
-private:  
-  QLabel*       __statusBox;
-  QProgressBar* __progressBar;
-  
-  
+    void __dataDownloading();
+    void __statusUpdated();
+    void __dataUpdated();
+    void __dataCorrupted();
+    void __enableRefreshAction();
+    void __updateProgress(qint64 read, qint64 total);
+    
+private:
+    QLabel*       __statusBox;
+    QProgressBar* __progressBar;
+    
+    
 };
 
 #endif // VATSINATORWINDOW_H

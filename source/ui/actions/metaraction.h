@@ -28,26 +28,26 @@
  * METAR report.
  */
 class MetarAction : public QAction {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  /**
-   * Passed from QAction.
-   * 
-   * \param metar The ICAO code of the airport.
-   */
-  void triggered(QString metar);
-
+    /**
+     * Passed from QAction.
+     *
+     * \param metar The ICAO code of the airport.
+     */
+    void triggered(QString metar);
+    
 public:
-  /**
-   * Creates new menu action with the provided _icao_ code and the specified
-   * _parent_, which is passed to QAction's constructor.
-   */
-  MetarAction(const QString& icao, QObject* parent);
-
+    /**
+     * Creates new menu action with the provided _icao_ code and the specified
+     * _parent_, which is passed to QAction's constructor.
+     */
+    MetarAction(const QString& icao, QObject* parent);
+    
 private:
-  QString __icao;
-
+    QString __icao;
+    
 };
 
 #endif // METARACTION_H

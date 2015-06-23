@@ -28,29 +28,33 @@ class FirItem;
 class Uir;
 
 class UirItem : public MapItem {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  explicit UirItem(const Uir* uir, QObject* parent = nullptr);
-  
-  bool isVisible() const override;
-  bool isLabelVisible() const override;
-  void showDetails() const override;
-  QString tooltipText() const override;
-  const LonLat& position() const override;
-  void drawItem(QOpenGLShaderProgram*) const override;
-  void drawLabel(QOpenGLShaderProgram*) const override;
-  void drawFocused(QOpenGLShaderProgram*) const override;
-  
-  inline const Uir* data() const { return __uir; }
-  inline const QList<FirItem*>& firItems() const {
-    return __firItems;
-  }
-  
+    explicit UirItem(const Uir* uir, QObject* parent = nullptr);
+    
+    bool isVisible() const override;
+    bool isLabelVisible() const override;
+    void showDetails() const override;
+    QString tooltipText() const override;
+    const LonLat& position() const override;
+    void drawItem(QOpenGLShaderProgram*) const override;
+    void drawLabel(QOpenGLShaderProgram*) const override;
+    void drawFocused(QOpenGLShaderProgram*) const override;
+    
+    inline const Uir* data() const
+    {
+        return __uir;
+    }
+    inline const QList<FirItem*>& firItems() const
+    {
+        return __firItems;
+    }
+    
 private:
-  const Uir* __uir;
-  QList<FirItem*> __firItems;
-
+    const Uir* __uir;
+    QList<FirItem*> __firItems;
+    
 };
 
 #endif // UIRITEM_H

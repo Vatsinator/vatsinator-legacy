@@ -33,27 +33,27 @@ class NotamListModel;
 class FirDetailsWindow :
     public BaseWindow,
     private Ui::FirDetailsWindow {
-
-  Q_OBJECT
-
+    
+    Q_OBJECT
+    
 public:
-  FirDetailsWindow(const Fir* fir, QWidget* parent = nullptr);
-
+    FirDetailsWindow(const Fir* fir, QWidget* parent = nullptr);
+    
 protected:
-  void showEvent(QShowEvent* event) override;
-
+    void showEvent(QShowEvent* event) override;
+    
 private:
-  void __updateLabels();
-  
+    void __updateLabels();
+    
 private slots:
-  void __notamUpdate(NotamListModel* model);
-  void __showAirportDetails(QModelIndex index);
-  void __showClientDetails(QModelIndex index);
-  void __goToNotam(QModelIndex index);
-  
+    void __notamUpdate(NotamListModel* model);
+    void __showAirportDetails(QModelIndex index);
+    void __showClientDetails(QModelIndex index);
+    void __goToNotam(QModelIndex index);
+    
 private:
-  const Fir* __fir;
-
+    const Fir* __fir;
+    
 };
 
 #endif // FIRDETAILSWINDOW_H

@@ -30,79 +30,88 @@
  * executing unzip() method and capturing the unzipped() signal.
  */
 class Unzipper : public QObject {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  /**
-   * Emited after next file is already unzipped.
-   * 
-   * \param total Total amount of files in the package.
-   * \param unzipped Files already unzipped.
-   * \param nextFile Going-to-be-unzipped file name.
-   */
-  void progress(int total, int unzipped, QString nextFile);
-  
-  /**
-   * Emited when Unzipper is done with its job.
-   */
-  void unzipped();
-  
-  /**
-   * Emited then an error occurs.
-   * \param error Error string.
-   */
-  void error(QString error);
-  
+    /**
+     * Emited after next file is already unzipped.
+     *
+     * \param total Total amount of files in the package.
+     * \param unzipped Files already unzipped.
+     * \param nextFile Going-to-be-unzipped file name.
+     */
+    void progress(int total, int unzipped, QString nextFile);
+    
+    /**
+     * Emited when Unzipper is done with its job.
+     */
+    void unzipped();
+    
+    /**
+     * Emited then an error occurs.
+     * \param error Error string.
+     */
+    void error(QString error);
+    
 public:
-  /**
-   * The cosntructor takes the absolute zip archive location.
-   */
-  explicit Unzipper(QString fileName, QObject* parent = nullptr);
-  
-  /**
-   * The default ctor.
-   */
-  explicit Unzipper(QObject* parent = nullptr);
-  
-  /**
-   * Sets the zip package location. This function has no efect when
-   * called after unzip() call.
-   */
-  void setFileName(const QString& fileName);
-  
-  /**
-   * Gets the zip archive location.
-   */
-  inline const QString& fileName() const { return __fileName; }
-  
-  /**
-   * Gets list of files that were already unzipped.
-   */
-  inline const QStringList& fileList() const { return __fileList; }
-  
-  /**
-   * Gets the directory location where the unzipped files go.
-   */
-  inline const QString& targetDir() const { return __targetDir; }
-  
+    /**
+     * The cosntructor takes the absolute zip archive location.
+     */
+    explicit Unzipper(QString fileName, QObject* parent = nullptr);
+    
+    /**
+     * The default ctor.
+     */
+    explicit Unzipper(QObject* parent = nullptr);
+    
+    /**
+     * Sets the zip package location. This function has no efect when
+     * called after unzip() call.
+     */
+    void setFileName(const QString& fileName);
+    
+    /**
+     * Gets the zip archive location.
+     */
+    inline const QString& fileName() const
+    {
+        return __fileName;
+    }
+    
+    /**
+     * Gets list of files that were already unzipped.
+     */
+    inline const QStringList& fileList() const
+    {
+        return __fileList;
+    }
+    
+    /**
+     * Gets the directory location where the unzipped files go.
+     */
+    inline const QString& targetDir() const
+    {
+        return __targetDir;
+    }
+    
 public slots:
-  
-  /**
-   * Starts extracting files from the archive. After that, fileName() function
-   * has no effect, until the next execution of this method. The finished
-   * process is signalized by the unzipped() signal.
-   */
-  void unzip();
-  
-private:
-  QStringList __fileList;
-  
-  /* zip file name */
-  QString __fileName;
-  
-  /* where all the files are extracted to */
-  QString __targetDir;
 
+    /**
+     * Starts extracting files from the archive. After that, fileName() function
+     * has no effect, until the next execution of this method. The finished
+     * process is signalized by the unzipped() signal.
+     */
+    void unzip();
+    
+private:
+    QStringList __fileList;
+    
+    /* zip file name */
+    QString __fileName;
+    
+    /* where all the files are extracted to */
+    QString __targetDir;
+    
 };
 
 #endif // UNZIPPER_H

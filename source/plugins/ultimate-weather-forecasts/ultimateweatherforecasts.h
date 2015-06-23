@@ -36,31 +36,31 @@ class WeatherForecastRequest;
  * https://www.mashape.com/george-vustrey/ultimate-weather-forecasts
  */
 class UltimateWeatherForecasts : public QObject, public WeatherForecastInterface {
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
-  Q_INTERFACES(WeatherForecastInterface)
-
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
+    Q_INTERFACES(WeatherForecastInterface)
+    
 public:
-  UltimateWeatherForecasts();
-  
-  WeatherForecastReply* fetch(WeatherForecastRequest* request) override;
-  
+    UltimateWeatherForecasts();
+    
+    WeatherForecastReply* fetch(WeatherForecastRequest* request) override;
+    
 private:
-  void __newRequest();
-  void __finishRequest();
-  
+    void __newRequest();
+    void __finishRequest();
+    
 private slots:
-  void __readyRead();
-  void __finished();
-  
+    void __readyRead();
+    void __finished();
+    
 private:
-  QNetworkAccessManager __nam;
-  QByteArray            __data;
-  QNetworkReply*        __reply;
-  
-  QList<WeatherForecastReply*> __forecastReplies;
-  QQueue<WeatherForecastReply*> __pendingForecasts;
-  
+    QNetworkAccessManager __nam;
+    QByteArray            __data;
+    QNetworkReply*        __reply;
+    
+    QList<WeatherForecastReply*> __forecastReplies;
+    QQueue<WeatherForecastReply*> __pendingForecasts;
+    
 };
 
 #endif // ULTIMATEWEATHERFORECASTS_H

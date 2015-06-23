@@ -22,12 +22,13 @@
 DataFetchErrorDialog::DataFetchErrorDialog(QWidget* parent) :
     QMessageBox(parent),
     __againButton(nullptr),
-    __keepButton(nullptr) {
-  
-  setText(tr("Vatsinator was unable to fetch the data file."));
-  setInformativeText(tr("What do you want to do with that?"));
-  setIcon(QMessageBox::Question);
-  
-  __againButton = addButton(tr("Try again"), QMessageBox::ActionRole); 
-  __keepButton = addButton(tr("Keep current data"), QMessageBox::RejectRole);
+    __keepButton(nullptr)
+{
+
+    setText(tr("Vatsinator was unable to fetch the data file."));
+    setInformativeText(tr("What do you want to do with that?"));
+    setIcon(QMessageBox::Question);
+    
+    __againButton = addButton(tr("Try again"), QMessageBox::ActionRole);
+    __keepButton = addButton(tr("Keep current data"), QMessageBox::RejectRole);
 }

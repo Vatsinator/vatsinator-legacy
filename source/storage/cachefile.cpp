@@ -25,35 +25,39 @@
 static const QString CacheDirectory =
     QDir::cleanPath(
         QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
-      % QDir::separator()
-      % QStringLiteral("Vatsinator")
+        % QDir::separator()
+        % QStringLiteral("Vatsinator")
     );
 
 
 CacheFile::CacheFile(const QString& fileName) :
-    QFile(CacheDirectory % QDir::separator() % fileName) {
-  qDebug("Cache file location: %s", qPrintable(fileName));
+    QFile(CacheDirectory % QDir::separator() % fileName)
+{
+    qDebug("Cache file location: %s", qPrintable(fileName));
 }
 
 bool
-CacheFile::exists() const {
-  if (!QDir(CacheDirectory).exists()) {
-    qDebug("CacheFile: creating directory %s...", qPrintable(CacheDirectory));
-    QDir().mkpath(CacheDirectory);
-    return false;
-  }
-  
-  return QFile::exists();
+CacheFile::exists() const
+{
+    if (!QDir(CacheDirectory).exists()) {
+        qDebug("CacheFile: creating directory %s...", qPrintable(CacheDirectory));
+        QDir().mkpath(CacheDirectory);
+        return false;
+    }
+    
+    return QFile::exists();
 }
 
 bool
-CacheFile::open(OpenMode mode) {
-  if (!QDir(CacheDirectory).exists())
-    QDir().mkdir(CacheDirectory);
-  
-  bool wasOpened = QFile::open(mode);
-  if (!wasOpened)
-    qWarning("CacheFile: %s failed to open.", qPrintable(fileName()));
-  
-  return wasOpened;
+CacheFile::open(OpenMode mode)
+{
+    if (!QDir(CacheDirectory).exists())
+        QDir().mkdir(CacheDirectory);
+        
+    bool wasOpened = QFile::open(mode);
+    
+    if (!wasOpened)
+        qWarning("CacheFile: %s failed to open.", qPrintable(fileName()));
+        
+    return wasOpened;
 }

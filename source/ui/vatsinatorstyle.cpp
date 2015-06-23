@@ -27,57 +27,63 @@
 #include "vatsinatorstyle.h"
 
 QFont
-VatsinatorStyle::boldFont() {
-  QFont font;
-  font.setBold(true);
-  return font;
+VatsinatorStyle::boldFont()
+{
+    QFont font;
+    font.setBold(true);
+    return font;
 }
 
 QFont
-VatsinatorStyle::h1Font() {
-  QFont font;
-  int size = font.pointSize() + 4;
-  font.setPointSize(size);
-  font.setBold(true);
-  return font;
+VatsinatorStyle::h1Font()
+{
+    QFont font;
+    int size = font.pointSize() + 4;
+    font.setPointSize(size);
+    font.setBold(true);
+    return font;
 }
 
 QFont
-VatsinatorStyle::h2Font() {
-  QFont font;
-  int size = font.pointSize() + 2;
-  font.setPointSize(size);
-  font.setBold(true);
-  return font;
+VatsinatorStyle::h2Font()
+{
+    QFont font;
+    int size = font.pointSize() + 2;
+    font.setPointSize(size);
+    font.setBold(true);
+    return font;
 }
 
 QFont
-VatsinatorStyle::smallFont() {
-  QFont font;
-  int size = font.pointSize() - 2;
-  font.setPointSize(size);
-  return font;
+VatsinatorStyle::smallFont()
+{
+    QFont font;
+    int size = font.pointSize() - 2;
+    font.setPointSize(size);
+    return font;
 }
 
 void
-VatsinatorStyle::polish(QWidget* widget) {
+VatsinatorStyle::polish(QWidget* widget)
+{
 #ifdef Q_OS_MAC
-  if (FlightDetailsWindow* w = dynamic_cast<FlightDetailsWindow*>(widget)) {
-    w->layout()->setContentsMargins(12, 12, 12, 2);
-  } else if (AtcDetailsWindow* w = dynamic_cast<AtcDetailsWindow*>(widget)) {
-    w->layout()->setContentsMargins(12, 12, 12, 2);
-  } else if (AirportDetailsWindow* w = dynamic_cast<AirportDetailsWindow*>(widget)) {
-    w->layout()->setSpacing(4);
-    w->layout()->setContentsMargins(12, 12, 12, 2);
-  } else if (MetarsWindow* w = dynamic_cast<MetarsWindow*>(widget)) {
-    w->layout()->setContentsMargins(0, 4, 0, 0);
-    w->layout()->setSpacing(4);
-    QLayout* l = w->findChild<QLayout*>("MetarControlLayout");
-    Q_ASSERT(l);
-    l->setContentsMargins(12, 0, 12, 0);
-  }
-  
+
+    if (FlightDetailsWindow* w = dynamic_cast<FlightDetailsWindow*>(widget))
+        w->layout()->setContentsMargins(12, 12, 12, 2);
+    else if (AtcDetailsWindow* w = dynamic_cast<AtcDetailsWindow*>(widget))
+        w->layout()->setContentsMargins(12, 12, 12, 2);
+    else if (AirportDetailsWindow* w = dynamic_cast<AirportDetailsWindow*>(widget)) {
+        w->layout()->setSpacing(4);
+        w->layout()->setContentsMargins(12, 12, 12, 2);
+    } else if (MetarsWindow* w = dynamic_cast<MetarsWindow*>(widget)) {
+        w->layout()->setContentsMargins(0, 4, 0, 0);
+        w->layout()->setSpacing(4);
+        QLayout* l = w->findChild<QLayout*>("MetarControlLayout");
+        Q_ASSERT(l);
+        l->setContentsMargins(12, 0, 12, 0);
+    }
+    
 #else
-  Q_UNUSED(widget);
+    Q_UNUSED(widget);
 #endif
 }

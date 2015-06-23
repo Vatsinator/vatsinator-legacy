@@ -29,22 +29,22 @@
  * in OpenGL texture format.
  */
 class IconKeeper : public QObject {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  
-  explicit IconKeeper(QObject* parent = nullptr);
-  virtual ~IconKeeper();
-  
-  QOpenGLTexture* emptyAirportIcon();
-  QOpenGLTexture* activeAirportIcon();
-  QOpenGLTexture* activeStaffedAirportIcon();
-  
+
+    explicit IconKeeper(QObject* parent = nullptr);
+    virtual ~IconKeeper();
+    
+    QOpenGLTexture* emptyAirportIcon();
+    QOpenGLTexture* activeAirportIcon();
+    QOpenGLTexture* activeStaffedAirportIcon();
+    
 private:
-  QOpenGLTexture __emptyAirportIcon;
-  QOpenGLTexture __activeAirportIcon;
-  QOpenGLTexture __activeStaffedAirportIcon;
-  
+    QOpenGLTexture __emptyAirportIcon;
+    QOpenGLTexture __activeAirportIcon;
+    QOpenGLTexture __activeStaffedAirportIcon;
+    
 };
 
 #endif // ICONKEEPER_H

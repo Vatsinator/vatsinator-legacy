@@ -26,65 +26,69 @@
 
 #include "modelmatcher.h"
 
-ModelMatcher::ModelMatcher(QObject* parent) : QObject(parent) {
-  __readModels();
-  __loadPixmaps();
+ModelMatcher::ModelMatcher(QObject* parent) : QObject(parent)
+{
+    __readModels();
+    __loadPixmaps();
 }
 
-ModelMatcher::~ModelMatcher() {
-  for (auto it: __modelsPixmaps) {
-    delete it;
-  }
+ModelMatcher::~ModelMatcher()
+{
+    for (auto it : __modelsPixmaps)
+        delete it;
 }
 
 QOpenGLTexture*
-ModelMatcher::matchMyModel(const QString& acft) const {
-  if (acft.isEmpty())
+ModelMatcher::matchMyModel(const QString& acft) const
+{
+    if (acft.isEmpty())
+        return __modelsPixmaps["1p"];
+        
+    for (auto pair : __modelsIds) {
+        if (acft.contains(pair.first))
+            return __modelsPixmaps[pair.second];
+    }
+    
     return __modelsPixmaps["1p"];
-  
-  for (auto pair: __modelsIds) {
-    if (acft.contains(pair.first)) {
-      return __modelsPixmaps[pair.second];
-    }
-  }
-  
-  return __modelsPixmaps["1p"];
 }
 
 void
-ModelMatcher::__readModels() {
-  __modelsIds << qMakePair(QString("ZZZZ"), QString("1p"));
-
-  QFile modelsFile(FileManager::path("data/model"));
-  if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    notifyWarning(tr("File %1 could not be opened! Check file permissions or reinstall the application.").arg(modelsFile.fileName()));
-    return;
-  }
-
-  while (!modelsFile.atEnd()) {
-    QString line(modelsFile.readLine());
-    line = line.simplified();
-
-    if (line.startsWith('#') || line.isEmpty())
-      continue;
-
-    auto split = line.split(' ');
-    __modelsIds << qMakePair(split[0], split[1]);
-  }
+ModelMatcher::__readModels()
+{
+    __modelsIds << qMakePair(QString("ZZZZ"), QString("1p"));
+    
+    QFile modelsFile(FileManager::path("data/model"));
+    
+    if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        notifyWarning(tr("File %1 could not be opened! Check file permissions or reinstall the application.").arg(modelsFile.fileName()));
+        return;
+    }
+    
+    while (!modelsFile.atEnd()) {
+        QString line(modelsFile.readLine());
+        line = line.simplified();
+        
+        if (line.startsWith('#') || line.isEmpty())
+            continue;
+            
+        auto split = line.split(' ');
+        __modelsIds << qMakePair(split[0], split[1]);
+    }
 }
 
 void
-ModelMatcher::__loadPixmaps() {
-  for (auto pair: __modelsIds) {
-    if (!__modelsPixmaps.contains(pair.second)) {
-      QString mPath = ":/pixmaps/model_" % pair.second % "32.png";
-      QImage model(mPath);
-      Q_ASSERT(!model.isNull());
-      QOpenGLTexture* t = new QOpenGLTexture(QOpenGLTexture::Target2D);
-      Q_CHECK_PTR(t);
-      __modelsPixmaps.insert(pair.second, t);
-      t->setData(model.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-      t->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+ModelMatcher::__loadPixmaps()
+{
+    for (auto pair : __modelsIds) {
+        if (!__modelsPixmaps.contains(pair.second)) {
+            QString mPath = ":/pixmaps/model_" % pair.second % "32.png";
+            QImage model(mPath);
+            Q_ASSERT(!model.isNull());
+            QOpenGLTexture* t = new QOpenGLTexture(QOpenGLTexture::Target2D);
+            Q_CHECK_PTR(t);
+            __modelsPixmaps.insert(pair.second, t);
+            t->setData(model.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
+            t->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+        }
     }
-  }
 }

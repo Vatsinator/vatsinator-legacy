@@ -26,27 +26,31 @@
 
 AirportDetailsButton::AirportDetailsButton(QWidget* parent) :
     QPushButton(parent),
-    __current(nullptr) {
-  connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
+    __current(nullptr)
+{
+    connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
 }
 
 AirportDetailsButton::AirportDetailsButton(const Airport* airport, QWidget* parent) :
     QPushButton(parent),
-    __current(airport) {
-//   setIcon(QIcon(":/uiIcons/button-details.png"));
-//   
-  connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
+    __current(airport)
+{
+    //   setIcon(QIcon(":/uiIcons/button-details.png"));
+    //
+    connect(this, SIGNAL(clicked()), this, SLOT(__handleClicked()));
 }
 
 void
-AirportDetailsButton::setAirportPointer(const Airport* airport) {
-  __current = airport;
-  setEnabled(airport != nullptr);
-  setFlat(airport == nullptr);
+AirportDetailsButton::setAirportPointer(const Airport* airport)
+{
+    __current = airport;
+    setEnabled(airport != nullptr);
+    setFlat(airport == nullptr);
 }
 
 void
-AirportDetailsButton::__handleClicked() {
-  if (__current)
-    emit clicked(__current);
+AirportDetailsButton::__handleClicked()
+{
+    if (__current)
+        emit clicked(__current);
 }

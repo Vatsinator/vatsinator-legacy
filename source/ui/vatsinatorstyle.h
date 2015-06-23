@@ -28,32 +28,32 @@
  * for the whole application style hints.
  */
 class VatsinatorStyle : public QProxyStyle {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  
-  /**
-   * Gets the default system font and makes it bold.
-   */
-  QFont boldFont();
-  
-  /**
-   * Use this font to make large titles.
-   */
-  QFont h1Font();
-  
-  /**
-   * Use this font to make captions.
-   */
-  QFont h2Font();
-  
-  /**
-   * Gets the default system font and makes it a bit smaller.
-   */
-  QFont smallFont();
-  
-  void polish(QWidget* widget) override;
-  
+
+    /**
+     * Gets the default system font and makes it bold.
+     */
+    QFont boldFont();
+    
+    /**
+     * Use this font to make large titles.
+     */
+    QFont h1Font();
+    
+    /**
+     * Use this font to make captions.
+     */
+    QFont h2Font();
+    
+    /**
+     * Gets the default system font and makes it a bit smaller.
+     */
+    QFont smallFont();
+    
+    void polish(QWidget* widget) override;
+    
 };
 
 #endif // VATSINATORSTYLE_H

@@ -80,195 +80,212 @@ Controller::Controller(const QStringList& data) :
     __rating(data[16].toInt()),
     __atis(data[35]),
     __airport(nullptr),
-    __isValid(true) {
-  
-  __cleanupAtis();
-  __recognizeDetails();
+    __isValid(true)
+{
+
+    __cleanupAtis();
+    __recognizeDetails();
 }
 
 void
-Controller::update(const QStringList& data) {
-  Client::update(data);
-  __frequency = data[4];
-  __rating = data[16].toInt();
-  __atis = data[35];
-  __cleanupAtis();
-  
-  emit updated();
+Controller::update(const QStringList& data)
+{
+    Client::update(data);
+    __frequency = data[4];
+    __rating = data[16].toInt();
+    __atis = data[35];
+    __cleanupAtis();
+    
+    emit updated();
 }
 
-void Controller::__cleanupAtis() {
-  // clenup ATIS message
-  if (__atis[0] == '$') {
-    int index = __atis.indexOf('^');
-    __atis.remove(0, index + 2);
-  }
-
-  __atis.replace((QString)'^' + (char)167, "\n");
+void Controller::__cleanupAtis()
+{
+    // clenup ATIS message
+    if (__atis[0] == '$') {
+        int index = __atis.indexOf('^');
+        __atis.remove(0, index + 2);
+    }
+    
+    __atis.replace((QString)'^' + (char)167, "\n");
 }
 
 void
-Controller::__recognizeDetails() {
-  QStringList sections = callsign().split('_');
-
-  if (sections.back() == "CTR") {
-    __facility = Ctr;
-    __airport = nullptr;
-
-    __icao = sections.front();
+Controller::__recognizeDetails()
+{
+    QStringList sections = callsign().split('_');
     
-    if (Fir* fir = vApp()->vatsimDataHandler()->findFir(__icao)) {
-      fir->addStaff(this);
-      __makeDescription(fir);
-      return;
+    if (sections.back() == "CTR") {
+        __facility = Ctr;
+        __airport = nullptr;
+        
+        __icao = sections.front();
+        
+        if (Fir* fir = vApp()->vatsimDataHandler()->findFir(__icao)) {
+            fir->addStaff(this);
+            __makeDescription(fir);
+            return;
+        }
+        
+        if (Uir* uir = vApp()->vatsimDataHandler()->findUir(__icao)) {
+            uir->addStaff(this);
+            __makeDescription(uir);
+            return;
+        }
+        
+        vApp()->statsPurveyor()->reportNoAtc(callsign());
+        qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
+        __isValid = false;
+    } else if (sections.back() == "FSS") {
+        __facility = Fss;
+        __airport = nullptr;
+        
+        QString& icao = sections.front();
+        
+        Fir* fir = vApp()->vatsimDataHandler()->findFir(icao, true);
+        
+        if (!fir)
+            fir = vApp()->vatsimDataHandler()->findFir(icao, false);
+            
+        if (fir) {
+            fir->addStaff(this);
+            __makeDescription(fir);
+            return;
+        }
+        
+        Uir* uir = vApp()->vatsimDataHandler()->findUir(icao);
+        
+        if (uir) {
+            uir->addStaff(this);
+            __makeDescription(uir);
+            return;
+        }
+        
+        vApp()->statsPurveyor()->reportNoAtc(callsign());
+        qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
+        __isValid = false;
+    } else if (
+        sections.back() == "APP" ||
+        sections.back() == "DEP" ||
+        sections.back() == "TWR" ||
+        sections.back() == "GND" ||
+        sections.back() == "DEL" ||
+        sections.back() == "ATIS") {
+        if (sections.back() == "APP")
+            __facility = App;
+        else if (sections.back() == "DEP")
+            __facility = Dep;
+        else if (sections.back() == "TWR")
+            __facility = Twr;
+        else if (sections.back() == "GND")
+            __facility = Gnd;
+        else if (sections.back() == "DEL")
+            __facility = Del;
+        else if (sections.back() == "ATIS")
+            __facility = Atis;
+            
+        if (Airport* ap = vApp()->vatsimDataHandler()->findAirport(sections.front())) {
+            ap->addStaff(this);
+            __airport = ap;
+            __makeDescription(__airport);
+            return;
+        }
+        
+        vApp()->statsPurveyor()->reportNoAtc(callsign());
+        qWarning("Airport not found for %s.", qPrintable(callsign()));
     }
     
-    if (Uir* uir = vApp()->vatsimDataHandler()->findUir(__icao)) {
-      uir->addStaff(this);
-      __makeDescription(uir);
-      return;
-    }
-      
-    vApp()->statsPurveyor()->reportNoAtc(callsign());
-    qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
     __isValid = false;
-  } else if (sections.back() == "FSS") {
-    __facility = Fss;
-    __airport = nullptr;
-
-    QString& icao = sections.front();
-
-    Fir* fir = vApp()->vatsimDataHandler()->findFir(icao, true);
-    if (!fir) {
-      fir = vApp()->vatsimDataHandler()->findFir(icao, false);
-    }
-
-    if (fir) {
-      fir->addStaff(this);
-      __makeDescription(fir);
-      return;
-    }
-    
-    Uir* uir = vApp()->vatsimDataHandler()->findUir(icao);
-    if (uir) {
-      uir->addStaff(this);
-      __makeDescription(uir);
-      return;
-    }
-    
-    vApp()->statsPurveyor()->reportNoAtc(callsign());
-    qWarning("FIR could not be matched for: %s.", qPrintable(callsign()));
-    __isValid = false;
-  } else if (
-    sections.back() == "APP" ||
-    sections.back() == "DEP" ||
-    sections.back() == "TWR" ||
-    sections.back() == "GND" ||
-    sections.back() == "DEL" ||
-    sections.back() == "ATIS") {
-    if (sections.back() == "APP")
-      __facility = App;
-    else if (sections.back() == "DEP")
-      __facility = Dep;
-    else if (sections.back() == "TWR")
-      __facility = Twr;
-    else if (sections.back() == "GND")
-      __facility = Gnd;
-    else if (sections.back() == "DEL")
-      __facility = Del;
-    else if (sections.back() == "ATIS")
-      __facility = Atis;
-
-    if (Airport* ap = vApp()->vatsimDataHandler()->findAirport(sections.front())) {
-      ap->addStaff(this);
-      __airport = ap;
-      __makeDescription(__airport);
-      return;
-    }
-    
-    vApp()->statsPurveyor()->reportNoAtc(callsign());
-    qWarning("Airport not found for %s.", qPrintable(callsign()));
-  }
-  
-  __isValid = false;
 }
 
 void
-Controller::__makeDescription(const Fir* fir) {
-  Q_ASSERT(fir);
-  QString aName = vApp()->vatsimDataHandler()->alternameName(fir->icao());
-  if (aName.isEmpty())
-    __description = fir->name();
-  else
-    __description = aName;
-}
-
-void
-Controller::__makeDescription(const Uir* uir) {
-  Q_ASSERT(uir);
-  QString aName = vApp()->vatsimDataHandler()->alternameName(uir->icao());
-  if (aName.isEmpty())
-    __description = uir->name();
-  else
-    __description = aName;
-}
-
-void
-Controller::__makeDescription(const Airport* airport) {
-  QString apName, fName; // airport name, facility name
-
-  if (!airport) {
-    apName = "Unknown";
-  } else {
-    if (qstrcmp(airport->data()->name, airport->data()->city) == 0)
-      apName = QString::fromUtf8(airport->data()->name);
+Controller::__makeDescription(const Fir* fir)
+{
+    Q_ASSERT(fir);
+    QString aName = vApp()->vatsimDataHandler()->alternameName(fir->icao());
+    
+    if (aName.isEmpty())
+        __description = fir->name();
     else
-      apName =
-        QString::fromUtf8(airport->data()->city) %
-        "/" %
-        QString::fromUtf8(airport->data()->name);
-  }
+        __description = aName;
+}
 
-  switch (__facility) {
-    case Atis:
-      fName = "ATIS";
-      break;
-    case Del:
-      fName = "Delivery";
-      break;
-    case Gnd:
-      fName = "Ground";
-      break;
-    case Twr:
-      fName = "Tower";
-      break;
-    case App:
-      fName = "Approach";
-      break;
-    case Dep:
-      fName = "Departure";
-      break;
-    default:
-      break;
-  }
+void
+Controller::__makeDescription(const Uir* uir)
+{
+    Q_ASSERT(uir);
+    QString aName = vApp()->vatsimDataHandler()->alternameName(uir->icao());
+    
+    if (aName.isEmpty())
+        __description = uir->name();
+    else
+        __description = aName;
+}
 
-  __description = apName % " " % fName;
+void
+Controller::__makeDescription(const Airport* airport)
+{
+    QString apName, fName; // airport name, facility name
+    
+    if (!airport)
+        apName = "Unknown";
+    else {
+        if (qstrcmp(airport->data()->name, airport->data()->city) == 0)
+            apName = QString::fromUtf8(airport->data()->name);
+        else
+            apName =
+                QString::fromUtf8(airport->data()->city) %
+                "/" %
+                QString::fromUtf8(airport->data()->name);
+    }
+    
+    switch (__facility) {
+        case Atis:
+            fName = "ATIS";
+            break;
+            
+        case Del:
+            fName = "Delivery";
+            break;
+            
+        case Gnd:
+            fName = "Ground";
+            break;
+            
+        case Twr:
+            fName = "Tower";
+            break;
+            
+        case App:
+            fName = "Approach";
+            break;
+            
+        case Dep:
+            fName = "Departure";
+            break;
+            
+        default:
+            break;
+    }
+    
+    __description = apName % " " % fName;
 }
 
 bool
-Controller::__initRatings() {
+Controller::__initRatings()
+{
 
-  // http://vateud.org/index.php?option=com_content&view=article&id=28&Itemid=133
-  Controller::ratings[1] = "Observer";
-  Controller::ratings[2] = "Student (S1)";
-  Controller::ratings[3] = "Student 2 (S2)";
-  Controller::ratings[4] = "Senior Student (S3)";
-  Controller::ratings[5] = "Controller (C1)";
-  Controller::ratings[7] = "Senior Controller (C3)";
-  Controller::ratings[8] = "Instructor (I1)";
-  Controller::ratings[10] = "Senior Instructor (I3)";
-  Controller::ratings[11] = "Supervisor";
-  Controller::ratings[12] = "Administrator";
-
-  return true;
+    // http://vateud.org/index.php?option=com_content&view=article&id=28&Itemid=133
+    Controller::ratings[1] = "Observer";
+    Controller::ratings[2] = "Student (S1)";
+    Controller::ratings[3] = "Student 2 (S2)";
+    Controller::ratings[4] = "Senior Student (S3)";
+    Controller::ratings[5] = "Controller (C1)";
+    Controller::ratings[7] = "Senior Controller (C3)";
+    Controller::ratings[8] = "Instructor (I1)";
+    Controller::ratings[10] = "Senior Instructor (I3)";
+    Controller::ratings[11] = "Supervisor";
+    Controller::ratings[12] = "Administrator";
+    
+    return true;
 }

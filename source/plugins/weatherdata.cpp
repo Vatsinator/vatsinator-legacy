@@ -29,26 +29,31 @@ WeatherData::WeatherData(QString dayOfWeek, WeatherData::Condition condition,
     __description(description) {}
 
 void
-WeatherData::setDayOfWeek(const QString& dayOfWeek) {
-  __dayOfWeek = dayOfWeek;
+WeatherData::setDayOfWeek(const QString& dayOfWeek)
+{
+    __dayOfWeek = dayOfWeek;
 }
 
 void
-WeatherData::setCondition(WeatherData::Condition condition) {
-  __condition = condition;
+WeatherData::setCondition(WeatherData::Condition condition)
+{
+    __condition = condition;
 }
 
 void
-WeatherData::setDescription(const QString& description) {
-  __description = description;
+WeatherData::setDescription(const QString& description)
+{
+    __description = description;
 }
 
 void
-WeatherData::setLow(const WeatherData::Temperature& low) {
-  __low = low;
+WeatherData::setLow(const WeatherData::Temperature& low)
+{
+    __low = low;
 }
 
 void
-WeatherData::setHigh(const WeatherData::Temperature& high) {
-  __high = high;
+WeatherData::setHigh(const WeatherData::Temperature& high)
+{
+    __high = high;
 }

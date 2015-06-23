@@ -21,85 +21,99 @@
 
 #include "mapconfig.h"
 
-const QGLFormat &
-MapConfig::glFormat() {
-  static QGLFormat fmt(
-      QGL::DoubleBuffer
-    | QGL::DepthBuffer
-    | QGL::Rgba
-    | QGL::AlphaChannel
-    | QGL::SampleBuffers
+const QGLFormat&
+MapConfig::glFormat()
+{
+    static QGLFormat fmt(
+        QGL::DoubleBuffer
+        | QGL::DepthBuffer
+        | QGL::Rgba
+        | QGL::AlphaChannel
+        | QGL::SampleBuffers
     );
-  return fmt;
+    return fmt;
 }
 
-const QString &
-MapConfig::emptyAirportIcon() {
-  static QString icon(":/pixmaps/airport_inactive.png");
-  return icon;
+const QString&
+MapConfig::emptyAirportIcon()
+{
+    static QString icon(":/pixmaps/airport_inactive.png");
+    return icon;
 }
 
-const QString &
-MapConfig::activeAirportIcon() {
-  static QString icon(":/pixmaps/airport.png");
-  return icon;
+const QString&
+MapConfig::activeAirportIcon()
+{
+    static QString icon(":/pixmaps/airport.png");
+    return icon;
 }
 
-const QString &
-MapConfig::activeStaffedAirportIcon() {
-  static QString icon(":/pixmaps/airport_staffed.png");
-  return icon;
+const QString&
+MapConfig::activeStaffedAirportIcon()
+{
+    static QString icon(":/pixmaps/airport_staffed.png");
+    return icon;
 }
 
-const QColor &
-MapConfig::pilotPen() {
-  static QColor pen(0, 0, 0);
-  return pen;
+const QColor&
+MapConfig::pilotPen()
+{
+    static QColor pen(0, 0, 0);
+    return pen;
 }
 
-const QColor &
-MapConfig::airportPen() {
-  static QColor pen(250, 250, 250);
-  return pen;
+const QColor&
+MapConfig::airportPen()
+{
+    static QColor pen(250, 250, 250);
+    return pen;
 }
 
-const QImage &
-MapConfig::pilotLabelBackground() {
-  static QImage label(":/pixmaps/pilot_tooltip.png");
-  return label;
+const QImage&
+MapConfig::pilotLabelBackground()
+{
+    static QImage label(":/pixmaps/pilot_tooltip.png");
+    return label;
 }
 
-const QImage &
-MapConfig::airportLabelBackground() {
-  static QImage label(":/pixmaps/airport_tooltip.png");
-  return label;
+const QImage&
+MapConfig::airportLabelBackground()
+{
+    static QImage label(":/pixmaps/airport_tooltip.png");
+    return label;
 }
 
-const QImage &
-MapConfig::firLabelBackground() {
-  static QImage label(64, 32, QImage::Format_ARGB32_Premultiplied);
-  static bool filled = false;
-  if (!filled) {
-    label.fill(0);
-    filled = true;
-  }
-  return label;
+const QImage&
+MapConfig::firLabelBackground()
+{
+    static QImage label(64, 32, QImage::Format_ARGB32_Premultiplied);
+    static bool filled = false;
+    
+    if (!filled) {
+        label.fill(0);
+        filled = true;
+    }
+    
+    return label;
 }
 
-const QFont &
-MapConfig::pilotFont() {
-  static QFont font("Verdana", 7, QFont::Normal);
-  return font;
+const QFont&
+MapConfig::pilotFont()
+{
+    static QFont font("Verdana", 7, QFont::Normal);
+    return font;
 }
 
-const QFont &
-MapConfig::airportFont() {
-  static QFont font("Verdana", 6, QFont::Bold);
-  return font;
+const QFont&
+MapConfig::airportFont()
+{
+    static QFont font("Verdana", 6, QFont::Bold);
+    return font;
 }
 
-const QFont &
-MapConfig::firFont() {
-  static QFont font("Verdana", 8, QFont::Bold);
-  return font;
+const QFont&
+MapConfig::firFont()
+{
+    static QFont font("Verdana", 8, QFont::Bold);
+    return font;
 }

@@ -25,68 +25,76 @@
 
 #include "miscellaneouspage.h"
 
-MiscellaneousPage::MiscellaneousPage(QWidget* parent) : QWidget(parent) {
-  setupUi(this);
-  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
-  StatsDescriptionLabel->setFont(style->smallFont());
-  LanguageDescriptionLabel->setFont(style->smallFont());
-  PrivacyPolicyLabel->setFont(style->smallFont());
-  
-  LanguageComboBox->addItems(vApp()->languageManager()->allLanguages());
-
-  connect(this, &MiscellaneousPage::languageChanged,
-          wui(), &WidgetsUserInterface::showAppRestartDialog);
-
-  connect(StatsCheckBox, &QCheckBox::stateChanged, this, &MiscellaneousPage::settingsChanged);
+MiscellaneousPage::MiscellaneousPage(QWidget* parent) : QWidget(parent)
+{
+    setupUi(this);
+    VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+    StatsDescriptionLabel->setFont(style->smallFont());
+    LanguageDescriptionLabel->setFont(style->smallFont());
+    PrivacyPolicyLabel->setFont(style->smallFont());
+    
+    LanguageComboBox->addItems(vApp()->languageManager()->allLanguages());
+    
+    connect(this, &MiscellaneousPage::languageChanged,
+            wui(), &WidgetsUserInterface::showAppRestartDialog);
+            
+    connect(StatsCheckBox, &QCheckBox::stateChanged, this, &MiscellaneousPage::settingsChanged);
 }
 
 QString
-MiscellaneousPage::listElement() const {
-  return tr("Miscellaneous");
+MiscellaneousPage::listElement() const
+{
+    return tr("Miscellaneous");
 }
 
 QString
-MiscellaneousPage::listIcon() const {
-  return QStringLiteral(":/settings/preferences-miscellaneous.png");
+MiscellaneousPage::listIcon() const
+{
+    return QStringLiteral(":/settings/preferences-miscellaneous.png");
 }
 
 QString
-MiscellaneousPage::moduleId() const {
-  return QStringLiteral("misc");
+MiscellaneousPage::moduleId() const
+{
+    return QStringLiteral("misc");
 }
 
 void
-MiscellaneousPage::update() const {
-  setValue("send_statistics",
-           StatsCheckBox->isChecked());
-  /* TODO fix LanguageManager instance below */
-//   setValue("language",
-//            LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
+MiscellaneousPage::update() const
+{
+    setValue("send_statistics",
+             StatsCheckBox->isChecked());
+    /* TODO fix LanguageManager instance below */
+    //   setValue("language",
+    //            LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
 }
 
 void
-MiscellaneousPage::showEvent(QShowEvent* event) {
-  Q_UNUSED(event);
-  __languageIndex = LanguageComboBox->currentIndex();
+MiscellaneousPage::showEvent(QShowEvent* event)
+{
+    Q_UNUSED(event);
+    __languageIndex = LanguageComboBox->currentIndex();
 }
 
 void
-MiscellaneousPage::restore(QSettings& s, const QVariantHash& defaults) {
-  QString id = moduleId() % ".";
-  StatsCheckBox->setChecked(
-    s.value("send_statistics", defaults[id % "send_statistics"]).toBool());
-  LanguageComboBox->setCurrentIndex(
-    vApp()->languageManager()->getLanguageId(
-      s.value("language", defaults[id % "language"]).toString()
-    )
-  );
+MiscellaneousPage::restore(QSettings& s, const QVariantHash& defaults)
+{
+    QString id = moduleId() % ".";
+    StatsCheckBox->setChecked(
+        s.value("send_statistics", defaults[id % "send_statistics"]).toBool());
+    LanguageComboBox->setCurrentIndex(
+        vApp()->languageManager()->getLanguageId(
+            s.value("language", defaults[id % "language"]).toString()
+        )
+    );
 }
 
 void
-MiscellaneousPage::save(QSettings& s) {
-  s.setValue("send_statistics", StatsCheckBox->isChecked());
-  s.setValue("language", vApp()->languageManager()->getLocaleById(LanguageComboBox->currentIndex()));
-  
-  if (__languageIndex != LanguageComboBox->currentIndex())
-    emit languageChanged();
+MiscellaneousPage::save(QSettings& s)
+{
+    s.setValue("send_statistics", StatsCheckBox->isChecked());
+    s.setValue("language", vApp()->languageManager()->getLocaleById(LanguageComboBox->currentIndex()));
+    
+    if (__languageIndex != LanguageComboBox->currentIndex())
+        emit languageChanged();
 }

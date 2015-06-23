@@ -28,9 +28,9 @@
  */
 class FlightProgressWidget : public QProgressBar {
     Q_OBJECT
-
+    
 public:
-  explicit FlightProgressWidget(QWidget* parent = nullptr);
+    explicit FlightProgressWidget(QWidget* parent = nullptr);
 };
 
 #endif // FLIGHTPROGRESSWIDGET_H

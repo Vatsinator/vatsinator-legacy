@@ -35,114 +35,127 @@ Airport::Airport(const AirportRecord* record) :
     __icao(__data->icao),
     __staff(new AtcTableModel(this)),
     __inbounds(new FlightTableModel(this)),
-    __outbounds(new FlightTableModel(this)) {
-  
-  Q_ASSERT(__data);
-  
-  auto fillFir = [this](const QString& icao, bool isFss) {
-    Fir* f = vApp()->vatsimDataHandler()->findFir(icao, isFss);
-    if (f) {
-      f->addAirport(this);
-      __firs << f;
-    }
-  };
-  
-  fillFir(QString(__data->fir_a), __data->is_fir_a_oceanic);
-  fillFir(QString(__data->fir_b), __data->is_fir_b_oceanic);
+    __outbounds(new FlightTableModel(this))
+{
+
+    Q_ASSERT(__data);
+    
+    auto fillFir = [this](const QString & icao, bool isFss) {
+        Fir* f = vApp()->vatsimDataHandler()->findFir(icao, isFss);
+        
+        if (f) {
+            f->addAirport(this);
+            __firs << f;
+        }
+    };
+    
+    fillFir(QString(__data->fir_a), __data->is_fir_a_oceanic);
+    fillFir(QString(__data->fir_b), __data->is_fir_b_oceanic);
 }
 
 unsigned
-Airport::countDepartures(bool includePrefiled) const {
-  return std::count_if(__outbounds->flights().begin(), __outbounds->flights().end(), 
-                       [includePrefiled](const Pilot* p) {
-                         return p->phase() == Pilot::Departing &&
-                          (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled));
-                       });
+Airport::countDepartures(bool includePrefiled) const
+{
+    return std::count_if(__outbounds->flights().begin(), __outbounds->flights().end(),
+    [includePrefiled](const Pilot * p) {
+        return p->phase() == Pilot::Departing &&
+               (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled));
+    });
 }
 
 unsigned
-Airport::countOutbounds() const {
-  return __outbounds->rowCount();
+Airport::countOutbounds() const
+{
+    return __outbounds->rowCount();
 }
 
 unsigned
-Airport::countArrivals() const {
-  return std::count_if(__inbounds->flights().begin(), __inbounds->flights().end(),
-                       [](const Pilot* p) {
-                         return p->phase() == Pilot::Arrived;
-                       });
+Airport::countArrivals() const
+{
+    return std::count_if(__inbounds->flights().begin(), __inbounds->flights().end(),
+    [](const Pilot * p) {
+        return p->phase() == Pilot::Arrived;
+    });
 }
 
 unsigned
-Airport::countInbounds() const {
-  return __inbounds->rowCount();
+Airport::countInbounds() const
+{
+    return __inbounds->rowCount();
 }
 
 Controller::Facilities
-Airport::facilities() const {
-  Controller::Facilities facilities = 0;
-  
-  for (const Controller* c: __staff->staff())
-    facilities |= c->facility();
-  
-  return facilities;
+Airport::facilities() const
+{
+    Controller::Facilities facilities = 0;
+    
+    for (const Controller* c : __staff->staff())
+        facilities |= c->facility();
+        
+    return facilities;
 }
 
 void
-Airport::addStaff(const Controller* atc) {
-  __staff->add(atc);
-  connect(atc,  SIGNAL(updated()),
-          this, SIGNAL(updated()));
-  connect(atc,  SIGNAL(destroyed(QObject*)),
-          this, SIGNAL(updated()), Qt::DirectConnection);
-  emit updated();
+Airport::addStaff(const Controller* atc)
+{
+    __staff->add(atc);
+    connect(atc,  SIGNAL(updated()),
+            this, SIGNAL(updated()));
+    connect(atc,  SIGNAL(destroyed(QObject*)),
+            this, SIGNAL(updated()), Qt::DirectConnection);
+    emit updated();
 }
 
 void
-Airport::addInbound(const Pilot* pilot) {
-  __inbounds->add(pilot);
-  connect(pilot,        SIGNAL(updated()),
-          this,         SIGNAL(updated()));
-  connect(pilot,        SIGNAL(destroyed(QObject*)),
-          this,         SIGNAL(updated()), Qt::DirectConnection);
-  
-  for (Fir* f: __firs)
-    f->addFlight(pilot);
-  
-  emit updated();
+Airport::addInbound(const Pilot* pilot)
+{
+    __inbounds->add(pilot);
+    connect(pilot,        SIGNAL(updated()),
+            this,         SIGNAL(updated()));
+    connect(pilot,        SIGNAL(destroyed(QObject*)),
+            this,         SIGNAL(updated()), Qt::DirectConnection);
+            
+    for (Fir* f : __firs)
+        f->addFlight(pilot);
+        
+    emit updated();
 }
 
 void
-Airport::addOutbound(const Pilot* pilot) {
-  __outbounds->add(pilot);
-  connect(pilot,        SIGNAL(updated()),
-          this,         SIGNAL(updated()));
-  connect(pilot,        SIGNAL(destroyed(QObject*)),
-          this,         SIGNAL(updated()), Qt::DirectConnection);
-  
-  for (Fir* f: __firs)
-    f->addFlight(pilot);
-  
-  emit updated();
+Airport::addOutbound(const Pilot* pilot)
+{
+    __outbounds->add(pilot);
+    connect(pilot,        SIGNAL(updated()),
+            this,         SIGNAL(updated()));
+    connect(pilot,        SIGNAL(destroyed(QObject*)),
+            this,         SIGNAL(updated()), Qt::DirectConnection);
+            
+    for (Fir* f : __firs)
+        f->addFlight(pilot);
+        
+    emit updated();
 }
 
 bool
-Airport::isEmpty() const {
-  return
-    __staff->rowCount() == 0 &&
-    __inbounds->rowCount() == 0 &&
-    __outbounds->rowCount() == 0;
+Airport::isEmpty() const
+{
+    return
+        __staff->rowCount() == 0 &&
+        __inbounds->rowCount() == 0 &&
+        __outbounds->rowCount() == 0;
 }
 
 bool
-Airport::isStaffed() const {
-  return
-    __staff->rowCount() > 0 || 
-    __inbounds->rowCount() > 0 ||
-    __outbounds->rowCount() > 0;
+Airport::isStaffed() const
+{
+    return
+        __staff->rowCount() > 0 ||
+        __inbounds->rowCount() > 0 ||
+        __outbounds->rowCount() > 0;
 }
 
 LonLat
-Airport::position() const {
-  return qMove(LonLat(data()->longitude, data()->latitude));
+Airport::position() const
+{
+    return qMove(LonLat(data()->longitude, data()->latitude));
 }

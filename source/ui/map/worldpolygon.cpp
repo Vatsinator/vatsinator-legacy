@@ -28,55 +28,59 @@
 WorldPolygon::WorldPolygon(MapRenderer* renderer) :
     __renderer(renderer),
     __borders(QOpenGLBuffer::VertexBuffer),
-    __triangles(QOpenGLBuffer::IndexBuffer) {
-  __initializeBuffers();
+    __triangles(QOpenGLBuffer::IndexBuffer)
+{
+    __initializeBuffers();
 }
 
-WorldPolygon::~WorldPolygon() {
-  __triangles.destroy();
-  __borders.destroy();
-  __vao.destroy();
-}
-
-void
-WorldPolygon::paint() {
-  __vao.bind();
-  glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT, 0);
-  __vao.release();
+WorldPolygon::~WorldPolygon()
+{
+    __triangles.destroy();
+    __borders.destroy();
+    __vao.destroy();
 }
 
 void
-WorldPolygon::__initializeBuffers() {
-  WorldMap* wm = vApp()->worldMap();
-  const QVector<Point>& bordersData = wm->borders();
-  Q_ASSERT(!bordersData.isEmpty());
-  
-  const QVector<unsigned int>& trianglesData = wm->triangles();
-  Q_ASSERT(!trianglesData.isEmpty());
-  
-  __vao.create();
-  Q_ASSERT(__vao.isCreated());
-  __vao.bind();
-  
-  __borders.create();
-  Q_ASSERT(__borders.isCreated());
-  __borders.setUsagePattern(QOpenGLBuffer::StaticDraw);
-  __borders.bind();
-  __borders.allocate(bordersData.constData(), sizeof(Point) * bordersData.size());
-  
-  __triangles.create();
-  Q_ASSERT(__triangles.isCreated());
-  __triangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
-  __triangles.bind();
-  __triangles.allocate(trianglesData.constData(), sizeof(unsigned int) * trianglesData.size());
-  
-  __borders.bind();
-  __triangles.bind();
-  __renderer->opengl()->glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
-  __renderer->opengl()->glEnableVertexAttribArray(MapRenderer::vertexLocation());
-  __vao.release();
-  __borders.release();
-  __triangles.release();
-  
-  __vertices = wm->triangles().size();
+WorldPolygon::paint()
+{
+    __vao.bind();
+    glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT, 0);
+    __vao.release();
+}
+
+void
+WorldPolygon::__initializeBuffers()
+{
+    WorldMap* wm = vApp()->worldMap();
+    const QVector<Point>& bordersData = wm->borders();
+    Q_ASSERT(!bordersData.isEmpty());
+    
+    const QVector<unsigned int>& trianglesData = wm->triangles();
+    Q_ASSERT(!trianglesData.isEmpty());
+    
+    __vao.create();
+    Q_ASSERT(__vao.isCreated());
+    __vao.bind();
+    
+    __borders.create();
+    Q_ASSERT(__borders.isCreated());
+    __borders.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    __borders.bind();
+    __borders.allocate(bordersData.constData(), sizeof(Point) * bordersData.size());
+    
+    __triangles.create();
+    Q_ASSERT(__triangles.isCreated());
+    __triangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    __triangles.bind();
+    __triangles.allocate(trianglesData.constData(), sizeof(unsigned int) * trianglesData.size());
+    
+    __borders.bind();
+    __triangles.bind();
+    __renderer->opengl()->glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
+    __renderer->opengl()->glEnableVertexAttribArray(MapRenderer::vertexLocation());
+    __vao.release();
+    __borders.release();
+    __triangles.release();
+    
+    __vertices = wm->triangles().size();
 }

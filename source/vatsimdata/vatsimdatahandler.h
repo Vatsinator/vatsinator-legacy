@@ -55,474 +55,497 @@ struct AirportRecord;
  * some math functions.
  */
 class VatsimDataHandler : public QObject, public Notifiable {
-  Q_OBJECT
-  
-  /**
-   * This property defines whether all data that is needed for the recognition
-   * mechanisms is loaded. If value of the property is false, functions like
-   * findAirport() or findFir() won't function properly.
-   */
-  Q_PROPERTY(bool initialized READ isInitialized NOTIFY initialized)
-  
-  /**
-   * Holds the number of connected VATSIM clients (pilotCount + atcCount + obsCount).
-   */
-  Q_PROPERTY(int clientCount READ clientCount)
-  
-  /**
-   * Holds the number of connected VATSIM pilots.
-   */
-  Q_PROPERTY(int pilotCount READ pilotCount)
-  
-  /**
-   * Holds the number of connected ATCs.
-   */
-  Q_PROPERTY(int atcCount READ atcCount)
-  
-  /**
-   * Holds the number of connected observers.
-   */
-  Q_PROPERTY(int obsCount READ obsCount)
-  
-  /**
-   * Date and time when the currently loaded data was fetched.
-   * \todo Rename it to something shorter.
-   */
-  Q_PROPERTY(QDateTime dateDataUpdated READ dateDataUpdated)
-  
+    Q_OBJECT
+    
+    /**
+     * This property defines whether all data that is needed for the recognition
+     * mechanisms is loaded. If value of the property is false, functions like
+     * findAirport() or findFir() won't function properly.
+     */
+    Q_PROPERTY(bool initialized READ isInitialized NOTIFY initialized)
+    
+    /**
+     * Holds the number of connected VATSIM clients (pilotCount + atcCount + obsCount).
+     */
+    Q_PROPERTY(int clientCount READ clientCount)
+    
+    /**
+     * Holds the number of connected VATSIM pilots.
+     */
+    Q_PROPERTY(int pilotCount READ pilotCount)
+    
+    /**
+     * Holds the number of connected ATCs.
+     */
+    Q_PROPERTY(int atcCount READ atcCount)
+    
+    /**
+     * Holds the number of connected observers.
+     */
+    Q_PROPERTY(int obsCount READ obsCount)
+    
+    /**
+     * Date and time when the currently loaded data was fetched.
+     * \todo Rename it to something shorter.
+     */
+    Q_PROPERTY(QDateTime dateDataUpdated READ dateDataUpdated)
+    
 signals:
-  
-  /**
-   * Emitted just after all data is read.
-   * \sa isInitialized().
-   */
-  void initialized();
-  
-  /**
-   * Emitted after status.txt is parsed.
-   */
-  void vatsimStatusUpdated();
-  
-  /**
-   * Emitted if the status file could not be fetched correctly.
-   */
-  void vatsimStatusError();
-  
-  /**
-   * Emitted when Vatsim data starts to be downloaded.
-   */
-  void vatsimDataDownloading();
-  
-  /**
-   * Emitted when new data is already loaded.
-   */
-  void vatsimDataUpdated();
-  
-  /**
-   * Emitted on incomplete fetch or some network error.
-   */
-  void vatsimDataError();
 
+    /**
+     * Emitted just after all data is read.
+     * \sa isInitialized().
+     */
+    void initialized();
+    
+    /**
+     * Emitted after status.txt is parsed.
+     */
+    void vatsimStatusUpdated();
+    
+    /**
+     * Emitted if the status file could not be fetched correctly.
+     */
+    void vatsimStatusError();
+    
+    /**
+     * Emitted when Vatsim data starts to be downloaded.
+     */
+    void vatsimDataDownloading();
+    
+    /**
+     * Emitted when new data is already loaded.
+     */
+    void vatsimDataUpdated();
+    
+    /**
+     * Emitted on incomplete fetch or some network error.
+     */
+    void vatsimDataError();
+    
 public:
-  /**
-   * Default ctor.
-   */
-  VatsimDataHandler(QObject* parent = nullptr);
-  
-  /**
-   * Destructor deletes all pointers.
-   */
-  ~VatsimDataHandler();
-  
-  /**
-   * Parses the data files.
-   * Called by VatsinatorApplication only, once, at the very beginning.
-   */
-  void initialize();
-  
-  /**
-   * Chooses randomly one of the URLs.
-   * 
-   * \return The randomly chosen data file URL.
-   * \todo Move to private scope.
-   */
-  const QUrl& dataUrl() const;
-  
-  /**
-   * Creates the new model and populates it with all flights that are online.
-   * 
-   * \return The newly allocated and filled model; needs to be deleted afterwards.
-   * \sa controllerTableModel().
-   */
-  FlightTableModel* flightTableModel() const;
-  
-  /**
-   * Creates the new model and populates it with all controllers that are online.
-   * 
-   * \return The newly allocated and filled model; needs to be deleted afterwards.
-   * \sa flightTableModel().
-   */
-  AtcTableModel* atcTableModel() const;
-  
-  /**
-   * Looks for pilot by callsign.
-   * 
-   * \param callsign Callsign of the pilot to be found.
-   * \return Pointer to the Pilot class instance or _nullptr_ if no pilot was found.
-   * \sa findAtc() and findAirport().
-   */
-  const Pilot* findPilot(const QString& callsign) const;
-  
-  /**
-   * Looks for the ATC.
-   * 
-   * \param callsign Callsign of the controller to be found.
-   * \return Pointer to the Controller class instance or _nullptr_ if no pilot was found.
-   * \sa findPilot().
-   */
-  const Controller* findAtc(const QString& callsign) const;
-  
-  /**
-   * Finds airport with particular _icao_ code or any airport that the given
-   * _icao_ is alias of.
-   * 
-   * \param icao Airport ICAO code.
-   * \return Pointer to the Airport instance or _nullptr_ if nothing was found.
-   * \sa findPilot() and findAtc().
-   */
-  Airport* findAirport(const QString& icao);
-  
-  /**
-   * \return List of all airports recognized by Vatsinator.
-   */
-  QList<Airport*> airports() const;
-  
-  /**
-   * Finds FIR that matches the given _icao_ code or any FIR that the given
-   * _icao_ is alias of.
-   * 
-   * \param icao The FIR's ICAO code.
-   * \param fss If set to true, this function will look only for FSS FIRs. Defaults to false.
-   * \return Pointer to the Fir instance or _nullptr_ if nothing was found.
-   * \sa findUir() and findAirport().
-   */
-  Fir* findFir(const QString& icao, bool fss = false);
-  
-  /**
-   * Finds UIR that matches the given _icao_ code or any UIR that the given
-   * _icao_ is alias of.
-   * 
-   * \param icao The UIR's ICAO code.
-   * \return Pointer to the Uir instance or _nullptr_ if nothing was found.
-   * \sa findFir() and findAirport().
-   */
-  Uir* findUir(const QString& icao);
-  
-  /**
-   * Finds the requested TMA. If nothing was found, returns _nullptr_.
-   */
-  Tma* findTma(const QString& icao);
-  
-  /**
-   * Finds alternate name for the given ICAO. If nothing was found,
-   * empty string is returned.
-   * 
-   * \param icao The ICAO code.
-   * \return The alternate name.
-   */
-  QString alternameName(const QString& icao);
-  
-  /**
-   * \return List of all FIRs known by Vatsinator.
-   */
-  QList<Fir*> firs() const;
-  
-  /**
-   * \return List of all UIRs known by Vatsinator.
-   */
-  QList<Uir*> uirs() const;
-  
-  /**
-   * Running instance of notam provider.
-   */
-  NotamProvider* notamProvider();
-  
-  /**
-   * Running instance of bookings provider.
-   */
-  BookingProvider* bookingProvider();
-  
-  /**
-   * Custom event handler.
-   */
-  bool event(QEvent*) override;
-  
-  /**
-   * Map (Callsign <-> instance pairs) of connected clients.
-   */
-  inline const QMap<QString, Client*>& clients() { return __clients; }
-  
-  /**
-   * List of only new clients, i.e. that showed up in the last update.
-   */
-  inline const QList<Client*>& newClients() { return __newClients; }
-
-  /**
-   * Gets base URL for METAR reports to download.
-   */
-  inline const QUrl& metar() const { return __metar; }
-  
-  /**
-   * Time between data reloads, in minutes.
-   */
-  inline int timeToReload() const { return __reload; }
-  
-  /**
-   * Current timestamp is updated every time VatsimDataHandler receives new
-   * data file and is guaranteed to be unique. Each client should contain
-   * its own copy of this variable and update it on every update() call.
-   * This way we can track outdated clients that are not longer logged-in
-   * to Vatsim, but still occupy room in Vatsinator memory.
-   */
-  inline const qint64& currentTimestamp() const {
-    return __currentTimestamp;
-  }
-
-  /**
-   * Returns true if status.txt is already fetched & parsed.
-   */
-  inline bool statusFileFetched() const { return __statusFileFetched; }
-  
-  /**
-   * Returns false before initialized() signal is emitted.
-   */
-  inline bool isInitialized() const { return __initialized; }
-  
-  /**
-   * Returns the instance of PlainTextDownloader that is used to download
-   * Vatsim data.
-   */
-  inline const PlainTextDownloader* downloader() const { return __downloader; }
-  
-  int clientCount() const;
-  int pilotCount() const;
-  int atcCount() const;
-  int obsCount() const;
-  
-  inline const QDateTime& dateDataUpdated() const {
-    return __dateVatsimDataUpdated;
-  }
-  
-  /**
-   * Calculates the distance between two points. The unit is undefined.
-   * 
-   * \note If you need specific unit, i.e. nautical miles, use
-   * VatsimDataHandler::nmDistance() function.
-   * 
-   * \param lat1 Latitude of the first point.
-   * \param lon1 Longitude of the first point.
-   * \param lat2 Latitude of the second point.
-   * \param lon2 Longitude of the second point.
-   * \return Distance between these two points.
-   */
-  static qreal fastDistance(const qreal& lat1, const qreal& lon1,
-                            const qreal& lat2, const qreal& lon2);
-  
-  /**
-   * Calculates the distance between two points. The unit is undefined.
-   * 
-   * \note If you need specific unit, i.e. nautical miles, use
-   * VatsimDataHandler::nmDistance() function.
-   * 
-   * \param a First point in the global coordinates.
-   * \param b Second point in the global coordinates.
-   * \return Distance between these two points.
-   */
-  static qreal fastDistance(const LonLat& a, const LonLat& b);
-  
-  /**
-   * Calculates distance between two points, expressed in
-   * nautical miles.
-   * 
-   * \note If you don't need the distance specifically in nautical miles
-   * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
-   * instead, as it is a lot quicker.
-   * 
-   * \note All coordinates must be in radians.
-   * 
-   * \param lat1 Latitude of the first point.
-   * \param lon1 Longitude of the first point.
-   * \param lat2 Latitude of the second point.
-   * \param lon2 Longitude of the second point.
-   * \return Distance between these two points.
-   */
-  static qreal nmDistance(const qreal& lat1, const qreal& lon1, const qreal& lat2, const qreal& lon2);
-  
-  /**
-   * Calculates distance between two points, expressed in
-   * nautical miles.
-   * 
-   * \note If you don't need the distance specifically in nautical miles
-   * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
-   * instead, as it is a lot quicker.
-   * 
-   * \note All coordinates must be in radians.
-   * 
-   * \param a First point.
-   * \param b Second point.
-   * @return Distance between these two points.
-   */
-  static qreal nmDistance(const LonLat& a, const LonLat& b);
-  
+    /**
+     * Default ctor.
+     */
+    VatsimDataHandler(QObject* parent = nullptr);
+    
+    /**
+     * Destructor deletes all pointers.
+     */
+    ~VatsimDataHandler();
+    
+    /**
+     * Parses the data files.
+     * Called by VatsinatorApplication only, once, at the very beginning.
+     */
+    void initialize();
+    
+    /**
+     * Chooses randomly one of the URLs.
+     *
+     * \return The randomly chosen data file URL.
+     * \todo Move to private scope.
+     */
+    const QUrl& dataUrl() const;
+    
+    /**
+     * Creates the new model and populates it with all flights that are online.
+     *
+     * \return The newly allocated and filled model; needs to be deleted afterwards.
+     * \sa controllerTableModel().
+     */
+    FlightTableModel* flightTableModel() const;
+    
+    /**
+     * Creates the new model and populates it with all controllers that are online.
+     *
+     * \return The newly allocated and filled model; needs to be deleted afterwards.
+     * \sa flightTableModel().
+     */
+    AtcTableModel* atcTableModel() const;
+    
+    /**
+     * Looks for pilot by callsign.
+     *
+     * \param callsign Callsign of the pilot to be found.
+     * \return Pointer to the Pilot class instance or _nullptr_ if no pilot was found.
+     * \sa findAtc() and findAirport().
+     */
+    const Pilot* findPilot(const QString& callsign) const;
+    
+    /**
+     * Looks for the ATC.
+     *
+     * \param callsign Callsign of the controller to be found.
+     * \return Pointer to the Controller class instance or _nullptr_ if no pilot was found.
+     * \sa findPilot().
+     */
+    const Controller* findAtc(const QString& callsign) const;
+    
+    /**
+     * Finds airport with particular _icao_ code or any airport that the given
+     * _icao_ is alias of.
+     *
+     * \param icao Airport ICAO code.
+     * \return Pointer to the Airport instance or _nullptr_ if nothing was found.
+     * \sa findPilot() and findAtc().
+     */
+    Airport* findAirport(const QString& icao);
+    
+    /**
+     * \return List of all airports recognized by Vatsinator.
+     */
+    QList<Airport*> airports() const;
+    
+    /**
+     * Finds FIR that matches the given _icao_ code or any FIR that the given
+     * _icao_ is alias of.
+     *
+     * \param icao The FIR's ICAO code.
+     * \param fss If set to true, this function will look only for FSS FIRs. Defaults to false.
+     * \return Pointer to the Fir instance or _nullptr_ if nothing was found.
+     * \sa findUir() and findAirport().
+     */
+    Fir* findFir(const QString& icao, bool fss = false);
+    
+    /**
+     * Finds UIR that matches the given _icao_ code or any UIR that the given
+     * _icao_ is alias of.
+     *
+     * \param icao The UIR's ICAO code.
+     * \return Pointer to the Uir instance or _nullptr_ if nothing was found.
+     * \sa findFir() and findAirport().
+     */
+    Uir* findUir(const QString& icao);
+    
+    /**
+     * Finds the requested TMA. If nothing was found, returns _nullptr_.
+     */
+    Tma* findTma(const QString& icao);
+    
+    /**
+     * Finds alternate name for the given ICAO. If nothing was found,
+     * empty string is returned.
+     *
+     * \param icao The ICAO code.
+     * \return The alternate name.
+     */
+    QString alternameName(const QString& icao);
+    
+    /**
+     * \return List of all FIRs known by Vatsinator.
+     */
+    QList<Fir*> firs() const;
+    
+    /**
+     * \return List of all UIRs known by Vatsinator.
+     */
+    QList<Uir*> uirs() const;
+    
+    /**
+     * Running instance of notam provider.
+     */
+    NotamProvider* notamProvider();
+    
+    /**
+     * Running instance of bookings provider.
+     */
+    BookingProvider* bookingProvider();
+    
+    /**
+     * Custom event handler.
+     */
+    bool event(QEvent*) override;
+    
+    /**
+     * Map (Callsign <-> instance pairs) of connected clients.
+     */
+    inline const QMap<QString, Client*>& clients()
+    {
+        return __clients;
+    }
+    
+    /**
+     * List of only new clients, i.e. that showed up in the last update.
+     */
+    inline const QList<Client*>& newClients()
+    {
+        return __newClients;
+    }
+    
+    /**
+     * Gets base URL for METAR reports to download.
+     */
+    inline const QUrl& metar() const
+    {
+        return __metar;
+    }
+    
+    /**
+     * Time between data reloads, in minutes.
+     */
+    inline int timeToReload() const
+    {
+        return __reload;
+    }
+    
+    /**
+     * Current timestamp is updated every time VatsimDataHandler receives new
+     * data file and is guaranteed to be unique. Each client should contain
+     * its own copy of this variable and update it on every update() call.
+     * This way we can track outdated clients that are not longer logged-in
+     * to Vatsim, but still occupy room in Vatsinator memory.
+     */
+    inline const qint64& currentTimestamp() const
+    {
+        return __currentTimestamp;
+    }
+    
+    /**
+     * Returns true if status.txt is already fetched & parsed.
+     */
+    inline bool statusFileFetched() const
+    {
+        return __statusFileFetched;
+    }
+    
+    /**
+     * Returns false before initialized() signal is emitted.
+     */
+    inline bool isInitialized() const
+    {
+        return __initialized;
+    }
+    
+    /**
+     * Returns the instance of PlainTextDownloader that is used to download
+     * Vatsim data.
+     */
+    inline const PlainTextDownloader* downloader() const
+    {
+        return __downloader;
+    }
+    
+    int clientCount() const;
+    int pilotCount() const;
+    int atcCount() const;
+    int obsCount() const;
+    
+    inline const QDateTime& dateDataUpdated() const
+    {
+        return __dateVatsimDataUpdated;
+    }
+    
+    /**
+     * Calculates the distance between two points. The unit is undefined.
+     *
+     * \note If you need specific unit, i.e. nautical miles, use
+     * VatsimDataHandler::nmDistance() function.
+     *
+     * \param lat1 Latitude of the first point.
+     * \param lon1 Longitude of the first point.
+     * \param lat2 Latitude of the second point.
+     * \param lon2 Longitude of the second point.
+     * \return Distance between these two points.
+     */
+    static qreal fastDistance(const qreal& lat1, const qreal& lon1,
+                              const qreal& lat2, const qreal& lon2);
+                              
+    /**
+     * Calculates the distance between two points. The unit is undefined.
+     *
+     * \note If you need specific unit, i.e. nautical miles, use
+     * VatsimDataHandler::nmDistance() function.
+     *
+     * \param a First point in the global coordinates.
+     * \param b Second point in the global coordinates.
+     * \return Distance between these two points.
+     */
+    static qreal fastDistance(const LonLat& a, const LonLat& b);
+    
+    /**
+     * Calculates distance between two points, expressed in
+     * nautical miles.
+     *
+     * \note If you don't need the distance specifically in nautical miles
+     * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+     * instead, as it is a lot quicker.
+     *
+     * \note All coordinates must be in radians.
+     *
+     * \param lat1 Latitude of the first point.
+     * \param lon1 Longitude of the first point.
+     * \param lat2 Latitude of the second point.
+     * \param lon2 Longitude of the second point.
+     * \return Distance between these two points.
+     */
+    static qreal nmDistance(const qreal& lat1, const qreal& lon1, const qreal& lat2, const qreal& lon2);
+    
+    /**
+     * Calculates distance between two points, expressed in
+     * nautical miles.
+     *
+     * \note If you don't need the distance specifically in nautical miles
+     * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+     * instead, as it is a lot quicker.
+     *
+     * \note All coordinates must be in radians.
+     *
+     * \param a First point.
+     * \param b Second point.
+     * @return Distance between these two points.
+     */
+    static qreal nmDistance(const LonLat& a, const LonLat& b);
+    
 public slots:
-  /**
-   * This is the safest method to refresh the Vatsim data.
-   * If data is being already downloaded, it is aborted and
-   * the new download is queued.
-   */
-  void requestDataUpdate();
-  
+    /**
+     * This is the safest method to refresh the Vatsim data.
+     * If data is being already downloaded, it is aborted and
+     * the new download is queued.
+     */
+    void requestDataUpdate();
+    
 protected:
-  virtual void userDecisionEvent(DecisionEvent* event);
-  
+    virtual void userDecisionEvent(DecisionEvent* event);
+    
 private:
-  /**
-   * The following functions read data files.
-   * \param fileName Location of the data file.
-   */
-  void __readAliasFile(const QString& fileName);
-  void __readCountryFile(const QString& fileName);
-  void __readFirFile(const QString& fileName);
-  void __readUirFile(const QString& fileName);
-  void __readTmaFile(const QString& fileName);
-  
-  /**
-   * Loads classes that wrap database records.
-   */
-  void __initializeData();
-  
-  /**
-   * Parses VATSIM data document.
-   */
-  void __parseDataDocument(const QByteArray& data, bool* ok);
-  
-  /**
-   * Goes through all the clients and checks whether they are still online
-   * or not. The check is based on the client's timestamp.
-   */
-  void __cleanupClients();
-  
+    /**
+     * The following functions read data files.
+     * \param fileName Location of the data file.
+     */
+    void __readAliasFile(const QString& fileName);
+    void __readCountryFile(const QString& fileName);
+    void __readFirFile(const QString& fileName);
+    void __readUirFile(const QString& fileName);
+    void __readTmaFile(const QString& fileName);
+    
+    /**
+     * Loads classes that wrap database records.
+     */
+    void __initializeData();
+    
+    /**
+     * Parses VATSIM data document.
+     */
+    void __parseDataDocument(const QByteArray& data, bool* ok);
+    
+    /**
+     * Goes through all the clients and checks whether they are still online
+     * or not. The check is based on the client's timestamp.
+     */
+    void __cleanupClients();
+    
 private slots:
-  /**
-   * Loads data file stored in the cache.
-   */
-  void __loadCachedData();
-  
-  /**
-   * Just after the UI is created, there are some things we should
-   * do right away. The data should be restored from cache, but
-   * only if databases are already initialized and the first download
-   * can be also started here.
-   */
-  void __slotUiCreated();
-  
-  /**
-   * Starts the real data download process.
-   */
-  void __beginDownload();
-  
-  /**
-   * The data file has been fetched.
-   */
-  void __dataFetched();
-  
-  /**
-   * If any file can't be fetched.
-   */
-  void __handleFetchError(QString error);
-  
-private:  
-  
-  /*
-   * All connected clients
-   * Callsign <-> instance pairs
-   */
-  QMap<QString, Client*> __clients;
-  
-  /*
-   * List of only new clients, i.e. that showed up in the last update.
-   */
-  QList<Client*> __newClients;
-  
-  /**
-   * List of clients marked as invalid.
-   */
-  QList<Client*> __invalidClients;
-  
-  /*
-   * All airports, each instance wraps the record in the database.
-   * ICAO <-> instance pairs
-   */
-  QMap<QString, Airport*> __airports;
-  
-  /*
-   * All FIRs, each instance wraps the record in the database.
-   * ICAO <-> instance pairs
-   */
-  QMultiMap<QString, Fir*> __firs;
-  
-  /*
-   * UIRs are stored in a separate file.
-   * ICAO <-> instance pairs
-   */
-  QMap<QString, Uir*> __uirs;
-  
-  /*
-   * TMAs are stored in data/tma file.
-   * ICAO <-> instance pairs
-   */
-  QMap<QString, Tma*> __tmas;
-  
-  /* This is vector of data servers, obtained from the status file */
-  QList<QUrl> __dataServers;
-  
-  /* Map of ICAO aliases */
-  QMultiMap<QString, QString> __aliases;
-  
-  /* Map of alternate names for given ICAO */
-  QMap<QString, QString> __alternameNames;
-  
-  /* This is URL that we can obtain METAR from */
-  QUrl __metar;
-  
-  /* And status.txt */
-  QUrl __status;
-  
-  /* Minutes to next reload, as stated in data file */
-  int __reload;
-  
-  /* Last time Vatsim data was refreshed.
-   * Got from data file.
-   */
-  QDateTime __dateVatsimDataUpdated;
-  
-  /* The timestamp is used to describe every data package, so clients can sync to this. */
-  qint64 __currentTimestamp;
-  
-  /* Observer count */
-  int __observers;
-  
-  /* Client cound */
-  int __clientCount;
-  
-  /* Indicates whether the status.txt file was already read or not */
-  bool __statusFileFetched;
-  
-  /* False before initialized() method is called */
-  bool __initialized;
-  
-  PlainTextDownloader* __downloader;
-  UpdateScheduler*     __scheduler;
+    /**
+     * Loads data file stored in the cache.
+     */
+    void __loadCachedData();
+    
+    /**
+     * Just after the UI is created, there are some things we should
+     * do right away. The data should be restored from cache, but
+     * only if databases are already initialized and the first download
+     * can be also started here.
+     */
+    void __slotUiCreated();
+    
+    /**
+     * Starts the real data download process.
+     */
+    void __beginDownload();
+    
+    /**
+     * The data file has been fetched.
+     */
+    void __dataFetched();
+    
+    /**
+     * If any file can't be fetched.
+     */
+    void __handleFetchError(QString error);
+    
+private:
+
+    /*
+     * All connected clients
+     * Callsign <-> instance pairs
+     */
+    QMap<QString, Client*> __clients;
+    
+    /*
+     * List of only new clients, i.e. that showed up in the last update.
+     */
+    QList<Client*> __newClients;
+    
+    /**
+     * List of clients marked as invalid.
+     */
+    QList<Client*> __invalidClients;
+    
+    /*
+     * All airports, each instance wraps the record in the database.
+     * ICAO <-> instance pairs
+     */
+    QMap<QString, Airport*> __airports;
+    
+    /*
+     * All FIRs, each instance wraps the record in the database.
+     * ICAO <-> instance pairs
+     */
+    QMultiMap<QString, Fir*> __firs;
+    
+    /*
+     * UIRs are stored in a separate file.
+     * ICAO <-> instance pairs
+     */
+    QMap<QString, Uir*> __uirs;
+    
+    /*
+     * TMAs are stored in data/tma file.
+     * ICAO <-> instance pairs
+     */
+    QMap<QString, Tma*> __tmas;
+    
+    /* This is vector of data servers, obtained from the status file */
+    QList<QUrl> __dataServers;
+    
+    /* Map of ICAO aliases */
+    QMultiMap<QString, QString> __aliases;
+    
+    /* Map of alternate names for given ICAO */
+    QMap<QString, QString> __alternameNames;
+    
+    /* This is URL that we can obtain METAR from */
+    QUrl __metar;
+    
+    /* And status.txt */
+    QUrl __status;
+    
+    /* Minutes to next reload, as stated in data file */
+    int __reload;
+    
+    /* Last time Vatsim data was refreshed.
+     * Got from data file.
+     */
+    QDateTime __dateVatsimDataUpdated;
+    
+    /* The timestamp is used to describe every data package, so clients can sync to this. */
+    qint64 __currentTimestamp;
+    
+    /* Observer count */
+    int __observers;
+    
+    /* Client cound */
+    int __clientCount;
+    
+    /* Indicates whether the status.txt file was already read or not */
+    bool __statusFileFetched;
+    
+    /* False before initialized() method is called */
+    bool __initialized;
+    
+    PlainTextDownloader* __downloader;
+    UpdateScheduler*     __scheduler;
 };
 
 #endif // VATSIMDATAHANDLER_H

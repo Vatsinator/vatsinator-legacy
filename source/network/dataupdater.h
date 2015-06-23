@@ -27,93 +27,93 @@ class Unzipper;
 /**
  * The DataUpdater class is responsible for synchronizing the local data
  * with the VatsinatorDatabase server.
- * 
+ *
  * \todo Rename to DatabaseUpdater.
  */
 class DataUpdater : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  /**
-   * Emitted after files are downloaded, unzipped, checked and moved
-   * to the destination directory correctly.
-   */
-  void updated();
-  
-  /**
-   * Emitted when something goes wrong.
-   */
-  void failed();
-  
-  /**
-   * This signal is for internal usage - starts unzipping files.
-   */
-  void readyToUnzip();
-
+    /**
+     * Emitted after files are downloaded, unzipped, checked and moved
+     * to the destination directory correctly.
+     */
+    void updated();
+    
+    /**
+     * Emitted when something goes wrong.
+     */
+    void failed();
+    
+    /**
+     * This signal is for internal usage - starts unzipping files.
+     */
+    void readyToUnzip();
+    
 public:
-  /**
-   * The default constructor passes _parent_ to QObject.
-   */
-  explicit DataUpdater(QObject* parent = nullptr);
-  
-  /**
-   * The destructor.
-   */
-  virtual ~DataUpdater();
-  
+    /**
+     * The default constructor passes _parent_ to QObject.
+     */
+    explicit DataUpdater(QObject* parent = nullptr);
+    
+    /**
+     * The destructor.
+     */
+    virtual ~DataUpdater();
+    
 public slots:
-  /**
-   * Begins the update process.
-   * This method is thread-safe.
-   */
-  void update();
-  
+    /**
+     * Begins the update process.
+     * This method is thread-safe.
+     */
+    void update();
+    
 private:
-  /*
-   * Checks if every file unzipped has the correct checksum.
-   */
-  bool __checksumsOk(const QString& fileName);
-  
-  /**
-   * Moves files from the temporary to the destination directory.
-   */
-  bool __moveFiles();
-  
-  /**
-   * Removes all the data that could stay in the temporary directory.
-   */
-  void __cleanup();
-  
+    /*
+     * Checks if every file unzipped has the correct checksum.
+     */
+    bool __checksumsOk(const QString& fileName);
+    
+    /**
+     * Moves files from the temporary to the destination directory.
+     */
+    bool __moveFiles();
+    
+    /**
+     * Removes all the data that could stay in the temporary directory.
+     */
+    void __cleanup();
+    
 private slots:
-  
-  /**
-   * Starts unzipping the package.
-   */
-  void __unzipPackage(QString fileName);
-  
-  /**
-   * Handles fetch errors (package's or Manifest's).
-   */
-  void __fetchError(QString error);
-  
-  /**
-   * Fetches the Manifest.
-   */
-  void __filesUnzipped();
-  
-  /**
-   * Something went wrong with the zip package.
-   */
-  void __unzipError(QString error);
-  
-  /**
-   * Manifest downloaded, check md5 sums of files in the package.
-   */
-  void __checkManifest(QString fileName);
-  
-private:
-  Unzipper* __unzipper;
 
+    /**
+     * Starts unzipping the package.
+     */
+    void __unzipPackage(QString fileName);
+    
+    /**
+     * Handles fetch errors (package's or Manifest's).
+     */
+    void __fetchError(QString error);
+    
+    /**
+     * Fetches the Manifest.
+     */
+    void __filesUnzipped();
+    
+    /**
+     * Something went wrong with the zip package.
+     */
+    void __unzipError(QString error);
+    
+    /**
+     * Manifest downloaded, check md5 sums of files in the package.
+     */
+    void __checkManifest(QString fileName);
+    
+private:
+    Unzipper* __unzipper;
+    
 };
 
 #endif // DATAUPDATER_H

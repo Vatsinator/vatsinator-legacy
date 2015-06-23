@@ -29,38 +29,38 @@
  * settings pages.
  */
 class WidgetSettingsModule : public QWidget, public AbstractSettingsModule {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  WidgetSettingsModule(QWidget* parent = nullptr);
-  
-  /**
-   * \copydoc AbstractSettingsModule::update()
-   * Captures all QWidget-based classes and tries to resolve their
-   * key in settings using the \ref settingsKey() routine. If the key
-   * is not empty, updates the given value.
-   */
-  void update() const override;
-  
+    WidgetSettingsModule(QWidget* parent = nullptr);
+    
+    /**
+     * \copydoc AbstractSettingsModule::update()
+     * Captures all QWidget-based classes and tries to resolve their
+     * key in settings using the \ref settingsKey() routine. If the key
+     * is not empty, updates the given value.
+     */
+    void update() const override;
+    
 protected:
-  /**
-   * Resolves the given _widget_'s key.
-   * The default implementation firstly queries `vatsinatorSettingsKey`
-   * property (it must be string), if it is empty then gets the _widget_'s
-   * name. An empty key is invalid.
-   */
-  virtual QString settingsKey(const QWidget *widget) const;
-  
-  /**
-   * \copydoc AbstractSettingsModule::restore().
-   */
-  void restore(QSettings &settings, const QVariantHash &defaults) override;
-  
-  /**
-   * \copydoc AbstractSettingsModule::save().
-   */
-  void save(QSettings &settings) override;
-
+    /**
+     * Resolves the given _widget_'s key.
+     * The default implementation firstly queries `vatsinatorSettingsKey`
+     * property (it must be string), if it is empty then gets the _widget_'s
+     * name. An empty key is invalid.
+     */
+    virtual QString settingsKey(const QWidget* widget) const;
+    
+    /**
+     * \copydoc AbstractSettingsModule::restore().
+     */
+    void restore(QSettings& settings, const QVariantHash& defaults) override;
+    
+    /**
+     * \copydoc AbstractSettingsModule::save().
+     */
+    void save(QSettings& settings) override;
+    
 };
 
 #endif // WIDGETSETTINGSMODULE_H

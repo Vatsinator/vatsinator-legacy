@@ -34,26 +34,26 @@ class VatbookBookingProvider : public QObject, public BookingProvider {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.BookingProvider")
     Q_INTERFACES(BookingProvider)
-
+    
 public:
-  explicit VatbookBookingProvider(QObject *parent = nullptr);
-  
-  AtcBookingTableModel* bookings(const QString& icao) override;
-  
+    explicit VatbookBookingProvider(QObject* parent = nullptr);
+    
+    AtcBookingTableModel* bookings(const QString& icao) override;
+    
 private:
-  void __addAtc(const QStringList& rawData);
-  void __clear();
-  
+    void __addAtc(const QStringList& rawData);
+    void __clear();
+    
 private slots:
-  void __update();
-  void __parseData();
-  
+    void __update();
+    void __parseData();
+    
 private:
-  QMap<QString, AtcBookingTableModel*> __bookings;
-  AtcBookingTableModel* __nullModel;
-  PlainTextDownloader* __downloader;
-  QTimer __timer;
-  
+    QMap<QString, AtcBookingTableModel*> __bookings;
+    AtcBookingTableModel* __nullModel;
+    PlainTextDownloader* __downloader;
+    QTimer __timer;
+    
 };
 
 #endif // VATBOOKBOOKINGPROVIDER_H

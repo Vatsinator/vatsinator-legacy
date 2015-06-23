@@ -32,31 +32,31 @@ class VatsimDataHandler;
  * \todo Refactor.
  */
 class MetarsWindow : public QWidget, private Ui::MetarsWindow {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  MetarsWindow(QWidget* parent = nullptr);
-
+    MetarsWindow(QWidget* parent = nullptr);
+    
 public slots:
-  void show(QString icao);
-  void metarRequested();
-  
+    void show(QString icao);
+    void metarRequested();
+    
 protected:
-  void showEvent(QShowEvent* event);
-  void keyPressEvent(QKeyEvent* event);
-
+    void showEvent(QShowEvent* event);
+    void keyPressEvent(QKeyEvent* event);
+    
 private:
-  void __findAndSelectMetar(const QString& icao, bool fetchIfNotFound = true);
-
+    void __findAndSelectMetar(const QString& icao, bool fetchIfNotFound = true);
+    
 private slots:
-  void __handleTextChange(const QString& text);
-  void __handleNewMetars();
-  void __enableButtons();
-  
+    void __handleTextChange(const QString& text);
+    void __handleNewMetars();
+    void __enableButtons();
+    
 private:
-  /* Keeps the ICAO of the metar that user's waiting for */
-  QString __awaited;
-
+    /* Keeps the ICAO of the metar that user's waiting for */
+    QString __awaited;
+    
 };
 
 #endif // METARSWINDOW_H

@@ -25,51 +25,62 @@
 
 UirItem::UirItem(const Uir* uir, QObject* parent) :
     MapItem(parent),
-    __uir(uir) {
-  
-  MapScene* scene = qobject_cast<MapScene*>(parent);
-  for (const Fir* f: data()->range()) {
-    FirItem* fi = scene->findItemForFir(f);
-    if (fi)
-      __firItems << fi;
-  }
+    __uir(uir)
+{
+
+    MapScene* scene = qobject_cast<MapScene*>(parent);
+    
+    for (const Fir* f : data()->range()) {
+        FirItem* fi = scene->findItemForFir(f);
+        
+        if (fi)
+            __firItems << fi;
+    }
 }
 
 bool
-UirItem::isVisible() const {
-  return !data()->isEmpty();
+UirItem::isVisible() const
+{
+    return !data()->isEmpty();
 }
 
 bool
-UirItem::isLabelVisible() const {
-  return false;
+UirItem::isLabelVisible() const
+{
+    return false;
 }
 
 void
-UirItem::showDetails() const {
-  
+UirItem::showDetails() const
+{
+
 }
 
 QString
-UirItem::tooltipText() const {
-  return QString();
+UirItem::tooltipText() const
+{
+    return QString();
 }
 
 const LonLat&
-UirItem::position() const {
-  static LonLat ll;
-  return ll;
+UirItem::position() const
+{
+    static LonLat ll;
+    return ll;
 }
 
 void
-UirItem::drawItem(QOpenGLShaderProgram*) const {
-  
-}
-
-void UirItem::drawLabel(QOpenGLShaderProgram*) const {
+UirItem::drawItem(QOpenGLShaderProgram*) const
+{
 
 }
 
-void UirItem::drawFocused(QOpenGLShaderProgram*) const {
+void UirItem::drawLabel(QOpenGLShaderProgram*) const
+{
+
+}
+
+void UirItem::drawFocused(QOpenGLShaderProgram*) const
+{
 
 }

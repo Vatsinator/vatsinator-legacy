@@ -29,100 +29,110 @@
 #include "metarswindow.h"
 
 MetarsWindow::MetarsWindow(QWidget* parent) :
-    QWidget(parent) {
-  setupUi(this);
-  
-  MetarUpdater* updater = vApp()->metarUpdater();
-  
-  connect(FetchButton, &QPushButton::clicked, this, &MetarsWindow::metarRequested);
-  connect(RefreshAllButton, &QPushButton::clicked, updater, &MetarUpdater::update);
-  connect(ClearButton, &QPushButton::clicked, updater->model(), &MetarListModel::clear);
-  connect(MetarIcaoEdit, &QLineEdit::textChanged, this, &MetarsWindow::__handleTextChange);
-  connect(updater->model(),  &MetarListModel::rowsInserted, this, &MetarsWindow::__handleNewMetars);
-  connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated, this, &MetarsWindow::__enableButtons);
-  
-  FetchButton->setEnabled(false);
-  MetarListView->setModel(updater->model());
-  MetarListView->setAttribute(Qt::WA_TranslucentBackground);
-}
-
-void
-MetarsWindow::show(QString icao) {
-  QWidget::show();
-  __findAndSelectMetar(icao);
-}
-
-void
-MetarsWindow::metarRequested() {
-  __findAndSelectMetar(MetarIcaoEdit->text());
-}
-
-void
-MetarsWindow::showEvent(QShowEvent* event) {
-  if (!event->spontaneous()) {
-    QRect rect = QDesktopWidget().screenGeometry(wui()->mainWindow());
-    int m = rect.height() / 4;
+    QWidget(parent)
+{
+    setupUi(this);
     
-    rect.setTop(rect.top() + m);
-    rect.setBottom(rect.bottom() - m);
+    MetarUpdater* updater = vApp()->metarUpdater();
     
-    this->setGeometry(
-      QStyle::alignedRect(
-        Qt::LeftToRight,
-        Qt::AlignTop | Qt::AlignHCenter,
-        this->size(),
-        rect
-      )
-    );
-    MetarListView->setMaximumHeight(m * 2);
-  }
-  MetarIcaoEdit->setFocus();
-  
-  QWidget::showEvent(event);
+    connect(FetchButton, &QPushButton::clicked, this, &MetarsWindow::metarRequested);
+    connect(RefreshAllButton, &QPushButton::clicked, updater, &MetarUpdater::update);
+    connect(ClearButton, &QPushButton::clicked, updater->model(), &MetarListModel::clear);
+    connect(MetarIcaoEdit, &QLineEdit::textChanged, this, &MetarsWindow::__handleTextChange);
+    connect(updater->model(),  &MetarListModel::rowsInserted, this, &MetarsWindow::__handleNewMetars);
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated, this, &MetarsWindow::__enableButtons);
+    
+    FetchButton->setEnabled(false);
+    MetarListView->setModel(updater->model());
+    MetarListView->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 void
-MetarsWindow::keyPressEvent(QKeyEvent* event) {
-  if (!MetarIcaoEdit->text().isEmpty() && MetarIcaoEdit->hasFocus() &&
-      (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter))
-    metarRequested();
-  
-  QWidget::keyPressEvent(event);
+MetarsWindow::show(QString icao)
+{
+    QWidget::show();
+    __findAndSelectMetar(icao);
 }
 
 void
-MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound) {
-  auto matches = vApp()->metarUpdater()->model()->match(
-      vApp()->metarUpdater()->model()->index(0), MetarRole, icao, 1);
-  
-  if (matches.length() > 0) {
-    MetarListView->setCurrentIndex(matches.first());
-    MetarListView->scrollTo(matches.first());
-  } else {
-    if (fetchIfNotFound) {
-      vApp()->metarUpdater()->fetch(icao);
-      __awaited = icao;
+MetarsWindow::metarRequested()
+{
+    __findAndSelectMetar(MetarIcaoEdit->text());
+}
+
+void
+MetarsWindow::showEvent(QShowEvent* event)
+{
+    if (!event->spontaneous()) {
+        QRect rect = QDesktopWidget().screenGeometry(wui()->mainWindow());
+        int m = rect.height() / 4;
+        
+        rect.setTop(rect.top() + m);
+        rect.setBottom(rect.bottom() - m);
+        
+        this->setGeometry(
+            QStyle::alignedRect(
+                Qt::LeftToRight,
+                Qt::AlignTop | Qt::AlignHCenter,
+                this->size(),
+                rect
+            )
+        );
+        MetarListView->setMaximumHeight(m * 2);
     }
-  }
-  
-  MetarIcaoEdit->clear();
+    
+    MetarIcaoEdit->setFocus();
+    
+    QWidget::showEvent(event);
 }
 
 void
-MetarsWindow::__handleTextChange(const QString& text) {
-  FetchButton->setEnabled(text.length() != 0);
+MetarsWindow::keyPressEvent(QKeyEvent* event)
+{
+    if (!MetarIcaoEdit->text().isEmpty() && MetarIcaoEdit->hasFocus() &&
+            (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter))
+        metarRequested();
+        
+    QWidget::keyPressEvent(event);
 }
 
 void
-MetarsWindow::__handleNewMetars() {
-  if (!__awaited.isEmpty()) {
-    __findAndSelectMetar(__awaited, false);
-    __awaited.clear();
-  }
+MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound)
+{
+    auto matches = vApp()->metarUpdater()->model()->match(
+                       vApp()->metarUpdater()->model()->index(0), MetarRole, icao, 1);
+                       
+    if (matches.length() > 0) {
+        MetarListView->setCurrentIndex(matches.first());
+        MetarListView->scrollTo(matches.first());
+    } else {
+        if (fetchIfNotFound) {
+            vApp()->metarUpdater()->fetch(icao);
+            __awaited = icao;
+        }
+    }
+    
+    MetarIcaoEdit->clear();
 }
 
 void
-MetarsWindow::__enableButtons() {
-  FetchButton->setEnabled(true);
-  RefreshAllButton->setEnabled(true);
+MetarsWindow::__handleTextChange(const QString& text)
+{
+    FetchButton->setEnabled(text.length() != 0);
+}
+
+void
+MetarsWindow::__handleNewMetars()
+{
+    if (!__awaited.isEmpty()) {
+        __findAndSelectMetar(__awaited, false);
+        __awaited.clear();
+    }
+}
+
+void
+MetarsWindow::__enableButtons()
+{
+    FetchButton->setEnabled(true);
+    RefreshAllButton->setEnabled(true);
 }

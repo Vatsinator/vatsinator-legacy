@@ -25,16 +25,16 @@
 #include "ui/ui_databasewindow.h"
 
 class DatabaseWindow : public BaseWindow, private Ui::DatabaseWindow {
-  
-  Q_OBJECT
 
+    Q_OBJECT
+    
 public:
-  DatabaseWindow(QWidget* parent = nullptr);
-  
+    DatabaseWindow(QWidget* parent = nullptr);
+    
 private slots:
-  void __updateNumbers();
-  void __updateDatabaseStatus(ResourceManager::VersionStatus status);
-  
+    void __updateNumbers();
+    void __updateDatabaseStatus(ResourceManager::VersionStatus status);
+    
 };
 
 #endif // DATABASEWINDOW_H

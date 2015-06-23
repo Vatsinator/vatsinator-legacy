@@ -27,44 +27,44 @@
 
 /**
  * This class is the interface for all NOTAM providers.
- * 
+ *
  * Each NOTAM provider is responsible for creating new models when
  * necessary, filling them in and giving access to them. User requests
  * NOTAMs calling fetchNotam() method. Pointers are given by emiting
  * notamReady() signal.
  */
 class NotamProvider : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  /**
-   * Signal emited when NOTAMs requested by fetchNotam() method are ready
-   * to read.
-   * 
-   * \sa fetchNotam().
-   */
-  void notamReady(NotamListModel* model);
-  
+    /**
+     * Signal emited when NOTAMs requested by fetchNotam() method are ready
+     * to read.
+     *
+     * \sa fetchNotam().
+     */
+    void notamReady(NotamListModel* model);
+    
 public:
-  using QObject::QObject;
-  
-  /**
-   * Requests NOTAM for the given ICAO code. The ICAO can be either airport's
-   * or FIR's. When the NOTAM report is ready, notamReady() signal must
-   * be emitted.
-   * 
-   * \param icao ICAO code.
-   * \sa notamReady().
-   */
-  virtual void fetchNotam(const QString& icao) = 0;
-  
-  /**
-   * Description text for the provider.
-   * This is rich-formatted text that can contain URL, image or anything
-   * Qt can recognize in a QLabel.
-   */
-  virtual QString providerInfo() const = 0;
-  
+    using QObject::QObject;
+    
+    /**
+     * Requests NOTAM for the given ICAO code. The ICAO can be either airport's
+     * or FIR's. When the NOTAM report is ready, notamReady() signal must
+     * be emitted.
+     *
+     * \param icao ICAO code.
+     * \sa notamReady().
+     */
+    virtual void fetchNotam(const QString& icao) = 0;
+    
+    /**
+     * Description text for the provider.
+     * This is rich-formatted text that can contain URL, image or anything
+     * Qt can recognize in a QLabel.
+     */
+    virtual QString providerInfo() const = 0;
+    
 };
 
 Q_DECLARE_INTERFACE(NotamProvider,

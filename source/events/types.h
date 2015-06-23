@@ -23,10 +23,10 @@
 #include <QEvent>
 
 namespace Event {
-  
-  extern int MouseLonLat;       /**< Type for MouseLonLatEvent */
-  extern int Notification;      /**< Type for NotificationEvent */
-  extern int Decision;          /**< Type for DecisionEvent */
+
+extern int MouseLonLat;       /**< Type for MouseLonLatEvent */
+extern int Notification;      /**< Type for NotificationEvent */
+extern int Decision;          /**< Type for DecisionEvent */
 
 }
 

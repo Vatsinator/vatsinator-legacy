@@ -29,18 +29,18 @@
  * in status.txt.
  */
 class VatsimMessageDialog : public QDialog, public Ui::VatsimMessageDialog {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  explicit VatsimMessageDialog(const QString& message, QWidget* parent = nullptr);
+    explicit VatsimMessageDialog(const QString& message, QWidget* parent = nullptr);
     
 protected:
-  void hideEvent(QHideEvent* event) override;
-  
+    void hideEvent(QHideEvent* event) override;
+    
 private:
-  QString __message;
-  
-  
+    QString __message;
+    
+    
 };
 
 #endif // VATSIMMESSAGEDIALOG_H

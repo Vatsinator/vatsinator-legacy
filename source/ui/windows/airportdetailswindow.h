@@ -36,29 +36,29 @@ class WeatherForecastReply;
  */
 class AirportDetailsWindow : public BaseWindow,
     private Ui::AirportDetailsWindow {
-
-  Q_OBJECT
-
+    
+    Q_OBJECT
+    
 public:
-  AirportDetailsWindow(const Airport* airport, QWidget* parent = nullptr);
-  virtual ~AirportDetailsWindow();
-  
+    AirportDetailsWindow(const Airport* airport, QWidget* parent = nullptr);
+    virtual ~AirportDetailsWindow();
+    
 protected:
-  void showEvent(QShowEvent* event) override;
-
+    void showEvent(QShowEvent* event) override;
+    
 private:
-  void __fillLabels();
-  
+    void __fillLabels();
+    
 private slots:
-  void __updateForecast(WeatherForecastReply* reply);
-  void __updateNotam(NotamListModel* model);
-  void __showDetails(QModelIndex index);
-  void __goToNotam(QModelIndex index);
-  void __metarUpdated();
-
+    void __updateForecast(WeatherForecastReply* reply);
+    void __updateNotam(NotamListModel* model);
+    void __showDetails(QModelIndex index);
+    void __goToNotam(QModelIndex index);
+    void __metarUpdated();
+    
 private:
-  const Airport* __airport;
-
+    const Airport* __airport;
+    
 };
 
 #endif // AIRPORTDETAILSWINDOW_H

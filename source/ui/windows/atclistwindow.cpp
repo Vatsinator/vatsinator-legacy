@@ -28,29 +28,32 @@
 #include "atclistwindow.h"
 
 AtcListWindow::AtcListWindow(QWidget* parent) :
-    BaseWindow(parent) {
-  setupUi(this);
-  AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  
-  connect(qApp,         SIGNAL(aboutToQuit()),
-          this,         SLOT(hide()));
-  connect(AtcTable,     SIGNAL(doubleClicked(const QModelIndex&)),
-          this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
+    BaseWindow(parent)
+{
+    setupUi(this);
+    AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    
+    connect(qApp,         SIGNAL(aboutToQuit()),
+            this,         SLOT(hide()));
+    connect(AtcTable,     SIGNAL(doubleClicked(const QModelIndex&)),
+            this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
 }
 
 void
-AtcListWindow::showEvent(QShowEvent* event) {
-  if (auto m = AtcTable->model())
-    m->deleteLater();
-  
-  AtcTable->setModel(vApp()->vatsimDataHandler()->atcTableModel());
-  
-  BaseWindow::showEvent(event);
+AtcListWindow::showEvent(QShowEvent* event)
+{
+    if (auto m = AtcTable->model())
+        m->deleteLater();
+        
+    AtcTable->setModel(vApp()->vatsimDataHandler()->atcTableModel());
+    
+    BaseWindow::showEvent(event);
 }
 
 void
-AtcListWindow::__handleDoubleClicked(const QModelIndex& index) {
-  Q_ASSERT(index.data(InstancePointerRole).isValid());
-  Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-  vApp()->userInterface()->showDetails(client);
+AtcListWindow::__handleDoubleClicked(const QModelIndex& index)
+{
+    Q_ASSERT(index.data(InstancePointerRole).isValid());
+    Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+    vApp()->userInterface()->showDetails(client);
 }

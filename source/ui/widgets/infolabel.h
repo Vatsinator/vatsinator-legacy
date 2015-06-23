@@ -29,50 +29,59 @@
  * and value, which is painted using standard application font.
  */
 class InfoLabel : public QWidget {
-  Q_OBJECT
-  
-  /**
-   * This property contains the description of what is being displayed by
-   * _value_.
-   */
-  Q_PROPERTY(QString description READ description WRITE setDescription)
-  
-  /**
-   * This property holds the actual value - it is larger and well visible.
-   */
-  Q_PROPERTY(QString value READ value WRITE setValue)
-  
-  /**
-   * This property holds font with which the _description_ is being rendered.
-   * By default, this property is set to VatsinatorStyle::smallFont().
-   */
-  Q_PROPERTY(QFont descriptionFont READ descriptionFont WRITE setDescriptionFont)
-
+    Q_OBJECT
+    
+    /**
+     * This property contains the description of what is being displayed by
+     * _value_.
+     */
+    Q_PROPERTY(QString description READ description WRITE setDescription)
+    
+    /**
+     * This property holds the actual value - it is larger and well visible.
+     */
+    Q_PROPERTY(QString value READ value WRITE setValue)
+    
+    /**
+     * This property holds font with which the _description_ is being rendered.
+     * By default, this property is set to VatsinatorStyle::smallFont().
+     */
+    Q_PROPERTY(QFont descriptionFont READ descriptionFont WRITE setDescriptionFont)
+    
 public:
-  /**
-   * The default constructor passes _parent_ and _flags_ to QWidget.
-   */
-  explicit InfoLabel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
-  
-  void setDescription(const QString& description);
-  void setValue(const QString& value);
-  void setDescriptionFont(const QFont& font);
-  
-  virtual QSize sizeHint() const override;
-  virtual QSize minimumSizeHint() const override;
-  
-  inline const QString& description() const { return __description; }
-  inline const QString& value() const { return __val; }
-  inline const QFont& descriptionFont() const { return __descriptionFont; }
-
+    /**
+     * The default constructor passes _parent_ and _flags_ to QWidget.
+     */
+    explicit InfoLabel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+    
+    void setDescription(const QString& description);
+    void setValue(const QString& value);
+    void setDescriptionFont(const QFont& font);
+    
+    virtual QSize sizeHint() const override;
+    virtual QSize minimumSizeHint() const override;
+    
+    inline const QString& description() const
+    {
+        return __description;
+    }
+    inline const QString& value() const
+    {
+        return __val;
+    }
+    inline const QFont& descriptionFont() const
+    {
+        return __descriptionFont;
+    }
+    
 protected:
-  virtual void paintEvent (QPaintEvent* event) override;
-
+    virtual void paintEvent (QPaintEvent* event) override;
+    
 private:
-  QString __description;
-  QString __val;
-  QFont   __descriptionFont;
-  
+    QString __description;
+    QString __val;
+    QFont   __descriptionFont;
+    
 };
 
 #endif // INFOLABEL_H

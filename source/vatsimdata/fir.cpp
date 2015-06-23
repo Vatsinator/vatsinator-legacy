@@ -27,85 +27,96 @@
 #include "fir.h"
 
 Fir::Fir(const FirRecord* record) :
-     __data(record),
-     __icao(QString::fromUtf8(record->header.icao)),
-     __oceanic(record->header.oceanic),
-     __staff(new AtcTableModel(this)),
-     __uirStaff(new AtcTableModel(this)),
-     __flights(new FlightTableModel(this)),
-     __airports(new AirportTableModel(this)) {
-  
-  Q_ASSERT(__data);
+    __data(record),
+    __icao(QString::fromUtf8(record->header.icao)),
+    __oceanic(record->header.oceanic),
+    __staff(new AtcTableModel(this)),
+    __uirStaff(new AtcTableModel(this)),
+    __flights(new FlightTableModel(this)),
+    __airports(new AirportTableModel(this))
+{
+
+    Q_ASSERT(__data);
 }
 
 Fir::~Fir() {}
 
 void
-Fir::addStaff(const Controller* atc) {
-  __staff->add(atc);
-  connect(atc,          SIGNAL(updated()),
-          this,         SIGNAL(updated()));
-  connect(atc,          SIGNAL(destroyed(QObject*)),
-          this,         SIGNAL(updated()), Qt::DirectConnection);
-  emit updated();
+Fir::addStaff(const Controller* atc)
+{
+    __staff->add(atc);
+    connect(atc,          SIGNAL(updated()),
+            this,         SIGNAL(updated()));
+    connect(atc,          SIGNAL(destroyed(QObject*)),
+            this,         SIGNAL(updated()), Qt::DirectConnection);
+    emit updated();
 }
 
 void
-Fir::addUirStaff(const Controller* atc) {
-  __uirStaff->add(atc);
-  connect(atc,           SIGNAL(updated()),
-          this,         SIGNAL(updated()));
-  connect(atc,           SIGNAL(destroyed(QObject*)),
-          this,         SIGNAL(updated()), Qt::DirectConnection);
-  emit updated();
+Fir::addUirStaff(const Controller* atc)
+{
+    __uirStaff->add(atc);
+    connect(atc,           SIGNAL(updated()),
+            this,         SIGNAL(updated()));
+    connect(atc,           SIGNAL(destroyed(QObject*)),
+            this,         SIGNAL(updated()), Qt::DirectConnection);
+    emit updated();
 }
 
 void
-Fir::addFlight(const Pilot* pilot) {
-  __flights->add(pilot);
-  connect(pilot,           SIGNAL(destroyed(QObject*)),
-          this,         SIGNAL(updated()), Qt::DirectConnection);
+Fir::addFlight(const Pilot* pilot)
+{
+    __flights->add(pilot);
+    connect(pilot,           SIGNAL(destroyed(QObject*)),
+            this,         SIGNAL(updated()), Qt::DirectConnection);
 }
 
 void
-Fir::addAirport(const Airport* airport) {
-  __airports->addAirport(airport);
+Fir::addAirport(const Airport* airport)
+{
+    __airports->addAirport(airport);
 }
 
 void
-Fir::fixupName() {
-  if (!__name.contains("Radar") &&
-      !__name.contains("Control") &&
-      !__name.contains("Radio") &&
-      !__name.contains("Oceanic")) {
-    if (__oceanic)
-      __name += " Oceanic";
-    else
-      __name += " Center";
-  }
+Fir::fixupName()
+{
+    if (!__name.contains("Radar") &&
+            !__name.contains("Control") &&
+            !__name.contains("Radio") &&
+            !__name.contains("Oceanic")) {
+        if (__oceanic)
+            __name += " Oceanic";
+        else
+            __name += " Center";
+    }
 }
 
 bool
-Fir::isStaffed() const {
-  return __staff->rowCount() > 0;
+Fir::isStaffed() const
+{
+    return __staff->rowCount() > 0;
 }
 
 bool
-Fir::isEmpty() const {
-  return __staff->rowCount() == 0;
+Fir::isEmpty() const
+{
+    return __staff->rowCount() == 0;
 }
 
 bool
-Fir::hasValidPosition() const {
-  return data()->header.textPosition.x != .0f && data()->header.textPosition.y != .0f;
+Fir::hasValidPosition() const
+{
+    return data()->header.textPosition.x != .0f && data()->header.textPosition.y != .0f;
 }
 
 void
-Fir::setName(const QString& _n) {
-  __name = _n;
+Fir::setName(const QString& _n)
+{
+    __name = _n;
 }
 
 void
-Fir::setCountry(const QString& _c) {
-  __country = _c;
+Fir::setCountry(const QString& _c)
+{
+    __country = _c;
 }

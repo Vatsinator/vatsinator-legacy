@@ -27,45 +27,48 @@
 AirportDatabase::AirportDatabase(QObject* parent) : QObject(parent) {}
 
 void
-AirportDatabase::initialize() {
-  __readDatabase();
+AirportDatabase::initialize()
+{
+    __readDatabase();
 }
 
 const AirportRecord*
-AirportDatabase::find(const QString& key) {
-  auto result = std::find_if(__airports.begin(), __airports.end(),
-                             [&key](const AirportRecord& record) {
-    return QString(record.icao) == key;
-  });
-  
-  return result == __airports.end() ? nullptr : result;
+AirportDatabase::find(const QString& key)
+{
+    auto result = std::find_if(__airports.begin(), __airports.end(),
+    [&key](const AirportRecord & record) {
+        return QString(record.icao) == key;
+    });
+    
+    return result == __airports.end() ? nullptr : result;
 }
 
 void
-AirportDatabase::__readDatabase() {  
-  static_assert(
-    sizeof(AirportRecord) == 436,
-    "Sizeof Airport class is not 436 bytes! The WorldAirports database will be incompatible!"
-  );
-  
-  __airports.clear();
-  
-  QFile db(FileManager::path("WorldAirports.db"));
-  
-  if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
-    notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
-    return;
-  }
-  
-  int size;
-  db.read(reinterpret_cast<char*>(&size), 4);
-
-  qDebug("Airports to be read: %i.", size);
-
-  db.seek(4);
-
-  __airports.resize(size);
-  db.read(reinterpret_cast<char*>(&__airports[0]), sizeof(AirportRecord) * size);
-
-  db.close();
+AirportDatabase::__readDatabase()
+{
+    static_assert(
+        sizeof(AirportRecord) == 436,
+        "Sizeof Airport class is not 436 bytes! The WorldAirports database will be incompatible!"
+    );
+    
+    __airports.clear();
+    
+    QFile db(FileManager::path("WorldAirports.db"));
+    
+    if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
+        notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+        return;
+    }
+    
+    int size;
+    db.read(reinterpret_cast<char*>(&size), 4);
+    
+    qDebug("Airports to be read: %i.", size);
+    
+    db.seek(4);
+    
+    __airports.resize(size);
+    db.read(reinterpret_cast<char*>(&__airports[0]), sizeof(AirportRecord) * size);
+    
+    db.close();
 }

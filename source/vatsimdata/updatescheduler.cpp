@@ -26,24 +26,27 @@
 #include "updatescheduler.h"
 
 namespace {
-  inline Q_DECL_CONSTEXPR int minutesToMsec(int ms) {
+inline Q_DECL_CONSTEXPR int minutesToMsec(int ms)
+{
     return ms * 1000 * 60;
-  }
+}
 }
 
-UpdateScheduler::UpdateScheduler(QObject* parent): QObject(parent) {
-  __timer.setSingleShot(true);
-  
-  connect(&__timer,                     SIGNAL(timeout()),
-          this,                         SIGNAL(timeToUpdate()));
-  connect(qobject_cast<VatsimDataHandler*>(parent), 
-                                        SIGNAL(vatsimDataUpdated()),
-          this,                         SLOT(__setupTimer()));
+UpdateScheduler::UpdateScheduler(QObject* parent): QObject(parent)
+{
+    __timer.setSingleShot(true);
+    
+    connect(&__timer,                     SIGNAL(timeout()),
+            this,                         SIGNAL(timeToUpdate()));
+    connect(qobject_cast<VatsimDataHandler*>(parent),
+            SIGNAL(vatsimDataUpdated()),
+            this,                         SLOT(__setupTimer()));
 }
 
 void
-UpdateScheduler::__setupTimer() {
-  int rate = minutesToMsec(vApp()->vatsimDataHandler()->timeToReload());
-  __timer.setInterval(rate);
-  __timer.start();
+UpdateScheduler::__setupTimer()
+{
+    int rate = minutesToMsec(vApp()->vatsimDataHandler()->timeToReload());
+    __timer.setInterval(rate);
+    __timer.start();
 }

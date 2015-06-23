@@ -22,10 +22,11 @@
 #include "flightprogresswidget.h"
 
 FlightProgressWidget::FlightProgressWidget(QWidget* parent) :
-    QProgressBar(parent) {
-  setMaximum(100);
-  setMinimum(0);
-  setTextVisible(false);
-  
-  setValue(50);
+    QProgressBar(parent)
+{
+    setMaximum(100);
+    setMinimum(0);
+    setTextVisible(false);
+    
+    setValue(50);
 }

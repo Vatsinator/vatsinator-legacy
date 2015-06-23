@@ -46,84 +46,91 @@
 
 FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
     BaseWindow(parent),
-    __fir(fir) {
-  setupUi(this);
-  
-  VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
-  ICAOLabel->setFont(style->h1Font());
-  
-  AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  AirportsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-  
-  connect(qApp, &QCoreApplication::aboutToQuit, this, &FirDetailsWindow::close);
-  connect(vApp()->vatsimDataHandler()->notamProvider(), &NotamProvider::notamReady,
-          this, &FirDetailsWindow::__notamUpdate);
-  connect(AirportsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showAirportDetails);
-  connect(AtcTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
-  connect(FlightsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
-  connect(NotamTableView, &DelayedModelTableView::doubleClicked, this, &FirDetailsWindow::__goToNotam);
+    __fir(fir)
+{
+    setupUi(this);
+    
+    VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
+    ICAOLabel->setFont(style->h1Font());
+    
+    AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    AirportsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    
+    connect(qApp, &QCoreApplication::aboutToQuit, this, &FirDetailsWindow::close);
+    connect(vApp()->vatsimDataHandler()->notamProvider(), &NotamProvider::notamReady,
+            this, &FirDetailsWindow::__notamUpdate);
+    connect(AirportsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showAirportDetails);
+    connect(AtcTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
+    connect(FlightsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
+    connect(NotamTableView, &DelayedModelTableView::doubleClicked, this, &FirDetailsWindow::__goToNotam);
 }
 
 void
-FirDetailsWindow::showEvent(QShowEvent* event) {
-  __updateLabels();
-
-  FlightsTable->setModel(__fir->flights());
-  /* TODO Show UIR controllers here, too */
-  AtcTable->setModel(__fir->staff());
-  AirportsTable->setModel(__fir->airports());
-  BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__fir->icao()));
-  
-  FlightsTable->hideColumn(FlightTableModel::Name);
-  
-  NotamTableView->setModel(nullptr);
-  vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__fir->icao());
-  NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
-  
-  BaseWindow::showEvent(event);
+FirDetailsWindow::showEvent(QShowEvent* event)
+{
+    __updateLabels();
+    
+    FlightsTable->setModel(__fir->flights());
+    /* TODO Show UIR controllers here, too */
+    AtcTable->setModel(__fir->staff());
+    AirportsTable->setModel(__fir->airports());
+    BookedATCTable->setModel(vApp()->vatsimDataHandler()->bookingProvider()->bookings(__fir->icao()));
+    
+    FlightsTable->hideColumn(FlightTableModel::Name);
+    
+    NotamTableView->setModel(nullptr);
+    vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__fir->icao());
+    NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
+    
+    BaseWindow::showEvent(event);
 }
 
 void
-FirDetailsWindow::__updateLabels() {
-  if (__fir->country() != "USA")
-    setWindowTitle(tr("%1 - FIR details").arg(__fir->icao()));
-  else
-    setWindowTitle(tr("%1 - ARTCC details").arg(__fir->icao()));
-
-  if (!__fir->isOceanic())
-    ICAOLabel->setText(__fir->icao());
-  else
-    ICAOLabel->setText(__fir->icao() + " Oceanic");
-
-  NameLabel->setText(__fir->name());
+FirDetailsWindow::__updateLabels()
+{
+    if (__fir->country() != "USA")
+        setWindowTitle(tr("%1 - FIR details").arg(__fir->icao()));
+    else
+        setWindowTitle(tr("%1 - ARTCC details").arg(__fir->icao()));
+        
+    if (!__fir->isOceanic())
+        ICAOLabel->setText(__fir->icao());
+    else
+        ICAOLabel->setText(__fir->icao() + " Oceanic");
+        
+    NameLabel->setText(__fir->name());
 }
 
 void
-FirDetailsWindow::__notamUpdate(NotamListModel* model) {
-  if (model->icao() == __fir->icao()) {
-    NotamTableView->setModel(model);
-  }
+FirDetailsWindow::__notamUpdate(NotamListModel* model)
+{
+    if (model->icao() == __fir->icao())
+        NotamTableView->setModel(model);
 }
 
 void
-FirDetailsWindow::__showAirportDetails(QModelIndex index) {
-  Q_ASSERT(index.data(InstancePointerRole).isValid());
-  Airport* const airport = reinterpret_cast<Airport* const>(index.data(InstancePointerRole).value<void*>());
-  vApp()->userInterface()->showDetails(airport);
+FirDetailsWindow::__showAirportDetails(QModelIndex index)
+{
+    Q_ASSERT(index.data(InstancePointerRole).isValid());
+    Airport* const airport = reinterpret_cast<Airport* const>(index.data(InstancePointerRole).value<void*>());
+    vApp()->userInterface()->showDetails(airport);
 }
 
 void
-FirDetailsWindow::__showClientDetails(QModelIndex index) {
-  Q_ASSERT(index.data(InstancePointerRole).isValid());
-  Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-  vApp()->userInterface()->showDetails(client);
+FirDetailsWindow::__showClientDetails(QModelIndex index)
+{
+    Q_ASSERT(index.data(InstancePointerRole).isValid());
+    Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+    vApp()->userInterface()->showDetails(client);
 }
 
 void
-FirDetailsWindow::__goToNotam(QModelIndex index) {
-  QString url = index.data(UrlRole).toString();
-  if (!url.isEmpty())
-    QDesktopServices::openUrl(url);
+FirDetailsWindow::__goToNotam(QModelIndex index)
+{
+    QString url = index.data(UrlRole).toString();
+    
+    if (!url.isEmpty())
+        QDesktopServices::openUrl(url);
 }

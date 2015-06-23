@@ -28,28 +28,31 @@ class PlainTextDownloader;
 class MetarListModel;
 
 class MetarUpdater : public QObject {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  MetarUpdater(MetarListModel* model, QObject* parent = nullptr);
-  
-  inline MetarListModel* model() { return __metars; }
-  
+    MetarUpdater(MetarListModel* model, QObject* parent = nullptr);
+    
+    inline MetarListModel* model()
+    {
+        return __metars;
+    }
+    
 public slots:
-  void fetch(QString icao);
-  void update();
-  
+    void fetch(QString icao);
+    void update();
+    
 protected:
-  void timerEvent(QTimerEvent* event) override;
-  
+    void timerEvent(QTimerEvent* event) override;
+    
 private slots:
-  void __readMetars();
-  
+    void __readMetars();
+    
 private:
-  MetarListModel* __metars;
-  PlainTextDownloader* __downloader;
-  QQueue<QString> __requests;
-  
+    MetarListModel* __metars;
+    PlainTextDownloader* __downloader;
+    QQueue<QString> __requests;
+    
 };
 
 #endif // METARUPDATER_H

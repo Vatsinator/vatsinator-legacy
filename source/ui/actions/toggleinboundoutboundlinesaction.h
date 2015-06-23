@@ -27,30 +27,30 @@ class Airport;
 /**
  * The action that corresponds to "Toggle inbout/outbound lines" option
  * for Airport right-mouse-button-click menu.
- * 
+ *
  * \todo Make this action actually works.
  */
 class ToggleInboundOutboundLinesAction : public QAction {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  /**
-   * Passed from QAction.
-   * 
-   * \param airport Airport for which the option was toggled.
-   */
-  void triggered(const Airport* airport);
-  
+    /**
+     * Passed from QAction.
+     *
+     * \param airport Airport for which the option was toggled.
+     */
+    void triggered(const Airport* airport);
+    
 public:
-  /**
-   * Creates new menu action for the specified _airport_.
-   * The _parent_ param is passed to QAction's constructor.
-   */
-  ToggleInboundOutboundLinesAction(const Airport* airport, QObject* parent);
-  
+    /**
+     * Creates new menu action for the specified _airport_.
+     * The _parent_ param is passed to QAction's constructor.
+     */
+    ToggleInboundOutboundLinesAction(const Airport* airport, QObject* parent);
+    
 private:
-  const Airport* __current;
-  
+    const Airport* __current;
+    
 };
 
 #endif // TOGGLEINBOUNDOUTBOUNDLINESACTION_H

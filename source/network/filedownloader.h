@@ -32,71 +32,74 @@ class QNetworkReply;
 /**
  * The FileDownloader class is a convenience class that simplfies
  * downloading files from the internet.
- * 
+ *
  * \todo Add progress() signal.
  */
 class FileDownloader : public QObject {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 signals:
-  /**
-   * Emited when download is complete.
-   * 
-   * \param fileName Location of the downloaded file.
-   */
-  void finished(QString fileName);
-  
-  /**
-   * Emited when an error occurs.
-   * \param error Error string.
-   */
-  void error(QString error);
-  
+    /**
+     * Emited when download is complete.
+     *
+     * \param fileName Location of the downloaded file.
+     */
+    void finished(QString fileName);
+    
+    /**
+     * Emited when an error occurs.
+     * \param error Error string.
+     */
+    void error(QString error);
+    
 public:
-  /**
-   * Creates new FileDownloader instance.
-   * 
-   * \param pb ProgressBar that will be updated during file fetching.
-   * \param parent Passed to QObject.
-   * \todo Remove pb.
-   */
-  FileDownloader(QProgressBar* pb = 0, QObject* parent = nullptr);
-  
-  /**
-   * If the requests queue is empty, downloads the given file
-   * immediately. Otherwise, enqueues the url.
-   */
-  void fetch(const QUrl& url);
-  
-  /**
-   * Generates the temporary file name (with the absolute path)
-   * from the given url.
-   * 
-   * \todo Move to private scope.
-   */
-  QString fileNameForUrl(const QUrl& url);
-  
-  /**
-   * Returns true if there are any queries left in the queue.
-   */
-  inline bool hasPendingTasks() const { return !__urls.isEmpty(); }
-  
+    /**
+     * Creates new FileDownloader instance.
+     *
+     * \param pb ProgressBar that will be updated during file fetching.
+     * \param parent Passed to QObject.
+     * \todo Remove pb.
+     */
+    FileDownloader(QProgressBar* pb = 0, QObject* parent = nullptr);
+    
+    /**
+     * If the requests queue is empty, downloads the given file
+     * immediately. Otherwise, enqueues the url.
+     */
+    void fetch(const QUrl& url);
+    
+    /**
+     * Generates the temporary file name (with the absolute path)
+     * from the given url.
+     *
+     * \todo Move to private scope.
+     */
+    QString fileNameForUrl(const QUrl& url);
+    
+    /**
+     * Returns true if there are any queries left in the queue.
+     */
+    inline bool hasPendingTasks() const
+    {
+        return !__urls.isEmpty();
+    }
+    
 private:
-  void __startRequest();
-  
+    void __startRequest();
+    
 private slots:
-  void __readyRead();
-  void __finished();
-  void __updateProgress(qint64 read, qint64 total);
-  
+    void __readyRead();
+    void __finished();
+    void __updateProgress(qint64 read, qint64 total);
+    
 private:
-  QQueue<QUrl>   __urls;
-  QProgressBar*  __pb;
-  QFile          __output;
-  
-  QNetworkAccessManager __nam;
-  QNetworkReply*        __reply;
-  
+    QQueue<QUrl>   __urls;
+    QProgressBar*  __pb;
+    QFile          __output;
+    
+    QNetworkAccessManager __nam;
+    QNetworkReply*        __reply;
+    
 };
 
 #endif // FILEDOWNLOADER_H

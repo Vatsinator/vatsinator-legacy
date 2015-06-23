@@ -35,236 +35,255 @@ static const QString ManifestUrl =
     NetConfig::Vatsinator::repoUrl() % QStringLiteral("packages/Manifest");
 
 namespace {
-  
-  /**
-   * Moves the file.
-   */
-  bool moveFile(const QString& _oldLocation, const QString& _newLocation) {
+
+/**
+ * Moves the file.
+ */
+bool moveFile(const QString& _oldLocation, const QString& _newLocation)
+{
     QFile file(_oldLocation);
+    
     if (!file.open(QIODevice::ReadWrite)) {
-      qCritical("DataUpdater: failed accessing file %s", qPrintable(_oldLocation));
-      return false;
+        qCritical("DataUpdater: failed accessing file %s", qPrintable(_oldLocation));
+        return false;
     }
     
     file.close();
     
     QFile oldFile(_newLocation);
+    
     if (oldFile.exists())
-      oldFile.remove();
-    
+        oldFile.remove();
+        
     QFileInfo fileInfo = QFileInfo(_newLocation);
+    
     if (!QDir(fileInfo.path()).exists())
-      QDir().mkpath(fileInfo.path());
-    
+        QDir().mkpath(fileInfo.path());
+        
     bool result = file.rename(_newLocation);
-    if (result)
-      qDebug("DataUpdater: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
-    else
-      qCritical("DataUpdater: failed moving %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
     
+    if (result)
+        qDebug("DataUpdater: moved file %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+    else
+        qCritical("DataUpdater: failed moving %s -> %s", qPrintable(_oldLocation), qPrintable(_newLocation));
+        
     return result;
-  }
-  
-  /**
-   * Removes the dir recursively.
-   * http://stackoverflow.com/questions/11050977/removing-a-non-empty-folder-in-qt
-   */
-  bool removeDir(const QString& _dirName) {
+}
+
+/**
+ * Removes the dir recursively.
+ * http://stackoverflow.com/questions/11050977/removing-a-non-empty-folder-in-qt
+ */
+bool removeDir(const QString& _dirName)
+{
     bool result = true;
     QDir dir(_dirName);
     
     if (dir.exists()) {
-      for (QFileInfo file: dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-        if (file.isDir()) {
-          qDebug("DataUpdater: removing dir %s", qPrintable(file.absoluteFilePath()));
-          result = removeDir(file.absoluteFilePath());
-        } else {
-          qDebug("DataUpdater: removing file %s", qPrintable(file.absoluteFilePath()));
-          result = QFile::remove(file.absoluteFilePath());
+        for (QFileInfo file : dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (file.isDir()) {
+                qDebug("DataUpdater: removing dir %s", qPrintable(file.absoluteFilePath()));
+                result = removeDir(file.absoluteFilePath());
+            } else {
+                qDebug("DataUpdater: removing file %s", qPrintable(file.absoluteFilePath()));
+                result = QFile::remove(file.absoluteFilePath());
+            }
+            
+            if (!result)
+                return result;
         }
         
-        if (!result)
-          return result;
-      }
-      
-      result = dir.rmdir(_dirName);
+        result = dir.rmdir(_dirName);
     }
     
     return result;
-  }
-  
-  bool checksumMatches(const QString& _fileName, const QByteArray& _md5) {
+}
+
+bool checksumMatches(const QString& _fileName, const QByteArray& _md5)
+{
     QFile file(_fileName);
-    if (!file.open(QIODevice::ReadOnly))
-      return false;
     
+    if (!file.open(QIODevice::ReadOnly))
+        return false;
+        
     auto hash = QCryptographicHash::hash(file.readAll(), QCryptographicHash::Md5).toHex();
     file.close();
     
     return hash == _md5;
-  }
-  
+}
+
 }
 
 DataUpdater::DataUpdater(QObject* parent) :
     QObject(parent),
-    __unzipper(new Unzipper()) {
-  
-  /* Give the Unzipper its own thread */
-  QThread* thread = new QThread();
-  __unzipper->moveToThread(thread);
-  connect(__unzipper,   SIGNAL(unzipped()),
-          this,         SLOT(__filesUnzipped()));
-  connect(__unzipper,   SIGNAL(error(QString)),
-          this,         SLOT(__unzipError(QString)));
-  connect(this,         SIGNAL(readyToUnzip()),
-          __unzipper,   SLOT(unzip()));
-  thread->start();
+    __unzipper(new Unzipper())
+{
+
+    /* Give the Unzipper its own thread */
+    QThread* thread = new QThread();
+    __unzipper->moveToThread(thread);
+    connect(__unzipper,   SIGNAL(unzipped()),
+            this,         SLOT(__filesUnzipped()));
+    connect(__unzipper,   SIGNAL(error(QString)),
+            this,         SLOT(__unzipError(QString)));
+    connect(this,         SIGNAL(readyToUnzip()),
+            __unzipper,   SLOT(unzip()));
+    thread->start();
 }
 
-DataUpdater::~DataUpdater() {
-  QThread* thread = __unzipper->thread();
-  __unzipper->deleteLater();
-  thread->quit();
-  thread->wait();
-  delete thread;
+DataUpdater::~DataUpdater()
+{
+    QThread* thread = __unzipper->thread();
+    __unzipper->deleteLater();
+    thread->quit();
+    thread->wait();
+    delete thread;
 }
 
 void
-DataUpdater::update() {
-  qDebug("DataUpdater: updating...");
-  
-  FileDownloader* fd = new FileDownloader();
-  
-  connect(fd,   SIGNAL(finished(QString)),
-          this, SLOT(__unzipPackage(QString)));
-  connect(fd,   SIGNAL(finished(QString)),
-          fd,   SLOT(deleteLater()));
-  connect(fd,   SIGNAL(error(QString)),
-          this, SLOT(__fetchError(QString)));
-  connect(fd,   SIGNAL(error(QString)),
-          fd,   SLOT(deleteLater()));
-  
-  fd->fetch(QUrl(PackageUrl));
+DataUpdater::update()
+{
+    qDebug("DataUpdater: updating...");
+    
+    FileDownloader* fd = new FileDownloader();
+    
+    connect(fd,   SIGNAL(finished(QString)),
+            this, SLOT(__unzipPackage(QString)));
+    connect(fd,   SIGNAL(finished(QString)),
+            fd,   SLOT(deleteLater()));
+    connect(fd,   SIGNAL(error(QString)),
+            this, SLOT(__fetchError(QString)));
+    connect(fd,   SIGNAL(error(QString)),
+            fd,   SLOT(deleteLater()));
+            
+    fd->fetch(QUrl(PackageUrl));
 }
 
 bool
-DataUpdater::__checksumsOk(const QString& fileName) {
-  QFile file(fileName);
-  
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    qWarning("DataUpdater: cannot open %s for reading", qPrintable(fileName));
-    return false;
-  }
-  
-  QHash<QString, QString> md5sums;
-  
-  while (!file.atEnd()) {
-    QString line = QString::fromUtf8(file.readLine()).simplified();
+DataUpdater::__checksumsOk(const QString& fileName)
+{
+    QFile file(fileName);
     
-    if (line.isEmpty())
-      continue;
-    
-    if (QRegExp("\\d{8}").exactMatch(line)) { // manifest date
-      qDebug("DataUpdater: manifest date: %s", qPrintable(line));
-      continue;
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning("DataUpdater: cannot open %s for reading", qPrintable(fileName));
+        return false;
     }
     
-    QStringList lineSplitted = line.split(QRegExp("\\s+"));
-    Q_ASSERT(lineSplitted.length() == 2);
+    QHash<QString, QString> md5sums;
     
-    lineSplitted[1].replace(QString("./"), QString(""));
-    
-    // insert filename <-> md5sum pair
-    md5sums.insert(lineSplitted[1], lineSplitted[0]);
-  }
-  
-  file.close();
-  
-  for (const QString& f: __unzipper->fileList()) {
-    if (!md5sums.contains(f)) {
-      qCritical("DataUpdater: could not find the md5 sum for file %s!", qPrintable(f));
-      return false;
+    while (!file.atEnd()) {
+        QString line = QString::fromUtf8(file.readLine()).simplified();
+        
+        if (line.isEmpty())
+            continue;
+            
+        if (QRegExp("\\d{8}").exactMatch(line)) { // manifest date
+            qDebug("DataUpdater: manifest date: %s", qPrintable(line));
+            continue;
+        }
+        
+        QStringList lineSplitted = line.split(QRegExp("\\s+"));
+        Q_ASSERT(lineSplitted.length() == 2);
+        
+        lineSplitted[1].replace(QString("./"), QString(""));
+        
+        // insert filename <-> md5sum pair
+        md5sums.insert(lineSplitted[1], lineSplitted[0]);
     }
     
-    if (!checksumMatches(__unzipper->targetDir() + f, md5sums[f].toUtf8())) {
-      qCritical("DataUpdater: checksum failed for %s", qPrintable(f));
-      return false;
+    file.close();
+    
+    for (const QString& f : __unzipper->fileList()) {
+        if (!md5sums.contains(f)) {
+            qCritical("DataUpdater: could not find the md5 sum for file %s!", qPrintable(f));
+            return false;
+        }
+        
+        if (!checksumMatches(__unzipper->targetDir() + f, md5sums[f].toUtf8())) {
+            qCritical("DataUpdater: checksum failed for %s", qPrintable(f));
+            return false;
+        }
     }
-  }
-  
-  return true;
+    
+    return true;
 }
 
 bool
-DataUpdater::__moveFiles() {
-  for (const QString& file: __unzipper->fileList()) {
-    if (!moveFile(__unzipper->targetDir() % file, FileManager::localDataPath() % file))
-      return false;
-  }
-  
-  return true;
+DataUpdater::__moveFiles()
+{
+    for (const QString& file : __unzipper->fileList()) {
+        if (!moveFile(__unzipper->targetDir() % file, FileManager::localDataPath() % file))
+            return false;
+    }
+    
+    return true;
 }
 
 void
-DataUpdater::__cleanup() {
-  removeDir(__unzipper->targetDir());
-  
-  if (QFile(__unzipper->fileName()).exists())
-    QFile::remove(__unzipper->fileName());
+DataUpdater::__cleanup()
+{
+    removeDir(__unzipper->targetDir());
+    
+    if (QFile(__unzipper->fileName()).exists())
+        QFile::remove(__unzipper->fileName());
 }
 
 void
-DataUpdater::__unzipPackage(QString fileName) {
-  __unzipper->setFileName(fileName);
-  emit readyToUnzip();
+DataUpdater::__unzipPackage(QString fileName)
+{
+    __unzipper->setFileName(fileName);
+    emit readyToUnzip();
 }
 
 void
-DataUpdater::__fetchError(QString error) {
-  qWarning("DataUpdater: fetch error: %s", qPrintable(error));
-  emit failed();
-}
-
-void
-DataUpdater::__filesUnzipped() {
-  qDebug("DataUpdater: files unzipped.");
-  
-  FileDownloader* fd = new FileDownloader();
-  
-  connect(fd,   SIGNAL(finished(QString)),
-          this, SLOT(__checkManifest(QString)));
-  connect(fd,   SIGNAL(finished(QString)),
-          fd,   SLOT(deleteLater()));
-  connect(fd,   SIGNAL(error(QString)),
-          this, SLOT(__fetchError(QString)));
-  connect(fd,   SIGNAL(error(QString)),
-          fd,   SLOT(deleteLater()));
-  
-  fd->fetch(QUrl(ManifestUrl));
-}
-
-void
-DataUpdater::__unzipError(QString error) {
-  qCritical("DataUpdater: unzip error: %s", qPrintable(error));
-  emit failed();
-}
-
-void
-DataUpdater::__checkManifest(QString fileName) {
-  if (!__checksumsOk(fileName)) {
-    __cleanup();
+DataUpdater::__fetchError(QString error)
+{
+    qWarning("DataUpdater: fetch error: %s", qPrintable(error));
     emit failed();
-    return;
-  }
-  
-  if (!__moveFiles()) {
-    __cleanup();
+}
+
+void
+DataUpdater::__filesUnzipped()
+{
+    qDebug("DataUpdater: files unzipped.");
+    
+    FileDownloader* fd = new FileDownloader();
+    
+    connect(fd,   SIGNAL(finished(QString)),
+            this, SLOT(__checkManifest(QString)));
+    connect(fd,   SIGNAL(finished(QString)),
+            fd,   SLOT(deleteLater()));
+    connect(fd,   SIGNAL(error(QString)),
+            this, SLOT(__fetchError(QString)));
+    connect(fd,   SIGNAL(error(QString)),
+            fd,   SLOT(deleteLater()));
+            
+    fd->fetch(QUrl(ManifestUrl));
+}
+
+void
+DataUpdater::__unzipError(QString error)
+{
+    qCritical("DataUpdater: unzip error: %s", qPrintable(error));
     emit failed();
-    return;
-  }
-  
-  moveFile(fileName, FileManager::localDataPath() % "Manifest");
-  __cleanup();
-  emit updated();
+}
+
+void
+DataUpdater::__checkManifest(QString fileName)
+{
+    if (!__checksumsOk(fileName)) {
+        __cleanup();
+        emit failed();
+        return;
+    }
+    
+    if (!__moveFiles()) {
+        __cleanup();
+        emit failed();
+        return;
+    }
+    
+    moveFile(fileName, FileManager::localDataPath() % "Manifest");
+    __cleanup();
+    emit updated();
 }

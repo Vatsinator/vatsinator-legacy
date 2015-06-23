@@ -30,39 +30,45 @@
 class LonLat : public QPointF {
 
 public:
-  friend QDataStream& operator<<(QDataStream&, const LonLat&);
-  friend QDataStream& operator>>(QDataStream&, LonLat&);
-  
-  /**
-   * The default constructor creates point (0.0, 0.0).
-   */
-  LonLat();
-  
-  /**
-   * Creates new LonLat from the given point.
-   */
-  LonLat(const QPoint& point);
-  
-  /**
-   * Creates new LonLat from the given point.
-   */
-  LonLat(const QPointF& point);
-  
-  /**
-   * Creates new LonLat from the given coordinates - _longitude_
-   * and _latitude_.
-   */
-  LonLat(qreal longitude, qreal latitude);
-  
-  /**
-   * Returns this point, but bounds its coordinates to be correct longitude
-   * and latitude.
-   */
-  LonLat bound() const;
-  
-  inline qreal longitude() const { return QPointF::x(); }
-  inline qreal latitude() const { return QPointF::y(); }
-
+    friend QDataStream& operator<<(QDataStream&, const LonLat&);
+    friend QDataStream& operator>>(QDataStream&, LonLat&);
+    
+    /**
+     * The default constructor creates point (0.0, 0.0).
+     */
+    LonLat();
+    
+    /**
+     * Creates new LonLat from the given point.
+     */
+    LonLat(const QPoint& point);
+    
+    /**
+     * Creates new LonLat from the given point.
+     */
+    LonLat(const QPointF& point);
+    
+    /**
+     * Creates new LonLat from the given coordinates - _longitude_
+     * and _latitude_.
+     */
+    LonLat(qreal longitude, qreal latitude);
+    
+    /**
+     * Returns this point, but bounds its coordinates to be correct longitude
+     * and latitude.
+     */
+    LonLat bound() const;
+    
+    inline qreal longitude() const
+    {
+        return QPointF::x();
+    }
+    inline qreal latitude() const
+    {
+        return QPointF::y();
+    }
+    
 };
 Q_DECLARE_METATYPE(LonLat)
 

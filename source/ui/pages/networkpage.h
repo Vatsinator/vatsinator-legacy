@@ -24,30 +24,30 @@
 #include "storage/abstractsettingsmodule.h"
 
 class NetworkPage : public QWidget, public AbstractSettingsModule, private Ui::NetworkPage {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void settingsChanged();
-
+    void settingsChanged();
+    
 public:
-  NetworkPage(QWidget* parent = nullptr);
-  
-  QString listElement() const override;
-  QString listIcon() const override;
-  QString moduleId() const override;
-  
-  /**
-   * @variables
-   * database_integration:              bool
-   * weather_forecast_provider:         string
-   * weather_temperature_units:         string {"Celsius", "Fahrenheit"}
-   */
-  void update() const;
-  
+    NetworkPage(QWidget* parent = nullptr);
+    
+    QString listElement() const override;
+    QString listIcon() const override;
+    QString moduleId() const override;
+    
+    /**
+     * @variables
+     * database_integration:              bool
+     * weather_forecast_provider:         string
+     * weather_temperature_units:         string {"Celsius", "Fahrenheit"}
+     */
+    void update() const;
+    
 protected:
-  void restore(QSettings& s, const QVariantHash& defaults) override;
-  void save(QSettings& s) override;
-
+    void restore(QSettings& s, const QVariantHash& defaults) override;
+    void save(QSettings& s) override;
+    
 };
 
 #endif // NETWORKPAGE_H

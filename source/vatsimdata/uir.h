@@ -31,46 +31,61 @@ class Fir;
  * Upper FIR.
  */
 class Uir : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 signals:
-  void updated();
-
+    void updated();
+    
 public:
-  /**
-   * \param icao The ICAO code.
-   * \param parent Passed to QObject's constructor.
-   */
-  Uir(const QString& icao, QObject* parent = nullptr);
-
-  /**
-   * \param fir FIR that the UIR is supposed to contain.
-   */
-  void addFir(Fir* fir);
-
-  /**
-   * \param atc UIR controller.
-   */
-  void addStaff(const Controller* atc);
-  
-  /**
-   * \return True, if there is no ATC on position.
-   */
-  bool isEmpty() const;
-  
-  inline const QList<Fir*>& range() const { return __range; }
-  inline const AtcTableModel* staff() const { return __staff; }
-  inline const QString& icao() const { return __icao; }
-  inline const QString& name() const { return __name; }
-  inline QString& name() { return __name; }
-
+    /**
+     * \param icao The ICAO code.
+     * \param parent Passed to QObject's constructor.
+     */
+    Uir(const QString& icao, QObject* parent = nullptr);
+    
+    /**
+     * \param fir FIR that the UIR is supposed to contain.
+     */
+    void addFir(Fir* fir);
+    
+    /**
+     * \param atc UIR controller.
+     */
+    void addStaff(const Controller* atc);
+    
+    /**
+     * \return True, if there is no ATC on position.
+     */
+    bool isEmpty() const;
+    
+    inline const QList<Fir*>& range() const
+    {
+        return __range;
+    }
+    inline const AtcTableModel* staff() const
+    {
+        return __staff;
+    }
+    inline const QString& icao() const
+    {
+        return __icao;
+    }
+    inline const QString& name() const
+    {
+        return __name;
+    }
+    inline QString& name()
+    {
+        return __name;
+    }
+    
 private:
-  QString __icao;
-  QString __name;
-  
-  QList<Fir*>         __range;
-  AtcTableModel* __staff;
-
+    QString __icao;
+    QString __name;
+    
+    QList<Fir*>         __range;
+    AtcTableModel* __staff;
+    
 };
 
 #endif // UIR_H

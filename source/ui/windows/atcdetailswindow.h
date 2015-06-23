@@ -27,20 +27,20 @@ class Client;
 class Controller;
 
 class AtcDetailsWindow : public QWidget, private Ui::ATCDetailsWindow {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  AtcDetailsWindow(const Controller* atc, QWidget* parent = nullptr);
-
+    AtcDetailsWindow(const Controller* atc, QWidget* parent = nullptr);
+    
 protected:
-  virtual void showEvent(QShowEvent* event) override;
-
+    virtual void showEvent(QShowEvent* event) override;
+    
 private:
-  const Controller* __atc;
-
+    const Controller* __atc;
+    
 private slots:
-  void __updateLabels();
-
+    void __updateLabels();
+    
 };
 
 #endif // ATCDETAILSWINDOW_H

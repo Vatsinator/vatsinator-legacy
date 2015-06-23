@@ -32,64 +32,64 @@ class QOpenGLShaderProgram;
  * MapItem is a base class for any object that exists on the map.
  */
 class MapItem : public QObject {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  explicit MapItem(QObject* parent = nullptr);
-  
-  /**
-   * Indicates whether the item is visible on the map or not.
-   */
-  virtual bool isVisible() const = 0;
-  
-  /**
-   * Indicates whether the item's label should be drawn on the map.
-   * Note that returning false in this function does not mean drawlabel() will
-   * not be called.
-   */
-  virtual bool isLabelVisible() const = 0;
-  
-  /**
-   * Position of the item, global coordinates.
-   */
-  virtual const LonLat& position() const = 0;
-  
-  /**
-   * Draws the specific item.
-   * For FlightItems it will be the airplane model.
-   * For AirportItems it will be the airport icon.
-   * For FirItems it will be the label.
-   * 
-   * \param shader Shader program that is in use during rendering the item.
-   */
-  virtual void drawItem(QOpenGLShaderProgram* shader) const = 0;
-  
-  /**
-   * Draws the item label.
-   * FirItem won't draw anything.
-   * 
-   * \param shader Shader program that is in use during rendering the item.
-   */
-  virtual void drawLabel(QOpenGLShaderProgram* shader) const = 0;
-  
-  /**
-   * Draws the item specific elements when it is under mouse.
-   * For FlightItems and AirportItems it means just rendering the lines.
-   * 
-   * \param shader Shader program that is in use during rendering the item.
-   */
-  virtual void drawFocused(QOpenGLShaderProgram* shader) const = 0;
-  
-  /**
-   * Tooltip text, shown when the item is mouseover'ed.
-   * Return empty string to ignore.
-   */
-  virtual QString tooltipText() const = 0;
-  
-  /**
-   * Calls UserInterface::showDetails().
-   */
-  virtual void showDetails() const  = 0;
+    explicit MapItem(QObject* parent = nullptr);
+    
+    /**
+     * Indicates whether the item is visible on the map or not.
+     */
+    virtual bool isVisible() const = 0;
+    
+    /**
+     * Indicates whether the item's label should be drawn on the map.
+     * Note that returning false in this function does not mean drawlabel() will
+     * not be called.
+     */
+    virtual bool isLabelVisible() const = 0;
+    
+    /**
+     * Position of the item, global coordinates.
+     */
+    virtual const LonLat& position() const = 0;
+    
+    /**
+     * Draws the specific item.
+     * For FlightItems it will be the airplane model.
+     * For AirportItems it will be the airport icon.
+     * For FirItems it will be the label.
+     *
+     * \param shader Shader program that is in use during rendering the item.
+     */
+    virtual void drawItem(QOpenGLShaderProgram* shader) const = 0;
+    
+    /**
+     * Draws the item label.
+     * FirItem won't draw anything.
+     *
+     * \param shader Shader program that is in use during rendering the item.
+     */
+    virtual void drawLabel(QOpenGLShaderProgram* shader) const = 0;
+    
+    /**
+     * Draws the item specific elements when it is under mouse.
+     * For FlightItems and AirportItems it means just rendering the lines.
+     *
+     * \param shader Shader program that is in use during rendering the item.
+     */
+    virtual void drawFocused(QOpenGLShaderProgram* shader) const = 0;
+    
+    /**
+     * Tooltip text, shown when the item is mouseover'ed.
+     * Return empty string to ignore.
+     */
+    virtual QString tooltipText() const = 0;
+    
+    /**
+     * Calls UserInterface::showDetails().
+     */
+    virtual void showDetails() const  = 0;
 };
 
 #endif // MAPITEM_H

@@ -31,33 +31,35 @@
 /**
  * The interpolator for LonLat, so that it can be animated nicely, i.e. by MapScene.
  */
-QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress) {
-  return LonLat(
-    start.longitude() + (end.longitude() - start.longitude()) * progress,
-    start.latitude() + (end.latitude() - start.latitude()) * progress
-  );
+QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress)
+{
+    return LonLat(
+               start.longitude() + (end.longitude() - start.longitude()) * progress,
+               start.latitude() + (end.latitude() - start.latitude()) * progress
+           );
 }
 
-int main(int argc, char** argv) {
-  Q_INIT_RESOURCE(files);
-  Q_INIT_RESOURCE(imgs);
-  Q_INIT_RESOURCE(shaders);
-  Q_INIT_RESOURCE(weather);
-  
-  QCoreApplication::setApplicationName(QStringLiteral("Vatsinator"));
-  QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
-  QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
-  QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
-  
-  qRegisterMetaType<LonLat>("LonLat");
-  qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
-  qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
-  
-  qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
-  
-  /* Defined in events/types.cpp */
-  extern void init_event_types();
-  init_event_types();
-  
-  return VatsinatorApplication(argc, argv).exec();
+int main(int argc, char** argv)
+{
+    Q_INIT_RESOURCE(files);
+    Q_INIT_RESOURCE(imgs);
+    Q_INIT_RESOURCE(shaders);
+    Q_INIT_RESOURCE(weather);
+    
+    QCoreApplication::setApplicationName(QStringLiteral("Vatsinator"));
+    QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
+    QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
+    QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
+    
+    qRegisterMetaType<LonLat>("LonLat");
+    qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
+    qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
+    
+    qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
+    
+    /* Defined in events/types.cpp */
+    extern void init_event_types();
+    init_event_types();
+    
+    return VatsinatorApplication(argc, argv).exec();
 }

@@ -28,17 +28,17 @@
  */
 class ResizableListView : public QListView {
     Q_OBJECT
-
+    
 public:
-  ResizableListView(QWidget* parent = nullptr);
-  
-  QSize sizeHint() const override;
-  
+    ResizableListView(QWidget* parent = nullptr);
+    
+    QSize sizeHint() const override;
+    
 protected:
-  void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
-  void rowsInserted(const QModelIndex& parent, int start, int end) override;
-  
-
+    void rowsAboutToBeRemoved(const QModelIndex& parent, int start, int end) override;
+    void rowsInserted(const QModelIndex& parent, int start, int end) override;
+    
+    
 };
 
 #endif // RESIZABLELISTVIEW_H

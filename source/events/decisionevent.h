@@ -29,41 +29,47 @@
  * appropriate action should be taken.
  */
 class DecisionEvent : public QEvent {
-  
+
 public:
-  /**
-   * The Decision enum describes user decisions.
-   */
-  enum Decision {
-    Accepted,   /**< User pressed "OK", "Accept" or something that indicates
+    /**
+     * The Decision enum describes user decisions.
+     */
+    enum Decision {
+        Accepted,   /**< User pressed "OK", "Accept" or something that indicates
                   a positive decision. */
-    TryAgain,   /**< User pressed "Try again" button. */
-    Declined    /**< User pressed "No", "Decline" or something that indicates
+        TryAgain,   /**< User pressed "Try again" button. */
+        Declined    /**< User pressed "No", "Decline" or something that indicates
                   a negative decision. */
-  };
-  
-  /**
-   * Creates a new DecisionEvent.
-   * 
-   * \param context Describes a context where the particular decision was made.
-   * \param decision The decision that has been made.
-   */
-  DecisionEvent(QString context, Decision decision);
-  
-  /**
-   * Gets the decision context.
-   */
-  inline const QString& context() const { return __context; }
-  
-  /**
-   * Gets the user decision.
-   */
-  inline Decision decision() const { return __decision; }
-  
+    };
+    
+    /**
+     * Creates a new DecisionEvent.
+     *
+     * \param context Describes a context where the particular decision was made.
+     * \param decision The decision that has been made.
+     */
+    DecisionEvent(QString context, Decision decision);
+    
+    /**
+     * Gets the decision context.
+     */
+    inline const QString& context() const
+    {
+        return __context;
+    }
+    
+    /**
+     * Gets the user decision.
+     */
+    inline Decision decision() const
+    {
+        return __decision;
+    }
+    
 private:
-  QString __context;
-  Decision __decision;
-  
+    QString __context;
+    Decision __decision;
+    
 };
 
 #endif // DECISIONEVENT_H

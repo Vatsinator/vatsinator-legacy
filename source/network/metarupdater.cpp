@@ -33,78 +33,86 @@ static Q_CONSTEXPR int UpdateInterval = 5 * 1000 * 60; // 5 minutes
 MetarUpdater::MetarUpdater (MetarListModel* model, QObject* parent) :
     QObject (parent),
     __metars(model),
-    __downloader(new PlainTextDownloader(this)) {
-  connect(__downloader, &PlainTextDownloader::finished, this, &MetarUpdater::__readMetars);
-  startTimer(UpdateInterval, Qt::VeryCoarseTimer);
+    __downloader(new PlainTextDownloader(this))
+{
+    connect(__downloader, &PlainTextDownloader::finished, this, &MetarUpdater::__readMetars);
+    startTimer(UpdateInterval, Qt::VeryCoarseTimer);
 }
 
 void
-MetarUpdater::fetch(QString icao) {
-  QUrl vatsimMetars = vApp()->vatsimDataHandler()->metar();
-  if (vatsimMetars.isEmpty()) {
-    qDebug("Vatsim status not read yet; postponing request");
-    __requests.enqueue(icao);
-  } else {
-    QUrlQuery query(QStringLiteral("id=%1").arg(icao.toLower()));
-    QUrl url(vatsimMetars);
-    url.setQuery(query);
-    __downloader->fetch(url);
-    __requests.enqueue(icao);
-  }
-}
-
-void
-MetarUpdater::update() {
-  for (int i = 0; i < __metars->rowCount(); ++i) {
-    auto index = __metars->data(__metars->index(i), MetarRole);
-    if (index.isValid()) {
-      Q_ASSERT(index.canConvert<Metar>());
-      Metar m = index.value<Metar>();
-      fetch(m.icao());
+MetarUpdater::fetch(QString icao)
+{
+    QUrl vatsimMetars = vApp()->vatsimDataHandler()->metar();
+    
+    if (vatsimMetars.isEmpty()) {
+        qDebug("Vatsim status not read yet; postponing request");
+        __requests.enqueue(icao);
+    } else {
+        QUrlQuery query(QStringLiteral("id=%1").arg(icao.toLower()));
+        QUrl url(vatsimMetars);
+        url.setQuery(query);
+        __downloader->fetch(url);
+        __requests.enqueue(icao);
     }
-  }
 }
 
 void
-MetarUpdater::timerEvent(QTimerEvent* event) {
-  update();
-  Q_UNUSED(event);
+MetarUpdater::update()
+{
+    for (int i = 0; i < __metars->rowCount(); ++i) {
+        auto index = __metars->data(__metars->index(i), MetarRole);
+        
+        if (index.isValid()) {
+            Q_ASSERT(index.canConvert<Metar>());
+            Metar m = index.value<Metar>();
+            fetch(m.icao());
+        }
+    }
 }
 
 void
-MetarUpdater::__readMetars() {
-  // How to recognize unavailable metars.
-  // This value represents the response returned by vatsim server
-  // in case given METAR could not be found.
-  static const QString NoMetarText = QStringLiteral("No METAR available");
-  
-  QString response = __downloader->data().simplified();
+MetarUpdater::timerEvent(QTimerEvent* event)
+{
+    update();
+    Q_UNUSED(event);
+}
 
-  if (response.isEmpty())
-    return;
-
-  if (response.contains(NoMetarText)) {
-    __requests.dequeue();
-    return;
-  }
-  
-  QString metar;
-  QStringList words = response.split(' ');
-  for (const auto& w: words) {
-    if (w.length() == 4 && w.startsWith(__requests.head(), Qt::CaseInsensitive)) {
-      if (!metar.isEmpty())
+void
+MetarUpdater::__readMetars()
+{
+    // How to recognize unavailable metars.
+    // This value represents the response returned by vatsim server
+    // in case given METAR could not be found.
+    static const QString NoMetarText = QStringLiteral("No METAR available");
+    
+    QString response = __downloader->data().simplified();
+    
+    if (response.isEmpty())
+        return;
+        
+    if (response.contains(NoMetarText)) {
+        __requests.dequeue();
+        return;
+    }
+    
+    QString metar;
+    QStringList words = response.split(' ');
+    
+    for (const auto& w : words) {
+        if (w.length() == 4 && w.startsWith(__requests.head(), Qt::CaseInsensitive)) {
+            if (!metar.isEmpty())
+                __metars->addOrUpdate(metar);
+                
+            metar.clear();
+        }
+        
+        metar.append(w).append(" ");
+    }
+    
+    if (!metar.isEmpty())
         __metars->addOrUpdate(metar);
-      
-      metar.clear();
-    }
-
-    metar.append(w).append(" ");
-  }
-
-  if (!metar.isEmpty())
-    __metars->addOrUpdate(metar);
-
-  __requests.dequeue();
+        
+    __requests.dequeue();
 }
 
 

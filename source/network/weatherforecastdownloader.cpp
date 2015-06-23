@@ -29,69 +29,78 @@ bool WeatherForecastDownloader::__initialized = false;
 
 WeatherForecastDownloader::WeatherForecastDownloader(QObject* parent):
     QObject(parent),
-    __request(nullptr) {
-  
-  if (!__initialized)
-    __initializeProviders();
+    __request(nullptr)
+{
+
+    if (!__initialized)
+        __initializeProviders();
 }
 
 void
-WeatherForecastDownloader::download(WeatherForecastRequest* request) {
-  Q_ASSERT(!__request);
-  
-  __currentProvider = __providers.begin();
-  __request = request;
-  __useCurrentProvider();
-}
-
-void
-WeatherForecastDownloader::__useCurrentProvider() {
-  if (__currentProvider == __providers.end()) {
-    WeatherForecastReply* reply = new WeatherForecastReply(__request, this);
-    reply->setError(WeatherForecastReply::NetworkError);
-    emit finished(reply);
-    __request = nullptr;
-  }
-  
-  WeatherForecastInterface* provider = *__currentProvider;
-  WeatherForecastReply* reply = provider->fetch(__request);
-  connect(reply, &WeatherForecastReply::finished, this, &WeatherForecastDownloader::__replyFinished);
-  
-}
-
-void
-WeatherForecastDownloader::__replyFinished() {
-  WeatherForecastReply* reply = qobject_cast<WeatherForecastReply*>(sender());
-  Q_ASSERT(reply);
-  
-  switch (reply->error()) {
-    case WeatherForecastReply::NotFoundError:
-    case WeatherForecastReply::NetworkError:
-      ++__currentProvider;
-      __useCurrentProvider();
-      break;
-      
-    case WeatherForecastReply::NoError:
-      emit finished(reply);
-      __request = nullptr;
-      break;
-  }
-}
-
-void
-WeatherForecastDownloader::__initializeProviders() {
-  auto plugins = QPluginLoader::staticPlugins();
-  for (auto& p: plugins) {
-    QJsonObject pluginData = p.metaData();
-    if (!pluginData["IID"].isString())
-      continue;
+WeatherForecastDownloader::download(WeatherForecastRequest* request)
+{
+    Q_ASSERT(!__request);
     
-    QString iid = pluginData["IID"].toString();
-    if (iid != "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
-      continue;
+    __currentProvider = __providers.begin();
+    __request = request;
+    __useCurrentProvider();
+}
+
+void
+WeatherForecastDownloader::__useCurrentProvider()
+{
+    if (__currentProvider == __providers.end()) {
+        WeatherForecastReply* reply = new WeatherForecastReply(__request, this);
+        reply->setError(WeatherForecastReply::NetworkError);
+        emit finished(reply);
+        __request = nullptr;
+    }
     
-    WeatherForecastInterface* i = qobject_cast<WeatherForecastInterface*>(p.instance());
-    if (i)
-      __providers << i;
-  }
+    WeatherForecastInterface* provider = *__currentProvider;
+    WeatherForecastReply* reply = provider->fetch(__request);
+    connect(reply, &WeatherForecastReply::finished, this, &WeatherForecastDownloader::__replyFinished);
+    
+}
+
+void
+WeatherForecastDownloader::__replyFinished()
+{
+    WeatherForecastReply* reply = qobject_cast<WeatherForecastReply*>(sender());
+    Q_ASSERT(reply);
+    
+    switch (reply->error()) {
+        case WeatherForecastReply::NotFoundError:
+        case WeatherForecastReply::NetworkError:
+            ++__currentProvider;
+            __useCurrentProvider();
+            break;
+            
+        case WeatherForecastReply::NoError:
+            emit finished(reply);
+            __request = nullptr;
+            break;
+    }
+}
+
+void
+WeatherForecastDownloader::__initializeProviders()
+{
+    auto plugins = QPluginLoader::staticPlugins();
+    
+    for (auto& p : plugins) {
+        QJsonObject pluginData = p.metaData();
+        
+        if (!pluginData["IID"].isString())
+            continue;
+            
+        QString iid = pluginData["IID"].toString();
+        
+        if (iid != "org.eu.vatsinator.Vatsinator.WeatherForecastInterface")
+            continue;
+            
+        WeatherForecastInterface* i = qobject_cast<WeatherForecastInterface*>(p.instance());
+        
+        if (i)
+            __providers << i;
+    }
 }

@@ -31,41 +31,47 @@
  * It contains global coastline as well as triangles.
  */
 class WorldMap : public QObject, public Notifiable {
-  Q_OBJECT
-
-  struct Polygon {
-    QVector<Point>          borders;
-    QVector<unsigned int>   triangles;
-  };
-  
+    Q_OBJECT
+    
+    struct Polygon {
+        QVector<Point>          borders;
+        QVector<unsigned int>   triangles;
+    };
+    
 public:
-  
-  /**
-   * Default constructor.
-   */
-  WorldMap(QObject* parent = nullptr);
-  
-  /**
-   * Called by VatsinatorApplication only.
-   */
-  void initialize();
-  
-  /**
-   * Gives direct access to the coastline.
-   */
-  const QVector<Point>& borders() const { return __worldPolygon.borders; }
-  
-  /**
-   * Gives direct access to triangles that fill lands.
-   */
-  const QVector<unsigned int>& triangles() const { return __worldPolygon.triangles; }
 
+    /**
+     * Default constructor.
+     */
+    WorldMap(QObject* parent = nullptr);
+    
+    /**
+     * Called by VatsinatorApplication only.
+     */
+    void initialize();
+    
+    /**
+     * Gives direct access to the coastline.
+     */
+    const QVector<Point>& borders() const
+    {
+        return __worldPolygon.borders;
+    }
+    
+    /**
+     * Gives direct access to triangles that fill lands.
+     */
+    const QVector<unsigned int>& triangles() const
+    {
+        return __worldPolygon.triangles;
+    }
+    
 private:
-  void __readDatabase();
-
-  Polygon __worldPolygon;
-
-
+    void __readDatabase();
+    
+    Polygon __worldPolygon;
+    
+    
 };
 
 #endif // WORLDMAP_H

@@ -31,7 +31,7 @@ class QMovie;
  * During the first state, the specified animation or text is being shown.
  * When subclassing, the DelayedWidget's paintEvent() implementation must
  * be called unless the state is Finished.
- * 
+ *
  * \code{.cpp}
  * void MyWidget::paintEvent(QPaintEvent* event) {
  *   if (status() == DelayedWidget::Loading) {
@@ -39,46 +39,55 @@ class QMovie;
  *   } else { ... }
  * }
  * \endcode
- * 
+ *
  * `DelayedWidget::Loading` is the default status.
  */
 class DelayedWidget : public QWidget {
-  Q_OBJECT
-  Q_ENUMS(Status)
-  
-  /**
-   * Describes the status of the widget.
-   */
-  Q_PROPERTY(Status status READ status WRITE setStatus)
-  
-  /**
-   * Keeps the current animation.
-   * The animation can be shown only when status == Loading.
-   */
-  Q_PROPERTY(QMovie* animation READ animation WRITE setAnimation)
-
+    Q_OBJECT
+    Q_ENUMS(Status)
+    
+    /**
+     * Describes the status of the widget.
+     */
+    Q_PROPERTY(Status status READ status WRITE setStatus)
+    
+    /**
+     * Keeps the current animation.
+     * The animation can be shown only when status == Loading.
+     */
+    Q_PROPERTY(QMovie* animation READ animation WRITE setAnimation)
+    
 public:
-  enum Status { Loading, Finished };
-  
-  /**
-   * The status is set to Loading by default.
-   */
-  explicit DelayedWidget(QWidget* = 0, Qt::WindowFlags = 0);
-  
-  void setStatus(Status);
-  void setAnimation(QMovie*);
-  
-  inline Status status() const { return __status; }
-  inline const QMovie* animation() const { return __animation; }
-  inline QMovie* animation() { return __animation; }
-  
+    enum Status { Loading, Finished };
+    
+    /**
+     * The status is set to Loading by default.
+     */
+    explicit DelayedWidget(QWidget* = 0, Qt::WindowFlags = 0);
+    
+    void setStatus(Status);
+    void setAnimation(QMovie*);
+    
+    inline Status status() const
+    {
+        return __status;
+    }
+    inline const QMovie* animation() const
+    {
+        return __animation;
+    }
+    inline QMovie* animation()
+    {
+        return __animation;
+    }
+    
 protected:
-  virtual void paintEvent(QPaintEvent*) override;
-  
+    virtual void paintEvent(QPaintEvent*) override;
+    
 private:
-  Status __status;
-  QMovie* __animation;
-  
+    Status __status;
+    QMovie* __animation;
+    
 };
 
 #endif // DELAYEDWIDGET_H

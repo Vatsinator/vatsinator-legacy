@@ -28,52 +28,56 @@
 #include "aboutwindow.h"
 #include "ui/about.h"
 
-AboutWindow::AboutWindow(QWidget* parent) : BaseWindow(parent) {
-  setupUi(this);
-  
-  connect(qApp, SIGNAL(aboutToQuit()),
-          this, SLOT(hide()));
-  connect(vApp()->resourceManager(),
-                SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
-          this,
-                SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
-  
-  AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
-  VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
-  ChangelogField->setHtml("<pre>" % trUtf8(CHANGELOG_TEXT) % "</pre>");
-  
-  QFont titleFont = QApplication::font();
-  titleFont.setPointSize(titleFont.pointSize() + 2);
-  TitleLabel->setFont(titleFont);
+AboutWindow::AboutWindow(QWidget* parent) : BaseWindow(parent)
+{
+    setupUi(this);
+    
+    connect(qApp, SIGNAL(aboutToQuit()),
+            this, SLOT(hide()));
+    connect(vApp()->resourceManager(),
+            SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
+            this,
+            SLOT(__updateVersionStatus(ResourceManager::VersionStatus)));
+            
+    AuthorsField->setHtml(trUtf8(ABOUT_TEXT));
+    VersionLabel->setText(tr("Version %1").arg(VATSINATOR_VERSION));
+    ChangelogField->setHtml("<pre>" % trUtf8(CHANGELOG_TEXT) % "</pre>");
+    
+    QFont titleFont = QApplication::font();
+    titleFont.setPointSize(titleFont.pointSize() + 2);
+    TitleLabel->setFont(titleFont);
 }
 
 void
-AboutWindow::showEvent(QShowEvent* event) {
-  if (LicenseField->toPlainText().isEmpty()) {
-    QFile file(":/about/COPYING");
-    bool result = file.open(QIODevice::ReadOnly | QIODevice::Text);
-    Q_ASSERT(result);
-    Q_UNUSED(result);
+AboutWindow::showEvent(QShowEvent* event)
+{
+    if (LicenseField->toPlainText().isEmpty()) {
+        QFile file(":/about/COPYING");
+        bool result = file.open(QIODevice::ReadOnly | QIODevice::Text);
+        Q_ASSERT(result);
+        Q_UNUSED(result);
+        
+        QString content = file.readAll();
+        file.close();
+        
+        LicenseField->setHtml("<pre>" % content.toHtmlEscaped() % "</pre>");
+    }
     
-    QString content = file.readAll();
-    file.close();
-    
-    LicenseField->setHtml("<pre>" % content.toHtmlEscaped() % "</pre>");
-  }
-  
-  BaseWindow::showEvent(event);
+    BaseWindow::showEvent(event);
 }
 
 void
-AboutWindow::__updateVersionStatus(ResourceManager::VersionStatus status) {
-  QPalette p = VersionStatusLabel->palette();
-  if (status == ResourceManager::Updated) {
-    p.setColor(QPalette::WindowText, Qt::darkGreen);
-    VersionStatusLabel->setPalette(p);
-    VersionStatusLabel->setText(tr("up-to-date", "Vatsinator version indicator"));
-  } else {
-    p.setColor(QPalette::WindowText, Qt::red);
-    VersionStatusLabel->setPalette(p);
-    VersionStatusLabel->setText(tr("outdated", "Vatsinator version indicator"));
-  }
+AboutWindow::__updateVersionStatus(ResourceManager::VersionStatus status)
+{
+    QPalette p = VersionStatusLabel->palette();
+    
+    if (status == ResourceManager::Updated) {
+        p.setColor(QPalette::WindowText, Qt::darkGreen);
+        VersionStatusLabel->setPalette(p);
+        VersionStatusLabel->setText(tr("up-to-date", "Vatsinator version indicator"));
+    } else {
+        p.setColor(QPalette::WindowText, Qt::red);
+        VersionStatusLabel->setPalette(p);
+        VersionStatusLabel->setText(tr("outdated", "Vatsinator version indicator"));
+    }
 }

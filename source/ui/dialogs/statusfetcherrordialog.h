@@ -28,11 +28,11 @@
  * to continue.
  */
 class StatusFetchErrorDialog : public QMessageBox {
-  Q_OBJECT
-
+    Q_OBJECT
+    
 public:
-  explicit StatusFetchErrorDialog(QWidget* parent = nullptr);
-
+    explicit StatusFetchErrorDialog(QWidget* parent = nullptr);
+    
 };
 
 #endif // STATUSFETCHERRORDIALOG_H

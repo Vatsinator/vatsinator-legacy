@@ -76,33 +76,38 @@ Client::Client(const QStringList& data) :
 Client::~Client() {}
 
 void
-Client::update(const QStringList& data) {
-  __pid = data[1].toUInt();
-  __realName = data[2].simplified();
-  __server = data[14];
-  __onlineFrom = QDateTime::fromString(data[37], "yyyyMMddhhmmss");
-  __position = LonLat(data[6].toFloat(), data[5].toFloat());
-  
-  __timestamp = vApp()->vatsimDataHandler()->currentTimestamp();
+Client::update(const QStringList& data)
+{
+    __pid = data[1].toUInt();
+    __realName = data[2].simplified();
+    __server = data[14];
+    __onlineFrom = QDateTime::fromString(data[37], "yyyyMMddhhmmss");
+    __position = LonLat(data[6].toFloat(), data[5].toFloat());
+    
+    __timestamp = vApp()->vatsimDataHandler()->currentTimestamp();
 }
 
 void
-Client::invalidate() {
-  emit invalid();
+Client::invalidate()
+{
+    emit invalid();
 }
 
 bool
-Client::isOnline() const {
-  return __timestamp == vApp()->vatsimDataHandler()->currentTimestamp();
+Client::isOnline() const
+{
+    return __timestamp == vApp()->vatsimDataHandler()->currentTimestamp();
 }
 
 bool
-Client::hasValidPosition() const {
-  return !position().isNull() && position().x() != 0.0 && position().y() != 0.0;
+Client::hasValidPosition() const
+{
+    return !position().isNull() && position().x() != 0.0 && position().y() != 0.0;
 }
 
 void
-Client::setPosition(const LonLat& position) {
-  __position = position;
+Client::setPosition(const LonLat& position)
+{
+    __position = position;
 }
 

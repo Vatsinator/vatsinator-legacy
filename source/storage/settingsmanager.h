@@ -35,90 +35,90 @@ class AbstractSettingsModule;
  * SM is typedef for SettingsManager.
  */
 class SettingsManager : public QObject {
-  Q_OBJECT
-  
-  friend class AbstractSettingsModule;
-
+    Q_OBJECT
+    
+    friend class AbstractSettingsModule;
+    
 signals:
-  void settingsChanged();
-
+    void settingsChanged();
+    
 public:
-  SettingsManager(QObject* parent = nullptr);
-  
-  /**
-   * Adds settings page.
-   */
-  void addPage(AbstractSettingsModule* page);
-  
-  /**
-   * We need this to be accessible before all pages are created.
-   * All pages are QWidget-dependent, so they can not be constructed
-   * before whole UI.
-   */
-  static QString earlyGetLocale();
-  
-  /**
-   * Gives access to particular setting.
-   * 
-   * \param s Page and variable name, glued by dot (.).
-   *    Example: SettingsManager::get("network.refresh_rate")
-   */
-  static const QVariant& get(const QString& s);
-  
-  /**
-   * If any class modifies the QSettings directly, it should call
-   * this method in order to have changes visible in the UI.
-   * 
-   * \param pageName Page name.
-   */
-  static void updateUi(const QString& page);
-  
+    SettingsManager(QObject* parent = nullptr);
+    
+    /**
+     * Adds settings page.
+     */
+    void addPage(AbstractSettingsModule* page);
+    
+    /**
+     * We need this to be accessible before all pages are created.
+     * All pages are QWidget-dependent, so they can not be constructed
+     * before whole UI.
+     */
+    static QString earlyGetLocale();
+    
+    /**
+     * Gives access to particular setting.
+     *
+     * \param s Page and variable name, glued by dot (.).
+     *    Example: SettingsManager::get("network.refresh_rate")
+     */
+    static const QVariant& get(const QString& s);
+    
+    /**
+     * If any class modifies the QSettings directly, it should call
+     * this method in order to have changes visible in the UI.
+     *
+     * \param pageName Page name.
+     */
+    static void updateUi(const QString& page);
+    
 public slots:
-  void initialize();
-  
-  /**
-   * Updates settings, but does not save them yet.
-   */
-  void updateSettings();
-  
-  /**
-   * Saves all settings to local config file.
-   */
-  void saveSettings();
-  
-  /**
-   * Clears all entries and then calls __restoreSettings().
-   */
-  void restoreDefaults();
-
+    void initialize();
+    
+    /**
+     * Updates settings, but does not save them yet.
+     */
+    void updateSettings();
+    
+    /**
+     * Saves all settings to local config file.
+     */
+    void saveSettings();
+    
+    /**
+     * Clears all entries and then calls __restoreSettings().
+     */
+    void restoreDefaults();
+    
 private:
-  /**
-   * Sets the given value in the settings map.
-   * \param key Key of the value.
-   * \param value The value.
-   */
-  static void updateValue(QString&& key, QVariant&& value);
-  
-  /**
-   * Reads config file, restores all settings.
-   */
-  void __restoreSettings();
-  
-  /**
-   * Gets page by module id.
-   */
-  AbstractSettingsModule* __getPage(const QString& s) const;
-  
-  /**
-   * Fills the default settings map.
-   */
-  void __fillDefaults();
-  
-  
-  QList<AbstractSettingsModule*> __pages;
-  QVariantHash __settings;
-  QVariantHash __defaults;
-
+    /**
+     * Sets the given value in the settings map.
+     * \param key Key of the value.
+     * \param value The value.
+     */
+    static void updateValue(QString&& key, QVariant&& value);
+    
+    /**
+     * Reads config file, restores all settings.
+     */
+    void __restoreSettings();
+    
+    /**
+     * Gets page by module id.
+     */
+    AbstractSettingsModule* __getPage(const QString& s) const;
+    
+    /**
+     * Fills the default settings map.
+     */
+    void __fillDefaults();
+    
+    
+    QList<AbstractSettingsModule*> __pages;
+    QVariantHash __settings;
+    QVariantHash __defaults;
+    
 };
 
 typedef SettingsManager SM;

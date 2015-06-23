@@ -20,9 +20,10 @@
 
 MetarAction::MetarAction(const QString& icao, QObject* parent) :
     QAction(tr("%1 metar").arg(icao), parent),
-    __icao(icao) {
-  
-  connect(this, &QAction::triggered, [this]() {
-    emit triggered(__icao);
-  });
+    __icao(icao)
+{
+
+    connect(this, &QAction::triggered, [this]() {
+        emit triggered(__icao);
+    });
 }

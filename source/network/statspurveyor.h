@@ -34,87 +34,90 @@ class QNetworkReply;
  * All functions are thread-safe.
  */
 class StatsPurveyor : public QObject {
-  Q_OBJECT
-  Q_ENUMS(UserDecision)
-  
-  /**
-   * Holds the user setting.
-   */
-  Q_PROPERTY(UserDecision userDecision READ userDecision WRITE setUserDecision)
-
+    Q_OBJECT
+    Q_ENUMS(UserDecision)
+    
+    /**
+     * Holds the user setting.
+     */
+    Q_PROPERTY(UserDecision userDecision READ userDecision WRITE setUserDecision)
+    
 signals:
-  /**
-   * Emitted when new reuqest is enqueued.
-   */
-  void newRequest();
-
+    /**
+     * Emitted when new reuqest is enqueued.
+     */
+    void newRequest();
+    
 public:
-  /**
-   * The UserDecision enum describes user choice.
-   */
-  enum UserDecision {
-    Accepted,   /**< User accepted statistics */
-    Declined,   /**< User declined sending anything */
-    NotYetMade  /**< User did not make the decision yet */
-  };
-  
-  /**
-   * The default constructor passes _parent_ to QObject.
-   */
-  explicit StatsPurveyor(QObject* parent = nullptr);
-  
-  virtual ~StatsPurveyor();
-  
-  void setUserDecision(UserDecision decision);
-  inline UserDecision userDecision() const { return __userDecision; }
-  
+    /**
+     * The UserDecision enum describes user choice.
+     */
+    enum UserDecision {
+        Accepted,   /**< User accepted statistics */
+        Declined,   /**< User declined sending anything */
+        NotYetMade  /**< User did not make the decision yet */
+    };
+    
+    /**
+     * The default constructor passes _parent_ to QObject.
+     */
+    explicit StatsPurveyor(QObject* parent = nullptr);
+    
+    virtual ~StatsPurveyor();
+    
+    void setUserDecision(UserDecision decision);
+    inline UserDecision userDecision() const
+    {
+        return __userDecision;
+    }
+    
 public slots:
-  /**
-   * Reports application startup; invoked automatically.
-   */
-  void reportStartup();
-  
-  /**
-   * Use this function to report unrecognized ATC callsigns.
-   */
-  void reportNoAtc(const QString& callsign);
-
+    /**
+     * Reports application startup; invoked automatically.
+     */
+    void reportStartup();
+    
+    /**
+     * Use this function to report unrecognized ATC callsigns.
+     */
+    void reportNoAtc(const QString& callsign);
+    
 private:
-  
-  void __enqueueRequest(const QNetworkRequest& request);
-  
+
+    void __enqueueRequest(const QNetworkRequest& request);
+    
 private slots:
-  /**
-   * Usually JSON-formatted response.
-   */
-  void __parseResponse();
-  
-  /**
-   * Dequeues next request and executes it.
-   */
-  void __nextRequest();
-  
-  /**
-   * Honors user's settings.
-   */
-  void __applySettings();
-  
-  /**
-   * Starts new request if nothing is being sent at the moment.
-   */
-  void __nextIfFree();
-  
+    /**
+     * Usually JSON-formatted response.
+     */
+    void __parseResponse();
+    
+    /**
+     * Dequeues next request and executes it.
+     */
+    void __nextRequest();
+    
+    /**
+     * Honors user's settings.
+     */
+    void __applySettings();
+    
+    /**
+     * Starts new request if nothing is being sent at the moment.
+     */
+    void __nextIfFree();
+    
 private:
-  UserDecision __userDecision;
-  
-  /* networkAccessible = NotAccessible when user disables stats */
-  QNetworkAccessManager __nam;
-  
-  /* Requests to be sent */
-  QQueue<QNetworkRequest> __requests;
-  
-  QNetworkReply* __reply;
-
+    UserDecision __userDecision;
+    
+    /* networkAccessible = NotAccessible when user disables stats */
+    QNetworkAccessManager __nam;
+    
+    /* Requests to be sent */
+    QQueue<QNetworkRequest> __requests;
+    
+    QNetworkReply* __reply;
+    
 };
 
 #endif // STATSPURVEYOR_H

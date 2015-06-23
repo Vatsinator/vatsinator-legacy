@@ -32,20 +32,20 @@
  */
 #pragma pack(1)
 struct FirHeader {
-  char  icao[8];
-  int   oceanic; // 0 or 1
-  Point externities[2];
-  Point textPosition;
+    char  icao[8];
+    int   oceanic; // 0 or 1
+    Point externities[2];
+    Point textPosition;
 };
 
 /**
  * FirRecord consists of the basic info (header), borders and triangles.
  */
 struct FirRecord {
-  FirHeader header;
-  
-  QVector<Point>          borders;
-  QVector<unsigned short> triangles;
+    FirHeader header;
+    
+    QVector<Point>          borders;
+    QVector<unsigned short> triangles;
 };
 #pragma pack()
 
@@ -55,43 +55,49 @@ struct FirRecord {
  * and the raw database file.
  */
 class FirDatabase : public QObject, public Notifiable {
-  Q_OBJECT
-  
+    Q_OBJECT
+    
 public:
-  
-  /**
-   * Default ctor.
-   */
-  FirDatabase(QObject* parent = nullptr);
-  
-  /**
-   * Called by VatsinatorApplication only.
-   */
-  void initialize();
 
-  /**
-   * Finds FirHeader entry by given ICAO.
-   * 
-   * \param icao The lookup ICAO code.
-   * \return FIR if any found, otherwise _nullptr_.
-   */
-  const FirRecord* find(const QString& icao);
-
-  /**
-   * Gives direct access to the vector of FIRs.
-   */
-  inline QVector<FirRecord>& firs() { return __firs; }
-  
-  /**
-   * Gives direct access to the vector of FIRs.
-   */
-  inline const QVector<FirRecord>& firs() const { return __firs; }
-
+    /**
+     * Default ctor.
+     */
+    FirDatabase(QObject* parent = nullptr);
+    
+    /**
+     * Called by VatsinatorApplication only.
+     */
+    void initialize();
+    
+    /**
+     * Finds FirHeader entry by given ICAO.
+     *
+     * \param icao The lookup ICAO code.
+     * \return FIR if any found, otherwise _nullptr_.
+     */
+    const FirRecord* find(const QString& icao);
+    
+    /**
+     * Gives direct access to the vector of FIRs.
+     */
+    inline QVector<FirRecord>& firs()
+    {
+        return __firs;
+    }
+    
+    /**
+     * Gives direct access to the vector of FIRs.
+     */
+    inline const QVector<FirRecord>& firs() const
+    {
+        return __firs;
+    }
+    
 private:
-  void __readDatabase();
-  
-  QVector<FirRecord> __firs;
-
+    void __readDatabase();
+    
+    QVector<FirRecord> __firs;
+    
 };
 
 #endif // FIRDATABASE_H

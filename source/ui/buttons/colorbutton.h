@@ -26,43 +26,46 @@
  * The ColorButton provides easy way to show and let pick any color.
  */
 class ColorButton : public QPushButton {
-  Q_OBJECT
-
-  /**
-   * This property holds the picked color.
-   */
-  Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
-  
+    Q_OBJECT
+    
+    /**
+     * This property holds the picked color.
+     */
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    
 signals:
-  void colorChanged(QColor color);
-  
+    void colorChanged(QColor color);
+    
 public:
-  /**
-   * The default constrcutor passes _parent_ to QPushButton.
-   */
-  ColorButton(QWidget* parent = nullptr);
-  
-  void setColor(const QColor& color);
-  
-  QSize sizeHint() const override;
-  QSize minimumSizeHint() const override;
-
-  inline const QColor& color() const { return __current; }
-  
+    /**
+     * The default constrcutor passes _parent_ to QPushButton.
+     */
+    ColorButton(QWidget* parent = nullptr);
+    
+    void setColor(const QColor& color);
+    
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
+    
+    inline const QColor& color() const
+    {
+        return __current;
+    }
+    
 protected:
-  void paintEvent(QPaintEvent* event) override;
-  
+    void paintEvent(QPaintEvent* event) override;
+    
 private:
-  void __initStyleOptionButton(QStyleOptionButton* option) const;
-
+    void __initStyleOptionButton(QStyleOptionButton* option) const;
+    
 private slots:
-  /**
-   * Opens the color dialog in order to let the user pick the color
-   */
-  void __pickColor();
-
+    /**
+     * Opens the color dialog in order to let the user pick the color
+     */
+    void __pickColor();
+    
 private:
-  QColor  __current;
+    QColor  __current;
 };
 
 #endif // COLORBUTTON_H

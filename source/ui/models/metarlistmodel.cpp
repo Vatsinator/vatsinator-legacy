@@ -27,75 +27,85 @@
 MetarListModel::MetarListModel(QObject* parent) :
     QAbstractListModel(parent) {}
 
-MetarListModel::~MetarListModel() {
-  qDeleteAll(__metars);
+MetarListModel::~MetarListModel()
+{
+    qDeleteAll(__metars);
 }
 
 void
-MetarListModel::addOrUpdate(const QString& metar) {
-  QString icao = metar.left(4).toUpper();
-  
-  auto it = std::find_if(__metars.begin(), __metars.end(), [&icao](Metar* m) {
-    return m->icao() == icao;
-  });
-  
-  if (it == __metars.end()) {
-    beginInsertRows(QModelIndex(), __metars.size(), __metars.size());
-    __metars << new Metar(icao, metar);
-    endInsertRows();
-  } else {
-    (*it)->setMetar(metar);
-    int n = it - __metars.begin();
-    emit dataChanged(createIndex(n, 0), createIndex(n, 0));
-  }
+MetarListModel::addOrUpdate(const QString& metar)
+{
+    QString icao = metar.left(4).toUpper();
+    
+    auto it = std::find_if(__metars.begin(), __metars.end(), [&icao](Metar * m) {
+        return m->icao() == icao;
+    });
+    
+    if (it == __metars.end()) {
+        beginInsertRows(QModelIndex(), __metars.size(), __metars.size());
+        __metars << new Metar(icao, metar);
+        endInsertRows();
+    } else {
+        (*it)->setMetar(metar);
+        int n = it - __metars.begin();
+        emit dataChanged(createIndex(n, 0), createIndex(n, 0));
+    }
 }
 
 int
-MetarListModel::rowCount(const QModelIndex& parent) const {
-  Q_UNUSED(parent);
-  return __metars.count();
+MetarListModel::rowCount(const QModelIndex& parent) const
+{
+    Q_UNUSED(parent);
+    return __metars.count();
 }
 
 QVariant
-MetarListModel::data(const QModelIndex& index, int role) const {
-  if (!index.isValid() || index.row() >= __metars.size())
-    return QVariant();
-
-  switch (role) {
-    case Qt::DisplayRole:
-      return __metars.at(index.row())->metar();
-    case Qt::ToolTipRole:
-      return __metars.at(index.row())->lastFetchTime();
-    case MetarRole:
-      return QVariant::fromValue(*(__metars.at(index.row())));
-    default:
-      return QVariant();
-  }
+MetarListModel::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid() || index.row() >= __metars.size())
+        return QVariant();
+        
+    switch (role) {
+        case Qt::DisplayRole:
+            return __metars.at(index.row())->metar();
+            
+        case Qt::ToolTipRole:
+            return __metars.at(index.row())->lastFetchTime();
+            
+        case MetarRole:
+            return QVariant::fromValue(*(__metars.at(index.row())));
+            
+        default:
+            return QVariant();
+    }
 }
 
 QModelIndexList
 MetarListModel::match(const QModelIndex& start, int role, const QVariant& value,
-                      int hits, Qt::MatchFlags flags) const {
-  if (role != MetarRole || !start.isValid())
-    return QAbstractItemModel::match(start, role, value, hits, flags);
-  
-  if (value.type() != QVariant::String)
-    return QModelIndexList();
-  
-  QString icao = value.toString().toUpper();
-  QModelIndexList matches;
-  for (int i = start.row(); i < __metars.size() && matches.size() < hits; ++i) {
-    if (__metars.at(i)->icao() == icao)
-      matches << createIndex(i, 0);
-  }
-  
-  return matches;
+                      int hits, Qt::MatchFlags flags) const
+{
+    if (role != MetarRole || !start.isValid())
+        return QAbstractItemModel::match(start, role, value, hits, flags);
+        
+    if (value.type() != QVariant::String)
+        return QModelIndexList();
+        
+    QString icao = value.toString().toUpper();
+    QModelIndexList matches;
+    
+    for (int i = start.row(); i < __metars.size() && matches.size() < hits; ++i) {
+        if (__metars.at(i)->icao() == icao)
+            matches << createIndex(i, 0);
+    }
+    
+    return matches;
 }
 
 void
-MetarListModel::clear() {
-  beginResetModel();
-  qDeleteAll(__metars);
-  __metars.clear();
-  endResetModel();
+MetarListModel::clear()
+{
+    beginResetModel();
+    qDeleteAll(__metars);
+    __metars.clear();
+    endResetModel();
 }
