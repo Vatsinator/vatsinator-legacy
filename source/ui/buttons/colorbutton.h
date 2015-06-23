@@ -47,7 +47,7 @@ public:
   QSize sizeHint() const override;
   QSize minimumSizeHint() const override;
 
-  inline const QColor& color() { return __current; }
+  inline const QColor& color() const { return __current; }
   
 protected:
   void paintEvent(QPaintEvent* event) override;

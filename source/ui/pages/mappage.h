@@ -24,9 +24,9 @@
 #include <QWidget>
 
 #include "ui/ui_mappage.h"
-#include "storage/abstractsettingsmodule.h"
+#include "widgets/widgetsettingsmodule.h"
 
-class MapPage : public QWidget, public AbstractSettingsModule, private Ui::MapPage {
+class MapPage : public WidgetSettingsModule, private Ui::MapPage {
   Q_OBJECT
   
 signals:
@@ -40,7 +40,7 @@ public:
   QString moduleId() const override;
   
   /**
-   * @variables
+   * \variables
    * zoom_coefficient:                  int
    * staffed_fir_borders_color:         QColor
    * staffed_fir_background_color:      QColor

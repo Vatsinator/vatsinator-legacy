@@ -101,6 +101,7 @@ set (widgets_SRCS
   widgets/replaceablewidget.cpp
   widgets/scrolllabel.cpp
   widgets/weatherforecastwidget.cpp
+  widgets/widgetsettingsmodule.cpp
   
   windows/aboutwindow.cpp
   windows/airportdetailswindow.cpp
@@ -155,6 +156,7 @@ set (widgets_HEADERS
   widgets/replaceablewidget.h
   widgets/scrolllabel.h
   widgets/weatherforecastwidget.h
+  widgets/widgetsettingsmodule.h
   
   windows/aboutwindow.h
   windows/airportdetailswindow.h

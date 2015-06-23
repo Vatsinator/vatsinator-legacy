@@ -51,7 +51,7 @@ public:
   virtual QString moduleId() const = 0;
   
   /**
-   * Puts all values that the module handles in the settingsmanager's
+   * Puts all values that the module handles in the SettingsManager's
    * map, using setValue().
    */
   virtual void update() const = 0;

@@ -112,13 +112,17 @@ MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> functio
 
 const MapItem*
 MapScene::nearest(const LonLat& point) const {
+  Q_ASSERT(vApp()->vatsimDataHandler()->isInitialized());
+  
   auto it = spatial::neighbor_begin(__items, point);
   if (it == __items.end())
     return nullptr;
   
   while (!it->second->isVisible()) {
     ++it;
-    Q_ASSERT(it != __items.end());
+    
+    if (it == __items.end())
+      return nullptr;
   }
   
   return it->second;

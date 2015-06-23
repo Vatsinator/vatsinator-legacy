@@ -32,13 +32,15 @@ class QMovie;
  * When subclassing, the DelayedWidget's paintEvent() implementation must
  * be called unless the state is Finished.
  * 
+ * \code{.cpp}
  * void MyWidget::paintEvent(QPaintEvent* event) {
  *   if (status() == DelayedWidget::Loading) {
  *      DelayedWidget::paintEvent(event);
  *   } else { ... }
  * }
+ * \endcode
  * 
- * DelayedWidget::Loading is the default status.
+ * `DelayedWidget::Loading` is the default status.
  */
 class DelayedWidget : public QWidget {
   Q_OBJECT

@@ -23,9 +23,9 @@
 #include <QWidget>
 
 #include "ui/ui_viewpage.h"
-#include "storage/abstractsettingsmodule.h"
+#include "widgets/widgetsettingsmodule.h"
 
-class ViewPage : public QWidget, public AbstractSettingsModule, private Ui::ViewPage {
+class ViewPage : public WidgetSettingsModule, private Ui::ViewPage {
   Q_OBJECT
   
 signals:
@@ -37,27 +37,7 @@ public:
   QString listElement() const override;
   QString listIcon() const override;
   QString moduleId() const override;
-  
-  /**
-   * @variables
-   * pilots_layer:                      bool
-   * airports_layer:                    bool
-   * staffed_firs:                      bool
-   * unstaffed_firs:                    bool
-   * empty_airports:                    bool
-   * 
-   * pilot_labels.always:               bool
-   * pilot_labels.when_hovered:         bool
-   * pilot_labels.airport_related:      bool
-   * 
-   * airport_labels:                    bool
-   */
-  void update() const;
 
-protected:
-  void restore(QSettings& s, const QVariantHash& defaults) override;
-  void save(QSettings& s) override;
-  
 private slots:
   void __handleAlwaysCheckBox(int state);
   
