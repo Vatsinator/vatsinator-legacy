@@ -1,6 +1,6 @@
 /*
  * AboutDialog.qml
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,9 @@ import QtQuick.Layouts 1.1
 Rectangle {
     width: parent.width
     height: parent.height
-    color: "#d1e3ff"
+    
+    color: "#000000"
+    opacity: 0.9
     
     ColumnLayout {
         spacing: 10
@@ -34,14 +36,14 @@ Rectangle {
             text: qsTr("Vatsinator")
             font.bold: true
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#000000"
+            color: "#ffffff"
         }
         
         Label {
             text: qsTr("A simple Vatsim monitor")
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#000000"
+            color: "#ffffff"
         }
-    
     }
+    
 }

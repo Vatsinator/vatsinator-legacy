@@ -1,6 +1,6 @@
 /*
- * SwipeHandler.qml
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * screenimageprovider.h
+ * Copyright (C) 2015  Michal Garapich <michal@garapich.pl>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,29 +17,27 @@
  * 
  */
 
-import QtQuick 2.2
+#ifndef SCREENIMAGEPROVIDER_H
+#define SCREENIMAGEPROVIDER_H
 
-MouseArea {
-    id: root
+#include <QQuickImageProvider>
+
+/**
+ * The ScreenImageProvider provides a currently rendered state of the screen.
+ */
+class ScreenImageProvider : public QQuickImageProvider {
     
-    property int lastX: mouseX
+public:
+    ScreenImageProvider();
     
-    signal swipeStarted()
-    signal swipeEnded()
-    signal swipeContinues(var diffX)
+    /**
+     * \copydoc QQuickImageProvider::requestImage()
+     * 
+     * Provided images:
+     *  * "map" - the currently rendered map, in the current state.
+     */
+    QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize) override;
     
-    onPressed: {
-        root.swipeStarted()
-        lastX = mouse.x
-        mouse.accepted = true
-    }
-    
-    onPositionChanged: {
-        root.swipeContinues(mouse.x - lastX)
-        lastX = mouse.x
-    }
-    
-    onReleased: {
-        root.swipeEnded()
-    }
-}
+};
+
+#endif // SCREENIMAGEPROVIDER_H

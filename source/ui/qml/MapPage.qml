@@ -34,6 +34,7 @@ Item {
     
     Map {
         id: map
+        objectName: "map"
     }
     
     /* Semi-transparent background */
@@ -47,7 +48,8 @@ Item {
         anchors.fill: parent
         
         SwipeHandler {
-            width: parent.width / 20
+            objectName: "menuSwipeHandler"
+            width: parent.width * 0.05
             height: parent.height
             
             onSwipeEnded: mainMenu.toggleState()
@@ -55,7 +57,7 @@ Item {
         }
         
         MapControls {
-            width: (parent.width / 20) * 19
+            width: parent.width * 0.95
             height: parent.height
             
             onZoomUpdated: map.updateZoom(zoom)
@@ -75,6 +77,7 @@ Item {
     
     MainMenu {
         id: mainMenu
+        objectName: "mainMenu"
         onClicked: root.clicked(page)
     }
 }

@@ -1,6 +1,6 @@
 /*
  * map.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #define MAP_H
 
 #include <QQuickItem>
+#include <QImage>
 
 class MapRenderer;
 class QQuickWindow;
@@ -33,24 +34,67 @@ class Map : public QQuickItem {
     Q_OBJECT
     
 signals:
+    /**
+     * Emitted when the item is ready to render the map.
+     */
     void ready();
     
 public:
-    Map();
+    /**
+     * Default constructor, passes _parent_ to the QQuickItem.
+     */
+    Map(QQuickItem * parent = nullptr);
+    
+    /**
+     * Destructor.
+     */
     virtual ~Map();
     
-    Q_INVOKABLE void updateZoom(qreal);
-    Q_INVOKABLE void updatePosition(int, int);
+    /**
+     * Gets the currently rendered map.
+     */
+    QImage grab();
+    
+    /**
+     * Updates zoom by the given _factor_.
+     */
+    Q_INVOKABLE void updateZoom(qreal factor);
+    
+    /**
+     * Updates the map position.
+     */
+    Q_INVOKABLE void updatePosition(int x, int y);
+    
+    /**
+     * Returns an absolute path to where the cached map image is stored.
+     * 
+     * \note It is not guaranteed that the image file exists.
+     */
     Q_INVOKABLE QString cachedImageSource() const;
     
+    /**
+     * Gives direct access to the map renderer instance.
+     */
     inline MapRenderer* renderer()
     {
         return __renderer;
     }
     
 public slots:
+    /**
+     * Handles the window synchronization.
+     */
     void sync();
+    
+    /**
+     * Cleans up all used resources.
+     */
     void cleanup();
+    
+    /**
+     * Caches the currently rendered map to the image.
+     */
+    void cache();
     
 private slots:
     /**
@@ -61,15 +105,16 @@ private slots:
     /**
      * Handles the window change.
      */
-    void __handleWindowChanged(QQuickWindow*);
+    void __handleWindowChange(QQuickWindow* window);
     
     /**
-     *
+     * Handles the application state change.
      */
-    void __handleApplicationStateChanged(Qt::ApplicationState);
+    void __handleApplicationStateChange(Qt::ApplicationState state);
     
 private:
     MapRenderer* __renderer;
+    QImage __cached;
     
 };
 

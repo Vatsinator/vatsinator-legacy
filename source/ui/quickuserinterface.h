@@ -35,6 +35,18 @@ public:
     explicit QuickUserInterface(QObject* parent = nullptr);
     virtual ~QuickUserInterface();
     
+    /**
+     * Gives direct access to the root Vatsinator window item.
+     * Returns null if the qml was not loaded yet.
+     */
+    QObject* rootItem();
+    
+    /**
+     * Finds an item by the given name in the QML tree, beginning
+     * with _rootItem()_.
+     */
+    QObject* findObjectByName(const QString& name);
+    
     void initialize() override;
     
 public slots:

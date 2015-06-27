@@ -28,9 +28,18 @@ Rectangle {
     width: parent.width
     height: 150 /* TODO DPI-independent value */
     
+    color: mouse.pressed ? "#363f4c" : "#00ffffff"
+    
     Column {
-        anchors.fill: parent
-        anchors.verticalCenter: parent.verticalCenter
+        anchors {
+            left: parent.left
+            leftMargin: 60
+            right: parent.right
+            rightMargin: 60
+            verticalCenter: parent.verticalCenter
+        }
+        
+        spacing: 5
         
         Row {
             width: parent.width
@@ -39,18 +48,21 @@ Rectangle {
             Label {
                 text: callsign
                 font.bold: true
-                font.pointSize: font.pointSize + 1
+                font.pointSize: font.pointSize + 3
+                color: "#f3f3f3"
             }
             
             Label {
                 text: airport_from + " -> " + airport_to
-                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                color: "#f3f3f3"
             }
         }
         
         Label {
             text: real_name
             font.italic: true
+            color: "#f3f3f3"
         }
     }
     

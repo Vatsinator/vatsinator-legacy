@@ -120,6 +120,7 @@ set (widgets_SRCS
 set (quick_SRCS
     quickuserinterface.cpp
     quick/map.cpp
+    quick/screenimageprovider.cpp
 )
 
 set (widgets_HEADERS
@@ -180,6 +181,7 @@ set (widgets_HEADERS
 set (quick_HEADERS
     quickuserinterface.h
     quick/map.h
+    quick/screenimageprovider.h
 )
 
 set (ui_QRCS

@@ -26,13 +26,16 @@
 
 #include "map.h"
 
-Map::Map() :
+Map::Map(QQuickItem* parent) :
+    QQuickItem(parent),
     __renderer(nullptr)
 {
     setFlag(QQuickItem::ItemHasContents);
-    connect(this, SIGNAL(windowChanged(QQuickWindow*)), SLOT(__handleWindowChanged(QQuickWindow*)));
-    connect(qApp, SIGNAL(applicationStateChanged(Qt::ApplicationState)),
-            SLOT(__handleApplicationStateChanged(Qt::ApplicationState)), Qt::DirectConnection);
+    
+    connect(this, &Map::windowChanged, this, &Map::__handleWindowChange);
+    connect(qApp, &QGuiApplication::applicationStateChanged,
+            this, &Map::__handleApplicationStateChange,
+            Qt::DirectConnection);
 }
 
 Map::~Map()
@@ -40,22 +43,31 @@ Map::~Map()
 
 }
 
+QImage
+Map::grab()
+{
+    if (__cached.isNull())
+        cache();
+    
+    return __cached;
+}
+
 void
-Map::updateZoom(qreal _factor)
+Map::updateZoom(qreal factor)
 {
     if (__renderer)
-        __renderer->setZoom(__renderer->zoom() + (__renderer->zoom() * _factor));
+        __renderer->setZoom(__renderer->zoom() + (__renderer->zoom() * factor));
         
     if (window())
         window()->update();
 }
 
 void
-Map::updatePosition(int _x, int _y)
+Map::updatePosition(int x, int y)
 {
     if (__renderer) {
         LonLat center = __renderer->center();
-        QPoint p(_x, -_y);
+        QPoint p(x, -y);
         center -= __renderer->scaleToLonLat(p);
         center.ry() = qBound(-90.0, center.y(), 90.0);
         
@@ -106,6 +118,15 @@ Map::cleanup()
 }
 
 void
+Map::cache()
+{
+    if (window()) {
+        qDebug("Caching map...");
+        __cached = window()->grabWindow();
+    }
+}
+
+void
 Map::__cacheMapImage()
 {
     if (!window()) {
@@ -113,9 +134,7 @@ Map::__cacheMapImage()
         return;
     }
     
-    QImage image = window()->grabWindow();
-    
-    
+    QImage image = grab();
     bool result = image.save(cachedImageSource());
     
     if (!result)
@@ -123,24 +142,20 @@ Map::__cacheMapImage()
 }
 
 void
-Map::__handleWindowChanged(QQuickWindow* _win)
+Map::__handleWindowChange(QQuickWindow* window)
 {
-    if (_win) {
-        connect(_win,       SIGNAL(beforeSynchronizing()),
-                this,       SLOT(sync()), Qt::DirectConnection);
-        connect(_win,       SIGNAL(sceneGraphInvalidated()),
-                this,       SLOT(cleanup()), Qt::DirectConnection);
-        connect(vApp()->vatsimDataHandler(),
-                SIGNAL(vatsimDataUpdated()),
-                _win,       SLOT(update()));
-        _win->setClearBeforeRendering(false);
+    if (window) {
+        connect(window, &QQuickWindow::beforeSynchronizing, this, &Map::sync, Qt::DirectConnection);
+        connect(window, &QQuickWindow::sceneGraphInvalidated, this, &Map::cleanup, Qt::DirectConnection);
+        connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, window, &QQuickWindow::update);
+        window->setClearBeforeRendering(false);
     }
 }
 
 void
-Map::__handleApplicationStateChanged(Qt::ApplicationState _state)
+Map::__handleApplicationStateChange(Qt::ApplicationState state)
 {
-    switch (_state) {
+    switch (state) {
         case Qt::ApplicationSuspended:
         case Qt::ApplicationHidden:
         case Qt::ApplicationInactive:
@@ -150,6 +165,7 @@ Map::__handleApplicationStateChanged(Qt::ApplicationState _state)
             
         case Qt::ApplicationActive:
             qDebug("Restoring map...");
+            /* TODO */
             break;
     }
 }

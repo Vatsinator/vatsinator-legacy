@@ -23,11 +23,11 @@ Rectangle {
     width: parent.width
     height: parent.height
     
+    color: "#2a313b"
+    
     ListView {
         anchors.topMargin: 60
         anchors.bottomMargin: 60
-        anchors.leftMargin: 60
-        anchors.rightMargin: 60
         model: flights
         anchors.fill: parent
         delegate: FlightListDelegate {}

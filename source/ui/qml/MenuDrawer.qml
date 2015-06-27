@@ -22,7 +22,7 @@ import QtGraphicalEffects 1.0
 
 /* Menu drawer */
 Item {
-  id: root
+    id: root
     
     height: drawer.height + (2 * drawerShadow.glowRadius)
     width: 64 + drawer.anchors.leftMargin + (2 * drawerShadow.glowRadius)

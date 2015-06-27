@@ -23,6 +23,7 @@
 #include "events/decisionevent.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/quick/map.h"
+#include "ui/quick/screenimageprovider.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -36,15 +37,47 @@ QuickUserInterface::~QuickUserInterface()
 
 }
 
+QObject*
+QuickUserInterface::rootItem()
+{
+    auto objects = __engine.rootObjects();
+    for (QObject* o: objects) {
+        if (o->objectName() == "vatsinatorWindow")
+            return o;
+    }
+    
+    return nullptr;
+}
+
+QObject*
+QuickUserInterface::findObjectByName(const QString& name)
+{
+    QObject* root = qui()->rootItem();
+    if (root)
+        return root->findChild<QObject*>(name);
+    else
+        return nullptr;
+}
+
 void
 QuickUserInterface::initialize()
 {
     qmlRegisterType<Map>("org.eu.vatsinator.ui", 1, 0, "Map");
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));
+    __engine.addImageProvider(QStringLiteral("screen"), new ScreenImageProvider);
     
     QQmlContext* ctx = __engine.rootContext();
     ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
+    
+    QObject* swipeHandler = findObjectByName("menuSwipeHandler");
+    Q_ASSERT(swipeHandler);
+    Map* map = qobject_cast<Map*>(qui()->findObjectByName("map"));
+    Q_ASSERT(map);
+    
+    bool c = connect(swipeHandler, SIGNAL(swipeStarted()), map, SLOT(cache()));
+    Q_ASSERT(c);
+    Q_UNUSED(c);
     
     emit initialized();
 }
