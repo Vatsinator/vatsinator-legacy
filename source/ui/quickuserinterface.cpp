@@ -21,6 +21,7 @@
 #include <QtQuick>
 
 #include "events/decisionevent.h"
+#include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/quick/androidbridge.h"
 #include "ui/quick/map.h"
@@ -72,6 +73,7 @@ QuickUserInterface::initialize()
     
     QQmlContext* ctx = __engine.rootContext();
     ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
+    ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
     ctx->setContextProperty("android", new AndroidBridge(this));
     
     __engine.addImageProvider(QStringLiteral("screen"), new ScreenImageProvider);

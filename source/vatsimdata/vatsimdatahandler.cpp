@@ -91,6 +91,7 @@ T* selectPlugin()
 VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     QObject(parent),
     __flights(new FlightTableModel(this)),
+    __atcs(new AtcTableModel(this)),
     __status(NetConfig::Vatsim::statusUrl()),
     __currentTimestamp(0),
     __observers(0),
@@ -100,7 +101,6 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __downloader(new PlainTextDownloader(this)),
     __scheduler(new UpdateScheduler(this))
 {
-
     connect(vApp()->userInterface(),              SIGNAL(initialized()),
             this,                                 SLOT(__slotUiCreated()));
     connect(__downloader,                         SIGNAL(finished()),
@@ -147,19 +147,6 @@ VatsimDataHandler::dataUrl() const
         return __dataServers.at(qrand() % __dataServers.size());
     } else
         return __status;
-}
-
-AtcTableModel*
-VatsimDataHandler::atcTableModel() const
-{
-    AtcTableModel* model = new AtcTableModel();
-    
-    for (Client* c : __clients.values()) {
-        if (Controller* cc = qobject_cast<Controller*>(c))
-            model->add(cc);
-    }
-    
-    return model;
 }
 
 const Pilot*
@@ -673,6 +660,7 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
                 if (atc->isValid()) {
                     __clients[atc->callsign()] = atc;
                     __newClients << atc;
+                    __atcs->add(atc);
                 } else {
                     __observers += 1;
                     atc->deleteLater();

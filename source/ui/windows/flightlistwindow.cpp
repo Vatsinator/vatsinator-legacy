@@ -44,7 +44,6 @@ void
 FlightListWindow::showEvent(QShowEvent* event)
 {
     FlightsTable->setModel(vApp()->vatsimDataHandler()->flights());
-    
     BaseWindow::showEvent(event);
 }
 

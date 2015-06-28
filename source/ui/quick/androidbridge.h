@@ -23,6 +23,10 @@
 #include <QObject>
 #include <QColor>
 
+/**
+ * An utility class that makes it possible to access native parts
+ * of Android's from the C++ code.
+ */
 class AndroidBridge : public QObject {
     Q_OBJECT
     

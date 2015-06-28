@@ -1,6 +1,8 @@
 <RCC>
   <qresource prefix="qmls">
     <file>AboutDialog.qml</file>
+    <file>AtcList.qml</file>
+    <file>AtcListDelegate.qml</file>
     <file>FlightList.qml</file>
     <file>FlightListDelegate.qml</file>
     <file>main.qml</file>

@@ -1,6 +1,6 @@
 /*
  * atctablemodel.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -117,6 +117,21 @@ AtcTableModel::data(const QModelIndex& index, int role) const
             return QVariant::fromValue(reinterpret_cast<void*>(c));
         }
         
+        case CallsignRole:
+            return __staff.at(index.row())->callsign();
+            
+        case RealNameRole:
+            return __staff.at(index.row())->realName();
+            
+        case IcaoRole:
+            return __staff.at(index.row())->icao();
+            
+        case FrequencyRole:
+            return __staff.at(index.row())->frequency();
+            
+        case DescriptionRole:
+            return __staff.at(index.row())->description();
+        
         default:
             return QVariant();
     }
@@ -177,6 +192,20 @@ AtcTableModel::sort(int column, Qt::SortOrder order)
     }
     
     endResetModel();
+}
+
+QHash<int, QByteArray>
+AtcTableModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+    
+    roles[CallsignRole] = "callsign";
+    roles[RealNameRole] = "real_name";
+    roles[IcaoRole] = "icao";
+    roles[FrequencyRole] = "frequency";
+    roles[DescriptionRole] = "description";
+    
+    return roles;
 }
 
 void

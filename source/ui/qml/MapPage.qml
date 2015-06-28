@@ -17,7 +17,7 @@
  * 
  */
 
-import QtQuick 2.2
+import QtQuick 2.4
 import org.eu.vatsinator.ui 1.0
 
 /**

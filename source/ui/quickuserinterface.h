@@ -52,7 +52,8 @@ public:
      * 
      * The following properties are bound to the QML context:
      * * \c flights - the VatsimDataHandler's flights model;
-     * * \c android - \ref AndroidBridge instance
+     * * \c atcs - the VatsimDataHandler's atc model;
+     * * \c android - \ref AndroidBridge instance.
      */
     void initialize() override;
     

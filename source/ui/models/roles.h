@@ -32,6 +32,11 @@ enum {
     
     /* Flights */
     AirportFromRole /**< Origin airport */,
-    AirportToRole /**< Destination airport */
+    AirportToRole /**< Destination airport */,
+    
+    /* ATCs */
+    IcaoRole /**< Airport's ICAO code */,
+    FrequencyRole /**< Radio frequency of the ATC */,
+    DescriptionRole /**< ATC's description */
     
 };

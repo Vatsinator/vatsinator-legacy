@@ -149,14 +149,6 @@ public:
     const QUrl& dataUrl() const;
     
     /**
-     * Creates the new model and populates it with all controllers that are online.
-     *
-     * \return The newly allocated and filled model; needs to be deleted afterwards.
-     * \sa flightTableModel().
-     */
-    AtcTableModel* atcTableModel() const;
-    
-    /**
      * Looks for pilot by callsign.
      *
      * \param callsign Callsign of the pilot to be found.
@@ -266,11 +258,23 @@ public:
     }
     
     /**
-     * Gives access to all flights.
+     * Gives access to the model containing all flights.
+     * 
+     * \sa atcs().
      */
     inline FlightTableModel* flights()
     {
         return __flights;
+    }
+    
+    /**
+     * Gives access to the model containing all ATCs.
+     * 
+     * \sa fligths().
+     */
+    inline AtcTableModel* atcs()
+    {
+        return __atcs;
     }
     
     /**
@@ -478,6 +482,7 @@ private:
     QList<Client*> __newClients;
     
     FlightTableModel* __flights;
+    AtcTableModel* __atcs;
     
     /**
      * List of clients marked as invalid.

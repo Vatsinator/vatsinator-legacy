@@ -34,6 +34,7 @@ ListModel {
     ListElement {
         name: "Controllers"
         icon: "images/ic_menu_atc.png"
+        page: "AtcList.qml"
     }
     
     ListElement {

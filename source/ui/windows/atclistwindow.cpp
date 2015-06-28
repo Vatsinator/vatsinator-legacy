@@ -42,11 +42,7 @@ AtcListWindow::AtcListWindow(QWidget* parent) :
 void
 AtcListWindow::showEvent(QShowEvent* event)
 {
-    if (auto m = AtcTable->model())
-        m->deleteLater();
-        
-    AtcTable->setModel(vApp()->vatsimDataHandler()->atcTableModel());
-    
+    AtcTable->setModel(vApp()->vatsimDataHandler()->atcs());   
     BaseWindow::showEvent(event);
 }
 

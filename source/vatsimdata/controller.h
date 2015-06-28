@@ -30,7 +30,7 @@ class Fir;
 class Uir;
 
 /**
- * The Controller class represents the logged-in ATC.
+ * The Controller class represents the ATC.
  */
 class Controller : public Client {
     Q_OBJECT
