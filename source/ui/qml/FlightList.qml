@@ -23,7 +23,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     
-    color: "#2a313b"
+    color: "#263238"
     
     ListView {
         anchors.topMargin: 60

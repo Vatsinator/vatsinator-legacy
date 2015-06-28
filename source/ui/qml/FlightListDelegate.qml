@@ -28,7 +28,7 @@ Rectangle {
     width: parent.width
     height: 150 /* TODO DPI-independent value */
     
-    color: mouse.pressed ? "#363f4c" : "#00ffffff"
+    color: mouse.pressed ? "#37474f" : "#263238"
     
     Column {
         anchors {
@@ -48,21 +48,20 @@ Rectangle {
             Label {
                 text: callsign
                 font.bold: true
-                font.pointSize: font.pointSize + 3
-                color: "#f3f3f3"
+                color: "#ffffff"
             }
             
             Label {
                 text: airport_from + " -> " + airport_to
                 verticalAlignment: Text.AlignVCenter
-                color: "#f3f3f3"
+                color: "#ffffff"
             }
         }
         
         Label {
             text: real_name
             font.italic: true
-            color: "#f3f3f3"
+            color: "#ffffff"
         }
     }
     

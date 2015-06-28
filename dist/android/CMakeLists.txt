@@ -18,6 +18,28 @@ if (NOT ADB_BIN)
     message(WARNING "Could not find adb. Add it to the path if you want to use the deploy/run_apk targets")
 endif ()
 
+get_target_property(QtCore_location Qt5::Core LOCATION)
+get_target_property(QtGui_location Qt5::Gui LOCATION)
+get_target_property(QtNetwork_location Qt5::Network LOCATION)
+get_target_property(QtQuick_location Qt5::Quick LOCATION)
+get_target_property(QtQml_location Qt5::Qml LOCATION)
+get_target_property(QtAndroidExtras_location Qt5::AndroidExtras LOCATION)
+
+install (FILES
+        ${QtCore_location}
+        ${QtGui_location}
+        ${QtNetwork_location}
+        ${QtQuick_location}
+        ${QtQml_location}
+        ${QtAndroidExtras_location}
+        DESTINATION libs/${ANDROID_ABI}
+    )
+
+get_filename_component (_quazip_fname ${QUAZIP_LIBRARIES} NAME)
+get_filename_component (_quazip_realpath ${QUAZIP_LIBRARIES} REALPATH)
+
+install (FILES ${_quazip_realpath} DESTINATION libs/${ANDROID_ABI} RENAME ${_quazip_fname})
+
 
 # setup permissions
 set (ANDROID_PERMISSIONS
@@ -43,6 +65,7 @@ add_custom_command (
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/res ${CMAKE_CURRENT_BINARY_DIR}/res/
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/src
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_BINARY_DIR}/src/
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/source/android/java/* ${CMAKE_CURRENT_BINARY_DIR}/src/*
     COMMAND ${ANDROID_BIN} ARGS update project -t android-${ANDROID_NATIVE_API_LEVEL} --name ${CMAKE_PROJECT_NAME} -p ${CMAKE_CURRENT_BINARY_DIR}
 )
 

@@ -15,6 +15,7 @@
         <item>Qt5Network</item>
         <item>Qt5Quick</item>
         <item>Qt5Qml</item>
+        <item>Qt5AndroidExtras</item>
     </array>
 
     <array name="bundled_in_lib">

@@ -22,11 +22,11 @@ import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 
 Rectangle {
+    id: root
     width: parent.width
     height: parent.height
     
-    color: "#000000"
-    opacity: 0.9
+    color: "#263238"
     
     ColumnLayout {
         spacing: 10
@@ -46,4 +46,6 @@ Rectangle {
         }
     }
     
+    Component.onCompleted: android.navigationBarColor = root.color
+    Component.onDestruction: android.navigationBarColor = undefined
 }

@@ -26,6 +26,7 @@ Item {
     signal clicked(url page)
     
     property int swipe: 0
+    property alias color: container.color
     
     width: parent.width
     height: parent.height
@@ -96,6 +97,7 @@ Item {
         State {
             name: "shown"
             PropertyChanges { target: root; swipe: root.width; focus: true }
+            PropertyChanges { target: android; navigationBarColor: root.color }
         },
         State {
             name: "hidden"

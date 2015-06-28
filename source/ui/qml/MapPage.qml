@@ -37,7 +37,7 @@ Item {
         objectName: "map"
     }
     
-    /* Semi-transparent background */
+    /* Semi-transparent overlay */
     Rectangle {
         anchors.fill: parent
         color: "#262626"

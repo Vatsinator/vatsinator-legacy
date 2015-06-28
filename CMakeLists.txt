@@ -52,6 +52,9 @@ include_directories (${QUAZIP_INCLUDE_DIRS})
 if (ANDROID)
     find_package (Qt5Quick REQUIRED)
     include_directories(${Qt5Quick_INCLUDE_DIRS})
+    
+    find_package (Qt5AndroidExtras REQUIRED)
+    include_directories (${Qt5AndroidExtras_INCLUDE_DIRS})
 else () # desktop
     find_package (OpenGL REQUIRED)
     
@@ -157,29 +160,6 @@ if (LINUX)
     option (WITH_RPM "Create RPM package" OFF)
 endif ()
 add_subdirectory (dist)
-
-if (ANDROID)
-    get_target_property(QtCore_location Qt5::Core LOCATION)
-    get_target_property(QtGui_location Qt5::Gui LOCATION)
-    get_target_property(QtNetwork_location Qt5::Network LOCATION)
-    get_target_property(QtQuick_location Qt5::Quick LOCATION)
-    get_target_property(QtQml_location Qt5::Qml LOCATION)
-
-    install (FILES
-            ${QtCore_location}
-            ${QtGui_location}
-            ${QtNetwork_location}
-            ${QtXml_location}
-            ${QtQuick_location}
-            ${QtQml_location}
-            DESTINATION libs/${ANDROID_ABI}
-        )
-    
-    get_filename_component (_quazip_fname ${QUAZIP_LIBRARIES} NAME)
-    get_filename_component (_quazip_realpath ${QUAZIP_LIBRARIES} REALPATH)
-    
-    install (FILES ${_quazip_realpath} DESTINATION libs/${ANDROID_ABI} RENAME ${_quazip_fname})
-endif ()
 
 set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 

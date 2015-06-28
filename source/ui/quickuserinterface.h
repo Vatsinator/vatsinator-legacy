@@ -47,6 +47,13 @@ public:
      */
     QObject* findObjectByName(const QString& name);
     
+    /**
+     * \copydoc UserInterface::initialize()
+     * 
+     * The following properties are bound to the QML context:
+     * * \c flights - the VatsimDataHandler's flights model;
+     * * \c android - \ref AndroidBridge instance
+     */
     void initialize() override;
     
 public slots:
