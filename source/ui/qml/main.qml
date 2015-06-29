@@ -24,9 +24,7 @@ ApplicationWindow {
     id: vatsinatorWindow
     objectName: "vatsinatorWindow"
     
-    height: 480
     title: "Vatsinator"
-    width: 320
     
     property Component mapPage : MapPage {
         onClicked: stackView.push(Qt.resolvedUrl(page))

@@ -23,23 +23,14 @@ Rectangle {
     width: parent.width
     height: parent.height
     
-    color: "#263238"
+    color: palette.background()
     
     ListView {
         anchors.topMargin: 60
         anchors.bottomMargin: 60
         model: flights
         anchors.fill: parent
+        spacing: 2
         delegate: FlightListDelegate {}
-    }
-    
-    Image {
-        source: "images/overlay_search.png"
-        
-        sourceSize.width: 150
-        sourceSize.height: 150
-        
-        x: parent.width - 200;
-        y: parent.height - 200;
     }
 }

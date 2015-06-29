@@ -31,9 +31,9 @@ public class VatsinatorActivity extends org.qtproject.qt5.android.bindings.QtAct
         instance = this;
     }
     
-    public static void setNavigationBarColor(int r, int g, int b)
+    public static void setNavigationBarColor(int r, int g, int b, int a)
     {
-        final int color = Color.argb(255, r, g, b);
+        final int color = Color.argb(a, r, g, b);
         
         instance.runOnUiThread(new Runnable() {
             @Override

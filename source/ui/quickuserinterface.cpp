@@ -25,6 +25,7 @@
 #include "ui/models/flighttablemodel.h"
 #include "ui/quick/androidbridge.h"
 #include "ui/quick/map.h"
+#include "ui/quick/paletteprovider.h"
 #include "ui/quick/screenimageprovider.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
@@ -69,14 +70,15 @@ QuickUserInterface::initialize()
 {
     qmlRegisterType<Map>("org.eu.vatsinator.ui", 1, 0, "Map");
     
-    __engine.load(QUrl("qrc:///qmls/main.qml"));
-    
     QQmlContext* ctx = __engine.rootContext();
     ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
     ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
     ctx->setContextProperty("android", new AndroidBridge(this));
+    ctx->setContextProperty("palette", new PaletteProvider(this));
     
-    __engine.addImageProvider(QStringLiteral("screen"), new ScreenImageProvider);
+    __engine.addImageProvider("screen", new ScreenImageProvider);
+    
+    __engine.load(QUrl("qrc:///qmls/main.qml"));
     
     QObject* swipeHandler = findObjectByName("menuSwipeHandler");
     Q_ASSERT(swipeHandler);

@@ -100,8 +100,7 @@ Map::sync()
 {
     if (!__renderer) {
         __renderer = new MapRenderer();
-        connect(window(),   SIGNAL(beforeRendering()),
-                __renderer, SLOT(paint()),  Qt::DirectConnection);
+        connect(window(), &QQuickWindow::beforeRendering, __renderer, &MapRenderer::paint, Qt::DirectConnection);
         emit ready();
     }
     
@@ -145,10 +144,10 @@ void
 Map::__handleWindowChange(QQuickWindow* window)
 {
     if (window) {
+        window->setClearBeforeRendering(false);
         connect(window, &QQuickWindow::beforeSynchronizing, this, &Map::sync, Qt::DirectConnection);
         connect(window, &QQuickWindow::sceneGraphInvalidated, this, &Map::cleanup, Qt::DirectConnection);
         connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, window, &QQuickWindow::update);
-        window->setClearBeforeRendering(false);
     }
 }
 

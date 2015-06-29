@@ -35,6 +35,7 @@ Item {
     Map {
         id: map
         objectName: "map"
+        anchors.fill: parent
     }
     
     /* Semi-transparent overlay */

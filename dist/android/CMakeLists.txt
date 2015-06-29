@@ -99,6 +99,7 @@ install_android_qt_qmls (
     QtQuick/Layouts/libqquicklayoutsplugin.so
     QtQuick/Window.2/libwindowplugin.so
     QtQuick.2/libqtquick2plugin.so
+    
 )
 
 # list of bundled jars

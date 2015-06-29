@@ -28,7 +28,7 @@ Rectangle {
     width: parent.width
     height: 150 /* TODO DPI-independent value */
     
-    color: mouse.pressed ? "#37474f" : "#263238"
+    color: mouse.pressed ? palette.byHue(50) : palette.background()
     
     Column {
         anchors {
@@ -48,20 +48,23 @@ Rectangle {
             Label {
                 text: callsign
                 font.bold: true
-                color: "#ffffff"
             }
             
             Label {
                 text: icao
                 verticalAlignment: Text.AlignVCenter
-                color: "#ffffff"
             }
         }
         
         Label {
             text: description
             font.italic: true
-            color: "#ffffff"
+        }
+        
+        Rectangle {
+            width: parent.width
+            height: 3
+            color: palette.divider()
         }
     }
     

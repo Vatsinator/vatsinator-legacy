@@ -97,7 +97,6 @@ Item {
         State {
             name: "shown"
             PropertyChanges { target: root; swipe: root.width; focus: true }
-            PropertyChanges { target: android; navigationBarColor: root.color }
         },
         State {
             name: "hidden"

@@ -53,14 +53,14 @@ function (install_android_qt_qmls)
     set (QT_ANDROID_XML_bundled_in_assets "${QT_ANDROID_XML_bundled_in_assets}")
     foreach (QML ${ARGV})
         if (${QML} MATCHES "/$") # directory
-            install (DIRECTORY ${QT_INSTALL_QML_DIR}/${QML}
-                DESTINATION assets/qml/${QML})
-      
             file (GLOB_RECURSE QML_FILES RELATIVE ${QT_INSTALL_QML_DIR} ${QT_INSTALL_QML_DIR}/${QML}*)
             foreach (QML_FILE ${QML_FILES})
                 if (${QML_FILE} MATCHES "\\.so$")
                     install_android_qt_qmls(${QML_FILE})
                 else ()
+                    get_filename_component (QML_FILE_DIR ${QML_FILE} DIRECTORY)
+                    install (FILES ${QT_INSTALL_QML_DIR}/${QML_FILE}
+                        DESTINATION assets/qml/${QML_FILE_DIR})
                     set (QT_ANDROID_XML_bundled_in_assets "${QT_ANDROID_XML_bundled_in_assets}
                         <item>qml/${QML_FILE}:qml/${QML_FILE}</item>")
                 endif ()

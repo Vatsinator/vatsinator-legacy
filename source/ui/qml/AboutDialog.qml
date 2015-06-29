@@ -26,7 +26,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     
-    color: "#263238"
+    color: palette.background()
     
     ColumnLayout {
         spacing: 10
@@ -36,16 +36,11 @@ Rectangle {
             text: qsTr("Vatsinator")
             font.bold: true
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#ffffff"
         }
         
         Label {
             text: qsTr("A simple Vatsim monitor")
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#ffffff"
         }
     }
-    
-    Component.onCompleted: android.navigationBarColor = root.color
-    Component.onDestruction: android.navigationBarColor = undefined
 }

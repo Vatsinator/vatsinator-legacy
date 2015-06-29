@@ -51,8 +51,8 @@ AndroidBridge::__setNavigationBarColorImpl(const QColor& navigationBarColor)
     QAndroidJniObject::callStaticMethod<void>(
         "org/eu/vatsinator/VatsinatorActivity",
         "setNavigationBarColor",
-        "(III)V", // gets three ints, returns void
-        navigationBarColor.red(), navigationBarColor.green(), navigationBarColor.blue()
+        "(IIII)V", // gets four ints, returns void
+        navigationBarColor.red(), navigationBarColor.green(), navigationBarColor.blue(), navigationBarColor.alpha()
     );
     
     QAndroidJniEnvironment env;
