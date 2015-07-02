@@ -25,19 +25,20 @@ Rectangle {
     signal clicked
     
     width: parent.width
-    height: 150 /* TODO DPI-independent value */
+    height: 48 * dp
     
     color: mouse.pressed ? "#3E3E3E" : container.color
     
     Row {
         anchors.fill: parent
         anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: 60
-        spacing: 30
+        anchors.leftMargin: 16 * dp
+        spacing: 16 * dp
         
         Image {
             source: icon
             anchors.verticalCenter: parent.verticalCenter
+            sourceSize.width: 56 * dp
         }
     
         Text {

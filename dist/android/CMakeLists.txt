@@ -40,6 +40,7 @@ get_filename_component (_quazip_realpath ${QUAZIP_LIBRARIES} REALPATH)
 
 install (FILES ${_quazip_realpath} DESTINATION libs/${ANDROID_ABI} RENAME ${_quazip_fname})
 
+include (QtAndroidDeploy)
 
 # setup permissions
 set (ANDROID_PERMISSIONS
@@ -71,8 +72,6 @@ add_custom_command (
 
 get_property (vatsinator_LIBRARY TARGET vatsinator PROPERTY LOCATION)
 
-include (QtAndroidDeploy)
-
 # install required plugins
 install_android_qt_plugins (
     platforms/android/libqtforandroid.so
@@ -93,7 +92,7 @@ install_android_qt_qmls (
     Qt/labs/settings/libqmlsettingsplugin.so
     QtGraphicalEffects/
     QtQml/Models.2/libmodelsplugin.so
-    QtQuick/Controls/libqtquickcontrolsplugin.so
+    QtQuick/Controls/
     QtQuick/Dialogs/libdialogplugin.so
     QtQuick/Dialogs/Private/libdialogsprivateplugin.so
     QtQuick/Layouts/libqquicklayoutsplugin.so
@@ -144,21 +143,3 @@ add_custom_target (deploy_apk
     COMMAND ${ADB_BIN} uninstall ${ANDROID_PACKAGE_NAME}
     COMMAND ${ADB_BIN} install -r ${CMAKE_CURRENT_BINARY_DIR}/bin/${ANDROID_APK_FILE_NAME}
 )
-
-add_custom_target (run_apk
-    COMMAND ${ADB_BIN} shell am start -n ${ANDROID_PACKAGE_NAME}/org.qtproject.qt5.android.bindings.QtActivity
-)
-
-if (${CMAKE_BUILD_TYPE} MATCHES Debug)
-    # 1. generate a fake Android.mk
-    file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/jni/Android.mk "APP_ABI := ${ANDROID_ABI}\n")
-
-    # 2. generate gdb.setup
-    get_directory_property (INCLUDE_DIRECTORIES DIRECTORY . INCLUDE_DIRECTORIES)
-    string (REGEX REPLACE ";" " " INCLUDE_DIRECTORIES "${INCLUDE_DIRECTORIES}")
-    file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/libs/${ANDROID_ABI}/gdb.setup "set solib-search-path ${CMAKE_CURRENT_BINARY_DIR}/obj/local/${ANDROID_ABI}\n")
-    file (APPEND ${CMAKE_CURRENT_BINARY_DIR}/libs/${ANDROID_ABI}/gdb.setup "directory ${INCLUDE_DIRECTORIES}\n")
-
-    # 3. copy gdbserver executable
-    file (COPY ${ANDROID_NDK}/prebuilt/android-arm/gdbserver/gdbserver DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/libs/${ANDROID_ABI}/)
-endif (${CMAKE_BUILD_TYPE} MATCHES Debug)

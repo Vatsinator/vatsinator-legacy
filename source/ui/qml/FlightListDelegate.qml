@@ -26,7 +26,7 @@ Rectangle {
     signal clicked
     
     width: parent.width
-    height: 150 /* TODO DPI-independent value */
+    height: 72 * dp
     
     color: mouse.pressed ? palette.byHue(50) : palette.background()
     

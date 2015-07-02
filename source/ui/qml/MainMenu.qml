@@ -52,7 +52,7 @@ Item {
         id: container
         
         anchors.fill: parent
-        anchors.rightMargin: parent.width * 0.1
+        anchors.rightMargin: Math.max(56 * dp, parent.width - 320 * dp)
         color: "#363636"
         
         ListView {

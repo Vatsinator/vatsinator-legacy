@@ -19,12 +19,16 @@
 
 import QtQuick 2.4
 import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.3
 
 ApplicationWindow {
     id: vatsinatorWindow
     objectName: "vatsinatorWindow"
     
     title: "Vatsinator"
+    width: 640
+    height: 480
+    visible: true
     
     property Component mapPage : MapPage {
         onClicked: stackView.push(Qt.resolvedUrl(page))
@@ -44,5 +48,10 @@ ApplicationWindow {
         initialItem: mapPage
     }
     
-    Component.onCompleted: visible = true
+    style: ApplicationWindowStyle {
+        background: Rectangle {
+            color: "#00ffffff"
+        }
+    }
+    
 }

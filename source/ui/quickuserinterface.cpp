@@ -75,6 +75,8 @@ QuickUserInterface::initialize()
     ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
     ctx->setContextProperty("android", new AndroidBridge(this));
     ctx->setContextProperty("palette", new PaletteProvider(this));
+    qreal dp = QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
+    ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp));
     
     __engine.addImageProvider("screen", new ScreenImageProvider);
     

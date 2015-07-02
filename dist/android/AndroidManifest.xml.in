@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
-<manifest package="@ANDROID_PACKAGE_NAME@" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="@ANDROID_VERSION_NAME@" android:versionCode="@ANDROID_VERSION_CODE@" android:installLocation="auto">
-    <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/vatsinator_icon" android:label="@string/app_name">
+<manifest package="@ANDROID_PACKAGE_NAME@"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:versionName="@ANDROID_VERSION_NAME@"
+          android:versionCode="@ANDROID_VERSION_CODE@"
+          android:installLocation="auto">
+    <application android:hardwareAccelerated="true"
+                 android:name="org.qtproject.qt5.android.bindings.QtApplication"
+                 android:icon="@drawable/vatsinator_icon"
+                 android:label="@string/app_name">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"
                   android:name="org.eu.vatsinator.VatsinatorActivity"
                   android:label="@string/app_name"
