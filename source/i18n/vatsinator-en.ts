@@ -38,7 +38,7 @@
         <translation>Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/qml/AboutDialog.qml" line="43"/>
+        <location filename="../ui/qml/AboutDialog.qml" line="42"/>
         <source>A simple Vatsim monitor</source>
         <translation>A simple Vatsim monitor</translation>
     </message>
@@ -347,17 +347,17 @@
 <context>
     <name>AtcTableModel</name>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="133"/>
+        <location filename="../ui/models/atctablemodel.cpp" line="148"/>
         <source>Callsign</source>
         <translation>Callsign</translation>
     </message>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="136"/>
+        <location filename="../ui/models/atctablemodel.cpp" line="151"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="139"/>
+        <location filename="../ui/models/atctablemodel.cpp" line="154"/>
         <source>Frequency</source>
         <translation>Frequency</translation>
     </message>
@@ -1166,19 +1166,19 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="415"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="501"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="561"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="598"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="402"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="453"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="488"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="548"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="585"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>File %1 could not be opened. Please reinstall the application.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="425"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="476"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="511"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="608"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="463"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="498"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="595"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>File %1 could not be read. Please reinstall the application.</translation>
     </message>

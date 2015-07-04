@@ -35,12 +35,12 @@
     <message>
         <location filename="../ui/qml/AboutDialog.qml" line="36"/>
         <source>Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/qml/AboutDialog.qml" line="43"/>
+        <location filename="../ui/qml/AboutDialog.qml" line="42"/>
         <source>A simple Vatsim monitor</source>
-        <translation type="unfinished"/>
+        <translation>Prosty monitor sieci Vatsim</translation>
     </message>
 </context>
 <context>
@@ -347,17 +347,17 @@
 <context>
     <name>AtcTableModel</name>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="133"/>
+        <location filename="../ui/models/atctablemodel.cpp" line="148"/>
         <source>Callsign</source>
         <translation>Znak wywoławczy</translation>
     </message>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="136"/>
+        <location filename="../ui/models/atctablemodel.cpp" line="151"/>
         <source>Name</source>
         <translation>Nazwisko</translation>
     </message>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="139"/>
+        <location filename="../ui/models/atctablemodel.cpp" line="154"/>
         <source>Frequency</source>
         <translation>Częstotliwość</translation>
     </message>
@@ -1026,7 +1026,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
         <source>Database updates</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizacje bazy danych</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="30"/>
@@ -1046,13 +1046,13 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="106"/>
         <source>ATC bookings</source>
-        <translation type="unfinished"/>
+        <translation>Rezerwacje ATC</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="116"/>
         <source>Download:</source>
         <extracomment>Opens section in settings window, answers question &quot;What to download?&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pobieraj:</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="77"/>
@@ -1166,19 +1166,19 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="415"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="466"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="501"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="561"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="598"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="402"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="453"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="488"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="548"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="585"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>Plik %1 nie mógł zostać otwarty. Przeinstaluj aplikację.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="425"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="476"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="511"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="608"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="463"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="498"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="595"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>Plik %1 nie mógł zostać odczytany. Przeinstaluj aplikację.</translation>
     </message>
@@ -1314,7 +1314,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>Show airport labels</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż etykiety lotnisk</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="141"/>
