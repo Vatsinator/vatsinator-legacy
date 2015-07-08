@@ -84,14 +84,13 @@ function (_android_generate_config target)
     cmake_policy (POP)
     
     set (libs_xml_location ${_android_apkutils_dir}/libs.xml.in)
+    set (files_dir ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkFiles)
     
     configure_file (${_android_apkutils_dir}/AndroidApkUtilsConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsConfig.cmake @ONLY)
 endfunction ()
 
 #
 #       android_deploy_apk(<target>
-#               ANDROID_PACKAGE_NAME package_name
-#               ANDROID_MANIFEST manifest_file
 #               [RESOURCES resources...]
 #               [SOURCES sources...]
 #               [PATHS paths...]
@@ -106,20 +105,22 @@ function (android_deploy_apk target)
     cmake_parse_arguments (
         _arg
         "QT_GENERATE_LIBS_XML"
-        "ANDROID_PACKAGE_NAME;ANDROID_MANIFEST;ASSETS_PREFIX"
+        "ASSETS_PREFIX"
         "PATHS;RESOURCES;SOURCES;QT_QML_MODULES;QT_PLUGINS"
         ${ARGN}
     )
     
-    if (NOT _arg_ANDROID_MANIFEST)
-        message (FATAL_ERROR "AndroidManifest.xml location not specified!")
+    get_target_property (manifest_file ${target} ANDROID_MANIFEST)
+    message ("dasdasdasdasd ${manifest_file}")
+    if (NOT manifest_file)
+        message (FATAL_ERROR "AndroidManifest.xml not created!")
     endif ()
-    set (manifest_file ${_arg_ANDROID_MANIFEST})
     
-    if (NOT _arg_ANDROID_PACKAGE_NAME)
-        message (FATAL_ERROR "Android package name not set! Please provide the ANDROID_PACKAGE_NAME argument")
+    get_target_property (package_name ${target} ANDROID_PACKAGE_NAME)
+    if (NOT package_name)
+        message (FATAL_ERROR "Android package name not set! Please update the ANDROID_PACKAGE_NAME property for target ${target}")
     endif ()
-    set (package_name ${_arg_ANDROID_PACKAGE_NAME})
+    
     set (package_location ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkFiles/${package_name})
     
     add_custom_target (android_refresh_package
@@ -173,6 +174,7 @@ function (android_deploy_apk target)
         DEPENDS android_copy_resources android_copy_sources
         COMMAND ${CMAKE_COMMAND} -E copy ${manifest_file} ${package_location}
         COMMAND ${ANDROID_BIN} update project -t android-${ANDROID_NATIVE_API_LEVEL} --name ${CMAKE_PROJECT_NAME} -p ${package_location}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkFiles
     )
     
     if (_arg_PATHS)
@@ -224,11 +226,6 @@ endfunction ()
 
 #
 #       android_generate_manifest(<output>
-#               ANDROID_APP_NAME app_name
-#               ANDROID_APP_LIB app_lib
-#               ANDROID_PACKAGE_NAME package_name
-#               ANDROID_VERSION_CODE version_code
-#               ANDROID_VERSION_NAME version_name
 #               [TEMPLATE_FILE template_file]
 #               [ANDROID_APPLICATION_CLASS application_class]
 #               [ANDROID_ACTIVITY_CLASS activity_class]
@@ -238,17 +235,6 @@ endfunction ()
 # Generates the AndroidManifest.xml file from the given template. The template
 # is taken from Qt sources and is designed to support Qt applications. It is
 # however possible to provide any custom template.
-#
-# The ANDROID_APP_NAME is the app name itself.
-#
-# The ANDROID_APP_LIB is the main library of the app.
-#
-# The ANDROID_PACKAGE_NAME specifies the fully-qualified package name for the
-# Android app, i.e. "org.foo.bar.baz".
-#
-# The ANDROID_VERSION_CODE defines version code for the Android app.
-#
-# The ANDROID_VERSION_NAME is the human-readable app version.
 #
 # The TEMPLATE_FILE is a path to the AndroidManifest.xml template file. Each of
 # variables documented here can be re-used in the template, with "@" syntax.
@@ -268,50 +254,43 @@ endfunction ()
 # APK or not. This value is not set by default, so the APK does not require Ministro.
 #
 # Sample usage:
-# android_qt_generate_manifest(${CMAKE_CURRENT_BINARY_DIR}/AndroidManifest.xml
-#               ANDROID_APP_NAME "Baz"
+# android_qt_generate_manifest(baz
 #               ANDROID_APP_LIB "baz"
-#               ANDROID_PACKAGE_NAME "org.foo.bar.baz"
-#               ANDROID_VERSION_CODE 2
-#               ANDROID_VERSION_NAME "1.1"
 #               ANDROID_ACTIVITY_CLASS "org.foo.bar.BazActivity"
 #               ANDROID_PERMISSIONS ACCESS_NETWORK_STATE INTERNET RECEIVE_SMS)
 #
 # TODO Add ANDROID_FEATURES option to auto-generate features as well
 #
-function (android_generate_manifest output)
+function (android_generate_manifest target)
     cmake_parse_arguments (
         _arg
         "QT_DONT_BUNDLE_LOCAL_QT_LIBS"
-        "ANDROID_APP_NAME;ANDROID_APP_LIB;ANDROID_PACKAGE_NAME;ANDROID_VERSION_CODE;ANDROID_VERSION_NAME;TEMPLATE_FILE;ANDROID_APPLICATION_CLASS;ANDROID_ACTIVITY_CLASS"
+        "TEMPLATE_FILE;ANDROID_APPLICATION_CLASS;ANDROID_ACTIVITY_CLASS"
         "ANDROID_PERMISSIONS"
         ${ARGN}
     )
     
-    if (NOT _arg_ANDROID_APP_NAME)
-        message (FATAL_ERROR "Android app name not set! Please provide the ANDROID_APP_NAME argument")
+    get_target_property (ANDROID_APP_NAME ${target} ANDROID_APP_NAME)
+    if (NOT ANDROID_APP_NAME)
+        message (FATAL_ERROR "Android app name not set! Please update the ANDROID_APP_NAME property for target ${target}")
     endif ()
-    set (ANDROID_APP_NAME ${_arg_ANDROID_APP_NAME})
     
-    if (NOT _arg_ANDROID_APP_LIB)
-        message (FATAL_ERROR "Android app library not set! Please provide the ANDROID_APP_LIB argument")
+    get_target_property (ANDROID_VERSION_NAME ${target} ANDROID_VERSION_NAME)
+    if (NOT ANDROID_VERSION_NAME)
+        message (FATAL_ERROR "Android app version name not set! Please update the ANDROID_VERSION_NAME property for target ${target}")
     endif ()
-    set (ANDROID_APP_LIB ${_arg_ANDROID_APP_LIB})
     
-    if (NOT _arg_ANDROID_PACKAGE_NAME)
-        message (FATAL_ERROR "Android package name not set! Please provide the ANDROID_PACKAGE_NAME argument")
+    get_target_property (ANDROID_VERSION_CODE ${target} ANDROID_VERSION_CODE)
+    if (NOT ANDROID_VERSION_CODE)
+        message (FATAL_ERROR "Android app version code not set! Please update the ANDROID_VERSION_CODE property for target ${target}")
     endif ()
-    set (ANDROID_PACKAGE_NAME ${_arg_ANDROID_PACKAGE_NAME})
     
-    if (NOT _arg_ANDROID_VERSION_CODE)
-        message (FATAL_ERROR "Android app version code not set! Please provide the ANDROID_VERSION_CODE argument")
+    get_target_property (ANDROID_PACKAGE_NAME ${target} ANDROID_PACKAGE_NAME)
+    if (NOT ANDROID_PACKAGE_NAME)
+        message (FATAL_ERROR "Android package name not set! Please update the ANDROID_PACKAGE_NAME property for target ${target}")
     endif ()
-    set (ANDROID_VERSION_CODE ${_arg_ANDROID_VERSION_CODE})
     
-    if (NOT _arg_ANDROID_VERSION_NAME)
-        message (FATAL_ERROR "Android app version name not set! Please provide the ANDROID_VERSION_NAME argument")
-    endif ()
-    set (ANDROID_VERSION_NAME ${_arg_ANDROID_VERSION_NAME})
+    set (ANDROID_APP_LIB ${target}) # TODO make this customizable
     
     set (TEMPLATE_FILE "${_android_apkutils_dir}/AndroidManifest.xml.in")
     if (_arg_TEMPLATE_FILE)
@@ -341,5 +320,7 @@ function (android_generate_manifest output)
         set (QT_BUNDLE_LOCAL_QT_LIBS 1)
     endif ()
     
+    set (output "${CMAKE_CURRENT_BINARY_DIR}/AndroidApkFiles/AndroidManifest.xml")
     configure_file (${TEMPLATE_FILE} ${output} @ONLY)
+    set_target_properties (${target} PROPERTIES ANDROID_MANIFEST ${output})
 endfunction ()

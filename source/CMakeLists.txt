@@ -65,6 +65,10 @@ else (ANDROID)
     )
 endif ()
 
+set_target_properties (vatsinator PROPERTIES
+    VERSION ${vatsinator_VERSION}
+)
+
 target_link_libraries (vatsinator
     Qt5::Gui
     Qt5::Network

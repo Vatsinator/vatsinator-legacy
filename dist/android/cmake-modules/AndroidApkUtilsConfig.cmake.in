@@ -1,5 +1,6 @@
 # AndroidApkUtils specific variables
 set (binary_root @CMAKE_BINARY_DIR@)
+set (files_dir @files_dir@)
 set (target_location "@target_location@")
 set (qt_root "@_qt_root@")
 set (qt_libs_dir "@_qt_libs_dir@")

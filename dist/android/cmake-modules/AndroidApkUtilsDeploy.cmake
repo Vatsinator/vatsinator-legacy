@@ -1,7 +1,7 @@
 include (CMakeParseArguments)
 include (${CMAKE_SOURCE_DIR}/AndroidApkUtilsConfig.cmake)
 
-function (android_find_dependencies output)
+function (android_find_target_dependencies output)
     if (NOT EXISTS ${target_location})
         message (FATAL_ERROR "Target file: ${target_location} does not exist!")
     endif ()
@@ -57,13 +57,15 @@ function (android_find_dependencies output)
 endfunction ()
 
 
+# first, install all user stuff
 if (EXISTS ${binary_root}/cmake_install.cmake)
     execute_process(
         COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=${package_location} -P ${binary_root}/cmake_install.cmake
     )
 endif ()
 
-android_find_dependencies(deps)
+# second, install dependencies
+android_find_target_dependencies(deps)
 foreach (d ${deps})
     find_library (d_location_${d} ${d}
         PATHS ${qt_libs_dir} ${paths}
@@ -92,7 +94,7 @@ foreach (d ${deps})
     endif ()
 endforeach ()
 
-# gnustl_shared is a must-have of built as a shared library
+# gnustl_shared is a must-have, as Qt libraries need it
 file (INSTALL ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI}/libgnustl_shared.so
     DESTINATION ${package_location}/libs/${ANDROID_ABI}
 )
@@ -173,8 +175,17 @@ elseif (${CMAKE_BUILD_TYPE} MATCHES Release) # TODO support app signing
     set (ant_output_file ${package_location}/bin/${app_name}-debug.apk)
 endif (${CMAKE_BUILD_TYPE} MATCHES Debug)
 
+message ("Building ${ant_output_file}...")
+
 execute_process (COMMAND ${ant_bin} ${ant_args}
     WORKING_DIRECTORY ${package_location}
+    RESULT_VARIABLE ant_result
+    OUTPUT_FILE ${files_dir}/ant.log
 )
 
-file (COPY ${ant_output_file} DESTINATION ${binary_root})
+if (${ant_result} EQUAL 0)
+    file (COPY ${ant_output_file} DESTINATION ${binary_root})
+    message ("${ant_output_file} done.")
+else ()
+    message (FATAL_ERROR "Failed building APK package; see ant logs in ${files_dir}/ant.log")
+endif ()
