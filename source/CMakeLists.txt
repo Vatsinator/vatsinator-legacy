@@ -125,5 +125,5 @@ elseif (APPLE OR WIN32)
         "${QT_INSTALL_LIBS};${QUAZIP_LIBRARY_DIR}" # dirs
     )
 elseif (ANDROID)
-    install (TARGETS vatsinator DESTINATION bin)
+    install (TARGETS vatsinator DESTINATION libs/${ANDROID_ABI})
 endif ()

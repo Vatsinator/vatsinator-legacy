@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <array name="qt_sources">
+        <item>https://download.qt-project.org/ministro/android/qt5/qt-5.4</item>
+    </array>
+
+    <!-- The following is handled automatically by the deployment tool. It should
+         not be edited manually. -->
+
+    <array name="bundled_libs">
+@bundled_libs@
+    </array>
+
+     <array name="qt_libs">
+@qt_libs@
+     </array>
+
+    <array name="bundled_in_lib">
+@bundled_in_lib@
+    </array>
+    <array name="bundled_in_assets">
+@bundled_in_assets@
+    </array>
+
+</resources>

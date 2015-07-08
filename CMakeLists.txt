@@ -138,12 +138,6 @@ if (NOT APPLE)
 endif (NOT APPLE)
 
 add_subdirectory (source)
-
-if (ANDROID)
-    set (vatsinator_ANDROID_APK ${CMAKE_BINARY_DIR}/vatsinator.apk)
-    set (CMAKE_INSTALL_PREFIX ${vatsinator_ANDROID_APK})
-endif (ANDROID)
-
 add_subdirectory (resources)
 
 include (Packaging)

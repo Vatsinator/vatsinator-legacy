@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='utf-8'?>
 <manifest package="@ANDROID_PACKAGE_NAME@"
           xmlns:android="http://schemas.android.com/apk/res/android"
           android:versionName="@ANDROID_VERSION_NAME@"
@@ -6,7 +6,6 @@
           android:installLocation="auto">
     <application android:hardwareAccelerated="true"
                  android:name="@ANDROID_APPLICATION_CLASS@"
-                 android:icon="@drawable/vatsinator_icon"
                  android:label="@ANDROID_APP_NAME@">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation"
                   android:name="@ANDROID_ACTIVITY_CLASS@"
@@ -53,8 +52,7 @@
             <!-- Background running -->
         </activity>
     </application>
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="21"/>
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="14"/>
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
 @ANDROID_PERMISSIONS@

@@ -1,0 +1,34 @@
+# AndroidApkUtils specific variables
+set (binary_root @CMAKE_BINARY_DIR@)
+set (target_location "@target_location@")
+set (qt_root "@_qt_root@")
+set (qt_libs_dir "@_qt_libs_dir@")
+set (qt_qmls_dir "@_qt_qmls_dir@")
+set (qt_plugins_dir "@_qt_plugins_dir@")
+set (ant_bin "@ANT_BIN@")
+
+set (package_name "@package_name@")
+set (package_location "@package_location@")
+set (qt_generate_libs_xml @qt_generate_libs_xml@)
+set (libs_xml_location "@libs_xml_location@")
+set (assets_prefix "@assets_prefix@")
+
+set (qt_qml_modules @qt_qml_modules@)
+set (qt_plugins @qt_plugins@)
+set (qt_jars @qt_jars@)
+
+set (paths "@paths@")
+
+# Android toolchain variables
+set (ANDROID_ABI "@ANDROID_ABI@")
+set (ANDROID_NDK "@ANDROID_NDK@")
+set (ANDROID_STL "@ANDROID_STL@")
+set (ANDROID_NATIVE_API_LEVEL @ANDROID_NATIVE_API_LEVEL@)
+set (ANDROID_TOOLCHAIN_ROOT "@ANDROID_TOOLCHAIN_ROOT@")
+
+
+# CMake specific variables
+set (CMAKE_FIND_LIBRARY_SUFFIXES @CMAKE_FIND_LIBRARY_SUFFIXES@)
+set (CMAKE_FIND_LIBRARY_PREFIXES @CMAKE_FIND_LIBRARY_PREFIXES@)
+set (CMAKE_BUILD_TYPE @CMAKE_BUILD_TYPE@)
+set (CMAKE_PROJECT_NAME @CMAKE_PROJECT_NAME@)
