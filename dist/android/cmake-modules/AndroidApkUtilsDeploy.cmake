@@ -175,17 +175,20 @@ elseif (${CMAKE_BUILD_TYPE} MATCHES Release) # TODO support app signing
     set (ant_output_file ${package_location}/bin/${app_name}-debug.apk)
 endif (${CMAKE_BUILD_TYPE} MATCHES Debug)
 
-message ("Building ${ant_output_file}...")
+get_filename_component (pkg_fname ${ant_output_file} NAME)
+message ("Building ${pkg_fname}...")
+
+set (ant_log_file ${files_dir}/ant.log)
 
 execute_process (COMMAND ${ant_bin} ${ant_args}
     WORKING_DIRECTORY ${package_location}
     RESULT_VARIABLE ant_result
-    OUTPUT_FILE ${files_dir}/ant.log
+    OUTPUT_FILE ${ant_log_file}
 )
 
 if (${ant_result} EQUAL 0)
     file (COPY ${ant_output_file} DESTINATION ${binary_root})
-    message ("${ant_output_file} done.")
+    message ("${pkg_fname} done.")
 else ()
-    message (FATAL_ERROR "Failed building APK package; see ant logs in ${files_dir}/ant.log")
+    message (FATAL_ERROR "Failed building APK package; see ant logs in ${ant_log_file}")
 endif ()

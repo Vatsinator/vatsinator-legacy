@@ -96,22 +96,49 @@ endfunction ()
 #               [PATHS paths...]
 #               [QT_QML_MODULES modules...]
 #               [QT_PLUGINS plugins...]
-#               [QT_GENERATE_LIBS_XML]
+#               [QT_GENERATE_LIBS_XML 0|1]
 #               [ASSETS_PREFIX prefix])
 #
-# Builds the APK package.
+# Copies resources, java sources, finds dependencies, installs QML modules,
+# plugins and builds the apk package.
+#
+# This function requries the ANDROID_MANIFEST property of the given target to
+# define the path to the AndroidManifest.xml file.
+#
+# The RESOURCES is a list of directories to be copied into res/ subfolder in
+# the apk structure.
+#
+# The SOURCES param is a list of additional Java sources; they will be copied
+# into src/ subfolder.
+#
+# The PATHS is a list of additional paths where the script should be looking
+# for dependencies. Qt paths are added by default.
+#
+# QT_QML_MODULES defines the list of QML modules to be installed; the 
+# modules are listed as directories, relative to the qml/ directory in Qt root.
+#
+# QT_PLUGINS is a list of Qt plugins to be shipped with the apk package,
+# relative to the plugins/ directory in the Qt root. Note that all necessary
+# plugins (like qtforandroid) are deployed automatically.
+#
+# The QT_GENERATE_LIBS_XML is enabled by default. If enabled, the libs.xml
+# file will be generated and put in res/values/ directory in the apk. It is
+# necessary for Qt-based apps.
+#
+# ASSETS_PREFIX defines the prefix for files installed by AndroidApkUtils in
+# the assets/ directory. androiddeployqt uses "--Added-by-androiddeployqt--",
+# AndroidApkUtils uses "--Added-by-AndroidApkUtils--" by default.
 #
 function (android_deploy_apk target)
     cmake_parse_arguments (
         _arg
-        "QT_GENERATE_LIBS_XML"
+        ""
         "ASSETS_PREFIX"
-        "PATHS;RESOURCES;SOURCES;QT_QML_MODULES;QT_PLUGINS"
+        "PATHS;RESOURCES;SOURCES;QT_QML_MODULES;QT_PLUGINS;QT_GENERATE_LIBS_XML"
         ${ARGN}
     )
     
     get_target_property (manifest_file ${target} ANDROID_MANIFEST)
-    message ("dasdasdasdasd ${manifest_file}")
     if (NOT manifest_file)
         message (FATAL_ERROR "AndroidManifest.xml not created!")
     endif ()
@@ -181,8 +208,11 @@ function (android_deploy_apk target)
         set (paths ${_arg_PATHS})
     endif ()
     
-    if (_arg_QT_GENERATE_LIBS_XML)
-        set (qt_generate_libs_xml 1)
+    set (qt_generate_libs_xml 1)
+    if (NOT "${_arg_QT_GENERATE_LIBS_XML}" STREQUAL "")
+        if ("${_arg_QT_GENERATE_LIBS_XML}" MATCHES "^[01]$")
+            set (qt_generate_libs_xml ${_arg_QT_GENERATE_LIBS_XML})
+         endif ()
     endif ()
     
     if (_arg_QT_QML_MODULES)
@@ -203,19 +233,19 @@ function (android_deploy_apk target)
     set (assets_prefix "--Added-by-AndroidApkUtils--")
     if (_arg_ASSETS_PREFIX)
         set (assets_prefix ${_arg_ASSETS_PREFIX})
-    endif ()    
+    endif ()
     
     _android_generate_config(${target})
     configure_file (${_android_apkutils_dir}/AndroidApkUtilsDeploy.cmake ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake COPYONLY)
     
-    add_custom_target (android_deploy_apk ALL
+    add_custom_target (apk
             ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         DEPENDS build.xml
     )
     
     string (TOLOWER ${CMAKE_PROJECT_NAME} app_name)
-    set (package_file_name ${app_name}-debug.apk)
+    set (package_file_name ${app_name}-debug.apk) # TODO support app signing
     
     add_custom_target (apk_install
         DEPENDS ${target}
@@ -230,15 +260,14 @@ endfunction ()
 #               [ANDROID_APPLICATION_CLASS application_class]
 #               [ANDROID_ACTIVITY_CLASS activity_class]
 #               [ANDROID_PERMISSIONS permissions...]
-#               [QT_DONT_BUNDLE_LOCAL_QT_LIBS])
+#               [QT_BUNDLE_LOCAL_QT_LIBS 0|1])
 #               
 # Generates the AndroidManifest.xml file from the given template. The template
 # is taken from Qt sources and is designed to support Qt applications. It is
-# however possible to provide any custom template.
+# however possible to provide a custom template.
 #
-# The TEMPLATE_FILE is a path to the AndroidManifest.xml template file. Each of
-# variables documented here can be re-used in the template, with "@" syntax.
-# If not specified, the Qt's default template is used.
+# The TEMPLATE_FILE is a path to the AndroidManifest.xml template file. If not
+# specified, the Qt's default template is used.
 #
 # The ANDROID_APPLICATION_CLASS param can be set to define the value of "android:name"
 # param in the XML. If not set, "org.qtproject.qt5.android.bindings.QtApplication" is
@@ -250,8 +279,12 @@ endfunction ()
 # The ANDROID_PERMISSIONS is a list of Android-specific permissions that will be put
 # in the manifest file.
 #
-# The QT_DONT_BUNDLE_LOCAL_QT_LIBS specified whether the Qt libs should be bundled with the
-# APK or not. This value is not set by default, so the APK does not require Ministro.
+# The QT_BUNDLE_LOCAL_QT_LIBS specifies whether the Qt libs should be bundled with the
+# APK or not. By default this value is set to 1, meaning that the apk does not
+# need Ministro.
+#
+# As a result, the ANDROID_MANIFEST property on the specified target is set, defining
+# the absolute location of the generated AndroidManifest.xml file.
 #
 # Sample usage:
 # android_qt_generate_manifest(baz
@@ -264,8 +297,8 @@ endfunction ()
 function (android_generate_manifest target)
     cmake_parse_arguments (
         _arg
-        "QT_DONT_BUNDLE_LOCAL_QT_LIBS"
-        "TEMPLATE_FILE;ANDROID_APPLICATION_CLASS;ANDROID_ACTIVITY_CLASS"
+        ""
+        "TEMPLATE_FILE;ANDROID_APPLICATION_CLASS;ANDROID_ACTIVITY_CLASS;QT_BUNDLE_LOCAL_QT_LIBS"
         "ANDROID_PERMISSIONS"
         ${ARGN}
     )
@@ -314,10 +347,11 @@ function (android_generate_manifest target)
         endforeach ()
     endif ()
     
-    if (_arg_QT_DONT_BUNDLE_LOCAL_QT_LIBS)
-        set (QT_BUNDLE_LOCAL_QT_LIBS 0)
-    else ()
-        set (QT_BUNDLE_LOCAL_QT_LIBS 1)
+    set (QT_BUNDLE_LOCAL_QT_LIBS 1)
+    if (NOT "${_arg_QT_BUNDLE_LOCAL_QT_LIBS}" STREQUAL "")
+        if ("${_arg_QT_BUNDLE_LOCAL_QT_LIBS}" MATCHES "^[01]$")
+            set (QT_BUNDLE_LOCAL_QT_LIBS ${_arg_QT_BUNDLE_LOCAL_QT_LIBS})
+        endif ()
     endif ()
     
     set (output "${CMAKE_CURRENT_BINARY_DIR}/AndroidApkFiles/AndroidManifest.xml")

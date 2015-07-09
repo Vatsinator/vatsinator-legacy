@@ -13,7 +13,6 @@ set_target_properties (vatsinator PROPERTIES
 )
 
 android_generate_manifest(vatsinator
-    ANDROID_APP_NAME "Vatsinator"
     ANDROID_ACTIVITY_CLASS "org.eu.vatsinator.VatsinatorActivity"
     ANDROID_PERMISSIONS ACCESS_NETWORK_STATE INTERNET
     TEMPLATE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml.in
@@ -22,7 +21,6 @@ android_generate_manifest(vatsinator
 get_filename_component (quazip_path ${QUAZIP_LIBRARIES} DIRECTORY)
 
 android_deploy_apk(vatsinator
-    ANDROID_APP_NAME "Vatsinator"
     RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/res
     SOURCES ${PROJECT_SOURCE_DIR}/source/android/java
     PATHS ${quazip_path}
@@ -33,5 +31,4 @@ android_deploy_apk(vatsinator
         QtQuick/Layouts
         QtQuick/Window.2
         QtQuick.2
-    QT_GENERATE_LIBS_XML
 )
