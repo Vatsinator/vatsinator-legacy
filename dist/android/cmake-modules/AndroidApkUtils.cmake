@@ -248,7 +248,7 @@ function (android_deploy_apk target)
     set (package_file_name ${app_name}-debug.apk) # TODO support app signing
     
     add_custom_target (apk_install
-        DEPENDS ${target}
+        DEPENDS apk
         COMMAND ${ADB_BIN} install -r ${package_file_name}
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )

@@ -1,6 +1,6 @@
 /*
  * MapView.qml
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,30 +42,10 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "#262626"
-        opacity: (mainMenu.swipe / parent.width) * 0.8
+        opacity: navigationDrawer.panelProgress * 0.6
     }
     
-    Row {
-        anchors.fill: parent
-        
-        SwipeHandler {
-            objectName: "menuSwipeHandler"
-            width: parent.width * 0.05
-            height: parent.height
-            
-            onSwipeEnded: mainMenu.toggleState()
-            onSwipeContinues: mainMenu.swipe += diffX
-        }
-        
-        MapControls {
-            width: parent.width * 0.95
-            height: parent.height
-            
-            onZoomUpdated: map.updateZoom(zoom)
-            onPositionUpdated: map.updatePosition(x, y)
-        }
-    }
-    
+    /* This small icon in the lower-left corner that makes user aware of the menu */
     MenuDrawer {
         id: menuDrawer
         
@@ -76,9 +56,28 @@ Item {
         }
     }
     
-    MainMenu {
-        id: mainMenu
-        objectName: "mainMenu"
-        onClicked: root.clicked(page)
+     MapControls {
+        anchors.fill: parent
+        
+        onZoomUpdated: map.updateZoom(zoom)
+        onPositionUpdated: map.updatePosition(x, y)
+    }
+    
+    NavigationDrawer {
+        id: navigationDrawer
+        
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        position: Qt.LeftEdge
+        visualParent: root
+        
+        MainMenu {
+            id: mainMenu
+            objectName: "mainMenu"
+            onClicked: {
+                navigationDrawer.hide()
+                root.clicked(page)
+            }
+        }
     }
 }

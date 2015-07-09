@@ -82,14 +82,14 @@ QuickUserInterface::initialize()
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));
     
-    QObject* swipeHandler = findObjectByName("menuSwipeHandler");
-    Q_ASSERT(swipeHandler);
-    Map* map = qobject_cast<Map*>(qui()->findObjectByName("map"));
-    Q_ASSERT(map);
-    
-    bool c = connect(swipeHandler, SIGNAL(swipeStarted()), map, SLOT(cache()));
-    Q_ASSERT(c);
-    Q_UNUSED(c);
+//     QObject* swipeHandler = findObjectByName("menuSwipeHandler");
+//     Q_ASSERT(swipeHandler);
+//     Map* map = qobject_cast<Map*>(qui()->findObjectByName("map"));
+//     Q_ASSERT(map);
+//     
+//     bool c = connect(swipeHandler, SIGNAL(swipeStarted()), map, SLOT(cache()));
+//     Q_ASSERT(c);
+//     Q_UNUSED(c);
     
     emit initialized();
 }

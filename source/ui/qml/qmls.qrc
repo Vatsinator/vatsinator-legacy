@@ -12,8 +12,8 @@
     <file>MenuDrawer.qml</file>
     <file>MenuListDelegate.qml</file>
     <file>MenuModel.qml</file>
+    <file>NavigationDrawer.qml</file>
     <file>SettingsPage.qml</file>
-    <file>SwipeHandler.qml</file>
     <file>images/ic_menu_about.png</file>
     <file>images/ic_menu_airports.png</file>
     <file>images/ic_menu_atc.png</file>
