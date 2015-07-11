@@ -758,27 +758,27 @@
 <context>
     <name>FlightTableModel</name>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="187"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="182"/>
         <source>Callsign</source>
         <translation>Rufzeichen</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="190"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="185"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="193"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="188"/>
         <source>From</source>
         <translation>Von</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="196"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="191"/>
         <source>To</source>
         <translation>Nach</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="199"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="194"/>
         <source>Aircraft</source>
         <translation>Luftfahrzeug</translation>
     </message>
@@ -928,6 +928,39 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
         <location filename="../ui/widgets/mapwidget.cpp" line="443"/>
         <source>Airports</source>
         <translation>Flughafen</translation>
+    </message>
+</context>
+<context>
+    <name>MenuModel</name>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="24"/>
+        <source>Refresh</source>
+        <translation>Aktualisieren</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="29"/>
+        <source>Flights</source>
+        <translation>Flüge</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="35"/>
+        <source>Controllers</source>
+        <translation>Fluglotsen</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="41"/>
+        <source>Airports</source>
+        <translation>Flughäfen</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="46"/>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="52"/>
+        <source>About</source>
+        <translation>Über</translation>
     </message>
 </context>
 <context>
@@ -1126,6 +1159,14 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="97"/>
         <source>Sunday</source>
         <translation>Sonntag</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsPage</name>
+    <message>
+        <location filename="../ui/qml/SettingsPage.qml" line="41"/>
+        <source>Send anonymous statistics</source>
+        <translation>Anonyme Statistiken senden</translation>
     </message>
 </context>
 <context>

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fa_IR" sourcelanguage="en_GB" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="lt" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
@@ -431,13 +431,13 @@
         <location filename="../ui/windows/databasewindow.cpp" line="48"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>and %n airlines(s).</source>
         <comment>The second part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="68"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="297"/>
         <source>Airports</source>
-        <translation>Airports</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="365"/>
@@ -925,7 +925,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="443"/>
         <source>Airports</source>
-        <translation>Airports</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -948,7 +948,7 @@
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="41"/>
         <source>Airports</source>
-        <translation>فرودگاه</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="46"/>
@@ -1380,7 +1380,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="91"/>
         <source>Airports</source>
-        <translation>Airports</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="64"/>

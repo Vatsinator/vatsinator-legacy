@@ -758,27 +758,27 @@
 <context>
     <name>FlightTableModel</name>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="187"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="182"/>
         <source>Callsign</source>
         <translation>Znak wywoławczy</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="190"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="185"/>
         <source>Name</source>
         <translation>Nazwisko</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="193"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="188"/>
         <source>From</source>
         <translation>Z</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="196"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="191"/>
         <source>To</source>
         <translation>Do</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="199"/>
+        <location filename="../ui/models/flighttablemodel.cpp" line="194"/>
         <source>Aircraft</source>
         <translation>Model</translation>
     </message>
@@ -926,6 +926,39 @@
         <location filename="../ui/widgets/mapwidget.cpp" line="443"/>
         <source>Airports</source>
         <translation>Lotniska</translation>
+    </message>
+</context>
+<context>
+    <name>MenuModel</name>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="24"/>
+        <source>Refresh</source>
+        <translation>Odśwież</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="29"/>
+        <source>Flights</source>
+        <translation>Loty</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="35"/>
+        <source>Controllers</source>
+        <translation>Kontrolerzy</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="41"/>
+        <source>Airports</source>
+        <translation>Lotniska</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="46"/>
+        <source>Settings</source>
+        <translation>Ustawienia</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/MenuModel.qml" line="52"/>
+        <source>About</source>
+        <translation>O programie</translation>
     </message>
 </context>
 <context>
@@ -1124,6 +1157,14 @@
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="97"/>
         <source>Sunday</source>
         <translation>Niedziela</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsPage</name>
+    <message>
+        <location filename="../ui/qml/SettingsPage.qml" line="41"/>
+        <source>Send anonymous statistics</source>
+        <translation>Wysyłaj anonimowe statystyki</translation>
     </message>
 </context>
 <context>
