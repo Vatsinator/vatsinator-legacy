@@ -27,25 +27,22 @@ Rectangle {
     width: parent.width
     height: 48 * dp
     
-    color: mouse.pressed ? "#3E3E3E" : container.color
+    color: mouse.pressed ? palette.byHue(50) : container.color
     
-    Row {
-        anchors.fill: parent
+    Image {
+        source: icon
         anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: 16 * dp
-        spacing: 16 * dp
+        x: 16 * dp
         
-        Image {
-            source: icon
-            anchors.verticalCenter: parent.verticalCenter
-            sourceSize.width: 56 * dp
-        }
+        sourceSize.width: 24 * dp
+    }
     
-        Text {
-            anchors.verticalCenter: parent.verticalCenter
-            color: "#E5E5E5"
-            text: name
-        }
+    Text {
+        anchors.verticalCenter: parent.verticalCenter
+        font.weight: Font.Medium
+        x: 72 * dp
+        
+        text: name
     }
     
     MouseArea {

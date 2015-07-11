@@ -30,41 +30,52 @@ Rectangle {
     
     color: mouse.pressed ? palette.byHue(50) : palette.background()
     
-    Column {
+    Item {
+        height: lblCallsign.implicitHeight + lblOrigin.implicitHeight
         anchors {
             left: parent.left
-            leftMargin: 60
+            leftMargin: 32 * dp
             right: parent.right
-            rightMargin: 60
+            rightMargin: 32 * dp
             verticalCenter: parent.verticalCenter
         }
         
-        spacing: 5
-        
-        Row {
-            width: parent.width
-            spacing: 10
+        Label {
+            id: lblCallsign
+            anchors.left: parent.left
+            font.weight: Font.Medium
             
-            Label {
-                text: callsign
-                font.bold: true
-            }
-            
-            Label {
-                text: airport_from + " -> " + airport_to
-                verticalAlignment: Text.AlignVCenter
-            }
+            text: callsign
         }
         
         Label {
-            text: real_name
-            font.italic: true
+            id: lblRealName
+            anchors.right: parent.right
+            font.weight: Font.Medium
+            
+            text: realName
         }
         
-        Rectangle {
-            width: parent.width
-            height: 3
-            color: palette.divider()
+        Label {
+            id: lblOrigin
+            anchors.left: parent.left
+            anchors.top: lblCallsign.bottom
+            
+            font.weight: Font.Medium
+            color: palette.caption()
+            
+            text: origin.icao + " " + origin.city
+        }
+        
+        Label {
+            id: lblDestination
+            anchors.right: parent.right
+            anchors.top: lblCallsign.bottom
+            
+            font.weight: Font.Medium
+            color: palette.caption()
+            
+            text: destination.icao + " " + destination.city
         }
     }
     

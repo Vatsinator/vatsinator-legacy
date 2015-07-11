@@ -31,8 +31,8 @@ enum {
     RealNameRole /**< Client's name */,
     
     /* Flights */
-    AirportFromRole /**< Origin airport */,
-    AirportToRole /**< Destination airport */,
+    OriginRole /**< Origin airport */,
+    DestinationRole /**< Destination airport */,
     
     /* ATCs */
     IcaoRole /**< Airport's ICAO code */,

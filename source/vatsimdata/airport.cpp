@@ -33,6 +33,7 @@
 Airport::Airport(const AirportRecord* record) :
     __data(record),
     __icao(__data->icao),
+    __city(__data ? QString::fromUtf8(__data->city) : QString()),
     __staff(new AtcTableModel(this)),
     __inbounds(new FlightTableModel(this)),
     __outbounds(new FlightTableModel(this))

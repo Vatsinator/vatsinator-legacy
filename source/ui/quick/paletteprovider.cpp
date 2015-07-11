@@ -59,3 +59,9 @@ PaletteProvider::divider() const
 {
     return QColor(250, 250, 250);
 }
+
+QColor
+PaletteProvider::caption() const
+{
+    return QColor(151, 151, 151);
+}

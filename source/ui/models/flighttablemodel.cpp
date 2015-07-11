@@ -129,10 +129,7 @@ FlightTableModel::data(const QModelIndex& index, int role) const
                     ap = __flights.at(index.row())->origin();
                     
                     if (ap)
-                        return QStringLiteral("%1 %2").arg(
-                                   QString::fromUtf8(ap->data()->icao),
-                                   QString::fromUtf8(ap->data()->city)
-                               );
+                        return QStringLiteral("%1 %2").arg(ap->icao(), ap->city());
                     else
                         return __flights.at(index.row())->route().origin;
                         
@@ -140,10 +137,7 @@ FlightTableModel::data(const QModelIndex& index, int role) const
                     ap = __flights.at(index.row())->destination();
                     
                     if (ap)
-                        return QStringLiteral("%1 %2").arg(
-                                   QString::fromUtf8(ap->data()->icao),
-                                   QString::fromUtf8(ap->data()->city)
-                               );
+                        return QStringLiteral("%1 %2").arg(ap->icao(), ap->city());
                     else
                         return __flights.at(index.row())->route().destination;
                         
@@ -165,11 +159,12 @@ FlightTableModel::data(const QModelIndex& index, int role) const
         case RealNameRole:
             return __flights.at(index.row())->realName();
             
-        case AirportFromRole:
-            return __flights.at(index.row())->route().origin;
+        case OriginRole:
+            // const Airport* won't work. It just won't.
+            return QVariant::fromValue<Airport*>(const_cast<Airport*>(__flights.at(index.row())->origin()));
             
-        case AirportToRole:
-            return __flights.at(index.row())->route().destination;
+        case DestinationRole:
+            return QVariant::fromValue<Airport*>(const_cast<Airport*>(__flights.at(index.row())->destination()));
         
         default:
             return QVariant();
@@ -274,9 +269,9 @@ FlightTableModel::roleNames() const
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
     
     roles[CallsignRole] = "callsign";
-    roles[RealNameRole] = "real_name";
-    roles[AirportFromRole] = "airport_from";
-    roles[AirportToRole] = "airport_to";
+    roles[RealNameRole] = "realName";
+    roles[OriginRole] = "origin";
+    roles[DestinationRole] = "destination";
     
     return roles;
 }

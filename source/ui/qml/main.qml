@@ -28,10 +28,9 @@ ApplicationWindow {
     title: "Vatsinator"
     width: 640
     height: 480
-    visible: true
     
-    property Component mapPage : MapPage {
-        onClicked: stackView.push(Qt.resolvedUrl(page))
+    MapPage {
+        id: mapPage
     }
     
     StackView {
@@ -48,10 +47,42 @@ ApplicationWindow {
         initialItem: mapPage
     }
     
+    NavigationDrawer {
+        id: navigationDrawer
+        objectName: "navigationDrawer"
+        
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        position: Qt.LeftEdge
+        visualParent: stackView
+        
+        MainMenu {
+            id: mainMenu
+            objectName: "mainMenu"
+            onClicked: {
+                navigationDrawer.hide()
+                stackView.push(Qt.resolvedUrl(page))
+            }
+        }
+    }
+    
+    /* Semi-transparent overlay */
+    Rectangle {
+        anchors.fill: parent
+        color: "#262626"
+        opacity: navigationDrawer.panelProgress * 0.6
+    }
+    
     style: ApplicationWindowStyle {
         background: Rectangle {
             color: "#00ffffff"
         }
+    }
+    
+    Component.onCompleted: {
+        visible = true
+        android.navigationBarColor = palette.byHue(500)
+        android.statusBarColor = palette.byHue(700)
     }
     
 }

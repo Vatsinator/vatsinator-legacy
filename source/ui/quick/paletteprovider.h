@@ -54,6 +54,11 @@ public:
      * Color of dividers, i.e. lines that split list view elements.
      */
     Q_INVOKABLE QColor divider() const;
+    
+    /**
+     * Color of the caption text.
+     */
+    Q_INVOKABLE QColor caption() const;
 };
 
 #endif // PALETTEPROVIDER_H

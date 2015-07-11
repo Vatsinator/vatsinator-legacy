@@ -119,7 +119,7 @@ AirportDetailsWindow::showEvent(QShowEvent* event)
         w->setCelsius();
     else
         w->setFahrenheit();
-        
+    
     WeatherForecastDownloader* wfd = new WeatherForecastDownloader(this);
     connect(wfd, &WeatherForecastDownloader::finished, this, &AirportDetailsWindow::__updateForecast);
     

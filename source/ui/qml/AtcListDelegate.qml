@@ -30,41 +30,41 @@ Rectangle {
     
     color: mouse.pressed ? palette.byHue(50) : palette.background()
     
-    Column {
+    Item {
+        height: lblCallsign.implicitHeight + lblDescription.implicitHeight
         anchors {
             left: parent.left
-            leftMargin: 60
+            leftMargin: 32 * dp
             right: parent.right
-            rightMargin: 60
+            rightMargin: 32 * dp
             verticalCenter: parent.verticalCenter
         }
         
-        spacing: 5
-        
-        Row {
-            width: parent.width
-            spacing: 10
+        Label {
+            id: lblCallsign
+            anchors.left: parent.left
+            font.weight: Font.Medium
             
-            Label {
-                text: callsign
-                font.bold: true
-            }
-            
-            Label {
-                text: icao
-                verticalAlignment: Text.AlignVCenter
-            }
+            text: callsign
         }
         
         Label {
-            text: description
-            font.italic: true
+            id: lblRealName
+            anchors.right: parent.right
+            font.weight: Font.Medium
+            
+            text: realName
         }
         
-        Rectangle {
-            width: parent.width
-            height: 3
-            color: palette.divider()
+        Label {
+            id: lblDescription
+            anchors.left: parent.left
+            anchors.top: lblCallsign.bottom
+            
+            font.weight: Font.Medium
+            color: palette.caption()
+            
+            text: description
         }
     }
     

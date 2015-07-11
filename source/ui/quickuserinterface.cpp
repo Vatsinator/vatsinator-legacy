@@ -27,6 +27,7 @@
 #include "ui/quick/map.h"
 #include "ui/quick/paletteprovider.h"
 #include "ui/quick/screenimageprovider.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -68,6 +69,8 @@ QuickUserInterface::findObjectByName(const QString& name)
 void
 QuickUserInterface::initialize()
 {
+    qmlRegisterType<Airport>();
+    
     qmlRegisterType<Map>("org.eu.vatsinator.ui", 1, 0, "Map");
     
     QQmlContext* ctx = __engine.rootContext();
@@ -82,14 +85,7 @@ QuickUserInterface::initialize()
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));
     
-//     QObject* swipeHandler = findObjectByName("menuSwipeHandler");
-//     Q_ASSERT(swipeHandler);
-//     Map* map = qobject_cast<Map*>(qui()->findObjectByName("map"));
-//     Q_ASSERT(map);
-//     
-//     bool c = connect(swipeHandler, SIGNAL(swipeStarted()), map, SLOT(cache()));
-//     Q_ASSERT(c);
-//     Q_UNUSED(c);
+    /* TODO Cache map from time to time */
     
     emit initialized();
 }

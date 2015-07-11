@@ -20,6 +20,7 @@
 #include <QVariantAnimation>
 
 #include "network/resourcemanager.h"
+#include "vatsimdata/airport.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
@@ -50,6 +51,8 @@ int main(int argc, char** argv)
     QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
     QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
     QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
+    
+    qRegisterMetaType<Airport*>();
     
     qRegisterMetaType<LonLat>("LonLat");
     qRegisterMetaTypeStreamOperators<LonLat>("LonLat");

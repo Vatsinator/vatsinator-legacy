@@ -40,8 +40,10 @@ namespace {
  */
 QString osString()
 {
-#ifdef Q_OS_WIN32
-
+#if defined Q_OS_ANDROID
+    /* TODO Get android version */
+    return "Android";
+#elif defined Q_OS_WIN32
     switch (QSysInfo::WindowsVersion) {
         case QSysInfo::WV_32s:
             return QStringLiteral("Windows 3.1");
@@ -94,9 +96,7 @@ QString osString()
         return QStringLiteral("Linux ") % d;
     } else
         return QStringLiteral("Linux");
-    
 #elif defined Q_OS_MAC
-    
     switch (QSysInfo::MacintoshVersion) {
         case QSysInfo::MV_10_3:
             return QStringLiteral("Mac OS X 10.3");
@@ -122,9 +122,6 @@ QString osString()
         default:
             return "Mac OS X";
     }
-#elif defined Q_OS_ANDROID
-    /* TODO Get android version */
-    return "Android";
 #else
 # warning "Define operating system string here"
     return "Unknown";

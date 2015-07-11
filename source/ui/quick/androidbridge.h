@@ -31,12 +31,27 @@ class AndroidBridge : public QObject {
     Q_OBJECT
     
     /**
-     * Defines the navigation bar color in Android.
+     * Defines the navigation bar color.
      */
-    Q_PROPERTY(QColor navigationBarColor READ navigationBarColor WRITE setNavigationBarColor RESET resetNavigationBarColor NOTIFY navigatinBarColorChanged)
+    Q_PROPERTY(QColor navigationBarColor
+        READ navigationBarColor
+        WRITE setNavigationBarColor
+        RESET resetNavigationBarColor
+        NOTIFY navigatinBarColorChanged
+    )
+    
+    /**
+     * Defines the status bar color.
+     */
+    Q_PROPERTY(QColor statusBarColor
+        READ statusBarColor
+        WRITE setStatusBarColor
+        NOTIFY statusBarColorChanged
+    )
     
 signals:
     void navigatinBarColorChanged(const QColor& navigationBarColor);
+    void statusBarColorChanged(const QColor& statusBarColor);
 
 public:
     explicit AndroidBridge(QObject* parent = nullptr);
@@ -44,17 +59,25 @@ public:
     void setNavigationBarColor(const QColor& color);
     void resetNavigationBarColor();
     
+    void setStatusBarColor(const QColor& color);
+    
     inline const QColor& navigationBarColor() const
     {
         return __navigationBarColor;
     }
     
+    inline const QColor& statusBarColor() const
+    {
+        return __statusBarColor;
+    }
+    
 private slots:
     void __setNavigationBarColorImpl(const QColor& navigationBarColor);
+    void __setStatusBarColorImpl(const QColor& statusBarColor);
     
 private:
     QColor __navigationBarColor;
-    
+    QColor __statusBarColor;
     
 };
 

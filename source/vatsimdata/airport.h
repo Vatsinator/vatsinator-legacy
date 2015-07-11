@@ -39,6 +39,21 @@ class Pilot;
 class Airport : public QObject {
     Q_OBJECT
     
+    /**
+     * The ICAO code of the airport.
+     */
+    Q_PROPERTY(QString icao READ icao CONSTANT)
+    
+    /**
+     * Position of the airport.
+     */
+    Q_PROPERTY(LonLat position READ position CONSTANT)
+    
+    /**
+     * City of the airport.
+     */
+    Q_PROPERTY(QString city READ city CONSTANT)
+    
 signals:
     void updated();
     
@@ -116,12 +131,14 @@ public:
         return __data;
     }
     
-    /**
-     * \return The airport ICAO code.
-     */
     inline const QString& icao() const
     {
         return __icao;
+    }
+    
+    inline const QString& city() const
+    {
+        return __city;
     }
     
     /**
@@ -151,6 +168,7 @@ public:
 private:
     const AirportRecord* __data;
     const QString __icao;
+    const QString __city;
     
     AtcTableModel* __staff;
     FlightTableModel* __inbounds;
@@ -158,5 +176,7 @@ private:
     QList<Fir*> __firs;
     
 };
+
+Q_DECLARE_METATYPE(Airport*)
 
 #endif // AIRPORT_H

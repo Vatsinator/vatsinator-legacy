@@ -24,24 +24,33 @@ import android.view.Window;
 
 public class VatsinatorActivity extends org.qtproject.qt5.android.bindings.QtActivity
 {
-    private static VatsinatorActivity instance;
 
-    public VatsinatorActivity()
-    {
-        instance = this;
-    }
-    
-    public static void setNavigationBarColor(int r, int g, int b, int a)
+    public void setNavigationBarColor(int r, int g, int b, int a)
     {
         final int color = Color.argb(a, r, g, b);
         
-        instance.runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    instance.getWindow().setNavigationBarColor(color);
+                    getWindow().setNavigationBarColor(color);
                 }
             }
         });
     }
+    
+    public void setStatusBarColor(int r, int g, int b, int a)
+    {
+        final int color = Color.argb(a, r, g, b);
+        
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().setStatusBarColor(color);
+                }
+            }
+        });
+    }
+    
 }

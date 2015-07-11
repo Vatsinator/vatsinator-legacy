@@ -7,7 +7,8 @@
     <application android:hardwareAccelerated="true"
                  android:name="@ANDROID_APPLICATION_CLASS@"
                  android:icon="@drawable/vatsinator_icon"
-                 android:label="@ANDROID_APP_NAME@">
+                 android:label="@ANDROID_APP_NAME@"
+                 android:theme="@android:style/Theme.Material.Light">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation"
                   android:name="@ANDROID_ACTIVITY_CLASS@"
                   android:label="@ANDROID_APP_NAME@"

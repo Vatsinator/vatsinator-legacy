@@ -21,36 +21,36 @@ import QtQuick 2.2
 
 ListModel {
     ListElement {
-        name: "Refresh"
-        icon: "images/ic_menu_refresh.png"
+        name: qsTr("Refresh")
+        icon: "images/ic_refresh_black.png"
     }
     
     ListElement {
-        name: "Flights"
-        icon: "images/ic_menu_flights.png"
+        name: qsTr("Flights")
+        icon: "images/ic_flight_takeoff_black.png"
         page: "FlightList.qml"
     }
     
     ListElement {
-        name: "Controllers"
-        icon: "images/ic_menu_atc.png"
+        name: qsTr("Controllers")
+        icon: "images/ic_traffic_black.png"
         page: "AtcList.qml"
     }
     
     ListElement {
-        name: "Airports"
-        icon: "images/ic_menu_airports.png"
+        name: qsTr("Airports")
+        icon: "images/ic_room_black.png"
     }
     
     ListElement {
-        name: "Settings"
-        icon: "images/ic_menu_settings.png"
+        name: qsTr("Settings")
+        icon: "images/ic_settings_black.png"
         page: "SettingsPage.qml"
     }
     
     ListElement {
-        name: "About"
-        icon: "images/ic_menu_about.png"
+        name: qsTr("About")
+        icon: "images/ic_info_outline_black.png"
         page: "AboutDialog.qml"
     }
 }

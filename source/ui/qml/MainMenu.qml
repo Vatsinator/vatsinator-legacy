@@ -35,7 +35,7 @@ Item {
         id: container
         
         anchors.fill: parent
-        color: "#363636"
+        color: palette.background()
         
         ListView {
             id: menuList

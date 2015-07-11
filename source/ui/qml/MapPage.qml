@@ -27,8 +27,6 @@ import org.eu.vatsinator.ui 1.0
 Item {
     id: root
     
-    signal clicked(url page)
-    
     width: parent.width
     height: parent.height
     
@@ -36,13 +34,6 @@ Item {
         id: map
         objectName: "map"
         anchors.fill: parent
-    }
-    
-    /* Semi-transparent overlay */
-    Rectangle {
-        anchors.fill: parent
-        color: "#262626"
-        opacity: navigationDrawer.panelProgress * 0.6
     }
     
     /* This small icon in the lower-left corner that makes user aware of the menu */
@@ -56,28 +47,10 @@ Item {
         }
     }
     
-     MapControls {
+    MapControls {
         anchors.fill: parent
         
         onZoomUpdated: map.updateZoom(zoom)
         onPositionUpdated: map.updatePosition(x, y)
-    }
-    
-    NavigationDrawer {
-        id: navigationDrawer
-        
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        position: Qt.LeftEdge
-        visualParent: root
-        
-        MainMenu {
-            id: mainMenu
-            objectName: "mainMenu"
-            onClicked: {
-                navigationDrawer.hide()
-                root.clicked(page)
-            }
-        }
     }
 }

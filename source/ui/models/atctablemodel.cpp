@@ -200,7 +200,7 @@ AtcTableModel::roleNames() const
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
     
     roles[CallsignRole] = "callsign";
-    roles[RealNameRole] = "real_name";
+    roles[RealNameRole] = "realName";
     roles[IcaoRole] = "icao";
     roles[FrequencyRole] = "frequency";
     roles[DescriptionRole] = "description";
