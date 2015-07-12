@@ -38,11 +38,6 @@ VectorMapDrawer::VectorMapDrawer(QObject* parent) :
     __worldMap->initialize();
 }
 
-VectorMapDrawer::~VectorMapDrawer()
-{
-
-}
-
 MapDrawer::MapDrawerFlags
 VectorMapDrawer::flags() const
 {
@@ -66,7 +61,7 @@ VectorMapDrawer::initialize()
 }
 
 void
-VectorMapDrawer::draw(const QMatrix4x4& mvp, const QRectF& screen, qreal zoom)
+VectorMapDrawer::draw(const QMatrix4x4& mvp, const QRectF& screen, const QSize& viewport)
 {
     QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();
     
@@ -82,6 +77,9 @@ VectorMapDrawer::draw(const QMatrix4x4& mvp, const QRectF& screen, qreal zoom)
     __vao.release();
     
     __identityProgram->release();
+    
+    Q_UNUSED(screen);
+    Q_UNUSED(viewport);
 }
 
 bool

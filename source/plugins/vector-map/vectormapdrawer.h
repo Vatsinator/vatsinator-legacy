@@ -43,7 +43,7 @@ class VectorMapDrawer : public QObject, public MapDrawer {
 public:
     VectorMapDrawer(QObject* parent = nullptr);
     
-    virtual ~VectorMapDrawer();
+    virtual ~VectorMapDrawer() = default;
     
     /**
      * \copydoc MapDrawer::flags()
@@ -58,7 +58,7 @@ public:
     /**
      * \copydoc MapDrawer::draw()
      */
-    void draw(const QMatrix4x4& mvp, const QRectF& screen, qreal zoom) override;
+    void draw(const QMatrix4x4& mvp, const QRectF& screen, const QSize& viewport) override;
     
 private:
     bool __buildShaders();

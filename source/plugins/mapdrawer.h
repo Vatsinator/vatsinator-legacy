@@ -24,6 +24,7 @@
 
 class QMatrix4x4;
 class QRectF;
+class QSize;
 
 /**
  * MapDrawer provides an interface for drawing the world map.
@@ -43,6 +44,11 @@ public:
     Q_DECLARE_FLAGS(MapDrawerFlags, MapDrawerFlag)
     
     /**
+     * Destructor.
+     */
+    virtual ~MapDrawer() = default;
+    
+    /**
      * Defines the flags for the plugin.
      */
     virtual MapDrawerFlags flags() const = 0;
@@ -57,7 +63,7 @@ public:
     /**
      * Renders a map.
      */
-    virtual void draw(const QMatrix4x4& mvp, const QRectF& screen, qreal zoom) = 0;
+    virtual void draw(const QMatrix4x4& mvp, const QRectF& screen, const QSize& viewport) = 0;
     
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(MapDrawer::MapDrawerFlags)

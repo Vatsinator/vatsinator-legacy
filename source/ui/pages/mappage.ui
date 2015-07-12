@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MapPage</class>
  <widget class="QWidget" name="MapPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>271</width>
+    <height>500</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string notr="true">Map</string>
   </property>
@@ -289,66 +297,6 @@
      </item>
      <item>
       <widget class="ColorButton" name="ApproachCircleColorButton">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
-     <item>
-      <widget class="QLabel" name="label_14">
-       <property name="text">
-        <string>Seas color:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="ColorButton" name="SeasColorButton">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_11">
-     <item>
-      <widget class="QLabel" name="label_15">
-       <property name="text">
-        <string>Lands color:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="ColorButton" name="LandsColorButton">
        <property name="minimumSize">
         <size>
          <width>80</width>

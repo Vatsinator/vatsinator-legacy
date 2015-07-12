@@ -171,8 +171,6 @@ SettingsManager::__fillDefaults()
     __defaults["map.airport_font"] = QFont("Verdana", 8);
     __defaults["map.pilot_font"] = QFont("Verdana", 8);
     __defaults["map.approach_circle_color"] = QColor(64, 127, 91);
-    __defaults["map.seas_color"] = QColor(188, 222, 225);
-    __defaults["map.lands_color"] = QColor(255, 255, 255);
     __defaults["map.origin_to_pilot_line_color"] = QColor(3, 116, 164);
     __defaults["map.pilot_to_destination_line_color"] = QColor(133, 164, 164);
     

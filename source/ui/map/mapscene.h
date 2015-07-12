@@ -64,8 +64,6 @@ public:
         } misc;
         
         struct {
-            QColor lands;
-            QColor seas;
             QColor staffed_fir_borders;
             QColor staffed_fir_background;
             QColor staffed_uir_borders;

@@ -38,8 +38,6 @@ MapPage::MapPage(QWidget* parent) : WidgetSettingsModule(parent)
     connect(UnstaffedFirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
     connect(StaffedUirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
     connect(ApproachCircleColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(SeasColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(LandsColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
     connect(OriginToPilotLineColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
     connect(PilotToDestinationLineColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
     connect(StaffedFirColorAlphaBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MapPage::settingsChanged);
@@ -52,8 +50,6 @@ MapPage::MapPage(QWidget* parent) : WidgetSettingsModule(parent)
     StaffedUirColorButton->setProperty("vatsinatorSettingsKey", "staffed_uir_borders_color");
     StaffedUirColorAlphaBox->setProperty("vatsinatorSettingsKey", "staffed_uir_background_alpha");
     ApproachCircleColorButton->setProperty("vatsinatorSettingsKey", "approach_circle_color");
-    SeasColorButton->setProperty("vatsinatorSettingsKey", "seas_color");
-    LandsColorButton->setProperty("vatsinatorSettingsKey", "lands_color");
     OriginToPilotLineColorButton->setProperty("vatsinatorSettingsKey", "origin_to_pilot_line_color");
     PilotToDestinationLineColorButton->setProperty("vatsinatorSettingsKey", "pilot_to_destination_line_color");
 }

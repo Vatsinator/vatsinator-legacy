@@ -300,7 +300,7 @@ MapRenderer::__drawWorld()
     QMatrix4x4 mvp = __projection * __worldTransform;
     mvp.translate(QVector3D(0.0f, 0.0f, zValue));
     
-    __mapDrawer->draw(mvp, __screen, __zoom);
+    __mapDrawer->draw(mvp, __screen);
 }
 
 void

@@ -51,8 +51,6 @@ public:
      * airport_font:                      QFont
      * pilot_font:                        QFont
      * approach_circle_color:             QColor
-     * seas_color:                        QColor
-     * lands_color:                       QColor
      * origin_to_pilot_line_color:        QColor
      * pilot_to_destination_line_color:   QColor
      */

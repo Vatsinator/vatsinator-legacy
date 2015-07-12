@@ -282,8 +282,6 @@ MapScene::__updateSettings()
 {
     __settings.misc.zoom_coefficient = SM::get("map.zoom_coefficient").toInt();
     
-    __settings.colors.lands = SM::get("map.lands_color").value<QColor>();
-    __settings.colors.seas = SM::get("map.seas_color").value<QColor>();
     __settings.colors.staffed_fir_borders = SM::get("map.staffed_fir_borders_color").value<QColor>();
     __settings.colors.staffed_fir_background = SM::get("map.staffed_fir_background_color").value<QColor>();
     __settings.colors.staffed_uir_borders = SM::get("map.staffed_uir_borders_color").value<QColor>();
