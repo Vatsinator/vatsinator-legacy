@@ -73,13 +73,11 @@ SettingsManager::updateUi(const QString& pageName)
         return;
 #endif
     
-    Q_ASSERT_X(vApp()->settingsManager()->__getPage(pageName),
-               qPrintable(QString("SettingsManager::updateUi(%1)").arg(pageName)),
-               "No such page");
+    Q_ASSERT(m);
                
     QSettings s;
     s.beginGroup("Settings");
-    vApp()->settingsManager()->__getPage(pageName)->restoreSettings(s, vApp()->settingsManager()->__defaults);
+    m->restoreSettings(s, vApp()->settingsManager()->__defaults);
     s.endGroup();
 }
 

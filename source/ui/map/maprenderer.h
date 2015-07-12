@@ -28,6 +28,7 @@
 #include "vatsimdata/lonlat.h"
 
 class IconKeeper;
+class MapDrawer;
 class MapItem;
 class MapScene;
 class ModelMatcher;
@@ -113,6 +114,16 @@ public:
      * Draws the specified item's "under mouse" elements.
      */
     void drawLines(const MapItem* item);
+    
+    /**
+     * Sets the MapDrawer instance.
+     * 
+     * If another drawer was bound before, it will be deleted.
+     * MapRenderer takes ownership over \c drawer.
+     * 
+     * \note This function is thread-safe.
+     */
+    void setMapDrawer(MapDrawer* drawer);
     
     qreal zoomStep(int zoom);
     void setZoom(qreal zoom);
@@ -259,6 +270,9 @@ private:
     /* OpenGL functions */
     QOpenGLFunctions* __functions;
     
+    /* MapDrawer implementation */
+    MapDrawer* __mapDrawer;
+    
     /* The IconKeeper instance */
     IconKeeper* __iconKeeper;
     
@@ -305,6 +319,8 @@ private:
     
     /*Actual Zoom level*/
     int __actualZoom;
+    
+    bool __mapDrawerNeedInitialization;
     
 };
 

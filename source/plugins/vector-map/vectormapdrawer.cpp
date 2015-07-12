@@ -30,8 +30,11 @@ VectorMapDrawer::VectorMapDrawer(QObject* parent) :
     QObject(parent),
     __worldMap(new WorldMap(this)),
     __borders(QOpenGLBuffer::VertexBuffer),
-    __triangles(QOpenGLBuffer::IndexBuffer)
+    __triangles(QOpenGLBuffer::IndexBuffer),
+    __lands(255, 255, 255),
+    __seas(188, 222, 225)
 {
+    Q_INIT_RESOURCE(vectormap);
     __worldMap->initialize();
 }
 
@@ -63,11 +66,22 @@ VectorMapDrawer::initialize()
 }
 
 void
-VectorMapDrawer::draw(const QRectF& screen, qreal zoom)
+VectorMapDrawer::draw(const QMatrix4x4& mvp, const QRectF& screen, qreal zoom)
 {
+    QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();
+    
+    gl->glClearColor(__seas.redF(), __seas.greenF(), __seas.blueF(), 1.0);
+    gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    __identityProgram->bind();
+    __identityProgram->setUniformValue(__matrixLocation, mvp);
+    __identityProgram->setUniformValue(__colorLocation, __lands);
+    
     __vao.bind();
-    glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT, 0);
+    gl->glDrawElements(GL_TRIANGLES, __vertices, GL_UNSIGNED_INT, 0);
     __vao.release();
+    
+    __identityProgram->release();
 }
 
 bool
@@ -77,10 +91,10 @@ VectorMapDrawer::__buildShaders()
     /* Create identity shader */
     __identityProgram = new QOpenGLShaderProgram(this);
     QOpenGLShader* vertex = new QOpenGLShader(QOpenGLShader::Vertex, __identityProgram);
-    result = vertex->compileSourceFile(":/shaders/identity.vert");
+    result = vertex->compileSourceFile(":/shaders/vectormap.vert");
     Q_ASSERT(result);
     QOpenGLShader* fragment = new QOpenGLShader(QOpenGLShader::Fragment, __identityProgram);
-    result = fragment->compileSourceFile(":/shaders/identity.frag");
+    result = fragment->compileSourceFile(":/shaders/vectormap.frag");
     Q_ASSERT(result);
     __identityProgram->addShader(vertex);
     __identityProgram->addShader(fragment);
@@ -91,10 +105,12 @@ VectorMapDrawer::__buildShaders()
     Q_ASSERT(result);
     __identityProgram->bind();
     __matrixLocation = __identityProgram->uniformLocation("matrix");
-    Q_ASSERT(__identityMatrixLocation >= 0);
+    Q_ASSERT(__matrixLocation >= 0);
     __colorLocation = __identityProgram->uniformLocation("color");
-    Q_ASSERT(__identityColorLocation >= 0);
+    Q_ASSERT(__colorLocation >= 0);
     __identityProgram->release();
+    
+    return true;
 }
 
 bool
@@ -133,6 +149,8 @@ VectorMapDrawer::__initializeBuffers()
     __vao.release();
     __borders.release();
     __triangles.release();
+    
+    __vertices = trianglesData.size();
     
     return true;
 }

@@ -1,4 +1,4 @@
-qt5_add_resources (vectormapdrawer_RESOURCES files.qrc)
+qt5_add_resources (vectormapdrawer_RESOURCES vectormap.qrc)
 
 add_library(vectormapdrawer STATIC
     vectormapdrawer.h

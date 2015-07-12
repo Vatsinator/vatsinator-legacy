@@ -51,11 +51,13 @@
 #include "vatsinatorapplication.h"
 #include "config.h"
 
+#include "plugins/vector-map/vectormapdrawer.h"
+
 #include "mapwidget.h"
 
 MapWidget::MapWidget(QWidget* parent) :
-    QGLWidget (MapConfig::glFormat(), parent),
-    __renderer (nullptr)
+    QGLWidget(MapConfig::glFormat(), parent),
+    __renderer(nullptr)
 {
     setAttribute (Qt::WA_NoSystemBackground);
     setAttribute (Qt::WA_OpaquePaintEvent);
@@ -75,7 +77,9 @@ MapWidget::MapWidget(QWidget* parent) :
 
 MapWidget::~MapWidget()
 {
+    makeCurrent();
     delete __renderer;
+    doneCurrent();
 }
 
 bool
@@ -113,6 +117,7 @@ MapWidget::initializeGL()
     }
     
     __renderer = new MapRenderer();
+    __renderer->setMapDrawer(new VectorMapDrawer);
     connect (__renderer,   SIGNAL (updated()),
              this,         SLOT (update()), Qt::DirectConnection);
 }

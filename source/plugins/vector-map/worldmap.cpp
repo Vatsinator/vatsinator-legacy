@@ -32,6 +32,10 @@ void WorldMap::__readDatabase()
 {
     QFile db(":/db/WorldMap.db");
     bool result = db.open(QIODevice::ReadOnly);
+    if (!result) {
+        qWarning("%s", qPrintable(db.errorString()));
+    }
+    
     Q_ASSERT(result);
     Q_UNUSED(result);
     

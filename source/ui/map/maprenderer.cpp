@@ -20,6 +20,7 @@
 #include <QtGui>
 #include <chrono>
 
+#include "plugins/mapdrawer.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/firitem.h"
@@ -45,11 +46,12 @@
 MapRenderer::MapRenderer(QObject* parent) :
     QObject(parent),
     __functions(new QOpenGLFunctions(QOpenGLContext::currentContext())),
+    __mapDrawer(nullptr),
     __iconKeeper(new IconKeeper(this)),
     __modelMatcher(new ModelMatcher(this)),
-    __scene(new MapScene(this))
+    __scene(new MapScene(this)),
+    __mapDrawerNeedInitialization(false)
 {
-
     __createShaderPrograms();
     __restoreSettings();
     
@@ -63,16 +65,12 @@ MapRenderer::MapRenderer(QObject* parent) :
     glAlphaFunc(GL_GREATER, 0.1f);
 #endif
     
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    glClearColor(__scene->settings().colors.seas.redF(),
-                 __scene->settings().colors.seas.greenF(),
-                 __scene->settings().colors.seas.blueF(),
-                 1.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     //  Q_ASSERT(glGetError() == 0);
@@ -83,6 +81,9 @@ MapRenderer::MapRenderer(QObject* parent) :
 
 MapRenderer::~MapRenderer()
 {
+    if (__mapDrawer)
+        delete __mapDrawer;
+    
     __storeSettings();
     delete __functions;
 }
@@ -151,6 +152,16 @@ MapRenderer::drawLines(const MapItem* item)
     }
     
     __identityProgram->release();
+}
+
+void
+MapRenderer::setMapDrawer(MapDrawer* drawer)
+{
+    __mapDrawer = drawer;
+    if (__mapDrawer->flags().testFlag(MapDrawer::RequireOpenGLContextOnInitialize))
+        __mapDrawerNeedInitialization = true;
+    else
+        __mapDrawer->initialize();
 }
 
 void
@@ -249,11 +260,16 @@ MapRenderer::supportsRequiredOpenGLFeatures()
 void
 MapRenderer::paint()
 {
+    if (__mapDrawerNeedInitialization) {
+        __mapDrawer->initialize();
+        __mapDrawerNeedInitialization = false;
+    }
+    
     //   auto start = std::chrono::high_resolution_clock::now();
     if (__screen.isNull())
         return;
         
-    __updateOffsets();
+//     __updateOffsets();
     
     /* Prepare world transform matrix */
     __worldTransform.setToIdentity();
@@ -261,20 +277,13 @@ MapRenderer::paint()
     __worldTransform.scale(zoom(), zoom());
     __worldTransform.translate(-center().x(), -center().y());
     
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    for (float o : __offsets) {
-        __xOffset = o;
-        
-        __drawWorld();
-        __drawUirs();
-        __drawFirs();
-        __drawApproachAreas();
-        __drawItems();
-    }
-    
     __xOffset = 0.0f;
+    __drawWorld();
+    __drawUirs();
+    __drawFirs();
+    __drawApproachAreas();
+    __drawItems();
+    
     //   auto end = std::chrono::high_resolution_clock::now();
     //   qDebug() << "MapRenderer::paint()" << std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count();
     // Q_ASSERT(glGetError() == 0);
@@ -283,16 +292,15 @@ MapRenderer::paint()
 void
 MapRenderer::__drawWorld()
 {
-//     static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
-//     
-//     QMatrix4x4 mvp = __projection * __worldTransform;
-//     mvp.translate(QVector3D(0.0f, 0.0f, zValue));
-//     __identityProgram->bind();
-//     __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
-//     __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
-//     __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.lands);
-//     __world->paint();
-//     __identityProgram->release();
+    if (!__mapDrawer)
+        return;
+    
+    static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
+    
+    QMatrix4x4 mvp = __projection * __worldTransform;
+    mvp.translate(QVector3D(0.0f, 0.0f, zValue));
+    
+    __mapDrawer->draw(mvp, __screen, __zoom);
 }
 
 void
@@ -414,7 +422,7 @@ MapRenderer::__drawItems()
     __texturedProgram->enableAttributeArray(texcoordLocation());
     __texturedProgram->enableAttributeArray(vertexLocation());
     
-    scene()->inRect(__screen, [this](const MapItem * item) {
+    scene()->inRect(__screen, [this](const MapItem* item) {
         __texturedProgram->setUniformValue(__texturedPositionLocation, glFromLonLat(item->position()));
         item->drawItem(__texturedProgram);
         

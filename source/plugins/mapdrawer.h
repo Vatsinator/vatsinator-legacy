@@ -22,6 +22,7 @@
 
 #include <QtPlugin>
 
+class QMatrix4x4;
 class QRectF;
 
 /**
@@ -55,9 +56,8 @@ public:
     
     /**
      * Renders a map.
-     * TODO Fill doc here
      */
-    virtual void draw(const QRectF& screen, qreal zoom) = 0;
+    virtual void draw(const QMatrix4x4& mvp, const QRectF& screen, qreal zoom) = 0;
     
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(MapDrawer::MapDrawerFlags)

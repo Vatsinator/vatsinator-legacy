@@ -92,27 +92,6 @@ MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> functio
         if (it->second->isVisible())
             function(it->second);
     }
-    
-    /* Handle cross-IDL queries */
-    if (rect.right() > 180.0) {
-        QRectF more(QPointF(-180.0, rect.top()), QSizeF(rect.right() - 180.0, rect.height()));
-        
-        for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
-                it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
-            if (it->second->isVisible())
-                function(it->second);
-        }
-    }
-    
-    if (rect.left() < -180.0) {
-        QRectF more(QPointF(rect.left() + 360.0, rect.top()), QPointF(180.0, rect.bottom()));
-        
-        for (auto it = spatial::region_cbegin(__items, more.bottomLeft(), more.topRight());
-                it != spatial::region_cend(__items, more.bottomLeft(), more.topRight()); ++it) {
-            if (it->second->isVisible())
-                function(it->second);
-        }
-    }
 }
 
 const MapItem*

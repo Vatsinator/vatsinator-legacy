@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
+#include <QColor>
 
 #include "plugins/mapdrawer.h"
 
@@ -57,7 +58,7 @@ public:
     /**
      * \copydoc MapDrawer::draw()
      */
-    void draw(const QRectF& screen, qreal zoom) override;
+    void draw(const QMatrix4x4& mvp, const QRectF& screen, qreal zoom) override;
     
 private:
     bool __buildShaders();
@@ -68,6 +69,9 @@ private:
     QOpenGLBuffer __triangles;
     QOpenGLVertexArrayObject __vao;
     QOpenGLShaderProgram* __identityProgram;
+    
+    QColor __lands;
+    QColor __seas;
     
     int __vertices;
     
