@@ -161,7 +161,7 @@ MapRenderer::setMapDrawer(MapDrawer* drawer)
     if (__mapDrawer->flags().testFlag(MapDrawer::RequireOpenGLContextOnInitialize))
         __mapDrawerNeedInitialization = true;
     else
-        __mapDrawer->initialize();
+        __mapDrawer->initialize(this);
 }
 
 void
@@ -170,6 +170,7 @@ MapRenderer::setZoom(qreal zoom)
     __zoom = zoom;
     __updateScreen();
     emit updated();
+    emit zoomChanged(__zoom);
 }
 
 void
@@ -178,6 +179,7 @@ MapRenderer::setCenter(const LonLat& center)
     __center = center;
     __updateScreen();
     emit updated();
+    emit centerChanged(__center);
 }
 
 qreal
@@ -233,6 +235,7 @@ MapRenderer::setViewport(const QSize& size)
     __updateOffsets();
     __updateScreen();
     emit updated();
+    emit viewportChanged(__viewport);
 }
 
 bool
@@ -261,7 +264,7 @@ void
 MapRenderer::paint()
 {
     if (__mapDrawerNeedInitialization) {
-        __mapDrawer->initialize();
+        __mapDrawer->initialize(this);
         __mapDrawerNeedInitialization = false;
     }
     
@@ -300,7 +303,7 @@ MapRenderer::__drawWorld()
     QMatrix4x4 mvp = __projection * __worldTransform;
     mvp.translate(QVector3D(0.0f, 0.0f, zValue));
     
-    __mapDrawer->draw(mvp, __screen);
+    __mapDrawer->draw(mvp, __screen, __viewport);
 }
 
 void

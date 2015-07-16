@@ -63,11 +63,10 @@ FileManager::moveToCache(const QString& source, const QString& destination)
     
     CacheFile oldCache(destination);
     QFileInfo info(oldCache);
-    QDir(info.path()).mkpath(".");
     
     if (oldCache.exists())
         oldCache.remove();
-        
+    
     bool result = file.rename(oldCache.fileName());
     
     if (result)

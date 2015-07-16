@@ -1,5 +1,5 @@
 /*
- * vectormapdrawer.h
+ * tiledmapdrawer.h
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,33 +17,24 @@
  *
  */
 
-#ifndef VECTORMAPDRAWER_H
-#define VECTORMAPDRAWER_H
+#ifndef TILEDMAPDRAWER_H
+#define TILEDMAPDRAWER_H
 
 #include <QObject>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
-#include <QColor>
 
 #include "plugins/mapdrawer.h"
 
-class QOpenGLShaderProgram;
+class TileManager;
 
-class WorldMap;
-
-/**
- * The VectorMapDrawer draws a vector, legacy map using data provided by
- * NSAA.
- */
-class VectorMapDrawer : public QObject, public MapDrawer {
+class TiledMapDrawer : public QObject, public MapDrawer {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.MapDrawer")
     Q_INTERFACES(MapDrawer)
-    
+
 public:
-    VectorMapDrawer(QObject* parent = nullptr);
+    TiledMapDrawer(QObject *parent = nullptr);
     
-    virtual ~VectorMapDrawer() = default;
+    virtual ~TiledMapDrawer() = default;
     
     /**
      * \copydoc MapDrawer::flags()
@@ -61,22 +52,9 @@ public:
     void draw(const QMatrix4x4& mvp, const QRectF& screen, const QSize& viewport) override;
     
 private:
-    bool __buildShaders();
-    bool __initializeBuffers();
+    MapRenderer* __renderer;
+    TileManager* __tiles;
     
-    WorldMap* __worldMap;
-    QOpenGLBuffer __borders;
-    QOpenGLBuffer __triangles;
-    QOpenGLVertexArrayObject __vao;
-    QOpenGLShaderProgram* __identityProgram;
-    
-    QColor __lands;
-    QColor __seas;
-    
-    int __vertices;
-    
-    int __matrixLocation;
-    int __colorLocation;
 };
 
-#endif // VECTORMAPDRAWER_H
+#endif // TILEDMAPDRAWER_H

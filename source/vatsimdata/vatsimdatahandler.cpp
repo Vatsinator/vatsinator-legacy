@@ -350,15 +350,7 @@ VatsimDataHandler::nmDistance(
     const qreal& lat1, const qreal& lon1,
     const qreal& lat2, const qreal& lon2)
 {
-
-    /* http://www.movable-type.co.uk/scripts/latlong.html */
-    static Q_CONSTEXPR qreal R = 3440.06479191; // nm
-    
-    return qAcos(
-               qSin(lat1) * qSin(lat2) +
-               qCos(lat1) * qCos(lat2) *
-               qCos(lon2 - lon1)
-           ) * R;
+    return nmDistance(LonLat(lon1, lat1), LonLat(lon2, lat2));
 }
 
 qreal
@@ -367,11 +359,13 @@ VatsimDataHandler::nmDistance(const LonLat& a, const LonLat& b)
     /* http://www.movable-type.co.uk/scripts/latlong.html */
     static Q_CONSTEXPR qreal R = 3440.06479191; // nm
     
-    return qAcos(
-               qSin(a.latitude()) * qSin(b.latitude()) +
-               qCos(a.latitude()) * qCos(b.latitude()) *
-               qCos(b.longitude() - a.longitude())
-           ) * R;
+    /* Equirectangular approximation */
+    qreal x = (qDegreesToRadians(b.longitude() - a.longitude())) *
+        qCos((qDegreesToRadians(a.latitude()) + qDegreesToRadians(b.latitude())) / 2);
+    
+    qreal y = qDegreesToRadians(b.latitude()) - qDegreesToRadians(a.latitude());
+    
+    return qSqrt(x * x + y * y) * R;
 }
 
 void

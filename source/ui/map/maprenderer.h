@@ -47,12 +47,17 @@ class MapRenderer : public QObject {
      * The zoom property describes the current zoom of the map. The larger the
      * value is, the smaller range is visible.
      */
-    Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY updated)
+    Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged)
     
     /**
      * The center property represents the center of the map.
      */
-    Q_PROPERTY(LonLat center READ center WRITE setCenter NOTIFY updated)
+    Q_PROPERTY(LonLat center READ center WRITE setCenter NOTIFY centerChanged)
+    
+    /**
+     * Size of the screen (in pixels) on which the map is being rendered.
+     */
+    Q_PROPERTY(QSize viewport READ viewport WRITE setViewport NOTIFY viewportChanged)
     
 signals:
     /**
@@ -63,6 +68,10 @@ signals:
      * it efficient.
      */
     void updated();
+    
+    void zoomChanged(qreal zoom);
+    void centerChanged(const LonLat& center);
+    void viewportChanged(const QSize& viewport);
     
 public:
     /**
@@ -135,11 +144,13 @@ public:
      * equations that consider the zoom coefficient specified by the user.
      */
     void updateZoom(int steps);
-    
-    /**
-     * Updates the viewport of the scene.
-     */
+
     void setViewport(const QSize& size);
+    
+    inline const QSize& viewport() const
+    {
+        return __viewport;
+    }
     
     inline qreal zoom() const
     {
@@ -148,6 +159,11 @@ public:
     inline const LonLat& center() const
     {
         return __center;
+    }
+    
+    inline const QRectF& screen() const
+    {
+        return __screen;
     }
     
     /**

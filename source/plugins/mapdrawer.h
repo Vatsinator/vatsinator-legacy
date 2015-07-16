@@ -21,6 +21,7 @@
 #define MAPDRAWER_H
 
 #include <QtPlugin>
+#include "ui/map/maprenderer.h"
 
 class QMatrix4x4;
 class QRectF;
@@ -58,7 +59,7 @@ public:
      *
      * This function is called just before the first frame is rendered.
      */
-    virtual void initialize() = 0;
+    virtual void initialize(MapRenderer* renderer) = 0;
     
     /**
      * Renders a map.

@@ -46,6 +46,7 @@ macro (vatsinator_static_plugin libname pluginname)
 endmacro ()
 
 add_subdirectory (euroute-notam-provider)
+add_subdirectory (tiled-map)
 add_subdirectory (ultimate-weather-forecasts)
 add_subdirectory (vatbook-booking-provider)
 add_subdirectory (vector-map)

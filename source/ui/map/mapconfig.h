@@ -41,7 +41,7 @@ public:
     
     static Q_DECL_CONSTEXPR qreal latitudeMax()
     {
-        return 90.0;
+        return 85.0511;
     }
     
     static Q_DECL_CONSTEXPR int baseWindowWidth()
@@ -51,7 +51,7 @@ public:
     
     static Q_DECL_CONSTEXPR int baseWindowHeight()
     {
-        return 600;
+        return 800;
     }
     
     /* Distance between mouse and object that object is considered

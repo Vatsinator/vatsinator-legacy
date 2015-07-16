@@ -372,7 +372,7 @@ public:
      * nautical miles.
      *
      * \note If you don't need the distance specifically in nautical miles
-     * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+     * (i.e. you just need to compare two distances), use VatsimDataHandler::fastDistance()
      * instead, as it is a lot quicker.
      *
      * \note All coordinates must be in radians.
@@ -390,7 +390,7 @@ public:
      * nautical miles.
      *
      * \note If you don't need the distance specifically in nautical miles
-     * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+     * (i.e. you just need to compare two distances), use VatsimDataHandler::fastDistance()
      * instead, as it is a lot quicker.
      *
      * \note All coordinates must be in radians.

@@ -51,6 +51,7 @@
 #include "vatsinatorapplication.h"
 #include "config.h"
 
+#include "plugins/tiled-map/tiledmapdrawer.h"
 #include "plugins/vector-map/vectormapdrawer.h"
 
 #include "mapwidget.h"
@@ -117,7 +118,7 @@ MapWidget::initializeGL()
     }
     
     __renderer = new MapRenderer();
-    __renderer->setMapDrawer(new VectorMapDrawer);
+    __renderer->setMapDrawer(new TiledMapDrawer);
     connect (__renderer,   SIGNAL (updated()),
              this,         SLOT (update()), Qt::DirectConnection);
 }
