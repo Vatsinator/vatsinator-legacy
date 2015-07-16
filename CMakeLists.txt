@@ -137,6 +137,8 @@ if (NOT APPLE)
     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
 
+set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_subdirectory (source)
 add_subdirectory (resources)
 
