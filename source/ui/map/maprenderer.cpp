@@ -175,9 +175,9 @@ MapRenderer::paint(QPainter* painter)
         __mapDrawer->draw(painter, transform);
     }
     
-//     scene()->inRect(__screen, [painter, &transform](const MapItem* item) {
-//         item->draw(painter, transform);
-//     });
+    scene()->inRect(__screen, [painter, &transform](const MapItem* item) {
+        item->draw(painter, transform);
+    });
 }
 
 void
