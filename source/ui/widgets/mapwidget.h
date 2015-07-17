@@ -20,24 +20,20 @@
 #ifndef MAPWIDGET_H
 #define MAPWIDGET_H
 
-#include <QGLWidget>
-#include "ui/notifiable.h"
+#include <QWidget>
+#include "ui/map/airportitem.h"
+#include "ui/map/firitem.h"
+#include "ui/map/flightitem.h"
+#include "ui/map/maprenderer.h"
 #include "vatsimdata/lonlat.h"
 
-class Airport;
-class AirportItem;
-class FirItem;
-class FlightItem;
-class Pilot;
-class MapItem;
-class MapRenderer;
 class QMenu;
 class QGestureEvent;
 class QPanGesture;
 class QPinchGesture;
 class QSwipeGesture;
 
-class MapWidget : public QGLWidget, private Notifiable {
+class MapWidget : public QWidget {
     Q_OBJECT
     friend class MapScene;
     
@@ -71,13 +67,11 @@ public:
     }
     
 protected:
-    void initializeGL() override;
-    void paintGL() override;
-    void resizeGL(int width, int height) override;
-    
     virtual bool gestureEvent(QGestureEvent* event);
     virtual void pinchTriggered(QPinchGesture* gesture);
     
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
     void wheelEvent(QWheelEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;

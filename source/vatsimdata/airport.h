@@ -54,6 +54,11 @@ class Airport : public QObject {
      */
     Q_PROPERTY(QString city READ city CONSTANT)
     
+    /**
+     * Name of the airport.
+     */
+    Q_PROPERTY(QString name READ name CONSTANT)
+    
 signals:
     void updated();
     
@@ -141,6 +146,11 @@ public:
         return __city;
     }
     
+    inline const QString& name() const
+    {
+        return __name;
+    }
+    
     /**
      * \return Staff model of the airport.
      */
@@ -169,6 +179,7 @@ private:
     const AirportRecord* __data;
     const QString __icao;
     const QString __city;
+    const QString __name;
     
     AtcTableModel* __staff;
     FlightTableModel* __inbounds;

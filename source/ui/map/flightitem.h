@@ -21,7 +21,7 @@
 #define FLIGHTITEM_H
 
 #include <QObject>
-#include <QtGui>
+#include <QPixmap>
 #include "ui/map/mapitem.h"
 
 class Pilot;
@@ -49,9 +49,7 @@ public:
     bool isVisible() const override;
     bool isLabelVisible() const override;
     const LonLat& position() const override;
-    void drawItem(QOpenGLShaderProgram* shader) const override;
-    void drawLabel(QOpenGLShaderProgram* shader) const override;
-    void drawFocused(QOpenGLShaderProgram* shader) const override;
+    void draw(QPainter* painter, const QTransform& transform) const override;
     QString tooltipText() const override;
     void showDetails() const override;
     
@@ -64,29 +62,13 @@ public:
         return __pilot;
     }
     
-private:
-    void __initializeLabel() const;
-    void __prepareLines() const;
-    void __matchModel() const;
-    
-private slots:
-    void __reloadSettings();
-    void __invalidate();
     
 private:
-    MapScene*     __scene;
-    const Pilot*  __pilot;
-    LonLat        __position;
+    MapScene* __scene;
+    const Pilot* __pilot;
+    LonLat __position;
+    mutable QPixmap __model;
     
-    mutable QOpenGLTexture* __model;
-    mutable QOpenGLTexture __label;
-    
-    mutable struct {
-        QVector<GLfloat>    coords;
-        QColor              color;
-    } __otpLine, __ptdLine; // OriginToPilot & PilotToDestination
-    
-    mutable bool  __linesReady;
 };
 
 #endif // FLIGHTITEM_H

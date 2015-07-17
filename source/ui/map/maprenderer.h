@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QSize>
 #include <QColor>
-#include <QMatrix4x4>
+#include <QRectF>
 
 #include "vatsimdata/lonlat.h"
 
@@ -32,8 +32,7 @@ class MapDrawer;
 class MapItem;
 class MapScene;
 class ModelMatcher;
-class QOpenGLFunctions;
-class QOpenGLShaderProgram;
+class QPainter;
 
 /**
  * The MapRenderer class takes care of rendering the map.
@@ -106,16 +105,6 @@ public:
     QPoint mapFromLonLat(const LonLat& point);
     
     /**
-     * Calculates OpenGL scene local coordinates from latitude/longitude.
-     */
-    QPointF glFromLonLat(const LonLat& point);
-    
-    /**
-     * Draws the specified item's "under mouse" elements.
-     */
-    void drawLines(const MapItem* item);
-    
-    /**
      * Sets the MapDrawer instance.
      * 
      * If another drawer was bound before, it will be deleted.
@@ -149,47 +138,7 @@ public:
     {
         return __center;
     }
-    
-    /**
-     * Gets the "color" attribute location in the shader program.
-     */
-    inline int programColorLocation() const
-    {
-        return __identityColorLocation;
-    }
-    
-    /**
-     * Gets the "z" attribute location in the shader program.
-     */
-    inline int programZLocation() const
-    {
-        return __texturedZLocation;
-    }
-    
-    /**
-     * Gets the "rotation" attribute in the shader program.
-     */
-    inline int programRotationLocation() const
-    {
-        return __texturedRotationLocation;
-    }
-    
-    /**
-     * Gets the running instance of IconKeeper.
-     */
-    inline IconKeeper* icons()
-    {
-        return __iconKeeper;
-    }
-    
-    /**
-     * Gets the running instance of ModelMatcher.
-     */
-    inline ModelMatcher* models()
-    {
-        return __modelMatcher;
-    }
-    
+
     /**
      * Gets the running instance of MapScene.
      */
@@ -198,63 +147,23 @@ public:
         return __scene;
     }
     
-    /**
-     * Keeps OpenGL extensions in one place.
-     */
-    inline QOpenGLFunctions* opengl()
+    inline const QRectF& screen()
     {
-        return __functions;
+        return __screen;
     }
-    
-    /**
-     * Vertex attribute location ("vertex").
-     */
-    inline static Q_DECL_CONSTEXPR int vertexLocation()
-    {
-        return 0;
-    }
-    
-    /**
-     * Texture coordinate location ("texcoord").
-     */
-    inline static Q_DECL_CONSTEXPR int texcoordLocation()
-    {
-        return 1;
-    }
-    
-    /**
-     * Checks whether client's machine supports required OpenGL extensions
-     * or not. The lowest require OpenGL profile is 2.1.
-     *
-     * \note This function should be called before the MapRenderer's constructor.
-     */
-    static bool supportsRequiredOpenGLFeatures();
-    
+
 public slots:
     /**
-     * Paints the scene.
-     * A valid OpenGL context must be present at the time of
-     * calling this function.
+     * Paints the scene using the given painter.
      */
-    void paint();
+    void paint(QPainter* painter);
     
 private:
-    void __drawWorld();
-    void __drawFirs();
-    void __drawUirs();
-    void __drawApproachAreas();
-    void __drawItems();
-    
     void __storeSettings();
     void __restoreSettings();
-    
-    void __createShaderPrograms();
-    
-    void __updateOffsets();
     void __updateScreen();
     
 private:
-
     /* The current viewport */
     QSize __viewport;
     
@@ -267,49 +176,11 @@ private:
     /* The center of the map */
     LonLat __center;
     
-    /* OpenGL functions */
-    QOpenGLFunctions* __functions;
-    
     /* MapDrawer implementation */
     MapDrawer* __mapDrawer;
     
-    /* The IconKeeper instance */
-    IconKeeper* __iconKeeper;
-    
-    /* The ModelMatcher instance */
-    ModelMatcher* __modelMatcher;
-    
     /* Scene handler */
     MapScene* __scene;
-    
-    /* To have the map repeated, we keep offsets */
-    QList<float> __offsets;
-    
-    /* Current offset */
-    float __xOffset;
-    
-    /* Stores screen rectangle */
-    float __rangeX;
-    float __rangeY;
-    
-    /* Shader programs */
-    QOpenGLShaderProgram* __identityProgram;
-    QOpenGLShaderProgram* __texturedProgram;
-    
-    /* Shader variable locations */
-    int __identityMatrixLocation;
-    int __identityColorLocation;
-    int __identityOffsetLocation;
-    int __texturedMatrixLocation;
-    int __texturedPositionLocation;
-    int __texturedRotationLocation;
-    int __texturedZLocation;
-    
-    /* Projection matrix */
-    QMatrix4x4 __projection;
-    
-    /* Model-View matrices */
-    QMatrix4x4 __worldTransform;
     
     /* Zoom Coefficient to let users customize their zooming speed */
     /* Zoom Coefficient is defined in MiscellaneousPage */
@@ -319,8 +190,6 @@ private:
     
     /*Actual Zoom level*/
     int __actualZoom;
-    
-    bool __mapDrawerNeedInitialization;
     
 };
 

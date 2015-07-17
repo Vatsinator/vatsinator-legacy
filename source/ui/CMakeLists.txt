@@ -25,7 +25,6 @@ set (ui_SRCS
     map/airportitem.cpp
     map/firitem.cpp
     map/flightitem.cpp
-    map/iconkeeper.cpp
     map/mapconfig.cpp
     map/mapitem.cpp
     map/maprenderer.cpp
@@ -46,7 +45,6 @@ set (ui_HEADERS
     map/airportitem.h
     map/firitem.h
     map/flightitem.h
-    map/iconkeeper.h
     map/mapconfig.h
     map/mapitem.h
     map/maprenderer.h

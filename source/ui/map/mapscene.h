@@ -36,6 +36,7 @@ class Fir;
 class FirItem;
 class FlightItem;
 class MapItem;
+class ModelMatcher;
 class Pilot;
 class MapRenderer;
 class UirItem;
@@ -209,6 +210,14 @@ public:
         return __settings;
     }
     
+    /*
+     * Gives direct access to the ModelMatcher instance.
+     */
+    inline ModelMatcher* modelMatcher()
+    {
+        return __modelMatcher;
+    }
+    
 public slots:
     /**
      * Moves the map smoothly to the given point.
@@ -283,6 +292,7 @@ private:
     const Pilot* __trackedFlight;
     QAbstractAnimation* __animation;
     
+    ModelMatcher* __modelMatcher;
     MapSettings __settings;
     
     QSignalMapper* __flightsMapper; /**< Maps Pilots to its iterators in the spatial map */

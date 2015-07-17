@@ -1,56 +1,36 @@
 /*
-    modelmatcher.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * modelmatcher.h
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 #ifndef MODELMATCHER_H
 #define MODELMATCHER_H
 
 #include <QObject>
-#include <QString>
-#include <QMap>
-#include <QPair>
-#include <QList>
-
 #include "ui/notifiable.h"
 
-class QOpenGLTexture;
-
-/**
- * This class is responsible for matching user airplanes to
- * corresponding models.
- */
-class ModelMatcher : public QObject, public Notifiable {
+class ModelMatcher : public QObject, private Notifiable {
     Q_OBJECT
-    
+
 public:
-    /**
-     * Reads the models.dat file. Passes _parent_ to the QObject's constructor.
-     */
-    ModelMatcher(QObject* = nullptr);
+    ModelMatcher(QObject* parent = nullptr);
     
-    virtual ~ModelMatcher();
-    
-    /**
-     * \param acft Aircraft code that comes from the flight plan.
-     * \return Model's texture; don't dare you delete it.
-     */
-    QOpenGLTexture* matchMyModel(const QString& acft) const;
-    
+    QPixmap& match(const QString& acft);
+
 private:
     void __readModels();
     void __loadPixmaps();
@@ -64,8 +44,7 @@ private:
     /*
      * Id <-> texture pairs
      */
-    QMap<QString, QOpenGLTexture*> __modelsPixmaps;
-    
+    QMap<QString, QPixmap> __modelsPixmaps;
 };
 
 #endif // MODELMATCHER_H

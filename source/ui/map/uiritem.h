@@ -38,9 +38,7 @@ public:
     void showDetails() const override;
     QString tooltipText() const override;
     const LonLat& position() const override;
-    void drawItem(QOpenGLShaderProgram*) const override;
-    void drawLabel(QOpenGLShaderProgram*) const override;
-    void drawFocused(QOpenGLShaderProgram*) const override;
+    void draw(QPainter* painter, const QTransform& transform) const override;
     
     inline const Uir* data() const
     {

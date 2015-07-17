@@ -23,10 +23,6 @@
 #include <QtGlobal> // qreal
 #include <QImage>
 
-#ifndef Q_OS_ANDROID
-# include <QGLFormat> // glFormat
-#endif
-
 class QColor;
 class QFont;
 class QPixmap;
@@ -44,21 +40,11 @@ public:
         return 90.0;
     }
     
-    static Q_DECL_CONSTEXPR int baseWindowWidth()
-    {
-        return 800;
-    }
-    
-    static Q_DECL_CONSTEXPR int baseWindowHeight()
-    {
-        return 600;
-    }
-    
     /* Distance between mouse and object that object is considered
        to be under mouse, in pixels. */
     static Q_DECL_CONSTEXPR qreal mouseOnObject()
     {
-        return 15.0;
+        return 200.0;
     }
     
     /* User won't be able to zoom below this value */
@@ -91,15 +77,6 @@ public:
         return 1.0;
 #endif
     }
-    
-    /* TODO Qt 5.4 Remove */
-#ifndef Q_OS_ANDROID
-    static const QGLFormat& glFormat();
-#endif
-    
-    static const QString& emptyAirportIcon();
-    static const QString& activeAirportIcon();
-    static const QString& activeStaffedAirportIcon();
     
     static const QColor& pilotPen();
     static const QColor& airportPen();

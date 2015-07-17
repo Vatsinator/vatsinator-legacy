@@ -77,9 +77,9 @@ target_link_libraries (vatsinator
 )
 
 if (ANDROID)
-    target_link_libraries (vatsinator Qt5::Quick Qt5::AndroidExtras GLESv1_CM GLESv2)
+    target_link_libraries (vatsinator Qt5::Quick Qt5::AndroidExtras)
 else ()
-    target_link_libraries (vatsinator Qt5::Widgets Qt5::OpenGL ${OPENGL_LIBRARY})
+    target_link_libraries (vatsinator Qt5::Widgets)
 endif ()
 
 if (APPLE)

@@ -20,13 +20,11 @@
 #ifndef MAPITEM_H
 #define MAPITEM_H
 
-#include <QPointF>
-#include <QString>
 #include <QObject>
+#include <QString>
+#include <QPainter>
 
 #include "vatsimdata/lonlat.h"
-
-class QOpenGLShaderProgram;
 
 /**
  * MapItem is a base class for any object that exists on the map.
@@ -55,30 +53,9 @@ public:
     virtual const LonLat& position() const = 0;
     
     /**
-     * Draws the specific item.
-     * For FlightItems it will be the airplane model.
-     * For AirportItems it will be the airport icon.
-     * For FirItems it will be the label.
-     *
-     * \param shader Shader program that is in use during rendering the item.
+     * Draws the item on the painter.
      */
-    virtual void drawItem(QOpenGLShaderProgram* shader) const = 0;
-    
-    /**
-     * Draws the item label.
-     * FirItem won't draw anything.
-     *
-     * \param shader Shader program that is in use during rendering the item.
-     */
-    virtual void drawLabel(QOpenGLShaderProgram* shader) const = 0;
-    
-    /**
-     * Draws the item specific elements when it is under mouse.
-     * For FlightItems and AirportItems it means just rendering the lines.
-     *
-     * \param shader Shader program that is in use during rendering the item.
-     */
-    virtual void drawFocused(QOpenGLShaderProgram* shader) const = 0;
+    virtual void draw(QPainter* painter, const QTransform& transform) const = 0;
     
     /**
      * Tooltip text, shown when the item is mouseover'ed.

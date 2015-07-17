@@ -21,12 +21,9 @@
 #define FIRITEM_H
 
 #include <QObject>
-#include <QOpenGLTexture>
-#include <QOpenGLVertexArrayObject>
 
 #include "ui/map/mapitem.h"
 
-class QOpenGLShaderProgram;
 class Fir;
 class MapScene;
 
@@ -50,24 +47,10 @@ public:
     
     virtual ~FirItem();
     
-    /**
-     * Draws the FIR's borders using GL_LINE_LOOP.
-     * Color and line width must be set before calling this function.
-     */
-    void drawBorders() const;
-    
-    /**
-     * Draws triangles that fill the background.
-     * Background color must be set before this function is called.
-     */
-    void drawBackground() const;
-    
     bool isVisible() const override;
     bool isLabelVisible() const override;
     const LonLat& position() const override;
-    void drawItem(QOpenGLShaderProgram* shader) const override;
-    void drawLabel(QOpenGLShaderProgram* shader) const override;
-    void drawFocused(QOpenGLShaderProgram* shader) const override;
+    void draw(QPainter* painter, const QTransform& transform) const override;
     QString tooltipText() const override;
     void showDetails() const override;
     
@@ -78,27 +61,12 @@ public:
     {
         return __fir;
     }
-    
-private:
-    void __initializeBuffers();
-    void __initializeLabel() const;
-    
-private slots:
-    void __resetLabel();
-    void __invalidate();
-    
+
 private:
     MapScene*  __scene;
     const Fir* __fir;
     LonLat     __position;
     
-    QOpenGLBuffer __borders;
-    QOpenGLBuffer __triangles;
-    mutable QOpenGLVertexArrayObject __vaoBorders;
-    mutable QOpenGLVertexArrayObject __vaoTriangles;
-    int __bordersVertices, __trianglesVertices;
-    
-    mutable QOpenGLTexture __label;
     
 };
 

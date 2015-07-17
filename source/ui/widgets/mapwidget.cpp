@@ -19,12 +19,6 @@
 
 #include <QtGlobal>
 #include <QtWidgets>
-#include <QtOpenGL>
-
-
-#ifdef Q_OS_ANDROID
-# include <GLES/gl.h>
-#endif
 
 #include "db/airportdatabase.h"
 #include "events/mouselonlatevent.h"
@@ -56,11 +50,9 @@
 #include "mapwidget.h"
 
 MapWidget::MapWidget(QWidget* parent) :
-    QGLWidget(MapConfig::glFormat(), parent),
-    __renderer(nullptr)
+    QWidget(parent),
+    __renderer(new MapRenderer())
 {
-    setAttribute (Qt::WA_NoSystemBackground);
-    setAttribute (Qt::WA_OpaquePaintEvent);
     setAttribute (Qt::WA_AcceptTouchEvents);
     setAttribute (Qt::WA_TouchPadAcceptSingleTouchEvents);
     
@@ -72,14 +64,14 @@ MapWidget::MapWidget(QWidget* parent) :
     
     grabGesture (Qt::PinchGesture);
     
-    setAutoBufferSwap (true);
+    __renderer->setMapDrawer(new VectorMapDrawer);
+    connect (__renderer,   SIGNAL (updated()),
+             this,         SLOT (update()));
 }
 
 MapWidget::~MapWidget()
 {
-    makeCurrent();
     delete __renderer;
-    doneCurrent();
 }
 
 bool
@@ -104,46 +96,8 @@ MapWidget::event(QEvent* event)
             return gestureEvent (static_cast<QGestureEvent*> (event));
             
         default:
-            return QGLWidget::event (event);
+            return QWidget::event (event);
     }
-}
-
-void
-MapWidget::initializeGL()
-{
-    if (!MapRenderer::supportsRequiredOpenGLFeatures()) {
-        notifyError (tr ("Your system does not support required OpenGL extensions. \
-                                      Please upgrade your graphic card driver."));
-    }
-    
-    __renderer = new MapRenderer();
-    __renderer->setMapDrawer(new VectorMapDrawer);
-    connect (__renderer,   SIGNAL (updated()),
-             this,         SLOT (update()), Qt::DirectConnection);
-}
-
-void
-MapWidget::paintGL()
-{
-    __renderer->paint();
-    
-    const MapItem* item = __underMouse();
-    
-    if (item) {
-        if (cursor().shape() != Qt::SizeAllCursor)
-            setCursor (QCursor (Qt::PointingHandCursor));
-            
-        __renderer->drawLines (item);
-    } else {
-        if (cursor().shape() != Qt::SizeAllCursor)
-            setCursor (QCursor (Qt::ArrowCursor));
-    }
-}
-
-void
-MapWidget::resizeGL(int width, int height)
-{
-    __renderer->setViewport (QSize (width, height));
 }
 
 bool
@@ -168,6 +122,35 @@ MapWidget::pinchTriggered(QPinchGesture* gesture)
                                      __renderer->zoom() + (__renderer->zoom() * value),
                                      static_cast<qreal> (MapConfig::zoomMaximum())));
     }
+}
+
+void
+MapWidget::paintEvent(QPaintEvent* event)
+{
+    QPainter painter(this);
+    __renderer->paint(&painter);
+    
+    QString mapInfo = QStringLiteral("Position: (%1, %2) zoom: %3, screen: (%4, %5), (%6, %7)").arg(
+        QString::number(__renderer->center().x()),
+        QString::number(__renderer->center().y()),
+        QString::number(__renderer->zoom()),
+        QString::number(__renderer->screen().topLeft().x()),
+        QString::number(__renderer->screen().topLeft().y()),
+        QString::number(__renderer->screen().bottomRight().x()),
+        QString::number(__renderer->screen().bottomRight().y())
+    );
+    QPen pen(QColor(0, 0, 0));
+    
+    painter.setPen(pen);
+    painter.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, mapInfo);
+    
+    Q_UNUSED(event);
+}
+
+void
+MapWidget::resizeEvent(QResizeEvent* event)
+{
+    __renderer->setViewport(event->size());
 }
 
 void
@@ -211,8 +194,13 @@ MapWidget::mouseReleaseEvent(QMouseEvent* event)
             emit windowRequest (item);
         }
     } else {
-        if (__renderer->scene()->trackedFlight())
-            __renderer->scene()->moveTo (__renderer->scene()->trackedFlight()->position());
+        if (__renderer->scene()->trackedFlight()) {
+            __renderer->scene()->moveTo(__renderer->scene()->trackedFlight()->position());
+        } else if (__renderer->center().y() < -MapConfig::latitudeMax()) {
+            __renderer->scene()->moveTo(LonLat(__renderer->center().longitude(), -MapConfig::latitudeMax()));
+        } else if (__renderer->center().y() > MapConfig::latitudeMax()) {
+            __renderer->scene()->moveTo(LonLat(__renderer->center().longitude(), MapConfig::latitudeMax()));
+        }
     }
     
     event->accept();
@@ -228,8 +216,6 @@ MapWidget::mouseMoveEvent(QMouseEvent* event)
         diff.rx() *= -1;
         LonLat center = __renderer->center();
         center += __renderer->scaleToLonLat (diff);
-        
-        center.ry() = qBound (-90.0, center.y(), 90.0);
         
         if (center.x() < -180.0)
             center.rx() += 360.0;
@@ -264,6 +250,8 @@ const MapItem*
 MapWidget::__underMouse()
 {
     const MapItem* closest = __renderer->scene()->nearest (__mousePosition.geoPosition());
+    
+    qDebug() << __mousePosition.screenDistance (__renderer->mapFromLonLat (closest->position()));
     
     if (!closest || __mousePosition.screenDistance (__renderer->mapFromLonLat (closest->position())) > MapConfig::mouseOnObject())
         return nullptr;

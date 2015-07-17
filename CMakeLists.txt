@@ -56,15 +56,9 @@ if (ANDROID)
     find_package (Qt5AndroidExtras REQUIRED)
     include_directories (${Qt5AndroidExtras_INCLUDE_DIRS})
 else () # desktop
-    find_package (OpenGL REQUIRED)
-    
     find_package (Qt5Widgets REQUIRED)
     include_directories (${Qt5Widgets_INCLUDE_DIRS})
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-    
-    # TODO Qt 5.4: remove (QtOpenGLWidget)
-    find_package (Qt5OpenGL REQUIRED)
-    include_directories(${Qt5OpenGL_INCLUDE_DIRS})
 endif()
 
 if (APPLE)

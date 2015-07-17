@@ -21,42 +21,6 @@
 
 #include "mapconfig.h"
 
-#ifndef Q_OS_ANDROID
-const QGLFormat&
-MapConfig::glFormat()
-{
-    static QGLFormat fmt(
-        QGL::DoubleBuffer
-        | QGL::DepthBuffer
-        | QGL::Rgba
-        | QGL::AlphaChannel
-        | QGL::SampleBuffers
-    );
-    return fmt;
-}
-#endif
-
-const QString&
-MapConfig::emptyAirportIcon()
-{
-    static QString icon(":/pixmaps/airport_inactive.png");
-    return icon;
-}
-
-const QString&
-MapConfig::activeAirportIcon()
-{
-    static QString icon(":/pixmaps/airport.png");
-    return icon;
-}
-
-const QString&
-MapConfig::activeStaffedAirportIcon()
-{
-    static QString icon(":/pixmaps/airport_staffed.png");
-    return icon;
-}
-
 const QColor&
 MapConfig::pilotPen()
 {

@@ -20,12 +20,11 @@
 #ifndef AIRPORTITEM_H
 #define AIRPORTITEM_H
 
-#include <QOpenGLTexture>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
 #include <QObject>
 #include <QVector>
 #include <QColor>
+#include <QPixmap>
+#include <QStaticText>
 
 #include "ui/map/mapitem.h"
 
@@ -49,17 +48,10 @@ public:
     
     virtual ~AirportItem();
     
-    /**
-     * Draws approach circle (or area, if provided).
-     */
-    void drawApproachArea() const;
-    
     bool isVisible() const override;
     bool isLabelVisible() const override;
     const LonLat& position() const override;
-    void drawItem(QOpenGLShaderProgram* shader) const override;
-    void drawLabel(QOpenGLShaderProgram* shader) const override;
-    void drawFocused(QOpenGLShaderProgram* shader) const override;
+    void draw(QPainter* painter, const QTransform& transform) const override;
     QString tooltipText() const override;
     void showDetails() const override;
     
@@ -71,36 +63,13 @@ public:
     {
         return __airport;
     }
-    
+
 private:
-    void __takeIcon() const;
-    void __prepareLines() const;
-    void __initializeLabel() const;
-    void __initializeApproachBuffer() const;
-    
-private slots:
-    void __reloadSettings();
-    void __invalidate();
-    
-private:
-    MapScene*             __scene;
-    const Airport*        __airport; /**< Data pointer */
-    LonLat                __position;
-    
-    mutable QOpenGLTexture* __icon; /**< Icon OpenGL texture */
-    mutable QOpenGLTexture  __label; /**< Label OpenGL texture */
-    
-    mutable struct {
-        QVector<GLfloat>    coords;
-        QColor              color;
-    } __otpLines, __ptdLines; /**< OriginToPilot & PilotToDestination */
-    
-    mutable bool  __linesReady;
-    
-    mutable QOpenGLVertexArrayObject __vaoApproach;
-    mutable QOpenGLBuffer __bufferApproachPoints;
-    mutable QOpenGLBuffer __bufferApproachTriangles;
-    mutable int __trianglesApproach;
+    MapScene* __scene;
+    const Airport* __airport; /**< Data pointer */
+    LonLat __position;
+    mutable QPixmap __icon;
+    QStaticText __label;
     
 };
 

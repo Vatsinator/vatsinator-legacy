@@ -31,6 +31,7 @@
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/maprenderer.h"
+#include "ui/map/modelmatcher.h"
 #include "ui/map/uiritem.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
@@ -46,6 +47,7 @@ MapScene::MapScene(QObject* parent) :
     __renderer(qobject_cast<MapRenderer * >(parent)),
     __trackedFlight(nullptr),
     __animation(nullptr),
+    __modelMatcher(new ModelMatcher(this)),
     __flightsMapper(new QSignalMapper(this))
 {
     Q_ASSERT(__renderer);

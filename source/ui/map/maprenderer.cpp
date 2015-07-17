@@ -25,11 +25,9 @@
 #include "ui/map/airportitem.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
-#include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapitem.h"
 #include "ui/map/mapscene.h"
-#include "ui/map/modelmatcher.h"
 #include "ui/map/uiritem.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
@@ -39,44 +37,12 @@
 
 #include "maprenderer.h"
 
-#ifndef GL_MULTISAMPLE
-# define GL_MULTISAMPLE 0x809D
-#endif
-
 MapRenderer::MapRenderer(QObject* parent) :
     QObject(parent),
-    __functions(new QOpenGLFunctions(QOpenGLContext::currentContext())),
     __mapDrawer(nullptr),
-    __iconKeeper(new IconKeeper(this)),
-    __modelMatcher(new ModelMatcher(this)),
-    __scene(new MapScene(this)),
-    __mapDrawerNeedInitialization(false)
+    __scene(new MapScene(this))
 {
-    __createShaderPrograms();
     __restoreSettings();
-    
-    glEnable(GL_MULTISAMPLE);
-    
-#ifndef Q_OS_ANDROID
-    glShadeModel(GL_SMOOTH);
-    
-    /* TODO Fix alpha on Android */
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.1f);
-#endif
-    
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    //  Q_ASSERT(glGetError() == 0);
-    
-    /* For a really strong debug */
-    //   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 MapRenderer::~MapRenderer()
@@ -85,83 +51,37 @@ MapRenderer::~MapRenderer()
         delete __mapDrawer;
     
     __storeSettings();
-    delete __functions;
 }
 
 LonLat
 MapRenderer::mapToLonLat(const QPoint& point)
 {
-    static Q_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-    static Q_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
-    
-    return LonLat(
-               static_cast<qreal>(point.x() - (__viewport.width() / 2)) * xFactor / static_cast<qreal>(zoom()) + center().x(),
-               -static_cast<qreal>(point.y() - (__viewport.height() / 2)) * yFactor / static_cast<qreal>(zoom()) + center().y()
-           );
+    qreal x = static_cast<qreal>(point.x() - (__viewport.width() / 2)) * MapConfig::longitudeMax() / __viewport.width() / zoom() + center().x();
+    qreal y = static_cast<qreal>(point.y() - (__viewport.height() / 2)) * MapConfig::latitudeMax() / __viewport.height() / zoom() - center().y();
+    return LonLat(x, -y);
 }
 
 LonLat
 MapRenderer::scaleToLonLat(const QPoint& point)
 {
-    static Q_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-    static Q_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
-    
-    return LonLat(
-               static_cast<qreal>(point.x()) * xFactor / static_cast<qreal>(zoom()),
-               static_cast<qreal>(point.y()) * yFactor / static_cast<qreal>(zoom())
-           );
+    qreal x = static_cast<qreal>(point.x()) * MapConfig::longitudeMax() / __viewport.width() / zoom();
+    qreal y = static_cast<qreal>(point.y()) * MapConfig::latitudeMax() / __viewport.height() / zoom();
+    return LonLat(x, y);
 }
 
 QPoint
 MapRenderer::mapFromLonLat(const LonLat& point)
 {
-    static Q_CONSTEXPR qreal xFactor = MapConfig::longitudeMax() / (MapConfig::baseWindowWidth() / 2);
-    static Q_CONSTEXPR qreal yFactor = MapConfig::latitudeMax() / (MapConfig::baseWindowHeight() / 2);
-    
-    return QPoint(
-               static_cast<int>((point.x() - center().x()) * zoom() / xFactor) + (__viewport.width() / 2),
-               static_cast<int>((-point.y() + center().y()) * zoom() / yFactor) + (__viewport.height() / 2)
-           );
-}
-
-QPointF
-MapRenderer::glFromLonLat(const LonLat& point)
-{
-    return QPointF(
-               (point.x() - center().x() + static_cast<qreal>(__xOffset)) /
-               MapConfig::longitudeMax() * zoom(),
-               (point.y() - center().y()) / MapConfig::latitudeMax() * zoom()
-           );
-}
-
-void
-MapRenderer::drawLines(const MapItem* item)
-{
-    static Q_CONSTEXPR GLfloat linesZ = static_cast<GLfloat>(MapConfig::MapLayers::Lines);
-    
-    QMatrix4x4 mvp = __projection * __worldTransform;
-    mvp.translate(QVector3D(0.0f, 0.0f, linesZ));
-    
-    __identityProgram->bind();
-    __texturedProgram->enableAttributeArray(vertexLocation());
-    __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
-    
-    for (float o : __offsets) {
-        __identityProgram->setUniformValue(__identityOffsetLocation, o);
-        item->drawFocused(__identityProgram);
-    }
-    
-    __identityProgram->release();
+    int x = (__viewport.width() * (2.0 * zoom() * (point.x() - center().x()) + MapConfig::longitudeMax())) / (2 * MapConfig::longitudeMax());
+    int y = (__viewport.height() * (2.0 * zoom() * (point.y() - center().y()) + MapConfig::latitudeMax())) / (2 * MapConfig::longitudeMax());
+    return QPoint(x, y);
 }
 
 void
 MapRenderer::setMapDrawer(MapDrawer* drawer)
 {
     __mapDrawer = drawer;
-    if (__mapDrawer->flags().testFlag(MapDrawer::RequireOpenGLContextOnInitialize))
-        __mapDrawerNeedInitialization = true;
-    else
-        __mapDrawer->initialize();
+//     __mapDrawer->initialize();
 }
 
 void
@@ -221,218 +141,22 @@ void
 MapRenderer::setViewport(const QSize& size)
 {
     __viewport = size;
-    
-    glViewport(0, 0, __viewport.width(), __viewport.height());
-    
-    __rangeX = static_cast<float>(__viewport.width()) / MapConfig::baseWindowWidth();
-    __rangeY = static_cast<float>(__viewport.height()) / MapConfig::baseWindowHeight();
-    
-    __projection.setToIdentity();
-    __projection.ortho(-__rangeX, __rangeX, -__rangeY, __rangeY, -static_cast<float>(MapConfig::MapLayers::Count), 1.0);
-    
-    __updateOffsets();
     __updateScreen();
     emit updated();
 }
 
-bool
-MapRenderer::supportsRequiredOpenGLFeatures()
-{
-    QOpenGLContext* context = QOpenGLContext::currentContext();
-    bool hasShaders = QOpenGLShaderProgram::hasOpenGLShaderPrograms();
-    
-    if (!hasShaders)
-        qWarning("MapRenderer: Shaders not supported");
-        
-    bool hasVao = (context->surface()->format().version() >= qMakePair(3, 0)) ||
-                  (
-                      context->hasExtension("GL_ARB_vertex_array_object") ||
-                      context->hasExtension("GL_OES_vertex_array_object") ||
-                      context->hasExtension("GL_APPLE_vertex_array_object")
-                  );
-                  
-    if (!hasVao)
-        qWarning("MapRenderer: VAO not supported");
-        
-    return hasShaders && hasVao;
-}
-
 void
-MapRenderer::paint()
+MapRenderer::paint(QPainter* painter)
 {
-    if (__mapDrawerNeedInitialization) {
-        __mapDrawer->initialize();
-        __mapDrawerNeedInitialization = false;
-    }
+    QTransform transform;
+    transform.translate(__viewport.width() / 2, __viewport.height() / 2);
+    transform.scale(__viewport.width() / MapConfig::longitudeMax(), -__viewport.height() / MapConfig::latitudeMax());
+    transform.scale(zoom(), zoom());
+    transform.translate(-center().x(), -center().y());
     
-    //   auto start = std::chrono::high_resolution_clock::now();
-    if (__screen.isNull())
-        return;
-        
-//     __updateOffsets();
-    
-    /* Prepare world transform matrix */
-    __worldTransform.setToIdentity();
-    __worldTransform.scale(1.0f / MapConfig::longitudeMax(), 1.0f / MapConfig::latitudeMax());
-    __worldTransform.scale(zoom(), zoom());
-    __worldTransform.translate(-center().x(), -center().y());
-    
-    __xOffset = 0.0f;
-    __drawWorld();
-    __drawUirs();
-    __drawFirs();
-    __drawApproachAreas();
-    __drawItems();
-    
-    //   auto end = std::chrono::high_resolution_clock::now();
-    //   qDebug() << "MapRenderer::paint()" << std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count();
-    // Q_ASSERT(glGetError() == 0);
-}
-
-void
-MapRenderer::__drawWorld()
-{
-    if (!__mapDrawer)
-        return;
-    
-    static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::WorldMap);
-    
-    QMatrix4x4 mvp = __projection * __worldTransform;
-    mvp.translate(QVector3D(0.0f, 0.0f, zValue));
-    
-    __mapDrawer->draw(mvp, __screen);
-}
-
-void
-MapRenderer::__drawFirs()
-{
-    static Q_CONSTEXPR GLfloat unstaffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::UnstaffedFirs);
-    static Q_CONSTEXPR GLfloat staffedFirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedFirs);
-    
-    QMatrix4x4 mvp = __projection * __worldTransform;
-    __identityProgram->bind();
-    __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
-    
-    if (__scene->settings().view.unstaffed_firs) {
-        mvp.translate(QVector3D(0.0f, 0.0f, unstaffedFirsZ));
-        __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
-        __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.unstaffed_fir_borders);
-        
-        for (const FirItem* item : __scene->firItems()) {
-            if (item->data()->isEmpty())
-                item->drawBorders();
-        }
-    }
-    
-    if (__scene->settings().view.staffed_firs) {
-        mvp.translate(QVector3D(0.0f, 0.0f, __scene->settings().view.unstaffed_firs ? staffedFirsZ - unstaffedFirsZ : staffedFirsZ));
-        __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
-        __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.staffed_fir_borders);
-        
-        glLineWidth(3.0);
-        
-        for (const FirItem* item : __scene->firItems()) {
-            if (item->data()->isStaffed())
-                item->drawBorders();
-        }
-        
-        glLineWidth(1.0);
-        
-        __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.staffed_fir_background);
-        
-        for (const FirItem* item : __scene->firItems()) {
-            if (item->data()->isStaffed())
-                item->drawBackground();
-        }
-    }
-    
-    __identityProgram->release();
-}
-
-void
-MapRenderer::__drawUirs()
-{
-    static Q_CONSTEXPR GLfloat staffedUirsZ = static_cast<GLfloat>(MapConfig::MapLayers::StaffedUirs);
-    
-    if (__scene->settings().view.staffed_firs) {
-        __identityProgram->bind();
-        __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
-        
-        QMatrix4x4 mvp = __projection * __worldTransform;
-        mvp.translate(QVector3D(0.0f, 0.0f, staffedUirsZ));
-        
-        __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
-        __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.staffed_uir_borders);
-        
-        glLineWidth(3.0);
-        
-        for (const UirItem* item : __scene->uirItems()) {
-            if (item->isVisible()) {
-                for (const FirItem* f : item->firItems()) {
-                    if (f->data()->isEmpty())
-                        f->drawBorders();
-                }
-            }
-        }
-        
-        glLineWidth(1.0);
-        
-        __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.staffed_uir_background);
-        
-        for (const UirItem* item : __scene->uirItems()) {
-            if (item->isVisible()) {
-                for (const FirItem* f : item->firItems()) {
-                    if (f->data()->isEmpty())
-                        f->drawBackground();
-                }
-            }
-        }
-        
-        __identityProgram->release();
-    }
-}
-
-void
-MapRenderer::__drawApproachAreas()
-{
-    static Q_CONSTEXPR GLfloat zValue = static_cast<GLfloat>(MapConfig::MapLayers::ApproachAreas);
-    
-    __identityProgram->bind();
-    __identityProgram->setUniformValue(__identityOffsetLocation, __xOffset);
-    
-    QMatrix4x4 mvp = __projection * __worldTransform;
-    mvp.translate(QVector3D(0.0f, 0.0f, zValue));
-    
-    __identityProgram->setUniformValue(__identityMatrixLocation, mvp);
-    __identityProgram->setUniformValue(__identityColorLocation, __scene->settings().colors.approach_circle);
-    
-    for (const AirportItem* item : __scene->airportItems()) {
-        if (item->data()->facilities().testFlag(Controller::App))
-            item->drawApproachArea();
-    }
-    
-    __identityProgram->release();
-}
-
-void
-MapRenderer::__drawItems()
-{
-    __texturedProgram->bind();
-    __texturedProgram->setUniformValue(__texturedMatrixLocation, __projection);
-    __texturedProgram->enableAttributeArray(texcoordLocation());
-    __texturedProgram->enableAttributeArray(vertexLocation());
-    
-    scene()->inRect(__screen, [this](const MapItem* item) {
-        __texturedProgram->setUniformValue(__texturedPositionLocation, glFromLonLat(item->position()));
-        item->drawItem(__texturedProgram);
-        
-        if (item->isLabelVisible())
-            item->drawLabel(__texturedProgram);
+    scene()->inRect(__screen, [painter, &transform](const MapItem* item) {
+        item->draw(painter, transform);
     });
-    
-    __texturedProgram->disableAttributeArray(texcoordLocation());
-    __texturedProgram->disableAttributeArray(vertexLocation());
-    __texturedProgram->release();
 }
 
 void
@@ -464,79 +188,8 @@ MapRenderer::__restoreSettings()
 }
 
 void
-MapRenderer::__createShaderPrograms()
-{
-    bool result;
-    /* Create identity shader */
-    __identityProgram = new QOpenGLShaderProgram(this);
-    QOpenGLShader* vertex = new QOpenGLShader(QOpenGLShader::Vertex, __identityProgram);
-    result = vertex->compileSourceFile(":/shaders/identity.vert");
-    Q_ASSERT(result);
-    QOpenGLShader* fragment = new QOpenGLShader(QOpenGLShader::Fragment, __identityProgram);
-    result = fragment->compileSourceFile(":/shaders/identity.frag");
-    Q_ASSERT(result);
-    __identityProgram->addShader(vertex);
-    __identityProgram->addShader(fragment);
-    
-    __identityProgram->bindAttributeLocation("vertex", vertexLocation());
-    
-    result = __identityProgram->link();
-    Q_ASSERT(result);
-    __identityProgram->bind();
-    __identityMatrixLocation = __identityProgram->uniformLocation("matrix");
-    Q_ASSERT(__identityMatrixLocation >= 0);
-    __identityColorLocation = __identityProgram->uniformLocation("color");
-    Q_ASSERT(__identityColorLocation >= 0);
-    __identityOffsetLocation = __identityProgram->uniformLocation("offset");
-    Q_ASSERT(__identityOffsetLocation >= 0);
-    __identityProgram->release();
-    
-    /* Create textured shader */
-    __texturedProgram = new QOpenGLShaderProgram(this);
-    vertex = new QOpenGLShader(QOpenGLShader::Vertex, __texturedProgram);
-    result = vertex->compileSourceFile(":/shaders/textured.vert");
-    Q_ASSERT(result);
-    fragment = new QOpenGLShader(QOpenGLShader::Fragment, __texturedProgram);
-    result = fragment->compileSourceFile(":/shaders/textured.frag");
-    Q_ASSERT(result);
-    __texturedProgram->addShader(vertex);
-    __texturedProgram->addShader(fragment);
-    
-    __texturedProgram->bindAttributeLocation("vertex", vertexLocation());
-    __texturedProgram->bindAttributeLocation("texcoord", texcoordLocation());
-    
-    result = __texturedProgram->link();
-    Q_ASSERT(result);
-    
-    __texturedProgram->bind();
-    __texturedMatrixLocation = __texturedProgram->uniformLocation("matrix");
-    Q_ASSERT(__texturedMatrixLocation >= 0);
-    __texturedPositionLocation = __texturedProgram->uniformLocation("position");
-    Q_ASSERT(__texturedPositionLocation >= 0);
-    __texturedRotationLocation = __texturedProgram->uniformLocation("rotation");
-    Q_ASSERT(__texturedRotationLocation >= 0);
-    __texturedZLocation = __texturedProgram->uniformLocation("z");
-    Q_ASSERT(__texturedZLocation >= 0);
-    __texturedProgram->setUniformValue("texture", 0);
-    __texturedProgram->release();
-}
-
-void
-MapRenderer::__updateOffsets()
-{
-    __offsets.clear();
-    __offsets.append(0.0f);
-    
-    if ((-1 - center().x()) * zoom() > -__rangeX)
-        __offsets.prepend(-360.0f);
-        
-    if ((1 - center().x()) * zoom() < __rangeX)
-        __offsets.append(360.0f);
-}
-
-void
 MapRenderer::__updateScreen()
 {
-    __screen.setBottomLeft(mapToLonLat(QPoint(-10, __viewport.height() + 10)));
-    __screen.setTopRight(mapToLonLat(QPoint(__viewport.width() + 10, -10)));
+    __screen.setTopLeft(mapToLonLat(QPoint(0, 0)));
+    __screen.setBottomRight(mapToLonLat(QPoint(__viewport.width(), __viewport.height())));
 }
