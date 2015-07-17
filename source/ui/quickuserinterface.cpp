@@ -26,7 +26,6 @@
 #include "ui/quick/androidbridge.h"
 #include "ui/quick/map.h"
 #include "ui/quick/paletteprovider.h"
-#include "ui/quick/screenimageprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
@@ -80,8 +79,6 @@ QuickUserInterface::initialize()
     ctx->setContextProperty("palette", new PaletteProvider(this));
     qreal dp = QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
     ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp));
-    
-    __engine.addImageProvider("screen", new ScreenImageProvider);
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));
     

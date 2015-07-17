@@ -21,6 +21,7 @@
 #define MAPDRAWER_H
 
 #include <QtPlugin>
+#include "ui/map/maprenderer.h"
 
 class QMatrix4x4;
 class QRectF;
@@ -33,40 +34,23 @@ class MapDrawer {
 
 public:
     /**
-     * Flags describe plugin's requirements and specific behaviour.
-     */
-    enum MapDrawerFlag {
-    
-        RequireOpenGLContextOnInitialize = 0x1, /**< Indicates that the plugin
-      requires a valid OpenGL context when initialize() is called. */
-
-    };
-    Q_DECLARE_FLAGS(MapDrawerFlags, MapDrawerFlag)
-    
-    /**
      * Destructor.
      */
     virtual ~MapDrawer() = default;
-    
-    /**
-     * Defines the flags for the plugin.
-     */
-    virtual MapDrawerFlags flags() const = 0;
     
     /**
      * Initializes the plugin.
      *
      * This function is called just before the first frame is rendered.
      */
-    virtual void initialize() = 0;
+    virtual void initialize(MapRenderer* renderer) = 0;
     
     /**
      * Renders a map.
      */
-    virtual void draw(const QMatrix4x4& mvp, const QRectF& screen, const QSize& viewport) = 0;
+    virtual void draw(QPainter* painter, const QTransform& transform) = 0;
     
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(MapDrawer::MapDrawerFlags)
 
 Q_DECLARE_INTERFACE(MapDrawer, "org.eu.vatsinator.Vatsinator.MapDrawer")
 

@@ -37,6 +37,20 @@
 
 #include "maprenderer.h"
 
+namespace {
+    inline qreal mercator(qreal y)
+    {
+//         return qRadiansToDegrees(2 * qAtan(qExp(qDegreesToRadians(y))) - M_PI / 2);
+        return y;
+    }
+    
+    inline qreal fromMercator(qreal lat)
+    {
+//         return qRadiansToDegrees(qLn(qTan(M_PI / 4 + qDegreesToRadians(lat) / 2)));
+        return lat;
+    }
+}
+
 MapRenderer::MapRenderer(QObject* parent) :
     QObject(parent),
     __mapDrawer(nullptr),
@@ -58,7 +72,7 @@ MapRenderer::mapToLonLat(const QPoint& point)
 {
     qreal x = static_cast<qreal>(point.x() - (__viewport.width() / 2)) * MapConfig::longitudeMax() / __viewport.width() / zoom() + center().x();
     qreal y = static_cast<qreal>(point.y() - (__viewport.height() / 2)) * MapConfig::latitudeMax() / __viewport.height() / zoom() - center().y();
-    return LonLat(x, -y);
+    return LonLat(x, mercator(-y));
 }
 
 LonLat
@@ -66,14 +80,14 @@ MapRenderer::scaleToLonLat(const QPoint& point)
 {
     qreal x = static_cast<qreal>(point.x()) * MapConfig::longitudeMax() / __viewport.width() / zoom();
     qreal y = static_cast<qreal>(point.y()) * MapConfig::latitudeMax() / __viewport.height() / zoom();
-    return LonLat(x, y);
+    return LonLat(x, mercator(y));
 }
 
 QPoint
 MapRenderer::mapFromLonLat(const LonLat& point)
 {
     int x = (__viewport.width() * (2.0 * zoom() * (point.x() - center().x()) + MapConfig::longitudeMax())) / (2 * MapConfig::longitudeMax());
-    int y = (__viewport.height() * (2.0 * zoom() * (point.y() - center().y()) + MapConfig::latitudeMax())) / (2 * MapConfig::longitudeMax());
+    int y = (__viewport.height() * (2.0 * zoom() * (fromMercator(-point.y()) + center().y()) + MapConfig::latitudeMax())) / (2 * MapConfig::latitudeMax());
     return QPoint(x, y);
 }
 
@@ -81,7 +95,7 @@ void
 MapRenderer::setMapDrawer(MapDrawer* drawer)
 {
     __mapDrawer = drawer;
-//     __mapDrawer->initialize();
+    __mapDrawer->initialize(this);
 }
 
 void
@@ -90,6 +104,7 @@ MapRenderer::setZoom(qreal zoom)
     __zoom = zoom;
     __updateScreen();
     emit updated();
+    emit zoomChanged(__zoom);
 }
 
 void
@@ -98,6 +113,7 @@ MapRenderer::setCenter(const LonLat& center)
     __center = center;
     __updateScreen();
     emit updated();
+    emit centerChanged(__center);
 }
 
 qreal
@@ -143,6 +159,7 @@ MapRenderer::setViewport(const QSize& size)
     __viewport = size;
     __updateScreen();
     emit updated();
+    emit viewportChanged(__viewport);
 }
 
 void
@@ -154,9 +171,13 @@ MapRenderer::paint(QPainter* painter)
     transform.scale(zoom(), zoom());
     transform.translate(-center().x(), -center().y());
     
-    scene()->inRect(__screen, [painter, &transform](const MapItem* item) {
-        item->draw(painter, transform);
-    });
+    if (__mapDrawer) {
+        __mapDrawer->draw(painter, transform);
+    }
+    
+//     scene()->inRect(__screen, [painter, &transform](const MapItem* item) {
+//         item->draw(painter, transform);
+//     });
 }
 
 void

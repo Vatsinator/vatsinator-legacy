@@ -19,6 +19,7 @@
 
 #include <QtQuick>
 
+#include "plugins/tiled-map/tiledmapdrawer.h"
 #include "storage/filemanager.h"
 #include "ui/map/maprenderer.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -27,15 +28,17 @@
 #include "map.h"
 
 Map::Map(QQuickItem* parent) :
-    QQuickItem(parent),
-    __renderer(nullptr)
+    QQuickPaintedItem(parent),
+    __renderer(new MapRenderer(this))
 {
     setFlag(QQuickItem::ItemHasContents);
     
-    connect(this, &Map::windowChanged, this, &Map::__handleWindowChange);
-    connect(qApp, &QGuiApplication::applicationStateChanged,
-            this, &Map::__handleApplicationStateChange,
-            Qt::DirectConnection);
+    __renderer->setMapDrawer(new TiledMapDrawer);
+    connect(__renderer, &MapRenderer::updated, this, &QQuickItem::update);
+    
+    connect(this, &QQuickPaintedItem::contentsSizeChanged, [this]() {
+        __renderer->setViewport(contentsSize());
+    });
 }
 
 Map::~Map()
@@ -43,20 +46,10 @@ Map::~Map()
 
 }
 
-QImage
-Map::grab()
-{
-    if (__cached.isNull())
-        cache();
-    
-    return __cached;
-}
-
 void
 Map::updateZoom(qreal factor)
 {
-    if (__renderer)
-        __renderer->setZoom(__renderer->zoom() + (__renderer->zoom() * factor));
+    __renderer->setZoom(__renderer->zoom() + (__renderer->zoom() * factor));
         
     if (window())
         window()->update();
@@ -65,23 +58,27 @@ Map::updateZoom(qreal factor)
 void
 Map::updatePosition(int x, int y)
 {
-    if (__renderer) {
-        LonLat center = __renderer->center();
-        QPoint p(x, -y);
-        center -= __renderer->scaleToLonLat(p);
-        center.ry() = qBound(-90.0, center.y(), 90.0);
+    LonLat center = __renderer->center();
+    QPoint p(x, -y);
+    center -= __renderer->scaleToLonLat(p);
+    center.ry() = qBound(-90.0, center.y(), 90.0);
+    
+    if (center.x() < -180.0)
+        center.rx() += 360.0;
         
-        if (center.x() < -180.0)
-            center.rx() += 360.0;
-            
-        if (center.x() > 180.0)
-            center.rx() -= 360.0;
-            
-        __renderer->setCenter(center);
-    }
+    if (center.x() > 180.0)
+        center.rx() -= 360.0;
+        
+    __renderer->setCenter(center);
     
     if (window())
         window()->update();
+}
+
+void
+Map::paint(QPainter* painter)
+{
+    __renderer->paint(painter);
 }
 
 QString
@@ -93,78 +90,4 @@ Map::cachedImageSource() const
                QStringLiteral("Vatsinator") %
                QDir::separator()
            ) % QStringLiteral("mapimage.png");
-}
-
-void
-Map::sync()
-{
-    if (!__renderer) {
-        __renderer = new MapRenderer();
-        connect(window(), &QQuickWindow::beforeRendering, __renderer, &MapRenderer::paint, Qt::DirectConnection);
-        emit ready();
-    }
-    
-    __renderer->setViewport(window()->size() * window()->devicePixelRatio());
-}
-
-void
-Map::cleanup()
-{
-    if (__renderer) {
-        delete __renderer;
-        __renderer = nullptr;
-    }
-}
-
-void
-Map::cache()
-{
-    if (window()) {
-        qDebug("Caching map...");
-        __cached = window()->grabWindow();
-    }
-}
-
-void
-Map::__cacheMapImage()
-{
-    if (!window()) {
-        qWarning("No window, can't cache the map image");
-        return;
-    }
-    
-    QImage image = grab();
-    bool result = image.save(cachedImageSource());
-    
-    if (!result)
-        qWarning("Could not save the map image");
-}
-
-void
-Map::__handleWindowChange(QQuickWindow* window)
-{
-    if (window) {
-        window->setClearBeforeRendering(false);
-        connect(window, &QQuickWindow::beforeSynchronizing, this, &Map::sync, Qt::DirectConnection);
-        connect(window, &QQuickWindow::sceneGraphInvalidated, this, &Map::cleanup, Qt::DirectConnection);
-        connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, window, &QQuickWindow::update);
-    }
-}
-
-void
-Map::__handleApplicationStateChange(Qt::ApplicationState state)
-{
-    switch (state) {
-        case Qt::ApplicationSuspended:
-        case Qt::ApplicationHidden:
-        case Qt::ApplicationInactive:
-            qDebug("Deactivating map...");
-            __cacheMapImage();
-            break;
-            
-        case Qt::ApplicationActive:
-            qDebug("Restoring map...");
-            /* TODO */
-            break;
-    }
 }

@@ -1,5 +1,5 @@
 /*
- * modelmatcher.h
+ * tilereadyevent.cpp
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,36 +17,9 @@
  *
  */
 
-#ifndef MODELMATCHER_H
-#define MODELMATCHER_H
+#include "tilereadyevent.h"
 
-#include <QObject>
-#include <QPair>
-#include <QMap>
-#include "ui/notifiable.h"
+TileReadyEvent::TileReadyEvent() : QEvent(static_cast<QEvent::Type>(TileReady))
+{
 
-class ModelMatcher : public QObject, private Notifiable {
-    Q_OBJECT
-
-public:
-    ModelMatcher(QObject* parent = nullptr);
-    
-    QPixmap& match(const QString& acft);
-
-private:
-    void __readModels();
-    void __loadPixmaps();
-    
-private:
-    /*
-     * Aircraft <-> id pairs
-     */
-    QList<QPair<QString, QString>> __modelsIds;
-    
-    /*
-     * Id <-> texture pairs
-     */
-    QMap<QString, QPixmap> __modelsPixmaps;
-};
-
-#endif // MODELMATCHER_H
+}

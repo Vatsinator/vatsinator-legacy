@@ -37,14 +37,14 @@ public:
     
     static Q_DECL_CONSTEXPR qreal latitudeMax()
     {
-        return 90.0;
+        return 85.0511;
     }
     
     /* Distance between mouse and object that object is considered
        to be under mouse, in pixels. */
     static Q_DECL_CONSTEXPR qreal mouseOnObject()
     {
-        return 200.0;
+        return 15.0;
     }
     
     /* User won't be able to zoom below this value */

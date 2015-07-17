@@ -45,7 +45,7 @@
 #include "vatsinatorapplication.h"
 #include "config.h"
 
-#include "plugins/vector-map/vectormapdrawer.h"
+#include "plugins/tiled-map/tiledmapdrawer.h"
 
 #include "mapwidget.h"
 
@@ -64,7 +64,7 @@ MapWidget::MapWidget(QWidget* parent) :
     
     grabGesture (Qt::PinchGesture);
     
-    __renderer->setMapDrawer(new VectorMapDrawer);
+    __renderer->setMapDrawer(new TiledMapDrawer);
     connect (__renderer,   SIGNAL (updated()),
              this,         SLOT (update()));
 }
@@ -143,6 +143,17 @@ MapWidget::paintEvent(QPaintEvent* event)
     
     painter.setPen(pen);
     painter.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, mapInfo);
+    
+    
+    if (cursor().shape() != Qt::SizeAllCursor) {
+        const MapItem* item = __underMouse();    
+        if (item) {
+            setCursor (QCursor (Qt::PointingHandCursor));       
+//         __renderer->drawLines (item);
+        } else {
+            setCursor (QCursor (Qt::ArrowCursor));
+        }
+    }
     
     Q_UNUSED(event);
 }
@@ -249,9 +260,9 @@ MapWidget::keyPressEvent(QKeyEvent* event)
 const MapItem*
 MapWidget::__underMouse()
 {
-    const MapItem* closest = __renderer->scene()->nearest (__mousePosition.geoPosition());
+    const MapItem* closest = __renderer->scene()->nearest(__mousePosition.geoPosition());
     
-    qDebug() << __mousePosition.screenDistance (__renderer->mapFromLonLat (closest->position()));
+    qDebug() << "mapped pos:" << __renderer->mapFromLonLat(__mousePosition.geoPosition()) << "pos:" << __mousePosition.screenPosition();
     
     if (!closest || __mousePosition.screenDistance (__renderer->mapFromLonLat (closest->position())) > MapConfig::mouseOnObject())
         return nullptr;

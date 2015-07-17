@@ -119,7 +119,6 @@ set (quick_SRCS
     quick/androidbridge.cpp
     quick/map.cpp
     quick/paletteprovider.cpp
-    quick/screenimageprovider.cpp
 )
 
 set (widgets_HEADERS
@@ -183,7 +182,6 @@ set (quick_HEADERS
     quick/androidbridge.h
     quick/map.h
     quick/paletteprovider.h
-    quick/screenimageprovider.h
 )
 
 set (ui_QRCS

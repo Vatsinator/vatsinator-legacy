@@ -20,8 +20,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <QQuickItem>
-#include <QImage>
+#include <QQuickPaintedItem>
 
 class MapRenderer;
 class QQuickWindow;
@@ -30,7 +29,7 @@ class QQuickWindow;
  * The Map class is an exposed to QML map surface. It provides useful methods
  * for the qml file, such as zoom and position handling.
  */
-class Map : public QQuickItem {
+class Map : public QQuickPaintedItem {
     Q_OBJECT
     
 signals:
@@ -51,11 +50,6 @@ public:
     virtual ~Map();
     
     /**
-     * Gets the currently rendered map.
-     */
-    QImage grab();
-    
-    /**
      * Updates zoom by the given _factor_.
      */
     Q_INVOKABLE void updateZoom(qreal factor);
@@ -72,6 +66,8 @@ public:
      */
     Q_INVOKABLE QString cachedImageSource() const;
     
+    void paint(QPainter* painter) override;
+    
     /**
      * Gives direct access to the map renderer instance.
      */
@@ -80,41 +76,8 @@ public:
         return __renderer;
     }
     
-public slots:
-    /**
-     * Handles the window synchronization.
-     */
-    void sync();
-    
-    /**
-     * Cleans up all used resources.
-     */
-    void cleanup();
-    
-    /**
-     * Caches the currently rendered map to the image.
-     */
-    void cache();
-    
-private slots:
-    /**
-     * Grabs the window and stores it in the cache.
-     */
-    void __cacheMapImage();
-    
-    /**
-     * Handles the window change.
-     */
-    void __handleWindowChange(QQuickWindow* window);
-    
-    /**
-     * Handles the application state change.
-     */
-    void __handleApplicationStateChange(Qt::ApplicationState state);
-    
 private:
     MapRenderer* __renderer;
-    QImage __cached;
     
 };
 

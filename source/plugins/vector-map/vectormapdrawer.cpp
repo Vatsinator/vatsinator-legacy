@@ -45,7 +45,7 @@ VectorMapDrawer::flags() const
 }
 
 void
-VectorMapDrawer::initialize()
+VectorMapDrawer::initialize(MapRenderer* renderer)
 {
     Q_ASSERT(QOpenGLContext::currentContext());
     
@@ -58,6 +58,8 @@ VectorMapDrawer::initialize()
         qCritical("Failed initializing buffers");
         return;
     }
+    
+    Q_UNUSED(renderer);
 }
 
 void
