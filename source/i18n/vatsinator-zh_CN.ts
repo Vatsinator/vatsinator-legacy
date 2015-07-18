@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="lt" sourcelanguage="en_GB" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="128"/>
         <source>Show</source>
-        <translation>Rodyti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="135"/>
         <source>Close</source>
-        <translation>Užverti</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -35,12 +35,12 @@
     <message>
         <location filename="../ui/qml/AboutDialog.qml" line="36"/>
         <source>Vatsinator</source>
-        <translation>Vatsinator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/AboutDialog.qml" line="42"/>
         <source>A simple Vatsim monitor</source>
-        <translation>Paprastas Vatsim monitorius</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -48,23 +48,23 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="14"/>
         <source>About Vatsinator</source>
-        <translation>Apie Vatsinator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="59"/>
         <source>Vatsinator</source>
-        <translation>Vatsinator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="69"/>
         <source>A simple Vatsim monitor</source>
-        <translation>Paprastas Vatsim monitorius</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
         <location filename="../ui/windows/aboutwindow.cpp" line="39"/>
         <source>Version %1</source>
-        <translation>Versija %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="129"/>
@@ -74,27 +74,27 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="151"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2014 Vatsinator Komanda&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {2012-2015 ?} {0057a?}</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="207"/>
         <source>Changelog</source>
-        <translation>Keitimų žurnalas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
-        <translation>Apie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
         <source>Authors</source>
-        <translation>Autoriai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="193"/>
         <source>License</source>
-        <translation>Licencija</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
@@ -114,12 +114,12 @@
     <message>
         <location filename="../db/airlinedatabase.cpp" line="39"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
-        <translation>Nepavyko atverti failo %1. Prašome iš naujo įdiegti programą.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../db/airlinedatabase.cpp" line="49"/>
         <source>File %1 could not be read. Please reinstall the applicaion.</source>
-        <translation>Nepavyko perskaityti failo %1. Prašome iš naujo įdiegti programą.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -127,7 +127,7 @@
     <message>
         <location filename="../db/airportdatabase.cpp" line="59"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>Nepavyko atverti failo %1! Prašome iš naujo įdiegti programą.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -136,17 +136,17 @@
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="143"/>
         <source>%1 - airport details</source>
-        <translation>%1 - išsamesnė oro uosto informacija</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="78"/>
         <source>Inbound</source>
-        <translation>Atskridimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="152"/>
         <source>Outbound</source>
-        <translation>Nuskridimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="223"/>
@@ -161,57 +161,57 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="368"/>
         <source>Airport info</source>
-        <translation>Oro uosto informacija</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="412"/>
         <source>Airport name:</source>
-        <translation>Oro uosto pavadinimas:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="436"/>
         <source>City:</source>
-        <translation>Miestas:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="460"/>
         <source>Country:</source>
-        <translation>Šalis:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="487"/>
         <source>Altitude:</source>
-        <translation>Aukštis:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="546"/>
         <source>Weather forecast</source>
-        <translation>Orų prognozė</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="626"/>
         <source>NOTAM</source>
-        <translation>NOTAM</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="720"/>
         <source>Close</source>
-        <translation>Užverti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="713"/>
         <source>Show</source>
-        <translation>Rodyti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="158"/>
         <source>%1 ft</source>
-        <translation>%1 pėdų</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="184"/>
         <source>Error</source>
-        <translation>Klaida</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="122"/>
         <source>Airport</source>
-        <translation>Oro uostas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="125"/>
@@ -242,12 +242,12 @@
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="128"/>
         <source>Inbound</source>
-        <translation>Atskridimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="131"/>
         <source>Outbound</source>
-        <translation>Nuskridimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="142"/>
@@ -265,17 +265,17 @@
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="14"/>
         <source>Restart application?</source>
-        <translation>Paleisti programą iš naujo?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="24"/>
         <source>You changed the language. To have it visible, you need to restart the application.</source>
-        <translation>Jūs pakeitėte kalbą. Norėdami ją naudoti, turite iš naujo paleisti programą.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/apprestartdialog.ui" line="40"/>
         <source>Do you want to restart the application now?</source>
-        <translation>Ar norite paleisti programą iš naujo dabar?</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -283,17 +283,17 @@
     <message>
         <location filename="../plugins/atcbookingtablemodel.cpp" line="108"/>
         <source>Callsign</source>
-        <translation>Šaukinys</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/atcbookingtablemodel.cpp" line="111"/>
         <source>Name</source>
-        <translation>Pavadinimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/atcbookingtablemodel.cpp" line="114"/>
         <source>Date</source>
-        <translation>Data</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/atcbookingtablemodel.cpp" line="117"/>
@@ -306,7 +306,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="47"/>
         <source>Name</source>
-        <translation>Vardas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
@@ -321,12 +321,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
         <source>Airport</source>
-        <translation>Oro uostas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
         <source>Server</source>
-        <translation>Serveris</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="52"/>
@@ -349,12 +349,12 @@
     <message>
         <location filename="../ui/models/atctablemodel.cpp" line="148"/>
         <source>Callsign</source>
-        <translation>Šaukinys</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/atctablemodel.cpp" line="151"/>
         <source>Name</source>
-        <translation>Vardas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/atctablemodel.cpp" line="154"/>
@@ -375,22 +375,22 @@
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="28"/>
         <source>Vatsinator was unable to fetch the data file.</source>
-        <translation>Vatsinator nepavyko gauti duomenų failo.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="29"/>
         <source>What do you want to do with that?</source>
-        <translation>Ką norite daryti?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="32"/>
         <source>Try again</source>
-        <translation>Bandyti dar kartą</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/datafetcherrordialog.cpp" line="33"/>
         <source>Keep current data</source>
-        <translation>Palikti esamus duomenis</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="14"/>
         <source>Vatsinator Database</source>
-        <translation>Vatsinator Duomenų bazė</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="20"/>
@@ -425,19 +425,19 @@
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
         <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
-        <translation>Esama būsena:</translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="48"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>and %n airlines(s).</source>
         <comment>The second part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="68"/>
@@ -466,7 +466,7 @@
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="90"/>
         <source>Your Vatsinator version is outdated.</source>
-        <translation>Jūsų Vatsinator versija yra pasenusi.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -474,12 +474,12 @@
     <message>
         <location filename="../ui/views/delayedmodeltableview.cpp" line="26"/>
         <source>Loading...</source>
-        <translation>Įkeliama...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/views/delayedmodeltableview.cpp" line="27"/>
         <source>Error occured</source>
-        <translation>Įvyko klaida</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -487,7 +487,7 @@
     <message>
         <location filename="../plugins/euroute-notam-provider/euroutenotamprovider.cpp" line="83"/>
         <source>NOTAMs by &lt;a href=&quot;%1&quot;&gt;EUroute&lt;/a&gt;</source>
-        <translation>NOTAM&apos;ai pagal &lt;a href=&quot;%1&quot;&gt;EUroute&lt;/a&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -500,12 +500,12 @@
     <message>
         <location filename="../network/filedownloader.cpp" line="79"/>
         <source>Could not open file (%1) for writing!</source>
-        <translation>Nepavyko įrašymui atverti failo (%1)!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../network/filedownloader.cpp" line="108"/>
         <source>Error downloading file: %1</source>
-        <translation>Klaida atsiunčiant failą: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -513,7 +513,7 @@
     <message>
         <location filename="../db/firdatabase.cpp" line="59"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>Nepavyko atverti failo %1! Prašome iš naujo įdiegti programą.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -521,7 +521,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="84"/>
         <source>Flights</source>
-        <translation>Skrydžiai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="155"/>
@@ -536,17 +536,17 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="297"/>
         <source>Airports</source>
-        <translation>Oro uostai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="365"/>
         <source>NOTAM</source>
-        <translation>NOTAM</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="446"/>
         <source>Close</source>
-        <translation>Užverti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="94"/>
@@ -570,7 +570,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="440"/>
         <source>Flight details</source>
-        <translation>Išsamesnė skrydžio informacija</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="318"/>
@@ -597,7 +597,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="684"/>
         <source>Route</source>
-        <translation>Maršrutas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="726"/>
@@ -624,17 +624,17 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="761"/>
         <source>Track this flight</source>
-        <translation>Sekti šį skrydį</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="768"/>
         <source>Show</source>
-        <translation>Rodyti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="775"/>
         <source>Close</source>
-        <translation>Užverti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="68"/>
@@ -664,7 +664,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="73"/>
         <source>Server</source>
-        <translation>Serveris</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
@@ -674,7 +674,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="75"/>
         <source>Squawk</source>
-        <translation>Atsakiklio signalas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
@@ -684,12 +684,12 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="77"/>
         <source>Flight rules</source>
-        <translation>Skrydžių taisyklės</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
         <source>Aircraft</source>
-        <translation>Orlaivis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="79"/>
@@ -704,13 +704,13 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="221"/>
         <source>%1 feet</source>
-        <translation>%1 pėdų</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="222"/>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="239"/>
         <source>%1 kts</source>
-        <translation>%1 mazgų</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="226"/>
@@ -734,17 +734,17 @@
         <location filename="../ui/map/flightitem.cpp" line="185"/>
         <location filename="../ui/map/flightitem.cpp" line="193"/>
         <source>(unknown)</source>
-        <translation>(nežinoma)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/map/flightitem.cpp" line="195"/>
         <source>Ground speed: %1 kts</source>
-        <translation>Kelio greitis: %1 mazgų</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/map/flightitem.cpp" line="196"/>
         <source>Altitude: %1 ft</source>
-        <translation>Aukštis: %1 pėdų</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -760,27 +760,27 @@
     <message>
         <location filename="../ui/models/flighttablemodel.cpp" line="182"/>
         <source>Callsign</source>
-        <translation>Šaukinys</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/flighttablemodel.cpp" line="185"/>
         <source>Name</source>
-        <translation>Pavadinimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/flighttablemodel.cpp" line="188"/>
         <source>From</source>
-        <translation>Iš</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/flighttablemodel.cpp" line="191"/>
         <source>To</source>
-        <translation>Į</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/models/flighttablemodel.cpp" line="194"/>
         <source>Aircraft</source>
-        <translation>Orlaivis</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -788,17 +788,17 @@
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="14"/>
         <source>Send anonymous statistics</source>
-        <translation>Siųsti anoniminę statistiką</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="43"/>
         <source>Do you let Vatsinator send some anonymous statistics?</source>
-        <translation>Ar leidžiate programai Vatsinator siųsti kai kurią anoniminę statistiką?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="56"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vatsinator can collect some anonymous statistics in order to provide better quality and usability. Things that will be sent to servers include: application version, operating system, errors and warnings. We do not collect such data as IP addresses or users&apos; locations.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vatsinator gali rinkti kai kuriuos anoniminius duomenis, siekiant teikti geresnę kokybę ir naudojamosi patogumą. Į elementus, kurie bus siunčiami į serverį, įeina: programos versija, operacinė sistema, klaidos ir įspėjimai. Mes nerenkame tokių duomenų kaip IP adresai ar naudotojų buvimo vietos.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Sužinokite daugiau apie Vatsinator privatumo politiką&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -806,7 +806,7 @@
     <message>
         <location filename="../ui/pages/mappage.cpp" line="64"/>
         <source>Map</source>
-        <translation>Žemėlapis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="14"/>
@@ -827,7 +827,7 @@
         <location filename="../ui/pages/mappage.ui" line="120"/>
         <location filename="../ui/pages/mappage.ui" line="199"/>
         <source>Alpha channel:</source>
-        <translation>Alfa kanalas:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="153"/>
@@ -857,12 +857,12 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="316"/>
         <source>Seas color:</source>
-        <translation>Jūrų spalva:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="346"/>
         <source>Lands color:</source>
-        <translation>Žemės spalva:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="376"/>
@@ -910,7 +910,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="384"/>
         <source>Flight details</source>
-        <translation>Išsamesnė skrydžio informacija</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="426"/>
@@ -920,12 +920,12 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="429"/>
         <source>Flights</source>
-        <translation>Skrydžiai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="443"/>
         <source>Airports</source>
-        <translation>Oro uostai</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -933,12 +933,12 @@
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="24"/>
         <source>Refresh</source>
-        <translation>Atnaujinti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="29"/>
         <source>Flights</source>
-        <translation>Skrydžiai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="35"/>
@@ -948,17 +948,17 @@
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="41"/>
         <source>Airports</source>
-        <translation>Oro uostai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="46"/>
         <source>Settings</source>
-        <translation>Nustatymai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="52"/>
         <source>About</source>
-        <translation>Apie</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -974,7 +974,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="20"/>
         <source>Weather reports</source>
-        <translation>Orų ataskaitos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="32"/>
@@ -994,7 +994,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="91"/>
         <source>Clear</source>
-        <translation>Išvalyti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="80"/>
@@ -1012,12 +1012,12 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.cpp" line="47"/>
         <source>Miscellaneous</source>
-        <translation>Įvairūs</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="76"/>
         <source>Send anonymous statistics</source>
-        <translation>Siųsti anoniminę statistiką</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="20"/>
@@ -1032,12 +1032,12 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="40"/>
         <source>Language:</source>
-        <translation>Kalba:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="83"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Sužinoti daugiau apie Vatsinator privatumo politika&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1054,7 +1054,7 @@
         <location filename="../ui/pages/networkpage.ui" line="14"/>
         <location filename="../ui/pages/networkpage.cpp" line="41"/>
         <source>Network</source>
-        <translation>Tinklas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
@@ -1090,7 +1090,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="77"/>
         <source>Enables the &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Database&lt;/a&gt; integration.</source>
-        <translation>Įjungia &lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Vatsinator Duomenų bazės&lt;/a&gt; integravimą.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="40"/>
@@ -1108,7 +1108,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="101"/>
         <source>There is a new version of Vatsinator available!</source>
-        <translation>Yra prieinama nauja Vatsinator versija!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="132"/>
@@ -1118,7 +1118,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
         <source>Close</source>
-        <translation>Užverti</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1126,37 +1126,37 @@
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="79"/>
         <source>Monday</source>
-        <translation>Pirmadienis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="82"/>
         <source>Tuesday</source>
-        <translation>Antradienis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="85"/>
         <source>Wednesday</source>
-        <translation>Trečiadienis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="88"/>
         <source>Thursday</source>
-        <translation>Ketvirtadienis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="91"/>
         <source>Friday</source>
-        <translation>Penktadienis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="94"/>
         <source>Saturday</source>
-        <translation>Šeštadienis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="97"/>
         <source>Sunday</source>
-        <translation>Sekmadienis</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1164,7 +1164,7 @@
     <message>
         <location filename="../ui/qml/SettingsPage.qml" line="41"/>
         <source>Send anonymous statistics</source>
-        <translation>Siųsti anoniminę statistiką</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1172,7 +1172,7 @@
     <message>
         <location filename="../ui/windows/settingswindow.ui" line="14"/>
         <source>Vatsinator settings</source>
-        <translation>Vatsinator nustatymai</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1180,7 +1180,7 @@
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="26"/>
         <source>Vatsinator was unable to fetch the status.txt file.</source>
-        <translation>Vatsinator nepavyko gauti status.txt failo.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="27"/>
@@ -1201,7 +1201,7 @@
     <message>
         <location filename="../ui/actions/trackaction.cpp" line="28"/>
         <source>Track this flight</source>
-        <translation>Sekti šį skrydį</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1213,7 +1213,7 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="548"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="585"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
-        <translation>Nepavyko atverti failo %1. Prašome iš naujo įdiegti programą.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
@@ -1234,7 +1234,7 @@
     <message>
         <location filename="../ui/dialogs/vatsimmessagedialog.ui" line="59"/>
         <source>Do not show this message again</source>
-        <translation>Daugiau neberodyti šio pranešimo</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1247,27 +1247,27 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="132"/>
         <source>&amp;Vatsinator</source>
-        <translation>&amp;Vatsinator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="152"/>
         <source>&amp;Help</source>
-        <translation>&amp;Pagalba</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
         <source>&amp;Settings</source>
-        <translation>&amp;Nustatymai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="172"/>
         <source>Exit</source>
-        <translation>Išeiti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="187"/>
         <source>About</source>
-        <translation>Apie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="199"/>
@@ -1277,12 +1277,12 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="214"/>
         <source>Refresh</source>
-        <translation>Atnaujinti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="226"/>
         <source>Settings</source>
-        <translation>Nustatymai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
@@ -1297,7 +1297,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="253"/>
         <source>Enable auto-updates</source>
-        <translation>Įjungti automatinius atnaujinimus</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="261"/>
@@ -1307,7 +1307,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
         <source>Ctrl+H</source>
-        <translation>Ctrl+H</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="273"/>
@@ -1317,7 +1317,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
         <source>&amp;Menu</source>
-        <translation>&amp;Meniu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="117"/>
@@ -1340,27 +1340,27 @@
     <message>
         <location filename="../ui/pages/viewpage.cpp" line="50"/>
         <source>View</source>
-        <translation>Rodinys</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="111"/>
         <source>Show pilot labels:</source>
-        <translation>Rodyti lakūnų etiketes:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="101"/>
         <source>Always</source>
-        <translation>Visada</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="131"/>
         <source>Show airport labels</source>
-        <translation>Rodyti oro uostų etiketes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="141"/>
         <source>When hovered</source>
-        <translation>Užvedus pelę</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="121"/>
@@ -1370,7 +1370,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="12"/>
         <source>Display layers:</source>
-        <translation>Rodymo lygmenys:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="22"/>
@@ -1380,7 +1380,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="91"/>
         <source>Airports</source>
-        <translation>Oro uostai</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="64"/>
@@ -1403,7 +1403,7 @@
     <message>
         <location filename="../db/worldmap.cpp" line="39"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>Nepavyko atverti failo %1! Prašome iš naujo įdiegti programą.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
