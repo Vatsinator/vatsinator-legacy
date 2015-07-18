@@ -38,16 +38,14 @@
 #include "maprenderer.h"
 
 namespace {
-    inline qreal mercator(qreal y)
+    inline qreal toMercator(qreal lat)
     {
-//         return qRadiansToDegrees(2 * qAtan(qExp(qDegreesToRadians(y))) - M_PI / 2);
-        return y;
+        return qRadiansToDegrees(qLn(qTan(M_PI / 4 + qDegreesToRadians(lat) / 2)));
     }
     
-    inline qreal fromMercator(qreal lat)
+    inline qreal fromMercator(qreal y)
     {
-//         return qRadiansToDegrees(qLn(qTan(M_PI / 4 + qDegreesToRadians(lat) / 2)));
-        return lat;
+        return qRadiansToDegrees(2 * qAtan(qExp(qDegreesToRadians(y))) - M_PI / 2);
     }
 }
 
@@ -72,7 +70,7 @@ MapRenderer::mapToLonLat(const QPoint& point)
 {
     qreal x = static_cast<qreal>(point.x() - (__viewport.width() / 2)) * MapConfig::longitudeMax() / __viewport.width() / zoom() + center().x();
     qreal y = static_cast<qreal>(point.y() - (__viewport.height() / 2)) * MapConfig::latitudeMax() / __viewport.height() / zoom() - center().y();
-    return LonLat(x, mercator(-y));
+    return LonLat(x, -::fromMercator(y));
 }
 
 LonLat
@@ -80,14 +78,14 @@ MapRenderer::scaleToLonLat(const QPoint& point)
 {
     qreal x = static_cast<qreal>(point.x()) * MapConfig::longitudeMax() / __viewport.width() / zoom();
     qreal y = static_cast<qreal>(point.y()) * MapConfig::latitudeMax() / __viewport.height() / zoom();
-    return LonLat(x, mercator(y));
+    return LonLat(x, ::fromMercator(y));
 }
 
 QPoint
 MapRenderer::mapFromLonLat(const LonLat& point)
 {
     int x = (__viewport.width() * (2.0 * zoom() * (point.x() - center().x()) + MapConfig::longitudeMax())) / (2 * MapConfig::longitudeMax());
-    int y = (__viewport.height() * (2.0 * zoom() * (fromMercator(-point.y()) + center().y()) + MapConfig::latitudeMax())) / (2 * MapConfig::latitudeMax());
+    int y = (__viewport.height() * (2.0 * zoom() * (-::toMercator(point.y()) + center().y()) + MapConfig::latitudeMax())) / (2 * MapConfig::latitudeMax());
     return QPoint(x, y);
 }
 
@@ -160,6 +158,12 @@ MapRenderer::setViewport(const QSize& size)
     __updateScreen();
     emit updated();
     emit viewportChanged(__viewport);
+}
+
+QPointF
+MapRenderer::toMercator(const LonLat& lonLat)
+{
+    return QPointF(lonLat.x(), qRadiansToDegrees(qLn(qTan(M_PI / 4 + qDegreesToRadians(lonLat.y()) / 2))));
 }
 
 void

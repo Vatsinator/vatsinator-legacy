@@ -22,6 +22,7 @@
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/modelmatcher.h"
 #include "ui/userinterface.h"
@@ -76,7 +77,7 @@ FlightItem::draw(QPainter* painter, const QTransform& transform) const
     Q_ASSERT(!__model.isNull());
     
     QRectF rect(QPointF(0.0, 0.0), __model.size());
-    rect.moveCenter(position() * transform);
+    rect.moveCenter(MapRenderer::toMercator(position()) * transform);
     
     painter->drawPixmap(rect, __model, QRectF(QPointF(0.0, 0.0), __model.size()));
 }

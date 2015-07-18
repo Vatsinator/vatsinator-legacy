@@ -262,8 +262,6 @@ MapWidget::__underMouse()
 {
     const MapItem* closest = __renderer->scene()->nearest(__mousePosition.geoPosition());
     
-    qDebug() << "mapped pos:" << __renderer->mapFromLonLat(__mousePosition.geoPosition()) << "pos:" << __mousePosition.screenPosition();
-    
     if (!closest || __mousePosition.screenDistance (__renderer->mapFromLonLat (closest->position())) > MapConfig::mouseOnObject())
         return nullptr;
     else

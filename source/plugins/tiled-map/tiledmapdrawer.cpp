@@ -19,13 +19,15 @@
 
 #include <QtGui>
 
+#include "ui/map/maprenderer.h"
+
 #include "tile.h"
 #include "tilemanager.h"
 #include "tilereadyevent.h"
 
 #include "tiledmapdrawer.h"
 
-int TileReady = 0;
+int TileReady = 0; /* Event */
 
 TiledMapDrawer::TiledMapDrawer(QObject* parent) :
     QObject (parent),
@@ -56,10 +58,8 @@ TiledMapDrawer::draw(QPainter* painter, const QTransform& transform)
             continue;
         
         QRectF rect = t->coords();
-        rect.setTopLeft(rect.topLeft() * transform);
-        rect.setBottomRight(rect.bottomRight() * transform);
-        
-//         qDebug() << rect;
+        rect.setTopLeft(MapRenderer::toMercator(rect.topLeft()) * transform);
+        rect.setBottomRight(MapRenderer::toMercator(rect.bottomRight()) * transform);
         
         painter->drawPixmap(rect, t->pixmap(), QRectF(QPointF(0.0, 0.0), t->pixmap().size()));
     }

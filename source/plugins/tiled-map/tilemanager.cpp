@@ -122,7 +122,7 @@ TileManager::__updateTileList()
         }
     }
     
-    qDebug() << "Tiles updated;" << tiles.size() << "tiles for zoom:" << __tileZoom;
+//     qDebug() << "Tiles updated;" << tiles.size() << "tiles for zoom:" << __tileZoom;
 }
 
 void

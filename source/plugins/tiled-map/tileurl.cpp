@@ -33,13 +33,14 @@ QUrl
 TileUrl::toUrl() const
 {
 //     return QUrl(QStringLiteral("http://c.tile.openstreetmap.org/") % path());
-    return QUrl(QStringLiteral("http://otile1.mqcdn.com/tiles/1.0.0/sat/") % path());
+//     return QUrl(QStringLiteral("http://otile1.mqcdn.com/tiles/1.0.0/sat/") % path());
+    return QUrl(QStringLiteral("http://a.basemaps.cartocdn.com/light_all/") % path());
 }
 
 QString
 TileUrl::path() const
 {
-    return QStringLiteral("%1/%2/%3.jpg").arg(
+    return QStringLiteral("%1/%2/%3.png").arg(
         QString::number(__zoom),
         QString::number(__x),
         QString::number(__y));
@@ -54,7 +55,7 @@ TileUrl::operator ==(const TileUrl& other) const
 TileUrl
 TileUrl::fromUrl(const QUrl& url)
 {
-    QRegExp rx("tiles/1\\.0\\.0/sat/(\\d+)/(\\d+)/(\\d+).{3}");
+    QRegExp rx("light_all/(\\d+)/(\\d+)/(\\d+).{3}");
     Q_ASSERT(rx.indexIn(url.path()) != -1);
     
     quint64 x = rx.cap(2).toULongLong();

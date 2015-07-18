@@ -162,6 +162,8 @@ public:
     {
         return __screen;
     }
+    
+    static QPointF toMercator(const LonLat& lonLat);
 
 public slots:
     /**
