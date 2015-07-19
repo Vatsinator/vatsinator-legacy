@@ -34,6 +34,11 @@ public:
     
     bool operator ==(const TileUrl& other) const;
     
+    inline quint64 zoom() const
+    {
+        return __zoom;
+    }
+    
     static TileUrl fromUrl(const QUrl& url);
     
 private:

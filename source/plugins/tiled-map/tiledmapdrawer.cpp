@@ -45,7 +45,7 @@ TiledMapDrawer::initialize(MapRenderer* renderer)
 }
 
 void
-TiledMapDrawer::draw(QPainter* painter, const QTransform& transform)
+TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
 {
     Q_ASSERT(__tiles);
     
@@ -54,14 +54,19 @@ TiledMapDrawer::draw(QPainter* painter, const QTransform& transform)
     
     auto& tiles = __tiles->tilesForCurrentZoom();
     for (Tile* t: tiles) {
-        if (t->pixmap().isNull())
-            continue;
+        QRect rect(t->coords().topLeft() * transform, t->coords().bottomRight() * transform);
         
-        QRectF rect = t->coords();
-        rect.setTopLeft(MapRenderer::toMercator(rect.topLeft()) * transform);
-        rect.setBottomRight(MapRenderer::toMercator(rect.bottomRight()) * transform);
+        if (!t->pixmap().isNull())
+            painter->drawPixmap(rect, t->pixmap());
         
-        painter->drawPixmap(rect, t->pixmap(), QRectF(QPointF(0.0, 0.0), t->pixmap().size()));
+#ifndef QT_NO_DEBUG
+        /* Extra info */
+        painter->drawText(rect, Qt::AlignTop | Qt::AlignLeft, QStringLiteral("%1/%2/%3").arg(
+            QString::number(t->zoom()),
+            QString::number(t->x()),
+            QString::number(t->y())));
+        painter->drawRect(rect);
+#endif
     }
     
     painter->setRenderHints(hints);

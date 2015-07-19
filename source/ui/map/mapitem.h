@@ -24,6 +24,7 @@
 #include <QString>
 #include <QPainter>
 
+#include "ui/map/worldtransform.h"
 #include "vatsimdata/lonlat.h"
 
 /**
@@ -55,7 +56,7 @@ public:
     /**
      * Draws the item on the painter.
      */
-    virtual void draw(QPainter* painter, const QTransform& transform) const = 0;
+    virtual void draw(QPainter* painter, const WorldTransform& transform) const = 0;
     
     /**
      * Tooltip text, shown when the item is mouseover'ed.

@@ -70,7 +70,7 @@ UirItem::position() const
 }
 
 void
-UirItem::draw(QPainter* painter, const QTransform& transform) const
+UirItem::draw(QPainter* painter, const WorldTransform& transform) const
 {
 
 }

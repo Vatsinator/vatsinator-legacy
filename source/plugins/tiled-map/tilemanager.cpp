@@ -71,9 +71,10 @@ TileManager::tileForLonLat (const LonLat& lonLat)
 QPair<quint64, quint64>
 TileManager::tileForLonLat(const LonLat& lonLat, unsigned zoom)
 {
+    LonLat ll = lonLat.bound();
     qreal n = qPow(2.0, static_cast<qreal>(zoom));
-    quint64 x = qFloor((lonLat.longitude() + 180.0) / 360.0 * n);
-    qreal lat_rad = qDegreesToRadians(lonLat.latitude());
+    quint64 x = qFloor((ll.longitude() + 180.0) / 360.0 * n);
+    qreal lat_rad = qDegreesToRadians(ll.latitude());
     quint64 y = qFloor((1.0 - qLn(qTan(lat_rad) + (1.0 / qCos(lat_rad))) / M_PI) / 2.0 * n);
     
     return qMakePair(x, y);
@@ -82,20 +83,18 @@ TileManager::tileForLonLat(const LonLat& lonLat, unsigned zoom)
 void
 TileManager::__calculateTileZoom()
 {
-    LonLat p1(0.0, 0.0);
-    LonLat p2 = __renderer->scaleToLonLat(QPoint(TileWidth, TileHeight));
+    LonLat p1 = __renderer->mapToLonLat(QPoint(0, 0));
+    LonLat p2 = __renderer->mapToLonLat(QPoint(TileWidth, 0));
     
     qreal dist = VatsimDataHandler::nmDistance(p2, p1);
     qreal nmPerPix = dist / TileWidth;
     
-    int zoom = 1;
-    quint64 resolution;
+    int zoom = 0;
+    qreal resolution;
     do {
         zoom += 1;
-        resolution = 84.5264761719/* * qCos(qDegreesToRadians(__renderer->center().latitude()))*/ / (qPow(2.0, zoom));
+        resolution = 84.5264761719 * qCos(qDegreesToRadians(p1.latitude())) / (qPow(2.0, zoom));
     } while (resolution > nmPerPix);
-    
-    qDebug() << "Minimum zoom:" << zoom;
     
     __tileZoom = zoom;
 }
@@ -131,14 +130,12 @@ TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
     TileUrl tileUrl = TileUrl::fromUrl(url);
     FileManager::moveToCache(fileName, tileUrl.path());
     
-    TileList& tiles = __tiles[__tileZoom];
+    TileList& tiles = __tiles[tileUrl.zoom()];
     auto it = std::find_if(tiles.begin(), tiles.end(), [&tileUrl](Tile* t) {
         return tileUrl == t->url();
     });
     
-//     Q_ASSERT(it != tiles.end());
-    if (it == tiles.end())
-        return;
+    Q_ASSERT(it != tiles.end());
     
     TileReadyEvent e;
     qApp->notify(*it, &e);

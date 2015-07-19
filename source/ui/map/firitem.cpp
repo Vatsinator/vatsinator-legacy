@@ -74,7 +74,7 @@ FirItem::position() const
 }
 
 void
-FirItem::draw(QPainter* painter, const QTransform& transform) const
+FirItem::draw(QPainter* painter, const WorldTransform& transform) const
 {
 
 }

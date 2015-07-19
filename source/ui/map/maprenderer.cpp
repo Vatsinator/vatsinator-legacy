@@ -65,28 +65,32 @@ MapRenderer::~MapRenderer()
     __storeSettings();
 }
 
+WorldTransform
+MapRenderer::transform() const
+{
+    return WorldTransform(viewport(), center(), zoom());
+}
+
 LonLat
 MapRenderer::mapToLonLat(const QPoint& point)
 {
-    qreal x = static_cast<qreal>(point.x() - (__viewport.width() / 2)) * MapConfig::longitudeMax() / __viewport.width() / zoom() + center().x();
-    qreal y = static_cast<qreal>(point.y() - (__viewport.height() / 2)) * MapConfig::latitudeMax() / __viewport.height() / zoom() - center().y();
-    return LonLat(x, -::fromMercator(y));
+    qreal m = qMax(viewport().width(), viewport().height());
+    
+    qreal x = (point.x() * 360 - 180 * viewport().width()) / (m * zoom()) - center().longitude();
+    qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) - center().latitude());
+    
+    return LonLat(x, y);
 }
 
-LonLat
-MapRenderer::scaleToLonLat(const QPoint& point)
+QPointF
+MapRenderer::scaleToLonLat(const QPoint& vector)
 {
-    qreal x = static_cast<qreal>(point.x()) * MapConfig::longitudeMax() / __viewport.width() / zoom();
-    qreal y = static_cast<qreal>(point.y()) * MapConfig::latitudeMax() / __viewport.height() / zoom();
-    return LonLat(x, ::fromMercator(y));
-}
-
-QPoint
-MapRenderer::mapFromLonLat(const LonLat& point)
-{
-    int x = (__viewport.width() * (2.0 * zoom() * (point.x() - center().x()) + MapConfig::longitudeMax())) / (2 * MapConfig::longitudeMax());
-    int y = (__viewport.height() * (2.0 * zoom() * (-::toMercator(point.y()) + center().y()) + MapConfig::latitudeMax())) / (2 * MapConfig::latitudeMax());
-    return QPoint(x, y);
+    qreal m = qMax(viewport().width(), viewport().height());
+    
+    qreal x = (vector.x() * 360) / (m * zoom());
+    qreal y = fromMercator(-vector.y() * 360 / (m * zoom()));
+    
+    return QPointF(x, y);
 }
 
 void
@@ -160,27 +164,18 @@ MapRenderer::setViewport(const QSize& size)
     emit viewportChanged(__viewport);
 }
 
-QPointF
-MapRenderer::toMercator(const LonLat& lonLat)
-{
-    return QPointF(lonLat.x(), qRadiansToDegrees(qLn(qTan(M_PI / 4 + qDegreesToRadians(lonLat.y()) / 2))));
-}
-
 void
 MapRenderer::paint(QPainter* painter)
 {
-    QTransform transform;
-    transform.translate(__viewport.width() / 2, __viewport.height() / 2);
-    transform.scale(__viewport.width() / MapConfig::longitudeMax(), -__viewport.height() / MapConfig::latitudeMax());
-    transform.scale(zoom(), zoom());
-    transform.translate(-center().x(), -center().y());
+    WorldTransform transform = this->transform();
     
     if (__mapDrawer) {
         __mapDrawer->draw(painter, transform);
     }
     
     scene()->inRect(__screen, [painter, &transform](const MapItem* item) {
-        item->draw(painter, transform);
+        if (item->isVisible())
+            item->draw(painter, transform);
     });
 }
 

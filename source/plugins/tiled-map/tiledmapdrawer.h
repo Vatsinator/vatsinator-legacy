@@ -44,7 +44,7 @@ public:
     /**
      * \copydoc MapDrawer::draw()
      */
-    void draw(QPainter* painter, const QTransform& transform) override;
+    void draw(QPainter* painter, const WorldTransform& transform) override;
     
 private:
     MapRenderer* __renderer;

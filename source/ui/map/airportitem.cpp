@@ -79,7 +79,7 @@ AirportItem::position() const
 }
 
 void
-AirportItem::draw(QPainter* painter, const QTransform& transform) const
+AirportItem::draw(QPainter* painter, const WorldTransform& transform) const
 {
     if (__icon.isNull()) {
         if (data()->isEmpty()) {
@@ -92,15 +92,16 @@ AirportItem::draw(QPainter* painter, const QTransform& transform) const
         }
     }
     
-    QRectF rect(QPointF(0.0, 0.0), __icon.size());
-    rect.moveCenter(MapRenderer::toMercator(position()) * transform);
+    QRect rect(QPoint(0, 0), __icon.size());
+    rect.moveCenter(position() * transform);
     
-    painter->drawPixmap(rect, __icon, QRectF(QPointF(0.0, 0.0), __icon.size()));
     
-    QRectF textRect(QPointF(0.0, 0.0), __label.size());
-    textRect.moveCenter(rect.center());
-    textRect.moveTop(rect.bottom());
-    painter->drawStaticText(textRect.topLeft(), __label);
+    painter->drawPixmap(rect, __icon);
+    
+//     QRectF textRect(QPointF(0.0, 0.0), __label.size());
+//     textRect.moveCenter(rect.center());
+//     textRect.moveTop(rect.bottom());
+//     painter->drawStaticText(textRect.topLeft(), __label);
 }
 
 QString

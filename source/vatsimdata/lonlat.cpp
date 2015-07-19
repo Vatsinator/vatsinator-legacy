@@ -41,7 +41,8 @@ LonLat::bound() const
     while (b.x() < -180.0)
         b.rx() += 360.0;
         
-    b.ry() = qBound(-90.0, b.y(), 90.0);
+//     b.ry() = qBound(-90.0, b.y(), 90.0);
+    b.ry() = qBound(-85.0511, b.y(), 85.0511);
     return qMove(b);
 }
 

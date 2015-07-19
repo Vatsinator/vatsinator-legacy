@@ -22,6 +22,7 @@
 
 #include <QtPlugin>
 #include "ui/map/maprenderer.h"
+#include "ui/map/worldtransform.h"
 
 class QMatrix4x4;
 class QRectF;
@@ -48,7 +49,7 @@ public:
     /**
      * Renders a map.
      */
-    virtual void draw(QPainter* painter, const QTransform& transform) = 0;
+    virtual void draw(QPainter* painter, const WorldTransform& transform) = 0;
     
 };
 

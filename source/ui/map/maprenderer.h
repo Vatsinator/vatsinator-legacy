@@ -25,6 +25,7 @@
 #include <QColor>
 #include <QRectF>
 
+#include "ui/map/worldtransform.h"
 #include "vatsimdata/lonlat.h"
 
 class IconKeeper;
@@ -87,6 +88,8 @@ public:
      */
     virtual ~MapRenderer();
     
+    WorldTransform transform() const;
+    
     /**
      * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
      * maps them to longitude & latitude.
@@ -96,22 +99,7 @@ public:
      */
     LonLat mapToLonLat(const QPoint& point);
     
-    /**
-     * Scales the given point (or distance) to the global
-     * coordinates system. It does not differ from the
-     * mapToLonLat() function except the fact that it
-     * does not take into consideration the current map
-     * center point.
-     *
-     * \param point The point (or the distance) in the window coordinates.
-     * \return Global coordinates (or the distance).
-     */
-    LonLat scaleToLonLat(const QPoint& point);
-    
-    /**
-     * Calculates widget coordinates from the given lat-lon coordinates.
-     */
-    QPoint mapFromLonLat(const LonLat& point);
+    QPointF scaleToLonLat(const QPoint& vector);
     
     /**
      * Sets the MapDrawer instance.
@@ -162,8 +150,6 @@ public:
     {
         return __screen;
     }
-    
-    static QPointF toMercator(const LonLat& lonLat);
 
 public slots:
     /**

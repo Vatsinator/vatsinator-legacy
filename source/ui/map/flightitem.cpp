@@ -22,7 +22,6 @@
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
-#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/modelmatcher.h"
 #include "ui/userinterface.h"
@@ -36,8 +35,7 @@
 FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     MapItem(parent),
     __scene(qobject_cast<MapScene * >(parent)),
-    __pilot(pilot),
-    __position(pilot->position())
+    __pilot(pilot)
 {
     
 }
@@ -62,24 +60,25 @@ FlightItem::isLabelVisible() const
 const LonLat&
 FlightItem::position() const
 {
-    return __position;
+    return __pilot->position();
 }
 
 void
-FlightItem::draw(QPainter* painter, const QTransform& transform) const
+FlightItem::draw(QPainter* painter, const WorldTransform& transform) const
 {
     if (__model.isNull()) {
         QTransform t;
         t.rotate(static_cast<float>(data()->heading()));
-        __model = __scene->modelMatcher()->match(__pilot->aircraft()).transformed(t, Qt::SmoothTransformation);
+        __model = __scene->modelMatcher()->match(__pilot->aircraft()).
+            transformed(t, Qt::SmoothTransformation);
     }
     
     Q_ASSERT(!__model.isNull());
     
-    QRectF rect(QPointF(0.0, 0.0), __model.size());
-    rect.moveCenter(MapRenderer::toMercator(position()) * transform);
+    QRect rect(QPoint(0, 0), __model.size());
+    rect.moveCenter(position() * transform);
     
-    painter->drawPixmap(rect, __model, QRectF(QPointF(0.0, 0.0), __model.size()));
+    painter->drawPixmap(rect, __model);
 }
 
 QString
