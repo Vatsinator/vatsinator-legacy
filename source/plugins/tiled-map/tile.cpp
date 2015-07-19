@@ -62,6 +62,8 @@ Tile::coords() const
         __coords = QRectF(topLeft, bottomRight);
     }
     
+#undef qSinh
+    
     return __coords;
 }
 

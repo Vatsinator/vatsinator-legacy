@@ -27,10 +27,12 @@
 class TileUrl {
     
 public:
+    TileUrl();
     explicit TileUrl(quint64 x, quint64 y, quint64 zoom);
     
     QUrl toUrl() const;
     QString path() const;
+    bool isValid() const;
     
     bool operator ==(const TileUrl& other) const;
     

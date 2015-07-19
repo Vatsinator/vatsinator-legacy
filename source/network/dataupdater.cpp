@@ -122,12 +122,9 @@ DataUpdater::DataUpdater(QObject* parent) :
     /* Give the Unzipper its own thread */
     QThread* thread = new QThread();
     __unzipper->moveToThread(thread);
-    connect(__unzipper,   SIGNAL(unzipped()),
-            this,         SLOT(__filesUnzipped()));
-    connect(__unzipper,   SIGNAL(error(QString)),
-            this,         SLOT(__unzipError(QString)));
-    connect(this,         SIGNAL(readyToUnzip()),
-            __unzipper,   SLOT(unzip()));
+    connect(__unzipper, &Unzipper::unzipped, this, &DataUpdater::__filesUnzipped);
+    connect(__unzipper, &Unzipper::error, this, &DataUpdater::__unzipError);
+    connect(this, &DataUpdater::readyToUnzip, __unzipper, &Unzipper::unzip);
     thread->start();
 }
 
@@ -147,15 +144,11 @@ DataUpdater::update()
     
     FileDownloader* fd = new FileDownloader();
     
-    connect(fd,   SIGNAL(finished(QString)),
-            this, SLOT(__unzipPackage(QString)));
-    connect(fd,   SIGNAL(finished(QString)),
-            fd,   SLOT(deleteLater()));
-    connect(fd,   SIGNAL(error(QString)),
-            this, SLOT(__fetchError(QString)));
-    connect(fd,   SIGNAL(error(QString)),
-            fd,   SLOT(deleteLater()));
-            
+    connect(fd, &FileDownloader::finished, this, &DataUpdater::__unzipPackage);
+    connect(fd, &FileDownloader::finished, fd, &FileDownloader::deleteLater);
+    connect(fd, &FileDownloader::error, this, &DataUpdater::__fetchError);
+    connect(fd, &FileDownloader::error, fd, &FileDownloader::deleteLater);
+    
     fd->fetch(QUrl(PackageUrl));
 }
 

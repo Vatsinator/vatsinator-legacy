@@ -21,6 +21,12 @@
 
 #include "tileurl.h"
 
+TileUrl::TileUrl() :
+    __zoom(0)
+{
+
+}
+
 TileUrl::TileUrl(quint64 x, quint64 y, quint64 zoom) :
     __x(x),
     __y(y),
@@ -32,6 +38,9 @@ TileUrl::TileUrl(quint64 x, quint64 y, quint64 zoom) :
 QUrl
 TileUrl::toUrl() const
 {
+    if (!isValid())
+        return QUrl();
+    
 //     return QUrl(QStringLiteral("http://c.tile.openstreetmap.org/") % path());
 //     return QUrl(QStringLiteral("http://otile1.mqcdn.com/tiles/1.0.0/sat/") % path());
     return QUrl(QStringLiteral("http://a.basemaps.cartocdn.com/light_all/") % path());
@@ -40,10 +49,19 @@ TileUrl::toUrl() const
 QString
 TileUrl::path() const
 {
+    if (!isValid())
+        return QString();
+    
     return QStringLiteral("%1/%2/%3.png").arg(
         QString::number(__zoom),
         QString::number(__x),
         QString::number(__y));
+}
+
+bool
+TileUrl::isValid() const
+{
+    return __zoom > 0;
 }
 
 bool
@@ -56,7 +74,11 @@ TileUrl
 TileUrl::fromUrl(const QUrl& url)
 {
     QRegExp rx("light_all/(\\d+)/(\\d+)/(\\d+).{3}");
-    Q_ASSERT(rx.indexIn(url.path()) != -1);
+    int res = rx.indexIn(url.path());
+    if (res != 1) {
+        qWarning("Failed parsing url (%s) - caps: %d", qPrintable(url.toString()), res);
+        return TileUrl();
+    }
     
     quint64 x = rx.cap(2).toULongLong();
     quint64 y = rx.cap(3).toULongLong();

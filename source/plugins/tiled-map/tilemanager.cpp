@@ -52,6 +52,9 @@ TileManager::TileManager(MapRenderer* renderer, QObject* parent) :
 void
 TileManager::fetchTile(const TileUrl& url)
 {
+    if (url.zoom() == 0)
+        qFatal("Fetching tile with zoom 0! (%s)", qPrintable(url.toUrl().toString()));
+    
     __downloader->fetch(url.toUrl());
 }
 
@@ -128,6 +131,9 @@ void
 TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
 {
     TileUrl tileUrl = TileUrl::fromUrl(url);
+    if (!tileUrl.isValid())
+        return;
+    
     FileManager::moveToCache(fileName, tileUrl.path());
     
     TileList& tiles = __tiles[tileUrl.zoom()];
