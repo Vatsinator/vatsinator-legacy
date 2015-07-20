@@ -42,12 +42,11 @@ static const QString AirportActiveWithAtcPixmap = QStringLiteral(":/pixmaps/airp
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
-    __scene(qobject_cast<MapScene * >(parent)),
+    __scene(qobject_cast<MapScene *>(parent)),
     __airport(airport),
-    __position(airport->data()->longitude, airport->data()->latitude),
     __label(airport->icao())
 {
-    
+    connect(airport, &Airport::updated, this, &AirportItem::__invalidate);
 }
 
 AirportItem::~AirportItem()
@@ -58,8 +57,6 @@ AirportItem::~AirportItem()
 bool
 AirportItem::isVisible() const
 {
-    Q_ASSERT(!__position.isNull());
-    
     if (data()->isEmpty())
         return __scene->settings().view.empty_airports;
     else
@@ -72,29 +69,21 @@ AirportItem::isLabelVisible() const
     return __scene->settings().view.airport_labels;
 }
 
-const LonLat&
+LonLat
 AirportItem::position() const
 {
-    return __position;
+    return __airport->position();
 }
 
 void
 AirportItem::draw(QPainter* painter, const WorldTransform& transform) const
 {
     if (__icon.isNull()) {
-        if (data()->isEmpty()) {
-            __icon.load(AirportInactivePixmap);
-        } else {
-            if (data()->staff()->staff().isEmpty())
-                __icon.load(AirportActivePixmap);
-            else
-                __icon.load(AirportActiveWithAtcPixmap);
-        }
+        __loadIcon();
     }
     
     QRect rect(QPoint(0, 0), __icon.size());
     rect.moveCenter(position() * transform);
-    
     
     painter->drawPixmap(rect, __icon);
     
@@ -139,4 +128,34 @@ void
 AirportItem::showDetails() const
 {
     vApp()->userInterface()->showDetails(data());
+}
+
+void
+AirportItem::__loadIcon() const
+{
+    if (data()->isEmpty()) {
+        if (!QPixmapCache::find(AirportInactivePixmap, &__icon)) {
+            __icon.load(AirportInactivePixmap);
+            QPixmapCache::insert(AirportInactivePixmap, __icon);
+        }
+    } else {
+        if (data()->staff()->staff().isEmpty()) {
+            if (!QPixmapCache::find(AirportActivePixmap, &__icon)) {
+                __icon.load(AirportActivePixmap);
+                QPixmapCache::insert(AirportActivePixmap, __icon);
+            }
+        } else {
+            if (!QPixmapCache::find(AirportActiveWithAtcPixmap, &__icon)) {
+                __icon.load(AirportActiveWithAtcPixmap);
+                QPixmapCache::insert(AirportActiveWithAtcPixmap, __icon);
+            }
+        }
+    }
+}
+
+void
+AirportItem::__invalidate()
+{
+    if (!QCoreApplication::closingDown())
+        __icon = QPixmap();
 }

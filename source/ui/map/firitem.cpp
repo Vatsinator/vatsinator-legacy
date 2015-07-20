@@ -36,9 +36,20 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     MapItem(parent),
     __scene(qobject_cast<MapScene * >(parent)),
     __fir(fir),
-    __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y)
+    __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y),
+    __font(QGuiApplication::font())
 {
+    QString labelText = __fir->icao();
+    if (__fir->isOceanic()) {
+        labelText += " Oceanic";
+    }
     
+    __label.setText(labelText);
+    
+    __font.setPointSize(__font.pointSize() + 2);
+    __font.setBold(true);
+    
+    __label.prepare(QTransform(), __font);
 }
 
 FirItem::~FirItem()
@@ -67,7 +78,7 @@ FirItem::isLabelVisible() const
         return __scene->settings().view.staffed_firs;
 }
 
-const LonLat&
+LonLat
 FirItem::position() const
 {
     return __position;
@@ -76,7 +87,20 @@ FirItem::position() const
 void
 FirItem::draw(QPainter* painter, const WorldTransform& transform) const
 {
-
+    QPen origPen = painter->pen();
+    QFont origFont = painter->font();
+    
+    QPen pen(QColor(121, 121, 121));
+    pen.setWidth(3);
+    painter->setPen(pen);
+    painter->setFont(__font);
+    
+    QRect rect(QPoint(0, 0), __label.size().toSize());
+    rect.moveCenter(position() * transform);
+    
+    painter->drawStaticText(rect.topLeft(), __label);
+    painter->setPen(origPen);
+    painter->setFont(origFont);
 }
 
 QString

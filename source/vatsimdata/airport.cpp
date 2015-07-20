@@ -101,10 +101,8 @@ void
 Airport::addStaff(const Controller* atc)
 {
     __staff->add(atc);
-    connect(atc,  SIGNAL(updated()),
-            this, SIGNAL(updated()));
-    connect(atc,  SIGNAL(destroyed(QObject*)),
-            this, SIGNAL(updated()), Qt::DirectConnection);
+    connect(atc, &Controller::updated, this, &Airport::updated);
+    connect(atc, &Controller::destroyed, this, &Airport::updated, Qt::DirectConnection);
     emit updated();
 }
 
@@ -112,10 +110,8 @@ void
 Airport::addInbound(const Pilot* pilot)
 {
     __inbounds->add(pilot);
-    connect(pilot,        SIGNAL(updated()),
-            this,         SIGNAL(updated()));
-    connect(pilot,        SIGNAL(destroyed(QObject*)),
-            this,         SIGNAL(updated()), Qt::DirectConnection);
+    connect(pilot, &Pilot::updated, this, &Airport::updated);
+    connect(pilot, &Pilot::destroyed, this, &Airport::updated, Qt::DirectConnection);
             
     for (Fir* f : __firs)
         f->addFlight(pilot);
@@ -127,10 +123,8 @@ void
 Airport::addOutbound(const Pilot* pilot)
 {
     __outbounds->add(pilot);
-    connect(pilot,        SIGNAL(updated()),
-            this,         SIGNAL(updated()));
-    connect(pilot,        SIGNAL(destroyed(QObject*)),
-            this,         SIGNAL(updated()), Qt::DirectConnection);
+    connect(pilot, &Pilot::updated, this, &Airport::updated);
+    connect(pilot, &Pilot::destroyed, this, &Airport::updated, Qt::DirectConnection);
             
     for (Fir* f : __firs)
         f->addFlight(pilot);
@@ -159,5 +153,5 @@ Airport::isStaffed() const
 LonLat
 Airport::position() const
 {
-    return qMove(LonLat(data()->longitude, data()->latitude));
+    return LonLat(data()->longitude, data()->latitude);
 }

@@ -51,7 +51,7 @@ public:
     /**
      * Position of the item, global coordinates.
      */
-    virtual const LonLat& position() const = 0;
+    virtual LonLat position() const = 0;
     
     /**
      * Draws the item on the painter.

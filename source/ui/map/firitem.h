@@ -49,7 +49,7 @@ public:
     
     bool isVisible() const override;
     bool isLabelVisible() const override;
-    const LonLat& position() const override;
+    LonLat position() const override;
     void draw(QPainter* painter, const WorldTransform& transform) const override;
     QString tooltipText() const override;
     void showDetails() const override;
@@ -63,10 +63,11 @@ public:
     }
 
 private:
-    MapScene*  __scene;
+    MapScene* __scene;
     const Fir* __fir;
-    LonLat     __position;
-    
+    LonLat __position;
+    mutable QStaticText __label;
+    QFont __font;
     
 };
 

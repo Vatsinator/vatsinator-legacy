@@ -37,7 +37,7 @@ public:
     bool isLabelVisible() const override;
     void showDetails() const override;
     QString tooltipText() const override;
-    const LonLat& position() const override;
+    LonLat position() const override;
     void draw(QPainter* painter, const WorldTransform& transform) const override;
     
     inline const Uir* data() const

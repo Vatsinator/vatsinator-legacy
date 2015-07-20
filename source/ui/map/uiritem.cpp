@@ -62,7 +62,7 @@ UirItem::tooltipText() const
     return QString();
 }
 
-const LonLat&
+LonLat
 UirItem::position() const
 {
     static LonLat ll;
