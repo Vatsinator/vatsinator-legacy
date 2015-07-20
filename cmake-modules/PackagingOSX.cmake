@@ -2,7 +2,10 @@ if (CMAKE_INSTALL_PREFIX MATCHES "/usr/local")
     set (CMAKE_INSTALL_PREFIX "/Applications")
 endif ()
 
-set (vatsinator_BUNDLE source/${CMAKE_PROJECT_NAME}.app)
+cmake_policy (PUSH)
+cmake_policy (SET CMP0026 OLD)
+get_target_property (vatsinator_BUNDLE_LOCATION vatsinator LOCATION)
+cmake_policy (POP)
 
 set (MACOSX_BUNDLE_INFO_STRING "Vatsinator ${vatsinator_VERSION}")
 set (MACOSX_BUNDLE_BUNDLE_VERSION "Vatsinator ${vatsinator_VERSION}")
@@ -14,8 +17,9 @@ set (MACOSX_BUNDLE_COPYRIGHT "2015 by VatsinatorTeam")
 set (MACOSX_BUNDLE_GUI_IDENTIFIER "org.eu.vatsinator")
 set (MACOSX_BUNDLE_BUNDLE_NAME "Vatsinator")
 
-set (MACOSX_BUNDLE_RESOURCES "${CMAKE_CURRENT_BINARY_DIR}/${vatsinator_BUNDLE}/Contents/Resources")
+set (MACOSX_BUNDLE_RESOURCES "${vatsinator_BUNDLE_LOCATION}/Contents/Resources")
 set (MACOSX_BUNDLE_ICON "${PROJECT_SOURCE_DIR}/dist/${MACOSX_BUNDLE_ICON_FILE}")
+set (CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/dist/${MACOSX_BUNDLE_ICON_FILE}")
 
 set (CPACK_GENERATOR "DragNDrop")
 set (CPACK_DMG_FORMAT "UDBZ")

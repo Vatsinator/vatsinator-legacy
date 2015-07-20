@@ -1,7 +1,8 @@
 set (CPACK_PACKAGE_CONTACT "Michał Garapich michal@garapich.pl")
 set (CPACK_PACKAGE_NAME "Vatsinator")
 set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING")
-
+set (CPACK_PACKAGE_VERSION ${vatsinator_VERSION})
+set (CPACK_PACKAGE_VENDOR "Vatsinator Team")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Vatsim monitor")
 
 # Platform-specific package setup
