@@ -52,8 +52,8 @@ WorldTransform::map(const LonLat& lonLat) const
 {    
     qreal m = qMax(viewport().width(), viewport().height());
     
-    int x = (lonLat.longitude() + offset().longitude()) * m * scale() / 360.0 + viewport().width() / 2;
-    int y = (-toMercator(lonLat.latitude()) - offset().latitude()) * m * scale() / 360.0 + viewport().height() / 2;
+    int x = (lonLat.longitude() - offset().longitude()) * m * scale() / 360.0 + viewport().width() / 2;
+    int y = (-toMercator(lonLat.latitude()) + offset().latitude()) * m * scale() / 360.0 + viewport().height() / 2;
     
     return QPoint(x, y);
 }

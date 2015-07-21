@@ -222,7 +222,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* event)
         setCursor (QCursor (Qt::SizeAllCursor));
         QPoint diff = event->pos() - __mousePosition.screenPosition();
         QPointF center = __renderer->center();
-        center += __renderer->scaleToLonLat (diff);
+        center -= __renderer->scaleToLonLat (diff);
         
         center.ry() = qBound (-90.0, center.y(), 90.0);
         

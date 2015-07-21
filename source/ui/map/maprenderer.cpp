@@ -76,8 +76,8 @@ MapRenderer::mapToLonLat(const QPoint& point)
 {
     qreal m = qMax(viewport().width(), viewport().height());
     
-    qreal x = (point.x() * 360 - 180 * viewport().width()) / (m * zoom()) - center().longitude();
-    qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) - center().latitude());
+    qreal x = (point.x() * 360 - 180 * viewport().width()) / (m * zoom()) + center().longitude();
+    qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) + center().latitude());
     
     return LonLat(x, y);
 }
