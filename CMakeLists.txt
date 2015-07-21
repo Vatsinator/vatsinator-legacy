@@ -59,12 +59,12 @@ else () # desktop
     find_package (Qt5Widgets REQUIRED)
     include_directories (${Qt5Widgets_INCLUDE_DIRS})
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+	
+	if (APPLE)
+		find_package (Qt5MacExtras REQUIRED)
+		include_directories (${Qt5MacExtras_INCLUDE_DIRS})
+	endif ()
 endif()
-
-if (APPLE)
-    find_package (Qt5MacExtras REQUIRED)
-    include_directories (${Qt5MacExtras_INCLUDE_DIRS})
-endif ()
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 add_subdirectory (3rdparty)
@@ -73,24 +73,29 @@ include (QtUtils)
 
 # set configuration types (msvc/xcode)
 if (CMAKE_CONFIGURATION_TYPES)
-  set (CMAKE_CONFIGURATION_TYPES Debug Release)
-  set (CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
-    "Reset the configurations to what we actually need"
-    FORCE)
+	set (CMAKE_CONFIGURATION_TYPES Debug Release)
+	set (CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
+		"Reset the configurations to what we actually need"
+		FORCE
+	)
 endif()
 
 # set CMAKE_BUILD_TYPE (makefiles)
 if (CMAKE_BUILD_TYPE MATCHES Debug)
-  set (CMAKE_BUILD_TYPE Debug)
+	set (CMAKE_BUILD_TYPE Debug)
 else ()
-  set (CMAKE_BUILD_TYPE Release)
+	set (CMAKE_BUILD_TYPE Release)
 endif ()
 
 # set CXX_FLAGS
 if (CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-  set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
-  set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
+	set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
+elseif (MSVC)
+	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+	set (CMAKE_CXX_FLAGS_DEBUG "/W4")
+	set (CMAKE_CXX_FLAGS_RELEASE "/DQT_NO_DEBUG /DQT_NO_DEBUG_OUTPUT")
 endif ()
 
 # find version
@@ -130,6 +135,8 @@ endif ()
 if (NOT APPLE)
     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
+
+set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_subdirectory (source)
 add_subdirectory (resources)

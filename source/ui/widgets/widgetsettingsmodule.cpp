@@ -71,7 +71,7 @@ WidgetSettingsModule::restore(QSettings& settings, const QVariantHash& defaults)
         if (key.isEmpty())
             return;
             
-        QVariant s = settings.value(key, defaults[moduleId() % QStringLiteral(".") % key]);
+        QVariant s = settings.value(key, defaults[moduleId() % "." % key]);
         
         if (QCheckBox* cb = qobject_cast<QCheckBox*>(w))
             cb->setChecked(s.toBool());
@@ -84,7 +84,7 @@ WidgetSettingsModule::restore(QSettings& settings, const QVariantHash& defaults)
         else if (ColorButton* button = qobject_cast<ColorButton*>(w))
             button->setColor(s.value<QColor>());
         else
-            qDebug() << w->metaObject()->className() << "not supported by WidgetSettingsModule";
+            qDebug("%s not supported by WidgetSettingsModule", w->metaObject()->className());
     });
 }
 
