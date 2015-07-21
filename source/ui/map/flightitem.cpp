@@ -71,6 +71,7 @@ FlightItem::draw(QPainter* painter, const WorldTransform& transform) const
         t.rotate(static_cast<float>(data()->heading()));
         __model = __scene->modelPixmapProvider()->pixmapForModel(__pilot->aircraft()).
             transformed(t, Qt::SmoothTransformation);
+        __dropShadow(&__model);
     }
     
     Q_ASSERT(!__model.isNull());
@@ -119,4 +120,23 @@ void
 FlightItem::showDetails() const
 {
     vApp()->userInterface()->showDetails(data());
+}
+
+void
+FlightItem::__dropShadow(QPixmap* image) const
+{
+    QPixmap orig = image->copy();
+    QBitmap mask = image->mask();
+    
+    image->fill(Qt::transparent);
+    QRect target = image->rect();
+    target.moveBottom(target.bottom() + 4);
+    
+    QPainter p(image);
+    p.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    p.setPen(QColor(180, 180, 180, 100));
+    p.drawPixmap(target, mask, mask.rect());
+    p.setPen(QPen());
+    p.drawPixmap(image->rect(), orig, orig.rect());
+    p.end();
 }

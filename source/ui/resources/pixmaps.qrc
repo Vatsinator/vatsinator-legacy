@@ -1,5 +1,17 @@
 <RCC>
   <qresource prefix="pixmaps">
+    <file>hdpi/airport.png</file>
+    <file>hdpi/airport_inactive.png</file>
+    <file>hdpi/airport_staffed.png</file>
+    <file>xhdpi/airport.png</file>
+    <file>xhdpi/airport_inactive.png</file>
+    <file>xhdpi/airport_staffed.png</file>
+    <file>xxhdpi/airport.png</file>
+    <file>xxhdpi/airport_inactive.png</file>
+    <file>xxhdpi/airport_staffed.png</file>
+    <file>xxxhdpi/airport.png</file>
+    <file>xxxhdpi/airport_inactive.png</file>
+    <file>xxxhdpi/airport_staffed.png</file>
     <file>hdpi/C172.png</file>
     <file>mdpi/C172.png</file>
     <file>xhdpi/C172.png</file>

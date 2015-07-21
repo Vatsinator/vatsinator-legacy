@@ -120,6 +120,10 @@ ModelPixmapProvider::__prepareModelPixmap(const QString& model)
 QImage
 ModelPixmapProvider::__modelColorized(const QImage& image, const QColor& color)
 {
+    /**
+     * I tried using Qt's alpha masks here and all that stuff, but
+     * it didn't end up well. So I came up with my own solution.
+     */
     int r, g, b;
     color.getRgb(&r, &g, &b);
     r = 255 - r;
@@ -129,6 +133,7 @@ ModelPixmapProvider::__modelColorized(const QImage& image, const QColor& color)
     QImage colorized = image.convertToFormat(QImage::Format_ARGB32);
     uchar* data = colorized.bits();
     for (int i = 0; i < colorized.byteCount() / 4; ++i) {
+        // data stored in AARRGGBB format, little-endian
         uchar* pb = data + (i * 4);
         uchar* pg = data + (i * 4 + 1);
         uchar* pr = data + (i * 4 + 2);
