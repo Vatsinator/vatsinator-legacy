@@ -1,5 +1,28 @@
 <RCC>
   <qresource prefix="pixmaps">
+    <file>hdpi/C172.png</file>
+    <file>mdpi/C172.png</file>
+    <file>xhdpi/C172.png</file>
+    <file>xxhdpi/C172.png</file>
+    <file>xxxhdpi/C172.png</file>
+    <file>mdpi/AT75.png</file>
+    <file>hdpi/A380.png</file>
+    <file>hdpi/AT75.png</file>
+    <file>hdpi/B737.png</file>
+    <file>hdpi/B747.png</file>
+    <file>xhdpi/A380.png</file>
+    <file>xhdpi/AT75.png</file>
+    <file>xhdpi/B737.png</file>
+    <file>xhdpi/B747.png</file>
+    <file>xxhdpi/A380.png</file>
+    <file>xxhdpi/AT75.png</file>
+    <file>xxhdpi/B737.png</file>
+    <file>xxhdpi/B747.png</file>
+    <file>xxxhdpi/AT75.png</file>
+    <file>xxxhdpi/A380.png</file>
+    <file>xxxhdpi/B737.png</file>
+    <file>xxxhdpi/B747.png</file>
+    <file>mdpi/A380.png</file>
     <file>mdpi/B737.png</file>
     <file>mdpi/B747.png</file>
     <file>mdpi/airport.png</file>

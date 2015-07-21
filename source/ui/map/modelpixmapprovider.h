@@ -21,6 +21,8 @@
 #define MODELPIXMAPPROVIDER_H
 
 #include <QObject>
+#include <QPixmap>
+#include <QMap>
 
 class ModelPixmapProvider : public QObject {
     Q_OBJECT
@@ -31,7 +33,12 @@ public:
     QPixmap pixmapForModel(const QString& modelString);
     
 private:
+    void __readMappings();
+    QString __matchModel(const QString modelString);
     QPixmap __prepareModelPixmap(const QString& model);
+    QImage __modelColorized(const QImage& image, const QColor& color);
+    
+    QMap<QString, QString> __mappings;
     
 };
 

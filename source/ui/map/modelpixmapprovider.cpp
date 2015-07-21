@@ -19,11 +19,13 @@
 
 #include <QtGui>
 
+#include "storage/filemanager.h"
+
 #include "modelpixmapprovider.h"
 
 ModelPixmapProvider::ModelPixmapProvider(QObject* parent) : QObject (parent)
 {
-    
+    __readMappings();
 }
 
 QPixmap
@@ -32,7 +34,7 @@ ModelPixmapProvider::pixmapForModel(const QString& modelString)
     /* Model matching will be here */
     Q_UNUSED(modelString);
     
-    QString model = "B747";
+    QString model = __matchModel(modelString);
     QPixmap px;
     if (!QPixmapCache::find(model, &px)) {
         px = __prepareModelPixmap(model);
@@ -41,9 +43,66 @@ ModelPixmapProvider::pixmapForModel(const QString& modelString)
     return px;
 }
 
+void
+ModelPixmapProvider::__readMappings()
+{
+    QFile file(FileManager::path("data/model"));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning("Could not open %s for reading", qPrintable(file.fileName()));
+        return;
+    }
+    
+    QJsonParseError error;
+    QJsonDocument document = QJsonDocument::fromJson(file.readAll(), &error);
+    if (error.error != QJsonParseError::NoError) {
+        qWarning("VatsimDataHandler: the following error occured parsing %s: %s",
+                 qPrintable(file.fileName()), qPrintable(error.errorString()));
+        return;
+    }
+    
+    Q_ASSERT(document.isObject());
+    QJsonObject object = document.object();
+    
+    QStringList keys = object.keys();
+    std::for_each(keys.begin(), keys.end(), [this, &object](const QString& key) {
+        QJsonValue value = object.value(key);
+        Q_ASSERT(value.isArray());;
+        QJsonArray array = value.toArray();
+        
+        std::for_each(array.begin(), array.end(), [this, &key](const QJsonValue& value) {
+            Q_ASSERT(value.isString());
+            QString mapping = value.toString();
+            __mappings.insert(mapping, key);
+        });
+    });
+    
+    file.close();
+}
+
+QString
+ModelPixmapProvider::__matchModel(const QString modelString)
+{
+    if (modelString.isEmpty())
+        return "B737";
+    
+    QRegExp rx("(\\w{3,})");
+    if (rx.indexIn(modelString) == -1) {
+        qWarning("No model match for %s ", qPrintable(modelString));
+        return "B737";
+    }
+    
+    return __mappings.value(rx.cap(1), "B737");
+}
+
 QPixmap
 ModelPixmapProvider::__prepareModelPixmap(const QString& model)
 {
+    /**
+     * In order to provide maximum flexibility, the model pixmaps
+     * are white with black outline and here they are colorized.
+     * The result itself is then stored in the pixmap cache.
+     */
+    
     QPixmap px;
     if (QPixmapCache::find(model, &px))
         return px;
@@ -52,26 +111,37 @@ ModelPixmapProvider::__prepareModelPixmap(const QString& model)
     QImage image(path);
     Q_ASSERT(!image.isNull());
     
-    /* Fill the white color with the outline color */
-    QBitmap mask = QBitmap::fromImage(image.createAlphaMask());
-    QPainter p(&image);
-    p.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-    p.setPen(QColor(238, 220, 122));
-    p.drawPixmap(image.rect(), mask, mask.rect());
-    
-    /* I don't know why this useful function isn't declared somewhere, really */
-    extern QPainterPath qt_regionToPath(const QRegion &region);
-    QPainterPath modelPath = qt_regionToPath(QRegion(mask));
-    
-    QPen outlinePen(QColor(151, 145, 80));
-    outlinePen.setWidthF(0.5);
-    p.setPen(outlinePen);
-    p.setOpacity(0.5);
-    p.drawPath(modelPath);
-    
-    p.end();
-    
-    px.convertFromImage(image);
+    QImage colorized = __modelColorized(image, QColor(238, 220, 122));
+    px.convertFromImage(colorized);
     QPixmapCache::insert(model, px);
     return px;
+}
+
+QImage
+ModelPixmapProvider::__modelColorized(const QImage& image, const QColor& color)
+{
+    int r, g, b;
+    color.getRgb(&r, &g, &b);
+    r = 255 - r;
+    g = 255 - g;
+    b = 255 - b;
+    
+    QImage colorized = image.convertToFormat(QImage::Format_ARGB32);
+    uchar* data = colorized.bits();
+    for (int i = 0; i < colorized.byteCount() / 4; ++i) {
+        uchar* pb = data + (i * 4);
+        uchar* pg = data + (i * 4 + 1);
+        uchar* pr = data + (i * 4 + 2);
+//         uchar* pa = data + (i * 4 + 3);
+        
+        int nr = 255 - *pr + r; // new red
+        int ng = 255 - *pg + g; // new green
+        int nb = 255 - *pb + b; // new blue
+        
+        *pr = qBound(0, 255 - nr, 255);
+        *pg = qBound(0, 255 - ng, 255);
+        *pb = qBound(0, 255 - nb, 255);
+    }
+    
+    return colorized;
 }
