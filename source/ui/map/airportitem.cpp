@@ -36,9 +36,9 @@
 #include "airportitem.h"
 
 // pixmaps to use
-static const QString AirportInactivePixmap = QStringLiteral(":/pixmaps/airport_inactive.png");
-static const QString AirportActivePixmap = QStringLiteral(":/pixmaps/airport.png");
-static const QString AirportActiveWithAtcPixmap = QStringLiteral(":/pixmaps/airport_staffed.png");
+static const QString AirportInactivePixmap = QStringLiteral(":/pixmaps/mdpi/airport_inactive.png");
+static const QString AirportActivePixmap = QStringLiteral(":/pixmaps/mdpi/airport.png");
+static const QString AirportActiveWithAtcPixmap = QStringLiteral(":/pixmaps/mdpi/airport_staffed.png");
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),

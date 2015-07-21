@@ -29,7 +29,7 @@ set (ui_SRCS
     map/mapitem.cpp
     map/maprenderer.cpp
     map/mapscene.cpp
-    map/modelmatcher.cpp
+    map/modelpixmapprovider.cpp
     map/uiritem.cpp
     map/worldtransform.cpp
     
@@ -50,7 +50,7 @@ set (ui_HEADERS
     map/mapitem.h
     map/maprenderer.h
     map/mapscene.h
-    map/modelmatcher.h
+    map/modelpixmapprovider.h
     map/uiritem.h
     map/worldtransform.h
     
@@ -189,6 +189,7 @@ set (quick_HEADERS
 set (ui_QRCS
     resources/files.qrc
     resources/imgs.qrc
+    resources/pixmaps.qrc
     resources/shaders.qrc
 )
 qt5_add_resources (ui_RESOURCES ${ui_QRCS})

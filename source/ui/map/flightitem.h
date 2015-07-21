@@ -1,6 +1,6 @@
 /*
  * flightitem.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,8 +62,9 @@ public:
         return __pilot;
     }
     
-    
 private:
+    void __dropShadow(QPixmap* image) const;
+    
     MapScene* __scene;
     const Pilot* __pilot;
     mutable QPixmap __model;
