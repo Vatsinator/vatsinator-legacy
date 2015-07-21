@@ -142,13 +142,11 @@ DataUpdater::update()
 {
     qDebug("DataUpdater: updating...");
     
-    FileDownloader* fd = new FileDownloader();
-    
+    FileDownloader* fd = new FileDownloader();    
     connect(fd, &FileDownloader::finished, this, &DataUpdater::__unzipPackage);
     connect(fd, &FileDownloader::finished, fd, &FileDownloader::deleteLater);
     connect(fd, &FileDownloader::error, this, &DataUpdater::__fetchError);
     connect(fd, &FileDownloader::error, fd, &FileDownloader::deleteLater);
-    
     fd->fetch(QUrl(PackageUrl));
 }
 
@@ -241,16 +239,10 @@ DataUpdater::__filesUnzipped()
     qDebug("DataUpdater: files unzipped.");
     
     FileDownloader* fd = new FileDownloader();
-    
-    connect(fd,   SIGNAL(finished(QString)),
-            this, SLOT(__checkManifest(QString)));
-    connect(fd,   SIGNAL(finished(QString)),
-            fd,   SLOT(deleteLater()));
-    connect(fd,   SIGNAL(error(QString)),
-            this, SLOT(__fetchError(QString)));
-    connect(fd,   SIGNAL(error(QString)),
-            fd,   SLOT(deleteLater()));
-            
+    connect(fd, &FileDownloader::finished, this, &DataUpdater::__checkManifest);
+    connect(fd, &FileDownloader::finished, fd, &FileDownloader::deleteLater);
+    connect(fd, &FileDownloader::error, this, &DataUpdater::__fetchError);
+    connect(fd, &FileDownloader::error, fd, &FileDownloader::deleteLater);
     fd->fetch(QUrl(ManifestUrl));
 }
 
