@@ -46,7 +46,7 @@ signals:
     void notamReady(NotamListModel* model);
     
 public:
-    using QObject::QObject;
+    explicit NotamProvider(QObject* parent = nullptr) : QObject(parent) {}
     
     /**
      * Requests NOTAM for the given ICAO code. The ICAO can be either airport's
