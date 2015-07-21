@@ -25,16 +25,7 @@
     </sizepolicy>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <property name="leftMargin">
-     <number>1</number>
-    </property>
-    <property name="topMargin">
-     <number>1</number>
-    </property>
-    <property name="rightMargin">
-     <number>1</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>1</number>
     </property>
     <item>
@@ -110,7 +101,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <widget class="QMenu" name="MenuVatsinator">
@@ -118,8 +109,8 @@
      <rect>
       <x>217</x>
       <y>159</y>
-      <width>177</width>
-      <height>222</height>
+      <width>176</width>
+      <height>252</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -289,6 +280,7 @@
  </customwidgets>
  <resources>
   <include location="../resources/imgs.qrc"/>
+  <include location="../resources/pixmaps.qrc"/>
   <include location="../resources/shaders.qrc"/>
  </resources>
  <connections/>

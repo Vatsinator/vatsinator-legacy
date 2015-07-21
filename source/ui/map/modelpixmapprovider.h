@@ -1,5 +1,5 @@
 /*
- * modelmatcher.h
+ * modelpixmapprovider.h
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,36 +17,22 @@
  *
  */
 
-#ifndef MODELMATCHER_H
-#define MODELMATCHER_H
+#ifndef MODELPIXMAPPROVIDER_H
+#define MODELPIXMAPPROVIDER_H
 
 #include <QObject>
-#include <QPair>
-#include <QMap>
-#include "ui/notifiable.h"
 
-class ModelMatcher : public QObject, private Notifiable {
+class ModelPixmapProvider : public QObject {
     Q_OBJECT
 
 public:
-    ModelMatcher(QObject* parent = nullptr);
+    explicit ModelPixmapProvider(QObject* parent = nullptr);
     
-    QPixmap& match(const QString& acft);
-
-private:
-    void __readModels();
-    void __loadPixmaps();
+    QPixmap pixmapForModel(const QString& modelString);
     
 private:
-    /*
-     * Aircraft <-> id pairs
-     */
-    QList<QPair<QString, QString>> __modelsIds;
+    QPixmap __prepareModelPixmap(const QString& model);
     
-    /*
-     * Id <-> texture pairs
-     */
-    QMap<QString, QPixmap> __modelsPixmaps;
 };
 
-#endif // MODELMATCHER_H
+#endif // MODELPIXMAPPROVIDER_H

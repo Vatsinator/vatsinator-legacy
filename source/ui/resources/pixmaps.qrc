@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="pixmaps">
+    <file>mdpi/B737.png</file>
+    <file>mdpi/B747.png</file>
+    <file>mdpi/airport.png</file>
+    <file>mdpi/airport_inactive.png</file>
+    <file>mdpi/airport_staffed.png</file>
+  </qresource>
+</RCC>

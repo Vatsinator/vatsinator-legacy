@@ -23,7 +23,7 @@
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
-#include "ui/map/modelmatcher.h"
+#include "ui/map/modelpixmapprovider.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
@@ -69,7 +69,7 @@ FlightItem::draw(QPainter* painter, const WorldTransform& transform) const
     if (__model.isNull()) {
         QTransform t;
         t.rotate(static_cast<float>(data()->heading()));
-        __model = __scene->modelMatcher()->match(__pilot->aircraft()).
+        __model = __scene->modelPixmapProvider()->pixmapForModel(__pilot->aircraft()).
             transformed(t, Qt::SmoothTransformation);
     }
     

@@ -36,7 +36,7 @@ class Fir;
 class FirItem;
 class FlightItem;
 class MapItem;
-class ModelMatcher;
+class ModelPixmapProvider;
 class Pilot;
 class MapRenderer;
 class UirItem;
@@ -213,9 +213,9 @@ public:
     /*
      * Gives direct access to the ModelMatcher instance.
      */
-    inline ModelMatcher* modelMatcher()
+    inline ModelPixmapProvider* modelPixmapProvider()
     {
-        return __modelMatcher;
+        return __modelPixmapProvider;
     }
     
 public slots:
@@ -292,7 +292,7 @@ private:
     const Pilot* __trackedFlight;
     QAbstractAnimation* __animation;
     
-    ModelMatcher* __modelMatcher;
+    ModelPixmapProvider* __modelPixmapProvider;
     MapSettings __settings;
     
     QSignalMapper* __flightsMapper; /**< Maps Pilots to its iterators in the spatial map */
