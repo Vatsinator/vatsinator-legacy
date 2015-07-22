@@ -11,6 +11,8 @@ macro (get_platform_qpa_plugin var)
 endmacro ()
 
 macro (get_target_location var target)
+    # This is the most ugly macro I've ever written, but
+    # this is only a workaround
     if (NOT APPLE)
         cmake_policy (PUSH)
         cmake_policy (SET CMP0026 OLD)
