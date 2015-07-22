@@ -29,10 +29,6 @@ class MapScene;
 
 /**
  * The FirItem class represents a single FIR on the map.
- *
- * In the case of FirItem, position() is a position of label. drawBackground()
- * and drawBorders() methods are used directly by MapRenderer and they use
- * VBOs and VAOs to draw a lot of triangles in the most efficient way.
  */
 class FirItem : public MapItem {
     Q_OBJECT
@@ -43,15 +39,31 @@ public:
      * to QObject's constructor.
      */
     explicit FirItem(const Fir* fir, QObject* parent = nullptr);
-    FirItem() = delete;
     
-    virtual ~FirItem();
-    
+    /**
+     * \copydoc MapItem::isVisible()
+     */
     bool isVisible() const override;
-    bool isLabelVisible() const override;
+    
+    /**
+     * \copydoc MapItem::position()
+     * Returns position of the label.
+     */
     LonLat position() const override;
+    
+    /**
+     * \copydoc MapItem::draw()
+     */
     void draw(QPainter* painter, const WorldTransform& transform) const override;
+    
+    /**
+     * \copydoc MapItem::tooltipText()
+     */
     QString tooltipText() const override;
+    
+    /**
+     * \copydoc MapItem::showDetails()
+     */
     void showDetails() const override;
     
     /**
@@ -62,6 +74,8 @@ public:
         return __fir;
     }
 
+    FirItem() = delete;
+    
 private:
     MapScene* __scene;
     const Fir* __fir;

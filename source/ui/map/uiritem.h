@@ -33,17 +33,36 @@ class UirItem : public MapItem {
 public:
     explicit UirItem(const Uir* uir, QObject* parent = nullptr);
     
+    /**
+     * \copydoc MapItem::isVisible()
+     */
     bool isVisible() const override;
-    bool isLabelVisible() const override;
+    
+    /**
+     * \copydoc MapItem::showDetails()
+     */
     void showDetails() const override;
+    
+    /**
+    /* \copydoc MapItem::tooltipText()
+     */
     QString tooltipText() const override;
+    
+    /**
+     * \copydoc MapItem::position()
+     */
     LonLat position() const override;
+    
+    /**
+     * \copydoc MapItem::draw()
+     */
     void draw(QPainter* painter, const WorldTransform& transform) const override;
     
     inline const Uir* data() const
     {
         return __uir;
     }
+    
     inline const QList<FirItem*>& firItems() const
     {
         return __firItems;

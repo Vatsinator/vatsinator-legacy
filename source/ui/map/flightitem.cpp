@@ -34,13 +34,8 @@
 
 FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     MapItem(parent),
-    __scene(qobject_cast<MapScene * >(parent)),
+    __scene(qobject_cast<MapScene*>(parent)),
     __pilot(pilot)
-{
-    
-}
-
-FlightItem::~FlightItem()
 {
     
 }
@@ -49,12 +44,6 @@ bool
 FlightItem::isVisible() const
 {
     return data()->phase() == Pilot::Airborne && !data()->isPrefiledOnly();
-}
-
-bool
-FlightItem::isLabelVisible() const
-{
-    return __scene->settings().view.pilot_labels.always;
 }
 
 LonLat

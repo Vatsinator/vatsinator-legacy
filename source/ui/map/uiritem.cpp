@@ -27,8 +27,8 @@ UirItem::UirItem(const Uir* uir, QObject* parent) :
     MapItem(parent),
     __uir(uir)
 {
-
     MapScene* scene = qobject_cast<MapScene*>(parent);
+    Q_ASSERT(scene);
     
     for (const Fir* f : data()->range()) {
         FirItem* fi = scene->findItemForFir(f);
@@ -42,12 +42,6 @@ bool
 UirItem::isVisible() const
 {
     return !data()->isEmpty();
-}
-
-bool
-UirItem::isLabelVisible() const
-{
-    return false;
 }
 
 void
@@ -65,8 +59,7 @@ UirItem::tooltipText() const
 LonLat
 UirItem::position() const
 {
-    static LonLat ll;
-    return ll;
+    return LonLat();
 }
 
 void

@@ -35,22 +35,34 @@ class FlightItem : public MapItem {
     
 public:
     /**
-     * The constructor takes _pilot_ as a data provider of what to show
+     * The constructor takes \c pilot as a data provider of what to show
      * on the map. Data is updated automatically.
-     *
-     * \param pilot The flight to show on the map.
-     * \param parent Passed to QObject's constructor.
      */
     explicit FlightItem(const Pilot* pilot, QObject* parent = nullptr);
-    FlightItem() = delete;
     
-    virtual ~FlightItem();
-    
+    /**
+     * \copydoc MapItem::isVisible()
+     */
     bool isVisible() const override;
-    bool isLabelVisible() const override;
+    
+    /**
+     * \copydoc MapItem::position()
+     */
     LonLat position() const override;
+    
+    /**
+     * \copydoc MapItem::draw()
+     */
     void draw(QPainter* painter, const WorldTransform& transform) const override;
+    
+    /**
+     * \copydoc MapItem::tooltipText()
+     */
     QString tooltipText() const override;
+    
+    /**
+     * \copydoc MapItem::showDetails()
+     */
     void showDetails() const override;
     
     /**
@@ -61,6 +73,8 @@ public:
     {
         return __pilot;
     }
+    
+    FlightItem() = delete;
     
 private:
     void __dropShadow(QPixmap* image) const;

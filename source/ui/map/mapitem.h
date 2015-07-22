@@ -42,13 +42,6 @@ public:
     virtual bool isVisible() const = 0;
     
     /**
-     * Indicates whether the item's label should be drawn on the map.
-     * Note that returning false in this function does not mean drawlabel() will
-     * not be called.
-     */
-    virtual bool isLabelVisible() const = 0;
-    
-    /**
      * Position of the item, global coordinates.
      */
     virtual LonLat position() const = 0;

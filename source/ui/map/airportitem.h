@@ -40,19 +40,34 @@ class AirportItem : public MapItem {
     
 public:
     /**
-     * Creates new AirportItem with the specified _airport_.
-     * _parent_ is passed to MapItem's constructor.
+     * Creates new AirportItem with the specified \c airport.
+     * \c parent is passed to MapItem's constructor.
      */
     explicit AirportItem(const Airport* airport, QObject* parent = nullptr);
-    AirportItem() = delete;
     
-    virtual ~AirportItem();
-    
+    /**
+     * \copydoc MapItem::isVisible()
+     */
     bool isVisible() const override;
-    bool isLabelVisible() const override;
+    
+    /**
+     * \copydoc MapItem::position()
+     */
     LonLat position() const override;
+    
+    /**
+     * \copydoc MapItem::draw()
+     */
     void draw(QPainter* painter, const WorldTransform& transform) const override;
+    
+    /**
+     * \copydoc MapItem::tooltipText()
+     */
     QString tooltipText() const override;
+    
+    /**
+     * \copydoc MapItem::showDetails()
+     */
     void showDetails() const override;
     
     /**
@@ -63,6 +78,8 @@ public:
     {
         return __airport;
     }
+    
+    AirportItem() = delete;
     
 private:
     void __loadIcon() const;

@@ -49,11 +49,6 @@ AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     connect(airport, &Airport::updated, this, &AirportItem::__invalidate);
 }
 
-AirportItem::~AirportItem()
-{
-    
-}
-
 bool
 AirportItem::isVisible() const
 {
@@ -61,12 +56,6 @@ AirportItem::isVisible() const
         return __scene->settings().view.empty_airports;
     else
         return __scene->settings().view.airports_layer;
-}
-
-bool
-AirportItem::isLabelVisible() const
-{
-    return __scene->settings().view.airport_labels;
 }
 
 LonLat

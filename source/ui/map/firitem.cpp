@@ -52,26 +52,12 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     __label.prepare(QTransform(), __font);
 }
 
-FirItem::~FirItem()
-{
-    
-}
-
 bool
 FirItem::isVisible() const
 {
     if (position().isNull())
         return false;
         
-    if (data()->isEmpty())
-        return __scene->settings().view.unstaffed_firs;
-    else
-        return __scene->settings().view.staffed_firs;
-}
-
-bool
-FirItem::isLabelVisible() const
-{
     if (data()->isEmpty())
         return __scene->settings().view.unstaffed_firs;
     else
