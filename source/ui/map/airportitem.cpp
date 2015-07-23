@@ -65,7 +65,7 @@ AirportItem::position() const
 }
 
 void
-AirportItem::draw(QPainter* painter, const WorldTransform& transform) const
+AirportItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const
 {
     if (__icon.isNull()) {
         __loadIcon();
@@ -80,6 +80,8 @@ AirportItem::draw(QPainter* painter, const WorldTransform& transform) const
 //     textRect.moveCenter(rect.center());
 //     textRect.moveTop(rect.bottom());
 //     painter->drawStaticText(textRect.topLeft(), __label);
+    
+    Q_UNUSED(flags);
 }
 
 QString

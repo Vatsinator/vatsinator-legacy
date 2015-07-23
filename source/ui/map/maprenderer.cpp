@@ -165,7 +165,7 @@ MapRenderer::setViewport(const QSize& size)
 }
 
 void
-MapRenderer::paint(QPainter* painter)
+MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
 {
     WorldTransform transform = this->transform();
     
@@ -173,9 +173,8 @@ MapRenderer::paint(QPainter* painter)
         __mapDrawer->draw(painter, transform);
     }
     
-    scene()->inRect(__screen, [painter, &transform](const MapItem* item) {
-        if (item->isVisible())
-            item->draw(painter, transform);
+    scene()->inRect(__screen, [painter, &transform, &selectedItems](const MapItem* item) {
+        item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));
     });
 }
 

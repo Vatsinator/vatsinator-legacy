@@ -24,6 +24,7 @@
 #include <QSize>
 #include <QColor>
 #include <QRectF>
+#include <QSet>
 
 #include "ui/map/worldtransform.h"
 #include "vatsimdata/lonlat.h"
@@ -155,7 +156,7 @@ public slots:
     /**
      * Paints the scene using the given painter.
      */
-    void paint(QPainter* painter);
+    void paint(QPainter* painter, const QSet<MapItem*>& selectedItems = QSet<MapItem*>());
     
 private:
     void __storeSettings();

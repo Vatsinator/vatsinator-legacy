@@ -54,7 +54,7 @@ public:
     /**
      * \copydoc MapItem::draw()
      */
-    void draw(QPainter* painter, const WorldTransform& transform) const override;
+    void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
     
     /**
      * \copydoc MapItem::tooltipText()
@@ -82,6 +82,7 @@ private:
     LonLat __position;
     mutable QStaticText __label;
     QFont __font;
+    QVector<LonLat> __boundaries;
     
 };
 

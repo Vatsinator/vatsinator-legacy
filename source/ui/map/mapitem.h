@@ -32,8 +32,22 @@
  */
 class MapItem : public QObject {
     Q_OBJECT
+    Q_ENUMS(DrawFlag)
     
 public:
+    /**
+     * Flags for drawing a single item on the map.
+     */
+    enum DrawFlag {
+        DrawSelected    = 0x1 /* Indicates that the item should be drawn as
+                                it was selected (i.e. by mouse) */,
+    };
+    Q_DECLARE_FLAGS(DrawFlags, DrawFlag)
+    
+    
+    /**
+     * The default constructor. Passes \c parent to the QObject.
+     */
     explicit MapItem(QObject* parent = nullptr);
     
     /**
@@ -49,7 +63,7 @@ public:
     /**
      * Draws the item on the painter.
      */
-    virtual void draw(QPainter* painter, const WorldTransform& transform) const = 0;
+    virtual void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const = 0;
     
     /**
      * Tooltip text, shown when the item is mouseover'ed.
@@ -62,5 +76,7 @@ public:
      */
     virtual void showDetails() const  = 0;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(MapItem::DrawFlags)
 
 #endif // MAPITEM_H

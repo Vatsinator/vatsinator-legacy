@@ -50,6 +50,12 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     __font.setBold(true);
     
     __label.prepare(QTransform(), __font);
+    
+    const QVector<Point>& borders = data()->data()->borders;
+    __boundaries.reserve(borders.size());
+    std::for_each(borders.begin(), borders.end(), [this](const Point& p) {
+        __boundaries << LonLat(p.x, p.y);
+    });
 }
 
 bool
@@ -71,7 +77,7 @@ FirItem::position() const
 }
 
 void
-FirItem::draw(QPainter* painter, const WorldTransform& transform) const
+FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const
 {
     QPen origPen = painter->pen();
     QFont origFont = painter->font();
@@ -87,6 +93,18 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform) const
     painter->drawStaticText(rect.topLeft(), __label);
     painter->setPen(origPen);
     painter->setFont(origFont);
+/*    
+    if (data()->isStaffed()) {
+        QVector<QPoint> points;
+        points.reserve(__boundaries.size());
+        std::for_each(__boundaries.constBegin(), __boundaries.constEnd(), [&points, &transform](const LonLat& l) {
+            points << l * transform;
+        });
+        
+        painter->setBrush(QBrush(Qt::red));
+        painter->drawPolygon(points.constData(), points.length());
+        painter->setBrush(QBrush());
+    }*/
 }
 
 QString

@@ -291,6 +291,8 @@ MapScene::__updateSettings()
     __settings.colors.unstaffed_fir_borders = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
     __settings.colors.approach_circle = SM::get("map.approach_circle_color").value<QColor>();
     __settings.colors.approach_circle.setAlpha(100);
+    __settings.colors.origin_to_pilot_line = SM::get("map.origin_to_pilot_line_color").value<QColor>();
+    __settings.colors.pilot_to_destination = SM::get("map.pilot_to_destination_line_color").value<QColor>();
     
     __settings.view.airports_layer = SM::get("view.airports_layer").toBool();
     __settings.view.airport_labels = SM::get("view.airport_labels").toBool();

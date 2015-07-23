@@ -124,9 +124,23 @@ MapWidget::pinchTriggered(QPinchGesture* gesture)
 void
 MapWidget::paintEvent(QPaintEvent* event)
 {
-    QPainter painter(this);
-    __renderer->paint(&painter);
+    QSet<MapItem*> selected;
     
+    if (cursor().shape() != Qt::SizeAllCursor) {
+        const MapItem* item = __underMouse();    
+        if (item) {
+            setCursor (QCursor (Qt::PointingHandCursor));       
+            selected.insert((MapItem*)item);
+        } else {
+            setCursor (QCursor (Qt::ArrowCursor));
+        }
+    }
+    
+    
+    QPainter painter(this);
+    __renderer->paint(&painter, selected);
+    
+#ifndef QT_NO_DEBUG
     QString mapInfo = QStringLiteral("Position: (%1, %2) zoom: %3, screen: (%4, %5), (%6, %7)").arg(
         QString::number(__renderer->center().x()),
         QString::number(__renderer->center().y()),
@@ -137,21 +151,10 @@ MapWidget::paintEvent(QPaintEvent* event)
         QString::number(__renderer->screen().bottomRight().y())
     );
     
-#ifndef QT_NO_DEBUG
     QPen pen(QColor(0, 0, 0));
     painter.setPen(pen);
     painter.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, mapInfo);
 #endif
-    
-    if (cursor().shape() != Qt::SizeAllCursor) {
-        const MapItem* item = __underMouse();    
-        if (item) {
-            setCursor (QCursor (Qt::PointingHandCursor));       
-//         __renderer->drawLines (item);
-        } else {
-            setCursor (QCursor (Qt::ArrowCursor));
-        }
-    }
     
     Q_UNUSED(event);
 }

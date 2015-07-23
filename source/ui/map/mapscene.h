@@ -71,6 +71,8 @@ public:
             QColor staffed_uir_background;
             QColor unstaffed_fir_borders;
             QColor approach_circle;
+            QColor origin_to_pilot_line;
+            QColor pilot_to_destination;
         } colors;
         
         struct {

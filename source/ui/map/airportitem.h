@@ -58,7 +58,7 @@ public:
     /**
      * \copydoc MapItem::draw()
      */
-    void draw(QPainter* painter, const WorldTransform& transform) const override;
+    void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
     
     /**
      * \copydoc MapItem::tooltipText()

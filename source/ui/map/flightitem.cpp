@@ -53,22 +53,48 @@ FlightItem::position() const
 }
 
 void
-FlightItem::draw(QPainter* painter, const WorldTransform& transform) const
+FlightItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const
 {
-    if (__model.isNull()) {
+    QPixmap& model = flags & DrawSelected ? __modelSelected : __model;
+    if (model.isNull()) {
         QTransform t;
         t.rotate(static_cast<float>(data()->heading()));
-        __model = __scene->modelPixmapProvider()->pixmapForModel(__pilot->aircraft()).
+        model = __scene->modelPixmapProvider()->pixmapForModel(__pilot->aircraft()).
             transformed(t, Qt::SmoothTransformation);
-        __dropShadow(&__model);
+        __dropShadow(&model);
     }
     
-    Q_ASSERT(!__model.isNull());
+    Q_ASSERT(!model.isNull());
     
-    QRect rect(QPoint(0, 0), __model.size());
-    rect.moveCenter(position() * transform);
+    QPoint pos = position() * transform;
     
-    painter->drawPixmap(rect, __model);
+    if (flags & DrawSelected) {
+        QPainter::RenderHints hints = painter->renderHints();
+        painter->setRenderHints(hints | QPainter::Antialiasing);
+        
+        QPen orig = painter->pen();
+        
+        if (data()->origin()) {
+            painter->setPen(QPen(__scene->settings().colors.origin_to_pilot_line));
+            QPoint p = data()->origin()->position() * transform;
+            painter->drawLine(p, pos);
+        }
+        
+        if (data()->destination()) {
+            QPen pen(__scene->settings().colors.pilot_to_destination);
+            pen.setStyle(Qt::DashLine);
+            painter->setPen(pen);
+            QPoint p = data()->destination()->position() * transform;
+            painter->drawLine(p, pos);
+        }
+        
+        painter->setRenderHints(hints);
+        painter->setPen(orig);
+    }
+    
+    QRect rect(QPoint(0, 0), model.size());
+    rect.moveCenter(pos);
+    painter->drawPixmap(rect, model);
 }
 
 QString

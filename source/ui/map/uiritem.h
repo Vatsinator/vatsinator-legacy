@@ -44,7 +44,7 @@ public:
     void showDetails() const override;
     
     /**
-    /* \copydoc MapItem::tooltipText()
+     * \copydoc MapItem::tooltipText()
      */
     QString tooltipText() const override;
     
@@ -56,7 +56,7 @@ public:
     /**
      * \copydoc MapItem::draw()
      */
-    void draw(QPainter* painter, const WorldTransform& transform) const override;
+    void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
     
     inline const Uir* data() const
     {

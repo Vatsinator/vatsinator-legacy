@@ -29,11 +29,8 @@ ModelPixmapProvider::ModelPixmapProvider(QObject* parent) : QObject (parent)
 }
 
 QPixmap
-ModelPixmapProvider::pixmapForModel(const QString& modelString)
+ModelPixmapProvider::pixmapForModel(const QString& modelString, bool selected)
 {
-    /* Model matching will be here */
-    Q_UNUSED(modelString);
-    
     QString model = __matchModel(modelString);
     QPixmap px;
     if (!QPixmapCache::find(model, &px)) {
