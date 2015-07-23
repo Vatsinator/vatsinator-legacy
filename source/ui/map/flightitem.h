@@ -77,8 +77,19 @@ public:
     FlightItem() = delete;
     
 private:
+    /**
+     * Creates a shadow for the aircraft icon.
+     */
     void __dropShadow(QPixmap* image) const;
     
+private slots:
+    /**
+     * Removes the aircraft icon to have it refreshed with the
+     * next repaint.
+     */
+    void __invalidate();
+    
+private:
     MapScene* __scene;
     const Pilot* __pilot;
     mutable QPixmap __model; /**< Normal aircraft model */

@@ -37,7 +37,7 @@ FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     __scene(qobject_cast<MapScene*>(parent)),
     __pilot(pilot)
 {
-    
+    connect(pilot, &Pilot::updated, this, &FlightItem::__invalidate);
 }
 
 bool
@@ -154,4 +154,11 @@ FlightItem::__dropShadow(QPixmap* image) const
     p.setPen(QPen());
     p.drawPixmap(image->rect(), orig, orig.rect());
     p.end();
+}
+
+void
+FlightItem::__invalidate()
+{
+    __model = QPixmap();
+    __modelSelected = QPixmap();
 }
