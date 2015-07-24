@@ -78,6 +78,17 @@ public:
     
 private:
     /**
+     * Retrieves a proper model from the pixmap cache and prepares
+     * it for rendering.
+     */
+    void __prepareModel() const;
+    
+    /**
+     * Draws lines for the flight.
+     */
+    void __drawLines(QPainter* painter, const WorldTransform& transform) const;
+    
+    /**
      * Creates a shadow for the aircraft icon.
      */
     void __dropShadow(QPixmap* image) const;
@@ -92,8 +103,8 @@ private slots:
 private:
     MapScene* __scene;
     const Pilot* __pilot;
-    mutable QPixmap __model; /**< Normal aircraft model */
-    mutable QPixmap __modelSelected; /**< Aircraft model when selected */
+    mutable QPixmap __model;
+    mutable QPixmap __label;
     
 };
 

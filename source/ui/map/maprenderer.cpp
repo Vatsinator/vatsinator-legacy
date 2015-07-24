@@ -55,6 +55,7 @@ MapRenderer::MapRenderer(QObject* parent) :
     __scene(new MapScene(this))
 {
     __restoreSettings();
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, this, &MapRenderer::updated);
 }
 
 MapRenderer::~MapRenderer()

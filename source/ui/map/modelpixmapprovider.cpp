@@ -29,9 +29,10 @@ ModelPixmapProvider::ModelPixmapProvider(QObject* parent) : QObject (parent)
 }
 
 QPixmap
-ModelPixmapProvider::pixmapForModel(const QString& modelString, bool selected)
+ModelPixmapProvider::pixmapForModel(const QString& modelString)
 {
     QString model = __matchModel(modelString);
+    
     QPixmap px;
     if (!QPixmapCache::find(model, &px)) {
         px = __prepareModelPixmap(model);
@@ -110,6 +111,7 @@ ModelPixmapProvider::__prepareModelPixmap(const QString& model)
     
     QImage colorized = __modelColorized(image, QColor(238, 220, 122));
     px.convertFromImage(colorized);
+    
     QPixmapCache::insert(model, px);
     return px;
 }

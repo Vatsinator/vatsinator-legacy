@@ -30,7 +30,7 @@ class ModelPixmapProvider : public QObject {
 public:
     explicit ModelPixmapProvider(QObject* parent = nullptr);
     
-    QPixmap pixmapForModel(const QString& modelString, bool selected = false);
+    QPixmap pixmapForModel(const QString& modelString);
     
 private:
     void __readMappings();

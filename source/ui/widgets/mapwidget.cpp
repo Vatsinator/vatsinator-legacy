@@ -156,6 +156,7 @@ MapWidget::paintEvent(QPaintEvent* event)
     painter.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, mapInfo);
 #endif
     
+    /* TODO Update event->rect() instead of the whole widget */
     Q_UNUSED(event);
 }
 
