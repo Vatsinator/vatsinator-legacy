@@ -408,7 +408,7 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="46"/>
         <source>Database info</source>
-        <translation type="unfinished"/>
+        <translation>Duomenų bazės informacija</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="56"/>
@@ -455,13 +455,13 @@
         <location filename="../ui/windows/databasewindow.cpp" line="82"/>
         <source>updating...</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>atnaujinama...</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="89"/>
         <source>cannot update</source>
         <comment>Database status indicator</comment>
-        <translation type="unfinished"/>
+        <translation>nepavyksta atnaujinti</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="90"/>
@@ -565,7 +565,7 @@
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="189"/>
         <source>%1 - flight details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - išsamesnė skrydžio informacija</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="440"/>
@@ -644,7 +644,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Aukštis</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="70"/>
@@ -880,7 +880,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="111"/>
         <source>Your system does not support required OpenGL extensions.                                       Please upgrade your graphic card driver.</source>
-        <translation type="unfinished"/>
+        <translation>Jūsų sistema nepalaiko reikalaujamų OpenGL plėtinių. Prašome naujovinti savo vaizdo plokštės tvarkykles.</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="293"/>
@@ -1064,7 +1064,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="30"/>
         <source>Weather forecasts</source>
-        <translation type="unfinished"/>
+        <translation>Orų prognozės</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="51"/>
@@ -1103,7 +1103,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="78"/>
         <source>New version available</source>
-        <translation type="unfinished"/>
+        <translation>Yra prieinama nauja versija</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="101"/>
@@ -1113,7 +1113,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="132"/>
         <source>Download now!</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųsti dabar!</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
@@ -1221,7 +1221,7 @@
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="498"/>
         <location filename="../vatsimdata/vatsimdatahandler.cpp" line="595"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko perskaityti failo %1. Prašome iš naujo įdiegti programą.</translation>
     </message>
 </context>
 <context>
@@ -1322,7 +1322,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="117"/>
         <source>Last update: never</source>
-        <translation type="unfinished"/>
+        <translation>Paskutinis atnaujinimas: niekada</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="119"/>
