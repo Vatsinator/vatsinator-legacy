@@ -22,9 +22,10 @@
 
 #include "plugins/mapdrawer.h"
 #include "storage/settingsmanager.h"
-#include "ui/map/airportitem.h"
-#include "ui/map/firitem.h"
-#include "ui/map/flightitem.h"
+// #include "ui/map/airportitem.h"
+// #include "ui/map/firitem.h"
+// #include "ui/map/flightitem.h"
+#include "ui/map/maparea.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapitem.h"
 #include "ui/map/mapscene.h"
@@ -173,6 +174,10 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
     if (__mapDrawer) {
         __mapDrawer->draw(painter, transform);
     }
+    
+    scene()->inRect(__screen, [painter, &transform](const MapArea* area) {
+        area->draw(painter, transform);
+    });
     
     scene()->inRect(__screen, [painter, &transform, &selectedItems](const MapItem* item) {
         item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));

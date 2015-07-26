@@ -28,7 +28,16 @@
 #include "vatsimdata/lonlat.h"
 
 /**
- * MapItem is a base class for any object that exists on the map.
+ * The MapItem is a base class for map objects that are points. Each item has
+ * its \c position that determines whether it needs to be drawn or not.
+ * The \c isVisible() method is an additional requirement that can eliminate
+ * items from being drawn. For example, all \c AirportItems that represent
+ * an empty airport will be hidden (with the default settings). The
+ * \c tooltipText() method returns a string for the tooltip that is visible
+ * whether user puts the mouse cursor over the item. The \c showDetails()
+ * method opens new view represeting the particular item's details.
+ * 
+ * To show areas on the map, look for \c MapArea class.
  */
 class MapItem : public QObject {
     Q_OBJECT

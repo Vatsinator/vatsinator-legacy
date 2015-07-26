@@ -1,6 +1,6 @@
 /*
- * mapitem.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * maparea.cpp
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
  *
  */
 
-#include "mapitem.h"
+#include "maparea.h"
 
-MapItem::MapItem(QObject* parent) : QObject(parent)
+MapArea::MapArea(QObject* parent) : QObject(parent)
 {
     
 }

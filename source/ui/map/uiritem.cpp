@@ -29,13 +29,13 @@ UirItem::UirItem(const Uir* uir, QObject* parent) :
 {
     MapScene* scene = qobject_cast<MapScene*>(parent);
     Q_ASSERT(scene);
-    
+    /*
     for (const Fir* f : data()->range()) {
         FirItem* fi = scene->findItemForFir(f);
         
         if (fi)
             __firItems << fi;
-    }
+    }*/
 }
 
 bool

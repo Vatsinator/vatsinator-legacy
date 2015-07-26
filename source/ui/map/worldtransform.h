@@ -22,6 +22,8 @@
 
 #include <QPoint>
 #include <QSize>
+#include <QRectF>
+#include <QVector>
 #include "vatsimdata/lonlat.h"
 
 /**
@@ -38,6 +40,18 @@ public:
      * Maps the given geo position to screen coordinates.
      */
     QPoint map(const LonLat& lonLat) const;
+    
+    /**
+     * Maps the given rectangle, treating its \c topLeft and
+     * \c bottomRight points as global coordinates.
+     */
+    QRect map(const QRectF& rect) const;
+    
+    /**
+     * Maps each point in the vector to the screen coordinates,
+     * creating new vector of points.
+     */
+    QVector<QPoint> map(const QVector<LonLat>& polygon) const;
     
     inline const QSize& viewport() const
     {
@@ -67,6 +81,22 @@ private:
 inline QPoint operator*(const LonLat& lonLat, const WorldTransform& transform)
 {
     return transform.map(lonLat);
+}
+
+/**
+ * Same as \ref WorldTransform::map().
+ */
+inline QRect operator*(const QRectF& rect, const WorldTransform& transform)
+{
+    return transform.map(rect);
+}
+
+/**
+ * Same as \ref WorldTransform::map().
+ */
+inline QVector<QPoint> operator*(const QVector<LonLat>& polygon, const WorldTransform& transform)
+{
+    return transform.map(polygon);
 }
 
 #endif // WORLDTRANSFORM_H

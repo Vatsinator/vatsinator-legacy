@@ -1,6 +1,6 @@
 /*
  * mapscene.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "db/firdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/airportitem.h"
+#include "ui/map/firarea.h"
 #include "ui/map/firitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/maprenderer.h"
@@ -52,14 +53,10 @@ MapScene::MapScene(QObject* parent) :
 {
     Q_ASSERT(__renderer);
     
-    connect(__flightsMapper,              SIGNAL(mapped(QObject*)),
-            this,                         SLOT(__removeFlightItem(QObject*)));
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
-            this,                         SLOT(__updateItems()));
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(initialized()),
-            this,                         SLOT(__setupItems()));
-    connect(vApp()->settingsManager(),    SIGNAL(settingsChanged()),
-            this,                         SLOT(__updateSettings()));
+    connect(__flightsMapper, static_cast<void (QSignalMapper::*)(QObject*)>(&QSignalMapper::mapped), this, &MapScene::__removeFlightItem);
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, this, &MapScene::__updateItems);
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::initialized, this, &MapScene::__setupItems);
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &MapScene::__updateSettings);
             
     connect(this, &MapScene::flightTracked, [this](const Pilot * p) {
         if (p)
@@ -76,24 +73,54 @@ MapScene::trackFlight(const Pilot* pilot)
     emit flightTracked(__trackedFlight);
 }
 
-FirItem*
-MapScene::findItemForFir(const Fir* fir)
-{
-    for (FirItem* f : firItems())
-        if (f->data() == fir)
-            return f;
-            
-    return nullptr;
-}
-
 void
 MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const
 {
-    for (auto it = spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight());
-            it != spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()); ++it) {
-        if (it->second->isVisible())
-            function(it->second);
-    }
+    std::for_each(spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight()),
+                  spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()),
+                  [&function](const std::pair<const LonLat&, const MapItem*>& it) {
+                        if (it.second->isVisible())
+                            function(it.second);
+                  });
+}
+
+void
+MapScene::inRect(const QRectF& rect, std::function<void(const MapArea*)> function) const
+{
+    auto pred = [&rect](spatial::dimension_type dim, spatial::dimension_type rank, const QRectF& area) -> spatial::relative_order {
+        /* Checks whether rect contains any point of area */
+        using namespace spatial;
+        switch (dim) {
+            case 0:
+            case 2:
+                if (area.right() < rect.left())
+                   return below;
+                else if (area.left() > rect.right())
+                    return above;
+                else
+                    return matching;
+                
+            case 1:
+            case 3:
+                if (area.bottom() > rect.top())
+                    return above;
+                else if (area.top() < rect.bottom())
+                    return below;
+                else
+                    return matching;
+                
+            default:
+                Q_UNREACHABLE();
+        }
+        
+        Q_UNUSED(rank);
+    };
+    
+    std::for_each(spatial::region_cbegin(__areas, pred), spatial::region_cend(__areas, pred),
+                  [&function](const std::pair<const QRectF, const MapArea*>& it) {
+        if (it.second->isVisible())
+            function(it.second);
+    });
 }
 
 const MapItem*
@@ -210,13 +237,14 @@ MapScene::__setupItems()
     for (const Fir* f : vApp()->vatsimDataHandler()->firs()) {
         if (f->data()->header.textPosition.x != 0.0 && f->data()->header.textPosition.y != 0.0) {
             FirItem* item = new FirItem(f, this);
-            __firItems << item;
             __items.insert(std::make_pair(item->position(), item));
+            FirArea* area = new FirArea(f, this);
+            __areas.insert(std::make_pair(area->boundingRect(), area));
         }
     }
     
-    for (const Uir* u : vApp()->vatsimDataHandler()->uirs())
-        __uirItems << new UirItem(u, this);
+//     for (const Uir* u : vApp()->vatsimDataHandler()->uirs())
+//         __uirItems << new UirItem(u, this);
         
     for (auto c : vApp()->vatsimDataHandler()->clients())
         if (Pilot* p = qobject_cast<Pilot*>(c)) {

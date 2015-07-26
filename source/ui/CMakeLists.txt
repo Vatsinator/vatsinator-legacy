@@ -23,8 +23,10 @@ set (ui_SRCS
     userinterface.cpp
     
     map/airportitem.cpp
+    map/firarea.cpp
     map/firitem.cpp
     map/flightitem.cpp
+    map/maparea.cpp
     map/mapconfig.cpp
     map/mapitem.cpp
     map/maprenderer.cpp
@@ -44,8 +46,10 @@ set (ui_HEADERS
     userinterface.h
     
     map/airportitem.h
+    map/firarea.h
     map/firitem.h
     map/flightitem.h
+    map/maparea.h
     map/mapconfig.h
     map/mapitem.h
     map/maprenderer.h

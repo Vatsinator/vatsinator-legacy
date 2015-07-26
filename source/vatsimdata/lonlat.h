@@ -22,6 +22,7 @@
 
 #include <QPointF>
 #include <QMetaType>
+#include "db/point.h"
 
 /**
  * The LonLat class is a wrapper around QPointF to provide convenience
@@ -47,6 +48,11 @@ public:
      * Creates new LonLat from the given point.
      */
     LonLat(const QPointF& point);
+    
+    /**
+     * Creates new LonLat from the given raw point.
+     */
+    LonLat(const Point& point);
     
     /**
      * Creates new LonLat from the given coordinates - _longitude_

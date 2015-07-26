@@ -18,6 +18,7 @@
  */
 
 #include <QtMath>
+#include <QtCore>
 
 #include "ui/map/mapconfig.h"
 
@@ -56,4 +57,22 @@ WorldTransform::map(const LonLat& lonLat) const
     int y = (-toMercator(lonLat.latitude()) + offset().latitude()) * m * scale() / 360.0 + viewport().height() / 2;
     
     return QPoint(x, y);
+}
+
+QRect
+WorldTransform::map(const QRectF& rect) const
+{
+    return QRect(map(rect.topLeft()), map(rect.bottomRight()));
+}
+
+QVector<QPoint>
+WorldTransform::map(const QVector<LonLat>& polygon) const
+{
+    QVector<QPoint> mapped;
+    mapped.reserve(polygon.length());
+    std::for_each(polygon.begin(), polygon.end(), [this, &mapped](const LonLat& l) {
+        mapped << map(l);
+    });
+    
+    return mapped;
 }
