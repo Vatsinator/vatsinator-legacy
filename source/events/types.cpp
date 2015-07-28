@@ -27,6 +27,7 @@ namespace Event {
 int MouseLonLat;
 int Notification;
 int Decision;
+int Vatsim;
 
 }
 
@@ -35,4 +36,5 @@ void init_event_types()
     Event::MouseLonLat = QEvent::registerEventType();
     Event::Notification = QEvent::registerEventType();
     Event::Decision = QEvent::registerEventType();
+    Event::Vatsim = QEvent::registerEventType();
 }

@@ -21,6 +21,7 @@
 #define USERINTERFACE_H
 
 #include <QObject>
+#include "events/vatsimevent.h"
 
 class Airport;
 class Client;
@@ -55,11 +56,6 @@ public:
     virtual void initialize() = 0;
     
     /**
-     * Custom events handling.
-     */
-    bool event(QEvent* event) override;
-    
-    /**
      * Creates new instance of either of the implementations.
      */
     static UserInterface* instantiate(QObject* parent);
@@ -83,35 +79,6 @@ public slots:
      * \param message Warning message.
      */
     virtual void warning(const QString& message) = 0;
-    
-    /**
-     * Show Vatsim status fetch error notification.
-     * Status.txt file is fetched on the startup of Vatsinator. If the download
-     * process fails, it means that either Vatsim servers are not available at
-     * all or user does not have connection to the internet.
-     * Call vApp()->vatsimData()->requestDataUpdate() to retry.
-     */
-    virtual void statusError() = 0;
-    
-    /**
-     * Show Vatsim data fetch error notification.
-     * When this function is called it means that Vatsinator tried a couple
-     * of times to refresh Vatsim status, but it was impossible or user choose
-     * manual data updates and the download process failed. Show the appropriate
-     * notification and let user decide whether he wants to retry the operation
-     * or keep the current data.
-     */
-    virtual void dataError() = 0;
-    
-    /**
-     * Implements the Vatsim msg0 directive.
-     * User will be notified about something by Vatsim servers. The dialog should
-     * contain "do not show this message again" checkbox, which initial state is
-     * unchecked.
-     *
-     * \param message Vatsim message that follows the msg0 directive.
-     */
-    virtual void showVatsimMessage(const QString& message) = 0;
     
     /**
      * Shows airport details.
@@ -156,7 +123,20 @@ public slots:
     virtual void ensureMainWindowIsActive() = 0;
     
 protected:
-    virtual bool notificationEvent(NotificationEvent* event);
+    /**
+     * Custom event handling.
+     */
+    void customEvent(QEvent* event) override;
+    
+    /**
+     * Handles Vatsim event.
+     */
+    virtual void vatsimEvent(VatsimEvent* event) = 0;
+    
+    /**
+     * Handles notification event.
+     */
+    virtual void notificationEvent(NotificationEvent* event);
     
 };
 

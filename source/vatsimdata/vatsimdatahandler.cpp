@@ -21,7 +21,7 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "events/decisionevent.h"
+#include "events/vatsimevent.h"
 #include "network/plaintextdownloader.h"
 #include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
@@ -101,20 +101,52 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __downloader(new PlainTextDownloader(this)),
     __scheduler(new UpdateScheduler(this))
 {
-    connect(vApp()->userInterface(),              SIGNAL(initialized()),
-            this,                                 SLOT(__slotUiCreated()));
-    connect(__downloader,                         SIGNAL(finished()),
-            this,                                 SLOT(__dataFetched()));
-    connect(__downloader,                         SIGNAL(error(QString)),
-            this,                                 SLOT(__handleFetchError(QString)));
-    connect(__scheduler,                          SIGNAL(timeToUpdate()),
-            this,                                 SLOT(requestDataUpdate()));
-    connect(this,                                 SIGNAL(vatsimStatusError()),
-            vApp()->userInterface(),              SLOT(statusError()));
-    connect(this,                                 SIGNAL(vatsimDataError()),
-            vApp()->userInterface(),              SLOT(dataError()));
+    connect(__downloader, &PlainTextDownloader::finished, this, &VatsimDataHandler::__dataFetched);
+    connect(__scheduler, &UpdateScheduler::timeToUpdate, this, &VatsimDataHandler::requestDataUpdate);
+    
+    connect(vApp()->userInterface(), &UserInterface::initialized, [this]() {
+        if (isInitialized())
+            __loadCachedData();
+        else
+            connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
             
-    connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
+        /* The first download */
+        __beginDownload();
+    });
+    
+    connect(__downloader, &PlainTextDownloader::error, [this](QString error) {
+        qWarning("Error downloading VATSIM data (%s)", qPrintable(error));
+        
+        /* Handle errors on download gracefully */
+        if (__statusFileFetched) {
+            emit vatsimDataError();
+        } else {
+            if (__status != NetConfig::Vatsim::backupStatusUrl()) {
+                /* Try the backup url */
+                __status = NetConfig::Vatsim::backupStatusUrl();
+                __beginDownload();
+            } else {
+                /* We already tried - there is something else causing the error */
+                emit vatsimStatusError();
+            }
+        }
+    });
+    
+    connect(this, &VatsimDataHandler::vatsimDataDownloading, [this]() {
+        __downloader->fetch(dataUrl());
+    });
+    
+    
+    /*  */
+    connect(this, &VatsimDataHandler::vatsimStatusError, [this]() {
+        VatsimEvent e(VatsimEvent::StatusError);
+        qApp->postEvent(vApp()->userInterface(), &e);
+    });
+    
+    connect(this, &VatsimDataHandler::vatsimDataError, [this]() {
+        VatsimEvent e(VatsimEvent::DataError);
+        qApp->postEvent(vApp()->userInterface(), &e);
+    });
 }
 
 VatsimDataHandler::~VatsimDataHandler()
@@ -153,7 +185,7 @@ const Pilot*
 VatsimDataHandler::findPilot(const QString& callsign) const
 {
     if (__clients.contains(callsign))
-        return qobject_cast<Pilot*>(__clients[callsign]);
+        return qobject_cast<const Pilot*>(__clients[callsign]);
     else
         return nullptr;
 }
@@ -162,7 +194,7 @@ const Controller*
 VatsimDataHandler::findAtc(const QString& callsign) const
 {
     if (__clients.contains(callsign))
-        return qobject_cast<Controller*>(__clients[callsign]);
+        return qobject_cast<const Controller*>(__clients[callsign]);
     else
         return nullptr;
 }
@@ -190,7 +222,7 @@ VatsimDataHandler::findAirport(const QString& icao)
 QList<Airport*>
 VatsimDataHandler::airports() const
 {
-    return qMove(__airports.values());
+    return __airports.values();
 }
 
 Fir*
@@ -315,16 +347,6 @@ VatsimDataHandler::bookingProvider()
     return provider;
 }
 
-bool
-VatsimDataHandler::event(QEvent* _event)
-{
-    if (_event->type() == Event::Decision) {
-        userDecisionEvent(static_cast<DecisionEvent*>(_event));
-        return true;
-    } else
-        return QObject::event(_event);
-}
-
 qreal
 VatsimDataHandler::fastDistance(
     const qreal& lat1, const qreal& lon1,
@@ -375,14 +397,6 @@ VatsimDataHandler::requestDataUpdate()
         __downloader->abort();
         
     emit vatsimDataDownloading();
-}
-
-void
-VatsimDataHandler::userDecisionEvent(DecisionEvent* event)
-{
-    if (event->context() == QStringLiteral("data_fetch_error") &&
-            event->decision() == DecisionEvent::TryAgain)
-        requestDataUpdate();
 }
 
 void
@@ -727,18 +741,6 @@ VatsimDataHandler::__loadCachedData()
 }
 
 void
-VatsimDataHandler::__slotUiCreated()
-{
-    if (isInitialized())
-        __loadCachedData();
-    else
-        connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
-        
-    /* The first download */
-    __beginDownload();
-}
-
-void
 VatsimDataHandler::__beginDownload()
 {
     qDebug("VatsimDataHandler: starting download");
@@ -769,33 +771,16 @@ VatsimDataHandler::__dataFetched()
             __metar = status.metar();
             __dataServers = status.dataFileUrls();
             
-            if (!status.message().isEmpty())
-                vApp()->userInterface()->showVatsimMessage(status.message());
+            if (!status.message().isEmpty()) {
+                VatsimEvent e(VatsimEvent::Message, status.message());
+                qApp->postEvent(vApp()->userInterface(), &e);
+            }
                 
             __statusFileFetched = true;
             emit vatsimStatusUpdated();
             
             /* Start downloading data when status document is read */
             emit vatsimDataDownloading();
-        }
-    }
-}
-
-void
-VatsimDataHandler::__handleFetchError(QString error)
-{
-    qWarning("Error downloading VATSIM data (%s)", qPrintable(error));
-    
-    if (__statusFileFetched)
-        emit vatsimDataError();
-    else {
-        if (__status != NetConfig::Vatsim::backupStatusUrl()) {
-            /* Try the backup url */
-            __status = NetConfig::Vatsim::backupStatusUrl();
-            __beginDownload();
-        } else {
-            /* We already tried - there is something else causing the error */
-            emit vatsimStatusError();
         }
     }
 }

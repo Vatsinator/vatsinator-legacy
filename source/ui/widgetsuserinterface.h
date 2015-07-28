@@ -90,17 +90,51 @@ public slots:
      */
     void showAppRestartDialog();
     
+    /**
+     * \copydoc UserInterface::fatal()
+     */
     void fatal(const QString& message) override;
+    
+    /**
+     * \copydoc UserInterface::warning()
+     */
     void warning(const QString& message) override;
-    void statusError() override;
-    void dataError() override;
-    void showVatsimMessage(const QString& message) override;
+    
+    /**
+     * \copydoc UserInterface::showDetails()
+     */
     void showDetails(const Airport* airport) override;
+    
+    /**
+     * \copydoc UserInterface::showDetails()
+     */
     void showDetails(const Client* client) override;
+    
+    /**
+     * \copydoc UserInterface::showDetails()
+     */
     void showDetails(const Fir* fir) override;
+    
+    /**
+     * \copydoc UserInterface::showMetar()
+     */
     void showMetar(const QString& metar) override;
+    
+    /**
+     * \copydoc UserInterface::showStatsDialog()
+     */
     void showStatsDialog() override;
+    
+    /**
+     * \copydoc UserInterface::ensureMainWindowIsActive()
+     */
     void ensureMainWindowIsActive() override;
+    
+protected:
+    /**
+     * \copydoc UserInterface::vatsimEvent()
+     */
+    void vatsimEvent(VatsimEvent *event) override;
     
 private slots:
     /**

@@ -1,6 +1,6 @@
 /*
- * types.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * vasimevent.h
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,18 +17,9 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#include "vatsimevent.h"
 
-#include <QEvent>
-
-namespace Event {
-
-extern int MouseLonLat;       /**< Type for MouseLonLatEvent */
-extern int Notification;      /**< Type for NotificationEvent */
-extern int Decision;          /**< Type for DecisionEvent */
-extern int Vatsim;            /**< Type for VatsimEvent */
-
-}
-
-#endif // TYPES_H
+VatsimEvent::VatsimEvent(VatsimEvent::Type type, const QString& message) : 
+    QEvent(static_cast<QEvent::Type>(Event::Vatsim)),
+    __type(type),
+    __message(message) {}

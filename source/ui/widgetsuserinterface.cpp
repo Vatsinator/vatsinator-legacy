@@ -158,48 +158,6 @@ WidgetsUserInterface::warning(const QString& message)
 }
 
 void
-WidgetsUserInterface::statusError()
-{
-    StatusFetchErrorDialog dialog;
-    dialog.exec();
-}
-
-void
-WidgetsUserInterface::dataError()
-{
-    DataFetchErrorDialog dialog;
-    dialog.exec();
-    
-    DecisionEvent* e;
-    
-    if (dialog.clickedButton() == dialog.again())
-        e = new DecisionEvent("data_fetch_error", DecisionEvent::TryAgain);
-    else
-        e = new DecisionEvent("data_fetch_error", DecisionEvent::Declined);
-        
-    QCoreApplication::postEvent(vApp()->vatsimDataHandler(), e);
-}
-
-void
-WidgetsUserInterface::showVatsimMessage(const QString& message)
-{
-    QString hash = QString::number(qHash(message));
-    QSettings s;
-    
-    if (s.value("VatsimMessages/" % hash, false).toBool())
-        return;
-        
-    VatsimMessageDialog* dialog = new VatsimMessageDialog(message);
-    
-    connect(dialog,       SIGNAL(finished(int)),
-            dialog,       SLOT(deleteLater()));
-            
-    dialog->show();
-    dialog->raise();
-    dialog->activateWindow();
-}
-
-void
 WidgetsUserInterface::showDetails(const Airport* airport)
 {
     AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
@@ -261,6 +219,43 @@ WidgetsUserInterface::ensureMainWindowIsActive()
 {
     mainWindow()->show();
     mainWindow()->activateWindow();
+}
+
+void
+WidgetsUserInterface::vatsimEvent(VatsimEvent* event)
+{
+    switch (event->type()) {
+        case VatsimEvent::Message: {
+            QString hash = QString::number(qHash(event->message()));
+            QSettings s;
+            
+            if (s.value("VatsimMessages/" % hash, false).toBool())
+                return;
+            
+            VatsimMessageDialog* dialog = new VatsimMessageDialog(event->message());
+            dialog->setAttribute(Qt::WA_DeleteOnClose);
+            dialog->show();
+            dialog->raise();
+            dialog->activateWindow();
+            break;
+        }
+        
+        case VatsimEvent::StatusError: {
+            StatusFetchErrorDialog dialog;
+            dialog.exec();
+            break;
+        }
+        
+        case VatsimEvent::DataError: {
+            DataFetchErrorDialog dialog;
+            dialog.exec();
+            
+            if (dialog.clickedButton() == dialog.again())
+                vApp()->vatsimDataHandler()->requestDataUpdate();
+            
+            break;
+        }
+    }
 }
 
 void

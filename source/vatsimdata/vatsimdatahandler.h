@@ -237,11 +237,6 @@ public:
     BookingProvider* bookingProvider();
     
     /**
-     * Custom event handler.
-     */
-    bool event(QEvent*) override;
-    
-    /**
      * Map (Callsign <-> instance pairs) of connected clients.
      */
     inline const QMap<QString, Client*>& clients()
@@ -409,9 +404,6 @@ public slots:
      */
     void requestDataUpdate();
     
-protected:
-    virtual void userDecisionEvent(DecisionEvent* event);
-    
 private:
     /**
      * The following functions read data files.
@@ -446,14 +438,6 @@ private slots:
     void __loadCachedData();
     
     /**
-     * Just after the UI is created, there are some things we should
-     * do right away. The data should be restored from cache, but
-     * only if databases are already initialized and the first download
-     * can be also started here.
-     */
-    void __slotUiCreated();
-    
-    /**
      * Starts the real data download process.
      */
     void __beginDownload();
@@ -462,11 +446,6 @@ private slots:
      * The data file has been fetched.
      */
     void __dataFetched();
-    
-    /**
-     * If any file can't be fetched.
-     */
-    void __handleFetchError(QString error);
     
 private:
 

@@ -31,14 +31,6 @@
 UserInterface::UserInterface(QObject* parent) :
     QObject(parent) {}
 
-bool UserInterface::event(QEvent* event)
-{
-    if (event->type() == Event::Notification)
-        return notificationEvent(static_cast<NotificationEvent*>(event));
-    else
-        return QObject::event(event);
-}
-
 UserInterface*
 UserInterface::instantiate(QObject* parent)
 {
@@ -49,7 +41,16 @@ UserInterface::instantiate(QObject* parent)
 #endif
 }
 
-bool
+void
+UserInterface::customEvent(QEvent* event)
+{
+    if (event->type() == Event::Notification)
+        notificationEvent(static_cast<NotificationEvent*>(event));
+    else if (event->type() == Event::Vatsim)
+        vatsimEvent(static_cast<VatsimEvent*>(event));
+}
+
+void
 UserInterface::notificationEvent(NotificationEvent* event)
 {
     switch (event->gravity()) {
@@ -66,6 +67,4 @@ UserInterface::notificationEvent(NotificationEvent* event)
             /* TODO */
             break;
     }
-    
-    return true;
 }
