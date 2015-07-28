@@ -46,7 +46,7 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     
     __label.setText(labelText);
     
-    __font.setPointSize(__font.pointSize() + 2);
+    __font.setPointSize(__font.pointSize() + 1);
     __font.setBold(true);
     
     __label.prepare(QTransform(), __font);
@@ -82,7 +82,7 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     QPen origPen = painter->pen();
     QFont origFont = painter->font();
     
-    QPen pen(QColor(121, 121, 121));
+    QPen pen(data()->isStaffed() ? QColor(157, 86, 86) : QColor(155, 155, 155));
     pen.setWidth(3);
     painter->setPen(pen);
     painter->setFont(__font);

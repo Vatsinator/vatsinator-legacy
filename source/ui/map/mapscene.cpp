@@ -57,7 +57,7 @@ MapScene::MapScene(QObject* parent) :
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, this, &MapScene::__updateItems);
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::initialized, this, &MapScene::__setupItems);
     connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &MapScene::__updateSettings);
-            
+    
     connect(this, &MapScene::flightTracked, [this](const Pilot * p) {
         if (p)
             moveTo(p->position());
