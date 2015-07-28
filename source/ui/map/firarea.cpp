@@ -20,12 +20,14 @@
 #include <QtGui>
 
 #include "db/firdatabase.h"
+#include "ui/map/mapscene.h"
 #include "vatsimdata/fir.h"
 
 #include "firarea.h"
 
 FirArea::FirArea(const Fir* fir, QObject* parent) :
     MapArea (parent),
+    __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
     __rect(QPointF(fir->data()->header.externities[0].x, fir->data()->header.externities[1].y),
            QPointF(fir->data()->header.externities[1].x, fir->data()->header.externities[0].y))
@@ -52,10 +54,11 @@ FirArea::isVisible() const
 void
 FirArea::draw(QPainter* painter, const WorldTransform& transform) const
 {
-    QColor firColor = QColor(255, 191, 191);
+    QColor firColor = __scene->settings().colors.staffed_fir_borders;
+    firColor.setAlpha(__scene->settings().colors.staffed_fir_background.alpha());
     
     QBrush brush = painter->brush();
-    painter->setBrush(QBrush(firColor, Qt::BDiagPattern));
+    painter->setBrush(QBrush(firColor));
     
     QPen pen = painter->pen();
     painter->setPen(firColor);

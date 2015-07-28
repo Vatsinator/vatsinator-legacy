@@ -34,7 +34,7 @@
 
 FirItem::FirItem(const Fir* fir, QObject* parent) :
     MapItem(parent),
-    __scene(qobject_cast<MapScene * >(parent)),
+    __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
     __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y),
     __font(QGuiApplication::font())
@@ -93,18 +93,6 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     painter->drawStaticText(rect.topLeft(), __label);
     painter->setPen(origPen);
     painter->setFont(origFont);
-/*    
-    if (data()->isStaffed()) {
-        QVector<QPoint> points;
-        points.reserve(__boundaries.size());
-        std::for_each(__boundaries.constBegin(), __boundaries.constEnd(), [&points, &transform](const LonLat& l) {
-            points << l * transform;
-        });
-        
-        painter->setBrush(QBrush(Qt::red));
-        painter->drawPolygon(points.constData(), points.length());
-        painter->setBrush(QBrush());
-    }*/
 }
 
 QString

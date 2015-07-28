@@ -23,6 +23,7 @@
 #include "ui/map/maparea.h"
 
 class Fir;
+class MapScene;
 
 class FirArea : public MapArea {
     Q_OBJECT
@@ -45,6 +46,7 @@ public:
     }
     
 private:
+    MapScene* __scene;
     const Fir* __fir;
     const QRectF __rect;
     QVector<LonLat> __boundaries;
