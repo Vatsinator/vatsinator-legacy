@@ -1,6 +1,6 @@
 /*
     filedownloader.cpp
-    Copyright (C) 2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,8 +24,38 @@
 
 #include "filedownloader.h"
 
-FileDownloader::FileDownloader(QObject* _parent) :
-    QObject(_parent),
+namespace {
+    /**
+     * Generates the temporary file name (with the absolute path)
+     * from the given url.
+     */
+    QString fileNameForUrl(const QUrl& url)
+    {
+        QString baseName = QFileInfo(url.path()).fileName();
+    
+        Q_ASSERT(!baseName.isEmpty());
+        
+        if (!QDir(QDir::tempPath()).isReadable()) {
+            qWarning("Temporary directory %s is not accessible!",
+                    qPrintable(QDir::tempPath()));
+            return QString();
+        }
+        
+        QString absPath = QDir::tempPath() % "/" % baseName;
+        while (QFile::exists(absPath)) {
+            
+            
+            QFile(absPath).remove();
+        }
+        
+        qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
+            
+        return absPath;
+    }
+}
+
+FileDownloader::FileDownloader(QObject* parent) :
+    QObject(parent),
     __reply(nullptr) {}
 
 void
@@ -37,36 +67,12 @@ FileDownloader::fetch(const QUrl& url)
         __startRequest();
 }
 
-QString
-FileDownloader::fileNameForUrl(const QUrl& url)
-{
-    QString baseName = QFileInfo(url.path()).fileName();
-    
-    Q_ASSERT(!baseName.isEmpty());
-    
-    if (!QDir(QDir::tempPath()).isReadable()) {
-        emit error(tr("Temporary directory (%1) is not readable!").arg(QDir::tempPath()), url);
-        qWarning("Temporary directory %s is not accessible!",
-                 qPrintable(QDir::tempPath()));
-        return QString();
-    }
-    
-    QString absPath = QDir::tempPath() % "/" % baseName;
-    
-    qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
-    
-    if (QFile::exists(absPath))
-        QFile(absPath).remove();
-        
-    return absPath;
-}
-
 void
 FileDownloader::__startRequest()
 {
-    if (__reply || !anyTasksLeft())
-        return;
-        
+    Q_ASSERT(!__reply);
+    Q_ASSERT(anyTasksLeft());
+    
     QUrl url = __urls.dequeue();
     QString fileName = fileNameForUrl(url);
     
@@ -89,10 +95,8 @@ FileDownloader::__startRequest()
     request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
     __reply = __nam.get(request);
     
-    connect(__reply,      SIGNAL(finished()),
-            this,         SLOT(__finished()));
-    connect(__reply,      SIGNAL(readyRead()),
-            this,         SLOT(__readyRead()));
+    connect(__reply, &QNetworkReply::finished, this, &FileDownloader::__finished);
+    connect(__reply, &QNetworkReply::readyRead, this, &FileDownloader::__readyRead);
 }
 
 void
@@ -121,5 +125,6 @@ FileDownloader::__finished()
     __reply->deleteLater();
     __reply = nullptr;
     
-    __startRequest();
+    if (anyTasksLeft())
+        __startRequest();
 }

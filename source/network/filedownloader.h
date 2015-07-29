@@ -1,6 +1,6 @@
 /*
     filedownloader.h
-    Copyright (C) 2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -57,22 +57,29 @@ public:
     /**
      * Creates new FileDownloader instance.
      */
-    FileDownloader(QObject* = 0);
+    FileDownloader(QObject* parent = nullptr);
     
     /**
      * If the requests queue is empty, downloads the given file
      * immediately. Otherwise, enqueues the url.
      */
-    void fetch(const QUrl&);
+    void fetch(const QUrl& url);
     
     /**
-     * Generates the temporary file name (with the absolute path)
-     * from the given url.
+     * Gets number of tasks in the queue.
      */
-    QString fileNameForUrl(const QUrl&);
+    inline int tasks() const
+    {
+        return __urls.size();
+    }
     
     /**
      * Returns true if there are any queries scheduled.
+     * This function is the same as calling
+     * 
+     * \code{.cpp}
+     * tasks() > 0
+     * \endcode
      */
     inline bool anyTasksLeft() const
     {
@@ -86,8 +93,8 @@ private slots:
 private:
     void __startRequest();
     
-    QQueue<QUrl>   __urls;
-    QFile          __output;
+    QQueue<QUrl> __urls;
+    QFile __output;
     
     QNetworkAccessManager __nam;
     QNetworkReply*        __reply;
