@@ -37,10 +37,23 @@ TiledMapDrawer::TiledMapDrawer(QObject* parent) :
         TileReady = QEvent::registerEventType();
 }
 
+TiledMapDrawer::~TiledMapDrawer()
+{
+    QThread* thread = __tiles->thread();
+    __tiles->deleteLater();
+    thread->quit();
+    thread->wait();
+}
+
 void
 TiledMapDrawer::initialize(MapRenderer* renderer)
 {
-    __tiles = new TileManager(renderer, this);
+    __tiles = new TileManager(renderer);
+    QThread* thread = new QThread(this);
+    __tiles->moveToThread(thread);
+    connect(thread, &QThread::started, __tiles, &TileManager::initialize);
+    thread->start();
+    
     __renderer = renderer;
 }
 
@@ -52,7 +65,7 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
     auto hints = painter->renderHints();
     painter->setRenderHints(hints | QPainter::SmoothPixmapTransform);
     
-    auto& tiles = __tiles->tilesForCurrentZoom();
+    auto tiles = __tiles->tilesForCurrentZoom();
     for (Tile* t: tiles) {
         QRect rect(t->coords().topLeft() * transform, t->coords().bottomRight() * transform);
         

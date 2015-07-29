@@ -21,6 +21,13 @@
 
 #include "tileurl.h"
 
+namespace {
+    QString randomizePrefix() {
+        static QVector<QString> prefixes = { "a", "b", "c" };
+        return prefixes[qrand() % 3];
+    }
+}
+
 TileUrl::TileUrl() :
     __zoom(0)
 {
@@ -43,7 +50,7 @@ TileUrl::toUrl() const
     
 //     return QUrl(QStringLiteral("http://c.tile.openstreetmap.org/") % path());
 //     return QUrl(QStringLiteral("http://otile1.mqcdn.com/tiles/1.0.0/sat/") % path());
-    return QUrl(QStringLiteral("http://a.basemaps.cartocdn.com/light_all/") % path());
+    return QUrl(QStringLiteral("http://%1.basemaps.cartocdn.com/light_all/%2").arg(randomizePrefix(), path()));
 }
 
 QString

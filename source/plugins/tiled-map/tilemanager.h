@@ -21,15 +21,19 @@
 #define TILEMANAGER_H
 
 #include <QObject>
+#include <QMutex>
 #include <QPair>
 #include <QList>
 #include <QMap>
+#include <QQueue>
+#include <spatial/bits/spatial_check_concept.hpp>
+#include <spatial/box_multimap.hpp>
 #include "vatsimdata/lonlat.h"
+#include "tileurl.h"
 
 class FileDownloader;
 class MapRenderer;
 class Tile;
-class TileUrl;
 class QUrl;
 
 /**
@@ -46,7 +50,7 @@ public:
      */
     void fetchTile(const TileUrl& url);
     
-    QList<Tile*>& tilesForCurrentZoom();
+    QList<Tile*> tilesForCurrentZoom();
     
     QPair<quint64, quint64> tileForLonLat(const LonLat& lonLat);
     
@@ -54,6 +58,12 @@ public:
      * x and y coordinates of tile at the given coordinate, at the given zoom.
      */
     static QPair<quint64, quint64> tileForLonLat(const LonLat& lonLat, unsigned zoom);
+    
+public slots:
+    /**
+     * Must be called on its own thread.
+     */
+    void initialize();
     
 private slots:
     void __calculateTileZoom();
@@ -63,10 +73,26 @@ private slots:
 private:
     MapRenderer* __renderer;
     quint32 __tileZoom;
-    FileDownloader* __downloader;
+    QList<FileDownloader*> __downloaders;
+    QQueue<TileUrl> __tileQueue;
+    QMutex __mutex;
     
-    typedef QList<Tile*> TileList;
-    QMap<quint64, TileList> __tiles; /**< zoom <-> tile list pairs */
+    typedef QPair<quint64, quint64> TileCoord;
+    
+    struct TileCoordAccessor
+    {
+        quint64 operator() (spatial::dimension_type dim, const TileCoord& coord) const
+        {
+            switch (dim) {
+                case 0: return coord.first;
+                case 1: return coord.second;
+                default: Q_UNREACHABLE();
+            }
+        }
+    };
+    
+    typedef spatial::box_multimap<2, TileCoord, Tile*, spatial::accessor_less<TileCoordAccessor, TileCoord>> TileMap;
+    QMap<quint64, TileMap> __tiles; /**< zoom <-> tile map pairs */
     
 };
 

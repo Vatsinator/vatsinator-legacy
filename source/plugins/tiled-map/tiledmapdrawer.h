@@ -34,7 +34,7 @@ class TiledMapDrawer : public QObject, public MapDrawer {
 public:
     TiledMapDrawer(QObject *parent = nullptr);
     
-    virtual ~TiledMapDrawer() = default;
+    virtual ~TiledMapDrawer();
     
     /**
      * \copydoc MapDrawer::initialize()

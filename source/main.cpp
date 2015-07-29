@@ -66,5 +66,7 @@ int main(int argc, char** argv)
     extern void init_event_types();
     init_event_types();
     
+    qsrand(QTime::currentTime().msec());
+    
     return VatsinatorApplication(argc, argv).exec();
 }

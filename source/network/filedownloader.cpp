@@ -41,15 +41,22 @@ namespace {
             return QString();
         }
         
+        auto suffix = [](QString fileName, int n) -> QString {
+            if (n <= 1)
+                return fileName;
+            
+            QFileInfo fi(fileName);
+            return fi.path() % QDir::separator() % fi.baseName() % "_" % QString::number(n) % "." % fi.completeSuffix();
+        };
+        
         QString absPath = QDir::tempPath() % "/" % baseName;
-        while (QFile::exists(absPath)) {
-            
-            
-            QFile(absPath).remove();
+        int n = 1;
+        while (QFile::exists(suffix(absPath, n))) {
+            n += 1;
         }
         
+        absPath = suffix(absPath, n);
         qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
-            
         return absPath;
     }
 }
