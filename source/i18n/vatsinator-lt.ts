@@ -4,12 +4,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="17"/>
         <source>ATC details</source>
-        <translation type="unfinished"/>
+        <translation>Išsamesnė skrydžių valdymo informacija</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="74"/>
         <source>Atis message</source>
-        <translation type="unfinished"/>
+        <translation>Aerodromo rajono informacijos automatinio perdavimo tarnybos pranešimas</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="128"/>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../ui/windows/atclistwindow.ui" line="14"/>
         <source>ATC list</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžių valdymų sąrašas</translation>
     </message>
 </context>
 <context>
@@ -151,7 +151,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="223"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžių valdymas</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="294"/>
@@ -219,12 +219,12 @@
     <message>
         <location filename="../ui/map/airportitem.cpp" line="206"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Išskridimai: %1</translation>
     </message>
     <message>
         <location filename="../ui/map/airportitem.cpp" line="213"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Atskridimai: %1</translation>
     </message>
 </context>
 <context>
@@ -237,7 +237,7 @@
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="125"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžių valdymas</translation>
     </message>
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="128"/>
@@ -252,12 +252,12 @@
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="142"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Atskridimai: %1</translation>
     </message>
     <message>
         <location filename="../ui/models/airporttablemodel.cpp" line="144"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Išskridimai: %1</translation>
     </message>
 </context>
 <context>
@@ -311,12 +311,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>Dažnis</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Kvalifikacija</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
@@ -331,12 +331,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="52"/>
         <source>Online from</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungęs nuo</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="86"/>
         <source>%1 - ATC details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Išsamesnė skrydžių valdymo informacija</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="101"/>
@@ -359,7 +359,7 @@
     <message>
         <location filename="../ui/models/atctablemodel.cpp" line="154"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>Dažnis</translation>
     </message>
 </context>
 <context>
@@ -413,13 +413,13 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="56"/>
         <source>Sync database now...</source>
-        <translation type="unfinished"/>
+        <translation>Dabar sinchoronizuoti duomenų bazę...</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="79"/>
         <source>Last update time:</source>
         <extracomment>Database last update time</extracomment>
-        <translation type="unfinished"/>
+        <translation>Paskutinio atnaujinimo laikas:</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
@@ -495,7 +495,7 @@
     <message>
         <location filename="../network/filedownloader.cpp" line="48"/>
         <source>Temporary directory (%1) is not readable!</source>
-        <translation type="unfinished"/>
+        <translation>Laikinasis katalogas (%1) nėra skaitomas!</translation>
     </message>
     <message>
         <location filename="../network/filedownloader.cpp" line="79"/>
@@ -526,7 +526,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="155"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžių valdymas</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="226"/>
@@ -582,7 +582,7 @@
         <location filename="../ui/windows/flightdetailswindow.ui" line="376"/>
         <source>Estimated Time of Arrival</source>
         <extracomment>Shortcut expansion for &quot;ETA&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Apskaičiuotasis Atskridimo Laikas</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="543"/>
@@ -602,12 +602,12 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="726"/>
         <source>Remarks</source>
-        <translation type="unfinished"/>
+        <translation>Pastabos</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="486"/>
         <source>Flight plan</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžio planas</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="207"/>
@@ -649,12 +649,12 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="70"/>
         <source>Ground speed</source>
-        <translation type="unfinished"/>
+        <translation>Kelio greitis</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="71"/>
         <source>Heading</source>
-        <translation type="unfinished"/>
+        <translation>Kursas</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="72"/>
@@ -669,7 +669,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
         <source>Online from</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungęs nuo</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="75"/>
@@ -694,12 +694,12 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="79"/>
         <source>TAS</source>
-        <translation type="unfinished"/>
+        <translation>Tikrasis Oro Greitis</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="80"/>
         <source>Cruise altitude</source>
-        <translation type="unfinished"/>
+        <translation>Kreiserinis aukštis</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="221"/>
@@ -752,7 +752,7 @@
     <message>
         <location filename="../ui/windows/flightlistwindow.ui" line="14"/>
         <source>Flight list</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžių sąrašas</translation>
     </message>
 </context>
 <context>
@@ -811,7 +811,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="14"/>
         <source>Zooming intensity:</source>
-        <translation type="unfinished"/>
+        <translation>Didinimo intensyvumas:</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="44"/>
@@ -842,7 +842,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="250"/>
         <source>Airport font:</source>
-        <translation type="unfinished"/>
+        <translation>Oro uosto šriftas:</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="268"/>
@@ -885,7 +885,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="293"/>
         <source>Airport details</source>
-        <translation type="unfinished"/>
+        <translation>Išsamesnė oro uosto informacija</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="306"/>
@@ -895,12 +895,12 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="318"/>
         <source>Arrivals</source>
-        <translation type="unfinished"/>
+        <translation>Atskridimai</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="332"/>
         <source>Departures</source>
-        <translation type="unfinished"/>
+        <translation>Išskridimai</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="355"/>
@@ -966,7 +966,7 @@
     <message>
         <location filename="../ui/actions/metaraction.cpp" line="22"/>
         <source>%1 metar</source>
-        <translation type="unfinished"/>
+        <translation>%1 reguliarusis aviacinis orų pranešimas</translation>
     </message>
 </context>
 <context>
@@ -979,17 +979,17 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="32"/>
         <source>Type airport ICAO code here to fetch METAR</source>
-        <translation type="unfinished"/>
+        <translation>Čia įveskite pasaulio oro navigacijos žemėlapio kodą, kad gautumėte reguliarųjį aviacinį orų pranešimą</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="38"/>
         <source>Enter an ICAO code here</source>
-        <translation type="unfinished"/>
+        <translation>Čia įveskite pasaulio oro navigacijos žemėlapio kodą</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="51"/>
         <source>Download METAR</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųsti reguliarųjį aviacinį orų pranešimą</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="91"/>
@@ -999,7 +999,7 @@
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="80"/>
         <source>Refresh all</source>
-        <translation type="unfinished"/>
+        <translation>Įkelti viską iš naujo</translation>
     </message>
     <message>
         <location filename="../ui/windows/metarswindow.ui" line="64"/>
@@ -1022,12 +1022,12 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator needs to be restarted before changes&lt;br/&gt;to the language settings will take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prieš įsigaliojant kalbos nustatymams,&lt;br/&gt;Vatsinator turi būti paleista iš naujo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="63"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
-        <translation type="unfinished"/>
+        <translation>Jei įjungta, kai kurie duomenys (tokie kaip operacinė sistema, programos naudojimo laikas, įspėjimai ir klaidos) bus siunčiami į Vatsinator serverius.</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="40"/>
@@ -1045,7 +1045,7 @@
     <message>
         <location filename="../ui/map/modelmatcher.cpp" line="62"/>
         <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atverti failo %1! Patikrinkite failo leidimus arba iš naujo įdiekite programą.</translation>
     </message>
 </context>
 <context>
@@ -1095,7 +1095,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="40"/>
         <source>Weather forecast temperature units:</source>
-        <translation type="unfinished"/>
+        <translation>Orų prognozės temperatūros vienetai:</translation>
     </message>
 </context>
 <context>
@@ -1185,7 +1185,7 @@
     <message>
         <location filename="../ui/dialogs/statusfetcherrordialog.cpp" line="27"/>
         <source>It means that no data can be obtained at all. Check your internet connection and the accessibility of Vatsim servers.</source>
-        <translation type="unfinished"/>
+        <translation>Tai reiškia, kad neįmanoma gauti visiškai jokių duomenų. Patikrinkite savo interneto ryšį ir prieigą prie Vatsim serverių.</translation>
     </message>
 </context>
 <context>
@@ -1272,7 +1272,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="199"/>
         <source>METARs...</source>
-        <translation type="unfinished"/>
+        <translation>Reguliarieji aviaciniai orų pranešimai...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="214"/>
@@ -1287,12 +1287,12 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
         <source>Flight list...</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžių sąrašas...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="242"/>
         <source>ATC list...</source>
-        <translation type="unfinished"/>
+        <translation>Skrydžių valdymų sąrašas...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="253"/>
@@ -1395,7 +1395,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="74"/>
         <source>Inactive airports</source>
-        <translation type="unfinished"/>
+        <translation>Neveiklūs oro uostai</translation>
     </message>
 </context>
 <context>
