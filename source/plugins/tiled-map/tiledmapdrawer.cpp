@@ -69,8 +69,9 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
     for (Tile* t: tiles) {
         QRect rect(t->coords().topLeft() * transform, t->coords().bottomRight() * transform);
         
-        if (!t->pixmap().isNull())
-            painter->drawPixmap(rect, t->pixmap());
+        QRect source;
+        QPixmap px = t->pixmap(&source);
+        painter->drawPixmap(rect, px, source);
         
 #ifndef QT_NO_DEBUG
         /* Extra info */

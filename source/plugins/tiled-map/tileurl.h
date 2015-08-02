@@ -23,6 +23,7 @@
 #include <QtGlobal>
 #include <QUrl>
 #include <QString>
+#include <QMetaType>
 
 class TileUrl {
     
@@ -35,6 +36,16 @@ public:
     bool isValid() const;
     
     bool operator ==(const TileUrl& other) const;
+    
+    inline quint64 x() const
+    {
+        return __x;
+    }
+    
+    inline quint64 y() const
+    {
+        return __y;
+    }
     
     inline quint64 zoom() const
     {
@@ -49,5 +60,7 @@ private:
     quint64 __zoom;
 
 };
+
+Q_DECLARE_METATYPE(TileUrl)
 
 #endif // TILEURL_H

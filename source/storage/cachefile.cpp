@@ -39,8 +39,6 @@ CacheFile::CacheFile(const QString& fileName) :
     
     if (!dir.exists())
         dir.mkpath(".");
-    
-    qDebug("Cache file location: %s", qPrintable(fileName));
 }
 
 bool

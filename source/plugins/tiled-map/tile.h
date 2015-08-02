@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QRectF>
 #include <QPixmap>
+#include <QMutex>
 #include "tileurl.h"
 
 class Tile : public QObject {
@@ -39,6 +40,8 @@ public:
     explicit Tile(quint64 x, quint64 y, quint64 zoom, QObject *parent = nullptr);
     
     const QRectF& coords() const;
+    
+    QPixmap pixmap(QRect* source) const;
     
     inline quint64 x() const
     {
@@ -60,11 +63,6 @@ public:
         return __url;
     }
     
-    inline const QPixmap& pixmap() const
-    {
-        return __pixmap;
-    }
-    
 protected:
     void customEvent(QEvent* event) override;
     
@@ -83,6 +81,7 @@ private:
     mutable QRectF __coords;
     
     QPixmap __pixmap;
+    mutable QMutex __mutex;
 };
 
 #endif // TILE_H

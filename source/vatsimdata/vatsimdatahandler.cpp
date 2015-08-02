@@ -137,15 +137,13 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     });
     
     
-    /*  */
+    /* Post events to the user interface */
     connect(this, &VatsimDataHandler::vatsimStatusError, [this]() {
-        VatsimEvent e(VatsimEvent::StatusError);
-        qApp->postEvent(vApp()->userInterface(), &e);
+        qApp->postEvent(vApp()->userInterface(), new VatsimEvent(VatsimEvent::StatusError));
     });
     
     connect(this, &VatsimDataHandler::vatsimDataError, [this]() {
-        VatsimEvent e(VatsimEvent::DataError);
-        qApp->postEvent(vApp()->userInterface(), &e);
+        qApp->postEvent(vApp()->userInterface(), new VatsimEvent(VatsimEvent::DataError));
     });
 }
 
@@ -772,8 +770,7 @@ VatsimDataHandler::__dataFetched()
             __dataServers = status.dataFileUrls();
             
             if (!status.message().isEmpty()) {
-                VatsimEvent e(VatsimEvent::Message, status.message());
-                qApp->postEvent(vApp()->userInterface(), &e);
+                qApp->postEvent(vApp()->userInterface(), new VatsimEvent(VatsimEvent::Message, status.message()));
             }
                 
             __statusFileFetched = true;

@@ -22,9 +22,6 @@
 
 #include "plugins/mapdrawer.h"
 #include "storage/settingsmanager.h"
-// #include "ui/map/airportitem.h"
-// #include "ui/map/firitem.h"
-// #include "ui/map/flightitem.h"
 #include "ui/map/maparea.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapitem.h"
@@ -108,7 +105,9 @@ MapRenderer::setZoom(qreal zoom)
     __zoom = zoom;
     __updateScreen();
     emit updated();
-    emit zoomChanged(__zoom);
+    
+    if (!scene()->isAnimating())
+        emit zoomChanged(__zoom);
 }
 
 void

@@ -63,7 +63,15 @@ namespace {
 
 FileDownloader::FileDownloader(QObject* parent) :
     QObject(parent),
-    __reply(nullptr) {}
+    __reply(nullptr)
+{    
+    connect(&__nam, &QNetworkAccessManager::networkAccessibleChanged, [this](QNetworkAccessManager::NetworkAccessibility accessible) {
+        if (accessible == QNetworkAccessManager::NotAccessible) {
+            qWarning("Network not accessible");
+            /* TODO Handle network accessibility */
+        }
+    });
+}
 
 void
 FileDownloader::fetch(const QUrl& url)
@@ -80,7 +88,7 @@ FileDownloader::__startRequest()
     Q_ASSERT(!__reply);
     Q_ASSERT(anyTasksLeft());
     
-    QUrl url = __urls.dequeue();
+    QUrl url = __urls.front();
     QString fileName = fileNameForUrl(url);
     
     if (fileName.isEmpty()) {
@@ -129,6 +137,7 @@ FileDownloader::__finished()
                qPrintable(__output.fileName()), size);
     }
     
+    __urls.dequeue();
     __reply->deleteLater();
     __reply = nullptr;
     

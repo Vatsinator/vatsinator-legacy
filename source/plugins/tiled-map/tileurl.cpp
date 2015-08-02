@@ -21,10 +21,15 @@
 
 #include "tileurl.h"
 
+static QString CartoDBMapPath = QStringLiteral("light_nolabels");
+
 namespace {
     QString randomizePrefix() {
-        static QVector<QString> prefixes = { "a", "b", "c" };
-        return prefixes[qrand() % 3];
+        static QVector<QString> prefixes = { "a", "b", "c", "d", "e", "f", "g",
+                                             "h", "i", "j", "k", "l", "m", "n",
+                                             "o", "p", "q", "r", "s", "t", "u",
+                                             "v", "w", "x", "y", "z" };
+        return prefixes[qrand() % prefixes.size()];
     }
 }
 
@@ -50,7 +55,7 @@ TileUrl::toUrl() const
     
 //     return QUrl(QStringLiteral("http://c.tile.openstreetmap.org/") % path());
 //     return QUrl(QStringLiteral("http://otile1.mqcdn.com/tiles/1.0.0/sat/") % path());
-    return QUrl(QStringLiteral("http://%1.basemaps.cartocdn.com/light_all/%2").arg(randomizePrefix(), path()));
+    return QUrl(QStringLiteral("http://%1.basemaps.cartocdn.com/%2/%3").arg(randomizePrefix(), CartoDBMapPath, path()));
 }
 
 QString
@@ -80,7 +85,7 @@ TileUrl::operator ==(const TileUrl& other) const
 TileUrl
 TileUrl::fromUrl(const QUrl& url)
 {
-    QRegExp rx("light_all/(\\d+)/(\\d+)/(\\d+).{3}");
+    QRegExp rx(CartoDBMapPath % "/(\\d+)/(\\d+)/(\\d+).{3}");
     int res = rx.indexIn(url.path());
     if (res != 1) {
         qWarning("Failed parsing url (%s) - caps: %d", qPrintable(url.toString()), res);

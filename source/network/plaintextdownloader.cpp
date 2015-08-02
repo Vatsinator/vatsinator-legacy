@@ -31,7 +31,15 @@
 
 PlainTextDownloader::PlainTextDownloader(QObject* parent) :
     QObject(parent),
-    __reply(nullptr) {}
+    __reply(nullptr)
+{
+    connect(&__nam, &QNetworkAccessManager::networkAccessibleChanged, [this](QNetworkAccessManager::NetworkAccessibility accessible) {
+        if (accessible == QNetworkAccessManager::NotAccessible) {
+            qWarning("Network not accessible");
+            /* TODO Handle network accessibility */
+        }
+    });
+}
 
 void
 PlainTextDownloader::fetch(const QUrl& url)
@@ -86,8 +94,11 @@ PlainTextDownloader::__finished()
                qPrintable(__reply->url().toString()));
         emit finished();
     } else {
-        qWarning("PlainTextDownloader: %s: error (%s)",
+        qDebug() << __nam.networkAccessible();
+        
+        qWarning("PlainTextDownloader: %s: error (%d: %s)",
                  qPrintable(__reply->url().toString()),
+                 __reply->error(),
                  qPrintable(__reply->errorString()));
                  
         emit error(__reply->errorString());

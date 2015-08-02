@@ -192,6 +192,8 @@ MapScene::zoomTo(qreal zoom)
     connect(animation, &QPropertyAnimation::finished, [this]() {
         __animation->deleteLater();
         __animation = nullptr;
+        /* Forces the MapRenderer::zoomChanged() signal emmition */
+        __renderer->setZoom(__renderer->zoom());
     });
 }
 

@@ -122,12 +122,8 @@ void
 WidgetsUserInterface::showAppRestartDialog()
 {
     AppRestartDialog* dialog = new AppRestartDialog();
-    
-    connect(dialog,       SIGNAL(accepted()),
-            vApp(),       SLOT(restart()));
-    connect(dialog,       SIGNAL(finished(int)),
-            dialog,       SLOT(deleteLater()));
-            
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(dialog, &AppRestartDialog::accepted, vApp(), &VatsinatorApplication::restart);
     dialog->show();
     dialog->raise();
     dialog->activateWindow();

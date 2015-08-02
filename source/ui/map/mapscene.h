@@ -206,6 +206,14 @@ public:
         return __modelPixmapProvider;
     }
     
+    /**
+     * Returns true if the map is in the middle of an animation.
+     */
+    inline bool isAnimating() const
+    {
+        return __animation != nullptr;
+    }
+    
 public slots:
     /**
      * Moves the map smoothly to the given point.

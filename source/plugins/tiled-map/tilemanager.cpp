@@ -30,7 +30,7 @@
 #include "tilemanager.h"
 
 Q_CONSTEXPR quint32 TileWidth = 256; /* in pixels */
-Q_CONSTEXPR int Downloaders = 2; /* number of tile downloaders */
+Q_CONSTEXPR int Downloaders = 4; /* number of tile downloaders */
 
 TileManager::TileManager(MapRenderer* renderer, QObject* parent) :
     QObject(parent),
@@ -59,26 +59,26 @@ TileManager::initialize()
 void
 TileManager::fetchTile(const TileUrl& url)
 {
-    if (url.zoom() == 0)
-        qFatal("Fetching tile with zoom 0! (%s)", qPrintable(url.toUrl().toString()));
-    
-    Q_ASSERT(this->thread() == QThread::currentThread());
+    Q_ASSERT(url.zoom() > 0);
+    Q_ASSERT(this->thread() == QThread::currentThread()); /* This method is not thread-safe */
     
     auto it = std::min_element(__downloaders.begin(), __downloaders.end(), [this](FileDownloader* a, FileDownloader* b)  {
         return a->tasks() < b->tasks();
     });
     
-    if ((*it)->tasks() > 0)
+    if ((*it)->tasks() > 0) {
         __tileQueue << url;
-    else
+    } else {
+        (*it)->setProperty("tileUrl", QVariant::fromValue<TileUrl>(url));
         (*it)->fetch(url.toUrl());
+    }
 }
 
 QList<Tile*>
 TileManager::tilesForCurrentZoom()
 {   
-    auto topLeft = tileForLonLat(__renderer->screen().topLeft());
-    auto bottomRight = tileForLonLat(__renderer->screen().bottomRight());
+    auto topLeft = tileCoordForLonLat(__renderer->screen().topLeft());
+    auto bottomRight = tileCoordForLonLat(__renderer->screen().bottomRight());
     
     __mutex.lock();
     
@@ -87,8 +87,7 @@ TileManager::tilesForCurrentZoom()
     
     for (auto i = topLeft.first; i <= bottomRight.first; ++i) {
         for (auto j = topLeft.second; j <= bottomRight.second; ++j) {
-            TileCoord coord(i, j);
-            auto it = tiles.find(coord);
+            auto it = tiles.find(TileCoord(i, j));
             
             if (it != tiles.end()) {
                 l << it->second;
@@ -101,13 +100,25 @@ TileManager::tilesForCurrentZoom()
 }
 
 QPair<quint64, quint64>
-TileManager::tileForLonLat(const LonLat& lonLat)
+TileManager::tileCoordForLonLat(const LonLat& lonLat)
 {
-    return tileForLonLat(lonLat, __tileZoom);
+    return tileCoordForLonLat(lonLat, __tileZoom);
+}
+
+Tile*
+TileManager::tile(quint64 z, quint64 x, quint64 y)
+{
+    Q_ASSERT(z > 0); 
+    TileMap& tiles = __tiles[z];
+    auto it = tiles.find(TileCoord(x, y));
+    if (it == tiles.end())
+        return nullptr;
+    else
+        return it->second;
 }
 
 QPair<quint64, quint64>
-TileManager::tileForLonLat(const LonLat& lonLat, unsigned zoom)
+TileManager::tileCoordForLonLat(const LonLat& lonLat, unsigned zoom)
 {
     LonLat ll = lonLat.bound();
     qreal n = qPow(2.0, static_cast<qreal>(zoom));
@@ -140,8 +151,8 @@ TileManager::__calculateTileZoom()
 void
 TileManager::__updateTileList()
 {
-    auto topLeft = tileForLonLat(__renderer->screen().topLeft());
-    auto bottomRight = tileForLonLat(__renderer->screen().bottomRight());
+    auto topLeft = tileCoordForLonLat(__renderer->screen().topLeft());
+    auto bottomRight = tileCoordForLonLat(__renderer->screen().bottomRight());
     
     TileMap& tiles = __tiles[__tileZoom];
     
@@ -167,8 +178,10 @@ TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
 {
     FileDownloader* downloader = qobject_cast<FileDownloader*>(sender());
     Q_ASSERT(downloader);
+    Q_ASSERT(downloader->property("tileUrl").isValid());
+    Q_ASSERT(downloader->property("tileUrl").canConvert<TileUrl>());
     
-    TileUrl tileUrl = TileUrl::fromUrl(url);
+    TileUrl tileUrl = downloader->property("tileUrl").value<TileUrl>();
     if (!tileUrl.isValid())
         return;
     
@@ -182,10 +195,15 @@ TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
     Q_ASSERT(it != tiles.end());
     
     TileReadyEvent e;
-    qApp->notify(it->second, &e);
+    qApp->sendEvent(it->second, &e);
     
+    Q_ASSERT(downloader->tasks() <= 1); /* One downloader - one task at a time */
     if (__tileQueue.length() > 0) {
-        TileUrl url = __tileQueue.dequeue();
+        int i = qrand() % __tileQueue.count();
+        TileUrl url = __tileQueue.takeAt(i);
+        downloader->setProperty("tileUrl", QVariant::fromValue<TileUrl>(url));
         downloader->fetch(url.toUrl());
     }
+    
+    Q_UNUSED(url);
 }

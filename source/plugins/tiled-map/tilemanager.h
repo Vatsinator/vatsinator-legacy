@@ -25,7 +25,6 @@
 #include <QPair>
 #include <QList>
 #include <QMap>
-#include <QQueue>
 #include <spatial/bits/spatial_check_concept.hpp>
 #include <spatial/box_multimap.hpp>
 #include "vatsimdata/lonlat.h"
@@ -52,12 +51,14 @@ public:
     
     QList<Tile*> tilesForCurrentZoom();
     
-    QPair<quint64, quint64> tileForLonLat(const LonLat& lonLat);
+    QPair<quint64, quint64> tileCoordForLonLat(const LonLat& lonLat);
+    
+    Tile* tile(quint64 z, quint64 x, quint64 y);
     
     /**
      * x and y coordinates of tile at the given coordinate, at the given zoom.
      */
-    static QPair<quint64, quint64> tileForLonLat(const LonLat& lonLat, unsigned zoom);
+    static QPair<quint64, quint64> tileCoordForLonLat(const LonLat& lonLat, unsigned zoom);
     
 public slots:
     /**
@@ -74,7 +75,7 @@ private:
     MapRenderer* __renderer;
     quint32 __tileZoom;
     QList<FileDownloader*> __downloaders;
-    QQueue<TileUrl> __tileQueue;
+    QList<TileUrl> __tileQueue;
     QMutex __mutex;
     
     typedef QPair<quint64, quint64> TileCoord;
