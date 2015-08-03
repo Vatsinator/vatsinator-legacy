@@ -32,7 +32,6 @@ set (ui_SRCS
     map/maprenderer.cpp
     map/mapscene.cpp
     map/modelpixmapprovider.cpp
-    map/uiritem.cpp
     map/worldtransform.cpp
     
     models/airporttablemodel.cpp
@@ -55,7 +54,6 @@ set (ui_HEADERS
     map/maprenderer.h
     map/mapscene.h
     map/modelpixmapprovider.h
-    map/uiritem.h
     map/worldtransform.h
     
     models/airporttablemodel.h

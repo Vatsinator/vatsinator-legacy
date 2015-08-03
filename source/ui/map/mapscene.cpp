@@ -33,7 +33,6 @@
 #include "ui/map/flightitem.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/modelpixmapprovider.h"
-#include "ui/map/uiritem.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
@@ -210,12 +209,7 @@ MapScene::abortAnimation()
 void
 MapScene::__addFlightItem(const Pilot* pilot)
 {
-    /* TODO check why it can be null */
-    if (pilot->position().isNull()) {
-        qWarning("MapScene: %s position is null; o=%s, d=%s",
-                 qPrintable(pilot->callsign()), qPrintable(pilot->route().origin), qPrintable(pilot->route().destination));
-        return;
-    }
+    Q_ASSERT(!pilot->position().isNull());
     
     FlightItem* item = new FlightItem(pilot, this);
     Q_ASSERT(item->position() == pilot->position());
@@ -233,7 +227,6 @@ MapScene::__setupItems()
         AirportItem* item = new AirportItem(a, this);
         Q_ASSERT(item->position() == a->position());
         __items.insert(std::make_pair(item->position(), item));
-        __airportItems << item;
     }
     
     for (const Fir* f : vApp()->vatsimDataHandler()->firs()) {
@@ -250,9 +243,7 @@ MapScene::__setupItems()
         
     for (auto c : vApp()->vatsimDataHandler()->clients())
         if (Pilot* p = qobject_cast<Pilot*>(c)) {
-            /* TODO handle prefiled flights */
-            if (p->phase() != Pilot::Arrived && !p->isPrefiledOnly())
-                __addFlightItem(p);
+            __addFlightItem(p);
         }
 }
 
@@ -261,8 +252,7 @@ MapScene::__updateItems()
 {
     for (Client* c : vApp()->vatsimDataHandler()->newClients())
         if (Pilot* p = qobject_cast<Pilot*>(c)) {
-            if (p->phase() != Pilot::Arrived && !p->isPrefiledOnly())
-                __addFlightItem(p);
+            __addFlightItem(p);
         }
 }
 

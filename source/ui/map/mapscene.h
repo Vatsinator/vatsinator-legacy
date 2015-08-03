@@ -43,7 +43,6 @@ class MapItem;
 class ModelPixmapProvider;
 class Pilot;
 class MapRenderer;
-class UirItem;
 
 /**
  * The MapScene class is responsible for managing all the map items, moving
@@ -175,14 +174,6 @@ public:
     }
     
     /**
-     * Gives direct access to all airport items.
-     */
-    inline const QList<AirportItem*>& airportItems() const
-    {
-        return __airportItems;
-    }
-    
-    /**
      * Gets the currently tracked flight.
      */
     inline const Pilot* trackedFlight() const
@@ -303,8 +294,6 @@ private:
      * This map keeps FirAreas.
      */
     spatial::idle_box_multimap<4, QRectF, const MapArea*, spatial::accessor_less<QRectFBoxAccessor, QRectF>> __areas;
-    
-    QList<AirportItem*> __airportItems;
     
     const Pilot* __trackedFlight;
     QAbstractAnimation* __animation;

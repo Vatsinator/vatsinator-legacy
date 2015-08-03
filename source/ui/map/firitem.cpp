@@ -93,6 +93,8 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     painter->drawStaticText(rect.topLeft(), __label);
     painter->setPen(origPen);
     painter->setFont(origFont);
+    
+    Q_UNUSED(flags);
 }
 
 QString

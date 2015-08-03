@@ -26,7 +26,6 @@
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapitem.h"
 #include "ui/map/mapscene.h"
-#include "ui/map/uiritem.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
