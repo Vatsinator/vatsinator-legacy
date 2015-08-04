@@ -29,7 +29,7 @@
 #include "ui/map/mapitem.h"
 
 class Airport;
-class ApproachCircleItem;
+class TmaArea;
 class MapScene;
 
 /**
@@ -91,7 +91,7 @@ private:
     MapScene* __scene;
     const Airport* __airport; /**< Data pointer */
     mutable QPixmap __icon;
-    QStaticText __label;
+    TmaArea* __tma;
     
 };
 

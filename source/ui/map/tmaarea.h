@@ -1,5 +1,5 @@
 /*
- * tma.cpp
+ * tmaarea.h
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,38 +17,33 @@
  *
  */
 
-#include <QtCore>
+#ifndef TMAAREA_H
+#define TMAAREA_H
 
-#include "vatsimdata/airport.h"
+#include "ui/map/maparea.h"
 
-#include "tma.h"
+class Airport;
+class MapScene;
 
-Tma::Tma(QString icao, QObject* parent) :
-    QObject(parent),
-    __icao(qMove(icao)) {}
-
-Tma::Tma(QString icao, const QJsonArray& coords, QObject* parent) :
-    Tma(icao, parent)
-{
-    __load(coords);
-}
-
-void
-Tma::__load(const QJsonArray& coords)
-{
-    qreal y = qQNaN();
+class TmaArea : public MapArea {
+    Q_OBJECT
     
-    for (const auto& value : coords) {
-        Q_ASSERT(value.isDouble());
-        
-        if (qIsNaN(y))
-            y = value.toDouble();
-        else {
-            double x = value.toDouble();
-            __points << Point{static_cast<float>(x), static_cast<float>(y)};
-            y = qQNaN();
-        }
-    }
+public:
+    explicit TmaArea(const Airport* airport, QObject *parent = nullptr);
     
-    Q_ASSERT(qIsNaN(y));
-}
+    QRectF boundingRect() const override;
+    
+    bool isVisible() const override;
+    
+    void draw(QPainter *painter, const WorldTransform &transform) const override;
+    
+private:
+    void __initialize(const Airport* airport);
+    void __boundingRectFromBoundaries();
+    
+    MapScene* __scene;
+    QRectF __rect;
+    QVector<LonLat> __boundaries;
+};
+
+#endif // TMAAREA_H

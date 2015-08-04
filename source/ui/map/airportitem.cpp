@@ -24,6 +24,7 @@
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
+#include "ui/map/tmaarea.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/userinterface.h"
@@ -44,7 +45,7 @@ AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
     __scene(qobject_cast<MapScene *>(parent)),
     __airport(airport),
-    __label(airport->icao())
+    __tma(nullptr)
 {
     connect(airport, &Airport::updated, this, &AirportItem::__invalidate);
 }
@@ -75,11 +76,6 @@ AirportItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags 
     rect.moveCenter(position() * transform);
     
     painter->drawPixmap(rect, __icon);
-    
-//     QRectF textRect(QPointF(0.0, 0.0), __label.size());
-//     textRect.moveCenter(rect.center());
-//     textRect.moveTop(rect.bottom());
-//     painter->drawStaticText(textRect.topLeft(), __label);
     
     Q_UNUSED(flags);
 }
@@ -149,4 +145,11 @@ AirportItem::__invalidate()
 {
     if (!QCoreApplication::closingDown())
         __icon = QPixmap();
+    
+    if (data()->facilities() & Controller::App) {
+        if (!__tma) {
+            __tma = new TmaArea(data(), __scene);
+            __scene->addArea(__tma);
+        }
+    }
 }

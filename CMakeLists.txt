@@ -26,7 +26,7 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 find_package (Qt5Core REQUIRED)
 find_package (Qt5Gui REQUIRED)
 find_package (Qt5Network REQUIRED)
-find_package (QuaZip REQUIRED)
+find_package (QuaZip5 REQUIRED)
 
 include_directories (${Qt5Core_INCLUDE_DIRS})
 include_directories (${Qt5Gui_INCLUDE_DIRS})

@@ -45,8 +45,6 @@ if (ANDROID) # on Android we want to build library libvatsinator.so
         $<TARGET_OBJECTS:storage>
         $<TARGET_OBJECTS:ui>
         $<TARGET_OBJECTS:vatsimdata>
-        
-        $<TARGET_OBJECTS:PolygonTriangulator>
     )
 else (ANDROID)
     add_executable (vatsinator MACOSX_BUNDLE WIN32
@@ -60,8 +58,6 @@ else (ANDROID)
         $<TARGET_OBJECTS:storage>
         $<TARGET_OBJECTS:ui>
         $<TARGET_OBJECTS:vatsimdata>
-        
-        $<TARGET_OBJECTS:PolygonTriangulator>
     )
 endif ()
 

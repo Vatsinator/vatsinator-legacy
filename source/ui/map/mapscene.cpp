@@ -66,6 +66,12 @@ MapScene::MapScene(QObject* parent) :
 }
 
 void
+MapScene::addArea(MapArea* area)
+{
+    __areas.insert(std::make_pair(area->boundingRect(), area));
+}
+
+void
 MapScene::trackFlight(const Pilot* pilot)
 {
     __trackedFlight = pilot;
@@ -310,7 +316,7 @@ MapScene::__updateSettings()
     __settings.colors.staffed_uir_background = SM::get("map.staffed_uir_background_color").value<QColor>();
     __settings.colors.unstaffed_fir_borders = SM::get("map.unstaffed_fir_borders_color").value<QColor>();
     __settings.colors.approach_circle = SM::get("map.approach_circle_color").value<QColor>();
-    __settings.colors.approach_circle.setAlpha(100);
+    __settings.colors.approach_circle.setAlpha(50);
     __settings.colors.origin_to_pilot_line = SM::get("map.origin_to_pilot_line_color").value<QColor>();
     __settings.colors.pilot_to_destination = SM::get("map.pilot_to_destination_line_color").value<QColor>();
     
