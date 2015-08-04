@@ -72,6 +72,17 @@ MapScene::addArea(MapArea* area)
 }
 
 void
+MapScene::removeArea(MapArea* area)
+{
+    auto it = std::find_if(__areas.begin(), __areas.end(), [area](const auto& it) {
+        return it.second == area;
+    });
+    
+    if (it != __areas.end())
+        __areas.erase(it);
+}
+
+void
 MapScene::trackFlight(const Pilot* pilot)
 {
     __trackedFlight = pilot;
@@ -83,9 +94,9 @@ MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> functio
 {
     std::for_each(spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight()),
                   spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()),
-                  [&function](const std::pair<const LonLat&, const MapItem*>& it) {
-                        if (it.second->isVisible())
-                            function(it.second);
+                  [&function](auto it) {
+                      if (it.second->isVisible())
+                          function(it.second);
                   });
 }
 
@@ -122,10 +133,10 @@ MapScene::inRect(const QRectF& rect, std::function<void(const MapArea*)> functio
     };
     
     std::for_each(spatial::region_cbegin(__areas, pred), spatial::region_cend(__areas, pred),
-                  [&function](const std::pair<const QRectF, const MapArea*>& it) {
-        if (it.second->isVisible())
-            function(it.second);
-    });
+                  [&function](auto it) {
+                      if (it.second->isVisible())
+                          function(it.second);
+                  });
 }
 
 const MapItem*
@@ -270,9 +281,9 @@ MapScene::__removeFlightItem(QObject* object)
     
     auto it = std::find_if(spatial::equal_begin(__items, item->data()->position()),
                            spatial::equal_end(__items, item->data()->position()),
-    [item](const std::pair<const LonLat, const MapItem*>& it) {
-        return item == it.second;
-    });
+                           [item](auto it) {
+                               return item == it.second;
+                           });
     
     item->deleteLater();
     __items.erase(it);
@@ -295,10 +306,10 @@ MapScene::__updateFlightItem()
         
     auto it = std::find_if(spatial::equal_begin(__items, p->oldPosition()),
                            spatial::equal_end(__items, p->oldPosition()),
-    [p](const std::pair<const LonLat, const MapItem*>& it) {
-        const FlightItem* citem = qobject_cast<const FlightItem*>(it.second);
-        return citem && citem->data() == p;
-    });
+                           [p](auto it) {
+                               const FlightItem* citem = qobject_cast<const FlightItem*>(it.second);
+                               return citem && citem->data() == p;
+                           });
     const MapItem* item = it->second;
     Q_ASSERT(item);
     __items.erase(it);

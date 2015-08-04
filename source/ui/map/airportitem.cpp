@@ -151,5 +151,10 @@ AirportItem::__invalidate()
             __tma = new TmaArea(data(), __scene);
             __scene->addArea(__tma);
         }
+    } else {
+        if (__tma) {
+            __scene->removeArea(__tma);
+            delete __tma;
+        }
     }
 }

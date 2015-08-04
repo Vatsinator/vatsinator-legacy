@@ -80,6 +80,9 @@ TileManager::tilesForCurrentZoom()
     auto topLeft = tileCoordForLonLat(__renderer->screen().topLeft());
     auto bottomRight = tileCoordForLonLat(__renderer->screen().bottomRight());
     
+    if (bottomRight.first < topLeft.first)
+        bottomRight = tileCoordForLonLat(LonLat(180.0, __renderer->screen().bottomRight().y()));
+    
     __mutex.lock();
     
     TileMap& tiles = __tiles[__tileZoom];
@@ -153,6 +156,9 @@ TileManager::__updateTileList()
 {
     auto topLeft = tileCoordForLonLat(__renderer->screen().topLeft());
     auto bottomRight = tileCoordForLonLat(__renderer->screen().bottomRight());
+    
+    if (bottomRight.first < topLeft.first)
+        bottomRight = tileCoordForLonLat(LonLat(180.0, __renderer->screen().bottomRight().y()));
     
     TileMap& tiles = __tiles[__tileZoom];
     

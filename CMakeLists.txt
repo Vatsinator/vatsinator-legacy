@@ -72,7 +72,12 @@ endif ()
 
 # set CXX_FLAGS
 if (CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    include (CheckCXXCompilerFlag)
+    check_cxx_compiler_flag ("-std=c++14" COMPILER_SUPPORTS_CXX14)
+    if (NOT COMPILER_SUPPORTS_CXX14)
+        message (FATAL_ERROR "Your compiler does not support C++14 standard; cannot continue.")
+    endif ()
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
     set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
     set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
 elseif (MSVC)

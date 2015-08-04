@@ -116,6 +116,11 @@ public:
     void addArea(MapArea* area);
     
     /**
+     * Removes the given area from the scene.
+     */
+   void removeArea(MapArea* area);
+    
+    /**
      * Marks the specified pilot as tracked one.
      * Tracked flight will be always displayed in the center of the map.
      * It is used in order to keep track of the flight when user hides

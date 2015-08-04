@@ -64,7 +64,13 @@ public:
      * Returns this point, but bounds its coordinates to be correct longitude
      * and latitude.
      */
-    LonLat bound() const;
+    LonLat bound() const &;
+    
+    /**
+     * Returns this point, but bounds its coordinates to be correct longitude
+     * and latitude.
+     */
+    LonLat bound() &&;
     
     inline qreal longitude() const
     {

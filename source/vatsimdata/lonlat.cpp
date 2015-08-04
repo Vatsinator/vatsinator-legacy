@@ -33,7 +33,7 @@ LonLat::LonLat(const Point& point): QPointF(point.x, point.y) {}
 LonLat::LonLat(qreal longitude, qreal latitude): QPointF(longitude, latitude) {}
 
 LonLat
-LonLat::bound() const
+LonLat::bound() const &
 {
     LonLat b(*this);
     
@@ -46,6 +46,20 @@ LonLat::bound() const
     b.ry() = qBound(-90.0, b.y(), 90.0);
 //     b.ry() = qBound(-85.0511, b.y(), 85.0511);
     return b;
+}
+
+LonLat
+LonLat::bound() &&
+{
+    while (x() > 180.0)
+        rx() -= 360.0;
+    
+    while (x() < -180.0)
+        rx() += 360.0;
+    
+    ry() = qBound(-90.0, y(), 90.0);
+//     b.ry() = qBound(-85.0511, b.y(), 85.0511);
+    return std::move(*this);
 }
 
 QDataStream&
