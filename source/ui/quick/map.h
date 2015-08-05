@@ -76,6 +76,9 @@ public:
         return __renderer;
     }
     
+protected:
+    void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry) override;
+    
 private:
     MapRenderer* __renderer;
     

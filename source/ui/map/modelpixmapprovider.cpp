@@ -20,6 +20,7 @@
 #include <QtGui>
 
 #include "storage/filemanager.h"
+#include "ui/map/mapconfig.h"
 
 #include "modelpixmapprovider.h"
 
@@ -105,7 +106,7 @@ ModelPixmapProvider::__prepareModelPixmap(const QString& model)
     if (QPixmapCache::find(model, &px))
         return px;
     
-    QString path = ":/pixmaps/mdpi/" + model + ".png";
+    QString path = ":/pixmaps/" + MapConfig::generalizedDensity() + "/" + model + ".png";
     QImage image(path);
     Q_ASSERT(!image.isNull());
     

@@ -37,9 +37,9 @@
 #include "airportitem.h"
 
 // pixmaps to use
-static const QString AirportInactivePixmap = QStringLiteral(":/pixmaps/mdpi/airport_inactive.png");
-static const QString AirportActivePixmap = QStringLiteral(":/pixmaps/mdpi/airport.png");
-static const QString AirportActiveWithAtcPixmap = QStringLiteral(":/pixmaps/mdpi/airport_staffed.png");
+static const QString AirportInactivePixmap = QStringLiteral(":/pixmaps/%1/airport_inactive.png");
+static const QString AirportActivePixmap = QStringLiteral(":/pixmaps/%1/airport.png");
+static const QString AirportActiveWithAtcPixmap = QStringLiteral(":/pixmaps/%1/airport_staffed.png");
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
@@ -121,20 +121,20 @@ void
 AirportItem::__loadIcon() const
 {
     if (data()->isEmpty()) {
-        if (!QPixmapCache::find(AirportInactivePixmap, &__icon)) {
-            __icon.load(AirportInactivePixmap);
-            QPixmapCache::insert(AirportInactivePixmap, __icon);
+        if (!QPixmapCache::find(AirportInactivePixmap.arg(MapConfig::generalizedDensity()), &__icon)) {
+            __icon.load(AirportInactivePixmap.arg(MapConfig::generalizedDensity()));
+            QPixmapCache::insert(AirportInactivePixmap.arg(MapConfig::generalizedDensity()), __icon);
         }
     } else {
         if (data()->staff()->staff().isEmpty()) {
-            if (!QPixmapCache::find(AirportActivePixmap, &__icon)) {
-                __icon.load(AirportActivePixmap);
-                QPixmapCache::insert(AirportActivePixmap, __icon);
+            if (!QPixmapCache::find(AirportActivePixmap.arg(MapConfig::generalizedDensity()), &__icon)) {
+                __icon.load(AirportActivePixmap.arg(MapConfig::generalizedDensity()));
+                QPixmapCache::insert(AirportActivePixmap.arg(MapConfig::generalizedDensity()), __icon);
             }
         } else {
-            if (!QPixmapCache::find(AirportActiveWithAtcPixmap, &__icon)) {
-                __icon.load(AirportActiveWithAtcPixmap);
-                QPixmapCache::insert(AirportActiveWithAtcPixmap, __icon);
+            if (!QPixmapCache::find(AirportActiveWithAtcPixmap.arg(MapConfig::generalizedDensity()), &__icon)) {
+                __icon.load(AirportActiveWithAtcPixmap.arg(MapConfig::generalizedDensity()));
+                QPixmapCache::insert(AirportActiveWithAtcPixmap.arg(MapConfig::generalizedDensity()), __icon);
             }
         }
     }

@@ -88,57 +88,39 @@ QuickUserInterface::initialize()
 }
 
 void
-QuickUserInterface::fatal(const QString&)
+QuickUserInterface::fatal(const QString& message)
 {
-
+    Q_UNUSED(message);
 }
 
 void
-QuickUserInterface::warning(const QString&)
+QuickUserInterface::warning(const QString& message)
 {
-
+    Q_UNUSED(message);
 }
 
 void
-QuickUserInterface::statusError()
+QuickUserInterface::showDetails(const Airport* airport)
 {
-
+    Q_UNUSED(airport);
 }
 
 void
-QuickUserInterface::dataError()
+QuickUserInterface::showDetails(const Client* client)
 {
-
+    Q_UNUSED(client);
 }
 
 void
-QuickUserInterface::showVatsimMessage(const QString&)
+QuickUserInterface::showDetails(const Fir* fir)
 {
-
+    Q_UNUSED(fir);
 }
 
 void
-QuickUserInterface::showDetails(const Airport*)
+QuickUserInterface::showMetar(const QString& metar)
 {
-
-}
-
-void
-QuickUserInterface::showDetails(const Client*)
-{
-
-}
-
-void
-QuickUserInterface::showDetails(const Fir*)
-{
-
-}
-
-void
-QuickUserInterface::showMetar(const QString&)
-{
-
+    Q_UNUSED(metar);
 }
 
 void
@@ -153,4 +135,10 @@ void
 QuickUserInterface::ensureMainWindowIsActive()
 {
 
+}
+
+void
+QuickUserInterface::vatsimEvent(VatsimEvent* event)
+{
+    Q_UNUSED(event);
 }

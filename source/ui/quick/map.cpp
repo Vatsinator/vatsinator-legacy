@@ -32,13 +32,10 @@ Map::Map(QQuickItem* parent) :
     __renderer(new MapRenderer(this))
 {
     setFlag(QQuickItem::ItemHasContents);
+    setOpaquePainting(true);
     
     __renderer->setMapDrawer(new TiledMapDrawer);
     connect(__renderer, &MapRenderer::updated, this, &QQuickItem::update);
-    
-    connect(this, &QQuickPaintedItem::contentsSizeChanged, [this]() {
-        __renderer->setViewport(contentsSize());
-    });
 }
 
 Map::~Map()
@@ -50,16 +47,13 @@ void
 Map::updateZoom(qreal factor)
 {
     __renderer->setZoom(__renderer->zoom() + (__renderer->zoom() * factor));
-        
-    if (window())
-        window()->update();
 }
 
 void
 Map::updatePosition(int x, int y)
 {
     LonLat center = __renderer->center();
-    QPoint p(x, -y);
+    QPoint p(x, y);
     center -= __renderer->scaleToLonLat(p);
     center.ry() = qBound(-90.0, center.y(), 90.0);
     
@@ -70,9 +64,6 @@ Map::updatePosition(int x, int y)
         center.rx() -= 360.0;
         
     __renderer->setCenter(center);
-    
-    if (window())
-        window()->update();
 }
 
 void
@@ -90,4 +81,10 @@ Map::cachedImageSource() const
                QStringLiteral("Vatsinator") %
                QDir::separator()
            ) % QStringLiteral("mapimage.png");
+}
+
+void
+Map::geometryChanged (const QRectF& newGeometry, const QRectF& oldGeometry) {
+     __renderer->setViewport(QSize(newGeometry.size().width(), newGeometry.size().height()));
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }

@@ -101,17 +101,17 @@ public slots:
     void warning(const QString& message) override;
     
     /**
-     * \copydoc UserInterface::showDetails()
+     * \copydoc UserInterface::showDetails(const Airport*)
      */
     void showDetails(const Airport* airport) override;
     
     /**
-     * \copydoc UserInterface::showDetails()
+     * \copydoc UserInterface::showDetails(const Client*)
      */
     void showDetails(const Client* client) override;
     
     /**
-     * \copydoc UserInterface::showDetails()
+     * \copydoc UserInterface::showDetails(const Fir*)
      */
     void showDetails(const Fir* fir) override;
     

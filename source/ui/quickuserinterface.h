@@ -1,6 +1,6 @@
 /*
  * quickuserinterface.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,17 +58,51 @@ public:
     void initialize() override;
     
 public slots:
+    /**
+     * \copydoc UserInterface::fatal()
+     */
     void fatal(const QString& message) override;
+    
+    /**
+     * \copydoc UserInterface::warning()
+     */
     void warning(const QString& message) override;
-    void statusError() override;
-    void dataError() override;
-    void showVatsimMessage(const QString& message) override;
+    
+    /**
+     * \copydoc UserInterface::showDetails(const Airport*)
+     */
     void showDetails(const Airport* airport) override;
+    
+    /**
+     * \copydoc UserInterface::showDetails(const Client*)
+     */
     void showDetails(const Client* client) override;
+    
+    /**
+     * \copydoc UserInterface::showDetails(const Fir*)
+     */
     void showDetails(const Fir* fir) override;
+    
+    /**
+     * \copydoc UserInterface::showMetar()
+     */
     void showMetar(const QString& metar) override;
+    
+    /**
+     * \copydoc UserInterface::showStatsDialog()
+     */
     void showStatsDialog() override;
+    
+    /**
+     * \copydoc UserInterface::ensureMainWindowIsActive()
+     */
     void ensureMainWindowIsActive() override;
+
+protected:
+    /**
+     * \copydoc UserInterface::vatsimEvent()
+     */
+    void vatsimEvent(VatsimEvent *event) override;
     
 private:
     QQmlApplicationEngine __engine;

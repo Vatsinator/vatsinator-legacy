@@ -78,16 +78,18 @@ public:
 #endif
     }
     
-    static const QColor& pilotPen();
-    static const QColor& airportPen();
-    
-    static const QImage& pilotLabelBackground();
-    static const QImage& airportLabelBackground();
-    static const QImage& firLabelBackground();
-    
-    static const QFont& pilotFont();
-    static const QFont& airportFont();
-    static const QFont& firFont();
+    /**
+     * Returns prefix path for pixmaps that should be used or
+     * the current device, depending on the DPI.
+     * 
+     * Possible values:
+     * * mdpi
+     * * hdpi
+     * * xhdpi
+     * * xxhdpi
+     * * xxxhdpi
+     */
+    static QString generalizedDensity();
     
     /* Map layers */
     enum MapLayers {

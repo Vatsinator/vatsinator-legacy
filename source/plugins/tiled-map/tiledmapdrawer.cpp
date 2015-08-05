@@ -62,8 +62,11 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
 {
     Q_ASSERT(__tiles);
     
+#ifndef Q_OS_ANDROID
+    /* Don't enable smooth pixmap transform on Android for better performance */
     auto hints = painter->renderHints();
     painter->setRenderHints(hints | QPainter::SmoothPixmapTransform);
+#endif
     
     auto tiles = __tiles->tilesForCurrentZoom();
     for (Tile* t: tiles) {
@@ -82,7 +85,9 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
         painter->drawRect(rect);
 #endif
     }
-    
+
+#ifndef Q_OS_ANDROID
     painter->setRenderHints(hints);
+#endif
 }
 
