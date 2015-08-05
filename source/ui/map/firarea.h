@@ -25,16 +25,28 @@
 class Fir;
 class MapScene;
 
+/**
+ * The FirArea class draws the Flight Information Region.
+ */
 class FirArea : public MapArea {
     Q_OBJECT
 
 public:
     explicit FirArea(const Fir* fir, QObject* parent = nullptr);
     
+    /**
+     * \copydoc MapArea::boundingRect()
+     */
     QRectF boundingRect() const override;
     
+    /**
+     * \copydoc MapArea::isVisible()
+     */
     bool isVisible() const override;
     
+    /**
+     * \copydoc MapArea::draw()
+     */
     void draw(QPainter* painter, const WorldTransform& transform) const override;
     
     /**

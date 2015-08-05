@@ -36,12 +36,26 @@ class MapArea : public QObject {
 public:
     explicit MapArea(QObject* parent = nullptr);
     
+    /**
+     * Defines the outer bounds of the area. The MapScene uses this
+     * value to determine whether the given area is visible on the
+     * screen.
+     */
     virtual QRectF boundingRect() const = 0;
     
+    /**
+     * Determines whether the area is visible or not.
+     * 
+     * This function is called only if the screen rectangle contains
+     * any point of \c boundingRect().
+     */
     virtual bool isVisible() const = 0;
     
     /**
      * Draws the area on the painter.
+     * 
+     * \param painter The painter to have the area drawn onto.
+     * \param transform The current world transformation.
      */
     virtual void draw(QPainter* painter, const WorldTransform& transform) const = 0;
 

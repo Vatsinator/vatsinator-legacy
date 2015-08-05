@@ -25,16 +25,35 @@
 class Airport;
 class MapScene;
 
+/**
+ * The TmaArea class draws the Terminal Manoeuvring Area (a.k.a. Terminal
+ * Control Area) on the map.
+ */
 class TmaArea : public MapArea {
     Q_OBJECT
     
 public:
+    /**
+     * Creates the TMA based on the given airport.
+     * 
+     * If no specific TMA is found for it, the fallback one will be used
+     * (an ellipse).
+     */
     explicit TmaArea(const Airport* airport, QObject *parent = nullptr);
     
+    /**
+     * \copydoc MapArea::boundingRect()
+     */
     QRectF boundingRect() const override;
     
+    /**
+     * \copydoc MapArea::isVisible()
+     */
     bool isVisible() const override;
     
+    /**
+     * \copydoc MapArea::draw()
+     */
     void draw(QPainter *painter, const WorldTransform &transform) const override;
     
 private:

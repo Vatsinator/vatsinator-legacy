@@ -70,8 +70,25 @@ signals:
      */
     void updated();
     
+    /**
+     * Emitted whenever the zoom changes.
+     * 
+     * \param zoom The new zoom value.
+     */
     void zoomChanged(qreal zoom);
+    
+    /**
+     * Emitted whenever the map's center point is moved.
+     * 
+     * \param center The new center point.
+     */
     void centerChanged(const LonLat& center);
+    
+    /**
+     * Emitted whenever renderer's viewport is changed.
+     * 
+     * \param viewport The vew viewport.
+     */
     void viewportChanged(const QSize& viewport);
     
 public:
@@ -89,6 +106,9 @@ public:
      */
     virtual ~MapRenderer();
     
+    /**
+     * Returns the current transform.
+     */
     WorldTransform transform() const;
     
     /**
@@ -100,6 +120,10 @@ public:
      */
     LonLat mapToLonLat(const QPoint& point);
     
+    /**
+     * Treats the given point as a vector and scales it to
+     * global coordinates.
+     */
     QPointF scaleToLonLat(const QPoint& vector);
     
     /**

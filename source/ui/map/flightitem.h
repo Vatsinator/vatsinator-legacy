@@ -28,7 +28,7 @@ class Pilot;
 class MapScene;
 
 /**
- * The FlightItem class represents a single Pilot on the map.
+ * The FlightItem class draws a single flight on the map.
  */
 class FlightItem : public MapItem {
     Q_OBJECT

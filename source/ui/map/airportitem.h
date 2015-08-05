@@ -34,6 +34,8 @@ class MapScene;
 
 /**
  * The AirportItem class represents a single airport on the map.
+ * 
+ * \sa TmaArea.
  */
 class AirportItem : public MapItem {
     Q_OBJECT

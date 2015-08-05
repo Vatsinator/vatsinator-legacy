@@ -28,14 +28,16 @@ class Fir;
 class MapScene;
 
 /**
- * The FirItem class represents a single FIR on the map.
+ * The FirItem class represents a single FIR label on the map.
+ * 
+ * \sa FirArea.
  */
 class FirItem : public MapItem {
     Q_OBJECT
     
 public:
     /**
-     * Constructs a new FirItem with the given _fir_. _parent_ is passed
+     * Constructs a new FirItem with the given \c fir. \c parent is passed
      * to QObject's constructor.
      */
     explicit FirItem(const Fir* fir, QObject* parent = nullptr);

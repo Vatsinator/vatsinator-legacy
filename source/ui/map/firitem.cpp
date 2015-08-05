@@ -64,10 +64,7 @@ FirItem::isVisible() const
     if (position().isNull())
         return false;
         
-    if (data()->isEmpty())
-        return __scene->settings().view.unstaffed_firs;
-    else
-        return __scene->settings().view.staffed_firs;
+    return data()->isEmpty() ? __scene->settings().view.unstaffed_firs : __scene->settings().view.staffed_firs;
 }
 
 LonLat
