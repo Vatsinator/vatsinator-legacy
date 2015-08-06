@@ -46,7 +46,7 @@ Map::~Map()
 void
 Map::updateZoom(qreal factor)
 {
-    __renderer->setZoom(__renderer->zoom() + (__renderer->zoom() * factor));
+    __renderer->setZoom(__renderer->zoom() * factor);
 }
 
 void

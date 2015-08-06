@@ -24,13 +24,15 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
 
 find_package (Qt5Core REQUIRED)
-find_package (Qt5Gui REQUIRED)
-find_package (Qt5Network REQUIRED)
-find_package (QuaZip5 REQUIRED)
-
 include_directories (${Qt5Core_INCLUDE_DIRS})
+
+find_package (Qt5Gui REQUIRED)
 include_directories (${Qt5Gui_INCLUDE_DIRS})
+
+find_package (Qt5Network REQUIRED)
 include_directories (${Qt5Network_INCLUDE_DIRS})
+
+find_package (QuaZip5 REQUIRED)
 include_directories (${QUAZIP_INCLUDE_DIRS})
 
 if (ANDROID)
@@ -111,15 +113,6 @@ elseif (ANDROID)
     set (vatsinator_INSTALL_DIR "assets")
 endif()
 
-# specify user interface implementation
-if (NOT vatsinator_UI_IMPLEMENTATION)
-    if (WIN32 OR LINUX OR APPLE) # use QtWidgets for desktop
-        set (vatsinator_UI_IMPLEMENTATION "widgets")
-    elseif (ANDROID) # use QtQuick for mobile
-        set (vatsinator_UI_IMPLEMENTATION "quick")
-    endif ()
-endif ()
-
 if (NOT APPLE)
     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
@@ -143,8 +136,6 @@ if (LINUX)
     option (WITH_RPM "Create RPM package" OFF)
 endif ()
 add_subdirectory (dist)
-
-set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")

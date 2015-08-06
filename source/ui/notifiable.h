@@ -33,7 +33,6 @@
 class Notifiable {
 
 protected:
-
     /**
      * Tell user that a fatal error occured.
      * This method will open an error dialog. You are likely to call

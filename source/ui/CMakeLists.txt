@@ -18,6 +18,15 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/about.h
 )
 
+# specify user interface implementation
+if (NOT vatsinator_UI_IMPLEMENTATION)
+  if (WIN32 OR LINUX OR APPLE) # use QtWidgets for desktop
+    set (vatsinator_UI_IMPLEMENTATION "widgets")
+  elseif (ANDROID) # use QtQuick for mobile
+    set (vatsinator_UI_IMPLEMENTATION "quick")
+  endif ()
+endif ()
+
 set (ui_SRCS
     notifiable.cpp
     userinterface.cpp
@@ -194,7 +203,6 @@ set (ui_QRCS
     resources/files.qrc
     resources/imgs.qrc
     resources/pixmaps.qrc
-    resources/shaders.qrc
 )
 qt5_add_resources (ui_RESOURCES ${ui_QRCS})
 

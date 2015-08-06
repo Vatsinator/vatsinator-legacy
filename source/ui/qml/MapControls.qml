@@ -1,6 +1,6 @@
 /*
  * MapControls.qml
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,33 +17,46 @@
  * 
  */
 
-import QtQuick 2.2
+import QtQuick 2.5
 
-PinchArea {
-  
+MultiPointTouchArea {
+    id: root
+    
     signal zoomUpdated(var zoom)
     signal positionUpdated(var x, var y)
+    signal clicked(var x, var y)
   
-    onPinchUpdated: {
-        zoomUpdated(pinch.scale - pinch.previousScale)
-    }
-  
-    MouseArea {
-        property int lastX
-        property int lastY
-        
-        anchors.fill: parent
-        
-        onPressed: {
-            lastX = mouse.x;
-            lastY = mouse.y;
-            mouse.accepted = true;
+    maximumTouchPoints: 2
+    
+    onUpdated: {
+        if (touchPoints.length == 1) {
+            var tp = touchPoints[0];
+            root.positionUpdated(tp.x - tp.previousX, tp.y - tp.previousY)
+        } else if (touchPoints.length == 2) {
+            var tp1 = touchPoints[0];
+            var tp2 = touchPoints[1];
+            
+            var vec = Qt.vector2d(tp2.x - tp1.x, tp2.y - tp1.y);
+            var previousVec = Qt.vector2d(tp2.previousX - tp1.previousX, tp2.previousY - tp1.previousY);
+            
+            var factor = vec.length() / previousVec.length();
+            root.zoomUpdated(factor);
+            
+            /* Calculate center point */
+            var x = (tp2.x + tp1.x) / 2;
+            var y = (tp2.y + tp1.y) / 2;
+            var previousX = (tp2.previousX + tp1.previousX) / 2;
+            var previousY = (tp2.previousY + tp1.previousY) / 2;
+            
+            root.positionUpdated(x - previousX, y - previousY);
         }
-        
-        onPositionChanged: {
-            positionUpdated(mouse.x - lastX, mouse.y - lastY);
-            lastX = mouse.x;
-            lastY = mouse.y;
+    }
+    
+    onReleased: {
+        if (touchPoints.length == 1) {
+            var tp = touchPoints[0];
+            if (tp.startX == tp.x && tp.startY == tp.y)
+                root.clicked(tp.x, tp.y);
         }
     }
 }

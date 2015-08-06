@@ -52,5 +52,6 @@ Item {
         
         onZoomUpdated: map.updateZoom(zoom)
         onPositionUpdated: map.updatePosition(x, y)
+        onClicked: console.log("pressed: ", x, ", ", y)
     }
 }

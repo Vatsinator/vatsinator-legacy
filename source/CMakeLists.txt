@@ -88,11 +88,6 @@ elseif (APPLE OR WIN32 OR ANDROID)
     set (vatsinator_PREFIX "")
 endif ()
 
-if (NOT vatsinator_UI_IMPLEMENTATION)
-    message (FATAL_ERROR "No valid user interface implementation specified")
-    message (STATUS "Known user interface implementations: widgets")
-endif ()
-
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/config.h
 )
