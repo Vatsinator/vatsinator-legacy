@@ -33,7 +33,6 @@ class QuickUserInterface : public UserInterface {
     
 public:
     explicit QuickUserInterface(QObject* parent = nullptr);
-    virtual ~QuickUserInterface();
     
     /**
      * Gives direct access to the root Vatsinator window item.
@@ -48,6 +47,11 @@ public:
     QObject* findObjectByName(const QString& name);
     
     /**
+     * Returns "dp" units for the current device.
+     */
+    qreal dp() const;
+    
+    /**
      * \copydoc UserInterface::initialize()
      * 
      * The following properties are bound to the QML context:
@@ -56,6 +60,17 @@ public:
      * * \c android - \ref AndroidBridge instance.
      */
     void initialize() override;
+    
+    /**
+     * Defines the minimum touch target size for the current device,
+     * in pixels.
+     * 
+     * The value is always 48x48 dp.
+     */
+    inline QSize minimumTouchTarget() const
+    {
+        return QSize(48 * dp(), 48 * dp());
+    }
     
 public slots:
     /**

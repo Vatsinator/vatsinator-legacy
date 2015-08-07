@@ -21,6 +21,7 @@
 #include <QVariantAnimation>
 
 #include "network/resourcemanager.h"
+#include "ui/map/mapitem.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
@@ -49,6 +50,7 @@ int main(int argc, char** argv)
     QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
     
     qRegisterMetaType<Airport*>();
+    qRegisterMetaType<MapItem*>();
     
     qRegisterMetaType<LonLat>("LonLat");
     qRegisterMetaTypeStreamOperators<LonLat>("LonLat");

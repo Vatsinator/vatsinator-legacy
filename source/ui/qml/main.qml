@@ -31,6 +31,7 @@ ApplicationWindow {
     
     MapPage {
         id: mapPage
+        objectName: "mapPage"
     }
     
     StackView {

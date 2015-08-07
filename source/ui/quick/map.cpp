@@ -22,6 +22,8 @@
 #include "plugins/tiled-map/tiledmapdrawer.h"
 #include "storage/filemanager.h"
 #include "ui/map/maprenderer.h"
+#include "ui/map/mapscene.h"
+#include "ui/quickuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -41,6 +43,34 @@ Map::Map(QQuickItem* parent) :
 Map::~Map()
 {
 
+}
+
+MapItem*
+Map::itemUnderPosition(int x, int y)
+{
+    MapItem* item = const_cast<MapItem*>(__renderer->scene()->nearest(__renderer->mapToLonLat(QPoint(x, y))));
+    Q_ASSERT(item);
+    QPoint pos = item->position() * __renderer->transform();
+    qreal dp = QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
+    QRect rect(QPoint(0, 0), qui()->minimumTouchTarget());
+    rect.moveCenter(pos);
+    if (rect.contains(x, y)) {
+        return item;
+    } else {
+        return nullptr;
+    }
+}
+
+void
+Map::paint(QPainter* painter)
+{
+    __renderer->paint(painter);
+}
+
+void
+Map::geometryChanged (const QRectF& newGeometry, const QRectF& oldGeometry) {
+     __renderer->setViewport(QSize(newGeometry.size().width(), newGeometry.size().height()));
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }
 
 void
@@ -64,27 +94,4 @@ Map::updatePosition(int x, int y)
         center.rx() -= 360.0;
         
     __renderer->setCenter(center);
-}
-
-void
-Map::paint(QPainter* painter)
-{
-    __renderer->paint(painter);
-}
-
-QString
-Map::cachedImageSource() const
-{
-    return QDir::cleanPath(
-               QStandardPaths::writableLocation(QStandardPaths::CacheLocation) %
-               QDir::separator() %
-               QStringLiteral("Vatsinator") %
-               QDir::separator()
-           ) % QStringLiteral("mapimage.png");
-}
-
-void
-Map::geometryChanged (const QRectF& newGeometry, const QRectF& oldGeometry) {
-     __renderer->setViewport(QSize(newGeometry.size().width(), newGeometry.size().height()));
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }

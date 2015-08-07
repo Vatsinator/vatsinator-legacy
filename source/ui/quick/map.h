@@ -22,6 +22,8 @@
 
 #include <QQuickPaintedItem>
 
+#include "ui/map/mapitem.h"
+
 class MapRenderer;
 class QQuickWindow;
 
@@ -50,21 +52,9 @@ public:
     virtual ~Map();
     
     /**
-     * Updates zoom by the given _factor_.
+     * Returns item under the given position.
      */
-    Q_INVOKABLE void updateZoom(qreal factor);
-    
-    /**
-     * Updates the map position.
-     */
-    Q_INVOKABLE void updatePosition(int x, int y);
-    
-    /**
-     * Returns an absolute path to where the cached map image is stored.
-     * 
-     * \note It is not guaranteed that the image file exists.
-     */
-    Q_INVOKABLE QString cachedImageSource() const;
+    Q_INVOKABLE MapItem* itemUnderPosition(int x, int y);
     
     void paint(QPainter* painter) override;
     
@@ -75,6 +65,17 @@ public:
     {
         return __renderer;
     }
+    
+public slots:
+    /**
+     * Updates zoom by the given \c factor.
+     */
+    void updateZoom(qreal factor);
+    
+    /**
+     * Updates the map position.
+     */
+    void updatePosition(int x, int y);
     
 protected:
     void geometryChanged(const QRectF& newGeometry, const QRectF& oldGeometry) override;

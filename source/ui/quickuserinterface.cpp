@@ -38,11 +38,6 @@ QuickUserInterface::QuickUserInterface(QObject* parent) :
     
 }
 
-QuickUserInterface::~QuickUserInterface()
-{
-
-}
-
 QObject*
 QuickUserInterface::rootItem()
 {
@@ -65,6 +60,12 @@ QuickUserInterface::findObjectByName(const QString& name)
         return nullptr;
 }
 
+qreal
+QuickUserInterface::dp() const
+{
+    return QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
+}
+
 void
 QuickUserInterface::initialize()
 {
@@ -77,13 +78,9 @@ QuickUserInterface::initialize()
     ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
     ctx->setContextProperty("android", new AndroidBridge(this));
     ctx->setContextProperty("palette", new PaletteProvider(this));
-    qreal dp = QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
-    ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp));
+    ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp()));
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));
-    
-    /* TODO Cache map from time to time */
-    
     emit initialized();
 }
 

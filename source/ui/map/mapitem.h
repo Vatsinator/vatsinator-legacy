@@ -78,7 +78,7 @@ public:
      * Tooltip text, shown when the item is mouseover'ed.
      * Return empty string to ignore.
      */
-    virtual QString tooltipText() const = 0;
+    Q_INVOKABLE virtual QString tooltipText() const = 0;
     
     /**
      * Calls UserInterface::showDetails().

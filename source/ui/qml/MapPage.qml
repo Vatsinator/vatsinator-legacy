@@ -17,7 +17,8 @@
  * 
  */
 
-import QtQuick 2.4
+import QtQuick 2.5
+import QtQuick.Dialogs 1.2
 import org.eu.vatsinator.ui 1.0
 
 /**
@@ -32,8 +33,12 @@ Item {
     
     Map {
         id: map
-        objectName: "map"
         anchors.fill: parent
+    }
+    
+    MessageDialog {
+        id: flightDetailsDialog
+        
     }
     
     /* This small icon in the lower-left corner that makes user aware of the menu */
@@ -52,6 +57,14 @@ Item {
         
         onZoomUpdated: map.updateZoom(zoom)
         onPositionUpdated: map.updatePosition(x, y)
-        onClicked: console.log("pressed: ", x, ", ", y)
+        onClicked: {
+            var item = map.itemUnderPosition(x, y);
+            if (item != null) {
+                flightDetailsDialog.text = item.tooltipText();
+                flightDetailsDialog.open();
+            } else {
+                console.log("You did not click a thing!");
+            }
+        }
     }
 }
