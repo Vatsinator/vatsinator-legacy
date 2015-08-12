@@ -188,6 +188,6 @@ private:
     
 };
 
-Q_DECLARE_METATYPE(Airport*)
+Q_DECLARE_METATYPE(const Airport*)
 
 #endif // AIRPORT_H

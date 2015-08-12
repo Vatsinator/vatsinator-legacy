@@ -27,6 +27,24 @@ import org.eu.vatsinator.ui 1.0
  */
 Item {
     id: root
+    objectName: "mapPage"
+    
+    signal itemTouched(var item)
+    
+    function showFlightDetails(flight)
+    {
+        console.log(flight.callsign)
+    }
+    
+    function showAirportDetails(airport)
+    {
+        console.log(airport.icao)
+    }
+    
+    function showFirDetails(fir)
+    {
+        console.log(fir.icao)
+    }
     
     width: parent.width
     height: parent.height
@@ -60,8 +78,7 @@ Item {
         onClicked: {
             var item = map.itemUnderPosition(x, y);
             if (item != null) {
-                flightDetailsDialog.text = item.tooltipText();
-                flightDetailsDialog.open();
+                root.itemTouched(item)
             } else {
                 console.log("You did not click a thing!");
             }

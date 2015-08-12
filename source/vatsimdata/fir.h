@@ -38,6 +38,11 @@ struct FirRecord;
 class Fir : public QObject {
     Q_OBJECT
     
+    /**
+     * The ICAO code of the FIR.
+     */
+    Q_PROPERTY(QString icao READ icao CONSTANT)
+    
 signals:
     void updated();
     
@@ -151,5 +156,7 @@ private:
     FlightTableModel*     __flights;
     AirportTableModel*    __airports;
 };
+
+Q_DECLARE_METATYPE(const Fir*)
 
 #endif // FIR_H

@@ -308,4 +308,6 @@ private:
     
 };
 
+Q_DECLARE_METATYPE(const Pilot*)
+
 #endif // PILOT_H

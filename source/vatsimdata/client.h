@@ -65,7 +65,7 @@ class Client : public QObject {
     
 signals:
     /**
-     * The update() signal is updated when the clients receives new data.
+     * The updated() signal is updated when the clients receives new data.
      */
     void updated();
     

@@ -1,6 +1,6 @@
 /*
  * widgetsuserinterface.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,6 +91,26 @@ public slots:
     void showAppRestartDialog();
     
     /**
+     * Shows pilot/ATC details window.
+     */
+    void showClientDetails(const Client* client);
+    
+    /**
+     * Shows airport details window.
+     */
+    void showAirportDetails(const Airport* airport);
+    
+    /**
+     * Shows FIR details window.
+     */
+    void showFirDetails(const Fir* fir);
+    
+    /**
+     * Shows METAR window.
+     */
+    void showMetar(const QString& icao);
+    
+    /**
      * \copydoc UserInterface::fatal()
      */
     void fatal(const QString& message) override;
@@ -99,26 +119,6 @@ public slots:
      * \copydoc UserInterface::warning()
      */
     void warning(const QString& message) override;
-    
-    /**
-     * \copydoc UserInterface::showDetails(const Airport*)
-     */
-    void showDetails(const Airport* airport) override;
-    
-    /**
-     * \copydoc UserInterface::showDetails(const Client*)
-     */
-    void showDetails(const Client* client) override;
-    
-    /**
-     * \copydoc UserInterface::showDetails(const Fir*)
-     */
-    void showDetails(const Fir* fir) override;
-    
-    /**
-     * \copydoc UserInterface::showMetar()
-     */
-    void showMetar(const QString& metar) override;
     
     /**
      * \copydoc UserInterface::showStatsDialog()

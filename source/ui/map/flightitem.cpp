@@ -69,46 +69,6 @@ FlightItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags f
     painter->drawPixmap(rect, __model);
 }
 
-QString
-FlightItem::tooltipText() const
-{
-    QString callsign = data()->callsign();
-    QString desc = QStringLiteral("%1 (%2)").arg(data()->realName(), data()->aircraft());
-    
-    QString from;
-    const Airport* ap = data()->origin();
-    
-    if (ap)
-        from = QString(ap->icao()) % QString(" ") % ap->city();
-    else
-        from = tr("(unknown)");
-        
-    QString to;
-    ap = data()->destination();
-    
-    if (ap)
-        to = QString(ap->icao()) % QString(" ") % ap->city();
-    else
-        to = tr("(unknown)");
-        
-    QString gs = tr("Ground speed: %1 kts").arg(QString::number(data()->groundSpeed()));
-    QString alt = tr("Altitude: %1 ft").arg(QString::number(data()->altitude()));
-    
-    return QString("<p style='white-space:nowrap'><center>"
-                   % callsign % "<br />"
-                   % desc % "<br />"
-                   % from % " > " % to % "<br />"
-                   % gs % "<br />"
-                   % alt
-                   % "</center></p>");
-}
-
-void
-FlightItem::showDetails() const
-{
-    vApp()->userInterface()->showDetails(data());
-}
-
 void
 FlightItem::__prepareModel() const
 {

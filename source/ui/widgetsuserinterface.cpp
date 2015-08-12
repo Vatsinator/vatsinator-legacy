@@ -1,6 +1,6 @@
 /*
  * widgetsuserinterface.cpp
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,6 +130,42 @@ WidgetsUserInterface::showAppRestartDialog()
 }
 
 void
+WidgetsUserInterface::showClientDetails(const Client* client)
+{
+    if (const Pilot* p = qobject_cast<const Pilot*>(client)) {
+        FlightDetailsWindow* w = new FlightDetailsWindow(p);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    } else if (const Controller* c = qobject_cast<const Controller*>(client)) {
+        AtcDetailsWindow* w = new AtcDetailsWindow(c);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    }
+}
+
+void
+WidgetsUserInterface::showAirportDetails(const Airport* airport)
+{
+    AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
+    ap->setAttribute(Qt::WA_DeleteOnClose);
+    ap->show();
+}
+
+void
+WidgetsUserInterface::showFirDetails(const Fir* fir)
+{
+    FirDetailsWindow* w = new FirDetailsWindow(fir);
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
+}
+
+void
+WidgetsUserInterface::showMetar(const QString& icao)
+{
+    metarsWindow()->show(icao);
+}
+
+void
 WidgetsUserInterface::fatal(const QString& message)
 {
     QMessageBox msgBox;
@@ -151,42 +187,6 @@ WidgetsUserInterface::warning(const QString& message)
     qWarning("%s", qPrintable(message));
     
     msgBox.exec();
-}
-
-void
-WidgetsUserInterface::showDetails(const Airport* airport)
-{
-    AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
-    ap->setAttribute(Qt::WA_DeleteOnClose);
-    ap->show();
-}
-
-void
-WidgetsUserInterface::showDetails(const Client* client)
-{
-    if (const Pilot* p = qobject_cast<const Pilot*>(client)) {
-        FlightDetailsWindow* w = new FlightDetailsWindow(p);
-        w->setAttribute(Qt::WA_DeleteOnClose);
-        w->show();
-    } else if (const Controller* c = qobject_cast<const Controller*>(client)) {
-        AtcDetailsWindow* w = new AtcDetailsWindow(c);
-        w->setAttribute(Qt::WA_DeleteOnClose);
-        w->show();
-    }
-}
-
-void
-WidgetsUserInterface::showDetails(const Fir* fir)
-{
-    FirDetailsWindow* w = new FirDetailsWindow(fir);
-    w->setAttribute(Qt::WA_DeleteOnClose);
-    w->show();
-}
-
-void
-WidgetsUserInterface::showMetar(const QString& metar)
-{
-    metarsWindow()->show(metar);
 }
 
 void

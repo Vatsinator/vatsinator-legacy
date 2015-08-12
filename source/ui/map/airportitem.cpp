@@ -80,43 +80,6 @@ AirportItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags 
     Q_UNUSED(flags);
 }
 
-QString
-AirportItem::tooltipText() const
-{
-    QString desc = QString("%1 %2, %3").arg(data()->icao(), data()->name(), data()->city());
-                       
-    QString staff, deparr;
-    
-    if (!data()->isEmpty()) {
-        for (const Controller* c : data()->staff()->staff()) {
-            staff.append("<br>");
-            staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
-        }
-        
-        int deps = data()->countDepartures();
-        
-        if (deps > 0) {
-            deparr.append("<br>");
-            deparr.append(tr("Departures: %1").arg(QString::number(deps)));
-        }
-        
-        int arrs = data()->countArrivals();
-        
-        if (arrs > 0) {
-            deparr.append("<br>");
-            deparr.append(tr("Arrivals: %1").arg(QString::number(arrs)));
-        }
-    }
-    
-    return QString("<p style='white-space:nowrap'><center>" % desc % staff % deparr % "</center></p>");
-}
-
-void
-AirportItem::showDetails() const
-{
-    vApp()->userInterface()->showDetails(data());
-}
-
 void
 AirportItem::__loadIcon() const
 {

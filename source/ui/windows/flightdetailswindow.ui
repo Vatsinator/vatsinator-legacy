@@ -453,31 +453,67 @@
         <number>10</number>
        </property>
        <item>
-        <widget class="InfoLabel" name="PilotLabel" native="true"/>
+        <widget class="InfoLabel" name="PilotLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Pilot</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="AltitudeLabel" native="true"/>
+        <widget class="InfoLabel" name="AltitudeLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Altitude</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="GroundSpeedLabel" native="true"/>
+        <widget class="InfoLabel" name="GroundSpeedLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Ground speed</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="HeadingLabel" native="true"/>
+        <widget class="InfoLabel" name="HeadingLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Heading</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="FlightPhaseLabel" native="true"/>
+        <widget class="InfoLabel" name="FlightPhaseLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Flight phase</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="ServerLabel" native="true"/>
+        <widget class="InfoLabel" name="ServerLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Server</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="TimeOnlineLabel" native="true"/>
+        <widget class="InfoLabel" name="TimeOnlineLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Online from</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="SquawkLabel" native="true"/>
+        <widget class="InfoLabel" name="SquawkLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Squawk</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="InfoLabel" name="AltimeterLabel" native="true"/>
+        <widget class="InfoLabel" name="AltimeterLabel" native="true">
+         <property name="description" stdset="0">
+          <string>Baro</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -504,20 +540,36 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
-          <widget class="InfoLabel" name="AircraftLabel" native="true"/>
+          <widget class="InfoLabel" name="AircraftLabel" native="true">
+           <property name="description" stdset="0">
+            <string>Aircraft</string>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="InfoLabel" name="FlightRulesLabel" native="true"/>
+          <widget class="InfoLabel" name="FlightRulesLabel" native="true">
+           <property name="description" stdset="0">
+            <string>Flight rules</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
-          <widget class="InfoLabel" name="CruiseAltitudeLabel" native="true"/>
+          <widget class="InfoLabel" name="CruiseAltitudeLabel" native="true">
+           <property name="description" stdset="0">
+            <string>Cruise altitude</string>
+           </property>
+          </widget>
          </item>
          <item>
-          <widget class="InfoLabel" name="TrueAirSpeedLabel" native="true"/>
+          <widget class="InfoLabel" name="TrueAirSpeedLabel" native="true">
+           <property name="description" stdset="0">
+            <string>TAS</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

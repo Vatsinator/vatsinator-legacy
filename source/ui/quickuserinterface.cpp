@@ -21,12 +21,17 @@
 #include <QtQuick>
 
 #include "events/decisionevent.h"
+#include "ui/map/airportitem.h"
+#include "ui/map/flightitem.h"
+#include "ui/map/firitem.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/quick/androidbridge.h"
 #include "ui/quick/map.h"
 #include "ui/quick/paletteprovider.h"
 #include "vatsimdata/airport.h"
+#include "vatsimdata/fir.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -69,10 +74,18 @@ QuickUserInterface::dp() const
 void
 QuickUserInterface::initialize()
 {
-    qmlRegisterType<Airport>();
+    /* For C++ methods called from QML */
+    qRegisterMetaType<MapItem*>();
     
+    /* For C++ classes accessed from QML */
+    qmlRegisterType<const Airport>();
+    qmlRegisterType<const Fir>();
+    qmlRegisterType<const Pilot>();
+    
+    /* C++ classes instantiated by QML */
     qmlRegisterType<Map>("org.eu.vatsinator.ui", 1, 0, "Map");
     
+    /* Couple of QML-global instances */
     QQmlContext* ctx = __engine.rootContext();
     ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
     ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
@@ -82,6 +95,11 @@ QuickUserInterface::initialize()
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));
     emit initialized();
+    
+    QObject* mapPage = findObjectByName("mapPage");
+    bool c = connect(mapPage, SIGNAL(itemTouched(QVariant)), this, SLOT(__handleItemTouch(QVariant)));
+    Q_ASSERT(c);
+    Q_UNUSED(c);
 }
 
 void
@@ -94,30 +112,6 @@ void
 QuickUserInterface::warning(const QString& message)
 {
     Q_UNUSED(message);
-}
-
-void
-QuickUserInterface::showDetails(const Airport* airport)
-{
-    Q_UNUSED(airport);
-}
-
-void
-QuickUserInterface::showDetails(const Client* client)
-{
-    Q_UNUSED(client);
-}
-
-void
-QuickUserInterface::showDetails(const Fir* fir)
-{
-    Q_UNUSED(fir);
-}
-
-void
-QuickUserInterface::showMetar(const QString& metar)
-{
-    Q_UNUSED(metar);
 }
 
 void
@@ -138,4 +132,33 @@ void
 QuickUserInterface::vatsimEvent(VatsimEvent* event)
 {
     Q_UNUSED(event);
+}
+
+void
+QuickUserInterface::__handleItemTouch(const QVariant& item)
+{
+    Q_ASSERT(item.canConvert<MapItem*>());
+    MapItem* pitem = item.value<MapItem*>();
+    Q_ASSERT(pitem);
+    
+    Q_ASSERT(sender());
+    
+    if (AirportItem* ai = qobject_cast<AirportItem*>(pitem)) {
+        const Airport* airport = ai->data();
+        bool c = QMetaObject::invokeMethod(sender(), "showAirportDetails", Q_ARG(QVariant, QVariant::fromValue<const Airport*>(airport)));
+        Q_ASSERT(c);
+        Q_UNUSED(c);
+    } else if (FlightItem* fi = qobject_cast<FlightItem*>(pitem)) {
+        const Pilot* flight = fi->data();
+        bool c = QMetaObject::invokeMethod(sender(), "showFlightDetails", Q_ARG(QVariant, QVariant::fromValue<const Pilot*>(flight)));
+        Q_ASSERT(c);
+        Q_UNUSED(c);
+    } else if (const FirItem* fi = qobject_cast<const FirItem*>(pitem)) {
+        const Fir* fir = fi->data();
+        bool c = QMetaObject::invokeMethod(sender(), "showFirDetails", Q_ARG(QVariant, QVariant::fromValue<const Fir*>(fir)));
+        Q_ASSERT(c);
+        Q_UNUSED(c);
+    } else {
+        Q_UNREACHABLE();
+    }
 }

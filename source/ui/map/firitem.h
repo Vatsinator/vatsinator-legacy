@@ -59,16 +59,6 @@ public:
     void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
     
     /**
-     * \copydoc MapItem::tooltipText()
-     */
-    QString tooltipText() const override;
-    
-    /**
-     * \copydoc MapItem::showDetails()
-     */
-    void showDetails() const override;
-    
-    /**
      * Gives direct access to the FIR that this item represents on the map.
      */
     inline const Fir* data() const

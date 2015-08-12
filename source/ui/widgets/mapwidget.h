@@ -27,6 +27,7 @@
 #include "ui/map/maprenderer.h"
 #include "vatsimdata/lonlat.h"
 
+class Client;
 class QMenu;
 class QGestureEvent;
 class QPanGesture;
@@ -36,21 +37,6 @@ class QSwipeGesture;
 class MapWidget : public QWidget {
     Q_OBJECT
     friend class MapScene;
-    
-signals:
-    /**
-     * The menuRequest() signal is emited when user clicks on the map with the
-     * right mouse button. If the cursor is over an item, the pointer is passed
-     * to this signal. It no item is under the mouse cursor, nullptr is passed.
-     */
-    void menuRequest(const MapItem* item);
-    
-    /**
-     * The windowRequest() signal is emited when user clicks on the map with
-     * the left mouse button or if selects an appropriate option from the
-     * right-button click menu.
-     */
-    void windowRequest(const MapItem* item);
     
 public:
     /**
@@ -77,6 +63,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
     
 private:
 
@@ -95,29 +82,13 @@ private:
      */
     void __updateZoom(int steps);
     
-    /**
-     * Creates submenu for an airport.
-     */
-    QMenu* __itemMenu(const AirportItem* item);
-    
-    /**
-     * Creates submenu for a FIR.
-     */
-    QMenu* __itemMenu(const FirItem* item);
-    
-    /**
-     * Creates submenu for a flight.
-     */
-    QMenu* __itemMenu(const FlightItem* item);
-    
-    /**
-     * Creates submenu for no item.
-     */
-    QMenu* __itemMenu();
-    
-private slots:
-    void __showMenu(const MapItem* item);
-    void __showWindow(const MapItem* item);
+    QMenu* __menuForNoItem();
+    QMenu* __menuForAirportItem(const AirportItem* item);
+    QString __toolTipForAirportItem(const AirportItem* item);
+    QMenu* __menuForFlightItem(const FlightItem* item);
+    QString __toolTipForFlightItem(const FlightItem* item);
+    QMenu* __menuForFirItem(const FirItem* item);
+    QString __toolTipForFirItem(const FirItem* item);
     
 private:
 

@@ -24,16 +24,13 @@
 #include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
 #include "plugins/notamlistmodel.h"
-#include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
 #include "ui/models/airporttablemodel.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/models/roles.h"
-#include "ui/windows/airportdetailswindow.h"
-#include "ui/windows/atcdetailswindow.h"
-#include "ui/windows/flightdetailswindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -115,7 +112,7 @@ FirDetailsWindow::__showAirportDetails(QModelIndex index)
 {
     Q_ASSERT(index.data(InstancePointerRole).isValid());
     Airport* const airport = reinterpret_cast<Airport* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(airport);
+    wui()->showAirportDetails(airport);
 }
 
 void
@@ -123,7 +120,7 @@ FirDetailsWindow::__showClientDetails(QModelIndex index)
 {
     Q_ASSERT(index.data(InstancePointerRole).isValid());
     Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(client);
+    wui()->showClientDetails(client);
 }
 
 void

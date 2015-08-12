@@ -38,8 +38,7 @@
 #include "ui/models/roles.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/widgets/weatherforecastwidget.h"
-#include "ui/windows/atcdetailswindow.h"
-#include "ui/windows/flightdetailswindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
@@ -196,7 +195,7 @@ AirportDetailsWindow::__showDetails(QModelIndex index)
 {
     Q_ASSERT(index.data(InstancePointerRole).isValid());
     Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(client);
+    wui()->showClientDetails(client);
 }
 
 void

@@ -1,6 +1,6 @@
 /*
     flightlistwindow.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,10 +18,9 @@
 
 #include <QtWidgets>
 
-#include "ui/userinterface.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/models/roles.h"
-#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/pilot.h"
 #include "vatsinatorapplication.h"
@@ -34,10 +33,12 @@ FlightListWindow::FlightListWindow(QWidget* parent) :
     setupUi(this);
     FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    connect(qApp,         SIGNAL(aboutToQuit()),
-            this,         SLOT(hide()));
-    connect(FlightsTable, SIGNAL(doubleClicked(const QModelIndex&)),
-            this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
+    
+    connect(FlightsTable, &QTableView::doubleClicked, [this](const QModelIndex& index) {
+        Q_ASSERT(index.data(InstancePointerRole).isValid());
+        Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+        wui()->showClientDetails(client);
+    });
 }
 
 void
@@ -45,12 +46,4 @@ FlightListWindow::showEvent(QShowEvent* event)
 {
     FlightsTable->setModel(vApp()->vatsimDataHandler()->flights());
     BaseWindow::showEvent(event);
-}
-
-void
-FlightListWindow::__handleDoubleClicked(const QModelIndex& index)
-{
-    Q_ASSERT(index.data(InstancePointerRole).isValid());
-    Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(client);
 }

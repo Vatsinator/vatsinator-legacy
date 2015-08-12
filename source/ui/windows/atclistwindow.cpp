@@ -1,6 +1,6 @@
 /*
     atclistwindow.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 
 #include <QtWidgets>
 
-#include "ui/userinterface.h"
 #include "ui/models/atctablemodel.h"
 #include "ui/models/roles.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
@@ -33,10 +33,11 @@ AtcListWindow::AtcListWindow(QWidget* parent) :
     setupUi(this);
     AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    connect(qApp,         SIGNAL(aboutToQuit()),
-            this,         SLOT(hide()));
-    connect(AtcTable,     SIGNAL(doubleClicked(const QModelIndex&)),
-            this,         SLOT(__handleDoubleClicked(const QModelIndex&)));
+    connect(AtcTable, &QTableView::doubleClicked, [this](const QModelIndex& index) {
+        Q_ASSERT(index.data(InstancePointerRole).isValid());
+        Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
+        wui()->showClientDetails(client);
+    });
 }
 
 void
@@ -44,12 +45,4 @@ AtcListWindow::showEvent(QShowEvent* event)
 {
     AtcTable->setModel(vApp()->vatsimDataHandler()->atcs());   
     BaseWindow::showEvent(event);
-}
-
-void
-AtcListWindow::__handleDoubleClicked(const QModelIndex& index)
-{
-    Q_ASSERT(index.data(InstancePointerRole).isValid());
-    Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(client);
 }

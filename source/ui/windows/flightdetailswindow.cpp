@@ -1,6 +1,6 @@
 /*
     flightdetailswindow.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "db/airline.h"
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
-#include "ui/userinterface.h"
+#include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
@@ -65,28 +65,12 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* pilot, QWidget* parent) :
     FromLabel->setFont(style->h2Font());
     ToLabel->setFont(style->h2Font());
     
-    PilotLabel->setDescription(tr("Pilot"));
-    AltitudeLabel->setDescription(tr("Altitude"));
-    GroundSpeedLabel->setDescription(tr("Ground speed"));
-    HeadingLabel->setDescription(tr("Heading"));
-    FlightPhaseLabel->setDescription(tr("Flight phase"));
-    ServerLabel->setDescription(tr("Server"));
-    TimeOnlineLabel->setDescription(tr("Online from"));
-    SquawkLabel->setDescription(tr("Squawk"));
-    AltimeterLabel->setDescription(tr("Baro"));
-    FlightRulesLabel->setDescription(tr("Flight rules"));
-    AircraftLabel->setDescription(tr("Aircraft"));
-    TrueAirSpeedLabel->setDescription(tr("TAS"));
-    CruiseAltitudeLabel->setDescription(tr("Cruise altitude"));
-    
     connect(qApp, &QCoreApplication::aboutToQuit, this, &FlightDetailsWindow::close);
     connect(__pilot, &Pilot::updated, this, &FlightDetailsWindow::__updateInfo);
     connect(__pilot, &Pilot::invalid, this, &FlightDetailsWindow::close);
     
-    connect(OriginButton,                 SIGNAL(clicked(const Airport*)),
-            vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
-    connect(DestinationButton,            SIGNAL(clicked(const Airport*)),
-            vApp()->userInterface(),      SLOT(showDetails(const Airport*)));
+    connect(OriginButton, &AirportDetailsButton::clicked, wui(), &WidgetsUserInterface::showAirportDetails);
+    connect(DestinationButton, &AirportDetailsButton::clicked, wui(), &WidgetsUserInterface::showAirportDetails);
             
     connect(ShowButton, &QPushButton::clicked, [this]() {
         wui()->mainWindow()->mapWidget()->renderer()->scene()->cancelFlightTracking();

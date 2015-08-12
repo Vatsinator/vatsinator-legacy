@@ -74,16 +74,6 @@ public:
      */
     virtual void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const = 0;
     
-    /**
-     * Tooltip text, shown when the item is mouseover'ed.
-     * Return empty string to ignore.
-     */
-    Q_INVOKABLE virtual QString tooltipText() const = 0;
-    
-    /**
-     * Calls UserInterface::showDetails().
-     */
-    virtual void showDetails() const  = 0;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MapItem::DrawFlags)

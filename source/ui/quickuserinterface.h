@@ -84,26 +84,6 @@ public slots:
     void warning(const QString& message) override;
     
     /**
-     * \copydoc UserInterface::showDetails(const Airport*)
-     */
-    void showDetails(const Airport* airport) override;
-    
-    /**
-     * \copydoc UserInterface::showDetails(const Client*)
-     */
-    void showDetails(const Client* client) override;
-    
-    /**
-     * \copydoc UserInterface::showDetails(const Fir*)
-     */
-    void showDetails(const Fir* fir) override;
-    
-    /**
-     * \copydoc UserInterface::showMetar()
-     */
-    void showMetar(const QString& metar) override;
-    
-    /**
      * \copydoc UserInterface::showStatsDialog()
      */
     void showStatsDialog() override;
@@ -119,6 +99,9 @@ protected:
      */
     void vatsimEvent(VatsimEvent *event) override;
     
+private slots:
+    void __handleItemTouch(const QVariant& item);
+    
 private:
     QQmlApplicationEngine __engine;
     
@@ -130,7 +113,7 @@ private:
  */
 inline QuickUserInterface* qui()
 {
-    return dynamic_cast<QuickUserInterface*>(vApp()->userInterface());
+    return qobject_cast<QuickUserInterface*>(vApp()->userInterface());
 }
 
 #endif // QUICKUSERINTERFACE_H

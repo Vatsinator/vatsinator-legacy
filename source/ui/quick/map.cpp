@@ -51,7 +51,6 @@ Map::itemUnderPosition(int x, int y)
     MapItem* item = const_cast<MapItem*>(__renderer->scene()->nearest(__renderer->mapToLonLat(QPoint(x, y))));
     Q_ASSERT(item);
     QPoint pos = item->position() * __renderer->transform();
-    qreal dp = QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
     QRect rect(QPoint(0, 0), qui()->minimumTouchTarget());
     rect.moveCenter(pos);
     if (rect.contains(x, y)) {
@@ -68,7 +67,8 @@ Map::paint(QPainter* painter)
 }
 
 void
-Map::geometryChanged (const QRectF& newGeometry, const QRectF& oldGeometry) {
+Map::geometryChanged (const QRectF& newGeometry, const QRectF& oldGeometry)
+{
      __renderer->setViewport(QSize(newGeometry.size().width(), newGeometry.size().height()));
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }

@@ -18,11 +18,10 @@
 
 #include "metaraction.h"
 
-MetarAction::MetarAction(const QString& icao, QObject* parent) :
-    QAction(tr("%1 metar").arg(icao), parent),
+MetarAction::MetarAction(const QString& icao, const QString& label, QObject* parent) :
+    QAction(label, parent),
     __icao(icao)
 {
-
     connect(this, &QAction::triggered, [this]() {
         emit triggered(__icao);
     });
