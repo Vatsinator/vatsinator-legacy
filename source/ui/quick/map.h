@@ -24,6 +24,7 @@
 
 #include "ui/map/mapitem.h"
 
+class LonLat;
 class MapRenderer;
 class QQuickWindow;
 
@@ -39,6 +40,16 @@ signals:
      * Emitted when the item is ready to render the map.
      */
     void ready();
+    
+    /**
+     * \copydoc MapRenderer::zoomChanged(qreal)
+     */
+    void zoomChanged(qreal zoom);
+    
+    /**
+     * \copydoc MapRenderer::centerChanged(const LonLat&)
+     */
+    void centerChanged(const LonLat& center);
     
 public:
     /**

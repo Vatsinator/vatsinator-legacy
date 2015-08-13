@@ -31,9 +31,26 @@ Item {
     
     signal itemTouched(var item)
     
+    property var flightDetails: null
+    property var currentDetails: null
+    
     function showFlightDetails(flight)
     {
         console.log(flight.callsign)
+        
+        var fd = root.flightDetails.createObject(root, {
+            width: root.width - 56 * dp,
+            height: 168 * dp,
+            flight: flight
+        });
+        
+        console.assert(fd != null);
+        
+        if (root.currentDetails)
+            root.currentDetails.close();
+        
+        fd.show();
+        currentDetails = fd;
     }
     
     function showAirportDetails(airport)
@@ -46,17 +63,23 @@ Item {
         console.log(fir.icao)
     }
     
+    function hideCurrentDetails()
+    {
+        if (root.currentDetails) {
+            root.currentDetails.close();
+            root.currentDetails = null;
+        }
+    }
+    
     width: parent.width
     height: parent.height
     
     Map {
         id: map
         anchors.fill: parent
-    }
-    
-    MessageDialog {
-        id: flightDetailsDialog
         
+        onCenterChanged: root.hideCurrentDetails()
+        onZoomChanged: root.hideCurrentDetails()
     }
     
     /* This small icon in the lower-left corner that makes user aware of the menu */
@@ -83,5 +106,9 @@ Item {
                 console.log("You did not click a thing!");
             }
         }
+    }
+    
+    Component.onCompleted: {
+        root.flightDetails = Qt.createComponent("FlightDetails.qml");
     }
 }

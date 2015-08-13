@@ -33,6 +33,9 @@ Map::Map(QQuickItem* parent) :
     QQuickPaintedItem(parent),
     __renderer(new MapRenderer(this))
 {
+    connect(__renderer, &MapRenderer::centerChanged, this, &Map::centerChanged);
+    connect(__renderer, &MapRenderer::zoomChanged, this, &Map::zoomChanged);
+    
     setFlag(QQuickItem::ItemHasContents);
     setOpaquePainting(true);
     

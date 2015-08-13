@@ -3,6 +3,8 @@
     <file>AboutDialog.qml</file>
     <file>AtcList.qml</file>
     <file>AtcListDelegate.qml</file>
+    <file>Details.qml</file>
+    <file>FlightDetails.qml</file>
     <file>FlightList.qml</file>
     <file>FlightListDelegate.qml</file>
     <file>main.qml</file>

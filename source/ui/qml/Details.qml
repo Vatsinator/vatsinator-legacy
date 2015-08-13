@@ -1,5 +1,5 @@
 /*
- * FlightList.qml
+ * Details.qml
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -20,17 +20,43 @@
 import QtQuick 2.5
 
 Rectangle {
-    width: parent.width
-    height: parent.height
+    id: root
     
-    color: palette.background()
+    property bool open: false
     
-    ListView {
-        anchors.topMargin: 60
-        anchors.bottomMargin: 60
-        model: flights
-        anchors.fill: parent
-        spacing: 2
-        delegate: FlightListDelegate {}
+    function close()
+    {
+        open = false;
     }
+    
+    function show()
+    {
+        open = true;
+    }
+    
+    y: parent.height
+    
+    Behavior on y {
+        SmoothedAnimation {
+            duration: 200
+            
+            onRunningChanged: {
+                if (!running && !open)
+                    root.destroy()
+            }
+        }
+    }
+    
+    states: [
+        State {
+            name: "hidden"
+            when: root.open == false
+            PropertyChanges { target: root; y: parent.height }
+        },
+        State {
+            name: "visible"
+            when: root.open == true
+            PropertyChanges { target: root; y: parent.height - height }
+        }
+    ]
 }

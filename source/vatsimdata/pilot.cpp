@@ -125,16 +125,12 @@ Pilot::Pilot(const QStringList& data, bool prefiled) :
     __progress(-1),
     __remarks(data[29]),
     __heading(data[38].toUInt()),
-    __pressure(
+    __pressure({ data[39], data[40] }),
+    __route({data[11].toUpper(), data[13].toUpper(), data[30], data[12].toUpper(), {}}),
+    __origin(nullptr),
+    __destination(nullptr),
+    __prefiledOnly(prefiled)
 {
-    data[39], data[40]
-}),
-__route({data[11].toUpper(), data[13].toUpper(), data[30], data[12].toUpper(), {}}),
-__origin(nullptr),
-__destination(nullptr),
-__prefiledOnly(prefiled)
-{
-
     // vatsim sometimes skips the 0 on the beginning
     if (__squawk.length() == 3)
         __squawk.prepend("0");
@@ -156,10 +152,29 @@ Pilot::update(const QStringList& data)
     Client::update(data);
     
     __prefiledOnly = false;
-    __altitude = data[7].toInt();
-    __groundSpeed = data[8].toInt();
-    __squawk = data[17];
-    __aircraft = data[9];
+    
+    int alt = data[7].toInt();
+    if (__altitude != alt) {
+        __altitude = alt;
+        emit altitudeChanged();
+    }
+    
+    int gs = data[8].toInt();
+    if (__groundSpeed != gs) {
+        __groundSpeed = gs;
+        emit groundSpeedChanged();
+    }
+    
+    if (__squawk != data[17]) {
+        __squawk = data[17];
+        emit squawkChanged();
+    }
+    
+    if (__aircraft != data[9]) {
+        __aircraft = data[9];
+        emit aircraftChanged();
+    }
+    
     __tas = data[10].toInt();
     __flightRules = data[21] == "I" ? Ifr : Vfr;
     __std = QTime::fromString(data[22], "hhmm");

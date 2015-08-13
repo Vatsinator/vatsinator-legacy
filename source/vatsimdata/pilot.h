@@ -56,23 +56,23 @@ class Pilot : public Client {
     /**
      * This property keeps current altitude.
      */
-    Q_PROPERTY(int altitude READ altitude)
+    Q_PROPERTY(int altitude READ altitude NOTIFY altitudeChanged)
     
     /**
      * This property keeps client's ground speed, expressed in knots.
      */
-    Q_PROPERTY(int groundSpeed READ groundSpeed)
+    Q_PROPERTY(int groundSpeed READ groundSpeed NOTIFY groundSpeedChanged)
     
     /**
      * The client's squawk code.
      * It's string, not int, as squawk might start with '0'.
      */
-    Q_PROPERTY(QString squawk READ squawk)
+    Q_PROPERTY(QString squawk READ squawk NOTIFY squawkChanged)
     
     /**
      * This property keeps the client's aircraft.
      */
-    Q_PROPERTY(QString aircraft READ aircraft)
+    Q_PROPERTY(QString aircraft READ aircraft NOTIFY aircraftChanged)
     
     /**
      * The client's current True Air Speed, in knots.
@@ -120,6 +120,23 @@ class Pilot : public Client {
      * \todo Handle prefiled flights properly.
      */
     Q_PROPERTY(bool prefiledOnly READ isPrefiledOnly)
+    
+    /**
+     * Origin airport.
+     */
+    Q_PROPERTY(const Airport* origin READ origin NOTIFY airportsUpdated)
+    
+    /**
+     * Destination airport.
+     */
+    Q_PROPERTY(const Airport* destination READ destination NOTIFY airportsUpdated)
+    
+signals:
+    void airportsUpdated();
+    void aircraftChanged();
+    void altitudeChanged();
+    void groundSpeedChanged();
+    void squawkChanged();
     
 public:
     /* Types */
@@ -202,71 +219,77 @@ public:
         return __route;
     }
     
-    /**
-     * \return Origin airport or nullptr if could not match any.
-     */
+    const QTime& eta() const;
+    int progress() const;
+    
+    inline int altitude() const
+    {
+        return __altitude;
+    }
+    
+    inline int groundSpeed() const
+    {
+        return __groundSpeed;
+    }
+    
+    inline const QString& squawk() const
+    {
+        return __squawk;
+    }
+    
+    inline const QString& aircraft() const
+    {
+        return __aircraft;
+    }
+    
+    inline int tas() const
+    {
+        return __tas;
+    }
+    
+    inline const QString& remarks() const
+    {
+        return __remarks;
+    }
+    
+    inline const QTime& std() const
+    {
+        return __std;
+    }
+    
+    inline const QTime& atd() const
+    {
+        return __atd;
+    }
+    
+    inline const QTime& sta() const
+    {
+        return __sta;
+    }
+    
+    inline unsigned heading() const
+    {
+        return __heading;
+    }
+    
+    inline Pilot::Phase phase() const
+    {
+        return __phase;
+    }
+    
+    inline bool isPrefiledOnly() const
+    {
+        return __prefiledOnly;
+    }
+    
     inline const Airport* origin() const
     {
         return __origin;
     }
     
-    /**
-     * \return Destination airport or nullptr if could not match any.
-     */
     inline const Airport* destination() const
     {
         return __destination;
-    }
-    
-    const QTime& eta() const;
-    int progress() const;
-    inline int altitude() const
-    {
-        return __altitude;
-    }
-    inline int groundSpeed() const
-    {
-        return __groundSpeed;
-    }
-    inline const QString& squawk() const
-    {
-        return __squawk;
-    }
-    inline const QString& aircraft() const
-    {
-        return __aircraft;
-    }
-    inline int tas() const
-    {
-        return __tas;
-    }
-    inline const QString& remarks() const
-    {
-        return __remarks;
-    }
-    inline const QTime& std() const
-    {
-        return __std;
-    }
-    inline const QTime& atd() const
-    {
-        return __atd;
-    }
-    inline const QTime& sta() const
-    {
-        return __sta;
-    }
-    inline unsigned heading() const
-    {
-        return __heading;
-    }
-    inline Pilot::Phase phase() const
-    {
-        return __phase;
-    }
-    inline bool isPrefiledOnly() const
-    {
-        return __prefiledOnly;
     }
     
 private:
