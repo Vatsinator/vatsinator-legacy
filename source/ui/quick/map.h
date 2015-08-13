@@ -35,6 +35,8 @@ class QQuickWindow;
 class Map : public QQuickPaintedItem {
     Q_OBJECT
     
+    Q_PROPERTY(MapItem* selectedItem READ selectedItem WRITE setSelectedItem RESET resetSelectedItem NOTIFY selectedItemChanged)
+    
 signals:
     /**
      * Emitted when the item is ready to render the map.
@@ -50,6 +52,8 @@ signals:
      * \copydoc MapRenderer::centerChanged(const LonLat&)
      */
     void centerChanged(const LonLat& center);
+    
+    void selectedItemChanged();
     
 public:
     /**
@@ -67,7 +71,17 @@ public:
      */
     Q_INVOKABLE MapItem* itemUnderPosition(int x, int y);
     
+    /**
+     * \copydoc QQuickPaintedItem::paint(QPainter*)
+     */
     void paint(QPainter* painter) override;
+    
+    void setSelectedItem(MapItem* item);
+    
+    inline void resetSelectedItem()
+    {
+        setSelectedItem(nullptr);
+    }
     
     /**
      * Gives direct access to the map renderer instance.
@@ -75,6 +89,11 @@ public:
     inline MapRenderer* renderer()
     {
         return __renderer;
+    }
+    
+    inline MapItem* selectedItem()
+    {
+        return __selectedItem;
     }
     
 public slots:
@@ -93,6 +112,7 @@ protected:
     
 private:
     MapRenderer* __renderer;
+    MapItem* __selectedItem;
     
 };
 

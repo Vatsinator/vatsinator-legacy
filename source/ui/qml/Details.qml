@@ -56,7 +56,7 @@ Rectangle {
         State {
             name: "visible"
             when: root.open == true
-            PropertyChanges { target: root; y: parent.height - height }
+            PropertyChanges { target: root; y: parent.height - height - (24 * dp) }
         }
     ]
 }

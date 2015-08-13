@@ -31,8 +31,8 @@ Item {
     
     signal itemTouched(var item)
     
-    property var flightDetails: null
-    property var currentDetails: null
+    property var flightDetails: null /**< FlightDetails component */
+    property var currentDetails: null /**< Currently shown details box */
     
     function showFlightDetails(flight)
     {
@@ -68,7 +68,13 @@ Item {
         if (root.currentDetails) {
             root.currentDetails.close();
             root.currentDetails = null;
+            map.selectedItem = undefined;
         }
+    }
+    
+    function updateSelectedItem(item)
+    {
+        map.selectedItem = item;
     }
     
     width: parent.width
@@ -110,5 +116,6 @@ Item {
     
     Component.onCompleted: {
         root.flightDetails = Qt.createComponent("FlightDetails.qml");
+        root.itemTouched.connect(updateSelectedItem);
     }
 }

@@ -41,6 +41,8 @@ Map::Map(QQuickItem* parent) :
     
     __renderer->setMapDrawer(new TiledMapDrawer);
     connect(__renderer, &MapRenderer::updated, this, &QQuickItem::update);
+    
+    connect(this, &Map::selectedItemChanged, &QQuickItem::update);
 }
 
 Map::~Map()
@@ -66,7 +68,21 @@ Map::itemUnderPosition(int x, int y)
 void
 Map::paint(QPainter* painter)
 {
-    __renderer->paint(painter);
+    QSet<MapItem*> selected;
+    
+    if (__selectedItem)
+        selected.insert(__selectedItem);
+    
+    __renderer->paint(painter, selected);
+}
+
+void
+Map::setSelectedItem(MapItem* item)
+{
+    if (__selectedItem != item) {
+        __selectedItem = item;
+        emit selectedItemChanged();
+    }
 }
 
 void

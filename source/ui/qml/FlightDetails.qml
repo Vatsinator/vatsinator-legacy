@@ -25,7 +25,7 @@ Details {
     property var flight
     
     anchors.horizontalCenter: parent.horizontalCenter
-    color: palette.background()
+    color: palette.byHue(700)
     radius: 10 * dp
     
     Column {
@@ -40,7 +40,7 @@ Details {
                 anchors.verticalCenter: parent.verticalCenter
             
                 Text {
-                    color: palette.caption()
+                    color: "#ffffff"
                     font.weight: Font.Bold
                     font.pixelSize: 24 * dp
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -49,7 +49,7 @@ Details {
                 }
                 
                 Text {
-                    color: palette.byHue(900)
+                    color: "#ffffff"
                     font.weight: Font.Medium
                     font.pixelSize: 12 * dp
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -63,7 +63,13 @@ Details {
         Rectangle {
             width: parent.width
             height: root.height / 3
-            color: palette.byHue(900)
+            
+            gradient: Gradient { /* Nicely shaded rectangle */
+                GradientStop { position: 0.0; color: Qt.darker(palette.byHue(900), 1.2) }
+                GradientStop { position: 0.03; color: palette.byHue(900) }
+                GradientStop { position: 0.97; color: palette.byHue(900) }
+                GradientStop { position: 1.0; color: Qt.darker(palette.byHue(900), 1.2) }
+            }
             
             Row {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -128,14 +134,14 @@ Details {
                 Column {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.caption()
+                        color: "#ffffff"
                         font.pixelSize: 10 * dp
                         
                         text: qsTr("Aircraft")
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.byHue(900)
+                        color: "#ffffff"
                         font.pixelSize: 16 * dp
                         
                         text: root.flight ? root.flight.aircraft : ""
@@ -145,14 +151,14 @@ Details {
                 Column {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.caption()
+                        color: "#ffffff"
                         font.pixelSize: 10 * dp
                         
                         text: qsTr("Altitude")
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.byHue(900)
+                        color: "#ffffff"
                         font.pixelSize: 16 * dp
                         
                         text: root.flight ? root.flight.altitude + " ft" : ""
@@ -162,14 +168,14 @@ Details {
                 Column {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.caption()
+                        color: "#ffffff"
                         font.pixelSize: 10 * dp
                         
                         text: qsTr("Ground speed")
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.byHue(900)
+                        color: "#ffffff"
                         font.pixelSize: 16 * dp
                         
                         text: root.flight ? root.flight.groundSpeed + " kts" : ""
@@ -179,14 +185,14 @@ Details {
                 Column {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.caption()
+                        color: "#ffffff"
                         font.pixelSize: 10 * dp
                         
                         text: qsTr("Squawk")
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        color: palette.byHue(900)
+                        color: "#ffffff"
                         font.pixelSize: 16 * dp
                         
                         text: root.flight ? root.flight.squawk : ""
