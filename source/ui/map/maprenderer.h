@@ -121,12 +121,6 @@ public:
     LonLat mapToLonLat(const QPoint& point);
     
     /**
-     * Treats the given point as a vector and scales it to
-     * global coordinates.
-     */
-    QPointF scaleToLonLat(const QPoint& vector);
-    
-    /**
      * Sets the MapDrawer instance.
      * 
      * If another drawer was bound before, it will be deleted.

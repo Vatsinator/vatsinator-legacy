@@ -43,8 +43,8 @@ LonLat::bound() const &
     while (b.x() < -180.0)
         b.rx() += 360.0;
         
-    b.ry() = qBound(-90.0, b.y(), 90.0);
-//     b.ry() = qBound(-85.0511, b.y(), 85.0511);
+//     b.ry() = qBound(-90.0, b.y(), 90.0);
+    b.ry() = qBound(-85.0511, b.y(), 85.0511);
     return b;
 }
 
@@ -57,8 +57,8 @@ LonLat::bound() &&
     while (x() < -180.0)
         rx() += 360.0;
     
-    ry() = qBound(-90.0, y(), 90.0);
-//     b.ry() = qBound(-85.0511, b.y(), 85.0511);
+//     ry() = qBound(-90.0, y(), 90.0);
+    ry() = qBound(-85.0511, y(), 85.0511);
     return std::move(*this);
 }
 

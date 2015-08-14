@@ -237,19 +237,20 @@ MapWidget::mouseMoveEvent(QMouseEvent* event)
     if (event->buttons() & Qt::LeftButton) {
         setCursor (QCursor (Qt::SizeAllCursor));
         QPoint diff = event->pos() - __mousePosition.screenPosition();
-        QPointF center = __renderer->center();
-        center -= __renderer->scaleToLonLat(diff);
+        QPoint center = __renderer->center() * __renderer->transform();
+        center -= diff;
         
-        center.ry() = qBound(-90.0, center.y(), 90.0);
+        LonLat llcenter = __renderer->mapToLonLat(center);
+        llcenter.ry() = qBound(-90.0, llcenter.y(), 90.0);
         
-        if (center.x() < -180.0)
-            center.rx() += 360.0;
+        if (llcenter.x() < -180.0)
+            llcenter.rx() += 360.0;
             
-        if (center.x() > 180.0)
-            center.rx() -= 360.0;
+        if (llcenter.x() > 180.0)
+            llcenter.rx() -= 360.0;
             
         __renderer->scene()->abortAnimation();
-        __renderer->setCenter(center);
+        __renderer->setCenter(llcenter);
     }
     
     __mousePosition.update(event->pos());
