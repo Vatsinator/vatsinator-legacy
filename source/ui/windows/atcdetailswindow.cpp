@@ -92,14 +92,10 @@ AtcDetailsWindow::__updateLabels()
     RatingLabel->setValue(Controller::ratings[__atc->rating()]);
     
     if (__atc->airport())
-        AirportLabel->setValue(QString("%1 %2, %3").arg(
-                                   QString(__atc->airport()->data()->icao),
-                                   QString::fromUtf8(__atc->airport()->data()->name),
-                                   QString::fromUtf8(__atc->airport()->data()->city)
-                               ));
+        AirportLabel->setValue(QStringLiteral("%1 %2, %3").arg(__atc->airport()->icao(), __atc->airport()->name(), __atc->airport()->city()));
     else
-        AirportLabel->setValue(tr("N/A"));
-        
+        AirportLabel->hide();
+    
     FacilityLabel->setText(__atc->description());
     ServerLabel->setValue(__atc->server());
     TimeOnlineLabel->setValue(__atc->onlineFrom().toString("dd MMM yyyy, hh:mm"));

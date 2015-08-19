@@ -230,13 +230,10 @@ Controller::__makeDescription(const Airport* airport)
     if (!airport)
         apName = "Unknown";
     else {
-        if (qstrcmp(airport->data()->name, airport->data()->city) == 0)
-            apName = QString::fromUtf8(airport->data()->name);
+        if (airport->name() == airport->city())
+            apName = airport->name();
         else
-            apName =
-                QString::fromUtf8(airport->data()->city) %
-                "/" %
-                QString::fromUtf8(airport->data()->name);
+            apName = QStringLiteral("%1/%2").arg(airport->city(), airport->name());
     }
     
     switch (__facility) {

@@ -179,24 +179,6 @@ VatsimDataHandler::dataUrl() const
         return __status;
 }
 
-const Pilot*
-VatsimDataHandler::findPilot(const QString& callsign) const
-{
-    if (__clients.contains(callsign))
-        return qobject_cast<const Pilot*>(__clients[callsign]);
-    else
-        return nullptr;
-}
-
-const Controller*
-VatsimDataHandler::findAtc(const QString& callsign) const
-{
-    if (__clients.contains(callsign))
-        return qobject_cast<const Controller*>(__clients[callsign]);
-    else
-        return nullptr;
-}
-
 Airport*
 VatsimDataHandler::findAirport(const QString& icao)
 {
@@ -215,6 +197,12 @@ VatsimDataHandler::findAirport(const QString& icao)
         
         return nullptr;
     }
+}
+
+QList<Client*>
+VatsimDataHandler::clients() const
+{
+    return __clients.values();
 }
 
 QList<Airport*>
@@ -657,14 +645,14 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
     __observers = 0;
     
     for (auto& c : document.clients()) {
-        if (__clients.contains(c.callsign))
-            __clients[c.callsign]->update(c.line);
+        if (__clients.contains(c.pid))
+            __clients[c.pid]->update(c.line);
         else {
             if (c.type == VatsimDataDocument::ClientLine::Atc) {
                 Controller* atc = new Controller(c.line);
                 
                 if (atc->isValid()) {
-                    __clients[atc->callsign()] = atc;
+                    __clients[atc->pid()] = atc;
                     __newClients << atc;
                     __atcs->add(atc);
                 } else {
@@ -677,7 +665,7 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
                 if (pilot->position().isNull())
                     pilot->deleteLater();
                 else {
-                    __clients[pilot->callsign()] = pilot;
+                    __clients[pilot->pid()] = pilot;
                     __newClients << pilot;
                     __flights->add(pilot);
                 }
@@ -689,9 +677,9 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
         if (p.type == VatsimDataDocument::ClientLine::Atc)
             continue;
             
-        if (!__clients.contains(p.callsign)) {
+        if (!__clients.contains(p.pid)) {
             Pilot* pilot = new Pilot(p.line, true);
-            __clients[pilot->callsign()] = pilot;
+            __clients[pilot->pid()] = pilot;
         }
     }
     

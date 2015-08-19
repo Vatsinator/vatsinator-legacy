@@ -43,10 +43,7 @@ static const int DaysToUpdate = 7;
 ResourceManager::ResourceManager(QObject* parent) :
     QObject(parent)
 {
-
-    connect(this, SIGNAL(vatsinatorVersionChecked(ResourceManager::VersionStatus)),
-            SLOT(__checkDatabase(ResourceManager::VersionStatus)));
-            
+    connect(this, &ResourceManager::vatsinatorVersionChecked, this, &ResourceManager::__checkDatabase);
     QTimer::singleShot(StartDelay, this, SLOT(__fetchVersion()));
 }
 
@@ -78,20 +75,17 @@ ResourceManager::__versionActual(const QString& version1, const QString& version
 void
 ResourceManager::__fetchVersion()
 {
-    PlainTextDownloader* fetcher = new PlainTextDownloader();
-    
-    connect(fetcher,    SIGNAL(finished()),
-            this,       SLOT(__parseVersion()));
-    connect(fetcher,    SIGNAL(error(QString)),
-            fetcher,    SLOT(deleteLater()));
-            
-    fetcher->fetch(QUrl(NetConfig::Vatsinator::repoUrl() % QStringLiteral("VERSION")));
+    PlainTextDownloader* d = new PlainTextDownloader();
+    connect(d, &PlainTextDownloader::finished, this, &ResourceManager::__parseVersion);
+    d->fetch(QUrl(NetConfig::Vatsinator::repoUrl() % QStringLiteral("VERSION")));
 }
 
 void
 ResourceManager::__parseVersion()
 {
     PlainTextDownloader* downloader = qobject_cast<PlainTextDownloader*>(sender());
+    Q_ASSERT(downloader);
+    
     QString version = downloader->data();
     bool actual = __versionActual(QString(VATSINATOR_VERSION), version);
     
@@ -100,7 +94,7 @@ ResourceManager::__parseVersion()
            
     if (!actual)
         emit outdated();
-        
+    
     emit vatsinatorVersionChecked(actual ? Updated : Outdated);
     downloader->deleteLater();
 }
@@ -110,7 +104,7 @@ ResourceManager::__checkDatabase(ResourceManager::VersionStatus status)
 {
     if (status == ResourceManager::Outdated)
         emit databaseStatusChanged(CannotUpdate);
-        
+    
     QFile manifest(FileManager::path(ManifestFileName));
     
     qDebug("ResourceManager: Manifest file: %s", qPrintable(manifest.fileName()));
@@ -141,14 +135,8 @@ ResourceManager::__syncDatabase()
     emit databaseStatusChanged(Updating);
     
     DataUpdater* du = new DataUpdater();
-    connect(du,   SIGNAL(updated()),
-            this, SLOT(__databaseUpdated()));
-    connect(du,   SIGNAL(updated()),
-            du,   SLOT(deleteLater()));
-    connect(du,   SIGNAL(failed()),
-            this, SLOT(__databaseFailed()));
-    connect(du,   SIGNAL(failed()),
-            du,   SLOT(deleteLater()));
+    connect(du, &DataUpdater::updated, this, &ResourceManager::__databaseUpdated);
+    connect(du, &DataUpdater::failed, this, &ResourceManager::__databaseFailed);
             
     du->update();
 }
@@ -157,6 +145,10 @@ void
 ResourceManager::__databaseUpdated()
 {
     __checkDatabase(Updated);
+    
+    DataUpdater* d = qobject_cast<DataUpdater*>(sender());
+    if (d)
+        d->deleteLater();
 }
 
 void
@@ -164,4 +156,8 @@ ResourceManager::__databaseFailed()
 {
     qCritical("ResourceManager: failed updating the database!");
     emit databaseStatusChanged(Outdated);
+    
+    DataUpdater* d = qobject_cast<DataUpdater*>(sender());
+    if (d)
+        d->deleteLater();
 }

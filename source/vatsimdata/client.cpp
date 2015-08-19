@@ -73,16 +73,38 @@ Client::Client(const QStringList& data) :
     __position(data[6].toFloat(), data[5].toFloat()),
     __timestamp(vApp()->vatsimDataHandler()->currentTimestamp()) {}
 
-Client::~Client() {}
-
 void
 Client::update(const QStringList& data)
 {
-    __pid = data[1].toUInt();
-    __realName = data[2].simplified();
-    __server = data[14];
-    __onlineFrom = QDateTime::fromString(data[37], "yyyyMMddhhmmss");
-    __position = LonLat(data[6].toFloat(), data[5].toFloat());
+    Q_ASSERT(__pid == data[1].toUInt());
+    
+    if (callsign() != data[0]) {
+        __callsign = data[0];
+        emit callsignChanged(__callsign);
+    }
+    
+    QString rn = data[2].simplified();
+    if (rn != realName()) {
+        __realName = rn;
+        emit realNameChanged(__realName);
+    }
+    
+    if (__server != data[14]) {
+        __server = data[14];
+        emit serverChanged(__server);
+    }
+    
+    QDateTime onlineFrom = QDateTime::fromString(data[37], "yyyyMMddhhmmss");
+    if (onlineFrom != __onlineFrom) {
+        __onlineFrom = onlineFrom;
+        emit onlineFromChanged(__onlineFrom);
+    }
+    
+    LonLat position = LonLat(data[6].toFloat(), data[5].toFloat());
+    if (position != __position) {
+        __position = position;
+        emit positionChanged(__position);
+    }
     
     __timestamp = vApp()->vatsimDataHandler()->currentTimestamp();
 }
@@ -109,5 +131,6 @@ void
 Client::setPosition(const LonLat& position)
 {
     __position = position;
+    emit positionChanged(__position);
 }
 

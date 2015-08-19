@@ -92,10 +92,10 @@ AirportTableModel::data(const QModelIndex& index, int role) const
                     return __produceFacilities(index.row());
                     
                 case Inbounds:
-                    return QString::number(__airports[index.row()]->countInbounds());
+                    return QString::number(__airports.at(index.row())->countInbounds());
                     
                 case Outbounds:
-                    return QString::number(__airports[index.row()]->countOutbounds());
+                    return QString::number(__airports.at(index.row())->countOutbounds());
                     
                 default:
                     return QVariant();
@@ -138,26 +138,20 @@ AirportTableModel::headerData(int section, Qt::Orientation orientation, int role
 QString
 AirportTableModel::__arrivalsAndDepartures(int row) const
 {
-    return
-        tr("Arrivals: %1").arg(QString::number(__airports[row]->countArrivals())) %
-        "<br>" %
-        tr("Departures: %1").arg(QString::number(__airports[row]->countDepartures()));
+    return tr("%n arrival(s)", "", __airports.at(row)->countArrivals()) % "<br>" %
+        tr("%n departure(s)", "", __airports.at(row)->countDepartures());
 }
 
 QString
 AirportTableModel::__produceLabel(int row) const
 {
-    return
-        static_cast<QString>(" ") %
-        QString::fromUtf8(__airports[row]->data()->icao) %
-        static_cast<QString>(" ") %
-        QString::fromUtf8(__airports[row]->data()->city);
+    return QStringLiteral("%1 %2").arg(__airports.at(row)->icao(), __airports.at(row)->city());
 }
 
 QString
 AirportTableModel::__produceFacilities(int row) const
 {
-    Controller::Facilities facilities = __airports[row]->facilities();
+    Controller::Facilities facilities = __airports.at(row)->facilities();
     
     if (!facilities)
         return "-";

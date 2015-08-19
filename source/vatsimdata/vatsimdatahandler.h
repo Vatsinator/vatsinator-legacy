@@ -149,24 +149,6 @@ public:
     const QUrl& dataUrl() const;
     
     /**
-     * Looks for pilot by callsign.
-     *
-     * \param callsign Callsign of the pilot to be found.
-     * \return Pointer to the Pilot class instance or _nullptr_ if no pilot was found.
-     * \sa findAtc() and findAirport().
-     */
-    const Pilot* findPilot(const QString& callsign) const;
-    
-    /**
-     * Looks for the ATC.
-     *
-     * \param callsign Callsign of the controller to be found.
-     * \return Pointer to the Controller class instance or _nullptr_ if no pilot was found.
-     * \sa findPilot().
-     */
-    const Controller* findAtc(const QString& callsign) const;
-    
-    /**
      * Finds airport with particular _icao_ code or any airport that the given
      * _icao_ is alias of.
      *
@@ -175,6 +157,11 @@ public:
      * \sa findPilot() and findAtc().
      */
     Airport* findAirport(const QString& icao);
+    
+    /**
+     * \return List of all clients.
+     */
+    QList<Client*> clients() const;
     
     /**
      * \return List of all airports recognized by Vatsinator.
@@ -235,14 +222,6 @@ public:
      * Running instance of bookings provider.
      */
     BookingProvider* bookingProvider();
-    
-    /**
-     * Map (Callsign <-> instance pairs) of connected clients.
-     */
-    inline const QMap<QString, Client*>& clients()
-    {
-        return __clients;
-    }
     
     /**
      * List of only new clients, i.e. that showed up in the last update.
@@ -451,9 +430,9 @@ private:
 
     /*
      * All connected clients
-     * Callsign <-> instance pairs
+     * pid <-> instance pairs
      */
-    QMap<QString, Client*> __clients;
+    QMap<quint32, Client*> __clients;
     
     /*
      * List of only new clients, i.e. that showed up in the last update.

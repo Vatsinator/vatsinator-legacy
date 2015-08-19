@@ -45,7 +45,7 @@ public:
         
         QStringList line; /**< Split line */
         bool valid; /**< Indicates whether the line is correct or not  */
-        QString callsign; /**< Parsed client callsign */
+        quint32 pid; /** Parsed client pid */
         enum { Pilot, Atc } type; /**< Parsed client type */
     };
     

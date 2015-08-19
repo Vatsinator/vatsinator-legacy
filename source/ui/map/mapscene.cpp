@@ -240,7 +240,7 @@ MapScene::__addFlightItem(const Pilot* pilot)
     
     __flightsMapper->setMapping(const_cast<Pilot*>(pilot), item);
     connect(pilot, SIGNAL(invalid()), __flightsMapper, SLOT(map()));
-    connect(pilot, &Pilot::updated, this, &MapScene::__updateFlightItem);
+    connect(pilot, &Pilot::positionChanged, this, &MapScene::__updateFlightItem);
 }
 
 void
@@ -263,11 +263,12 @@ MapScene::__setupItems()
     
 //     for (const Uir* u : vApp()->vatsimDataHandler()->uirs())
 //         __uirItems << new UirItem(u, this);
-        
-    for (auto c : vApp()->vatsimDataHandler()->clients())
+    
+    for (auto c : vApp()->vatsimDataHandler()->clients()) {
         if (Pilot* p = qobject_cast<Pilot*>(c)) {
             __addFlightItem(p);
         }
+    }
 }
 
 void

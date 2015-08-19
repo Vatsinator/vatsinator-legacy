@@ -36,10 +36,8 @@ public:
 protected:
     virtual void showEvent(QShowEvent* event) override;
     
-private:
-    void __updateAirports();
-    
 private slots:
+    void __updateAirports();
     void __updateInfo();
     void __airlineUpdated();
     

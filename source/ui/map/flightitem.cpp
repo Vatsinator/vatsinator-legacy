@@ -37,7 +37,7 @@ FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     __scene(qobject_cast<MapScene*>(parent)),
     __pilot(pilot)
 {
-    connect(pilot, &Pilot::updated, this, &FlightItem::__invalidate);
+    connect(pilot, &Pilot::aircraftChanged, this, &FlightItem::__invalidateModel);
 }
 
 bool
@@ -90,13 +90,13 @@ FlightItem::__drawLines(QPainter* painter, const WorldTransform& transform) cons
     QPen orig = painter->pen();
     QPoint pos = position() * transform;
     
-    if (data()->origin()) {
+    if (data()->origin()->isValid()) {
         painter->setPen(QPen(__scene->settings().colors.origin_to_pilot_line));
         QPoint p = data()->origin()->position() * transform;
         painter->drawLine(p, pos);
     }
     
-    if (data()->destination()) {
+    if (data()->destination()->isValid()) {
         QPen pen(__scene->settings().colors.pilot_to_destination);
         pen.setStyle(Qt::DashLine);
         painter->setPen(pen);
@@ -128,7 +128,7 @@ FlightItem::__dropShadow(QPixmap* image) const
 }
 
 void
-FlightItem::__invalidate()
+FlightItem::__invalidateModel()
 {
     __model = QPixmap();
 }

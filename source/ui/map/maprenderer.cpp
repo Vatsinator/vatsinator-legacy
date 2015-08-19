@@ -180,8 +180,6 @@ MapRenderer::setViewport(const QSize& size)
 void
 MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
 {
-    Q_ASSERT(mappingsAreValid(this));
-    
     WorldTransform transform = this->transform();
     
     if (__mapDrawer) {

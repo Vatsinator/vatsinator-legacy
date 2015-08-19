@@ -117,7 +117,8 @@ AirportItem::__invalidate()
     } else {
         if (__tma) {
             __scene->removeArea(__tma);
-            delete __tma;
+            __tma->deleteLater();
+            __tma = nullptr;
         }
     }
 }

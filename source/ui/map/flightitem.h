@@ -88,7 +88,7 @@ private slots:
      * Removes the aircraft icon to have it refreshed with the
      * next repaint.
      */
-    void __invalidate();
+    void __invalidateModel();
     
 private:
     MapScene* __scene;

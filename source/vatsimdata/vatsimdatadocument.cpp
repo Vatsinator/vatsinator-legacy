@@ -135,12 +135,15 @@ VatsimDataDocument::__parse()
 }
 
 VatsimDataDocument::ClientLine::ClientLine(const QString& data)
+    : line(data.split(':'))
 {
-    line = data.split(':');
     valid = line.size() == 42;
     
     if (valid) {
-        callsign = line[0];
+        bool ok;
+        pid = line.at(1).toUInt(&ok);
+        Q_ASSERT(ok);
+        Q_UNUSED(ok);
         type = line[3] == "ATC" ? Atc : Pilot;
     }
 }

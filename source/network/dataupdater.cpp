@@ -144,9 +144,7 @@ DataUpdater::update()
     
     FileDownloader* fd = new FileDownloader();    
     connect(fd, &FileDownloader::finished, this, &DataUpdater::__unzipPackage);
-    connect(fd, &FileDownloader::finished, fd, &FileDownloader::deleteLater);
     connect(fd, &FileDownloader::error, this, &DataUpdater::__fetchError);
-    connect(fd, &FileDownloader::error, fd, &FileDownloader::deleteLater);
     fd->fetch(QUrl(PackageUrl));
 }
 
@@ -224,6 +222,10 @@ DataUpdater::__unzipPackage(QString fileName)
 {
     __unzipper->setFileName(fileName);
     emit readyToUnzip();
+    
+    FileDownloader* d = qobject_cast<FileDownloader*>(sender());
+    if (d)
+        d->deleteLater();
 }
 
 void
@@ -231,6 +233,10 @@ DataUpdater::__fetchError(QString error)
 {
     qWarning("DataUpdater: fetch error: %s", qPrintable(error));
     emit failed();
+    
+    FileDownloader* d = qobject_cast<FileDownloader*>(sender());
+    if (d)
+        d->deleteLater();
 }
 
 void
@@ -240,9 +246,7 @@ DataUpdater::__filesUnzipped()
     
     FileDownloader* fd = new FileDownloader();
     connect(fd, &FileDownloader::finished, this, &DataUpdater::__checkManifest);
-    connect(fd, &FileDownloader::finished, fd, &FileDownloader::deleteLater);
     connect(fd, &FileDownloader::error, this, &DataUpdater::__fetchError);
-    connect(fd, &FileDownloader::error, fd, &FileDownloader::deleteLater);
     fd->fetch(QUrl(ManifestUrl));
 }
 
@@ -256,6 +260,10 @@ DataUpdater::__unzipError(QString error)
 void
 DataUpdater::__checkManifest(QString fileName)
 {
+    FileDownloader* d = qobject_cast<FileDownloader*>(sender());
+    if (d)
+        d->deleteLater();
+    
     if (!__checksumsOk(fileName)) {
         __cleanup();
         emit failed();

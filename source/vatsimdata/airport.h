@@ -45,30 +45,70 @@ class Airport : public QObject {
     Q_PROPERTY(QString icao READ icao CONSTANT)
     
     /**
+     * The IATA code of the airport.
+     */
+    Q_PROPERTY(QString iata READ iata CONSTANT)
+    
+    /**
      * Position of the airport.
      */
     Q_PROPERTY(LonLat position READ position CONSTANT)
     
     /**
-     * City of the airport.
+     * The closest city of the airport.
      */
     Q_PROPERTY(QString city READ city CONSTANT)
+    
+    /**
+     * Country.
+     */
+    Q_PROPERTY(QString country READ country CONSTANT)
     
     /**
      * Name of the airport.
      */
     Q_PROPERTY(QString name READ name CONSTANT)
     
+    /**
+     * Altitude of the airport.
+     */
+    Q_PROPERTY(int altitude READ altitude CONSTANT)
+    
+    /**
+     * Defines whether the airport was created from the
+     * database record or as a placeholder for the unrecognized
+     * one.
+     */
+    Q_PROPERTY(bool valid READ isValid CONSTANT)
+    
 signals:
+    /**
+     * Emitted only when a flight is added or removed, either inbound
+     * or outbound, or when ATC staff changes.
+     */
     void updated();
     
 public:
     /**
+     * Creates the Airport instance, getting all its data
+     * from the given record. The airport created using
+     * this constructor is valid.
+     * 
      * \param data Record in the database.
      */
-    Airport(const AirportRecord* record);
+    Airport(const AirportRecord* record, QObject* parent = nullptr);
     
-    ~Airport() = default;
+    /**
+     * Creates the Airport instance that has the
+     * given ICAO. The airport is invalid. It becomes
+     * only a placeholder for the ICAO code.
+     */
+    Airport(const QString& icao, QObject* parent = nullptr);
+    
+    /**
+     * Creates the placeholder Airport instance, without ICAO code.
+     */
+    Airport(QObject* parent = nullptr);
     
     /**
      * Counts flights that are about to take off.
@@ -128,17 +168,14 @@ public:
      */
     LonLat position() const;
     
-    /**
-     * \return Pointer to AirportRecord in the database.
-     */
-    inline const AirportRecord* data() const
-    {
-        return __data;
-    }
-    
     inline const QString& icao() const
     {
         return __icao;
+    }
+    
+    inline const QString& iata() const
+    {
+        return __iata;
     }
     
     inline const QString& city() const
@@ -146,9 +183,24 @@ public:
         return __city;
     }
     
+    inline const QString& country() const
+    {
+        return __country;
+    }
+    
     inline const QString& name() const
     {
         return __name;
+    }
+    
+    inline int altitude() const
+    {
+        return __altitude;
+    }
+    
+    inline bool isValid() const
+    {
+        return __data != nullptr;
     }
     
     /**
@@ -175,11 +227,16 @@ public:
         return __outbounds;
     }
     
+    ~Airport() = default;
+    
 private:
     const AirportRecord* __data;
     const QString __icao;
+    const QString __iata;
     const QString __city;
+    const QString __country;
     const QString __name;
+    const int __altitude;
     
     AtcTableModel* __staff;
     FlightTableModel* __inbounds;

@@ -30,16 +30,18 @@
 
 #include "airport.h"
 
-Airport::Airport(const AirportRecord* record) :
+Airport::Airport(const AirportRecord* record, QObject* parent) :
+    QObject(parent),
     __data(record),
     __icao(__data->icao),
-    __city(__data ? QString::fromUtf8(__data->city) : QString()),
-    __name(__data ? QString::fromUtf8(__data->name) : QString()),
+    __city(QString::fromUtf8(__data->city)),
+    __country(QString::fromUtf8(__data->country)),
+    __name(QString::fromUtf8(__data->name)),
+    __altitude(__data->altitude),
     __staff(new AtcTableModel(this)),
     __inbounds(new FlightTableModel(this)),
     __outbounds(new FlightTableModel(this))
 {
-
     Q_ASSERT(__data);
     
     auto fillFir = [this](const QString & icao, bool isFss) {
@@ -55,40 +57,78 @@ Airport::Airport(const AirportRecord* record) :
     fillFir(QString(__data->fir_b), __data->is_fir_b_oceanic);
 }
 
+Airport::Airport(const QString& icao, QObject* parent) : 
+    QObject(parent),
+    __data(nullptr),
+    __icao(icao),
+    __altitude(0),
+    __staff(nullptr),
+    __inbounds(nullptr),
+    __outbounds(nullptr)
+{
+    Q_ASSERT(!icao.isEmpty());
+}
+
+Airport::Airport(QObject* parent) :
+    QObject (parent),
+    __data(nullptr),
+    __icao(tr("(unknown)")),
+    __altitude(0),
+    __staff(nullptr),
+    __inbounds(nullptr),
+    __outbounds(nullptr)
+{
+
+}
+
 unsigned
 Airport::countDepartures(bool includePrefiled) const
 {
-    return std::count_if(__outbounds->flights().begin(), __outbounds->flights().end(),
-    [includePrefiled](const Pilot * p) {
-        return p->phase() == Pilot::Departing &&
-               (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled));
-    });
+    if (isValid()) {
+        return std::count_if(__outbounds->flights().begin(), __outbounds->flights().end(), [includePrefiled](const Pilot * p) {
+            return p->phase() == Pilot::Departing && (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled));
+        });
+    } else {
+        return 0;
+    }
 }
 
 unsigned
 Airport::countOutbounds() const
 {
-    return __outbounds->rowCount();
+    if (isValid())
+        return __outbounds->rowCount();
+    else
+        return 0;
 }
 
 unsigned
 Airport::countArrivals() const
 {
-    return std::count_if(__inbounds->flights().begin(), __inbounds->flights().end(),
-    [](const Pilot * p) {
-        return p->phase() == Pilot::Arrived;
-    });
+    if (isValid()) {
+        return std::count_if(__inbounds->flights().begin(), __inbounds->flights().end(), [](const Pilot * p) {
+                return p->phase() == Pilot::Arrived;
+        });
+    } else {
+        return 0;
+    }
 }
 
 unsigned
 Airport::countInbounds() const
 {
-    return __inbounds->rowCount();
+    if (isValid())
+        return __inbounds->rowCount();
+    else
+        return 0;
 }
 
 Controller::Facilities
 Airport::facilities() const
 {
+    if (!isValid())
+        return 0;
+    
     Controller::Facilities facilities = 0;
     
     for (const Controller* c : __staff->staff())
@@ -100,6 +140,7 @@ Airport::facilities() const
 void
 Airport::addStaff(const Controller* atc)
 {
+    Q_ASSERT(isValid());
     __staff->add(atc);
     connect(atc, &Controller::updated, this, &Airport::updated);
     connect(atc, &Controller::destroyed, this, &Airport::updated, Qt::DirectConnection);
@@ -109,6 +150,7 @@ Airport::addStaff(const Controller* atc)
 void
 Airport::addInbound(const Pilot* pilot)
 {
+    Q_ASSERT(isValid());
     __inbounds->add(pilot);
     connect(pilot, &Pilot::updated, this, &Airport::updated);
     connect(pilot, &Pilot::destroyed, this, &Airport::updated, Qt::DirectConnection);
@@ -122,6 +164,7 @@ Airport::addInbound(const Pilot* pilot)
 void
 Airport::addOutbound(const Pilot* pilot)
 {
+    Q_ASSERT(isValid());
     __outbounds->add(pilot);
     connect(pilot, &Pilot::updated, this, &Airport::updated);
     connect(pilot, &Pilot::destroyed, this, &Airport::updated, Qt::DirectConnection);
@@ -135,23 +178,26 @@ Airport::addOutbound(const Pilot* pilot)
 bool
 Airport::isEmpty() const
 {
-    return
-        __staff->rowCount() == 0 &&
-        __inbounds->rowCount() == 0 &&
-        __outbounds->rowCount() == 0;
+    if (isValid())
+        return __staff->rowCount() == 0 && __inbounds->rowCount() == 0 && __outbounds->rowCount() == 0;
+    else
+        return true;
 }
 
 bool
 Airport::isStaffed() const
 {
-    return
-        __staff->rowCount() > 0 ||
-        __inbounds->rowCount() > 0 ||
-        __outbounds->rowCount() > 0;
+    if (isValid())
+        return __staff->rowCount() > 0 || __inbounds->rowCount() > 0 || __outbounds->rowCount() > 0;
+    else
+        return false;
 }
 
 LonLat
 Airport::position() const
 {
-    return LonLat(data()->longitude, data()->latitude);
+    if (isValid())
+        return LonLat(__data->longitude, __data->latitude);
+    else
+        return LonLat();
 }

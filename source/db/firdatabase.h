@@ -58,7 +58,6 @@ class FirDatabase : public QObject, public Notifiable {
     Q_OBJECT
     
 public:
-
     /**
      * Default ctor.
      */

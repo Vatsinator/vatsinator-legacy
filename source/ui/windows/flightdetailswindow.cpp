@@ -65,13 +65,13 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* pilot, QWidget* parent) :
     FromLabel->setFont(style->h2Font());
     ToLabel->setFont(style->h2Font());
     
-    connect(qApp, &QCoreApplication::aboutToQuit, this, &FlightDetailsWindow::close);
     connect(__pilot, &Pilot::updated, this, &FlightDetailsWindow::__updateInfo);
+    connect(__pilot, &Pilot::airportsUpdated, this, &FlightDetailsWindow::__updateAirports);
     connect(__pilot, &Pilot::invalid, this, &FlightDetailsWindow::close);
     
     connect(OriginButton, &AirportDetailsButton::clicked, wui(), &WidgetsUserInterface::showAirportDetails);
     connect(DestinationButton, &AirportDetailsButton::clicked, wui(), &WidgetsUserInterface::showAirportDetails);
-            
+    
     connect(ShowButton, &QPushButton::clicked, [this]() {
         wui()->mainWindow()->mapWidget()->renderer()->scene()->cancelFlightTracking();
         wui()->mainWindow()->mapWidget()->renderer()->scene()->moveTo(__pilot->position());
@@ -112,58 +112,34 @@ FlightDetailsWindow::showEvent(QShowEvent* event)
 void
 FlightDetailsWindow::__updateAirports()
 {
-    if (!__pilot->route().origin.isEmpty()) {
-        const Airport* ap = __pilot->origin();
-        QString text = __pilot->route().origin;
+    if (__pilot->origin()->isValid()) {
+        FromCityLabel->setText(__pilot->origin()->city());
         
-        if (ap) {
-            FromCityLabel->setText(QString::fromUtf8(ap->data()->city));
-            text.append(static_cast<QString>(" ") %
-                        QString::fromUtf8(ap->data()->name));
-                        
-            if (!QString::fromUtf8(ap->data()->name).contains(QString::fromUtf8(ap->data()->city)))
-                text.append(
-                    static_cast<QString>(" - ") %
-                    QString::fromUtf8(ap->data()->city));
-                    
-            OriginButton->setAirportPointer(ap);
-        } else {
-            OriginButton->setAirportPointer(nullptr);
-            FromCityLabel->setText("");
-        }
+        QString text = QStringLiteral("%1 %2").arg(__pilot->origin()->icao(), __pilot->origin()->name());
+        if (!__pilot->origin()->name().contains(__pilot->origin()->city()))
+            text.append(" - ").append(__pilot->origin()->city());
         
         OriginButton->setText(text);
+        OriginButton->setAirportPointer(__pilot->origin());
     } else {
-        OriginButton->setText("(unknown)");
-        OriginButton->setAirportPointer(nullptr);
         FromCityLabel->setText("");
+        OriginButton->setText(__pilot->origin()->icao());
+        OriginButton->setAirportPointer(nullptr);
     }
     
-    if (!__pilot->route().destination.isEmpty()) {
-        const Airport* ap = __pilot->destination();
-        QString text = __pilot->route().destination;
+    if (__pilot->destination()->isValid()) {
+        ToCityLabel->setText(__pilot->destination()->city());
         
-        if (ap) {
-            ToCityLabel->setText(QString::fromUtf8(ap->data()->city));
-            text.append(static_cast<QString>(" ") %
-                        QString::fromUtf8(ap->data()->name));
-                        
-            if (!QString::fromUtf8(ap->data()->name).contains(QString::fromUtf8(ap->data()->city)))
-                text.append(
-                    static_cast<QString>(" - ") %
-                    QString::fromUtf8(ap->data()->city));
-                    
-            DestinationButton->setAirportPointer(ap);
-        } else {
-            DestinationButton->setAirportPointer(nullptr);
-            ToCityLabel->setText("");
-        }
+        QString text = QStringLiteral("%1 %2").arg(__pilot->destination()->icao(), __pilot->destination()->name());
+        if (!__pilot->destination()->name().contains(__pilot->destination()->city()))
+            text.append(" - ").append(__pilot->destination()->city());
         
         DestinationButton->setText(text);
+        DestinationButton->setAirportPointer(__pilot->destination());
     } else {
-        DestinationButton->setText("(unknown)");
-        DestinationButton->setAirportPointer(NULL);
         ToCityLabel->setText("");
+        DestinationButton->setText(__pilot->destination()->icao());
+        DestinationButton->setAirportPointer(nullptr);
     }
 }
 
@@ -194,7 +170,10 @@ FlightDetailsWindow::__updateInfo()
     FromLabel->setText(__pilot->route().origin);
     ToLabel->setText(__pilot->route().destination);
     
-    FlightProgress->setValue(__pilot->progress());
+    if (__pilot->origin()->isValid() && __pilot->destination()->isValid())
+        FlightProgress->setValue(__pilot->progress());
+    else
+        FlightProgress->hide();
     
     PlannedDepartureTimeLabel->setText(__pilot->std().isValid() ? __pilot->std().toString("hh:mm") : "-");
     ActualDepartureTimeLabel->setText(__pilot->atd().isValid() ? __pilot->atd().toString("hh:mm") : "-");

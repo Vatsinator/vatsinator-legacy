@@ -123,8 +123,8 @@ AirportDetailsWindow::showEvent(QShowEvent* event)
     connect(wfd, &WeatherForecastDownloader::finished, this, &AirportDetailsWindow::__updateForecast);
     
     WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
-    request->setCity(QString::fromUtf8(__airport->data()->city));
-    request->setCountry(QString::fromUtf8(__airport->data()->country));
+    request->setCity(__airport->city());
+    request->setCountry(__airport->country());
     request->setPosition(__airport->position());
     
     wfd->download(request);
@@ -139,26 +139,26 @@ AirportDetailsWindow::showEvent(QShowEvent* event)
 void
 AirportDetailsWindow::__fillLabels()
 {
+    //: %1 is an ICAO code of the airport.
     setWindowTitle(tr("%1 - airport details").arg(__airport->icao()));
     
-    if (!QString(__airport->data()->iata).isEmpty()) {
-        CodesLabel->setText(QString("%1 / %2").arg(QString(__airport->data()->icao),
-                            QString(__airport->data()->iata)));
-    } else
-        CodesLabel->setText(QString(__airport->data()->icao));
-        
-    NameLabel->setText(QString("%1, %2").arg(QString::fromUtf8(__airport->data()->name),
-                       QString::fromUtf8(__airport->data()->city)));
-                       
+    if (!QString(__airport->iata()).isEmpty())
+        CodesLabel->setText(QStringLiteral("%1 / %2").arg(__airport->icao(), __airport->iata()));
+    else
+        CodesLabel->setText(__airport->icao());
+    
+    NameLabel->setText(QStringLiteral("%1, %2").arg(__airport->name(), __airport->city()));
+    
     // fill "Airport info" tab
-    FullNameLabel->setText(QString::fromUtf8(__airport->data()->name));
-    CityLabel->setText(QString::fromUtf8(__airport->data()->city));
-    CountryLabel->setText(QString::fromUtf8(__airport->data()->country));
-    AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->data()->altitude)));
+    FullNameLabel->setText(__airport->name());
+    CityLabel->setText(__airport->city());
+    CountryLabel->setText(__airport->country());
+    //: ft - feet
+    AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->altitude())));
     
     // If METAR is available, set it. Otherwise, request it.
     auto matches = vApp()->metarUpdater()->model()->match(
-                       vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
+        vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
                        
     if (matches.length() > 0) {
         Metar metar = matches.first().data(MetarRole).value<Metar>();
