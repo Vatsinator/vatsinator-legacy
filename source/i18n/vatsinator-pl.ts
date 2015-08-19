@@ -1022,7 +1022,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator needs to be restarted before changes&lt;br/&gt;to the language settings will take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vatsinator musi zostać uruchomiony ponownie,&lt;br/&gt;aby zmiany ustawień języka odniosły efekt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="63"/>
