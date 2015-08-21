@@ -29,7 +29,13 @@
 
 #include "tilemanager.h"
 
-Q_CONSTEXPR quint32 TileWidth = 256; /* in pixels */
+Q_CONSTEXPR quint32 TileWidth = /* in pixels */
+#ifdef Q_OS_ANDROID
+    512;
+#else
+    256;
+#endif
+    
 Q_CONSTEXPR int Downloaders = 4; /* number of tile downloaders */
 
 TileManager::TileManager(MapRenderer* renderer, QObject* parent) :

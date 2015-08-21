@@ -34,6 +34,7 @@ Airport::Airport(const AirportRecord* record, QObject* parent) :
     QObject(parent),
     __data(record),
     __icao(__data->icao),
+    __iata(__data->iata),
     __city(QString::fromUtf8(__data->city)),
     __country(QString::fromUtf8(__data->country)),
     __name(QString::fromUtf8(__data->name)),

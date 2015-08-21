@@ -140,6 +140,7 @@ VatsimDataDocument::ClientLine::ClientLine(const QString& data)
     valid = line.size() == 42;
     
     if (valid) {
+        callsign = line.at(0);
         bool ok;
         pid = line.at(1).toUInt(&ok);
         Q_ASSERT(ok);

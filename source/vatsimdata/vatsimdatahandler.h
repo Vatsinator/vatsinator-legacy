@@ -429,8 +429,10 @@ private slots:
 private:
 
     /*
-     * All connected clients
+     * All connected clients.
      * pid <-> instance pairs
+     * 
+     * It is multi map, as ATC sometimes may have two same PIDs (i.e. EPWW_CTR can provide EPWA_ATIS as well). 
      */
     QMap<quint32, Client*> __clients;
     

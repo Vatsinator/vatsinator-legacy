@@ -32,35 +32,51 @@ Item {
     signal itemTouched(var item)
     
     property var flightDetails: null /**< FlightDetails component */
+    property var airportDetails: null /**< AirportDetails component */
+    property var firDetails: null /**< FirDetails component */
     property var currentDetails: null /**< Currently shown details box */
     
     function showFlightDetails(flight)
     {
-        console.log(flight.callsign)
-        
         var fd = root.flightDetails.createObject(root, {
             width: root.width - 56 * dp,
             height: 168 * dp,
             flight: flight
         });
         
-        console.assert(fd != null);
-        
-        if (root.currentDetails)
-            root.currentDetails.close();
-        
-        fd.show();
-        currentDetails = fd;
+        root.showDetails(fd);
     }
     
     function showAirportDetails(airport)
     {
-        console.log(airport.icao)
+        var ad = root.airportDetails.createObject(root, {
+            width: root.width - 56 * dp,
+            height: 56 * dp,
+            airport: airport
+        });
+        
+        root.showDetails(ad);
     }
     
     function showFirDetails(fir)
     {
-        console.log(fir.icao)
+        var fd = root.firDetails.createObject(root, {
+            width: root.width - 56 * dp,
+            height: 56 * dp,
+            fir: fir
+        });
+        
+        root.showDetails(fd);
+    }
+    
+    function showDetails(details)
+    {
+        console.assert(details != null);
+        if (root.currentDetails)
+            root.currentDetails.close();
+        
+        details.show();
+        root.currentDetails = details;
     }
     
     function hideCurrentDetails()
@@ -116,6 +132,8 @@ Item {
     
     Component.onCompleted: {
         root.flightDetails = Qt.createComponent("FlightDetails.qml");
+        root.airportDetails = Qt.createComponent("AirportDetails.qml");
+        root.firDetails = Qt.createComponent("FirDetails.qml");
         root.itemTouched.connect(updateSelectedItem);
     }
 }

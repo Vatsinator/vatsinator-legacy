@@ -101,16 +101,18 @@ Map::updateZoom(qreal factor)
 void
 Map::updatePosition(int x, int y)
 {
-    LonLat center = __renderer->center();
-    QPoint p(x, y);
-    center -= __renderer->scaleToLonLat(p);
-    center.ry() = qBound(-90.0, center.y(), 90.0);
+    QPoint center = __renderer->center() * __renderer->transform();
+    QPoint diff(x, y);
+    center -= diff;
     
-    if (center.x() < -180.0)
-        center.rx() += 360.0;
+    LonLat llcenter = __renderer->mapToLonLat(center);
+    llcenter.ry() = qBound(-90.0, llcenter.y(), 90.0);
+    
+    if (llcenter.x() < -180.0)
+        llcenter.rx() += 360.0;
         
-    if (center.x() > 180.0)
-        center.rx() -= 360.0;
+    if (llcenter.x() > 180.0)
+        llcenter.rx() -= 360.0;
         
-    __renderer->setCenter(center);
+    __renderer->setCenter(llcenter);
 }

@@ -645,30 +645,44 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
     __observers = 0;
     
     for (auto& c : document.clients()) {
-        if (__clients.contains(c.pid))
-            __clients[c.pid]->update(c.line);
-        else {
-            if (c.type == VatsimDataDocument::ClientLine::Atc) {
-                Controller* atc = new Controller(c.line);
-                
-                if (atc->isValid()) {
-                    __clients[atc->pid()] = atc;
-                    __newClients << atc;
-                    __atcs->add(atc);
-                } else {
-                    __observers += 1;
-                    atc->deleteLater();
-                }
-            } else { // Pilot
-                Pilot* pilot = new Pilot(c.line);
-                
-                if (pilot->position().isNull())
-                    pilot->deleteLater();
-                else {
-                    __clients[pilot->pid()] = pilot;
-                    __newClients << pilot;
-                    __flights->add(pilot);
-                }
+        if (c.type == VatsimDataDocument::ClientLine::Atc) {
+            /* Multiple PIDs for ATCs allowed, unique key is pid + callsign */
+            auto it = __clients.find(c.pid);
+            while (it != __clients.end() && it.value()->callsign() != c.callsign)
+                ++it;
+            
+            if (it != __clients.end()) {
+                it.value()->update(c.line);
+                continue;
+            }
+            
+            /* No such ATC with the given callsign found */
+            Controller* atc = new Controller(c.line);
+            
+            if (atc->isValid()) {
+                __clients.insertMulti(atc->pid(), atc);
+                __newClients << atc;
+                __atcs->add(atc);
+            } else {
+                __observers += 1;
+                atc->deleteLater();
+            }
+        } else { // Pilot
+            /* Multiple PIDs for pilots not allowed */
+            Q_ASSERT(__clients.count(c.pid) <= 1);
+            if (__clients.contains(c.pid)) {
+                __clients[c.pid]->update(c.line);
+                continue;
+            }
+            
+            Pilot* pilot = new Pilot(c.line);
+            
+            if (pilot->position().isNull())
+                pilot->deleteLater();
+            else {
+                __clients[pilot->pid()] = pilot;
+                __newClients << pilot;
+                __flights->add(pilot);
             }
         }
     }

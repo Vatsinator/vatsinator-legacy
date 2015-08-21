@@ -1,9 +1,11 @@
 <RCC>
   <qresource prefix="qmls">
     <file>AboutDialog.qml</file>
+    <file>AirportDetails.qml</file>
     <file>AtcList.qml</file>
     <file>AtcListDelegate.qml</file>
     <file>Details.qml</file>
+    <file>FirDetails.qml</file>
     <file>FlightDetails.qml</file>
     <file>FlightList.qml</file>
     <file>FlightListDelegate.qml</file>

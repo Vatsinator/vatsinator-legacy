@@ -55,7 +55,6 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
     BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    connect(qApp, &QCoreApplication::aboutToQuit, this, &FirDetailsWindow::close);
     connect(vApp()->vatsimDataHandler()->notamProvider(), &NotamProvider::notamReady,
             this, &FirDetailsWindow::__notamUpdate);
     connect(AirportsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showAirportDetails);

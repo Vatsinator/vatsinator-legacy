@@ -43,6 +43,21 @@ class Fir : public QObject {
      */
     Q_PROPERTY(QString icao READ icao CONSTANT)
     
+    /**
+     * This property defines whether the given FIR is Oceanic (FSS) or not.
+     */
+    Q_PROPERTY(bool oceanic READ isOceanic CONSTANT)
+    
+    /**
+     * Short, descriptive name of the FIR.
+     */
+    Q_PROPERTY(QString name READ name CONSTANT)
+    
+    /**
+     * Country in which the FIR exists.
+     */
+    Q_PROPERTY(QString country READ country CONSTANT)
+    
 signals:
     void updated();
     
