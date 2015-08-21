@@ -160,11 +160,10 @@ FlightTableModel::data(const QModelIndex& index, int role) const
             return __flights.at(index.row())->realName();
             
         case OriginRole:
-            // const Airport* won't work. It just won't.
-            return QVariant::fromValue<Airport*>(const_cast<Airport*>(__flights.at(index.row())->origin()));
+            return QVariant::fromValue<const Airport*>(__flights.at(index.row())->origin());
             
         case DestinationRole:
-            return QVariant::fromValue<Airport*>(const_cast<Airport*>(__flights.at(index.row())->destination()));
+            return QVariant::fromValue<const Airport*>(__flights.at(index.row())->destination());
         
         default:
             return QVariant();
