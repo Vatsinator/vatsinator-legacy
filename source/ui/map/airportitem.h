@@ -75,6 +75,7 @@ public:
     
 private:
     void __loadIcon() const;
+    void __drawLines(QPainter* painter, const WorldTransform& transform) const;
     
 private slots:
     void __invalidate();

@@ -72,12 +72,13 @@ AirportItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags 
         __loadIcon();
     }
     
+    if (flags & DrawSelected)
+        __drawLines(painter, transform);
+    
     QRect rect(QPoint(0, 0), __icon.size());
     rect.moveCenter(position() * transform);
     
     painter->drawPixmap(rect, __icon);
-    
-    Q_UNUSED(flags);
 }
 
 void
@@ -101,6 +102,38 @@ AirportItem::__loadIcon() const
             }
         }
     }
+}
+
+void
+AirportItem::__drawLines(QPainter* painter, const WorldTransform& transform) const
+{
+    QPainter::RenderHints hints = painter->renderHints();
+    painter->setRenderHints(hints | QPainter::Antialiasing);
+    
+    QPen orig = painter->pen();
+    QPoint pos = position() * transform;
+    
+    painter->setPen(QPen(__scene->settings().colors.origin_to_pilot_line));
+    for (const Pilot* p: data()->outbounds()->flights()) {
+        if (p->phase() == Pilot::Airborne || p->phase() == Pilot::Arrived) {
+            QPoint pf = p->position() * transform;
+            painter->drawLine(pf, pos);
+        }
+    }
+    
+    QPen pen(__scene->settings().colors.pilot_to_destination);
+    pen.setStyle(Qt::DashLine);
+    painter->setPen(pen);
+    
+    for (const Pilot* p: data()->inbounds()->flights()) {
+        if (p->phase() == Pilot::Airborne || p->phase() == Pilot::Departing) {
+            QPoint pf = p->position() * transform;
+            painter->drawLine(pf, pos);
+        }
+    }
+    
+    painter->setRenderHints(hints);
+    painter->setPen(orig);
 }
 
 void

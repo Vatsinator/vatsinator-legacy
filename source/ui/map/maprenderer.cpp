@@ -228,4 +228,7 @@ MapRenderer::__updateScreen()
 {
     __screen.setTopLeft(mapToLonLat(QPoint(0, 0)));
     __screen.setBottomRight(mapToLonLat(QPoint(__viewport.width(), __viewport.height())));
+    if (__screen.right() < __screen.left()) {
+        __screen.setRight(MapConfig::longitudeMax());
+    }
 }
