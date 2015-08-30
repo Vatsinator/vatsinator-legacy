@@ -51,7 +51,7 @@ Item {
     {
         var ad = root.airportDetails.createObject(root, {
             width: root.width - 56 * dp,
-            height: 56 * dp,
+            height: 168 * dp,
             airport: airport
         });
         

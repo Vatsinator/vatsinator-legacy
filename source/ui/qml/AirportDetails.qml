@@ -33,7 +33,7 @@ Details {
         
         Item {
             width: parent.width
-            height: root.height
+            height: root.height / 3
             
             Column {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -45,7 +45,7 @@ Details {
                     font.pixelSize: 24 * dp
                     anchors.horizontalCenter: parent.horizontalCenter
                     
-                    text: root.airport ? root.airport.icao + "/" + root.airport.iata : ""
+                    text: airport ? airport.icao + "/" + airport.iata : ""
                 }
                 
                 Text {
@@ -54,9 +54,46 @@ Details {
                     font.pixelSize: 12 * dp
                     anchors.horizontalCenter: parent.horizontalCenter
                     
-                    text: root.airport ? root.airport.name + ", " + root.airport.city : ""
+                    text: airport ? airport.name + ", " + airport.city : ""
                 }   
             }
         }
-    }   
+        
+        Rectangle {
+            width: parent.width
+            height: root.height / 3
+            
+            gradient: Gradient { /* Nicely shaded rectangle */
+                GradientStop { position: 0.0; color: Qt.darker(palette.byHue(900), 1.2) }
+                GradientStop { position: 0.03; color: palette.byHue(900) }
+                GradientStop { position: 0.97; color: palette.byHue(900) }
+                GradientStop { position: 1.0; color: Qt.darker(palette.byHue(900), 1.2) }
+            }
+            
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 30
+                
+                Text {
+                    font.weight: Font.Medium
+                    font.pixelSize: 12 * dp
+                    color: "#ffffff"
+                    
+                    text: metars.fetch(root.airport.icao).metar
+                }
+            }
+        }
+        
+        Item {
+            width: parent.width
+            height: root.height / 3
+            
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 20
+            }
+        }
+    }
 }

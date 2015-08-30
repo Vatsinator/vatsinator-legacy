@@ -54,7 +54,6 @@ private slots:
     void __updateNotam(NotamListModel* model);
     void __showDetails(QModelIndex index);
     void __goToNotam(QModelIndex index);
-    void __metarUpdated();
     
 private:
     const Airport* __airport;

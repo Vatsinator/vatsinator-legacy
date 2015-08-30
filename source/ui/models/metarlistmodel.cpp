@@ -33,23 +33,13 @@ MetarListModel::~MetarListModel()
 }
 
 void
-MetarListModel::addOrUpdate(const QString& metar)
+MetarListModel::addMetar(Metar* metar)
 {
-    QString icao = metar.left(4).toUpper();
+    beginInsertRows(QModelIndex(), __metars.size(), __metars.size());
+    __metars << metar;
+    endInsertRows();
     
-    auto it = std::find_if(__metars.begin(), __metars.end(), [&icao](Metar * m) {
-        return m->icao() == icao;
-    });
-    
-    if (it == __metars.end()) {
-        beginInsertRows(QModelIndex(), __metars.size(), __metars.size());
-        __metars << new Metar(icao, metar);
-        endInsertRows();
-    } else {
-        (*it)->setMetar(metar);
-        int n = it - __metars.begin();
-        emit dataChanged(createIndex(n, 0), createIndex(n, 0));
-    }
+    connect(metar, &Metar::metarChanged, this, &MetarListModel::__metarUpdated);
 }
 
 int
@@ -73,7 +63,7 @@ MetarListModel::data(const QModelIndex& index, int role) const
             return __metars.at(index.row())->lastFetchTime();
             
         case MetarRole:
-            return QVariant::fromValue(*(__metars.at(index.row())));
+            return QVariant::fromValue(__metars.at(index.row()));
             
         default:
             return QVariant();
@@ -89,8 +79,8 @@ MetarListModel::match(const QModelIndex& start, int role, const QVariant& value,
         
     if (value.type() != QVariant::String)
         return QModelIndexList();
-        
-    QString icao = value.toString().toUpper();
+    
+    QString icao = value.toString();
     QModelIndexList matches;
     
     for (int i = start.row(); i < __metars.size() && matches.size() < hits; ++i) {
@@ -108,4 +98,22 @@ MetarListModel::clear()
     qDeleteAll(__metars);
     __metars.clear();
     endResetModel();
+}
+
+void
+MetarListModel::__metarUpdated(const QString& metar)
+{
+    Metar* m = qobject_cast<Metar*>(sender());
+    Q_ASSERT(m);
+    
+    auto it = std::find_if(__metars.begin(), __metars.end(), [m](Metar * metar) {
+        return m->icao() == metar->icao();
+    });
+    
+    if (it == __metars.end()) {
+        qWarning("Invalid metar: %s", qPrintable(metar));
+    } else {
+        int n = it - __metars.begin();
+        emit dataChanged(createIndex(n, 0), createIndex(n, 0));
+    }
 }

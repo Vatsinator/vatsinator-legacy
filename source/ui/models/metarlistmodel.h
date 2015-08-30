@@ -26,29 +26,46 @@
 class Metar;
 
 /**
- * The MetarListModel class is a model that keeps METAR reports.
+ * The MetarListModel class is a model that keeps METARs.
  */
 class MetarListModel : public QAbstractListModel {
     Q_OBJECT
     
 public:
     /**
-     * The constructor passes _parent_ to _QAbstractListModel_.
+     * The constructor passes \c parent to the \c QAbstractListModel.
      */
     MetarListModel(QObject* parent = nullptr);
     
     virtual ~MetarListModel();
     
-    void addOrUpdate(const QString& metar);
+    /**
+     * Adds the given METAR object to the model.
+     */
+    void addMetar(Metar* metar);
     
+    /**
+     * \copydoc QAbstractListModel::rowCount()
+     */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    
+    /**
+     * \copydoc QAbstractListModel::data()
+     */
     QVariant data(const QModelIndex& index, int role) const override;
+    
+    /**
+     * \copydoc QAbstractListModel::match()
+     */
     QModelIndexList match(const QModelIndex& start, int role,
                           const QVariant& value, int hits = 1,
                           Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
                           
 public slots:
     void clear();
+    
+private slots:
+    void __metarUpdated(const QString &metar);
     
 private:
     QList<Metar*> __metars;

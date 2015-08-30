@@ -375,6 +375,11 @@ public:
      */
     static qreal nmDistance(const LonLat& a, const LonLat& b);
     
+    /**
+     * Checks whether the given string is a valid ICAO code.
+     */
+    static bool isValidIcao(const QString& str);
+    
 public slots:
     /**
      * This is the safest method to refresh the Vatsim data.

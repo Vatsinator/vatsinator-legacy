@@ -30,7 +30,7 @@
 
 static Q_CONSTEXPR int UpdateInterval = 5 * 1000 * 60; // 5 minutes
 
-MetarUpdater::MetarUpdater (MetarListModel* model, QObject* parent) :
+MetarUpdater::MetarUpdater(MetarListModel* model, QObject* parent) :
     QObject (parent),
     __metars(model),
     __downloader(new PlainTextDownloader(this))
@@ -39,20 +39,32 @@ MetarUpdater::MetarUpdater (MetarListModel* model, QObject* parent) :
     startTimer(UpdateInterval, Qt::VeryCoarseTimer);
 }
 
-void
-MetarUpdater::fetch(QString icao)
+Metar*
+MetarUpdater::fetch(const QString& request)
 {
     QUrl vatsimMetars = vApp()->vatsimDataHandler()->metar();
-    
     if (vatsimMetars.isEmpty()) {
         qDebug("Vatsim status not read yet; postponing request");
-        __requests.enqueue(icao);
+        __requests.enqueue(request);
     } else {
-        QUrlQuery query(QStringLiteral("id=%1").arg(icao.toLower()));
+        QUrlQuery query(QStringLiteral("id=%1").arg(request.toLower()));
         QUrl url(vatsimMetars);
         url.setQuery(query);
         __downloader->fetch(url);
-        __requests.enqueue(icao);
+        __requests.enqueue(request);
+    }
+    
+    if (!VatsimDataHandler::isValidIcao(request))
+        return nullptr;
+    
+    auto matches = vApp()->metarUpdater()->model()->match(vApp()->metarUpdater()->model()->index(0), MetarRole, request, 1);
+    if (matches.length() > 0) {
+        Metar* metar = matches.first().data(MetarRole).value<Metar*>();
+        return metar;
+    } else {
+        Metar* metar = new Metar(request);
+        __metars->addMetar(metar);
+        return metar;
     }
 }
 
@@ -63,9 +75,9 @@ MetarUpdater::update()
         auto index = __metars->data(__metars->index(i), MetarRole);
         
         if (index.isValid()) {
-            Q_ASSERT(index.canConvert<Metar>());
-            Metar m = index.value<Metar>();
-            fetch(m.icao());
+            Q_ASSERT(index.canConvert<Metar*>());
+            Metar* m = index.value<Metar*>();
+            fetch(m->icao());
         }
     }
 }
@@ -78,6 +90,23 @@ MetarUpdater::timerEvent(QTimerEvent* event)
 }
 
 void
+MetarUpdater::__update(const QString& metar)
+{
+    QString icao = metar.left(4);
+    Q_ASSERT(VatsimDataHandler::isValidIcao(icao));
+    
+    auto matches = __metars->match(__metars->index(0), MetarRole, icao, 1);
+    if (matches.length() > 0) {
+        Metar* m = matches.first().data(MetarRole).value<Metar*>();
+        m->setMetar(metar);
+    } else {
+        qDebug() << "New metar:" << icao;
+        Metar* m = new Metar(icao, metar);
+        __metars->addMetar(m);
+    }
+}
+
+void
 MetarUpdater::__readMetars()
 {
     // How to recognize unavailable metars.
@@ -86,10 +115,9 @@ MetarUpdater::__readMetars()
     static const QString NoMetarText = QStringLiteral("No METAR available");
     
     QString response = __downloader->data().simplified();
-    
     if (response.isEmpty())
         return;
-        
+    
     if (response.contains(NoMetarText)) {
         __requests.dequeue();
         return;
@@ -101,7 +129,7 @@ MetarUpdater::__readMetars()
     for (const auto& w : words) {
         if (w.length() == 4 && w.startsWith(__requests.head(), Qt::CaseInsensitive)) {
             if (!metar.isEmpty())
-                __metars->addOrUpdate(metar);
+                __update(metar);
                 
             metar.clear();
         }
@@ -110,7 +138,7 @@ MetarUpdater::__readMetars()
     }
     
     if (!metar.isEmpty())
-        __metars->addOrUpdate(metar);
+        __update(metar);
         
     __requests.dequeue();
 }

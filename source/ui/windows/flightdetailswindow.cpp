@@ -104,7 +104,7 @@ FlightDetailsWindow::showEvent(QShowEvent* event)
         TrackFlightBox->setCheckState(Qt::Checked);
     else
         TrackFlightBox->setCheckState(Qt::Unchecked);
-        
+    
     __updateInfo();
     __updateAirports();
 }
@@ -123,7 +123,7 @@ FlightDetailsWindow::__updateAirports()
         OriginButton->setAirportPointer(__pilot->origin());
     } else {
         FromCityLabel->setText("");
-        OriginButton->setText(__pilot->origin()->icao());
+        OriginButton->setText(__pilot->route().origin);
         OriginButton->setAirportPointer(nullptr);
     }
     
@@ -138,7 +138,7 @@ FlightDetailsWindow::__updateAirports()
         DestinationButton->setAirportPointer(__pilot->destination());
     } else {
         ToCityLabel->setText("");
-        DestinationButton->setText(__pilot->destination()->icao());
+        DestinationButton->setText(__pilot->route().destination);
         DestinationButton->setAirportPointer(nullptr);
     }
 }

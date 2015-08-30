@@ -155,18 +155,11 @@ AirportDetailsWindow::__fillLabels()
     //: ft - feet
     AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->altitude())));
     
-    // If METAR is available, set it. Otherwise, request it.
-    auto matches = vApp()->metarUpdater()->model()->match(
-        vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
-                       
-    if (matches.length() > 0) {
-        Metar metar = matches.first().data(MetarRole).value<Metar>();
-        MetarLabel->setText(metar.metar());
-    } else
-        vApp()->metarUpdater()->fetch(__airport->icao());
-        
-    connect(vApp()->metarUpdater()->model(), &MetarListModel::dataChanged, this, &AirportDetailsWindow::__metarUpdated);
-    connect(vApp()->metarUpdater()->model(), &MetarListModel::rowsInserted, this, &AirportDetailsWindow::__metarUpdated);
+    Metar* metar = vApp()->metarUpdater()->fetch(__airport->icao());
+    MetarLabel->setText(metar->metar());
+    connect(metar, &Metar::metarChanged, [this](const QString& metar) {
+        MetarLabel->setText(metar);
+    });
 }
 
 void
@@ -204,18 +197,4 @@ AirportDetailsWindow::__goToNotam(QModelIndex index)
     
     if (!url.isEmpty())
         QDesktopServices::openUrl(url);
-}
-
-void
-AirportDetailsWindow::__metarUpdated()
-{
-    auto matches = vApp()->metarUpdater()->model()->match(
-                       vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
-                       
-    if (matches.length() > 0) {
-        Metar metar = matches.first().data(MetarRole).value<Metar>();
-        
-        if (metar.metar() != MetarLabel->text())
-            MetarLabel->setText(metar.metar());
-    }
 }

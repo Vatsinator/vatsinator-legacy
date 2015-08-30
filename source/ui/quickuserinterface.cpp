@@ -21,6 +21,7 @@
 #include <QtQuick>
 
 #include "events/decisionevent.h"
+#include "network/metarupdater.h"
 #include "ui/map/airportitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/firitem.h"
@@ -31,6 +32,7 @@
 #include "ui/quick/paletteprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
+#include "vatsimdata/metar.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
@@ -74,13 +76,11 @@ QuickUserInterface::dp() const
 void
 QuickUserInterface::initialize()
 {
-    /* For C++ methods called from QML */
-    qRegisterMetaType<MapItem*>();
-    
     /* For C++ classes accessed from QML */
     qmlRegisterType<const Airport>();
     qmlRegisterType<const Fir>();
     qmlRegisterType<const Pilot>();
+    qmlRegisterType<Metar>();
     
     /* C++ classes instantiated by QML */
     qmlRegisterType<Map>("org.eu.vatsinator.ui", 1, 0, "Map");
@@ -91,6 +91,7 @@ QuickUserInterface::initialize()
     ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
     ctx->setContextProperty("android", new AndroidBridge(this));
     ctx->setContextProperty("palette", new PaletteProvider(this));
+    ctx->setContextProperty("metars", vApp()->metarUpdater());
     ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp()));
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));

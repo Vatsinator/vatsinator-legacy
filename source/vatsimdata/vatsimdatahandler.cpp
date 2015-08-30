@@ -376,6 +376,13 @@ VatsimDataHandler::nmDistance(const LonLat& a, const LonLat& b)
     return qSqrt(x * x + y * y) * R;
 }
 
+bool
+VatsimDataHandler::isValidIcao(const QString& str)
+{
+    QRegExp rx("[a-zA-z0-9]{,4}");
+    return rx.exactMatch(str);
+}
+
 void
 VatsimDataHandler::requestDataUpdate()
 {
@@ -391,7 +398,6 @@ VatsimDataHandler::__readAliasFile(const QString& fileName)
     qDebug("Reading %s...", qPrintable(fileName));
     
     QFile file(fileName);
-    
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(file.fileName()));
         return;
@@ -442,7 +448,6 @@ VatsimDataHandler::__readCountryFile(const QString& fileName)
     qDebug("Reading %s...", qPrintable(fileName));
     
     QFile file(fileName);
-    
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(fileName));
         return;
@@ -610,19 +615,25 @@ VatsimDataHandler::__initializeData()
 {
     std::for_each(vApp()->firDatabase()->firs().begin(),
                   vApp()->firDatabase()->firs().end(),
-    [this](const FirRecord & fr) {
-        Fir* f = new Fir(&fr);
-        __firs.insert(f->icao(), f);
-    }
-                 );
+        [this](const FirRecord & fr) {
+            Fir* f = new Fir(&fr);
+            __firs.insert(f->icao(), f);
+        }
+    );
                  
     std::for_each(vApp()->airportDatabase()->airports().begin(),
                   vApp()->airportDatabase()->airports().end(),
-    [this](const AirportRecord & ar) {
-        Airport* a = new Airport(&ar);
-        __airports.insert(a->icao(), a);
-    }
-                 );
+        [this](const AirportRecord& ar) {
+            /* TODO Remove invalid ICAOs from the database itself */
+            if (!isValidIcao(ar.icao)) {
+                qWarning("Invalid airport icao in the database: %s", ar.icao);
+                return;
+            }
+            
+            Airport* a = new Airport(&ar);
+            __airports.insert(a->icao(), a);
+        }
+    );
 }
 
 void

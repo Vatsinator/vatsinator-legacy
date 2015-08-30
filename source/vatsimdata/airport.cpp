@@ -1,6 +1,6 @@
 /*
     airport.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,8 +44,9 @@ Airport::Airport(const AirportRecord* record, QObject* parent) :
     __outbounds(new FlightTableModel(this))
 {
     Q_ASSERT(__data);
+    Q_ASSERT(VatsimDataHandler::isValidIcao(__icao));
     
-    auto fillFir = [this](const QString & icao, bool isFss) {
+    auto fillFir = [this](const QString& icao, bool isFss) {
         Fir* f = vApp()->vatsimDataHandler()->findFir(icao, isFss);
         
         if (f) {
@@ -67,13 +68,12 @@ Airport::Airport(const QString& icao, QObject* parent) :
     __inbounds(nullptr),
     __outbounds(nullptr)
 {
-    Q_ASSERT(!icao.isEmpty());
+    
 }
 
 Airport::Airport(QObject* parent) :
     QObject (parent),
     __data(nullptr),
-    __icao(tr("(unknown)")),
     __altitude(0),
     __staff(nullptr),
     __inbounds(nullptr),

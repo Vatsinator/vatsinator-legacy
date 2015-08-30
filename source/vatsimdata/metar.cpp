@@ -20,10 +20,8 @@
 
 #include "metar.h"
 
-Metar::Metar() : __icao("ZZZZ") {}
-
 Metar::Metar(const QString& icao, const QString& metar) :
-    __icao(icao.toUpper()),
+    __icao(icao),
     __metar(metar),
     __lastFetchTime(QDateTime::currentDateTimeUtc()) {}
 
@@ -35,6 +33,10 @@ Metar::setMetar(const QString& metar)
         return;
     }
     
-    __metar = metar;
     __lastFetchTime = QDateTime::currentDateTimeUtc();
+    
+    if (__metar != metar) {
+        __metar = metar;
+        emit metarChanged(__metar);
+    }
 }

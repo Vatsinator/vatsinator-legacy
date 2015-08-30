@@ -1,6 +1,6 @@
 /*
     airport.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -91,8 +91,8 @@ signals:
 public:
     /**
      * Creates the Airport instance, getting all its data
-     * from the given record. The airport created using
-     * this constructor is valid.
+     * from the given record. This costructor is used only
+     * by VatsimDataHandler.
      * 
      * \param data Record in the database.
      */
