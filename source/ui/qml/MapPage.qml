@@ -19,7 +19,8 @@
 
 import QtQuick 2.5
 import QtQuick.Dialogs 1.2
-import org.eu.vatsinator.ui 1.0
+import Map 1.0
+import Vatsim 1.0
 
 /**
  * The MapView consists of the map itself, the menu drawer (the small

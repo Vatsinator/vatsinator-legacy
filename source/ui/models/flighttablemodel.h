@@ -1,6 +1,6 @@
 /*
     flighttablemodel.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,29 +44,29 @@ public:
     };
     
     /**
-     * The default constructor passes _parent_ to QAbstractTableModel.
+     * The default constructor passes \c parent to QAbstractTableModel.
      */
     explicit FlightTableModel(QObject* parent = nullptr);
     
     /**
      * Adds new flight to the model.
-     * When _pilot_ becomes inactive, he is automatically removed from the model.
-     * The model does not take ownership over _pilot_.
+     * When \c pilot becomes inactive, he is automatically removed from the model.
+     * The model does not take ownership over \c pilot.
      *
      * \sa remove().
      */
     void add(const Pilot* pilot);
     
     /**
-     * Removes the given _pilot_ from the model.
-     * The model must contain _pilot_, otherwise an error occurs.
+     * Removes the given \c pilot from the model.
+     * The model must contain \c pilot, otherwise an error occurs.
      *
      * \sa add() and remove().
      */
     void remove(const Pilot* pilot);
     
     /**
-     * Checks whether the model contains _pilot_ or not.
+     * Checks whether the model contains \c pilot or not.
      */
     bool contains(const Pilot* pilot);
     
@@ -74,21 +74,44 @@ public:
      * Looks for the given pilot in the model.
      *
      * \param callsign Callsign of the client to find.
-     * \return The Pilot instance or _nullptr_ if nothing was found.
+     * \return The Pilot instance or \c nullptr if nothing was found.
      */
     const Pilot* findFlightByCallsign(const QString& callsign) const;
     
+    /**
+     * \copydoc QAbstractTableModel::rowCount()
+     */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::columnCount()
+     */
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::data()
+     */
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::headerData()
+     */
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::sort()
+     */
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    
+    /**
+     * \copydoc QAbstractTableModel::roleNames()
+     */
     QHash<int, QByteArray> roleNames() const override;
     
     /**
      * Gives direct access to all flights that the model contains.
      */
-    inline const QList<const Pilot*>& flights() const
+    inline const QList<const Pilot*>& toList() const
     {
         return __flights;
     }
@@ -100,5 +123,7 @@ private:
     QList<const Pilot*> __flights;
     
 };
+
+Q_DECLARE_METATYPE(FlightTableModel*)
 
 #endif // FLIGHTTABLEMODEL_H

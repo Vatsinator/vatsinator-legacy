@@ -17,6 +17,8 @@ set (assets_prefix "@assets_prefix@")
 set (qt_qml_modules @qt_qml_modules@)
 set (qt_plugins @qt_plugins@)
 set (qt_jars @qt_jars@)
+set (qml_plugins @qml_plugins@)
+@qml_plugins_data@
 
 set (paths "@paths@")
 

@@ -28,7 +28,6 @@
 #include "ui/models/atctablemodel.h"
 #include "ui/models/flighttablemodel.h"
 #include "ui/quick/androidbridge.h"
-#include "ui/quick/map.h"
 #include "ui/quick/paletteprovider.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
@@ -76,22 +75,10 @@ QuickUserInterface::dp() const
 void
 QuickUserInterface::initialize()
 {
-    /* For C++ classes accessed from QML */
-    qmlRegisterType<const Airport>();
-    qmlRegisterType<const Fir>();
-    qmlRegisterType<const Pilot>();
-    qmlRegisterType<Metar>();
-    
-    /* C++ classes instantiated by QML */
-    qmlRegisterType<Map>("org.eu.vatsinator.ui", 1, 0, "Map");
-    
     /* Couple of QML-global instances */
     QQmlContext* ctx = __engine.rootContext();
-    ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
-    ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
     ctx->setContextProperty("android", new AndroidBridge(this));
     ctx->setContextProperty("palette", new PaletteProvider(this));
-    ctx->setContextProperty("metars", vApp()->metarUpdater());
     ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp()));
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));

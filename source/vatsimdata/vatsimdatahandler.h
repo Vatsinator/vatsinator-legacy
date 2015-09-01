@@ -29,6 +29,7 @@
 #include <QMultiMap>
 
 #include "vatsimdata/client.h"
+#include "ui/models/flighttablemodel.h"
 #include "ui/notifiable.h"
 
 class Airport;
@@ -37,7 +38,6 @@ class BookingProvider;
 class Controller;
 class DecisionEvent;
 class Fir;
-class FlightTableModel;
 class NotamProvider;
 class Pilot;
 class PlainTextDownloader;
@@ -149,8 +149,8 @@ public:
     const QUrl& dataUrl() const;
     
     /**
-     * Finds airport with particular _icao_ code or any airport that the given
-     * _icao_ is alias of.
+     * Finds airport with particular \c icao code or any airport that the given
+     * \c icao is alias of.
      *
      * \param icao Airport ICAO code.
      * \return Pointer to the Airport instance or _nullptr_ if nothing was found.

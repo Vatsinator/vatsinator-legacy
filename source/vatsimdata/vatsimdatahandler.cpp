@@ -27,7 +27,6 @@
 #include "plugins/notamprovider.h"
 #include "plugins/weatherforecastinterface.h"
 #include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
 #include "ui/models/metarlistmodel.h"
 #include "ui/widgetsuserinterface.h"
 #include "storage/cachefile.h"

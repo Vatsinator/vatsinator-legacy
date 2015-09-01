@@ -393,7 +393,7 @@ MapWidget::__menuForAirportItem(const AirportItem* item)
     
     if (item->data()->countArrivals() > 0) {
         menu->addSection(tr("Arrivals"));
-        for (const Pilot* p: item->data()->inbounds()->flights()) {
+        for (const Pilot* p: item->data()->inbounds()->toList()) {
             if (p->phase() == Pilot::Arrived) {
                 ClientDetailsAction* a = new ClientDetailsAction(p, p->callsign(), this);
                 connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
@@ -404,7 +404,7 @@ MapWidget::__menuForAirportItem(const AirportItem* item)
     
     if (item->data()->countDepartures(false) > 0) {
         menu->addSection(tr("Departures"));
-        for (const Pilot* p: item->data()->outbounds()->flights()) {
+        for (const Pilot* p: item->data()->outbounds()->toList()) {
             if (p->phase() == Pilot::Departing) {
                 ClientDetailsAction* a = new ClientDetailsAction(p, p->callsign(), this);
                 connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);

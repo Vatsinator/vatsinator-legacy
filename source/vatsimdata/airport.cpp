@@ -86,7 +86,7 @@ unsigned
 Airport::countDepartures(bool includePrefiled) const
 {
     if (isValid()) {
-        return std::count_if(__outbounds->flights().begin(), __outbounds->flights().end(), [includePrefiled](const Pilot * p) {
+        return std::count_if(__outbounds->toList().begin(), __outbounds->toList().end(), [includePrefiled](const Pilot * p) {
             return p->phase() == Pilot::Departing && (!p->isPrefiledOnly() || (p->isPrefiledOnly() && includePrefiled));
         });
     } else {
@@ -107,7 +107,7 @@ unsigned
 Airport::countArrivals() const
 {
     if (isValid()) {
-        return std::count_if(__inbounds->flights().begin(), __inbounds->flights().end(), [](const Pilot * p) {
+        return std::count_if(__inbounds->toList().begin(), __inbounds->toList().end(), [](const Pilot * p) {
                 return p->phase() == Pilot::Arrived;
         });
     } else {

@@ -132,7 +132,6 @@ set (quick_SRCS
     quickuserinterface.cpp
     
     quick/androidbridge.cpp
-    quick/map.cpp
     quick/paletteprovider.cpp
 )
 
@@ -195,7 +194,6 @@ set (quick_HEADERS
     quickuserinterface.h
     
     quick/androidbridge.h
-    quick/map.h
     quick/paletteprovider.h
 )
 

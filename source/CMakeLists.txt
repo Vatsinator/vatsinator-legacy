@@ -46,6 +46,8 @@ if (ANDROID) # on Android we want to build library libvatsinator.so
         $<TARGET_OBJECTS:ui>
         $<TARGET_OBJECTS:vatsimdata>
     )
+    
+    add_subdirectory (imports)
 else (ANDROID)
     add_executable (vatsinator MACOSX_BUNDLE WIN32
         main.cpp

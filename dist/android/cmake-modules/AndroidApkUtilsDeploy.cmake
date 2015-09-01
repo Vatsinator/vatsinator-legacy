@@ -147,6 +147,33 @@ foreach (m ${qt_qml_modules})
     endforeach ()
 endforeach ()
 
+# install custom QML plugins
+foreach (p ${qml_plugins})
+    set (p_location ${${p}_location})
+    set (p_dir ${${p}_dir})
+    set (p_qmldir ${${p}_qmldir})
+    
+    get_filename_component (p_name ${p_location} NAME)
+    set (p_ext ${p_dir}/${p_name})
+    string (REPLACE "/" "_" p_ext "${p_ext}")
+    set (p_ext "lib${p_ext}")
+    
+    get_filename_component (p_qmldir_name ${p_qmldir} NAME)
+    set (p_qmldir_target ${p_dir}/${p_qmldir_name})
+    
+    file (INSTALL
+        DESTINATION ${package_location}/libs/${ANDROID_ABI}
+        TYPE FILE RENAME ${p_ext}
+        FILES ${p_location}
+    )
+    list (APPEND bundled_in_lib "<item>${p_ext}:${p_dir}/${p_name}</item>")
+    
+    file (COPY ${p_qmldir} NO_SOURCE_PERMISSIONS
+        DESTINATION ${package_location}/assets/${assets_prefix}/${p_dir}
+    )
+    list (APPEND bundled_in_assets "<item>${assets_prefix}/${p_qmldir_target}:${p_qmldir_target}</item>")
+endforeach ()
+
 # install Qt's jars
 foreach (j ${qt_jars})
     file (COPY ${qt_root}/jar/${j}
