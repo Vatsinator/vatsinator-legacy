@@ -19,9 +19,9 @@
 
 #include <QtQml>
 
+#include "models/atctablemodel.h"
+#include "models/flighttablemodel.h"
 #include "network/metarupdater.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/pilot.h"
@@ -34,6 +34,8 @@
 void
 VatsimQmlPlugin::initializeEngine(QQmlEngine* engine, const char* uri)
 {
+    Q_ASSERT(uri == QStringLiteral("Vatsim"));
+    
     QQmlContext* ctx = engine->rootContext();
     ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
     ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());

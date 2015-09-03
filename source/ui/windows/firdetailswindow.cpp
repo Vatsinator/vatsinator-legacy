@@ -1,6 +1,6 @@
 /*
     firdetailswindow.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,16 +20,16 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "models/airporttablemodel.h"
+#include "models/atctablemodel.h"
+#include "models/flighttablemodel.h"
+#include "models/roles.h"
 #include "plugins/atcbookingtablemodel.h"
 #include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
 #include "plugins/notamlistmodel.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
-#include "ui/models/airporttablemodel.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
-#include "ui/models/roles.h"
 #include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/airport.h"

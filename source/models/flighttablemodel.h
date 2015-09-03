@@ -33,7 +33,7 @@ class FlightTableModel : public QAbstractTableModel {
     
 public:
     /**
-     * Column numbers
+     * Column numbers.
      */
     enum Column {
         Callsign    = 0,

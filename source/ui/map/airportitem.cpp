@@ -20,13 +20,12 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
+#include "models/atctablemodel.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/tmaarea.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/pilot.h"
@@ -90,7 +89,7 @@ AirportItem::__loadIcon() const
             QPixmapCache::insert(AirportInactivePixmap.arg(MapConfig::generalizedDensity()), __icon);
         }
     } else {
-        if (data()->staff()->staff().isEmpty()) {
+        if (data()->staff()->toList().isEmpty()) {
             if (!QPixmapCache::find(AirportActivePixmap.arg(MapConfig::generalizedDensity()), &__icon)) {
                 __icon.load(AirportActivePixmap.arg(MapConfig::generalizedDensity()));
                 QPixmapCache::insert(AirportActivePixmap.arg(MapConfig::generalizedDensity()), __icon);

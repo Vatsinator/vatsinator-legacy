@@ -20,7 +20,7 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
-#include "ui/models/roles.h"
+#include "models/roles.h"
 #include "vatsimdata/airport.h"
 
 #include "flighttablemodel.h"

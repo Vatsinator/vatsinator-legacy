@@ -27,6 +27,7 @@ endif ()
 
 add_subdirectory (db)
 add_subdirectory (events)
+add_subdirectory (models)
 add_subdirectory (network)
 add_subdirectory (plugins)
 add_subdirectory (storage)
@@ -40,6 +41,7 @@ if (ANDROID) # on Android we want to build library libvatsinator.so
         ${vatsinator_HEADERS}
         $<TARGET_OBJECTS:db>
         $<TARGET_OBJECTS:events>
+        $<TARGET_OBJECTS:models>
         $<TARGET_OBJECTS:network>
         $<TARGET_OBJECTS:plugins>
         $<TARGET_OBJECTS:storage>
@@ -55,6 +57,7 @@ else (ANDROID)
         ${vatsinator_HEADERS}
         $<TARGET_OBJECTS:db>
         $<TARGET_OBJECTS:events>
+        $<TARGET_OBJECTS:models>
         $<TARGET_OBJECTS:network>
         $<TARGET_OBJECTS:plugins>
         $<TARGET_OBJECTS:storage>

@@ -21,8 +21,8 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
+#include "models/atctablemodel.h"
+#include "models/flighttablemodel.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -132,7 +132,7 @@ Airport::facilities() const
     
     Controller::Facilities facilities = 0;
     
-    for (const Controller* c : __staff->staff())
+    for (const Controller* c : __staff->toList())
         facilities |= c->facility();
         
     return facilities;

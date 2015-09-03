@@ -41,14 +41,14 @@ public:
     };
     
     /**
-     * The default constructor passes _parent_ to QAbstractTableModel.
+     * The default constructor passes \c parent to the QAbstractTableModel.
      */
     explicit AtcTableModel(QObject* parent = nullptr);
     
     /**
      * Adds new Atc to the model.
      * When the client becomes inactive, the pointer is automatically removed.
-     * The model does not take ownership over the _atc_.
+     * The model does not take ownership over the \c atc.
      *
      * \param atc Controller instance to be added to the model.
      * \sa remove().
@@ -57,7 +57,7 @@ public:
     
     /**
      * Removes the given client from the model.
-     * If the model does not contain _atc_, this function throws runtime error.
+     * If the model does not contain \c atc, this function throws runtime error.
      *
      * \param atc Controller instance pointer to be removed.
      * \sa add() and contains().
@@ -65,21 +65,44 @@ public:
     void remove(const Controller* atc);
     
     /**
-     * Checks whether the model contains _atc_ or not.
+     * Checks whether the model contains \c atc or not.
      */
     bool contains(const Controller* atc) const;
     
+    /**
+     * \copydoc QAbstractTableModel::rowCount()
+     */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::columnCount()
+     */
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::data()
+     */
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::headerData()
+     */
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::sort()
+     */
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) override;
+    
+    /**
+     * \copydoc QAbstractTableModel::roleNames()
+     */
     QHash<int, QByteArray> roleNames() const override;
     
     /**
      * Gives direct access to the list of clients.
      */
-    inline const QList<const Controller*>& staff() const
+    inline const QList<const Controller*>& toList() const
     {
         return __staff;
     }

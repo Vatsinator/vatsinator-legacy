@@ -1,6 +1,6 @@
 /*
     metarswindow.cpp
-    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 
 #include <QtWidgets>
 
+#include "models/metarlistmodel.h"
+#include "models/roles.h"
 #include "network/metarupdater.h"
-#include "ui/models/metarlistmodel.h"
-#include "ui/models/roles.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"

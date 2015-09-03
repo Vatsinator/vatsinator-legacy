@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <QtGui>
 
-#include "ui/models/roles.h"
+#include "models/roles.h"
 
 #include "notamlistmodel.h"
 

@@ -25,8 +25,6 @@
 #include "ui/map/airportitem.h"
 #include "ui/map/flightitem.h"
 #include "ui/map/firitem.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
 #include "ui/quick/androidbridge.h"
 #include "ui/quick/paletteprovider.h"
 #include "vatsimdata/airport.h"
@@ -60,10 +58,7 @@ QObject*
 QuickUserInterface::findObjectByName(const QString& name)
 {
     QObject* root = qui()->rootItem();
-    if (root)
-        return root->findChild<QObject*>(name);
-    else
-        return nullptr;
+    return root ? root->findChild<QObject*>(name) : nullptr;
 }
 
 qreal

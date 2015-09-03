@@ -1,6 +1,6 @@
 /*
     airportdetailswindow.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,10 @@
 #include <QtWidgets>
 
 #include "db/airportdatabase.h"
+#include "models/atctablemodel.h"
+#include "models/flighttablemodel.h"
+#include "models/metarlistmodel.h"
+#include "models/roles.h"
 #include "network/metarupdater.h"
 #include "network/weatherforecastdownloader.h"
 #include "plugins/atcbookingtablemodel.h"
@@ -32,10 +36,6 @@
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
-#include "ui/models/metarlistmodel.h"
-#include "ui/models/roles.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/widgets/weatherforecastwidget.h"
 #include "ui/widgetsuserinterface.h"

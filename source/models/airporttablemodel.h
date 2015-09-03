@@ -33,7 +33,17 @@ class AirportTableModel : public QAbstractTableModel {
     
 public:
     /**
-     * The default constructor passes _parent_ to QAbstractTableModel.
+     * Describes column in the model.
+     */
+    enum Column {
+        Label       = 0,
+        Facilities  = 1,
+        Outbounds   = 2,
+        Inbounds    = 3
+    };
+    
+    /**
+     * The default constructor passes \c parent to the QAbstractTableModel.
      */
     explicit AirportTableModel(QObject* parent = nullptr);
     
@@ -43,30 +53,32 @@ public:
     void addAirport(const Airport* airport);
     
     /**
-     * Removes all pointers.
-     * \todo Remove.
+     * \copydoc QAbstractTableModel::rowCount()
      */
-    void clear();
-    
     int rowCount(const QModelIndex& index = QModelIndex()) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::columnCount()
+     */
     int columnCount(const QModelIndex& index = QModelIndex()) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::data()
+     */
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    
+    /**
+     * \copydoc QAbstractTableModel::headerData()
+     */
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     
     /**
      * Gives direct access to all airports.
      */
-    inline const QList<const Airport*>& airports() const
+    inline const QList<const Airport*>& toList() const
     {
         return __airports;
     }
-    
-    enum Column {
-        Label       = 0,
-        Facilities  = 1,
-        Outbounds   = 2,
-        Inbounds    = 3
-    };
     
 private:
     QString __arrivalsAndDepartures(int row) const;

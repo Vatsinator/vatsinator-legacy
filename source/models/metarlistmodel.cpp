@@ -18,7 +18,7 @@
 
 #include <QtCore>
 
-#include "ui/models/roles.h"
+#include "models/roles.h"
 #include "vatsimdata/metar.h"
 
 #include "metarlistmodel.h"

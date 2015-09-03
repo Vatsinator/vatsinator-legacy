@@ -19,7 +19,7 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
-#include "ui/models/roles.h"
+#include "models/roles.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/controller.h"
 
@@ -34,14 +34,6 @@ AirportTableModel::addAirport(const Airport* airport)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     __airports.push_back(airport);
     endInsertRows();
-}
-
-void
-AirportTableModel::clear()
-{
-    beginResetModel();
-    __airports.clear();
-    endResetModel();
 }
 
 int

@@ -6,7 +6,4 @@ add_library (mapplugin MODULE
 )
 
 target_link_libraries (mapplugin Qt5::Qml vatsinator)
-set_target_properties (mapplugin PROPERTIES
-    PLUGIN_DIR qml/Map
-    QMLDIR_FILE ${CMAKE_CURRENT_SOURCE_DIR}/qmldir
-)
+vatsinator_add_qml_plugin (mapplugin Map)

@@ -43,11 +43,6 @@ set (ui_SRCS
     map/modelpixmapprovider.cpp
     map/tmaarea.cpp
     map/worldtransform.cpp
-    
-    models/airporttablemodel.cpp
-    models/atctablemodel.cpp
-    models/flighttablemodel.cpp
-    models/metarlistmodel.cpp
 )
 
 set (ui_HEADERS
@@ -66,11 +61,6 @@ set (ui_HEADERS
     map/modelpixmapprovider.h
     map/tmaarea.h
     map/worldtransform.h
-    
-    models/airporttablemodel.h
-    models/atctablemodel.h
-    models/flighttablemodel.h
-    models/metarlistmodel.h
 )
 
 set (widgets_SRCS

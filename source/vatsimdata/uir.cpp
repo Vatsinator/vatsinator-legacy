@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ui/models/atctablemodel.h"
+#include "models/atctablemodel.h"
 #include "vatsimdata/fir.h"
 #include "vatsimdata/controller.h"
 
@@ -50,6 +50,6 @@ Uir::addStaff(const Controller* atc)
 bool
 Uir::isEmpty() const
 {
-    return __staff->staff().isEmpty();
+    return __staff->toList().isEmpty();
 }
 

@@ -19,9 +19,9 @@
 
 #include <QtCore>
 
+#include "models/metarlistmodel.h"
+#include "models/roles.h"
 #include "network/plaintextdownloader.h"
-#include "ui/models/metarlistmodel.h"
-#include "ui/models/roles.h"
 #include "vatsimdata/metar.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"

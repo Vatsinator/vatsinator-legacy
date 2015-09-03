@@ -23,7 +23,6 @@
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
-#include "ui/models/atctablemodel.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/fir.h"

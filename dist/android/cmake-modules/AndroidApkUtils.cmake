@@ -60,12 +60,6 @@ execute_process (
 # a list of plugins needed for every Android, Qt-based app
 set (_android_musthave_plugins
     platforms/android/libqtforandroid.so
-    platforms/libqeglfs.so
-    platforms/libqminimal.so
-    platforms/libqminimalegl.so
-    platforms/libqoffscreen.so
-    generic/libqevdevtabletplugin.so
-    generic/libqevdevtouchplugin.so
 )
 
 # a list of necessary jars
@@ -244,6 +238,8 @@ function (android_deploy_apk target)
         foreach (p ${_arg_QML_PLUGINS})
             get_target_property (p_dir ${p} PLUGIN_DIR)
             get_target_property (p_qmldir ${p} QMLDIR_FILE)
+            get_target_property (p_qmls ${p} QMLS)
+            get_target_property (p_prefix ${p} PLUGIN_PREFIX)
             
             cmake_policy (PUSH)
             cmake_policy (SET CMP0026 OLD)
@@ -254,9 +250,25 @@ function (android_deploy_apk target)
             
             set (qml_plugins_data "${qml_plugins_data}
                 set (${p}_dir ${p_dir})
-                set (${p}_qmldir ${p_qmldir})
-                set (${p}_location ${p_location})
-            ")
+                set (${p}_qmldir ${p_qmldir})")
+            
+            if (p_location)
+                set (qml_plugins_data "${qml_plugins_data}
+                    set (${p}_location ${p_location})")
+            endif ()
+            
+            if (p_qmls)
+                set (qml_plugins_data "${qml_plugins_data}
+                    set (${p}_qmls ${p_qmls})")
+            endif()
+            
+            if (p_prefix)
+                set (qml_plugins_data "${qml_plugins_data}
+                    set (${p}_prefix ${p_prefix})")
+            else ()
+                set (qml_plugins_data "${qml_plugins_data}
+                    set (${p}_prefix qml)")
+            endif ()
             
             add_dependencies (android_refresh_package ${p})
         endforeach ()

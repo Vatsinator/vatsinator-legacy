@@ -22,6 +22,7 @@
 
 #include "db/airportdatabase.h"
 #include "events/mouselonlatevent.h"
+#include "models/atctablemodel.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/actionmenuseparator.h"
 #include "ui/actions/airportdetailsaction.h"
@@ -36,8 +37,6 @@
 #include "ui/map/mapitem.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/pilot.h"
@@ -382,9 +381,9 @@ MapWidget::__menuForAirportItem(const AirportItem* item)
     connect(showMetar, &MetarAction::triggered, wui(), &WidgetsUserInterface::showMetar);
     menu->addAction(showMetar);
     
-    if (!item->data()->staff()->staff().isEmpty()) {
+    if (!item->data()->staff()->toList().isEmpty()) {
         menu->addSection(tr("Controllers"));
-        for (const Controller* c: item->data()->staff()->staff()) {
+        for (const Controller* c: item->data()->staff()->toList()) {
             ClientDetailsAction* a = new ClientDetailsAction(c, c->callsign(), this);
             connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
             menu->addAction(a);
@@ -424,7 +423,7 @@ MapWidget::__toolTipForAirportItem(const AirportItem* item)
     
     QString staff, deparr;
     if (!airport->isEmpty()) {
-        for (const Controller* c: airport->staff()->staff()) {
+        for (const Controller* c: airport->staff()->toList()) {
             staff.append("<br>");
             staff.append(QStringLiteral("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
         }
@@ -482,13 +481,13 @@ MapWidget::__menuForFirItem(const FirItem* item)
     connect(fa, &FirDetailsAction::triggered, wui(), &WidgetsUserInterface::showFirDetails);
     menu->addAction(fa);
     
-    for (const Controller* c: item->data()->staff()->staff()) {
+    for (const Controller* c: item->data()->staff()->toList()) {
         ClientDetailsAction* a = new ClientDetailsAction(c, c->callsign(), this);
         connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
         menu->addAction(a);
     }
     
-    for (const Controller* c: item->data()->uirStaff()->staff()) {
+    for (const Controller* c: item->data()->uirStaff()->toList()) {
         ClientDetailsAction* a = new ClientDetailsAction(c, c->callsign(), this);
         connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
         menu->addAction(a);
@@ -510,11 +509,11 @@ MapWidget::__toolTipForFirItem(const FirItem* item)
     }
     
     QString staff;
-    for (const Controller* c: fir->staff()->staff()) {
+    for (const Controller* c: fir->staff()->toList()) {
         staff.append(QStringLiteral("<br>%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
     }
     
-    for (const Controller* c: fir->uirStaff()->staff()) {
+    for (const Controller* c: fir->uirStaff()->toList()) {
         staff.append(QStringLiteral("<br>%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
     }
     

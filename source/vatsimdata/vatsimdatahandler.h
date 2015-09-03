@@ -28,8 +28,8 @@
 #include <QUrl>
 #include <QMultiMap>
 
+#include "models/flighttablemodel.h"
 #include "vatsimdata/client.h"
-#include "ui/models/flighttablemodel.h"
 #include "ui/notifiable.h"
 
 class Airport;

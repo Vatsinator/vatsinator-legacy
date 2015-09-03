@@ -20,7 +20,7 @@
 #include <algorithm>
 #include <QtCore>
 
-#include "ui/models/roles.h"
+#include "models/roles.h"
 #include "vatsimdata/controller.h"
 
 #include "atctablemodel.h"

@@ -26,8 +26,8 @@
 #include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
 #include "plugins/weatherforecastinterface.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/metarlistmodel.h"
+#include "models/atctablemodel.h"
+#include "models/metarlistmodel.h"
 #include "ui/widgetsuserinterface.h"
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
@@ -43,10 +43,6 @@
 #include "storage/filemanager.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
-
-#ifndef Q_OS_ANDROID
-# include "ui/windows/vatsinatorwindow.h"
-#endif
 
 #include "vatsimdatahandler.h"
 

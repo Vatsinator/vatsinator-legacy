@@ -60,7 +60,7 @@ public:
     QModelIndexList match(const QModelIndex& start, int role,
                           const QVariant& value, int hits = 1,
                           Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const override;
-                          
+    
 public slots:
     void clear();
     
