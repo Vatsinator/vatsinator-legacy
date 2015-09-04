@@ -274,6 +274,10 @@ function (android_deploy_apk target)
         endforeach ()
     endif ()
     
+    get_target_property (keystore ${target} KEYSTORE)
+    get_target_property (keystore_alias ${target} KEYSTORE_ALIAS)
+    get_target_property (keystore_password ${target} KEYSTORE_PASSWORD)
+    
     _android_generate_config(${target})
     configure_file (${_android_apkutils_dir}/AndroidApkUtilsDeploy.cmake ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake COPYONLY)
     
@@ -284,7 +288,11 @@ function (android_deploy_apk target)
     )
     
     string (TOLOWER ${CMAKE_PROJECT_NAME} app_name)
-    set (package_file_name ${app_name}-debug.apk) # TODO support app signing
+    if (keystore AND keystore_alias AND keystore_password)
+        set (package_file_name ${app_name}-release.apk)
+    else ()
+        set (package_file_name ${app_name}-debug.apk)
+    endif ()
     
     add_custom_target (apk_install
         DEPENDS apk

@@ -20,6 +20,10 @@ set (qt_jars @qt_jars@)
 set (qml_plugins @qml_plugins@)
 @qml_plugins_data@
 
+set (keystore @keystore@)
+set (keystore_alias @keystore_alias@)
+set (keystore_password "@keystore_password@")
+
 set (paths "@paths@")
 
 # Android toolchain variables

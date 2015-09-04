@@ -115,7 +115,6 @@ function (android_deploy_qml_plugin plugin_dir plugin_source_dir plugin_files pl
     set (bundled_in_assets ${bundled_in_assets} PARENT_SCOPE)
 endfunction ()
 
-
 # first, install all user stuff
 message (STATUS "Executing make install")
 if (EXISTS ${binary_root}/cmake_install.cmake)
@@ -246,13 +245,17 @@ endif ()
 # build the actual .apk package
 string (TOLOWER ${CMAKE_PROJECT_NAME} app_name)
 
-if (${CMAKE_BUILD_TYPE} MATCHES Debug)
+if (keystore AND keystore_alias AND keystore_password)
+    set (ant_args "release")
+    set (ant_output_file ${package_location}/bin/${app_name}-release.apk)
+    
+    file (WRITE ${package_location}/ant.properties
+        "key.store=${keystore}\nkey.alias=${keystore_alias}\nkey.store.password=${keystore_password}\nkey.alias.password=${keystore_password}"
+    )
+else ()
     set (ant_args "debug")
     set (ant_output_file ${package_location}/bin/${app_name}-debug.apk)
-elseif (${CMAKE_BUILD_TYPE} MATCHES Release) # TODO support app signing
-    set (ant_args "debug")
-    set (ant_output_file ${package_location}/bin/${app_name}-debug.apk)
-endif (${CMAKE_BUILD_TYPE} MATCHES Debug)
+endif ()
 
 get_filename_component (pkg_fname ${ant_output_file} NAME)
 message (STATUS "Building ${pkg_fname}...")
@@ -264,6 +267,10 @@ execute_process (COMMAND ${ant_bin} ${ant_args}
     RESULT_VARIABLE ant_result
     OUTPUT_FILE ${ant_log_file}
 )
+
+if (EXISTS ${package_location}/ant.properties)
+    file (REMOVE ${package_location}/ant.properties)
+endif ()
 
 if (${ant_result} EQUAL 0)
     file (COPY ${ant_output_file} DESTINATION ${binary_root})
