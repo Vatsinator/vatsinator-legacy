@@ -21,10 +21,10 @@ function (vatsinator_add_qml_plugin target plugin_dir)
     )
     
     include(CMakeParseArguments)
-    cmake_parse_arguments (arg "" "" "QMLS" ${ARGN})
-    if (arg_QMLS)
+    cmake_parse_arguments (arg "" "" "FILES" ${ARGN})
+    if (arg_FILES)
         set_target_properties (${target} PROPERTIES
-            QMLS "${arg_QMLS}"
+            FILES "${arg_FILES}"
         )
     endif ()
 endfunction ()
@@ -32,5 +32,6 @@ endfunction ()
 add_definitions (-DQT_PLUGIN)
 add_definitions (-DQT_SHARED)
 
+add_subdirectory (components)
 add_subdirectory (map)
 add_subdirectory (vatsim)

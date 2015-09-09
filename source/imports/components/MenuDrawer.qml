@@ -17,7 +17,7 @@
  * 
  */
 
-import QtQuick 2.4
+import QtQuick 2.5
 import QtGraphicalEffects 1.0
 
 /* Menu drawer */
@@ -25,7 +25,7 @@ Item {
     id: root
     
     height: drawer.height + (2 * drawerShadow.glowRadius)
-    width: 64 + drawer.anchors.leftMargin + (2 * drawerShadow.glowRadius)
+    width: 24 * dp + drawer.anchors.leftMargin + (2 * drawerShadow.glowRadius)
     
     RectangularGlow {
         id: drawerShadow
@@ -39,19 +39,19 @@ Item {
     
     Rectangle {
         id: drawer
-    
+        
         color: "white"
         border.width: 0
         radius: 10
-        height: 128
-        width: 64
+        height: 48 * dp
+        width: 24 * dp
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        anchors.leftMargin: -10
+        anchors.leftMargin: -4 * dp
         
         Image {
-            width: 48
-            height: 48
+            width: 18 * dp
+            height: 18 * dp
             fillMode: Image.Stretch
             source: "images/ic_drawer.png"
             anchors.centerIn: parent

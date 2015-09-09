@@ -26,7 +26,7 @@
 void
 MapQmlPlugin::registerTypes(const char* uri)
 {
-    Q_ASSERT(uri == QStringLiteral("Map"));
+    Q_ASSERT(uri == QStringLiteral("org.eu.vatsinator.Map"));
     
     qmlRegisterType<Map>(uri, 1, 0, "Map");
 }

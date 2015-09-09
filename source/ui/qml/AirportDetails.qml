@@ -18,7 +18,7 @@
  */
 
 import QtQuick 2.5
-import Vatsim 1.0
+import org.eu.vatsinator.Vatsim 1.0
 
 Details {
     id: root

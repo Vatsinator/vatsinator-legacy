@@ -238,7 +238,7 @@ function (android_deploy_apk target)
         foreach (p ${_arg_QML_PLUGINS})
             get_target_property (p_dir ${p} PLUGIN_DIR)
             get_target_property (p_qmldir ${p} QMLDIR_FILE)
-            get_target_property (p_qmls ${p} QMLS)
+            get_target_property (p_files ${p} FILES)
             get_target_property (p_prefix ${p} PLUGIN_PREFIX)
             
             cmake_policy (PUSH)
@@ -249,25 +249,25 @@ function (android_deploy_apk target)
             list (APPEND qml_plugins ${p})
             
             set (qml_plugins_data "${qml_plugins_data}
-                set (${p}_dir ${p_dir})
-                set (${p}_qmldir ${p_qmldir})")
+                set (${p}_dir \"${p_dir}\")
+                set (${p}_qmldir \"${p_qmldir}\")")
             
             if (p_location)
                 set (qml_plugins_data "${qml_plugins_data}
-                    set (${p}_location ${p_location})")
+                    set (${p}_location \"${p_location}\")")
             endif ()
             
-            if (p_qmls)
+            if (p_files)
                 set (qml_plugins_data "${qml_plugins_data}
-                    set (${p}_qmls ${p_qmls})")
+                    set (${p}_files \"${p_files}\")")
             endif()
             
             if (p_prefix)
                 set (qml_plugins_data "${qml_plugins_data}
-                    set (${p}_prefix ${p_prefix})")
+                    set (${p}_prefix \"${p_prefix}\")")
             else ()
                 set (qml_plugins_data "${qml_plugins_data}
-                    set (${p}_prefix qml)")
+                    set (${p}_prefix \"qml\")")
             endif ()
             
             add_dependencies (android_refresh_package ${p})
@@ -282,7 +282,7 @@ function (android_deploy_apk target)
     configure_file (${_android_apkutils_dir}/AndroidApkUtilsDeploy.cmake ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake COPYONLY)
     
     add_custom_target (apk
-            ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake
+        ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         DEPENDS build.xml
     )

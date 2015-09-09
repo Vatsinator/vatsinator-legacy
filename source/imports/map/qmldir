@@ -1,2 +1,2 @@
-module Map
+module org.eu.vatsinator.Map
 plugin mapplugin

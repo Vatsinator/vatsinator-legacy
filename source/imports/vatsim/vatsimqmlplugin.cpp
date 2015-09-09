@@ -34,7 +34,7 @@
 void
 VatsimQmlPlugin::initializeEngine(QQmlEngine* engine, const char* uri)
 {
-    Q_ASSERT(uri == QStringLiteral("Vatsim"));
+    Q_ASSERT(uri == QStringLiteral("org.eu.vatsinator.Vatsim"));
     
     QQmlContext* ctx = engine->rootContext();
     ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
@@ -45,7 +45,7 @@ VatsimQmlPlugin::initializeEngine(QQmlEngine* engine, const char* uri)
 void
 VatsimQmlPlugin::registerTypes(const char* uri)
 {
-    Q_ASSERT(uri == QStringLiteral("Vatsim"));
+    Q_ASSERT(uri == QStringLiteral("org.eu.vatsinator.Vatsim"));
     
     qmlRegisterUncreatableType<const Airport>(uri, 1, 0, "Airport", "Airport instances can be created only by Vatsinator, internally");
     qmlRegisterUncreatableType<const Fir>(uri, 1, 0, "Fir", "Fir instances can be created only during initialization");

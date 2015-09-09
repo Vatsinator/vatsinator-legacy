@@ -39,7 +39,7 @@
 QuickUserInterface::QuickUserInterface(QObject* parent) :
     UserInterface(parent)
 {
-    
+    connect(&__engine, &QQmlEngine::quit, qApp, &QCoreApplication::quit);
 }
 
 QObject*

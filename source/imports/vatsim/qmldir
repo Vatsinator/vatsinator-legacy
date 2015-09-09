@@ -1,2 +1,2 @@
-module Vatsim
+module org.eu.vatsinator.Vatsim
 plugin vatsimplugin

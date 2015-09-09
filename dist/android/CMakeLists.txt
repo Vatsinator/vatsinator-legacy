@@ -52,6 +52,7 @@ android_deploy_apk(vatsinator
         QtQuick/Window.2
         QtQuick.2
     QML_PLUGINS
+        componentsplugin
         mapplugin
         vatsimplugin
 )

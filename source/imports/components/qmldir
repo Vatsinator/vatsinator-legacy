@@ -1,0 +1,3 @@
+module org.eu.vatsinator.Components
+MenuDrawer 1.0 MenuDrawer.qml
+NavigationDrawer 1.0 NavigationDrawer.qml

@@ -6,4 +6,4 @@ add_library (mapplugin MODULE
 )
 
 target_link_libraries (mapplugin Qt5::Qml vatsinator)
-vatsinator_add_qml_plugin (mapplugin Map)
+vatsinator_add_qml_plugin (mapplugin org/eu/vatsinator/Map)

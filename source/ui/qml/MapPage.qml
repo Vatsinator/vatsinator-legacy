@@ -19,8 +19,9 @@
 
 import QtQuick 2.5
 import QtQuick.Dialogs 1.2
-import Map 1.0
-import Vatsim 1.0
+import org.eu.vatsinator.Components 1.0
+import org.eu.vatsinator.Map 1.0
+import org.eu.vatsinator.Vatsim 1.0
 
 /**
  * The MapView consists of the map itself, the menu drawer (the small
@@ -137,4 +138,5 @@ Item {
         root.firDetails = Qt.createComponent("FirDetails.qml");
         root.itemTouched.connect(updateSelectedItem);
     }
+    
 }

@@ -213,9 +213,9 @@ foreach (p ${qml_plugins})
         list (APPEND p_files ${${p}_location})
     endif ()
     
-    if (${p}_qmls)
-        foreach (q ${${p}_qmls})
-            list (APPEND p_files ${q})
+    if (${p}_files)
+        foreach (f ${${p}_files})
+            list (APPEND p_files ${f})
         endforeach ()
     endif ()
     
