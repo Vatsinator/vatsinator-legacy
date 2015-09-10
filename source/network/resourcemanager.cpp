@@ -161,3 +161,10 @@ ResourceManager::__databaseFailed()
     if (d)
         d->deleteLater();
 }
+
+
+static void registerType()
+{
+    qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
+}
+Q_COREAPP_STARTUP_FUNCTION(registerType)

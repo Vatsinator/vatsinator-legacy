@@ -17,6 +17,7 @@
  *
  */
 
+#include <QCoreApplication>
 #include "types.h"
 
 namespace Event {
@@ -31,10 +32,11 @@ int Vatsim;
 
 }
 
-void init_event_types()
+static void init_event_types()
 {
     Event::MouseLonLat = QEvent::registerEventType();
     Event::Notification = QEvent::registerEventType();
     Event::Decision = QEvent::registerEventType();
     Event::Vatsim = QEvent::registerEventType();
 }
+Q_COREAPP_STARTUP_FUNCTION(init_event_types)

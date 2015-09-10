@@ -17,7 +17,7 @@
  *
  */
 
-#include <QtGlobal>
+#include <QtCore>
 #include <QDataStream>
 
 #include "lonlat.h"
@@ -75,3 +75,20 @@ operator>>(QDataStream& stream, LonLat& lonlat)
     stream >> lonlat.rx() >> lonlat.ry();
     return stream;
 }
+
+
+static QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress)
+{
+    return LonLat(
+        start.longitude() + (end.longitude() - start.longitude()) * progress,
+        start.latitude() + (end.latitude() - start.latitude()) * progress
+    );
+}
+
+static void registerType()
+{
+    qRegisterMetaType<LonLat>("LonLat");
+    qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
+    qRegisterAnimationInterpolator<LonLat>(&lonLatInterpolator);
+}
+Q_COREAPP_STARTUP_FUNCTION(registerType)

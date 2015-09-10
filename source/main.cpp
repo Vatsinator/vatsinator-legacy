@@ -18,10 +18,7 @@
 
 #include <QtCore>
 #include <QtPlugin>
-#include <QVariantAnimation>
 
-#include "network/resourcemanager.h"
-#include "vatsimdata/lonlat.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
 
@@ -29,33 +26,12 @@
 #include "plugins/import_static_plugins.h"
 
 
-/**
- * The interpolator for LonLat, so that it can be animated nicely, i.e. by MapScene.
- */
-QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress)
-{
-    return LonLat(
-               start.longitude() + (end.longitude() - start.longitude()) * progress,
-               start.latitude() + (end.latitude() - start.latitude()) * progress
-           );
-}
-
 int main(int argc, char** argv)
 {
     QCoreApplication::setApplicationName(QStringLiteral("Vatsinator"));
     QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
     QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
     QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
-    
-    qRegisterMetaType<LonLat>("LonLat");
-    qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
-    qRegisterAnimationInterpolator<LonLat>(lonLatInterpolator);
-    
-    qRegisterMetaType<ResourceManager::VersionStatus>("ResourceManager::VersionStatus");
-    
-    /* Defined in events/types.cpp */
-    extern void init_event_types();
-    init_event_types();
     
     qsrand(QTime::currentTime().msec());
     
