@@ -639,7 +639,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="68"/>
         <source>Pilot</source>
-        <translation type="unfinished"/>
+        <translation>Lakūnas</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
@@ -847,7 +847,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="268"/>
         <source>Pilot font:</source>
-        <translation type="unfinished"/>
+        <translation>Lakūno šriftas:</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="286"/>
@@ -1375,7 +1375,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="22"/>
         <source>Pilots</source>
-        <translation type="unfinished"/>
+        <translation>Lakūnai</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="91"/>
