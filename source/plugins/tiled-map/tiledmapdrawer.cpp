@@ -27,14 +27,11 @@
 
 #include "tiledmapdrawer.h"
 
-int TileReady = 0; /* Event */
-
 TiledMapDrawer::TiledMapDrawer(QObject* parent) :
-    QObject (parent),
+    QObject(parent),
     __tiles(nullptr)
 {
-    if (!TileReady)
-        TileReady = QEvent::registerEventType();
+    
 }
 
 TiledMapDrawer::~TiledMapDrawer()
@@ -68,23 +65,18 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
     painter->setRenderHints(hints | QPainter::SmoothPixmapTransform);
 #endif
     
-    auto tiles = __tiles->tilesForCurrentZoom();
-    for (Tile* t: tiles) {
-        QRect rect(t->coords().topLeft() * transform, t->coords().bottomRight() * transform);
-        
-        QRect source;
-        QPixmap px = t->pixmap(&source);
-        painter->drawPixmap(rect, px, source);
+    __tiles->forEachTileOnScreen([&transform, painter](const Tile* tile, const QRectF& coords,const QRect& source) {
+        painter->drawPixmap(coords * transform, tile->pixmap(), source);
         
 #ifndef QT_NO_DEBUG
         /* Extra info */
-        painter->drawText(rect, Qt::AlignTop | Qt::AlignLeft, QStringLiteral("%1/%2/%3").arg(
-            QString::number(t->zoom()),
-            QString::number(t->x()),
-            QString::number(t->y())));
-        painter->drawRect(rect);
+        painter->drawText(coords * transform, Qt::AlignTop | Qt::AlignLeft, QStringLiteral("%1/%2/%3").arg(
+            QString::number(tile->zoom()),
+            QString::number(tile->x()),
+            QString::number(tile->y())));
+        painter->drawRect(coords * transform);
 #endif
-    }
+    });
 
 #ifndef Q_OS_ANDROID
     painter->setRenderHints(hints);

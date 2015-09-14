@@ -46,22 +46,6 @@ namespace {
         return qRadiansToDegrees(2 * qAtan(qExp(qDegreesToRadians(y))) - M_PI / 2);
     }
     
-    /* Used only in assertions */
-    inline bool mappingsAreValid(MapRenderer* mr)
-    {
-        int lon = -180 + qrand() % 360;
-        int lat = -85 + qrand() % 170;
-        
-        LonLat ll(lon, lat);
-        QPoint p = ll * mr->transform();
-        LonLat ll2 = mr->mapToLonLat(p);
-        
-        ll2.setX(qRound(ll2.x()));
-        ll2.setY(qRound(ll2.y()));
-        
-        return ll == ll2;
-    }
-    
 }
 
 MapRenderer::MapRenderer(QObject* parent) :
@@ -114,8 +98,6 @@ MapRenderer::setZoom(qreal zoom)
     
     if (!scene()->isAnimating())
         emit zoomChanged(__zoom);
-    
-    Q_ASSERT(mappingsAreValid(this));
 }
 
 void
@@ -125,8 +107,6 @@ MapRenderer::setCenter(const LonLat& center)
     __updateScreen();
     emit updated();
     emit centerChanged(__center);
-    
-    Q_ASSERT(mappingsAreValid(this));
 }
 
 qreal
@@ -173,8 +153,6 @@ MapRenderer::setViewport(const QSize& size)
     __updateScreen();
     emit updated();
     emit viewportChanged(__viewport);
-    
-    Q_ASSERT(mappingsAreValid(this));
 }
 
 void

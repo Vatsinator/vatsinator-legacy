@@ -17,9 +17,19 @@
  *
  */
 
+#include <QCoreApplication>
+
 #include "tilereadyevent.h"
+
+int TileReady = 0; /* Event */
 
 TileReadyEvent::TileReadyEvent() : QEvent(static_cast<QEvent::Type>(TileReady))
 {
 
 }
+
+static void registerEvent()
+{
+    TileReady = QEvent::registerEventType();
+}
+Q_COREAPP_STARTUP_FUNCTION(registerEvent)

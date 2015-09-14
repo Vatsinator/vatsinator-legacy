@@ -29,6 +29,7 @@
 class Tile : public QObject {
     Q_OBJECT
     
+    Q_PROPERTY(bool ready READ isReady NOTIFY ready)
     Q_PROPERTY(quint64 x READ x CONSTANT)
     Q_PROPERTY(quint64 y READ y CONSTANT)
     Q_PROPERTY(quint64 zoom READ zoom CONSTANT)
@@ -41,7 +42,12 @@ public:
     
     const QRectF& coords() const;
     
-    QPixmap pixmap(QRect* source) const;
+    QPixmap pixmap() const;
+    
+    inline bool isReady() const
+    {
+        return __ready;
+    }
     
     inline quint64 x() const
     {
@@ -73,6 +79,7 @@ private slots:
     void __loadTile();
     
 private:
+    bool __ready;
     const quint64 __x;
     const quint64 __y;
     const quint64 __zoom;

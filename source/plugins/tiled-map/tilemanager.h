@@ -20,11 +20,13 @@
 #ifndef TILEMANAGER_H
 #define TILEMANAGER_H
 
+#include <functional>
 #include <QObject>
 #include <QMutex>
-#include <QPair>
 #include <QList>
+#include <QPair>
 #include <QMap>
+#include <QRect>
 #include <spatial/bits/spatial_check_concept.hpp>
 #include <spatial/box_multimap.hpp>
 #include "vatsimdata/lonlat.h"
@@ -51,20 +53,44 @@ public:
     
     QList<Tile*> tilesForCurrentZoom();
     
+    /**
+     * Executes the given function for each tile in the provided rectangle.
+     * 
+     * The \c function receives the tile, its coords and the source rectangle for it. The source
+     * rectangle depends on the zoom level.
+     */
+    void forEachTileInRect(const LonLat& topLeft, const LonLat& bottomRight,
+                           std::function<void(const Tile*, const QRectF&, const QRect&)> function);
+    
+    /**
+     * Executes the given function for each tile that is visible on the screen.
+     * This function has the same effect as calling \c forEachTileInRect() with
+     * the screen boundaries.
+     */
+    void forEachTileOnScreen(std::function<void(const Tile*, const QRectF&, const QRect&)> function);
+    
     QPair<quint64, quint64> tileCoordForLonLat(const LonLat& lonLat);
     
     Tile* tile(quint64 z, quint64 x, quint64 y);
     
     /**
+     * Calculate global coordinates for the given tile.
+     */
+    static QRectF tileCoords(quint64 z, quint64 x, quint64 y);
+    
+    /**
      * x and y coordinates of tile at the given coordinate, at the given zoom.
      */
-    static QPair<quint64, quint64> tileCoordForLonLat(const LonLat& lonLat, unsigned zoom);
+    static QPair<quint64, quint64> tileForLonLat(const LonLat& lonLat, unsigned zoom);
     
 public slots:
     /**
      * Must be called on its own thread.
      */
     void initialize();
+    
+private:
+    TileUrl __dequeueByPriority();
     
 private slots:
     void __calculateTileZoom();

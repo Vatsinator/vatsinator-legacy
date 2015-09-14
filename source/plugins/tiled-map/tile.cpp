@@ -29,6 +29,7 @@
 
 Tile::Tile(quint64 x, quint64 y, quint64 zoom, QObject* parent) :
     QObject(parent),
+    __ready(false),
     __x(x),
     __y(y),
     __zoom(zoom),
@@ -46,69 +47,16 @@ Tile::Tile(quint64 x, quint64 y, quint64 zoom, QObject* parent) :
 const QRectF&
 Tile::coords() const
 {
-    if (__coords.isNull()) {
-        QPointF topLeft;
-        
-#define qSinh(x) (0.5 * (qExp(x) - qExp(-x)))
-        
-        qreal n = qPow(2.0, static_cast<qreal>(zoom()));
-        topLeft.setX(static_cast<qreal>(x()) / n * 360.0 - 180.0);
-        topLeft.setY(qRadiansToDegrees(qAtan(qSinh(M_PI * (1 - 2 * static_cast<qreal>(y()) / n)))));
-        
-        QPointF bottomRight;
-        bottomRight.setX(static_cast<qreal>(x() + 1) / n * 360.0 - 180.0);
-        bottomRight.setY(qRadiansToDegrees(qAtan(qSinh(M_PI * (1 - 2 * static_cast<qreal>(y() + 1) / n)))));
-        
-        __coords = QRectF(topLeft, bottomRight);
-    }
-    
-#undef qSinh
+    if (__coords.isNull())
+        __coords = TileManager::tileCoords(x(), y(), zoom());
     
     return __coords;
 }
 
 QPixmap
-Tile::pixmap(QRect* source) const
+Tile::pixmap() const
 {
-    Q_ASSERT(source);
-    
-    QMutexLocker l(&__mutex);
-    
-    if (__pixmap.isNull()) {
-        if (zoom() <= 1) {
-            *source = __pixmap.rect();
-            return __pixmap;
-        }
-        
-        /* If we don't have the tile yet, get one that is less zoomed */
-        quint64 x = this->x() / 2;
-        quint64 y = this->y() / 2;
-        quint64 z = this->zoom() - 1;
-        
-        TileManager* manager = qobject_cast<TileManager*>(parent());
-        Q_ASSERT(manager);
-        
-        Tile* tile = manager->tile(z, x, y);
-        if (!tile) {
-            *source = __pixmap.rect();
-            return __pixmap;
-        }
-        
-        QPixmap px = tile->pixmap(source);
-        
-        source->setWidth(source->width() / 2);
-        if (this->x() % 2 == 1)
-            source->moveLeft(source->left() + source->width());
-        
-        source->setHeight(source->height() / 2);
-        if (this->y() % 2 == 1)
-            source->moveTop(source->top() + source->height());
-        
-        return px;
-    } else {
-        *source = __pixmap.rect();
-        return __pixmap;
-    }
+    return __pixmap;
 }
 
 void Tile::customEvent(QEvent* event)
@@ -126,8 +74,10 @@ Tile::__loadTile()
     QMutexLocker l(&__mutex);
     __pixmap.load(QFileInfo(cached).absoluteFilePath());
     
-    if (!__pixmap.isNull())
+    if (!__pixmap.isNull()) {
+        __ready = true;
         emit ready();
+    }
 }
 
 void
