@@ -56,22 +56,21 @@ public:
     /**
      * Executes the given function for each tile in the provided rectangle.
      * 
-     * The \c function receives the tile, its coords and the source rectangle for it. The source
-     * rectangle depends on the zoom level.
+     * The \c function receives the tile pointer.
      */
     void forEachTileInRect(const LonLat& topLeft, const LonLat& bottomRight,
-                           std::function<void(const Tile*, const QRectF&, const QRect&)> function);
+                           std::function<void(const Tile*)> function);
     
     /**
      * Executes the given function for each tile that is visible on the screen.
      * This function has the same effect as calling \c forEachTileInRect() with
      * the screen boundaries.
      */
-    void forEachTileOnScreen(std::function<void(const Tile*, const QRectF&, const QRect&)> function);
+    void forEachTileOnScreen(std::function<void(const Tile*)> function);
     
     QPair<quint64, quint64> tileCoordForLonLat(const LonLat& lonLat);
     
-    Tile* tile(quint64 z, quint64 x, quint64 y);
+    Tile* tile(quint64 x, quint64 y, quint64 z);
     
     /**
      * Calculate global coordinates for the given tile.
@@ -102,7 +101,7 @@ private:
     quint32 __tileZoom;
     QList<FileDownloader*> __downloaders;
     QList<TileUrl> __tileQueue;
-    QMutex __mutex;
+    QMutex __tileMutex, __queueMutex;
     
     typedef QPair<quint64, quint64> TileCoord;
     

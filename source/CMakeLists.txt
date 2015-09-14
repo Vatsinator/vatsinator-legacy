@@ -64,6 +64,18 @@ else (ANDROID)
         $<TARGET_OBJECTS:ui>
         $<TARGET_OBJECTS:vatsimdata>
     )
+
+    if (APPLE)
+        set_target_properties (vatsinator PROPERTIES
+            MACOSX_BUNDLE_ICON_FILE "vatsinator.icns"
+            MACOSX_BUNDLE_BUNDLE_NAME "Vatsinator"
+            MACOSX_BUNDLE_BUNDLE_VERSION "${vatsinator_VERSION}"
+            MACOSX_BUNDLE_GUI_IDENTIFIER "org.eu.vatsinator.Vatsinator"
+            MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME}"
+            MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_NAME} Version ${vatsinator_VERSION}"
+            MACOSX_BUNDLE_SHORT_VERSION_STRING "${vatsinator_VERSION}"
+        )
+    endif ()
 endif ()
 
 set_target_properties (vatsinator PROPERTIES

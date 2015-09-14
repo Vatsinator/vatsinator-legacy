@@ -26,6 +26,8 @@
 #include <QMutex>
 #include "tileurl.h"
 
+class TileManager;
+
 class Tile : public QObject {
     Q_OBJECT
     
@@ -38,11 +40,11 @@ signals:
     void ready();
 
 public:
-    explicit Tile(quint64 x, quint64 y, quint64 zoom, QObject *parent = nullptr);
+    explicit Tile(quint64 x, quint64 y, quint64 zoom, TileManager* tm, QObject *parent = nullptr);
     
     const QRectF& coords() const;
     
-    QPixmap pixmap() const;
+    QPixmap pixmap(QRect* source) const;
     
     inline bool isReady() const
     {
@@ -80,6 +82,7 @@ private slots:
     
 private:
     bool __ready;
+    TileManager* __tm;
     const quint64 __x;
     const quint64 __y;
     const quint64 __zoom;

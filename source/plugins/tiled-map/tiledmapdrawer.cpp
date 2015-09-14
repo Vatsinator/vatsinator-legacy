@@ -65,16 +65,19 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
     painter->setRenderHints(hints | QPainter::SmoothPixmapTransform);
 #endif
     
-    __tiles->forEachTileOnScreen([&transform, painter](const Tile* tile, const QRectF& coords,const QRect& source) {
-        painter->drawPixmap(coords * transform, tile->pixmap(), source);
+    __tiles->forEachTileOnScreen([&transform, painter](const Tile* tile) {
+        QRect coords = tile->coords() * transform;
+        QRect source;
+        QPixmap px = tile->pixmap(&source);
+        painter->drawPixmap(coords, px, source);
         
 #ifndef QT_NO_DEBUG
         /* Extra info */
-        painter->drawText(coords * transform, Qt::AlignTop | Qt::AlignLeft, QStringLiteral("%1/%2/%3").arg(
+        painter->drawText(coords, Qt::AlignTop | Qt::AlignLeft, QStringLiteral("%1/%2/%3").arg(
             QString::number(tile->zoom()),
             QString::number(tile->x()),
             QString::number(tile->y())));
-        painter->drawRect(coords * transform);
+        painter->drawRect(coords);
 #endif
     });
 

@@ -148,8 +148,6 @@ MapScene::inRect(const QRectF& rect, std::function<void(const MapArea*)> functio
 const MapItem*
 MapScene::nearest(const LonLat& point) const
 {
-    Q_ASSERT(vApp()->vatsimDataHandler()->isInitialized());
-    
     auto it = spatial::neighbor_begin(__items, point);
     
     if (it == __items.end())
