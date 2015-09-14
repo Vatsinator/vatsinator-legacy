@@ -50,15 +50,6 @@ TileManager::TileManager(MapRenderer* renderer, QObject* parent) :
     connect(renderer, &MapRenderer::zoomChanged, this, &TileManager::__updateTileList);
     connect(renderer, &MapRenderer::viewportChanged, this, &TileManager::__updateTileList);
     connect(renderer, &MapRenderer::centerChanged, this, &TileManager::__updateTileList);
-    
-    /* Fetch the whole 1 zoom */
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
-            Tile* tile = new Tile(i, j, 1, this);
-            connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
-            __tiles[1].insert(std::make_pair(TileCoord(i, j), tile));
-        }
-    }
 }
 
 void
@@ -68,6 +59,15 @@ TileManager::initialize()
         FileDownloader* d = new FileDownloader(this);
         connect(d, &FileDownloader::finished, this, &TileManager::__tileDownloaded);
         __downloaders << d;
+    }
+    
+    /* Fetch the whole 1 zoom */
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            Tile* tile = new Tile(i, j, 1, this);
+            connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
+            __tiles[1].insert(std::make_pair(TileCoord(i, j), tile));
+        }
     }
 }
 
@@ -162,9 +162,14 @@ TileManager::forEachTileInRect(const LonLat& topLeft, const LonLat& bottomRight,
                     z -= 1;
                     
                     tile = this->tile(z, x, y);
+                    
+                    if (z <= 0)
+                        break;
+                        
                 } while (!tile || !tile->isReady());
                 
-                function(tile, coords, source);
+                if (z > 0)
+                    function(tile, coords, source);
             }
         }
     }

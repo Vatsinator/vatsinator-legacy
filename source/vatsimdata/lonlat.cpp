@@ -20,6 +20,8 @@
 #include <QtCore>
 #include <QDataStream>
 
+#include "db/point.h"
+
 #include "lonlat.h"
 
 LonLat::LonLat() : QPointF() {}

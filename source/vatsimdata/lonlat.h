@@ -22,7 +22,8 @@
 
 #include <QPointF>
 #include <QMetaType>
-#include "db/point.h"
+
+struct Point;
 
 /**
  * The LonLat class is a wrapper around QPointF to provide convenience
