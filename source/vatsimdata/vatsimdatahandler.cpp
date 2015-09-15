@@ -374,7 +374,7 @@ VatsimDataHandler::nmDistance(const LonLat& a, const LonLat& b)
 bool
 VatsimDataHandler::isValidIcao(const QString& str)
 {
-    QRegExp rx("[a-zA-z0-9]{,4}");
+    QRegExp rx("[a-zA-z0-9]{4}");
     return rx.exactMatch(str);
 }
 

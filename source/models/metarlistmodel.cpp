@@ -20,6 +20,7 @@
 
 #include "models/roles.h"
 #include "vatsimdata/metar.h"
+#include "vatsimdata/vatsimdatahandler.h"
 
 #include "metarlistmodel.h"
 
@@ -80,7 +81,8 @@ MetarListModel::match(const QModelIndex& start, int role, const QVariant& value,
     if (value.type() != QVariant::String)
         return QModelIndexList();
     
-    QString icao = value.toString();
+    QString icao = value.toString().toUpper();
+    Q_ASSERT(VatsimDataHandler::isValidIcao(icao));
     QModelIndexList matches;
     
     for (int i = start.row(); i < __metars.size() && matches.size() < hits; ++i) {

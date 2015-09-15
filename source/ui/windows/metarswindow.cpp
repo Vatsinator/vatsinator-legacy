@@ -99,16 +99,20 @@ MetarsWindow::keyPressEvent(QKeyEvent* event)
 void
 MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound)
 {
-    auto matches = vApp()->metarUpdater()->model()->match(vApp()->metarUpdater()->model()->index(0), MetarRole, icao, 1);
-    
-    if (matches.length() > 0) {
-        MetarListView->setCurrentIndex(matches.first());
-        MetarListView->scrollTo(matches.first());
-    } else {
-        if (fetchIfNotFound) {
-            vApp()->metarUpdater()->fetch(icao);
-            __awaited = icao;
+    if (VatsimDataHandler::isValidIcao(icao)) {
+        auto matches = vApp()->metarUpdater()->model()->match(vApp()->metarUpdater()->model()->index(0), MetarRole, icao, 1);
+        
+        if (matches.length() > 0) {
+            MetarListView->setCurrentIndex(matches.first());
+            MetarListView->scrollTo(matches.first());
+        } else {
+            if (fetchIfNotFound) {
+                vApp()->metarUpdater()->fetch(icao);
+                __awaited = icao;
+            }
         }
+    } else {
+        vApp()->metarUpdater()->fetch(icao);
     }
     
     MetarIcaoEdit->clear();

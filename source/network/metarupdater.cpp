@@ -100,7 +100,6 @@ MetarUpdater::__update(const QString& metar)
         Metar* m = matches.first().data(MetarRole).value<Metar*>();
         m->setMetar(metar);
     } else {
-        qDebug() << "New metar:" << icao;
         Metar* m = new Metar(icao, metar);
         __metars->addMetar(m);
     }

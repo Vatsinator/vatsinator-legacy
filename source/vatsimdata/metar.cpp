@@ -21,7 +21,7 @@
 #include "metar.h"
 
 Metar::Metar(const QString& icao, const QString& metar) :
-    __icao(icao),
+    __icao(icao.toUpper()),
     __metar(metar),
     __lastFetchTime(QDateTime::currentDateTimeUtc()) {}
 
