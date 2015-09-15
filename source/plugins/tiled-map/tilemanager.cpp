@@ -53,6 +53,13 @@ TileManager::TileManager(MapRenderer* renderer, QObject* parent) :
 }
 
 void
+TileManager::fetchTile(const TileUrl& url)
+{
+    Q_ASSERT(url.zoom() > 0);
+    QMetaObject::invokeMethod(this, "__fetchTileImpl", Q_ARG(TileUrl, url));
+}
+
+void
 TileManager::initialize()
 {
     for (int i = 0; i < Downloaders; ++i) {
@@ -68,25 +75,6 @@ TileManager::initialize()
             connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
             __tiles[1].insert(std::make_pair(TileCoord(i, j), tile));
         }
-    }
-}
-
-void
-TileManager::fetchTile(const TileUrl& url)
-{
-    Q_ASSERT(url.zoom() > 0);
-    
-    auto it = std::min_element(__downloaders.begin(), __downloaders.end(), [this](FileDownloader* a, FileDownloader* b)  {
-        return a->tasks() < b->tasks();
-    });
-    
-    if ((*it)->tasks() > 0) {
-        __queueMutex.lock();
-        __tileQueue << url;
-        __queueMutex.unlock();
-    } else {
-        (*it)->setProperty("tileUrl", QVariant::fromValue<TileUrl>(url));
-        (*it)->fetch(url.toUrl());
     }
 }
 
@@ -213,6 +201,21 @@ TileManager::__dequeueByPriority()
     TileUrl tmp = *it;
     __tileQueue.erase(it);
     return tmp;
+}
+
+void
+TileManager::__fetchTileImpl(const TileUrl& url)
+{
+    auto it = std::min_element(__downloaders.begin(), __downloaders.end(), [this](FileDownloader* a, FileDownloader* b)  {
+        return a->tasks() < b->tasks();
+    });
+    
+    if ((*it)->tasks() > 0) {
+        __tileQueue << url;
+    } else {
+        (*it)->setProperty("tileUrl", QVariant::fromValue<TileUrl>(url));
+        (*it)->fetch(url.toUrl());
+    }
 }
 
 void

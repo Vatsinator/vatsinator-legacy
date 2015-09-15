@@ -98,3 +98,9 @@ TileUrl::fromUrl(const QUrl& url)
     
     return TileUrl(x, y, zoom);
 }
+
+static void registerType()
+{
+    qRegisterMetaType<TileUrl>();
+}
+Q_COREAPP_STARTUP_FUNCTION(registerType)

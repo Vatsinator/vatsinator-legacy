@@ -48,6 +48,8 @@ public:
     
     /**
      * Downloads a tile.
+     * 
+     * \note This function is thread-safe.
      */
     void fetchTile(const TileUrl& url);
     
@@ -92,6 +94,7 @@ private:
     TileUrl __dequeueByPriority();
     
 private slots:
+    void __fetchTileImpl(const TileUrl& url);
     void __calculateTileZoom();
     void __updateTileList();
     void __tileDownloaded(const QString& fileName, const QUrl& url);
