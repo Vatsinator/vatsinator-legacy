@@ -26,6 +26,9 @@
 
 class TileManager;
 
+/**
+ * A plugin that uses tiles to render the map.
+ */
 class TiledMapDrawer : public QObject, public MapDrawer {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.eu.vatsinator.Vatsinator.MapDrawer")

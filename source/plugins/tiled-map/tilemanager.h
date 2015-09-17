@@ -48,41 +48,38 @@ public:
     
     /**
      * Downloads a tile.
-     * 
      * \note This function is thread-safe.
      */
     void fetchTile(const TileUrl& url);
     
-    QList<Tile*> tilesForCurrentZoom();
+    /**
+     * Returns list of tiles that are inside the given rectangle, for the
+     * given zoom. If \c zoom is 0, the current zoom is used. If \c rect
+     * is the empty rectangle, the current visible screen is used.
+     */
+    QList<Tile*> tiles(const QRectF& rect = QRectF(), quint32 zoom = 0);
     
     /**
-     * Executes the given function for each tile in the provided rectangle.
-     * 
-     * The \c function receives the tile pointer.
+     * Returns tile coordinate for the provided geo coordinate.
+     * This function has the same effect as calling \c tileCoordsForLonLat()
+     * static function with the current zoom as a second argument.
      */
-    void forEachTileInRect(const LonLat& topLeft, const LonLat& bottomRight,
-                           std::function<void(const Tile*)> function);
+    QPair<quint64, quint64> tileCoordsForLonLat(const LonLat& lonLat);
     
     /**
-     * Executes the given function for each tile that is visible on the screen.
-     * This function has the same effect as calling \c forEachTileInRect() with
-     * the screen boundaries.
+     * Finds a tile for the provided coordinates.
      */
-    void forEachTileOnScreen(std::function<void(const Tile*)> function);
-    
-    QPair<quint64, quint64> tileCoordForLonLat(const LonLat& lonLat);
-    
     Tile* tile(quint64 x, quint64 y, quint64 z);
     
     /**
      * Calculate global coordinates for the given tile.
      */
-    static QRectF tileCoords(quint64 z, quint64 x, quint64 y);
+    static QRectF tileCoords(quint64 x, quint64 y, quint64 z);
     
     /**
      * x and y coordinates of tile at the given coordinate, at the given zoom.
      */
-    static QPair<quint64, quint64> tileForLonLat(const LonLat& lonLat, unsigned zoom);
+    static QPair<quint64, quint64> tileCoordsForLonLat(const LonLat& lonLat, unsigned zoom);
     
 public slots:
     /**
@@ -96,7 +93,6 @@ private:
 private slots:
     void __fetchTileImpl(const TileUrl& url);
     void __calculateTileZoom();
-    void __updateTileList();
     void __tileDownloaded(const QString& fileName, const QUrl& url);
     
 private:
@@ -104,7 +100,6 @@ private:
     quint32 __tileZoom;
     QList<FileDownloader*> __downloaders;
     QList<TileUrl> __tileQueue;
-    QMutex __tileMutex, __queueMutex;
     
     typedef QPair<quint64, quint64> TileCoord;
     

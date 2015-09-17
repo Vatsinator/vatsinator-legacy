@@ -46,17 +46,17 @@ TileManager::TileManager(MapRenderer* renderer, QObject* parent) :
     Q_ASSERT(renderer);
     connect(renderer, &MapRenderer::zoomChanged, this, &TileManager::__calculateTileZoom);
     connect(renderer, &MapRenderer::viewportChanged, this, &TileManager::__calculateTileZoom);
-    
-//    connect(renderer, &MapRenderer::zoomChanged, this, &TileManager::__updateTileList);
-//    connect(renderer, &MapRenderer::viewportChanged, this, &TileManager::__updateTileList);
-//    connect(renderer, &MapRenderer::centerChanged, this, &TileManager::__updateTileList);
 }
 
 void
 TileManager::fetchTile(const TileUrl& url)
 {
     Q_ASSERT(url.zoom() > 0);
-    QMetaObject::invokeMethod(this, "__fetchTileImpl", Q_ARG(TileUrl, url));
+    
+//     Was used back then when TileManager existed on its own thread
+//     QMetaObject::invokeMethod(this, "__fetchTileImpl", Q_ARG(TileUrl, url));
+    
+    __fetchTileImpl(url);
 }
 
 void
@@ -79,66 +79,30 @@ TileManager::initialize()
 }
 
 QList<Tile*>
-TileManager::tilesForCurrentZoom()
-{   
-    auto topLeft = tileCoordForLonLat(__renderer->screen().topLeft());
-    auto bottomRight = tileCoordForLonLat(__renderer->screen().bottomRight());
+TileManager::tiles(const QRectF& rect, quint32 zoom)
+{
+    QRectF realRect = rect.isNull() ? __renderer->screen() : rect;
+    int realZoom = zoom ? zoom : __tileZoom;
+    
+    auto topLeft = tileCoordsForLonLat(realRect.topLeft());
+    auto bottomRight = tileCoordsForLonLat(realRect.bottomRight());
     
     if (bottomRight.first < topLeft.first)
-        bottomRight = tileCoordForLonLat(LonLat(180.0, __renderer->screen().bottomRight().y()));
+        bottomRight = tileCoordsForLonLat(LonLat(180.0, realRect.bottomRight().y()));
     
-    __tileMutex.lock();
+    QList<Tile*> tiles;
     
-    TileMap& tiles = __tiles[__tileZoom];
-    QList<Tile*> l;
+    for (quint64 x = topLeft.first; x <= bottomRight.first; ++x)
+        for (quint64 y = topLeft.second; y <= bottomRight.second; ++y)
+            tiles << this->tile(x, y, realZoom);
     
-    for (auto i = topLeft.first; i <= bottomRight.first; ++i) {
-        for (auto j = topLeft.second; j <= bottomRight.second; ++j) {
-            auto it = tiles.find(TileCoord(i, j));
-            
-            if (it != tiles.end()) {
-                l << it->second;
-            }
-        }
-    }
-    
-    __tileMutex.unlock();
-    return l;
-}
-
-void
-TileManager::forEachTileInRect(const LonLat& topLeft, const LonLat& bottomRight,
-                               std::function<void(const Tile*)> function)
-{
-    auto tileTopLeft = tileCoordForLonLat(topLeft);
-    auto tileBottomRight = tileCoordForLonLat(bottomRight);
-    
-    if (tileBottomRight.first < tileTopLeft.first)
-        tileBottomRight = tileCoordForLonLat(LonLat(180.0, bottomRight.y()));
-    
-    __tileMutex.lock();
-    
-    for (auto i = tileTopLeft.first; i <= tileBottomRight.first; ++i) {
-        for (auto j = tileTopLeft.second; j <= tileBottomRight.second; ++j) {
-            Tile* tile = this->tile(i, j, __tileZoom);
-            Q_ASSERT(tile);
-            function(tile);
-        }
-    }
-    
-    __tileMutex.unlock();
-}
-
-void
-TileManager::forEachTileOnScreen(std::function<void(const Tile*)> function)
-{
-    forEachTileInRect(__renderer->screen().topLeft(), __renderer->screen().bottomRight(), function);
+    return tiles;
 }
 
 QPair<quint64, quint64>
-TileManager::tileCoordForLonLat(const LonLat& lonLat)
+TileManager::tileCoordsForLonLat(const LonLat& lonLat)
 {
-    return tileForLonLat(lonLat, __tileZoom);
+    return tileCoordsForLonLat(lonLat, __tileZoom);
 }
 
 Tile*
@@ -180,7 +144,7 @@ TileManager::tileCoords(quint64 x, quint64 y, quint64 z)
 }
 
 QPair<quint64, quint64>
-TileManager::tileForLonLat(const LonLat& lonLat, unsigned zoom)
+TileManager::tileCoordsForLonLat(const LonLat& lonLat, unsigned zoom)
 {
     LonLat ll = lonLat.bound();
     qreal n = qPow(2.0, static_cast<qreal>(zoom));
@@ -194,9 +158,18 @@ TileManager::tileForLonLat(const LonLat& lonLat, unsigned zoom)
 TileUrl
 TileManager::__dequeueByPriority()
 {
-    auto it = std::min_element(__tileQueue.begin(), __tileQueue.end(), [this](const TileUrl& a, const TileUrl& b) {
-        return qAbs(__tileZoom - a.zoom()) < qAbs(__tileZoom - b.zoom());
+    auto centerCoords = tileCoordsForLonLat(__renderer->center());
+    
+    auto it = std::min_element(__tileQueue.begin(), __tileQueue.end(), [this, &centerCoords](const TileUrl& a, const TileUrl& b) {
+        if (a.zoom() == b.zoom()) { // zooms equal, prioritize by distance from the center of the screen
+            return qSqrt(qPow(static_cast<int>(a.x() - centerCoords.first), 2) + qPow(static_cast<int>(a.y() - centerCoords.second), 2)) <
+                qSqrt(qPow(static_cast<int>(b.x() - centerCoords.first), 2) + qPow(static_cast<int>(b.y() - centerCoords.second), 2));
+        } else {
+            return qAbs(__tileZoom - a.zoom()) < qAbs(__tileZoom - b.zoom());
+        }
     });
+    
+    Q_ASSERT(it != __tileQueue.end());
     
     TileUrl tmp = *it;
     __tileQueue.erase(it);
@@ -238,37 +211,6 @@ TileManager::__calculateTileZoom()
 }
 
 void
-TileManager::__updateTileList()
-{
-    auto topLeft = tileCoordForLonLat(__renderer->screen().topLeft());
-    auto bottomRight = tileCoordForLonLat(__renderer->screen().bottomRight());
-    
-    if (bottomRight.first < topLeft.first)
-        bottomRight = tileCoordForLonLat(LonLat(180.0, __renderer->screen().bottomRight().y()));
-    
-    __tileMutex.lock();
-    TileMap& tiles = __tiles[__tileZoom];
-    __tileMutex.unlock();
-    
-    for (auto i = topLeft.first; i <= bottomRight.first; ++i) {
-        for (auto j = topLeft.second; j <= bottomRight.second; ++j) {
-            TileCoord coord(i, j);
-            
-            auto it = tiles.find(coord);
-            
-            if (it == tiles.end()) {
-                Tile* tile = new Tile(i, j, __tileZoom, this);
-                connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
-                
-                __tileMutex.lock();
-                tiles.insert(std::make_pair(coord, tile));
-                __tileMutex.unlock();
-            }
-        }
-    }
-}
-
-void
 TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
 {
     FileDownloader* downloader = qobject_cast<FileDownloader*>(sender());
@@ -293,13 +235,11 @@ TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
     qApp->sendEvent(it->second, &e);
     
     Q_ASSERT(downloader->tasks() <= 1); /* One downloader - one task at a time */
-    __queueMutex.lock();
     if (__tileQueue.length() > 0) {
         TileUrl url = __dequeueByPriority();
         downloader->setProperty("tileUrl", QVariant::fromValue<TileUrl>(url));
         downloader->fetch(url.toUrl());
     }
-    __queueMutex.unlock();
     
     Q_UNUSED(url);
 }

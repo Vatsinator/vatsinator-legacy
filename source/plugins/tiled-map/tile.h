@@ -28,13 +28,39 @@
 
 class TileManager;
 
+/**
+ * Represents a single tile of the map.
+ * 
+ * The tile can be loaded from the local cache or be fetched from the
+ * internet.
+ */
 class Tile : public QObject {
     Q_OBJECT
     
+    /**
+     * Indicates whether the tile is fetched and loaded.
+     */
     Q_PROPERTY(bool ready READ isReady NOTIFY ready)
+    
+    /**
+     * The x-coordinate of the tile.
+     */
     Q_PROPERTY(quint64 x READ x CONSTANT)
+    
+    /**
+     * The y-coordinate of the tile.
+     */
     Q_PROPERTY(quint64 y READ y CONSTANT)
+    
+    /**
+     * The tile's zoom.
+     */
     Q_PROPERTY(quint64 zoom READ zoom CONSTANT)
+    
+    /**
+     * Tile's URL.
+     */
+    Q_PROPERTY(TileUrl url READ url CONSTANT)
     
 signals:
     void ready();
@@ -42,8 +68,15 @@ signals:
 public:
     explicit Tile(quint64 x, quint64 y, quint64 zoom, TileManager* tm, QObject *parent = nullptr);
     
+    /**
+     * Gets the tile's rectangle global coordinates.
+     */
     const QRectF& coords() const;
     
+    /**
+     * Returns tile's pixmap. If the tile is not ready, a closest one available
+     * will be picked and \c source adjusted.
+     */
     QPixmap pixmap(QRect* source) const;
     
     inline bool isReady() const
