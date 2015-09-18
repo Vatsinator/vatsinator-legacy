@@ -18,6 +18,7 @@
  */
 
 #include <QtCore>
+#include <cmath>
 
 #include "network/filedownloader.h"
 #include "storage/filemanager.h"
@@ -200,14 +201,11 @@ TileManager::__calculateTileZoom()
     qreal dist = VatsimDataHandler::nmDistance(p2, p1);
     qreal nmPerPix = dist / TileWidth;
     
-    int zoom = 0;
-    qreal resolution;
-    do {
-        zoom += 1;
-        resolution = 84.5264761719 * qCos(qDegreesToRadians(p1.latitude())) / (qPow(2.0, zoom));
-    } while (resolution > nmPerPix);
+    /* K = 156543.03 for meters. This is for NM. */
+    constexpr qreal K = 84.5264761719;
     
-    __tileZoom = zoom;
+    int zoom = qCeil(std::log2(K * (qCos(qDegreesToRadians(p1.latitude())) / nmPerPix)));
+    __tileZoom = qBound(1, zoom, 18);
 }
 
 void
