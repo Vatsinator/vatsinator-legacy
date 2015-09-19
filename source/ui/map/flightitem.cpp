@@ -91,13 +91,13 @@ FlightItem::__drawLines(QPainter* painter, const WorldTransform& transform) cons
     QPoint pos = position() * transform;
     
     if (data()->origin()->isValid()) {
-        painter->setPen(QPen(__scene->settings().colors.origin_to_pilot_line));
+        painter->setPen(QPen(QColor(3, 116, 164)));
         QPoint p = data()->origin()->position() * transform;
         painter->drawLine(p, pos);
     }
     
     if (data()->destination()->isValid()) {
-        QPen pen(__scene->settings().colors.pilot_to_destination);
+        QPen pen(QColor(133, 164, 164));
         pen.setStyle(Qt::DashLine);
         painter->setPen(pen);
         QPoint p = data()->destination()->position() * transform;

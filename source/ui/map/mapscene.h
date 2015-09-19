@@ -1,6 +1,6 @@
 /*
  * mapscene.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,20 +63,6 @@ public:
      * here, updating it only when needed.
      */
     struct MapSettings {
-        struct {
-            int zoom_coefficient;
-        } misc;
-        
-        struct {
-            QColor staffed_fir_borders;
-            QColor staffed_fir_background;
-            QColor staffed_uir_borders;
-            QColor staffed_uir_background;
-            QColor unstaffed_fir_borders;
-            QColor approach_circle;
-            QColor origin_to_pilot_line;
-            QColor pilot_to_destination;
-        } colors;
         
         struct {
             bool airports_layer;

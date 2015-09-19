@@ -53,8 +53,6 @@ TileUrl::toUrl() const
     if (!isValid())
         return QUrl();
     
-//     return QUrl(QStringLiteral("http://c.tile.openstreetmap.org/") % path());
-//     return QUrl(QStringLiteral("http://otile1.mqcdn.com/tiles/1.0.0/sat/") % path());
     return QUrl(QStringLiteral("http://%1.basemaps.cartocdn.com/%2/%3").arg(randomizePrefix(), CartoDBMapPath, path()));
 }
 

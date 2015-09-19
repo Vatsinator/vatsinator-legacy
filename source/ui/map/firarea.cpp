@@ -54,8 +54,7 @@ FirArea::isVisible() const
 void
 FirArea::draw(QPainter* painter, const WorldTransform& transform) const
 {
-    QColor firColor = __scene->settings().colors.staffed_fir_borders;
-    firColor.setAlpha(__scene->settings().colors.staffed_fir_background.alpha());
+    QColor firColor = QColor(176, 32, 32, 30);
     
     QBrush brush = painter->brush();
     painter->setBrush(QBrush(firColor));

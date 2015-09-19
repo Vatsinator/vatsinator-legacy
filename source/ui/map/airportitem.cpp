@@ -112,7 +112,7 @@ AirportItem::__drawLines(QPainter* painter, const WorldTransform& transform) con
     QPen orig = painter->pen();
     QPoint pos = position() * transform;
     
-    painter->setPen(QPen(__scene->settings().colors.origin_to_pilot_line));
+    painter->setPen(QPen(QColor(3, 116, 164)));
     for (const Pilot* p: data()->outbounds()->toList()) {
         if (p->phase() == Pilot::Airborne || p->phase() == Pilot::Arrived) {
             QPoint pf = p->position() * transform;
@@ -120,7 +120,7 @@ AirportItem::__drawLines(QPainter* painter, const WorldTransform& transform) con
         }
     }
     
-    QPen pen(__scene->settings().colors.pilot_to_destination);
+    QPen pen(QColor(133, 164, 164));
     pen.setStyle(Qt::DashLine);
     painter->setPen(pen);
     
