@@ -161,19 +161,6 @@ SettingsManager::__getPage(const QString& s) const
 void
 SettingsManager::__fillDefaults()
 {
-    __defaults["map.zoom_coefficient"] = 30;
-    __defaults["map.staffed_fir_borders_color"] = QColor(176, 32, 32);
-    __defaults["map.staffed_fir_background_color"] = QColor(176, 32, 32, 30);
-    __defaults["map.unstaffed_fir_borders_color"] = QColor(193, 193, 193);
-    __defaults["map.staffed_uir_borders_color"] = QColor(0, 118, 148);
-    __defaults["map.staffed_uir_background_color"] = QColor(0, 118, 148, 30);
-    __defaults["map.fir_font"] = QFont("Verdana", 9);
-    __defaults["map.airport_font"] = QFont("Verdana", 8);
-    __defaults["map.pilot_font"] = QFont("Verdana", 8);
-    __defaults["map.approach_circle_color"] = QColor(64, 127, 91);
-    __defaults["map.origin_to_pilot_line_color"] = QColor(3, 116, 164);
-    __defaults["map.pilot_to_destination_line_color"] = QColor(133, 164, 164);
-    
     __defaults["network.database_integration"] = true;
     
     /* In USA provide Fahrenheit by default */

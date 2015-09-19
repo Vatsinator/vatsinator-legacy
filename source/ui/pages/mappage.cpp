@@ -1,6 +1,6 @@
 /*
  * mappage.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,25 +33,9 @@ MapPage::MapPage(QWidget* parent) : WidgetSettingsModule(parent)
     connect(AirportFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showAirportFontDialog);
     connect(PilotFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showPilotFontDialog);
     
-    connect(ZoomCoefficientSlider, &QSlider::valueChanged, this, &MapPage::settingsChanged);
-    connect(StaffedFirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(UnstaffedFirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(StaffedUirColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(ApproachCircleColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(OriginToPilotLineColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(PilotToDestinationLineColorButton, &ColorButton::colorChanged, this, &MapPage::settingsChanged);
-    connect(StaffedFirColorAlphaBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MapPage::settingsChanged);
-    connect(StaffedUirColorAlphaBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MapPage::settingsChanged);
+    connect(MapTypeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &MapPage::settingsChanged);
     
-    ZoomCoefficientSlider->setProperty("vatsinatorSettingsKey", "zoom_coefficient");
-    StaffedFirColorButton->setProperty("vatsinatorSettingsKey", "staffed_fir_borders_color");
-    StaffedFirColorAlphaBox->setProperty("vatsinatorSettingsKey", "staffed_fir_background_alpha");
-    UnstaffedFirColorButton->setProperty("vatsinatorSettingsKey", "unstaffed_fir_borders_color");
-    StaffedUirColorButton->setProperty("vatsinatorSettingsKey", "staffed_uir_borders_color");
-    StaffedUirColorAlphaBox->setProperty("vatsinatorSettingsKey", "staffed_uir_background_alpha");
-    ApproachCircleColorButton->setProperty("vatsinatorSettingsKey", "approach_circle_color");
-    OriginToPilotLineColorButton->setProperty("vatsinatorSettingsKey", "origin_to_pilot_line_color");
-    PilotToDestinationLineColorButton->setProperty("vatsinatorSettingsKey", "pilot_to_destination_line_color");
+    MapTypeComboBox->setProperty("vatsinatorSettingsKey", "map_type");
 }
 
 QString
@@ -131,6 +115,7 @@ MapPage::__showFirFontDialog()
     if (ok) {
         __firFont = font;
         __updateFontButtons();
+        emit settingsChanged();
     }
 }
 
@@ -143,6 +128,7 @@ MapPage::__showAirportFontDialog()
     if (ok) {
         __airportFont = font;
         __updateFontButtons();
+        emit settingsChanged();
     }
 }
 
@@ -155,5 +141,6 @@ MapPage::__showPilotFontDialog()
     if (ok) {
         __pilotFont = font;
         __updateFontButtons();
+        emit settingsChanged();
     }
 }

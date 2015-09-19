@@ -1,6 +1,6 @@
 /*
  * mappage.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,18 +41,9 @@ public:
     
     /**
      * \variables
-     * zoom_coefficient:                  int
-     * staffed_fir_borders_color:         QColor
-     * staffed_fir_background_color:      QColor
-     * unstaffed_fir_borders_color:       QColor
-     * staffed_uir_borders_color:         QColor
-     * staffed_uir_background_color:      QColor
-     * fir_font:                          QFont
-     * airport_font:                      QFont
-     * pilot_font:                        QFont
-     * approach_circle_color:             QColor
-     * origin_to_pilot_line_color:        QColor
-     * pilot_to_destination_line_color:   QColor
+     * fir_font:                        QFont
+     * airport_font:                    QFont
+     * pilot_font:                      QFont
      */
     void update() const override;
     

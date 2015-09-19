@@ -114,20 +114,8 @@ MapRenderer::zoomStep(int steps)
 {
     //count limiter for this function
     __actualZoomMaximum =
-        qFloor(
-            qLn(
-                (
-                    MapConfig::zoomMaximum() - MapConfig::zoomMinimum()
-                ) /
-                MapConfig::zoomNormalizeCoef()
-            ) / qLn(
-                MapConfig::zoomBase() +
-                (
-                    __scene->settings().misc.zoom_coefficient * 0.01
-                )
-            )
-        );
-        
+        qFloor(qLn((MapConfig::zoomMaximum() - MapConfig::zoomMinimum()) / MapConfig::zoomNormalizeCoef()) / qLn(MapConfig::zoomBase() + (MapConfig::zoomCoefficient() * 0.01)));
+    
     //set the actual zoom level according to number of scroll wheel steps
     __actualZoom += steps;
     
@@ -135,15 +123,8 @@ MapRenderer::zoomStep(int steps)
     __actualZoom = qBound(0, __actualZoom, __actualZoomMaximum);
     
     // count value of closeup
-    return
-        MapConfig::zoomMinimum() + MapConfig::zoomNormalizeCoef() *
-        qPow(
-            MapConfig::zoomBase() +
-            (
-                __scene->settings().misc.zoom_coefficient * 0.01
-            ),
-            __actualZoom
-        );
+    return MapConfig::zoomMinimum() + MapConfig::zoomNormalizeCoef() *
+        qPow(MapConfig::zoomBase() + (MapConfig::zoomCoefficient() * 0.01), __actualZoom);
 }
 
 void

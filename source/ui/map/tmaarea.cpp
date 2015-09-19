@@ -52,10 +52,10 @@ void
 TmaArea::draw(QPainter* painter, const WorldTransform& transform) const
 {
     QBrush brush = painter->brush();
-    painter->setBrush(__scene->settings().colors.approach_circle);
+    painter->setBrush(QColor(62, 87, 127, 50));
     
     QPen pen = painter->pen();
-    painter->setPen(__scene->settings().colors.approach_circle);
+    painter->setPen(QColor(62, 87, 127, 50));
     
     if (__boundaries.isEmpty()) {
         QRect rect = __rect * transform;
