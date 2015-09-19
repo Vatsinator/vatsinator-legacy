@@ -24,8 +24,7 @@
 
 #include "ui/ui_vatsinatorwindow.h"
 
-class QLabel;
-class QProgressBar;
+class MapInfoWidget;
 class MouseLonLatEvent;
 
 class VatsinatorWindow :
@@ -73,9 +72,7 @@ private slots:
     void __updateProgress(qint64 read, qint64 total);
     
 private:
-    QLabel*       __statusBox;
-    QProgressBar* __progressBar;
-    
+    MapInfoWidget* __mapInfo;
     
 };
 

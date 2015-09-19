@@ -98,6 +98,7 @@ set (widgets_SRCS
     widgets/delayedwidget.cpp
     widgets/flightprogresswidget.cpp
     widgets/infolabel.cpp
+    widgets/mapinfowidget.cpp
     widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
@@ -160,6 +161,7 @@ set (widgets_HEADERS
     widgets/delayedwidget.h
     widgets/flightprogresswidget.h
     widgets/infolabel.h
+    widgets/mapinfowidget.h
     widgets/mapwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h

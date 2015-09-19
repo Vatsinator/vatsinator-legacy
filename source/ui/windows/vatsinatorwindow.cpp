@@ -21,6 +21,7 @@
 
 #include "events/mouselonlatevent.h"
 #include "network/plaintextdownloader.h"
+#include "ui/widgets/mapinfowidget.h"
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/atclistwindow.h"
 #include "ui/windows/databasewindow.h"
@@ -38,29 +39,18 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
     QMainWindow(parent)
 {
     setupUi(this);
-    MainGridLayout->setVerticalSpacing(0);
-    
-    connect(qApp, SIGNAL(aboutToQuit()),
-            this, SLOT(close()));
             
     Q_ASSERT(wui());
     
-    connect(ActionExit,                   SIGNAL(triggered()),
-            qApp,                         SLOT(quit()));
-    connect(ActionAbout,                  SIGNAL(triggered()),
-            wui()->aboutWindow(),         SLOT(show()));
-    connect(ActionMetar,                  SIGNAL(triggered()),
-            wui()->metarsWindow(),        SLOT(show()));
-    connect(ActionDatabase,               SIGNAL(triggered()),
-            wui()->databaseWindow(),      SLOT(show()));
-    connect(ActionRefresh,                SIGNAL(triggered()),
-            vApp()->vatsimDataHandler(),  SLOT(requestDataUpdate()));
-    connect(ActionPreferences,            SIGNAL(triggered()),
-            wui()->settingsWindow(),      SLOT(show()));
-    connect(ActionFlightList,             SIGNAL(triggered()),
-            wui()->flightListWindow(),    SLOT(show()));
-    connect(ActionATCList,                SIGNAL(triggered()),
-            wui()->atcListWindow(),       SLOT(show()));
+    connect(ActionExit, &QAction::triggered, qApp, &QApplication::quit);
+    connect(ActionAbout, &QAction::triggered, wui()->aboutWindow(), &AboutWindow::show);
+    connect(ActionMetar, &QAction::triggered, wui()->metarsWindow(), &QWidget::show);
+    connect(ActionDatabase, &QAction::triggered, wui()->databaseWindow(), &DatabaseWindow::show);
+    connect(ActionRefresh, &QAction::triggered, vApp()->vatsimDataHandler(), &VatsimDataHandler::requestDataUpdate);
+    connect(ActionPreferences, &QAction::triggered, wui()->settingsWindow(), &SettingsWindow::show);
+    connect(ActionFlightList, &QAction::triggered, wui()->flightListWindow(), &FlightListWindow::show);
+    connect(ActionATCList, &QAction::triggered, wui()->atcListWindow(), &AtcListWindow::show);
+    // TODO
     //   connect(ActionHomeLocation,                       SIGNAL(triggered()),
     //           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
     
@@ -87,57 +77,50 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
     
     /* Set small font for the bottom status bar */
     VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
-    QFont statusBarFont = style->smallFont();
-    ClientsBox->setFont(statusBarFont);
-    PositionBox->setFont(statusBarFont);
 #endif
     
-    __statusBox = new QLabel();
-    __statusBox->setIndent(6);
-    __statusBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    __mapInfo = new MapInfoWidget;
     
-#ifdef Q_OS_MAC
-    __statusBox->setFont(statusBarFont);
-#endif
-    
-    __progressBar = new QProgressBar();
-    __progressBar->setValue(0);
-    __progressBar->setTextVisible(true);
-    
-    Replaceable->addWidgets({__statusBox, __progressBar});
-    
-    statusBarUpdate();
+    QVBoxLayout* layout = new QVBoxLayout;
+    layout->addItem(new QSpacerItem(0, 20));
+    layout->addWidget(__mapInfo);
+    layout->setStretch(0, 1);
+    layout->setSpacing(0);
+    layout->setContentsMargins(QMargins(0, 0, 0, 0));
+    MapDisplay->setLayout(layout);
 }
 
 void
 VatsinatorWindow::statusBarUpdate(const QString& message, const QPalette& palette)
 {
-    if (message.isEmpty()) {
-        if (vApp()->vatsimDataHandler()->dateDataUpdated().isNull())
-            __statusBox->setText(tr("Last update: never"));
-        else
-            __statusBox->setText(tr("Last update: %1 UTC").arg(
-                                     vApp()->vatsimDataHandler()->dateDataUpdated().toString("dd MMM yyyy, hh:mm")
-                                 ));
-    } else
-        __statusBox->setText(message);
-        
-    __statusBox->setPalette(palette);
+//     if (message.isEmpty()) {
+//         if (vApp()->vatsimDataHandler()->dateDataUpdated().isNull())
+//             __statusBox->setText(tr("Last update: never"));
+//         else
+//             __statusBox->setText(tr("Last update: %1 UTC").arg(
+//                                      vApp()->vatsimDataHandler()->dateDataUpdated().toString("dd MMM yyyy, hh:mm")
+//                                  ));
+//     } else
+//         __statusBox->setText(message);
+//         
+//     __statusBox->setPalette(palette);
+    
+    __mapInfo->setUpdated(vApp()->vatsimDataHandler()->dateDataUpdated());
 }
 
 void
 VatsinatorWindow::infoBarUpdate()
 {
-    VatsimDataHandler* data = vApp()->vatsimDataHandler();
-    
-    ClientsBox->setText(tr(
-                            "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
-                            QString::number(data->clientCount()),
-                            QString::number(data->pilotCount()),
-                            QString::number(data->atcCount()),
-                            QString::number(data->obsCount())
-                        )
-                       );
+//     VatsimDataHandler* data = vApp()->vatsimDataHandler();
+//     
+//     ClientsBox->setText(tr(
+//                             "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
+//                             QString::number(data->clientCount()),
+//                             QString::number(data->pilotCount()),
+//                             QString::number(data->atcCount()),
+//                             QString::number(data->obsCount())
+//                         )
+//                        );
 }
 
 void
@@ -163,12 +146,7 @@ VatsinatorWindow::showEvent(QShowEvent*)
 void
 VatsinatorWindow::mouseLonLatMoveEvent(MouseLonLatEvent* event)
 {
-    PositionBox->setText(QString("%1 %2 %3 %4").arg(
-                             event->lonLat().latitude() > 0 ? "N" : "S",
-                             QString::number(qAbs(event->lonLat().latitude()), 'g', 6),
-                             event->lonLat().longitude() < 0 ? "W" : "E",
-                             QString::number(qAbs(event->lonLat().longitude()), 'g', 6)
-                         ));
+    __mapInfo->setPosition(event->lonLat());
 }
 
 void
@@ -223,8 +201,8 @@ VatsinatorWindow::__restoreWindowGeometry()
 void
 VatsinatorWindow::__dataDownloading()
 {
-    Replaceable->setCurrentWidget(__progressBar);
-    __progressBar->setValue(0);
+//     Replaceable->setCurrentWidget(__progressBar);
+//     __progressBar->setValue(0);
 }
 
 void
@@ -238,16 +216,16 @@ VatsinatorWindow::__dataUpdated()
 {
     infoBarUpdate();
     statusBarUpdate();
-    Replaceable->setCurrentWidget(__statusBox);
+//     Replaceable->setCurrentWidget(__statusBox);
 }
 
 void
 VatsinatorWindow::__dataCorrupted()
 {
-    Replaceable->setCurrentWidget(__statusBox);
-    QPalette palette = __statusBox->palette();
-    palette.setColor(__statusBox->foregroundRole(), Qt::red);
-    statusBarUpdate("", palette);
+//     Replaceable->setCurrentWidget(__statusBox);
+//     QPalette palette = __statusBox->palette();
+//     palette.setColor(__statusBox->foregroundRole(), Qt::red);
+//     statusBarUpdate("", palette);
 }
 
 void
@@ -259,6 +237,6 @@ VatsinatorWindow::__enableRefreshAction()
 void
 VatsinatorWindow::__updateProgress(qint64 read, qint64 total)
 {
-    __progressBar->setMaximum(total);
-    __progressBar->setValue(read);
+//     __progressBar->setMaximum(total);
+//     __progressBar->setValue(read);
 }

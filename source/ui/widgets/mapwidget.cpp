@@ -160,7 +160,7 @@ MapWidget::paintEvent(QPaintEvent* event)
     
     QPen pen(QColor(0, 0, 0));
     painter.setPen(pen);
-    painter.drawText(rect(), Qt::AlignRight | Qt::AlignBottom, mapInfo);
+    painter.drawText(rect(), Qt::AlignRight | Qt::AlignTop, mapInfo);
 #endif
     
     /* TODO Update event->rect() instead of the whole widget */
