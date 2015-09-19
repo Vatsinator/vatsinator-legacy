@@ -306,15 +306,15 @@ MapScene::__updateFlightItem()
     Pilot* p = qobject_cast<Pilot*>(sender());
     Q_ASSERT(p);
     
-    if (p->position() == p->oldPosition()) // position didn't change
-        return;
-        
     auto it = std::find_if(spatial::equal_begin(__items, p->oldPosition()),
                            spatial::equal_end(__items, p->oldPosition()),
                            [p](auto it) {
                                const FlightItem* citem = qobject_cast<const FlightItem*>(it.second);
                                return citem && citem->data() == p;
                            });
+    
+    Q_ASSERT(it != __items.end());
+    
     const MapItem* item = it->second;
     Q_ASSERT(item);
     __items.erase(it);

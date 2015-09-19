@@ -204,7 +204,7 @@ TileManager::__calculateTileZoom()
     /* K = 156543.03 for meters. This is for NM. */
     constexpr qreal K = 84.5264761719;
     
-    int zoom = qCeil(std::log2(K * (qCos(qDegreesToRadians(p1.latitude())) / nmPerPix)));
+    int zoom = qCeil(log2(K * (qFastCos(qDegreesToRadians(p1.latitude())) / nmPerPix)));
     __tileZoom = qBound(1, zoom, 18);
 }
 
