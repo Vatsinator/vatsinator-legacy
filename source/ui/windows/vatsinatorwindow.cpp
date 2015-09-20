@@ -84,6 +84,10 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, [this]() {
         __mapInfo->setUpdatedVisible(true);
         __mapInfo->setUpdated(vApp()->vatsimDataHandler()->dateDataUpdated());
+        __mapInfo->setClients(vApp()->vatsimDataHandler()->clientCount());
+        __mapInfo->setPilots(vApp()->vatsimDataHandler()->pilotCount());
+        __mapInfo->setAtcs(vApp()->vatsimDataHandler()->atcCount());
+        __mapInfo->setObservers(vApp()->vatsimDataHandler()->obsCount());
     });
 }
 

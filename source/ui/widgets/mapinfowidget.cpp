@@ -24,36 +24,31 @@
 MapInfoWidget::MapInfoWidget(QWidget* parent) : QWidget(parent)
 {
     QFont font;
-    font.setPointSize(font.pointSize() - 1);
+    font.setBold(true);
     
-    __labelPosition = new QLabel;
-    __labelPosition->setAlignment(Qt::AlignRight);
-    __labelPosition->setFont(font);
-    
-    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);
-    effect->setBlurRadius(2.0);
-    effect->setOffset(QPointF(1.0, 1.0));
-    __labelPosition->setGraphicsEffect(effect);
+    QPalette palette;
+    palette.setColor(QPalette::WindowText, Qt::white);
     
     __labelUpdated = new QLabel;
     __labelUpdated->setFont(font);
-    
-    effect = new QGraphicsDropShadowEffect(this);
-    effect->setBlurRadius(2.0);
-    effect->setOffset(QPointF(1.0, 1.0));
-    __labelUpdated->setGraphicsEffect(effect);
+    __labelUpdated->setPalette(palette);
+    __labelUpdated->setGraphicsEffect(__prepareEffect());
     
     __labelUpdating = new QLabel(tr("Updating..."));
     __labelUpdating->setFont(font);
-    effect = new QGraphicsDropShadowEffect(this);
-    effect->setBlurRadius(2.0);
-    effect->setOffset(QPointF(1.0, 1.0));
-    __labelUpdating->setGraphicsEffect(effect);
+    __labelUpdating->setPalette(palette);
+    __labelUpdating->setGraphicsEffect(__prepareEffect());
+    
+    __labelStatus = new QLabel;
+    __labelStatus->setAlignment(Qt::AlignRight);
+    __labelStatus->setFont(font);
+    __labelStatus->setPalette(palette);
+    __labelStatus->setGraphicsEffect(__prepareEffect());
     
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(__labelUpdated);
     layout->addWidget(__labelUpdating);
-    layout->addWidget(__labelPosition);
+    layout->addWidget(__labelStatus);
     setLayout(layout);
     
     setUpdatedVisible(true);
@@ -63,13 +58,13 @@ void
 MapInfoWidget::setPosition(const LonLat& position)
 {
     __position = position;
-    __labelPosition->setText(QStringLiteral("%1 %2 %3 %4").arg(
-        position.latitude() > 0 ? "N" : "S",
-        QString::number(qAbs(position.latitude()), 'g', 6),
-        position.longitude() < 0 ? "W" : "E",
-        QString::number(qAbs(position.longitude()), 'g', 6)
-    ));
-    update();
+//     __labelPosition->setText(QStringLiteral("%1 %2 %3 %4").arg(
+//         position.latitude() > 0 ? "N" : "S",
+//         QString::number(qAbs(position.latitude()), 'g', 6),
+//         position.longitude() < 0 ? "W" : "E",
+//         QString::number(qAbs(position.longitude()), 'g', 6)
+//     ));
+    /* Not used */
 }
 
 void
@@ -89,4 +84,52 @@ MapInfoWidget::setUpdatedVisible(bool updatedVisible)
     __updatedVisible = updatedVisible;
     __labelUpdated->setVisible(updatedVisible);
     __labelUpdating->setVisible(!updatedVisible);
+}
+
+void
+MapInfoWidget::setClients(int clients)
+{
+    __clients = clients;
+    __updateStatusLabel();
+}
+
+void
+MapInfoWidget::setPilots(int pilots)
+{
+    __pilots = pilots;
+    __updateStatusLabel();
+}
+
+void
+MapInfoWidget::setAtcs(int atcs)
+{
+    __atcs = atcs;
+    __updateStatusLabel();
+}
+
+void
+MapInfoWidget::setObservers(int observers)
+{
+    __observers = observers;
+    __updateStatusLabel();
+}
+
+QGraphicsDropShadowEffect*
+MapInfoWidget::__prepareEffect()
+{
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);
+    effect->setBlurRadius(15.0);
+    effect->setOffset(QPointF(0.0, 0.0));
+    effect->setColor(Qt::black);
+    return effect;
+}
+
+void
+MapInfoWidget::__updateStatusLabel()
+{
+    QString clients = tr("%n client(s)", "", __clients);
+    QString pilots = tr("%n pilot(s)", "", __pilots);
+    QString atcs = tr("%n ATC(s)", "", __atcs);
+    QString observers = tr("%n observer(s)", "", __observers);
+    __labelStatus->setText(QStringLiteral("%1 (%2, %3, %4)").arg(clients, pilots, atcs, observers));
 }

@@ -25,6 +25,7 @@
 #include "vatsimdata/lonlat.h"
 
 class QLabel;
+class QGraphicsDropShadowEffect;
 
 /**
  * MapInfoWidget encapsulates information displayed over the map.
@@ -48,6 +49,26 @@ class MapInfoWidget : public QWidget
      * If not, the "Updating..." label is shown instead.
      */
     Q_PROPERTY(bool updatedVisible READ updatedVisible WRITE setUpdatedVisible)
+    
+    /**
+     * Number of connected clients.
+     */
+    Q_PROPERTY(int clients READ clients WRITE setClients)
+    
+    /**
+     * Number of connected pilots.
+     */
+    Q_PROPERTY(int pilots READ pilots WRITE setPilots)
+    
+    /**
+     * Number of connected ATCs.
+     */
+    Q_PROPERTY(int atcs READ atcs WRITE setAtcs)
+    
+    /**
+     * Number of connected observers.
+     */
+    Q_PROPERTY(int observers READ observers WRITE setObservers)
 
 public:
     MapInfoWidget(QWidget* parent = nullptr);
@@ -55,6 +76,10 @@ public:
     void setPosition(const LonLat& position);
     void setUpdated(const QDateTime& updated);
     void setUpdatedVisible(bool updatedVisible);
+    void setClients(int clients);
+    void setPilots(int pilots);
+    void setAtcs(int atcs);
+    void setObservers(int observers);
     
     inline const LonLat& position() const
     {
@@ -71,15 +96,43 @@ public:
         return __updatedVisible;
     }
     
+    inline int clients() const
+    {
+        return __clients;
+    }
+    
+    inline int pilots() const
+    {
+        return __pilots;
+    }
+    
+    inline int atcs() const
+    {
+        return __atcs;
+    }
+    
+    inline int observers() const
+    {
+        return __observers;
+    }
+    
 private:
+    QGraphicsDropShadowEffect* __prepareEffect();
+    void __updateStatusLabel();
+    
     LonLat __position;
-    QLabel* __labelPosition;
     
     QDateTime __updated;
     QLabel* __labelUpdated;
     
     bool __updatedVisible;
     QLabel* __labelUpdating; /**< Visible only if __labelUpdated is not */
+    
+    int __clients;
+    int __pilots;
+    int __atcs;
+    int __observers;
+    QLabel* __labelStatus;
     
 };
 
