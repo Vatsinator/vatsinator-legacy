@@ -25,9 +25,10 @@ MapInfoWidget::MapInfoWidget(QWidget* parent) : QWidget(parent)
 {
     QFont font;
     font.setBold(true);
+    font.setPointSize(font.pointSize() - 1);
     
     QPalette palette;
-    palette.setColor(QPalette::WindowText, Qt::white);
+    palette.setColor(QPalette::WindowText, QColor(65, 65, 65));
     
     __labelUpdated = new QLabel;
     __labelUpdated->setFont(font);
@@ -118,9 +119,9 @@ QGraphicsDropShadowEffect*
 MapInfoWidget::__prepareEffect()
 {
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect(this);
-    effect->setBlurRadius(15.0);
+    effect->setBlurRadius(5.0);
     effect->setOffset(QPointF(0.0, 0.0));
-    effect->setColor(Qt::black);
+    effect->setColor(Qt::white); // white shadow gives as a gentle outline
     return effect;
 }
 
