@@ -24,7 +24,6 @@
 MapInfoWidget::MapInfoWidget(QWidget* parent) : QWidget(parent)
 {
     QFont font;
-    font.setBold(true);
     font.setPointSize(font.pointSize() - 1);
     
     __labelPosition = new QLabel;
@@ -44,10 +43,20 @@ MapInfoWidget::MapInfoWidget(QWidget* parent) : QWidget(parent)
     effect->setOffset(QPointF(1.0, 1.0));
     __labelUpdated->setGraphicsEffect(effect);
     
+    __labelUpdating = new QLabel(tr("Updating..."));
+    __labelUpdating->setFont(font);
+    effect = new QGraphicsDropShadowEffect(this);
+    effect->setBlurRadius(2.0);
+    effect->setOffset(QPointF(1.0, 1.0));
+    __labelUpdating->setGraphicsEffect(effect);
+    
     QHBoxLayout* layout = new QHBoxLayout;
     layout->addWidget(__labelUpdated);
+    layout->addWidget(__labelUpdating);
     layout->addWidget(__labelPosition);
     setLayout(layout);
+    
+    setUpdatedVisible(true);
 }
 
 void
@@ -72,4 +81,12 @@ MapInfoWidget::setUpdated(const QDateTime& updated)
         __labelUpdated->setText(QString());
     else
         __labelUpdated->setText(tr("Last update: %1 UTC").arg(updated.toString("dd MMM yyyy, hh:mm")));
+}
+
+void
+MapInfoWidget::setUpdatedVisible(bool updatedVisible)
+{
+    __updatedVisible = updatedVisible;
+    __labelUpdated->setVisible(updatedVisible);
+    __labelUpdating->setVisible(!updatedVisible);
 }

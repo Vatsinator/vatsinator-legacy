@@ -36,18 +36,6 @@ class VatsinatorWindow :
 public:
     explicit VatsinatorWindow(QWidget* parent = nullptr);
     
-    /**
-     * Sets the specified message in the bottom-left bar corner
-     * or puts simple "Last update" text.
-     * \param text If specified, this text will be shown.
-     */
-    void statusBarUpdate(const QString& text = QString(), const QPalette& palette = QPalette());
-    
-    /**
-     * The middle part of status bar - how many clients, etc etc.
-     */
-    void infoBarUpdate();
-    
     inline MapWidget* mapWidget()
     {
         return MapDisplay;
@@ -62,14 +50,6 @@ protected:
 private:
     void __storeWindowGeometry();
     void __restoreWindowGeometry();
-    
-private slots:
-    void __dataDownloading();
-    void __statusUpdated();
-    void __dataUpdated();
-    void __dataCorrupted();
-    void __enableRefreshAction();
-    void __updateProgress(qint64 read, qint64 total);
     
 private:
     MapInfoWidget* __mapInfo;

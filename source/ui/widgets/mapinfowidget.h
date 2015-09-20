@@ -33,14 +33,28 @@ class MapInfoWidget : public QWidget
 {
     Q_OBJECT
     
+    /**
+     * The currently shown position of the mouse cursor.
+     */
     Q_PROPERTY(LonLat position READ position WRITE setPosition)
+    
+    /**
+     * The date and time of the last update, in UTC.
+     */
     Q_PROPERTY(QDateTime updated READ updated WRITE setUpdated)
+    
+    /**
+     * Specifies whether the \c updated label is shown or not.
+     * If not, the "Updating..." label is shown instead.
+     */
+    Q_PROPERTY(bool updatedVisible READ updatedVisible WRITE setUpdatedVisible)
 
 public:
     MapInfoWidget(QWidget* parent = nullptr);
     
     void setPosition(const LonLat& position);
     void setUpdated(const QDateTime& updated);
+    void setUpdatedVisible(bool updatedVisible);
     
     inline const LonLat& position() const
     {
@@ -52,12 +66,20 @@ public:
         return __updated;
     }
     
+    inline bool updatedVisible() const
+    {
+        return __updatedVisible;
+    }
+    
 private:
     LonLat __position;
     QLabel* __labelPosition;
     
     QDateTime __updated;
     QLabel* __labelUpdated;
+    
+    bool __updatedVisible;
+    QLabel* __labelUpdating; /**< Visible only if __labelUpdated is not */
     
 };
 

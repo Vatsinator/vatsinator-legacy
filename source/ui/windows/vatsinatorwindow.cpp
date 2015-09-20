@@ -17,6 +17,7 @@
  *
  */
 
+#include <functional>
 #include <QtWidgets>
 
 #include "events/mouselonlatevent.h"
@@ -54,22 +55,9 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
     //   connect(ActionHomeLocation,                       SIGNAL(triggered()),
     //           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
     
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataDownloading()),
-            this,                         SLOT(__dataDownloading()));
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimStatusUpdated()),
-            this,                         SLOT(__statusUpdated()));
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimStatusError()),
-            this,                         SLOT(__dataCorrupted()));
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataUpdated()),
-            this,                         SLOT(__dataUpdated()));
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimDataError()),
-            this,                         SLOT(__dataCorrupted()));
-    connect(vApp()->vatsimDataHandler(),  SIGNAL(vatsimStatusUpdated()),
-            this,                         SLOT(__enableRefreshAction()));
-            
-    connect(vApp()->vatsimDataHandler()->downloader(),    SIGNAL(progress(qint64, qint64)),
-            this,                                         SLOT(__updateProgress(qint64, qint64)));
-            
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated,
+            std::bind(&QAction::setEnabled, ActionRefresh, true));
+    
 #ifdef Q_OS_MAC
     /* On Mac set main manu name to "Menu" in order not to have two
        "Vatsinators" on the menubar. */
@@ -88,39 +76,15 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
     layout->setSpacing(0);
     layout->setContentsMargins(QMargins(0, 0, 0, 0));
     MapDisplay->setLayout(layout);
-}
-
-void
-VatsinatorWindow::statusBarUpdate(const QString& message, const QPalette& palette)
-{
-//     if (message.isEmpty()) {
-//         if (vApp()->vatsimDataHandler()->dateDataUpdated().isNull())
-//             __statusBox->setText(tr("Last update: never"));
-//         else
-//             __statusBox->setText(tr("Last update: %1 UTC").arg(
-//                                      vApp()->vatsimDataHandler()->dateDataUpdated().toString("dd MMM yyyy, hh:mm")
-//                                  ));
-//     } else
-//         __statusBox->setText(message);
-//         
-//     __statusBox->setPalette(palette);
     
-    __mapInfo->setUpdated(vApp()->vatsimDataHandler()->dateDataUpdated());
-}
-
-void
-VatsinatorWindow::infoBarUpdate()
-{
-//     VatsimDataHandler* data = vApp()->vatsimDataHandler();
-//     
-//     ClientsBox->setText(tr(
-//                             "Clients: %1 (%2 pilots, %3 ATCs, %4 observers)").arg(
-//                             QString::number(data->clientCount()),
-//                             QString::number(data->pilotCount()),
-//                             QString::number(data->atcCount()),
-//                             QString::number(data->obsCount())
-//                         )
-//                        );
+    
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataDownloading,
+            std::bind(&MapInfoWidget::setUpdatedVisible, __mapInfo, false));
+    
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, [this]() {
+        __mapInfo->setUpdatedVisible(true);
+        __mapInfo->setUpdated(vApp()->vatsimDataHandler()->dateDataUpdated());
+    });
 }
 
 void
@@ -196,47 +160,4 @@ VatsinatorWindow::__restoreWindowGeometry()
     
     EnableAutoUpdatesAction->setChecked(settings.value("autoUpdatesEnabled", true).toBool());
     settings.endGroup();
-}
-
-void
-VatsinatorWindow::__dataDownloading()
-{
-//     Replaceable->setCurrentWidget(__progressBar);
-//     __progressBar->setValue(0);
-}
-
-void
-VatsinatorWindow::__statusUpdated()
-{
-    statusBarUpdate();
-}
-
-void
-VatsinatorWindow::__dataUpdated()
-{
-    infoBarUpdate();
-    statusBarUpdate();
-//     Replaceable->setCurrentWidget(__statusBox);
-}
-
-void
-VatsinatorWindow::__dataCorrupted()
-{
-//     Replaceable->setCurrentWidget(__statusBox);
-//     QPalette palette = __statusBox->palette();
-//     palette.setColor(__statusBox->foregroundRole(), Qt::red);
-//     statusBarUpdate("", palette);
-}
-
-void
-VatsinatorWindow::__enableRefreshAction()
-{
-    ActionRefresh->setEnabled(true);
-}
-
-void
-VatsinatorWindow::__updateProgress(qint64 read, qint64 total)
-{
-//     __progressBar->setMaximum(total);
-//     __progressBar->setValue(read);
 }
