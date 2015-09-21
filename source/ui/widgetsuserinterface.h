@@ -1,6 +1,6 @@
 /*
  * widgetsuserinterface.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +45,8 @@ class WidgetsUserInterface : public UserInterface {
     
 public:
     explicit WidgetsUserInterface(QObject* parent = nullptr);
+    
+    virtual ~WidgetsUserInterface();
     
     void initialize() override;
     
@@ -149,7 +151,7 @@ private:
     MetarsWindow*         __metarsWindow;
     DatabaseWindow*       __databaseWindow;
     AtcListWindow*        __atcListWindow;
-    FlightListWindow*     __flightsListWindow;
+    FlightListWindow*     __flightListWindow;
     SettingsWindow*       __settingsWindow;
     VatsinatorWindow*     __vatsinatorWindow;
     

@@ -34,6 +34,9 @@ class QPanGesture;
 class QPinchGesture;
 class QSwipeGesture;
 
+/**
+ * A widget that encapsulates MapRenderer in the QWidget.
+ */
 class MapWidget : public QWidget {
     Q_OBJECT
     friend class MapScene;

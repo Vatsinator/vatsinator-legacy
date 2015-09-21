@@ -1,6 +1,6 @@
 /*
  * widgetsuserinterface.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,17 @@
 WidgetsUserInterface::WidgetsUserInterface(QObject* parent):
     UserInterface(parent) {}
 
+WidgetsUserInterface::~WidgetsUserInterface()
+{
+    delete __aboutWindow;
+    delete __metarsWindow;
+    delete __databaseWindow;
+    delete __atcListWindow;
+    delete __flightListWindow;
+    delete __settingsWindow;
+    delete __vatsinatorWindow;
+}
+
 void
 WidgetsUserInterface::initialize()
 {
@@ -57,13 +68,13 @@ WidgetsUserInterface::initialize()
     __metarsWindow = new MetarsWindow();
     __databaseWindow = new DatabaseWindow();
     __atcListWindow = new AtcListWindow();
-    __flightsListWindow = new FlightListWindow();
+    __flightListWindow = new FlightListWindow();
     __settingsWindow = new SettingsWindow();
     __vatsinatorWindow = new VatsinatorWindow();
     
     connect(vApp()->resourceManager(), &ResourceManager::outdated,
             this, &WidgetsUserInterface::__showNewVersionDialog);
-            
+    
     emit initialized();
     
     mainWindow()->show();
@@ -93,8 +104,8 @@ WidgetsUserInterface::databaseWindow()
 FlightListWindow*
 WidgetsUserInterface::flightListWindow()
 {
-    Q_ASSERT(__flightsListWindow);
-    return __flightsListWindow;
+    Q_ASSERT(__flightListWindow);
+    return __flightListWindow;
 }
 
 MetarsWindow*
