@@ -53,16 +53,15 @@ MapRenderer::MapRenderer(QObject* parent) :
     __mapDrawer(nullptr),
     __scene(new MapScene(this))
 {
-    __restoreSettings();
+    __restoreMapState();
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, this, &MapRenderer::updated);
+    connect(qApp, &QCoreApplication::aboutToQuit, this, &MapRenderer::__saveMapState);
 }
 
 MapRenderer::~MapRenderer()
 {
     if (__mapDrawer)
         delete __mapDrawer;
-    
-    __storeSettings();
 }
 
 WorldTransform
@@ -155,25 +154,11 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
 }
 
 void
-MapRenderer::__storeSettings()
+MapRenderer::__restoreMapState()
 {
     QSettings settings;
     
-    settings.beginGroup("CameraSettings");
-    
-    settings.setValue("actualZoomCoefficient", __actualZoom);
-    settings.setValue("zoom", __zoom);
-    settings.setValue("center", QVariant::fromValue<LonLat>(__center));
-    
-    settings.endGroup();
-}
-
-void
-MapRenderer::__restoreSettings()
-{
-    QSettings settings;
-    
-    settings.beginGroup("CameraSettings");
+    settings.beginGroup("MapState");
     
     __actualZoom = settings.value("actualZoomCoefficient", 0).toInt();
     __zoom = settings.value("zoom", MapConfig::zoomDefault()).toReal();
@@ -190,4 +175,18 @@ MapRenderer::__updateScreen()
     if (__screen.right() < __screen.left()) {
         __screen.setRight(MapConfig::longitudeMax());
     }
+}
+
+void
+MapRenderer::__saveMapState()
+{
+    QSettings settings;
+    
+    settings.beginGroup("MapState");
+    
+    settings.setValue("actualZoomCoefficient", __actualZoom);
+    settings.setValue("zoom", __zoom);
+    settings.setValue("center", QVariant::fromValue<LonLat>(__center));
+    
+    settings.endGroup();
 }

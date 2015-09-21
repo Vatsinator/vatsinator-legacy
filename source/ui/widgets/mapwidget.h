@@ -43,7 +43,6 @@ public:
      * The default constrcutor passes _parent_ to QGLWidget.
      */
     explicit MapWidget(QWidget* parent = nullptr);
-    virtual ~MapWidget();
     
     bool event(QEvent* event) override;
     

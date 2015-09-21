@@ -50,7 +50,7 @@
 
 MapWidget::MapWidget(QWidget* parent) :
     QWidget(parent),
-    __renderer(new MapRenderer())
+    __renderer(new MapRenderer(this))
 {
     setAttribute(Qt::WA_AcceptTouchEvents);
     setAttribute(Qt::WA_TouchPadAcceptSingleTouchEvents);
@@ -61,11 +61,6 @@ MapWidget::MapWidget(QWidget* parent) :
     
     __renderer->setMapDrawer(new TiledMapDrawer);
     connect(__renderer, &MapRenderer::updated, this, static_cast<void (MapWidget::*)()>(&MapWidget::update));
-}
-
-MapWidget::~MapWidget()
-{
-    delete __renderer;
 }
 
 bool

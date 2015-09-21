@@ -177,9 +177,11 @@ public slots:
     void paint(QPainter* painter, const QSet<MapItem*>& selectedItems = QSet<MapItem*>());
     
 private:
-    void __storeSettings();
-    void __restoreSettings();
+    void __restoreMapState();
     void __updateScreen();
+    
+private slots:
+    void __saveMapState();
     
 private:
     /* The current viewport */
