@@ -84,8 +84,13 @@ MapRenderer::mapToLonLat(const QPoint& point)
 void
 MapRenderer::setMapDrawer(MapDrawer* drawer)
 {
+    if (__mapDrawer)
+        delete __mapDrawer;
+    
     __mapDrawer = drawer;
     __mapDrawer->initialize(this);
+    
+    emit mapDrawerChanged(__mapDrawer);
 }
 
 void

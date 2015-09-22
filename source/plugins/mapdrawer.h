@@ -40,6 +40,14 @@ public:
     virtual ~MapDrawer() = default;
     
     /**
+     * List of map types. The types will be visible in the settings
+     * and therefore should be translated.
+     * The currently selected type index is available through the
+     * `SettingManager::get()` method.
+     */
+    virtual QStringList types() const = 0;
+    
+    /**
      * Initializes the plugin.
      *
      * This function is called just before the first frame is rendered.

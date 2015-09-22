@@ -91,6 +91,11 @@ signals:
      */
     void viewportChanged(const QSize& viewport);
     
+    /**
+     * The MapDrawer implementation has changed.
+     */
+    void mapDrawerChanged(MapDrawer* drawer);
+    
 public:
     /**
      * The default constructor requires valid OpenGL context. All initialization
@@ -125,8 +130,6 @@ public:
      * 
      * If another drawer was bound before, it will be deleted.
      * MapRenderer takes ownership over \c drawer.
-     * 
-     * \note This function is thread-safe.
      */
     void setMapDrawer(MapDrawer* drawer);
     
@@ -168,6 +171,14 @@ public:
     inline const QRectF& screen()
     {
         return __screen;
+    }
+    
+    /**
+     * Gets the running instance of MapDrawer.
+     */
+    inline MapDrawer* mapDrawer()
+    {
+        return __mapDrawer;
     }
 
 public slots:

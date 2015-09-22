@@ -1,5 +1,5 @@
 /*
- * tileurl.h
+ * tileprovider.h
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,54 +17,31 @@
  *
  */
 
-#ifndef TILEURL_H
-#define TILEURL_H
+#ifndef TILEPROVIDER_H
+#define TILEPROVIDER_H
 
-#include <QtGlobal>
-#include <QUrl>
 #include <QString>
-#include <QMetaType>
 
-class TileProvider;
-
-class TileUrl {
-    
+/**
+ * The TileProvider class identifies the remote location where all the
+ * tiles will be fetched from.
+ */
+class TileProvider {
 public:
-    TileUrl();
-    explicit TileUrl(quint64 x, quint64 y, quint64 zoom, TileProvider* provider);
+    TileProvider(const QString& name, const QString& url, const QString& path);
     
-    bool isValid() const;
+    QUrl url(quint64 x, quint64 y, quint64 zoom);
     
-    bool operator ==(const TileUrl& other) const;
-    
-    inline quint64 x() const
+    inline const QString& name() const
     {
-        return __x;
-    }
-    
-    inline quint64 y() const
-    {
-        return __y;
-    }
-    
-    inline quint64 zoom() const
-    {
-        return __zoom;
-    }
-    
-    inline const QUrl& toUrl() const
-    {
-        return __url;
+        return __name;
     }
     
 private:
-    quint64 __x;
-    quint64 __y;
-    quint64 __zoom;
-    QUrl __url;
-
+    QString __name;
+    QString __url;
+    QString __path;
+    
 };
 
-Q_DECLARE_METATYPE(TileUrl)
-
-#endif // TILEURL_H
+#endif // TILEPROVIDER_H

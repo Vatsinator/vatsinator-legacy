@@ -19,7 +19,9 @@
 
 #include <QtGui>
 
+#include "storage/settingsmanager.h"
 #include "ui/map/maprenderer.h"
+#include "vatsinatorapplication.h"
 
 #include "tile.h"
 #include "tilemanager.h"
@@ -29,7 +31,10 @@
 
 TiledMapDrawer::TiledMapDrawer(QObject* parent) :
     QObject(parent),
-    __tiles(nullptr)
+    __tiles(nullptr),
+    __providers({
+        TileProvider("CartoDB", "http://<prefix>.basemaps.cartocdn.com", "light_nolabels/<zoom>/<x>/<y>.png"), // light
+        TileProvider("CartoDB", "http://<prefix>.basemaps.cartocdn.com", "dark_nolabels/<zoom>/<x>/<y>.png") }) // dark
 {
     
 }
@@ -39,13 +44,22 @@ TiledMapDrawer::~TiledMapDrawer()
     __tiles->deleteLater();
 }
 
+QStringList
+TiledMapDrawer::types() const
+{
+    return { tr("Light"), tr("Dark") };
+}
+
 void
 TiledMapDrawer::initialize(MapRenderer* renderer)
 {
     __tiles = new TileManager(renderer);
+    __updateMapType();
     __tiles->initialize();
     
     __renderer = renderer;
+    
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &TiledMapDrawer::__updateMapType);
 }
 
 void
@@ -81,3 +95,15 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
 #endif
 }
 
+
+void
+TiledMapDrawer::__updateMapType()
+{
+    int selectedType = SM::get("map.map_type").toInt();
+    if (selectedType < 0) // ui not yet initialized
+        return;
+    
+    qDebug() << "Selected map type: " << types()[selectedType];
+    
+    __tiles->setTileProvider(&__providers[selectedType]);
+}

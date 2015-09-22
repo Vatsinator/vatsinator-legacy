@@ -27,10 +27,10 @@
 class MapInfoWidget;
 class MouseLonLatEvent;
 
-class VatsinatorWindow :
-    public QMainWindow,
-    private Ui::VatsinatorWindow {
-    
+/**
+ * The main application window.
+ */
+class VatsinatorWindow : public QMainWindow, private Ui::VatsinatorWindow {
     Q_OBJECT
     
 public:

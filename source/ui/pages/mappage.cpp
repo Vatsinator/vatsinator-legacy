@@ -19,6 +19,11 @@
 
 #include <QtWidgets>
 
+#include "plugins/mapdrawer.h"
+#include "ui/map/maprenderer.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
+
 #include "mappage.h"
 
 MapPage::MapPage(QWidget* parent) : WidgetSettingsModule(parent)
@@ -36,6 +41,8 @@ MapPage::MapPage(QWidget* parent) : WidgetSettingsModule(parent)
     connect(MapTypeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &MapPage::settingsChanged);
     
     MapTypeComboBox->setProperty("vatsinatorSettingsKey", "map_type");
+    
+    connect(wui(), &WidgetsUserInterface::initialized, this, &MapPage::__initialize);
 }
 
 QString
@@ -91,6 +98,15 @@ MapPage::save(QSettings& s)
 }
 
 void
+MapPage::__initialize()
+{
+    MapRenderer* renderer = wui()->mainWindow()->mapWidget()->renderer();
+    connect(renderer, &MapRenderer::mapDrawerChanged, this, &MapPage::__updateMapTypes);
+    
+    __updateMapTypes(renderer->mapDrawer());
+}
+
+void
 MapPage::__updateFontButtons()
 {
     QString fontName = QString("%1, %2").arg(__firFont.family(), QString::number(__firFont.pointSize()));
@@ -142,5 +158,20 @@ MapPage::__showPilotFontDialog()
         __pilotFont = font;
         __updateFontButtons();
         emit settingsChanged();
+    }
+}
+
+void
+MapPage::__updateMapTypes(MapDrawer* drawer)
+{
+    MapTypeComboBox->clear();
+    
+    if (!drawer) {
+        MapTypeComboBox->setEnabled(false);
+    } else {
+        auto types = drawer->types();
+        std::for_each(types.begin(), types.end(), [this](const QString& type) {
+            MapTypeComboBox->addItem(type);
+        });
     }
 }

@@ -2,12 +2,14 @@ add_library (tiledmapdrawer STATIC
     tile.h
     tiledmapdrawer.h
     tilemanager.h
+    tileprovider.h
     tilereadyevent.h
     tileurl.h
     
     tile.cpp
     tiledmapdrawer.cpp
     tilemanager.cpp
+    tileprovider.cpp
     tilereadyevent.cpp
     tileurl.cpp
 )

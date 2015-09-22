@@ -35,6 +35,7 @@
 class FileDownloader;
 class MapRenderer;
 class Tile;
+class TileProvider;
 class QUrl;
 
 /**
@@ -72,6 +73,11 @@ public:
     Tile* tile(quint64 x, quint64 y, quint64 z);
     
     /**
+     * Sets a tile provider.
+     */
+    void setTileProvider(TileProvider* provider);
+    
+    /**
      * Calculate global coordinates for the given tile.
      */
     static QRectF tileCoords(quint64 x, quint64 y, quint64 z);
@@ -80,6 +86,14 @@ public:
      * x and y coordinates of tile at the given coordinate, at the given zoom.
      */
     static QPair<quint64, quint64> tileCoordsForLonLat(const LonLat& lonLat, unsigned zoom);
+    
+    /**
+     * Currently used tile provider.
+     */
+    inline TileProvider* provider()
+    {
+        return __provider;
+    }
     
 public slots:
     /**
@@ -100,6 +114,7 @@ private:
     quint32 __tileZoom;
     QList<FileDownloader*> __downloaders;
     QList<TileUrl> __tileQueue;
+    TileProvider* __provider;
     
     typedef QPair<quint64, quint64> TileCoord;
     

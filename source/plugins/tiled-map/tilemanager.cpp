@@ -26,6 +26,7 @@
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "tile.h"
+#include "tileprovider.h"
 #include "tilereadyevent.h"
 
 #include "tilemanager.h"
@@ -72,7 +73,7 @@ TileManager::initialize()
     /* Fetch the whole 1 zoom */
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 2; ++j) {
-            Tile* tile = new Tile(i, j, 1, this);
+            Tile* tile = new Tile(i, j, 1, this, this);
             connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
             __tiles[1].insert(std::make_pair(TileCoord(i, j), tile));
         }
@@ -113,8 +114,8 @@ TileManager::tile(quint64 x, quint64 y, quint64 z)
     TileMap& tiles = __tiles[z];
     auto it = tiles.find(TileCoord(x, y));
     if (it == tiles.end()) {
-        Tile* tile = new Tile(x, y, z, this);
-        tile->moveToThread(this->thread());
+        Tile* tile = new Tile(x, y, z, this, this);
+//         tile->moveToThread(this->thread());
         connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
         
         tiles.insert(std::make_pair(TileCoord(x, y), tile));
@@ -122,6 +123,14 @@ TileManager::tile(quint64 x, quint64 y, quint64 z)
     } else {
         return it->second;
     }
+}
+
+void
+TileManager::setTileProvider(TileProvider* provider)
+{
+    __provider = provider;
+    __tiles.clear();
+    __tileQueue.clear();
 }
 
 QRectF
@@ -220,7 +229,7 @@ TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
     if (!tileUrl.isValid())
         return;
     
-    FileManager::moveToCache(fileName, tileUrl.path());
+    FileManager::moveToCache(fileName, provider()->name() % tileUrl.toUrl().path());
     
     TileMap& tiles = __tiles[tileUrl.zoom()];
     auto it = std::find_if(tiles.begin(), tiles.end(), [&tileUrl](const std::pair<const TileCoord&, const Tile*>& it) {

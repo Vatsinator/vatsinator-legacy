@@ -76,7 +76,6 @@ set (widgets_SRCS
     actions/trackaction.cpp
     
     buttons/airportdetailsbutton.cpp
-    buttons/colorbutton.cpp
     buttons/clientdetailsbutton.cpp
     buttons/urlbutton.cpp
     
@@ -100,7 +99,6 @@ set (widgets_SRCS
     widgets/infolabel.cpp
     widgets/mapinfowidget.cpp
     widgets/mapwidget.cpp
-    widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
     widgets/weatherforecastwidget.cpp
     widgets/widgetsettingsmodule.cpp
@@ -139,7 +137,6 @@ set (widgets_HEADERS
     actions/trackaction.h
     
     buttons/airportdetailsbutton.h
-    buttons/colorbutton.h
     buttons/clientdetailsbutton.h
     buttons/urlbutton.h
     
@@ -163,7 +160,6 @@ set (widgets_HEADERS
     widgets/infolabel.h
     widgets/mapinfowidget.h
     widgets/mapwidget.h
-    widgets/replaceablewidget.h
     widgets/scrolllabel.h
     widgets/weatherforecastwidget.h
     widgets/widgetsettingsmodule.h

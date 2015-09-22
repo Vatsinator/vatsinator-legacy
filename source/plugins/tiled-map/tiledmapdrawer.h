@@ -23,6 +23,7 @@
 #include <QObject>
 
 #include "plugins/mapdrawer.h"
+#include "tileprovider.h"
 
 class TileManager;
 
@@ -40,6 +41,11 @@ public:
     virtual ~TiledMapDrawer();
     
     /**
+     * \copydoc MapDrawer::types()
+     */
+    QStringList types() const override;
+    
+    /**
      * \copydoc MapDrawer::initialize()
      */
     void initialize(MapRenderer* renderer) override;
@@ -49,9 +55,13 @@ public:
      */
     void draw(QPainter* painter, const WorldTransform& transform) override;
     
+private slots:
+    void __updateMapType();
+    
 private:
     MapRenderer* __renderer;
     TileManager* __tiles;
+    TileProvider __providers[2];
     
 };
 

@@ -19,8 +19,6 @@
 
 #include <QtWidgets>
 
-#include "ui/buttons/colorbutton.h"
-
 #include "widgetsettingsmodule.h"
 
 WidgetSettingsModule::WidgetSettingsModule(QWidget* parent) : QWidget(parent) {}
@@ -43,8 +41,6 @@ WidgetSettingsModule::update() const
             setValue(key, slider->value());
         else if (const QSpinBox* sb = qobject_cast<const QSpinBox*>(w))
             setValue(key, sb->value());
-        else if (const ColorButton* button = qobject_cast<const ColorButton*>(w))
-            setValue(key, button->color());
         else
             qDebug() << w->metaObject()->className() << "not supported by WidgetSettingsModule";
     });
@@ -81,8 +77,6 @@ WidgetSettingsModule::restore(QSettings& settings, const QVariantHash& defaults)
             slider->setValue(s.toInt());
         else if (QSpinBox* sb = qobject_cast<QSpinBox*>(w))
             sb->setValue(s.toInt());
-        else if (ColorButton* button = qobject_cast<ColorButton*>(w))
-            button->setColor(s.value<QColor>());
         else
             qDebug("%s not supported by WidgetSettingsModule", w->metaObject()->className());
     });
@@ -106,8 +100,6 @@ WidgetSettingsModule::save(QSettings& settings)
             settings.setValue(key, slider->value());
         else if (QSpinBox* sb = qobject_cast<QSpinBox*>(w))
             settings.setValue(key, sb->value());
-        else if (ColorButton* button = qobject_cast<ColorButton*>(w))
-            settings.setValue(key, button->color());
         else
             qDebug() << w->metaObject()->className() << "not supported by WidgetSettingsModule";
     });

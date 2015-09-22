@@ -23,6 +23,7 @@
 #include "storage/cachefile.h"
 
 #include "tilemanager.h"
+#include "tileprovider.h"
 #include "tilereadyevent.h"
 
 #include "tile.h"
@@ -34,11 +35,11 @@ Tile::Tile(quint64 x, quint64 y, quint64 zoom, TileManager* tm, QObject* parent)
     __x(x),
     __y(y),
     __zoom(zoom),
-    __url(x, y, zoom)
+    __url(x, y, zoom, tm->provider())
 {
     Q_ASSERT(__tm);
     
-    QString path = __url.path();
+    QString path = __tm->provider()->name() % __url.toUrl().path();
     CacheFile cached(path);
     if (!cached.exists()) {
         __fetchTile();
@@ -101,7 +102,7 @@ void Tile::customEvent(QEvent* event)
 void
 Tile::__loadTile()
 {
-    CacheFile cached(__url.path());
+    CacheFile cached(__tm->provider()->name() % __url.toUrl().path());
     
     QMutexLocker l(&__mutex);
     __pixmap.load(QFileInfo(cached).absoluteFilePath());

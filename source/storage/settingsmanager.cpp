@@ -27,8 +27,7 @@
 SettingsManager::SettingsManager(QObject* parent) :
     QObject(parent)
 {
-    connect(vApp()->userInterface(),      SIGNAL(initialized()),
-            this,                         SLOT(initialize()));
+    connect(vApp()->userInterface(), &UserInterface::initialized, this, &SettingsManager::initialize);
     __fillDefaults();
     __settings = __defaults;
 }
@@ -74,7 +73,7 @@ SettingsManager::updateUi(const QString& pageName)
 #endif
     
     Q_ASSERT(m);
-               
+    
     QSettings s;
     s.beginGroup("Settings");
     m->restoreSettings(s, vApp()->settingsManager()->__defaults);
@@ -181,4 +180,6 @@ SettingsManager::__fillDefaults()
     __defaults["view.pilot_labels.when_hovered"] = true;
     __defaults["view.pilot_labels.airport_related"] = true;
     __defaults["view.airport_labels"] = true;
+    
+    __defaults["map.map_type"] = 0;
 }
