@@ -35,8 +35,7 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     MapItem(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
-    __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y),
-    __font(QGuiApplication::font())
+    __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y)
 {
     QString labelText = __fir->icao();
     if (__fir->isOceanic()) {
@@ -45,10 +44,8 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     
     __label.setText(labelText);
     
-    __font.setPointSize(__font.pointSize() + 1);
-    __font.setBold(true);
-    
-    __label.prepare(QTransform(), __font);
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &FirItem::__prepareLabel);
+    __prepareLabel();
     
     const QVector<Point>& borders = data()->data()->borders;
     __boundaries.reserve(borders.size());
@@ -91,4 +88,11 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     painter->setFont(origFont);
     
     Q_UNUSED(flags);
+}
+
+void
+FirItem::__prepareLabel()
+{
+    __font = SM::get("map.fir_font").value<QFont>();
+    __label.prepare(QTransform(), __font);
 }

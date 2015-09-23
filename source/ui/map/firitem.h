@@ -68,6 +68,9 @@ public:
 
     FirItem() = delete;
     
+private slots:
+    void __prepareLabel();
+    
 private:
     MapScene* __scene;
     const Fir* __fir;

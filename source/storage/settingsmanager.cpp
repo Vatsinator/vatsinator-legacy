@@ -182,4 +182,9 @@ SettingsManager::__fillDefaults()
     __defaults["view.airport_labels"] = true;
     
     __defaults["map.map_type"] = 0;
+    
+    QFont font = QGuiApplication::font();
+    font.setBold(true);
+    font.setPointSize(font.pointSize() + 1);
+    __defaults["map.fir_font"] = QVariant::fromValue(font);
 }

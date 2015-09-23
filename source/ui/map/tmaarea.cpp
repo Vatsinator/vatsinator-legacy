@@ -79,7 +79,7 @@ TmaArea::__initialize(const Airport* airport)
         }
         __boundingRectFromBoundaries();
     } else {
-        __rect = QRectF(QPointF(0.0, 0.0), QSizeF(4.0, -3.0));
+        __rect = QRectF(QPointF(0.0, 0.0), QSizeF(2.0, -1.5));
         __rect.moveCenter(airport->position());
     }
 }
