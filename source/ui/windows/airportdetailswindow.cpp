@@ -157,9 +157,7 @@ AirportDetailsWindow::__fillLabels()
     
     Metar* metar = vApp()->metarUpdater()->fetch(__airport->icao());
     MetarLabel->setText(metar->metar());
-    connect(metar, &Metar::metarChanged, [this](const QString& metar) {
-        MetarLabel->setText(metar);
-    });
+    connect(metar, &Metar::metarChanged, this, &AirportDetailsWindow::__updateMetarLabel);
 }
 
 void
@@ -197,4 +195,10 @@ AirportDetailsWindow::__goToNotam(QModelIndex index)
     
     if (!url.isEmpty())
         QDesktopServices::openUrl(url);
+}
+
+void
+AirportDetailsWindow::__updateMetarLabel(const QString& metar)
+{
+    MetarLabel->setText(metar);
 }

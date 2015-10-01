@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtGui>
+
 #include "events/notificationevent.h"
 #include "vatsinatorapplication.h"
 
@@ -39,6 +41,12 @@ UserInterface::instantiate(QObject* parent)
 #else
     return new WidgetsUserInterface(parent);
 #endif
+}
+
+qreal
+UserInterface::dp()
+{
+    return QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
 }
 
 void

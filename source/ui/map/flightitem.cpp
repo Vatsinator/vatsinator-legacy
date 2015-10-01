@@ -23,7 +23,7 @@
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/mapscene.h"
-#include "ui/map/modelpixmapprovider.h"
+#include "ui/map/pixmapprovider.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
@@ -74,11 +74,14 @@ FlightItem::__prepareModel() const
 {
     QTransform t;
     t.rotate(static_cast<qreal>(data()->heading()));
-    __model = __scene->modelPixmapProvider()->pixmapForModel(__pilot->aircraft())
+    __model = __scene->pixmapProvider()->pixmapForModel(__pilot->aircraft())
         .transformed(t, Qt::SmoothTransformation);
     
     /* We drop shadow after transformation, it looks more convincing */
+
+#if 0 // Temporarily disabled
     __dropShadow(&__model);
+#endif
 }
 
 void

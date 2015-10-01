@@ -123,10 +123,8 @@ VatsimDataDocument::__parse()
             
             case Servers:
             case VoiceServers:
+            case None: // TODO Q_UNREACHABLE for None, but validate the document first
                 break;
-                
-            default:
-                Q_UNREACHABLE();
         }
     }
     

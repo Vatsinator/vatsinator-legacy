@@ -1,6 +1,6 @@
 /*
  * airportitem.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "ui/map/tmaarea.h"
+#include "ui/map/pixmapprovider.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/pilot.h"
@@ -35,10 +36,11 @@
 
 #include "airportitem.h"
 
-// pixmaps to use
+// pixmaps to use, %1 is DPI prefix
 static const QString AirportInactivePixmap = QStringLiteral(":/pixmaps/%1/airport_inactive.png");
 static const QString AirportActivePixmap = QStringLiteral(":/pixmaps/%1/airport.png");
 static const QString AirportActiveWithAtcPixmap = QStringLiteral(":/pixmaps/%1/airport_staffed.png");
+
 
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
@@ -47,15 +49,16 @@ AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     __tma(nullptr)
 {
     connect(airport, &Airport::updated, this, &AirportItem::__invalidate);
+    
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, [this]() {
+        __label = QPixmap();
+    });
 }
 
 bool
 AirportItem::isVisible() const
 {
-    if (data()->isEmpty())
-        return __scene->settings().view.empty_airports;
-    else
-        return __scene->settings().view.airports_layer;
+    return data()->isEmpty() ? __scene->settings().view.empty_airports : __scene->settings().view.airports_layer;
 }
 
 LonLat
@@ -74,10 +77,24 @@ AirportItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags 
     if (flags & DrawSelected)
         __drawLines(painter, transform);
     
+    QPoint center = position() * transform;
+    
     QRect rect(QPoint(0, 0), __icon.size());
-    rect.moveCenter(position() * transform);
+    rect.moveCenter(center);
+    rect.moveBottom(rect.bottom() - rect.height() / 2);
     
     painter->drawPixmap(rect, __icon);
+    
+    if (__scene->settings().view.airport_labels) {
+        if (__label.isNull())
+            __prepareLabel();
+        
+        QRect rect2(__label.rect());
+        rect2.moveCenter(center);
+        rect2.moveBottom(rect2.bottom() + rect2.height() / 2);
+        
+        painter->drawPixmap(rect2, __label);
+    }
 }
 
 void
@@ -101,6 +118,23 @@ AirportItem::__loadIcon() const
             }
         }
     }
+}
+
+void
+AirportItem::__prepareLabel() const
+{
+    __label = __scene->pixmapProvider()->backgroundForAirportLabel();
+    
+    QPainter p(&__label);
+    
+    QFont font = SettingsManager::get("map.airport_font").value<QFont>();
+    p.setFont(font);
+    
+    QPen pen(QColor(245, 245, 245));
+    p.setPen(pen);
+    
+    p.drawText(__label.rect(), Qt::AlignCenter, data()->icao());
+    p.end();
 }
 
 void

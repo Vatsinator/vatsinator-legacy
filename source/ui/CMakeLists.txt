@@ -40,7 +40,7 @@ set (ui_SRCS
     map/mapitem.cpp
     map/maprenderer.cpp
     map/mapscene.cpp
-    map/modelpixmapprovider.cpp
+    map/pixmapprovider.cpp
     map/tmaarea.cpp
     map/worldtransform.cpp
 )
@@ -58,7 +58,7 @@ set (ui_HEADERS
     map/mapitem.h
     map/maprenderer.h
     map/mapscene.h
-    map/modelpixmapprovider.h
+    map/pixmapprovider.h
     map/tmaarea.h
     map/worldtransform.h
 )

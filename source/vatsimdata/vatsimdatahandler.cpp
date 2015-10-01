@@ -654,10 +654,10 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
         if (c.type == VatsimDataDocument::ClientLine::Atc) {
             /* Multiple PIDs for ATCs allowed, unique key is pid + callsign */
             auto it = __clients.find(c.pid);
-            while (it != __clients.end() && it.value()->callsign() != c.callsign)
+            while (it != __clients.end() && it.value()->pid() == c.pid && it.value()->callsign() != c.callsign)
                 ++it;
             
-            if (it != __clients.end()) {
+            if (it != __clients.end() && it.value()->pid() == c.pid) {
                 it.value()->update(c.line);
                 continue;
             }

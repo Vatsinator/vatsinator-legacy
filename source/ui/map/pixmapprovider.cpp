@@ -1,5 +1,5 @@
 /*
- * modelpixmapprovider.cpp
+ * pixmapprovider.cpp
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,30 +20,82 @@
 #include <QtGui>
 
 #include "storage/filemanager.h"
+#include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
+#include "ui/userinterface.h"
+#include "vatsinatorapplication.h"
 
-#include "modelpixmapprovider.h"
+#include "pixmapprovider.h"
 
-ModelPixmapProvider::ModelPixmapProvider(QObject* parent) : QObject (parent)
+
+constexpr auto AirportLabelBackgroundKey = "airport_label_background";
+constexpr auto ModelFallback = "B737";
+
+
+PixmapProvider::PixmapProvider(QObject* parent) : QObject (parent)
 {
-    __readMappings();
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, [this]() {
+        QPixmapCache::remove(AirportLabelBackgroundKey);
+    });
+    
+    __readModelMappings();
 }
 
 QPixmap
-ModelPixmapProvider::pixmapForModel(const QString& modelString)
+PixmapProvider::backgroundForAirportLabel()
+{
+    QPixmap px;
+    if (!QPixmapCache::find(AirportLabelBackgroundKey, &px)) {
+        QFont font = SettingsManager::get("map.airport_font").value<QFont>();
+        QFontMetrics metrics(font);
+        
+        int width = 4 * metrics.maxWidth(); // 4 letters for ICAO code
+        int height = metrics.height();
+        px = QPixmap(width, height);
+        
+        px.fill(Qt::transparent);
+        
+        QPainterPath path;
+        path.addRoundedRect(px.rect(), 20.0, 20.0, Qt::RelativeSize);
+        
+        QPainter p(&px);
+        p.fillPath(path, QBrush(QColor(75, 75, 75, 200)));
+        p.end();
+        
+        QPixmapCache::insert(AirportLabelBackgroundKey, px);
+    }
+    
+    return px;
+}
+
+QPixmap
+PixmapProvider::pixmapForModel (const QString& modelString)
 {
     QString model = __matchModel(modelString);
     
     QPixmap px;
     if (!QPixmapCache::find(model, &px)) {
-        px = __prepareModelPixmap(model);
+        /**
+        * In order to provide maximum flexibility, the model pixmaps
+        * are white with black outline and here they are colorized.
+        * The result itself is then stored in the pixmap cache.
+        */
+        
+        QString path = ":/pixmaps/" + MapConfig::generalizedDensity() + "/" + model + ".png";
+        QImage image(path);
+        Q_ASSERT(!image.isNull());
+        
+        QImage colorized = __modelColorized(image, QColor(238, 220, 122));
+        px.convertFromImage(colorized);
+        
+        QPixmapCache::insert(model, px);
     }
     
     return px;
 }
 
 void
-ModelPixmapProvider::__readMappings()
+PixmapProvider::__readModelMappings()
 {
     QFile file(FileManager::path("data/model"));
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -79,46 +131,22 @@ ModelPixmapProvider::__readMappings()
 }
 
 QString
-ModelPixmapProvider::__matchModel(const QString modelString)
+PixmapProvider::__matchModel(const QString& modelString)
 {
     if (modelString.isEmpty())
-        return "B737";
+        return ModelFallback;
     
     QRegExp rx("(\\w{3,})");
     if (rx.indexIn(modelString) == -1) {
         qWarning("No model match for %s ", qPrintable(modelString));
-        return "B737";
+        return ModelFallback;
     }
     
-    return __mappings.value(rx.cap(1), "B737");
-}
-
-QPixmap
-ModelPixmapProvider::__prepareModelPixmap(const QString& model)
-{
-    /**
-     * In order to provide maximum flexibility, the model pixmaps
-     * are white with black outline and here they are colorized.
-     * The result itself is then stored in the pixmap cache.
-     */
-    
-    QPixmap px;
-    if (QPixmapCache::find(model, &px))
-        return px;
-    
-    QString path = ":/pixmaps/" + MapConfig::generalizedDensity() + "/" + model + ".png";
-    QImage image(path);
-    Q_ASSERT(!image.isNull());
-    
-    QImage colorized = __modelColorized(image, QColor(238, 220, 122));
-    px.convertFromImage(colorized);
-    
-    QPixmapCache::insert(model, px);
-    return px;
+    return __mappings.value(rx.cap(1), ModelFallback);
 }
 
 QImage
-ModelPixmapProvider::__modelColorized(const QImage& image, const QColor& color)
+PixmapProvider::__modelColorized(const QImage& image, const QColor& color)
 {
     /**
      * I tried using Qt's alpha masks here and all that stuff, but

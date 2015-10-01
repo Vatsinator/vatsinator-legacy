@@ -61,12 +61,6 @@ QuickUserInterface::findObjectByName(const QString& name)
     return root ? root->findChild<QObject*>(name) : nullptr;
 }
 
-qreal
-QuickUserInterface::dp() const
-{
-    return QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
-}
-
 void
 QuickUserInterface::initialize()
 {

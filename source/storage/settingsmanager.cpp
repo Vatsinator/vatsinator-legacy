@@ -187,4 +187,7 @@ SettingsManager::__fillDefaults()
     font.setBold(true);
     font.setPointSize(font.pointSize() + 1);
     __defaults["map.fir_font"] = QVariant::fromValue(font);
+    
+    font.setPointSize(font.pointSize() - 2);
+    __defaults["map.airport_font"] = QVariant::fromValue(font);
 }

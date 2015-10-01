@@ -47,8 +47,6 @@ public:
      */
     UserInterface(QObject* parent = nullptr);
     
-    virtual ~UserInterface() = default;
-    
     /**
      * Initializes UI components. Must emit the initialized() signal when
      * all classes are instantiated.
@@ -56,9 +54,19 @@ public:
     virtual void initialize() = 0;
     
     /**
+     * Default dtor.
+     */
+    virtual ~UserInterface() = default;
+    
+    /**
      * Creates new instance of either of the implementations.
      */
     static UserInterface* instantiate(QObject* parent);
+    
+    /**
+     * Returns "dp" units for the current device.
+     */
+    static qreal dp();
     
 public slots:
     /**

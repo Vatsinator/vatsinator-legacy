@@ -40,8 +40,8 @@ class FirItem;
 class FlightItem;
 class MapArea;
 class MapItem;
-class ModelPixmapProvider;
 class Pilot;
+class PixmapProvider;
 class MapRenderer;
 
 /**
@@ -90,11 +90,9 @@ signals:
     
 public:
     /**
-     * Constructs new MapScene. Passes _parent_ to QObject's constructor.
+     * Constructs new MapScene. Passes \c parent to the QObject's constructor.
      */
     explicit MapScene(QObject* parent);
-    
-    virtual ~MapScene() = default;
     
     /**
      * Adds a new area to the scene.
@@ -185,12 +183,12 @@ public:
         return __settings;
     }
     
-    /*
-     * Gives direct access to the ModelMatcher instance.
+    /**
+     * Gives access to the pixmap provider.
      */
-    inline ModelPixmapProvider* modelPixmapProvider()
+    inline PixmapProvider* pixmapProvider()
     {
-        return __modelPixmapProvider;
+        return __pixmapProvider;
     }
     
     /**
@@ -200,6 +198,8 @@ public:
     {
         return __animation != nullptr;
     }
+    
+    virtual ~MapScene() = default;
     
 public slots:
     /**
@@ -294,7 +294,7 @@ private:
     const Pilot* __trackedFlight;
     QAbstractAnimation* __animation;
     
-    ModelPixmapProvider* __modelPixmapProvider;
+    PixmapProvider* __pixmapProvider;
     MapSettings __settings;
     
     QSignalMapper* __flightsMapper; /**< Maps Pilots to its iterators in the spatial map */

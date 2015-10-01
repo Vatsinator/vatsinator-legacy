@@ -47,11 +47,6 @@ public:
     QObject* findObjectByName(const QString& name);
     
     /**
-     * Returns "dp" units for the current device.
-     */
-    qreal dp() const;
-    
-    /**
      * \copydoc UserInterface::initialize()
      * 
      * The following properties are bound to the QML context:

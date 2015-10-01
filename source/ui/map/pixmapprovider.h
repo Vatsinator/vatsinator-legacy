@@ -1,5 +1,5 @@
 /*
- * modelpixmapprovider.h
+ * pixmapprovider.h
  * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,42 @@
  *
  */
 
-#ifndef MODELPIXMAPPROVIDER_H
-#define MODELPIXMAPPROVIDER_H
+#ifndef PIXMAPPROVIDER_H
+#define PIXMAPPROVIDER_H
 
 #include <QObject>
 #include <QPixmap>
+#include <QImage>
 #include <QMap>
 
-class ModelPixmapProvider : public QObject {
+/**
+ * The PixmapProvider class is respoinsble for generating and storing
+ * pixmaps that all map items can re-use.
+ */
+class PixmapProvider : public QObject {
     Q_OBJECT
 
 public:
-    explicit ModelPixmapProvider(QObject* parent = nullptr);
+    explicit PixmapProvider(QObject *parent = nullptr);
     
+    /**
+     * Background for airport labels.
+     */
+    QPixmap backgroundForAirportLabel();
+    
+    /**
+     * Matches the given model and returns the best representing
+     * pixmap.
+     */
     QPixmap pixmapForModel(const QString& modelString);
     
 private:
-    void __readMappings();
-    QString __matchModel(const QString modelString);
-    QPixmap __prepareModelPixmap(const QString& model);
+    void __readModelMappings();
+    QString __matchModel(const QString& modelString);
     QImage __modelColorized(const QImage& image, const QColor& color);
     
     QMap<QString, QString> __mappings;
     
 };
 
-#endif // MODELPIXMAPPROVIDER_H
+#endif // PIXMAPPROVIDER_H

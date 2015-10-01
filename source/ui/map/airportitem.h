@@ -1,6 +1,6 @@
 /*
  * airportitem.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,7 @@ public:
     
 private:
     void __loadIcon() const;
+    void __prepareLabel() const;
     void __drawLines(QPainter* painter, const WorldTransform& transform) const;
     
 private slots:
@@ -84,6 +85,7 @@ private:
     MapScene* __scene;
     const Airport* __airport; /**< Data pointer */
     mutable QPixmap __icon;
+    mutable QPixmap __label;
     TmaArea* __tma;
     
 };
