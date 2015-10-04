@@ -675,6 +675,11 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
             }
         } else { // Pilot
             /* Multiple PIDs for pilots not allowed */
+            if (__clients.count(c.pid) > 1) {
+                qWarning("Multiple PIDs (%d) for client", c.pid);
+                __clients.remove(c.pid);
+            }
+            
             Q_ASSERT(__clients.count(c.pid) <= 1);
             if (__clients.contains(c.pid)) {
                 __clients[c.pid]->update(c.line);

@@ -38,12 +38,16 @@ FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     __pilot(pilot)
 {
     connect(pilot, &Pilot::aircraftChanged, this, &FlightItem::__invalidateModel);
+    
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, [this]() {
+        __label = QPixmap();
+    });
 }
 
 bool
 FlightItem::isVisible() const
 {
-    return data()->phase() == Pilot::Airborne && !data()->isPrefiledOnly();
+    return __scene->settings().view.pilots_layer && data()->phase() == Pilot::Airborne && !data()->isPrefiledOnly();
 }
 
 LonLat
@@ -57,6 +61,7 @@ FlightItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags f
 {
     if (__model.isNull())
         __prepareModel();
+    
     Q_ASSERT(!__model.isNull());
     
     QPoint pos = position() * transform;
@@ -67,6 +72,20 @@ FlightItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags f
     QRect rect(QPoint(0, 0), __model.size());
     rect.moveCenter(pos);
     painter->drawPixmap(rect, __model);
+    
+    bool drawLabel = __scene->settings().view.pilot_labels.always ||
+        (__scene->settings().view.pilot_labels.when_hovered && (flags & DrawSelected));
+    
+    if (drawLabel) {
+        if (__label.isNull())
+            __prepareLabel();
+        
+        QRect rect2(__label.rect());
+        rect2.moveCenter(pos);
+        rect2.moveBottom(rect.top());
+        
+        painter->drawPixmap(rect2, __label);
+    }
 }
 
 void
@@ -82,6 +101,24 @@ FlightItem::__prepareModel() const
 #if 0 // Temporarily disabled
     __dropShadow(&__model);
 #endif
+}
+
+void
+FlightItem::__prepareLabel() const
+{
+    QRect rect;
+    __label = __scene->pixmapProvider()->backgroundForFlightLabel(&rect);
+    
+    QPainter p(&__label);
+    
+    QFont font = SettingsManager::get("map.pilot_font").value<QFont>();
+    p.setFont(font);
+    
+    QPen pen(QColor(0, 0, 0));
+    p.setPen(pen);
+    
+    p.drawText(rect, Qt::AlignCenter, data()->callsign());
+    p.end();
 }
 
 void

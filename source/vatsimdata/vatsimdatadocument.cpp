@@ -141,8 +141,11 @@ VatsimDataDocument::ClientLine::ClientLine(const QString& data)
         callsign = line.at(0);
         bool ok;
         pid = line.at(1).toUInt(&ok);
-        Q_ASSERT(ok);
-        Q_UNUSED(ok);
+        if (!ok) {
+            qWarning("Wrong PID: %s", qPrintable(line.at(1)));
+            valid = false;
+            return;
+        }
         type = line[3] == "ATC" ? Atc : Pilot;
     }
 }

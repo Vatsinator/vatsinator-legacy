@@ -74,6 +74,11 @@ private:
     void __prepareModel() const;
     
     /**
+     * Prepares the flight label.
+     */
+    void __prepareLabel() const;
+    
+    /**
      * Draws lines for the flight.
      */
     void __drawLines(QPainter* painter, const WorldTransform& transform) const;

@@ -29,6 +29,7 @@
 
 
 constexpr auto AirportLabelBackgroundKey = "airport_label_background";
+constexpr auto FlightLabelBackgroundKey = "flight_label_background";
 constexpr auto ModelFallback = "B737";
 
 
@@ -56,13 +57,71 @@ PixmapProvider::backgroundForAirportLabel()
         px.fill(Qt::transparent);
         
         QPainterPath path;
-        path.addRoundedRect(px.rect(), 20.0, 20.0, Qt::RelativeSize);
+        path.addRoundedRect(px.rect(), 2.0, 2.0);
         
         QPainter p(&px);
         p.fillPath(path, QBrush(QColor(75, 75, 75, 200)));
         p.end();
         
         QPixmapCache::insert(AirportLabelBackgroundKey, px);
+    }
+    
+    return px;
+}
+
+QPixmap
+PixmapProvider::backgroundForFlightLabel(QRect* targetRect)
+{
+    QPixmap px;
+    if (!QPixmapCache::find(FlightLabelBackgroundKey, &px)) {
+        QFont font = SettingsManager::get("map.pilot_font").value<QFont>();
+        QFontMetrics metrics(font);
+        
+        /* Tooltip shadow offsets */
+        constexpr int ShadowWidth = 0;
+        constexpr int ShadowHeight = 2;
+        
+        int width = 5 * metrics.maxWidth(); // 7 is usually the longest callsign
+        int height = metrics.height();
+        int arrowHeight = 8 * UserInterface::dp();
+        int arrowWidth = 16 * UserInterface::dp();
+        
+        /* Pixmap is large enough to contain the rounded rectangle and the shadow */
+        px = QPixmap(width + ShadowWidth, height + arrowHeight + ShadowHeight);
+        
+        px.fill(Qt::transparent);
+        QPainter p(&px);
+        
+        /* Design the tooltip */
+        QPainterPath path;
+        path.addRoundedRect(QRect(QPoint(0, 0), QSize(width, height)), 2.0, 2.0);
+        int o = arrowWidth / 2;
+        path.moveTo(width / 2 - o, height);
+        path.lineTo(width / 2, height + arrowHeight);
+        path.lineTo(width / 2 + o, height);
+        path.lineTo(width / 2 - o, height);
+        
+        /* First, draw the shadow */
+        QLinearGradient shadow(QPoint(0, 0), QPoint(0, height));
+        shadow.setColorAt(0.0, QColor(145, 145, 145, 105));
+        shadow.setColorAt(1.0, QColor(175, 175, 175, 75));
+        
+        p.fillPath(path.translated(ShadowWidth, ShadowHeight), QBrush(shadow));
+        
+        QRadialGradient gradient(QPointF(width / 2, 0.0), width / 2);
+        gradient.setColorAt(0.0, QColor(250, 250, 250));
+        gradient.setColorAt(1.0, QColor(235, 235, 235));
+        
+        p.fillPath(path, QBrush(gradient));
+        p.end();
+        
+        QPixmapCache::insert(FlightLabelBackgroundKey, px);
+        __flightLabelRect = QRect(QPoint(0, 0), QSize(width, height));
+    }
+    
+    if (targetRect) {
+        Q_ASSERT(!__flightLabelRect.isNull());
+        *targetRect = __flightLabelRect;
     }
     
     return px;

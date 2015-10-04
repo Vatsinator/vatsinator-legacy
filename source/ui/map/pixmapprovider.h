@@ -41,6 +41,13 @@ public:
     QPixmap backgroundForAirportLabel();
     
     /**
+     * Background for flight labels.
+     * 
+     * \param targetRect Where the text should be rendered.
+     */
+    QPixmap backgroundForFlightLabel(QRect* targetRect);
+    
+    /**
      * Matches the given model and returns the best representing
      * pixmap.
      */
@@ -52,6 +59,7 @@ private:
     QImage __modelColorized(const QImage& image, const QColor& color);
     
     QMap<QString, QString> __mappings;
+    QRect __flightLabelRect;
     
 };
 
