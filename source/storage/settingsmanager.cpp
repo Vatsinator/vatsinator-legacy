@@ -179,7 +179,7 @@ SettingsManager::__fillDefaults()
     __defaults["view.pilot_labels.always"] = false;
     __defaults["view.pilot_labels.when_hovered"] = true;
     __defaults["view.pilot_labels.airport_related"] = true;
-    __defaults["view.airport_labels"] = true;
+    __defaults["view.airport_labels"] = false;
     
     __defaults["map.map_type"] = 0;
     
