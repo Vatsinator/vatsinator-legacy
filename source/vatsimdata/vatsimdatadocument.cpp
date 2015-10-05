@@ -142,7 +142,7 @@ VatsimDataDocument::ClientLine::ClientLine(const QString& data)
         bool ok;
         pid = line.at(1).toUInt(&ok);
         if (!ok) {
-            qWarning("Wrong PID: %s", qPrintable(line.at(1)));
+            qWarning("Invalid PID: %s", qPrintable(line.at(1)));
             valid = false;
             return;
         }

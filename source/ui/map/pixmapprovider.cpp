@@ -56,8 +56,10 @@ PixmapProvider::backgroundForAirportLabel()
         
         px.fill(Qt::transparent);
         
+        qreal radius = 3.0 * UserInterface::dp();
+        
         QPainterPath path;
-        path.addRoundedRect(px.rect(), 2.0, 2.0);
+        path.addRoundedRect(px.rect(), radius, radius);
         
         QPainter p(&px);
         p.fillPath(path, QBrush(QColor(75, 75, 75, 200)));
@@ -92,9 +94,11 @@ PixmapProvider::backgroundForFlightLabel(QRect* targetRect)
         px.fill(Qt::transparent);
         QPainter p(&px);
         
+        qreal radius = 3.0 * UserInterface::dp();
+        
         /* Design the tooltip */
         QPainterPath path;
-        path.addRoundedRect(QRect(QPoint(0, 0), QSize(width, height)), 2.0, 2.0);
+        path.addRoundedRect(QRect(QPoint(0, 0), QSize(width, height)), radius, radius);
         int o = arrowWidth / 2;
         path.moveTo(width / 2 - o, height);
         path.lineTo(width / 2, height + arrowHeight);

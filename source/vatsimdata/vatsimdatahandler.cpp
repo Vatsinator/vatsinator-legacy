@@ -677,6 +677,10 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
             /* Multiple PIDs for pilots not allowed */
             if (__clients.count(c.pid) > 1) {
                 qWarning("Multiple PIDs (%d) for client", c.pid);
+                auto it = __clients.find(c.pid);
+                while (it != __clients.end() && it.key() == c.pid)
+                    qWarning("PID: %d; callsign: %s", it.key(), qPrintable(it.value()->callsign()));
+                
                 __clients.remove(c.pid);
             }
             

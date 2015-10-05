@@ -176,7 +176,7 @@ SettingsManager::__fillDefaults()
     __defaults["view.staffed_firs"] = true;
     __defaults["view.unstaffed_firs"] = true;
     __defaults["view.empty_airports"] = false;
-    __defaults["view.pilot_labels.always"] = true;
+    __defaults["view.pilot_labels.always"] = false;
     __defaults["view.pilot_labels.when_hovered"] = true;
     __defaults["view.pilot_labels.airport_related"] = true;
     __defaults["view.airport_labels"] = true;
