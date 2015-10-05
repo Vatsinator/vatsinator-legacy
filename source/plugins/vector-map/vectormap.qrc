@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="db">
+    <file>WorldMap.db</file>
+  </qresource>
+  <qresource prefix="shaders">
+    <file>vectormap.frag</file>
+    <file>vectormap.vert</file>
+  </qresource>
+</RCC>

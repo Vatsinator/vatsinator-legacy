@@ -18,26 +18,31 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/about.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/about.h
 )
 
+# specify user interface implementation
+if (NOT vatsinator_UI_IMPLEMENTATION)
+  if (WIN32 OR LINUX OR APPLE) # use QtWidgets for desktop
+    set (vatsinator_UI_IMPLEMENTATION "widgets")
+  elseif (ANDROID) # use QtQuick for mobile
+    set (vatsinator_UI_IMPLEMENTATION "quick")
+  endif ()
+endif ()
+
 set (ui_SRCS
     notifiable.cpp
     userinterface.cpp
     
     map/airportitem.cpp
+    map/firarea.cpp
     map/firitem.cpp
     map/flightitem.cpp
-    map/iconkeeper.cpp
+    map/maparea.cpp
     map/mapconfig.cpp
     map/mapitem.cpp
     map/maprenderer.cpp
     map/mapscene.cpp
-    map/modelmatcher.cpp
-    map/uiritem.cpp
-    map/worldpolygon.cpp
-    
-    models/airporttablemodel.cpp
-    models/atctablemodel.cpp
-    models/flighttablemodel.cpp
-    models/metarlistmodel.cpp
+    map/pixmapprovider.cpp
+    map/tmaarea.cpp
+    map/worldtransform.cpp
 )
 
 set (ui_HEADERS
@@ -45,21 +50,17 @@ set (ui_HEADERS
     userinterface.h
     
     map/airportitem.h
+    map/firarea.h
     map/firitem.h
     map/flightitem.h
-    map/iconkeeper.h
+    map/maparea.h
     map/mapconfig.h
     map/mapitem.h
     map/maprenderer.h
     map/mapscene.h
-    map/modelmatcher.h
-    map/uiritem.h
-    map/worldpolygon.h
-    
-    models/airporttablemodel.h
-    models/atctablemodel.h
-    models/flighttablemodel.h
-    models/metarlistmodel.h
+    map/pixmapprovider.h
+    map/tmaarea.h
+    map/worldtransform.h
 )
 
 set (widgets_SRCS
@@ -75,7 +76,6 @@ set (widgets_SRCS
     actions/trackaction.cpp
     
     buttons/airportdetailsbutton.cpp
-    buttons/colorbutton.cpp
     buttons/clientdetailsbutton.cpp
     buttons/urlbutton.cpp
     
@@ -97,8 +97,8 @@ set (widgets_SRCS
     widgets/delayedwidget.cpp
     widgets/flightprogresswidget.cpp
     widgets/infolabel.cpp
+    widgets/mapinfowidget.cpp
     widgets/mapwidget.cpp
-    widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
     widgets/weatherforecastwidget.cpp
     widgets/widgetsettingsmodule.cpp
@@ -121,9 +121,7 @@ set (quick_SRCS
     quickuserinterface.cpp
     
     quick/androidbridge.cpp
-    quick/map.cpp
     quick/paletteprovider.cpp
-    quick/screenimageprovider.cpp
 )
 
 set (widgets_HEADERS
@@ -139,7 +137,6 @@ set (widgets_HEADERS
     actions/trackaction.h
     
     buttons/airportdetailsbutton.h
-    buttons/colorbutton.h
     buttons/clientdetailsbutton.h
     buttons/urlbutton.h
     
@@ -161,8 +158,8 @@ set (widgets_HEADERS
     widgets/delayedwidget.h
     widgets/flightprogresswidget.h
     widgets/infolabel.h
+    widgets/mapinfowidget.h
     widgets/mapwidget.h
-    widgets/replaceablewidget.h
     widgets/scrolllabel.h
     widgets/weatherforecastwidget.h
     widgets/widgetsettingsmodule.h
@@ -185,15 +182,13 @@ set (quick_HEADERS
     quickuserinterface.h
     
     quick/androidbridge.h
-    quick/map.h
     quick/paletteprovider.h
-    quick/screenimageprovider.h
 )
 
 set (ui_QRCS
     resources/files.qrc
     resources/imgs.qrc
-    resources/shaders.qrc
+    resources/pixmaps.qrc
 )
 qt5_add_resources (ui_RESOURCES ${ui_QRCS})
 

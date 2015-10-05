@@ -17,7 +17,8 @@
  * 
  */
 
-import QtQuick 2.4
+import QtQuick 2.5
+import org.eu.vatsinator.Vatsim 1.0
 
 Rectangle {
     width: parent.width

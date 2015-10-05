@@ -1,6 +1,6 @@
 /*
  * main.qml
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,10 @@
  * 
  */
 
-import QtQuick 2.4
+import QtQuick 2.5
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.3
+import org.eu.vatsinator.Components 1.0
 
 ApplicationWindow {
     id: vatsinatorWindow
@@ -31,18 +32,36 @@ ApplicationWindow {
     
     MapPage {
         id: mapPage
+        objectName: "mapPage"
     }
     
     StackView {
         id: stackView
         anchors.fill: parent
+        
         focus: true
         
         /* Implements back key navigation */
-        Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {
-                             stackView.pop();
-                             event.accepted = true;
-                         }
+        Keys.onBackPressed: {
+            if (navigationDrawer.open) {
+                navigationDrawer.hide();
+                return;
+            }
+            
+            if (stackView.currentItem == mapPage) {
+                if (mapPage.currentDetails) {
+                    mapPage.hideCurrentDetails();
+                    return;
+                }
+            }
+            
+            if (stackView.depth > 1) {
+                stackView.pop();
+                return;
+            }
+            
+            Qt.quit();
+        }
         
         initialItem: mapPage
     }
@@ -60,8 +79,8 @@ ApplicationWindow {
             id: mainMenu
             objectName: "mainMenu"
             onClicked: {
-                navigationDrawer.hide()
-                stackView.push(Qt.resolvedUrl(page))
+                navigationDrawer.hide();
+                stackView.push(Qt.resolvedUrl(page));
             }
         }
     }
@@ -80,9 +99,8 @@ ApplicationWindow {
     }
     
     Component.onCompleted: {
-        visible = true
-        android.navigationBarColor = palette.byHue(500)
-        android.statusBarColor = palette.byHue(700)
+        visible = true;
+        android.navigationBarColor = palette.byHue(500);
+        android.statusBarColor = palette.byHue(700);
     }
-    
 }

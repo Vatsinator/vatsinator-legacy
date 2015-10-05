@@ -1,6 +1,6 @@
 # AndroidApkUtils specific variables
-set (binary_root @CMAKE_BINARY_DIR@)
-set (files_dir @files_dir@)
+set (binary_root "@CMAKE_BINARY_DIR@")
+set (files_dir "@files_dir@")
 set (target_location "@target_location@")
 set (qt_root "@_qt_root@")
 set (qt_libs_dir "@_qt_libs_dir@")
@@ -17,6 +17,12 @@ set (assets_prefix "@assets_prefix@")
 set (qt_qml_modules @qt_qml_modules@)
 set (qt_plugins @qt_plugins@)
 set (qt_jars @qt_jars@)
+set (qml_plugins @qml_plugins@)
+@qml_plugins_data@
+
+set (keystore @keystore@)
+set (keystore_alias @keystore_alias@)
+set (keystore_password "@keystore_password@")
 
 set (paths "@paths@")
 

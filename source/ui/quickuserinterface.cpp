@@ -21,13 +21,16 @@
 #include <QtQuick>
 
 #include "events/decisionevent.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
+#include "network/metarupdater.h"
+#include "ui/map/airportitem.h"
+#include "ui/map/flightitem.h"
+#include "ui/map/firitem.h"
 #include "ui/quick/androidbridge.h"
-#include "ui/quick/map.h"
 #include "ui/quick/paletteprovider.h"
-#include "ui/quick/screenimageprovider.h"
 #include "vatsimdata/airport.h"
+#include "vatsimdata/fir.h"
+#include "vatsimdata/metar.h"
+#include "vatsimdata/pilot.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
@@ -36,12 +39,7 @@
 QuickUserInterface::QuickUserInterface(QObject* parent) :
     UserInterface(parent)
 {
-    
-}
-
-QuickUserInterface::~QuickUserInterface()
-{
-
+    connect(&__engine, &QQmlEngine::quit, qApp, &QCoreApplication::quit);
 }
 
 QObject*
@@ -60,88 +58,37 @@ QObject*
 QuickUserInterface::findObjectByName(const QString& name)
 {
     QObject* root = qui()->rootItem();
-    if (root)
-        return root->findChild<QObject*>(name);
-    else
-        return nullptr;
+    return root ? root->findChild<QObject*>(name) : nullptr;
 }
 
 void
 QuickUserInterface::initialize()
 {
-    qmlRegisterType<Airport>();
-    
-    qmlRegisterType<Map>("org.eu.vatsinator.ui", 1, 0, "Map");
-    
+    /* Couple of QML-global instances */
     QQmlContext* ctx = __engine.rootContext();
-    ctx->setContextProperty("flights", vApp()->vatsimDataHandler()->flights());
-    ctx->setContextProperty("atcs", vApp()->vatsimDataHandler()->atcs());
     ctx->setContextProperty("android", new AndroidBridge(this));
     ctx->setContextProperty("palette", new PaletteProvider(this));
-    qreal dp = QGuiApplication::primaryScreen()->physicalDotsPerInch() / 160;
-    ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp));
-    
-    __engine.addImageProvider("screen", new ScreenImageProvider);
+    ctx->setContextProperty("dp", QVariant::fromValue<qreal>(dp()));
     
     __engine.load(QUrl("qrc:///qmls/main.qml"));
-    
-    /* TODO Cache map from time to time */
-    
     emit initialized();
+    
+    QObject* mapPage = findObjectByName("mapPage");
+    bool c = connect(mapPage, SIGNAL(itemTouched(QVariant)), this, SLOT(__handleItemTouch(QVariant)));
+    Q_ASSERT(c);
+    Q_UNUSED(c);
 }
 
 void
-QuickUserInterface::fatal(const QString&)
+QuickUserInterface::fatal(const QString& message)
 {
-
+    Q_UNUSED(message);
 }
 
 void
-QuickUserInterface::warning(const QString&)
+QuickUserInterface::warning(const QString& message)
 {
-
-}
-
-void
-QuickUserInterface::statusError()
-{
-
-}
-
-void
-QuickUserInterface::dataError()
-{
-
-}
-
-void
-QuickUserInterface::showVatsimMessage(const QString&)
-{
-
-}
-
-void
-QuickUserInterface::showDetails(const Airport*)
-{
-
-}
-
-void
-QuickUserInterface::showDetails(const Client*)
-{
-
-}
-
-void
-QuickUserInterface::showDetails(const Fir*)
-{
-
-}
-
-void
-QuickUserInterface::showMetar(const QString&)
-{
-
+    Q_UNUSED(message);
 }
 
 void
@@ -156,4 +103,39 @@ void
 QuickUserInterface::ensureMainWindowIsActive()
 {
 
+}
+
+void
+QuickUserInterface::vatsimEvent(VatsimEvent* event)
+{
+    Q_UNUSED(event);
+}
+
+void
+QuickUserInterface::__handleItemTouch(const QVariant& item)
+{
+    Q_ASSERT(item.canConvert<MapItem*>());
+    MapItem* pitem = item.value<MapItem*>();
+    Q_ASSERT(pitem);
+    
+    Q_ASSERT(sender());
+    
+    if (AirportItem* ai = qobject_cast<AirportItem*>(pitem)) {
+        const Airport* airport = ai->data();
+        bool c = QMetaObject::invokeMethod(sender(), "showAirportDetails", Q_ARG(QVariant, QVariant::fromValue<const Airport*>(airport)));
+        Q_ASSERT(c);
+        Q_UNUSED(c);
+    } else if (FlightItem* fi = qobject_cast<FlightItem*>(pitem)) {
+        const Pilot* flight = fi->data();
+        bool c = QMetaObject::invokeMethod(sender(), "showFlightDetails", Q_ARG(QVariant, QVariant::fromValue<const Pilot*>(flight)));
+        Q_ASSERT(c);
+        Q_UNUSED(c);
+    } else if (const FirItem* fi = qobject_cast<const FirItem*>(pitem)) {
+        const Fir* fir = fi->data();
+        bool c = QMetaObject::invokeMethod(sender(), "showFirDetails", Q_ARG(QVariant, QVariant::fromValue<const Fir*>(fir)));
+        Q_ASSERT(c);
+        Q_UNUSED(c);
+    } else {
+        Q_UNREACHABLE();
+    }
 }

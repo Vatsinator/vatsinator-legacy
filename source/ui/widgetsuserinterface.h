@@ -46,6 +46,8 @@ class WidgetsUserInterface : public UserInterface {
 public:
     explicit WidgetsUserInterface(QObject* parent = nullptr);
     
+    virtual ~WidgetsUserInterface();
+    
     void initialize() override;
     
     /**
@@ -90,17 +92,51 @@ public slots:
      */
     void showAppRestartDialog();
     
+    /**
+     * Shows pilot/ATC details window.
+     */
+    void showClientDetails(const Client* client);
+    
+    /**
+     * Shows airport details window.
+     */
+    void showAirportDetails(const Airport* airport);
+    
+    /**
+     * Shows FIR details window.
+     */
+    void showFirDetails(const Fir* fir);
+    
+    /**
+     * Shows METAR window.
+     */
+    void showMetar(const QString& icao);
+    
+    /**
+     * \copydoc UserInterface::fatal()
+     */
     void fatal(const QString& message) override;
+    
+    /**
+     * \copydoc UserInterface::warning()
+     */
     void warning(const QString& message) override;
-    void statusError() override;
-    void dataError() override;
-    void showVatsimMessage(const QString& message) override;
-    void showDetails(const Airport* airport) override;
-    void showDetails(const Client* client) override;
-    void showDetails(const Fir* fir) override;
-    void showMetar(const QString& metar) override;
+    
+    /**
+     * \copydoc UserInterface::showStatsDialog()
+     */
     void showStatsDialog() override;
+    
+    /**
+     * \copydoc UserInterface::ensureMainWindowIsActive()
+     */
     void ensureMainWindowIsActive() override;
+    
+protected:
+    /**
+     * \copydoc UserInterface::vatsimEvent()
+     */
+    void vatsimEvent(VatsimEvent *event) override;
     
 private slots:
     /**
@@ -115,7 +151,7 @@ private:
     MetarsWindow*         __metarsWindow;
     DatabaseWindow*       __databaseWindow;
     AtcListWindow*        __atcListWindow;
-    FlightListWindow*     __flightsListWindow;
+    FlightListWindow*     __flightListWindow;
     SettingsWindow*       __settingsWindow;
     VatsinatorWindow*     __vatsinatorWindow;
     

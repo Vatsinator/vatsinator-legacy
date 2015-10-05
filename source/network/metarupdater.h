@@ -26,9 +26,20 @@
 
 class PlainTextDownloader;
 class MetarListModel;
+class Metar;
+class Icao;
 
+/**
+ * The MetarUpdater class is responsible for fetching new weather reports
+ * and updating the existing ones.
+ */
 class MetarUpdater : public QObject {
     Q_OBJECT
+    
+    /**
+     * The model that contains all fetched weather reports.
+     */
+    Q_PROPERTY(MetarListModel* model READ model CONSTANT)
     
 public:
     MetarUpdater(MetarListModel* model, QObject* parent = nullptr);
@@ -39,11 +50,22 @@ public:
     }
     
 public slots:
-    void fetch(QString icao);
+    /**
+     * Starts downloading the METAR, if it is not fetched yet.
+     * \todo update doc
+     */
+    Metar* fetch(const QString& request);
+    
+    /**
+     * Updates all the weather reports.
+     */
     void update();
     
 protected:
     void timerEvent(QTimerEvent* event) override;
+    
+private:
+    void __update(const QString& metar);
     
 private slots:
     void __readMetars();

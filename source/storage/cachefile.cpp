@@ -34,7 +34,11 @@ static const QString CacheDirectory =
 CacheFile::CacheFile(const QString& fileName) :
     QFile(CacheDirectory % QDir::separator() % fileName)
 {
-    qDebug("Cache file location: %s", qPrintable(fileName));
+    QFileInfo info(*this);
+    QDir dir = info.dir();
+    
+    if (!dir.exists())
+        dir.mkpath(".");
 }
 
 bool

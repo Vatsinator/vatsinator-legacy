@@ -21,14 +21,13 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
-#include "events/decisionevent.h"
+#include "events/vatsimevent.h"
 #include "network/plaintextdownloader.h"
 #include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
 #include "plugins/weatherforecastinterface.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
-#include "ui/models/metarlistmodel.h"
+#include "models/atctablemodel.h"
+#include "models/metarlistmodel.h"
 #include "ui/widgetsuserinterface.h"
 #include "storage/cachefile.h"
 #include "storage/settingsmanager.h"
@@ -44,10 +43,6 @@
 #include "storage/filemanager.h"
 #include "netconfig.h"
 #include "vatsinatorapplication.h"
-
-#ifndef Q_OS_ANDROID
-# include "ui/windows/vatsinatorwindow.h"
-#endif
 
 #include "vatsimdatahandler.h"
 
@@ -101,20 +96,50 @@ VatsimDataHandler::VatsimDataHandler(QObject* parent) :
     __downloader(new PlainTextDownloader(this)),
     __scheduler(new UpdateScheduler(this))
 {
-    connect(vApp()->userInterface(),              SIGNAL(initialized()),
-            this,                                 SLOT(__slotUiCreated()));
-    connect(__downloader,                         SIGNAL(finished()),
-            this,                                 SLOT(__dataFetched()));
-    connect(__downloader,                         SIGNAL(error(QString)),
-            this,                                 SLOT(__handleFetchError(QString)));
-    connect(__scheduler,                          SIGNAL(timeToUpdate()),
-            this,                                 SLOT(requestDataUpdate()));
-    connect(this,                                 SIGNAL(vatsimStatusError()),
-            vApp()->userInterface(),              SLOT(statusError()));
-    connect(this,                                 SIGNAL(vatsimDataError()),
-            vApp()->userInterface(),              SLOT(dataError()));
+    connect(__downloader, &PlainTextDownloader::finished, this, &VatsimDataHandler::__dataFetched);
+    connect(__scheduler, &UpdateScheduler::timeToUpdate, this, &VatsimDataHandler::requestDataUpdate);
+    
+    connect(vApp()->userInterface(), &UserInterface::initialized, [this]() {
+        if (isInitialized())
+            __loadCachedData();
+        else
+            connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
             
-    connect(this, SIGNAL(vatsimDataDownloading()), SLOT(__beginDownload()));
+        /* The first download */
+        __beginDownload();
+    });
+    
+    connect(__downloader, &PlainTextDownloader::error, [this](QString error) {
+        qWarning("Error downloading VATSIM data (%s)", qPrintable(error));
+        
+        /* Handle errors on download gracefully */
+        if (__statusFileFetched) {
+            emit vatsimDataError();
+        } else {
+            if (__status != NetConfig::Vatsim::backupStatusUrl()) {
+                /* Try the backup url */
+                __status = NetConfig::Vatsim::backupStatusUrl();
+                __beginDownload();
+            } else {
+                /* We already tried - there is something else causing the error */
+                emit vatsimStatusError();
+            }
+        }
+    });
+    
+    connect(this, &VatsimDataHandler::vatsimDataDownloading, [this]() {
+        __downloader->fetch(dataUrl());
+    });
+    
+    
+    /* Post events to the user interface */
+    connect(this, &VatsimDataHandler::vatsimStatusError, [this]() {
+        qApp->postEvent(vApp()->userInterface(), new VatsimEvent(VatsimEvent::StatusError));
+    });
+    
+    connect(this, &VatsimDataHandler::vatsimDataError, [this]() {
+        qApp->postEvent(vApp()->userInterface(), new VatsimEvent(VatsimEvent::DataError));
+    });
 }
 
 VatsimDataHandler::~VatsimDataHandler()
@@ -149,24 +174,6 @@ VatsimDataHandler::dataUrl() const
         return __status;
 }
 
-const Pilot*
-VatsimDataHandler::findPilot(const QString& callsign) const
-{
-    if (__clients.contains(callsign))
-        return qobject_cast<Pilot*>(__clients[callsign]);
-    else
-        return nullptr;
-}
-
-const Controller*
-VatsimDataHandler::findAtc(const QString& callsign) const
-{
-    if (__clients.contains(callsign))
-        return qobject_cast<Controller*>(__clients[callsign]);
-    else
-        return nullptr;
-}
-
 Airport*
 VatsimDataHandler::findAirport(const QString& icao)
 {
@@ -187,10 +194,16 @@ VatsimDataHandler::findAirport(const QString& icao)
     }
 }
 
+QList<Client*>
+VatsimDataHandler::clients() const
+{
+    return __clients.values();
+}
+
 QList<Airport*>
 VatsimDataHandler::airports() const
 {
-    return qMove(__airports.values());
+    return __airports.values();
 }
 
 Fir*
@@ -315,16 +328,6 @@ VatsimDataHandler::bookingProvider()
     return provider;
 }
 
-bool
-VatsimDataHandler::event(QEvent* _event)
-{
-    if (_event->type() == Event::Decision) {
-        userDecisionEvent(static_cast<DecisionEvent*>(_event));
-        return true;
-    } else
-        return QObject::event(_event);
-}
-
 qreal
 VatsimDataHandler::fastDistance(
     const qreal& lat1, const qreal& lon1,
@@ -350,15 +353,7 @@ VatsimDataHandler::nmDistance(
     const qreal& lat1, const qreal& lon1,
     const qreal& lat2, const qreal& lon2)
 {
-
-    /* http://www.movable-type.co.uk/scripts/latlong.html */
-    static Q_CONSTEXPR qreal R = 3440.06479191; // nm
-    
-    return qAcos(
-               qSin(lat1) * qSin(lat2) +
-               qCos(lat1) * qCos(lat2) *
-               qCos(lon2 - lon1)
-           ) * R;
+    return nmDistance(LonLat(lon1, lat1), LonLat(lon2, lat2));
 }
 
 qreal
@@ -367,11 +362,20 @@ VatsimDataHandler::nmDistance(const LonLat& a, const LonLat& b)
     /* http://www.movable-type.co.uk/scripts/latlong.html */
     static Q_CONSTEXPR qreal R = 3440.06479191; // nm
     
-    return qAcos(
-               qSin(a.latitude()) * qSin(b.latitude()) +
-               qCos(a.latitude()) * qCos(b.latitude()) *
-               qCos(b.longitude() - a.longitude())
-           ) * R;
+    /* Equirectangular approximation */
+    qreal x = (qDegreesToRadians(b.longitude() - a.longitude())) *
+        qCos((qDegreesToRadians(a.latitude()) + qDegreesToRadians(b.latitude())) / 2);
+    
+    qreal y = qDegreesToRadians(b.latitude()) - qDegreesToRadians(a.latitude());
+    
+    return qSqrt(x * x + y * y) * R;
+}
+
+bool
+VatsimDataHandler::isValidIcao(const QString& str)
+{
+    QRegExp rx("[a-zA-z0-9]{4}");
+    return rx.exactMatch(str);
 }
 
 void
@@ -384,20 +388,11 @@ VatsimDataHandler::requestDataUpdate()
 }
 
 void
-VatsimDataHandler::userDecisionEvent(DecisionEvent* event)
-{
-    if (event->context() == QStringLiteral("data_fetch_error") &&
-            event->decision() == DecisionEvent::TryAgain)
-        requestDataUpdate();
-}
-
-void
 VatsimDataHandler::__readAliasFile(const QString& fileName)
 {
     qDebug("Reading %s...", qPrintable(fileName));
     
     QFile file(fileName);
-    
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(file.fileName()));
         return;
@@ -448,7 +443,6 @@ VatsimDataHandler::__readCountryFile(const QString& fileName)
     qDebug("Reading %s...", qPrintable(fileName));
     
     QFile file(fileName);
-    
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(fileName));
         return;
@@ -616,19 +610,25 @@ VatsimDataHandler::__initializeData()
 {
     std::for_each(vApp()->firDatabase()->firs().begin(),
                   vApp()->firDatabase()->firs().end(),
-    [this](const FirRecord & fr) {
-        Fir* f = new Fir(&fr);
-        __firs.insert(f->icao(), f);
-    }
-                 );
+        [this](const FirRecord & fr) {
+            Fir* f = new Fir(&fr);
+            __firs.insert(f->icao(), f);
+        }
+    );
                  
     std::for_each(vApp()->airportDatabase()->airports().begin(),
                   vApp()->airportDatabase()->airports().end(),
-    [this](const AirportRecord & ar) {
-        Airport* a = new Airport(&ar);
-        __airports.insert(a->icao(), a);
-    }
-                 );
+        [this](const AirportRecord& ar) {
+            /* TODO Remove invalid ICAOs from the database itself */
+            if (!isValidIcao(ar.icao)) {
+                qWarning("Invalid airport icao in the database: %s", ar.icao);
+                return;
+            }
+            
+            Airport* a = new Airport(&ar);
+            __airports.insert(a->icao(), a);
+        }
+    );
 }
 
 void
@@ -651,30 +651,53 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
     __observers = 0;
     
     for (auto& c : document.clients()) {
-        if (__clients.contains(c.callsign))
-            __clients[c.callsign]->update(c.line);
-        else {
-            if (c.type == VatsimDataDocument::ClientLine::Atc) {
-                Controller* atc = new Controller(c.line);
+        if (c.type == VatsimDataDocument::ClientLine::Atc) {
+            /* Multiple PIDs for ATCs allowed, unique key is pid + callsign */
+            auto it = __clients.find(c.pid);
+            while (it != __clients.end() && it.value()->pid() == c.pid && it.value()->callsign() != c.callsign)
+                ++it;
+            
+            if (it != __clients.end() && it.value()->pid() == c.pid) {
+                it.value()->update(c.line);
+                continue;
+            }
+            
+            /* No such ATC with the given callsign found */
+            Controller* atc = new Controller(c.line);
+            
+            if (atc->isValid()) {
+                __clients.insertMulti(atc->pid(), atc);
+                __newClients << atc;
+                __atcs->add(atc);
+            } else {
+                __observers += 1;
+                atc->deleteLater();
+            }
+        } else { // Pilot
+            /* Multiple PIDs for pilots not allowed */
+            if (__clients.count(c.pid) > 1) {
+                qWarning("Multiple PIDs (%d) for client", c.pid);
+                auto it = __clients.find(c.pid);
+                while (it != __clients.end() && it.key() == c.pid)
+                    qWarning("PID: %d; callsign: %s", it.key(), qPrintable(it.value()->callsign()));
                 
-                if (atc->isValid()) {
-                    __clients[atc->callsign()] = atc;
-                    __newClients << atc;
-                    __atcs->add(atc);
-                } else {
-                    __observers += 1;
-                    atc->deleteLater();
-                }
-            } else { // Pilot
-                Pilot* pilot = new Pilot(c.line);
-                
-                if (pilot->position().isNull())
-                    pilot->deleteLater();
-                else {
-                    __clients[pilot->callsign()] = pilot;
-                    __newClients << pilot;
-                    __flights->add(pilot);
-                }
+                __clients.remove(c.pid);
+            }
+            
+            Q_ASSERT(__clients.count(c.pid) <= 1);
+            if (__clients.contains(c.pid)) {
+                __clients[c.pid]->update(c.line);
+                continue;
+            }
+            
+            Pilot* pilot = new Pilot(c.line);
+            
+            if (pilot->position().isNull())
+                pilot->deleteLater();
+            else {
+                __clients[pilot->pid()] = pilot;
+                __newClients << pilot;
+                __flights->add(pilot);
             }
         }
     }
@@ -683,9 +706,9 @@ VatsimDataHandler::__parseDataDocument(const QByteArray& data, bool* ok)
         if (p.type == VatsimDataDocument::ClientLine::Atc)
             continue;
             
-        if (!__clients.contains(p.callsign)) {
+        if (!__clients.contains(p.pid)) {
             Pilot* pilot = new Pilot(p.line, true);
-            __clients[pilot->callsign()] = pilot;
+            __clients[pilot->pid()] = pilot;
         }
     }
     
@@ -733,18 +756,6 @@ VatsimDataHandler::__loadCachedData()
 }
 
 void
-VatsimDataHandler::__slotUiCreated()
-{
-    if (isInitialized())
-        __loadCachedData();
-    else
-        connect(this, &VatsimDataHandler::initialized, this, &VatsimDataHandler::__loadCachedData);
-        
-    /* The first download */
-    __beginDownload();
-}
-
-void
 VatsimDataHandler::__beginDownload()
 {
     qDebug("VatsimDataHandler: starting download");
@@ -775,33 +786,15 @@ VatsimDataHandler::__dataFetched()
             __metar = status.metar();
             __dataServers = status.dataFileUrls();
             
-            if (!status.message().isEmpty())
-                vApp()->userInterface()->showVatsimMessage(status.message());
+            if (!status.message().isEmpty()) {
+                qApp->postEvent(vApp()->userInterface(), new VatsimEvent(VatsimEvent::Message, status.message()));
+            }
                 
             __statusFileFetched = true;
             emit vatsimStatusUpdated();
             
             /* Start downloading data when status document is read */
             emit vatsimDataDownloading();
-        }
-    }
-}
-
-void
-VatsimDataHandler::__handleFetchError(QString error)
-{
-    qWarning("Error downloading VATSIM data (%s)", qPrintable(error));
-    
-    if (__statusFileFetched)
-        emit vatsimDataError();
-    else {
-        if (__status != NetConfig::Vatsim::backupStatusUrl()) {
-            /* Try the backup url */
-            __status = NetConfig::Vatsim::backupStatusUrl();
-            __beginDownload();
-        } else {
-            /* We already tried - there is something else causing the error */
-            emit vatsimStatusError();
         }
     }
 }

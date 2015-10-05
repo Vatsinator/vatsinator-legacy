@@ -46,63 +46,68 @@ class Pilot : public Client {
     /**
      * This property keeps the Estimated Time of Arrival.
      */
-    Q_PROPERTY(QTime eta READ eta)
+    Q_PROPERTY(QTime eta READ eta NOTIFY progressChanged)
     
     /**
      * This property holds the flight progress [1-100].
      */
-    Q_PROPERTY(int progress READ progress)
+    Q_PROPERTY(int progress READ progress NOTIFY progressChanged)
     
     /**
      * This property keeps current altitude.
      */
-    Q_PROPERTY(int altitude READ altitude)
+    Q_PROPERTY(int altitude READ altitude NOTIFY altitudeChanged)
     
     /**
      * This property keeps client's ground speed, expressed in knots.
      */
-    Q_PROPERTY(int groundSpeed READ groundSpeed)
+    Q_PROPERTY(int groundSpeed READ groundSpeed NOTIFY groundSpeedChanged)
     
     /**
      * The client's squawk code.
      * It's string, not int, as squawk might start with '0'.
      */
-    Q_PROPERTY(QString squawk READ squawk)
+    Q_PROPERTY(QString squawk READ squawk NOTIFY squawkChanged)
     
     /**
      * This property keeps the client's aircraft.
      */
-    Q_PROPERTY(QString aircraft READ aircraft)
+    Q_PROPERTY(QString aircraft READ aircraft NOTIFY aircraftChanged)
     
     /**
      * The client's current True Air Speed, in knots.
      */
-    Q_PROPERTY(int tas READ tas)
+    Q_PROPERTY(int tas READ tas NOTIFY tasChanged)
     
     /**
      * The client's remarks.
      */
-    Q_PROPERTY(QString remarks READ remarks)
+    Q_PROPERTY(QString remarks READ remarks NOTIFY remarksChanged)
     
     /**
      * Scheduled Time of Departure.
      */
-    Q_PROPERTY(QTime std READ std)
+    Q_PROPERTY(QTime std READ std NOTIFY stdChanged)
     
     /**
      * Actual Time of Departure.
      */
-    Q_PROPERTY(QTime atd READ atd)
+    Q_PROPERTY(QTime atd READ atd NOTIFY atdChanged)
     
     /**
      * Scheduled Time of Arrival.
      */
-    Q_PROPERTY(QTime sta READ sta)
+    Q_PROPERTY(QTime sta READ sta NOTIFY staChanged)
     
     /**
      * This property holds the client's current heading.
      */
-    Q_PROPERTY(int heading READ heading)
+    Q_PROPERTY(int heading READ heading NOTIFY headingChanged)
+    
+    /**
+     * The client's flight rules - instrumental or visual.
+     */
+    Q_PROPERTY(FlightRules flightRules READ flightRules NOTIFY flightRulesChanged)
     
     /**
      * The client's current flight phase.
@@ -111,7 +116,7 @@ class Pilot : public Client {
      *
      * \todo Climbing & descending status options.
      */
-    Q_PROPERTY(Phase phase READ phase)
+    Q_PROPERTY(Phase phase READ phase NOTIFY phaseChanged)
     
     /**
      * Prefiled only means that client has prefiled the flight plan, but
@@ -119,23 +124,41 @@ class Pilot : public Client {
      *
      * \todo Handle prefiled flights properly.
      */
-    Q_PROPERTY(bool prefiledOnly READ isPrefiledOnly)
+    Q_PROPERTY(bool prefiledOnly READ isPrefiledOnly NOTIFY wentOnline)
+    
+    /**
+     * Origin airport.
+     */
+    Q_PROPERTY(const Airport* origin READ origin NOTIFY airportsUpdated)
+    
+    /**
+     * Destination airport.
+     */
+    Q_PROPERTY(const Airport* destination READ destination NOTIFY airportsUpdated)
     
 public:
-    /* Types */
+    /**
+     * The FlightRUles enum describes the rules the flight is operatig on.
+     * \sa flightRules().
+     */
     enum FlightRules {
-        Ifr, Vfr
+        Ifr, /**< Instrumental Flight Rules */
+        Vfr /**< Visual Flight Rules */
     };
     
+    /**
+     * The Phase enum describes the phase of the flight.
+     * \sa phase().
+     */
     enum Phase {
-        Departing,
-        Airborne,
-        Arrived
+        Departing, /**< The aircraft is still at the origin airport. */
+        Airborne, /**< The flight is in progress. */
+        Arrived /**< The aircraft is already at the destination airport. */
     };
     
     struct Pressure {
-        QString ihg;
-        QString mb;
+        QString ihg; /**< Inch of mercury */
+        QString mb; /**< A.k.a. hectopascal (hPa) - millibar */
     };
     
     /**
@@ -156,16 +179,34 @@ public:
         QVector<LonLat> waypoints;
     };
     
-    Pilot() = delete;
+signals:
+    void progressChanged();
+    void altitudeChanged(int altitude);
+    void groundSpeedChanged(int groundSpeed);
+    void squawkChanged(const QString& squawk);
+    void aircraftChanged(const QString& aircraft);
+    void tasChanged(int tas);
+    void remarksChanged(const QString& remarks);
+    void stdChanged(const QTime& std);
+    void atdChanged(const QTime& atd);
+    void staChanged(const QTime& sta);
+    void headingChanged(int heading);
+    void flightRulesChanged(FlightRules flightRules);
+    void phaseChanged(Phase phase);
+    void wentOnline();
+    void airportsUpdated();
     
+public:
     /**
      * This constructor instantiates new Pilot from the given _data_.
      * \param data The data line.
      * \param prefiled Indicates whether the flight is only prefiled.
      */
     Pilot(const QStringList& data, bool prefiled = false);
-    virtual ~Pilot();
     
+    /**
+     * \copydoc Client::update()
+     */
     void update(const QStringList& data) override;
     
     /**
@@ -175,14 +216,6 @@ public:
     inline const LonLat& oldPosition() const
     {
         return __oldPosition;
-    }
-    
-    /**
-     * The client's flight rules - Ifr or Vfr.
-     */
-    inline const Pilot::FlightRules& flightRules() const
-    {
-        return __flightRules;
     }
     
     /**
@@ -202,72 +235,86 @@ public:
         return __route;
     }
     
-    /**
-     * \return Origin airport or nullptr if could not match any.
-     */
+    const QTime& eta() const;
+    int progress() const;
+    
+    inline int altitude() const
+    {
+        return __altitude;
+    }
+    
+    inline int groundSpeed() const
+    {
+        return __groundSpeed;
+    }
+    
+    inline const QString& squawk() const
+    {
+        return __squawk;
+    }
+    
+    inline const QString& aircraft() const
+    {
+        return __aircraft;
+    }
+    
+    inline int tas() const
+    {
+        return __tas;
+    }
+    
+    inline const QString& remarks() const
+    {
+        return __remarks;
+    }
+    
+    inline const QTime& std() const
+    {
+        return __std;
+    }
+    
+    inline const QTime& atd() const
+    {
+        return __atd;
+    }
+    
+    inline const QTime& sta() const
+    {
+        return __sta;
+    }
+    
+    inline unsigned heading() const
+    {
+        return __heading;
+    }
+    
+    inline Pilot::FlightRules flightRules() const
+    {
+        return __flightRules;
+    }
+    
+    inline Pilot::Phase phase() const
+    {
+        return __phase;
+    }
+    
+    inline bool isPrefiledOnly() const
+    {
+        return __prefiledOnly;
+    }
+    
     inline const Airport* origin() const
     {
         return __origin;
     }
     
-    /**
-     * \return Destination airport or nullptr if could not match any.
-     */
     inline const Airport* destination() const
     {
         return __destination;
     }
     
-    const QTime& eta() const;
-    int progress() const;
-    inline int altitude() const
-    {
-        return __altitude;
-    }
-    inline int groundSpeed() const
-    {
-        return __groundSpeed;
-    }
-    inline const QString& squawk() const
-    {
-        return __squawk;
-    }
-    inline const QString& aircraft() const
-    {
-        return __aircraft;
-    }
-    inline int tas() const
-    {
-        return __tas;
-    }
-    inline const QString& remarks() const
-    {
-        return __remarks;
-    }
-    inline const QTime& std() const
-    {
-        return __std;
-    }
-    inline const QTime& atd() const
-    {
-        return __atd;
-    }
-    inline const QTime& sta() const
-    {
-        return __sta;
-    }
-    inline unsigned heading() const
-    {
-        return __heading;
-    }
-    inline Pilot::Phase phase() const
-    {
-        return __phase;
-    }
-    inline bool isPrefiledOnly() const
-    {
-        return __prefiledOnly;
-    }
+    Pilot() = delete;
+    virtual ~Pilot() = default;
     
 private:
     /**
@@ -276,15 +323,36 @@ private:
     void __updateAirports();
     
     /**
+     * Finds origin airport, based on the flight plan.
+     */
+    void __findOrigin();
+    
+    /**
+     * Finds destination airport.
+     */
+    void __findDestination();
+    
+    /**
      * Checks whether pilot is departing, airborn or has just arrived.
      */
-    void __discoverFlightPhase();
+    Phase __discoverFlightPhase();
     
     /**
      * Checks whether the route crosses the IDL and fixes it.
      */
     void __fixupRoute();
     
+    /**
+     * Checks (without knowing the flight phase yet) whether the flight
+     * is airborne or not.
+     */
+    bool __maybeAirborne();
+    
+private slots:
+    void __updateWaypoints();
+    void __invalidateProgress();
+    
+private:
     int                   __altitude;
     int                   __groundSpeed;
     QString               __squawk;
@@ -307,5 +375,7 @@ private:
     bool                  __prefiledOnly;
     
 };
+
+Q_DECLARE_METATYPE(const Pilot*)
 
 #endif // PILOT_H

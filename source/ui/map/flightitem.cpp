@@ -19,16 +19,11 @@
 
 #include <QtGui>
 
-#ifdef Q_OS_ANDROID
-# include <GLES/gl.h>
-#endif
-
 #include "db/airportdatabase.h"
 #include "storage/settingsmanager.h"
 #include "ui/map/mapconfig.h"
-#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
-#include "ui/map/modelmatcher.h"
+#include "ui/map/pixmapprovider.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/pilot.h"
 #include "vatsimdata/airport.h"
@@ -39,245 +34,147 @@
 
 FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     MapItem(parent),
-    __scene(qobject_cast<MapScene * >(parent)),
-    __pilot(pilot),
-    __position(pilot->position()),
-    __model(nullptr),
-    __label(QOpenGLTexture::Target2D),
-    __linesReady(false)
+    __scene(qobject_cast<MapScene*>(parent)),
+    __pilot(pilot)
 {
-    connect(vApp()->settingsManager(),            SIGNAL(settingsChanged()),
-            this,                                 SLOT(__reloadSettings()));
-    connect(pilot,                               SIGNAL(updated()),
-            this,                                 SLOT(__invalidate()));
-}
-
-FlightItem::~FlightItem()
-{
-    __label.destroy();
+    connect(pilot, &Pilot::aircraftChanged, this, &FlightItem::__invalidateModel);
+    
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, [this]() {
+        __label = QPixmap();
+    });
 }
 
 bool
 FlightItem::isVisible() const
 {
-    return data()->phase() == Pilot::Airborne && !data()->isPrefiledOnly();
+    return __scene->settings().view.pilots_layer && data()->phase() == Pilot::Airborne && !data()->isPrefiledOnly();
 }
 
-bool
-FlightItem::isLabelVisible() const
-{
-    return __scene->settings().view.pilot_labels.always;
-}
-
-const LonLat&
+LonLat
 FlightItem::position() const
 {
-    return __position;
+    return __pilot->position();
 }
 
 void
-FlightItem::drawItem(QOpenGLShaderProgram* shader) const
+FlightItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const
 {
-    static Q_CONSTEXPR float PilotsZ = static_cast<float>(MapConfig::MapLayers::Pilots);
+    if (__model.isNull())
+        __prepareModel();
     
-    static const GLfloat modelRect[] = {
-        -0.03f, -0.03f,
-        -0.03f,  0.03f,
-        0.03f,  0.03f,
-        0.03f,  0.03f,
-        0.03f, -0.03f,
-        -0.03f, -0.03f
-    };
+    Q_ASSERT(!__model.isNull());
     
-    static const GLfloat textureCoords[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f,
-        0.0f, 0.0f
-    };
+    QPoint pos = position() * transform;
     
-    if (!__model)
-        __matchModel();
+    if (flags & DrawSelected)
+        __drawLines(painter, transform);
+    
+    QRect rect(QPoint(0, 0), __model.size());
+    rect.moveCenter(pos);
+    painter->drawPixmap(rect, __model);
+    
+    bool drawLabel = __scene->settings().view.pilot_labels.always ||
+        (__scene->settings().view.pilot_labels.when_hovered && (flags & DrawSelected));
+    
+    if (drawLabel) {
+        if (__label.isNull())
+            __prepareLabel();
         
-    shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-    shader->setAttributeArray(MapRenderer::vertexLocation(), modelRect, 2);
-    shader->setUniformValue(__scene->renderer()->programRotationLocation(), -qDegreesToRadians(static_cast<float>(data()->heading())));
-    shader->setUniformValue(__scene->renderer()->programZLocation(), PilotsZ);
-    
-    __model->bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
-    shader->setUniformValue(__scene->renderer()->programRotationLocation(), 0.0f);
-}
-
-void
-FlightItem::drawLabel(QOpenGLShaderProgram* shader) const
-{
-    static const GLfloat labelRect[] = {
-        -0.16f,  0.019f,
-        -0.16f,  0.12566666f,
-        0.16f,  0.12566666f,
-        0.16f,  0.12566666f,
-        0.16f,  0.019f,
-        -0.16f,  0.019f
-    };
-    
-    static const GLfloat textureCoords[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f,
-        0.0f, 0.0f
-    };
-    
-    shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-    shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
-    
-    if (!__label.isCreated())
-        __initializeLabel();
+        QRect rect2(__label.rect());
+        rect2.moveCenter(pos);
+        rect2.moveBottom(rect.top());
         
-    __label.bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    __label.release();
-}
-
-void
-FlightItem::drawFocused(QOpenGLShaderProgram* shader) const
-{
-    if (!__linesReady)
-        __prepareLines();
-        
-    if (!__otpLine.coords.isEmpty()) {
-        if (!__otpLine.color.isValid())
-            __otpLine.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
-            
-        shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLine.color);
-        shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLine.coords.constData(), 2);
-        glDrawArrays(GL_LINE_STRIP, 0, __otpLine.coords.size() / 2);
-    }
-    
-    if (!__ptdLine.coords.isEmpty()) {
-        if (!__ptdLine.color.isValid())
-            __ptdLine.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
-            
-        shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLine.color);
-        shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLine.coords.constData(), 2);
-        glDrawArrays(GL_LINE_STRIP, 0, __ptdLine.coords.size() / 2);
+        painter->drawPixmap(rect2, __label);
     }
 }
 
-QString
-FlightItem::tooltipText() const
+int
+FlightItem::z() const
 {
-    QString callsign = data()->callsign();
-    QString desc = QStringLiteral("%1 (%2)").arg(data()->realName(), data()->aircraft());
-    
-    QString from;
-    const Airport* ap = data()->origin();
-    
-    if (ap)
-        from = QString(ap->icao()) % QString(" ") % QString::fromUtf8(ap->data()->city);
-    else
-        from = tr("(unknown)");
-        
-    QString to;
-    ap = data()->destination();
-    
-    if (ap)
-        to = QString(ap->icao()) % QString(" ") % QString::fromUtf8(ap->data()->city);
-    else
-        to = tr("(unknown)");
-        
-    QString gs = tr("Ground speed: %1 kts").arg(QString::number(data()->groundSpeed()));
-    QString alt = tr("Altitude: %1 ft").arg(QString::number(data()->altitude()));
-    
-    return QString("<p style='white-space:nowrap'><center>"
-                   % callsign % "<br />"
-                   % desc % "<br />"
-                   % from % " > " % to % "<br />"
-                   % gs % "<br />"
-                   % alt
-                   % "</center></p>");
+    return 3;
 }
 
 void
-FlightItem::showDetails() const
+FlightItem::__prepareModel() const
 {
-    vApp()->userInterface()->showDetails(data());
+    QTransform t;
+    t.rotate(static_cast<qreal>(data()->heading()));
+    __model = __scene->pixmapProvider()->pixmapForModel(__pilot->aircraft())
+        .transformed(t, Qt::SmoothTransformation);
+    
+    /* We drop shadow after transformation, it looks more convincing */
+
+#if 0 // Temporarily disabled
+    __dropShadow(&__model);
+#endif
 }
 
 void
-FlightItem::__initializeLabel() const
+FlightItem::__prepareLabel() const
 {
-    static QRect labelRect(28, 10, 73, 13);
+    QRect rect;
+    __label = __scene->pixmapProvider()->backgroundForFlightLabel(&rect);
     
-    __label.destroy();
+    QPainter p(&__label);
     
-    QString callsign(data()->callsign());
+    QFont font = SettingsManager::get("map.pilot_font").value<QFont>();
+    p.setFont(font);
     
-    QImage temp(MapConfig::pilotLabelBackground());
-    QPainter painter(&temp);
-    painter.setRenderHint(QPainter::TextAntialiasing);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform);
-    painter.setRenderHint(QPainter::HighQualityAntialiasing);
+    QPen pen(QColor(0, 0, 0));
+    p.setPen(pen);
     
-    painter.setFont(SM::get("map.pilot_font").value<QFont>());
-    painter.setPen(MapConfig::pilotPen());
-    
-    painter.drawText(labelRect, Qt::AlignCenter, callsign);
-    __label.setData(temp.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __label.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
+    p.drawText(rect, Qt::AlignCenter, data()->callsign());
+    p.end();
 }
 
 void
-FlightItem::__prepareLines() const
+FlightItem::__drawLines(QPainter* painter, const WorldTransform& transform) const
 {
-    QVector<GLfloat>* coords = &__otpLine.coords;
+    QPainter::RenderHints hints = painter->renderHints();
+    painter->setRenderHints(hints | QPainter::Antialiasing);
     
-    for (const LonLat& p : data()->route().waypoints) {
-        (*coords) << p.x() << p.y();
-        
-        if (p == data()->position()) {
-            coords = &__ptdLine.coords;
-            (*coords) << p.x() << p.y();
-        }
+    QPen orig = painter->pen();
+    QPoint pos = position() * transform;
+    
+    if (data()->origin()->isValid()) {
+        painter->setPen(QPen(QColor(3, 116, 164)));
+        QPoint p = data()->origin()->position() * transform;
+        painter->drawLine(p, pos);
     }
     
-    __linesReady = true;
+    if (data()->destination()->isValid()) {
+        QPen pen(QColor(133, 164, 164));
+        pen.setStyle(Qt::DashLine);
+        painter->setPen(pen);
+        QPoint p = data()->destination()->position() * transform;
+        painter->drawLine(p, pos);
+    }
+    
+    painter->setRenderHints(hints);
+    painter->setPen(orig);
 }
 
 void
-FlightItem::__matchModel() const
+FlightItem::__dropShadow(QPixmap* image) const
 {
-    __model = __scene->renderer()->models()->matchMyModel(__pilot->aircraft());
+    QPixmap orig = image->copy();
+    QBitmap mask = image->mask();
+    
+    image->fill(Qt::transparent);
+    QRect target = image->rect();
+    target.moveBottom(target.bottom() + 4);
+    
+    QPainter p(image);
+    p.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    p.setPen(QColor(180, 180, 180, 100));
+    p.drawPixmap(target, mask, mask.rect());
+    p.setPen(QPen());
+    p.drawPixmap(image->rect(), orig, orig.rect());
+    p.end();
 }
 
 void
-FlightItem::__reloadSettings()
+FlightItem::__invalidateModel()
 {
-    if (__label.isCreated())
-        __label.destroy();
-        
-    __otpLine.color = QColor();
-    __ptdLine.color = QColor();
-}
-
-void
-FlightItem::__invalidate()
-{
-    __position = __pilot->position();
-    
-    __model = nullptr;
-    
-    __linesReady = false;
-    __otpLine.coords.clear();
-    __ptdLine.coords.clear();
-    
-    /* We don't need to invalidate the label - pilot can't just change his
-     * callsign, can he?
-     */
+    __model = QPixmap();
 }

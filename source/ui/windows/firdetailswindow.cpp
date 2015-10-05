@@ -1,6 +1,6 @@
 /*
     firdetailswindow.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,20 +20,17 @@
 
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
+#include "models/airporttablemodel.h"
+#include "models/atctablemodel.h"
+#include "models/flighttablemodel.h"
+#include "models/roles.h"
 #include "plugins/atcbookingtablemodel.h"
 #include "plugins/bookingprovider.h"
 #include "plugins/notamprovider.h"
 #include "plugins/notamlistmodel.h"
-#include "ui/userinterface.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
-#include "ui/models/airporttablemodel.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
-#include "ui/models/roles.h"
-#include "ui/windows/airportdetailswindow.h"
-#include "ui/windows/atcdetailswindow.h"
-#include "ui/windows/flightdetailswindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -58,7 +55,6 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
     BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    connect(qApp, &QCoreApplication::aboutToQuit, this, &FirDetailsWindow::close);
     connect(vApp()->vatsimDataHandler()->notamProvider(), &NotamProvider::notamReady,
             this, &FirDetailsWindow::__notamUpdate);
     connect(AirportsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showAirportDetails);
@@ -115,7 +111,7 @@ FirDetailsWindow::__showAirportDetails(QModelIndex index)
 {
     Q_ASSERT(index.data(InstancePointerRole).isValid());
     Airport* const airport = reinterpret_cast<Airport* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(airport);
+    wui()->showAirportDetails(airport);
 }
 
 void
@@ -123,7 +119,7 @@ FirDetailsWindow::__showClientDetails(QModelIndex index)
 {
     Q_ASSERT(index.data(InstancePointerRole).isValid());
     Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(client);
+    wui()->showClientDetails(client);
 }
 
 void

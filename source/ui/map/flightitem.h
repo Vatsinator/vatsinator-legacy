@@ -1,6 +1,6 @@
 /*
  * flightitem.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,39 +21,44 @@
 #define FLIGHTITEM_H
 
 #include <QObject>
-#include <QtGui>
+#include <QPixmap>
 #include "ui/map/mapitem.h"
 
 class Pilot;
 class MapScene;
 
 /**
- * The FlightItem class represents a single Pilot on the map.
+ * The FlightItem class draws a single flight on the map.
  */
 class FlightItem : public MapItem {
     Q_OBJECT
     
 public:
     /**
-     * The constructor takes _pilot_ as a data provider of what to show
+     * The constructor takes \c pilot as a data provider of what to show
      * on the map. Data is updated automatically.
-     *
-     * \param pilot The flight to show on the map.
-     * \param parent Passed to QObject's constructor.
      */
     explicit FlightItem(const Pilot* pilot, QObject* parent = nullptr);
-    FlightItem() = delete;
     
-    virtual ~FlightItem();
-    
+    /**
+     * \copydoc MapItem::isVisible()
+     */
     bool isVisible() const override;
-    bool isLabelVisible() const override;
-    const LonLat& position() const override;
-    void drawItem(QOpenGLShaderProgram* shader) const override;
-    void drawLabel(QOpenGLShaderProgram* shader) const override;
-    void drawFocused(QOpenGLShaderProgram* shader) const override;
-    QString tooltipText() const override;
-    void showDetails() const override;
+    
+    /**
+     * \copydoc MapItem::position()
+     */
+    LonLat position() const override;
+    
+    /**
+     * \copydoc MapItem::draw()
+     */
+    void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
+    
+    /**
+     * \copydoc MapItem::z()
+     */
+    int z() const override;
     
     /**
      * Gives direct access to the Pilot class instance that this item
@@ -64,29 +69,43 @@ public:
         return __pilot;
     }
     
+    FlightItem() = delete;
+    
 private:
-    void __initializeLabel() const;
-    void __prepareLines() const;
-    void __matchModel() const;
+    /**
+     * Retrieves a proper model from the pixmap cache and prepares
+     * it for rendering.
+     */
+    void __prepareModel() const;
+    
+    /**
+     * Prepares the flight label.
+     */
+    void __prepareLabel() const;
+    
+    /**
+     * Draws lines for the flight.
+     */
+    void __drawLines(QPainter* painter, const WorldTransform& transform) const;
+    
+    /**
+     * Creates a shadow for the aircraft icon.
+     */
+    void __dropShadow(QPixmap* image) const;
     
 private slots:
-    void __reloadSettings();
-    void __invalidate();
+    /**
+     * Removes the aircraft icon to have it refreshed with the
+     * next repaint.
+     */
+    void __invalidateModel();
     
 private:
-    MapScene*     __scene;
-    const Pilot*  __pilot;
-    LonLat        __position;
+    MapScene* __scene;
+    const Pilot* __pilot;
+    mutable QPixmap __model;
+    mutable QPixmap __label;
     
-    mutable QOpenGLTexture* __model;
-    mutable QOpenGLTexture __label;
-    
-    mutable struct {
-        QVector<GLfloat>    coords;
-        QColor              color;
-    } __otpLine, __ptdLine; // OriginToPilot & PilotToDestination
-    
-    mutable bool  __linesReady;
 };
 
 #endif // FLIGHTITEM_H

@@ -23,6 +23,8 @@
 #include <QPointF>
 #include <QMetaType>
 
+struct Point;
+
 /**
  * The LonLat class is a wrapper around QPointF to provide convenience
  * handling global coordinates - latitude and longitude.
@@ -49,6 +51,11 @@ public:
     LonLat(const QPointF& point);
     
     /**
+     * Creates new LonLat from the given raw point.
+     */
+    LonLat(const Point& point);
+    
+    /**
      * Creates new LonLat from the given coordinates - _longitude_
      * and _latitude_.
      */
@@ -58,7 +65,13 @@ public:
      * Returns this point, but bounds its coordinates to be correct longitude
      * and latitude.
      */
-    LonLat bound() const;
+    LonLat bound() const &;
+    
+    /**
+     * Returns this point, but bounds its coordinates to be correct longitude
+     * and latitude.
+     */
+    LonLat bound() &&;
     
     inline qreal longitude() const
     {

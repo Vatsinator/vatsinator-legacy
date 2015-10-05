@@ -122,12 +122,9 @@ DataUpdater::DataUpdater(QObject* parent) :
     /* Give the Unzipper its own thread */
     QThread* thread = new QThread();
     __unzipper->moveToThread(thread);
-    connect(__unzipper,   SIGNAL(unzipped()),
-            this,         SLOT(__filesUnzipped()));
-    connect(__unzipper,   SIGNAL(error(QString)),
-            this,         SLOT(__unzipError(QString)));
-    connect(this,         SIGNAL(readyToUnzip()),
-            __unzipper,   SLOT(unzip()));
+    connect(__unzipper, &Unzipper::unzipped, this, &DataUpdater::__filesUnzipped);
+    connect(__unzipper, &Unzipper::error, this, &DataUpdater::__unzipError);
+    connect(this, &DataUpdater::readyToUnzip, __unzipper, &Unzipper::unzip);
     thread->start();
 }
 
@@ -145,17 +142,9 @@ DataUpdater::update()
 {
     qDebug("DataUpdater: updating...");
     
-    FileDownloader* fd = new FileDownloader();
-    
-    connect(fd,   SIGNAL(finished(QString)),
-            this, SLOT(__unzipPackage(QString)));
-    connect(fd,   SIGNAL(finished(QString)),
-            fd,   SLOT(deleteLater()));
-    connect(fd,   SIGNAL(error(QString)),
-            this, SLOT(__fetchError(QString)));
-    connect(fd,   SIGNAL(error(QString)),
-            fd,   SLOT(deleteLater()));
-            
+    FileDownloader* fd = new FileDownloader();    
+    connect(fd, &FileDownloader::finished, this, &DataUpdater::__unzipPackage);
+    connect(fd, &FileDownloader::error, this, &DataUpdater::__fetchError);
     fd->fetch(QUrl(PackageUrl));
 }
 
@@ -233,6 +222,10 @@ DataUpdater::__unzipPackage(QString fileName)
 {
     __unzipper->setFileName(fileName);
     emit readyToUnzip();
+    
+    FileDownloader* d = qobject_cast<FileDownloader*>(sender());
+    if (d)
+        d->deleteLater();
 }
 
 void
@@ -240,6 +233,10 @@ DataUpdater::__fetchError(QString error)
 {
     qWarning("DataUpdater: fetch error: %s", qPrintable(error));
     emit failed();
+    
+    FileDownloader* d = qobject_cast<FileDownloader*>(sender());
+    if (d)
+        d->deleteLater();
 }
 
 void
@@ -248,16 +245,8 @@ DataUpdater::__filesUnzipped()
     qDebug("DataUpdater: files unzipped.");
     
     FileDownloader* fd = new FileDownloader();
-    
-    connect(fd,   SIGNAL(finished(QString)),
-            this, SLOT(__checkManifest(QString)));
-    connect(fd,   SIGNAL(finished(QString)),
-            fd,   SLOT(deleteLater()));
-    connect(fd,   SIGNAL(error(QString)),
-            this, SLOT(__fetchError(QString)));
-    connect(fd,   SIGNAL(error(QString)),
-            fd,   SLOT(deleteLater()));
-            
+    connect(fd, &FileDownloader::finished, this, &DataUpdater::__checkManifest);
+    connect(fd, &FileDownloader::error, this, &DataUpdater::__fetchError);
     fd->fetch(QUrl(ManifestUrl));
 }
 
@@ -271,6 +260,10 @@ DataUpdater::__unzipError(QString error)
 void
 DataUpdater::__checkManifest(QString fileName)
 {
+    FileDownloader* d = qobject_cast<FileDownloader*>(sender());
+    if (d)
+        d->deleteLater();
+    
     if (!__checksumsOk(fileName)) {
         __cleanup();
         emit failed();

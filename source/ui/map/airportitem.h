@@ -1,6 +1,6 @@
 /*
  * airportitem.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,48 +20,52 @@
 #ifndef AIRPORTITEM_H
 #define AIRPORTITEM_H
 
-#include <QOpenGLTexture>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
 #include <QObject>
 #include <QVector>
 #include <QColor>
+#include <QPixmap>
+#include <QStaticText>
 
 #include "ui/map/mapitem.h"
 
 class Airport;
-class ApproachCircleItem;
+class TmaArea;
 class MapScene;
 
 /**
  * The AirportItem class represents a single airport on the map.
+ * 
+ * \sa TmaArea.
  */
 class AirportItem : public MapItem {
     Q_OBJECT
     
 public:
     /**
-     * Creates new AirportItem with the specified _airport_.
-     * _parent_ is passed to MapItem's constructor.
+     * Creates new AirportItem with the specified \c airport.
+     * \c parent is passed to MapItem's constructor.
      */
     explicit AirportItem(const Airport* airport, QObject* parent = nullptr);
-    AirportItem() = delete;
-    
-    virtual ~AirportItem();
     
     /**
-     * Draws approach circle (or area, if provided).
+     * \copydoc MapItem::isVisible()
      */
-    void drawApproachArea() const;
-    
     bool isVisible() const override;
-    bool isLabelVisible() const override;
-    const LonLat& position() const override;
-    void drawItem(QOpenGLShaderProgram* shader) const override;
-    void drawLabel(QOpenGLShaderProgram* shader) const override;
-    void drawFocused(QOpenGLShaderProgram* shader) const override;
-    QString tooltipText() const override;
-    void showDetails() const override;
+    
+    /**
+     * \copydoc MapItem::position()
+     */
+    LonLat position() const override;
+    
+    /**
+     * \copydoc MapItem::draw()
+     */
+    void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
+    
+    /**
+     * \copydoc MapItem::z()
+     */
+    int z() const override;
     
     /**
      * Gives direct access to the Airport object that this item represents
@@ -72,35 +76,22 @@ public:
         return __airport;
     }
     
+    AirportItem() = delete;
+    
 private:
-    void __takeIcon() const;
-    void __prepareLines() const;
-    void __initializeLabel() const;
-    void __initializeApproachBuffer() const;
+    void __loadIcon() const;
+    void __prepareLabel() const;
+    void __drawLines(QPainter* painter, const WorldTransform& transform) const;
     
 private slots:
-    void __reloadSettings();
     void __invalidate();
-    
+
 private:
-    MapScene*             __scene;
-    const Airport*        __airport; /**< Data pointer */
-    LonLat                __position;
-    
-    mutable QOpenGLTexture* __icon; /**< Icon OpenGL texture */
-    mutable QOpenGLTexture  __label; /**< Label OpenGL texture */
-    
-    mutable struct {
-        QVector<GLfloat>    coords;
-        QColor              color;
-    } __otpLines, __ptdLines; /**< OriginToPilot & PilotToDestination */
-    
-    mutable bool  __linesReady;
-    
-    mutable QOpenGLVertexArrayObject __vaoApproach;
-    mutable QOpenGLBuffer __bufferApproachPoints;
-    mutable QOpenGLBuffer __bufferApproachTriangles;
-    mutable int __trianglesApproach;
+    MapScene* __scene;
+    const Airport* __airport; /**< Data pointer */
+    mutable QPixmap __icon;
+    mutable QPixmap __label;
+    TmaArea* __tma;
     
 };
 

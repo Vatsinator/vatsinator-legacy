@@ -17,8 +17,11 @@
  * 
  */
 
-import QtQuick 2.4
-import org.eu.vatsinator.ui 1.0
+import QtQuick 2.5
+import QtQuick.Dialogs 1.2
+import org.eu.vatsinator.Components 1.0
+import org.eu.vatsinator.Map 1.0
+import org.eu.vatsinator.Vatsim 1.0
 
 /**
  * The MapView consists of the map itself, the menu drawer (the small
@@ -26,14 +29,81 @@ import org.eu.vatsinator.ui 1.0
  */
 Item {
     id: root
+    objectName: "mapPage"
+    
+    signal itemTouched(var item)
+    
+    property var flightDetails: null /**< FlightDetails component */
+    property var airportDetails: null /**< AirportDetails component */
+    property var firDetails: null /**< FirDetails component */
+    property var currentDetails: null /**< Currently shown details box */
+    
+    function showFlightDetails(flight)
+    {
+        var fd = root.flightDetails.createObject(root, {
+            width: root.width - 56 * dp,
+            height: 168 * dp,
+            flight: flight
+        });
+        
+        root.showDetails(fd);
+    }
+    
+    function showAirportDetails(airport)
+    {
+        var ad = root.airportDetails.createObject(root, {
+            width: root.width - 56 * dp,
+            height: 168 * dp,
+            airport: airport
+        });
+        
+        root.showDetails(ad);
+    }
+    
+    function showFirDetails(fir)
+    {
+        var fd = root.firDetails.createObject(root, {
+            width: root.width - 56 * dp,
+            height: 56 * dp,
+            fir: fir
+        });
+        
+        root.showDetails(fd);
+    }
+    
+    function showDetails(details)
+    {
+        console.assert(details != null);
+        if (root.currentDetails)
+            root.currentDetails.close();
+        
+        details.show();
+        root.currentDetails = details;
+    }
+    
+    function hideCurrentDetails()
+    {
+        if (root.currentDetails) {
+            root.currentDetails.close();
+            root.currentDetails = null;
+            map.selectedItem = undefined;
+        }
+    }
+    
+    function updateSelectedItem(item)
+    {
+        map.selectedItem = item;
+    }
     
     width: parent.width
     height: parent.height
     
     Map {
         id: map
-        objectName: "map"
         anchors.fill: parent
+        
+        onCenterChanged: root.hideCurrentDetails()
+        onZoomChanged: root.hideCurrentDetails()
     }
     
     /* This small icon in the lower-left corner that makes user aware of the menu */
@@ -52,5 +122,21 @@ Item {
         
         onZoomUpdated: map.updateZoom(zoom)
         onPositionUpdated: map.updatePosition(x, y)
+        onClicked: {
+            var item = map.itemUnderPosition(x, y);
+            if (item != null) {
+                root.itemTouched(item)
+            } else {
+                console.log("You did not click a thing!");
+            }
+        }
     }
+    
+    Component.onCompleted: {
+        root.flightDetails = Qt.createComponent("FlightDetails.qml");
+        root.airportDetails = Qt.createComponent("AirportDetails.qml");
+        root.firDetails = Qt.createComponent("FirDetails.qml");
+        root.itemTouched.connect(updateSelectedItem);
+    }
+    
 }

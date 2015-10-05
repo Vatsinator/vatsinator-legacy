@@ -18,6 +18,26 @@ android_generate_manifest(vatsinator
     TEMPLATE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/AndroidManifest.xml.in
 )
 
+option (SIGN_APK "Build the apk signed" OFF)
+if (SIGN_APK)
+    set (KEYSTORE ${CMAKE_CURRENT_BINARY_DIR}
+        CACHE FILEPATH "Path to the KeyStore file")
+    set (KEYSTORE_ALIAS "mykey"
+        CACHE STRING "KeyStore key entry")
+    set (KEYSTORE_PASSWORD ""
+        CACHE STRING "KeyStore password")
+
+    if (KEYSTORE AND KEYSTORE_ALIAS AND KEYSTORE_PASSWORD)
+        set_target_properties (vatsinator PROPERTIES
+            KEYSTORE ${KEYSTORE}
+            KEYSTORE_ALIAS ${KEYSTORE_ALIAS}
+            KEYSTORE_PASSWORD ${KEYSTORE_PASSWORD}
+        )
+    else ()
+        message (WARNING "Keystore not set up despite enabling SIGN_APK option")
+    endif ()
+endif ()
+
 get_filename_component (quazip_path ${QUAZIP_LIBRARIES} DIRECTORY)
 
 android_deploy_apk(vatsinator
@@ -31,4 +51,8 @@ android_deploy_apk(vatsinator
         QtQuick/Layouts
         QtQuick/Window.2
         QtQuick.2
+    QML_PLUGINS
+        componentsplugin
+        mapplugin
+        vatsimplugin
 )

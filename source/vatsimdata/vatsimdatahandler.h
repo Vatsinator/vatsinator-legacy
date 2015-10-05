@@ -28,6 +28,7 @@
 #include <QUrl>
 #include <QMultiMap>
 
+#include "models/flighttablemodel.h"
 #include "vatsimdata/client.h"
 #include "ui/notifiable.h"
 
@@ -37,7 +38,6 @@ class BookingProvider;
 class Controller;
 class DecisionEvent;
 class Fir;
-class FlightTableModel;
 class NotamProvider;
 class Pilot;
 class PlainTextDownloader;
@@ -149,32 +149,19 @@ public:
     const QUrl& dataUrl() const;
     
     /**
-     * Looks for pilot by callsign.
-     *
-     * \param callsign Callsign of the pilot to be found.
-     * \return Pointer to the Pilot class instance or _nullptr_ if no pilot was found.
-     * \sa findAtc() and findAirport().
-     */
-    const Pilot* findPilot(const QString& callsign) const;
-    
-    /**
-     * Looks for the ATC.
-     *
-     * \param callsign Callsign of the controller to be found.
-     * \return Pointer to the Controller class instance or _nullptr_ if no pilot was found.
-     * \sa findPilot().
-     */
-    const Controller* findAtc(const QString& callsign) const;
-    
-    /**
-     * Finds airport with particular _icao_ code or any airport that the given
-     * _icao_ is alias of.
+     * Finds airport with particular \c icao code or any airport that the given
+     * \c icao is alias of.
      *
      * \param icao Airport ICAO code.
      * \return Pointer to the Airport instance or _nullptr_ if nothing was found.
      * \sa findPilot() and findAtc().
      */
     Airport* findAirport(const QString& icao);
+    
+    /**
+     * \return List of all clients.
+     */
+    QList<Client*> clients() const;
     
     /**
      * \return List of all airports recognized by Vatsinator.
@@ -235,19 +222,6 @@ public:
      * Running instance of bookings provider.
      */
     BookingProvider* bookingProvider();
-    
-    /**
-     * Custom event handler.
-     */
-    bool event(QEvent*) override;
-    
-    /**
-     * Map (Callsign <-> instance pairs) of connected clients.
-     */
-    inline const QMap<QString, Client*>& clients()
-    {
-        return __clients;
-    }
     
     /**
      * List of only new clients, i.e. that showed up in the last update.
@@ -372,7 +346,7 @@ public:
      * nautical miles.
      *
      * \note If you don't need the distance specifically in nautical miles
-     * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+     * (i.e. you just need to compare two distances), use VatsimDataHandler::fastDistance()
      * instead, as it is a lot quicker.
      *
      * \note All coordinates must be in radians.
@@ -390,7 +364,7 @@ public:
      * nautical miles.
      *
      * \note If you don't need the distance specifically in nautical miles
-     * (i.e. you just need to compare two distances), use VatsimDataHandler::distance()
+     * (i.e. you just need to compare two distances), use VatsimDataHandler::fastDistance()
      * instead, as it is a lot quicker.
      *
      * \note All coordinates must be in radians.
@@ -401,6 +375,11 @@ public:
      */
     static qreal nmDistance(const LonLat& a, const LonLat& b);
     
+    /**
+     * Checks whether the given string is a valid ICAO code.
+     */
+    static bool isValidIcao(const QString& str);
+    
 public slots:
     /**
      * This is the safest method to refresh the Vatsim data.
@@ -408,9 +387,6 @@ public slots:
      * the new download is queued.
      */
     void requestDataUpdate();
-    
-protected:
-    virtual void userDecisionEvent(DecisionEvent* event);
     
 private:
     /**
@@ -446,14 +422,6 @@ private slots:
     void __loadCachedData();
     
     /**
-     * Just after the UI is created, there are some things we should
-     * do right away. The data should be restored from cache, but
-     * only if databases are already initialized and the first download
-     * can be also started here.
-     */
-    void __slotUiCreated();
-    
-    /**
      * Starts the real data download process.
      */
     void __beginDownload();
@@ -463,18 +431,15 @@ private slots:
      */
     void __dataFetched();
     
-    /**
-     * If any file can't be fetched.
-     */
-    void __handleFetchError(QString error);
-    
 private:
 
     /*
-     * All connected clients
-     * Callsign <-> instance pairs
+     * All connected clients.
+     * pid <-> instance pairs
+     * 
+     * It is multi map, as ATC sometimes may have two same PIDs (i.e. EPWW_CTR can provide EPWA_ATIS as well). 
      */
-    QMap<QString, Client*> __clients;
+    QMap<quint32, Client*> __clients;
     
     /*
      * List of only new clients, i.e. that showed up in the last update.

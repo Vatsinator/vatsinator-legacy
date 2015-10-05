@@ -1,6 +1,6 @@
 /*
     metarswindow.cpp
-    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 
 #include <QtWidgets>
 
+#include "models/metarlistmodel.h"
+#include "models/roles.h"
 #include "network/metarupdater.h"
-#include "ui/models/metarlistmodel.h"
-#include "ui/models/roles.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -99,17 +99,20 @@ MetarsWindow::keyPressEvent(QKeyEvent* event)
 void
 MetarsWindow::__findAndSelectMetar(const QString& icao, bool fetchIfNotFound)
 {
-    auto matches = vApp()->metarUpdater()->model()->match(
-                       vApp()->metarUpdater()->model()->index(0), MetarRole, icao, 1);
-                       
-    if (matches.length() > 0) {
-        MetarListView->setCurrentIndex(matches.first());
-        MetarListView->scrollTo(matches.first());
-    } else {
-        if (fetchIfNotFound) {
-            vApp()->metarUpdater()->fetch(icao);
-            __awaited = icao;
+    if (VatsimDataHandler::isValidIcao(icao)) {
+        auto matches = vApp()->metarUpdater()->model()->match(vApp()->metarUpdater()->model()->index(0), MetarRole, icao, 1);
+        
+        if (matches.length() > 0) {
+            MetarListView->setCurrentIndex(matches.first());
+            MetarListView->scrollTo(matches.first());
+        } else {
+            if (fetchIfNotFound) {
+                vApp()->metarUpdater()->fetch(icao);
+                __awaited = icao;
+            }
         }
+    } else {
+        vApp()->metarUpdater()->fetch(icao);
     }
     
     MetarIcaoEdit->clear();

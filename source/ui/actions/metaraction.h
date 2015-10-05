@@ -40,10 +40,10 @@ signals:
     
 public:
     /**
-     * Creates new menu action with the provided _icao_ code and the specified
-     * _parent_, which is passed to QAction's constructor.
+     * Creates new menu action with the provided \c icao code and the specified
+     * \c parent, which is passed to QAction's constructor.
      */
-    MetarAction(const QString& icao, QObject* parent);
+    MetarAction(const QString& icao, const QString& label, QObject* parent);
     
 private:
     QString __icao;

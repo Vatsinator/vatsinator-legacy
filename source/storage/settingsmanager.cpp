@@ -27,8 +27,7 @@
 SettingsManager::SettingsManager(QObject* parent) :
     QObject(parent)
 {
-    connect(vApp()->userInterface(),      SIGNAL(initialized()),
-            this,                         SLOT(initialize()));
+    connect(vApp()->userInterface(), &UserInterface::initialized, this, &SettingsManager::initialize);
     __fillDefaults();
     __settings = __defaults;
 }
@@ -73,13 +72,11 @@ SettingsManager::updateUi(const QString& pageName)
         return;
 #endif
     
-    Q_ASSERT_X(vApp()->settingsManager()->__getPage(pageName),
-               qPrintable(QString("SettingsManager::updateUi(%1)").arg(pageName)),
-               "No such page");
-               
+    Q_ASSERT(m);
+    
     QSettings s;
     s.beginGroup("Settings");
-    vApp()->settingsManager()->__getPage(pageName)->restoreSettings(s, vApp()->settingsManager()->__defaults);
+    m->restoreSettings(s, vApp()->settingsManager()->__defaults);
     s.endGroup();
 }
 
@@ -163,21 +160,6 @@ SettingsManager::__getPage(const QString& s) const
 void
 SettingsManager::__fillDefaults()
 {
-    __defaults["map.zoom_coefficient"] = 30;
-    __defaults["map.staffed_fir_borders_color"] = QColor(176, 32, 32);
-    __defaults["map.staffed_fir_background_color"] = QColor(176, 32, 32, 30);
-    __defaults["map.unstaffed_fir_borders_color"] = QColor(193, 193, 193);
-    __defaults["map.staffed_uir_borders_color"] = QColor(0, 118, 148);
-    __defaults["map.staffed_uir_background_color"] = QColor(0, 118, 148, 30);
-    __defaults["map.fir_font"] = QFont("Verdana", 9);
-    __defaults["map.airport_font"] = QFont("Verdana", 8);
-    __defaults["map.pilot_font"] = QFont("Verdana", 8);
-    __defaults["map.approach_circle_color"] = QColor(64, 127, 91);
-    __defaults["map.seas_color"] = QColor(188, 222, 225);
-    __defaults["map.lands_color"] = QColor(255, 255, 255);
-    __defaults["map.origin_to_pilot_line_color"] = QColor(3, 116, 164);
-    __defaults["map.pilot_to_destination_line_color"] = QColor(133, 164, 164);
-    
     __defaults["network.database_integration"] = true;
     
     /* In USA provide Fahrenheit by default */
@@ -194,8 +176,18 @@ SettingsManager::__fillDefaults()
     __defaults["view.staffed_firs"] = true;
     __defaults["view.unstaffed_firs"] = true;
     __defaults["view.empty_airports"] = false;
-    __defaults["view.pilot_labels.always"] = true;
+    __defaults["view.pilot_labels.always"] = false;
     __defaults["view.pilot_labels.when_hovered"] = true;
     __defaults["view.pilot_labels.airport_related"] = true;
     __defaults["view.airport_labels"] = true;
+    
+    __defaults["map.map_type"] = 0;
+    
+    QFont font = QGuiApplication::font();
+    font.setBold(true);
+    font.setPointSize(font.pointSize() + 1);
+    __defaults["map.fir_font"] = QVariant::fromValue(font);
+    
+    font.setPointSize(font.pointSize() - 2);
+    __defaults["map.airport_font"] = QVariant::fromValue(font);
 }

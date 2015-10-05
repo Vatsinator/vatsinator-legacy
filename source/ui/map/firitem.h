@@ -21,55 +21,47 @@
 #define FIRITEM_H
 
 #include <QObject>
-#include <QOpenGLTexture>
-#include <QOpenGLVertexArrayObject>
 
 #include "ui/map/mapitem.h"
 
-class QOpenGLShaderProgram;
 class Fir;
 class MapScene;
 
 /**
- * The FirItem class represents a single FIR on the map.
- *
- * In the case of FirItem, position() is a position of label. drawBackground()
- * and drawBorders() methods are used directly by MapRenderer and they use
- * VBOs and VAOs to draw a lot of triangles in the most efficient way.
+ * The FirItem class represents a single FIR label on the map.
+ * 
+ * \sa FirArea.
  */
 class FirItem : public MapItem {
     Q_OBJECT
     
 public:
     /**
-     * Constructs a new FirItem with the given _fir_. _parent_ is passed
+     * Constructs a new FirItem with the given \c fir. \c parent is passed
      * to QObject's constructor.
      */
     explicit FirItem(const Fir* fir, QObject* parent = nullptr);
-    FirItem() = delete;
-    
-    virtual ~FirItem();
     
     /**
-     * Draws the FIR's borders using GL_LINE_LOOP.
-     * Color and line width must be set before calling this function.
+     * \copydoc MapItem::isVisible()
      */
-    void drawBorders() const;
-    
-    /**
-     * Draws triangles that fill the background.
-     * Background color must be set before this function is called.
-     */
-    void drawBackground() const;
-    
     bool isVisible() const override;
-    bool isLabelVisible() const override;
-    const LonLat& position() const override;
-    void drawItem(QOpenGLShaderProgram* shader) const override;
-    void drawLabel(QOpenGLShaderProgram* shader) const override;
-    void drawFocused(QOpenGLShaderProgram* shader) const override;
-    QString tooltipText() const override;
-    void showDetails() const override;
+    
+    /**
+     * \copydoc MapItem::position()
+     * Returns position of the label.
+     */
+    LonLat position() const override;
+    
+    /**
+     * \copydoc MapItem::draw()
+     */
+    void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
+    
+    /**
+     * \copydoc MapItem::z()
+     */
+    int z() const override;
     
     /**
      * Gives direct access to the FIR that this item represents on the map.
@@ -78,27 +70,19 @@ public:
     {
         return __fir;
     }
-    
-private:
-    void __initializeBuffers();
-    void __initializeLabel() const;
+
+    FirItem() = delete;
     
 private slots:
-    void __resetLabel();
-    void __invalidate();
+    void __prepareLabel();
     
 private:
-    MapScene*  __scene;
+    MapScene* __scene;
     const Fir* __fir;
-    LonLat     __position;
-    
-    QOpenGLBuffer __borders;
-    QOpenGLBuffer __triangles;
-    mutable QOpenGLVertexArrayObject __vaoBorders;
-    mutable QOpenGLVertexArrayObject __vaoTriangles;
-    int __bordersVertices, __trianglesVertices;
-    
-    mutable QOpenGLTexture __label;
+    LonLat __position;
+    mutable QStaticText __label;
+    QFont __font;
+    QVector<LonLat> __boundaries;
     
 };
 

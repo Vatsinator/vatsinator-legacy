@@ -24,13 +24,15 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
 
 find_package (Qt5Core REQUIRED)
-find_package (Qt5Gui REQUIRED)
-find_package (Qt5Network REQUIRED)
-find_package (QuaZip REQUIRED)
-
 include_directories (${Qt5Core_INCLUDE_DIRS})
+
+find_package (Qt5Gui REQUIRED)
 include_directories (${Qt5Gui_INCLUDE_DIRS})
+
+find_package (Qt5Network REQUIRED)
 include_directories (${Qt5Network_INCLUDE_DIRS})
+
+find_package (QuaZip5 REQUIRED)
 include_directories (${QUAZIP_INCLUDE_DIRS})
 
 if (ANDROID)
@@ -40,15 +42,9 @@ if (ANDROID)
     find_package (Qt5AndroidExtras REQUIRED)
     include_directories (${Qt5AndroidExtras_INCLUDE_DIRS})
 else () # desktop
-    find_package (OpenGL REQUIRED)
-    
     find_package (Qt5Widgets REQUIRED)
     include_directories (${Qt5Widgets_INCLUDE_DIRS})
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-    
-    # TODO Qt 5.4: remove (QtOpenGLWidget)
-    find_package (Qt5OpenGL REQUIRED)
-    include_directories(${Qt5OpenGL_INCLUDE_DIRS})
     
     if (APPLE)
         find_package (Qt5MacExtras REQUIRED)
@@ -78,7 +74,12 @@ endif ()
 
 # set CXX_FLAGS
 if (CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    include (CheckCXXCompilerFlag)
+    check_cxx_compiler_flag ("-std=c++14" COMPILER_SUPPORTS_CXX14)
+    if (NOT COMPILER_SUPPORTS_CXX14)
+        message (FATAL_ERROR "Your compiler does not support C++14 standard; cannot continue.")
+    endif ()
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
     set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
     set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
 elseif (MSVC)
@@ -112,15 +113,6 @@ elseif (ANDROID)
     set (vatsinator_INSTALL_DIR "assets")
 endif()
 
-# specify user interface implementation
-if (NOT vatsinator_UI_IMPLEMENTATION)
-    if (WIN32 OR LINUX OR APPLE) # use QtWidgets for desktop
-        set (vatsinator_UI_IMPLEMENTATION "widgets")
-    elseif (ANDROID) # use QtQuick for mobile
-        set (vatsinator_UI_IMPLEMENTATION "quick")
-    endif ()
-endif ()
-
 if (NOT APPLE)
     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif (NOT APPLE)
@@ -144,8 +136,6 @@ if (LINUX)
     option (WITH_RPM "Create RPM package" OFF)
 endif ()
 add_subdirectory (dist)
-
-set (vatsinator_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")

@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <QtCore>
+#include <QtGlobal>
 
 #include "ui/userinterface.h"
 #include "vatsimdata/fir.h"
@@ -86,7 +87,14 @@ FirDatabase::__readDatabase()
     
     db.close();
     
-    std::sort(__firs.begin(), __firs.end(), [](const FirRecord & a, const FirRecord & b) -> bool {
+    std::sort(__firs.begin(), __firs.end(), [](const FirRecord& a, const FirRecord& b) -> bool {
         return QString(a.header.icao) < QString(b.header.icao);
+    });
+    
+    /* TODO When VatsinatorDatabase FIR exports are finished, this may be removed */
+    std::for_each(__firs.begin(), __firs.end(), [](FirRecord& f) {
+        std::for_each(f.borders.begin(), f.borders.end(), [](Point& p) {
+            p.y = qBound(-85.0511f, p.y, 85.0511f);
+        });
     });
 }

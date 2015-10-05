@@ -21,7 +21,7 @@
 #define DECISIONEVENT_H
 
 #include <QEvent>
-
+#include <QString>
 #include "events/types.h"
 
 /**

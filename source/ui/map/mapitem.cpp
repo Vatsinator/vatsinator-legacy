@@ -19,4 +19,7 @@
 
 #include "mapitem.h"
 
-MapItem::MapItem(QObject* parent) : QObject(parent) {}
+MapItem::MapItem(QObject* parent) : QObject(parent)
+{
+    
+}

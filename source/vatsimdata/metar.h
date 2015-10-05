@@ -1,6 +1,6 @@
 /*
     metar.h
-    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #ifndef METAR_H
 #define METAR_H
 
+#include <QObject>
 #include <QString>
 #include <QStringBuilder>
 #include <QDateTime>
@@ -30,22 +31,33 @@
  *
  * \todo Parse METARs.
  */
-class Metar {
+class Metar : public QObject {
+    Q_OBJECT
+    
+    /**
+     * The ICAO code of the airport.
+     */
+    Q_PROPERTY(QString icao READ icao CONSTANT)
+    
+    /**
+     * The weather report itself.
+     */
+    Q_PROPERTY(QString metar READ metar WRITE setMetar NOTIFY metarChanged)
+    
+signals:
+    void metarChanged(const QString& metar);
 
 public:
     /**
      * Creates an empty report.
      */
-    Metar();
+    Metar() = default;
     
     /**
-     * Creates new METAR for _icao_ with the given _metar_.
+     * Creates new METAR for \c icao with the given \c metar.
      */
     Metar(const QString& icao, const QString& metar = QString());
     
-    /**
-     * Sets the METAR report to the given _metar_.
-     */
     void setMetar(const QString& metar);
     
     inline const QString& icao() const
@@ -63,11 +75,11 @@ public:
     }
     
 private:
-    QString   __icao;
-    QString   __metar;
+    QString __icao;
+    QString __metar;
     QDateTime __lastFetchTime;
     
 };
-Q_DECLARE_METATYPE(Metar)
+Q_DECLARE_METATYPE(Metar*)
 
 #endif // METAR_H

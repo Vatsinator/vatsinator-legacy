@@ -24,12 +24,10 @@ ViewPage::ViewPage(QWidget* parent) : WidgetSettingsModule(parent)
 {
     setupUi(this);
     
-    connect(ShowPilotsLabelsAlwaysCheckBox, SIGNAL(stateChanged(int)),
-            this,                           SLOT(__handleAlwaysCheckBox(int)));
+    connect(ShowPilotsLabelsAlwaysCheckBox, &QCheckBox::stateChanged, this, &ViewPage::__handleAlwaysCheckBox);
     __handleAlwaysCheckBox(ShowPilotsLabelsAlwaysCheckBox->checkState());
     
     auto checkBoxes = findChildren<QCheckBox*>();
-    
     for (QCheckBox* c : checkBoxes)
         connect(c, &QCheckBox::stateChanged, this, &ViewPage::settingsChanged);
         
@@ -53,13 +51,13 @@ ViewPage::listElement() const
 QString
 ViewPage::listIcon() const
 {
-    return ":/settings/preferences-view.png";
+    return QStringLiteral(":/settings/preferences-view.png");
 }
 
 QString
 ViewPage::moduleId() const
 {
-    return "view";
+    return QStringLiteral("view");
 }
 
 void

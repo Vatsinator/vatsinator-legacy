@@ -45,10 +45,15 @@ public:
         
         QStringList line; /**< Split line */
         bool valid; /**< Indicates whether the line is correct or not  */
+        quint32 pid; /**< Parsed client pid */
         QString callsign; /**< Parsed client callsign */
         enum { Pilot, Atc } type; /**< Parsed client type */
     };
     
+    /**
+     * The constructor that takes the whole VATSIM's data document
+     * and parses it.
+     */
     VatsimDataDocument(QByteArray data, QObject* parent = nullptr);
     
     inline bool isValid() const

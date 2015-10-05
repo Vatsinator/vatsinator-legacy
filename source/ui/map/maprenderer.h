@@ -1,6 +1,6 @@
 /*
  * maprenderer.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,17 +23,18 @@
 #include <QObject>
 #include <QSize>
 #include <QColor>
-#include <QMatrix4x4>
+#include <QRectF>
+#include <QSet>
 
+#include "ui/map/worldtransform.h"
 #include "vatsimdata/lonlat.h"
 
 class IconKeeper;
+class MapDrawer;
 class MapItem;
 class MapScene;
 class ModelMatcher;
-class WorldPolygon;
-class QOpenGLFunctions;
-class QOpenGLShaderProgram;
+class QPainter;
 
 /**
  * The MapRenderer class takes care of rendering the map.
@@ -47,12 +48,17 @@ class MapRenderer : public QObject {
      * The zoom property describes the current zoom of the map. The larger the
      * value is, the smaller range is visible.
      */
-    Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY updated)
+    Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged)
     
     /**
      * The center property represents the center of the map.
      */
-    Q_PROPERTY(LonLat center READ center WRITE setCenter NOTIFY updated)
+    Q_PROPERTY(LonLat center READ center WRITE setCenter NOTIFY centerChanged)
+    
+    /**
+     * Size of the screen (in pixels) on which the map is being rendered.
+     */
+    Q_PROPERTY(QSize viewport READ viewport WRITE setViewport NOTIFY viewportChanged)
     
 signals:
     /**
@@ -63,6 +69,32 @@ signals:
      * it efficient.
      */
     void updated();
+    
+    /**
+     * Emitted whenever the zoom changes.
+     * 
+     * \param zoom The new zoom value.
+     */
+    void zoomChanged(qreal zoom);
+    
+    /**
+     * Emitted whenever the map's center point is moved.
+     * 
+     * \param center The new center point.
+     */
+    void centerChanged(const LonLat& center);
+    
+    /**
+     * Emitted whenever renderer's viewport is changed.
+     * 
+     * \param viewport The vew viewport.
+     */
+    void viewportChanged(const QSize& viewport);
+    
+    /**
+     * The MapDrawer implementation has changed.
+     */
+    void mapDrawerChanged(MapDrawer* drawer);
     
 public:
     /**
@@ -80,6 +112,11 @@ public:
     virtual ~MapRenderer();
     
     /**
+     * Returns the current transform.
+     */
+    WorldTransform transform() const;
+    
+    /**
      * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
      * maps them to longitude & latitude.
      *
@@ -89,31 +126,12 @@ public:
     LonLat mapToLonLat(const QPoint& point);
     
     /**
-     * Scales the given point (or distance) to the global
-     * coordinates system. It does not differ from the
-     * mapToLonLat() function except the fact that it
-     * does not take into consideration the current map
-     * center point.
-     *
-     * \param point The point (or the distance) in the window coordinates.
-     * \return Global coordinates (or the distance).
+     * Sets the MapDrawer instance.
+     * 
+     * If another drawer was bound before, it will be deleted.
+     * MapRenderer takes ownership over \c drawer.
      */
-    LonLat scaleToLonLat(const QPoint& point);
-    
-    /**
-     * Calculates widget coordinates from the given lat-lon coordinates.
-     */
-    QPoint mapFromLonLat(const LonLat& point);
-    
-    /**
-     * Calculates OpenGL scene local coordinates from latitude/longitude.
-     */
-    QPointF glFromLonLat(const LonLat& point);
-    
-    /**
-     * Draws the specified item's "under mouse" elements.
-     */
-    void drawLines(const MapItem* item);
+    void setMapDrawer(MapDrawer* drawer);
     
     qreal zoomStep(int zoom);
     void setZoom(qreal zoom);
@@ -125,11 +143,13 @@ public:
      * equations that consider the zoom coefficient specified by the user.
      */
     void updateZoom(int steps);
-    
-    /**
-     * Updates the viewport of the scene.
-     */
+
     void setViewport(const QSize& size);
+    
+    inline const QSize& viewport() const
+    {
+        return __viewport;
+    }
     
     inline qreal zoom() const
     {
@@ -139,47 +159,7 @@ public:
     {
         return __center;
     }
-    
-    /**
-     * Gets the "color" attribute location in the shader program.
-     */
-    inline int programColorLocation() const
-    {
-        return __identityColorLocation;
-    }
-    
-    /**
-     * Gets the "z" attribute location in the shader program.
-     */
-    inline int programZLocation() const
-    {
-        return __texturedZLocation;
-    }
-    
-    /**
-     * Gets the "rotation" attribute in the shader program.
-     */
-    inline int programRotationLocation() const
-    {
-        return __texturedRotationLocation;
-    }
-    
-    /**
-     * Gets the running instance of IconKeeper.
-     */
-    inline IconKeeper* icons()
-    {
-        return __iconKeeper;
-    }
-    
-    /**
-     * Gets the running instance of ModelMatcher.
-     */
-    inline ModelMatcher* models()
-    {
-        return __modelMatcher;
-    }
-    
+
     /**
      * Gets the running instance of MapScene.
      */
@@ -188,63 +168,33 @@ public:
         return __scene;
     }
     
-    /**
-     * Keeps OpenGL extensions in one place.
-     */
-    inline QOpenGLFunctions* opengl()
+    inline const QRectF& screen()
     {
-        return __functions;
+        return __screen;
     }
     
     /**
-     * Vertex attribute location ("vertex").
+     * Gets the running instance of MapDrawer.
      */
-    inline static Q_DECL_CONSTEXPR int vertexLocation()
+    inline MapDrawer* mapDrawer()
     {
-        return 0;
+        return __mapDrawer;
     }
-    
-    /**
-     * Texture coordinate location ("texcoord").
-     */
-    inline static Q_DECL_CONSTEXPR int texcoordLocation()
-    {
-        return 1;
-    }
-    
-    /**
-     * Checks whether client's machine supports required OpenGL extensions
-     * or not. The lowest require OpenGL profile is 2.1.
-     *
-     * \note This function should be called before the MapRenderer's constructor.
-     */
-    static bool supportsRequiredOpenGLFeatures();
-    
+
 public slots:
     /**
-     * Paints the scene.
-     * A valid OpenGL context must be present at the time of
-     * calling this function.
+     * Paints the scene using the given painter.
      */
-    void paint();
+    void paint(QPainter* painter, const QSet<MapItem*>& selectedItems = QSet<MapItem*>());
     
 private:
-    void __drawWorld();
-    void __drawFirs();
-    void __drawUirs();
-    void __drawApproachAreas();
-    void __drawItems();
-    
-    void __storeSettings();
-    void __restoreSettings();
-    
-    void __createShaderPrograms();
-    
-    void __updateOffsets();
+    void __restoreMapState();
     void __updateScreen();
     
+private slots:
+    void __saveMapState();
+    
 private:
-
     /* The current viewport */
     QSize __viewport;
     
@@ -257,49 +207,11 @@ private:
     /* The center of the map */
     LonLat __center;
     
-    /* OpenGL functions */
-    QOpenGLFunctions* __functions;
-    
-    /* World map drawer */
-    WorldPolygon* __world;
-    
-    /* The IconKeeper instance */
-    IconKeeper* __iconKeeper;
-    
-    /* The ModelMatcher instance */
-    ModelMatcher* __modelMatcher;
+    /* MapDrawer implementation */
+    MapDrawer* __mapDrawer;
     
     /* Scene handler */
     MapScene* __scene;
-    
-    /* To have the map repeated, we keep offsets */
-    QList<float> __offsets;
-    
-    /* Current offset */
-    float __xOffset;
-    
-    /* Stores screen rectangle */
-    float __rangeX;
-    float __rangeY;
-    
-    /* Shader programs */
-    QOpenGLShaderProgram* __identityProgram;
-    QOpenGLShaderProgram* __texturedProgram;
-    
-    /* Shader variable locations */
-    int __identityMatrixLocation;
-    int __identityColorLocation;
-    int __identityOffsetLocation;
-    int __texturedMatrixLocation;
-    int __texturedPositionLocation;
-    int __texturedRotationLocation;
-    int __texturedZLocation;
-    
-    /* Projection matrix */
-    QMatrix4x4 __projection;
-    
-    /* Model-View matrices */
-    QMatrix4x4 __worldTransform;
     
     /* Zoom Coefficient to let users customize their zooming speed */
     /* Zoom Coefficient is defined in MiscellaneousPage */

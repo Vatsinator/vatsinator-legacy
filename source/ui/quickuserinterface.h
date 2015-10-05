@@ -1,6 +1,6 @@
 /*
  * quickuserinterface.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ class QuickUserInterface : public UserInterface {
     
 public:
     explicit QuickUserInterface(QObject* parent = nullptr);
-    virtual ~QuickUserInterface();
     
     /**
      * Gives direct access to the root Vatsinator window item.
@@ -57,18 +56,46 @@ public:
      */
     void initialize() override;
     
+    /**
+     * Defines the minimum touch target size for the current device,
+     * in pixels.
+     * 
+     * The value is always 48x48 dp.
+     */
+    inline QSize minimumTouchTarget() const
+    {
+        return QSize(48 * dp(), 48 * dp());
+    }
+    
 public slots:
+    /**
+     * \copydoc UserInterface::fatal()
+     */
     void fatal(const QString& message) override;
+    
+    /**
+     * \copydoc UserInterface::warning()
+     */
     void warning(const QString& message) override;
-    void statusError() override;
-    void dataError() override;
-    void showVatsimMessage(const QString& message) override;
-    void showDetails(const Airport* airport) override;
-    void showDetails(const Client* client) override;
-    void showDetails(const Fir* fir) override;
-    void showMetar(const QString& metar) override;
+    
+    /**
+     * \copydoc UserInterface::showStatsDialog()
+     */
     void showStatsDialog() override;
+    
+    /**
+     * \copydoc UserInterface::ensureMainWindowIsActive()
+     */
     void ensureMainWindowIsActive() override;
+
+protected:
+    /**
+     * \copydoc UserInterface::vatsimEvent()
+     */
+    void vatsimEvent(VatsimEvent *event) override;
+    
+private slots:
+    void __handleItemTouch(const QVariant& item);
     
 private:
     QQmlApplicationEngine __engine;
@@ -81,7 +108,7 @@ private:
  */
 inline QuickUserInterface* qui()
 {
-    return dynamic_cast<QuickUserInterface*>(vApp()->userInterface());
+    return qobject_cast<QuickUserInterface*>(vApp()->userInterface());
 }
 
 #endif // QUICKUSERINTERFACE_H

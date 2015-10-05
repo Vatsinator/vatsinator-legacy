@@ -19,15 +19,10 @@
 
 #include <QtGlobal>
 #include <QtWidgets>
-#include <QtOpenGL>
-
-
-#ifdef Q_OS_ANDROID
-# include <GLES/gl.h>
-#endif
 
 #include "db/airportdatabase.h"
 #include "events/mouselonlatevent.h"
+#include "models/atctablemodel.h"
 #include "storage/settingsmanager.h"
 #include "ui/actions/actionmenuseparator.h"
 #include "ui/actions/airportdetailsaction.h"
@@ -42,8 +37,6 @@
 #include "ui/map/mapitem.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/pilot.h"
@@ -51,31 +44,23 @@
 #include "vatsinatorapplication.h"
 #include "config.h"
 
+#include "plugins/tiled-map/tiledmapdrawer.h"
+
 #include "mapwidget.h"
 
 MapWidget::MapWidget(QWidget* parent) :
-    QGLWidget (MapConfig::glFormat(), parent),
-    __renderer (nullptr)
+    QWidget(parent),
+    __renderer(new MapRenderer(this))
 {
-    setAttribute (Qt::WA_NoSystemBackground);
-    setAttribute (Qt::WA_OpaquePaintEvent);
-    setAttribute (Qt::WA_AcceptTouchEvents);
-    setAttribute (Qt::WA_TouchPadAcceptSingleTouchEvents);
-    
-    connect (vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated, this, static_cast<void (MapWidget::*) ()> (&MapWidget::update));
-    connect (vApp()->settingsManager(), &SettingsManager::settingsChanged, this, static_cast<void (MapWidget::*) ()> (&MapWidget::update));
-    
-    connect (this, SIGNAL (menuRequest (const MapItem*)), SLOT (__showMenu (const MapItem*)));
-    connect (this, SIGNAL (windowRequest (const MapItem*)),  SLOT (__showWindow (const MapItem*)));
-    
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    setAttribute(Qt::WA_TouchPadAcceptSingleTouchEvents);
     grabGesture (Qt::PinchGesture);
     
-    setAutoBufferSwap (true);
-}
-
-MapWidget::~MapWidget()
-{
-    delete __renderer;
+    connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimStatusUpdated, this, static_cast<void (MapWidget::*)()>(&MapWidget::update));
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, static_cast<void (MapWidget::*)()>(&MapWidget::update));
+    
+    __renderer->setMapDrawer(new TiledMapDrawer);
+    connect(__renderer, &MapRenderer::updated, this, static_cast<void (MapWidget::*)()>(&MapWidget::update));
 }
 
 bool
@@ -83,12 +68,22 @@ MapWidget::event(QEvent* event)
 {
     switch (event->type()) {
         case QEvent::ToolTip: {
-            QHelpEvent* helpEvent = static_cast<QHelpEvent*> (event);
-            const MapItem* item = __underPoint (helpEvent->pos());
+            QHelpEvent* helpEvent = static_cast<QHelpEvent*>(event);
+            const MapItem* item = __underPoint(helpEvent->pos());
             
-            if (item)
-                QToolTip::showText (helpEvent->globalPos(), item->tooltipText());
-            else {
+            if (item) {
+                QString text;
+                if (const AirportItem* ai = qobject_cast<const AirportItem*>(item)) {
+                    text = __toolTipForAirportItem(ai);
+                } else if (const FlightItem* fi = qobject_cast<const FlightItem*>(item)) {
+                    text = __toolTipForFlightItem(fi);
+                } else if (const FirItem* fi = qobject_cast<const FirItem*>(item)) {
+                    text = __toolTipForFirItem(fi);
+                } else {
+                    Q_UNREACHABLE();
+                }
+                QToolTip::showText(helpEvent->globalPos(), text);
+            } else {
                 QToolTip::hideText();
                 event->ignore();
             }
@@ -97,56 +92,19 @@ MapWidget::event(QEvent* event)
         }
         
         case QEvent::Gesture:
-            return gestureEvent (static_cast<QGestureEvent*> (event));
+            return gestureEvent(static_cast<QGestureEvent*>(event));
             
         default:
-            return QGLWidget::event (event);
+            return QWidget::event(event);
     }
-}
-
-void
-MapWidget::initializeGL()
-{
-    if (!MapRenderer::supportsRequiredOpenGLFeatures()) {
-        notifyError (tr ("Your system does not support required OpenGL extensions. \
-                                      Please upgrade your graphic card driver."));
-    }
-    
-    __renderer = new MapRenderer();
-    connect (__renderer,   SIGNAL (updated()),
-             this,         SLOT (update()), Qt::DirectConnection);
-}
-
-void
-MapWidget::paintGL()
-{
-    __renderer->paint();
-    
-    const MapItem* item = __underMouse();
-    
-    if (item) {
-        if (cursor().shape() != Qt::SizeAllCursor)
-            setCursor (QCursor (Qt::PointingHandCursor));
-            
-        __renderer->drawLines (item);
-    } else {
-        if (cursor().shape() != Qt::SizeAllCursor)
-            setCursor (QCursor (Qt::ArrowCursor));
-    }
-}
-
-void
-MapWidget::resizeGL(int width, int height)
-{
-    __renderer->setViewport (QSize (width, height));
 }
 
 bool
 MapWidget::gestureEvent(QGestureEvent* event)
 {
-    if (QGesture* pinch = event->gesture (Qt::PinchGesture)) {
-        pinchTriggered (static_cast<QPinchGesture*> (pinch));
-        event->accept (pinch);
+    if (QGesture* pinch = event->gesture(Qt::PinchGesture)) {
+        pinchTriggered(static_cast<QPinchGesture*> (pinch));
+        event->accept(pinch);
     }
     
     return true;
@@ -159,10 +117,55 @@ MapWidget::pinchTriggered(QPinchGesture* gesture)
     
     if (changeFlags & QPinchGesture::ScaleFactorChanged) {
         qreal value = gesture->scaleFactor() - gesture->lastScaleFactor();
-        __renderer->setZoom (qBound (static_cast<qreal> (MapConfig::zoomMinimum()),
-                                     __renderer->zoom() + (__renderer->zoom() * value),
-                                     static_cast<qreal> (MapConfig::zoomMaximum())));
+        __renderer->setZoom(qBound(static_cast<qreal> (MapConfig::zoomMinimum()),
+                                   __renderer->zoom() + (__renderer->zoom() * value),
+                                   static_cast<qreal> (MapConfig::zoomMaximum())));
     }
+}
+
+void
+MapWidget::paintEvent(QPaintEvent* event)
+{
+    QSet<MapItem*> selected;
+    
+    if (cursor().shape() != Qt::SizeAllCursor) {
+        const MapItem* item = __underMouse();    
+        if (item) {
+            setCursor (QCursor (Qt::PointingHandCursor));       
+            selected.insert((MapItem*)item);
+        } else {
+            setCursor (QCursor (Qt::ArrowCursor));
+        }
+    }
+    
+    
+    QPainter painter(this);
+    __renderer->paint(&painter, selected);
+    
+#ifndef QT_NO_DEBUG
+    QString mapInfo = QStringLiteral("Position: (%1, %2) zoom: %3, screen: (%4, %5), (%6, %7)").arg(
+        QString::number(__renderer->center().x()),
+        QString::number(__renderer->center().y()),
+        QString::number(__renderer->zoom()),
+        QString::number(__renderer->screen().topLeft().x()),
+        QString::number(__renderer->screen().topLeft().y()),
+        QString::number(__renderer->screen().bottomRight().x()),
+        QString::number(__renderer->screen().bottomRight().y())
+    );
+    
+    QPen pen(QColor(0, 0, 0));
+    painter.setPen(pen);
+    painter.drawText(rect(), Qt::AlignRight | Qt::AlignTop, mapInfo);
+#endif
+    
+    /* TODO Update event->rect() instead of the whole widget */
+    Q_UNUSED(event);
+}
+
+void
+MapWidget::resizeEvent(QResizeEvent* event)
+{
+    __renderer->setViewport(event->size());
 }
 
 void
@@ -183,10 +186,6 @@ MapWidget::mousePressEvent(QMouseEvent* event)
     
     if (event->buttons() & Qt::LeftButton)
         __lastClickPosition = event->pos();
-    else if (event->buttons() & Qt::RightButton) {
-        const MapItem* item = __underMouse();
-        emit menuRequest (item);
-    }
     
     event->accept();
 }
@@ -196,18 +195,31 @@ MapWidget::mouseReleaseEvent(QMouseEvent* event)
 {
     __mousePosition.update (event->pos());
     __mousePosition.setDown (false);
-    setCursor (QCursor (Qt::ArrowCursor));
+    setCursor(QCursor(Qt::ArrowCursor));
     
     const MapItem* item = __underMouse();
     
     if (item) {
         if (__lastClickPosition == __mousePosition.screenPosition()) {
             QToolTip::hideText();
-            emit windowRequest (item);
+            if (const AirportItem* ai = qobject_cast<const AirportItem*>(item)) {
+                wui()->showAirportDetails(ai->data());
+            } else if (const FlightItem* fi = qobject_cast<const FlightItem*>(item)) {
+                wui()->showClientDetails(fi->data());
+            } else if (const FirItem* fi = qobject_cast<const FirItem*>(item)) {
+                wui()->showFirDetails(fi->data());
+            } else {
+                Q_UNREACHABLE();
+            }
         }
     } else {
-        if (__renderer->scene()->trackedFlight())
-            __renderer->scene()->moveTo (__renderer->scene()->trackedFlight()->position());
+        if (__renderer->scene()->trackedFlight()) {
+            __renderer->scene()->moveTo(__renderer->scene()->trackedFlight()->position());
+        } else if (__renderer->center().y() < -MapConfig::latitudeMax()) {
+            __renderer->scene()->moveTo(LonLat(__renderer->center().longitude(), -MapConfig::latitudeMax()));
+        } else if (__renderer->center().y() > MapConfig::latitudeMax()) {
+            __renderer->scene()->moveTo(LonLat(__renderer->center().longitude(), MapConfig::latitudeMax()));
+        }
     }
     
     event->accept();
@@ -218,25 +230,24 @@ MapWidget::mouseMoveEvent(QMouseEvent* event)
 {
     if (event->buttons() & Qt::LeftButton) {
         setCursor (QCursor (Qt::SizeAllCursor));
-        
         QPoint diff = event->pos() - __mousePosition.screenPosition();
-        diff.rx() *= -1;
-        LonLat center = __renderer->center();
-        center += __renderer->scaleToLonLat (diff);
+        QPoint center = __renderer->center() * __renderer->transform();
+        center -= diff;
         
-        center.ry() = qBound (-90.0, center.y(), 90.0);
+        LonLat llcenter = __renderer->mapToLonLat(center);
+        llcenter.ry() = qBound(-90.0, llcenter.y(), 90.0);
         
-        if (center.x() < -180.0)
-            center.rx() += 360.0;
+        if (llcenter.x() < -180.0)
+            llcenter.rx() += 360.0;
             
-        if (center.x() > 180.0)
-            center.rx() -= 360.0;
+        if (llcenter.x() > 180.0)
+            llcenter.rx() -= 360.0;
             
         __renderer->scene()->abortAnimation();
-        __renderer->setCenter (center);
+        __renderer->setCenter(llcenter);
     }
     
-    __mousePosition.update (event->pos());
+    __mousePosition.update(event->pos());
     update();
     event->accept();
 }
@@ -255,229 +266,259 @@ MapWidget::keyPressEvent(QKeyEvent* event)
     }
 }
 
+void
+MapWidget::contextMenuEvent(QContextMenuEvent* event)
+{
+    const MapItem* item = __underPoint(event->pos());
+    
+    QMenu* menu;
+    if (!item) {
+        menu = __menuForNoItem();
+    } else if (const AirportItem* ai = qobject_cast<const AirportItem*>(item)) {
+        menu = __menuForAirportItem(ai);
+    } else if (const FlightItem* fi = qobject_cast<const FlightItem*>(item)) {
+        menu = __menuForFlightItem(fi);
+    } else if (const FirItem* fi = qobject_cast<const FirItem*>(item)) {
+        menu = __menuForFirItem(fi);
+    } else {
+        Q_UNREACHABLE();
+    }
+    
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    menu->exec(event->globalPos());
+}
+
 const MapItem*
 MapWidget::__underMouse()
 {
-    const MapItem* closest = __renderer->scene()->nearest (__mousePosition.geoPosition());
+    const MapItem* closest = __renderer->scene()->nearest(__mousePosition.geoPosition());
+    if (!closest)
+        return nullptr;
+
+    QPoint pos = closest->position() * __renderer->transform();
     
-    if (!closest || __mousePosition.screenDistance (__renderer->mapFromLonLat (closest->position())) > MapConfig::mouseOnObject())
+    if (__mousePosition.screenDistance(pos) > MapConfig::mouseOnObject())
         return nullptr;
     else
         return closest;
+    
+    return nullptr;
 }
 
 const MapItem*
 MapWidget::__underPoint(const QPoint& point)
 {
-    const MapItem* closest = __renderer->scene()->nearest (__renderer->mapToLonLat (point).bound());
-    Q_ASSERT (closest);
+    const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat (point).bound());
+    Q_ASSERT(closest);
+    QPoint pos = closest->position() * __renderer->transform();
     
-    if (__mousePosition.screenDistance (__renderer->mapFromLonLat (closest->position())) > MapConfig::mouseOnObject())
+    if (__mousePosition.screenDistance(pos) > MapConfig::mouseOnObject())
         return nullptr;
     else
         return closest;
+    
+    return nullptr;
 }
 
 void
 MapWidget::__updateZoom(int steps)
 {
     //   __renderer->updateZoom(_steps);
-    __renderer->scene()->zoomTo (__renderer->zoomStep (static_cast<qreal> (steps)));
+    __renderer->scene()->zoomTo(__renderer->zoomStep(static_cast<qreal>(steps)));
 }
 
 QMenu*
-MapWidget::__itemMenu(const AirportItem* item)
+MapWidget::__menuForNoItem()
 {
-    QMenu* menu = new QMenu (item->data()->data()->icao, this);
-    
-    AirportDetailsAction* showAp = new AirportDetailsAction (item->data(), tr ("Airport details"), this);
-    connect (showAp,                       SIGNAL (triggered (const Airport*)),
-             vApp()->userInterface(),      SLOT (showDetails (const Airport*)));
-    menu->addAction (showAp);
-    
-    MetarAction* showMetar = new MetarAction (item->data()->data()->icao, this);
-    connect (showMetar,                                    SIGNAL (triggered (QString)),
-             vApp()->userInterface(),                      SLOT (showMetar (QString)));
-    menu->addAction (showMetar);
-    
-    if (!item->data()->isEmpty()) {
-        if (!item->data()->staff()->staff().isEmpty()) {
-            menu->addSeparator();
-            menu->addAction (new ActionMenuSeparator(tr ("Controllers"), this));
-            
-            for (const Controller* c : item->data()->staff()->staff()) {
-                ClientDetailsAction* cda = new ClientDetailsAction (c, c->callsign(), this);
-                connect (cda, SIGNAL (triggered (const Client*)),
-                         vApp()->userInterface(), SLOT (showDetails (const Client*)));
-                menu->addAction (cda);
-            }
-        }
-        
-        if (item->data()->countArrivals() > 0) {
-            menu->addSeparator();
-            menu->addAction (new ActionMenuSeparator(tr ("Arrivals"), this));
-            
-            for (const Pilot* p : item->data()->inbounds()->flights()) {
-                if (p->phase() == Pilot::Arrived) {
-                    ClientDetailsAction* cda = new ClientDetailsAction (p, p->callsign(), this);
-                    connect (cda, SIGNAL (triggered (const Client*)),
-                             vApp()->userInterface(), SLOT (showDetails (const Client*)));
-                    menu->addAction (cda);
-                }
-            }
-        }
-        
-        if (item->data()->countDepartures (false) > 0) {
-            menu->addSeparator();
-            menu->addAction (new ActionMenuSeparator(tr ("Departures"), this));
-            
-            for (const Pilot* p : item->data()->outbounds()->flights()) {
-                if (!p->isPrefiledOnly() && p->phase() == Pilot::Departing) {
-                    ClientDetailsAction* cda = new ClientDetailsAction (p, p->callsign(), this);
-                    connect (cda, SIGNAL (triggered (const Client*)),
-                             vApp()->userInterface(), SLOT (showDetails (const Client*)));
-                    menu->addAction (cda);
-                }
-            }
-        }
-    }
-    
-    return menu;
-}
-
-QMenu*
-MapWidget::__itemMenu(const FirItem* item)
-{
-    QMenu* menu = new QMenu (item->data()->icao(), this);
-    
-    FirDetailsAction* showFir = new FirDetailsAction (
-        item->data(),
-        tr ("%1 details").arg (item->data()->icao()),
-        this
-    );
-    connect (showFir,                      SIGNAL (triggered (const Fir*)),
-             vApp()->userInterface(),      SLOT (showDetails (const Fir*)));
-    menu->addAction (showFir);
-    
-    for (const Controller* c : item->data()->staff()->staff()) {
-        ClientDetailsAction* cda = new ClientDetailsAction (c, c->callsign(), this);
-        connect (cda,                        SIGNAL (triggered (const Client*)),
-                 vApp()->userInterface(),    SLOT (showDetails (const Client*)));
-        menu->addAction (cda);
-    }
-    
-    for (const Controller* c : item->data()->uirStaff()->staff()) {
-        ClientDetailsAction* cda = new ClientDetailsAction (c, c->callsign(), this);
-        connect (cda,                        SIGNAL (triggered (const Client*)),
-                 vApp()->userInterface(),    SLOT (showDetails (const Client*)));
-        menu->addAction (cda);
-    }
-    
-    return menu;
-}
-
-QMenu*
-MapWidget::__itemMenu(const FlightItem* item)
-{
-    QMenu* menu = new QMenu (item->data()->callsign(), this);
-    
-    ClientDetailsAction* showDetails = new ClientDetailsAction (item->data(), tr ("Flight details"), this);
-    connect (showDetails,                  SIGNAL (triggered (const Client*)),
-             vApp()->userInterface(),      SLOT (showDetails (const Client*)));
-    menu->addAction (showDetails);
-    
-    TrackAction* trackFlight = new TrackAction (item->data(), this);
-    menu->addAction (trackFlight);
-    
-    menu->addSeparator();
-    
-    if (!item->data()->route().origin.isEmpty()) {
-        MetarAction* ma = new MetarAction (item->data()->route().origin, this);
-        connect (ma,                                         SIGNAL (triggered (QString)),
-                 vApp()->userInterface(),                    SLOT (showMetar (QString)));
-        menu->addAction (ma);
-    }
-    
-    if (!item->data()->route().destination.isEmpty()) {
-        MetarAction* ma = new MetarAction (item->data()->route().destination, this);
-        connect (ma,                                         SIGNAL (triggered (QString)),
-                 vApp()->userInterface(),                    SLOT (showMetar (QString)));
-        menu->addAction (ma);
-    }
-    
-    return menu;
-}
-
-QMenu*
-MapWidget::__itemMenu()
-{
-    // group fetched items
+    /* Group fetched items */
     QList<const FlightItem*> flights;
     QList<const AirportItem*> airports;
     
-    __renderer->scene()->nearTo (__mousePosition.geoPosition(), 10, [&] (const MapItem * item) {
-        if (const FlightItem* f = qobject_cast<const FlightItem*> (item)) {
+    __renderer->scene()->nearTo(__mousePosition.geoPosition(), 10, [&](const MapItem* item) {
+        if (const FlightItem* f = qobject_cast<const FlightItem*>(item)) {
             if (!f->data()->isPrefiledOnly())
                 flights << f;
-        } else if (const AirportItem* a = qobject_cast<const AirportItem*> (item))
+        } else if (const AirportItem* a = qobject_cast<const AirportItem*>(item)) {
             airports << a;
+        }
     });
     
-    QMenu* menu = new QMenu (tr ("Nearby"), this);
+    QMenu* menu = new QMenu(tr("Nearby"), this);
+    if (!flights.isEmpty()) {
+        menu->addSection(tr("Flights"));
+        std::for_each(flights.begin(), flights.end(), [this, menu](const FlightItem* item) {
+            ClientDetailsAction* a = new ClientDetailsAction(item->data(), item->data()->callsign(), this);
+            connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
+            menu->addAction(a);
+        });
+    }
     
-    if (flights.size() > 0) {
-        menu->addAction (new ActionMenuSeparator (tr ("Flights"), this));
-        
-        for (const FlightItem* f : flights) {
-            ClientDetailsAction* action = new ClientDetailsAction (f->data(), f->data()->callsign(), this);
-            connect (action,                   SIGNAL (triggered (const Client*)),
-                     vApp()->userInterface(),  SLOT (showDetails (const Client*)));
-            menu->addAction (action);
+    if (!airports.isEmpty()) {
+        menu->addSection(tr("Airports"));
+        std::for_each(airports.begin(), airports.end(), [this, menu](const AirportItem* item) {
+            AirportDetailsAction* a = new AirportDetailsAction(item->data(), item->data()->icao(), this);
+            connect(a, &AirportDetailsAction::triggered, wui(), &WidgetsUserInterface::showAirportDetails);
+            menu->addAction(a);
+        });
+    }
+    
+    return menu;
+}
+
+QMenu*
+MapWidget::__menuForAirportItem(const AirportItem* item)
+{
+    QMenu* menu = new QMenu(item->data()->icao(), this);
+    
+    AirportDetailsAction* showAp = new AirportDetailsAction(item->data(), tr("Airport details"), this);
+    connect(showAp, &AirportDetailsAction::triggered,wui(), &WidgetsUserInterface::showAirportDetails);
+    menu->addAction(showAp);
+    
+    MetarAction* showMetar = new MetarAction(item->data()->icao(), tr("%1 metar").arg(item->data()->icao()), this);
+    connect(showMetar, &MetarAction::triggered, wui(), &WidgetsUserInterface::showMetar);
+    menu->addAction(showMetar);
+    
+    if (!item->data()->staff()->toList().isEmpty()) {
+        menu->addSection(tr("Controllers"));
+        for (const Controller* c: item->data()->staff()->toList()) {
+            ClientDetailsAction* a = new ClientDetailsAction(c, c->callsign(), this);
+            connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
+            menu->addAction(a);
         }
     }
     
-    if (flights.size() > 0 && airports.size() > 0)
-        menu->addSeparator();
-        
-    if (airports.size() > 0) {
-        menu->addAction (new ActionMenuSeparator (tr ("Airports"), this));
-        
-        for (const AirportItem* a : airports) {
-            AirportDetailsAction* action = new AirportDetailsAction (a->data(), a->data()->icao(), this);
-            connect (action,                   SIGNAL (triggered (const Airport*)),
-                     vApp()->userInterface(),  SLOT (showDetails (const Airport*)));
-            menu->addAction (action);
+    if (item->data()->countArrivals() > 0) {
+        menu->addSection(tr("Arrivals"));
+        for (const Pilot* p: item->data()->inbounds()->toList()) {
+            if (p->phase() == Pilot::Arrived) {
+                ClientDetailsAction* a = new ClientDetailsAction(p, p->callsign(), this);
+                connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
+                menu->addAction(a);
+            }
+        }
+    }
+    
+    if (item->data()->countDepartures(false) > 0) {
+        menu->addSection(tr("Departures"));
+        for (const Pilot* p: item->data()->outbounds()->toList()) {
+            if (p->phase() == Pilot::Departing) {
+                ClientDetailsAction* a = new ClientDetailsAction(p, p->callsign(), this);
+                connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
+                menu->addAction(a);
+            }
         }
     }
     
     return menu;
 }
 
-void
-MapWidget::__showMenu(const MapItem* item)
+QString
+MapWidget::__toolTipForAirportItem(const AirportItem* item)
 {
-    QMenu* menu;
+    const Airport* airport = item->data();
+    QString desc = QStringLiteral("%1 %2, %3").arg(airport->icao(), airport->name(), airport->city());
     
-    /* FIXME I don't like that part below */
-    if (!item)
-        menu = __itemMenu();
-    else if (const AirportItem* i = qobject_cast<const AirportItem*> (item))
-        menu = __itemMenu (i);
-    else if (const FirItem* i = qobject_cast<const FirItem*> (item))
-        menu = __itemMenu (i);
-    else if (const FlightItem* i = qobject_cast<const FlightItem*> (item))
-        menu = __itemMenu (i);
-    else
-        Q_UNREACHABLE();
+    QString staff, deparr;
+    if (!airport->isEmpty()) {
+        for (const Controller* c: airport->staff()->toList()) {
+            staff.append("<br>");
+            staff.append(QStringLiteral("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
+        }
         
-    menu->exec (mapToGlobal (__mousePosition.screenPosition()));
-    delete menu;
+        int deps = airport->countDepartures();
+        if (deps > 0) {
+            deparr.append("<br>");
+            deparr.append(tr("Departures: %1").arg(QString::number(deps)));
+        }
+        
+        int arrs = airport->countArrivals();
+        if (arrs > 0) {
+            deparr.append("<br>");
+            deparr.append(tr("Arrivals: %1").arg(QString::number(arrs)));
+        }
+    }
+    return QStringLiteral("<p style='white-space:nowrap'><center>") % desc % staff % deparr % QStringLiteral("</center></p>");
 }
 
-void
-MapWidget::__showWindow(const MapItem* item)
+QMenu*
+MapWidget::__menuForFlightItem(const FlightItem* item)
 {
-    item->showDetails();
+    QMenu* menu = new QMenu(item->data()->callsign(), this);
+    
+    ClientDetailsAction* cda = new ClientDetailsAction(item->data(), tr("Flight details"), this);
+    connect(cda, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
+    menu->addAction(cda);
+    
+    TrackAction* ta = new TrackAction(item->data(), this);
+    menu->addAction(ta);
+    
+    return menu;
+}
+
+QString
+MapWidget::__toolTipForFlightItem(const FlightItem* item)
+{
+    const Pilot* flight = item->data();
+    QString desc = QStringLiteral("%1 (%2)").arg(flight->realName(), flight->aircraft());
+    QString from = flight->origin() ? QStringLiteral("%1 %2").arg(flight->origin()->icao(), flight->origin()->city()) : flight->origin()->icao();
+    QString to = flight->destination() ? QStringLiteral("%1 %2").arg(flight->destination()->icao(), flight->destination()->city()) : flight->destination()->icao();
+    QString gs = tr("Ground speed: %1 kts").arg(QString::number(flight->groundSpeed()));
+    QString alt = tr("Altitude: %1 ft").arg(QString::number(flight->altitude()));
+    
+    return QStringLiteral("<p style='white-space:nowrap'><center>%1<br>%2<br>%3 > %4<br>%5<br>%6</center></p>")
+        .arg(flight->callsign(), desc, from, to, gs, alt);
+}
+
+QMenu*
+MapWidget::__menuForFirItem(const FirItem* item)
+{
+    QMenu* menu = new QMenu(item->data()->icao(), this);
+    
+    FirDetailsAction* fa = new FirDetailsAction(item->data(), tr("%1 details").arg(item->data()->icao()), this);
+    connect(fa, &FirDetailsAction::triggered, wui(), &WidgetsUserInterface::showFirDetails);
+    menu->addAction(fa);
+    
+    for (const Controller* c: item->data()->staff()->toList()) {
+        ClientDetailsAction* a = new ClientDetailsAction(c, c->callsign(), this);
+        connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
+        menu->addAction(a);
+    }
+    
+    for (const Controller* c: item->data()->uirStaff()->toList()) {
+        ClientDetailsAction* a = new ClientDetailsAction(c, c->callsign(), this);
+        connect(a, &ClientDetailsAction::triggered, wui(), &WidgetsUserInterface::showClientDetails);
+        menu->addAction(a);
+    }
+    
+    return menu;
+}
+
+QString
+MapWidget::__toolTipForFirItem(const FirItem* item)
+{
+    const Fir* fir = item->data();
+    QString desc;
+    if (!fir->name().isEmpty()) {
+        desc.append(fir->name());
+        if (!fir->country().isEmpty()) {
+            desc.append(", ").append(fir->country());
+        }
+    }
+    
+    QString staff;
+    for (const Controller* c: fir->staff()->toList()) {
+        staff.append(QStringLiteral("<br>%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
+    }
+    
+    for (const Controller* c: fir->uirStaff()->toList()) {
+        staff.append(QStringLiteral("<br>%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
+    }
+    
+    if (desc.isEmpty() && staff.isEmpty())
+        return QString();
+    else
+        return QStringLiteral("<p style='white-space:nowrap'><center>%1%2</center></p>")
+            .arg(desc, staff);
 }
 
 MapWidget::MousePosition::MousePosition() : __down (false) {}

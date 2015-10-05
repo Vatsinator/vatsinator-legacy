@@ -1,6 +1,6 @@
 /*
  * airportitem.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,13 @@
 #include <QtGui>
 
 #include "db/airportdatabase.h"
+#include "models/atctablemodel.h"
 #include "storage/settingsmanager.h"
-#include "ui/map/iconkeeper.h"
 #include "ui/map/mapconfig.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
+#include "ui/map/tmaarea.h"
+#include "ui/map/pixmapprovider.h"
 #include "ui/userinterface.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/pilot.h"
@@ -36,334 +36,161 @@
 
 #include "airportitem.h"
 
+// pixmaps to use, %1 is DPI prefix
+static const QString AirportInactivePixmap = QStringLiteral(":/pixmaps/%1/airport_inactive.png");
+static const QString AirportActivePixmap = QStringLiteral(":/pixmaps/%1/airport.png");
+static const QString AirportActiveWithAtcPixmap = QStringLiteral(":/pixmaps/%1/airport_staffed.png");
+
+
 AirportItem::AirportItem(const Airport* airport, QObject* parent) :
     MapItem(parent),
-    __scene(qobject_cast<MapScene * >(parent)),
+    __scene(qobject_cast<MapScene *>(parent)),
     __airport(airport),
-    __position(airport->data()->longitude, airport->data()->latitude),
-    __icon(nullptr),
-    __label(QOpenGLTexture::Target2D),
-    __linesReady(false),
-    __bufferApproachPoints(QOpenGLBuffer::VertexBuffer),
-    __bufferApproachTriangles(QOpenGLBuffer::IndexBuffer),
-    __trianglesApproach(0)
+    __tma(nullptr)
 {
-
-    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &AirportItem::__reloadSettings);
-    connect(__airport, &Airport::updated, this, &AirportItem::__invalidate);
-}
-
-AirportItem::~AirportItem()
-{
-    __label.destroy();
-}
-
-void
-AirportItem::drawApproachArea() const
-{
-    if (!__vaoApproach.isCreated())
-        __initializeApproachBuffer();
-        
-    __vaoApproach.bind();
-    glDrawElements(GL_TRIANGLES, __trianglesApproach, GL_UNSIGNED_SHORT, 0);
-    __vaoApproach.release();
+    connect(airport, &Airport::updated, this, &AirportItem::__invalidate);
+    
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, [this]() {
+        __label = QPixmap();
+    });
 }
 
 bool
 AirportItem::isVisible() const
 {
-    Q_ASSERT(!__position.isNull());
-    
-    if (data()->isEmpty())
-        return __scene->settings().view.empty_airports;
-    else
-        return __scene->settings().view.airports_layer;
+    return data()->isEmpty() ? __scene->settings().view.empty_airports : __scene->settings().view.airports_layer;
 }
 
-bool
-AirportItem::isLabelVisible() const
-{
-    return __scene->settings().view.airport_labels;
-}
-
-const LonLat&
+LonLat
 AirportItem::position() const
 {
-    return __position;
+    return __airport->position();
 }
 
 void
-AirportItem::drawItem(QOpenGLShaderProgram* shader) const
+AirportItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const
 {
-    static Q_CONSTEXPR float ActiveAirportsZ = static_cast<float>(MapConfig::MapLayers::ActiveAirports);
-    
-    static const GLfloat iconRect[] = {
-        -0.04f, -0.02f,
-        -0.04f,  0.06f,
-        0.04f,  0.06f,
-        0.04f,  0.06f,
-        0.04f, -0.02f,
-        -0.04f, -0.02f
-    };
-    
-    static const GLfloat textureCoords[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f,
-        0.0f, 0.0f
-    };
-    
-    if (!__icon)
-        __takeIcon();
-        
-    shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-    shader->setAttributeArray(MapRenderer::vertexLocation(), iconRect, 2);
-    shader->setUniformValue(__scene->renderer()->programZLocation(), ActiveAirportsZ);
-    
-    __icon->bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    //   __icon->release();
-}
-
-void
-AirportItem::drawLabel(QOpenGLShaderProgram* shader) const
-{
-    static const GLfloat labelRect[] = {
-        -0.08f, -0.05333333f,
-        -0.08f,  0.0f,
-        0.08f,  0.0f,
-        0.08f,  0.0f,
-        0.08f, -0.05333333f,
-        -0.08f, -0.05333333f
-    };
-    
-    static const GLfloat textureCoords[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f,
-        0.0f, 0.0f
-    };
-    
-    if (data()->isEmpty())
-        return;
-        
-    shader->setAttributeArray(MapRenderer::texcoordLocation(), textureCoords, 2);
-    shader->setAttributeArray(MapRenderer::vertexLocation(), labelRect, 2);
-    
-    if (!__label.isCreated())
-        __initializeLabel();
-        
-    __label.bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    __label.release();
-}
-
-void
-AirportItem::drawFocused(QOpenGLShaderProgram* shader) const
-{
-    if (!__linesReady)
-        __prepareLines();
-        
-    if (!__otpLines.color.isValid())
-        __otpLines.color = SM::get("map.origin_to_pilot_line_color").value<QColor>();
-        
-    shader->setUniformValue(__scene->renderer()->programColorLocation(), __otpLines.color);
-    shader->setAttributeArray(MapRenderer::vertexLocation(), __otpLines.coords.constData(), 2);
-    glDrawArrays(GL_LINES, 0, __otpLines.coords.size() / 2);
-    
-    if (!__ptdLines.color.isValid())
-        __ptdLines.color = SM::get("map.pilot_to_destination_line_color").value<QColor>();
-        
-    shader->setUniformValue(__scene->renderer()->programColorLocation(), __ptdLines.color);
-    shader->setAttributeArray(MapRenderer::vertexLocation(), __ptdLines.coords.constData(), 2);
-    glDrawArrays(GL_LINE_STRIP, 0, __ptdLines.coords.size() / 2);
-}
-
-QString
-AirportItem::tooltipText() const
-{
-    QString desc = QString("%1 %2, %3").arg(
-                       data()->data()->icao,
-                       QString::fromUtf8(data()->data()->name),
-                       QString::fromUtf8(data()->data()->city));
-                       
-    QString staff, deparr;
-    
-    if (!data()->isEmpty()) {
-        for (const Controller* c : data()->staff()->staff()) {
-            staff.append("<br>");
-            staff.append(QString("%1 %2 %3").arg(c->callsign(), c->frequency(), c->realName()));
-        }
-        
-        int deps = data()->countDepartures();
-        
-        if (deps > 0) {
-            deparr.append("<br>");
-            deparr.append(tr("Departures: %1").arg(QString::number(deps)));
-        }
-        
-        int arrs = data()->countArrivals();
-        
-        if (arrs > 0) {
-            deparr.append("<br>");
-            deparr.append(tr("Arrivals: %1").arg(QString::number(arrs)));
-        }
+    if (__icon.isNull()) {
+        __loadIcon();
     }
     
-    return QString("<p style='white-space:nowrap'><center>" % desc % staff % deparr % "</center></p>");
-}
-
-void
-AirportItem::showDetails() const
-{
-    vApp()->userInterface()->showDetails(data());
-}
-
-void
-AirportItem::__takeIcon() const
-{
-    if (data()->isEmpty())
-        __icon = __scene->renderer()->icons()->emptyAirportIcon();
-    else {
-        if (data()->staff()->staff().isEmpty())
-            __icon = __scene->renderer()->icons()->activeAirportIcon();
-        else
-            __icon = __scene->renderer()->icons()->activeStaffedAirportIcon();
+    if (flags & DrawSelected)
+        __drawLines(painter, transform);
+    
+    QPoint center = position() * transform;
+    
+    QRect rect(QPoint(0, 0), __icon.size());
+    rect.moveCenter(center);
+    rect.moveBottom(rect.bottom() - rect.height() / 2);
+    
+    painter->drawPixmap(rect, __icon);
+    
+    if (__scene->settings().view.airport_labels) {
+        if (__label.isNull())
+            __prepareLabel();
+        
+        QRect rect2(__label.rect());
+        rect2.moveCenter(center);
+        rect2.moveBottom(rect2.bottom() + rect2.height() / 2);
+        
+        painter->drawPixmap(rect2, __label);
     }
 }
 
-void
-AirportItem::__prepareLines() const
+int
+AirportItem::z() const
 {
-    for (const Pilot* p : data()->outbounds()->flights()) {
-        for (const LonLat& ll : p->route().waypoints) {
-            __otpLines.coords << ll.x() << ll.y();
-            
-            if (ll == p->position())
-                break;
-            else if (ll != p->route().waypoints[0])
-                __otpLines.coords << ll.x() << ll.y();
-        }
-    }
-    
-    for (const Pilot* p : data()->inbounds()->flights()) {
-        bool append = false;
-        
-        for (const LonLat& ll : p->route().waypoints) {
-            if (append)
-                __ptdLines.coords << ll.x() << ll.y();
-                
-            if (ll == p->position())
-                append = true;
-                
-            if (append && ll != p->route().waypoints.last())
-                __ptdLines.coords << ll.x() << ll.y();
-        }
-    }
-    
-    __linesReady = true;
+    return 2;
 }
 
 void
-AirportItem::__initializeLabel() const
+AirportItem::__loadIcon() const
 {
-    static QRect labelRect(8, 2, 48, 12);
-    
-    if (__label.isCreated())
-        __label.destroy();
-        
-    QString icao(data()->data()->icao);
-    
-    QImage temp(MapConfig::airportLabelBackground());
-    QPainter painter(&temp);
-    painter.setRenderHint(QPainter::TextAntialiasing);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform);
-    painter.setRenderHint(QPainter::HighQualityAntialiasing);
-    
-    painter.setFont(SM::get("map.airport_font").value<QFont>());
-    painter.setPen(MapConfig::airportPen());
-    
-    painter.drawText(labelRect, Qt::AlignCenter, icao);
-    __label.setData(temp.mirrored(), QOpenGLTexture::DontGenerateMipMaps);
-    __label.setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Nearest);
-}
-
-void
-AirportItem::__initializeApproachBuffer() const
-{
-    QVector<Point> points;
-    QVector<quint16> triangles;
-    
-    Tma* tma = vApp()->vatsimDataHandler()->findTma(data()->icao());
-    
-    if (tma) {
-        qDebug("TMA for %s found. Triangulating...", qPrintable(data()->icao()));
-        
-        if (!tma->isTriangulated())
-            tma->triangulate();
-            
-        points = tma->points();
-        triangles = tma->triangles();
+    if (data()->isEmpty()) {
+        if (!QPixmapCache::find(AirportInactivePixmap.arg(MapConfig::generalizedDensity()), &__icon)) {
+            __icon.load(AirportInactivePixmap.arg(MapConfig::generalizedDensity()));
+            QPixmapCache::insert(AirportInactivePixmap.arg(MapConfig::generalizedDensity()), __icon);
+        }
     } else {
-        qDebug("TMA for %s not found. Using default circle.", qPrintable(data()->icao()));
-        Tma* temp = Tma::circle(data());
-        
-        if (!temp->isTriangulated())
-            temp->triangulate();
-            
-        points = temp->points();
-        triangles = temp->triangles();
-        
-        delete temp;
+        if (data()->staff()->toList().isEmpty()) {
+            if (!QPixmapCache::find(AirportActivePixmap.arg(MapConfig::generalizedDensity()), &__icon)) {
+                __icon.load(AirportActivePixmap.arg(MapConfig::generalizedDensity()));
+                QPixmapCache::insert(AirportActivePixmap.arg(MapConfig::generalizedDensity()), __icon);
+            }
+        } else {
+            if (!QPixmapCache::find(AirportActiveWithAtcPixmap.arg(MapConfig::generalizedDensity()), &__icon)) {
+                __icon.load(AirportActiveWithAtcPixmap.arg(MapConfig::generalizedDensity()));
+                QPixmapCache::insert(AirportActiveWithAtcPixmap.arg(MapConfig::generalizedDensity()), __icon);
+            }
+        }
     }
-    
-    Q_ASSERT(points.size());
-    Q_ASSERT(triangles.size());
-    
-    __bufferApproachPoints.create();
-    Q_ASSERT(__bufferApproachPoints.isCreated());
-    __bufferApproachPoints.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    __bufferApproachPoints.bind();
-    __bufferApproachPoints.allocate(points.constData(), sizeof(Point) * points.size());
-    __bufferApproachPoints.release();
-    
-    __bufferApproachTriangles.create();
-    Q_ASSERT(__bufferApproachTriangles.isCreated());
-    __bufferApproachTriangles.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    __bufferApproachTriangles.bind();
-    __bufferApproachTriangles.allocate(triangles.constData(), sizeof(quint16) * triangles.size());
-    __bufferApproachTriangles.release();
-    
-    __vaoApproach.create();
-    Q_ASSERT(__vaoApproach.isCreated());
-    __vaoApproach.bind();
-    __bufferApproachPoints.bind();
-    __bufferApproachTriangles.bind();
-    __scene->renderer()->opengl()->glVertexAttribPointer(MapRenderer::vertexLocation(), 2, GL_FLOAT, GL_FALSE, 0, 0);
-    __scene->renderer()->opengl()->glEnableVertexAttribArray(MapRenderer::vertexLocation());
-    __vaoApproach.release();
-    __bufferApproachPoints.release();
-    __bufferApproachTriangles.release();
-    
-    __trianglesApproach = triangles.size();
 }
 
 void
-AirportItem::__reloadSettings()
+AirportItem::__prepareLabel() const
 {
-    if (__label.isCreated())
-        __label.destroy();
+    __label = __scene->pixmapProvider()->backgroundForAirportLabel();
+    
+    QPainter p(&__label);
+    
+    QFont font = SettingsManager::get("map.airport_font").value<QFont>();
+    p.setFont(font);
+    
+    QPen pen(QColor(245, 245, 245));
+    p.setPen(pen);
+    
+    p.drawText(__label.rect(), Qt::AlignCenter, data()->icao());
+    p.end();
+}
+
+void
+AirportItem::__drawLines(QPainter* painter, const WorldTransform& transform) const
+{
+    QPainter::RenderHints hints = painter->renderHints();
+    painter->setRenderHints(hints | QPainter::Antialiasing);
+    
+    QPen orig = painter->pen();
+    QPoint pos = position() * transform;
+    
+    painter->setPen(QPen(QColor(3, 116, 164)));
+    for (const Pilot* p: data()->outbounds()->toList()) {
+        if (p->phase() == Pilot::Airborne || p->phase() == Pilot::Arrived) {
+            QPoint pf = p->position() * transform;
+            painter->drawLine(pf, pos);
+        }
+    }
+    
+    QPen pen(QColor(133, 164, 164));
+    pen.setStyle(Qt::DashLine);
+    painter->setPen(pen);
+    
+    for (const Pilot* p: data()->inbounds()->toList()) {
+        if (p->phase() == Pilot::Airborne || p->phase() == Pilot::Departing) {
+            QPoint pf = p->position() * transform;
+            painter->drawLine(pf, pos);
+        }
+    }
+    
+    painter->setRenderHints(hints);
+    painter->setPen(orig);
 }
 
 void
 AirportItem::__invalidate()
 {
-    __icon = nullptr;
-    __linesReady = false;
-    __otpLines.coords.clear();
-    __ptdLines.coords.clear();
+    if (!QCoreApplication::closingDown())
+        __icon = QPixmap();
+    
+    if (data()->facilities() & Controller::App) {
+        if (!__tma) {
+            __tma = new TmaArea(data(), __scene);
+            __scene->addArea(__tma);
+        }
+    } else {
+        if (__tma) {
+            __scene->removeArea(__tma);
+            __tma->deleteLater();
+            __tma = nullptr;
+        }
+    }
 }

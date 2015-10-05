@@ -1,6 +1,6 @@
 /*
     flightdetailswindow.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,10 +36,8 @@ public:
 protected:
     virtual void showEvent(QShowEvent* event) override;
     
-private:
-    void __updateAirports();
-    
 private slots:
+    void __updateAirports();
     void __updateInfo();
     void __airlineUpdated();
     

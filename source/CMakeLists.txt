@@ -27,6 +27,7 @@ endif ()
 
 add_subdirectory (db)
 add_subdirectory (events)
+add_subdirectory (models)
 add_subdirectory (network)
 add_subdirectory (plugins)
 add_subdirectory (storage)
@@ -40,14 +41,15 @@ if (ANDROID) # on Android we want to build library libvatsinator.so
         ${vatsinator_HEADERS}
         $<TARGET_OBJECTS:db>
         $<TARGET_OBJECTS:events>
+        $<TARGET_OBJECTS:models>
         $<TARGET_OBJECTS:network>
         $<TARGET_OBJECTS:plugins>
         $<TARGET_OBJECTS:storage>
         $<TARGET_OBJECTS:ui>
         $<TARGET_OBJECTS:vatsimdata>
-        
-        $<TARGET_OBJECTS:PolygonTriangulator>
     )
+    
+    add_subdirectory (imports)
 else (ANDROID)
     add_executable (vatsinator MACOSX_BUNDLE WIN32
         main.cpp
@@ -55,14 +57,25 @@ else (ANDROID)
         ${vatsinator_HEADERS}
         $<TARGET_OBJECTS:db>
         $<TARGET_OBJECTS:events>
+        $<TARGET_OBJECTS:models>
         $<TARGET_OBJECTS:network>
         $<TARGET_OBJECTS:plugins>
         $<TARGET_OBJECTS:storage>
         $<TARGET_OBJECTS:ui>
         $<TARGET_OBJECTS:vatsimdata>
-        
-        $<TARGET_OBJECTS:PolygonTriangulator>
     )
+
+    if (APPLE)
+        set_target_properties (vatsinator PROPERTIES
+            MACOSX_BUNDLE_ICON_FILE "vatsinator.icns"
+            MACOSX_BUNDLE_BUNDLE_NAME "Vatsinator"
+            MACOSX_BUNDLE_BUNDLE_VERSION "${vatsinator_VERSION}"
+            MACOSX_BUNDLE_GUI_IDENTIFIER "org.eu.vatsinator.Vatsinator"
+            MACOSX_BUNDLE_INFO_STRING "${PROJECT_NAME}"
+            MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_NAME} Version ${vatsinator_VERSION}"
+            MACOSX_BUNDLE_SHORT_VERSION_STRING "${vatsinator_VERSION}"
+        )
+    endif ()
 endif ()
 
 set_target_properties (vatsinator PROPERTIES
@@ -77,9 +90,9 @@ target_link_libraries (vatsinator
 )
 
 if (ANDROID)
-    target_link_libraries (vatsinator Qt5::Quick Qt5::AndroidExtras GLESv1_CM GLESv2)
+    target_link_libraries (vatsinator Qt5::Quick Qt5::AndroidExtras)
 else ()
-    target_link_libraries (vatsinator Qt5::Widgets Qt5::OpenGL ${OPENGL_LIBRARY})
+    target_link_libraries (vatsinator Qt5::Widgets)
 endif ()
 
 if (APPLE)
@@ -90,11 +103,6 @@ if (LINUX)
     set (vatsinator_PREFIX "${CMAKE_INSTALL_PREFIX}/share/vatsinator/")
 elseif (APPLE OR WIN32 OR ANDROID)
     set (vatsinator_PREFIX "")
-endif ()
-
-if (NOT vatsinator_UI_IMPLEMENTATION)
-    message (FATAL_ERROR "No valid user interface implementation specified")
-    message (STATUS "Known user interface implementations: widgets")
 endif ()
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/vatsinator-config.h.in

@@ -24,7 +24,10 @@
 #include <QObject>
 #include <QList>
 #include <QColor>
+#include <QRectF>
+#include <spatial/bits/spatial_check_concept.hpp>
 #include <spatial/point_multimap.hpp>
+#include <spatial/idle_box_multimap.hpp>
 #include "vatsimdata/lonlat.h"
 
 class QAbstractAnimation;
@@ -35,10 +38,11 @@ class Controller;
 class Fir;
 class FirItem;
 class FlightItem;
+class MapArea;
 class MapItem;
 class Pilot;
+class PixmapProvider;
 class MapRenderer;
-class UirItem;
 
 /**
  * The MapScene class is responsible for managing all the map items, moving
@@ -59,20 +63,6 @@ public:
      * here, updating it only when needed.
      */
     struct MapSettings {
-        struct {
-            int zoom_coefficient;
-        } misc;
-        
-        struct {
-            QColor lands;
-            QColor seas;
-            QColor staffed_fir_borders;
-            QColor staffed_fir_background;
-            QColor staffed_uir_borders;
-            QColor staffed_uir_background;
-            QColor unstaffed_fir_borders;
-            QColor approach_circle;
-        } colors;
         
         struct {
             bool airports_layer;
@@ -100,11 +90,19 @@ signals:
     
 public:
     /**
-     * Constructs new MapScene. Passes _parent_ to QObject's constructor.
+     * Constructs new MapScene. Passes \c parent to the QObject's constructor.
      */
     explicit MapScene(QObject* parent);
     
-    virtual ~MapScene() = default;
+    /**
+     * Adds a new area to the scene.
+     */
+    void addArea(MapArea* area);
+    
+    /**
+     * Removes the given area from the scene.
+     */
+   void removeArea(MapArea* area);
     
     /**
      * Marks the specified pilot as tracked one.
@@ -123,7 +121,7 @@ public:
     /**
      * Stops tracking any flight.
      *
-     * This is the same as calling trackFlight() with _nullptr_.
+     * This is the same as calling \c MapScene::trackFlight() with \c nullptr.
      */
     inline void cancelFlightTracking()
     {
@@ -131,21 +129,26 @@ public:
     }
     
     /**
-     * Finds FirItem instance that handles the given Fir.
-     * This function is linear in complexity.
-     *
-     * \return nullptr if no such FirItem could be found.
-     */
-    FirItem* findItemForFir(const Fir* fir);
-    
-    /**
-     * Executes the given function for each item found inside the given _rect_.
+     * Executes the given function for each item found inside the given \c rect.
      *
      * \param rect The bounding rectangle for items.
      * \param function The function to execute on every item found.
      *
      */
     void inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const;
+    
+    /**
+     * Returns a list of all items that exist within the provided boundaries.
+     * 
+     * \param rect The bounding rectangle used to select items.
+     */
+    QList<const MapItem*> itemsInRect(const QRectF& rect) const;
+    
+    /**
+     * Executes the provided function for each area that is visible in the given
+     * \c rect.
+     */
+    void inRect(const QRectF& rect, std::function<void(const MapArea*)> function) const;
     
     /**
      * Finds nearest item to the given _point_.
@@ -172,30 +175,6 @@ public:
     }
     
     /**
-     * Gives direct access to all airport items.
-     */
-    inline const QList<AirportItem*>& airportItems() const
-    {
-        return __airportItems;
-    }
-    
-    /**
-     * Gets all FirItems that are attached to the scene.
-     */
-    inline const QList<FirItem*>& firItems() const
-    {
-        return __firItems;
-    }
-    
-    /**
-     * Gets all UirItems that are attached to the scene.
-     */
-    inline const QList<UirItem*>& uirItems() const
-    {
-        return __uirItems;
-    }
-    
-    /**
      * Gets the currently tracked flight.
      */
     inline const Pilot* trackedFlight() const
@@ -210,6 +189,24 @@ public:
     {
         return __settings;
     }
+    
+    /**
+     * Gives access to the pixmap provider.
+     */
+    inline PixmapProvider* pixmapProvider()
+    {
+        return __pixmapProvider;
+    }
+    
+    /**
+     * Returns true if the map is in the middle of an animation.
+     */
+    inline bool isAnimating() const
+    {
+        return __animation != nullptr;
+    }
+    
+    virtual ~MapScene() = default;
     
 public slots:
     /**
@@ -273,18 +270,38 @@ private:
         }
     };
     
+    struct QRectFBoxAccessor {
+        qreal operator() (spatial::dimension_type dim, const QRectF& rect) const
+        {
+            switch (dim) {
+                case 0:
+                    return rect.topLeft().x();
+                case 1:
+                    return rect.topLeft().y();
+                case 2:
+                    return rect.bottomRight().x();
+                case 3:
+                    return rect.bottomRight().y();
+                default:
+                    Q_UNREACHABLE();
+            }
+        }
+    };
+    
     /**
      * This map keeps FlightItems, AirportItems and FirItems.
      */
     spatial::point_multimap<2, LonLat, const MapItem*, spatial::accessor_less<LonLatPointAccessor, LonLat>> __items;
     
-    QList<AirportItem*> __airportItems;
-    QList<FirItem*> __firItems;
-    QList<UirItem*> __uirItems;
+    /**
+     * This map keeps FirAreas.
+     */
+    spatial::idle_box_multimap<4, QRectF, const MapArea*, spatial::accessor_less<QRectFBoxAccessor, QRectF>> __areas;
     
     const Pilot* __trackedFlight;
     QAbstractAnimation* __animation;
     
+    PixmapProvider* __pixmapProvider;
     MapSettings __settings;
     
     QSignalMapper* __flightsMapper; /**< Maps Pilots to its iterators in the spatial map */

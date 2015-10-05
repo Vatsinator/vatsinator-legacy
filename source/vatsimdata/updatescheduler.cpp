@@ -36,11 +36,8 @@ UpdateScheduler::UpdateScheduler(QObject* parent): QObject(parent)
 {
     __timer.setSingleShot(true);
     
-    connect(&__timer,                     SIGNAL(timeout()),
-            this,                         SIGNAL(timeToUpdate()));
-    connect(qobject_cast<VatsimDataHandler*>(parent),
-            SIGNAL(vatsimDataUpdated()),
-            this,                         SLOT(__setupTimer()));
+    connect(&__timer, &QTimer::timeout, this, &UpdateScheduler::timeToUpdate);
+    connect(qobject_cast<VatsimDataHandler*>(parent), &VatsimDataHandler::vatsimDataUpdated, this, &UpdateScheduler::__setupTimer);
 }
 
 void

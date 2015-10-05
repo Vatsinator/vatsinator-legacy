@@ -36,36 +36,36 @@ class Client : public QObject {
     /**
      * This property holds the client's Vatsim PID.
      */
-    Q_PROPERTY(unsigned pid READ pid NOTIFY updated)
+    Q_PROPERTY(unsigned pid READ pid CONSTANT)
     
     /**
      * This property holds the client's callsign.
      */
-    Q_PROPERTY(QString callsign READ callsign NOTIFY updated)
+    Q_PROPERTY(QString callsign READ callsign NOTIFY callsignChanged)
     
     /**
      * This property holds the client's real name.
      */
-    Q_PROPERTY(QString realName READ realName NOTIFY updated)
+    Q_PROPERTY(QString realName READ realName NOTIFY realNameChanged)
     
     /**
-     * The _server_ property keeps the server that the client is connected to.
+     * The \c server property keeps the server that the client is connected to.
      */
-    Q_PROPERTY(QString server READ server NOTIFY updated)
+    Q_PROPERTY(QString server READ server NOTIFY serverChanged)
     
     /**
      * This property keeps date and time when the client went online.
      */
-    Q_PROPERTY(QDateTime onlineFrom READ onlineFrom NOTIFY updated)
+    Q_PROPERTY(QDateTime onlineFrom READ onlineFrom NOTIFY onlineFromChanged)
     
     /**
      * This property holds current client's position.
      */
-    Q_PROPERTY(LonLat position READ position NOTIFY updated)
+    Q_PROPERTY(LonLat position READ position NOTIFY positionChanged)
     
 signals:
     /**
-     * The update() signal is updated when the clients receives new data.
+     * The updated() signal is updated when the clients receives new data.
      */
     void updated();
     
@@ -73,24 +73,23 @@ signals:
      * The invalid() signal is emitted when the client logs out and this instance
      * will be deleted soon.
      * \note We cannot use destroyed() signal because sometimes we still need
-     * access to the client data, which is not available when destroyed() signal
+     * access to the client data, which is not available after destroyed() signal
      * is emitted.
      */
     void invalid();
     
-public:
-    /**
-     * Prevent from creating foo-clients.
-     */
-    Client() = delete;
+    void callsignChanged(const QString& callsign);
+    void realNameChanged(const QString& realName);
+    void serverChanged(const QString& server);
+    void onlineFromChanged(const QDateTime& onlineFrom);
+    void positionChanged(const LonLat& position);
     
+public:
     /**
      * Creates new Client from the data list. This can be, for example, one line
      * obtained from vatsim data servers, divided with ":".
      */
     Client(const QStringList& data);
-    
-    virtual ~Client();
     
     /**
      * Updates the client from the _data_ given.
@@ -148,6 +147,9 @@ public:
     {
         return __position;
     }
+    
+    Client() = delete;
+    virtual ~Client() = default;
     
 protected:
     void setPosition(const LonLat& position);

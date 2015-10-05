@@ -1,6 +1,6 @@
 /*
  * mappage.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@
 #include "ui/ui_mappage.h"
 #include "widgets/widgetsettingsmodule.h"
 
+class MapDrawer;
+
 class MapPage : public WidgetSettingsModule, private Ui::MapPage {
     Q_OBJECT
     
@@ -41,20 +43,10 @@ public:
     
     /**
      * \variables
-     * zoom_coefficient:                  int
-     * staffed_fir_borders_color:         QColor
-     * staffed_fir_background_color:      QColor
-     * unstaffed_fir_borders_color:       QColor
-     * staffed_uir_borders_color:         QColor
-     * staffed_uir_background_color:      QColor
-     * fir_font:                          QFont
-     * airport_font:                      QFont
-     * pilot_font:                        QFont
-     * approach_circle_color:             QColor
-     * seas_color:                        QColor
-     * lands_color:                       QColor
-     * origin_to_pilot_line_color:        QColor
-     * pilot_to_destination_line_color:   QColor
+     * fir_font:        QFont
+     * airport_font:    QFont
+     * pilot_font:      QFont
+     * map_type:        int
      */
     void update() const override;
     
@@ -66,9 +58,11 @@ private:
     void __updateFontButtons();
     
 private slots:
+    void __initialize();
     void __showFirFontDialog();
     void __showAirportFontDialog();
     void __showPilotFontDialog();
+    void __updateMapTypes(MapDrawer* drawer);
     
 private:
     QFont __firFont;

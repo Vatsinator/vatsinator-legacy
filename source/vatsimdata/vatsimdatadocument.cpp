@@ -123,10 +123,8 @@ VatsimDataDocument::__parse()
             
             case Servers:
             case VoiceServers:
+            case None: // TODO Q_UNREACHABLE for None, but validate the document first
                 break;
-                
-            default:
-                Q_UNREACHABLE();
         }
     }
     
@@ -135,12 +133,19 @@ VatsimDataDocument::__parse()
 }
 
 VatsimDataDocument::ClientLine::ClientLine(const QString& data)
+    : line(data.split(':'))
 {
-    line = data.split(':');
     valid = line.size() == 42;
     
     if (valid) {
-        callsign = line[0];
+        callsign = line.at(0);
+        bool ok;
+        pid = line.at(1).toUInt(&ok);
+        if (!ok) {
+            qWarning("Invalid PID: %s", qPrintable(line.at(1)));
+            valid = false;
+            return;
+        }
         type = line[3] == "ATC" ? Atc : Pilot;
     }
 }

@@ -17,7 +17,7 @@
  * 
  */
 
-import QtQuick 2.4
+import QtQuick 2.5
 
 Rectangle {
     id: root

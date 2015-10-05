@@ -1,6 +1,6 @@
 /*
     filedownloader.cpp
-    Copyright (C) 2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,9 +24,54 @@
 
 #include "filedownloader.h"
 
-FileDownloader::FileDownloader(QObject* _parent) :
-    QObject(_parent),
-    __reply(nullptr) {}
+namespace {
+    /**
+     * Generates the temporary file name (with the absolute path)
+     * from the given url.
+     */
+    QString fileNameForUrl(const QUrl& url)
+    {
+        QString baseName = QFileInfo(url.path()).fileName();
+    
+        Q_ASSERT(!baseName.isEmpty());
+        
+        if (!QDir(QDir::tempPath()).isReadable()) {
+            qWarning("Temporary directory %s is not accessible!",
+                    qPrintable(QDir::tempPath()));
+            return QString();
+        }
+        
+        auto suffix = [](QString fileName, int n) -> QString {
+            if (n <= 1)
+                return fileName;
+            
+            QFileInfo fi(fileName);
+            return fi.path() % QDir::separator() % fi.baseName() % "_" % QString::number(n) % "." % fi.completeSuffix();
+        };
+        
+        QString absPath = QDir::tempPath() % "/" % baseName;
+        int n = 1;
+        while (QFile::exists(suffix(absPath, n))) {
+            n += 1;
+        }
+        
+        absPath = suffix(absPath, n);
+        qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
+        return absPath;
+    }
+}
+
+FileDownloader::FileDownloader(QObject* parent) :
+    QObject(parent),
+    __reply(nullptr)
+{    
+    connect(&__nam, &QNetworkAccessManager::networkAccessibleChanged, [this](QNetworkAccessManager::NetworkAccessibility accessible) {
+        if (accessible == QNetworkAccessManager::NotAccessible) {
+            qWarning("Network not accessible");
+            /* TODO Handle network accessibility */
+        }
+    });
+}
 
 void
 FileDownloader::fetch(const QUrl& url)
@@ -37,60 +82,36 @@ FileDownloader::fetch(const QUrl& url)
         __startRequest();
 }
 
-QString
-FileDownloader::fileNameForUrl(const QUrl& url)
+void
+FileDownloader::__startRequest()
 {
-    QString baseName = QFileInfo(url.path()).fileName();
+    Q_ASSERT(!__reply);
+    Q_ASSERT(anyTasksLeft());
     
-    Q_ASSERT(!baseName.isEmpty());
+    QUrl url = __urls.front();
+    QString fileName = fileNameForUrl(url);
     
-    if (!QDir(QDir::tempPath()).isReadable()) {
-        emit error(tr("Temporary directory (%1) is not readable!").arg(QDir::tempPath()));
-        qWarning("Temporary directory %s is not accessible!",
-                 qPrintable(QDir::tempPath()));
-        return QString();
+    if (fileName.isEmpty()) {
+        __startRequest();
+        return;
     }
     
-    QString absPath = QDir::tempPath() % "/" % baseName;
+    __output.setFileName(fileName);
     
-    qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
+    if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()), url);
+        qCritical("FileDownloader: could not open file (%s) for writing!",
+                  qPrintable(__output.fileName()));
+        __startRequest();
+        return;
+    }
     
-    if (QFile::exists(absPath))
-        QFile(absPath).remove();
-        
-    return absPath;
-}
-
-void
-FileDownloader::__startRequest() {
-  if (__reply || !anyTasksLeft())
-    return;
-  
-  QUrl url = __urls.dequeue();
-  QString fileName = fileNameForUrl(url);
-  
-  if (fileName.isEmpty()) {
-    __startRequest();
-    return;
-  }
-  
-  __output.setFileName(fileName);
-  if (!__output.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-    emit error(tr("Could not open file (%1) for writing!").arg(__output.fileName()));
-    qCritical("FileDownloader: could not open file (%s) for writing!",
-              qPrintable(__output.fileName()));
-    __startRequest();
-    return;
-  }
-  
-  QNetworkRequest request(url);
-  request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
-  __reply = __nam.get(request);
-  
-  connect(__reply,      SIGNAL(finished()),
-          this,         SLOT(__finished()));
-  connect(__reply,      SIGNAL(readyRead()),
-          this,         SLOT(__readyRead()));
+    QNetworkRequest request(url);
+    request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
+    __reply = __nam.get(request);
+    
+    connect(__reply, &QNetworkReply::finished, this, &FileDownloader::__finished);
+    connect(__reply, &QNetworkReply::readyRead, this, &FileDownloader::__readyRead);
 }
 
 void
@@ -100,23 +121,26 @@ FileDownloader::__readyRead()
 }
 
 void
-FileDownloader::__finished() {
-  qint64 size = __output.size();
-  __output.close();
-  
-  if (__reply->error()) {
-    emit error(tr("Error downloading file: %1").arg(__reply->errorString()));
-    qCritical("FileDownloader: error downloading file: %s",
-              qPrintable(__reply->errorString()));
-    QFile::remove(__output.fileName());
-  } else {
-    emit finished(QString(__output.fileName()));
-    qDebug("FileDownloader: file %s downloaded, size: %lli",
-              qPrintable(__output.fileName()), size);
-  }
-  
-  __reply->deleteLater();
-  __reply = nullptr;
-  
-  __startRequest();
+FileDownloader::__finished()
+{
+    qint64 size = __output.size();
+    __output.close();
+    
+    if (__reply->error()) {
+        emit error(tr("Error downloading file: %1").arg(__reply->errorString()), __reply->url());
+        qCritical("FileDownloader: error downloading file: %s",
+                  qPrintable(__reply->errorString()));
+        QFile::remove(__output.fileName());
+    } else {
+        emit finished(QString(__output.fileName()), __reply->url());
+        qDebug("FileDownloader: file %s downloaded, size: %lli",
+               qPrintable(__output.fileName()), size);
+    }
+    
+    __urls.dequeue();
+    __reply->deleteLater();
+    __reply = nullptr;
+    
+    if (anyTasksLeft())
+        __startRequest();
 }

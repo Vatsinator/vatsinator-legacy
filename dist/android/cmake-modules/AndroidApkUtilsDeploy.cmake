@@ -1,6 +1,13 @@
 include (CMakeParseArguments)
 include (${CMAKE_SOURCE_DIR}/AndroidApkUtilsConfig.cmake)
 
+# GLobal variables:
+# bundled_in_lib
+# bundled_in_assets
+# qt_libs
+# bundled_libs
+
+# Finds target dependencies using the readelf util.
 function (android_find_target_dependencies output)
     if (NOT EXISTS ${target_location})
         message (FATAL_ERROR "Target file: ${target_location} does not exist!")
@@ -56,15 +63,69 @@ function (android_find_target_dependencies output)
     endif ()
 endfunction ()
 
+# plugin_dir - target directory of the plugin (i.e. "QtQuick/Controls/Styles")
+# plugin_source_dir - source directory of the plugin, absolute path (i.e. "/opt/Qt/5.5/android_armv7")
+# plugin_files - list of files to be deployed (qmldir, .qml, .so), paths relative to plugin_source
+# plugin prefix - where all the files (except libraries) will be deployed; this dir has to be in the QML import paths
+function (android_deploy_qml_plugin plugin_dir plugin_source_dir plugin_files plugin_prefix)
+    if (NOT plugin_dir)
+        message(FATAL_ERROR "No plugin directory specified")
+    endif ()
+    
+    foreach (file ${plugin_files})
+        if (IS_ABSOLUTE ${file})
+            set (file_absolute ${file})
+            get_filename_component (file ${file} NAME)
+        else ()
+            set (file_absolute ${plugin_source_dir}/${file})
+        endif ()
+        
+        if (${file} MATCHES "\\.so$")
+            set (fname_ext ${plugin_dir}/${file})
+            string (REPLACE "/" "_" fname_ext "${fname_ext}")
+            set (fname_ext "lib${fname_ext}")
+            
+            message ("${plugin_dir}/${file} => ${fname_ext}")
+            
+            set (f_destination ${package_location}/libs/${ANDROID_ABI})
+            
+            file (COPY ${file_absolute}
+                DESTINATION ${f_destination}
+                NO_SOURCE_PERMISSIONS
+            )
+            
+            get_filename_component (fname ${file} NAME)
+            file (RENAME
+                ${f_destination}/${fname}
+                ${f_destination}/${fname_ext}
+            )
+            
+            list (APPEND bundled_in_lib "<item>${fname_ext}:${plugin_prefix}/${plugin_dir}/${file}</item>")
+        else ()
+            get_filename_component (file_target_dir ${file} DIRECTORY)
+            file (COPY ${file_absolute}
+                DESTINATION ${package_location}/assets/${assets_prefix}/${plugin_prefix}/${plugin_dir}/${file_target_dir}
+                NO_SOURCE_PERMISSIONS
+            )
+            list (APPEND bundled_in_assets "<item>${assets_prefix}/${plugin_prefix}/${plugin_dir}/${file}:${plugin_prefix}/${plugin_dir}/${file}</item>")
+        endif ()
+    endforeach ()
+    
+    set (bundled_in_lib ${bundled_in_lib} PARENT_SCOPE)
+    set (bundled_in_assets ${bundled_in_assets} PARENT_SCOPE)
+endfunction ()
 
 # first, install all user stuff
+message (STATUS "Executing make install")
 if (EXISTS ${binary_root}/cmake_install.cmake)
     execute_process(
         COMMAND ${CMAKE_COMMAND} -DCMAKE_INSTALL_PREFIX=${package_location} -P ${binary_root}/cmake_install.cmake
+        OUTPUT_QUIET
     )
 endif ()
 
 # second, install dependencies
+message (STATUS "Installing dependencies")
 android_find_target_dependencies(deps)
 foreach (d ${deps})
     find_library (d_location_${d} ${d}
@@ -76,8 +137,9 @@ foreach (d ${deps})
     )
     
     if (d_location_${d})
-        file (INSTALL ${d_location_${d}}
+        file (COPY ${d_location_${d}}
             DESTINATION ${package_location}/libs/${ANDROID_ABI}
+            NO_SOURCE_PERMISSIONS
         )
         
         string (REGEX
@@ -95,12 +157,15 @@ foreach (d ${deps})
 endforeach ()
 
 # gnustl_shared is a must-have, as Qt libraries need it
-file (INSTALL ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI}/libgnustl_shared.so
+message (STATUS "Installing libgnustl_shared.so")
+file (COPY ${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI}/libgnustl_shared.so
     DESTINATION ${package_location}/libs/${ANDROID_ABI}
+    NO_SOURCE_PERMISSIONS
 )
 list (INSERT qt_libs 0 "<item>gnustl_shared</item>")
 
 # install plugins
+message (STATUS "Installing Qt plugins")
 foreach (p ${qt_plugins})
     set (p_absolute ${qt_plugins_dir}/${p})
     file (RELATIVE_PATH p_location ${qt_root} ${p_absolute})
@@ -108,43 +173,56 @@ foreach (p ${qt_plugins})
     string (REPLACE "/" "_" p_ext "${p_location}")
     set (p_ext "lib${p_ext}")
     
-    file (INSTALL
-        DESTINATION ${package_location}/libs/${ANDROID_ABI}
-        TYPE FILE RENAME ${p_ext}
-        FILES ${p_absolute}
+    set (p_destination ${package_location}/libs/${ANDROID_ABI})
+    
+    file (COPY ${p_absolute}
+        DESTINATION ${p_destination}
+        NO_SOURCE_PERMISSIONS
     )
     
+    get_filename_component (fname ${p} NAME)
+    message ("${p} => ${p_ext}")
+    file (RENAME ${p_destination}/${fname} ${p_destination}/${p_ext})
     list (APPEND bundled_in_lib "<item>${p_ext}:${p_location}</item>")
 endforeach ()
 
 # install QML modules
+message (STATUS "Installing Qt QML modules")
 foreach (m ${qt_qml_modules})
     set (m_location ${qt_qmls_dir}/${m})
-    file (GLOB_RECURSE qml_files RELATIVE ${qt_root} ${m_location}/*)
+    file (GLOB_RECURSE qml_files RELATIVE ${m_location} ${m_location}/*)
+    #file (GLOB_RECURSE qml_files ${m_location}/*)
+    
     foreach (f ${qml_files})
-        set (f_absolute ${qt_root}/${f})
-        
-        if (${f} MATCHES "\\.so$")
-            get_filename_component (f_name ${f} NAME)
-            string (REPLACE "/" "_" f_ext "${f}")
-            set (f_ext "lib${f_ext}")
-            
-            file (INSTALL
-                DESTINATION ${package_location}/libs/${ANDROID_ABI}
-                TYPE FILE RENAME ${f_ext}
-                FILES ${f_absolute}
-            )
-            
-            list (APPEND bundled_in_lib "<item>${f_ext}:${f}</item>")
-        else ()
-            get_filename_component (f_dir ${f} DIRECTORY)
-            file (COPY ${f_absolute} NO_SOURCE_PERMISSIONS
-                DESTINATION ${package_location}/assets/${assets_prefix}/${f_dir}
-            )
-            
-            list (APPEND bundled_in_assets "<item>${assets_prefix}/${f}:${f}</item>")
-        endif ()
+        list (APPEND m_files ${f})
     endforeach ()
+    
+    android_deploy_qml_plugin (${m} ${m_location} "${m_files}" "qml")
+    unset (m_files)
+endforeach ()
+
+# install custom QML plugins
+message (STATUS "Installing QML plugins")
+foreach (p ${qml_plugins})
+    set (p_dir ${${p}_dir})
+    set (p_qmldir ${${p}_qmldir})
+    set (p_prefix ${${p}_prefix})
+    get_filename_component (p_path ${p_qmldir} DIRECTORY)
+    
+    if (${p}_location)
+        list (APPEND p_files ${${p}_location})
+    endif ()
+    
+    if (${p}_files)
+        foreach (f ${${p}_files})
+            list (APPEND p_files ${f})
+        endforeach ()
+    endif ()
+    
+    get_filename_component (p_qmldir_fname ${p_qmldir} NAME)
+    list (APPEND p_files ${p_qmldir_fname})
+    android_deploy_qml_plugin (${p_dir} ${p_path} "${p_files}" ${p_prefix})
+    unset (p_files)
 endforeach ()
 
 # install Qt's jars
@@ -167,16 +245,20 @@ endif ()
 # build the actual .apk package
 string (TOLOWER ${CMAKE_PROJECT_NAME} app_name)
 
-if (${CMAKE_BUILD_TYPE} MATCHES Debug)
+if (keystore AND keystore_alias AND keystore_password)
+    set (ant_args "release")
+    set (ant_output_file ${package_location}/bin/${app_name}-release.apk)
+    
+    file (WRITE ${package_location}/ant.properties
+        "key.store=${keystore}\nkey.alias=${keystore_alias}\nkey.store.password=${keystore_password}\nkey.alias.password=${keystore_password}"
+    )
+else ()
     set (ant_args "debug")
     set (ant_output_file ${package_location}/bin/${app_name}-debug.apk)
-elseif (${CMAKE_BUILD_TYPE} MATCHES Release) # TODO support app signing
-    set (ant_args "debug")
-    set (ant_output_file ${package_location}/bin/${app_name}-debug.apk)
-endif (${CMAKE_BUILD_TYPE} MATCHES Debug)
+endif ()
 
 get_filename_component (pkg_fname ${ant_output_file} NAME)
-message ("Building ${pkg_fname}...")
+message (STATUS "Building ${pkg_fname}...")
 
 set (ant_log_file ${files_dir}/ant.log)
 
@@ -185,6 +267,10 @@ execute_process (COMMAND ${ant_bin} ${ant_args}
     RESULT_VARIABLE ant_result
     OUTPUT_FILE ${ant_log_file}
 )
+
+if (EXISTS ${package_location}/ant.properties)
+    file (REMOVE ${package_location}/ant.properties)
+endif ()
 
 if (${ant_result} EQUAL 0)
     file (COPY ${ant_output_file} DESTINATION ${binary_root})

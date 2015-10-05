@@ -69,8 +69,7 @@ Airline::requestLogo()
         emit logoFetched();
     } else {
         FileDownloader* fd = new FileDownloader();
-        connect(fd,         SIGNAL(finished(QString)),
-                this,       SLOT(__logoFetched(QString)));
+        connect(fd, &FileDownloader::finished, this, &Airline::__logoFetched);
         fd->fetch(url);
     }
 }

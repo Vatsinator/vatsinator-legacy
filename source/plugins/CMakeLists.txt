@@ -11,14 +11,16 @@ set (plugins_SRCS
 set (plugins_HEADERS
   atcbooking.h
   atcbookingtablemodel.h
-  bookingprovider.h
   notam.h
   notamlistmodel.h
   notamprovider.h
   weatherdata.h
-  weatherforecastinterface.h
   weatherforecastreply.h
   weatherforecastrequest.h
+  
+  bookingprovider.h
+  mapdrawer.h
+  weatherforecastinterface.h
 )
 
 set (plugins_QRCS
@@ -44,8 +46,10 @@ macro (vatsinator_static_plugin libname pluginname)
 endmacro ()
 
 add_subdirectory (euroute-notam-provider)
+add_subdirectory (tiled-map)
 add_subdirectory (ultimate-weather-forecasts)
 add_subdirectory (vatbook-booking-provider)
+# add_subdirectory (vector-map)
 
 set (vatsinator_STATIC_PLUGINS
   ${vatsinator_STATIC_PLUGINS}

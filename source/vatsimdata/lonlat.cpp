@@ -17,8 +17,10 @@
  *
  */
 
-#include <QtGlobal>
+#include <QtCore>
 #include <QDataStream>
+
+#include "db/point.h"
 
 #include "lonlat.h"
 
@@ -28,10 +30,12 @@ LonLat::LonLat(const QPoint& point): QPointF(point) {}
 
 LonLat::LonLat(const QPointF& point): QPointF(point) {}
 
+LonLat::LonLat(const Point& point): QPointF(point.x, point.y) {}
+
 LonLat::LonLat(qreal longitude, qreal latitude): QPointF(longitude, latitude) {}
 
 LonLat
-LonLat::bound() const
+LonLat::bound() const &
 {
     LonLat b(*this);
     
@@ -41,8 +45,23 @@ LonLat::bound() const
     while (b.x() < -180.0)
         b.rx() += 360.0;
         
-    b.ry() = qBound(-90.0, b.y(), 90.0);
-    return qMove(b);
+//     b.ry() = qBound(-90.0, b.y(), 90.0);
+    b.ry() = qBound(-85.0511, b.y(), 85.0511);
+    return b;
+}
+
+LonLat
+LonLat::bound() &&
+{
+    while (x() > 180.0)
+        rx() -= 360.0;
+    
+    while (x() < -180.0)
+        rx() += 360.0;
+    
+//     ry() = qBound(-90.0, y(), 90.0);
+    ry() = qBound(-85.0511, y(), 85.0511);
+    return std::move(*this);
 }
 
 QDataStream&
@@ -58,3 +77,20 @@ operator>>(QDataStream& stream, LonLat& lonlat)
     stream >> lonlat.rx() >> lonlat.ry();
     return stream;
 }
+
+
+static QVariant lonLatInterpolator(const LonLat& start, const LonLat& end, qreal progress)
+{
+    return LonLat(
+        start.longitude() + (end.longitude() - start.longitude()) * progress,
+        start.latitude() + (end.latitude() - start.latitude()) * progress
+    );
+}
+
+static void registerType()
+{
+    qRegisterMetaType<LonLat>("LonLat");
+    qRegisterMetaTypeStreamOperators<LonLat>("LonLat");
+    qRegisterAnimationInterpolator<LonLat>(&lonLatInterpolator);
+}
+Q_COREAPP_STARTUP_FUNCTION(registerType)

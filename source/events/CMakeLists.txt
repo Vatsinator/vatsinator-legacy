@@ -3,6 +3,7 @@ set (events_SRCS
   mouselonlatevent.cpp
   notificationevent.cpp
   types.cpp
+  vatsimevent.cpp
 )
 
 set (events_HEADERS
@@ -10,6 +11,7 @@ set (events_HEADERS
   mouselonlatevent.h
   notificationevent.h
   types.h
+  vatsimevent.h
 )
 
 add_library (events OBJECT

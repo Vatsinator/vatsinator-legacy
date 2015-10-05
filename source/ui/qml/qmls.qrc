@@ -1,18 +1,20 @@
 <RCC>
   <qresource prefix="qmls">
     <file>AboutDialog.qml</file>
+    <file>AirportDetails.qml</file>
     <file>AtcList.qml</file>
     <file>AtcListDelegate.qml</file>
+    <file>Details.qml</file>
+    <file>FirDetails.qml</file>
+    <file>FlightDetails.qml</file>
     <file>FlightList.qml</file>
     <file>FlightListDelegate.qml</file>
     <file>main.qml</file>
     <file>MainMenu.qml</file>
     <file>MapControls.qml</file>
     <file>MapPage.qml</file>
-    <file>MenuDrawer.qml</file>
     <file>MenuListDelegate.qml</file>
     <file>MenuModel.qml</file>
-    <file>NavigationDrawer.qml</file>
     <file>SettingsPage.qml</file>
     <file>images/ic_flight_takeoff_black.png</file>
     <file>images/ic_info_outline_black.png</file>
@@ -20,6 +22,5 @@
     <file>images/ic_room_black.png</file>
     <file>images/ic_settings_black.png</file>
     <file>images/ic_traffic_black.png</file>
-    <file>images/ic_drawer.png</file>
   </qresource>
 </RCC>

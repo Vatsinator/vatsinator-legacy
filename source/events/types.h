@@ -1,6 +1,6 @@
 /*
  * types.h
- * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ namespace Event {
 extern int MouseLonLat;       /**< Type for MouseLonLatEvent */
 extern int Notification;      /**< Type for NotificationEvent */
 extern int Decision;          /**< Type for DecisionEvent */
+extern int Vatsim;            /**< Type for VatsimEvent */
 
 }
 

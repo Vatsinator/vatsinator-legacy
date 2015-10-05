@@ -1,6 +1,6 @@
 /*
     filedownloader.h
-    Copyright (C) 2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013-2015  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,50 +42,62 @@ signals:
      * Emited when download is complete.
      *
      * \param fileName Location of the downloaded file.
+     * \param url The request URL.
      */
-    void finished(QString fileName);
+    void finished(QString fileName, QUrl url);
     
     /**
      * Emited when an error occurs.
      * \param error Error string.
+     * \param url URL of the request.
      */
-    void error(QString error);
+    void error(QString error, QUrl url);
     
 public:
-  /**
-   * Creates new FileDownloader instance.
-   */
-  FileDownloader(QObject* = 0);
-  
-  /**
-   * If the requests queue is empty, downloads the given file
-   * immediately. Otherwise, enqueues the url.
-   */
-  void fetch(const QUrl&);
-  
-  /**
-   * Generates the temporary file name (with the absolute path)
-   * from the given url.
-   */
-  QString fileNameForUrl(const QUrl&);
-  
-  /**
-   * Returns true if there are any queries scheduled.
-   */
-  inline bool anyTasksLeft() const { return !__urls.isEmpty(); }
-
+    /**
+     * Creates new FileDownloader instance.
+     */
+    FileDownloader(QObject* parent = nullptr);
+    
+    /**
+     * If the requests queue is empty, downloads the given file
+     * immediately. Otherwise, enqueues the url.
+     */
+    void fetch(const QUrl& url);
+    
+    /**
+     * Gets number of tasks in the queue.
+     */
+    inline int tasks() const
+    {
+        return __urls.size();
+    }
+    
+    /**
+     * Returns true if there are any queries scheduled.
+     * This function is the same as calling
+     * 
+     * \code{.cpp}
+     * tasks() > 0
+     * \endcode
+     */
+    inline bool anyTasksLeft() const
+    {
+        return !__urls.isEmpty();
+    }
+    
 private slots:
-  void __readyRead();
-  void __finished();
-  
+    void __readyRead();
+    void __finished();
+    
 private:
-  void __startRequest();
-  
-  QQueue<QUrl>   __urls;
-  QFile          __output;
-  
-  QNetworkAccessManager __nam;
-  QNetworkReply*        __reply;
+    void __startRequest();
+    
+    QQueue<QUrl> __urls;
+    QFile __output;
+    
+    QNetworkAccessManager __nam;
+    QNetworkReply*        __reply;
 };
 
 #endif // FILEDOWNLOADER_H

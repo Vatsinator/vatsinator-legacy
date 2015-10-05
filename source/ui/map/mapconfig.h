@@ -23,10 +23,6 @@
 #include <QtGlobal> // qreal
 #include <QImage>
 
-#ifndef Q_OS_ANDROID
-# include <QGLFormat> // glFormat
-#endif
-
 class QColor;
 class QFont;
 class QPixmap;
@@ -34,56 +30,52 @@ class QPixmap;
 class MapConfig {
 public:
 
-    static Q_DECL_CONSTEXPR qreal longitudeMax()
+    static constexpr qreal longitudeMax()
     {
         return 180.0;
     }
     
-    static Q_DECL_CONSTEXPR qreal latitudeMax()
+    static constexpr qreal latitudeMax()
     {
-        return 90.0;
-    }
-    
-    static Q_DECL_CONSTEXPR int baseWindowWidth()
-    {
-        return 800;
-    }
-    
-    static Q_DECL_CONSTEXPR int baseWindowHeight()
-    {
-        return 600;
+        return 85.0511;
     }
     
     /* Distance between mouse and object that object is considered
        to be under mouse, in pixels. */
-    static Q_DECL_CONSTEXPR qreal mouseOnObject()
+    static constexpr qreal mouseOnObject()
     {
         return 15.0;
     }
     
     /* User won't be able to zoom below this value */
-    static Q_DECL_CONSTEXPR int zoomMinimum()
+    static constexpr int zoomMinimum()
     {
         return 1;
     }
     
+    /* Per-step zoom intensivity */
+    static constexpr int zoomCoefficient()
+    {
+        return 30;
+    }
+    
     /* User won't be able to zoom above this value */
-    static Q_DECL_CONSTEXPR int zoomMaximum()
+    static constexpr int zoomMaximum()
     {
         return 1500;
     }
     
-    static Q_DECL_CONSTEXPR qreal zoomNormalizeCoef()
+    static constexpr qreal zoomNormalizeCoef()
     {
         return 0.5;
     }
     
-    static Q_DECL_CONSTEXPR qreal zoomBase()
+    static constexpr qreal zoomBase()
     {
         return 1.1;
     }
     
-    static Q_DECL_CONSTEXPR qreal zoomDefault()
+    static constexpr qreal zoomDefault()
     {
 #ifdef Q_OS_ANDROID
         return 3.0;
@@ -92,25 +84,18 @@ public:
 #endif
     }
     
-    /* TODO Qt 5.4 Remove */
-#ifndef Q_OS_ANDROID
-    static const QGLFormat& glFormat();
-#endif
-    
-    static const QString& emptyAirportIcon();
-    static const QString& activeAirportIcon();
-    static const QString& activeStaffedAirportIcon();
-    
-    static const QColor& pilotPen();
-    static const QColor& airportPen();
-    
-    static const QImage& pilotLabelBackground();
-    static const QImage& airportLabelBackground();
-    static const QImage& firLabelBackground();
-    
-    static const QFont& pilotFont();
-    static const QFont& airportFont();
-    static const QFont& firFont();
+    /**
+     * Returns prefix path for pixmaps that should be used or
+     * the current device, depending on the DPI.
+     * 
+     * Possible values:
+     * * mdpi
+     * * hdpi
+     * * xhdpi
+     * * xxhdpi
+     * * xxxhdpi
+     */
+    static QString generalizedDensity();
     
     /* Map layers */
     enum MapLayers {

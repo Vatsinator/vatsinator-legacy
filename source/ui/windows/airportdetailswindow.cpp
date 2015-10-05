@@ -1,6 +1,6 @@
 /*
     airportdetailswindow.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +19,10 @@
 #include <QtWidgets>
 
 #include "db/airportdatabase.h"
+#include "models/atctablemodel.h"
+#include "models/flighttablemodel.h"
+#include "models/metarlistmodel.h"
+#include "models/roles.h"
 #include "network/metarupdater.h"
 #include "network/weatherforecastdownloader.h"
 #include "plugins/atcbookingtablemodel.h"
@@ -32,14 +36,9 @@
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
-#include "ui/models/atctablemodel.h"
-#include "ui/models/flighttablemodel.h"
-#include "ui/models/metarlistmodel.h"
-#include "ui/models/roles.h"
 #include "ui/widgets/mapwidget.h"
 #include "ui/widgets/weatherforecastwidget.h"
-#include "ui/windows/atcdetailswindow.h"
-#include "ui/windows/flightdetailswindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/airport.h"
 #include "vatsimdata/client.h"
@@ -68,7 +67,6 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
     AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     BookedATCTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    connect(qApp, &QCoreApplication::aboutToQuit, this, &AirportDetailsWindow::close);
     connect(InboundTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
     connect(OutboundTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
     connect(AtcTable, &QTableView::doubleClicked, this, &AirportDetailsWindow::__showDetails);
@@ -124,8 +122,8 @@ AirportDetailsWindow::showEvent(QShowEvent* event)
     connect(wfd, &WeatherForecastDownloader::finished, this, &AirportDetailsWindow::__updateForecast);
     
     WeatherForecastRequest* request = new WeatherForecastRequest(__airport->icao());
-    request->setCity(QString::fromUtf8(__airport->data()->city));
-    request->setCountry(QString::fromUtf8(__airport->data()->country));
+    request->setCity(__airport->city());
+    request->setCountry(__airport->country());
     request->setPosition(__airport->position());
     
     wfd->download(request);
@@ -140,35 +138,26 @@ AirportDetailsWindow::showEvent(QShowEvent* event)
 void
 AirportDetailsWindow::__fillLabels()
 {
+    //: %1 is an ICAO code of the airport.
     setWindowTitle(tr("%1 - airport details").arg(__airport->icao()));
     
-    if (!QString(__airport->data()->iata).isEmpty()) {
-        CodesLabel->setText(QString("%1 / %2").arg(QString(__airport->data()->icao),
-                            QString(__airport->data()->iata)));
-    } else
-        CodesLabel->setText(QString(__airport->data()->icao));
-        
-    NameLabel->setText(QString("%1, %2").arg(QString::fromUtf8(__airport->data()->name),
-                       QString::fromUtf8(__airport->data()->city)));
-                       
-    // fill "Airport info" tab
-    FullNameLabel->setText(QString::fromUtf8(__airport->data()->name));
-    CityLabel->setText(QString::fromUtf8(__airport->data()->city));
-    CountryLabel->setText(QString::fromUtf8(__airport->data()->country));
-    AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->data()->altitude)));
+    if (!QString(__airport->iata()).isEmpty())
+        CodesLabel->setText(QStringLiteral("%1 / %2").arg(__airport->icao(), __airport->iata()));
+    else
+        CodesLabel->setText(__airport->icao());
     
-    // If METAR is available, set it. Otherwise, request it.
-    auto matches = vApp()->metarUpdater()->model()->match(
-                       vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
-                       
-    if (matches.length() > 0) {
-        Metar metar = matches.first().data(MetarRole).value<Metar>();
-        MetarLabel->setText(metar.metar());
-    } else
-        vApp()->metarUpdater()->fetch(__airport->icao());
-        
-    connect(vApp()->metarUpdater()->model(), &MetarListModel::dataChanged, this, &AirportDetailsWindow::__metarUpdated);
-    connect(vApp()->metarUpdater()->model(), &MetarListModel::rowsInserted, this, &AirportDetailsWindow::__metarUpdated);
+    NameLabel->setText(QStringLiteral("%1, %2").arg(__airport->name(), __airport->city()));
+    
+    // fill "Airport info" tab
+    FullNameLabel->setText(__airport->name());
+    CityLabel->setText(__airport->city());
+    CountryLabel->setText(__airport->country());
+    //: ft - feet
+    AltitudeLabel->setText(tr("%1 ft").arg(QString::number(__airport->altitude())));
+    
+    Metar* metar = vApp()->metarUpdater()->fetch(__airport->icao());
+    MetarLabel->setText(metar->metar());
+    connect(metar, &Metar::metarChanged, this, &AirportDetailsWindow::__updateMetarLabel);
 }
 
 void
@@ -196,7 +185,7 @@ AirportDetailsWindow::__showDetails(QModelIndex index)
 {
     Q_ASSERT(index.data(InstancePointerRole).isValid());
     Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
-    vApp()->userInterface()->showDetails(client);
+    wui()->showClientDetails(client);
 }
 
 void
@@ -209,15 +198,7 @@ AirportDetailsWindow::__goToNotam(QModelIndex index)
 }
 
 void
-AirportDetailsWindow::__metarUpdated()
+AirportDetailsWindow::__updateMetarLabel(const QString& metar)
 {
-    auto matches = vApp()->metarUpdater()->model()->match(
-                       vApp()->metarUpdater()->model()->index(0), MetarRole, __airport->icao(), 1);
-                       
-    if (matches.length() > 0) {
-        Metar metar = matches.first().data(MetarRole).value<Metar>();
-        
-        if (metar.metar() != MetarLabel->text())
-            MetarLabel->setText(metar.metar());
-    }
+    MetarLabel->setText(metar);
 }

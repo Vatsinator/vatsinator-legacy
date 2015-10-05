@@ -50,6 +50,17 @@
 WidgetsUserInterface::WidgetsUserInterface(QObject* parent):
     UserInterface(parent) {}
 
+WidgetsUserInterface::~WidgetsUserInterface()
+{
+    delete __aboutWindow;
+    delete __metarsWindow;
+    delete __databaseWindow;
+    delete __atcListWindow;
+    delete __flightListWindow;
+    delete __settingsWindow;
+    delete __vatsinatorWindow;
+}
+
 void
 WidgetsUserInterface::initialize()
 {
@@ -57,13 +68,13 @@ WidgetsUserInterface::initialize()
     __metarsWindow = new MetarsWindow();
     __databaseWindow = new DatabaseWindow();
     __atcListWindow = new AtcListWindow();
-    __flightsListWindow = new FlightListWindow();
+    __flightListWindow = new FlightListWindow();
     __settingsWindow = new SettingsWindow();
     __vatsinatorWindow = new VatsinatorWindow();
     
     connect(vApp()->resourceManager(), &ResourceManager::outdated,
             this, &WidgetsUserInterface::__showNewVersionDialog);
-            
+    
     emit initialized();
     
     mainWindow()->show();
@@ -93,8 +104,8 @@ WidgetsUserInterface::databaseWindow()
 FlightListWindow*
 WidgetsUserInterface::flightListWindow()
 {
-    Q_ASSERT(__flightsListWindow);
-    return __flightsListWindow;
+    Q_ASSERT(__flightListWindow);
+    return __flightListWindow;
 }
 
 MetarsWindow*
@@ -122,15 +133,47 @@ void
 WidgetsUserInterface::showAppRestartDialog()
 {
     AppRestartDialog* dialog = new AppRestartDialog();
-    
-    connect(dialog,       SIGNAL(accepted()),
-            vApp(),       SLOT(restart()));
-    connect(dialog,       SIGNAL(finished(int)),
-            dialog,       SLOT(deleteLater()));
-            
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(dialog, &AppRestartDialog::accepted, vApp(), &VatsinatorApplication::restart);
     dialog->show();
     dialog->raise();
     dialog->activateWindow();
+}
+
+void
+WidgetsUserInterface::showClientDetails(const Client* client)
+{
+    if (const Pilot* p = qobject_cast<const Pilot*>(client)) {
+        FlightDetailsWindow* w = new FlightDetailsWindow(p);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    } else if (const Controller* c = qobject_cast<const Controller*>(client)) {
+        AtcDetailsWindow* w = new AtcDetailsWindow(c);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        w->show();
+    }
+}
+
+void
+WidgetsUserInterface::showAirportDetails(const Airport* airport)
+{
+    AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
+    ap->setAttribute(Qt::WA_DeleteOnClose);
+    ap->show();
+}
+
+void
+WidgetsUserInterface::showFirDetails(const Fir* fir)
+{
+    FirDetailsWindow* w = new FirDetailsWindow(fir);
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
+}
+
+void
+WidgetsUserInterface::showMetar(const QString& icao)
+{
+    metarsWindow()->show(icao);
 }
 
 void
@@ -155,84 +198,6 @@ WidgetsUserInterface::warning(const QString& message)
     qWarning("%s", qPrintable(message));
     
     msgBox.exec();
-}
-
-void
-WidgetsUserInterface::statusError()
-{
-    StatusFetchErrorDialog dialog;
-    dialog.exec();
-}
-
-void
-WidgetsUserInterface::dataError()
-{
-    DataFetchErrorDialog dialog;
-    dialog.exec();
-    
-    DecisionEvent* e;
-    
-    if (dialog.clickedButton() == dialog.again())
-        e = new DecisionEvent("data_fetch_error", DecisionEvent::TryAgain);
-    else
-        e = new DecisionEvent("data_fetch_error", DecisionEvent::Declined);
-        
-    QCoreApplication::postEvent(vApp()->vatsimDataHandler(), e);
-}
-
-void
-WidgetsUserInterface::showVatsimMessage(const QString& message)
-{
-    QString hash = QString::number(qHash(message));
-    QSettings s;
-    
-    if (s.value("VatsimMessages/" % hash, false).toBool())
-        return;
-        
-    VatsimMessageDialog* dialog = new VatsimMessageDialog(message);
-    
-    connect(dialog,       SIGNAL(finished(int)),
-            dialog,       SLOT(deleteLater()));
-            
-    dialog->show();
-    dialog->raise();
-    dialog->activateWindow();
-}
-
-void
-WidgetsUserInterface::showDetails(const Airport* airport)
-{
-    AirportDetailsWindow* ap = new AirportDetailsWindow(airport);
-    ap->setAttribute(Qt::WA_DeleteOnClose);
-    ap->show();
-}
-
-void
-WidgetsUserInterface::showDetails(const Client* client)
-{
-    if (const Pilot* p = qobject_cast<const Pilot*>(client)) {
-        FlightDetailsWindow* w = new FlightDetailsWindow(p);
-        w->setAttribute(Qt::WA_DeleteOnClose);
-        w->show();
-    } else if (const Controller* c = qobject_cast<const Controller*>(client)) {
-        AtcDetailsWindow* w = new AtcDetailsWindow(c);
-        w->setAttribute(Qt::WA_DeleteOnClose);
-        w->show();
-    }
-}
-
-void
-WidgetsUserInterface::showDetails(const Fir* fir)
-{
-    FirDetailsWindow* w = new FirDetailsWindow(fir);
-    w->setAttribute(Qt::WA_DeleteOnClose);
-    w->show();
-}
-
-void
-WidgetsUserInterface::showMetar(const QString& metar)
-{
-    metarsWindow()->show(metar);
 }
 
 void
@@ -261,6 +226,43 @@ WidgetsUserInterface::ensureMainWindowIsActive()
 {
     mainWindow()->show();
     mainWindow()->activateWindow();
+}
+
+void
+WidgetsUserInterface::vatsimEvent(VatsimEvent* event)
+{
+    switch (event->type()) {
+        case VatsimEvent::Message: {
+            QString hash = QString::number(qHash(event->message()));
+            QSettings s;
+            
+            if (s.value("VatsimMessages/" % hash, false).toBool())
+                return;
+            
+            VatsimMessageDialog* dialog = new VatsimMessageDialog(event->message());
+            dialog->setAttribute(Qt::WA_DeleteOnClose);
+            dialog->show();
+            dialog->raise();
+            dialog->activateWindow();
+            break;
+        }
+        
+        case VatsimEvent::StatusError: {
+            StatusFetchErrorDialog dialog;
+            dialog.exec();
+            break;
+        }
+        
+        case VatsimEvent::DataError: {
+            DataFetchErrorDialog dialog;
+            dialog.exec();
+            
+            if (dialog.clickedButton() == dialog.again())
+                vApp()->vatsimDataHandler()->requestDataUpdate();
+            
+            break;
+        }
+    }
 }
 
 void
