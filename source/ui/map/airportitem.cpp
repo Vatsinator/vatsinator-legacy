@@ -97,6 +97,12 @@ AirportItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags 
     }
 }
 
+int
+AirportItem::z() const
+{
+    return 2;
+}
+
 void
 AirportItem::__loadIcon() const
 {

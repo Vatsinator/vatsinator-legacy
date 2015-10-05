@@ -88,6 +88,12 @@ FlightItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags f
     }
 }
 
+int
+FlightItem::z() const
+{
+    return 3;
+}
+
 void
 FlightItem::__prepareModel() const
 {

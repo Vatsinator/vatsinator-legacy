@@ -138,6 +138,13 @@ public:
     void inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const;
     
     /**
+     * Returns a list of all items that exist within the provided boundaries.
+     * 
+     * \param rect The bounding rectangle used to select items.
+     */
+    QList<const MapItem*> itemsInRect(const QRectF& rect) const;
+    
+    /**
      * Executes the provided function for each area that is visible in the given
      * \c rect.
      */

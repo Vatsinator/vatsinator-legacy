@@ -74,6 +74,11 @@ public:
      */
     virtual void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const = 0;
     
+    /**
+     * Returns the z-stacking of the item.
+     */
+    virtual int z() const = 0;
+    
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MapItem::DrawFlags)

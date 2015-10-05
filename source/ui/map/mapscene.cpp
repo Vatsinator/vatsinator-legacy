@@ -103,6 +103,24 @@ MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> functio
                   });
 }
 
+QList<const MapItem*>
+MapScene::itemsInRect(const QRectF& rect) const
+{
+    Q_ASSERT(rect.bottomLeft().x() < rect.topRight().x());
+    Q_ASSERT(rect.bottomLeft().y() < rect.topRight().y());
+    
+    QList<const MapItem*> items;
+    
+    std::for_each(spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight()),
+                  spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()),
+                  [&items](auto it) {
+                      if (it.second->isVisible())
+                          items << it.second;
+                  });
+    
+    return items;
+}
+
 void
 MapScene::inRect(const QRectF& rect, std::function<void(const MapArea*)> function) const
 {

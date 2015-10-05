@@ -90,6 +90,12 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     Q_UNUSED(flags);
 }
 
+int
+FirItem::z() const
+{
+    return 1;
+}
+
 void
 FirItem::__prepareLabel()
 {

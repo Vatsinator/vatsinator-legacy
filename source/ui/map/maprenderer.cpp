@@ -153,7 +153,12 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
         area->draw(painter, transform);
     });
     
-    scene()->inRect(__screen, [painter, &transform, &selectedItems](const MapItem* item) {
+    auto items = scene()->itemsInRect(__screen);
+    std::sort(items.begin(), items.end(), [](auto a, auto b) {
+        return a->z() < b->z();
+    });
+    
+    std::for_each(items.begin(), items.end(), [painter, &transform, &selectedItems](auto item) {
         item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));
     });
 }

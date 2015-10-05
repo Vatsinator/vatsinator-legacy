@@ -63,6 +63,11 @@ public:
     void draw(QPainter* painter, const WorldTransform& transform, DrawFlags flags) const override;
     
     /**
+     * \copydoc MapItem::z()
+     */
+    int z() const override;
+    
+    /**
      * Gives direct access to the Airport object that this item represents
      * on the map.
      */
