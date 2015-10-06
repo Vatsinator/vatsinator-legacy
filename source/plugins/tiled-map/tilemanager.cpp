@@ -31,12 +31,7 @@
 
 #include "tilemanager.h"
 
-Q_CONSTEXPR quint32 TileWidth = /* in pixels */
-#ifdef Q_OS_ANDROID
-    512;
-#else
-    256;
-#endif
+Q_CONSTEXPR quint32 TileWidth = 256; /* px */
     
 Q_CONSTEXPR int Downloaders = 4; /* number of tile downloaders */
 
@@ -209,6 +204,10 @@ TileManager::__calculateTileZoom()
     
     qreal dist = VatsimDataHandler::nmDistance(p2, p1);
     qreal nmPerPix = dist / TileWidth;
+    
+#ifdef Q_OS_ANDROID
+    nmPerPix *= 2; /* less tiles = better performance */
+#endif
     
     /* K = 156543.03 for meters. This is for NM. */
     constexpr qreal K = 84.5264761719;

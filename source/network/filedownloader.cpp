@@ -63,14 +63,20 @@ namespace {
 
 FileDownloader::FileDownloader(QObject* parent) :
     QObject(parent),
+    __nam(new QNetworkAccessManager),
     __reply(nullptr)
 {    
-    connect(&__nam, &QNetworkAccessManager::networkAccessibleChanged, [this](QNetworkAccessManager::NetworkAccessibility accessible) {
+    connect(__nam.data(), &QNetworkAccessManager::networkAccessibleChanged, [this](QNetworkAccessManager::NetworkAccessibility accessible) {
         if (accessible == QNetworkAccessManager::NotAccessible) {
             qWarning("Network not accessible");
             /* TODO Handle network accessibility */
         }
     });
+}
+
+FileDownloader::~FileDownloader()
+{
+
 }
 
 void
@@ -108,7 +114,7 @@ FileDownloader::__startRequest()
     
     QNetworkRequest request(url);
     request.setRawHeader("User-Agent", "Vatsinator/" VATSINATOR_VERSION);
-    __reply = __nam.get(request);
+    __reply = __nam->get(request);
     
     connect(__reply, &QNetworkReply::finished, this, &FileDownloader::__finished);
     connect(__reply, &QNetworkReply::readyRead, this, &FileDownloader::__readyRead);

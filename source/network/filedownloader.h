@@ -59,6 +59,8 @@ public:
      */
     FileDownloader(QObject* parent = nullptr);
     
+    virtual ~FileDownloader();
+    
     /**
      * If the requests queue is empty, downloads the given file
      * immediately. Otherwise, enqueues the url.
@@ -96,7 +98,7 @@ private:
     QQueue<QUrl> __urls;
     QFile __output;
     
-    QNetworkAccessManager __nam;
+    QSharedPointer<QNetworkAccessManager> __nam;
     QNetworkReply*        __reply;
 };
 
