@@ -535,22 +535,22 @@
     <message>
         <location filename="../ui/qml/FlightDetails.qml" line="140"/>
         <source>Aircraft</source>
-        <translation type="unfinished"/>
+        <translation>Αεροσκάφος</translation>
     </message>
     <message>
         <location filename="../ui/qml/FlightDetails.qml" line="157"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Υψόμετρο</translation>
     </message>
     <message>
         <location filename="../ui/qml/FlightDetails.qml" line="174"/>
         <source>Ground speed</source>
-        <translation type="unfinished"/>
+        <translation>Ταχύτητα εδάφους</translation>
     </message>
     <message>
         <location filename="../ui/qml/FlightDetails.qml" line="191"/>
         <source>Squawk</source>
-        <translation type="unfinished"/>
+        <translation>Squawk</translation>
     </message>
 </context>
 <context>
@@ -786,7 +786,7 @@
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="79"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>Τελευταία ενημέρωση: %1 UTC</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
@@ -829,12 +829,12 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="58"/>
         <source>Airport</source>
-        <translation type="unfinished"/>
+        <translation>Αεροδρόμιο</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="65"/>
         <source>Pilot</source>
-        <translation type="unfinished"/>
+        <translation>Πιλότος</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="72"/>
@@ -852,7 +852,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="377"/>
         <source>%1 metar</source>
-        <translation type="unfinished"/>
+        <translation>%1 metar</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="382"/>
@@ -872,22 +872,22 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="431"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Αναχωρήσεις:: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="437"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Αφίξεις: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="465"/>
         <source>Ground speed: %1 kts</source>
-        <translation type="unfinished"/>
+        <translation>Ταχύτητα εδάφους: %1 kts</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
         <source>Altitude: %1 ft</source>
-        <translation type="unfinished"/>
+        <translation>Υψόμετρο: %1 ft</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="477"/>

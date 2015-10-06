@@ -535,7 +535,7 @@
     <message>
         <location filename="../ui/qml/FlightDetails.qml" line="140"/>
         <source>Aircraft</source>
-        <translation type="unfinished"/>
+        <translation>Tipo aeronave</translation>
     </message>
     <message>
         <location filename="../ui/qml/FlightDetails.qml" line="157"/>
@@ -786,7 +786,7 @@
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="79"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>Última actualização: %1 UTC</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
@@ -829,7 +829,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="58"/>
         <source>Airport</source>
-        <translation type="unfinished"/>
+        <translation>Aeroporto</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="65"/>
@@ -852,7 +852,7 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="377"/>
         <source>%1 metar</source>
-        <translation type="unfinished"/>
+        <translation>METAR %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="382"/>
@@ -872,22 +872,22 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="431"/>
         <source>Departures: %1</source>
-        <translation type="unfinished"/>
+        <translation>Partidas: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="437"/>
         <source>Arrivals: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chegadas: %1</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="465"/>
         <source>Ground speed: %1 kts</source>
-        <translation type="unfinished"/>
+        <translation>Velocidade: %1 kts</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
         <source>Altitude: %1 ft</source>
-        <translation type="unfinished"/>
+        <translation>Altitude: %1 ft</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="477"/>

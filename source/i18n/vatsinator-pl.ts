@@ -241,12 +241,12 @@
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="133"/>
         <source>%n arrival(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n przylot</numerusform><numerusform>%n przyloty</numerusform><numerusform>%n przylotów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="134"/>
         <source>%n departure(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n odlot</numerusform><numerusform>%n odloty</numerusform><numerusform>%n odlotów</numerusform></translation>
     </message>
 </context>
 <context>
@@ -781,7 +781,7 @@
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="38"/>
         <source>Updating...</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizowanie...</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="79"/>
@@ -791,22 +791,22 @@
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
         <source>%n client(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n klient</numerusform><numerusform>%n klientów</numerusform><numerusform>%n klientów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="132"/>
         <source>%n pilot(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n pilot</numerusform><numerusform>%n pilotów</numerusform><numerusform>%n pilotów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="133"/>
         <source>%n ATC(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n kontroler</numerusform><numerusform>%n kontrolerów</numerusform><numerusform>%n kontrolerów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="134"/>
         <source>%n observer(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n obserwator</numerusform><numerusform>%n obserwatorów</numerusform><numerusform>%n obserwatorów</numerusform></translation>
     </message>
 </context>
 <context>
@@ -819,12 +819,12 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="34"/>
         <source>FIR</source>
-        <translation type="unfinished"/>
+        <translation>FIR</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="41"/>
         <source>Fonts:</source>
-        <translation type="unfinished"/>
+        <translation>Czcionki:</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="58"/>
@@ -839,7 +839,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="72"/>
         <source>Map type:</source>
-        <translation type="unfinished"/>
+        <translation>Rodzaj mapy:</translation>
     </message>
 </context>
 <context>
@@ -1164,12 +1164,12 @@
     <message>
         <location filename="../plugins/tiled-map/tiledmapdrawer.cpp" line="50"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Jasna</translation>
     </message>
     <message>
         <location filename="../plugins/tiled-map/tiledmapdrawer.cpp" line="50"/>
         <source>Dark</source>
-        <translation type="unfinished"/>
+        <translation>Ciemna</translation>
     </message>
 </context>
 <context>
