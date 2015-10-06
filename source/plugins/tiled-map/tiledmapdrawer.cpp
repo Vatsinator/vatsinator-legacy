@@ -32,9 +32,9 @@
 TiledMapDrawer::TiledMapDrawer(QObject* parent) :
     QObject(parent),
     __tiles(nullptr),
-    __providers({
+    __providers{
         TileProvider("CartoDB", "http://<prefix>.basemaps.cartocdn.com", "light_nolabels/<zoom>/<x>/<y>.png"), // light
-        TileProvider("CartoDB", "http://<prefix>.basemaps.cartocdn.com", "dark_nolabels/<zoom>/<x>/<y>.png") }) // dark
+        TileProvider("CartoDB", "http://<prefix>.basemaps.cartocdn.com", "dark_nolabels/<zoom>/<x>/<y>.png") } // dark
 {
     
 }

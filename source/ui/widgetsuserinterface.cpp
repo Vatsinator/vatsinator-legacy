@@ -58,7 +58,6 @@ WidgetsUserInterface::~WidgetsUserInterface()
     delete __atcListWindow;
     delete __flightListWindow;
     delete __settingsWindow;
-    delete __vatsinatorWindow;
 }
 
 void
