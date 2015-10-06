@@ -134,8 +134,9 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="143"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="142"/>
         <source>%1 - airport details</source>
+        <extracomment>%1 is an ICAO code of the airport.</extracomment>
         <translation>%1 - 机场详情</translation>
     </message>
     <message>
@@ -204,60 +205,48 @@
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="158"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="156"/>
         <source>%1 ft</source>
+        <extracomment>ft - feet</extracomment>
         <translation>%1 英尺</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="184"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="173"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
 </context>
 <context>
-    <name>AirportItem</name>
-    <message>
-        <location filename="../ui/map/airportitem.cpp" line="206"/>
-        <source>Departures: %1</source>
-        <translation>离场: %1</translation>
-    </message>
-    <message>
-        <location filename="../ui/map/airportitem.cpp" line="213"/>
-        <source>Arrivals: %1</source>
-        <translation>到达: %1</translation>
-    </message>
-</context>
-<context>
     <name>AirportTableModel</name>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="122"/>
+        <location filename="../models/airporttablemodel.cpp" line="114"/>
         <source>Airport</source>
         <translation>机场</translation>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="125"/>
+        <location filename="../models/airporttablemodel.cpp" line="117"/>
         <source>ATC</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="128"/>
+        <location filename="../models/airporttablemodel.cpp" line="120"/>
         <source>Inbound</source>
         <translation>进港</translation>
     </message>
     <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="131"/>
+        <location filename="../models/airporttablemodel.cpp" line="123"/>
         <source>Outbound</source>
         <translation>出港</translation>
     </message>
-    <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="142"/>
-        <source>Arrivals: %1</source>
-        <translation>到达: %1</translation>
+    <message numerus="yes">
+        <location filename="../models/airporttablemodel.cpp" line="133"/>
+        <source>%n arrival(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
-    <message>
-        <location filename="../ui/models/airporttablemodel.cpp" line="144"/>
-        <source>Departures: %1</source>
-        <translation>离场: %1</translation>
+    <message numerus="yes">
+        <location filename="../models/airporttablemodel.cpp" line="134"/>
+        <source>%n departure(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -338,36 +327,23 @@
         <source>%1 - ATC details</source>
         <translation>%1 - ATC详情</translation>
     </message>
-    <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="101"/>
-        <source>N/A</source>
-        <translation>N/A</translation>
-    </message>
 </context>
 <context>
     <name>AtcTableModel</name>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="148"/>
+        <location filename="../models/atctablemodel.cpp" line="148"/>
         <source>Callsign</source>
         <translation>呼号</translation>
     </message>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="151"/>
+        <location filename="../models/atctablemodel.cpp" line="151"/>
         <source>Name</source>
         <translation>你改名</translation>
     </message>
     <message>
-        <location filename="../ui/models/atctablemodel.cpp" line="154"/>
+        <location filename="../models/atctablemodel.cpp" line="154"/>
         <source>Frequency</source>
         <translation>频率</translation>
-    </message>
-</context>
-<context>
-    <name>ColorButton</name>
-    <message>
-        <location filename="../ui/buttons/colorbutton.cpp" line="118"/>
-        <source>Select color</source>
-        <translation>选择颜色</translation>
     </message>
 </context>
 <context>
@@ -493,17 +469,12 @@
 <context>
     <name>FileDownloader</name>
     <message>
-        <location filename="../network/filedownloader.cpp" line="48"/>
-        <source>Temporary directory (%1) is not readable!</source>
-        <translation>临时文件目录 (%1)不能读取！</translation>
-    </message>
-    <message>
-        <location filename="../network/filedownloader.cpp" line="79"/>
+        <location filename="../network/filedownloader.cpp" line="116"/>
         <source>Could not open file (%1) for writing!</source>
         <translation>文件(%1)不能写入！</translation>
     </message>
     <message>
-        <location filename="../network/filedownloader.cpp" line="108"/>
+        <location filename="../network/filedownloader.cpp" line="144"/>
         <source>Error downloading file: %1</source>
         <translation>不能下载文件: %1</translation>
     </message>
@@ -511,7 +482,7 @@
 <context>
     <name>FirDatabase</name>
     <message>
-        <location filename="../db/firdatabase.cpp" line="59"/>
+        <location filename="../db/firdatabase.cpp" line="60"/>
         <source>File %1 could not be opened! Please reinstall the application.</source>
         <translation>文件 %1 无法打开！请重新安装本程序。</translation>
     </message>
@@ -549,21 +520,44 @@
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="94"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="90"/>
         <source>%1 - FIR details</source>
         <translation>%1 - FIR 详情</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="96"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="92"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - ARTCC 详情</translation>
+    </message>
+</context>
+<context>
+    <name>FlightDetails</name>
+    <message>
+        <location filename="../ui/qml/FlightDetails.qml" line="140"/>
+        <source>Aircraft</source>
+        <translation>机型</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/FlightDetails.qml" line="157"/>
+        <source>Altitude</source>
+        <translation>高度</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/FlightDetails.qml" line="174"/>
+        <source>Ground speed</source>
+        <translation>地速</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/FlightDetails.qml" line="191"/>
+        <source>Squawk</source>
+        <translation>应答机</translation>
     </message>
 </context>
 <context>
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="189"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="149"/>
         <source>%1 - flight details</source>
         <translation>%1 - 航班详情</translation>
     </message>
@@ -585,27 +579,27 @@
         <translation>预计到达时间（ETA）</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="543"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="595"/>
         <source>Origin</source>
         <translation>出发机场</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="615"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="667"/>
         <source>Destination</source>
         <translation>到达机场</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="684"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="736"/>
         <source>Route</source>
         <translation>航路</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="726"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="778"/>
         <source>Remarks</source>
         <translation>备注</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="486"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="522"/>
         <source>Flight plan</source>
         <translation>飞行计划</translation>
     </message>
@@ -622,129 +616,110 @@
         <translation>计划到达时间</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="761"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="813"/>
         <source>Track this flight</source>
         <translation>跟踪该航班</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="768"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="820"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.ui" line="775"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="827"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="68"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="458"/>
         <source>Pilot</source>
         <translation>飞行员</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="69"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="465"/>
         <source>Altitude</source>
         <translation>高度</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="70"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="472"/>
         <source>Ground speed</source>
         <translation>地速</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="71"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="479"/>
         <source>Heading</source>
         <translation>航向</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="72"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="486"/>
         <source>Flight phase</source>
         <translation>飞行阶段</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="73"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="493"/>
         <source>Server</source>
         <translation>服务器</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="74"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="500"/>
         <source>Online from</source>
         <translation>登录时间</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="75"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="507"/>
         <source>Squawk</source>
         <translation>应答机</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="76"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="514"/>
         <source>Baro</source>
         <translation>修正海压</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="77"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="552"/>
         <source>Flight rules</source>
         <translation>飞行规则</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="78"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="545"/>
         <source>Aircraft</source>
         <translation>机型</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="79"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="570"/>
         <source>TAS</source>
         <translation>计划空速</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="80"/>
+        <location filename="../ui/windows/flightdetailswindow.ui" line="563"/>
         <source>Cruise altitude</source>
         <translation> 高度</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="221"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
         <source>%1 feet</source>
         <translation>%1 英尺</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="222"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="239"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="202"/>
         <source>%1 kts</source>
         <translation>%1 节</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="226"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="189"/>
         <source>airborne</source>
         <translation>已起飞</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="228"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="191"/>
         <source>departing</source>
         <translation>正在离场</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="230"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="193"/>
         <source>arrived</source>
         <translation>已到达</translation>
-    </message>
-</context>
-<context>
-    <name>FlightItem</name>
-    <message>
-        <location filename="../ui/map/flightitem.cpp" line="185"/>
-        <location filename="../ui/map/flightitem.cpp" line="193"/>
-        <source>(unknown)</source>
-        <translation>(无法识别)</translation>
-    </message>
-    <message>
-        <location filename="../ui/map/flightitem.cpp" line="195"/>
-        <source>Ground speed: %1 kts</source>
-        <translation>地速: %1 节</translation>
-    </message>
-    <message>
-        <location filename="../ui/map/flightitem.cpp" line="196"/>
-        <source>Altitude: %1 ft</source>
-        <translation>高度: %1 英尺</translation>
     </message>
 </context>
 <context>
@@ -758,27 +733,27 @@
 <context>
     <name>FlightTableModel</name>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="182"/>
+        <location filename="../models/flighttablemodel.cpp" line="181"/>
         <source>Callsign</source>
         <translation>呼号</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="185"/>
+        <location filename="../models/flighttablemodel.cpp" line="184"/>
         <source>Name</source>
         <translation>你改名</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="188"/>
+        <location filename="../models/flighttablemodel.cpp" line="187"/>
         <source>From</source>
         <translation>出发</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="191"/>
+        <location filename="../models/flighttablemodel.cpp" line="190"/>
         <source>To</source>
         <translation>到达</translation>
     </message>
     <message>
-        <location filename="../ui/models/flighttablemodel.cpp" line="194"/>
+        <location filename="../models/flighttablemodel.cpp" line="193"/>
         <source>Aircraft</source>
         <translation>机型</translation>
     </message>
@@ -802,128 +777,140 @@
     </message>
 </context>
 <context>
+    <name>MapInfoWidget</name>
+    <message>
+        <location filename="../ui/widgets/mapinfowidget.cpp" line="38"/>
+        <source>Updating...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapinfowidget.cpp" line="79"/>
+        <source>Last update: %1 UTC</source>
+        <translation>最近更新时间: %1 UTC</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
+        <source>%n client(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/widgets/mapinfowidget.cpp" line="132"/>
+        <source>%n pilot(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/widgets/mapinfowidget.cpp" line="133"/>
+        <source>%n ATC(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ui/widgets/mapinfowidget.cpp" line="134"/>
+        <source>%n observer(s)</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+</context>
+<context>
     <name>MapPage</name>
     <message>
-        <location filename="../ui/pages/mappage.cpp" line="64"/>
+        <location filename="../ui/pages/mappage.cpp" line="51"/>
         <source>Map</source>
         <translation>地图</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="14"/>
-        <source>Zooming intensity:</source>
-        <translation>缩放速度:</translation>
+        <location filename="../ui/pages/mappage.ui" line="34"/>
+        <source>FIR</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="44"/>
-        <source>Unstaffed FIR borders color:</source>
-        <translation>无管制的FIR边界颜色:</translation>
+        <location filename="../ui/pages/mappage.ui" line="41"/>
+        <source>Fonts:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="74"/>
-        <source>Staffed FIR background color:</source>
-        <translation>有管制的FIR背景颜色:</translation>
+        <location filename="../ui/pages/mappage.ui" line="58"/>
+        <source>Airport</source>
+        <translation>机场</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="120"/>
-        <location filename="../ui/pages/mappage.ui" line="199"/>
-        <source>Alpha channel:</source>
-        <translation>Alpha通道</translation>
+        <location filename="../ui/pages/mappage.ui" line="65"/>
+        <source>Pilot</source>
+        <translation>飞行员</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="153"/>
-        <source>Staffed UIR background color:</source>
-        <translation>有管制的UIR背景颜色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="232"/>
-        <source>FIR font:</source>
-        <translation>FIR字体:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="250"/>
-        <source>Airport font:</source>
-        <translation>机场字体:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="268"/>
-        <source>Pilot font:</source>
-        <translation>飞行员字体:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="286"/>
-        <source>Approach circle color:</source>
-        <translation>进近圆弧颜色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="316"/>
-        <source>Seas color:</source>
-        <translation>海洋颜色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="346"/>
-        <source>Lands color:</source>
-        <translation>陆地颜色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="376"/>
-        <source>Origin-to-pilot line color:</source>
-        <translation>起飞机场与机组连线颜色:</translation>
-    </message>
-    <message>
-        <location filename="../ui/pages/mappage.ui" line="406"/>
-        <source>Pilot-to-destination line color:</source>
-        <translation>机组与落地机场连线颜色:</translation>
+        <location filename="../ui/pages/mappage.ui" line="72"/>
+        <source>Map type:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="111"/>
-        <source>Your system does not support required OpenGL extensions.                                       Please upgrade your graphic card driver.</source>
-        <translation>你的系统不支持OpenGL拓展。请更新你的显卡。</translation>
-    </message>
-    <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="293"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="373"/>
         <source>Airport details</source>
         <translation>机场详情:</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="306"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="377"/>
+        <source>%1 metar</source>
+        <translation>%1的METAR</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="382"/>
         <source>Controllers</source>
         <translation>管制员</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="318"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="391"/>
         <source>Arrivals</source>
         <translation>到达</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="332"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="402"/>
         <source>Departures</source>
         <translation>出发</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="355"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="431"/>
+        <source>Departures: %1</source>
+        <translation>离场: %1</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="437"/>
+        <source>Arrivals: %1</source>
+        <translation>到达: %1</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="465"/>
+        <source>Ground speed: %1 kts</source>
+        <translation>地速: %1 节</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
+        <source>Altitude: %1 ft</source>
+        <translation>高度: %1 英尺</translation>
+    </message>
+    <message>
+        <location filename="../ui/widgets/mapwidget.cpp" line="477"/>
         <source>%1 details</source>
         <translation>%1 详情</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="384"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="448"/>
         <source>Flight details</source>
         <translation>航班详情</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="426"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="346"/>
         <source>Nearby</source>
         <translation>最近的机场</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="429"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="348"/>
         <source>Flights</source>
         <translation>航班</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="443"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="357"/>
         <source>Airports</source>
         <translation>机场</translation>
     </message>
@@ -959,14 +946,6 @@
         <location filename="../ui/qml/MenuModel.qml" line="52"/>
         <source>About</source>
         <translation>关于</translation>
-    </message>
-</context>
-<context>
-    <name>MetarAction</name>
-    <message>
-        <location filename="../ui/actions/metaraction.cpp" line="22"/>
-        <source>%1 metar</source>
-        <translation>%1的METAR</translation>
     </message>
 </context>
 <context>
@@ -1038,14 +1017,6 @@
         <location filename="../ui/pages/miscellaneouspage.ui" line="83"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;了解更改Vatsinator的隐私政策&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>ModelMatcher</name>
-    <message>
-        <location filename="../ui/map/modelmatcher.cpp" line="62"/>
-        <source>File %1 could not be opened! Check file permissions or reinstall the application.</source>
-        <translation>文件 %1 无法打开！请检查文件权限或重新安装本程序。</translation>
     </message>
 </context>
 <context>
@@ -1189,6 +1160,19 @@
     </message>
 </context>
 <context>
+    <name>TiledMapDrawer</name>
+    <message>
+        <location filename="../plugins/tiled-map/tiledmapdrawer.cpp" line="50"/>
+        <source>Light</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../plugins/tiled-map/tiledmapdrawer.cpp" line="50"/>
+        <source>Dark</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ToggleInboundOutboundLinesAction</name>
     <message>
         <location filename="../ui/actions/toggleinboundoutboundlinesaction.cpp" line="26"/>
@@ -1207,19 +1191,19 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="402"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="453"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="488"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="548"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="585"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="397"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="447"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="482"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="542"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="579"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>文件 %1 无法打开！请重新安装本程序。</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="463"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="498"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="595"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="407"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="492"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="589"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>文件 %1 无法读取！请重新安装本程序。</translation>
     </message>
@@ -1240,105 +1224,85 @@
 <context>
     <name>VatsinatorWindow</name>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="61"/>
-        <source>Clients:</source>
-        <translation>客户端数量:</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="132"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="68"/>
         <source>&amp;Vatsinator</source>
         <translation>&amp;Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="152"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="88"/>
         <source>&amp;Help</source>
         <translation>&amp;帮助</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="158"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="94"/>
         <source>&amp;Settings</source>
         <translation>&amp;设置</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="172"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="108"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="187"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="123"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="199"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="135"/>
         <source>METARs...</source>
         <translation>METARs...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="214"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="150"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="226"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="162"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="237"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="173"/>
         <source>Flight list...</source>
         <translation>航班列表...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="242"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
         <source>ATC list...</source>
         <translation>ATC列表...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="253"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="189"/>
         <source>Enable auto-updates</source>
         <translation>启用自动更新</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="261"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="197"/>
         <source>Show home location</source>
         <translation>显示家乡位置</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="264"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="200"/>
         <source>Ctrl+H</source>
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.ui" line="273"/>
+        <location filename="../ui/windows/vatsinatorwindow.ui" line="209"/>
         <source>Database...</source>
         <translation>数据库</translation>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="86"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="64"/>
         <source>&amp;Menu</source>
         <translation>&amp;菜单</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="117"/>
-        <source>Last update: never</source>
-        <translation>最近更新时间: 从未</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="119"/>
-        <source>Last update: %1 UTC</source>
-        <translation>最近更新时间: %1 UTC</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="133"/>
-        <source>Clients: %1 (%2 pilots, %3 ATCs, %4 observers)</source>
-        <translation>客户端数量: %1 (%2 位飞行员，%3 位ATC，%4 位观察员)</translation>
     </message>
 </context>
 <context>
     <name>ViewPage</name>
     <message>
-        <location filename="../ui/pages/viewpage.cpp" line="50"/>
+        <location filename="../ui/pages/viewpage.cpp" line="48"/>
         <source>View</source>
         <translation>视图</translation>
     </message>
@@ -1396,14 +1360,6 @@
         <location filename="../ui/pages/viewpage.ui" line="74"/>
         <source>Inactive airports</source>
         <translation>非活动机场</translation>
-    </message>
-</context>
-<context>
-    <name>WorldMap</name>
-    <message>
-        <location filename="../db/worldmap.cpp" line="39"/>
-        <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>文件 %1 无法打开！请重新安装本程序。</translation>
     </message>
 </context>
 </TS>
