@@ -59,13 +59,21 @@ namespace {
         qDebug("FileDownloader: file %s will be downloaded to: %s", qPrintable(url.toString()), qPrintable(absPath));
         return absPath;
     }
+    
+    
+    QSharedPointer<QNetworkAccessManager> fileDownloaderNam;
 }
 
 FileDownloader::FileDownloader(QObject* parent) :
     QObject(parent),
-    __nam(new QNetworkAccessManager),
+    __nam(fileDownloaderNam),
     __reply(nullptr)
-{    
+{
+    if (!fileDownloaderNam.data()) {
+        fileDownloaderNam.reset(new QNetworkAccessManager);
+        __nam = fileDownloaderNam;
+    }
+    
     connect(__nam.data(), &QNetworkAccessManager::networkAccessibleChanged, [this](QNetworkAccessManager::NetworkAccessibility accessible) {
         if (accessible == QNetworkAccessManager::NotAccessible) {
             qWarning("Network not accessible");

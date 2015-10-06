@@ -50,6 +50,7 @@ VatsimDataDocument::__parse()
     
     QStringList tempList = QString(__data).split(QRegExp("\r?\n"), QString::SkipEmptyParts);
     DataSections section = None;
+    int invalidClients = 0;
     
     for (auto& temp : tempList) {
         if (temp.startsWith(';')) // comment
@@ -101,7 +102,8 @@ VatsimDataDocument::__parse()
                 ClientLine line(temp);
                 
                 if (!line.valid) {
-                    qWarning("VatsimDataDocument: error parsing line: %s", qPrintable(temp));
+                    qDebug("VatsimDataDocument: error parsing line: %s", qPrintable(temp));
+                    invalidClients += 1;
                     continue;
                 }
                 
@@ -113,7 +115,8 @@ VatsimDataDocument::__parse()
                 ClientLine line(temp);
                 
                 if (!line.valid) {
-                    qWarning("VatsimDataDocument: error parsing line: %s", qPrintable(temp));
+                    qDebug("VatsimDataDocument: error parsing line: %s", qPrintable(temp));
+                    invalidClients += 1;
                     continue;
                 }
                 
@@ -128,7 +131,7 @@ VatsimDataDocument::__parse()
         }
     }
     
-    if (__connectedClients == __clients.size())
+    if (__connectedClients - invalidClients == __clients.size())
         __isValid = true;
 }
 
@@ -142,7 +145,7 @@ VatsimDataDocument::ClientLine::ClientLine(const QString& data)
         bool ok;
         pid = line.at(1).toUInt(&ok);
         if (!ok) {
-            qWarning("Invalid PID: %s", qPrintable(line.at(1)));
+            qDebug("Invalid PID: %s", qPrintable(line.at(1)));
             valid = false;
             return;
         }
