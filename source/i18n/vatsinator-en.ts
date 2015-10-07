@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="en" sourcelanguage="en_GB">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
@@ -16,6 +14,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="128"/>
         <source>Show</source>
+        <extracomment>Show this ATC position on the map</extracomment>
         <translation>Show</translation>
     </message>
     <message>
@@ -35,11 +34,6 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../ui/qml/AboutDialog.qml" line="36"/>
-        <source>Vatsinator</source>
-        <translation>Vatsinator</translation>
-    </message>
-    <message>
         <location filename="../ui/qml/AboutDialog.qml" line="42"/>
         <source>A simple Vatsim monitor</source>
         <translation>A simple Vatsim monitor</translation>
@@ -53,11 +47,6 @@
         <translation>About Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="59"/>
-        <source>Vatsinator</source>
-        <translation>Vatsinator</translation>
-    </message>
-    <message>
         <location filename="../ui/windows/aboutwindow.ui" line="69"/>
         <source>A simple Vatsim monitor</source>
         <translation>A simple Vatsim monitor</translation>
@@ -66,17 +55,13 @@
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
         <location filename="../ui/windows/aboutwindow.cpp" line="39"/>
         <source>Version %1</source>
+        <extracomment>%1 becomes a Vatsinator version</extracomment>
         <translation>Version %1</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="129"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
         <translation>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</translation>
-    </message>
-    <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(C) 2012-2014 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {2012-2015 ?} {0057a?}</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="207"/>
@@ -87,6 +72,11 @@
         <location filename="../ui/windows/aboutwindow.ui" line="121"/>
         <source>About</source>
         <translation>About</translation>
+    </message>
+    <message>
+        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
@@ -115,21 +105,21 @@
     <name>AirlineDatabase</name>
     <message>
         <location filename="../db/airlinedatabase.cpp" line="39"/>
-        <source>File %1 could not be opened. Please reinstall the application.</source>
-        <translation>File %1 could not be opened. Please reinstall the application.</translation>
+        <source>File %1 could not be accessed. Please reinstall the application.</source>
+        <translation>File %1 could not be accessed. Please reinstall the application.</translation>
     </message>
     <message>
         <location filename="../db/airlinedatabase.cpp" line="49"/>
-        <source>File %1 could not be read. Please reinstall the applicaion.</source>
-        <translation>File %1 could not be read. Please reinstall the applicaion.</translation>
+        <source>File %1 could not be accessed. Please reinstall the applicaion.</source>
+        <translation>File %1 could not be accessed. Please reinstall the applicaion.</translation>
     </message>
 </context>
 <context>
     <name>AirportDatabase</name>
     <message>
         <location filename="../db/airportdatabase.cpp" line="59"/>
-        <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>File %1 could not be opened! Please reinstall the application.</translation>
+        <source>File %1 could not be accessed. Please reinstall the application.</source>
+        <translation>File %1 could not be accessed. Please reinstall the application.</translation>
     </message>
 </context>
 <context>
@@ -144,16 +134,21 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="78"/>
         <source>Inbound</source>
+        <comment>airport details window tab</comment>
+        <extracomment>Inbound flights</extracomment>
         <translation>Inbound</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="152"/>
         <source>Outbound</source>
+        <comment>airport details window tab</comment>
+        <extracomment>Outbound flights</extracomment>
         <translation>Outbound</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="223"/>
         <source>ATC</source>
+        <comment>airport details window tab</comment>
         <translation>ATC</translation>
     </message>
     <message>
@@ -231,30 +226,28 @@
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../models/airporttablemodel.cpp" line="120"/>
+        <location filename="../models/airporttablemodel.cpp" line="121"/>
         <source>Inbound</source>
+        <comment>airport table model</comment>
+        <extracomment>Number of inbound flights in airpots' tab in FIR details</extracomment>
         <translation>Inbound</translation>
     </message>
     <message>
-        <location filename="../models/airporttablemodel.cpp" line="123"/>
+        <location filename="../models/airporttablemodel.cpp" line="125"/>
         <source>Outbound</source>
+        <comment>airport table model</comment>
+        <extracomment>Number of outbound flights in airports' tab in FIR details</extracomment>
         <translation>Outbound</translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/airporttablemodel.cpp" line="133"/>
+        <location filename="../models/airporttablemodel.cpp" line="135"/>
         <source>%n arrival(s)</source>
-        <translation>
-            <numerusform>%n arrival(s)</numerusform>
-            <numerusform>%n arrival(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n arrival(s)</numerusform><numerusform>%n arrival(s)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../models/airporttablemodel.cpp" line="134"/>
+        <location filename="../models/airporttablemodel.cpp" line="136"/>
         <source>%n departure(s)</source>
-        <translation>
-            <numerusform>%n departure(s)</numerusform>
-            <numerusform>%n departure(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n departure(s)</numerusform><numerusform>%n departure(s)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -301,37 +294,38 @@
 <context>
     <name>AtcDetailsWindow</name>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="47"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
         <source>Name</source>
+        <extracomment>Name of the ATC (i.e. John Smith EGLL)</extracomment>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
         <source>Frequency</source>
         <translation>Frequency</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
         <source>Rating</source>
         <translation>Rating</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
         <source>Airport</source>
         <translation>Airport</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="52"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="52"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="53"/>
         <source>Online from</source>
         <translation>Online from</translation>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="86"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="87"/>
         <source>%1 - ATC details</source>
         <translation>%1 - ATC details</translation>
     </message>
@@ -344,12 +338,13 @@
         <translation>Callsign</translation>
     </message>
     <message>
-        <location filename="../models/atctablemodel.cpp" line="151"/>
+        <location filename="../models/atctablemodel.cpp" line="152"/>
         <source>Name</source>
+        <extracomment>Name of the ATC (i.e. John Smith EGLL)</extracomment>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../models/atctablemodel.cpp" line="154"/>
+        <location filename="../models/atctablemodel.cpp" line="155"/>
         <source>Frequency</source>
         <translation>Frequency</translation>
     </message>
@@ -408,26 +403,20 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
-        <extracomment>It&apos;s about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
+        <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
         <translation>Current status:</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="48"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
-        <translation>
-            <numerusform>Your local clone of Vatsinator Database contains %n airport</numerusform>
-            <numerusform>Your local clone of Vatsinator Database contains %n airports</numerusform>
-        </translation>
+        <translation><numerusform>Your local clone of Vatsinator Database contains %n airport</numerusform><numerusform>Your local clone of Vatsinator Database contains %n airports</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>and %n airlines(s).</source>
         <comment>The second part of the summary</comment>
-        <translation>
-            <numerusform>and %n airlines.</numerusform>
-            <numerusform>and %n airlines.</numerusform>
-        </translation>
+        <translation><numerusform>and %n airlines.</numerusform><numerusform>and %n airlines.</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="68"/>
@@ -497,8 +486,8 @@
     <name>FirDatabase</name>
     <message>
         <location filename="../db/firdatabase.cpp" line="60"/>
-        <source>File %1 could not be opened! Please reinstall the application.</source>
-        <translation>File %1 could not be opened! Please reinstall the application.</translation>
+        <source>File %1 could not be accessed. Please reinstall the application.</source>
+        <translation>File %1 could not be accessed. Please reinstall the application.</translation>
     </message>
 </context>
 <context>
@@ -547,22 +536,23 @@
 <context>
     <name>FlightDetails</name>
     <message>
-        <location filename="../ui/qml/FlightDetails.qml" line="140"/>
+        <location filename="../ui/qml/FlightDetails.qml" line="141"/>
         <source>Aircraft</source>
+        <extracomment>Aircraft model</extracomment>
         <translation>Aircraft</translation>
     </message>
     <message>
-        <location filename="../ui/qml/FlightDetails.qml" line="157"/>
+        <location filename="../ui/qml/FlightDetails.qml" line="158"/>
         <source>Altitude</source>
         <translation>Altitude</translation>
     </message>
     <message>
-        <location filename="../ui/qml/FlightDetails.qml" line="174"/>
+        <location filename="../ui/qml/FlightDetails.qml" line="175"/>
         <source>Ground speed</source>
         <translation>Ground speed</translation>
     </message>
     <message>
-        <location filename="../ui/qml/FlightDetails.qml" line="191"/>
+        <location filename="../ui/qml/FlightDetails.qml" line="192"/>
         <source>Squawk</source>
         <translation>Squawk</translation>
     </message>
@@ -595,11 +585,13 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="595"/>
         <source>Origin</source>
+        <extracomment>Airport of origin</extracomment>
         <translation>Origin</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="667"/>
         <source>Destination</source>
+        <extracomment>Destination airport</extracomment>
         <translation>Destination</translation>
     </message>
     <message>
@@ -637,11 +629,13 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="820"/>
         <source>Show</source>
+        <extracomment>Show this flight on the map</extracomment>
         <translation>Show</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="827"/>
         <source>Close</source>
+        <extracomment>Close the window</extracomment>
         <translation>Close</translation>
     </message>
     <message>
@@ -687,6 +681,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="514"/>
         <source>Baro</source>
+        <extracomment>Altimeter setting</extracomment>
         <translation>Baro</translation>
     </message>
     <message>
@@ -805,34 +800,22 @@
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
         <source>%n client(s)</source>
-        <translation>
-            <numerusform>%n client</numerusform>
-            <numerusform>%n clients</numerusform>
-        </translation>
+        <translation><numerusform>%n client</numerusform><numerusform>%n clients</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="132"/>
         <source>%n pilot(s)</source>
-        <translation>
-            <numerusform>%n pilot</numerusform>
-            <numerusform>%n pilots</numerusform>
-        </translation>
+        <translation><numerusform>%n pilot</numerusform><numerusform>%n pilots</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="133"/>
         <source>%n ATC(s)</source>
-        <translation>
-            <numerusform>%n ATC</numerusform>
-            <numerusform>%n ATCs</numerusform>
-        </translation>
+        <translation><numerusform>%n ATC</numerusform><numerusform>%n ATCs</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="134"/>
         <source>%n observer(s)</source>
-        <translation>
-            <numerusform>%n observer</numerusform>
-            <numerusform>%n observers</numerusform>
-        </translation>
+        <translation><numerusform>%n observer</numerusform><numerusform>%n observers</numerusform></translation>
     </message>
 </context>
 <context>
@@ -845,6 +828,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="34"/>
         <source>FIR</source>
+        <extracomment>Select FIR font</extracomment>
         <translation>FIR</translation>
     </message>
     <message>
@@ -855,11 +839,13 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="58"/>
         <source>Airport</source>
+        <extracomment>Select font for airports</extracomment>
         <translation>Airport</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="65"/>
         <source>Pilot</source>
+        <extracomment>Select font for pilots</extracomment>
         <translation>Pilot</translation>
     </message>
     <message>
@@ -871,72 +857,73 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="373"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="374"/>
         <source>Airport details</source>
         <translation>Airport details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="377"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="378"/>
         <source>%1 metar</source>
         <translation>%1 metar</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="382"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="383"/>
         <source>Controllers</source>
         <translation>Controllers</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="391"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="392"/>
         <source>Arrivals</source>
         <translation>Arrivals</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="402"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="403"/>
         <source>Departures</source>
         <translation>Departures</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="431"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="432"/>
         <source>Departures: %1</source>
         <translation>Departures: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="437"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="438"/>
         <source>Arrivals: %1</source>
         <translation>Arrivals: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="465"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="467"/>
         <source>Altitude: %1 ft</source>
         <translation>Altitude: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="477"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="478"/>
         <source>%1 details</source>
         <translation>%1 details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="448"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="449"/>
         <source>Flight details</source>
         <translation>Flight details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="346"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="347"/>
         <source>Nearby</source>
+        <extracomment>Nearby flights and airports</extracomment>
         <translation>Nearby</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="348"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="349"/>
         <source>Flights</source>
         <translation>Flights</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="357"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="358"/>
         <source>Airports</source>
         <translation>Airports</translation>
     </message>
