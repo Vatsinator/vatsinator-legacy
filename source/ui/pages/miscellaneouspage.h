@@ -43,7 +43,7 @@ public:
      * send_statistics:   bool
      * language:          QString
      */
-    void update() const;
+    void update() const override;
     
 protected:
     void showEvent(QShowEvent* event) override;

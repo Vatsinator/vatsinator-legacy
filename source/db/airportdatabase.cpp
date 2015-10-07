@@ -56,7 +56,7 @@ AirportDatabase::__readDatabase()
     QFile db(FileManager::path("WorldAirports.db"));
     
     if (!db.exists() || !db.open(QIODevice::ReadOnly)) {
-        notifyError(tr("File %1 could not be opened! Please reinstall the application.").arg(db.fileName()));
+        notifyError(tr("File %1 could not be accessed. Please reinstall the application.").arg(db.fileName()));
         return;
     }
     

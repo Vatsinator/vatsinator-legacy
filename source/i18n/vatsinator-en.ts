@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" sourcelanguage="en_GB" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en" sourcelanguage="en_GB">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
@@ -241,12 +243,18 @@
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="133"/>
         <source>%n arrival(s)</source>
-        <translation><numerusform>%n arrival(s)</numerusform><numerusform>%n arrival(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n arrival(s)</numerusform>
+            <numerusform>%n arrival(s)</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="134"/>
         <source>%n departure(s)</source>
-        <translation><numerusform>%n departure(s)</numerusform><numerusform>%n departure(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n departure(s)</numerusform>
+            <numerusform>%n departure(s)</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -400,20 +408,26 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
-        <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
+        <extracomment>It&apos;s about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
         <translation>Current status:</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="48"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <comment>The first part of the summary</comment>
-        <translation><numerusform>Your local clone of Vatsinator Database contains %n airport</numerusform><numerusform>Your local clone of Vatsinator Database contains %n airports</numerusform></translation>
+        <translation>
+            <numerusform>Your local clone of Vatsinator Database contains %n airport</numerusform>
+            <numerusform>Your local clone of Vatsinator Database contains %n airports</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>and %n airlines(s).</source>
         <comment>The second part of the summary</comment>
-        <translation><numerusform>and %n airlines(s).</numerusform><numerusform>and %n airlines(s).</numerusform></translation>
+        <translation>
+            <numerusform>and %n airlines.</numerusform>
+            <numerusform>and %n airlines.</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="68"/>
@@ -791,22 +805,34 @@
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
         <source>%n client(s)</source>
-        <translation><numerusform>%n client(s)</numerusform><numerusform>%n client(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n client</numerusform>
+            <numerusform>%n clients</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="132"/>
         <source>%n pilot(s)</source>
-        <translation><numerusform>%n pilot(s)</numerusform><numerusform>%n pilot(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n pilot</numerusform>
+            <numerusform>%n pilots</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="133"/>
         <source>%n ATC(s)</source>
-        <translation><numerusform>%n ATC(s)</numerusform><numerusform>%n ATC(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n ATC</numerusform>
+            <numerusform>%n ATCs</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="134"/>
         <source>%n observer(s)</source>
-        <translation><numerusform>%n observer(s)</numerusform><numerusform>%n observer(s)</numerusform></translation>
+        <translation>
+            <numerusform>%n observer</numerusform>
+            <numerusform>%n observers</numerusform>
+        </translation>
     </message>
 </context>
 <context>

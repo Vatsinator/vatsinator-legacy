@@ -17,6 +17,7 @@
 */
 
 #include <QtCore>
+#include <QFont>
 
 #include "storage/abstractsettingsmodule.h"
 #include "ui/userinterface.h"

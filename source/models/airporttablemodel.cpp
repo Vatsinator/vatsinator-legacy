@@ -117,10 +117,12 @@ AirportTableModel::headerData(int section, Qt::Orientation orientation, int role
             return tr("ATC");
             
         case Inbounds:
-            return tr("Inbound");
+            //: Number of inbound flights in airpots' tab in FIR details
+            return tr("Inbound", "airport table model");
             
         case Outbounds:
-            return tr("Outbound");
+            //: Number of outbound flights in airports' tab in FIR details
+            return tr("Outbound", "airport table model");
             
         default:
             return "";

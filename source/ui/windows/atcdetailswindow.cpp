@@ -44,6 +44,7 @@ AtcDetailsWindow::AtcDetailsWindow(const Controller* atc, QWidget* parent) :
     CallsignLabel->setFont(style->h1Font());
     FacilityLabel->setFont(style->h2Font());
     
+    //: Name of the ATC (i.e. John Smith EGLL)
     NameLabel->setDescription(tr("Name"));
     FrequencyLabel->setDescription(tr("Frequency"));
     RatingLabel->setDescription(tr("Rating"));

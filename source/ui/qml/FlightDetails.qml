@@ -137,6 +137,7 @@ Details {
                         color: "#ffffff"
                         font.pixelSize: 10 * dp
                         
+                        //: Aircraft model
                         text: qsTr("Aircraft")
                     }
                     Text {

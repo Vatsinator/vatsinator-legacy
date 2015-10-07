@@ -343,6 +343,7 @@ MapWidget::__menuForNoItem()
         }
     });
     
+    //: Nearby flights and airports
     QMenu* menu = new QMenu(tr("Nearby"), this);
     if (!flights.isEmpty()) {
         menu->addSection(tr("Flights"));

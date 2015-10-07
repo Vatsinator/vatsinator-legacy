@@ -75,7 +75,7 @@
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Inbound</string>
+       <string comment="airport details window tab" extracomment="Inbound flights">Inbound</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <property name="leftMargin">
@@ -149,7 +149,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Outbound</string>
+       <string comment="airport details window tab" extracomment="Outbound flights">Outbound</string>
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <property name="leftMargin">
@@ -220,7 +220,7 @@
      </widget>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>ATC</string>
+       <string comment="airport details window tab">ATC</string>
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <property name="leftMargin">

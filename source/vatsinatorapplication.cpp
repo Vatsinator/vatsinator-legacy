@@ -50,28 +50,21 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
     QGuiApplication(argc, argv),
 #endif
     __userInterface(UserInterface::instantiate(this)),
-    __fileManager(new FileManager()),
+    __fileManager(new FileManager),
     __settingsManager(new SettingsManager(this)),
     __airlineDatabase(new AirlineDatabase(this)),
     __airportDatabaase(new AirportDatabase(this)),
     __firDatabase(new FirDatabase(this)),
     __metarUpdater(new MetarUpdater(new MetarListModel(this), this)),
     __vatsimData(new VatsimDataHandler(this)),
-    __languageManager(new LanguageManager()),
+    __languageManager(new LanguageManager),
     __resourceManager(new ResourceManager()),
     __statsPurveyor(new StatsPurveyor())
 {
 
     /* Set up translations */
     QString locale = SettingsManager::earlyGetLocale();
-    
-    QTranslator* tr_qt = new QTranslator(this);
-    tr_qt->load(QString("qt_") % locale, FileManager::staticPath(FileManager::Translations));
-    installTranslator(tr_qt);
-    
-    QTranslator* tr = new QTranslator(this);
-    tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
-    installTranslator(tr);
+    __loadTranslation(locale);
     
 #ifndef Q_OS_ANDROID
     setStyle(new VatsinatorStyle());
@@ -91,11 +84,15 @@ VatsinatorApplication::~VatsinatorApplication()
     __statsPurveyor->deleteLater();
     spThread->quit();
     
-    delete __languageManager;
-    delete __fileManager;
-    
     rmThread->wait();
     spThread->wait();
+}
+
+LanguageManager*
+VatsinatorApplication::languageManager()
+{
+    Q_ASSERT(__languageManager.data());
+    return __languageManager.data();
 }
 
 void
@@ -154,4 +151,31 @@ VatsinatorApplication::__initialize()
     
     if (!s.contains("Decided/stats"))   // no decision made yet
         __userInterface->showStatsDialog();
+}
+
+void
+VatsinatorApplication::__loadTranslation(const QString& locale)
+{
+    std::for_each(__translators.begin(), __translators.end(), [this](auto tr) {
+        removeTranslator(tr);
+    });
+    
+    qDeleteAll(__translators);
+    __translators.clear();
+    
+    QTranslator* tr_qt = new QTranslator(this);
+    bool result = tr_qt->load(QString("qt_") % locale, FileManager::staticPath(FileManager::Translations));
+    if (result) {
+        installTranslator(tr_qt);
+        __translators << tr_qt;
+    } else {
+        qDebug() << "Failed loading" << locale << "translation for Qt";
+        tr_qt->deleteLater();
+    }
+    
+    QTranslator* tr = new QTranslator(this);
+    result = tr->load(QString("vatsinator-") % locale, FileManager::staticPath(FileManager::Translations));
+    Q_ASSERT(result);
+    installTranslator(tr);
+    __translators << tr;
 }

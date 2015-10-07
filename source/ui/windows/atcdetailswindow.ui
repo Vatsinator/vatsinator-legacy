@@ -125,7 +125,7 @@
      <item>
       <widget class="QPushButton" name="ShowButton">
        <property name="text">
-        <string>Show</string>
+        <string extracomment="Show this ATC position on the map">Show</string>
        </property>
       </widget>
      </item>

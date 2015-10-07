@@ -42,7 +42,7 @@ public:
      * weather_forecast_provider:         string
      * weather_temperature_units:         string {"Celsius", "Fahrenheit"}
      */
-    void update() const;
+    void update() const override;
     
 protected:
     void restore(QSettings& s, const QVariantHash& defaults) override;

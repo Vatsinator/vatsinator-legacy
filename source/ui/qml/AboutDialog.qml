@@ -33,7 +33,7 @@ Rectangle {
         anchors.fill: parent
         
         Label {
-            text: qsTr("Vatsinator")
+            text: "Vatsinator"
             font.bold: true
             anchors.horizontalCenter: parent.horizontalCenter
         }

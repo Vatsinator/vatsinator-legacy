@@ -36,7 +36,7 @@ AirlineDatabase::initialize()
     QFile db(FileManager::path("data/airlines"));
     
     if (!db.exists() || !db.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        notifyWarning(tr("File %1 could not be opened. Please reinstall the application.").arg(db.fileName()));
+        notifyWarning(tr("File %1 could not be accessed. Please reinstall the application.").arg(db.fileName()));
         return;
     }
     
@@ -46,7 +46,7 @@ AirlineDatabase::initialize()
     if (error.error != QJsonParseError::NoError) {
         qWarning("AirlineDatabase: the following error occured parsing %s: %s",
                  qPrintable(db.fileName()), qPrintable(error.errorString()));
-        notifyWarning(tr("File %1 could not be read. Please reinstall the applicaion.").arg(db.fileName()));
+        notifyWarning(tr("File %1 could not be accessed. Please reinstall the applicaion.").arg(db.fileName()));
         return;
     }
     

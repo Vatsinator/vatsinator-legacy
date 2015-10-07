@@ -148,6 +148,7 @@ AtcTableModel::headerData(int section, Qt::Orientation orientation, int role) co
             return tr("Callsign");
             
         case 1:
+            //: Name of the ATC (i.e. John Smith EGLL)
             return tr("Name");
             
         case 2:

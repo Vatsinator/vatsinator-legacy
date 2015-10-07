@@ -28,8 +28,7 @@
 # include <QGuiApplication>
 #endif
 
-#include <QFont>
-#include <QMutex>
+#include <QScopedPointer>
 
 
 class AirlineDatabase;
@@ -78,6 +77,11 @@ public:
      * Cleans the resources up.
      */
     virtual ~VatsinatorApplication();
+    
+    /**
+     * Gets the LanguageManager instance.
+     */
+    LanguageManager* languageManager();
     
     /**
      * Gets the UserInterface instance.
@@ -169,15 +173,6 @@ public:
         return __metarUpdater;
     }
     
-    /**
-     * Gets the LanguageManager instance.
-     */
-    inline LanguageManager* languageManager()
-    {
-        Q_ASSERT(__languageManager);
-        return __languageManager;
-    }
-    
 public slots:
     /**
      * Restarts the application.
@@ -201,18 +196,25 @@ private slots:
      */
     void __initialize();
     
+    /**
+     * Loads translations of the given locale.
+     */
+    void __loadTranslation(const QString& locale);
+    
 private:
-    UserInterface*       __userInterface;
-    FileManager*         __fileManager;
-    SettingsManager*     __settingsManager;
-    AirlineDatabase*     __airlineDatabase;
-    AirportDatabase*     __airportDatabaase;
-    FirDatabase*         __firDatabase;
-    MetarUpdater*        __metarUpdater;
-    VatsimDataHandler*   __vatsimData;
-    LanguageManager*     __languageManager;
-    ResourceManager*     __resourceManager;
-    StatsPurveyor*       __statsPurveyor;
+    UserInterface*              __userInterface;
+    QScopedPointer<FileManager> __fileManager;
+    SettingsManager*            __settingsManager;
+    AirlineDatabase*            __airlineDatabase;
+    AirportDatabase*            __airportDatabaase;
+    FirDatabase*                __firDatabase;
+    MetarUpdater*               __metarUpdater;
+    VatsimDataHandler*          __vatsimData;
+    QScopedPointer<LanguageManager> __languageManager;
+    ResourceManager*            __resourceManager;
+    StatsPurveyor*              __statsPurveyor;
+    
+    QList<QTranslator*> __translators;
     
 };
 

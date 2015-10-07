@@ -511,7 +511,7 @@
        <item>
         <widget class="InfoLabel" name="AltimeterLabel" native="true">
          <property name="description" stdset="0">
-          <string>Baro</string>
+          <string extracomment="Altimeter setting">Baro</string>
          </property>
         </widget>
        </item>
@@ -592,7 +592,7 @@
        <item>
         <widget class="QLabel" name="OriginLabel">
          <property name="text">
-          <string>Origin</string>
+          <string extracomment="Airport of origin">Origin</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -664,7 +664,7 @@
        <item>
         <widget class="QLabel" name="DestinationLabel">
          <property name="text">
-          <string>Destination</string>
+          <string extracomment="Destination airport">Destination</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -817,14 +817,14 @@
      <item>
       <widget class="AirportDetailsButton" name="ShowButton">
        <property name="text">
-        <string>Show</string>
+        <string extracomment="Show this flight on the map">Show</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="CloseButton">
        <property name="text">
-        <string>Close</string>
+        <string extracomment="Close the window">Close</string>
        </property>
        <property name="default">
         <bool>true</bool>
