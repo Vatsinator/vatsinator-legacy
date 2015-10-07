@@ -20,8 +20,7 @@
 #ifndef FIRDETAILSWINDOW_H
 #define FIRDETAILSWINDOW_H
 
-#include "ui/windows/basewindow.h"
-
+#include <QWidget>
 #include "ui/ui_firdetailswindow.h"
 
 class Airport;
@@ -30,10 +29,7 @@ class Fir;
 class Pilot;
 class NotamListModel;
 
-class FirDetailsWindow :
-    public BaseWindow,
-    private Ui::FirDetailsWindow {
-    
+class FirDetailsWindow : public QWidget, private Ui::FirDetailsWindow {
     Q_OBJECT
     
 public:

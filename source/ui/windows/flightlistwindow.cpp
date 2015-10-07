@@ -20,6 +20,7 @@
 
 #include "models/flighttablemodel.h"
 #include "models/roles.h"
+#include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsimdata/pilot.h"
@@ -28,22 +29,23 @@
 #include "flightlistwindow.h"
 
 FlightListWindow::FlightListWindow(QWidget* parent) :
-    BaseWindow(parent)
+    QWidget(parent)
 {
     setupUi(this);
     FlightsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    
     
     connect(FlightsTable, &QTableView::doubleClicked, [this](const QModelIndex& index) {
         Q_ASSERT(index.data(InstancePointerRole).isValid());
         Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
         wui()->showClientDetails(client);
     });
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 void
 FlightListWindow::showEvent(QShowEvent* event)
 {
     FlightsTable->setModel(vApp()->vatsimDataHandler()->flights());
-    BaseWindow::showEvent(event);
+    Q_UNUSED(event);
 }

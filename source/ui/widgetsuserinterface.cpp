@@ -50,26 +50,29 @@
 WidgetsUserInterface::WidgetsUserInterface(QObject* parent):
     UserInterface(parent) {}
 
-WidgetsUserInterface::~WidgetsUserInterface()
-{
-    delete __aboutWindow;
-    delete __metarsWindow;
-    delete __databaseWindow;
-    delete __atcListWindow;
-    delete __flightListWindow;
-    delete __settingsWindow;
-}
-
 void
 WidgetsUserInterface::initialize()
 {
-    __aboutWindow = new AboutWindow();
-    __metarsWindow = new MetarsWindow();
-    __databaseWindow = new DatabaseWindow();
-    __atcListWindow = new AtcListWindow();
-    __flightListWindow = new FlightListWindow();
-    __settingsWindow = new SettingsWindow();
-    __vatsinatorWindow = new VatsinatorWindow();
+    __vatsinatorWindow = new VatsinatorWindow;
+    connect(qApp, &QCoreApplication::aboutToQuit, __vatsinatorWindow, &QObject::deleteLater);
+    
+    __aboutWindow = new AboutWindow;
+    connect(qApp, &QCoreApplication::aboutToQuit, __aboutWindow, &QObject::deleteLater);
+    
+    __metarsWindow = new MetarsWindow;
+    connect(qApp, &QCoreApplication::aboutToQuit, __metarsWindow, &QObject::deleteLater);
+    
+    __databaseWindow = new DatabaseWindow;
+    connect(qApp, &QCoreApplication::aboutToQuit, __databaseWindow, &QObject::deleteLater);
+    
+    __atcListWindow = new AtcListWindow;
+    connect(qApp, &QCoreApplication::aboutToQuit, __atcListWindow, &QObject::deleteLater);
+    
+    __flightListWindow = new FlightListWindow;
+    connect(qApp, &QCoreApplication::aboutToQuit, __flightListWindow, &QObject::deleteLater);
+    
+    __settingsWindow = new SettingsWindow;
+    connect(qApp, &QCoreApplication::aboutToQuit, __settingsWindow, &QObject::deleteLater);
     
     connect(vApp()->resourceManager(), &ResourceManager::outdated,
             this, &WidgetsUserInterface::__showNewVersionDialog);

@@ -20,13 +20,11 @@
 #ifndef ABOUTWINDOW_H
 #define ABOUTWINDOW_H
 
+#include <QWidget>
 #include "network/resourcemanager.h"
-#include "ui/windows/basewindow.h"
 #include "ui/ui_aboutwindow.h"
 
-class AboutWindow :
-    public BaseWindow,
-    private Ui::AboutWindow {
+class AboutWindow : public QWidget, private Ui::AboutWindow {
     
     Q_OBJECT
     

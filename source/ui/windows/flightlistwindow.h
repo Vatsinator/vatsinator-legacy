@@ -20,13 +20,10 @@
 #ifndef FLIGHTLISTWINDOW_H
 #define FLIGHTLISTWINDOW_H
 
-#include "ui/windows/basewindow.h"
+#include <QWidget>
 #include "ui/ui_flightlistwindow.h"
 
-class FlightListWindow :
-    public BaseWindow,
-    private Ui::FlightListWindow {
-    
+class FlightListWindow : public QWidget, private Ui::FlightListWindow {
     Q_OBJECT
     
 public:

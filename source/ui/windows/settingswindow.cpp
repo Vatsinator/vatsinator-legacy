@@ -110,15 +110,7 @@ SettingsWindow::showEvent(QShowEvent* event)
 {
     if (!event->spontaneous()) {
         __resizeToMinimum();
-        
-        this->setGeometry(
-            QStyle::alignedRect(
-                Qt::LeftToRight,
-                Qt::AlignCenter,
-                this->size(),
-                QDesktopWidget().screenGeometry(wui()->mainWindow())
-            )
-        );
+        setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
     }
     
     event->accept();

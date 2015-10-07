@@ -42,15 +42,7 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
     setupUi(this);
             
     Q_ASSERT(wui());
-    
-    connect(ActionExit, &QAction::triggered, qApp, &QApplication::quit);
-    connect(ActionAbout, &QAction::triggered, wui()->aboutWindow(), &AboutWindow::show);
-    connect(ActionMetar, &QAction::triggered, wui()->metarsWindow(), &QWidget::show);
-    connect(ActionDatabase, &QAction::triggered, wui()->databaseWindow(), &DatabaseWindow::show);
-    connect(ActionRefresh, &QAction::triggered, vApp()->vatsimDataHandler(), &VatsimDataHandler::requestDataUpdate);
-    connect(ActionPreferences, &QAction::triggered, wui()->settingsWindow(), &SettingsWindow::show);
-    connect(ActionFlightList, &QAction::triggered, wui()->flightListWindow(), &FlightListWindow::show);
-    connect(ActionATCList, &QAction::triggered, wui()->atcListWindow(), &AtcListWindow::show);
+
     // TODO
     //   connect(ActionHomeLocation,                       SIGNAL(triggered()),
     //           HomeLocation::getSingletonPtr(),          SLOT(showOnMap()));
@@ -62,9 +54,6 @@ VatsinatorWindow::VatsinatorWindow(QWidget* parent) :
     /* On Mac set main manu name to "Menu" in order not to have two
        "Vatsinators" on the menubar. */
     MenuVatsinator->setTitle(tr("&Menu"));
-    
-    /* Set small font for the bottom status bar */
-    VatsinatorStyle* style = qobject_cast<VatsinatorStyle*>(vApp()->style());
 #endif
     
     __mapInfo = new MapInfoWidget;
@@ -102,12 +91,20 @@ void
 VatsinatorWindow::closeEvent(QCloseEvent*)
 {
     __storeWindowGeometry();
-    qApp->quit();
 }
 
 void
 VatsinatorWindow::showEvent(QShowEvent*)
 {
+    connect(ActionExit, &QAction::triggered, qApp, &QApplication::quit);
+    connect(ActionAbout, &QAction::triggered, wui()->aboutWindow(), &AboutWindow::show);
+    connect(ActionMetar, &QAction::triggered, wui()->metarsWindow(), &QWidget::show);
+    connect(ActionDatabase, &QAction::triggered, wui()->databaseWindow(), &DatabaseWindow::show);
+    connect(ActionRefresh, &QAction::triggered, vApp()->vatsimDataHandler(), &VatsimDataHandler::requestDataUpdate);
+    connect(ActionPreferences, &QAction::triggered, wui()->settingsWindow(), &SettingsWindow::show);
+    connect(ActionFlightList, &QAction::triggered, wui()->flightListWindow(), &FlightListWindow::show);
+    connect(ActionATCList, &QAction::triggered, wui()->atcListWindow(), &AtcListWindow::show);
+    
     __restoreWindowGeometry();
 }
 

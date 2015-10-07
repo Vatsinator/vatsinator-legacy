@@ -20,8 +20,7 @@
 #ifndef AIRPORTDETAILSWINDOW_H
 #define AIRPORTDETAILSWINDOW_H
 
-#include "ui/windows/basewindow.h"
-
+#include <QWidget>
 #include "ui/ui_airportdetailswindow.h"
 
 class Airport;
@@ -31,11 +30,10 @@ class NotamListModel;
 class WeatherForecastReply;
 
 /**
- * The AirportDetailsWindow class represents a window that shows up when user
- * clicks on airport icon
+ * The AirportDetailsWindow class represents a window containing all airport
+ * information.
  */
-class AirportDetailsWindow : public BaseWindow,
-    private Ui::AirportDetailsWindow {
+class AirportDetailsWindow : public QWidget, private Ui::AirportDetailsWindow {
     
     Q_OBJECT
     

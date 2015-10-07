@@ -107,7 +107,6 @@ set (widgets_SRCS
     windows/airportdetailswindow.cpp
     windows/atcdetailswindow.cpp
     windows/atclistwindow.cpp
-    windows/basewindow.cpp
     windows/databasewindow.cpp
     windows/firdetailswindow.cpp
     windows/flightdetailswindow.cpp
@@ -168,7 +167,6 @@ set (widgets_HEADERS
     windows/airportdetailswindow.h
     windows/atcdetailswindow.h
     windows/atclistwindow.h
-    windows/basewindow.h
     windows/databasewindow.h
     windows/firdetailswindow.h
     windows/flightdetailswindow.h

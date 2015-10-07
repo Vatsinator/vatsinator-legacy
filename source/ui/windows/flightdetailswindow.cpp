@@ -82,23 +82,14 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* pilot, QWidget* parent) :
     connect(TrackFlightBox, &QCheckBox::stateChanged, [this](int _state) {
         emit flightTrackingStateChanged(__pilot, _state);
     });
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 void
 FlightDetailsWindow::showEvent(QShowEvent* event)
 {
     Q_ASSERT(__pilot);
-    
-    if (!event->spontaneous()) {
-        this->setGeometry(
-            QStyle::alignedRect(
-                Qt::LeftToRight,
-                Qt::AlignCenter,
-                this->size(),
-                QDesktopWidget().screenGeometry(wui()->mainWindow())
-            )
-        );
-    }
     
     if (wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight() == __pilot)
         TrackFlightBox->setCheckState(Qt::Checked);
@@ -107,6 +98,8 @@ FlightDetailsWindow::showEvent(QShowEvent* event)
     
     __updateInfo();
     __updateAirports();
+    
+    Q_UNUSED(event);
 }
 
 void

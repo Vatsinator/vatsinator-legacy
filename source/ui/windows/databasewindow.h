@@ -20,12 +20,11 @@
 #ifndef DATABASEWINDOW_H
 #define DATABASEWINDOW_H
 
-#include "ui/windows/basewindow.h"
+#include <QWidget>
 #include "network/resourcemanager.h"
 #include "ui/ui_databasewindow.h"
 
-class DatabaseWindow : public BaseWindow, private Ui::DatabaseWindow {
-
+class DatabaseWindow : public QWidget, private Ui::DatabaseWindow {
     Q_OBJECT
     
 public:

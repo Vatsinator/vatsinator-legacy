@@ -82,8 +82,6 @@ MetarsWindow::showEvent(QShowEvent* event)
     }
     
     MetarIcaoEdit->setFocus();
-    
-    QWidget::showEvent(event);
 }
 
 void

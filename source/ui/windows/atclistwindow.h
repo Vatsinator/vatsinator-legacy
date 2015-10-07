@@ -20,13 +20,10 @@
 #ifndef ATCLISTWINDOW_H
 #define ATCLISTWINDOW_H
 
-#include "ui/windows/basewindow.h"
+#include <QWidget>
 #include "ui/ui_atclistwindow.h"
 
-class AtcListWindow :
-    public BaseWindow,
-    private Ui::ATCListWindow {
-    
+class AtcListWindow : public QWidget, private Ui::ATCListWindow {
     Q_OBJECT
     
 public:

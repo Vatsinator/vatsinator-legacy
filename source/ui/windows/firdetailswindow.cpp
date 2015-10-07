@@ -30,6 +30,7 @@
 #include "plugins/notamlistmodel.h"
 #include "ui/buttons/clientdetailsbutton.h"
 #include "ui/buttons/airportdetailsbutton.h"
+#include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "ui/vatsinatorstyle.h"
 #include "vatsimdata/airport.h"
@@ -42,7 +43,7 @@
 #include "firdetailswindow.h"
 
 FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
-    BaseWindow(parent),
+    QWidget(parent),
     __fir(fir)
 {
     setupUi(this);
@@ -61,6 +62,8 @@ FirDetailsWindow::FirDetailsWindow(const Fir* fir, QWidget* parent) :
     connect(AtcTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
     connect(FlightsTable, &QTableView::doubleClicked, this, &FirDetailsWindow::__showClientDetails);
     connect(NotamTableView, &DelayedModelTableView::doubleClicked, this, &FirDetailsWindow::__goToNotam);
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 void
@@ -80,7 +83,7 @@ FirDetailsWindow::showEvent(QShowEvent* event)
     vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__fir->icao());
     NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
     
-    BaseWindow::showEvent(event);
+    Q_UNUSED(event);
 }
 
 void

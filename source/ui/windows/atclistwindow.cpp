@@ -20,6 +20,7 @@
 
 #include "models/atctablemodel.h"
 #include "models/roles.h"
+#include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
 #include "vatsimdata/controller.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -27,8 +28,7 @@
 
 #include "atclistwindow.h"
 
-AtcListWindow::AtcListWindow(QWidget* parent) :
-    BaseWindow(parent)
+AtcListWindow::AtcListWindow(QWidget* parent) : QWidget(parent)
 {
     setupUi(this);
     AtcTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -38,11 +38,13 @@ AtcListWindow::AtcListWindow(QWidget* parent) :
         Client* const client = reinterpret_cast<Client* const>(index.data(InstancePointerRole).value<void*>());
         wui()->showClientDetails(client);
     });
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 void
 AtcListWindow::showEvent(QShowEvent* event)
 {
-    AtcTable->setModel(vApp()->vatsimDataHandler()->atcs());   
-    BaseWindow::showEvent(event);
+    AtcTable->setModel(vApp()->vatsimDataHandler()->atcs());
+    Q_UNUSED(event);
 }

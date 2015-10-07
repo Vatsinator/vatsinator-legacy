@@ -52,7 +52,7 @@
 #include "airportdetailswindow.h"
 
 AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* parent) :
-    BaseWindow(parent),
+    QWidget(parent),
     __airport(airport)
 {
     setupUi(this);
@@ -90,6 +90,8 @@ AirportDetailsWindow::AirportDetailsWindow(const Airport* airport, QWidget* pare
     QMovie* animation = new QMovie(":/animations/loader.gif");
     w->setAnimation(animation);
     WeatherForecastScrollArea->setWidget(w);
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 AirportDetailsWindow::~AirportDetailsWindow() {}
@@ -132,7 +134,7 @@ AirportDetailsWindow::showEvent(QShowEvent* event)
     vApp()->vatsimDataHandler()->notamProvider()->fetchNotam(__airport->icao());
     NotamProviderInfoLabel->setText(vApp()->vatsimDataHandler()->notamProvider()->providerInfo());
     
-    BaseWindow::showEvent(event);
+    Q_UNUSED(event);
 }
 
 void

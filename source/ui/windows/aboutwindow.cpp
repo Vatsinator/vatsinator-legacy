@@ -21,14 +21,15 @@
 #include "db/airportdatabase.h"
 #include "db/firdatabase.h"
 #include "storage/filemanager.h"
-#include "ui/userinterface.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsinatorapplication.h"
 #include "config.h"
 
 #include "aboutwindow.h"
 #include "ui/about.h"
 
-AboutWindow::AboutWindow(QWidget* parent) : BaseWindow(parent)
+AboutWindow::AboutWindow(QWidget* parent) : QWidget(parent)
 {
     setupUi(this);
     
@@ -42,6 +43,8 @@ AboutWindow::AboutWindow(QWidget* parent) : BaseWindow(parent)
     QFont titleFont = QApplication::font();
     titleFont.setPointSize(titleFont.pointSize() + 2);
     TitleLabel->setFont(titleFont);
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 void
@@ -59,7 +62,7 @@ AboutWindow::showEvent(QShowEvent* event)
         LicenseField->setHtml("<pre>" % content.toHtmlEscaped() % "</pre>");
     }
     
-    BaseWindow::showEvent(event);
+    Q_UNUSED(event);
 }
 
 void
@@ -70,10 +73,12 @@ AboutWindow::__updateVersionStatus(ResourceManager::VersionStatus status)
     if (status == ResourceManager::Updated) {
         p.setColor(QPalette::WindowText, Qt::darkGreen);
         VersionStatusLabel->setPalette(p);
+        //: Indicates Vatsinator version
         VersionStatusLabel->setText(tr("up-to-date", "Vatsinator version indicator"));
     } else {
         p.setColor(QPalette::WindowText, Qt::red);
         VersionStatusLabel->setPalette(p);
+        //: Indicates Vatsinator version
         VersionStatusLabel->setText(tr("outdated", "Vatsinator version indicator"));
     }
 }

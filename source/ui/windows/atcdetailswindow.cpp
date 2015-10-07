@@ -60,25 +60,15 @@ AtcDetailsWindow::AtcDetailsWindow(const Controller* atc, QWidget* parent) :
         close();
         vApp()->userInterface()->ensureMainWindowIsActive();
     });
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 void
 AtcDetailsWindow::showEvent(QShowEvent* event)
 {
-    Q_ASSERT(__atc);
-    
-    if (!event->spontaneous()) {
-        this->setGeometry(
-            QStyle::alignedRect(
-                Qt::LeftToRight,
-                Qt::AlignCenter,
-                this->size(),
-                QDesktopWidget().screenGeometry(wui()->mainWindow())
-            )
-        );
-    }
-    
     __updateLabels();
+    Q_UNUSED(event);
 }
 
 void

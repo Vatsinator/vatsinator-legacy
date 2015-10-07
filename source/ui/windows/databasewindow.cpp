@@ -21,13 +21,14 @@
 
 #include "db/airlinedatabase.h"
 #include "db/airportdatabase.h"
+#include "ui/windows/vatsinatorwindow.h"
+#include "ui/widgetsuserinterface.h"
 #include "vatsimdata/vatsimdatahandler.h"
 #include "vatsinatorapplication.h"
 
 #include "databasewindow.h"
 
-DatabaseWindow::DatabaseWindow(QWidget* parent) :
-    BaseWindow(parent)
+DatabaseWindow::DatabaseWindow(QWidget* parent) : QWidget(parent)
 {
     setupUi(this);
     
@@ -39,19 +40,21 @@ DatabaseWindow::DatabaseWindow(QWidget* parent) :
             vApp()->resourceManager(), &ResourceManager::requestDatabaseSync);
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::initialized,
             this, &DatabaseWindow::__updateNumbers);
+    
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
 
 void
 DatabaseWindow::__updateNumbers()
 {
     DatabaseInfoLabel->setText(
-        tr(
-            "Your local clone of Vatsinator Database contains %n airport(s)",
-            "The first part of the summary", vApp()->airportDatabase()->airports().count()
+        //: First part of the summary
+        tr("Your local clone of Vatsinator Database contains %n airport(s)",
+            "", vApp()->airportDatabase()->airports().count()
         ) % " " %
-        tr(
-            "and %n airlines(s).",
-            "The second part of the summary", vApp()->airlineDatabase()->airlines().size()
+        //: Second part of the summary
+        tr("and %n airlines(s).",
+            "", vApp()->airlineDatabase()->airlines().size()
         )
     );
 }
@@ -65,6 +68,7 @@ DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus status)
         case ResourceManager::Updated:
             p.setColor(QPalette::WindowText, Qt::darkGreen);
             StatusLabel->setPalette(p);
+            //: Describes database update status
             StatusLabel->setText(tr("up-to-date", "Database status indicator"));
             SyncDatabaseButton->setEnabled(true);
             break;
@@ -72,6 +76,7 @@ DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus status)
         case ResourceManager::Outdated:
             p.setColor(QPalette::WindowText, Qt::red);
             StatusLabel->setPalette(p);
+            //: Describes database update status
             StatusLabel->setText(tr("outdated", "Database status indicator"));
             SyncDatabaseButton->setEnabled(true);
             break;
@@ -79,6 +84,7 @@ DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus status)
         case ResourceManager::Updating:
             p.setColor(QPalette::WindowText, Qt::darkYellow);
             StatusLabel->setPalette(p);
+            //: Describes database update status
             StatusLabel->setText(tr("updating...", "Database status indicator"));
             SyncDatabaseButton->setEnabled(false);
             break;
@@ -86,6 +92,7 @@ DatabaseWindow::__updateDatabaseStatus(ResourceManager::VersionStatus status)
         case ResourceManager::CannotUpdate:
             p.setColor(QPalette::WindowText, Qt::darkGray);
             StatusLabel->setPalette(p);
+            //: Describes database update status
             StatusLabel->setText(tr("cannot update", "Database status indicator"));
             StatusLabel->setToolTip(tr("Your Vatsinator version is outdated."));
             SyncDatabaseButton->setEnabled(false);
