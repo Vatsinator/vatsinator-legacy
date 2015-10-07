@@ -76,7 +76,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="151"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Zespół Vatsinator&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="170"/>
@@ -106,12 +106,12 @@
     <message>
         <location filename="../db/airlinedatabase.cpp" line="39"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Brak dostępu do pliku %1. Proszę przeinstalować aplikację.</translation>
     </message>
     <message>
         <location filename="../db/airlinedatabase.cpp" line="49"/>
         <source>File %1 could not be accessed. Please reinstall the applicaion.</source>
-        <translation type="unfinished"/>
+        <translation>Brak dostępu do pliku %1. Proszę przeinstalować aplikację.</translation>
     </message>
 </context>
 <context>
@@ -119,7 +119,7 @@
     <message>
         <location filename="../db/airportdatabase.cpp" line="59"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Brak dostępu do pliku %1. Proszę przeinstalować aplikację.</translation>
     </message>
 </context>
 <context>
@@ -416,7 +416,7 @@
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>and %n airlines(s).</source>
         <comment>The second part of the summary</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>oraz %n linię lotniczą.</numerusform><numerusform>oraz %n linii lotniczych.</numerusform><numerusform>oraz %n linii lotniczych.</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="68"/>
@@ -487,7 +487,7 @@
     <message>
         <location filename="../db/firdatabase.cpp" line="60"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Brak dostępu do pliku %1. Proszę przeinstalować aplikację.</translation>
     </message>
 </context>
 <context>
@@ -800,22 +800,22 @@
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
         <source>%n client(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n klient</numerusform><numerusform>%n klientów</numerusform><numerusform>%n klientów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="132"/>
         <source>%n pilot(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n pilot</numerusform><numerusform>%n pilotów</numerusform><numerusform>%n pilotów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="133"/>
         <source>%n ATC(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n kontroler</numerusform><numerusform>%n kontrolerów</numerusform><numerusform>%n kontrolerów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="134"/>
         <source>%n observer(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n obserwator</numerusform><numerusform>%n obserwatorów</numerusform><numerusform>%n obserwatorów</numerusform></translation>
     </message>
 </context>
 <context>
