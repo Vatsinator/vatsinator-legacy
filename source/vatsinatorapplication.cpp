@@ -76,16 +76,13 @@ VatsinatorApplication::VatsinatorApplication(int& argc, char** argv) :
 
 VatsinatorApplication::~VatsinatorApplication()
 {
-    QThread* rmThread = __resourceManager->thread();
-    __resourceManager->deleteLater();
-    rmThread->quit();
+    std::for_each(__threads.begin(), __threads.end(), [](auto t) {
+        t->quit();
+    });
     
-    QThread* spThread = __statsPurveyor->thread();
-    __statsPurveyor->deleteLater();
-    spThread->quit();
-    
-    rmThread->wait();
-    spThread->wait();
+    std::for_each(__threads.begin(), __threads.end(), [](auto t) {
+        t->wait();
+    });
 }
 
 LanguageManager*
@@ -138,13 +135,19 @@ VatsinatorApplication::__initialize()
     
     /* Thread for ResourceManager */
     QThread* rmThread = new QThread(this);
+    rmThread->setObjectName("ResourceManager thread");
     __resourceManager->moveToThread(rmThread);
     rmThread->start();
+    connect(this, &QCoreApplication::aboutToQuit, __resourceManager, &QObject::deleteLater);
+    __threads << rmThread;
     
     /* Thread for StatsPurveyor */
     QThread* spThread = new QThread(this);
+    spThread->setObjectName("StatsPurveyor thread");
     __statsPurveyor->moveToThread(spThread);
     spThread->start();
+    connect(this, &QCoreApplication::aboutToQuit, __statsPurveyor, &QObject::deleteLater);
+    __threads << spThread;
     
     /* Initialize statistics */
     QSettings s;

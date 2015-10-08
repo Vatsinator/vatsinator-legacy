@@ -30,10 +30,6 @@ MapPage::MapPage(QWidget* parent) : WidgetSettingsModule(parent)
 {
     setupUi(this);
     
-#ifdef Q_OS_MAC
-    layout()->setSpacing(0);
-#endif
-    
     connect(FirFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showFirFontDialog);
     connect(AirportFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showAirportFontDialog);
     connect(PilotFontSelectionButton, &QPushButton::clicked, this, &MapPage::__showPilotFontDialog);

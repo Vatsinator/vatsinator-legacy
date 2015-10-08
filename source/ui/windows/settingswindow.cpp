@@ -44,7 +44,12 @@ SettingsWindow::SettingsWindow(QWidget* parent) : QWidget(parent)
     setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
     
 #ifdef Q_OS_MAC
-    __macToolBar = new QMacToolBar(this);
+    /* Pareting the __macToolBar to this causes an application crash on
+       exit, in VatsinatorApplication's destructor. Apparently, it is a
+       Qt bug, but I am not sure.
+       TODO Test this under Qt 5.6 */
+    __macToolBar = new QMacToolBar();
+    connect(this, &QObject::destroyed, __macToolBar, &QObject::deleteLater);
     layout()->removeWidget(CategoryList);
     CategoryList->setVisible(false);
     layout()->removeWidget(OKCancelButtonBox);

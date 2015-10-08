@@ -64,9 +64,6 @@ MiscellaneousPage::update() const
 {
     setValue("send_statistics",
              StatsCheckBox->isChecked());
-    /* TODO fix LanguageManager instance below */
-    //   setValue("language",
-    //            LanguageManager::getSingleton().getLocaleById(LanguageComboBox->currentIndex()));
 }
 
 void

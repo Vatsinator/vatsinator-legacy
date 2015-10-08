@@ -215,6 +215,7 @@ private:
     StatsPurveyor*              __statsPurveyor;
     
     QList<QTranslator*> __translators;
+    QList<QThread*> __threads;
     
 };
 
