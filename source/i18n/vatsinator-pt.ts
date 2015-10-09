@@ -53,7 +53,7 @@
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="94"/>
-        <location filename="../ui/windows/aboutwindow.cpp" line="39"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="40"/>
         <source>Version %1</source>
         <extracomment>%1 becomes a Vatsinator version</extracomment>
         <translation>Versão %1</translation>
@@ -89,15 +89,17 @@
         <translation>Licença</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="73"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
+        <extracomment>Indicates Vatsinator version</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
+        <location filename="../ui/windows/aboutwindow.cpp" line="82"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
+        <extracomment>Indicates Vatsinator version</extracomment>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -126,7 +128,7 @@
     <name>AirportDetailsWindow</name>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="23"/>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="142"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="144"/>
         <source>%1 - airport details</source>
         <extracomment>%1 is an ICAO code of the airport.</extracomment>
         <translation>%1 - detalhes do aeroporto</translation>
@@ -202,13 +204,13 @@
         <translation>Mostrar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="156"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="158"/>
         <source>%1 ft</source>
         <extracomment>ft - feet</extracomment>
         <translation>%1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/windows/airportdetailswindow.cpp" line="173"/>
+        <location filename="../ui/windows/airportdetailswindow.cpp" line="175"/>
         <source>Error</source>
         <translation type="unfinished"/>
     </message>
@@ -325,7 +327,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/atcdetailswindow.cpp" line="87"/>
+        <location filename="../ui/windows/atcdetailswindow.cpp" line="77"/>
         <source>%1 - ATC details</source>
         <translation>%1 - Detalhes ATC</translation>
     </message>
@@ -407,43 +409,47 @@
         <translation>Estado actual:</translation>
     </message>
     <message numerus="yes">
-        <location filename="../ui/windows/databasewindow.cpp" line="48"/>
+        <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
-        <comment>The first part of the summary</comment>
+        <extracomment>First part of the summary</extracomment>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../ui/windows/databasewindow.cpp" line="52"/>
+        <location filename="../ui/windows/databasewindow.cpp" line="56"/>
         <source>and %n airlines(s).</source>
-        <comment>The second part of the summary</comment>
+        <extracomment>Second part of the summary</extracomment>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.cpp" line="68"/>
+        <location filename="../ui/windows/databasewindow.cpp" line="72"/>
         <source>up-to-date</source>
         <comment>Database status indicator</comment>
+        <extracomment>Describes database update status</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.cpp" line="75"/>
+        <location filename="../ui/windows/databasewindow.cpp" line="80"/>
         <source>outdated</source>
         <comment>Database status indicator</comment>
+        <extracomment>Describes database update status</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.cpp" line="82"/>
+        <location filename="../ui/windows/databasewindow.cpp" line="88"/>
         <source>updating...</source>
         <comment>Database status indicator</comment>
+        <extracomment>Describes database update status</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.cpp" line="89"/>
+        <location filename="../ui/windows/databasewindow.cpp" line="96"/>
         <source>cannot update</source>
         <comment>Database status indicator</comment>
+        <extracomment>Describes database update status</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.cpp" line="90"/>
+        <location filename="../ui/windows/databasewindow.cpp" line="97"/>
         <source>Your Vatsinator version is outdated.</source>
         <translation type="unfinished"/>
     </message>
@@ -523,12 +529,12 @@
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="90"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="93"/>
         <source>%1 - FIR details</source>
         <translation>%1 - Detalhes FIR</translation>
     </message>
     <message>
-        <location filename="../ui/windows/firdetailswindow.cpp" line="92"/>
+        <location filename="../ui/windows/firdetailswindow.cpp" line="95"/>
         <source>%1 - ARTCC details</source>
         <translation>%1 - Detalhes ARTCC</translation>
     </message>
@@ -561,7 +567,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="149"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="142"/>
         <source>%1 - flight details</source>
         <translation>%1 - Detalhes vôo</translation>
     </message>
@@ -705,28 +711,28 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="177"/>
         <source>%1 feet</source>
         <translation>%1 feet</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="202"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="195"/>
         <source>%1 kts</source>
         <translation>%1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="189"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="182"/>
         <source>airborne</source>
         <translation>no ar</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="191"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
         <source>departing</source>
         <translation>partida</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="193"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="186"/>
         <source>arrived</source>
         <translation>chegada</translation>
     </message>
@@ -821,35 +827,35 @@
 <context>
     <name>MapPage</name>
     <message>
-        <location filename="../ui/pages/mappage.cpp" line="51"/>
+        <location filename="../ui/pages/mappage.cpp" line="47"/>
         <source>Map</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="34"/>
+        <location filename="../ui/pages/mappage.ui" line="67"/>
         <source>FIR</source>
         <extracomment>Select FIR font</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="41"/>
+        <location filename="../ui/pages/mappage.ui" line="37"/>
         <source>Fonts:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="58"/>
+        <location filename="../ui/pages/mappage.ui" line="74"/>
         <source>Airport</source>
         <extracomment>Select font for airports</extracomment>
         <translation>Aeroporto</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="65"/>
+        <location filename="../ui/pages/mappage.ui" line="81"/>
         <source>Pilot</source>
         <extracomment>Select font for pilots</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="72"/>
+        <location filename="../ui/pages/mappage.ui" line="54"/>
         <source>Map type:</source>
         <translation type="unfinished"/>
     </message>
@@ -1307,7 +1313,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/vatsinatorwindow.cpp" line="64"/>
+        <location filename="../ui/windows/vatsinatorwindow.cpp" line="56"/>
         <source>&amp;Menu</source>
         <translation type="unfinished"/>
     </message>
