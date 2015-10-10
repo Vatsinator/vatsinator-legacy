@@ -375,7 +375,7 @@ MapWidget::__menuForAirportItem(const AirportItem* item)
     connect(showAp, &AirportDetailsAction::triggered,wui(), &WidgetsUserInterface::showAirportDetails);
     menu->addAction(showAp);
     
-    MetarAction* showMetar = new MetarAction(item->data()->icao(), tr("%1 metar").arg(item->data()->icao()), this);
+    MetarAction* showMetar = new MetarAction(item->data()->icao(), tr("%1 METAR").arg(item->data()->icao()), this);
     connect(showMetar, &MetarAction::triggered, wui(), &WidgetsUserInterface::showMetar);
     menu->addAction(showMetar);
     

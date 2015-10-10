@@ -4,7 +4,6 @@
 * Home-location
 * Data files should use JSON format (model, uir)
 * Old versions config updater
-* Optimize OpenGL engine (texture atlas...)
 * Search window
 * Better labels display
 
@@ -12,6 +11,5 @@ Due to the new engine:
 * Make trackers work (FlightTracker, AirportTracker)
 
 == TODO for later versions ==
-* Dynamic map (plugin format)
 * Chart links
 * VATSIM news widget

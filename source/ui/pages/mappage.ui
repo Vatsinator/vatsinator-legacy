@@ -14,9 +14,6 @@
    <string notr="true">Map</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0">
-   <property name="verticalSpacing">
-    <number>0</number>
-   </property>
    <item row="1" column="2">
     <widget class="QPushButton" name="FirFontSelectionButton">
      <property name="text">
