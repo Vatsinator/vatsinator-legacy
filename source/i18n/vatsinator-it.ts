@@ -835,30 +835,30 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="67"/>
+        <location filename="../ui/pages/mappage.ui" line="64"/>
         <source>FIR</source>
         <extracomment>Select FIR font</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="37"/>
+        <location filename="../ui/pages/mappage.ui" line="34"/>
         <source>Fonts:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="74"/>
+        <location filename="../ui/pages/mappage.ui" line="71"/>
         <source>Airport</source>
         <extracomment>Select font for airports</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="81"/>
+        <location filename="../ui/pages/mappage.ui" line="78"/>
         <source>Pilot</source>
         <extracomment>Select font for pilots</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="54"/>
+        <location filename="../ui/pages/mappage.ui" line="51"/>
         <source>Map type:</source>
         <translation type="unfinished"/>
     </message>
@@ -872,7 +872,7 @@
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="378"/>
-        <source>%1 metar</source>
+        <source>%1 METAR</source>
         <translation type="unfinished"/>
     </message>
     <message>
