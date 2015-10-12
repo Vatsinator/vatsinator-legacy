@@ -38,6 +38,7 @@ FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     __pilot(pilot)
 {
     connect(pilot, &Pilot::aircraftChanged, this, &FlightItem::__invalidateModel);
+    connect(pilot, &Pilot::headingChanged, this, &FlightItem::__invalidateModel);
     connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &FlightItem::__invalidateLabel);
 }
 
