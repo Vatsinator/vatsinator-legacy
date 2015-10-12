@@ -38,10 +38,7 @@ FlightItem::FlightItem(const Pilot* pilot, QObject* parent) :
     __pilot(pilot)
 {
     connect(pilot, &Pilot::aircraftChanged, this, &FlightItem::__invalidateModel);
-    
-    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, [this]() {
-        __label = QPixmap();
-    });
+    connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &FlightItem::__invalidateLabel);
 }
 
 bool
@@ -63,6 +60,9 @@ FlightItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags f
         __prepareModel();
     
     Q_ASSERT(!__model.isNull());
+    
+    if (__scene->trackedFlight() == data())
+        flags |= DrawSelected;
     
     QPoint pos = position() * transform;
     
@@ -177,4 +177,10 @@ void
 FlightItem::__invalidateModel()
 {
     __model = QPixmap();
+}
+
+void
+FlightItem::__invalidateLabel()
+{
+    __label = QPixmap();
 }

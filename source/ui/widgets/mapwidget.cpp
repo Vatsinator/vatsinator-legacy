@@ -138,7 +138,6 @@ MapWidget::paintEvent(QPaintEvent* event)
         }
     }
     
-    
     QPainter painter(this);
     __renderer->paint(&painter, selected);
     

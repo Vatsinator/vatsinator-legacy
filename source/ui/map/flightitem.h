@@ -100,6 +100,11 @@ private slots:
      */
     void __invalidateModel();
     
+    /**
+     * Removes the label pixmap, forcing it to be refreshed.
+     */
+    void __invalidateLabel();
+    
 private:
     MapScene* __scene;
     const Pilot* __pilot;
