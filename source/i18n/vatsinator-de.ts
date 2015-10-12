@@ -4,7 +4,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="17"/>
         <source>ATC details</source>
-        <translation>ATC-Details</translation>
+        <translation>FVK-Details</translation>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="74"/>
@@ -28,7 +28,7 @@
     <message>
         <location filename="../ui/windows/atclistwindow.ui" line="14"/>
         <source>ATC list</source>
-        <translation>ATC-Liste</translation>
+        <translation>FVK-Liste</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="129"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
-        <translation>Vatsinator ist der einfache VATSIM-Monitor - er zeigt angemeldete Piloten und Fluglotsen an und liefert einige nützliche Informationen (wie z.B. METARs oder Flughafendetails).</translation>
+        <translation>Vatsinator ist der einfache Vatsim-Monitor - er zeigt angemeldete Piloten und Fluglotsen an und liefert einige nützliche Informationen (wie z.B. METARs oder Flughafendetails).</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="207"/>
@@ -145,13 +145,13 @@
         <source>Outbound</source>
         <comment>airport details window tab</comment>
         <extracomment>Outbound flights</extracomment>
-        <translation>/Abfliegend</translation>
+        <translation>Abfliegend</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="223"/>
         <source>ATC</source>
         <comment>airport details window tab</comment>
-        <translation>ATC</translation>
+        <translation>FVK</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="294"/>
@@ -161,7 +161,7 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="368"/>
         <source>Airport info</source>
-        <translation>Flughafeninformation</translation>
+        <translation>Flughafeninformationen</translation>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="412"/>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../models/airporttablemodel.cpp" line="117"/>
         <source>ATC</source>
-        <translation>ATC</translation>
+        <translation>FVK</translation>
     </message>
     <message>
         <location filename="../models/airporttablemodel.cpp" line="121"/>
@@ -239,7 +239,7 @@
         <source>Outbound</source>
         <comment>airport table model</comment>
         <extracomment>Number of outbound flights in airports' tab in FIR details</extracomment>
-        <translation>/Abfliegend</translation>
+        <translation>Abfliegend</translation>
     </message>
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="135"/>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="77"/>
         <source>%1 - ATC details</source>
-        <translation>%1 - ATC-Details</translation>
+        <translation>%1 - FVK-Details</translation>
     </message>
 </context>
 <context>
@@ -412,13 +412,13 @@
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <extracomment>First part of the summary</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ihr lokaler Klon der Vatsinator-Datenbank enthält %n Flughafen</numerusform><numerusform>Ihr lokaler Klon der Vatsinator-Datenbank enthält %n Flughäfen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="56"/>
         <source>and %n airlines(s).</source>
         <extracomment>Second part of the summary</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>und %n Fluggesellschaften.</numerusform><numerusform>und %n Fluggesellschaften.</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="72"/>
@@ -506,7 +506,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="155"/>
         <source>ATC</source>
-        <translation>ATC</translation>
+        <translation>FVK</translation>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="226"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="95"/>
         <source>%1 - ARTCC details</source>
-        <translation>%1 - ARTCC-Details</translation>
+        <translation>%1 - Bezirkskontrollstellendetails</translation>
     </message>
 </context>
 <context>
@@ -783,14 +783,13 @@
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="43"/>
         <source>Do you let Vatsinator send some anonymous statistics?</source>
-        <translation>Möchten Sie Vatsinator manche anonyme Statistiken senden lassen?</translation>
+        <translation>Möchten Sie Vatsinator einige anonyme Statistiken senden lassen?</translation>
     </message>
     <message>
         <location filename="../ui/dialogs/letsendstatsdialog.ui" line="56"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Vatsinator can collect some anonymous statistics in order to provide better quality and usability. Things that will be sent to servers include: application version, operating system, errors and warnings. We do not collect such data as IP addresses or users&apos; locations.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;
-Um eine Verbesserung von Qualität und Nutzbarkeit von Vatsinator zu ermöglichen, können anonyme Statistiken erhoben werden. Daten, die an Server geschickt werden, enthalten: Anwendungsversion, Betriebssystem, Fehler und Warnungen.
-Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+Um eine Verbesserung von Qualität und Nutzbarkeit von Vatsinator zu ermöglichen, können anonyme Statistiken erhoben werden. Daten, die an Server gesendet werden, enthalten: Anwendungsversion, Betriebssystem, Fehler und Warnungen. Wir erfassen keine IP-Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Erfahren Sie mehr über die Vatsinator-Datenschutzerklärung&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -818,7 +817,7 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="133"/>
         <source>%n ATC(s)</source>
-        <translation><numerusform>%n Flugverkehrskontrolle</numerusform><numerusform>%n Flugverkehrskontrollen</numerusform></translation>
+        <translation><numerusform>%n FVK</numerusform><numerusform>%n FVK</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="134"/>
@@ -834,30 +833,30 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
         <translation>Karte</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="67"/>
+        <location filename="../ui/pages/mappage.ui" line="64"/>
         <source>FIR</source>
         <extracomment>Select FIR font</extracomment>
         <translation>FIR</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="37"/>
+        <location filename="../ui/pages/mappage.ui" line="34"/>
         <source>Fonts:</source>
         <translation>Schriftarten:</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="74"/>
+        <location filename="../ui/pages/mappage.ui" line="71"/>
         <source>Airport</source>
         <extracomment>Select font for airports</extracomment>
         <translation>Flughafen</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="81"/>
+        <location filename="../ui/pages/mappage.ui" line="78"/>
         <source>Pilot</source>
         <extracomment>Select font for pilots</extracomment>
         <translation>Pilot</translation>
     </message>
     <message>
-        <location filename="../ui/pages/mappage.ui" line="54"/>
+        <location filename="../ui/pages/mappage.ui" line="51"/>
         <source>Map type:</source>
         <translation>Kartentyp:</translation>
     </message>
@@ -871,8 +870,8 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="378"/>
-        <source>%1 metar</source>
-        <translation>%1 metar</translation>
+        <source>%1 METAR</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="383"/>
@@ -1027,7 +1026,7 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="63"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
-        <translation>Wenn aktiviert, werden manche Daten (wie z.B. Betriebssystem, Zeit der Anwendungsnutzung, Warnungen und Fehler) an die Vatsinator-Server gesendet werden.</translation>
+        <translation>Wenn aktiviert, werden einige Daten (wie z.B. Betriebssystem, Zeit der Anwendungsnutzung, Warnungen und Fehler) an die Vatsinator-Server gesendet werden.</translation>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="40"/>
@@ -1071,7 +1070,7 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../ui/pages/networkpage.ui" line="106"/>
         <source>ATC bookings</source>
-        <translation>ATC-Buchungen</translation>
+        <translation>FVK-Buchungen</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="116"/>
@@ -1292,7 +1291,7 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="178"/>
         <source>ATC list...</source>
-        <translation>ATC-Liste...</translation>
+        <translation>FVK-Liste...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="189"/>
@@ -1365,7 +1364,7 @@ Wir erfassen keine IP Adressen oder Standortdaten.&lt;/p&gt;&lt;p align=&quot;ce
     <message>
         <location filename="../ui/pages/viewpage.ui" line="91"/>
         <source>Airports</source>
-        <translation>Flughafen</translation>
+        <translation>Flughäfen</translation>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="64"/>
