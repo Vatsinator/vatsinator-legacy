@@ -83,7 +83,7 @@ public:
 signals:
     /**
      * Emitted when user wants to track the flight.
-     * If the pointer is nullptr, it means that user has just cancelled
+     * If the pointer is \c nullptr, it means that user has just cancelled
      * flight tracking.
      */
     void flightTracked(const Pilot* pilot);

@@ -1,6 +1,6 @@
 /*
     trackaction.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,24 +26,33 @@ class Pilot;
 
 /**
  * The TrackAction class is used to mark the given pilot as a tracked one.
- *
- * \todo Implement.
  */
 class TrackAction : public QAction {
     Q_OBJECT
     
 signals:
+    /**
+     * Emitted when a user triggers this action, passing a to-be-tracked
+     * pilot in the argument.
+     */
     void triggered(const Pilot* pilot);
     
 public:
-    TrackAction(const Pilot* pilot, QObject* parent);
+    /**
+     * Creates the action with the standard "Track this flight" text.
+     */
+    explicit TrackAction(const Pilot* pilot, QObject* parent);
+    
+    /**
+     * Creates the action with the custom text.
+     */
+    explicit TrackAction(const QString& text, const Pilot* pilot, QObject *parent);
     
 private slots:
-    void __handleTriggered();
     void __updateChecked(const Pilot* pilot);
     
 private:
-    const Pilot* __current;
+    const Pilot* __pilot;
     
 };
 

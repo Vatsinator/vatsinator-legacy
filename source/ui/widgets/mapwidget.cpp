@@ -1,6 +1,6 @@
 /*
  * mapwidget.cpp
- * Copyright (C) 2013-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -308,7 +308,9 @@ const MapItem*
 MapWidget::__underPoint(const QPoint& point)
 {
     const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat (point).bound());
-    Q_ASSERT(closest);
+    if (!closest)
+        return nullptr;
+    
     QPoint pos = closest->position() * __renderer->transform();
     
     if (__mousePosition.screenDistance(pos) > MapConfig::mouseOnObject())
@@ -451,6 +453,9 @@ MapWidget::__menuForFlightItem(const FlightItem* item)
     
     TrackAction* ta = new TrackAction(item->data(), this);
     menu->addAction(ta);
+    connect(ta, &TrackAction::triggered, [](const Pilot* pilot) {
+        wui()->mainWindow()->mapWidget()->renderer()->scene()->trackFlight(pilot);
+    });
     
     return menu;
 }

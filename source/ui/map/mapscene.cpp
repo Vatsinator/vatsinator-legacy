@@ -85,8 +85,18 @@ MapScene::removeArea(MapArea* area)
 void
 MapScene::trackFlight(const Pilot* pilot)
 {
+    if (nullptr == pilot)
+        disconnect(pilot);
+    
     __trackedFlight = pilot;
     emit flightTracked(__trackedFlight);
+    
+    if (pilot) {
+        connect(pilot, &Pilot::phaseChanged, [this](Pilot::Phase phase) {
+            if (phase != Pilot::Airborne)
+                trackFlight(nullptr);
+        });
+    }
 }
 
 void

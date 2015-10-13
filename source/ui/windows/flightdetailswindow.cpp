@@ -79,9 +79,10 @@ FlightDetailsWindow::FlightDetailsWindow(const Pilot* pilot, QWidget* parent) :
         vApp()->userInterface()->ensureMainWindowIsActive();
     });
     
-    connect(TrackFlightBox, &QCheckBox::stateChanged, [this](int _state) {
-        emit flightTrackingStateChanged(__pilot, _state);
+    connect(TrackFlightBox, &QCheckBox::stateChanged, [this](int state) {
+        emit flightTracked(state == Qt::Checked ? __pilot : nullptr);
     });
+    connect(this, &FlightDetailsWindow::flightTracked, wui()->mainWindow()->mapWidget()->renderer()->scene(), &MapScene::trackFlight);
     
     setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QDesktopWidget().screenGeometry(wui()->mainWindow())));
 }
@@ -184,7 +185,7 @@ FlightDetailsWindow::__updateInfo()
         FlightPhaseLabel->setValue(tr("departing"));
     else
         FlightPhaseLabel->setValue(tr("arrived"));
-        
+    
     ServerLabel->setValue(__pilot->server());
     TimeOnlineLabel->setValue(__pilot->onlineFrom().toString("dd MMM yyyy, hh:mm"));
     SquawkLabel->setValue(__pilot->squawk());

@@ -24,14 +24,25 @@
 
 class Pilot;
 
+/**
+ * A window that shows the selected flight's information.
+ */
 class FlightDetailsWindow : public QWidget, private Ui::FlightDetailsWindow {
     Q_OBJECT
     
 signals:
-    void flightTrackingStateChanged(const Pilot* pilot, int state);
+    /**
+     * Emitted when user wants to track the flight. \c pilot becomes
+     * \c nullptr if user cancels flight tracking.
+     */
+    void flightTracked(const Pilot* pilot);
     
 public:
-    FlightDetailsWindow(const Pilot* pilot, QWidget* parent = nullptr);
+    /**
+     * Creates new window for the provided \c pilot. Passes \c parent
+     * to the \c QWidget constructor.
+     */
+    explicit FlightDetailsWindow(const Pilot* pilot, QWidget* parent = nullptr);
     
 protected:
     virtual void showEvent(QShowEvent* event) override;

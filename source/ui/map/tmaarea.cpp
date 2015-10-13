@@ -45,7 +45,7 @@ TmaArea::boundingRect() const
 bool
 TmaArea::isVisible() const
 {
-    return true;
+    return __scene->settings().view.airports_layer;
 }
 
 void

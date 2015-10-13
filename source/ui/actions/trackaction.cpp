@@ -1,6 +1,6 @@
 /*
     trackaction.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,33 +21,31 @@
 #include "ui/widgets/mapwidget.h"
 #include "ui/windows/vatsinatorwindow.h"
 #include "ui/widgetsuserinterface.h"
+#include "vatsimdata/pilot.h"
 
 #include "trackaction.h"
 
 TrackAction::TrackAction(const Pilot* pilot, QObject* parent) :
-    QAction(tr("Track this flight"), parent),
-    __current(pilot)
-{
+    TrackAction(tr("Track this flight"), pilot, parent) {}
 
+TrackAction::TrackAction(const QString& text, const Pilot* pilot, QObject* parent) :
+    QAction(text, parent),
+    __pilot(pilot)
+{
     setCheckable(true);
     
-    if (__current == wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight())
+    if (__pilot == wui()->mainWindow()->mapWidget()->renderer()->scene()->trackedFlight())
         setChecked(true);
-        
-    connect(this, SIGNAL(triggered()), SLOT(__handleTriggered()));
-    connect(wui()->mainWindow()->mapWidget()->renderer()->scene(),
-            SIGNAL(flightTracked(const Pilot*)),
-            this,   SLOT(__updateChecked(const Pilot*)));
-}
-
-void
-TrackAction::__handleTriggered()
-{
-    wui()->mainWindow()->mapWidget()->renderer()->scene()->trackFlight(__current);
+    
+    connect(this, &QAction::triggered, [this](bool checked) {
+        emit triggered(checked ? __pilot : nullptr);
+    });
+    
+    connect(wui()->mainWindow()->mapWidget()->renderer()->scene(), &MapScene::flightTracked, this, &TrackAction::__updateChecked);
 }
 
 void
 TrackAction::__updateChecked(const Pilot* pilot)
 {
-    setChecked(pilot == __current);
+    setChecked(pilot == __pilot);
 }
