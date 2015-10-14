@@ -75,7 +75,9 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     QPen origPen = painter->pen();
     QFont origFont = painter->font();
     
-    QPen pen(data()->isStaffed() ? QColor(157, 86, 86) : QColor(155, 155, 155));
+    QPen pen(data()->isStaffed() ?
+            (flags & DrawSelected ? QColor(137, 66, 66) : QColor(157, 86, 86)) :
+            (flags & DrawSelected ? QColor(135, 135, 135) : QColor(155, 155, 155)));
     pen.setWidth(3);
     painter->setPen(pen);
     painter->setFont(__font);
@@ -86,8 +88,6 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     painter->drawStaticText(rect.topLeft(), __label);
     painter->setPen(origPen);
     painter->setFont(origFont);
-    
-    Q_UNUSED(flags);
 }
 
 int

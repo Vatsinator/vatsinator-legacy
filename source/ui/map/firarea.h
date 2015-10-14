@@ -23,6 +23,7 @@
 #include "ui/map/maparea.h"
 
 class Fir;
+class FirItem;
 class MapScene;
 
 /**
@@ -32,7 +33,7 @@ class FirArea : public MapArea {
     Q_OBJECT
 
 public:
-    explicit FirArea(const Fir* fir, QObject* parent = nullptr);
+    explicit FirArea(const Fir* fir, const FirItem* item, QObject* parent = nullptr);
     
     /**
      * \copydoc MapArea::boundingRect()
@@ -62,6 +63,7 @@ private:
     const Fir* __fir;
     const QRectF __rect;
     QVector<LonLat> __boundaries;
+    const FirItem* __item;
     
 };
 

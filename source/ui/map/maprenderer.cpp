@@ -1,6 +1,6 @@
 /*
  * maprenderer.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,7 @@ namespace {
 
 MapRenderer::MapRenderer(QObject* parent) :
     QObject(parent),
+    __isRendering(false),
     __mapDrawer(nullptr),
     __scene(new MapScene(this))
 {
@@ -144,6 +145,9 @@ MapRenderer::setViewport(const QSize& size)
 void
 MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
 {
+    __selectedItems = selectedItems;
+    __isRendering = true;
+    
     WorldTransform transform = this->transform();
     
     if (__mapDrawer) {
@@ -162,6 +166,8 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
     std::for_each(items.begin(), items.end(), [painter, &transform, &selectedItems](auto item) {
         item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));
     });
+    
+    __isRendering = false;
 }
 
 void

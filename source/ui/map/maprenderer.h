@@ -1,6 +1,6 @@
 /*
  * maprenderer.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,6 +137,7 @@ public:
     qreal zoomStep(int zoom);
     void setZoom(qreal zoom);
     void setCenter(const LonLat& center);
+    void setViewport(const QSize& size);
     
     /**
      * The difference between the updateZoom() and setZoom() methods is that
@@ -144,8 +145,23 @@ public:
      * equations that consider the zoom coefficient specified by the user.
      */
     void updateZoom(int steps);
-
-    void setViewport(const QSize& size);
+    
+    /**
+     * Is this instance of MapRenderer currently in the paintEvent()?
+     */
+    inline bool isRendering() const
+    {
+        return __isRendering;
+    }
+    
+    /**
+     * Returns set of items selected by user.
+     * \warning This method is valid only when \c isRendering() \c == \c true.
+     */
+    inline const QSet<MapItem*>& selectedItems() const
+    {
+        return __selectedItems;
+    }
     
     inline const QSize& viewport() const
     {
@@ -201,6 +217,12 @@ private slots:
     void __saveMapState();
     
 private:
+    /* Is currenly in paintEvent()? */
+    bool __isRendering;
+    
+    /* Valid only if __isRendering == true */
+    QSet<MapItem*> __selectedItems;
+    
     /* The current viewport */
     QSize __viewport;
     

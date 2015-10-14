@@ -20,17 +20,20 @@
 #include <QtGui>
 
 #include "db/firdatabase.h"
+#include "ui/map/firitem.h"
+#include "ui/map/maprenderer.h"
 #include "ui/map/mapscene.h"
 #include "vatsimdata/fir.h"
 
 #include "firarea.h"
 
-FirArea::FirArea(const Fir* fir, QObject* parent) :
-    MapArea (parent),
+FirArea::FirArea(const Fir* fir, const FirItem* item, QObject* parent) :
+    MapArea(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
     __rect(QPointF(fir->data()->header.externities[0].x, fir->data()->header.externities[1].y),
-           QPointF(fir->data()->header.externities[1].x, fir->data()->header.externities[0].y))
+           QPointF(fir->data()->header.externities[1].x, fir->data()->header.externities[0].y)),
+    __item(item)
 {
     const FirRecord* f = fir->data();
     __boundaries.reserve(f->borders.length());
@@ -48,25 +51,44 @@ FirArea::boundingRect() const
 bool
 FirArea::isVisible() const
 {
-    return data()->isStaffed();
+    if (__scene->renderer()->isRendering())
+        return data()->isStaffed() || __scene->renderer()->selectedItems().contains((MapItem*&)__item);
+    else
+        return data()->isStaffed();
 }
 
 void
 FirArea::draw(QPainter* painter, const WorldTransform& transform) const
 {
-    QColor firColor = QColor(176, 32, 32, 30);
-    
-    QBrush brush = painter->brush();
-    painter->setBrush(QBrush(firColor));
-    
-    QPen pen = painter->pen();
-    painter->setPen(firColor);
-    
-    auto region = __boundaries * transform;
-    painter->drawPolygon(region.data(), region.length());
-    
-    painter->setPen(pen);
-    painter->setBrush(brush);
+    if (data()->isStaffed()) {
+        QColor firColor = QColor(176, 32, 32, 30);
+        
+        QBrush brush = painter->brush();
+        painter->setBrush(QBrush(firColor));
+        
+        QPen pen = painter->pen();
+        painter->setPen(firColor);
+        
+        auto region = __boundaries * transform;
+        painter->drawPolygon(region.data(), region.length());
+        
+        painter->setPen(pen);
+        painter->setBrush(brush);
+    } else {
+        QColor firColor = QColor(175, 175, 175);
+        
+        QPen pen = painter->pen();
+        painter->setPen(firColor);
+        
+        QPainter::RenderHints hints = painter->renderHints();
+        painter->setRenderHints(hints | QPainter::Antialiasing);
+        
+        auto region = __boundaries * transform;
+        painter->drawPolygon(region.data(), region.length());
+        
+        painter->setPen(pen);
+        painter->setRenderHints(hints);
+    }
     
 #ifndef QT_NO_DEBUG
     QRect mapped = __rect * transform;

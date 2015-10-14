@@ -268,7 +268,7 @@ MapScene::__setupItems()
         if (f->data()->header.textPosition.x != 0.0 && f->data()->header.textPosition.y != 0.0) {
             FirItem* item = new FirItem(f, this);
             __items.insert(std::make_pair(item->position(), item));
-            FirArea* area = new FirArea(f, this);
+            FirArea* area = new FirArea(f, item, this);
             __areas.insert(std::make_pair(area->boundingRect(), area));
         }
     }
