@@ -312,6 +312,8 @@ MapScene::__removeFlightItem(QObject* object)
     FlightItem* item = qobject_cast<FlightItem*>(object);
     Q_ASSERT(item);
     
+    disconnect(item->data());
+    
     auto it = std::find_if(spatial::equal_begin(__items, item->data()->position()),
                            spatial::equal_end(__items, item->data()->position()),
                            [item](auto it) {
