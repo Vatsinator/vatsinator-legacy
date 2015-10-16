@@ -567,7 +567,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="142"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="143"/>
         <source>%1 - flight details</source>
         <translation>%1 - λεπτομέρειες της πτήσης</translation>
     </message>
@@ -711,28 +711,28 @@
         <translation> Αυτόματο υψόμετρο</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="177"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
         <source>%1 feet</source>
         <translation>%1 πόδια</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="195"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="179"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="196"/>
         <source>%1 kts</source>
         <translation>%1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="182"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="183"/>
         <source>airborne</source>
         <translation>αερομεταφορεας</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
         <source>departing</source>
         <translation>αναχώρηση</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="186"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="187"/>
         <source>arrived</source>
         <translation>έφθασε</translation>
     </message>
@@ -863,73 +863,73 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="374"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
         <source>Airport details</source>
         <translation>Λεπτομερειες αεροδρομιου</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="378"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="379"/>
         <source>%1 METAR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="383"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="384"/>
         <source>Controllers</source>
         <translation>Ελεγκτές</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="392"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="393"/>
         <source>Arrivals</source>
         <translation>Αφίξεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="403"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="404"/>
         <source>Departures</source>
         <translation>Αναχωρήσεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="432"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="433"/>
         <source>Departures: %1</source>
         <translation>Αναχωρήσεις:: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="438"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="439"/>
         <source>Arrivals: %1</source>
         <translation>Αφίξεις: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="470"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ταχύτητα εδάφους: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="467"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="471"/>
         <source>Altitude: %1 ft</source>
         <translation>Υψόμετρο: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="478"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="482"/>
         <source>%1 details</source>
         <translation>%1 Λεπτομέρειες</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="449"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="450"/>
         <source>Flight details</source>
         <translation>Λεπτομέρειες της πτήσης</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="347"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="348"/>
         <source>Nearby</source>
         <extracomment>Nearby flights and airports</extracomment>
         <translation>Μικρή απόσταση</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="349"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
         <source>Flights</source>
         <translation>Πτήσεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="358"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
         <source>Airports</source>
         <translation>Αεροδρόμια</translation>
     </message>
@@ -1202,7 +1202,7 @@
 <context>
     <name>TrackAction</name>
     <message>
-        <location filename="../ui/actions/trackaction.cpp" line="28"/>
+        <location filename="../ui/actions/trackaction.cpp" line="29"/>
         <source>Track this flight</source>
         <translation>Παρακολούθηση αυτής της πτήσης</translation>
     </message>

@@ -406,19 +406,19 @@
         <location filename="../ui/windows/databasewindow.ui" line="106"/>
         <source>Current status:</source>
         <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
-        <translation>Etap lotu:</translation>
+        <translation>Stan bazy danych:</translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <extracomment>First part of the summary</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Twoja lokalna kopia Bazy Danych Vatsinator zawiera %n lotnisko</numerusform><numerusform>Twoja lokalna kopia Bazy Danych Vatsinator zawiera %n lotniska</numerusform><numerusform>Twoja lokalna kopia Bazy Danych Vatsinator zawiera %n lotnisk</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="56"/>
         <source>and %n airlines(s).</source>
         <extracomment>Second part of the summary</extracomment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>oraz %n linię lotniczą.</numerusform><numerusform>oraz %n linie lotnicze.</numerusform><numerusform>oraz %n linii lotniczych.</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="72"/>
@@ -567,7 +567,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="142"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="143"/>
         <source>%1 - flight details</source>
         <translation>%1 - szczegóły lotu</translation>
     </message>
@@ -711,28 +711,28 @@
         <translation>Wysokość przelotowa</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="177"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
         <source>%1 feet</source>
         <translation>%1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="195"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="179"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="196"/>
         <source>%1 kts</source>
         <translation>%1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="182"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="183"/>
         <source>airborne</source>
         <translation>w powietrzu</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
         <source>departing</source>
         <translation>startuje</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="186"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="187"/>
         <source>arrived</source>
         <translation>wylądował</translation>
     </message>
@@ -863,73 +863,73 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="374"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
         <source>Airport details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="378"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="379"/>
         <source>%1 METAR</source>
-        <translation type="unfinished"/>
+        <translation>%1 - METAR</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="383"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="384"/>
         <source>Controllers</source>
         <translation>Kontrolerzy</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="392"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="393"/>
         <source>Arrivals</source>
         <translation>Przyloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="403"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="404"/>
         <source>Departures</source>
         <translation>Odloty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="432"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="433"/>
         <source>Departures: %1</source>
         <translation>Startują: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="438"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="439"/>
         <source>Arrivals: %1</source>
         <translation>Wylądowało: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="470"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ground speed: %1 węzłów</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="467"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="471"/>
         <source>Altitude: %1 ft</source>
         <translation>Wysokość: %1 stóp</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="478"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="482"/>
         <source>%1 details</source>
         <translation>Szczegóły %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="449"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="450"/>
         <source>Flight details</source>
         <translation>Szczegóły</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="347"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="348"/>
         <source>Nearby</source>
         <extracomment>Nearby flights and airports</extracomment>
         <translation>W pobliżu</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="349"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
         <source>Flights</source>
         <translation>Loty</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="358"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
         <source>Airports</source>
         <translation>Lotniska</translation>
     </message>
@@ -1202,7 +1202,7 @@
 <context>
     <name>TrackAction</name>
     <message>
-        <location filename="../ui/actions/trackaction.cpp" line="28"/>
+        <location filename="../ui/actions/trackaction.cpp" line="29"/>
         <source>Track this flight</source>
         <translation>Śledź ten lot</translation>
     </message>

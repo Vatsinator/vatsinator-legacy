@@ -567,7 +567,7 @@
     <name>FlightDetailsWindow</name>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="17"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="142"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="143"/>
         <source>%1 - flight details</source>
         <translation>%1 - フライト詳細</translation>
     </message>
@@ -711,28 +711,28 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="177"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
         <source>%1 feet</source>
         <translation>%1 フィート</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="178"/>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="195"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="179"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="196"/>
         <source>%1 kts</source>
         <translation>%1 ノット</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="182"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="183"/>
         <source>airborne</source>
         <translation>飛行中</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="184"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="185"/>
         <source>departing</source>
         <translation>出発</translation>
     </message>
     <message>
-        <location filename="../ui/windows/flightdetailswindow.cpp" line="186"/>
+        <location filename="../ui/windows/flightdetailswindow.cpp" line="187"/>
         <source>arrived</source>
         <translation>到着</translation>
     </message>
@@ -863,73 +863,73 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="374"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
         <source>Airport details</source>
         <translation>空港詳細</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="378"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="379"/>
         <source>%1 METAR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="383"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="384"/>
         <source>Controllers</source>
         <translation>管制官</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="392"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="393"/>
         <source>Arrivals</source>
         <translation>到着機</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="403"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="404"/>
         <source>Departures</source>
         <translation>出発機</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="432"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="433"/>
         <source>Departures: %1</source>
         <translation>出発機: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="438"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="439"/>
         <source>Arrivals: %1</source>
         <translation>到着機: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="466"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="470"/>
         <source>Ground speed: %1 kts</source>
         <translation>対地速度: %1 ノット</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="467"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="471"/>
         <source>Altitude: %1 ft</source>
         <translation>高度: %1 フィート</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="478"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="482"/>
         <source>%1 details</source>
         <translation>%1 詳細</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="449"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="450"/>
         <source>Flight details</source>
         <translation>フライト詳細</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="347"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="348"/>
         <source>Nearby</source>
         <extracomment>Nearby flights and airports</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="349"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
         <source>Flights</source>
         <translation>フライト</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="358"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
         <source>Airports</source>
         <translation>空港</translation>
     </message>
@@ -1202,7 +1202,7 @@
 <context>
     <name>TrackAction</name>
     <message>
-        <location filename="../ui/actions/trackaction.cpp" line="28"/>
+        <location filename="../ui/actions/trackaction.cpp" line="29"/>
         <source>Track this flight</source>
         <translation>飛行経路を表示</translation>
     </message>
