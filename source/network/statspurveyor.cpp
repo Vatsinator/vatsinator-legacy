@@ -75,8 +75,15 @@ QString osString()
         case QSysInfo::WV_WINDOWS8:
             return QStringLiteral("Windows 8");
             
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 2, 0))
         case QSysInfo::WV_WINDOWS8_1:
             return QStringLiteral("Windows 8.1");
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
+        case QSysInfo::WV_WINDOWS10:
+            return QStringLiteral("Windows 10");
+#endif
             
         default:
             return QStringLiteral("Windows");
