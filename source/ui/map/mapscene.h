@@ -242,6 +242,8 @@ private slots:
      */
     void __updateSettings();
     
+    void __handleTrackedFlight(const Pilot* pilot);
+    
 private:
     MapRenderer* __renderer;
     
@@ -296,6 +298,7 @@ private:
     MapSettings __settings;
     
     QSignalMapper* __flightsMapper; /**< Maps Pilots to its iterators in the spatial map */
+    QMetaObject::Connection __trackedFlightConnection;
     
 };
 

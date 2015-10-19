@@ -56,11 +56,7 @@ MapScene::MapScene(QObject* parent) :
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, this, &MapScene::__updateItems);
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::initialized, this, &MapScene::__setupItems);
     connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &MapScene::__updateSettings);
-    
-    connect(this, &MapScene::flightTracked, [this](const Pilot * p) {
-        if (p)
-            moveTo(p->position());
-    });
+    connect(this, &MapScene::flightTracked, this, &MapScene::__handleTrackedFlight);
     
     __updateSettings();
 }
@@ -349,4 +345,15 @@ MapScene::__updateSettings()
     __settings.view.pilot_labels.always = SM::get("view.pilot_labels.always").toBool();
     __settings.view.pilot_labels.airport_related = SM::get("view.pilot_labels.airport_related").toBool();
     __settings.view.pilot_labels.when_hovered = SM::get("view.pilot_labels.when_hovered").toBool();
+}
+
+void
+MapScene::__handleTrackedFlight(const Pilot* pilot)
+{
+    if (nullptr == pilot) {
+        disconnect(__trackedFlightConnection);
+    } else {
+        __trackedFlightConnection = connect(pilot, &Client::positionChanged, this, &MapScene::moveTo);
+        moveTo(pilot->position());
+    }
 }

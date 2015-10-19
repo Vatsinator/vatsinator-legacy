@@ -209,11 +209,6 @@ private:
     void __updateScreen();
     
 private slots:
-    /**
-     * \sa __trackedFlightConnection
-     */
-    void __trackFlight(const Pilot* pilot);
-    
     void __saveMapState();
     
 private:
@@ -249,8 +244,6 @@ private:
     
     /*Actual Zoom level*/
     int __actualZoom;
-    
-    QMetaObject::Connection __trackedFlightConnection;
     
 };
 

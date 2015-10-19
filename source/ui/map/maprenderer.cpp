@@ -56,7 +56,6 @@ MapRenderer::MapRenderer(QObject* parent) :
 {
     __restoreMapState();
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, this, &MapRenderer::updated);
-    connect(__scene, &MapScene::flightTracked, this, &MapRenderer::__trackFlight);
     connect(qApp, &QCoreApplication::aboutToQuit, this, &MapRenderer::__saveMapState);
 }
 
@@ -191,16 +190,6 @@ MapRenderer::__updateScreen()
     __screen.setBottomRight(mapToLonLat(QPoint(__viewport.width(), __viewport.height())));
     if (__screen.right() < __screen.left()) {
         __screen.setRight(MapConfig::longitudeMax());
-    }
-}
-
-void
-MapRenderer::__trackFlight(const Pilot* pilot)
-{
-    if (nullptr == pilot) {
-        disconnect(__trackedFlightConnection);
-    } else {
-        __trackedFlightConnection = connect(pilot, &Client::positionChanged, __scene, &MapScene::moveTo);
     }
 }
 
