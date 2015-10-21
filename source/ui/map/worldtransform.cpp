@@ -54,6 +54,17 @@ WorldTransform::map(const LonLat& lonLat) const
     return QPoint(x, y);
 }
 
+QPointF
+WorldTransform::mapF(const LonLat& lonLat) const
+{
+    qreal m = qMax(viewport().width(), viewport().height());
+    
+    qreal x = (lonLat.longitude() - offset().longitude()) * m * scale() / 360.0 + static_cast<qreal>(viewport().width()) / 2.0;
+    qreal y = (-toMercator(lonLat.latitude()) + toMercator(offset().latitude())) * m * scale() / 360.0 + static_cast<qreal>(viewport().height()) / 2.0;
+    
+    return QPointF(x, y);
+}
+
 QRect
 WorldTransform::map(const QRectF& rect) const
 {

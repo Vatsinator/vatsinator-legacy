@@ -230,7 +230,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* event)
     if (event->buttons() & Qt::LeftButton) {
         setCursor (QCursor (Qt::SizeAllCursor));
         QPoint diff = event->pos() - __mousePosition.screenPosition();
-        QPoint center = __renderer->center() * __renderer->transform();
+        QPointF center = __renderer->transform().mapF(__renderer->center());
         center -= diff;
         
         LonLat llcenter = __renderer->mapToLonLat(center);

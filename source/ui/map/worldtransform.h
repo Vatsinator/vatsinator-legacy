@@ -42,6 +42,11 @@ public:
     QPoint map(const LonLat& lonLat) const;
     
     /**
+     * Maps the given geo position to screen coordinates, but keeps the precision.
+     */
+    QPointF mapF(const LonLat& lonLat) const;
+    
+    /**
      * Maps the given rectangle, treating its \c topLeft and
      * \c bottomRight points as global coordinates.
      */

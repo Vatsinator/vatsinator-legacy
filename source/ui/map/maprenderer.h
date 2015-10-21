@@ -126,6 +126,8 @@ public:
      */
     LonLat mapToLonLat(const QPoint& point);
     
+    LonLat mapToLonLat(const QPointF& point);
+    
     /**
      * Sets the MapDrawer instance.
      * 

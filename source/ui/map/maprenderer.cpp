@@ -82,6 +82,17 @@ MapRenderer::mapToLonLat(const QPoint& point)
     return LonLat(x, y).bound();
 }
 
+LonLat
+MapRenderer::mapToLonLat(const QPointF& point)
+{
+    qreal m = qMax(viewport().width(), viewport().height());
+    
+    qreal x = (point.x() * 360.0 - 180.0 * viewport().width()) / (m * zoom()) + center().longitude();
+    qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) + toMercator(center().latitude()));
+    
+    return LonLat(x, y).bound();
+}
+
 void
 MapRenderer::setMapDrawer(MapDrawer* drawer)
 {
