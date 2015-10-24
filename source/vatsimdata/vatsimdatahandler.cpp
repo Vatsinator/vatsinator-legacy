@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.cpp
-    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -334,8 +334,8 @@ VatsimDataHandler::fastDistance(
     const qreal& lat2, const qreal& lon2)
 {
     return qSqrt(
-               qPow(lat1 - lat2, 2) +
-               qPow(lon1 - lon2, 2)
+                qPow(lat1 - lat2, 2) +
+                qPow(lon1 - lon2, 2)
            );
 }
 
@@ -343,8 +343,17 @@ qreal
 VatsimDataHandler::fastDistance(const LonLat& a, const LonLat& b)
 {
     return qSqrt(
-               qPow(a.latitude() - b.latitude(), 2) +
-               qPow(a.longitude() - b.longitude(), 2)
+                qPow(a.latitude() - b.latitude(), 2) +
+                qPow(a.longitude() - b.longitude(), 2)
+           );
+}
+
+qreal
+VatsimDataHandler::fastDistance(int ax, int ay, int bx, int by)
+{
+    return qSqrt(
+                qPow(static_cast<qreal>(ax - bx), 2.0) +
+                qPow(static_cast<qreal>(ay - by), 2.0)
            );
 }
 

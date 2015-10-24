@@ -126,6 +126,13 @@ public:
      */
     LonLat mapToLonLat(const QPoint& point);
     
+    /**
+     * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
+     * maps them to longitude & latitude.
+     *
+     * \param point The point on the screen.
+     * \return Global coordinates (longitude, latitude).
+     */
     LonLat mapToLonLat(const QPointF& point);
     
     /**
@@ -187,7 +194,7 @@ public:
         return __scene;
     }
     
-    inline const QRectF& screen()
+    inline const QRectF& screen() const
     {
         return __screen;
     }

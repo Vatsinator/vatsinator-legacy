@@ -17,12 +17,23 @@
  *
  */
 
+#include <cmath>
 #include <QtCore>
 #include <QDataStream>
 
 #include "db/point.h"
 
 #include "lonlat.h"
+
+namespace {
+    template<class T> T mod(T x, T y)
+    {
+        T mod = std::fmod(x, y);
+        if (mod < 0)
+            mod = y + mod;
+        return mod;
+    }
+}
 
 LonLat::LonLat() : QPointF() {}
 
@@ -39,11 +50,8 @@ LonLat::bound() const &
 {
     LonLat b(*this);
     
-    while (b.x() > 180.0)
-        b.rx() -= 360.0;
-        
-    while (b.x() < -180.0)
-        b.rx() += 360.0;
+//     b.rx() = std::fmod(b.x() + 180.0, 360.0) - 180.0;
+    b.rx() = mod(b.x() + 180.0, 360.0);
         
 //     b.ry() = qBound(-90.0, b.y(), 90.0);
     b.ry() = qBound(-85.0511, b.y(), 85.0511);
@@ -53,11 +61,7 @@ LonLat::bound() const &
 LonLat
 LonLat::bound() &&
 {
-    while (x() > 180.0)
-        rx() -= 360.0;
-    
-    while (x() < -180.0)
-        rx() += 360.0;
+    rx() = mod(x() + 180.0, 360.0) - 180.0;
     
 //     ry() = qBound(-90.0, y(), 90.0);
     ry() = qBound(-85.0511, y(), 85.0511);

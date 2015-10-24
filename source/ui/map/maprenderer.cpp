@@ -19,6 +19,7 @@
 
 #include <QtGui>
 #include <chrono>
+#include <cmath>
 
 #include "plugins/mapdrawer.h"
 #include "storage/settingsmanager.h"
@@ -46,6 +47,43 @@ namespace {
         return qRadiansToDegrees(2 * qAtan(qExp(qDegreesToRadians(y))) - M_PI / 2);
     }
     
+    /**
+     * Splits the given \c screen to a valid transforms.
+     */
+    QList<WorldTransform>
+    splitScreenToTransforms(const QSize& viewport, const LonLat& offset, qreal scale, const QRectF& screen)
+    {
+        QList<WorldTransform> list;
+        qreal it = screen.left();
+        do {
+            qreal tmp = it;
+            qreal mod = std::fmod((it + 180.0), 360.0);
+            if (mod < 0)
+                mod = 360.0 + mod;
+            
+            qreal ax = mod - 180.0;
+            qreal bx = qMin(it - mod + 360.0, screen.right());
+            it = bx;
+            
+            mod = std::fmod((bx + 180.0), 360.0);
+            if (mod < 0)
+                mod = 360.0 + mod;
+            
+            bx = mod - 180.0;
+            if (bx <= -180.0)
+                bx += 360.0;
+            
+            QRectF trScreen(QPointF(ax, screen.top()), QPointF(bx, screen.bottom()));
+            LonLat trOffset = offset;
+            qreal m = qRound((it + tmp) / 2 / 360.0) * -360.0;
+            trOffset.setX(trOffset.x() + m);
+            
+            list << WorldTransform(viewport, trOffset, scale, trScreen);
+        } while (it < screen.right());
+        
+        return list;
+    }
+    
 }
 
 MapRenderer::MapRenderer(QObject* parent) :
@@ -68,7 +106,7 @@ MapRenderer::~MapRenderer()
 WorldTransform
 MapRenderer::transform() const
 {
-    return WorldTransform(viewport(), center(), zoom());
+    return WorldTransform(viewport(), center(), zoom(), screen());
 }
 
 LonLat
@@ -79,7 +117,7 @@ MapRenderer::mapToLonLat(const QPoint& point)
     qreal x = (point.x() * 360 - 180 * viewport().width()) / (m * zoom()) + center().longitude();
     qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) + toMercator(center().latitude()));
     
-    return LonLat(x, y).bound();
+    return LonLat(x, y);
 }
 
 LonLat
@@ -90,7 +128,7 @@ MapRenderer::mapToLonLat(const QPointF& point)
     qreal x = (point.x() * 360.0 - 180.0 * viewport().width()) / (m * zoom()) + center().longitude();
     qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) + toMercator(center().latitude()));
     
-    return LonLat(x, y).bound();
+    return LonLat(x, y);
 }
 
 void
@@ -158,23 +196,26 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
     __selectedItems = selectedItems;
     __isRendering = true;
     
-    WorldTransform transform = this->transform();
+    auto transforms = splitScreenToTransforms(viewport(), center(), zoom(), screen());
     
-    if (__mapDrawer) {
-        __mapDrawer->draw(painter, transform);
-    }
-    
-    scene()->inRect(__screen, [painter, &transform](const MapArea* area) {
-        area->draw(painter, transform);
-    });
-    
-    auto items = scene()->itemsInRect(__screen);
-    std::sort(items.begin(), items.end(), [](auto a, auto b) {
-        return a->z() < b->z();
-    });
-    
-    std::for_each(items.begin(), items.end(), [painter, &transform, &selectedItems](auto item) {
-        item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));
+    std::for_each(transforms.begin(), transforms.end(), [&](auto transform) {
+        if (__mapDrawer) {
+            __mapDrawer->draw(painter, transform);
+        }
+        
+        this->scene()->inRect(transform.screen(), [painter, &transform](const MapArea* area) {
+            area->draw(painter, transform);
+        });
+        
+        
+        auto items = this->scene()->itemsInRect(transform.screen());
+        std::sort(items.begin(), items.end(), [](auto a, auto b) {
+            return a->z() < b->z();
+        });
+
+        std::for_each(items.begin(), items.end(), [painter, &transform, &selectedItems](auto item) {
+            item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));
+        });
     });
     
     __isRendering = false;
@@ -199,9 +240,6 @@ MapRenderer::__updateScreen()
 {
     __screen.setTopLeft(mapToLonLat(QPoint(0, 0)));
     __screen.setBottomRight(mapToLonLat(QPoint(__viewport.width(), __viewport.height())));
-    if (__screen.right() < __screen.left()) {
-        __screen.setRight(MapConfig::longitudeMax());
-    }
 }
 
 void

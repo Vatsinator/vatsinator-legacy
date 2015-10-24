@@ -102,6 +102,7 @@ public slots:
     void initialize();
     
 private:
+    void __tilesImpl(const QRectF& rect, quint32 zoom, QList<Tile*>* tiles);
     TileUrl __dequeueByPriority();
     
 private slots:

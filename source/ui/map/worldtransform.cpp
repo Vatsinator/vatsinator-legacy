@@ -35,12 +35,12 @@ namespace {
 }
 
 
-WorldTransform::WorldTransform(const QSize& viewport, const LonLat& offset, qreal scale) :
+WorldTransform::WorldTransform(const QSize& viewport, const LonLat& offset, qreal scale, const QRectF& screen) :
     __viewport(viewport),
     __offset(offset),
-    __scale(scale)
+    __scale(scale),
+    __screen(screen)
 {
-
 }
 
 QPoint
@@ -48,8 +48,8 @@ WorldTransform::map(const LonLat& lonLat) const
 {    
     qreal m = qMax(viewport().width(), viewport().height());
     
-    int x = (lonLat.longitude() - offset().longitude()) * m * scale() / 360.0 + viewport().width() / 2;
-    int y = (-toMercator(lonLat.latitude()) + toMercator(offset().latitude())) * m * scale() / 360.0 + viewport().height() / 2;
+    int x = static_cast<int>(__mapLongitude(lonLat.longitude(), m));
+    int y = static_cast<int>(__mapLatitude(lonLat.latitude(), m));
     
     return QPoint(x, y);
 }
@@ -59,8 +59,8 @@ WorldTransform::mapF(const LonLat& lonLat) const
 {
     qreal m = qMax(viewport().width(), viewport().height());
     
-    qreal x = (lonLat.longitude() - offset().longitude()) * m * scale() / 360.0 + static_cast<qreal>(viewport().width()) / 2.0;
-    qreal y = (-toMercator(lonLat.latitude()) + toMercator(offset().latitude())) * m * scale() / 360.0 + static_cast<qreal>(viewport().height()) / 2.0;
+    qreal x = __mapLongitude(lonLat.longitude(), m);
+    qreal y = __mapLatitude(lonLat.latitude(), m);
     
     return QPointF(x, y);
 }
@@ -68,7 +68,8 @@ WorldTransform::mapF(const LonLat& lonLat) const
 QRect
 WorldTransform::map(const QRectF& rect) const
 {
-    return QRect(map(rect.topLeft()), map(rect.bottomRight()));
+    QRect mapped(map(rect.topLeft()), map(rect.bottomRight()));
+    return mapped;
 }
 
 QVector<QPoint>
@@ -81,4 +82,16 @@ WorldTransform::map(const QVector<LonLat>& polygon) const
     });
     
     return mapped;
+}
+
+qreal
+WorldTransform::__mapLongitude(qreal longitude, qreal m) const
+{
+    return (longitude - offset().longitude()) * m * scale() / 360.0 + static_cast<qreal>(viewport().width()) / 2.0;
+}
+
+qreal
+WorldTransform::__mapLatitude(qreal latitude, qreal m) const
+{
+    return (-toMercator(latitude) + toMercator(offset().latitude())) * m * scale() / 360.0 + static_cast<qreal>(viewport().height()) / 2.0;
 }

@@ -34,7 +34,11 @@
 class WorldTransform {
 
 public:
-    WorldTransform(const QSize& viewport, const LonLat& offset, qreal scale);
+    /**
+     * The constructor that takes the \c viewport size, the mapping \c offset,
+     * the \c scale of the transform and the \c screen area.
+     */
+    WorldTransform(const QSize& viewport, const LonLat& offset, qreal scale, const QRectF& screen);
     
     /**
      * Maps the given geo position to screen coordinates.
@@ -73,10 +77,19 @@ public:
         return __scale;
     }
     
+    inline const QRectF screen() const
+    {
+        return __screen;
+    }
+    
 private:
+    qreal __mapLongitude(qreal longitude, qreal m) const;
+    qreal __mapLatitude(qreal latitude, qreal m) const;
+    
     QSize __viewport;
     LonLat __offset;
     qreal __scale;
+    QRectF __screen;
     
 };
 

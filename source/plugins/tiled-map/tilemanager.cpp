@@ -23,6 +23,7 @@
 #include "network/filedownloader.h"
 #include "storage/filemanager.h"
 #include "ui/map/maprenderer.h"
+#include "ui/map/mapconfig.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "tile.h"
@@ -81,17 +82,21 @@ TileManager::tiles(const QRectF& rect, quint32 zoom)
     QRectF realRect = rect.isNull() ? __renderer->screen() : rect;
     int realZoom = zoom ? zoom : __tileZoom;
     
-    auto topLeft = tileCoordsForLonLat(realRect.topLeft());
-    auto bottomRight = tileCoordsForLonLat(realRect.bottomRight());
-    
-    if (bottomRight.first < topLeft.first)
-        bottomRight = tileCoordsForLonLat(LonLat(180.0, realRect.bottomRight().y()));
-    
     QList<Tile*> tiles;
-    
-    for (quint64 x = topLeft.first; x <= bottomRight.first; ++x)
-        for (quint64 y = topLeft.second; y <= bottomRight.second; ++y)
-            tiles << this->tile(x, y, realZoom);
+/*    
+    if (realRect.right() > MapConfig::longitudeMax()) {
+        LonLat tl = realRect.topLeft();
+        LonLat br = realRect.bottomRight();
+        __tilesImpl(QRectF(tl, QPointF(MapConfig::longitudeMax(), br.y())), realZoom, &tiles);
+        __tilesImpl(QRectF(QPointF(-MapConfig::longitudeMax(), tl.y()), QPointF(br.x() - 360.0, br.y())), realZoom, &tiles);
+    } else if (realRect.left() < -MapConfig::longitudeMax()) {
+        LonLat tl = realRect.topLeft();
+        LonLat br = realRect.bottomRight();
+        __tilesImpl(QRectF(QPointF(tl.x() + 360.0, tl.y()), QPointF(MapConfig::longitudeMax(), br.y())), realZoom, &tiles);
+        __tilesImpl(QRectF(QPointF(-MapConfig::longitudeMax(), tl.y()), br), realZoom, &tiles);
+    } else {*/
+        __tilesImpl(realRect, realZoom, &tiles);
+//     }
     
     return tiles;
 }
@@ -151,13 +156,25 @@ TileManager::tileCoords(quint64 x, quint64 y, quint64 z)
 QPair<quint64, quint64>
 TileManager::tileCoordsForLonLat(const LonLat& lonLat, unsigned zoom)
 {
-    LonLat ll = lonLat.bound();
+    Q_ASSERT(qBound(-MapConfig::longitudeMax(), lonLat.longitude(), MapConfig::longitudeMax()) == lonLat.longitude());
+    
     qreal n = qPow(2.0, static_cast<qreal>(zoom));
-    quint64 x = qFloor((ll.longitude() + 180.0) / 360.0 * n);
-    qreal lat_rad = qDegreesToRadians(ll.latitude());
+    quint64 x = qFloor((lonLat.longitude() + 180.0) / 360.0 * n);
+    qreal lat_rad = qDegreesToRadians(qBound(-MapConfig::latitudeMax(), lonLat.latitude(), MapConfig::latitudeMax()));
     quint64 y = qFloor((1.0 - qLn(qTan(lat_rad) + (1.0 / qCos(lat_rad))) / M_PI) / 2.0 * n);
     
     return qMakePair(x, y);
+}
+
+void
+TileManager::__tilesImpl(const QRectF& rect, quint32 zoom, QList<Tile*>* tiles)
+{
+    auto topLeft = tileCoordsForLonLat(rect.topLeft());
+    auto bottomRight = tileCoordsForLonLat(rect.bottomRight());
+    
+    for (quint64 x = topLeft.first; x <= bottomRight.first; ++x)
+        for (quint64 y = topLeft.second; y <= bottomRight.second; ++y)
+            tiles->append(this->tile(x, y, zoom));
 }
 
 TileUrl

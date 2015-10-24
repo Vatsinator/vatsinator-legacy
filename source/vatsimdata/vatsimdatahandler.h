@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.h
-    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -315,7 +315,7 @@ public:
     }
     
     /**
-     * Calculates the distance between two points. The unit is undefined.
+     * Calculates the distance between two points.
      *
      * \note If you need specific unit, i.e. nautical miles, use
      * VatsimDataHandler::nmDistance() function.
@@ -330,7 +330,7 @@ public:
                               const qreal& lat2, const qreal& lon2);
                               
     /**
-     * Calculates the distance between two points. The unit is undefined.
+     * Calculates the distance between two points.
      *
      * \note If you need specific unit, i.e. nautical miles, use
      * VatsimDataHandler::nmDistance() function.
@@ -340,6 +340,11 @@ public:
      * \return Distance between these two points.
      */
     static qreal fastDistance(const LonLat& a, const LonLat& b);
+    
+    /**
+     * Calculates the distance between two points.
+     */
+    static qreal fastDistance(int ax, int ay, int bx, int by);
     
     /**
      * Calculates distance between two points, expressed in
