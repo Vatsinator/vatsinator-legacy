@@ -21,6 +21,7 @@
 #define FILEDOWNLOADER_H
 
 #include <QNetworkAccessManager>
+#include <QSharedPointer>
 #include <QObject>
 #include <QQueue>
 #include <QFile>

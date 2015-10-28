@@ -129,15 +129,6 @@ public:
     }
     
     /**
-     * Executes the given function for each item found inside the given \c rect.
-     *
-     * \param rect The bounding rectangle for items.
-     * \param function The function to execute on every item found.
-     *
-     */
-    void inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const;
-    
-    /**
      * Returns a list of all items that exist within the provided boundaries.
      * 
      * \param rect The bounding rectangle used to select items.

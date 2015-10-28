@@ -99,20 +99,6 @@ MapScene::trackFlight(const Pilot* pilot)
     }
 }
 
-void
-MapScene::inRect(const QRectF& rect, std::function<void(const MapItem*)> function) const
-{
-    Q_ASSERT(rect.bottomLeft().x() < rect.topRight().x());
-    Q_ASSERT(rect.bottomLeft().y() < rect.topRight().y());
-    
-    std::for_each(spatial::region_cbegin(__items, rect.bottomLeft(), rect.topRight()),
-                  spatial::region_cend(__items, rect.bottomLeft(), rect.topRight()),
-                  [&function](auto it) {
-                      if (it.second->isVisible())
-                          function(it.second);
-                  });
-}
-
 QList<const MapItem*>
 MapScene::itemsInRect(const QRectF& rect) const
 {
