@@ -58,7 +58,7 @@ QFont
 VatsinatorStyle::smallFont()
 {
     QFont font;
-    int size = font.pointSize() - 2;
+    int size = font.pointSize() - 1;
     font.setPointSize(size);
     return font;
 }

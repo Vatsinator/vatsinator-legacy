@@ -170,7 +170,7 @@ TileManager::__dequeueByPriority()
             return qSqrt(qPow(static_cast<int>(a.x() - centerCoords.first), 2) + qPow(static_cast<int>(a.y() - centerCoords.second), 2)) <
                 qSqrt(qPow(static_cast<int>(b.x() - centerCoords.first), 2) + qPow(static_cast<int>(b.y() - centerCoords.second), 2));
         } else {
-            return qAbs(__tileZoom - a.zoom()) < qAbs(__tileZoom - b.zoom());
+            return qAbs(static_cast<int>(__tileZoom) - static_cast<int>(a.zoom())) < qAbs(static_cast<int>(__tileZoom) - static_cast<int>(b.zoom()));
         }
     });
     

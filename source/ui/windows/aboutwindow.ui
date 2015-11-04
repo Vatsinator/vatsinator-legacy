@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>About Vatsinator</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/imgs.qrc">
+    <normaloff>:/mainIcon/icon.png</normaloff>:/mainIcon/icon.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
