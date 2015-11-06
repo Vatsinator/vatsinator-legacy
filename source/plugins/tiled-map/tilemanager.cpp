@@ -50,10 +50,6 @@ void
 TileManager::fetchTile(const TileUrl& url)
 {
     Q_ASSERT(url.zoom() > 0);
-    
-//     Was used back then when TileManager existed on its own thread
-//     QMetaObject::invokeMethod(this, "__fetchTileImpl", Q_ARG(TileUrl, url));
-    
     __fetchTileImpl(url);
 }
 
@@ -83,20 +79,7 @@ TileManager::tiles(const QRectF& rect, quint32 zoom)
     int realZoom = zoom ? zoom : __tileZoom;
     
     QList<Tile*> tiles;
-/*    
-    if (realRect.right() > MapConfig::longitudeMax()) {
-        LonLat tl = realRect.topLeft();
-        LonLat br = realRect.bottomRight();
-        __tilesImpl(QRectF(tl, QPointF(MapConfig::longitudeMax(), br.y())), realZoom, &tiles);
-        __tilesImpl(QRectF(QPointF(-MapConfig::longitudeMax(), tl.y()), QPointF(br.x() - 360.0, br.y())), realZoom, &tiles);
-    } else if (realRect.left() < -MapConfig::longitudeMax()) {
-        LonLat tl = realRect.topLeft();
-        LonLat br = realRect.bottomRight();
-        __tilesImpl(QRectF(QPointF(tl.x() + 360.0, tl.y()), QPointF(MapConfig::longitudeMax(), br.y())), realZoom, &tiles);
-        __tilesImpl(QRectF(QPointF(-MapConfig::longitudeMax(), tl.y()), br), realZoom, &tiles);
-    } else {*/
-        __tilesImpl(realRect, realZoom, &tiles);
-//     }
+    __tilesImpl(realRect, realZoom, &tiles);
     
     return tiles;
 }
@@ -115,7 +98,6 @@ TileManager::tile(quint64 x, quint64 y, quint64 z)
     auto it = tiles.find(TileCoord(x, y));
     if (it == tiles.end()) {
         Tile* tile = new Tile(x, y, z, this, this);
-//         tile->moveToThread(this->thread());
         connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
         
         tiles.insert(std::make_pair(TileCoord(x, y), tile));

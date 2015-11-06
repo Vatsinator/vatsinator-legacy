@@ -62,7 +62,6 @@ Tile::pixmap(QRect* source) const
 {
     Q_ASSERT(source);
     
-    QMutexLocker l(&__mutex);
     if (!isReady()) {
         if (zoom() <= 1) {
             *source = __pixmap.rect();

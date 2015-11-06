@@ -124,7 +124,6 @@ private:
     mutable QRectF __coords;
     
     QPixmap __pixmap;
-    mutable QMutex __mutex;
 };
 
 #endif // TILE_H
