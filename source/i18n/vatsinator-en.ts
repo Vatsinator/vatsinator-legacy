@@ -47,44 +47,44 @@
         <translation>About Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="69"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="73"/>
         <source>A simple Vatsim monitor</source>
         <translation>A simple Vatsim monitor</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="94"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="98"/>
         <location filename="../ui/windows/aboutwindow.cpp" line="40"/>
         <source>Version %1</source>
         <extracomment>%1 becomes a Vatsinator version</extracomment>
         <translation>Version %1</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="129"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="133"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
         <translation>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="207"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="211"/>
         <source>Changelog</source>
         <translation>Changelog</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="121"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="125"/>
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="155"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="174"/>
         <source>Authors</source>
         <translation>Authors</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="197"/>
         <source>License</source>
         <translation>License</translation>
     </message>
@@ -382,28 +382,28 @@
         <translation>Vatsinator Database</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="20"/>
+        <location filename="../ui/windows/databasewindow.ui" line="24"/>
         <source>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="46"/>
+        <location filename="../ui/windows/databasewindow.ui" line="50"/>
         <source>Database info</source>
         <translation>Database info</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="56"/>
+        <location filename="../ui/windows/databasewindow.ui" line="60"/>
         <source>Sync database now...</source>
         <translation>Sync database now...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="79"/>
+        <location filename="../ui/windows/databasewindow.ui" line="83"/>
         <source>Last update time:</source>
         <extracomment>Database last update time</extracomment>
         <translation>Last update time:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="106"/>
+        <location filename="../ui/windows/databasewindow.ui" line="110"/>
         <source>Current status:</source>
         <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
         <translation>Current status:</translation>

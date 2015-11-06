@@ -47,44 +47,44 @@
         <translation>Σχετικά με το Vatsinator</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="69"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="73"/>
         <source>A simple Vatsim monitor</source>
         <translation>Ένα απλό μόνιτορ Vatsim</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="94"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="98"/>
         <location filename="../ui/windows/aboutwindow.cpp" line="40"/>
         <source>Version %1</source>
         <extracomment>%1 becomes a Vatsinator version</extracomment>
         <translation>Έκδοση %1</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="129"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="133"/>
         <source>Vatsinator is the simple Vatsim monitor - it shows logged-in pilots, controllers and provides some useful information (such as METARs or airport details).</source>
         <translation>Το Vatsinator είναι ενας απλός μόνιτορ Vatsim - παρουσιάζει συνδεδεμένους πιλότους, ελεγκτές και παρέχει χρήσιμες πληροφορίες (όπως METARs ή λεπτομέρειες αεροδρομίου).</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="207"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="211"/>
         <source>Changelog</source>
         <translation>Αρχείο καταγραφής αλλαγών</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="121"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="125"/>
         <source>About</source>
         <translation>Σχετικά με</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="151"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="155"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="170"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="174"/>
         <source>Authors</source>
         <translation>Δημιουργοι</translation>
     </message>
     <message>
-        <location filename="../ui/windows/aboutwindow.ui" line="193"/>
+        <location filename="../ui/windows/aboutwindow.ui" line="197"/>
         <source>License</source>
         <translation>Άδεια Χρήσης</translation>
     </message>
@@ -382,28 +382,28 @@
         <translation>Vatsinator Βάση δεδομένων</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="20"/>
+        <location filename="../ui/windows/databasewindow.ui" line="24"/>
         <source>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Μάθετε περισσότερα για την βάση δεδομένων του Vatsinator&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="46"/>
+        <location filename="../ui/windows/databasewindow.ui" line="50"/>
         <source>Database info</source>
         <translation>Πληροφορίες βάσης δεδομένων</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="56"/>
+        <location filename="../ui/windows/databasewindow.ui" line="60"/>
         <source>Sync database now...</source>
         <translation>Συγχρονισμός βάσης δεδομένων Συγχρονισμός τώρα...</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="79"/>
+        <location filename="../ui/windows/databasewindow.ui" line="83"/>
         <source>Last update time:</source>
         <extracomment>Database last update time</extracomment>
         <translation>Τελευταία ενημέρωση:</translation>
     </message>
     <message>
-        <location filename="../ui/windows/databasewindow.ui" line="106"/>
+        <location filename="../ui/windows/databasewindow.ui" line="110"/>
         <source>Current status:</source>
         <extracomment>It's about the database sync status - can be out-of-date, updated or synchronizing</extracomment>
         <translation>Τωρινή κατάσταση:</translation>
