@@ -9,8 +9,6 @@ before_install:
     - sudo apt-add-repository ppa:george-edison55/precise-backports -y
     - sudo apt-get update -q
     - sudo apt-get install -y build-essential zlib1g-dev mesa-common-dev cmake-data cmake gcc-5 g++-5 qt55base qt55tools
-
-before_script:
     - wget http://sourceforge.net/projects/quazip/files/quazip/0.7.1/quazip-0.7.1.tar.gz/download -O /tmp/quazip-0.7.1.tar.gz
     - tar xvf /tmp/quazip-0.7.1.tar.gz
     - cd quazip-0.7.1
