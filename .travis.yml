@@ -11,7 +11,7 @@ before_install:
     - sudo apt-get install -y build-essential zlib1g-dev mesa-common-dev cmake-data cmake gcc-5 g++-5 qt55base qt55tools
     - wget http://sourceforge.net/projects/quazip/files/quazip/0.7.1/quazip-0.7.1.tar.gz/download -O /tmp/quazip-0.7.1.tar.gz
     - tar xvf /tmp/quazip-0.7.1.tar.gz
-    - cd quazip-0.7.1 && CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake . -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake/ -DCMAKE_INSTALL_PREFIX=/usr && make && sudo make install
+    - cd quazip-0.7.1 && CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake . -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake/ -DCMAKE_INSTALL_PREFIX=/usr && make && sudo make install && cd ..
 
 before_script:
     - CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake . -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake/ -DCMAKE_INSTALL_PREFIX=/usr -DWITH_DEBIAN=1
