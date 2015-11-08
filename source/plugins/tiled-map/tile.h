@@ -23,7 +23,6 @@
 #include <QObject>
 #include <QRectF>
 #include <QPixmap>
-#include <QMutex>
 #include "tileurl.h"
 
 class TileManager;

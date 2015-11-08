@@ -135,20 +135,34 @@ FlightItem::__drawLines(QPainter* painter, const WorldTransform& transform) cons
     painter->setRenderHints(hints | QPainter::Antialiasing);
     
     QPen orig = painter->pen();
-    QPoint pos = position() * transform;
+    
+    int n = 0;
     
     if (data()->origin()->isValid()) {
         painter->setPen(QPen(QColor(3, 116, 164)));
-        QPoint p = data()->origin()->position() * transform;
-        painter->drawLine(p, pos);
+        QPoint p = data()->route().waypoints.at(0) * transform;
+        
+        do {
+            n += 1;
+            QPoint r = data()->route().waypoints.at(n) * transform;
+            painter->drawLine(p, r);
+            p = r;
+        } while (data()->route().waypoints.at(n) != data()->position());
     }
     
     if (data()->destination()->isValid()) {
         QPen pen(QColor(133, 164, 164));
         pen.setStyle(Qt::DashLine);
         painter->setPen(pen);
-        QPoint p = data()->destination()->position() * transform;
-        painter->drawLine(p, pos);
+        QPoint p = data()->route().waypoints.at(n) * transform;
+        n += 1;
+        
+        while (n < data()->route().waypoints.length()) {
+            QPoint r = data()->route().waypoints.at(n) * transform;
+            painter->drawLine(p, r);
+            p = r;
+            n += 1;
+        }
     }
     
     painter->setRenderHints(hints);

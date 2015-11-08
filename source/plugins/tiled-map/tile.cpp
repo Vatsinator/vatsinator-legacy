@@ -103,7 +103,6 @@ Tile::__loadTile()
 {
     CacheFile cached(__tm->provider()->name() % __url.toUrl().path());
     
-    QMutexLocker l(&__mutex);
     __pixmap.load(QFileInfo(cached).absoluteFilePath());
     
     if (!__pixmap.isNull()) {

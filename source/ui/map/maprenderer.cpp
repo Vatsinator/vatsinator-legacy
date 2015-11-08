@@ -207,7 +207,9 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
             area->draw(painter, transform);
         });
         
-        
+    });
+    
+    std::for_each(transforms.begin(), transforms.end(), [&](auto transform) {    
         auto items = this->scene()->itemsInRect(transform.screen());
         std::sort(items.begin(), items.end(), [](auto a, auto b) {
             return a->z() < b->z();
