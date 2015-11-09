@@ -117,32 +117,36 @@ public:
      * Checks whether VATSIM provided a correct client's position.
      * Sometimes the given position is like (0, 90) or (0, 0), which is obviously
      * wrong. It means that the actual client's position should be recognized
-     * i.e. by parsing the route. Use setPosition() to fixup the client's
-     * position coordinates.
+     * i.e. by parsing the route. Use setPosition() in the derived class to
+     * fixup the client's position coordinates.
      */
     bool hasValidPosition() const;
-    
     
     inline unsigned pid() const
     {
         return __pid;
     }
+    
     inline const QString& callsign() const
     {
         return __callsign;
     }
+    
     inline const QString& realName() const
     {
         return __realName;
     }
+    
     inline const QString& server() const
     {
         return __server;
     }
+    
     inline const QDateTime& onlineFrom() const
     {
         return __onlineFrom;
     }
+    
     inline const LonLat& position() const
     {
         return __position;

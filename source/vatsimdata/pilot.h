@@ -1,6 +1,6 @@
 /*
     pilot.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -156,6 +156,9 @@ public:
         Arrived /**< The aircraft is already at the destination airport. */
     };
     
+    /**
+     * The Pressure struct represents the pilot's barometer setting.
+     */
     struct Pressure {
         QString ihg; /**< Inch of mercury */
         QString mb; /**< A.k.a. hectopascal (hPa) - millibar */
@@ -167,10 +170,10 @@ public:
      * see origin() and destination() methods.
      */
     struct Route {
-        QString origin;
-        QString destination;
-        QString route;
-        QString altitude;
+        QString origin; /**< ICAO code of the origin airport */
+        QString destination; /**< ICAO code of the destination airport */
+        QString route; /**< Route as filed */
+        QString altitude; /**< Filed altitude */
         
         /* This is vector of points that belong to the route.
          * The first point is the origin airport, the middle one is
@@ -198,9 +201,9 @@ signals:
     
 public:
     /**
-     * This constructor instantiates new Pilot from the given _data_.
+     * This constructor instantiates new Pilot from the given \c data.
      * \param data The data line.
-     * \param prefiled Indicates whether the flight is only prefiled.
+     * \param prefiled Indicates whether the flight comes from the prefiled section.
      */
     Pilot(const QStringList& data, bool prefiled = false);
     
@@ -338,11 +341,6 @@ private:
     Phase __discoverFlightPhase();
     
     /**
-     * Checks whether the route crosses the IDL and fixes it.
-     */
-    void __fixupRoute();
-    
-    /**
      * Checks (without knowing the flight phase yet) whether the flight
      * is airborne or not.
      */
@@ -353,26 +351,26 @@ private slots:
     void __invalidateProgress();
     
 private:
-    int                   __altitude;
-    int                   __groundSpeed;
-    QString               __squawk;
-    QString               __aircraft;
-    LonLat                __oldPosition;
-    int                   __tas;
-    Pilot::FlightRules    __flightRules;
-    QTime                 __std; /* Scheduled Time of Departure  */
-    QTime                 __atd; /* Actual Time of Departure */
-    QTime                 __sta; /* Scheduled Time of Arrival */
-    mutable QTime         __eta; /* Estimated Time of Arrival */
-    mutable int           __progress; /* [1-100] */
-    QString               __remarks;
-    unsigned              __heading;
-    Pilot::Phase          __phase;
-    Pilot::Pressure       __pressure;
-    Pilot::Route          __route;
-    const Airport*        __origin;
-    const Airport*        __destination;
-    bool                  __prefiledOnly;
+    int __altitude;
+    int __groundSpeed;
+    QString __squawk;
+    QString __aircraft;
+    LonLat __oldPosition;
+    int __tas;
+    Pilot::FlightRules __flightRules;
+    QTime __std; /* Scheduled Time of Departure  */
+    QTime __atd; /* Actual Time of Departure */
+    QTime __sta; /* Scheduled Time of Arrival */
+    mutable QTime __eta; /* Estimated Time of Arrival */
+    mutable int __progress; /* [1-100] */
+    QString __remarks;
+    unsigned __heading;
+    Pilot::Phase __phase;
+    Pilot::Pressure __pressure;
+    Pilot::Route __route;
+    const Airport* __origin;
+    const Airport* __destination;
+    bool __prefiledOnly;
     
 };
 

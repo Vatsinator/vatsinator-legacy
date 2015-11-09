@@ -135,33 +135,47 @@ FlightItem::__drawLines(QPainter* painter, const WorldTransform& transform) cons
     painter->setRenderHints(hints | QPainter::Antialiasing);
     
     QPen orig = painter->pen();
+    painter->setPen(QPen(QColor(3, 116, 164)));
+    qreal offset = 0.0;
     
-    int n = 0;
+    LonLat p1 = data()->route().waypoints.first();
     
-    if (data()->origin()->isValid()) {
-        painter->setPen(QPen(QColor(3, 116, 164)));
-        QPoint p = data()->route().waypoints.at(0) * transform;
+    for (int i = 1; i < data()->route().waypoints.length(); ++i) {
+        LonLat p2 = data()->route().waypoints.at(i);
         
-        do {
-            n += 1;
-            QPoint r = data()->route().waypoints.at(n) * transform;
-            painter->drawLine(p, r);
-            p = r;
-        } while (data()->route().waypoints.at(n) != data()->position());
-    }
-    
-    if (data()->destination()->isValid()) {
-        QPen pen(QColor(133, 164, 164));
-        pen.setStyle(Qt::DashLine);
-        painter->setPen(pen);
-        QPoint p = data()->route().waypoints.at(n) * transform;
-        n += 1;
+        /**
+         * Checks whether the given line crosses the IDL (International Date Line).
+         * For reference:
+         * https://github.com/Vatsinator/Vatsinator/pull/2
+         * Code by @Ucchi98.
+         */
+        qreal p1Sign = p1.longitude() / qFabs(p1.longitude());
+        qreal p2Sign = p2.longitude() / qFabs(p2.longitude());
         
-        while (n < data()->route().waypoints.length()) {
-            QPoint r = data()->route().waypoints.at(n) * transform;
-            painter->drawLine(p, r);
-            p = r;
-            n += 1;
+         if (p1Sign != p2Sign) {
+            qreal dst = VatsimDataHandler::fastDistance(p1, p2);
+             
+            if (p1Sign < 0) {
+                if (dst > VatsimDataHandler::fastDistance(p1.longitude() + 360.0, p1.latitude(), p2.longitude(), p2.latitude())) {
+                    offset -= 360.0;
+                }
+            } else {
+                if (dst > VatsimDataHandler::fastDistance(p1.longitude(), p1.latitude(), p2.longitude() + 360.0, p2.latitude())) {
+                    offset += 360.0;
+                }
+            }
+        }
+        
+        p2.rx() += offset;
+        
+        painter->drawLine(p1 * transform, p2 * transform);
+        
+        p1 = p2;
+        
+        if (data()->route().waypoints.at(i) == data()->position()) {
+            QPen pen(QColor(133, 164, 164));
+            pen.setStyle(Qt::DashLine);
+            painter->setPen(pen);
         }
     }
     
