@@ -179,8 +179,8 @@ MapWidget::wheelEvent(QWheelEvent* event)
 void
 MapWidget::mousePressEvent(QMouseEvent* event)
 {
-    __mousePosition.update (event->pos());
-    __mousePosition.setDown (true);
+    __mouse.update (event->pos());
+    __mouse.setDown (true);
     QToolTip::hideText();
     
     if (event->buttons() & Qt::LeftButton)
@@ -192,14 +192,14 @@ MapWidget::mousePressEvent(QMouseEvent* event)
 void
 MapWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-    __mousePosition.update (event->pos());
-    __mousePosition.setDown (false);
+    __mouse.update (event->pos());
+    __mouse.setDown (false);
     setCursor(QCursor(Qt::ArrowCursor));
     
     const MapItem* item = __underMouse();
     
     if (item) {
-        if (__lastClickPosition == __mousePosition.screenPosition()) {
+        if (__lastClickPosition == __mouse.screenPosition()) {
             QToolTip::hideText();
             if (const AirportItem* ai = qobject_cast<const AirportItem*>(item)) {
                 wui()->showAirportDetails(ai->data());
@@ -229,7 +229,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* event)
 {
     if (event->buttons() & Qt::LeftButton) {
         setCursor (QCursor (Qt::SizeAllCursor));
-        QPoint diff = event->pos() - __mousePosition.screenPosition();
+        QPoint diff = event->pos() - __mouse.screenPosition();
         QPointF center = __renderer->transform().mapF(__renderer->center());
         center -= diff;
         
@@ -246,7 +246,7 @@ MapWidget::mouseMoveEvent(QMouseEvent* event)
         __renderer->setCenter(llcenter);
     }
     
-    __mousePosition.update(event->pos());
+    __mouse.update(event->pos());
     update();
     event->accept();
 }
@@ -290,33 +290,20 @@ MapWidget::contextMenuEvent(QContextMenuEvent* event)
 const MapItem*
 MapWidget::__underMouse()
 {
-    const MapItem* closest = __renderer->scene()->nearest(__mousePosition.geoPosition());
-    if (!closest)
-        return nullptr;
-
-    QPoint pos = closest->position() * __renderer->transform();
-    
-    if (__mousePosition.screenDistance(pos) > MapConfig::mouseOnObject())
-        return nullptr;
-    else
-        return closest;
-    
-    return nullptr;
+    return __underPoint(__mouse.screenPosition());
 }
 
 const MapItem*
 MapWidget::__underPoint(const QPoint& point)
 {
-    const MapItem* closest = __renderer->scene()->nearest(__renderer->mapToLonLat(point).bound());
-    if (!closest)
-        return nullptr;
-    
-    QPoint pos = closest->position() * __renderer->transform();
-    
-    if (__mousePosition.screenDistance(pos) > MapConfig::mouseOnObject())
-        return nullptr;
-    else
-        return closest;
+    LonLat position = __renderer->mapToLonLat(point);
+    const MapItem* closest = __renderer->scene()->nearest(position.bound());
+    if (closest) {
+        QPoint pos = closest->position() * __renderer->transform(position.longitude());
+        
+        if (__mouse.screenDistance(pos) < MapConfig::mouseOnObject())
+            return closest;
+    }
     
     return nullptr;
 }
@@ -335,7 +322,7 @@ MapWidget::__menuForNoItem()
     QList<const FlightItem*> flights;
     QList<const AirportItem*> airports;
     
-    __renderer->scene()->nearTo(__mousePosition.geoPosition(), 10, [&](const MapItem* item) {
+    __renderer->scene()->nearTo(__mouse.geoPosition(), 10, [&](const MapItem* item) {
         if (const FlightItem* f = qobject_cast<const FlightItem*>(item)) {
             if (!f->data()->isPrefiledOnly())
                 flights << f;
@@ -526,10 +513,8 @@ MapWidget::__toolTipForFirItem(const FirItem* item)
             .arg(desc, staff);
 }
 
-MapWidget::MousePosition::MousePosition() : __down (false) {}
-
 void
-MapWidget::MousePosition::update(const QPoint& pos)
+MapWidget::MouseHelper::update(const QPoint& pos)
 {
     __screenPosition = pos;
     __geoPosition = wui()->mainWindow()->mapWidget()->renderer()->mapToLonLat(pos).bound();
@@ -539,7 +524,7 @@ MapWidget::MousePosition::update(const QPoint& pos)
 }
 
 qreal
-MapWidget::MousePosition::screenDistance(const QPoint& point)
+MapWidget::MouseHelper::screenDistance(const QPoint& point)
 {
     return qSqrt (
                qPow (point.x() - __screenPosition.x(), 2) +
@@ -548,7 +533,7 @@ MapWidget::MousePosition::screenDistance(const QPoint& point)
 }
 
 qreal
-MapWidget::MousePosition::geoDistance(const LonLat& point)
+MapWidget::MouseHelper::geoDistance(const LonLat& point)
 {
     return qSqrt (
                qPow (point.x() - __geoPosition.x(), 2) +
@@ -557,7 +542,7 @@ MapWidget::MousePosition::geoDistance(const LonLat& point)
 }
 
 void
-MapWidget::MousePosition::setDown(bool down)
+MapWidget::MouseHelper::setDown(bool down)
 {
     __down = down;
 }

@@ -25,6 +25,7 @@
 #include <QColor>
 #include <QRectF>
 #include <QSet>
+#include <QMap>
 
 #include "ui/map/worldtransform.h"
 #include "vatsimdata/lonlat.h"
@@ -113,11 +114,6 @@ public:
     virtual ~MapRenderer();
     
     /**
-     * Returns the current transform.
-     */
-    WorldTransform transform() const;
-    
-    /**
      * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
      * maps them to longitude & latitude.
      *
@@ -149,11 +145,17 @@ public:
     void setViewport(const QSize& size);
     
     /**
-     * The difference between the updateZoom() and setZoom() methods is that
-     * updateZoom() updates the zoom property smoothly, i.e. it does some
-     * equations that consider the zoom coefficient specified by the user.
+     * Returns transformation that is valid for the given longitude.
      */
-    void updateZoom(int steps);
+    WorldTransform transform(qreal longitude) const;
+    
+    /**
+     * Returns the default, global transformation.
+     */
+    inline WorldTransform transform() const
+    {
+        return WorldTransform(viewport(), center(), zoom(), screen());
+    }
     
     /**
      * Is this instance of MapRenderer currently in the paintEvent()?
@@ -215,7 +217,7 @@ public slots:
     
 private:
     void __restoreMapState();
-    void __updateScreen();
+    void __updateTransforms();
     
 private slots:
     void __saveMapState();
@@ -232,6 +234,9 @@ private:
     
     /* Geo coordinates of the current viewport */
     QRectF __screen;
+    
+    /* id <-> transform map */
+    QMap<int, WorldTransform> __transforms;
     
     /* The current zoom property */
     qreal __zoom;

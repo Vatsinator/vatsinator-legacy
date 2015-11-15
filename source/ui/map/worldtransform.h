@@ -34,6 +34,8 @@
 class WorldTransform {
 
 public:
+    WorldTransform() = default;
+    
     /**
      * The constructor that takes the \c viewport size, the mapping \c offset,
      * the \c scale of the transform and the \c screen area.
@@ -88,7 +90,7 @@ private:
     
     QSize __viewport;
     LonLat __offset;
-    qreal __scale;
+    qreal __scale = 0.0;
     QRectF __screen;
     
 };

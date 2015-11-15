@@ -103,12 +103,6 @@ MapRenderer::~MapRenderer()
         delete __mapDrawer;
 }
 
-WorldTransform
-MapRenderer::transform() const
-{
-    return WorldTransform(viewport(), center(), zoom(), screen());
-}
-
 LonLat
 MapRenderer::mapToLonLat(const QPoint& point)
 {
@@ -147,7 +141,7 @@ void
 MapRenderer::setZoom(qreal zoom)
 {
     __zoom = zoom;
-    __updateScreen();
+    __updateTransforms();
     emit updated();
     
     if (!scene()->isAnimating())
@@ -158,7 +152,7 @@ void
 MapRenderer::setCenter(const LonLat& center)
 {
     __center = center;
-    __updateScreen();
+    __updateTransforms();
     emit updated();
     emit centerChanged(__center);
 }
@@ -185,9 +179,16 @@ void
 MapRenderer::setViewport(const QSize& size)
 {
     __viewport = size;
-    __updateScreen();
+    __updateTransforms();
     emit updated();
     emit viewportChanged(__viewport);
+}
+
+WorldTransform
+MapRenderer::transform(qreal longitude) const
+{
+    int index = static_cast<int>(longitude / 180.0);
+    return __transforms[index];
 }
 
 void
@@ -196,8 +197,7 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
     __selectedItems = selectedItems;
     __isRendering = true;
     
-    auto transforms = splitScreenToTransforms(viewport(), center(), zoom(), screen());
-    
+    auto transforms = __transforms.values();
     std::for_each(transforms.begin(), transforms.end(), [&](auto transform) {
         if (__mapDrawer) {
             __mapDrawer->draw(painter, transform);
@@ -209,7 +209,7 @@ MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
         
     });
     
-    std::for_each(transforms.begin(), transforms.end(), [&](auto transform) {    
+    std::for_each(transforms.begin(), transforms.end(), [&](auto transform) {
         auto items = this->scene()->itemsInRect(transform.screen());
         std::sort(items.begin(), items.end(), [](auto a, auto b) {
             return a->z() < b->z();
@@ -238,10 +238,19 @@ MapRenderer::__restoreMapState()
 }
 
 void
-MapRenderer::__updateScreen()
+MapRenderer::__updateTransforms()
 {
     __screen.setTopLeft(mapToLonLat(QPoint(0, 0)));
     __screen.setBottomRight(mapToLonLat(QPoint(__viewport.width(), __viewport.height())));
+    
+    QMap<int, WorldTransform> map;
+    auto transforms = splitScreenToTransforms(viewport(), center(), zoom(), screen());
+    std::for_each(transforms.begin(), transforms.end(), [&map](auto t) {
+        int id = static_cast<int>(t.offset().x() / -180.0);
+        map[id] = t;
+    });
+    
+    __transforms.swap(map);
 }
 
 void

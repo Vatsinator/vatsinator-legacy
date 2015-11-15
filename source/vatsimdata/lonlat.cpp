@@ -51,7 +51,7 @@ LonLat::bound() const &
     LonLat b(*this);
     
 //     b.rx() = std::fmod(b.x() + 180.0, 360.0) - 180.0;
-    b.rx() = mod(b.x() + 180.0, 360.0);
+    b.rx() = mod(b.x() + 180.0, 360.0) - 180.0;
         
 //     b.ry() = qBound(-90.0, b.y(), 90.0);
     b.ry() = qBound(-85.0511, b.y(), 85.0511);
