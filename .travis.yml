@@ -1,24 +1,22 @@
 language: cpp
 
 compiler:
-    - gcc
+    - clang
 
 before_install:
-    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    - sudo apt-add-repository ppa:beineri/opt-qt55 -y
-    - sudo apt-add-repository ppa:george-edison55/precise-backports -y
-    - sudo apt-get update -q
-    - sudo apt-get install -y build-essential zlib1g-dev mesa-common-dev cmake-data cmake gcc-5 g++-5 qt55base qt55tools
-    - wget http://sourceforge.net/projects/quazip/files/quazip/0.7.1/quazip-0.7.1.tar.gz/download -O /tmp/quazip-0.7.1.tar.gz
+    - brew update
+    - brew install qt5
+    - wget http://sourceforge.net/projects/quazip/files/quazip/0.7.1/quazip-0.7.1.tar.gz/download -O /tmp/quazip-0.7.1.tar.gz || wget http://vatsinator.eu.org/downloads/3rdparty/quazip-0.7.1.tar.gz -O /tmp/quazip-0.7.1.tar.gz
+    - wget http://vatsinator.eu.org/downloads/3rdparty/quazip-qtcore-osx.patch -O /tmp/quazip-qtcore-osx.patch
     - tar xvf /tmp/quazip-0.7.1.tar.gz
-    - cd quazip-0.7.1 && CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake . -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake/ -DCMAKE_INSTALL_PREFIX=/usr && make && sudo make install && cd ..
+    - cd quazip-0.7.1 && patch -p1 < /tmp/quazip-qtcore-osx.patch && cmake . -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake && make VERBOSE=1 && sudo make install && cd ..
 
 before_script:
-    - CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake . -DCMAKE_PREFIX_PATH=/opt/qt55/lib/cmake/ -DCMAKE_INSTALL_PREFIX=/usr -DWITH_DEBIAN=1
+    - cmake . -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
 
-script: make
-
-after_succes: make package
+script:
+    - make VERBOSE=1
+    - make package
 
 os:
-    - linux
+    - osx
