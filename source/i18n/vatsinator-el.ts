@@ -491,7 +491,7 @@
 <context>
     <name>FirDatabase</name>
     <message>
-        <location filename="../db/firdatabase.cpp" line="60"/>
+        <location filename="../db/firdatabase.cpp" line="66"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
         <translation type="unfinished"/>
     </message>
@@ -863,73 +863,73 @@
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="362"/>
         <source>Airport details</source>
         <translation>Λεπτομερειες αεροδρομιου</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="379"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="366"/>
         <source>%1 METAR</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="384"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="371"/>
         <source>Controllers</source>
         <translation>Ελεγκτές</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="393"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="380"/>
         <source>Arrivals</source>
         <translation>Αφίξεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="404"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="391"/>
         <source>Departures</source>
         <translation>Αναχωρήσεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="433"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="420"/>
         <source>Departures: %1</source>
         <translation>Αναχωρήσεις:: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="439"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="426"/>
         <source>Arrivals: %1</source>
         <translation>Αφίξεις: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="470"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="457"/>
         <source>Ground speed: %1 kts</source>
         <translation>Ταχύτητα εδάφους: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="471"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="458"/>
         <source>Altitude: %1 ft</source>
         <translation>Υψόμετρο: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="482"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="469"/>
         <source>%1 details</source>
         <translation>%1 Λεπτομέρειες</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="450"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="437"/>
         <source>Flight details</source>
         <translation>Λεπτομέρειες της πτήσης</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="348"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="335"/>
         <source>Nearby</source>
         <extracomment>Nearby flights and airports</extracomment>
         <translation>Μικρή απόσταση</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="337"/>
         <source>Flights</source>
         <translation>Πτήσεις</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="346"/>
         <source>Airports</source>
         <translation>Αεροδρόμια</translation>
     </message>
@@ -1210,19 +1210,19 @@
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="397"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="447"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="482"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="542"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="579"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="402"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="452"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="487"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="547"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="584"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>Το αρχείο %1 δεν ήταν δυνατό να ανοιχτεί. Παρακαλούμε εγκαταστήστε ξανά την εφαρμογή.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="407"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="492"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="589"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="497"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="594"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>Το αρχείο %1 δεν μπορεσε να διαβάστει. Παρακαλούμε εγκαταστήστε ξανά την εφαρμογή.</translation>
     </message>

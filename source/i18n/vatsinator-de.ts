@@ -491,7 +491,7 @@
 <context>
     <name>FirDatabase</name>
     <message>
-        <location filename="../db/firdatabase.cpp" line="60"/>
+        <location filename="../db/firdatabase.cpp" line="66"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
         <translation>Datei %1 konnte nicht aufgerufen werden! Bitte installieren Sie die Anwendung erneut.</translation>
     </message>
@@ -864,73 +864,73 @@ Um eine Verbesserung von Qualität und Nutzbarkeit von Vatsinator zu ermögliche
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="375"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="362"/>
         <source>Airport details</source>
         <translation>Flughafendetails</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="379"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="366"/>
         <source>%1 METAR</source>
         <translation>%1 METAR</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="384"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="371"/>
         <source>Controllers</source>
         <translation>Fluglotsen</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="393"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="380"/>
         <source>Arrivals</source>
         <translation>Ankommende Flüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="404"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="391"/>
         <source>Departures</source>
         <translation>Abflüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="433"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="420"/>
         <source>Departures: %1</source>
         <translation>Abflüge: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="439"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="426"/>
         <source>Arrivals: %1</source>
         <translation>Ankommende Flüge: %1</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="470"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="457"/>
         <source>Ground speed: %1 kts</source>
         <translation>Geschwindigkeit über Grund: %1 kts</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="471"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="458"/>
         <source>Altitude: %1 ft</source>
         <translation>Höhe: %1 ft</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="482"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="469"/>
         <source>%1 details</source>
         <translation>%1 Details</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="450"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="437"/>
         <source>Flight details</source>
         <translation>Flugdetails</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="348"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="335"/>
         <source>Nearby</source>
         <extracomment>Nearby flights and airports</extracomment>
         <translation>In der Nähe</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="350"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="337"/>
         <source>Flights</source>
         <translation>Flüge</translation>
     </message>
     <message>
-        <location filename="../ui/widgets/mapwidget.cpp" line="359"/>
+        <location filename="../ui/widgets/mapwidget.cpp" line="346"/>
         <source>Airports</source>
         <translation>Flughafen</translation>
     </message>
@@ -1211,19 +1211,19 @@ Um eine Verbesserung von Qualität und Nutzbarkeit von Vatsinator zu ermögliche
 <context>
     <name>VatsimDataHandler</name>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="397"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="447"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="482"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="542"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="579"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="402"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="452"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="487"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="547"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="584"/>
         <source>File %1 could not be opened. Please reinstall the application.</source>
         <translation>Datei %1 konnte nicht geöffnet werden! Bitte installieren Sie die Anwendung erneut.</translation>
     </message>
     <message>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="407"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="457"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="492"/>
-        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="589"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="412"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="462"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="497"/>
+        <location filename="../vatsimdata/vatsimdatahandler.cpp" line="594"/>
         <source>File %1 could not be read. Please reinstall the application.</source>
         <translation>Datei %1 konnte nicht gelesen werden! Bitte installieren Sie die Anwendung erneut.</translation>
     </message>
