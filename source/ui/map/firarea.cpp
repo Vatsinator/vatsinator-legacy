@@ -27,19 +27,32 @@
 
 #include "firarea.h"
 
-FirArea::FirArea(const Fir* fir, const FirItem* item, QObject* parent) :
+FirArea::FirArea(const Fir* fir, const FirRecord* record, const FirItem* item, QObject* parent) :
     MapArea(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
-    __rect(QPointF(fir->data()->header.externities[0].x, fir->data()->header.externities[1].y),
-           QPointF(fir->data()->header.externities[1].x, fir->data()->header.externities[0].y)),
-    __item(item)
+    __rect(QPointF(record->header.externities[0].x, record->header.externities[1].y),
+           QPointF(record->header.externities[1].x, record->header.externities[0].y)),
+    __item(item),
+    __icao(QString::fromUtf8(record->header.icao))
 {
-    const FirRecord* f = fir->data();
-    __boundaries.reserve(f->borders.length());
-    std::for_each(f->borders.begin(), f->borders.end(), [this](const Point& p) {
-       __boundaries << LonLat(p);
+    __borders.reserve(record->borders.length() * 2);
+    __polygon.reserve(record->borders.length());
+    std::for_each(record->borders.begin(), record->borders.end(), [this](const Point& p) {
+        if (__borders.length() > 1)
+            __borders << __borders.last();
+        
+       __borders << LonLat(p);
+       __polygon << LonLat(p);
     });
+    
+    __borders << __borders.last() << __borders.first();
+    
+    for (auto it = __borders.begin(); it < __borders.end(); it += 2) {
+        if (qAbs(it->x()) == 180.0 && qAbs((it + 1)->x()) == 180.0) {
+            it = __borders.erase(it, it + 2);
+        }
+    }
 }
 
 QRectF
@@ -60,38 +73,36 @@ FirArea::isVisible() const
 void
 FirArea::draw(QPainter* painter, const WorldTransform& transform) const
 {
+    QColor firColor = QColor(175, 175, 175);
+    if (data()->isStaffed())
+        firColor = QColor(176, 32, 32, 30);
+
+    QPen pen = painter->pen();
+    painter->setPen(firColor);
+    
+    QPainter::RenderHints hints = painter->renderHints();
+    painter->setRenderHints(hints | QPainter::Antialiasing);
+    
+    auto lines = __borders * transform;
+    painter->drawLines(lines);
+    
     if (data()->isStaffed()) {
-        QColor firColor = QColor(176, 32, 32, 30);
-        
         QBrush brush = painter->brush();
         painter->setBrush(QBrush(firColor));
         
-        QPen pen = painter->pen();
-        painter->setPen(firColor);
+        auto polygon = __polygon * transform;
+        painter->drawPolygon(polygon.constData(), polygon.size());
         
-        auto region = __boundaries * transform;
-        painter->drawPolygon(region.data(), region.length());
-        
-        painter->setPen(pen);
         painter->setBrush(brush);
-    } else {
-        QColor firColor = QColor(175, 175, 175);
-        
-        QPen pen = painter->pen();
-        painter->setPen(firColor);
-        
-        QPainter::RenderHints hints = painter->renderHints();
-        painter->setRenderHints(hints | QPainter::Antialiasing);
-        
-        auto region = __boundaries * transform;
-        painter->drawPolygon(region.data(), region.length());
-        
-        painter->setPen(pen);
-        painter->setRenderHints(hints);
     }
+    
+    painter->setPen(pen);
+    painter->setRenderHints(hints);
     
 #ifndef QT_NO_DEBUG
     QRect mapped = __rect * transform;
     painter->drawRect(mapped);
+    
+    painter->drawText(__polygon.first() * transform, __icao);
 #endif
 }

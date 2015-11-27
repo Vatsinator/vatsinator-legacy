@@ -261,11 +261,14 @@ MapScene::__setupItems()
     }
     
     for (const Fir* f : vApp()->vatsimDataHandler()->firs()) {
-        if (f->data()->header.textPosition.x != 0.0 && f->data()->header.textPosition.y != 0.0) {
+        if (!f->labelPosition().isNull()) {
             FirItem* item = new FirItem(f, this);
             __items.insert(std::make_pair(item->position(), item));
-            FirArea* area = new FirArea(f, item, this);
-            __areas.insert(std::make_pair(area->boundingRect(), area));
+            
+            for (const FirRecord* fr: f->data()) {
+                FirArea* area = new FirArea(f, fr, item, this);
+                __areas.insert(std::make_pair(area->boundingRect(), area));
+            }
         }
     }
     

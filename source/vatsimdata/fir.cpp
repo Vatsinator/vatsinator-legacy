@@ -1,6 +1,6 @@
 /*
     fir.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,16 +27,16 @@
 #include "fir.h"
 
 Fir::Fir(const FirRecord* record) :
-    __data(record),
+    __data{ record },
     __icao(QString::fromUtf8(record->header.icao)),
     __oceanic(record->header.oceanic),
+    __labelPosition(record->header.textPosition.x, record->header.textPosition.y),
     __staff(new AtcTableModel(this)),
     __uirStaff(new AtcTableModel(this)),
     __flights(new FlightTableModel(this)),
     __airports(new AirportTableModel(this))
 {
-
-    Q_ASSERT(__data);
+    Q_ASSERT(record);
 }
 
 Fir::~Fir() {}
@@ -45,10 +45,8 @@ void
 Fir::addStaff(const Controller* atc)
 {
     __staff->add(atc);
-    connect(atc,          SIGNAL(updated()),
-            this,         SIGNAL(updated()));
-    connect(atc,          SIGNAL(destroyed(QObject*)),
-            this,         SIGNAL(updated()), Qt::DirectConnection);
+    connect(atc, &Client::updated, this, &Fir::updated);
+    connect(atc, &Client::invalid, this, &Fir::updated);
     emit updated();
 }
 
@@ -56,10 +54,8 @@ void
 Fir::addUirStaff(const Controller* atc)
 {
     __uirStaff->add(atc);
-    connect(atc,           SIGNAL(updated()),
-            this,         SIGNAL(updated()));
-    connect(atc,           SIGNAL(destroyed(QObject*)),
-            this,         SIGNAL(updated()), Qt::DirectConnection);
+    connect(atc, &Client::updated, this, &Fir::updated);
+    connect(atc, &Client::invalid, this, &Fir::updated);
     emit updated();
 }
 
@@ -67,8 +63,7 @@ void
 Fir::addFlight(const Pilot* pilot)
 {
     __flights->add(pilot);
-    connect(pilot,           SIGNAL(destroyed(QObject*)),
-            this,         SIGNAL(updated()), Qt::DirectConnection);
+    connect(pilot, &Client::invalid, this, &Fir::updated);
 }
 
 void
@@ -78,17 +73,20 @@ Fir::addAirport(const Airport* airport)
 }
 
 void
+Fir::addRecord(const FirRecord* record)
+{
+    Q_ASSERT(QString::fromUtf8(record->header.icao) == icao());
+    __data << record;
+    
+    if (__labelPosition.isNull())
+        __labelPosition = LonLat(record->header.textPosition.x, record->header.textPosition.y);
+}
+
+void
 Fir::fixupName()
 {
-    if (!__name.contains("Radar") &&
-            !__name.contains("Control") &&
-            !__name.contains("Radio") &&
-            !__name.contains("Oceanic")) {
-        if (__oceanic)
-            __name += " Oceanic";
-        else
-            __name += " Center";
-    }
+    if (!QRegularExpression("\\b(Radar|Control|Radio|Oceanic)\\b").match(__name).hasMatch())
+        __name += __oceanic ? " Oceanic" : " Center";
 }
 
 bool
@@ -101,12 +99,6 @@ bool
 Fir::isEmpty() const
 {
     return __staff->rowCount() == 0;
-}
-
-bool
-Fir::hasValidPosition() const
-{
-    return data()->header.textPosition.x != .0f && data()->header.textPosition.y != .0f;
 }
 
 void

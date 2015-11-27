@@ -35,7 +35,7 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     MapItem(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
-    __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y)
+    __position(fir->labelPosition())
 {
     QString labelText = __fir->icao();
     if (__fir->isOceanic()) {
@@ -46,12 +46,6 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     
     connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &FirItem::__prepareLabel);
     __prepareLabel();
-    
-    const QVector<Point>& borders = data()->data()->borders;
-    __boundaries.reserve(borders.size());
-    std::for_each(borders.begin(), borders.end(), [this](const Point& p) {
-        __boundaries << LonLat(p.x, p.y);
-    });
 }
 
 bool

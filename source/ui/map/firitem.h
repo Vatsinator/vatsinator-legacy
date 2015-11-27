@@ -82,7 +82,6 @@ private:
     LonLat __position;
     mutable QStaticText __label;
     QFont __font;
-    QVector<LonLat> __boundaries;
     
 };
 
