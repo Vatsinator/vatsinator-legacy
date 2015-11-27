@@ -56,19 +56,18 @@ public:
     LonLat(const Point& point);
     
     /**
-     * Creates new LonLat from the given coordinates - _longitude_
-     * and _latitude_.
+     * Creates new LonLat from the given coordinates.
      */
     LonLat(qreal longitude, qreal latitude);
     
     /**
-     * Returns this point, but bounds its coordinates to be correct longitude
+     * Returns this point, but wraps its coordinates to be correct longitude
      * and latitude.
      */
     LonLat bound() const &;
     
     /**
-     * Returns this point, but bounds its coordinates to be correct longitude
+     * Returns this point, but wraps its coordinates to be correct longitude
      * and latitude.
      */
     LonLat bound() &&;

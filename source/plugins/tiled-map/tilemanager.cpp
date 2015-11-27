@@ -23,6 +23,7 @@
 #include "network/filedownloader.h"
 #include "storage/filemanager.h"
 #include "ui/map/maprenderer.h"
+#include "ui/map/mapconfig.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "tile.h"
@@ -49,10 +50,6 @@ void
 TileManager::fetchTile(const TileUrl& url)
 {
     Q_ASSERT(url.zoom() > 0);
-    
-//     Was used back then when TileManager existed on its own thread
-//     QMetaObject::invokeMethod(this, "__fetchTileImpl", Q_ARG(TileUrl, url));
-    
     __fetchTileImpl(url);
 }
 
@@ -81,17 +78,8 @@ TileManager::tiles(const QRectF& rect, quint32 zoom)
     QRectF realRect = rect.isNull() ? __renderer->screen() : rect;
     int realZoom = zoom ? zoom : __tileZoom;
     
-    auto topLeft = tileCoordsForLonLat(realRect.topLeft());
-    auto bottomRight = tileCoordsForLonLat(realRect.bottomRight());
-    
-    if (bottomRight.first < topLeft.first)
-        bottomRight = tileCoordsForLonLat(LonLat(180.0, realRect.bottomRight().y()));
-    
     QList<Tile*> tiles;
-    
-    for (quint64 x = topLeft.first; x <= bottomRight.first; ++x)
-        for (quint64 y = topLeft.second; y <= bottomRight.second; ++y)
-            tiles << this->tile(x, y, realZoom);
+    __tilesImpl(realRect, realZoom, &tiles);
     
     return tiles;
 }
@@ -110,7 +98,6 @@ TileManager::tile(quint64 x, quint64 y, quint64 z)
     auto it = tiles.find(TileCoord(x, y));
     if (it == tiles.end()) {
         Tile* tile = new Tile(x, y, z, this, this);
-//         tile->moveToThread(this->thread());
         connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
         
         tiles.insert(std::make_pair(TileCoord(x, y), tile));
@@ -151,13 +138,25 @@ TileManager::tileCoords(quint64 x, quint64 y, quint64 z)
 QPair<quint64, quint64>
 TileManager::tileCoordsForLonLat(const LonLat& lonLat, unsigned zoom)
 {
-    LonLat ll = lonLat.bound();
+    Q_ASSERT(qBound(-MapConfig::longitudeMax(), lonLat.longitude(), MapConfig::longitudeMax()) == lonLat.longitude());
+    
     qreal n = qPow(2.0, static_cast<qreal>(zoom));
-    quint64 x = qFloor((ll.longitude() + 180.0) / 360.0 * n);
-    qreal lat_rad = qDegreesToRadians(ll.latitude());
+    quint64 x = qFloor((lonLat.longitude() + 180.0) / 360.0 * n);
+    qreal lat_rad = qDegreesToRadians(qBound(-MapConfig::latitudeMax(), lonLat.latitude(), MapConfig::latitudeMax()));
     quint64 y = qFloor((1.0 - qLn(qTan(lat_rad) + (1.0 / qCos(lat_rad))) / M_PI) / 2.0 * n);
     
     return qMakePair(x, y);
+}
+
+void
+TileManager::__tilesImpl(const QRectF& rect, quint32 zoom, QList<Tile*>* tiles)
+{
+    auto topLeft = tileCoordsForLonLat(rect.topLeft());
+    auto bottomRight = tileCoordsForLonLat(rect.bottomRight());
+    
+    for (quint64 x = topLeft.first; x <= bottomRight.first; ++x)
+        for (quint64 y = topLeft.second; y <= bottomRight.second; ++y)
+            tiles->append(this->tile(x, y, zoom));
 }
 
 TileUrl

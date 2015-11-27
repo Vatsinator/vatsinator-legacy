@@ -73,7 +73,7 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
     painter->setRenderHints(hints | QPainter::SmoothPixmapTransform);
 #endif
     
-    auto tiles = __tiles->tiles();
+    auto tiles = __tiles->tiles(transform.screen());
     std::for_each(tiles.begin(), tiles.end(), [&transform, painter](Tile* tile) {
         QRect coords = tile->coords() * transform;
         QRect source;

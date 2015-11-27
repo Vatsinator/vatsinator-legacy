@@ -62,7 +62,6 @@ Tile::pixmap(QRect* source) const
 {
     Q_ASSERT(source);
     
-    QMutexLocker l(&__mutex);
     if (!isReady()) {
         if (zoom() <= 1) {
             *source = __pixmap.rect();
@@ -104,7 +103,6 @@ Tile::__loadTile()
 {
     CacheFile cached(__tm->provider()->name() % __url.toUrl().path());
     
-    QMutexLocker l(&__mutex);
     __pixmap.load(QFileInfo(cached).absoluteFilePath());
     
     if (!__pixmap.isNull()) {

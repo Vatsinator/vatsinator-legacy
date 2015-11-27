@@ -41,6 +41,61 @@ class MapWidget : public QWidget {
     Q_OBJECT
     friend class MapScene;
     
+    class MouseHelper {
+    public:
+        /**
+         * Updates the mouse position.
+         * \param pos Widget's position (in pixels, relative).
+         */
+        void update(const QPoint& pos);
+        
+        /**
+         * Quickly calculates distance between the given point and mouse cursor
+         * position on the screen.
+         */
+        qreal screenDistance(const QPoint& point);
+        
+        /**
+         * Calculates distance between the point (defined in the global coordinates) and
+         * the mouse cursor position.
+         */
+        qreal geoDistance(const LonLat& point);
+        
+        /**
+         * Sets the mouse down status.
+         */
+        void setDown(bool down);
+        
+        /**
+         * Position within the widget.
+         */
+        inline const QPoint& screenPosition() const
+        {
+            return __screenPosition;
+        }
+        
+        /**
+         * Latitude/longitude that the mouse cursor currently points at.
+         */
+        inline const LonLat& geoPosition() const
+        {
+            return __geoPosition;
+        }
+        
+        /**
+         * Indicates whether any of the mouse buttons is pressed or not.
+         */
+        inline bool down() const
+        {
+            return __down;
+        }
+        
+    private:
+        QPoint __screenPosition;
+        LonLat __geoPosition;
+        bool __down = false;
+    };
+    
 public:
     /**
      * The default constrcutor passes _parent_ to QGLWidget.
@@ -93,69 +148,8 @@ private:
     QString __toolTipForFirItem(const FirItem* item);
     
 private:
-
     MapRenderer* __renderer;
-    
-    
-    /**
-     * This class handles mouse position on the screen.
-     */
-    class MousePosition {
-    public:
-        MousePosition();
-        
-        /**
-         * Updates the mouse position from location on the widget (as
-         * it is given by Qt).
-         */
-        void update(const QPoint& pos);
-        
-        /**
-         * Quickly calculates distance between the given point and mouse cursor
-         * position on the screen, _in pixels_.
-         */
-        qreal screenDistance(const QPoint& point);
-        
-        /**
-         * Calculates distance between the point on the globe (lat-lon) and
-         * the mouse cursor position.
-         */
-        qreal geoDistance(const LonLat& point);
-        
-        /**
-         * Sets the mouse down status.
-         */
-        void setDown(bool down);
-        
-        /**
-         * Position within the widget.
-         */
-        inline const QPoint& screenPosition() const
-        {
-            return __screenPosition;
-        }
-        
-        /**
-         * Latitude/longitude that the mouse cursor currently points at.
-         */
-        inline const LonLat& geoPosition() const
-        {
-            return __geoPosition;
-        }
-        
-        /**
-         * Indicates whether any of the mouse buttons is pressed or not.
-         */
-        inline bool down() const
-        {
-            return __down;
-        }
-        
-    private:
-        QPoint  __screenPosition;
-        LonLat  __geoPosition;
-        bool    __down;
-    } __mousePosition;
+    MouseHelper __mouse;
     
     QPoint __lastClickPosition;
     

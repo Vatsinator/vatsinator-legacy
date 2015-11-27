@@ -1,6 +1,6 @@
 /*
     pilot.cpp
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,44 +29,7 @@
 
 // how far from the airport the pilot must be to be recognized as "departing"
 // or "arrived"
-static Q_DECL_CONSTEXPR qreal PilotToAirport = 0.15;
-
-namespace {
-
-/**
- * Checks whether the given line crosses the IDL or the Greenwich Meridian.
- * For reference:
- * https://github.com/Vatsinator/Vatsinator/pull/2
- * Code by @Ucchi98.
- */
-bool crossesIdl(const QVector<LonLat>& _line)
-{
-    LonLat p = _line.first(), c;
-    
-    for (int i = 1; i < _line.size(); ++i) {
-        c = _line[i];
-        qreal pSign = p.longitude() / qFabs(p.longitude());
-        qreal cSign = c.longitude() / qFabs(c.longitude());
-        
-        if (pSign != cSign) {
-            qreal dst1 = VatsimDataHandler::fastDistance(p, c), dst2;
-            
-            if (pSign < 0)
-                dst2 = VatsimDataHandler::fastDistance(p.longitude() + 360.0, p.latitude(), c.longitude(), c.latitude());
-            else
-                dst2 = VatsimDataHandler::fastDistance(p.longitude(), p.latitude(), c.longitude() + 360.0, c.latitude());
-                
-            if (dst1 > dst2)
-                return true;
-        }
-        
-        p = c;
-    }
-    
-    return false;
-}
-
-}
+static constexpr qreal PilotToAirport = 0.15;
 
 /*
  * 0 callsign
@@ -383,16 +346,6 @@ Pilot::__discoverFlightPhase()
     return Airborne;
 }
 
-void
-Pilot::__fixupRoute()
-{
-    if (crossesIdl(__route.waypoints)) {
-        for (LonLat& p : __route.waypoints)
-            if (p.longitude() < 0)
-                p.rx() += 360.0;
-    }
-}
-
 bool
 Pilot::__maybeAirborne()
 {
@@ -411,8 +364,6 @@ Pilot::__updateWaypoints()
     
     if (!isPrefiledOnly() && destination()->isValid())
         __route.waypoints << destination()->position();
-    
-    __fixupRoute();
 }
 
 void

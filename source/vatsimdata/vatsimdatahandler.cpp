@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.cpp
-    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -218,13 +218,9 @@ VatsimDataHandler::findFir(const QString& icao, bool fss)
         keys.prepend(QString("K") % icao);
         
     for (const QString& k : keys) {
-        if (__firs.contains(k)) {
-            QList<Fir*> values = __firs.values(k);
-            
-            for (Fir* f : values) {
-                if (f->isOceanic() == fss && f->hasValidPosition())
-                    return f;
-            }
+        FirKey key(k, fss);
+        if (__firs.contains(key)) {
+            return __firs[key];
         }
     }
     
@@ -334,8 +330,8 @@ VatsimDataHandler::fastDistance(
     const qreal& lat2, const qreal& lon2)
 {
     return qSqrt(
-               qPow(lat1 - lat2, 2) +
-               qPow(lon1 - lon2, 2)
+                qPow(lat1 - lat2, 2) +
+                qPow(lon1 - lon2, 2)
            );
 }
 
@@ -343,8 +339,17 @@ qreal
 VatsimDataHandler::fastDistance(const LonLat& a, const LonLat& b)
 {
     return qSqrt(
-               qPow(a.latitude() - b.latitude(), 2) +
-               qPow(a.longitude() - b.longitude(), 2)
+                qPow(a.latitude() - b.latitude(), 2) +
+                qPow(a.longitude() - b.longitude(), 2)
+           );
+}
+
+qreal
+VatsimDataHandler::fastDistance(int ax, int ay, int bx, int by)
+{
+    return qSqrt(
+                qPow(static_cast<qreal>(ax - bx), 2.0) +
+                qPow(static_cast<qreal>(ay - by), 2.0)
            );
 }
 
@@ -608,17 +613,19 @@ VatsimDataHandler::__readTmaFile(const QString& fileName)
 void
 VatsimDataHandler::__initializeData()
 {
-    std::for_each(vApp()->firDatabase()->firs().begin(),
-                  vApp()->firDatabase()->firs().end(),
-        [this](const FirRecord & fr) {
-            Fir* f = new Fir(&fr);
-            __firs.insert(f->icao(), f);
+    const auto& firs = vApp()->firDatabase()->firs();
+    std::for_each(firs.begin(), firs.end(), [this](const FirRecord& fr) {
+//             FirDatabase::dumpHeader(&fr.header);
+            FirKey key(QString::fromUtf8(fr.header.icao), fr.header.oceanic);
+            if (__firs.contains(key))
+                __firs[key]->addRecord(&fr);
+            else
+                __firs.insert(key, new Fir(&fr));
         }
     );
-                 
-    std::for_each(vApp()->airportDatabase()->airports().begin(),
-                  vApp()->airportDatabase()->airports().end(),
-        [this](const AirportRecord& ar) {
+    
+    const auto& airports = vApp()->airportDatabase()->airports();
+    std::for_each(airports.begin(), airports.end(), [this](const AirportRecord& ar) {
             /* TODO Remove invalid ICAOs from the database itself */
             if (!isValidIcao(ar.icao)) {
                 qWarning("Invalid airport icao in the database: %s", ar.icao);

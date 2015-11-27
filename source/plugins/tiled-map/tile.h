@@ -23,7 +23,6 @@
 #include <QObject>
 #include <QRectF>
 #include <QPixmap>
-#include <QMutex>
 #include "tileurl.h"
 
 class TileManager;
@@ -124,7 +123,6 @@ private:
     mutable QRectF __coords;
     
     QPixmap __pixmap;
-    mutable QMutex __mutex;
 };
 
 #endif // TILE_H

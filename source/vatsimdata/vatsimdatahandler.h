@@ -1,6 +1,6 @@
 /*
     vatsimdatahandler.h
-    Copyright (C) 2012-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -315,7 +315,7 @@ public:
     }
     
     /**
-     * Calculates the distance between two points. The unit is undefined.
+     * Calculates the distance between two points.
      *
      * \note If you need specific unit, i.e. nautical miles, use
      * VatsimDataHandler::nmDistance() function.
@@ -330,7 +330,7 @@ public:
                               const qreal& lat2, const qreal& lon2);
                               
     /**
-     * Calculates the distance between two points. The unit is undefined.
+     * Calculates the distance between two points.
      *
      * \note If you need specific unit, i.e. nautical miles, use
      * VatsimDataHandler::nmDistance() function.
@@ -340,6 +340,11 @@ public:
      * \return Distance between these two points.
      */
     static qreal fastDistance(const LonLat& a, const LonLat& b);
+    
+    /**
+     * Calculates the distance between two points.
+     */
+    static qreal fastDistance(int ax, int ay, int bx, int by);
     
     /**
      * Calculates distance between two points, expressed in
@@ -432,90 +437,29 @@ private slots:
     void __dataFetched();
     
 private:
-
-    /*
-     * All connected clients.
-     * pid <-> instance pairs
-     * 
-     * It is multi map, as ATC sometimes may have two same PIDs (i.e. EPWW_CTR can provide EPWA_ATIS as well). 
-     */
-    QMap<quint32, Client*> __clients;
+    QMap<quint32, Client*> __clients; /**< All connected clients; it is multi map, with pid <-> instance pairs. */
+    QList<Client*> __newClients; /**< List of only new clients, i.e. that showed up in the last update. */
+    FlightTableModel* __flights; /**< Pilots only. */
+    AtcTableModel* __atcs; /**< ATCs only. */
+    QList<Client*> __invalidClients; /**< List of clients marked as invalid, i.e. will be removed prior to next update. */
+    QMap<QString, Airport*> __airports; /**< All airports, each instance wraps the record in the database. */
     
-    /*
-     * List of only new clients, i.e. that showed up in the last update.
-     */
-    QList<Client*> __newClients;
-    
-    FlightTableModel* __flights;
-    AtcTableModel* __atcs;
-    
-    /**
-     * List of clients marked as invalid.
-     */
-    QList<Client*> __invalidClients;
-    
-    /*
-     * All airports, each instance wraps the record in the database.
-     * ICAO <-> instance pairs
-     */
-    QMap<QString, Airport*> __airports;
-    
-    /*
-     * All FIRs, each instance wraps the record in the database.
-     * ICAO <-> instance pairs
-     */
-    QMultiMap<QString, Fir*> __firs;
-    
-    /*
-     * UIRs are stored in a separate file.
-     * ICAO <-> instance pairs
-     */
-    QMap<QString, Uir*> __uirs;
-    
-    /*
-     * TMAs are stored in data/tma file.
-     * ICAO <-> instance pairs
-     */
-    QMap<QString, Tma*> __tmas;
-    
-    /* This is vector of data servers, obtained from the status file */
-    QList<QUrl> __dataServers;
-    
-    /* Map of ICAO aliases */
-    QMultiMap<QString, QString> __aliases;
-    
-    /* Map of alternate names for given ICAO */
-    QMap<QString, QString> __alternameNames;
-    
-    /* This is URL that we can obtain METAR from */
-    QUrl __metar;
-    
-    /* And status.txt */
-    QUrl __status;
-    
-    /* Minutes to next reload, as stated in data file */
-    int __reload;
-    
-    /* Last time Vatsim data was refreshed.
-     * Got from data file.
-     */
-    QDateTime __dateVatsimDataUpdated;
-    
-    /* The timestamp is used to describe every data package, so clients can sync to this. */
-    qint64 __currentTimestamp;
-    
-    /* Observer count */
-    int __observers;
-    
-    /* Client cound */
-    int __clientCount;
-    
-    /* Indicates whether the status.txt file was already read or not */
-    bool __statusFileFetched;
-    
-    /* False before initialized() method is called */
-    bool __initialized;
-    
+    typedef QPair<QString, bool> FirKey; /**< ICAO <-> isOceanic */
+    QMap<FirKey, Fir*> __firs; /**< All FIRs, each instance wraps the record in the database. */
+    QMap<QString, Uir*> __uirs; /**< ICAO <-> instance pairs. */
+    QMap<QString, Tma*> __tmas; /**< ICAO <-> instance pairs. */
+    QList<QUrl> __dataServers; /**< Data server URLs, obtained from the status file */
+    QMultiMap<QString, QString> __aliases; /**< ICAO aliases */
+    QMap<QString, QString> __alternameNames; /**< Alternate names for ICAO codes */
+    QUrl __metar; /**< The URL that we can obtain METAR from */
+    QUrl __status; /**< The URL that we can obtain status.txt from */
+    int __reload; /**< Minutes to next reload, as stated in data file */
+    QDateTime __dateVatsimDataUpdated; /**< Last time Vatsim data was refreshed. */
+    qint64 __currentTimestamp; /**< The timestamp is used to describe every data package, so clients can sync to this. */
+    int __observers; /**< Observer count. */
+    int __clientCount; /**< Client count. */
+    bool __statusFileFetched; /**< Indicates whether the status.txt file was already read or not. */
+    bool __initialized; /**< False before initialized() method is called. */
     PlainTextDownloader* __downloader;
     UpdateScheduler*     __scheduler;
 };

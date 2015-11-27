@@ -1,6 +1,6 @@
 /*
  * maprenderer.h
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <QColor>
 #include <QRectF>
 #include <QSet>
+#include <QMap>
 
 #include "ui/map/worldtransform.h"
 #include "vatsimdata/lonlat.h"
@@ -113,9 +114,13 @@ public:
     virtual ~MapRenderer();
     
     /**
-     * Returns the current transform.
+     * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
+     * maps them to longitude & latitude.
+     *
+     * \param point The point on the screen.
+     * \return Global coordinates (longitude, latitude).
      */
-    WorldTransform transform() const;
+    LonLat mapToLonLat(const QPoint& point);
     
     /**
      * Gets screen coordinates (0 - winWidth, 0 - winHeight) and
@@ -124,7 +129,7 @@ public:
      * \param point The point on the screen.
      * \return Global coordinates (longitude, latitude).
      */
-    LonLat mapToLonLat(const QPoint& point);
+    LonLat mapToLonLat(const QPointF& point);
     
     /**
      * Sets the MapDrawer instance.
@@ -137,15 +142,37 @@ public:
     qreal zoomStep(int zoom);
     void setZoom(qreal zoom);
     void setCenter(const LonLat& center);
+    void setViewport(const QSize& size);
     
     /**
-     * The difference between the updateZoom() and setZoom() methods is that
-     * updateZoom() updates the zoom property smoothly, i.e. it does some
-     * equations that consider the zoom coefficient specified by the user.
+     * Returns transformation that is valid for the given longitude.
      */
-    void updateZoom(int steps);
-
-    void setViewport(const QSize& size);
+    WorldTransform transform(qreal longitude) const;
+    
+    /**
+     * Returns the default, global transformation.
+     */
+    inline WorldTransform transform() const
+    {
+        return WorldTransform(viewport(), center(), zoom(), screen());
+    }
+    
+    /**
+     * Is this instance of MapRenderer currently in the paintEvent()?
+     */
+    inline bool isRendering() const
+    {
+        return __isRendering;
+    }
+    
+    /**
+     * Returns set of items selected by user.
+     * \warning This method is valid only when \c isRendering() \c == \c true.
+     */
+    inline const QSet<MapItem*>& selectedItems() const
+    {
+        return __selectedItems;
+    }
     
     inline const QSize& viewport() const
     {
@@ -169,7 +196,7 @@ public:
         return __scene;
     }
     
-    inline const QRectF& screen()
+    inline const QRectF& screen() const
     {
         return __screen;
     }
@@ -190,22 +217,26 @@ public slots:
     
 private:
     void __restoreMapState();
-    void __updateScreen();
+    void __updateTransforms();
     
 private slots:
-    /**
-     * \sa __trackedFlightConnection
-     */
-    void __trackFlight(const Pilot* pilot);
-    
     void __saveMapState();
     
 private:
+    /* Is currenly in paintEvent()? */
+    bool __isRendering;
+    
+    /* Valid only if __isRendering == true */
+    QSet<MapItem*> __selectedItems;
+    
     /* The current viewport */
     QSize __viewport;
     
     /* Geo coordinates of the current viewport */
     QRectF __screen;
+    
+    /* id <-> transform map */
+    QMap<int, WorldTransform> __transforms;
     
     /* The current zoom property */
     qreal __zoom;
@@ -227,8 +258,6 @@ private:
     
     /*Actual Zoom level*/
     int __actualZoom;
-    
-    QMetaObject::Connection __trackedFlightConnection;
     
 };
 

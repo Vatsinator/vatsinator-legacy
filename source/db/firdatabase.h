@@ -1,6 +1,6 @@
 /*
     firdatabase.h
-    Copyright (C) 2012-2013  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -75,6 +75,11 @@ public:
      * \return FIR if any found, otherwise _nullptr_.
      */
     const FirRecord* find(const QString& icao);
+    
+    /**
+     * Prints the fir header to stdout.
+     */
+    static void dumpHeader(const FirHeader* header);
     
     /**
      * Gives direct access to the vector of FIRs.

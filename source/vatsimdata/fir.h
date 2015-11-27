@@ -1,6 +1,6 @@
 /*
     fir.h
-    Copyright (C) 2012-2014  Michał Garapich michal@garapich.pl
+    Copyright (C) 2012  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QString>
+#include "vatsimdata/lonlat.h"
 
 class Airport;
 class AirportTableModel;
@@ -58,6 +59,11 @@ class Fir : public QObject {
      */
     Q_PROPERTY(QString country READ country CONSTANT)
     
+    /**
+     * Position of the label.
+     */
+    Q_PROPERTY(LonLat labelPosition READ labelPosition CONSTANT)
+    
 signals:
     void updated();
     
@@ -93,6 +99,11 @@ public:
     void addAirport(const Airport* airport);
     
     /**
+     * Adds the given record to this Fir object.
+     */
+    void addRecord(const FirRecord* record);
+    
+    /**
      * Having the name set, this method suffixes it with "Oceanic" or "Center",
      * appropriately.
      */
@@ -108,15 +119,10 @@ public:
      */
     bool isEmpty() const;
     
-    /**
-     * \return True is position is not equal to (0, 0).
-     */
-    bool hasValidPosition() const;
-    
     void setName(const QString& name);
     void setCountry(const QString& country);
     
-    inline const FirRecord* data() const
+    inline const QList<const FirRecord*>& data() const
     {
         return __data;
     }
@@ -125,14 +131,17 @@ public:
     {
         return __staff;
     }
+    
     inline AtcTableModel* uirStaff() const
     {
         return __uirStaff;
     }
+    
     inline FlightTableModel* flights() const
     {
         return __flights;
     }
+    
     inline AirportTableModel* airports() const
     {
         return __airports;
@@ -142,6 +151,7 @@ public:
     {
         return __icao;
     }
+    
     inline bool isOceanic() const
     {
         return __oceanic;
@@ -151,25 +161,32 @@ public:
     {
         return __name;
     }
+    
     inline const QString& country() const
     {
         return __country;
     }
     
+    inline const LonLat& labelPosition() const
+    {
+        return __labelPosition;
+    }
+    
 private:
-
-    const FirRecord* __data;
+    QList<const FirRecord*> __data;
     
-    QString       __icao;
-    bool          __oceanic;
+    const QString __icao;
+    bool __oceanic;
     
-    QString       __name;
-    QString       __country;
+    QString __name;
+    QString __country;
+    
+    LonLat __labelPosition;
     
     AtcTableModel* __staff;
     AtcTableModel* __uirStaff;
-    FlightTableModel*     __flights;
-    AirportTableModel*    __airports;
+    FlightTableModel* __flights;
+    AirportTableModel* __airports;
 };
 
 Q_DECLARE_METATYPE(const Fir*)

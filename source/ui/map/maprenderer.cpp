@@ -1,6 +1,6 @@
 /*
  * maprenderer.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 #include <QtGui>
 #include <chrono>
+#include <cmath>
 
 #include "plugins/mapdrawer.h"
 #include "storage/settingsmanager.h"
@@ -46,16 +47,53 @@ namespace {
         return qRadiansToDegrees(2 * qAtan(qExp(qDegreesToRadians(y))) - M_PI / 2);
     }
     
+    /**
+     * Splits the given \c screen to a valid transforms.
+     */
+    QList<WorldTransform>
+    splitScreenToTransforms(const QSize& viewport, const LonLat& offset, qreal scale, const QRectF& screen)
+    {
+        QList<WorldTransform> list;
+        qreal it = screen.left();
+        do {
+            qreal tmp = it;
+            qreal mod = std::fmod((it + 180.0), 360.0);
+            if (mod < 0)
+                mod = 360.0 + mod;
+            
+            qreal ax = mod - 180.0;
+            qreal bx = qMin(it - mod + 360.0, screen.right());
+            it = bx;
+            
+            mod = std::fmod((bx + 180.0), 360.0);
+            if (mod < 0)
+                mod = 360.0 + mod;
+            
+            bx = mod - 180.0;
+            if (bx <= -180.0)
+                bx += 360.0;
+            
+            QRectF trScreen(QPointF(ax, screen.top()), QPointF(bx, screen.bottom()));
+            LonLat trOffset = offset;
+            qreal m = qRound((it + tmp) / 2 / 360.0) * -360.0;
+            trOffset.setX(trOffset.x() + m);
+            
+            list << WorldTransform(viewport, trOffset, scale, trScreen);
+        } while (it < screen.right());
+        
+        return list;
+    }
+    
 }
 
 MapRenderer::MapRenderer(QObject* parent) :
     QObject(parent),
+    __isRendering(false),
     __mapDrawer(nullptr),
     __scene(new MapScene(this))
 {
     __restoreMapState();
     connect(vApp()->vatsimDataHandler(), &VatsimDataHandler::vatsimDataUpdated, this, &MapRenderer::updated);
-    connect(__scene, &MapScene::flightTracked, this, &MapRenderer::__trackFlight);
     connect(qApp, &QCoreApplication::aboutToQuit, this, &MapRenderer::__saveMapState);
 }
 
@@ -63,12 +101,6 @@ MapRenderer::~MapRenderer()
 {
     if (__mapDrawer)
         delete __mapDrawer;
-}
-
-WorldTransform
-MapRenderer::transform() const
-{
-    return WorldTransform(viewport(), center(), zoom());
 }
 
 LonLat
@@ -79,7 +111,18 @@ MapRenderer::mapToLonLat(const QPoint& point)
     qreal x = (point.x() * 360 - 180 * viewport().width()) / (m * zoom()) + center().longitude();
     qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) + toMercator(center().latitude()));
     
-    return LonLat(x, y).bound();
+    return LonLat(x, y);
+}
+
+LonLat
+MapRenderer::mapToLonLat(const QPointF& point)
+{
+    qreal m = qMax(viewport().width(), viewport().height());
+    
+    qreal x = (point.x() * 360.0 - 180.0 * viewport().width()) / (m * zoom()) + center().longitude();
+    qreal y = fromMercator((180 * viewport().height() - point.y() * 360) / (m * zoom()) + toMercator(center().latitude()));
+    
+    return LonLat(x, y);
 }
 
 void
@@ -98,7 +141,7 @@ void
 MapRenderer::setZoom(qreal zoom)
 {
     __zoom = zoom;
-    __updateScreen();
+    __updateTransforms();
     emit updated();
     
     if (!scene()->isAnimating())
@@ -109,7 +152,7 @@ void
 MapRenderer::setCenter(const LonLat& center)
 {
     __center = center;
-    __updateScreen();
+    __updateTransforms();
     emit updated();
     emit centerChanged(__center);
 }
@@ -136,32 +179,48 @@ void
 MapRenderer::setViewport(const QSize& size)
 {
     __viewport = size;
-    __updateScreen();
+    __updateTransforms();
     emit updated();
     emit viewportChanged(__viewport);
+}
+
+WorldTransform
+MapRenderer::transform(qreal longitude) const
+{
+    int index = static_cast<int>(longitude / 180.0);
+    return __transforms[index];
 }
 
 void
 MapRenderer::paint(QPainter* painter, const QSet<MapItem*>& selectedItems)
 {
-    WorldTransform transform = this->transform();
+    __selectedItems = selectedItems;
+    __isRendering = true;
     
-    if (__mapDrawer) {
-        __mapDrawer->draw(painter, transform);
-    }
-    
-    scene()->inRect(__screen, [painter, &transform](const MapArea* area) {
-        area->draw(painter, transform);
+    auto transforms = __transforms.values();
+    std::for_each(transforms.begin(), transforms.end(), [&](auto transform) {
+        if (__mapDrawer) {
+            __mapDrawer->draw(painter, transform);
+        }
+        
+        this->scene()->inRect(transform.screen(), [painter, &transform](const MapArea* area) {
+            area->draw(painter, transform);
+        });
+        
     });
     
-    auto items = scene()->itemsInRect(__screen);
-    std::sort(items.begin(), items.end(), [](auto a, auto b) {
-        return a->z() < b->z();
+    std::for_each(transforms.begin(), transforms.end(), [&](auto transform) {
+        auto items = this->scene()->itemsInRect(transform.screen());
+        std::sort(items.begin(), items.end(), [](auto a, auto b) {
+            return a->z() < b->z();
+        });
+
+        std::for_each(items.begin(), items.end(), [painter, &transform, &selectedItems](auto item) {
+            item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));
+        });
     });
     
-    std::for_each(items.begin(), items.end(), [painter, &transform, &selectedItems](auto item) {
-        item->draw(painter, transform, selectedItems.contains((MapItem*&)item) ? MapItem::DrawSelected : static_cast<MapItem::DrawFlags>(0));
-    });
+    __isRendering = false;
 }
 
 void
@@ -179,23 +238,19 @@ MapRenderer::__restoreMapState()
 }
 
 void
-MapRenderer::__updateScreen()
+MapRenderer::__updateTransforms()
 {
     __screen.setTopLeft(mapToLonLat(QPoint(0, 0)));
     __screen.setBottomRight(mapToLonLat(QPoint(__viewport.width(), __viewport.height())));
-    if (__screen.right() < __screen.left()) {
-        __screen.setRight(MapConfig::longitudeMax());
-    }
-}
-
-void
-MapRenderer::__trackFlight(const Pilot* pilot)
-{
-    if (nullptr == pilot) {
-        disconnect(__trackedFlightConnection);
-    } else {
-        __trackedFlightConnection = connect(pilot, &Client::positionChanged, __scene, &MapScene::moveTo);
-    }
+    
+    QMap<int, WorldTransform> map;
+    auto transforms = splitScreenToTransforms(viewport(), center(), zoom(), screen());
+    std::for_each(transforms.begin(), transforms.end(), [&map](auto t) {
+        int id = static_cast<int>(t.offset().x() / -180.0);
+        map[id] = t;
+    });
+    
+    __transforms.swap(map);
 }
 
 void

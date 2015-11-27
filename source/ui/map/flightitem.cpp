@@ -1,6 +1,6 @@
 /*
  * flightitem.cpp
- * Copyright (C) 2014-2015  Michał Garapich <michal@garapich.pl>
+ * Copyright (C) 2014  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,20 +135,48 @@ FlightItem::__drawLines(QPainter* painter, const WorldTransform& transform) cons
     painter->setRenderHints(hints | QPainter::Antialiasing);
     
     QPen orig = painter->pen();
-    QPoint pos = position() * transform;
+    painter->setPen(QPen(QColor(3, 116, 164)));
+    qreal offset = 0.0;
     
-    if (data()->origin()->isValid()) {
-        painter->setPen(QPen(QColor(3, 116, 164)));
-        QPoint p = data()->origin()->position() * transform;
-        painter->drawLine(p, pos);
-    }
+    LonLat p1 = data()->route().waypoints.first();
     
-    if (data()->destination()->isValid()) {
-        QPen pen(QColor(133, 164, 164));
-        pen.setStyle(Qt::DashLine);
-        painter->setPen(pen);
-        QPoint p = data()->destination()->position() * transform;
-        painter->drawLine(p, pos);
+    for (int i = 1; i < data()->route().waypoints.length(); ++i) {
+        LonLat p2 = data()->route().waypoints.at(i);
+        
+        /**
+         * Checks whether the given line crosses the IDL (International Date Line).
+         * For reference:
+         * https://github.com/Vatsinator/Vatsinator/pull/2
+         * Code by @Ucchi98.
+         */
+        qreal p1Sign = p1.longitude() / qFabs(p1.longitude());
+        qreal p2Sign = p2.longitude() / qFabs(p2.longitude());
+        
+         if (p1Sign != p2Sign) {
+            qreal dst = VatsimDataHandler::fastDistance(p1, p2);
+             
+            if (p1Sign < 0) {
+                if (dst > VatsimDataHandler::fastDistance(p1.longitude() + 360.0, p1.latitude(), p2.longitude(), p2.latitude())) {
+                    offset -= 360.0;
+                }
+            } else {
+                if (dst > VatsimDataHandler::fastDistance(p1.longitude(), p1.latitude(), p2.longitude() + 360.0, p2.latitude())) {
+                    offset += 360.0;
+                }
+            }
+        }
+        
+        p2.rx() += offset;
+        
+        painter->drawLine(p1 * transform, p2 * transform);
+        
+        p1 = p2;
+        
+        if (data()->route().waypoints.at(i) == data()->position()) {
+            QPen pen(QColor(133, 164, 164));
+            pen.setStyle(Qt::DashLine);
+            painter->setPen(pen);
+        }
     }
     
     painter->setRenderHints(hints);

@@ -35,7 +35,7 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     MapItem(parent),
     __scene(qobject_cast<MapScene*>(parent)),
     __fir(fir),
-    __position(fir->data()->header.textPosition.x, fir->data()->header.textPosition.y)
+    __position(fir->labelPosition())
 {
     QString labelText = __fir->icao();
     if (__fir->isOceanic()) {
@@ -46,12 +46,6 @@ FirItem::FirItem(const Fir* fir, QObject* parent) :
     
     connect(vApp()->settingsManager(), &SettingsManager::settingsChanged, this, &FirItem::__prepareLabel);
     __prepareLabel();
-    
-    const QVector<Point>& borders = data()->data()->borders;
-    __boundaries.reserve(borders.size());
-    std::for_each(borders.begin(), borders.end(), [this](const Point& p) {
-        __boundaries << LonLat(p.x, p.y);
-    });
 }
 
 bool
@@ -75,7 +69,9 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     QPen origPen = painter->pen();
     QFont origFont = painter->font();
     
-    QPen pen(data()->isStaffed() ? QColor(157, 86, 86) : QColor(155, 155, 155));
+    QPen pen(data()->isStaffed() ?
+            (flags & DrawSelected ? QColor(137, 66, 66) : QColor(157, 86, 86)) :
+            (flags & DrawSelected ? QColor(135, 135, 135) : QColor(155, 155, 155)));
     pen.setWidth(3);
     painter->setPen(pen);
     painter->setFont(__font);
@@ -86,8 +82,6 @@ FirItem::draw(QPainter* painter, const WorldTransform& transform, DrawFlags flag
     painter->drawStaticText(rect.topLeft(), __label);
     painter->setPen(origPen);
     painter->setFont(origFont);
-    
-    Q_UNUSED(flags);
 }
 
 int
