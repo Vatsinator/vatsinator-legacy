@@ -74,7 +74,7 @@ TiledMapDrawer::draw(QPainter* painter, const WorldTransform& transform)
 #endif
     
     auto tiles = __tiles->tiles(transform.screen());
-    std::for_each(tiles.begin(), tiles.end(), [&transform, painter](Tile* tile) {
+    std::for_each(tiles.begin(), tiles.end(), [&transform, painter](const Tile* tile) {
         QRect coords = tile->coords() * transform;
         QRect source;
         QPixmap px = tile->pixmap(&source);

@@ -1,6 +1,6 @@
 /*
     filedownloader.cpp
-    Copyright (C) 2013-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -88,12 +88,11 @@ FileDownloader::~FileDownloader()
 }
 
 void
-FileDownloader::fetch(const QUrl& url)
+FileDownloader::fetch(QUrl url)
 {
-    __urls.enqueue(url);
-    
-    if (!__reply)
-        __startRequest();
+    bool result = QMetaObject::invokeMethod(this, "__fetchImpl", Q_ARG(QUrl, url));
+    Q_ASSERT(result);
+    Q_UNUSED(result);
 }
 
 void
@@ -126,6 +125,15 @@ FileDownloader::__startRequest()
     
     connect(__reply, &QNetworkReply::finished, this, &FileDownloader::__finished);
     connect(__reply, &QNetworkReply::readyRead, this, &FileDownloader::__readyRead);
+}
+
+void
+FileDownloader::__fetchImpl(QUrl url)
+{
+    __urls.enqueue(url);
+    
+    if (!__reply)
+        __startRequest();
 }
 
 void

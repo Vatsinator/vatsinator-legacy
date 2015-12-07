@@ -32,9 +32,14 @@
 
 #include "tilemanager.h"
 
-Q_CONSTEXPR quint32 TileWidth = 256; /* px */
+namespace {
+    qreal Log2 = 0.6931471805599453094172321214581765680755001343602552;
     
-Q_CONSTEXPR int Downloaders = 4; /* number of tile downloaders */
+    qreal log2Impl(int x) { return std::log(x) / Log2; }
+}
+
+constexpr quint32 TileWidth = 256; /* px */
+constexpr int Downloaders = 4; /* number of tile downloaders */
 
 TileManager::TileManager(MapRenderer* renderer, QObject* parent) :
     QObject(parent),
@@ -65,20 +70,20 @@ TileManager::initialize()
     /* Fetch the whole 1 zoom */
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 2; ++j) {
-            Tile* tile = new Tile(i, j, 1, this, this);
-            connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
+            TilePointer tile(new Tile(i, j, 1, this), &QObject::deleteLater);
+            connect(tile.data(), &Tile::ready, __renderer, &MapRenderer::updated);
             __tiles[1].insert(std::make_pair(TileCoord(i, j), tile));
         }
     }
 }
 
-QList<Tile*>
+QList<const Tile*>
 TileManager::tiles(const QRectF& rect, quint32 zoom)
 {
     QRectF realRect = rect.isNull() ? __renderer->screen() : rect;
     int realZoom = zoom ? zoom : __tileZoom;
     
-    QList<Tile*> tiles;
+    QList<const Tile*> tiles;
     __tilesImpl(realRect, realZoom, &tiles);
     
     return tiles;
@@ -90,15 +95,15 @@ TileManager::tileCoordsForLonLat(const LonLat& lonLat)
     return tileCoordsForLonLat(lonLat, __tileZoom);
 }
 
-Tile*
+QSharedPointer<Tile>
 TileManager::tile(quint64 x, quint64 y, quint64 z)
 {
     Q_ASSERT(z > 0);
     TileMap& tiles = __tiles[z];
     auto it = tiles.find(TileCoord(x, y));
     if (it == tiles.end()) {
-        Tile* tile = new Tile(x, y, z, this, this);
-        connect(tile, &Tile::ready, __renderer, &MapRenderer::updated);
+        TilePointer tile(new Tile(x, y, z, this), &QObject::deleteLater);
+        connect(tile.data(), &Tile::ready, __renderer, &MapRenderer::updated);
         
         tiles.insert(std::make_pair(TileCoord(x, y), tile));
         return tile;
@@ -149,14 +154,14 @@ TileManager::tileCoordsForLonLat(const LonLat& lonLat, unsigned zoom)
 }
 
 void
-TileManager::__tilesImpl(const QRectF& rect, quint32 zoom, QList<Tile*>* tiles)
+TileManager::__tilesImpl(const QRectF& rect, quint32 zoom, QList<const Tile*>* tiles)
 {
     auto topLeft = tileCoordsForLonLat(rect.topLeft());
     auto bottomRight = tileCoordsForLonLat(rect.bottomRight());
     
     for (quint64 x = topLeft.first; x <= bottomRight.first; ++x)
         for (quint64 y = topLeft.second; y <= bottomRight.second; ++y)
-            tiles->append(this->tile(x, y, zoom));
+            tiles->append(this->tile(x, y, zoom).data());
 }
 
 TileUrl
@@ -211,7 +216,7 @@ TileManager::__calculateTileZoom()
     /* K = 156543.03 for meters. This is for NM. */
     constexpr qreal K = 84.5264761719;
     
-    int zoom = qCeil(log2(K * (qFastCos(qDegreesToRadians(p1.latitude())) / nmPerPix)));
+    int zoom = qCeil(log2Impl(K * (qFastCos(qDegreesToRadians(p1.latitude())) / nmPerPix)));
     __tileZoom = qBound(1, zoom, 18);
 }
 
@@ -230,14 +235,16 @@ TileManager::__tileDownloaded(const QString& fileName, const QUrl& url)
     FileManager::moveToCache(fileName, provider()->name() % tileUrl.toUrl().path());
     
     TileMap& tiles = __tiles[tileUrl.zoom()];
-    auto it = std::find_if(tiles.begin(), tiles.end(), [&tileUrl](const std::pair<const TileCoord&, const Tile*>& it) {
+    auto it = std::find_if(tiles.begin(), tiles.end(), [&tileUrl](auto it) {
         return tileUrl == it.second->url();
     });
     
-    Q_ASSERT(it != tiles.end());
-    
-    TileReadyEvent e;
-    qApp->sendEvent(it->second, &e);
+    if (it == tiles.end()) {
+        qFatal("Orphaned tile: %s", qPrintable(tileUrl.toUrl().toString()));
+    } else {
+        TileReadyEvent e;
+        qApp->sendEvent(it->second.data(), &e);
+    }
     
     Q_ASSERT(downloader->tasks() <= 1); /* One downloader - one task at a time */
     if (__tileQueue.length() > 0) {

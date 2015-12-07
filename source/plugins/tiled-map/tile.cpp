@@ -72,7 +72,7 @@ Tile::pixmap(QRect* source) const
         quint64 y = this->y() / 2;
         quint64 z = this->zoom() - 1;
         
-        Tile* tile = __tm->tile(x, y, z);
+        auto tile = __tm->tile(x, y, z);
         Q_ASSERT(tile);
         
         QPixmap px = tile->pixmap(source);

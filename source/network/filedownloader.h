@@ -1,6 +1,6 @@
 /*
     filedownloader.h
-    Copyright (C) 2013-2015  Michał Garapich michal@garapich.pl
+    Copyright (C) 2013  Michał Garapich michal@garapich.pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ public:
      * If the requests queue is empty, downloads the given file
      * immediately. Otherwise, enqueues the url.
      */
-    void fetch(const QUrl& url);
+    void fetch(QUrl url);
     
     /**
      * Gets number of tasks in the queue.
@@ -90,6 +90,7 @@ public:
     }
     
 private slots:
+    void __fetchImpl(QUrl url);
     void __readyRead();
     void __finished();
     

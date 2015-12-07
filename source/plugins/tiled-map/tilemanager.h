@@ -27,6 +27,7 @@
 #include <QPair>
 #include <QMap>
 #include <QRect>
+#include <QSharedPointer>
 #include <spatial/bits/spatial_check_concept.hpp>
 #include <spatial/box_multimap.hpp>
 #include "vatsimdata/lonlat.h"
@@ -58,7 +59,7 @@ public:
      * given zoom. If \c zoom is 0, the current zoom is used. If \c rect
      * is the empty rectangle, the current visible screen is used.
      */
-    QList<Tile*> tiles(const QRectF& rect = QRectF(), quint32 zoom = 0);
+    QList<const Tile*> tiles(const QRectF& rect = QRectF(), quint32 zoom = 0);
     
     /**
      * Returns tile coordinate for the provided geo coordinate.
@@ -70,7 +71,7 @@ public:
     /**
      * Finds a tile for the provided coordinates.
      */
-    Tile* tile(quint64 x, quint64 y, quint64 z);
+    QSharedPointer<Tile> tile(quint64 x, quint64 y, quint64 z);
     
     /**
      * Sets a tile provider.
@@ -102,7 +103,7 @@ public slots:
     void initialize();
     
 private:
-    void __tilesImpl(const QRectF& rect, quint32 zoom, QList<Tile*>* tiles);
+    void __tilesImpl(const QRectF& rect, quint32 zoom, QList<const Tile*>* tiles);
     TileUrl __dequeueByPriority();
     
 private slots:
@@ -118,6 +119,7 @@ private:
     TileProvider* __provider;
     
     typedef QPair<quint64, quint64> TileCoord;
+    typedef QSharedPointer<Tile> TilePointer;
     
     struct TileCoordAccessor
     {
@@ -131,7 +133,7 @@ private:
         }
     };
     
-    typedef spatial::box_multimap<2, TileCoord, Tile*, spatial::accessor_less<TileCoordAccessor, TileCoord>> TileMap;
+    typedef spatial::box_multimap<2, TileCoord, TilePointer, spatial::accessor_less<TileCoordAccessor, TileCoord>> TileMap;
     QMap<quint64, TileMap> __tiles; /**< zoom <-> tile map pairs */
     
 };

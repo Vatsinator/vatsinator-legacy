@@ -2,6 +2,9 @@ if (NOT ANDROID)
     message (FATAL_ERROR "Imports are valid only on Android")
 endif ()
 
+# http://stackoverflow.com/questions/26841603/arm-linux-androideabi-bin-ld-fatal-error-soname-must-take-a-non-empty-argume
+string(REPLACE "<CMAKE_SHARED_LIBRARY_SONAME_CXX_FLAG><TARGET_SONAME>" "" CMAKE_CXX_CREATE_SHARED_MODULE "${CMAKE_CXX_CREATE_SHARED_MODULE}")
+
 # where QML plugins will be deployed. This value must
 # be in the QML import path list.
 set (vatsinator_INSTALL_QML_PLUGINS qml)
