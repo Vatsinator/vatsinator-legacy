@@ -15,8 +15,9 @@
 
 #include <memory>  // std::allocator
 #include <utility> // std::pair
-#include "bits/spatial_relaxed_kdtree.hpp"
 #include "function.hpp"
+#include "bits/spatial_check_concept.hpp"
+#include "bits/spatial_relaxed_kdtree.hpp"
 
 namespace spatial
 {

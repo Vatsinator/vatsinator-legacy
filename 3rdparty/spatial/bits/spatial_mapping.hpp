@@ -14,8 +14,8 @@
  *  purpose by the trees.
  */
 
-#ifndef SPATIAL_NODE_MAPPING_HPP
-#define SPATIAL_NODE_MAPPING_HPP
+#ifndef SPATIAL_MAPPING_HPP
+#define SPATIAL_MAPPING_HPP
 
 #include <utility> // provides ::std::pair<> and ::std::make_pair()
 

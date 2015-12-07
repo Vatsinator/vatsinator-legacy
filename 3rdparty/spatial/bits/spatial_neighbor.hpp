@@ -13,11 +13,12 @@
 #ifndef SPATIAL_NEIGHBOR_HPP
 #define SPATIAL_NEIGHBOR_HPP
 
-#include <utility> // provides ::std::pair<>
+#include <limits> // numeric_limits min() and max()
+
+#include "spatial_import_tuple.hpp"
 #include "../metric.hpp"
 #include "../traits.hpp"
 #include "spatial_bidirectional.hpp"
-#include "spatial_except.hpp"
 
 namespace spatial
 {
@@ -50,12 +51,16 @@ namespace spatial
        *  \param container The container being iterated.
        *  \param metric The metric to apply during iteration
        *  \param key The key representing the iteration target.
+       *  \param distance Cached distance value from the last iterator's
+       *  distance computation.
        */
       Neighbor_data
       (const typename container_traits<Ct>::key_compare& container,
        const Metric& metric,
-       const typename container_traits<Ct>::key_type& key)
-        : container_traits<Ct>::key_compare(container), _target(metric, key) { }
+       const typename container_traits<Ct>::key_type& key,
+       typename Metric::distance_type distance)
+        : container_traits<Ct>::key_compare(container), _target(metric, key),
+          _distance(distance) { }
 
       /**
        *  The target of the iteration; element of the container are iterate
@@ -118,6 +123,10 @@ namespace spatial
      typename container_traits<Ct>::rank_type> Base;
 
   public:
+    using Base::node;
+    using Base::node_dim;
+    using Base::rank;
+
     //! Key comparator type transferred from the container
     typedef typename container_traits<Ct>::key_compare key_compare;
 
@@ -141,14 +150,17 @@ namespace spatial
      *  \param metric_ The \metric applied during the iteration.
      *  \param target_ The target of the neighbor iteration.
      *  \param iter_ An iterator on container.
+     *  \param distance_ The distance at which the node pointed by iterator is
+     *  from target.
      */
     neighbor_iterator
     (Ct& container_, const Metric& metric_,
      const typename container_traits<Ct>::key_type& target_,
-     const typename container_traits<Ct>::iterator& iter_)
+     const typename container_traits<Ct>::iterator& iter_,
+     typename Metric::distance_type distance_)
       : Base(container_.rank(), iter_.node,
              modulo(iter_.node, container_.rank())),
-        _data(container_.key_comp(), metric_, target_) { }
+        _data(container_.key_comp(), metric_, target_, distance_) { }
 
     /**
      *  When the information of the dimension for the current node being
@@ -161,6 +173,8 @@ namespace spatial
      *  \param node_dim_ The dimension of the node pointed to by iterator.
      *  \param node_ Use the value of node as the start point for the
      *  iteration.
+     *  \param distance_ The distance between \c node_ and \c target_ according
+     *  to \c metric_.
      *
      *  In order to iterate through nodes in the \kdtree built in the
      *  container, the algorithm must know at each node which dimension is
@@ -176,9 +190,10 @@ namespace spatial
     (Ct& container_, const Metric& metric_,
      const typename container_traits<Ct>::key_type& target_,
      dimension_type node_dim_,
-     typename container_traits<Ct>::mode_type::node_ptr node_)
+     typename container_traits<Ct>::mode_type::node_ptr node_,
+     typename Metric::distance_type distance_)
       : Base(container_.rank(), node_, node_dim_),
-        _data(container_.key_comp(), metric_, target_) { }
+        _data(container_.key_comp(), metric_, target_, distance_) { }
 
     /**
      *  Build the iterator with a given rank and key compare functor, if the
@@ -201,6 +216,8 @@ namespace spatial
      *  \param node_dim_ The dimension of the node pointed to by iterator.
      *  \param node_ Use the value of node as the start point for the
      *  iteration.
+     *  \param distance_ The distance between \c node_ and \c target_ according
+     *  to \c metric_.
      */
     neighbor_iterator
     (const typename container_traits<Ct>::rank_type& rank_,
@@ -208,34 +225,50 @@ namespace spatial
      const Metric& metric_,
      const typename container_traits<Ct>::key_type& target_,
      dimension_type node_dim_,
-     typename container_traits<Ct>::mode_type::node_ptr node_)
-      : Base(rank_, node_, node_dim_), _data(key_comp_, metric_, target_) { }
+     typename container_traits<Ct>::mode_type::node_ptr node_,
+     typename Metric::distance_type distance_)
+      : Base(rank_, node_, node_dim_),
+        _data(key_comp_, metric_, target_, distance_) { }
 
     //! Increments the iterator and returns the incremented value. Prefer to
     //! use this form in \c for loops.
     neighbor_iterator<Ct, Metric>& operator++()
-    { return increment_neighbor(*this); }
+    {
+      import::tie(node, node_dim, distance())
+        = increment_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
+      return *this;
+    }
 
     //! Increments the iterator but returns the value of the iterator before
     //! the increment. Prefer to use the other form in \c for loops.
     neighbor_iterator<Ct, Metric> operator++(int)
     {
       neighbor_iterator<Ct, Metric> x(*this);
-      increment_neighbor(*this);
+      import::tie(node, node_dim, distance())
+        = increment_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
       return x;
     }
 
     //! Decrements the iterator and returns the decremented value. Prefer to
     //! use this form in \c for loops.
     neighbor_iterator<Ct, Metric>& operator--()
-    { return decrement_neighbor(*this); }
+    {
+      import::tie(node, node_dim, distance())
+        = decrement_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
+      return *this;
+    }
 
     //! Decrements the iterator but returns the value of the iterator before
     //! the decrement. Prefer to use the other form in \c for loops.
     neighbor_iterator<Ct, Metric> operator--(int)
     {
       neighbor_iterator<Ct, Metric> x(*this);
-      decrement_neighbor(*this);
+      import::tie(node, node_dim, distance())
+        = decrement_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
       return x;
     }
 
@@ -315,6 +348,10 @@ namespace spatial
      typename container_traits<Ct>::rank_type> Base;
 
   public:
+    using Base::node;
+    using Base::node_dim;
+    using Base::rank;
+
     //! Key comparator type transferred from the container
     typedef typename container_traits<Ct>::key_compare key_compare;
 
@@ -338,14 +375,17 @@ namespace spatial
      *  \param metric_ The metric applied during the iteration.
      *  \param target_ The target of the neighbor iteration.
      *  \param iter_ An iterator on \c container.
+     *  \param distance_ The distance between the node pointed to by \c iter_
+     *  and \c target_ according to \c metric_.
      */
     neighbor_iterator
     (const Ct& container_, const Metric& metric_,
      const typename container_traits<Ct>::key_type& target_,
-     typename container_traits<Ct>::const_iterator iter_)
+     typename container_traits<Ct>::const_iterator iter_,
+     typename Metric::distance_type distance_)
       : Base(container_.rank(), iter_.node,
              modulo(iter_.node, container_.rank())),
-        _data(container_.key_comp(), metric_, target_) { }
+        _data(container_.key_comp(), metric_, target_, distance_) { }
 
     /**
      *  When the information of the dimension for the current node being
@@ -358,6 +398,8 @@ namespace spatial
      *  \param node_dim_ The dimension of the node pointed to by iterator.
      *  \param node_ Use the value of node as the start point for the
      *  iteration.
+     *  \param distance_ The distance between \c node_ and \c target_ according
+     *  to \c metric_.
      *
      *  In order to iterate through nodes in the \kdtree built in the
      *  container, the algorithm must know at each node which dimension is
@@ -373,9 +415,10 @@ namespace spatial
     (const Ct& container_, const Metric& metric_,
      const typename container_traits<Ct>::key_type& target_,
      dimension_type node_dim_,
-     typename container_traits<Ct>::mode_type::const_node_ptr node_)
+     typename container_traits<Ct>::mode_type::const_node_ptr node_,
+     typename Metric::distance_type distance_)
       : Base(container_.rank(), node_, node_dim_),
-        _data(container_.key_comp(), metric_, target_) { }
+        _data(container_.key_comp(), metric_, target_, distance_) { }
 
     /**
      *  Build the iterator with a given rank and key compare functor, if the
@@ -389,11 +432,8 @@ namespace spatial
      *  \param node_dim_ The dimension of the node pointed to by iterator.
      *  \param node_ Use the value of node as the start point for the
      *  iteration.
-     *
-     *  In order to iterate through nodes in the \kdtree built in the
-     *  container, the algorithm must know at each node which dimension is
-     *  used to partition the space. Some algorithms will provide this
-     *  dimension, such as the function \ref spatial::details::modulo().
+     *  \param distance_ The distance between \c node_ and \c target_ according
+     *  to \c metric_.
      *
      *  \attention Specifying the incorrect dimension value for the node will
      *  result in unknown behavior. It is recommended that you do not use this
@@ -406,39 +446,56 @@ namespace spatial
      const Metric& metric_,
      const typename container_traits<Ct>::key_type& target_,
      dimension_type node_dim_,
-     typename container_traits<Ct>::mode_type::const_node_ptr node_)
-      : Base(rank_, node_, node_dim_), _data(key_comp_, metric_, target_) { }
+     typename container_traits<Ct>::mode_type::const_node_ptr node_,
+     typename Metric::distance_type distance_)
+      : Base(rank_, node_, node_dim_),
+        _data(key_comp_, metric_, target_, distance_) { }
 
-    //! Covertion of mutable iterator into a constant iterator is permitted.
+    //! Convertion of mutable iterator into a constant iterator.
     neighbor_iterator(const neighbor_iterator<Ct, Metric>& iter)
       : Base(iter.rank(), iter.node, iter.node_dim),
-        _data(iter.key_comp(), iter.metric(), iter.target_key()) { }
+        _data(iter.key_comp(), iter.metric(),
+              iter.target_key(), iter.distance()) { }
 
     //! Increments the iterator and returns the incremented value. Prefer to
     //! use this form in \c for loops.
     neighbor_iterator<const Ct, Metric>& operator++()
-    { return increment_neighbor(*this); }
+    {
+      import::tie(node, node_dim, distance())
+        = increment_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
+      return *this;
+    }
 
     //! Increments the iterator but returns the value of the iterator before
     //! the increment. Prefer to use the other form in \c for loops.
     neighbor_iterator<const Ct, Metric> operator++(int)
     {
       neighbor_iterator<const Ct, Metric> x(*this);
-      increment_neighbor(*this);
+      import::tie(node, node_dim, distance())
+        = increment_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
       return x;
     }
 
     //! Decrements the iterator and returns the decremented value. Prefer to
     //! use this form in \c for loops.
     neighbor_iterator<const Ct, Metric>& operator--()
-    { return decrement_neighbor(*this); }
+    {
+      import::tie(node, node_dim, distance())
+        = decrement_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
+      return *this;
+    }
 
     //! Decrements the iterator but returns the value of the iterator before
     //! the decrement. Prefer to use the other form in \c for loops.
     neighbor_iterator<const Ct, Metric> operator--(int)
     {
       neighbor_iterator<const Ct, Metric> x(*this);
-      decrement_neighbor(*this);
+      import::tie(node, node_dim, distance())
+        = decrement_neighbor(node, node_dim, rank(), key_comp(),
+                             metric(), target_key(), distance());
       return x;
     }
 
@@ -485,8 +542,8 @@ namespace spatial
   template <typename Ct, typename Metric>
   inline void
   distance(neighbor_iterator<Ct, Metric>& iter,
-           const typename Metric::distance_type& dist)
-  { iter.distance() = dist; }
+           const typename Metric::distance_type& distance)
+  { iter.distance() = distance; }
   ///@}
 
   /**
@@ -565,35 +622,6 @@ namespace spatial
       : Base(p.first, p.second) { }
   };
 
-  namespace details
-  {
-    template <typename Container, typename Metric>
-    neighbor_iterator<Container, Metric>&
-    increment_neighbor(neighbor_iterator<Container, Metric>& iter);
-
-    template <typename Container, typename Metric>
-    neighbor_iterator<Container, Metric>&
-    decrement_neighbor(neighbor_iterator<Container, Metric>& iter);
-
-    template <typename Container, typename Metric>
-    neighbor_iterator<Container, Metric>&
-    minimum_neighbor(neighbor_iterator<Container, Metric>& iter);
-
-    template <typename Container, typename Metric>
-    neighbor_iterator<Container, Metric>&
-    maximum_neighbor(neighbor_iterator<Container, Metric>& iter);
-
-    template <typename Container, typename Metric>
-    neighbor_iterator<Container, Metric>&
-    lower_bound_neighbor(neighbor_iterator<Container, Metric>& iter,
-                         typename Metric::distance_type bound);
-
-    template <typename Container, typename Metric>
-    neighbor_iterator<Container, Metric>&
-    upper_bound_neighbor(neighbor_iterator<Container, Metric>& iter,
-                         typename Metric::distance_type bound);
-  } // namespace details
-
   /**
    *  Build a past-the-end neighbor iterator with a user-defined \metric.
    *  \param container The container in which a neighbor must be found.
@@ -608,7 +636,7 @@ namespace spatial
   {
     return neighbor_iterator<Ct, Metric>
       (container, metric, target, container.dimension() - 1,
-       container.end().node);
+       container.end().node, typename Metric::distance_type());
   }
 
   template <typename Ct, typename Metric>
@@ -618,14 +646,17 @@ namespace spatial
   {
     return neighbor_iterator<const Ct, Metric>
       (container, metric, target, container.dimension() - 1,
-       container.end().node);
+       container.end().node, typename Metric::distance_type());
   }
 
   template <typename Ct, typename Metric>
   inline neighbor_iterator<const Ct, Metric>
   neighbor_cend(const Ct& container, const Metric& metric,
                 const typename container_traits<Ct>::key_type& target)
-  { return neighbor_end(container, metric, target); }
+  {
+    return neighbor_end(container, metric, target,
+                        typename Metric::distance_type());
+  }
   ///@}
 
   /**
@@ -693,9 +724,14 @@ namespace spatial
                  const typename container_traits<Ct>::key_type& target)
   {
     if (container.empty()) return neighbor_end(container, metric, target);
-    neighbor_iterator<Ct, Metric>
-      it(container, metric, target, 0, container.end().node->parent);
-    return details::minimum_neighbor(it);
+    typename Ct::mode_type::node_ptr node = container.end().node->parent;
+    dimension_type dim = 0;
+    typename Metric::distance_type dist;
+    import::tie(node, dim, dist)
+      = first_neighbor(node, dim, container.rank(), container.key_comp(),
+                       metric, target);
+    return neighbor_iterator<Ct, Metric>(container, metric, target,
+                                         dim, node, dist);
   }
 
   template <typename Ct, typename Metric>
@@ -704,9 +740,14 @@ namespace spatial
                  const typename container_traits<Ct>::key_type& target)
   {
     if (container.empty()) return neighbor_end(container, metric, target);
-    neighbor_iterator<const Ct, Metric>
-      it(container, metric, target, 0, container.end().node->parent);
-    return details::minimum_neighbor(it);
+    typename Ct::mode_type::const_node_ptr node = container.end().node->parent;
+    dimension_type dim = 0;
+    typename Metric::distance_type dist;
+    import::tie(node, dim, dist)
+      = first_neighbor(node, dim, container.rank(), container.key_comp(),
+                       metric, target);
+    return neighbor_iterator<const Ct, Metric>(container, metric, target,
+                                               dim, node, dist);
   }
 
   template <typename Ct, typename Metric>
@@ -786,10 +827,14 @@ namespace spatial
                        typename Metric::distance_type bound)
   {
     if (container.empty()) return neighbor_end(container, metric, target);
-    except::check_positive_distance(bound);
-    neighbor_iterator<Ct, Metric>
-      it(container, metric, target, 0, container.end().node->parent);
-    return details::lower_bound_neighbor(it, bound);
+    typename Ct::mode_type::node_ptr node = container.end().node->parent;
+    dimension_type dim = 0;
+    typename Metric::distance_type dist;
+    import::tie(node, dim, dist)
+      = lower_bound_neighbor(node, dim, container.rank(), container.key_comp(),
+                             metric, target, bound);
+    return neighbor_iterator<Ct, Metric>(container, metric, target,
+                                         dim, node, dist);
   }
 
   template <typename Ct, typename Metric>
@@ -799,10 +844,14 @@ namespace spatial
                        typename Metric::distance_type bound)
   {
     if (container.empty()) return neighbor_end(container, metric, target);
-    except::check_positive_distance(bound);
-    neighbor_iterator<const Ct, Metric>
-      it(container, metric, target, 0, container.end().node->parent);
-    return details::lower_bound_neighbor(it, bound);
+    typename Ct::mode_type::const_node_ptr node = container.end().node->parent;
+    dimension_type dim = 0;
+    typename Metric::distance_type dist;
+    import::tie(node, dim, dist)
+      = lower_bound_neighbor(node, dim, container.rank(), container.key_comp(),
+                             metric, target, bound);
+    return neighbor_iterator<const Ct, Metric>(container, metric, target,
+                                               dim, node, dist);
   }
 
   template <typename Ct, typename Metric>
@@ -889,10 +938,14 @@ namespace spatial
                        typename Metric::distance_type bound)
   {
     if (container.empty()) return neighbor_end(container, metric, target);
-    except::check_positive_distance(bound);
-    neighbor_iterator<Ct, Metric>
-      it(container, metric, target, 0, container.end().node->parent);
-    return details::upper_bound_neighbor(it, bound);
+    typename Ct::mode_type::node_ptr node = container.end().node->parent;
+    dimension_type dim = 0;
+    typename Metric::distance_type dist;
+    import::tie(node, dim, dist)
+      = upper_bound_neighbor(node, dim, container.rank(), container.key_comp(),
+                             metric, target, bound);
+    return neighbor_iterator<Ct, Metric>(container, metric, target, dim,
+                                         node, dist);
   }
 
   template <typename Ct, typename Metric>
@@ -902,10 +955,14 @@ namespace spatial
                        typename Metric::distance_type bound)
   {
     if (container.empty()) return neighbor_end(container, metric, target);
-    except::check_positive_distance(bound);
-    neighbor_iterator<const Ct, Metric>
-      it(container, metric, target, 0, container.end().node->parent);
-    return details::upper_bound_neighbor(it, bound);
+    typename Ct::mode_type::const_node_ptr node = container.end().node->parent;
+    dimension_type dim = 0;
+    typename Metric::distance_type dist;
+    import::tie(node, dim, dist)
+      = upper_bound_neighbor(node, dim, container.rank(), container.key_comp(),
+                             metric, target, bound);
+    return neighbor_iterator<const Ct, Metric>(container, metric, target,
+                                               dim, node, dist);
   }
 
   template <typename Ct, typename Metric>
@@ -1059,452 +1116,17 @@ namespace spatial
 
   namespace details
   {
-    template <typename Container, typename Metric>
-    inline neighbor_iterator<Container, Metric>&
-    increment_neighbor(neighbor_iterator<Container, Metric>& it)
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    last_neighbor_sub(NodePtr node, dimension_type dim, Rank rank,
+                      KeyCompare key_comp, const Metric& met, const Key& target,
+                      typename Metric::distance_type best_dist)
     {
-      typedef typename neighbor_iterator<Container, Metric>::node_ptr node_ptr;
-      typename container_traits<Container>::rank_type rank(it.rank());
-      typename container_traits<Container>::key_compare cmp(it.key_comp());
-      Metric met(it.metric());
-      SPATIAL_ASSERT_CHECK(it.node_dim < rank());
-      SPATIAL_ASSERT_CHECK(it.node != 0);
-      SPATIAL_ASSERT_CHECK(!header(it.node));
-      // In this algorithm, we seek to find the next nearest point to
-      // origin. Thus assuming that this point exists, its distance to origin is
-      // equal or greater than that of the previous nearest point to origin.
-      // Since K-d tree are good at preserving locality, it is best to search
-      // the next nearest point from the current nearest point, since these 2
-      // points could be close to one another in the tree. In order to find the
-      // next nearest, we perform in-order transveral, at the left and right
-      // simultaneously.
-      //
-      // right iteration variables start with 'r'
-      // left iteration variables start with 'l'
-      node_ptr rn = it.node;
-      node_ptr ln = it.node;
-      dimension_type rn_dim = it.node_dim;
-      dimension_type ln_dim = it.node_dim;
-      bool rn_break = false;
-      bool ln_break = false;
-      // existing values used for comparison
-      node_ptr curr = it.node;
-      node_ptr near_node = 0;
-      dimension_type near_dim = 0;
-      typename Metric::distance_type near_distance = 0;
-      typename Metric::distance_type tmp;
-      do
-        {
-          // One step to the right side...
-          if (rn_break) { goto left_side; }
-          if (rn->right != 0
-              && (!cmp(rn_dim, target_key(it), const_key(rn))
-                  || near_node == 0
-                  || near_distance >= met.distance_to_plane
-                  (rank(), rn_dim, target_key(it), const_key(rn))))
-            {
-              rn = rn->right;
-              rn_dim = incr_dim(rank, rn_dim);
-              while(rn->left != 0
-                    && (!cmp(rn_dim, const_key(rn), target_key(it))
-                        || near_node == 0
-                        || near_distance >= met.distance_to_plane
-                        (rank(), rn_dim, target_key(it), const_key(rn))))
-                {
-                  rn = rn->left;
-                  rn_dim = incr_dim(rank, rn_dim);
-                }
-            }
-          else
-            {
-              node_ptr p = rn->parent;
-              while (!header(p) && p->right == rn)
-                {
-                  rn = p;
-                  rn_dim = decr_dim(rank, rn_dim);
-                  p = rn->parent;
-                }
-              rn = p;
-              rn_dim = decr_dim(rank, rn_dim);
-            }
-          if (header(rn))
-            { if (ln_break) break; rn_break = true; goto left_side; }
-          tmp = met.distance_to_key(rank(), target_key(it), const_key(rn));
-          if (tmp < distance(it) || (tmp == distance(it) && rn < curr))
-            { goto left_side; }
-          if (near_node == 0 || tmp < near_distance)
-            {
-              near_node = rn;
-              near_dim = rn_dim;
-              near_distance = tmp;
-            }
-          else if (tmp == near_distance && rn < near_node)
-            {
-              near_node = rn;
-              near_dim = rn_dim;
-            }
-        left_side:
-          // One step to the left side...
-          if (ln_break) { continue; }
-          if (ln->left != 0
-              && (!cmp(ln_dim, const_key(ln), target_key(it))
-                  || near_node == 0
-                  || near_distance >= met.distance_to_plane
-                  (rank(), ln_dim, target_key(it), const_key(ln))))
-            {
-              ln = ln->left;
-              ln_dim = incr_dim(rank, ln_dim);
-              while(ln->right != 0
-                    && (!cmp(ln_dim, target_key(it), const_key(ln))
-                        || near_node == 0
-                        || near_distance >= met.distance_to_plane
-                        (rank(), ln_dim, target_key(it), const_key(ln))))
-                {
-                  ln = ln->right;
-                  ln_dim = incr_dim(rank, ln_dim);
-                }
-            }
-          else
-            {
-              node_ptr p = ln->parent;
-              while (!header(p) && p->left == ln)
-                {
-                  ln = p;
-                  ln_dim = decr_dim(rank, ln_dim);
-                  p = ln->parent;
-                }
-              ln = p;
-              ln_dim = decr_dim(rank, ln_dim);
-            }
-          if (header(ln))
-            { if (rn_break) break; ln_break = true; continue; }
-          tmp = met.distance_to_key(rank(), target_key(it), const_key(ln));
-          if (tmp < distance(it) || (tmp == distance(it) && ln < curr))
-            { continue; }
-          if (near_node == 0 || tmp < near_distance)
-            {
-              near_node = ln;
-              near_dim = ln_dim;
-              near_distance = tmp;
-            }
-          else if (tmp == near_distance && ln < near_node)
-            {
-              near_node = ln;
-              near_dim = ln_dim;
-            }
-        }
-      while(true);
-      SPATIAL_ASSERT_CHECK(near_dim < rank());
-      SPATIAL_ASSERT_CHECK(near_node != curr);
-      SPATIAL_ASSERT_CHECK(near_node == 0 || distance(it) < near_distance
-                           || (distance(it) == near_distance
-                               && curr < near_node));
-      SPATIAL_ASSERT_CHECK(rn_dim == (rank() - 1));
-      SPATIAL_ASSERT_CHECK(ln_dim == (rank() - 1));
-      if (near_node != 0)
-        {
-          it.node = near_node;
-          it.node_dim = near_dim;
-          it.distance() = near_distance;
-        }
-      else
-        {
-          it.node = rn; // rn points past-the-end
-          it.node_dim = rn_dim;
-        }
-      return it;
-    }
-
-    // The next largest key on the neighbor dimension is likely to be found in
-    // the children of the current best, so, descend into the children of node
-    // first.
-    template <typename Container, typename Metric>
-    inline neighbor_iterator<Container, Metric>&
-    decrement_neighbor(neighbor_iterator<Container, Metric>& it)
-    {
-      typedef typename neighbor_iterator<Container, Metric>::node_ptr node_ptr;
-      typename container_traits<Container>::rank_type rank(it.rank());
-      typename container_traits<Container>::key_compare cmp(it.key_comp());
-      Metric met(it.metric());
-      SPATIAL_ASSERT_CHECK(it.node_dim < rank());
-      SPATIAL_ASSERT_CHECK(it.node != 0);
-      // Must come back from an end position for reverse iteration...
-      if (header(it.node))
-        {
-          it.node = it.node->parent;
-          it.node_dim = 0; // root is always compared on dimension 0
-          return maximum_neighbor(it);
-        }
-      // As in 'increment', we follow the same convention: we traverse the tree
-      // in-order to the left and the right simultaneously.
-      //
-      // right iteration variables start with 'r'
-      // left iteration variables start with 'l'
-      node_ptr rn = it.node;
-      node_ptr ln = it.node;
-      dimension_type rn_dim = it.node_dim;
-      dimension_type ln_dim = it.node_dim;
-      bool rn_break = false;
-      bool ln_break = false;
-      // existing values used for comparison
-      node_ptr curr = it.node;
-      node_ptr near_node = 0;
-      dimension_type near_dim = 0;
-      typename Metric::distance_type near_distance = 0;
-      typename Metric::distance_type tmp;
-      do
-        {
-          // In-order traversal that starts with all nodes before 'curr'
-          if (ln_break) { goto right_side; }
-          if (ln->left != 0
-              && (!cmp(ln_dim, const_key(ln), target_key(it))
-                  || distance(it) >= met.distance_to_plane
-                  (rank(), ln_dim, target_key(it), const_key(ln))))
-            {
-              ln = ln->left;
-              ln_dim = incr_dim(rank, ln_dim);
-              while(ln->right != 0
-                    && (!cmp(ln_dim, target_key(it), const_key(ln))
-                        || distance(it) >= met.distance_to_plane
-                        (rank(), ln_dim, target_key(it), const_key(ln))))
-                {
-                  ln = ln->right;
-                  ln_dim = incr_dim(rank, ln_dim);
-                }
-            }
-          else
-            {
-              node_ptr p = ln->parent;
-              while (!header(p) && p->left == ln)
-                {
-                  ln = p;
-                  ln_dim = decr_dim(rank, ln_dim);
-                  p = ln->parent;
-                }
-              ln = p;
-              ln_dim = decr_dim(rank, ln_dim);
-            }
-          if (header(ln))
-            { if (rn_break) break; ln_break = true; goto right_side; }
-          tmp = met.distance_to_key(rank(), target_key(it), const_key(ln));
-          if (tmp > distance(it) || (tmp == distance(it) && ln > curr))
-            { goto right_side; }
-          if (near_node == 0 || tmp > near_distance)
-            {
-              near_node = ln;
-              near_dim = ln_dim;
-              near_distance = tmp;
-            }
-          else if (tmp == near_distance && ln > near_node)
-            {
-              near_node = ln;
-              near_dim = ln_dim;
-            }
-        right_side:
-          // Now, in-order traversal that starts with all nodes after 'curr'
-          if (rn_break) { continue; }
-          if (rn->right != 0
-              && (!cmp(rn_dim, target_key(it), const_key(rn))
-                  || distance(it) >= met.distance_to_plane
-                  (rank(), rn_dim, target_key(it), const_key(rn))))
-            {
-              rn = rn->right;
-              rn_dim = incr_dim(rank, rn_dim);
-              while(rn->left != 0
-                    && (!cmp(rn_dim, const_key(rn), target_key(it))
-                        || distance(it) >= met.distance_to_plane
-                        (rank(), rn_dim, target_key(it), const_key(rn))))
-                {
-                  rn = rn->left;
-                  rn_dim = incr_dim(rank, rn_dim);
-                }
-            }
-          else
-            {
-              node_ptr p = rn->parent;
-              while (!header(p) && p->right == rn)
-                {
-                  rn = p;
-                  rn_dim = decr_dim(rank, rn_dim);
-                  p = rn->parent;
-                }
-              rn = p;
-              rn_dim = decr_dim(rank, rn_dim);
-            }
-          if (header(rn))
-            { if(ln_break) break; rn_break = true; continue; }
-          tmp = met.distance_to_key(rank(), target_key(it), const_key(rn));
-          if (tmp > distance(it) || (tmp == distance(it) && rn > curr))
-            { continue; }
-          if (near_node == 0 || tmp > near_distance)
-            {
-              near_node = rn;
-              near_dim = rn_dim;
-              near_distance = tmp;
-            }
-          else if (tmp == near_distance && rn > near_node)
-            {
-              near_node = rn;
-              near_dim = rn_dim;
-            }
-        }
-      while(true);
-      SPATIAL_ASSERT_CHECK(near_dim < rank());
-      SPATIAL_ASSERT_CHECK(near_node != curr);
-      SPATIAL_ASSERT_CHECK(near_node == 0
-                           || distance(it) > near_distance
-                           || (distance(it) == near_distance
-                               && curr > near_node));
-      SPATIAL_ASSERT_CHECK(rn_dim == (rank() - 1));
-      SPATIAL_ASSERT_CHECK(ln_dim == (rank() - 1));
-      if (near_node != 0)
-        {
-          it.node = near_node;
-          it.node_dim = near_dim;
-          it.distance() = near_distance;
-        }
-      else
-        {
-          it.node = rn; // rn points past-the-end here
-          it.node_dim = rn_dim;
-        }
-      return it;
-    }
-
-    // Find the minimum from node and stop when reaching the parent. Iterate
-    // in left-first fashion.
-    template <typename Container, typename Metric>
-    inline neighbor_iterator<Container, Metric>&
-    minimum_neighbor(neighbor_iterator<Container, Metric>& it)
-    {
-      typedef typename neighbor_iterator<Container, Metric>::node_ptr node_ptr;
-      typename container_traits<Container>::rank_type rank(it.rank());
-      typename container_traits<Container>::key_compare cmp(it.key_comp());
-      Metric met(it.metric());
-      SPATIAL_ASSERT_CHECK(it.node_dim < rank());
-      SPATIAL_ASSERT_CHECK(!header(it.node));
-      SPATIAL_ASSERT_CHECK(it.node != 0);
-      node_ptr node = it.node;
-      dimension_type node_dim = it.node_dim;
-      node_ptr near_node = node;
-      node_ptr end = node->parent;
-      dimension_type near_dim = node_dim;
-      typename Metric::distance_type near_distance
-        = met.distance_to_key(rank(), target_key(it), const_key(node));
-      typename Metric::distance_type tmp;
-      // Depth traversal starts with left first
-      while(node->left != 0
-            && (!cmp(node_dim, const_key(node), target_key(it))
-                || near_distance
-                >= met.distance_to_plane(rank(), node_dim, target_key(it),
-                                         const_key(node))))
-        {
-          node = node->left;
-          node_dim = incr_dim(rank, node_dim);
-          tmp = met.distance_to_key(rank(), target_key(it), const_key(node));
-          if (tmp < near_distance)
-            {
-              near_node = node;
-              near_dim = node_dim;
-              near_distance = tmp;
-            }
-          else if (tmp == near_distance
-                   // to provide total ordering among the nodes, we use the node
-                   // pointer as a fall back comparison mechanism
-                   && node < near_node)
-            {
-              near_node = node;
-              near_dim = node_dim;
-            }
-        }
-      // In-order, right, left, then all the way up
-      do
-        {
-          if (node->right != 0
-              && (!cmp(node_dim, target_key(it), const_key(node))
-                  || near_distance
-                  >= met.distance_to_plane(rank(), node_dim, target_key(it),
-                                           const_key(node))))
-            {
-              node = node->right;
-              node_dim = incr_dim(rank, node_dim);
-              tmp = met.distance_to_key(rank(), target_key(it),
-                                        const_key(node));
-              if (tmp < near_distance)
-                {
-                  near_node = node;
-                  near_dim = node_dim;
-                  near_distance = tmp;
-                }
-              else if (tmp == near_distance && node < near_node)
-                {
-                  near_node = node;
-                  near_dim = node_dim;
-                }
-              while(node->left != 0
-                    && (!cmp(node_dim, const_key(node), target_key(it))
-                        || near_distance
-                        >= met.distance_to_plane(rank(), node_dim,
-                                                 target_key(it),
-                                                 const_key(node))))
-                {
-                  node = node->left;
-                  node_dim = incr_dim(rank, node_dim);
-                  tmp = met.distance_to_key(rank(), target_key(it),
-                                            const_key(node));
-                  if (tmp < near_distance)
-                    {
-                      near_node = node;
-                      near_dim = node_dim;
-                      near_distance = tmp;
-                    }
-                  else if (tmp == near_distance && node < near_node)
-                    {
-                      near_node = node;
-                      near_dim = node_dim;
-                    }
-                }
-            }
-          // No more nodes to visit, so go up!
-          else
-            {
-              node_ptr p = node->parent;
-              while (p != end && p->right == node)
-                {
-                  node = p;
-                  node_dim = decr_dim(rank, node_dim);
-                  p = node->parent;
-                }
-              node = p;
-              node_dim = decr_dim(rank, node_dim);
-            }
-        }
-      while(node != end);
-      SPATIAL_ASSERT_CHECK(near_dim < rank());
-      SPATIAL_ASSERT_CHECK(!header(near_node));
+      SPATIAL_ASSERT_CHECK(dim < rank());
+      SPATIAL_ASSERT_CHECK(!header(node));
       SPATIAL_ASSERT_CHECK(node != 0);
-      SPATIAL_ASSERT_CHECK(near_node != 0);
-      it.node = near_node; it.node_dim = near_dim;
-      it.distance() = near_distance;
-      return it;
-    }
-
-    // Find the minimum from node and stop when reaching the parent. Iterate
-    // in left-first fashion.
-    template <typename Container, typename Metric>
-    inline neighbor_iterator<Container, Metric>&
-    maximum_neighbor(neighbor_iterator<Container, Metric>& it)
-    {
-      typedef typename neighbor_iterator<Container, Metric>::node_ptr node_ptr;
-      typename container_traits<Container>::rank_type rank(it.rank());
-      Metric met(it.metric());
-      SPATIAL_ASSERT_CHECK(it.node_dim < rank());
-      SPATIAL_ASSERT_CHECK(!header(it.node));
-      SPATIAL_ASSERT_CHECK(it.node != 0);
-      node_ptr node = it.node;
-      node_ptr end = node->parent;
-      dimension_type node_dim = it.node_dim;
-      typename Metric::distance_type tmp;
       // Finding the maximum is, for lack of a better algorithm, equivalent to a
       // O(n) search. An alternative has been explored: being able to find if a
       // node is in a cell that is smaller than the current 'far_node' node
@@ -1514,303 +1136,526 @@ namespace spatial
       // no impact on the memory footprint of the tree (although I doubt these 2
       // conditions will ever be met. Probably there will be a tradeoff.)
       //
-      // Iterate from left most to right most, and stop at node's parent.
-      while (node->left != 0)
-        { node = node->left; node_dim = incr_dim(rank, node_dim); }
-      node_ptr far_node = node;
-      dimension_type far_dim = node_dim;
-      typename Metric::distance_type far_distance
-        = met.distance_to_key(rank(), target_key(it), const_key(node));
-      do {
-        if (node->right != 0)
-          {
-            node = node->right; node_dim = incr_dim(rank, node_dim);
-            while (node->left != 0)
-              { node = node->left; node_dim = incr_dim(rank, node_dim); }
-          }
-        else
-          {
-            node_ptr p = node->parent;
-            while (p != end && node == p->right)
-              {
-                node = p; p = node->parent;
-                node_dim = decr_dim(rank, node_dim);
-              }
-            node = p;
-            node_dim = decr_dim(rank, node_dim);
-          }
-        if (node == end) { break; }
-        tmp = met.distance_to_key(rank(), target_key(it), const_key(node));
-        if (tmp > far_distance
-            || (tmp == far_distance && node > far_node))
-          {
-            far_node = node;
-            far_dim = node_dim;
-            far_distance = tmp;
-          }
-      }
-      while(true);
-      SPATIAL_ASSERT_CHECK(far_dim < rank());
-      SPATIAL_ASSERT_CHECK(!header(far_node));
-      SPATIAL_ASSERT_CHECK(node != 0);
-      SPATIAL_ASSERT_CHECK(far_node != 0);
-      it.node = far_node; it.node_dim = far_dim;
-      it.distance() = far_distance;
-      return it;
+      // Seeks the last node in near-pre-order.
+      NodePtr best = node->parent;
+      dimension_type best_dim = 0;
+      for (;;)
+        {
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist >= best_dist)
+            {
+              best = node;
+              best_dim = dim;
+              best_dist = test_dist;
+            }
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (far != 0)
+            {
+              dimension_type child_dim = incr_dim(rank, dim);
+              if (near != 0)
+                {
+                  import::tuple<NodePtr, dimension_type,
+                                typename Metric::distance_type>
+                    triplet = last_neighbor_sub(near, child_dim, rank,
+                                                key_comp, met, target,
+                                                best_dist);
+                  if (import::get<0>(triplet) != node)
+                    { import::tie(best, best_dim, best_dist) = triplet; }
+                }
+              node = far; dim = child_dim;
+            }
+          else if (near != 0)
+            { node = near; dim = incr_dim(rank, dim); }
+          else
+            { return import::make_tuple(best, best_dim, best_dist); }
+        }
     }
 
-    template <typename Container, typename Metric>
-    inline neighbor_iterator<Container, Metric>&
-    lower_bound_neighbor(neighbor_iterator<Container, Metric>& it,
-                         typename Metric::distance_type bound)
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    last_neighbor(NodePtr node, dimension_type dim, Rank rank,
+                  KeyCompare key_comp, const Metric& met, const Key& target)
     {
-      typedef typename neighbor_iterator<Container, Metric>::node_ptr node_ptr;
-      typename container_traits<Container>::rank_type rank(it.rank());
-      typename container_traits<Container>::key_compare cmp(it.key_comp());
-      Metric met(it.metric());
-      SPATIAL_ASSERT_CHECK(it.node_dim < rank());
-      SPATIAL_ASSERT_CHECK(!header(it.node));
-      SPATIAL_ASSERT_CHECK(it.node != 0);
-      node_ptr node = it.node;
-      node_ptr end = node->parent;
-      node_ptr near_node = 0;
-      dimension_type node_dim = it.node_dim;
-      dimension_type near_dim = node_dim;
-      typename Metric::distance_type tmp;
-      typename Metric::distance_type near_distance
-        = met.distance_to_key(rank(), target_key(it), const_key(node));
-      if (near_distance >= bound) { near_node = node; }
-      // Depth traversal starts with left first
-      while(node->left != 0
-            && (!cmp(node_dim, const_key(node), target_key(it))
-                || near_node == 0 || near_distance
-                >= met.distance_to_plane(rank(), node_dim, target_key(it),
-                                         const_key(node))))
-        {
-          node = node->left;
-          node_dim = incr_dim(rank, node_dim);
-          tmp = met.distance_to_key(rank(), target_key(it), const_key(node));
-          if (tmp < bound) { continue; }
-          if (near_node == 0 || tmp < near_distance)
-            {
-              near_node = node;
-              near_dim = node_dim;
-              near_distance = tmp;
-            }
-          else if (tmp == near_distance
-                   // to provide total ordering among the nodes, we use the node
-                   // pointer as a fall back comparison mechanism
-                   && node < near_node)
-            {
-              near_node = node;
-              near_dim = node_dim;
-            }
-        }
-      // In-order, right, left, then all the way up
-      do
-        {
-          if (node->right != 0
-              && (!cmp(node_dim, target_key(it), const_key(node))
-                  || near_node == 0 || near_distance
-                  >= met.distance_to_plane(rank(), node_dim, target_key(it),
-                                           const_key(node))))
-            {
-              node = node->right;
-              node_dim = incr_dim(rank, node_dim);
-              tmp = met.distance_to_key(rank(), target_key(it),
-                                        const_key(node));
-              if (tmp >= bound)
-                {
-                  if (near_node == 0 || tmp < near_distance)
-                    {
-                      near_node = node;
-                      near_dim = node_dim;
-                      near_distance = tmp;
-                    }
-                  else if (tmp == near_distance && node < near_node)
-                    {
-                      near_node = node;
-                      near_dim = node_dim;
-                    }
-                }
-              while(node->left != 0
-                    && (!cmp(node_dim, const_key(node), target_key(it))
-                        || near_node == 0
-                        || near_distance
-                        >= met.distance_to_plane(rank(), node_dim,
-                                                 target_key(it),
-                                                 const_key(node))))
-                {
-                  node = node->left;
-                  node_dim = incr_dim(rank, node_dim);
-                  tmp = met.distance_to_key(rank(), target_key(it),
-                                            const_key(node));
-                  if (tmp >= bound)
-                    {
-                      if (near_node == 0 || tmp < near_distance)
-                        {
-                          near_node = node;
-                          near_dim = node_dim;
-                          near_distance = tmp;
-                        }
-                      else if (tmp == near_distance && node < near_node)
-                        {
-                          near_node = node;
-                          near_dim = node_dim;
-                        }
-                    }
-                }
-            }
-          // No more nodes to visit, so go up!
-          else
-            {
-              node_ptr p = node->parent;
-              while (p != end && p->right == node)
-                {
-                  node = p;
-                  node_dim = decr_dim(rank, node_dim);
-                  p = node->parent;
-                }
-              node = p;
-              node_dim = decr_dim(rank, node_dim);
-            }
-        }
-      while(node != end);
-      if (near_node == 0)
-        { near_node = node; near_dim = node_dim; }
-      SPATIAL_ASSERT_CHECK(near_dim < rank());
-      SPATIAL_ASSERT_CHECK(node != 0);
-      it.node = near_node; it.node_dim = near_dim;
-      it.distance() = near_distance;
-      return it;
+      return last_neighbor_sub(node, dim, rank, key_comp, met, target,
+                               typename Metric::distance_type());
     }
 
-    template <typename Container, typename Metric>
-    inline neighbor_iterator<Container, Metric>&
-    upper_bound_neighbor(neighbor_iterator<Container, Metric>& it,
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    first_neighbor_sub(NodePtr node, dimension_type dim, Rank rank,
+                       const KeyCompare& key_comp, const Metric& met,
+                       const Key& target,
+                       typename Metric::distance_type best_dist)
+    {
+      SPATIAL_ASSERT_CHECK(dim < rank());
+      SPATIAL_ASSERT_CHECK(node != 0);
+      SPATIAL_ASSERT_CHECK(!header(node));
+      // Finds the nearest in near-pre-order fashion. Uses semi-recursiveness.
+      NodePtr best = node->parent;
+      dimension_type best_dim = 0;
+      for (;;)
+        {
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist < best_dist)
+            {
+              best = node;
+              best_dim = dim;
+              best_dist = test_dist;
+            }
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (far != 0 && (met.distance_to_plane
+                           (rank(), dim, target, const_key(node)) < best_dist))
+            {
+              dimension_type child_dim = incr_dim(rank, dim);
+              if (near != 0)
+                {
+                  import::tuple<NodePtr, dimension_type,
+                                typename Metric::distance_type>
+                    triplet = first_neighbor_sub(near, child_dim, rank,
+                                                 key_comp, met, target,
+                                                 best_dist);
+                  if (import::get<0>(triplet) != node)
+                    {
+                      // If I can't go right after exploring left, I'm done
+                      if (!(met.distance_to_plane
+                            (rank(), dim, target, const_key(node))
+                            < import::get<2>(triplet)))
+                        { return triplet; }
+                      import::tie(best, best_dim, best_dist) = triplet;
+                    }
+                }
+              node = far; dim = child_dim;
+            }
+          else if (near != 0)
+            { node = near; dim = incr_dim(rank, dim); }
+          else
+            { return import::make_tuple(best, best_dim, best_dist); }
+        }
+    }
+
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    first_neighbor(NodePtr node, dimension_type dim, Rank rank,
+                   const KeyCompare& key_comp, const Metric& met, const Key& target)
+    {
+      return first_neighbor_sub
+        (node, dim, rank, key_comp, met, target,
+         (std::numeric_limits<typename Metric::distance_type>::max)());
+    }
+
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    lower_bound_neighbor_sub(NodePtr node, dimension_type dim, Rank rank,
+                             KeyCompare key_comp, const Metric& met,
+                             const Key& target,
+                             typename Metric::distance_type bound,
+                             typename Metric::distance_type best_dist)
+    {
+      // Finds lower bound in left-pre-order fashion. Uses semi-recursiveness.
+      SPATIAL_ASSERT_CHECK(dim < rank());
+      SPATIAL_ASSERT_CHECK(node != 0);
+      SPATIAL_ASSERT_CHECK(!header(node));
+      NodePtr best = node->parent;
+      dimension_type best_dim = decr_dim(rank, dim);
+      for (;;)
+        {
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist > bound)
+            {
+              if (test_dist < best_dist)
+                {
+                  best = node;
+                  best_dim = dim;
+                  best_dist = test_dist;
+                }
+            }
+          else if (test_dist == bound)
+            { return import::make_tuple(node, dim, test_dist); }
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (far != 0 && (met.distance_to_plane
+                           (rank(), dim, target, const_key(node)) < best_dist))
+            {
+              dimension_type child_dim = incr_dim(rank, dim);
+              if (near != 0)
+                {
+                  import::tuple<NodePtr, dimension_type,
+                                typename Metric::distance_type>
+                    triplet = lower_bound_neighbor_sub(near, child_dim, rank,
+                                                       key_comp, met, target,
+                                                       bound, best_dist);
+                  if (import::get<0>(triplet) != node)
+                    {
+                      if (import::get<2>(triplet) == bound
+                          // If I can't go right after exploring left, I'm done
+                          || !(met.distance_to_plane
+                               (rank(), dim, target, const_key(node))
+                               < import::get<2>(triplet)))
+                        { return triplet; }
+                      import::tie(best, best_dim, best_dist) = triplet;
+                    }
+                }
+              node = far; dim = child_dim;
+            }
+          else if (near != 0)
+            { node = near; dim = incr_dim(rank, dim); }
+          else
+            { return import::make_tuple(best, best_dim, best_dist); }
+        }
+    }
+
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    lower_bound_neighbor(NodePtr node, dimension_type dim, Rank rank,
+                         KeyCompare key_comp, const Metric& met,
+                         const Key& target,
                          typename Metric::distance_type bound)
     {
-      typedef typename neighbor_iterator<Container, Metric>::node_ptr node_ptr;
-      typename container_traits<Container>::rank_type rank(it.rank());
-      typename container_traits<Container>::key_compare cmp(it.key_comp());
-      Metric met(it.metric());
-      SPATIAL_ASSERT_CHECK(it.node_dim < rank());
-      SPATIAL_ASSERT_CHECK(!header(it.node));
-      SPATIAL_ASSERT_CHECK(it.node != 0);
-      node_ptr node = it.node;
-      node_ptr end = node->parent;
-      node_ptr near_node = 0;
-      dimension_type node_dim = it.node_dim;
-      dimension_type near_dim = node_dim;
-      typename Metric::distance_type tmp;
-      typename Metric::distance_type near_distance
-        = met.distance_to_key(rank(), target_key(it), const_key(node));
-      if (near_distance > bound) { near_node = node; }
-      // Depth traversal starts with left first
-      while(node->left != 0
-            && (!cmp(node_dim, const_key(node), target_key(it))
-                || near_node == 0
-                || near_distance
-                >= met.distance_to_plane(rank(), node_dim, target_key(it),
-                                         const_key(node))))
+      return lower_bound_neighbor_sub
+        (node, dim, rank, key_comp, met, target, bound,
+         (std::numeric_limits<typename Metric::distance_type>::max)());
+    }
+
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    upper_bound_neighbor_sub(NodePtr node, dimension_type dim, Rank rank,
+                             KeyCompare key_comp, Metric met, const Key& target,
+                             typename Metric::distance_type bound,
+                             typename Metric::distance_type best_dist)
+    {
+      SPATIAL_ASSERT_CHECK(dim < rank());
+      SPATIAL_ASSERT_CHECK(node != 0);
+      SPATIAL_ASSERT_CHECK(!header(node));
+      // Finds upper bound in left-pre-order fashion. Uses semi-recursiveness.
+      NodePtr best = node->parent;
+      dimension_type best_dim = decr_dim(rank, dim);
+      for (;;)
         {
-          node = node->left;
-          node_dim = incr_dim(rank, node_dim);
-          tmp = met.distance_to_key(rank(), target_key(it), const_key(node));
-          if (tmp <= bound) { continue; }
-          if (near_node == 0 || tmp < near_distance)
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist > bound && test_dist < best_dist)
             {
-              near_node = node;
-              near_dim = node_dim;
-              near_distance = tmp;
+              best = node;
+              best_dim = dim;
+              best_dist = test_dist;
             }
-          else if (tmp == near_distance
-                   // to provide total ordering among the nodes, we use the node
-                   // pointer as a fall back comparison mechanism
-                   && node < near_node)
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (far != 0 && (met.distance_to_plane
+                           (rank(), dim, target, const_key(node)) < best_dist))
             {
-              near_node = node;
-              near_dim = node_dim;
+              dimension_type child_dim = incr_dim(rank, dim);
+              if (near != 0)
+                {
+                  import::tuple<NodePtr, dimension_type,
+                                typename Metric::distance_type>
+                    triplet = upper_bound_neighbor_sub(near, child_dim, rank,
+                                                       key_comp, met, target,
+                                                       bound, best_dist);
+                  if (import::get<0>(triplet) != node)
+                    {
+                      // If I can't go right after exploring left, I'm done
+                      if (!(met.distance_to_plane
+                            (rank(), dim, target, const_key(node))
+                            < import::get<2>(triplet)))
+                        { return triplet; }
+                      import::tie(best, best_dim, best_dist) = triplet;
+                    }
+                }
+              node = far; dim = child_dim;
             }
+          else if (near != 0)
+            { node = near; dim = incr_dim(rank, dim); }
+          else
+            { return import::make_tuple(best, best_dim, best_dist); }
         }
-      // In-order, right, left, then all the way up
-      do
+    }
+
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    upper_bound_neighbor(NodePtr node, dimension_type dim, Rank rank,
+                         KeyCompare key_comp, const Metric& met,
+                         const Key& target,
+                         typename Metric::distance_type bound)
+    {
+      return upper_bound_neighbor_sub
+        (node, dim, rank, key_comp, met, target, bound,
+         (std::numeric_limits<typename Metric::distance_type>::max)());
+    }
+
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    increment_neighbor(NodePtr node, dimension_type dim, Rank rank,
+                       KeyCompare key_comp, const Metric& met,
+                       const Key& target,
+                       typename Metric::distance_type node_dist)
+    {
+      SPATIAL_ASSERT_CHECK(dim < rank());
+      SPATIAL_ASSERT_CHECK(!header(node));
+      SPATIAL_ASSERT_CHECK(node != 0);
+      NodePtr orig = node;
+      dimension_type orig_dim = dim;
+      NodePtr best = 0;
+      dimension_type best_dim = dim;
+      typename Metric::distance_type best_dist = node_dist;
+      // Looks forward to find an equal or greater next best. If an equal next
+      // best is found, then no need to look further. 'Forward' and 'backward'
+      // refer to tree walking in near-pre-order.
+      for(;;)
         {
-          if (node->right != 0
-              && (!cmp(node_dim, target_key(it), const_key(node))
-                  || near_node == 0 || near_distance
-                  >= met.distance_to_plane(rank(), node_dim, target_key(it),
-                                           const_key(node))))
-            {
-              node = node->right;
-              node_dim = incr_dim(rank, node_dim);
-              tmp = met.distance_to_key(rank(), target_key(it),
-                                        const_key(node));
-              if (tmp > bound)
-                {
-                  if (near_node == 0 || tmp < near_distance)
-                    {
-                      near_node = node;
-                      near_dim = node_dim;
-                      near_distance = tmp;
-                    }
-                  else if (tmp == near_distance && node < near_node)
-                    {
-                      near_node = node;
-                      near_dim = node_dim;
-                    }
-                }
-              while(node->left != 0
-                    && (!cmp(node_dim, const_key(node), target_key(it))
-                        || near_node == 0
-                        || near_distance
-                        >= met.distance_to_plane(rank(), node_dim,
-                                                 target_key(it),
-                                                 const_key(node))))
-                {
-                  node = node->left;
-                  node_dim = incr_dim(rank, node_dim);
-                  tmp = met.distance_to_key(rank(), target_key(it),
-                                            const_key(node));
-                  if (tmp > bound)
-                    {
-                      if (near_node == 0 || tmp < near_distance)
-                        {
-                          near_node = node;
-                          near_dim = node_dim;
-                          near_distance = tmp;
-                        }
-                      else if (tmp == near_distance && node < near_node)
-                        {
-                          near_node = node;
-                          near_dim = node_dim;
-                        }
-                    }
-                }
-            }
-          // No more nodes to visit, so go up!
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (near != 0)
+            { node = near; dim = incr_dim(rank, dim); }
+          else if (far != 0
+                   && (best == 0
+                       || met.distance_to_plane
+                       (rank(), dim, target, const_key(node)) < best_dist))
+            { node = far; dim = incr_dim(rank, dim); }
           else
             {
-              node_ptr p = node->parent;
-              while (p != end && p->right == node)
+              NodePtr prev_node = node;
+              node = node->parent; dim = decr_dim(rank, dim);
+              while (!header(node)
+                     && (prev_node
+                         == (far = key_comp(dim, const_key(node), target)
+                             ? node->left : node->right)
+                         || far == 0
+                         || !(best == 0
+                              || (met.distance_to_plane
+                                  (rank(), dim, target, const_key(node))
+                                  < best_dist))))
                 {
-                  node = p;
-                  node_dim = decr_dim(rank, node_dim);
-                  p = node->parent;
+                  prev_node = node;
+                  node = node->parent; dim = decr_dim(rank, dim);
                 }
-              node = p;
-              node_dim = decr_dim(rank, node_dim);
+              if (!header(node))
+                { node = far; dim = incr_dim(rank, dim); }
+              else break;
+            }
+          // Test node here and stops as soon as it finds an equal
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist == node_dist)
+            {
+              SPATIAL_ASSERT_CHECK(dim < rank());
+              SPATIAL_ASSERT_CHECK(best == 0 || test_dist < best_dist);
+              return import::make_tuple(node, dim, test_dist);
+            }
+          else if (test_dist > node_dist
+                   && (best == 0 || test_dist < best_dist))
+            {
+              best = node;
+              best_dim = dim;
+              best_dist = test_dist;
             }
         }
-      while(node != end);
-      if (near_node == 0)
-        { near_node = node; near_dim = node_dim; }
-      SPATIAL_ASSERT_CHECK(near_dim < rank());
+      // Here, current best_dist > node_dist or best == 0, maybe there is a
+      // better best at the back (iterate backwards to header)
+      NodePtr prev_node = orig;
+      dimension_type prev_dim = orig_dim;
+      node = orig->parent;
+      dim = decr_dim(rank, orig_dim);
+      while(!header(node))
+        {
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (far == prev_node && near != 0)
+            {
+              node = near;
+              dim = prev_dim;
+              for (;;)
+                {
+                  import::tie(near, far) = key_comp(dim, const_key(node), target)
+                    ? import::make_tuple(node->right, node->left)
+                    : import::make_tuple(node->left, node->right);
+                  if (far != 0
+                      && (best == 0
+                          || (met.distance_to_plane(rank(), dim, target,
+                                                    const_key(node))
+                              < best_dist)))
+                    { node = far; dim = incr_dim(rank, dim); }
+                  else if (near != 0)
+                    { node = near; dim = incr_dim(rank, dim); }
+                  else break;
+                }
+            }
+          // Test node here for new best
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist > node_dist && (best == 0 || test_dist <= best_dist))
+            {
+              best = node;
+              best_dim = dim;
+              best_dist = test_dist;
+            }
+          prev_node = node;
+          prev_dim = dim;
+          node = node->parent;
+          dim = decr_dim(rank, dim);
+        }
+      SPATIAL_ASSERT_CHECK(dim < rank());
       SPATIAL_ASSERT_CHECK(node != 0);
-      it.node = near_node; it.node_dim = near_dim;
-      it.distance() = near_distance;
-      return it;
+      if (best != 0) { node = best; dim = best_dim; }
+      return import::make_tuple(node, dim, best_dist);
     }
+
+    template <typename NodePtr, typename Rank, typename KeyCompare,
+              typename Key, typename Metric>
+    inline import::tuple<NodePtr, dimension_type,
+                         typename Metric::distance_type>
+    decrement_neighbor(NodePtr node, dimension_type dim, Rank rank,
+                       KeyCompare key_comp, const Metric& met,
+                       const Key& target,
+                       typename Metric::distance_type node_dist)
+    {
+      if (header(node))
+        { return last_neighbor(node->parent, 0, rank, key_comp, met, target); }
+      SPATIAL_ASSERT_CHECK(dim < rank());
+      SPATIAL_ASSERT_CHECK(node != 0);
+      NodePtr orig = node;
+      dimension_type orig_dim = dim;
+      NodePtr best = 0;
+      dimension_type best_dim = dim;
+      typename Metric::distance_type best_dist = node_dist;
+      // Looks backaward to find an equal or lower next best. If an equal next
+      // best is found, then no need to look further. 'Forward' and 'backward'
+      // refer to tree walking in near-pre-order.
+      NodePtr prev_node = node;
+      dimension_type prev_dim = dim;
+      node = node->parent;
+      dim = decr_dim(rank, dim);
+      while (!header(node))
+        {
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (prev_node == far && near != 0)
+            {
+              node = near;
+              dim = prev_dim;
+              for (;;)
+                {
+                  import::tie(near, far) = key_comp(dim, const_key(node), target)
+                    ? import::make_tuple(node->right, node->left)
+                    : import::make_tuple(node->left, node->right);
+                  if (far != 0
+                      && (met.distance_to_plane(rank(), dim, target,
+                                                const_key(node))
+                          <= node_dist))
+                    { node = far; dim = incr_dim(rank, dim); }
+                  else if (near != 0)
+                    { node = near; dim = incr_dim(rank, dim); }
+                  else break;
+                }
+            }
+          // Test node here and stops as soon as it finds an equal
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist == node_dist)
+            {
+              SPATIAL_ASSERT_CHECK(dim < rank());
+              SPATIAL_ASSERT_CHECK(best == 0 || test_dist > best_dist);
+              return import::make_tuple(node, dim, test_dist);
+            }
+          else if (test_dist < node_dist
+                   && (best == 0 || test_dist > best_dist))
+            {
+              best = node;
+              best_dim = dim;
+              best_dist = test_dist;
+            }
+          prev_node = node;
+          prev_dim = dim;
+          node = node->parent;
+          dim = decr_dim(rank, dim);
+        }
+      // Here, current best_dist < node_dist or best == 0, maybe there is a
+      // better best at the front (iterate forward to header)
+      node = orig;
+      dim = orig_dim;
+      for(;;)
+        {
+          NodePtr near, far;
+          import::tie(near, far) = key_comp(dim, const_key(node), target)
+            ? import::make_tuple(node->right, node->left)
+            : import::make_tuple(node->left, node->right);
+          if (near != 0)
+            { node = near; dim = incr_dim(rank, dim); }
+          else if (far != 0
+                   && (met.distance_to_plane(rank(), dim, target,
+                                             const_key(node))
+                       < node_dist))
+            { node = far; dim = incr_dim(rank, dim); }
+          else
+            {
+              prev_node = node;
+              node = node->parent; dim = decr_dim(rank, dim);
+              while (!header(node)
+                     && (prev_node
+                         == (far = key_comp(dim, const_key(node), target)
+                             ? node->left : node->right)
+                         || far == 0
+                         || !(met.distance_to_plane(rank(), dim, target,
+                                                    const_key(node))
+                                  < node_dist)))
+                {
+                  prev_node = node;
+                  node = node->parent; dim = decr_dim(rank, dim);
+                }
+              if (!header(node))
+                { node = far; dim = incr_dim(rank, dim); }
+              else break;
+            }
+          typename Metric::distance_type test_dist
+            = met.distance_to_key(rank(), target, const_key(node));
+          if (test_dist < node_dist && (best == 0 || test_dist >= best_dist))
+            {
+              best = node;
+              best_dim = dim;
+              best_dist = test_dist;
+            }
+        }
+      SPATIAL_ASSERT_CHECK(dim < rank());
+      SPATIAL_ASSERT_CHECK(node != 0);
+      if (best != 0) { node = best; dim = best_dim; }
+      return import::make_tuple(node, dim, best_dist);
+    }
+
   } // namespace details
 } // namespace spatial
 

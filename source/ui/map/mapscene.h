@@ -25,7 +25,6 @@
 #include <QList>
 #include <QColor>
 #include <QRectF>
-#include <spatial/bits/spatial_check_concept.hpp>
 #include <spatial/point_multimap.hpp>
 #include <spatial/idle_box_multimap.hpp>
 #include "vatsimdata/lonlat.h"

@@ -81,6 +81,7 @@ namespace spatial
         }
       return std::abs(x);
     }
+
     template <typename Tp>
     inline typename enable_if_c
     <!std::numeric_limits<Tp>::is_integer
@@ -182,64 +183,6 @@ namespace spatial
   namespace math
   {
     /**
-     *  Compute the distance between the \p origin and the closest point to the
-     *  plane orthogonal to the axis of dimension \c dim and passing by \c key.
-     */
-    template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<import::is_floating_point<Unit>, Unit>::type
-    euclid_distance_to_plane
-    (dimension_type dim, Key origin, Key key, Difference diff)
-    {
-      return std::abs(diff(dim, origin, key)); // floating types abs is always okay!
-    }
-
-    /**
-     *  Uses the hypot() algorithm in order to compute the distance: minimize
-     *  possibilities of loss of precision due to overflow and underflow.
-     *
-     *  The trick is to find the maximum value among all the component of the
-     *  Key and then divide all other component with this one.
-     *
-     *  Here is the rationale for the distance:
-     *  sqrt( x^2 + y^2 + z^2 + ... ) = abs(x) * sqrt( 1 + (y/x)^2 + (z/x)^2 )
-     *
-     *  Providing x statisfies x>y, x>z, etc, the second form is less likely to
-     *  overflow than the first form.
-     */
-    template <typename Key, typename Difference, typename Unit>
-    inline typename enable_if<import::is_floating_point<Unit>, Unit>::type
-    euclid_distance_to_key
-    (dimension_type rank, Key origin, Key key, Difference diff)
-    {
-      // Find a non zero maximum or return 0
-      Unit max = euclid_distance_to_plane<Key, Difference, Unit>
-        (0, origin, key, diff);
-      dimension_type max_dim = 0;
-      for (dimension_type i = 1; i < rank; ++i)
-        {
-          Unit d = euclid_distance_to_plane<Key, Difference, Unit>
-            (i, origin, key, diff);
-          if (d > max) { max = d; max_dim = i; }
-        }
-      const Unit zero = Unit();
-      if (max == zero) return zero; // they're all zero!
-      // Compute the distance
-      Unit sum = zero;
-      for (dimension_type i = 0; i < rank; ++i)
-        {
-          if (i == max_dim) continue;
-          Unit div = diff(i, origin, key) / max;
-          sum += div * div;
-        }
-      const Unit one = ((Unit) 1.0); // Not sure how to represent it otherwise
-#ifdef SPATIAL_SAFER_ARITHMETICS
-      return except::check_positive_mul(max, std::sqrt(one + sum));
-#else
-      return max * std::sqrt(one + sum);
-#endif
-    }
-
-    /**
      *  Compute the distance between the \p origin and the closest point
      *  to the plane orthogonal to the axis of dimension \c dim and passing by
      *  \c key.
@@ -247,7 +190,7 @@ namespace spatial
     template <typename Key, typename Difference, typename Unit>
     inline typename enable_if<import::is_arithmetic<Unit>, Unit>::type
     square_euclid_distance_to_plane
-    (dimension_type dim, Key origin, Key key, Difference diff)
+    (dimension_type dim, const Key& origin, const Key& key, Difference diff)
     {
       Unit d = diff(dim, origin, key);
 #ifdef SPATIAL_SAFER_ARITHMETICS
@@ -264,8 +207,7 @@ namespace spatial
     template <typename Key, typename Difference, typename Unit>
     inline typename enable_if<import::is_arithmetic<Unit>, Unit>::type
     square_euclid_distance_to_key
-    (dimension_type rank, const Key& origin, const Key& key,
-     const Difference& diff)
+    (dimension_type rank, const Key& origin, const Key& key, Difference diff)
     {
       Unit sum = square_euclid_distance_to_plane<Key, Difference, Unit>
         (0, origin, key, diff);
@@ -284,6 +226,75 @@ namespace spatial
     }
 
     /**
+     *  Compute the distance between the \p origin and the closest point to the
+     *  plane orthogonal to the axis of dimension \c dim and passing by \c key.
+     */
+    template <typename Key, typename Difference, typename Unit>
+    inline typename enable_if<import::is_floating_point<Unit>, Unit>::type
+    euclid_distance_to_plane
+    (dimension_type dim, const Key& origin, const Key& key, Difference diff)
+    {
+      return std::abs(diff(dim, origin, key)); // floating types abs is always okay!
+    }
+
+    /**
+     *  Computes the euclidian distance between 2 points.
+     *
+     *  When compiled without SPATIAL_SAFER_ARITHMETICS, it uses the naive
+     *  approach, which may overflow or underflow, but is much faster.
+     *
+     *  When compiled without SPATIAL_SAFER_ARITHMETICS the calculation uses
+     *  the hypot() algorithm in order to compute the distance: minimize
+     *  possibilities of overflow or underflow at the expense of speed.
+     *
+     *  The principle of hypot() is to find the maximum value among all the
+     *  component of the distance and then divide all other components with this
+     *  one.
+     *
+     *  The algorithm comes from this equality:
+     *  sqrt( x^2 + y^2 + z^2 + ... ) = abs(x) * sqrt( 1 + (y/x)^2 + (z/x)^2 + ...)
+     *
+     *  Where the second form (on the right of the equation) is less likely to
+     *  overflow or underflow than the first form during computation.
+     */
+    template <typename Key, typename Difference, typename Unit>
+    inline typename enable_if<import::is_floating_point<Unit>, Unit>::type
+    euclid_distance_to_key
+    (dimension_type rank, const Key& origin, const Key& key, Difference diff)
+    {
+#ifdef SPATIAL_SAFER_ARITHMETICS
+      // Find a non zero maximum or return 0
+      Unit max = euclid_distance_to_plane<Key, Difference, Unit>
+        (0, origin, key, diff);
+      dimension_type max_dim = 0;
+      for (dimension_type i = 1; i < rank; ++i)
+        {
+          Unit d = euclid_distance_to_plane<Key, Difference, Unit>
+            (i, origin, key, diff);
+          if (d > max) { max = d; max_dim = i; }
+        }
+      const Unit zero = Unit();
+      if (max == zero) return zero; // they're all zero!
+      // Compute the distance
+      Unit sum = zero;
+      for (dimension_type i = 0; i < max_dim; ++i)
+        {
+          Unit div = diff(i, origin, key) / max;
+          sum += div * div;
+        }
+      for (dimension_type i = max_dim + 1; i < rank; ++i)
+        {
+          Unit div = diff(i, origin, key) / max;
+          sum += div * div;
+        }
+      return except::check_positive_mul(max, std::sqrt(((Unit) 1.0) + sum));
+#else
+      return std::sqrt(square_euclid_distance_to_key<Key, Difference, Unit>
+                       (rank, origin, key, diff));
+#endif
+    }
+
+    /**
      *  Compute the distance between the \p origin and the closest point
      *  to the plane orthogonal to the axis of dimension \c dim and passing by
      *  \c key.
@@ -291,7 +302,7 @@ namespace spatial
     template <typename Key, typename Difference, typename Unit>
     inline typename enable_if<import::is_arithmetic<Unit>, Unit>::type
     manhattan_distance_to_plane
-    (dimension_type dim, Key origin, Key key, Difference diff)
+    (dimension_type dim, const Key& origin, const Key& key, Difference diff)
     {
 #ifdef SPATIAL_SAFER_ARITHMETICS
       return except::check_abs(diff(dim, origin, key));
@@ -306,7 +317,7 @@ namespace spatial
     template <typename Key, typename Difference, typename Unit>
     inline typename enable_if<import::is_arithmetic<Unit>, Unit>::type
     manhattan_distance_to_key
-    (dimension_type rank, Key origin, Key key, Difference diff)
+    (dimension_type rank, const Key& origin, const Key& key, Difference diff)
     {
       Unit sum = manhattan_distance_to_plane<Key, Difference, Unit>
         (0, origin, key, diff);

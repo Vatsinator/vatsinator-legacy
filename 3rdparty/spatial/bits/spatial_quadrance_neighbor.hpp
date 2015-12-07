@@ -55,7 +55,8 @@ namespace spatial
      <Ct, quadrance<Ct, AnyDistanceType, Diff> >& other)
       : neighbor_iterator<Ct, quadrance<Ct, DistanceType, Diff> >
         (other.rank(), other.key_comp(), other.metric(),
-         other.target_key(), other.node_dim, other.node) { }
+         other.target_key(), other.node_dim, other.node,
+         static_cast<AnyDistanceType>(other.distance())) { }
   };
 
   template <typename Ct, typename DistanceType, typename Diff>
@@ -75,7 +76,8 @@ namespace spatial
      <const Ct, quadrance<Ct, AnyDistanceType, Diff> >& other)
       : neighbor_iterator<const Ct, quadrance<Ct, DistanceType, Diff> >
         (other.rank(), other.key_comp(), other.metric(),
-         other.target_key(), other.node_dim, other.node) { }
+         other.target_key(), other.node_dim, other.node,
+         static_cast<AnyDistanceType>(other.distance())) { }
 
     template <typename AnyDistanceType>
     quadrance_neighbor_iterator
@@ -83,7 +85,8 @@ namespace spatial
      <Ct, quadrance<Ct, AnyDistanceType, Diff> >& other)
       : neighbor_iterator<const Ct, quadrance<Ct, DistanceType, Diff> >
         (other.rank(), other.key_comp(), other.metric(),
-         other.target_key(), other.node_dim, other.node) { }
+         other.target_key(), other.node_dim, other.node,
+         static_cast<AnyDistanceType>(other.distance())) { }
   };
   ///@}
 

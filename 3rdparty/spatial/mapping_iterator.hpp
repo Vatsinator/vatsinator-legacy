@@ -14,6 +14,7 @@
 #define SPATIAL_MAPPING_ITERATOR_HPP
 
 #include <utility> // std::pair
+#include "spatial.hpp"
 #include "traits.hpp"
 #include "bits/spatial_bidirectional.hpp"
 #include "bits/spatial_rank.hpp"

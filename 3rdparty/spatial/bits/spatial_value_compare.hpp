@@ -13,12 +13,14 @@
 #ifndef SPATIAL_VALUE_COMPARE_HPP
 #define SPATIAL_VALUE_COMPARE_HPP
 
+#include "../spatial.hpp"
+
 namespace spatial
 {
   namespace details
   {
     /**
-     *  Value compare functor for container storing pairs of (Key, Value) types,
+     *  Value compare functor for container storing pairs of (Key, Mapped) types,
      *  such as in \point_multimap, \box_multimap, etc. These container provide a
      *  \c key_compare functor type that is being used for the comparison of the
      *  value.
@@ -26,8 +28,8 @@ namespace spatial
      *  In \point_multimap, \box_multimap and other containers, the value type
      *  differs from the key type. Value type is a pair of key type and mapped
      *  type. The \c KeyCompare functor, provided to the container is reused
-     *  to compare the value by using the first element of each value which is
-     *  the key.
+     *  to compare the value by using the first element of each value (which is
+     *  the key).
      *
      *  \tparam Value A \c std::pair of key and value type.
      *  \tparam KeyCompare A type that is a model of \generalized_compare.
@@ -37,7 +39,7 @@ namespace spatial
     {
       //! Comparator being initilized with a value to copy into the interal
       //! comparison function.
-      ValueCompare(const KeyCompare& x) : KeyCompare(x) { }
+      explicit ValueCompare(const KeyCompare& x) : KeyCompare(x) { }
 
       //! Unintialized comparator.
       ValueCompare() : KeyCompare() { }
@@ -56,6 +58,7 @@ namespace spatial
         return KeyCompare::operator()(dim, a.first, b.first);
       }
     };
+
   } // namespace details
 } // namespace spatial
 

@@ -14,7 +14,7 @@
 #ifndef SPATIAL_RANK_HPP
 #define SPATIAL_RANK_HPP
 
-#include "../spatial.hpp"
+#include "spatial_node.hpp" // for modulo()
 
 namespace spatial
 {
@@ -79,7 +79,6 @@ namespace spatial
     decr_dim(Rank rank, dimension_type node_dim)
     { return (rank() + node_dim - 1) % rank(); }
 
-
     /**
      *  Returns the modulo of a node's heigth by a container's rank. This, in
      *  effect, gives the current dimension along which the node's invarient is
@@ -98,8 +97,8 @@ namespace spatial
     modulo(const Node<Link>* x, Rank r)
     {
       dimension_type d = r() - 1;
-      while(!header(x)) { d = incr_dim(r, d); x = x->parent; }
-      return d;
+      while(!header(x)) { ++d; x = x->parent; }
+      return d % r();
     }
   }
 }

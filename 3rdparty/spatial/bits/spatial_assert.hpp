@@ -205,7 +205,7 @@ namespace spatial
      std::size_t depth)
     {
       for (std::size_t i = 0; i < depth; ++i) o << ".";
-      if (header(node->parent)) o << "H";
+      if (header(node->parent)) o << "T";
       else if (node->parent->left == node) o << "L";
       else if (node->parent->right == node) o << "R";
       else o << "E";
@@ -251,7 +251,7 @@ namespace spatial
       if (node->left)
         assert_inspect_node(cmp, rank, o, node->left, depth + 1);
       for (std::size_t i = 0; i < depth; ++i) o << ".";
-      if (header(node->parent)) o << "H";
+      if (header(node->parent)) o << "T";
       else if (node->parent->left == node) o << "L";
       else if (node->parent->right == node) o << "R";
       else o << "E";
@@ -359,6 +359,7 @@ namespace spatial
                     << " right:" << tree.end().node->right
                     << "}" << std::endl;
           std::cerr << "leftmost:" << tree.begin().node
+                    << " size:" << tree.size()
                     << " items:[" << std::endl;
           if (tree.end().node->parent != tree.end().node)
             assert_inspect_node(tree.key_comp(), tree.dimension(), std::cerr,

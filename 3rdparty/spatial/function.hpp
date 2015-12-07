@@ -29,7 +29,7 @@ namespace spatial
   struct accessor_minus
     : private Accessor // empty member optimization
   {
-    accessor_minus(Accessor accessor_ = Accessor())
+    explicit accessor_minus(Accessor accessor_ = Accessor())
       : Accessor(accessor_)
     { }
 
@@ -42,7 +42,7 @@ namespace spatial
     operator() (dimension_type n, const Tp& x, const Tp& y) const
     { return Accessor::operator()(n, x) - Accessor::operator()(n, y); }
 
-    Accessor accessor() const { return static_cast<Accessor>(*this); }
+    Accessor accessor() const { return *static_cast<const Accessor*>(this); }
   };
 
   /**
@@ -133,6 +133,10 @@ namespace spatial
   struct accessor_less
     : private Accessor // empty member optimization
   {
+    explicit accessor_less(Accessor access = Accessor())
+      : Accessor(access)
+    { }
+
     bool
     operator() (dimension_type n, const Tp& x, const Tp& y) const
     {

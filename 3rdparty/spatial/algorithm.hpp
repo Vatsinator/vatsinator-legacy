@@ -18,6 +18,7 @@
 #include <utility> // std::pair
 #include <bits/spatial_node.hpp>
 #include <bits/spatial_assert.hpp>
+#include "spatial.hpp"
 
 namespace spatial
 {

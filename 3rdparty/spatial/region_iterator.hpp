@@ -14,6 +14,7 @@
 #ifndef SPATIAL_REGION_ITERATOR_HPP
 #define SPATIAL_REGION_ITERATOR_HPP
 
+#include "spatial.hpp"
 #include "bits/spatial_open_region.hpp"
 #include "bits/spatial_closed_region.hpp"
 #include "bits/spatial_enclosed_region.hpp"

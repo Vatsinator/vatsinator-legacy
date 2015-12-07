@@ -16,10 +16,8 @@
 #ifndef SPATIAL_METRIC_HPP
 #define SPATIAL_METRIC_HPP
 
-#ifndef SPATIAL_HPP
-#  error "Do not include this file directly in your project."
-#endif
-
+#include "function.hpp"
+#include "traits.hpp"
 #include "bits/spatial_math.hpp"
 #include "bits/spatial_builtin.hpp"
 
@@ -34,13 +32,14 @@ namespace spatial
    *  \attention \c This metric works on floating types only. It will fail
    *  to compile if given non-floating types as a parameter for the distance.
    *
-   *  \ref euclidian attempts to compute distances while limitting loss of
-   *  precision due to overflow during the computation. \ref euclidian could
-   *  be more precise than \ref quadrance in some cases, but it will be
-   *  slower in all cases.
+   *  \ref euclidian uses square root calculation in the distance. It will
+   *  return proper distances therefore but will be slower than \ref
+   *  quadrance. When defining SPATIAL_SAFER_ARITHMETICS however, \ref euclidian
+   *  uses the hypot algorithm which has much less chance to overflow or
+   *  underflow than \ref quadrance. However is it also much slower.
    */
   template<typename Ct, typename DistanceType, typename Diff>
-  class euclidian
+  class euclidian : Diff
   {
     // Check that DistanceType is a fundamental floating point type
     typedef typename enable_if<import::is_floating_point<DistanceType> >::type
@@ -60,11 +59,6 @@ namespace spatial
      */
     typedef typename container_traits<Ct>::key_type key_type;
 
-    /**
-     *  Placeholder for the 'difference' functor.
-     */
-    difference_type _diff;
-
   public:
     /**
      *  The distance type being used for distance calculations.
@@ -72,12 +66,12 @@ namespace spatial
     typedef DistanceType distance_type;
 
     //! The constructors allows you to specify a custom difference type.
-    euclidian(const difference_type& diff = Diff()) : _diff(diff) { }
+    explicit euclidian(const difference_type& diff = Diff()) : Diff(diff) { }
 
     //! Copy the metric from another metric with any DistanceType.
     template <typename AnyDistanceType>
     euclidian(const euclidian<Ct, AnyDistanceType, Diff>& other)
-      : _diff(other.difference()) { }
+      : Diff(other.difference()) { }
 
     /**
      *  Compute the distance between the point of \c origin and the \c key.
@@ -88,7 +82,8 @@ namespace spatial
                     const key_type& origin, const key_type& key) const
     {
       return math::euclid_distance_to_key
-        <key_type, difference_type, DistanceType>(rank, origin, key, _diff);
+        <key_type, difference_type, DistanceType>(rank, origin, key,
+                                                  difference());
     }
 
     /**
@@ -106,13 +101,15 @@ namespace spatial
                       const key_type& origin, const key_type& key) const
     {
       return math::euclid_distance_to_plane
-        <key_type, difference_type, DistanceType>(dim, origin, key, _diff);
+        <key_type, difference_type, DistanceType>(dim, origin, key,
+                                                  difference());
     }
 
     /**
      *  Returns the difference functor used in this type.
      */
-    difference_type difference() const { return _diff; }
+    difference_type difference() const
+    { return *static_cast<const Diff*>(this); }
   };
 
   /**
@@ -138,7 +135,7 @@ namespace spatial
    *
    */
   template<typename Ct, typename DistanceType, typename Diff>
-  class quadrance
+  class quadrance : Diff
   {
     // Check that DistanceType is a fundamental floating point type
     typedef typename enable_if<import::is_arithmetic<DistanceType> >::type
@@ -158,21 +155,16 @@ namespace spatial
      */
     typedef typename container_traits<Ct>::key_type key_type;
 
-    /**
-     *  Placeholder for the 'difference' functor.
-     */
-    difference_type _diff;
-
   public:
     typedef DistanceType distance_type;
 
     //! The constructor allows you to specify a custom difference type.
-    quadrance(const difference_type& diff = Diff()) : _diff(diff) { }
+    explicit quadrance(const difference_type& diff = Diff()) : Diff(diff) { }
 
     //! Copy the metric from another metric with any DistanceType.
     template <typename AnyDistanceType>
     quadrance(const quadrance<Ct, AnyDistanceType, Diff>& other)
-      : _diff(other.difference()) { }
+      : Diff(other.difference()) { }
 
     /**
      *  Compute the distance between the point of \c origin and the \c key.
@@ -183,7 +175,8 @@ namespace spatial
                     const key_type& origin, const key_type& key) const
     {
       return math::square_euclid_distance_to_key
-        <key_type, difference_type, DistanceType>(rank, origin, key, _diff);
+        <key_type, difference_type, DistanceType>(rank, origin, key,
+                                                  difference());
     }
 
     /**
@@ -197,13 +190,15 @@ namespace spatial
                       const key_type& origin, const key_type& key) const
     {
       return math::square_euclid_distance_to_plane
-        <key_type, difference_type, DistanceType>(dim, origin, key, _diff);
+        <key_type, difference_type, DistanceType>(dim, origin, key,
+                                                  difference());
     }
 
     /**
      *  Returns the difference functor used in this type.
      */
-    difference_type difference() const { return _diff; }
+    difference_type difference() const
+    { return *static_cast<const Diff*>(this); }
   };
 
   /**
@@ -233,7 +228,7 @@ namespace spatial
    *  \c \#define \c SPATIAL_SAFER_ARITHEMTICS.
    */
   template<typename Ct, typename DistanceType, typename Diff>
-  class manhattan
+  class manhattan : Diff
   {
     // Check that DistanceType is a fundamental floating point type
     typedef typename enable_if<import::is_arithmetic<DistanceType> >::type
@@ -253,21 +248,16 @@ namespace spatial
      */
     typedef typename container_traits<Ct>::key_type key_type;
 
-    /**
-     *  Placeholder for the 'difference' functor.
-     */
-    difference_type _diff;
-
   public:
     typedef DistanceType distance_type;
 
     //! A constructor that allows you to specify the Difference type.
-    manhattan(const difference_type& diff = Diff()) : _diff(diff) { }
+    explicit manhattan(const difference_type& diff = Diff()) : Diff(diff) { }
 
     //! Copy the metric from another metric with any DistanceType.
     template <typename AnyDistanceType>
     manhattan(const manhattan<Ct, AnyDistanceType, Diff>& other)
-      : _diff(other.difference()) { }
+      : Diff(other.difference()) { }
 
     /**
      *  Compute the distance between the point of \c origin and the \c key.
@@ -278,7 +268,8 @@ namespace spatial
                     const key_type& origin, const key_type& key) const
     {
       return math::manhattan_distance_to_key
-        <key_type, difference_type, DistanceType>(rank, origin, key, _diff);
+        <key_type, difference_type, DistanceType>(rank, origin, key,
+                                                  difference());
     }
 
     /**
@@ -293,13 +284,15 @@ namespace spatial
                       const key_type& origin, const key_type& key) const
     {
       return math::manhattan_distance_to_plane
-        <key_type, difference_type, DistanceType>(dim, origin, key, _diff);
+        <key_type, difference_type, DistanceType>(dim, origin, key,
+                                                  difference());
     }
 
     /**
      *  Returns the difference functor used in this type.
      */
-    difference_type difference() const { return _diff; }
+    difference_type difference() const
+    { return *static_cast<const Diff*>(this); }
   };
 
 } // namespace spatial

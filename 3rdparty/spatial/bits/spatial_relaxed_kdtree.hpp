@@ -513,11 +513,20 @@ namespace spatial
        */
       iterator
       find(const key_type& key)
-      { return equal_begin(*this, key); }
+      {
+        if (empty()) return end();
+        return iterator(first_equal(get_root(), 0, rank(), key_comp(), key)
+                        .first);
+      }
 
       const_iterator
       find(const key_type& key) const
-      { return equal_begin(*this, key); }
+      {
+        if (empty()) return end();
+        return const_iterator(first_equal(get_root(), 0, rank(), key_comp(),
+                                          key)
+                              .first);
+      }
       ///@}
 
     public:
@@ -707,6 +716,10 @@ namespace spatial
      *  they match, the elements are compared sequentially using algorithm
      *  std::equal, which stops at the first mismatch. The sequence of element
      *  in each container is extracted using \ref ordered_iterator.
+     *
+     *  The Value type of containers must provide equal comparison operator
+     *  in order to use this operation.
+     *
      *  \param lhs Left-hand side container.
      *  \param rhs Right-hand side container.
      */
@@ -731,7 +744,7 @@ namespace spatial
                <Rank, Key, Value, Compare, Balancing, Alloc>& lhs,
                const Relaxed_kdtree
                <Rank, Key, Value, Compare, Balancing, Alloc>& rhs)
-    { return !(lhs.size() == rhs.size()); }
+    { return !(lhs == rhs); }
     ///@}
 
     /**
@@ -739,6 +752,10 @@ namespace spatial
      *  lexicographical_compare, which compares the elements sequentially using
      *  operator< reflexively, stopping at the first mismatch. The sequence of
      *  element in each container is extracted using \ref ordered_iterator.
+     *
+     *  The Value type of containers must provide less than comparison operator
+     *  in order to use these operations.
+     *
      *  \param lhs Left-hand side container.
      *  \param rhs Right-hand side container.
      */
@@ -1138,15 +1155,17 @@ namespace spatial
     ::erase
     (const key_type& key)
     {
+      details::Equal<Self> equal_query(key_comp(), key);
       size_type cnt = 0;
-      while (true)
+      while (!empty())
         {
-          if (empty()) break;
-          equal_iterator<Self> found = equal_begin(*this, key);
-          equal_iterator<Self> none = equal_end(*this, key);
-          if (found == none) break; // no node matching this key
-          erase_node_balance(found.node_dim, found.node);
-          destroy_node(found.node);
+          node_ptr node;
+          dimension_type dim;
+          details::assign(node, dim,
+                          first_equal(get_root(), 0, rank(), key_comp(), key));
+          if (node == get_header()) break;
+          erase_node_balance(dim, node);
+          destroy_node(node);
           ++cnt;
         }
       SPATIAL_ASSERT_INVARIANT(*this);

@@ -14,6 +14,7 @@
 #define SPATIAL_ORDERED_ITERATOR_HPP
 
 #include <utility> // provides ::std::pair<>
+#include "spatial.hpp"
 #include "bits/spatial_ordered.hpp"
 
 namespace spatial

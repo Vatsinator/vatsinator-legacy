@@ -26,10 +26,10 @@
 ///@{
 #define SPATIAL_VERSION_MAJOR 2
 #define SPATIAL_VERSION_MINOR 1
-#define SPATIAL_VERSION_RELEASE 6
+#define SPATIAL_VERSION_RELEASE 8
 //! In general, this number will start by the major, then 2 digits for the
 //! minor, then 2 more for the revision.
-#define SPATIAL_VERSION 20106
+#define SPATIAL_VERSION 20108
 ///@}
 
 // For compatibility with older environments

@@ -317,12 +317,8 @@ namespace spatial
       //! The category of invariant with associated with this mode.
       typedef relaxed_invariant_tag               invariant_category;
 
-      //! Default constructor
-      Relaxed_kdtree_link() : weight(), value() { }
-
-      //! The weight is equal to 1 plus the amount of child nodes below the
-      //! current node. It is always equal to 1 at least.
-      weight_type weight;
+      //! \empty
+      Relaxed_kdtree_link() { }
 
       /**
        *  The value of the node, required by the \linkmode concept.
@@ -336,6 +332,10 @@ namespace spatial
        *  changed. Most algorithm only use a pointer to the link_type.
        */
       Value value;
+
+      //! The weight is equal to 1 plus the amount of child nodes below the
+      //! current node. It is always equal to 1 at least.
+      weight_type weight;
 
     private:
       /**

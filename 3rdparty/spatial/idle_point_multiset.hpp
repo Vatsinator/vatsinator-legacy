@@ -24,8 +24,8 @@
 #define SPATIAL_IDLE_POINT_MULTISET_HPP
 
 #include <memory>  // std::allocator
-#include "bits/spatial_kdtree.hpp"
 #include "function.hpp"
+#include "bits/spatial_kdtree.hpp"
 
 namespace spatial
 {

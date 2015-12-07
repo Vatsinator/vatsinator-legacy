@@ -13,6 +13,7 @@
 #ifndef SPATIAL_NEIGHBOR_ITERATOR_HPP
 #define SPATIAL_NEIGHBOR_ITERATOR_HPP
 
+#include "spatial.hpp"
 #include "bits/spatial_euclidian_neighbor.hpp"
 #include "bits/spatial_quadrance_neighbor.hpp"
 #include "bits/spatial_manhattan_neighbor.hpp"

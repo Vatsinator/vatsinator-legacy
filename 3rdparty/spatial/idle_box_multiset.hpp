@@ -14,8 +14,9 @@
 #define SPATIAL_IDLE_BOX_MULTISET_HPP
 
 #include <memory>  // std::allocator
-#include "bits/spatial_kdtree.hpp"
 #include "function.hpp"
+#include "bits/spatial_check_concept.hpp"
+#include "bits/spatial_kdtree.hpp"
 
 namespace spatial
 {

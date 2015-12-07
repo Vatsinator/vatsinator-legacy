@@ -13,6 +13,7 @@
 #ifndef SPATIAL_EQUAL_ITERATOR_HPP
 #define SPATIAL_EQUAL_ITERATOR_HPP
 
+#include "spatial.hpp"
 #include "bits/spatial_equal.hpp"
 
 namespace spatial

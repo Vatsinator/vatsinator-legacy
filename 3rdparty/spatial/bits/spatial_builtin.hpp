@@ -15,6 +15,7 @@
 #define SPATIAL_COMPARE_BUILTIN_HPP
 
 #include "spatial_import_type_traits.hpp"
+#include "spatial_check_concept.hpp"
 
 namespace spatial
 {
@@ -62,6 +63,13 @@ namespace spatial
     { };
 
     /**
+     *  The generic helper class to determine if a container uses a built-in
+     *  compare type. See the specializations of this class.
+     */
+    template<typename Container, typename Enable = void>
+    struct with_builtin_difference { }; // sink for not using built-in compare
+
+    /**
      *  Retrieve the builtin difference functor on the condition that the
      *  compare functor used in Container is a builtin comparator.
      *
@@ -75,12 +83,7 @@ namespace spatial
      *
      *  \tparam Container The container used in the iterator.
      *  \tparam DistanceType The type used to express distances.
-     *
-     *  @{
      */
-    template<typename Container, typename Enable = void>
-    struct with_builtin_difference { }; // sink for not using built-in compare
-
     template<typename Container>
     struct with_builtin_difference
     <Container,
@@ -95,9 +98,8 @@ namespace spatial
        *
        *  \tparam Compare The comparator used in the container.
        *  \tparam DistanceType The type used to express distances.
-       *
-       *  @{
        */
+      ///@{
       template<typename>
       struct builtin_difference { }; // sink type, never used normally
 
@@ -132,9 +134,7 @@ namespace spatial
         type operator() (const accessor_less<Accessor, Key>& cmp) const
         { return type(cmp.accessor()); }
       };
-      /**
-       *  @}
-       */
+      ///@}
 
       typedef typename builtin_difference
       <typename container_traits<Container>::key_compare>::type type;
@@ -148,9 +148,6 @@ namespace spatial
           (container.key_comp());
       }
     };
-    /**
-     *  @}
-     */
 
     /**
      *  Help to resolve whether the type used is a builtin difference or not.

@@ -20,9 +20,9 @@
 
 #include <memory>  // std::allocator
 #include <utility> // std::pair
+#include "function.hpp"
 #include "bits/spatial_check_concept.hpp"
 #include "bits/spatial_kdtree.hpp"
-#include "function.hpp"
 
 namespace spatial
 {
