@@ -478,12 +478,12 @@
 <context>
     <name>FileDownloader</name>
     <message>
-        <location filename="../network/filedownloader.cpp" line="116"/>
+        <location filename="../network/filedownloader.cpp" line="115"/>
         <source>Could not open file (%1) for writing!</source>
         <translation>Nie można otworzyć pliku (%1) do zapisu!</translation>
     </message>
     <message>
-        <location filename="../network/filedownloader.cpp" line="144"/>
+        <location filename="../network/filedownloader.cpp" line="152"/>
         <source>Error downloading file: %1</source>
         <translation>Błąd pobierania pliku: %1</translation>
     </message>

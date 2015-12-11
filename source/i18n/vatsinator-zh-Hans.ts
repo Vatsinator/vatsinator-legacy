@@ -478,12 +478,12 @@
 <context>
     <name>FileDownloader</name>
     <message>
-        <location filename="../network/filedownloader.cpp" line="116"/>
+        <location filename="../network/filedownloader.cpp" line="115"/>
         <source>Could not open file (%1) for writing!</source>
         <translation>文件(%1)不能写入！</translation>
     </message>
     <message>
-        <location filename="../network/filedownloader.cpp" line="144"/>
+        <location filename="../network/filedownloader.cpp" line="152"/>
         <source>Error downloading file: %1</source>
         <translation>不能下载文件: %1</translation>
     </message>
