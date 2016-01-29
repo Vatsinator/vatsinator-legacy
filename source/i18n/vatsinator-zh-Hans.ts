@@ -76,7 +76,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="155"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="174"/>
@@ -108,12 +108,12 @@
     <message>
         <location filename="../db/airlinedatabase.cpp" line="39"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 不能访问。请重新安装本应用。</translation>
     </message>
     <message>
         <location filename="../db/airlinedatabase.cpp" line="49"/>
         <source>File %1 could not be accessed. Please reinstall the applicaion.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 无法访问。请您重新安装本应用。</translation>
     </message>
 </context>
 <context>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../db/airportdatabase.cpp" line="59"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 不能访问。请重新安装本应用。</translation>
     </message>
 </context>
 <context>
@@ -244,12 +244,12 @@
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="135"/>
         <source>%n arrival(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n 进场(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="136"/>
         <source>%n departure(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n 离场(s)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -412,13 +412,13 @@
         <location filename="../ui/windows/databasewindow.cpp" line="52"/>
         <source>Your local clone of Vatsinator Database contains %n airport(s)</source>
         <extracomment>First part of the summary</extracomment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>您本地的Vatsinator数据库包含 %n 座机场</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/windows/databasewindow.cpp" line="56"/>
         <source>and %n airlines(s).</source>
         <extracomment>Second part of the summary</extracomment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>还有 $n 家航空公司。</numerusform></translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="72"/>
@@ -493,7 +493,7 @@
     <message>
         <location filename="../db/firdatabase.cpp" line="66"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>文件 %1 不能访问。请重新安装本应用。</translation>
     </message>
 </context>
 <context>
@@ -796,7 +796,7 @@
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="38"/>
         <source>Updating...</source>
-        <translation type="unfinished"/>
+        <translation>正在更新...</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="79"/>
@@ -806,7 +806,7 @@
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="131"/>
         <source>%n client(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n 个客户端</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="132"/>
