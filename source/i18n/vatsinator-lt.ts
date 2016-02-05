@@ -76,7 +76,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="155"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator Team&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;© 2012-2015 Vatsinator komanda&lt;br/&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;vatsinator.eu.org&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="174"/>
@@ -108,12 +108,12 @@
     <message>
         <location filename="../db/airlinedatabase.cpp" line="39"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti failo %1 . Prašome iš naujo įdiegti programą.</translation>
     </message>
     <message>
         <location filename="../db/airlinedatabase.cpp" line="49"/>
         <source>File %1 could not be accessed. Please reinstall the applicaion.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti failo %1 . Prašome iš naujo įdiegti programą.</translation>
     </message>
 </context>
 <context>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../db/airportdatabase.cpp" line="59"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti failo %1 . Prašome iš naujo įdiegti programą.</translation>
     </message>
 </context>
 <context>
@@ -384,7 +384,7 @@
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="24"/>
         <source>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Learn more about the VatsinatorDatabase&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;http://database.vatsinator.eu.org/&quot;&gt;Sužinokite daugiau apie Vatsinator duomenų bazę&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.ui" line="50"/>
@@ -493,7 +493,7 @@
     <message>
         <location filename="../db/firdatabase.cpp" line="66"/>
         <source>File %1 could not be accessed. Please reinstall the application.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pasiekti failo %1 . Prašome iš naujo įdiegti programą.</translation>
     </message>
 </context>
 <context>
@@ -796,7 +796,7 @@
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="38"/>
         <source>Updating...</source>
-        <translation type="unfinished"/>
+        <translation>Atnaujinama...</translation>
     </message>
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="79"/>
@@ -840,7 +840,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="34"/>
         <source>Fonts:</source>
-        <translation type="unfinished"/>
+        <translation>Šriftai:</translation>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="71"/>
@@ -1049,7 +1049,7 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
         <source>Database updates</source>
-        <translation type="unfinished"/>
+        <translation>Duomenų bazės atnaujinimai</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="30"/>
@@ -1059,12 +1059,12 @@
     <message>
         <location filename="../ui/pages/networkpage.ui" line="51"/>
         <source>Celsius</source>
-        <translation type="unfinished"/>
+        <translation>Celsijus</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="56"/>
         <source>Fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation>Farenheitas</translation>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="106"/>
