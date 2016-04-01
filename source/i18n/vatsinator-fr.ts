@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" sourcelanguage="en_GB" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>ATCDetailsWindow</name>
     <message>
@@ -15,13 +15,12 @@
         <location filename="../ui/windows/atcdetailswindow.ui" line="128"/>
         <source>Show</source>
         <extracomment>Show this ATC position on the map</extracomment>
-        <translation>Mostra
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.ui" line="135"/>
         <source>Close</source>
-        <translation>Chiudi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -37,7 +36,7 @@
     <message>
         <location filename="../ui/qml/AboutDialog.qml" line="42"/>
         <source>A simple Vatsim monitor</source>
-        <translation>Un semplice VATSIM visualizzatore</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -50,14 +49,14 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="73"/>
         <source>A simple Vatsim monitor</source>
-        <translation>Un semplice VATSIM visualizzatore</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="98"/>
         <location filename="../ui/windows/aboutwindow.cpp" line="40"/>
         <source>Version %1</source>
         <extracomment>%1 becomes a Vatsinator version</extracomment>
-        <translation>Versione %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="133"/>
@@ -72,7 +71,7 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="125"/>
         <source>About</source>
-        <translation>Informazioni</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="155"/>
@@ -82,26 +81,26 @@
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="174"/>
         <source>Authors</source>
-        <translation>Autori</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.ui" line="197"/>
         <source>License</source>
-        <translation>Licenza</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="77"/>
         <source>up-to-date</source>
         <comment>Vatsinator version indicator</comment>
         <extracomment>Indicates Vatsinator version</extracomment>
-        <translation>Aggiornato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/aboutwindow.cpp" line="82"/>
         <source>outdated</source>
         <comment>Vatsinator version indicator</comment>
         <extracomment>Indicates Vatsinator version</extracomment>
-        <translation>Antiquato</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -139,20 +138,20 @@
         <source>Inbound</source>
         <comment>airport details window tab</comment>
         <extracomment>Inbound flights</extracomment>
-        <translation>Arrivi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="152"/>
         <source>Outbound</source>
         <comment>airport details window tab</comment>
         <extracomment>Outbound flights</extracomment>
-        <translation>Partenze</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="223"/>
         <source>ATC</source>
         <comment>airport details window tab</comment>
-        <translation>ATC</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="294"/>
@@ -162,22 +161,22 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="368"/>
         <source>Airport info</source>
-        <translation>Informazioni sull&apos;aeroporto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="412"/>
         <source>Airport name:</source>
-        <translation>Nome dell&apos;aeroporto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="436"/>
         <source>City:</source>
-        <translation>Città:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="460"/>
         <source>Country:</source>
-        <translation>Paese:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="487"/>
@@ -192,24 +191,23 @@
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="626"/>
         <source>NOTAM</source>
-        <translation>NOTAM</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="720"/>
         <source>Close</source>
-        <translation>Chiudi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.ui" line="713"/>
         <source>Show</source>
-        <translation>Mostra
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="158"/>
         <source>%1 ft</source>
         <extracomment>ft - feet</extracomment>
-        <translation>%1 ft</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/airportdetailswindow.cpp" line="175"/>
@@ -222,26 +220,26 @@
     <message>
         <location filename="../models/airporttablemodel.cpp" line="114"/>
         <source>Airport</source>
-        <translation>Aeroporto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../models/airporttablemodel.cpp" line="117"/>
         <source>ATC</source>
-        <translation>ATC</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../models/airporttablemodel.cpp" line="121"/>
         <source>Inbound</source>
         <comment>airport table model</comment>
         <extracomment>Number of inbound flights in airpots' tab in FIR details</extracomment>
-        <translation>Arrivi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../models/airporttablemodel.cpp" line="125"/>
         <source>Outbound</source>
         <comment>airport table model</comment>
         <extracomment>Number of outbound flights in airports' tab in FIR details</extracomment>
-        <translation>Partenze</translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="135"/>
@@ -251,7 +249,7 @@
     <message numerus="yes">
         <location filename="../models/airporttablemodel.cpp" line="136"/>
         <source>%n departure(s)</source>
-        <translation><numerusform>%n partenzia</numerusform><numerusform>%n partenze</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -277,12 +275,12 @@
     <message>
         <location filename="../plugins/atcbookingtablemodel.cpp" line="108"/>
         <source>Callsign</source>
-        <translation>Callsign</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/atcbookingtablemodel.cpp" line="111"/>
         <source>Name</source>
-        <translation>Nome</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/atcbookingtablemodel.cpp" line="114"/>
@@ -301,12 +299,12 @@
         <location filename="../ui/windows/atcdetailswindow.cpp" line="48"/>
         <source>Name</source>
         <extracomment>Name of the ATC (i.e. John Smith EGLL)</extracomment>
-        <translation>Nome</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="49"/>
         <source>Frequency</source>
-        <translation>Frequenza</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="50"/>
@@ -316,12 +314,12 @@
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="51"/>
         <source>Airport</source>
-        <translation>Aeroporto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="52"/>
         <source>Server</source>
-        <translation>Server</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/atcdetailswindow.cpp" line="53"/>
@@ -339,18 +337,18 @@
     <message>
         <location filename="../models/atctablemodel.cpp" line="148"/>
         <source>Callsign</source>
-        <translation>Callsign</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../models/atctablemodel.cpp" line="152"/>
         <source>Name</source>
         <extracomment>Name of the ATC (i.e. John Smith EGLL)</extracomment>
-        <translation>Nome</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../models/atctablemodel.cpp" line="155"/>
         <source>Frequency</source>
-        <translation>Frequenza</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -427,14 +425,14 @@
         <source>up-to-date</source>
         <comment>Database status indicator</comment>
         <extracomment>Describes database update status</extracomment>
-        <translation>Aggiornato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="80"/>
         <source>outdated</source>
         <comment>Database status indicator</comment>
         <extracomment>Describes database update status</extracomment>
-        <translation>Antiquato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/databasewindow.cpp" line="88"/>
@@ -461,7 +459,7 @@
     <message>
         <location filename="../ui/views/delayedmodeltableview.cpp" line="26"/>
         <source>Loading...</source>
-        <translation>Caricamento in corso...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/views/delayedmodeltableview.cpp" line="27"/>
@@ -503,12 +501,12 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="84"/>
         <source>Flights</source>
-        <translation>Voli</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="155"/>
         <source>ATC</source>
-        <translation>ATC</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="226"/>
@@ -518,17 +516,17 @@
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="297"/>
         <source>Airports</source>
-        <translation>Aereoporti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="365"/>
         <source>NOTAM</source>
-        <translation>NOTAM</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.ui" line="446"/>
         <source>Close</source>
-        <translation>Chiudi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/firdetailswindow.cpp" line="93"/>
@@ -562,7 +560,7 @@
     <message>
         <location filename="../ui/qml/FlightDetails.qml" line="192"/>
         <source>Squawk</source>
-        <translation>Squawk</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -594,13 +592,13 @@
         <location filename="../ui/windows/flightdetailswindow.ui" line="595"/>
         <source>Origin</source>
         <extracomment>Airport of origin</extracomment>
-        <translation>Provenienza</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="667"/>
         <source>Destination</source>
         <extracomment>Destination airport</extracomment>
-        <translation>Destinazione</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="736"/>
@@ -638,19 +636,18 @@
         <location filename="../ui/windows/flightdetailswindow.ui" line="820"/>
         <source>Show</source>
         <extracomment>Show this flight on the map</extracomment>
-        <translation>Mostra
-</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="827"/>
         <source>Close</source>
         <extracomment>Close the window</extracomment>
-        <translation>Chiudi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="458"/>
         <source>Pilot</source>
-        <translation>Pilota</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="465"/>
@@ -675,7 +672,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="493"/>
         <source>Server</source>
-        <translation>Server</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="500"/>
@@ -685,7 +682,7 @@
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="507"/>
         <source>Squawk</source>
-        <translation>Squawk</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="514"/>
@@ -753,12 +750,12 @@
     <message>
         <location filename="../models/flighttablemodel.cpp" line="181"/>
         <source>Callsign</source>
-        <translation>Callsign</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../models/flighttablemodel.cpp" line="184"/>
         <source>Name</source>
-        <translation>Nome</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../models/flighttablemodel.cpp" line="187"/>
@@ -799,7 +796,7 @@
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="38"/>
         <source>Updating...</source>
-        <translation>Aggiornamento in corso...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapinfowidget.cpp" line="79"/>
@@ -814,12 +811,12 @@
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="132"/>
         <source>%n pilot(s)</source>
-        <translation><numerusform>%n pilota</numerusform><numerusform>%n piloti</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="133"/>
         <source>%n ATC(s)</source>
-        <translation><numerusform>%n ATC</numerusform><numerusform>%n ATCs</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../ui/widgets/mapinfowidget.cpp" line="134"/>
@@ -838,7 +835,7 @@
         <location filename="../ui/pages/mappage.ui" line="64"/>
         <source>FIR</source>
         <extracomment>Select FIR font</extracomment>
-        <translation>FIR</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="34"/>
@@ -849,13 +846,13 @@
         <location filename="../ui/pages/mappage.ui" line="71"/>
         <source>Airport</source>
         <extracomment>Select font for airports</extracomment>
-        <translation>Aeroporto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="78"/>
         <source>Pilot</source>
         <extracomment>Select font for pilots</extracomment>
-        <translation>Pilota</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/mappage.ui" line="51"/>
@@ -883,22 +880,22 @@
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="380"/>
         <source>Arrivals</source>
-        <translation>Arrivi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="391"/>
         <source>Departures</source>
-        <translation>Partenze</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="420"/>
         <source>Departures: %1</source>
-        <translation>Partenze: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="426"/>
         <source>Arrivals: %1</source>
-        <translation>Arrivi: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="457"/>
@@ -924,17 +921,17 @@
         <location filename="../ui/widgets/mapwidget.cpp" line="335"/>
         <source>Nearby</source>
         <extracomment>Nearby flights and airports</extracomment>
-        <translation>Vicino</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="337"/>
         <source>Flights</source>
-        <translation>Voli</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/widgets/mapwidget.cpp" line="346"/>
         <source>Airports</source>
-        <translation>Aereoporti</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -947,7 +944,7 @@
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="29"/>
         <source>Flights</source>
-        <translation>Voli</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="35"/>
@@ -957,7 +954,7 @@
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="41"/>
         <source>Airports</source>
-        <translation>Aereoporti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="46"/>
@@ -967,7 +964,7 @@
     <message>
         <location filename="../ui/qml/MenuModel.qml" line="52"/>
         <source>About</source>
-        <translation>Informazioni</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1033,7 +1030,7 @@
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="40"/>
         <source>Language:</source>
-        <translation>Lingua:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/miscellaneouspage.ui" line="83"/>
@@ -1047,7 +1044,7 @@
         <location filename="../ui/pages/networkpage.ui" line="14"/>
         <location filename="../ui/pages/networkpage.cpp" line="41"/>
         <source>Network</source>
-        <translation>Rete</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/networkpage.ui" line="20"/>
@@ -1111,7 +1108,7 @@
     <message>
         <location filename="../ui/dialogs/newversiondialog.ui" line="139"/>
         <source>Close</source>
-        <translation>Chiudi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1119,37 +1116,37 @@
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="79"/>
         <source>Monday</source>
-        <translation>Lunedì</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="82"/>
         <source>Tuesday</source>
-        <translation>Martedì</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="85"/>
         <source>Wednesday</source>
-        <translation>Mercoledì</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="88"/>
         <source>Thursday</source>
-        <translation>Giovedì</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="91"/>
         <source>Friday</source>
-        <translation>Venerdì</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="94"/>
         <source>Saturday</source>
-        <translation>Sabato</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../plugins/ultimate-weather-forecasts/ultimateweatherforecasts.cpp" line="97"/>
         <source>Sunday</source>
-        <translation>Domenica</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1248,7 +1245,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="68"/>
         <source>&amp;Vatsinator</source>
-        <translation>&amp;Vatsinator</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="88"/>
@@ -1263,12 +1260,12 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="108"/>
         <source>Exit</source>
-        <translation>Chiudi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="123"/>
         <source>About</source>
-        <translation>Informazioni</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="135"/>
@@ -1308,7 +1305,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="200"/>
         <source>Ctrl+H</source>
-        <translation>Ctrl+H</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="209"/>
@@ -1336,7 +1333,7 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="101"/>
         <source>Always</source>
-        <translation>Sempre</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="131"/>
@@ -1361,12 +1358,12 @@
     <message>
         <location filename="../ui/pages/viewpage.ui" line="22"/>
         <source>Pilots</source>
-        <translation>Piloti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="91"/>
         <source>Airports</source>
-        <translation>Aereoporti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../ui/pages/viewpage.ui" line="64"/>
