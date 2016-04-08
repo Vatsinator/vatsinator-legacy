@@ -45,3 +45,7 @@ Comment[zh-Hans]=一个简单的VATSIM监视器
 GenericName[zh-Hans]=VATSIM监视器
 Name[zh-Hans]=Vatsinator
 Icon[zh-Hans]=vatsinator
+Comment[fr]=Un simple logiciel de surveillance de Vatsim
+GenericName[fr]=Logiciel de surveillance de Vatsim
+Name[fr]=Vatsinator
+Icon[fr]=vatsinator
