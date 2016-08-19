@@ -586,7 +586,7 @@
         <location filename="../ui/windows/flightdetailswindow.ui" line="376"/>
         <source>Estimated Time of Arrival</source>
         <extracomment>Shortcut expansion for &quot;ETA&quot;</extracomment>
-        <translation>Apskaičiuotasis Atskridimo Laikas</translation>
+        <translation>Apskaičiuotasis atskridimo laikas</translation>
     </message>
     <message>
         <location filename="../ui/windows/flightdetailswindow.ui" line="595"/>
@@ -857,7 +857,7 @@
     <message>
         <location filename="../ui/pages/mappage.ui" line="51"/>
         <source>Map type:</source>
-        <translation type="unfinished"/>
+        <translation>Žemėlapio tipas:</translation>
     </message>
 </context>
 <context>
@@ -1310,7 +1310,7 @@
     <message>
         <location filename="../ui/windows/vatsinatorwindow.ui" line="209"/>
         <source>Database...</source>
-        <translation type="unfinished"/>
+        <translation>Duomenų bazė...</translation>
     </message>
     <message>
         <location filename="../ui/windows/vatsinatorwindow.cpp" line="56"/>
