@@ -57,21 +57,13 @@ QSize FirItem::size() const
 
 void FirItem::draw(WorldPainter* painter, MapItem::DrawFlags flags) const
 {
+    Q_UNUSED(flags);
+
     if (m_label.isNull())
         loadLabel();
 
     Q_ASSERT(!m_label.isNull());
     painter->drawPixmap(position(), m_label);
-
-//    if (flags & Debug) {
-//        painter->drawRect(rectForLabel(transform));
-
-//        if (flags & DrawSelected) {
-//            painter->fillRect(rectForLabel(transform), QBrush(QColor(100, 100, 100, 100)));
-//        }
-//    }
-    
-//    painter->drawPixmap(rectForLabel(transform), m_label);
 }
 
 int FirItem::z() const
@@ -89,8 +81,7 @@ void FirItem::loadLabel() const
     int w = fm.width(label);
     int h = fm.height();
     
-    int dpr = qApp->primaryScreen()->devicePixelRatio();
-    
+    int dpr = static_cast<int>(qApp->primaryScreen()->devicePixelRatio());
     m_label = QPixmap(w * dpr, h * dpr);
     m_label.setDevicePixelRatio(dpr);
     m_label.fill(Qt::transparent);
@@ -98,8 +89,8 @@ void FirItem::loadLabel() const
     QPainter p(&m_label);
     
     auto atcs = m_fir->clients<Atc>();
-    int fss = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->facility() == Atc::Ctr || it->facility() == Atc::Fss; });
-    int uirs = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->isUir(); });
+    auto fss = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->facility() == Atc::Ctr || it->facility() == Atc::Fss; });
+    auto uirs = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->isUir(); });
 
     QColor color;
     if (fss == 0)

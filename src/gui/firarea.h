@@ -72,7 +72,7 @@ private:
     mutable QRectF m_boundingRect;
     QVector<Core::LonLat> m_polygon;
     QVector<Core::LonLat> m_boundary;
-    bool m_visible;
+    bool m_isStaffed;
     QColor m_fillColor;
 
 }; /** @} */

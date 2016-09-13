@@ -70,4 +70,10 @@ void WorldPainter::drawLine(const LonLat& p1, const LonLat& p2)
     QPainter::drawLine(m1, m2);
 }
 
+void WorldPainter::drawLines(const QVector<LonLat>& pointPairs)
+{
+    QVector<QPoint> points = m_transform.map(pointPairs.cbegin(), pointPairs.cend());
+    QPainter::drawLines(points);
+}
+
 }} /* namespace Vatsinator::Gui */

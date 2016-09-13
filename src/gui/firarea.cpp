@@ -79,35 +79,30 @@ QRectF FirArea::boundingRect() const
 
 bool FirArea::isVisible() const
 {
-    return m_visible;
+    return m_isStaffed;
 }
 
 void FirArea::draw(WorldPainter* painter, MapDrawable::DrawFlags flags) const
 {
-    painter->save();
+    Q_UNUSED(flags);
 
-    bool staffed = m_fir->hasClientOfType<Atc>();
-    
+    painter->save();
     painter->setBrush(m_fillColor);
     painter->setPen(m_fillColor);
     
-    if (staffed)
+    if (m_isStaffed)
         painter->drawPolygon(m_polygon);
-//    else
-//        painter->drawLines(transform.map(m_boundary.cbegin(), m_boundary.cend()));
+    else
+        painter->drawLines(m_boundary);
     
     painter->restore();
-    
-//    if (flags & Debug) {
-//        painter->drawRect(m_boundingRect * transform);
-//    }
 }
 
 void FirArea::refreshStatus()
 {
     auto atcs = m_fir->clients<Atc>();
-    int fss = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->facility() == Atc::Ctr || it->facility() == Atc::Fss; });
-    int uirs = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->isUir(); });
+    auto fss = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->facility() == Atc::Ctr || it->facility() == Atc::Fss; });
+    auto uirs = std::count_if(atcs.begin(), atcs.end(), [](auto it) { return it->isUir(); });
 
     if (fss == 0)
         m_fillColor = QColor(175, 175, 175);
@@ -118,7 +113,7 @@ void FirArea::refreshStatus()
     else
         Q_UNREACHABLE();
 
-    m_visible = fss > 0;
+    m_isStaffed = fss > 0;
 }
 
 }} /* namespace Vatsinator::Gui */

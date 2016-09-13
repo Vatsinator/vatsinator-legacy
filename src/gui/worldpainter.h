@@ -88,6 +88,11 @@ public:
     void drawLine(const Core::LonLat& p1, const Core::LonLat& p2);
 
     /**
+     * Draws a line for each pair of points in the vector \c pointPairs using the current pen.
+     */
+    void drawLines(const QVector<Core::LonLat>& pointPairs);
+
+    /**
      * Returns transform used by this painter.
      */
     const WorldTransform& transform() const { return m_transform; }
