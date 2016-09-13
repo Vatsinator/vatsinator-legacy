@@ -275,7 +275,7 @@ QMenu* MapWidget::makeMenu(const QPoint &pos)
         menu->addAction(tr("Flight details"),
                         std::bind(&MapWidget::flightDetailsRequested, this, flightItem->pilot()));
 
-        QAction* trackAction = new QAction(tr("Track this flight"));
+        QAction* trackAction = new QAction(tr("Track this flight"), nullptr);
         trackAction->setCheckable(true);
 
         bool isTracked = renderer()->scene()->trackedFlight() == flightItem->pilot();
