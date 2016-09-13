@@ -1,0 +1,854 @@
+[
+  {
+    "alias": [
+      "ANYN",
+      "INU"
+    ],
+    "target": "ANAU"
+  },
+  {
+    "alias": [
+      "SFJ",
+      "BGG1",
+      "GREN"
+    ],
+    "target": "BGGL"
+  },
+  {
+    "alias": [
+      "MTL"
+    ],
+    "target": "CYUL"
+  },
+  {
+    "alias": [
+      "EDM",
+      "ZEG"
+    ],
+    "target": "CZEG"
+  },
+  {
+    "alias": [
+      "MON"
+    ],
+    "target": "CZQM"
+  },
+  {
+    "alias": [
+      "GAND",
+      "YQX",
+      "GAN"
+    ],
+    "target": "CZQX"
+  },
+  {
+    "alias": [
+      "MTL"
+    ],
+    "target": "CZUL"
+  },
+  {
+    "alias": [
+      "VAN",
+      "CYVR",
+      "ZVR"
+    ],
+    "target": "CZVR"
+  },
+  {
+    "alias": [
+      "YWG",
+      "ZWG"
+    ],
+    "target": "CZWG"
+  },
+  {
+    "alias": [
+      "TOR"
+    ],
+    "target": "CZYZ"
+  },
+  {
+    "alias": [
+      "EBBR",
+      "EBUR"
+    ],
+    "target": "EBBU"
+  },
+  {
+    "alias": [
+      "EDDM"
+    ],
+    "target": "EDMM"
+  },
+  {
+    "alias": [
+      "EDDW"
+    ],
+    "target": "EDWW"
+  },
+  {
+    "alias": [
+      "EETN"
+    ],
+    "target": "EETT"
+  },
+  {
+    "alias": [
+      {
+        "alias": [
+          "EFPS"
+        ],
+        "name": "Rovaniemi"
+      }
+    ],
+    "target": "EFES"
+  },
+  {
+    "alias": [
+      "THAMES"
+    ],
+    "target": "EGLC"
+  },
+  {
+    "alias": [
+      {
+        "alias": [
+          "EGCC",
+          "MAN"
+        ],
+        "name": "Manchester"
+      },
+      {
+        "alias": [
+          "PEN",
+          "EGNV"
+        ],
+        "name": "Pennine Radar"
+      },
+      {
+        "alias": [
+          "EGJJ",
+          "JER"
+        ],
+        "name": "Jersey Zone"
+      },
+      "LON",
+      "LTC",
+      "LON-SM",
+      "LON-CM",
+      "LON-DM",
+      "LON-EM"
+    ],
+    "target": "EGTT"
+  },
+  {
+    "alias": [
+      "EGX",
+      "GX",
+      "EG",
+      "E",
+      "G",
+      "X",
+      "SH",
+      "SR",
+      "SHW",
+      "SHAN",
+      "SWICK",
+      "SHWICK",
+      "SAWICK",
+      "SNWICK",
+      {
+        "alias": [
+          "EGG1"
+        ],
+        "name": "Shanwick"
+      },
+      {
+        "alias": [
+          "SC-D",
+          "EGG2"
+        ],
+        "name": "Shanwick Clearance Delivery"
+      },
+      {
+        "alias": [
+          "EGG3",
+          "S-ORCA",
+          "SORCA",
+          "S"
+        ],
+        "name": "Shanwick Oceanic Routing Clearance Authority"
+      },
+      {
+        "alias": [
+          "EGG2",
+          "EGG4",
+          "EGGX-D",
+          "EGX-D",
+          "EG-D",
+          "GX-D",
+          "E-D",
+          "G-D",
+          "X-D",
+          "SH-D",
+          "SH-D",
+          "SR-D",
+          "SHW-D",
+          "SHAN-D"
+        ],
+        "name": "Shanwick Oceanic Clearance Delivery"
+      }
+    ],
+    "target": "EGGX"
+  },
+  {
+    "alias": [
+      "SCO"
+    ],
+    "target": "EGPX"
+  },
+  {
+    "alias": [
+      "SEFG"
+    ],
+    "target": "SEGU"
+  },
+  {
+    "alias": [
+      "ESSEX",
+      "ESX"
+    ],
+    "target": "EGSS"
+  },
+  {
+    "alias": [
+      {
+        "alias": [
+          "EHMC"
+        ],
+        "name": "Dutch Mil (Military)"
+      }
+    ],
+    "target": "EHAA"
+  },
+  {
+    "alias": [
+      "SWEH",
+      "SWEL",
+      "ESSA",
+      "ESOS",
+      {
+        "alias": [
+          "ESMM",
+          "ESMS"
+        ],
+        "name": "Malmo"
+      },
+      {
+        "alias": [
+          "ESUN"
+        ],
+        "name": "Sundsvall"
+      }
+    ],
+    "target": "ESAA"
+  },
+  {
+    "alias": [
+      "TIP",
+      "HLLT",
+      {
+        "alias": [
+          "HLLB",
+          "BEN"
+        ],
+        "name": "Benina"
+      }
+    ],
+    "target": "HLLL"
+  },
+  {
+    "alias": [
+      "LEBL",
+      {
+        "alias": [
+          "LECL",
+          "LEVC"
+        ],
+        "name": "Valencia"
+      },
+      {
+        "alias": [
+          "LEVC"
+        ],
+        "name": "Valencia"
+      },
+      "LECP"
+    ],
+    "target": "LECB"
+  },
+  {
+    "alias": [
+      "LEMD",
+      {
+        "alias": [
+          "LECS",
+          "LEZL"
+        ],
+        "name": "Sevilla"
+      }
+    ],
+    "target": "LECM"
+  },
+  {
+    "alias": [
+      "LFPG",
+      "LFUB"
+    ],
+    "target": "LFFF"
+  },
+  {
+    "alias": [
+      "LFUB"
+    ],
+    "target": "LFBB"
+  },
+  {
+    "alias": [
+      "LFUE"
+    ],
+    "target": "LFEE"
+  },
+  {
+    "alias": [
+      "LFUM",
+      "LFRR",
+      "LFUR"
+    ],
+    "target": "LFMM"
+  },
+  {
+    "alias": [
+      {
+        "alias": [
+          "LGMD"
+        ],
+        "name": "Makedonia"
+      }
+    ],
+    "target": "LGGG"
+  },
+  {
+    "alias": [
+      {
+        "alias": [
+          "LIMG"
+        ],
+        "name": "Albenga"
+      },
+      {
+        "alias": [
+          "LIPP"
+        ],
+        "name": "Padova"
+      }
+    ],
+    "target": "LIMM"
+  },
+  {
+    "alias": [
+      "LIMM"
+    ],
+    "target": "LIMC"
+  },
+  {
+    "alias": [
+      "LLTA",
+      {
+        "alias": [
+          "LLSC"
+        ],
+        "name": "South Control"
+      }
+    ],
+    "target": "LLLL"
+  },
+  {
+    "alias": [
+      "LOWW"
+    ],
+    "target": "LOVV"
+  },
+  {
+    "alias": [
+      "LUUU"
+    ],
+    "target": "LUKK"
+  },
+  {
+    "alias": [
+      {
+        "alias": [
+          "LPAM"
+        ],
+        "name": "Lisboa Military"
+      }
+    ],
+    "target": "LPPC"
+  },
+  {
+    "alias": [
+      "LQSA"
+    ],
+    "target": "LQSB"
+  },
+  {
+    "alias": [
+      "LSAG",
+      {
+        "alias": [
+          "LSAZ",
+          "LSZH"
+        ],
+        "name": "Zurich"
+      }
+    ],
+    "target": "LSAS"
+  },
+  {
+    "alias": [
+      "LTBA"
+    ],
+    "target": "LTBB"
+  },
+  {
+    "alias": [
+      "MZT",
+      "MMMZ"
+    ],
+    "target": "MMZT"
+  },
+  {
+    "alias": [
+      "NZCH-B"
+    ],
+    "target": "NZCB"
+  },
+  {
+    "alias": [
+      "NZCH-S"
+    ],
+    "target": "NZCS"
+  },
+  {
+    "alias": [
+      "NZCH-R"
+    ],
+    "target": "NZCR"
+  },
+  {
+    "alias": [
+      "NZCH-K"
+    ],
+    "target": "NZCK"
+  },
+  {
+    "alias": [
+      "BEY",
+      "OLBB"
+    ],
+    "target": "OLBA"
+  },
+  {
+    "alias": [
+      "OSDI"
+    ],
+    "target": "OSTT"
+  },
+  {
+    "alias": [
+      "AMM"
+    ],
+    "target": "OJAI"
+  },
+  {
+    "alias": [
+      "ANC"
+    ],
+    "target": "PAZA"
+  },
+  {
+    "alias": [
+      "ANC"
+    ],
+    "target": "PANC"
+  },
+  {
+    "alias": [
+      "KOA"
+    ],
+    "target": "PHKO"
+  },
+  {
+    "alias": [
+      "ITO"
+    ],
+    "target": "PHTO"
+  },
+  {
+    "alias": [
+      "HNL"
+    ],
+    "target": "PHZH"
+  },
+  {
+    "alias": [
+      "TPE"
+    ],
+    "target": "RCAA"
+  },
+  {
+    "alias": [
+      {
+        "alias": [
+          "RJCG",
+          "SPO",
+          "RJCO"
+        ],
+        "name": "Sapporo"
+      },
+      {
+        "alias": [
+          "RJDG",
+          "RJFF",
+          "FKO"
+        ],
+        "name": "Fukuoka"
+      },
+      "TOKYO",
+      "TOKYOE",
+      "TOKYOS",
+      "TOKYOW",
+      "TYO",
+      "TYOE",
+      "TYOS",
+      "TYOW"
+    ],
+    "target": "RJTG"
+  },
+  {
+    "alias": [
+      "SJU"
+    ],
+    "target": "TJSJ"
+  },
+  {
+    "alias": [
+      "SJU"
+    ],
+    "target": "TJZS"
+  },
+  {
+    "alias": [
+      "BAIRES"
+    ],
+    "target": "SAEF"
+  },
+  {
+    "alias": [
+      "SBWR"
+    ],
+    "target": "SBBR"
+  },
+  {
+    "alias": [
+      "SBBR",
+      "SBXP"
+    ],
+    "target": "SBBS"
+  },
+  {
+    "alias": [
+      "SBWT"
+    ],
+    "target": "SBCT"
+  },
+  {
+    "alias": [
+      "SBWN"
+    ],
+    "target": "SBEG"
+  },
+  {
+    "alias": [
+      "SBWF"
+    ],
+    "target": "SBRF"
+  },
+  {
+    "alias": [
+      "SBXF"
+    ],
+    "target": "SBFL"
+  },
+  {
+    "alias": [
+      "RIO"
+    ],
+    "target": "SBRJ"
+  },
+  {
+    "alias": [
+      "SBWS"
+    ],
+    "target": "SBSL"
+  },
+  {
+    "alias": [
+      "SP",
+      "SBXP"
+    ],
+    "target": "SBSP"
+  },
+  {
+    "alias": [
+      "SBXS"
+    ],
+    "target": "SBSV"
+  },
+  {
+    "alias": [
+      "MSK"
+    ],
+    "target": "UUWV"
+  },
+  {
+    "alias": [
+      "BN"
+    ],
+    "target": "YBBN"
+  },
+  {
+    "alias": [
+      "ML-BKE"
+    ],
+    "target": "YBKE"
+  },
+  {
+    "alias": [
+      "BN-CAH"
+    ],
+    "target": "YCAH"
+  },
+  {
+    "alias": [
+      "BN-ISA",
+      "BN-WEG"
+    ],
+    "target": "YISA"
+  },
+  {
+    "alias": [
+      "BN-TBP",
+      "BN-SWY",
+      "BN-KEN",
+      "BN-BAR"
+    ],
+    "target": "YTBP"
+  },
+  {
+    "alias": [
+      "AD"
+    ],
+    "target": "YPAD"
+  },
+  {
+    "alias": [
+      "ML"
+    ],
+    "target": "YMML"
+  },
+  {
+    "alias": [
+      "ML-KLG"
+    ],
+    "target": "YKLG"
+  },
+  {
+    "alias": [
+      "ML-TAS"
+    ],
+    "target": "YTAS"
+  },
+  {
+    "alias": [
+      "ML-BIK"
+    ],
+    "target": "YBIK"
+  },
+  {
+    "alias": [
+      "SU"
+    ],
+    "target": "YBSU"
+  },
+  {
+    "alias": [
+      "SY"
+    ],
+    "target": "YSSY"
+  },
+  {
+    "alias": [
+      "ABQ"
+    ],
+    "target": "KZAB"
+  },
+  {
+    "alias": [
+      "CHI",
+      "ORD"
+    ],
+    "target": "KZAU"
+  },
+  {
+    "alias": [
+      "BOS"
+    ],
+    "target": "KZBW"
+  },
+  {
+    "alias": [
+      "DC",
+      "WAS"
+    ],
+    "target": "KZDC"
+  },
+  {
+    "alias": [
+      "DEN"
+    ],
+    "target": "KZDV"
+  },
+  {
+    "alias": [
+      "FTW"
+    ],
+    "target": "KZFW"
+  },
+  {
+    "alias": [
+      "HOU"
+    ],
+    "target": "KZHU"
+  },
+  {
+    "alias": [
+      "IND"
+    ],
+    "target": "KZID"
+  },
+  {
+    "alias": [
+      "JAX"
+    ],
+    "target": "KZJX"
+  },
+  {
+    "alias": [
+      "KC"
+    ],
+    "target": "KZKC"
+  },
+  {
+    "alias": [
+      "LAX"
+    ],
+    "target": "KZLA"
+  },
+  {
+    "alias": [
+      "SLC"
+    ],
+    "target": "KZLC"
+  },
+  {
+    "alias": [
+      "MIA"
+    ],
+    "target": "KZMA"
+  },
+  {
+    "alias": [
+      "MEM"
+    ],
+    "target": "KZME"
+  },
+  {
+    "alias": [
+      "MSP"
+    ],
+    "target": "KZMP"
+  },
+  {
+    "alias": [
+      "NY"
+    ],
+    "target": "KZNY"
+  },
+  {
+    "alias": [
+      "OAK"
+    ],
+    "target": "KZOA"
+  },
+  {
+    "alias": [
+      "CLE"
+    ],
+    "target": "KZOB"
+  },
+  {
+    "alias": [
+      "SEA"
+    ],
+    "target": "KZSE"
+  },
+  {
+    "alias": [
+      "ATL"
+    ],
+    "target": "KZTL"
+  },
+  {
+    "alias": [
+      "NY"
+    ],
+    "target": "KJFK"
+  },
+  {
+    "alias": [
+      "REG"
+    ],
+    "target": "KDFW"
+  },
+  {
+    "alias": [
+      "CHI"
+    ],
+    "target": "KORD"
+  },
+  {
+    "alias": [
+      "HNL"
+    ],
+    "target": "PHNL"
+  },
+  {
+    "alias": [
+      "ZAN"
+    ],
+    "target": "PAZA"
+  }
+]

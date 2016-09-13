@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>AirportDetailsPage.qml</file>
+        <file>AtcDetailsPage.qml</file>
+        <file>FirDetailsPage.qml</file>
+        <file>FlightDetailsPage.qml</file>
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>
+

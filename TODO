@@ -1,15 +1,11 @@
 == TODO for version 1.0 ==
 
+* VatsinatorDatabase
+* moveto0 and msg0
 * Pilots that went offline airborne
-* Home-location
-* Data files should use JSON format (model, uir)
 * Old versions config updater
-* Search window
-* Better labels display
 
-Due to the new engine:
-* Make trackers work (FlightTracker, AirportTracker)
-
-== TODO for later versions ==
+== Ideas for later versions ==
 * Chart links
 * VATSIM news widget
+* Search window

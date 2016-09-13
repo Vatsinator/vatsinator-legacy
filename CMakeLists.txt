@@ -20,42 +20,7 @@ if (UNIX AND NOT APPLE AND NOT MINGW AND NOT ANDROID)
     set (LINUX 1)
 endif ()
 
-set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
-
-
-find_package (Qt5Core REQUIRED)
-include_directories (${Qt5Core_INCLUDE_DIRS})
-
-find_package (Qt5Gui REQUIRED)
-include_directories (${Qt5Gui_INCLUDE_DIRS})
-
-find_package (Qt5Network REQUIRED)
-include_directories (${Qt5Network_INCLUDE_DIRS})
-
-find_package (QuaZip5 REQUIRED)
-include_directories (${QUAZIP_INCLUDE_DIRS})
-
-if (ANDROID)
-    find_package (Qt5Quick REQUIRED)
-    include_directories(${Qt5Quick_INCLUDE_DIRS})
-    
-    find_package (Qt5AndroidExtras REQUIRED)
-    include_directories (${Qt5AndroidExtras_INCLUDE_DIRS})
-else () # desktop
-    find_package (Qt5Widgets REQUIRED)
-    include_directories (${Qt5Widgets_INCLUDE_DIRS})
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
-    
-    if (APPLE)
-        find_package (Qt5MacExtras REQUIRED)
-        include_directories (${Qt5MacExtras_INCLUDE_DIRS})
-    endif ()
-endif()
-
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
-add_subdirectory (3rdparty)
-
-include (QtUtils)
+set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 # set configuration types (msvc/xcode)
 if (CMAKE_CONFIGURATION_TYPES)
@@ -74,26 +39,16 @@ endif ()
 
 # set CXX_FLAGS
 if (CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
-    include (CheckCXXCompilerFlag)
-    check_cxx_compiler_flag ("-std=c++14" COMPILER_SUPPORTS_CXX14)
-    check_cxx_compiler_flag ("-std=c++1y" COMPILER_SUPPORTS_CXX1Y)
-    if (NOT COMPILER_SUPPORTS_CXX14 AND NOT COMPILER_SUPPORTS_CXX1Y)
-        message (FATAL_ERROR "Your compiler does not support C++14 standard; cannot continue.")
-    endif ()
-
-    if (COMPILER_SUPPORTS_CXX14)
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
-    elseif (COMPILER_SUPPORTS_CXX1Y)
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
-    endif ()
-
     set (CMAKE_CXX_FLAGS_RELEASE "-DQT_NO_DEBUG -DQT_NO_DEBUG_OUTPUT")
     set (CMAKE_CXX_FLAGS_DEBUG "-g -Wall -Wpedantic -Wextra")
+    set (CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
 elseif (MSVC)
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
     set (CMAKE_CXX_FLAGS_DEBUG "/W4")
     set (CMAKE_CXX_FLAGS_RELEASE "/DQT_NO_DEBUG /DQT_NO_DEBUG_OUTPUT")
 endif ()
+
+set (CMAKE_CXX_STANDARD "14")
 
 # find version
 if (NOT vatsinator_VERSION)
@@ -110,39 +65,30 @@ if (NOT vatsinator_VERSION)
     endif (NOT "${GIT_SHA1}" STREQUAL "GITDIR-NOTFOUND")
 endif (NOT vatsinator_VERSION)
 
-if (LINUX)
-    set (vatsinator_INSTALL_DIR "share/vatsinator")
-elseif (WIN32)
-    set (vatsinator_INSTALL_DIR ".")
-elseif (APPLE)
-    set (vatsinator_INSTALL_DIR "vatsinator.app/Contents/Resources")
-elseif (ANDROID)
-    set (vatsinator_INSTALL_DIR "assets")
-endif()
-
-if (NOT APPLE)
-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-endif (NOT APPLE)
-
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-add_subdirectory (source)
-add_subdirectory (resources)
-
-include (Packaging)
-
-# Platform-specific actions
 if (LINUX)
-    # This sets up the "debian" directory
-    option (WITH_DEBIAN "Setup \"debian\" subdirectory" OFF)
-    if (WITH_DEBIAN AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/debian")
-        add_subdirectory (debian)
-    endif ()
-    
-    # Spec file
-    option (WITH_RPM "Create RPM package" OFF)
+    set (vatsinator_RESOURCES_TARGET_DIR "share/vatsinator")
+elseif (WIN32)
+    set (vatsinator_RESOURCES_TARGET_DIR ".")
+elseif (APPLE)
+    set (vatsinator_RESOURCES_TARGET_DIR "vatsinator.app/Contents/Resources")
+elseif (ANDROID)
+    set (vatsinator_RESOURCES_TARGET_DIR "assets")
+endif()
+
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
+add_subdirectory (3rdparty)
+
+add_subdirectory (src)
+
+find_package (Qt5Test QUIET)
+if (Qt5Test_FOUND)
+    include_directories (${Qt5Test_INCLUDE_DIRS})
+    include (CTest)
+    enable_testing ()
+    add_subdirectory (tests)
 endif ()
-add_subdirectory (dist)
 
 # Sum up our configuration
 message (STATUS "Vatsinator-${vatsinator_VERSION} will be built with the following options:")
@@ -166,8 +112,11 @@ else ()
     message (STATUS " * platform: Undefined")
 endif ()
 
-query_qmake (QT_VERSION QT_VERSION)
-message (STATUS " * Qt version: ${QT_VERSION}")
+if (BUILD_TESTING)
+    message (STATUS " * tests: enabled")
+else ()
+    message (STATUS " * tests: disabled")
+endif ()
 
 # uninstall target
 configure_file (
@@ -191,4 +140,3 @@ if (DOXYGEN_FOUND)
         COMMENT "Generating documentation with Doxygen" VERBATIM
     )
 endif ()
-

@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>preferences-network.png</file>
+    <file>preferences-miscellaneous.png</file>
+    <file>vatsinator.png</file>
+    <file>vatsinator@2x.png</file>
+  </qresource>
+</RCC>

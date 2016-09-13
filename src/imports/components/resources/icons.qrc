@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/icons/action">
+        <file alias="label_black.svg">ic_label_black_24px.svg</file>
+        <file alias="assignment_black.svg">ic_assignment_black_24px.svg</file>
+    </qresource>
+    
+    <qresource prefix="/icons/content">
+        <file alias="flag_black.svg">ic_flag_black_24px.svg</file>
+        <file alias="forward.svg">ic_forward_black_24px.svg</file>
+    </qresource>
+    
+    <qresource prefix="/icons/navigation">
+        <file alias="arrow_back_white.svg">ic_arrow_back_white_48px.svg</file>
+    </qresource>
+    
+    <qresource prefix="/icons/image">
+        <file alias="filter_hdr_black.svg">ic_filter_hdr_black_24px.svg</file>
+    </qresource>
+    
+    <qresource prefix="/icons/maps">
+        <file alias="traffic_black.svg">ic_traffic_black_24px.svg</file>
+        <file alias="flight_black.svg">ic_flight_black_24px.svg</file>
+    </qresource>
+    
+    <qresource prefix="/icons/social">
+        <file alias="location_city_black.svg">ic_location_city_black_24px.svg</file>
+    </qresource>
+    
+    <qresource prefix="pixmaps">
+        <file>hdpi/flightmark_black_24dp.png</file>
+        <file>mdpi/flightmark_black_24dp.png</file>
+        <file>xhdpi/flightmark_black_24dp.png</file>
+        <file>xxhdpi/flightmark_black_24dp.png</file>
+        <file>xxxhdpi/flightmark_black_24dp.png</file>
+    </qresource>
+</RCC>
+

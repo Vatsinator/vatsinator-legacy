@@ -1,0 +1,25 @@
+vatsinator ICON "vatsinator.ico"
+1 VERSIONINFO
+FILEVERSION ${vatsinator_VERSION_WINDRES},0,0
+PRODUCTVERSION ${vatsinator_VERSION_WINDRES},0,0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080904E4"
+    BEGIN
+      VALUE "CompanyName", "VatsinatorTeam"
+      VALUE "FileDescription", "A simple Vatsim monitor"
+      VALUE "FileVersion", "${vatsinator_VERSION}"
+      VALUE "InternalName", "vatsinator"
+      VALUE "LegalCopyright", "VatsinatorTeam"
+      VALUE "OriginalFilename", "vatsinator.exe"
+      VALUE "ProductName", "Vatsinator"
+      VALUE "ProductVersion", "${vatsinator_VERSION}"
+    END
+  END
+
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x809, 1252
+  END
+END

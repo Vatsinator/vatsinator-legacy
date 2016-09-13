@@ -1,0 +1,5 @@
+if (BUILD_WIDGETS)
+    add_subdirectory (widgets)
+elseif (BUILD_QML)
+    add_subdirectory (quick)
+endif ()

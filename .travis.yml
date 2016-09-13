@@ -6,10 +6,6 @@ compiler:
 before_install:
     - brew update
     - brew install qt5
-    - wget http://sourceforge.net/projects/quazip/files/quazip/0.7.1/quazip-0.7.1.tar.gz/download -O /tmp/quazip-0.7.1.tar.gz || wget http://vatsinator.eu.org/downloads/3rdparty/quazip-0.7.1.tar.gz -O /tmp/quazip-0.7.1.tar.gz
-    - wget http://vatsinator.eu.org/downloads/3rdparty/quazip-qtcore-osx.patch -O /tmp/quazip-qtcore-osx.patch
-    - tar xvf /tmp/quazip-0.7.1.tar.gz
-    - cd quazip-0.7.1 && patch -p1 < /tmp/quazip-qtcore-osx.patch && cmake . -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake && make VERBOSE=1 && sudo make install && cd ..
 
 before_script:
     - cmake . -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake

@@ -1,0 +1,455 @@
+[
+    {
+        "firs": [
+            "RPHI",
+            "VVTS",
+            "VTBB",
+            "VVGL",
+            "VLVT",
+            "VYYY",
+            "VDPP"
+        ],
+        "icao": "ASEA_N",
+        "name": "South East Asia Control"
+    },
+    {
+        "firs": [
+            "WSJC",
+            "WMFC",
+            "WBFC",
+            "WIIF",
+            "WAAF"
+        ],
+        "icao": "ASEA_S",
+        "name": "South East Asia Control"
+    },
+    {
+        "firs": [
+            "WSJC",
+            "WMFC",
+            "WBFC",
+            "WIIF",
+            "WAAF",
+            "RPHI",
+            "VVTS",
+            "VYYF",
+            "VDPP",
+            "VTBB",
+            "VVGL",
+            "VLVT"
+        ],
+        "icao": "ASEA",
+        "name": "South East Asia Control"
+    },
+    {
+        "firs": [
+            "GMMM",
+            "DAAA",
+            "DTTC",
+            "HLLL",
+            "HECC",
+            "GVSC",
+            "GCCC",
+            "GOOO",
+            "GOOC",
+            "DRRR",
+            "FTTT",
+            "HSSS",
+            "HHAA",
+            "HAAA"
+        ],
+        "icao": "AFRN",
+        "name": "North Africa"
+    },
+    {
+        "firs": [
+            "HUEC",
+            "HRYR",
+            "HBBA",
+            "HKNA",
+            "HCSM",
+            "FSSS",
+            "HTDC",
+            "FLFI",
+            "FNAN"
+        ],
+        "icao": "AFRC_E",
+        "name": "Central Africa East"
+    },
+    {
+        "firs": [
+            "GLRB",
+            "DIII",
+            "DGAC",
+            "DNKK"
+        ],
+        "icao": "AFRC_w",
+        "name": "Central Africa West"
+    },
+    {
+        "firs": [
+            "FCCC",
+            "FZZA",
+            "FLFI",
+            "FNAN"
+        ],
+        "icao": "AFRC_c",
+        "name": "Central Africa Central"
+    },
+    {
+        "firs": [
+            "GLRB",
+            "DIII",
+            "DGAC",
+            "DNKK",
+            "FCCC",
+            "FZZA",
+            "HUEC",
+            "HRYR",
+            "HBBA",
+            "HKNA",
+            "HCSM",
+            "FSSS",
+            "HTDC",
+            "FLFI",
+            "FNAN"
+        ],
+        "icao": "AFRC",
+        "name": "Central Africa"
+    },
+    {
+        "firs": [
+            "FYWH",
+            "FBGR",
+            "FVHA",
+            "FWLL",
+            "FMMM",
+            "FIMM",
+            "FQBE",
+            "FAJS",
+            "FACT",
+            "FAJO"
+        ],
+        "icao": "AFRS",
+        "name": "South Africa"
+    },
+    {
+        "firs": [
+            "UMKK",
+            "EYVL",
+            "EVRR",
+            "EETT"
+        ],
+        "icao": "BALT",
+        "name": "Baltic Control"
+    },
+    {
+        "firs": [
+            "BGGL",
+            "BIRD"
+        ],
+        "icao": "BICC",
+        "name": "Iceland Radio"
+    },
+    {
+        "firs": [
+            "EKDK",
+            "EETT",
+            "EFPS",
+            "EFES",
+            "EVRR",
+            "EYVL",
+            "ENOR",
+            "ENBD",
+            "ENTR",
+            "ENSV",
+            "ENOS",
+            "ESAA",
+            "ESMM",
+            "ESOS"
+        ],
+        "icao": "EURN",
+        "name": "Eurocontrol North"
+    },
+    {
+        "firs": [
+            "LOVV",
+            "EBBU",
+            "EDFF",
+            "EDLL",
+            "EDGG",
+            "EDMM",
+            "EDWW",
+            "LSAS",
+            "EHAA"
+        ],
+        "icao": "EURM",
+        "name": "Maastricht Eurocontrol"
+    },
+    {
+        "firs": [
+            "LFBB",
+            "LFEE",
+            "LFMM",
+            "LFRR",
+            "LFFF",
+            "LPPC",
+            "LECM",
+            "LECB"
+        ],
+        "icao": "EURW",
+        "name": "Eurocontrol West"
+    },
+    {
+        "firs": [
+            "LAAA",
+            "LQSB",
+            "LBSR",
+            "LBWR",
+            "LDZO",
+            "LKAA",
+            "LWSS",
+            "LHCC",
+            "LUKK",
+            "EPWW",
+            "LRBB",
+            "LYBA",
+            "LZBB",
+            "LJLA"
+        ],
+        "icao": "EURE",
+        "name": "Eurocontrol East"
+    },
+    {
+        "firs": [
+            "LCCC",
+            "LGGG",
+            "LIMM",
+            "LIRR",
+            "LIBB",
+            "LMMM",
+            "LTBB"
+        ],
+        "icao": "EURS",
+        "name": "Eurocontrol South"
+    },
+    {
+        "firs": [
+            "EISN",
+            "EGTT",
+            "EGPX",
+            "BIRD"
+        ],
+        "icao": "EURI",
+        "name": "Eurocontrol Islands"
+    },
+    {
+        "firs": [
+            "OIIX",
+            "ORBB",
+            "OSTT",
+            "OEJD",
+            "OKAC",
+            "OBBB",
+            "OMAE",
+            "OYSC",
+            "OOMM",
+            "OJAC",
+            "HECC"
+        ],
+        "icao": "GULF",
+        "name": "Gulf Area"
+    },
+    {
+        "firs": [
+            "LFMM",
+            "LFFF",
+            "LFEE",
+            "LFBB",
+            "LFRR"
+        ],
+        "icao": "LFUP",
+        "name": "France Control"
+    },
+    {
+        "firs": [
+            "LFMM",
+            "LFFF",
+            "LFEE",
+            "LFBB",
+            "LFRR"
+        ],
+        "icao": "LFFM",
+        "name": "France Military"
+    },
+    {
+        "firs": [
+            "LIMM",
+            "LIBB",
+            "LIRR",
+            "LIPP"
+        ],
+        "icao": "LIUP",
+        "name": "Italy Radar"
+    },
+    {
+        "firs": [
+            "LTBB",
+            "LTAA"
+        ],
+        "icao": "LTUP",
+        "name": "Turkey Uppder Control"
+    },
+    {
+        "firs": [
+            "UEEE",
+            "UELL",
+            "UEMO",
+            "UESS",
+            "UEST",
+            "UESU",
+            "UHHH",
+            "UHMM",
+            "UHPP",
+            "UHSS",
+            "UHWW"
+        ],
+        "icao": "RU-ERC",
+        "name": "Eastern Russia Control"
+    },
+    {
+        "firs": [
+            "UMMV",
+            "UUWV",
+            "URRV",
+            "UWWW",
+            "UWOO",
+            "UWUU",
+            "UWKD"
+        ],
+        "icao": "RU-WRC",
+        "name": "Western Russia Control"
+    },
+    {
+        "firs": [
+            "UOOO",
+            "UOTT",
+            "UNIP",
+            "UNKL",
+            "UNIW",
+            "UNIT",
+            "UERP",
+            "UENN",
+            "UERR",
+            "UIKK",
+            "UIII",
+            "UIAA",
+            "UIKB"
+        ],
+        "icao": "RU-ESC",
+        "name": "Eastern Siberia Control"
+    },
+    {
+        "firs": [
+            "USDK",
+            "USDD",
+            "USDS",
+            "USHB",
+            "USSE",
+            "USHH",
+            "USRR",
+            "UNLL",
+            "USTR",
+            "USSS",
+            "USCC",
+            "USCM",
+            "USUU",
+            "UNOO",
+            "UNNT",
+            "UNWW",
+            "UNBB"
+        ],
+        "icao": "RU-WSC",
+        "name": "Western Siberia Control"
+    },
+    {
+        "firs": [
+            "UATT",
+            "UACC",
+            "UAAA",
+            "UTAK",
+            "UTAA",
+            "UTAT",
+            "UTNR",
+            "UTAV",
+            "UTSD",
+            "UTTR",
+            "UAII",
+            "UCFO",
+            "UTDD",
+            "UCFM"
+        ],
+        "icao": "RU-CEN",
+        "name": "Central Asia Control"
+    },
+    {
+        "firs": [
+            "ULLL",
+            "ULMM",
+            "ULAA",
+            "UMKK",
+            "UUYY"
+        ],
+        "icao": "RU-NWC",
+        "name": "North West Control"
+    },
+    {
+        "firs": [
+            "UKDV",
+            "UKFV",
+            "UKOV",
+            "UKBV",
+            "UKLV"
+        ],
+        "icao": "UKR",
+        "name": "Ukraine Control"
+    },
+    {
+        "firs": [
+            "VABF",
+            "VEGF",
+            "VECF",
+            "VIDF",
+            "VOMF"
+        ],
+        "icao": "VZUP",
+        "name": "India Upper Radar"
+    },
+    {
+        "firs": [
+            "YBIK",
+            "YBKE",
+            "YSNO",
+            "YCAN",
+            "YTAS",
+            "YPIL",
+            "YKLG",
+            "YNUL"
+        ],
+        "icao": "YMMM",
+        "name": "Melbourne Centre Upper"
+    },
+    {
+        "firs": [
+            "YARL",
+            "YDOS",
+            "YKPL",
+            "YCAH",
+            "YTRT",
+            "YTBP",
+            "YISA"
+        ],
+        "icao": "YBBB",
+        "name": "Brisbane Centre Upper"
+    }
+]

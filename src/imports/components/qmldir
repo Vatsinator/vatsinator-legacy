@@ -1,0 +1,6 @@
+module org.eu.vatsinator.Components
+plugin componentsplugin
+ClientListView 1.0 ClientListView.qml
+Details 1.0 Details.qml
+MapControls 1.0 MapControls.qml
+TwoLineListItem 1.0 TwoLineListItem.qml

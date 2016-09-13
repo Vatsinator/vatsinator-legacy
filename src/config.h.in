@@ -1,0 +1,9 @@
+#ifndef VATSINATOR_CONFIG_H
+#define VATSINATOR_CONFIG_H
+
+#define VATSINATOR_VERSION "${vatsinator_VERSION}"
+#define VATSINATOR_PREFIX "${vatsinator_PREFIX}"
+
+#define VATSINATOR_SOURCE_PATH "${vatsinator_SOURCE_PATH}"
+
+#endif // VATSINATOR_CONFIG_H
