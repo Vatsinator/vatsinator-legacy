@@ -1,5 +1,5 @@
-﻿project (vatsinator)
-cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
+project (vatsinator)
+cmake_minimum_required (VERSION 3.4 FATAL_ERROR)
 
 # Automatically link Qt executables to qtmain target on Windows
 if (POLICY CMP0020)
