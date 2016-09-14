@@ -1,8 +1,4 @@
-find_package (Qt5Core REQUIRED)
-include_directories (${Qt5Core_INCLUDE_DIRS})
-
 find_package (Qt5Gui REQUIRED)
-include_directories (${Qt5Gui_INCLUDE_DIRS}) 
 
 set (gui_SOURCES
     airportitem.cpp
@@ -50,7 +46,7 @@ set (gui_QRCS
 )
 
 add_library (vtrgui SHARED ${gui_SOURCES} ${gui_HEADERS} ${gui_QRCS})
-target_link_libraries (vtrgui Qt5::Core Qt5::Gui vtrcore)
+target_link_libraries (vtrgui vtrcore Qt5::Gui)
 set_target_properties (vtrgui PROPERTIES CXX_VISIBILITY_PRESET hidden)
 install (TARGETS vtrgui
     EXPORT vtrgui

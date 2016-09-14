@@ -1,8 +1,4 @@
-find_package (Qt5Core REQUIRED)
-include_directories (${Qt5Core_INCLUDE_DIRS})
-
 find_package (Qt5Gui REQUIRED)
-include_directories (${Qt5Gui_INCLUDE_DIRS}) 
 
 set (misc_SOURCES
     airlinelogoreply.cpp
@@ -42,7 +38,7 @@ set (misc_HEADERS
 )
 
 add_library (vtrmisc SHARED ${misc_SOURCES} ${misc_HEADERS})
-target_link_libraries (vtrmisc Qt5::Core Qt5::Gui vtrcore)
+target_link_libraries (vtrmisc vtrcore Qt5::Gui)
 set_target_properties (vtrmisc PROPERTIES CXX_VISIBILITY_PRESET hidden)
 install (TARGETS vtrmisc
     EXPORT vtrmisc

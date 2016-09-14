@@ -24,8 +24,8 @@ endif ()
 
 add_executable (vatsinator MACOSX_BUNDLE WIN32 ${vatsinator_SRCS})
 target_link_libraries (vatsinator
-    Qt5::Widgets
     vtrwidgets
+    Qt5::Widgets
 )
 add_dependencies (vatsinator i18n)
 install (TARGETS vatsinator DESTINATION bin)

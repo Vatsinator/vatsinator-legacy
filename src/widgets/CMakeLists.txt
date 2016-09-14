@@ -1,6 +1,4 @@
 find_package (Qt5Widgets REQUIRED)
-include_directories (${Qt5Widgets_INCLUDE_DIRS})
-
 include_directories (${CMAKE_CURRENT_BINARY_DIR})
 
 set (widgets_SOURCES
@@ -32,7 +30,7 @@ set (widgets_HEADERS
 )
 
 add_library (vtrwidgets SHARED ${widgets_SOURCES} ${widgets_HEADERS})
-target_link_libraries (vtrwidgets Qt5::Widgets vtrgui vtrmisc)
+target_link_libraries (vtrwidgets vtrgui vtrmisc Qt5::Widgets)
 set_target_properties (vtrwidgets PROPERTIES CXX_VISIBILITY_PRESET hidden)
 install (TARGETS vtrwidgets
     EXPORT vtrwidgets
