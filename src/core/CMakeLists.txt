@@ -1,8 +1,5 @@
-find_package (Qt5Core REQUIRED)
-include_directories (${Qt5Core_INCLUDE_DIRS})
-
+find_package (Qt5Core 5.6 REQUIRED)
 find_package (Qt5Network REQUIRED)
-include_directories (${Qt5Network_INCLUDE_DIRS})
 
 set (core_SOURCES
     airline.cpp

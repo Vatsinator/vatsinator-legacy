@@ -8,14 +8,12 @@ endif ()
 function (add_qt_qm_file output prefix lang_code)
     set (qm_file "${QT_TRANSLATIONS_DIR}/${prefix}_${lang_code}.qm")
     if (NOT EXISTS ${qm_file})
-        string (SUBSTRING "${lang_code}" 0 2 lang_code) # language code without region
-        set (qm_file "${QT_TRANSLATIONS_DIR}/${prefix}_${lang_code}.qm")
+        string (SUBSTRING "${lang_code}" 0 2 lang_code_short) # language code without region
+        set (qm_file "${QT_TRANSLATIONS_DIR}/${prefix}_${lang_code_short}.qm")
     endif ()
 
     if (EXISTS ${qm_file})
         set (${output} ${${output}} ${qm_file} PARENT_SCOPE)
-    else ()
-        message (STATUS "No Qt translation for ${lang_code}")
     endif ()
 endfunction ()
 

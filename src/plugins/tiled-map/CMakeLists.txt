@@ -1,5 +1,6 @@
+find_package (Qt5Core REQUIRED)
+find_package (Qt5Network REQUIRED)
 find_package (Qt5Gui REQUIRED)
-include_directories (${Qt5Gui_INCLUDE_DIRS}) 
 
 add_library (tiledmapdrawer MODULE
     tiledmapdrawer.h
@@ -16,7 +17,7 @@ add_library (tiledmapdrawer MODULE
 )
 
 target_compile_definitions (tiledmapdrawer PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (tiledmapdrawer Qt5::Gui vtrgui vtrmisc)
+target_link_libraries (tiledmapdrawer vtrgui vtrmisc)
 
 if (NOT ANDROID)
     install (TARGETS tiledmapdrawer DESTINATION ${vatsinator_RESOURCES_TARGET_DIR}/plugins)

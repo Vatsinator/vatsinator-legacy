@@ -1,4 +1,8 @@
+find_package (Qt5Core REQUIRED)
+find_package (Qt5Network REQUIRED)
+find_package (Qt5Gui REQUIRED)
 find_package (Qt5Widgets REQUIRED)
+
 include_directories (${CMAKE_CURRENT_BINARY_DIR})
 
 set (widgets_SOURCES
