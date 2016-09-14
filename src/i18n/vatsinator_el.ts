@@ -48,12 +48,12 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="153"/>
         <source>NOTAM</source>
-        <translation type="unfinished"/>
+        <translation>NOTAM</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="191"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ονομα</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="197"/>
@@ -68,12 +68,12 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="209"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Υψόμετρο</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="210"/>
         <source>%1 feet</source>
-        <translation type="unfinished"/>
+        <translation>%1 πόδια</translation>
     </message>
 </context>
 <context>
@@ -81,17 +81,17 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="50"/>
         <source>Inbound</source>
-        <translation type="unfinished"/>
+        <translation>Εισερχόμενα</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="79"/>
         <source>Outbound</source>
-        <translation type="unfinished"/>
+        <translation>Εξερχόμενα</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="108"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>ATC</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="137"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="185"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Υψόμετρο</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="227"/>
@@ -182,7 +182,7 @@
     <message>
         <location filename="../imports/components/ClientListView.qml" line="45"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>Πτήσεις</translation>
     </message>
 </context>
 <context>
@@ -228,12 +228,12 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="202"/>
         <source>Flight rules</source>
-        <translation type="unfinished"/>
+        <translation>Κανόνες πτήσης</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="208"/>
         <source>Cruise altitude</source>
-        <translation type="unfinished"/>
+        <translation> Αυτόματο υψόμετρο</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="214"/>
@@ -243,32 +243,32 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="223"/>
         <source>Track this flight</source>
-        <translation type="unfinished"/>
+        <translation>Παρακολούθηση αυτής της πτήσης</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="249"/>
         <source>Pilot</source>
-        <translation type="unfinished"/>
+        <translation>Πιλότος</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="254"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>Διακομιστής</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="259"/>
         <source>Online from</source>
-        <translation type="unfinished"/>
+        <translation>Απευθείας σύνδεση από</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="286"/>
         <source>Squawk</source>
-        <translation type="unfinished"/>
+        <translation>Squawk</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="291"/>
         <source>Ground speed</source>
-        <translation type="unfinished"/>
+        <translation>Ταχύτητα εδάφους</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="292"/>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
         <source>%1 feet</source>
-        <translation type="unfinished"/>
+        <translation>%1 πόδια</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="296"/>
@@ -289,12 +289,12 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="301"/>
         <source>Heading</source>
-        <translation type="unfinished"/>
+        <translation>Επικεφαλίδα</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="306"/>
         <source>Altitude</source>
-        <translation type="unfinished"/>
+        <translation>Υψόμετρο</translation>
     </message>
 </context>
 <context>
@@ -478,27 +478,27 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="54"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Δίκτυο</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="80"/>
         <source>Language:</source>
-        <translation type="unfinished"/>
+        <translation>Γλώσσα:</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="116"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
-        <translation type="unfinished"/>
+        <translation>Αν ενεργοποιηθεί, ορισμένα στοιχεία (όπως το λειτουργικό σύστημα, ο χρόνος της χρήσης της εφαρμογής, προειδοποιήσεις και σφάλματα) θα σταλθουν στους Vatsinator διακομιστές.</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="129"/>
         <source>Send anonymous statistics</source>
-        <translation type="unfinished"/>
+        <translation>Αποστολή ανώνυμων στατιστικών</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="139"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Μάθετε περισσότερα για την πολιτική προστασίας προσωπικών δεδομένων του Vatsinator/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="153"/>
@@ -521,7 +521,7 @@
     <message>
         <location filename="../core/filedownloader.cpp" line="72"/>
         <source>Error downloading file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα αρχείου λήψης %1</translation>
     </message>
 </context>
 <context>
@@ -534,22 +534,22 @@
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="93"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Σήμα Κλήσης</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="94"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ονομα</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="95"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Ημερομηνία</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="96"/>
         <source>Hours</source>
-        <translation type="unfinished"/>
+        <translation>Ώρες</translation>
     </message>
 </context>
 <context>
@@ -557,17 +557,17 @@
     <message>
         <location filename="../misc/atclistmodel.cpp" line="79"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Σήμα Κλήσης</translation>
     </message>
     <message>
         <location filename="../misc/atclistmodel.cpp" line="80"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ονομα</translation>
     </message>
     <message>
         <location filename="../misc/atclistmodel.cpp" line="81"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>Συχνότητα</translation>
     </message>
 </context>
 <context>
@@ -575,12 +575,12 @@
     <message>
         <location filename="../misc/clientlistmodel.cpp" line="137"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Σήμα Κλήσης</translation>
     </message>
     <message>
         <location filename="../misc/clientlistmodel.cpp" line="138"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ονομα</translation>
     </message>
 </context>
 <context>
@@ -588,27 +588,27 @@
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="87"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Σήμα Κλήσης</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="88"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ονομα</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="89"/>
         <source>From</source>
-        <translation type="unfinished"/>
+        <translation>Απο</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="90"/>
         <source>To</source>
-        <translation type="unfinished"/>
+        <translation>Προς</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="91"/>
         <source>Aircraft</source>
-        <translation type="unfinished"/>
+        <translation>Αεροσκάφος</translation>
     </message>
 </context>
 <context>
@@ -617,7 +617,7 @@
         <location filename="../widgets/airportdetailswindow.cpp" line="70"/>
         <location filename="../widgets/airportdetailswindow.cpp" line="120"/>
         <source>%1 - airport details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - λεπτομερειες αεροδρομιου</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/airportdetailswindow.cpp" line="99"/>
@@ -632,7 +632,7 @@
         <location filename="../widgets/atcdetailswindow.cpp" line="128"/>
         <source>N/A</source>
         <extracomment>not applicable</extracomment>
-        <translation type="unfinished"/>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -655,22 +655,22 @@
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="239"/>
         <source>%1 feet</source>
-        <translation type="unfinished"/>
+        <translation>%1 πόδια</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="251"/>
         <source>departing</source>
-        <translation type="unfinished"/>
+        <translation>αναχώρηση</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="255"/>
         <source>airborne</source>
-        <translation type="unfinished"/>
+        <translation>αερομεταφορεας</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="259"/>
         <source>arrived</source>
-        <translation type="unfinished"/>
+        <translation>έφθασε</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../widgets/mapinfowidget.cpp" line="68"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>Τελευταία ενημέρωση: %1 UTC</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="102"/>
@@ -706,7 +706,7 @@
     <message>
         <location filename="../widgets/mapwidget.cpp" line="261"/>
         <source>Airport details</source>
-        <translation type="unfinished"/>
+        <translation>Λεπτομερειες αεροδρομιου</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="264"/>
@@ -721,17 +721,17 @@
         <extracomment>a.k.a. ATC
 ----------
 a.k.a. ATC</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ελεγκτές</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="275"/>
         <source>Flight details</source>
-        <translation type="unfinished"/>
+        <translation>Λεπτομέρειες της πτήσης</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="278"/>
         <source>Track this flight</source>
-        <translation type="unfinished"/>
+        <translation>Παρακολούθηση αυτής της πτήσης</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="291"/>
@@ -741,17 +741,17 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="302"/>
         <source>Nearby</source>
-        <translation type="unfinished"/>
+        <translation>Μικρή απόσταση</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="320"/>
         <source>Airports</source>
-        <translation type="unfinished"/>
+        <translation>Αεροδρόμια</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="327"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>Πτήσεις</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="334"/>
@@ -764,7 +764,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="14"/>
         <source>Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>

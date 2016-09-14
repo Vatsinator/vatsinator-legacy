@@ -746,7 +746,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="320"/>
         <source>Airports</source>
-        <translation type="unfinished"/>
+        <translation>فرودگاه</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="327"/>

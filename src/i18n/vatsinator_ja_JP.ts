@@ -53,7 +53,7 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="191"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="197"/>
@@ -73,7 +73,7 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="210"/>
         <source>%1 feet</source>
-        <translation type="unfinished"/>
+        <translation>%1 フィート</translation>
     </message>
 </context>
 <context>
@@ -81,17 +81,17 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="50"/>
         <source>Inbound</source>
-        <translation type="unfinished"/>
+        <translation>到着機</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="79"/>
         <source>Outbound</source>
-        <translation type="unfinished"/>
+        <translation>出発機</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="108"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>ATC</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="137"/>
@@ -182,7 +182,7 @@
     <message>
         <location filename="../imports/components/ClientListView.qml" line="45"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>フライト</translation>
     </message>
 </context>
 <context>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="223"/>
         <source>Track this flight</source>
-        <translation type="unfinished"/>
+        <translation>飛行経路を表示</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="249"/>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
         <source>%1 feet</source>
-        <translation type="unfinished"/>
+        <translation>%1 フィート</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="296"/>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../widgets/metarwindow.ui" line="14"/>
         <source>METARs</source>
-        <translation type="unfinished"/>
+        <translation>METAR</translation>
     </message>
     <message>
         <location filename="../widgets/metarwindow.ui" line="23"/>
@@ -478,27 +478,27 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="54"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>ネットワーク</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="80"/>
         <source>Language:</source>
-        <translation type="unfinished"/>
+        <translation>言語:</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="116"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
-        <translation type="unfinished"/>
+        <translation>有効の場合、統計データ (OS や使用時間、エラー情報など ) を Vatsinator サーバへ送信するようになります。</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="129"/>
         <source>Send anonymous statistics</source>
-        <translation type="unfinished"/>
+        <translation>匿名の統計データを送信する</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="139"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Vatsinator の個人情報保護に関する詳細について&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="153"/>
@@ -521,7 +521,7 @@
     <message>
         <location filename="../core/filedownloader.cpp" line="72"/>
         <source>Error downloading file: %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルのダウンロード失敗: %1</translation>
     </message>
 </context>
 <context>
@@ -534,22 +534,22 @@
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="93"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>コールサイン</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="94"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="95"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>日付</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="96"/>
         <source>Hours</source>
-        <translation type="unfinished"/>
+        <translation>時間</translation>
     </message>
 </context>
 <context>
@@ -557,17 +557,17 @@
     <message>
         <location filename="../misc/atclistmodel.cpp" line="79"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>コールサイン</translation>
     </message>
     <message>
         <location filename="../misc/atclistmodel.cpp" line="80"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../misc/atclistmodel.cpp" line="81"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>周波数</translation>
     </message>
 </context>
 <context>
@@ -575,12 +575,12 @@
     <message>
         <location filename="../misc/clientlistmodel.cpp" line="137"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>コールサイン</translation>
     </message>
     <message>
         <location filename="../misc/clientlistmodel.cpp" line="138"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
 </context>
 <context>
@@ -588,27 +588,27 @@
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="87"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>コールサイン</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="88"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="89"/>
         <source>From</source>
-        <translation type="unfinished"/>
+        <translation>出発空港</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="90"/>
         <source>To</source>
-        <translation type="unfinished"/>
+        <translation>到着空港</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="91"/>
         <source>Aircraft</source>
-        <translation type="unfinished"/>
+        <translation>機材</translation>
     </message>
 </context>
 <context>
@@ -617,7 +617,7 @@
         <location filename="../widgets/airportdetailswindow.cpp" line="70"/>
         <location filename="../widgets/airportdetailswindow.cpp" line="120"/>
         <source>%1 - airport details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - 空港詳細</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/airportdetailswindow.cpp" line="99"/>
@@ -632,7 +632,7 @@
         <location filename="../widgets/atcdetailswindow.cpp" line="128"/>
         <source>N/A</source>
         <extracomment>not applicable</extracomment>
-        <translation type="unfinished"/>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -655,22 +655,22 @@
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="239"/>
         <source>%1 feet</source>
-        <translation type="unfinished"/>
+        <translation>%1 フィート</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="251"/>
         <source>departing</source>
-        <translation type="unfinished"/>
+        <translation>出発</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="255"/>
         <source>airborne</source>
-        <translation type="unfinished"/>
+        <translation>飛行中</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="259"/>
         <source>arrived</source>
-        <translation type="unfinished"/>
+        <translation>到着</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../widgets/mapinfowidget.cpp" line="68"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>最終更新時刻: %1 UTC</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="102"/>
@@ -706,7 +706,7 @@
     <message>
         <location filename="../widgets/mapwidget.cpp" line="261"/>
         <source>Airport details</source>
-        <translation type="unfinished"/>
+        <translation>空港詳細</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="264"/>
@@ -721,17 +721,17 @@
         <extracomment>a.k.a. ATC
 ----------
 a.k.a. ATC</extracomment>
-        <translation type="unfinished"/>
+        <translation>管制官</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="275"/>
         <source>Flight details</source>
-        <translation type="unfinished"/>
+        <translation>フライト詳細</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="278"/>
         <source>Track this flight</source>
-        <translation type="unfinished"/>
+        <translation>飛行経路を表示</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="291"/>
@@ -746,12 +746,12 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="320"/>
         <source>Airports</source>
-        <translation type="unfinished"/>
+        <translation>空港</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="327"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>フライト</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="334"/>
@@ -764,7 +764,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="14"/>
         <source>Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>

@@ -53,7 +53,7 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="191"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="197"/>
@@ -81,17 +81,17 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="50"/>
         <source>Inbound</source>
-        <translation type="unfinished"/>
+        <translation>Gelen</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="79"/>
         <source>Outbound</source>
-        <translation type="unfinished"/>
+        <translation>Giden</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="108"/>
         <source>ATC</source>
-        <translation type="unfinished"/>
+        <translation>ATC</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="137"/>
@@ -182,7 +182,7 @@
     <message>
         <location filename="../imports/components/ClientListView.qml" line="45"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>Uçuşlar</translation>
     </message>
 </context>
 <context>
@@ -478,12 +478,12 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="54"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Ağ</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="80"/>
         <source>Language:</source>
-        <translation type="unfinished"/>
+        <translation>Dil:</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="116"/>
@@ -493,7 +493,7 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="129"/>
         <source>Send anonymous statistics</source>
-        <translation type="unfinished"/>
+        <translation>İsimsiz istatistik gönder</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="139"/>
@@ -521,7 +521,7 @@
     <message>
         <location filename="../core/filedownloader.cpp" line="72"/>
         <source>Error downloading file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hatalı indirilen dosya: %1</translation>
     </message>
 </context>
 <context>
@@ -534,22 +534,22 @@
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="93"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="94"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="95"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Tarih</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="96"/>
         <source>Hours</source>
-        <translation type="unfinished"/>
+        <translation>Saat</translation>
     </message>
 </context>
 <context>
@@ -557,17 +557,17 @@
     <message>
         <location filename="../misc/atclistmodel.cpp" line="79"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../misc/atclistmodel.cpp" line="80"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <location filename="../misc/atclistmodel.cpp" line="81"/>
         <source>Frequency</source>
-        <translation type="unfinished"/>
+        <translation>Frekans:</translation>
     </message>
 </context>
 <context>
@@ -575,12 +575,12 @@
     <message>
         <location filename="../misc/clientlistmodel.cpp" line="137"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../misc/clientlistmodel.cpp" line="138"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
 </context>
 <context>
@@ -588,27 +588,27 @@
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="87"/>
         <source>Callsign</source>
-        <translation type="unfinished"/>
+        <translation>Cağrı Kodu</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="88"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>İsim</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="89"/>
         <source>From</source>
-        <translation type="unfinished"/>
+        <translation>dan</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="90"/>
         <source>To</source>
-        <translation type="unfinished"/>
+        <translation>a</translation>
     </message>
     <message>
         <location filename="../misc/flightlistmodel.cpp" line="91"/>
         <source>Aircraft</source>
-        <translation type="unfinished"/>
+        <translation>Uçak</translation>
     </message>
 </context>
 <context>
@@ -617,7 +617,7 @@
         <location filename="../widgets/airportdetailswindow.cpp" line="70"/>
         <location filename="../widgets/airportdetailswindow.cpp" line="120"/>
         <source>%1 - airport details</source>
-        <translation type="unfinished"/>
+        <translation>%1 - havalimanı detayları</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/airportdetailswindow.cpp" line="99"/>
@@ -632,7 +632,7 @@
         <location filename="../widgets/atcdetailswindow.cpp" line="128"/>
         <source>N/A</source>
         <extracomment>not applicable</extracomment>
-        <translation type="unfinished"/>
+        <translation>N/A</translation>
     </message>
 </context>
 <context>
@@ -670,7 +670,7 @@
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="259"/>
         <source>arrived</source>
-        <translation type="unfinished"/>
+        <translation>geldi</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../widgets/mapinfowidget.cpp" line="68"/>
         <source>Last update: %1 UTC</source>
-        <translation type="unfinished"/>
+        <translation>Son güncelleme: %1 UTC</translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="102"/>
@@ -706,7 +706,7 @@
     <message>
         <location filename="../widgets/mapwidget.cpp" line="261"/>
         <source>Airport details</source>
-        <translation type="unfinished"/>
+        <translation>Havalimanı detayları</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="264"/>
@@ -721,12 +721,12 @@
         <extracomment>a.k.a. ATC
 ----------
 a.k.a. ATC</extracomment>
-        <translation type="unfinished"/>
+        <translation>Kontroller</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="275"/>
         <source>Flight details</source>
-        <translation type="unfinished"/>
+        <translation>Uçuş detayları</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="278"/>
@@ -746,12 +746,12 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="320"/>
         <source>Airports</source>
-        <translation type="unfinished"/>
+        <translation>Havalimanları</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="327"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>Uçuşlar</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="334"/>
@@ -764,7 +764,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="14"/>
         <source>Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>
