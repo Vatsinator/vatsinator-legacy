@@ -1,3 +1,6 @@
+find_package (Qt5Core REQUIRED)
+find_package (Qt5Network REQUIRED)
+
 include_directories (${CMAKE_SOURCE_DIR}/src/core)
 
 add_executable (servertracking servertracking.cpp servertracking.h)
