@@ -88,12 +88,29 @@ public:
      * Access downloaded data.
      */
     const QByteArray& data() const { return m_data; }
+
+    /**
+     * Returns the number of retries.
+     *
+     * When this number of retries is reached, the \c error() signal is emitted.
+     */
+    int maxRetries() const { return m_maxRetries; }
+
+    /**
+     * Sets the max trials to the given value.
+     */
+    void setMaxRetries(int maxRetries);
+
+private:
+    void start(const QNetworkRequest& request);
     
 private slots:
     void finish();
     
 private:
     bool m_isDownloading = false;
+    int m_maxRetries = 1;
+    int m_retries = 0;
     QByteArray m_data;
     
 }; /** @} */

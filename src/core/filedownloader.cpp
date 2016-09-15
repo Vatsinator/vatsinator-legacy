@@ -35,9 +35,8 @@ void FileDownloader::fetch(const QUrl& url)
     if (!networkAccessManagers.hasLocalData())
         networkAccessManagers.setLocalData(new QNetworkAccessManager);
     
-    if (m_isDownloading) {
+    if (m_isDownloading)
         qWarning("ATTENTION: this FileDownloader instance is already downloading something");
-    }
     
     m_isDownloading = true;
     
@@ -47,7 +46,20 @@ void FileDownloader::fetch(const QUrl& url)
         version = QStringLiteral("1.0");
     
     QString userAgent = QStringLiteral("Vatsinator/%1").arg(version);
-    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent); // TODO Use Vatsinator version here
+    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
+    m_retries = 0;
+    start(request);
+}
+
+void FileDownloader::setMaxRetries(int maxTrials)
+{
+    m_maxRetries = maxTrials;
+}
+
+void FileDownloader::start(const QNetworkRequest& request)
+{
+    m_retries += 1;
+
     QNetworkAccessManager* nam = networkAccessManagers.localData();
     QNetworkReply* reply = nam->get(request);
     connect(reply, &QNetworkReply::finished, this, &FileDownloader::finish);
@@ -61,22 +73,24 @@ void FileDownloader::fetch(const QUrl& url)
 
 void FileDownloader::finish()
 {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    QSharedPointer<QNetworkReply> reply(qobject_cast<QNetworkReply*>(sender()), &QObject::deleteLater);
     Q_ASSERT(reply);
     
     m_isDownloading = false;
     
     if (reply->error()) {
-        qCritical("FileDownloader: error downloading file: %s",
-                 qPrintable(reply->errorString()));
-        emit error(tr("Error downloading file: %1").arg(reply->errorString()), reply->url());
+        if (m_retries >= m_maxRetries) {
+            qCritical("FileDownloader: error downloading file: %s",
+                     qPrintable(reply->errorString()));
+            emit error(tr("Error downloading file: %1").arg(reply->errorString()), reply->url());
+        } else {
+            start(reply->request());
+        }
     } else {
         m_data = reply->readAll();
         qDebug("FileDownloader: %s downloaded", qPrintable(reply->url().toString()));
         emit finished(reply->url());
     }
-    
-    reply->deleteLater();
 }
 
 }} /* namespace Vatsinator::Core */
