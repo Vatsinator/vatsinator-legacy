@@ -27,10 +27,14 @@
 #include "gui/tmaarea.h"
 #include "core/lonlat.h"
 #include <QtCore>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #include <spatial/point_multimap.hpp>
 #include <spatial/neighbor_iterator.hpp>
 #include <spatial/region_iterator.hpp>
 #include <spatial/idle_box_multimap.hpp>
+#pragma GCC diagnostic pop
 
 using namespace Vatsinator::Core;
 

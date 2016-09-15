@@ -18,8 +18,13 @@
  */
 
 #include "airportlistreader.h"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #include <spatial/point_multimap.hpp>
 #include <spatial/neighbor_iterator.hpp>
+#pragma GCC diagnostic pop
+
 #include <QtCore>
 
 namespace Vatsinator { namespace Core {
