@@ -15,12 +15,12 @@
     <message>
         <location filename="../application/widgets/aboutwindow.ui" line="108"/>
         <source>Vatsinator is a simple VATSIM monitor.</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator ist ein einfacher VATSIM-Monitor.</translation>
     </message>
     <message>
         <location filename="../application/widgets/aboutwindow.ui" line="128"/>
         <source>&amp;copy; 2012-2016 Vatsinator Team</source>
-        <translation type="unfinished"/>
+        <translation>&amp;copy; 2012-2016 Vatsinator Team</translation>
     </message>
 </context>
 <context>
@@ -28,22 +28,22 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="55"/>
         <source>to %1</source>
-        <translation type="unfinished"/>
+        <translation>nach %1</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="57"/>
         <source>from %1</source>
-        <translation type="unfinished"/>
+        <translation>von %1</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="135"/>
         <source>INFO</source>
-        <translation type="unfinished"/>
+        <translation>INFO</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="144"/>
         <source>CLIENTS</source>
-        <translation type="unfinished"/>
+        <translation>KUNDEN</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="153"/>
@@ -58,12 +58,12 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="197"/>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Stadt</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="203"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Land</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="209"/>
@@ -86,7 +86,7 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="79"/>
         <source>Outbound</source>
-        <translation>Abfliegend</translation>
+        <translation>Abgehend</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="108"/>
@@ -96,12 +96,12 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="137"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Details</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="143"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Land</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="185"/>
@@ -111,12 +111,12 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="227"/>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Stadt</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="237"/>
         <source>Airport name</source>
-        <translation type="unfinished"/>
+        <translation>Flughafenname</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="261"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="334"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Auf Karte anzeigen</translation>
     </message>
 </context>
 <context>
@@ -149,7 +149,7 @@
     <message>
         <location filename="../widgets/atcdetailswindow.ui" line="82"/>
         <source>ATIS message</source>
-        <translation type="unfinished"/>
+        <translation>ATIS-Mitteilung</translation>
     </message>
     <message>
         <location filename="../widgets/atcdetailswindow.ui" line="92"/>
@@ -177,7 +177,7 @@
     <message>
         <location filename="../imports/components/ClientListView.qml" line="43"/>
         <source>ATCs</source>
-        <translation type="unfinished"/>
+        <translation>FVKs</translation>
     </message>
     <message>
         <location filename="../imports/components/ClientListView.qml" line="45"/>
@@ -213,17 +213,17 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="109"/>
         <source>FLIGHT PLAN</source>
-        <translation type="unfinished"/>
+        <translation>FLUGPLAN</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="118"/>
         <source>PILOT</source>
-        <translation type="unfinished"/>
+        <translation>PILOT</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="127"/>
         <source>DETAILS</source>
-        <translation type="unfinished"/>
+        <translation>DETAILS</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="202"/>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="214"/>
         <source>Planned TAS</source>
-        <translation type="unfinished"/>
+        <translation>Geplante TAS</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="223"/>
@@ -274,7 +274,7 @@
         <location filename="../application/quick/FlightDetailsPage.qml" line="292"/>
         <location filename="../application/quick/FlightDetailsPage.qml" line="297"/>
         <source>%1 knots</source>
-        <translation type="unfinished"/>
+        <translation>%1 Knoten</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="296"/>
         <source>True Air Speed</source>
-        <translation type="unfinished"/>
+        <translation>Wahre Fluggeschwindigkeit</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="301"/>
@@ -378,7 +378,7 @@
         <location filename="../widgets/flightdetailswindow.ui" line="501"/>
         <source>Not filled</source>
         <extracomment>Refers to a flight plan route</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nicht gefüllt</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.ui" line="508"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../widgets/flightdetailswindow.ui" line="518"/>
         <source>Departure</source>
-        <translation type="unfinished"/>
+        <translation>Abflug</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.ui" line="528"/>
@@ -399,7 +399,7 @@
         <location filename="../widgets/flightdetailswindow.ui" line="560"/>
         <location filename="../widgets/flightdetailswindow.ui" line="625"/>
         <source>True Air Speed</source>
-        <translation type="unfinished"/>
+        <translation>Wahre Fluggeschwindigkeit</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.ui" line="589"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../widgets/flightdetailswindow.ui" line="817"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Auf Karte anzeigen</translation>
     </message>
 </context>
 <context>
@@ -432,22 +432,22 @@
     <message>
         <location filename="../widgets/widgetsprivate.cpp" line="43"/>
         <source>Inbound flights: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ankommende Flüge: %1</translation>
     </message>
     <message>
         <location filename="../widgets/widgetsprivate.cpp" line="46"/>
         <source>Outbound flights: %1</source>
-        <translation type="unfinished"/>
+        <translation>Abgehende Flüge: %1</translation>
     </message>
     <message>
         <location filename="../widgets/widgetsprivate.cpp" line="54"/>
         <source>Ground speed: %1 knots</source>
-        <translation type="unfinished"/>
+        <translation>Geschwindigkeit über Grund: %1 Knoten</translation>
     </message>
     <message>
         <location filename="../widgets/widgetsprivate.cpp" line="55"/>
         <source>Altitude: %1 feet</source>
-        <translation type="unfinished"/>
+        <translation>Höhe: %1 Fuß</translation>
     </message>
 </context>
 <context>
@@ -460,7 +460,7 @@
     <message>
         <location filename="../widgets/metarwindow.ui" line="23"/>
         <source>Search for ICAO code...</source>
-        <translation type="unfinished"/>
+        <translation>Nach ICAO-Code suchen...</translation>
     </message>
 </context>
 <context>
@@ -468,12 +468,12 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="14"/>
         <source>Vatsinator - settings</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator - Einstellungen</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="45"/>
         <source>Miscallenous</source>
-        <translation type="unfinished"/>
+        <translation>Verschiedenes</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="54"/>
@@ -503,23 +503,23 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="153"/>
         <source>VA&amp;TSIM</source>
-        <translation type="unfinished"/>
+        <translation>VA&amp;TSIM</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="163"/>
         <source>NOAA</source>
-        <translation type="unfinished"/>
+        <translation>NOAA</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="183"/>
         <source>METAR source:</source>
-        <translation type="unfinished"/>
+        <translation>METAR-Quelle:</translation>
     </message>
 </context>
 <context>
     <name>Vatsinator::Core::FileDownloader</name>
     <message>
-        <location filename="../core/filedownloader.cpp" line="72"/>
+        <location filename="../core/filedownloader.cpp" line="85"/>
         <source>Error downloading file: %1</source>
         <translation>Fehler beim Herunterladen der Datei: %1</translation>
     </message>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="80"/>
         <source>Training session</source>
-        <translation type="unfinished"/>
+        <translation>Trainingseinheit</translation>
     </message>
     <message>
         <location filename="../misc/atcbookinglistmodel.cpp" line="93"/>
@@ -623,7 +623,7 @@
         <location filename="../widgets/airportdetailswindow.cpp" line="99"/>
         <location filename="../widgets/airportdetailswindow.cpp" line="119"/>
         <source>%n foot(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Fuß</numerusform><numerusform>%n Fuß</numerusform></translation>
     </message>
 </context>
 <context>
@@ -641,7 +641,7 @@
         <location filename="../widgets/firdetailswindow.cpp" line="68"/>
         <source>%1 - %2 details</source>
         <extracomment>%1 is ICAO code, %2 is &quot;FIR&quot; or &quot;ARTCC&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 - %2 Details</translation>
     </message>
 </context>
 <context>
@@ -650,7 +650,7 @@
         <location filename="../widgets/flightdetailswindow.cpp" line="229"/>
         <location filename="../widgets/flightdetailswindow.cpp" line="281"/>
         <source>%1 knots</source>
-        <translation type="unfinished"/>
+        <translation>%1 Knoten</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="239"/>
@@ -683,22 +683,22 @@
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="102"/>
         <source>%n client(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Kunden</numerusform><numerusform>%n Kunden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="103"/>
         <source>%n pilot(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Pilot</numerusform><numerusform>%n Piloten</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="104"/>
         <source>%n ATC(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n FVK(s)</numerusform><numerusform>%n FVK(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="105"/>
         <source>%n observer(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Beobachter</numerusform><numerusform>%n Beobachter</numerusform></translation>
     </message>
 </context>
 <context>
@@ -736,7 +736,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="291"/>
         <source>FIR details</source>
-        <translation type="unfinished"/>
+        <translation>FIR-Details</translation>
     </message>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="302"/>
@@ -756,7 +756,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../widgets/mapwidget.cpp" line="334"/>
         <source>FIRs</source>
-        <translation type="unfinished"/>
+        <translation>FIRs</translation>
     </message>
 </context>
 <context>
@@ -769,7 +769,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>
         <source>Vatsi&amp;nator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsi&amp;nator</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="58"/>
@@ -779,32 +779,32 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="64"/>
         <source>Settin&amp;gs</source>
-        <translation type="unfinished"/>
+        <translation>Einstellun&amp;gen</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="78"/>
         <source>&amp;Refresh</source>
-        <translation type="unfinished"/>
+        <translation>Aktualisie&amp;ren</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="81"/>
         <source>F5</source>
-        <translation type="unfinished"/>
+        <translation>F5</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="90"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Beenden</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="93"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>Strg+Q</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="102"/>
         <source>&amp;About</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Über</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="107"/>
@@ -814,12 +814,12 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="112"/>
         <source>&amp;METARs...</source>
-        <translation type="unfinished"/>
+        <translation>&amp;METARs...</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="115"/>
         <source>Ctrl+M</source>
-        <translation type="unfinished"/>
+        <translation>Strg+M</translation>
     </message>
 </context>
 </TS>

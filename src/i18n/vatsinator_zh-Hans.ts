@@ -519,7 +519,7 @@
 <context>
     <name>Vatsinator::Core::FileDownloader</name>
     <message>
-        <location filename="../core/filedownloader.cpp" line="72"/>
+        <location filename="../core/filedownloader.cpp" line="85"/>
         <source>Error downloading file: %1</source>
         <translation>不能下载文件: %1</translation>
     </message>

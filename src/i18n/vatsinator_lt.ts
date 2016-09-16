@@ -15,12 +15,12 @@
     <message>
         <location filename="../application/widgets/aboutwindow.ui" line="108"/>
         <source>Vatsinator is a simple VATSIM monitor.</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator yra paprasta VATSIM prižiūryklė.</translation>
     </message>
     <message>
         <location filename="../application/widgets/aboutwindow.ui" line="128"/>
         <source>&amp;copy; 2012-2016 Vatsinator Team</source>
-        <translation type="unfinished"/>
+        <translation>&amp;copy; 2012-2016 Vatsinator komanda</translation>
     </message>
 </context>
 <context>
@@ -58,12 +58,12 @@
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="197"/>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Miestas</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="203"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Šalis</translation>
     </message>
     <message>
         <location filename="../application/quick/AirportDetailsPage.qml" line="209"/>
@@ -96,12 +96,12 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="137"/>
         <source>Details</source>
-        <translation type="unfinished"/>
+        <translation>Išsamiau</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="143"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Šalis</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="185"/>
@@ -111,7 +111,7 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="227"/>
         <source>City</source>
-        <translation type="unfinished"/>
+        <translation>Miestas</translation>
     </message>
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="237"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../widgets/airportdetailswindow.ui" line="334"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti žemėlapyje</translation>
     </message>
 </context>
 <context>
@@ -274,7 +274,7 @@
         <location filename="../application/quick/FlightDetailsPage.qml" line="292"/>
         <location filename="../application/quick/FlightDetailsPage.qml" line="297"/>
         <source>%1 knots</source>
-        <translation type="unfinished"/>
+        <translation>%1 mazgų</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="296"/>
         <source>True Air Speed</source>
-        <translation type="unfinished"/>
+        <translation>Tikrasis oro greitis</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="301"/>
@@ -399,7 +399,7 @@
         <location filename="../widgets/flightdetailswindow.ui" line="560"/>
         <location filename="../widgets/flightdetailswindow.ui" line="625"/>
         <source>True Air Speed</source>
-        <translation type="unfinished"/>
+        <translation>Tikrasis oro greitis</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.ui" line="589"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../widgets/flightdetailswindow.ui" line="817"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti žemėlapyje</translation>
     </message>
 </context>
 <context>
@@ -447,7 +447,7 @@
     <message>
         <location filename="../widgets/widgetsprivate.cpp" line="55"/>
         <source>Altitude: %1 feet</source>
-        <translation type="unfinished"/>
+        <translation>Aukštis: %1 pėdų</translation>
     </message>
 </context>
 <context>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../widgets/metarwindow.ui" line="14"/>
         <source>METARs</source>
-        <translation type="unfinished"/>
+        <translation>Reguliarieji aviaciniai orų pranešimai</translation>
     </message>
     <message>
         <location filename="../widgets/metarwindow.ui" line="23"/>
@@ -468,7 +468,7 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="14"/>
         <source>Vatsinator - settings</source>
-        <translation type="unfinished"/>
+        <translation>Vatsinator - nustatymai</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="45"/>
@@ -503,7 +503,7 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="153"/>
         <source>VA&amp;TSIM</source>
-        <translation type="unfinished"/>
+        <translation>VA&amp;TSIM</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="163"/>
@@ -519,7 +519,7 @@
 <context>
     <name>Vatsinator::Core::FileDownloader</name>
     <message>
-        <location filename="../core/filedownloader.cpp" line="72"/>
+        <location filename="../core/filedownloader.cpp" line="85"/>
         <source>Error downloading file: %1</source>
         <translation>Klaida atsiunčiant failą: %1</translation>
     </message>
@@ -650,7 +650,7 @@
         <location filename="../widgets/flightdetailswindow.cpp" line="229"/>
         <location filename="../widgets/flightdetailswindow.cpp" line="281"/>
         <source>%1 knots</source>
-        <translation type="unfinished"/>
+        <translation>%1 mazgų</translation>
     </message>
     <message>
         <location filename="../widgets/flightdetailswindow.cpp" line="239"/>
@@ -769,7 +769,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>
         <source>Vatsi&amp;nator</source>
-        <translation type="unfinished"/>
+        <translation>Vatsi&amp;nator</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="58"/>
@@ -779,17 +779,17 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="64"/>
         <source>Settin&amp;gs</source>
-        <translation type="unfinished"/>
+        <translation>N&amp;ustatymai</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="78"/>
         <source>&amp;Refresh</source>
-        <translation type="unfinished"/>
+        <translation>Į&amp;kelti iš naujo</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="81"/>
         <source>F5</source>
-        <translation type="unfinished"/>
+        <translation>F5</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="90"/>
@@ -799,12 +799,12 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="93"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl(Vald)+Q</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="102"/>
         <source>&amp;About</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Apie</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="107"/>
@@ -814,12 +814,12 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="112"/>
         <source>&amp;METARs...</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Reguliarieji aviaciniai orų pranešimai...</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="115"/>
         <source>Ctrl+M</source>
-        <translation type="unfinished"/>
+        <translation>Ctrl(Vald)+M</translation>
     </message>
 </context>
 </TS>
