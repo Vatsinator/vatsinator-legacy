@@ -77,7 +77,8 @@ Map::~Map()
 
 void Map::paint(QPainter* painter)
 {
-    m_renderer->paint(painter);
+//    m_renderer->paint(painter);
+    m_renderer->paint(painter->device());
 }
 
 void Map::setServerTracker(Core::ServerTracker* serverTracker)
@@ -147,11 +148,11 @@ void Map::updateZoom(qreal factor)
 void Map::updatePosition(int x, int y)
 {
     WorldTransform t = m_renderer->transform();
-    QPoint center = m_renderer->center() * t;
+    QPoint center = t.map(m_renderer->center());
     QPoint diff(x, y);
     center -= diff;
     
-    LonLat llcenter = t.map(center).bound();   
+    LonLat llcenter = t.map(center).bound();
     m_renderer->setCenter(llcenter);
 }
 
@@ -162,10 +163,16 @@ MapItem* Map::underPoint(int x, int y)
     QPoint q(x, y);
     LonLat pos = m_renderer->transform().map(q);
     MapItem* item = m_renderer->scene()->nearest(pos.bound());
-    if (item && item->contains(q, m_renderer->transform(pos.longitude())))
-        return item;
-    else
+    if (item) {
+        QSize size = item->size();
+        int m = qApp->primaryScreen()->devicePixelRatio();
+        size = size.expandedTo(QSize(m, m));
+        QPoint p = renderer()->transform().map(item->position());
+        QRect r(p.x() - size.width() / 2, p.y() - size.height() / 2, size.width(), size.height());
+        return r.contains(q) ? item : nullptr;
+    } else {
         return nullptr;
+    }
 }
 
 void Map::handleClicked(int x, int y)

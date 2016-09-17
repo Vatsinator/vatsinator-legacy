@@ -28,6 +28,7 @@
 #include <QRectF>
 #include <QPixmap>
 #include <QScopedPointer>
+#include <QSet>
 
 struct TileCoords;
 
