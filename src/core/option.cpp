@@ -24,46 +24,92 @@ namespace Vatsinator { namespace Core {
 
 class __VtrCoreHide__ OptionPrivate {
 public:
-    static void optionCreated(QString key, Option* instance)
+    bool readSaved(QString key, Option* instance)
     {
+        if (m_settings.contains(key)) {
+            QVariant value = m_settings.value(key);
+            instance->m_value = value;
+            qDebug() << key << "restored.";
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    void save(QString key, Option* instance)
+    {
+        m_settings.setValue(key, instance->value());
+        qDebug() << key << "saved.";
+    }
+
+    void optionCreated(QString key, Option* instance)
+    {
+        // if the option is already set, set it to the instance
+        if (m_options.contains(key)) {
+           Option* first = m_options.values(key).first();
+           Q_ASSERT(first);
+           instance->m_value = first->value();
+        } else {
+            readSaved(key, instance); // read value from disk
+        }
+
+        // insert the newly created instance in the all-instances map
         m_options.insert(key, instance);
     }
 
-    static void optionChanged(QString key, const QVariant& value)
+    void optionCreated(QString key, Option* instance, const QVariant& defaultValue)
+    {
+        if (m_options.contains(key)) {
+            Option* first = m_options.values(key).first();
+            Q_ASSERT(first);
+            instance->m_value = first->value();
+        } else if (!readSaved(key, instance)) {
+            instance->m_value = defaultValue;
+        }
+
+        m_options.insert(key, instance);
+    }
+
+    void optionChanged(QString key, const QVariant& value)
     {
         QList<Option*> options = m_options.values(key);
         for (Option* o: options)
             QMetaObject::invokeMethod(o, "setValueImpl", Q_ARG(QVariant, value));
     }
 
-    static void optionDestroyed(QString key, Option* instance)
+    void optionDestroyed(QString key, Option* instance)
     {
+        if (m_options.count(key) == 1) {
+            save(key, instance);
+        }
+
         m_options.remove(key, instance);
     }
 
 private:
-    static QMultiMap<QString, Option*> m_options;
+    QSettings m_settings;
+    QMultiMap<QString, Option*> m_options;
 };
-
-QMultiMap<QString, Option*> OptionPrivate::m_options;
+Q_GLOBAL_STATIC(Vatsinator::Core::OptionPrivate, optionGlobal)
 
 
 Option::Option(const QString& key, QObject* parent) :
     QObject(parent),
     m_key(key)
 {
-    OptionPrivate::optionCreated(m_key, this);
+    optionGlobal->optionCreated(m_key, this);
 }
 
 Option::Option(const QString& key, const QVariant& defaultValue, QObject* parent) :
-    Option(key, parent)
+    QObject(parent),
+    m_key(key)
 {
-    m_value = defaultValue;
+    optionGlobal->optionCreated(m_key, this, defaultValue);
 }
 
 Option::~Option()
 {
-    OptionPrivate::optionDestroyed(m_key, this);
+    optionGlobal->optionDestroyed(m_key, this);
 }
 
 void Option::track(QObject* target, const char* propertyName)
@@ -95,7 +141,7 @@ void Option::setValue(const QVariant& value)
         m_newValue = value;
         emit valueChanged(m_newValue);
     } else {
-        OptionPrivate::optionChanged(key(), value);
+        optionGlobal->optionChanged(key(), value);
     }
 }
 
@@ -131,7 +177,7 @@ void Option::onExternalValueChanged()
 {
     Q_ASSERT(sender());
     QVariant v = m_trackedProperty.read(sender());
-    OptionPrivate::optionChanged(key(), v);
+    optionGlobal->optionChanged(key(), v);
 }
 
 }} /* namespace Vatsinator::Core */

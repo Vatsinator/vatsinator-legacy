@@ -44,6 +44,10 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
         QString locale = this->ui->language->itemData(index).toString();
         language->setValue(locale);
     });
+
+    QString locale = language->value().toString();
+    int index = ui->language->findData(locale);
+    ui->language->setCurrentIndex(index);
     
     m_options << statistics << language;
     

@@ -103,7 +103,7 @@ void VatsinatorWindow::showEvent(QShowEvent* event)
         qreal zoom = s.value("map/zoom", 1.0).toReal();
         ui->map->renderer()->setZoom(zoom);
 
-        Option* mapDrawerPlugin = new Option("plugins/map_drawer", MapDrawerDefaultPlugin, this);
+        Option* mapDrawerPlugin = new Option("plugins/map_drawer", QString(MapDrawerDefaultPlugin), this);
         connect(mapDrawerPlugin, &Option::valueChanged, this, &VatsinatorWindow::setMapDrawerPlugin);
         setMapDrawerPlugin(mapDrawerPlugin->value());
 
@@ -221,7 +221,6 @@ void VatsinatorWindow::showSettingsWindow()
 
 void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 {
-    Q_ASSERT(name.type() == QVariant::String);
     MapDrawer* drawer = qobject_cast<MapDrawer*>(PluginFinder::pluginByName(name.toString()));
     ui->map->renderer()->setMapDrawer(drawer);
 }
