@@ -59,6 +59,7 @@ VatsinatorWindow::VatsinatorWindow() :
     connect(ui->actionSettings, &QAction::triggered, this, &VatsinatorWindow::showSettingsWindow);
     connect(ui->actionRefresh, &QAction::triggered, m_server, &ServerTracker::refreshData);
     connect(ui->actionMetars, &QAction::triggered, this, &VatsinatorWindow::showMetarWindow);
+    connect(ui->actionClients, &QAction::triggered, this, &VatsinatorWindow::showClientListWindow);
     connect(ui->actionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
     
     AboutWindow* about = new AboutWindow;
@@ -234,4 +235,16 @@ void VatsinatorWindow::showMetarWindow()
 
     Q_ASSERT(m_metars);
     m_metars->show();
+}
+
+void VatsinatorWindow::showClientListWindow()
+{
+    if (!m_clients) {
+        m_clients = new ClientListWindow(m_server);
+        connect(m_clients, &ClientListWindow::clientDetailsRequested, this, &VatsinatorWindow::showClientDetails);
+        connect(qApp, &QCoreApplication::aboutToQuit, m_clients, &QObject::deleteLater);
+    }
+
+    Q_ASSERT(m_clients);
+    m_clients->show();
 }

@@ -86,6 +86,12 @@ public:
      */
     static AtcListModel* staff(const Core::FirObject* fir,
                                QObject* parent = nullptr);
+
+    /**
+     * Creates a new model that tracks all ATCs connected to the \c server.
+     */
+    static AtcListModel* all(const Core::ServerTracker* server,
+                             QObject* parent = nullptr);
     
 private:
     /**

@@ -15,6 +15,11 @@ set (vatsinator_SRCS
     resources/icons.qrc
 )
 
+set (vatsinator_UIS
+    settingswindow.ui
+    vatsinatorwindow.ui
+)
+
 # application icon for Windows
 if (WIN32)
     string (REPLACE "." "," vatsinator_VERSION_WINDRES ${vatsinator_VERSION})
@@ -24,7 +29,7 @@ if (WIN32)
     list (APPEND vatsinator_SRCS ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.rc)
 endif ()
 
-add_executable (vatsinator MACOSX_BUNDLE WIN32 ${vatsinator_SRCS})
+add_executable (vatsinator MACOSX_BUNDLE WIN32 ${vatsinator_SRCS} ${vatsinator_UIS})
 target_link_libraries (vatsinator
     vtrwidgets
     Qt5::Widgets

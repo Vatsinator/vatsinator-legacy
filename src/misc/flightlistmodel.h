@@ -97,6 +97,12 @@ public:
     static FlightListModel* around(const Core::FirObject* fir,
                                    QObject* parent = nullptr);
 
+    /**
+     * Creates a new model that tracks all pilots connected to the \c server.
+     */
+    static FlightListModel* all(const Core::ServerTracker* server,
+                                QObject* parent = nullptr);
+
 private:
     /**
      * Handles new client.

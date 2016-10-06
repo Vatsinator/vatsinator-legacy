@@ -20,6 +20,7 @@
 #include "clientlistmodel.h"
 #include "core/atc.h"
 #include "core/pilot.h"
+#include "core/servertracker.h"
 #include "misc/roles.h"
 #include <functional>
 
@@ -174,7 +175,7 @@ ClientListModel* ClientListModel::clients(const AirportObject* airport, QObject*
     return m;
 }
 
-ClientListModel* ClientListModel::clients(const Core::FirObject* fir, QObject* parent)
+ClientListModel* ClientListModel::clients(const FirObject* fir, QObject* parent)
 {
     ClientListModel* m = new ClientListModel(parent);
     
@@ -186,6 +187,25 @@ ClientListModel* ClientListModel::clients(const Core::FirObject* fir, QObject* p
         connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
     }
     
+    return m;
+}
+
+ClientListModel*ClientListModel::pilots(const ServerTracker* server, QObject* parent)
+{
+    ClientListModel* m = new ClientListModel(parent);
+
+    if (server) {
+        auto adder = [m](Client* c) {
+            if (qobject_cast<Pilot*>(c))
+                m->add(c);
+        };
+
+        auto clients = server->clients();
+        std::for_each(clients.constBegin(), clients.constEnd(), adder);
+        auto conn = connect(server, &ServerTracker::clientAdded, adder);
+        connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
+    }
+
     return m;
 }
 

@@ -102,6 +102,11 @@ const Client* ServerTracker::findClient(const QString& callsign) const
     return m_clients.value(callsign, nullptr);
 }
 
+QList<Client*> ServerTracker::clients() const
+{
+    return m_clients.values();
+}
+
 QList<FirObject*> ServerTracker::firObjects()
 {
     return m_firs.values();

@@ -19,6 +19,7 @@
 
 #include "atclistmodel.h"
 #include "core/atc.h"
+#include "core/servertracker.h"
 #include "misc/roles.h"
 
 using namespace Vatsinator::Core;
@@ -105,6 +106,24 @@ AtcListModel* AtcListModel::staff(const AirportObject* airport, QObject* parent)
 AtcListModel* AtcListModel::staff(const FirObject* fir, QObject* parent)
 {
     return staffImpl(fir, parent);
+}
+
+AtcListModel*AtcListModel::all(const ServerTracker* server, QObject* parent)
+{
+    AtcListModel* m = new AtcListModel(parent);
+    if (server) {
+        auto adder = [m](const Client* c) {
+            if (const Atc* atc = qobject_cast<const Atc*>(c))
+                m->add(atc);
+        };
+
+        auto clients = server->clients();
+        std::for_each(clients.constBegin(), clients.constEnd(), adder);
+        auto conn = connect(server, &ServerTracker::clientAdded, adder);
+        connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
+    }
+
+    return m;
 }
 
 void AtcListModel::add(const Atc* atc)

@@ -20,12 +20,13 @@
 #ifndef VATSINATORWINDOW_H
 #define VATSINATORWINDOW_H
 
-#include "core/airportobject.h"
-#include "core/atc.h"
-#include "core/pilot.h"
-#include "core/servertracker.h"
-#include "widgets/mapinfowidget.h"
-#include "widgets/metarwindow.h"
+#include <core/airportobject.h>
+#include <core/atc.h>
+#include <core/pilot.h>
+#include <core/servertracker.h>
+#include <widgets/mapinfowidget.h>
+#include <widgets/metarwindow.h>
+#include <widgets/clientlistwindow.h>
 #include <QMainWindow>
 
 namespace Ui { class VatsinatorWindow; }
@@ -54,12 +55,14 @@ private slots:
     void showSettingsWindow();
     void setMapDrawerPlugin(const QVariant& name);
     void showMetarWindow();
+    void showClientListWindow();
 
 private:
     QScopedPointer<Ui::VatsinatorWindow> ui;
     Vatsinator::Core::ServerTracker* m_server;
     Vatsinator::Widgets::MapInfoWidget* m_mapInfo;
     Vatsinator::Widgets::MetarWindow* m_metars = nullptr;
+    Vatsinator::Widgets::ClientListWindow* m_clients = nullptr;
     SettingsWindow* m_settings = nullptr;
 };
 

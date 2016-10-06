@@ -29,6 +29,7 @@
 #include "vatsimdatadocument.h"
 #include "vatsimstatusdocument.h"
 #include <QMap>
+#include <QList>
 #include <QObject>
 #include <QUrl>
 #include <QTimer>
@@ -129,6 +130,11 @@ public:
     Client* findClient(const QString& callsign);
     const Client* findClient(const QString& callsign) const;
     /** @} */
+
+    /**
+     * Returns a list of connected clients.
+     */
+    QList<Client*> clients() const;
     
     /**
      * Gives access to all FIR objects.

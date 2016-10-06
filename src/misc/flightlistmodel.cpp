@@ -19,6 +19,7 @@
 
 #include "flightlistmodel.h"
 #include "core/pilot.h"
+#include "core/servertracker.h"
 #include "misc/roles.h"
 
 using namespace Vatsinator::Core;
@@ -158,6 +159,25 @@ FlightListModel* FlightListModel::around(const FirObject* fir, QObject* parent)
     };
     
     return fromClientList(fir, parent, pred);
+}
+
+FlightListModel*FlightListModel::all(const ServerTracker* server, QObject* parent)
+{
+    FlightListModel* m = new FlightListModel(parent);
+
+    if (server) {
+        auto adder = [m](const Client* c) {
+            if (qobject_cast<const Pilot*>(c))
+                m->add(c);
+        };
+
+        auto clients = server->clients();
+        std::for_each(clients.constBegin(), clients.constEnd(), adder);
+        auto conn = connect(server, &ServerTracker::clientAdded, adder);
+        connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
+    }
+
+    return m;
 }
 
 void FlightListModel::add(const Core::Client* client)

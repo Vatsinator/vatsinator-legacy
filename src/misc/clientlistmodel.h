@@ -92,6 +92,12 @@ public:
     static ClientListModel* clients(const Core::FirObject* fir,
                                     QObject* parent = nullptr);
 
+    /**
+     * Creates a new model that tracks all pilots connected to the \c server.
+     */
+    static ClientListModel* pilots(const Core::ServerTracker* server,
+                                   QObject* parent = nullptr);
+
 private:
     /**
      * Adds a new client.

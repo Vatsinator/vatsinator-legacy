@@ -42,20 +42,21 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>30</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuVatsinator">
     <property name="title">
-     <string>Vatsi&amp;nator</string>
+     <string>&amp;Vatsinator</string>
     </property>
     <addaction name="actionMetars"/>
+    <addaction name="actionClients"/>
     <addaction name="actionRefresh"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>&amp;Help</string>
+     <string>He&amp;lp</string>
     </property>
     <addaction name="actionAbout"/>
    </widget>
@@ -113,6 +114,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionClients">
+   <property name="text">
+    <string>Clients...</string>
    </property>
   </action>
  </widget>
