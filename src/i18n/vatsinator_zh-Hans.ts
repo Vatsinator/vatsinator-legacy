@@ -186,6 +186,24 @@
     </message>
 </context>
 <context>
+    <name>ClientListWindow</name>
+    <message>
+        <location filename="../widgets/clientlistwindow.ui" line="14"/>
+        <source>Clients</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../widgets/clientlistwindow.ui" line="24"/>
+        <source>Flights</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../widgets/clientlistwindow.ui" line="53"/>
+        <source>ATCs</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FirDetailsWindow</name>
     <message>
         <location filename="../widgets/firdetailswindow.ui" line="47"/>
@@ -555,17 +573,17 @@
 <context>
     <name>Vatsinator::Misc::AtcListModel</name>
     <message>
-        <location filename="../misc/atclistmodel.cpp" line="79"/>
+        <location filename="../misc/atclistmodel.cpp" line="80"/>
         <source>Callsign</source>
         <translation>呼号</translation>
     </message>
     <message>
-        <location filename="../misc/atclistmodel.cpp" line="80"/>
+        <location filename="../misc/atclistmodel.cpp" line="81"/>
         <source>Name</source>
         <translation>姓名</translation>
     </message>
     <message>
-        <location filename="../misc/atclistmodel.cpp" line="81"/>
+        <location filename="../misc/atclistmodel.cpp" line="82"/>
         <source>Frequency</source>
         <translation>频率</translation>
     </message>
@@ -573,12 +591,12 @@
 <context>
     <name>Vatsinator::Misc::ClientListModel</name>
     <message>
-        <location filename="../misc/clientlistmodel.cpp" line="137"/>
+        <location filename="../misc/clientlistmodel.cpp" line="138"/>
         <source>Callsign</source>
         <translation>呼号</translation>
     </message>
     <message>
-        <location filename="../misc/clientlistmodel.cpp" line="138"/>
+        <location filename="../misc/clientlistmodel.cpp" line="139"/>
         <source>Name</source>
         <translation>姓名</translation>
     </message>
@@ -586,27 +604,27 @@
 <context>
     <name>Vatsinator::Misc::FlightListModel</name>
     <message>
-        <location filename="../misc/flightlistmodel.cpp" line="87"/>
+        <location filename="../misc/flightlistmodel.cpp" line="88"/>
         <source>Callsign</source>
         <translation>呼号</translation>
     </message>
     <message>
-        <location filename="../misc/flightlistmodel.cpp" line="88"/>
+        <location filename="../misc/flightlistmodel.cpp" line="89"/>
         <source>Name</source>
         <translation>姓名</translation>
     </message>
     <message>
-        <location filename="../misc/flightlistmodel.cpp" line="89"/>
+        <location filename="../misc/flightlistmodel.cpp" line="90"/>
         <source>From</source>
         <translation>出发</translation>
     </message>
     <message>
-        <location filename="../misc/flightlistmodel.cpp" line="90"/>
+        <location filename="../misc/flightlistmodel.cpp" line="91"/>
         <source>To</source>
         <translation>到达</translation>
     </message>
     <message>
-        <location filename="../misc/flightlistmodel.cpp" line="91"/>
+        <location filename="../misc/flightlistmodel.cpp" line="92"/>
         <source>Aircraft</source>
         <translation>机型</translation>
     </message>
@@ -768,57 +786,62 @@ a.k.a. ATC</extracomment>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>
-        <source>Vatsi&amp;nator</source>
+        <source>&amp;Vatsinator</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="58"/>
-        <source>&amp;Help</source>
-        <translation>&amp;帮助</translation>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="59"/>
+        <source>He&amp;lp</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="64"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="65"/>
         <source>Settin&amp;gs</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="78"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="79"/>
         <source>&amp;Refresh</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="81"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="82"/>
         <source>F5</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="90"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="91"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="93"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="94"/>
         <source>Ctrl+Q</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="102"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="103"/>
         <source>&amp;About</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="107"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="108"/>
         <source>&amp;Settings</source>
         <translation>&amp;设置</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="112"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="113"/>
         <source>&amp;METARs...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="115"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="116"/>
         <source>Ctrl+M</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="121"/>
+        <source>Clients...</source>
         <translation type="unfinished"/>
     </message>
 </context>
