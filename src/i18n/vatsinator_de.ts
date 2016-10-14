@@ -190,7 +190,7 @@
     <message>
         <location filename="../widgets/clientlistwindow.ui" line="14"/>
         <source>Clients</source>
-        <translation type="unfinished"/>
+        <translation>Clients</translation>
     </message>
     <message>
         <location filename="../widgets/clientlistwindow.ui" line="24"/>
@@ -792,7 +792,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="59"/>
         <source>He&amp;lp</source>
-        <translation type="unfinished"/>
+        <translation>Hi&amp;lfe</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="65"/>
@@ -842,7 +842,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="121"/>
         <source>Clients...</source>
-        <translation type="unfinished"/>
+        <translation>Clients...</translation>
     </message>
 </context>
 </TS>

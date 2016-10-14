@@ -195,7 +195,7 @@
     <message>
         <location filename="../widgets/clientlistwindow.ui" line="24"/>
         <source>Flights</source>
-        <translation type="unfinished"/>
+        <translation>Vôos</translation>
     </message>
     <message>
         <location filename="../widgets/clientlistwindow.ui" line="53"/>
@@ -787,7 +787,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>
         <source>&amp;Vatsinator</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Vatsinator</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="59"/>
