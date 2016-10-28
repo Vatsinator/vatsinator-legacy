@@ -40,27 +40,27 @@ TileRenderer::TileRenderer(QObject* parent) :
     m_timer(new QTimer(this)),
     m_manager(new TileManager(this))
 {
-    m_timer->setSingleShot(true);
     connect(m_timer, &QTimer::timeout, this, &TileRenderer::render);
-    connect(m_manager, &TileManager::updated, this, &TileRenderer::render);
+//    connect(m_manager, &TileManager::updated, this, &TileRenderer::render);
+    m_timer->start(300);
 }
 
 void TileRenderer::updateViewport(QSize viewport)
 {
     m_viewport = viewport;
-    m_timer->start(100);
+//    m_timer->start(100);
 }
 
 void TileRenderer::updateCenter(LonLat center)
 {
     m_center = center;
-    m_timer->start(100);
+//    m_timer->start(100);
 }
 
 void TileRenderer::updateZoom(qreal zoom)
 {
     m_zoom = zoom;
-    m_timer->start(100);
+//    m_timer->start(100);
 }
 
 quint32 TileRenderer::zoomLevel(const WorldTransform& transform)
@@ -83,6 +83,9 @@ quint32 TileRenderer::zoomLevel(const WorldTransform& transform)
 
 void TileRenderer::render()
 {
+    QElapsedTimer timer;
+    timer.start();
+
     const qreal dpr = qApp->primaryScreen()->devicePixelRatio();
     WorldTransform transform(m_viewport * dpr, m_center, m_zoom);
 
