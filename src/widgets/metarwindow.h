@@ -32,15 +32,30 @@ namespace Vatsinator { namespace Widgets {
 /**
  * \ingroup Widgets
  * @{
+ *
+ * The MetarWindow displays list of all METAR weather reports.
  */
 class __VtrWidgetsApi__ MetarWindow : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MetarWindow(Vatsinator::Core::MetarManager* metars, QWidget* parent = 0);
+    /**
+     * Creates a new MetarWindow instance.
+     *
+     * \param metars The \ref MetarManager instance that contains list of METARs.
+     * \param parent Passed to QObject's constructor.
+     */
+    explicit MetarWindow(Vatsinator::Core::MetarManager* metars, QWidget* parent = nullptr);
+
+    /**
+     * Destroys this \c MetarWindow.
+     */
     virtual ~MetarWindow();
 
 protected:
+    /**
+     * \copydoc QWidget::showEvent()
+     */
     void showEvent(QShowEvent* event) override;
 
 private slots:

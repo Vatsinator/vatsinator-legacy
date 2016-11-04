@@ -34,6 +34,7 @@ class AirportListReaderPrivate;
  * \ingroup Core
  * @{
  *
+ * A reader for airport list.
  */
 class __VtrCoreApi__ AirportListReader : public ResourceFile {
     Q_OBJECT

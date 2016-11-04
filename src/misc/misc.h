@@ -21,8 +21,7 @@
 #define MISC_H
 
 /**
- * \defgroup Misc
- * A set of utility classes.
+ * \defgroup Misc A set of utility classes.
  */
 
 #endif // MISC_H

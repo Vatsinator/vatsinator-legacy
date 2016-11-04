@@ -30,6 +30,7 @@ namespace Vatsinator { namespace Core {
  * \ingroup Core
  * @{
  *
+ * The reader for list of aliases.
  */
 class __VtrCoreApi__ AliasListReader : public ResourceFile {
     Q_OBJECT

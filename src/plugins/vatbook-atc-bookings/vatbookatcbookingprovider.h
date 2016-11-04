@@ -25,8 +25,14 @@
 #include <QMultiMap>
 
 /**
- * \defgroup euroute-notams VATBOOK ATC booking provider.
+ * \defgroup vatbook-atc-bookings VATBOOK ATC booking provider.
  * @{
+ *
+ * A VATBOOK bookings plugin for Vatsinator.
+ */
+
+/**
+ * The VatbookAtcBookingProvider makes use of the VATBOOK bookings.
  */
 class VatbookAtcBookingProvider : public QObject, public Vatsinator::Misc::AtcBookingProvider {
     Q_OBJECT
@@ -34,6 +40,10 @@ class VatbookAtcBookingProvider : public QObject, public Vatsinator::Misc::AtcBo
     Q_INTERFACES(Vatsinator::Misc::AtcBookingProvider)
 
 public:
+    /**
+     * Creates a nre VatbookAtcBookingProvider; passes \c parent to the
+     * QObject's constructor.
+     */
     explicit VatbookAtcBookingProvider(QObject* parent = nullptr);
     
     /**
@@ -54,6 +64,6 @@ private:
     QMultiMap<QString, Vatsinator::Misc::AtcBooking> m_bookings;
     QList<Vatsinator::Misc::AtcBookingReply*> m_pending;
 
-};
+}; /** @} */
 
 #endif // VATBOOKATCBOOKINGPROVIDER_H

@@ -23,8 +23,24 @@ import QtQuick.Window 2.2
 MultiPointTouchArea {
     id: root
     
+    /**
+     * The zoom has changed.
+     * \param zoom The new zoom.
+     */
     signal zoomUpdated(real zoom)
+    
+    /**
+     * The position has changed.
+     * \param x The x-coordinate of the new center point.
+     * \param y The y-coordinate of the new center point.
+     */
     signal positionUpdated(int x, int y)
+    
+    /**
+     * The item was clicked.
+     * \param x The x-coordinate of the point that was pressed.
+     * \param y The y-coordinate of the point that was pressed.
+     */
     signal clicked(int x, int y)
     
     maximumTouchPoints: 2

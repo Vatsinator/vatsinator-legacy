@@ -32,6 +32,8 @@ class FileDownloader;
 /**
  * \ingroup Core
  * @{
+ *
+ * The MetarManager keeps list of all METARs.
  */
 class __VtrCoreApi__ MetarManager : public QObject {
     Q_OBJECT

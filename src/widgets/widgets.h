@@ -21,8 +21,7 @@
 #define WIDGETS_H
 
 /**
- * \defgroup Widgets
- * Bunch of widgets for the QtWidgets module.
+ * \defgroup Widgets Widgets for the QtWidgets module.
  */
 
 

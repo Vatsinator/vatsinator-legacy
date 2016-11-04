@@ -30,10 +30,14 @@ namespace Vatsinator { namespace Misc {
  * \ingroup Misc
  * @{
  * 
+ * A reply for AtcBooking request.
  */
 class __VtrMiscApi__ AtcBookingReply : public QObject {
     Q_OBJECT
     
+    /**
+     * Stores the ICAO code of airport or FIR.
+     */
     Q_PROPERTY(QString icao READ icao)
     
 signals:
@@ -43,6 +47,11 @@ signals:
     void finished();
     
 public:
+    /**
+     * Creates a new \c AtcBookingReply instance.
+     * \param icao An ICAO code of airport of FIR for which the booking list was requested.
+     * \param parent Passed to QObject's constructor.
+     */
     explicit AtcBookingReply(const QString& icao, QObject* parent = nullptr);
     
     /**

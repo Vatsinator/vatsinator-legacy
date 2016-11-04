@@ -26,8 +26,10 @@
 #include <QList>
 
 /**
- * \defgroup idl-drawer Draws the Internation Date Line.
+ * \defgroup idl-drawer International Date Line drawer plugin.
  * @{
+ *
+ * The International Date Line plugin for Vatsinator.
  */
 class IdlDrawer : public QObject, public Vatsinator::Gui::MapAddon {
     Q_OBJECT
@@ -35,9 +37,19 @@ class IdlDrawer : public QObject, public Vatsinator::Gui::MapAddon {
     Q_INTERFACES(Vatsinator::Gui::MapAddon)
 
 public:
+    /**
+     * Creates a new IdlDrawer instance, passes \c parent to the QObject's constructor.
+     */
     explicit IdlDrawer(QObject *parent = nullptr);
 
+    /**
+     * \copydoc Vatsinator::Gui::MapAddon::drawBeforeItems()
+     */
     void drawBeforeItems(Vatsinator::Gui::WorldPainter* painter) override;
+
+    /**
+     * \copydoc Vatsinator::Gui::MapAddon::drawAfterItems()
+     */
     void drawAfterItems(Vatsinator::Gui::WorldPainter* painter) override;
 
 private:

@@ -21,8 +21,7 @@
 #define CORE_H
 
 /**
- * \defgroup Core
- * The core functionality of Vatsinator.
+ * \defgroup Core The core functionality of Vatsinator.
  */
 
 #endif // CORE_H

@@ -32,10 +32,19 @@ namespace Vatsinator { namespace Gui {
  * \ingroup Gui
  * @{
  *
+ * An interface for any map addon.
  */
 class __VtrGuiApi__ MapAddon {
 public:
+    /**
+     * This method is called just before all the map items (airports,
+     * airplanes, etc.) are drawn.
+     */
     virtual void drawBeforeItems(WorldPainter* painter) = 0;
+
+    /**
+     * This method is called right after all the map items are drawn.
+     */
     virtual void drawAfterItems(WorldPainter* painter) = 0;
 
 }; /** @} */

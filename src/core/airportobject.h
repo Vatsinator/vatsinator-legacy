@@ -47,6 +47,9 @@ class ServerTracker;
 class __VtrCoreApi__ AirportObject : public ClientList {
     Q_OBJECT
     
+    /**
+     * Keeps track of the server.
+     */
     Q_PROPERTY(Vatsinator::Core::ServerTracker* server READ server CONSTANT)
     
     /**

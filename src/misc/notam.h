@@ -42,7 +42,7 @@ public:
      * Flag for the "to" field.
      */
     enum CFlag {
-        None,
+        None    /**< Unspecified */,
         Est     /**< Estimated */,
         Perm    /**< Permament */
     };

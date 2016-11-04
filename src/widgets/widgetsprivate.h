@@ -29,21 +29,15 @@ namespace Vatsinator { namespace Widgets {
 
 /**
  * \internal
- */
-
-/**
  * Produces tooltip text for the provided map item.
  */
 QString __VtrWidgetsHide__ makeToolTip(const Vatsinator::Gui::MapItem* item);
 
 /**
+ * \internal
  * Positions the window in the middle of the main window.
  */
 void __VtrWidgetsHide__ fixupGeometry(QWidget* window);
-
-/**
- * \endinternal
- */
 
 }} /* namespace Vatsinator::Widgets */
 

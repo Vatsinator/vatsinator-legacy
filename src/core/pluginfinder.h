@@ -38,9 +38,6 @@ public:
      * \internal
      */
     explicit PluginFinder(QObject* parent = nullptr);
-    /**
-     * \endinternal
-     */
     
     /**
      * Returns list of plugins that implement the given interface ID.

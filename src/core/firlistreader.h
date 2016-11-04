@@ -30,6 +30,7 @@ namespace Vatsinator { namespace Core {
  * \ingroup Core
  * @{
  *
+ * The reader for FIR list.
  */
 class __VtrCoreApi__ FirListReader : public ResourceFile {
     Q_OBJECT

@@ -30,6 +30,8 @@ namespace Vatsinator { namespace Misc {
 /**
  * \ingroup Misc
  * @{
+ *
+ * An interface for booking provider.
  */
 class __VtrMiscApi__ AtcBookingProvider {
 public:

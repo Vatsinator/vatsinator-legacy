@@ -34,6 +34,7 @@ class AtcBookingData;
  * \ingroup Misc
  * @{
  * 
+ * The AtcBooking class represents a single booking entry for an ATC.
  */
 class __VtrMiscApi__ AtcBooking {
 public:
@@ -72,19 +73,54 @@ public:
      */
     void setCallsign(const QString& callsign);
     
+    /**
+     * Returns the real name of the guy who made the booking.
+     */
     QString realName() const;
+
+    /**
+     * Sets the booking's real name to the given value.
+     */
     void setRealName(const QString& realName);
     
+    /**
+     * Returns the day the booking was made for.
+     */
     QDate bookedDay() const;
+
+    /**
+     * Sets the booked day of the booking to the given value.
+     */
     void setBookedDay(const QDate& bookedDay);
     
+    /**
+     * Returns the beginning of the time frame of the booking.
+     */
     QTime timeFrom() const;
+
+    /**
+     * Sets the time frame beginning to the given value.
+     */
     void setTimeFrom(const QTime& timeFrom);
     
+    /**
+     * Returns the end of the time frame for the booking.
+     */
     QTime timeTo() const;
+
+    /**
+     * Sets the time frame ending to the given value.
+     */
     void setTimeTo(const QTime& timeTo);
     
+    /**
+     * Specifies whether the booking is for training session only.
+     */
     bool isTrainingSession() const;
+
+    /**
+     * Sets the training session value for this booking.
+     */
     void setIsTrainingSession(bool isTrainingSession);
 
 private:

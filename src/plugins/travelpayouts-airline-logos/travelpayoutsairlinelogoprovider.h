@@ -24,10 +24,16 @@
 #include <QObject>
 
 /**
- * \defgroup travelpayouts-airline-logo travelpayouts airline logos.
+ * \defgroup travelpayouts-airline-logo Travelpayouts airline logos.
  * @{
  * 
  * https://support.travelpayouts.com/hc/en-us/articles/203956073-Airline-logos
+ *
+ * A Travelpayouts airline logos plugin for Vatsinator.
+ */
+
+/**
+ * The TravelpayoutsAirlineLogoProvider class makes use of the Travelpayouts service.
  */
 class TravelpayoutsAirlineLogoProvider : public QObject, public Vatsinator::Misc::AirlineLogoProvider {
     Q_OBJECT
@@ -35,6 +41,10 @@ class TravelpayoutsAirlineLogoProvider : public QObject, public Vatsinator::Misc
     Q_INTERFACES(Vatsinator::Misc::AirlineLogoProvider)
 
 public:
+    /**
+     * Creates a new TravelpayoutsAirlineLogoProvider instance, passing \c parent to the
+     * QOobject's constructor.
+     */
     explicit TravelpayoutsAirlineLogoProvider(QObject* parent = nullptr);
     
     /**
@@ -43,6 +53,6 @@ public:
     const Vatsinator::Misc::AirlineLogoReply* fetchLogo(const Vatsinator::Core::Airline& airline,
                                                         const QSize& prefferedSize) override;
     
-};
+}; /** @} */
 
 #endif // TRAVELPAYOUTSAIRLINELOGOPROVIDER_H

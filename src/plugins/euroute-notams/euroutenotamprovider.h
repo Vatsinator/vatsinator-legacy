@@ -28,9 +28,15 @@
 /**
  * \defgroup euroute-notams EUroute NOTAM provider.
  * @{
- * 
+ *
  * http://notams.euroutepro.com/doc/
- * 
+ *
+ * The EUroute NOTAM plugin for Vatsinator.
+ */
+
+/**
+ * The EurouteNotamProvider class makes use of EUroute NOTAM reports.
+ *
  * To avoid excessive downloads, the XML file is cached and
  * fetched only once per 24h.
  */
@@ -40,6 +46,10 @@ class EurouteNotamProvider : public QObject, public Vatsinator::Misc::NotamProvi
     Q_INTERFACES(Vatsinator::Misc::NotamProvider)
 
 public:
+    /**
+     * Creates a new EurouteNotamProvider instance, passing \c parent to the
+     * QObject's constructor.
+     */
     explicit EurouteNotamProvider(QObject* parent = nullptr);
     
     /**

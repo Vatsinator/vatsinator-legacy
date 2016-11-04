@@ -28,7 +28,11 @@ class TileRenderer;
 /**
  * \defgroup tiled-map Tiled map drawer plugin
  * @{
- * 
+ *
+ * A tile-based world map for Vatsinator.
+ */
+
+/**
  * The implementation of MapDrawer that uses map tiles to draw the world.
  */
 class TiledMapDrawer : public QObject, public Vatsinator::Gui::MapDrawer {
@@ -37,7 +41,15 @@ class TiledMapDrawer : public QObject, public Vatsinator::Gui::MapDrawer {
     Q_INTERFACES(Vatsinator::Gui::MapDrawer)
 
 public:
+    /**
+     * Creates a new TiledMapDrawer instance, passes \c parent to the QObject's
+     * constructor.
+     */
     TiledMapDrawer(QObject* parent = nullptr);
+
+    /**
+     * Destroys this TiledMapDrawer instance.
+     */
     virtual ~TiledMapDrawer();
     
     /**

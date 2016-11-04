@@ -133,6 +133,21 @@ add_custom_target (
 # doxygen documentation
 find_package (Doxygen QUIET)
 if (DOXYGEN_FOUND)
+    include (QtUtils)
+    query_qmake(qt_doc_root QT_INSTALL_DOCS)
+
+    if (qt_doc_root)
+        file (GLOB qt_doc_dirs RELATIVE ${qt_doc_root} ${qt_doc_root}/*)
+        foreach (dir ${qt_doc_dirs})
+            set (tag_file ${qt_doc_root}/${dir}/${dir}.tags)
+            if (EXISTS ${tag_file})
+                list (APPEND qt_tags "${tag_file}=http://doc.qt.io/qt-5/")
+            endif ()
+        endforeach ()
+
+        string (REGEX REPLACE ";" " \\\\\n" QT_TAGS "${qt_tags}")
+    endif ()
+
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
     add_custom_target(doc
         ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile

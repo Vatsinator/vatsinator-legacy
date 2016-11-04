@@ -29,6 +29,8 @@ namespace Vatsinator { namespace Misc {
 /**
  * \ingroup Misc
  * @{
+ *
+ * A model for keeping \ref AtcBooking instances.
  */
 class __VtrMiscApi__ AtcBookingListModel : public QAbstractListModel {
     Q_OBJECT

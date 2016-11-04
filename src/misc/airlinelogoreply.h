@@ -30,18 +30,27 @@ namespace Vatsinator { namespace Misc {
 /**
  * \ingroup Misc
  * @{
+ *
+ * The AirlineLogoReply class represents a response for airline logo request
+ * made to a \ref AirlineLogoProvider implementation instance.
  */
 class __VtrMiscApi__ AirlineLogoReply : public QObject {
     Q_OBJECT
-    
+
+    /**
+     * The airline.
+     */
     Q_PROPERTY(Vatsinator::Core::Airline airline READ airline)
     
 signals:
+    /**
+     * Emitted when the logo is downloaded.
+     */
     void finished();
     
 public:
     /**
-     * Default constructor, represents a logo reply for \c airline.
+     * Default constructor, represents a logo reply for the \c airline.
      */
     explicit AirlineLogoReply(const Core::Airline& airline, QObject* parent = nullptr);
     

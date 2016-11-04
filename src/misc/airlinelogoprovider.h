@@ -30,6 +30,8 @@ namespace Vatsinator { namespace Misc {
 /**
  * \ingroup Misc
  * @{
+ *
+ * The interface for airline logo providers.
  */
 class __VtrMiscApi__ AirlineLogoProvider {
 public:

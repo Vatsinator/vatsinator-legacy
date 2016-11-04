@@ -31,15 +31,26 @@ namespace Vatsinator { namespace Core {
  * \ingroup Core
  * @{
  *
+ * A reader for airlines.
  */
 class __VtrCoreApi__ AirlineListReader : public ResourceFile {
     Q_OBJECT
     
 public:
+    /**
+     * Creates a new reader, passes \c parent to the QObject's constructor.
+     */
     explicit AirlineListReader(QObject* parent = nullptr);
     
+    /**
+     * Destroys this \c AirlineListReader instance.
+     */
     virtual ~AirlineListReader();
     
+    /**
+     * Finds an airline, using the \c icao code as a key. Returns an empty
+     * \c Airline instance if nothing was found.
+     */
     Airline findByIcao(const QString& icao) const;
     
 private slots:
