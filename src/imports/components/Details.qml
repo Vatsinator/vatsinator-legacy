@@ -24,11 +24,26 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
 
+/**
+ * \ingroup Imports
+ * 
+ * \code{.qml}
+ * import org.eu.vatsinator.Components
+ * \endcode
+ * 
+ * The Details component displays two lines: the \ref value
+ * and the \ref name of the property.
+ */
 Item {
     id: root
     
+    /** type:string The name of the property. */
     property string name
+    
+    /** type:string The value itself. */
     property string value
+    
+    /** type:string Path to an icon; can be empty. */
     property string iconSource: ""
     
     implicitHeight: 72

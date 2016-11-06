@@ -24,12 +24,10 @@
 #include <QObject>
 
 /**
- * \defgroup travelpayouts-airline-logo Travelpayouts airline logos.
+ * \defgroup Travelpayouts-airline-logos
  * @{
- * 
- * https://support.travelpayouts.com/hc/en-us/articles/203956073-Airline-logos
- *
  * A Travelpayouts airline logos plugin for Vatsinator.
+ * https://support.travelpayouts.com/hc/en-us/articles/203956073-Airline-logos
  */
 
 /**
@@ -53,6 +51,8 @@ public:
     const Vatsinator::Misc::AirlineLogoReply* fetchLogo(const Vatsinator::Core::Airline& airline,
                                                         const QSize& prefferedSize) override;
     
-}; /** @} */
+};
+
+/** @} */
 
 #endif // TRAVELPAYOUTSAIRLINELOGOPROVIDER_H

@@ -21,7 +21,8 @@
 #define GUI_H
 
 /**
- * \defgroup Gui UI-related classes.
+ * \defgroup Gui
+ * UI-related classes.
  */
 
 #endif // GUI_H

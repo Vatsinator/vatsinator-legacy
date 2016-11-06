@@ -26,14 +26,15 @@
 class TileRenderer;
 
 /**
- * \defgroup tiled-map Tiled map drawer plugin
+ * \defgroup Tiled-mad-drawer
  * @{
  *
- * A tile-based world map for Vatsinator.
+ * A tile-based world map drawer plugin for Vatsinator.
  */
 
 /**
- * The implementation of MapDrawer that uses map tiles to draw the world.
+ * The TiledMapDrawer is an implementation of MapDrawer that uses map tiles
+ * to draw the world.
  */
 class TiledMapDrawer : public QObject, public Vatsinator::Gui::MapDrawer {
     Q_OBJECT
@@ -72,6 +73,8 @@ private:
     QPixmap m_map;
     QRectF m_coords; /**< Area that is covered by rendered map, global coordinates */
     
-}; /** @} */
+};
+
+/** @} */
 
 #endif // TILEDMAPDRAWER_H

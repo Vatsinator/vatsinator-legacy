@@ -20,6 +20,16 @@
 import QtQuick 2.5
 import QtQuick.Window 2.2
 
+/**
+ * \ingroup Imports
+ * 
+ * \code{.qml}
+ * import org.eu.vatsinator.Components
+ * \endcode
+ * 
+ * The MapControls class provides smooth user experience for
+ * moving and zooming the map.
+ */
 MultiPointTouchArea {
     id: root
     

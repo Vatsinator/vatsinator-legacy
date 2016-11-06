@@ -26,10 +26,13 @@
 #include <QList>
 
 /**
- * \defgroup idl-drawer International Date Line drawer plugin.
+ * \defgroup IDL-map-addon
  * @{
- *
  * The International Date Line plugin for Vatsinator.
+ */
+
+/**
+ * The IdlDrawer addon draws the International Date Line on the world map.
  */
 class IdlDrawer : public QObject, public Vatsinator::Gui::MapAddon {
     Q_OBJECT
@@ -55,6 +58,8 @@ public:
 private:
     QList<Vatsinator::Core::LonLat> m_idl;
 
-}; /** @} */
+};
+
+/** @} */
 
 #endif // IDLDRAWER_H

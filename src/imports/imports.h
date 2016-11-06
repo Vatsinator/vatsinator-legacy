@@ -23,6 +23,13 @@
 /**
  * \defgroup Imports
  * Vatsinator modules for QML.
+ * 
+ * For QML classes, use
+ * \code{.qml}
+ * import org.eu.vatsinator.Components
+ * import org.eu.vatsinator.NativeUtils
+ * import org.eu.vatsinator.Vatsim
+ * \endcode
  */
 
 #endif // IMPORTS_H

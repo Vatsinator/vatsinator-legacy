@@ -42,7 +42,7 @@ public:
     /**
      * Creates a new MetarWindow instance.
      *
-     * \param metars The \ref MetarManager instance that contains list of METARs.
+     * \param metars The \ref Vatsinator::Core::MetarManager instance that contains list of METARs.
      * \param parent Passed to QObject's constructor.
      */
     explicit MetarWindow(Vatsinator::Core::MetarManager* metars, QWidget* parent = nullptr);

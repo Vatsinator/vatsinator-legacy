@@ -25,9 +25,8 @@
 #include <QMultiMap>
 
 /**
- * \defgroup vatbook-atc-bookings VATBOOK ATC booking provider.
+ * \defgroup VATBOOK-atc-bookings
  * @{
- *
  * A VATBOOK bookings plugin for Vatsinator.
  */
 
@@ -64,6 +63,8 @@ private:
     QMultiMap<QString, Vatsinator::Misc::AtcBooking> m_bookings;
     QList<Vatsinator::Misc::AtcBookingReply*> m_pending;
 
-}; /** @} */
+};
+
+/** @} */
 
 #endif // VATBOOKATCBOOKINGPROVIDER_H

@@ -24,11 +24,26 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
 
+/**
+ * \ingroup Imports
+ * 
+ * \code{.qml}
+ * import org.eu.vatsinator.Components
+ * \endcode
+ * 
+ * The TwoLineListItem represents a two-line component that respects
+ * Material Design guidelines.
+ */
 Item {
     id: root
     
+    /** type:string The primary text. */
     property string primaryText
+    
+    /** type:string The secondary text. */
     property string secondaryText
+    
+    /** type:string The primary text. */
     property string iconSource
     
     signal primaryClicked

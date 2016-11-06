@@ -25,8 +25,7 @@
 namespace Vatsinator { namespace Imports {
 
 /**
- * \ingroup Imports
- * @{
+ * \internal
  */
 class NativeUtilsQmlPlugin : public QQmlExtensionPlugin {
     Q_OBJECT
@@ -38,7 +37,7 @@ public:
      */
     void registerTypes(const char* uri) override;
     
-}; /** @} */
+};
 
 }} /* namespace Vatsinator::Imports */
 

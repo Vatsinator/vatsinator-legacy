@@ -26,12 +26,10 @@
 #include <QXmlStreamReader>
 
 /**
- * \defgroup euroute-notams EUroute NOTAM provider.
+ * \defgroup EUroute-notams
  * @{
- *
- * http://notams.euroutepro.com/doc/
- *
  * The EUroute NOTAM plugin for Vatsinator.
+ * http://notams.euroutepro.com/doc/
  */
 
 /**
@@ -73,6 +71,8 @@ private:
     QMultiMap<QString, Vatsinator::Misc::Notam> m_notams;
     QList<Vatsinator::Misc::NotamReply*> m_requests;
     
-}; /** @} */
+};
+
+/** @} */
 
 #endif // EUROUTENOTAMPROVIDER_H

@@ -22,21 +22,47 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
 import org.eu.vatsinator.Vatsim 1.0
 
+/**
+ * \ingroup Imports
+ * 
+ * \code{.qml}
+ * import org.eu.vatsinator.Components
+ * \endcode
+ * 
+ * The ClientListView represents a list of clients of the given \ref object.
+ */
 ListView {
     id: root
     
+    /** type:ClientList The list object. */
     property var object
+    
+    /** type:function Returns an ATC line; the default value returns the real name. */
     property var atcSecondaryText: function(atc) {
         return atc.realName;
     }
     
+    /** type:function Returns a flight line; the default value returns departure and destination airports' ICAO codes. */
     property var flightSecondaryText: function(flight) {
         return flight.departure.icao + " -> " + flight.destination.icao;
     }
     
+    /**
+     * The ATC was clicked.
+     * \param atc The ATC that was clicked.
+     */
     signal atcClicked(var atc)
+    
+    /**
+     * The flight was clicked.
+     * \param flight The flight that was clicked.
+     */
     signal flightClicked(var flight)
     
+    /**
+     * Converts client type (pilot/ATC) to a string describing it.
+     * \param type The type of the client ("ATC"/"PILOT").
+     */
     function clientTypeToString(type)
     {
         if (type == "ATC")

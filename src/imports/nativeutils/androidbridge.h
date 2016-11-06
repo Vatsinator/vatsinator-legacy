@@ -27,10 +27,21 @@ namespace Vatsinator { namespace Imports {
 /**
  * \ingroup Imports
  * @{
+ * 
+ * \code{.qml}
+ * import org.eu.vatsinator.NativeUtils
+ * \endcode
+ * 
+ * A couple of utilities that make it easy to retrieve info about currently
+ * running Android system.
  */
 class AndroidBridge : public QObject {
     Q_OBJECT
     
+    /**
+     * Height, in pixels, of the navigation bar.
+     * When in landscape mode, it is always 0.
+     */
     Q_PROPERTY(int navigationBarHeight
         READ navigationBarHeight
         NOTIFY navigationBarHeightChanged)
