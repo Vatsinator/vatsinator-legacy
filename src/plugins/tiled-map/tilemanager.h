@@ -33,7 +33,7 @@
 struct TileCoords;
 
 /**
- * \ingroup tiled-map
+ * \ingroup Tiled-mad-drawer
  * @{
  */
 class TileManager : public QObject {

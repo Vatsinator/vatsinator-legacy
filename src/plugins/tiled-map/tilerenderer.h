@@ -29,7 +29,7 @@ namespace Vatsinator { namespace Gui { class WorldTransform; }}
 class TileManager;
 
 /**
- * \ingroup tiled-map
+ * \ingroup Tiled-mad-drawer
  * @{
  */
 class TileRenderer : public QObject {

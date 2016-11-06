@@ -28,7 +28,7 @@
 class TileManager;
 
 /**
- * \ingroup tiled-map Map that uses graphical map tiles.
+ * \ingroup Tiled-mad-drawer
  * @{
  */
 class Tile {
