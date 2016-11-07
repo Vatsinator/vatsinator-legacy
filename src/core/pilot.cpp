@@ -292,7 +292,7 @@ void Pilot::setNodes(QList<LonLat> nodes)
     }
 
     m_nodes = std::make_tuple(nodes.mid(0, pos), nodes.mid(pos));
-    emit routeChanged(route());
+    emit nodesUpdated();
 }
 
 void Pilot::RouteParserTask::run()

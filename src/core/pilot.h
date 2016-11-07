@@ -201,6 +201,12 @@ signals:
     void routeChanged(const QString& route);
     void airlineChanged(const Airline& airline);
 
+    /**
+     * Emitted when the nodes on the route are updated, i.e. the
+     * route is parsed.
+     */
+    void nodesUpdated();
+
 public:
     /**
      * Creates a new Pilot instance.
@@ -217,7 +223,7 @@ public:
      *
      * \note With the first call to this function only the nodes between airports
      * and the pilot will be returned. The route will be parsed on a separate thread.
-     * When the full list of nodes is ready, the \c routeChanged() signal will be
+     * When the full list of nodes is ready, the \c nodesUpdated() signal will be
      * emitted.
      */
     QList<LonLat> nodes(NodeSelection selection = NodeSelection(DepartureToPilot | PilotToDestination)) const;
