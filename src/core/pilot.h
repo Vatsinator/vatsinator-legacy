@@ -45,6 +45,7 @@ class __VtrCoreApi__ Pilot : public Client {
     
     friend class ClientData;
     friend class ServerTracker;
+    class RouteParserTask;
     
     /**
      * Estimated time of arrival.
@@ -166,9 +167,15 @@ public:
         Arrived /**< The aircraft is already at the destination airport. */
     };
     
+    /**
+     * The \c NodeSelectionFlag is used to specify which part of route
+     * is to be fetched in the \ref nodes() method.
+     */
     enum NodeSelectionFlag {
-        DepartureToPilot    = 0x01,
-        PilotToDestination  = 0x02
+        DepartureToPilot    = 0x01, /**< First node is departure airport,
+                                         last is the pilot's position. */
+        PilotToDestination  = 0x02 /**< First node is the pilot's position,
+                                         last is the destination airport. */
     };
     Q_DECLARE_FLAGS(NodeSelection, NodeSelectionFlag)
     
@@ -207,6 +214,11 @@ public:
     
     /**
      * Returns list of points that make the flight route.
+     *
+     * \note With the first call to this function only the nodes between airports
+     * and the pilot will be returned. The route will be parsed on a separate thread.
+     * When the full list of nodes is ready, the \c routeChanged() signal will be
+     * emitted.
      */
     QList<LonLat> nodes(NodeSelection selection = NodeSelection(DepartureToPilot | PilotToDestination)) const;
     
@@ -258,10 +270,11 @@ protected:
 private:
     void calculateEta() const;
     void calculateProgress() const;
+    void setNodes(QList<LonLat> nodes);
     
     mutable QTime m_eta;
     mutable bool m_etaCalculated;
-    mutable int m_progress = -1; // -1 means it needs re-calculating
+    mutable int m_progress = -1; // -1 means it needs re-calculation
     int m_altitude = 0;
     int m_groundSpeed = 0;
     QString m_squawk;
@@ -280,6 +293,9 @@ private:
     int m_plannedTas;
     QString m_route;
     Airline m_airline;
+
+    std::tuple<QList<LonLat>, QList<LonLat>> m_nodes;
+    mutable int m_routeParserStatus = 0; // 0 - not parsed, 1 - is being parsed, 2 - parsed
 
 }; /** @} */
 

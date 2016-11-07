@@ -19,9 +19,20 @@
 
 #include "pilot.h"
 #include "geo.h"
+#include "natparser.h"
 #include <QtCore>
 
 namespace Vatsinator { namespace Core {
+
+class Pilot::RouteParserTask : public QRunnable {
+public:
+    RouteParserTask(Pilot* pilot) : m_pilot(pilot) {}
+    void run() override;
+
+private:
+    Pilot* const m_pilot;
+};
+
 
 Pilot::Pilot(quint32 pid, ServerTracker* server) :
     Client(pid, server)
@@ -41,14 +52,31 @@ Pilot::~Pilot() {}
 QList<LonLat> Pilot::nodes(NodeSelection selection) const
 {
     QList<LonLat> nodes;
-    if (selection.testFlag(DepartureToPilot) && departure()->isValid())
-        nodes.append(departure()->position());
-    
-    nodes.append(position());
-    
-    if (selection.testFlag(PilotToDestination) && destination()->isValid())
-        nodes.append(destination()->position());
-    
+
+    if (m_routeParserStatus < 2) {
+        if (m_routeParserStatus == 0) {
+            m_routeParserStatus = 1;
+            QRunnable* task = new RouteParserTask(const_cast<Pilot*>(this));
+            QThreadPool::globalInstance()->start(task);
+        }
+
+        if (selection.testFlag(DepartureToPilot) && departure()->isValid())
+            nodes.append(departure()->position());
+
+        nodes.append(position());
+
+        if (selection.testFlag(PilotToDestination) && destination()->isValid())
+            nodes.append(destination()->position());
+    } else {
+        if (selection.testFlag(DepartureToPilot))
+            nodes.append(std::get<0>(m_nodes));
+
+        nodes.append(position());
+
+        if (selection.testFlag(PilotToDestination))
+            nodes.append(std::get<1>(m_nodes));
+    }
+
     return nodes;
 }
 
@@ -222,7 +250,7 @@ void Pilot::calculateEta() const
         m_eta = QDateTime::currentDateTimeUtc().time();
     } else if (destination()->isValid()) {
         qreal dist = nmDistance(position(), m_destination->position());
-        int secs = (dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0;
+        int secs = static_cast<int>((dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0);
         m_eta = QDateTime::currentDateTimeUtc().time().addSecs(secs);
     } else {
         m_eta = m_sta;
@@ -241,11 +269,50 @@ void Pilot::calculateProgress() const
         if (!departure()->position().isNull() && !destination()->position().isNull()) {
             qreal total = nmDistance(departure()->position(), destination()->position());
             qreal left = nmDistance(position(), destination()->position());
-            m_progress = 100 - (100 * left / total);
+            m_progress = static_cast<int>(100.0 - (100.0 * left / total));
         } else {
             m_progress = 0;
         }
     }
+}
+
+void Pilot::setNodes(QList<LonLat> nodes)
+{
+    int pos = 0;
+    if (nodes.size() > 2) {
+        if (nodes.first().x() < position().x()) {
+            while (nodes.at(pos).x() < position().x())
+                ++pos;
+        } else {
+            while (nodes.at(pos).x() > position().x())
+                ++pos;
+        }
+    } else if (nodes.size() == 2) {
+        pos = 1;
+    }
+
+    m_nodes = std::make_tuple(nodes.mid(0, pos), nodes.mid(pos));
+    emit routeChanged(route());
+}
+
+void Pilot::RouteParserTask::run()
+{
+    if (!m_pilot->departure()->isValid() || !m_pilot->destination()->isValid())
+        return;
+
+    qDebug() << "Parsing route for" << m_pilot->callsign();
+
+    QList<LonLat> nodes;
+    nodes.append(m_pilot->departure()->position());
+
+    NatParser np(m_pilot->route());
+    if (np.natFound())
+        nodes.append(np.waypoints());
+
+    nodes.append(m_pilot->destination()->position());
+
+    m_pilot->m_routeParserStatus = 2;
+    m_pilot->setNodes(nodes);
 }
 
 }} /* namespace Vatsinator::Core */

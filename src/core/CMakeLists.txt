@@ -22,6 +22,7 @@ set (core_SOURCES
     lonlat.cpp
     metar.cpp
     metarmanager.cpp
+    natparser.cpp
     option.cpp
     pilot.cpp
     pluginfinder.cpp
@@ -56,6 +57,7 @@ set (core_HEADERS
     lonlat.h
     metar.h
     metarmanager.h
+    natparser.h
     option.h
     pilot.h
     pluginfinder.h

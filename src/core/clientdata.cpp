@@ -147,7 +147,7 @@ ClientData ClientData::fromWhazzUpLine(const QString& line)
         client.setLine(data);
         client.setCallsign(data.at(0));
         bool ok;
-        quint64 pid = data.at(1).toUInt(&ok);
+        quint32 pid = data.at(1).toUInt(&ok);
         if (!ok) {
             client.setValid(false);
             return client;
@@ -224,7 +224,7 @@ void ClientData::updatePilotImpl(Pilot* pilot)
     pilot->setAtd(QTime::fromString(line().at(ActualDepTime), "hhmm"));
     pilot->setProgress(-1);
     pilot->setRemarks(line().at(PlannedRemarks));
-    pilot->setHeading(line().at(Heading).toUInt());
+    pilot->setHeading(line().at(Heading).toInt());
     pilot->setRoute(line().at(PlannedRoute));
     pilot->setCruiseAltitude(line().at(PlannedAltitude));
     pilot->setPlannedTas(line().at(PlannedTascruise).toInt());
