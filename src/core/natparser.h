@@ -65,6 +65,7 @@ protected:
     bool natMethod1();
     bool natMethod2();
     bool natMethod3();
+    bool natMethod4();
 
 private:
     QString m_filledRoute;

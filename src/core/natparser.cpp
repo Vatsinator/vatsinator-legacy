@@ -31,7 +31,7 @@ bool NatParser::natFound()
     if (m_waypoints.size() > 0)
         return true;
 
-    return natMethod1() || natMethod2() || natMethod3();
+    return natMethod1() || natMethod2() || natMethod3() || natMethod4();
 }
 
 bool NatParser::natMethod1()
@@ -100,6 +100,26 @@ bool NatParser::natMethod3()
         m_waypoints << LonLat(static_cast<qreal>(we), static_cast<qreal>(ns));
 
         offset = match.capturedEnd(3);
+        match = regex.match(m_filledRoute, offset);
+    }
+
+    return m_waypoints.size() > 0;
+}
+
+bool NatParser::natMethod4()
+{
+    /* 54/20 54/30 54/40 53/50 */
+    static QRegularExpression regex(QStringLiteral("\\b([0-9]{2})/([0-9]{2})\\b"));
+
+    int offset = 0;
+    auto match = regex.match(m_filledRoute);
+    while (match.lastCapturedIndex() == 2) {
+        int n = match.captured(1).toInt();
+        int w = 0 - match.captured(2).toInt();
+
+        m_waypoints << LonLat(static_cast<qreal>(w), static_cast<qreal>(n));
+
+        offset = match.capturedEnd(2);
         match = regex.match(m_filledRoute, offset);
     }
 
