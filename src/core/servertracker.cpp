@@ -443,6 +443,7 @@ void ServerTracker::maintainClient()
 void ServerTracker::readStatus(VatsimStatusDocument status)
 {
     if (!status.isValid()) {
+        // TODO Handle invalid status
         qWarning("STATUS INVALID! Handle me pls ;-;");
         return;
     }

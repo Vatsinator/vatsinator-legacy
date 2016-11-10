@@ -28,6 +28,7 @@ VatsimDataReader::VatsimDataReader(QObject* parent) :
 {
     connect(m_downloader, &FileDownloader::finished, this,
             static_cast<void (VatsimDataReader::*)()>(&VatsimDataReader::read));
+    connect(m_downloader, &FileDownloader::error, this, &VatsimDataReader::readAnotherOneFromChain);
 }
 
 VatsimDataReader::~VatsimDataReader() {}
@@ -42,9 +43,21 @@ void VatsimDataReader::read(const QUrl& url)
             emit dataRead(s);
         } else {
             qWarning("VatsimDataReader: could not open the file %s for reading!", qPrintable(url.toLocalFile()));
+            readAnotherOneFromChain();
         }
     } else {
         m_downloader->fetch(url);
+    }
+}
+
+void VatsimDataReader::read(const QList<QUrl>& urlChain)
+{
+    m_urls.append(urlChain);
+
+    if (!m_downloader->isDownloading()) {
+        int serverNo = qrand() % m_urls.length();
+        QUrl url = m_urls.at(serverNo);
+        read(url);
     }
 }
 
@@ -52,6 +65,15 @@ void VatsimDataReader::read()
 {
     VatsimDataDocument s = parse(m_downloader->data());
     emit dataRead(s);
+}
+
+void VatsimDataReader::readAnotherOneFromChain()
+{
+    if (m_urls.size() > 0) {
+        int serverNo = qrand() % m_urls.length();
+        QUrl url = m_urls.at(serverNo);
+        read(url);
+    }
 }
 
 VatsimDataDocument VatsimDataReader::parse(const QByteArray& data)

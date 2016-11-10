@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  * \ingroup Core
  * @{
  * 
- * The VatsimDataReader class is a utility class that simplified the
+ * The VatsimDataReader class is a utility class that simplifies the
  * process of fetching and parsing data files by VATSIM.
  * 
  * \sa VatsimDataDocument, VatsimStatusDocument and VatsimStatusReader.
@@ -41,22 +41,48 @@ class __VtrCoreApi__ VatsimDataReader : public QObject {
     Q_OBJECT
     
 signals:
+    /**
+     * Emitted each time when the data document is downloaded and
+     * successfully parsed.
+     */
     void dataRead(Vatsinator::Core::VatsimDataDocument data);
 
 public:
+    /**
+     * Creates a new \c VatsimDataReader instance. Passes \c parent
+     * to the QObject.
+     */
     explicit VatsimDataReader(QObject* parent = nullptr);
+
+    /**
+     * Destroys this \c VatsimDataReader.
+     */
     virtual ~VatsimDataReader();
     
+    /**
+     * Reads the data document under location specified by \c url.
+     * If the \c url points to a local file, reads it immediately.
+     * If the \c url points to a remote file, downloads it prior to reading it.
+     */
     void read(const QUrl& url);
+
+    /**
+     * Picks a random URL from the \c urlChain and calls \ref read(const QUrl&)
+     * on it. If it fails, picks another one and does that forever until any
+     * document is downloaded and parsed successfully.
+     */
+    void read(const QList<QUrl>& urlChain);
     
 private:
     VatsimDataDocument parse(const QByteArray& data);
     
-private:
+private slots:
     void read();
+    void readAnotherOneFromChain();
     
 private:
     FileDownloader* m_downloader;
+    QList<QUrl> m_urls;
     
 }; /** @} */
 
