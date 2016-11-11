@@ -175,12 +175,12 @@
 <context>
     <name>ClientListView</name>
     <message>
-        <location filename="../imports/components/ClientListView.qml" line="43"/>
+        <location filename="../imports/components/ClientListView.qml" line="69"/>
         <source>ATCs</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../imports/components/ClientListView.qml" line="45"/>
+        <location filename="../imports/components/ClientListView.qml" line="71"/>
         <source>Flights</source>
         <translation>フライト</translation>
     </message>
