@@ -18,6 +18,7 @@ set (core_SOURCES
     fir.cpp
     firlistreader.cpp
     firobject.cpp
+    flightplan.cpp
     geo.cpp
     lonlat.cpp
     metar.cpp
@@ -53,6 +54,7 @@ set (core_HEADERS
     fir.h
     firlistreader.h
     firobject.h
+    flightplan.h
     geo.h
     lonlat.h
     metar.h

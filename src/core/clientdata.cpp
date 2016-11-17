@@ -225,12 +225,14 @@ void ClientData::updatePilotImpl(Pilot* pilot)
     pilot->setProgress(-1);
     pilot->setRemarks(line().at(PlannedRemarks));
     pilot->setHeading(line().at(Heading).toInt());
-    pilot->setRoute(line().at(PlannedRoute));
     pilot->setCruiseAltitude(line().at(PlannedAltitude));
     pilot->setPlannedTas(line().at(PlannedTascruise).toInt());
-    
-    pilot->plannedDepartureAirport = line().at(PlannedDepAirport);
-    pilot->plannedDestinationAirport = line().at(PlannedDestairport);
+
+    FlightPlan plan;
+    plan.setRoute(line().at(PlannedRoute));
+    plan.setDepartureAirpoirt(line().at(PlannedDepAirport));
+    plan.setDestinationAirport(line().at(PlannedDestairport));
+    pilot->setFlightPlan(plan);
     
     if (pilot->std().isValid()) {
         QTime sta = QTime(pilot->std().hour() + line().at(PlannedHrsEnroute).toInt(),

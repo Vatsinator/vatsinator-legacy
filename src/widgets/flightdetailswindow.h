@@ -107,7 +107,7 @@ private slots:
     void updateFlightRules(Core::Pilot::FlightRules rules);
     void updateCruiseAltitude(QString cruiseAltitude);
     void updatePlannedTas(int plannedTas);
-    void updateRoute(QString route);
+    void updateFlightPlan(Core::FlightPlan flightPlan);
     void updateRemarks(QString remarks);
     void updateAirline(const Core::Airline& airline);
     void airlineLogoUpdated();

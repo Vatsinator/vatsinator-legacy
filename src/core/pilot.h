@@ -24,6 +24,7 @@
 #include "airportobject.h"
 #include "client.h"
 #include "coreexport.h"
+#include "flightplan.h"
 #include <QMetaType>
 #include <QString>
 
@@ -43,7 +44,6 @@ class __VtrCoreApi__ Pilot : public Client {
     Q_ENUMS(FlightRules)
     Q_ENUMS(FlightPhase)
     
-    friend class ClientData;
     friend class ServerTracker;
     class RouteParserTask;
     
@@ -136,11 +136,11 @@ class __VtrCoreApi__ Pilot : public Client {
      * Planned True Air Speed.
      */
     Q_PROPERTY(int plannedTas READ plannedTas WRITE setPlannedTas NOTIFY plannedTasChanged)
-    
+
     /**
-     * Route of the flight, as filled in the flight plan.
+     * The filled flight plan.
      */
-    Q_PROPERTY(QString route READ route WRITE setRoute NOTIFY routeChanged)
+    Q_PROPERTY(Vatsinator::Core::FlightPlan flightPlan READ flightPlan WRITE setFlightPlan NOTIFY flightPlanChanged)
     
     /**
      * The airline that is operating this flight.
@@ -198,7 +198,7 @@ signals:
     void destinationChanged(AirportObject* destination);
     void cruiseAltitudeChanged(const QString& cruiseAltitude);
     void plannedTasChanged(int plannedTas);
-    void routeChanged(const QString& route);
+    void flightPlanChanged(const FlightPlan& flightPlan);
     void airlineChanged(const Airline& airline);
 
     /**
@@ -264,14 +264,10 @@ public:
     void setCruiseAltitude(const QString& cruiseAltitude);
     int plannedTas() const { return m_plannedTas; }
     void setPlannedTas(int plannedTas);
-    const QString& route() const { return m_route; }
-    void setRoute(const QString& route);
+    const FlightPlan& flightPlan() const { return m_flightPlan; }
+    void setFlightPlan(FlightPlan flightPlan);
     const Airline& airline() const { return m_airline; }
     void setAirline(const Airline& airline);
-    
-protected:
-    QString plannedDepartureAirport;
-    QString plannedDestinationAirport;
     
 private:
     void calculateEta() const;
@@ -297,7 +293,7 @@ private:
     AirportObject* m_destination = nullptr;
     QString m_cruiseAltitude;
     int m_plannedTas;
-    QString m_route;
+    FlightPlan m_flightPlan;
     Airline m_airline;
 
     std::tuple<QList<LonLat>, QList<LonLat>> m_nodes;

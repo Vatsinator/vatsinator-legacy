@@ -134,8 +134,8 @@ void FlightDetailsWindow::flightUpdated()
     updateFlightRules(m_flight->flightRules());
     connect(m_flight.data(), &Pilot::flightRulesChanged, this, &FlightDetailsWindow::updateFlightRules);
     
-    updateRoute(m_flight->route());
-    connect(m_flight.data(), &Pilot::routeChanged, this, &FlightDetailsWindow::updateRoute);
+    updateFlightPlan(m_flight->flightPlan());
+    connect(m_flight.data(), &Pilot::flightPlanChanged, this, &FlightDetailsWindow::updateFlightPlan);
     
     updateRemarks(m_flight->remarks());
     connect(m_flight.data(), &Pilot::remarksChanged, this, &FlightDetailsWindow::updateRemarks);
@@ -281,9 +281,9 @@ void FlightDetailsWindow::updatePlannedTas(int plannedTas)
     ui->tas->setText(plannedTas > 0 ? tr("%1 knots").arg(QString::number(plannedTas)) : QString());
 }
 
-void FlightDetailsWindow::updateRoute(QString route)
+void FlightDetailsWindow::updateFlightPlan(FlightPlan flightPlan)
 {
-    ui->route->setText(route);
+    ui->route->setText(flightPlan.route());
 }
 
 void FlightDetailsWindow::updateRemarks(QString remarks)

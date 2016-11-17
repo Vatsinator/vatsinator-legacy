@@ -38,7 +38,6 @@ FlightItem::FlightItem(Pilot* pilot, MapScene* scene,
     connect(m_pilot, &Pilot::headingChanged, this, &MapItem::updated);
     connect(m_pilot, &Pilot::flightPhaseChanged, this, &MapItem::updated);
     connect(m_pilot, &Client::positionChanged, this, &FlightItem::clearNodes);
-    connect(m_pilot, &Pilot::routeChanged, this, &FlightItem::clearNodes);
     connect(m_pilot, &Pilot::nodesUpdated, this, &FlightItem::clearNodes);
 }
 

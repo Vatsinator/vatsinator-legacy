@@ -176,8 +176,7 @@ void ServerTracker::markOfflineClients()
 
 void ServerTracker::addFlightImpl(Pilot* flight)
 {
-    connect(flight, &Pilot::routeChanged, this, &ServerTracker::invalidateAirports);
-    connect(flight, &Pilot::groundSpeedChanged, this, &ServerTracker::maintainClient);
+    connect(flight, &Client::positionChanged, this, &ServerTracker::maintainClient);
     maintainFlightImpl(flight);
     
     flight->setAirline(m_airlines->findByIcao(flight->callsign().left(3)));
@@ -296,7 +295,7 @@ void ServerTracker::discoverFlightAirportsImpl(Pilot* flight)
 {
     AirportObject *dep = nullptr, *dest = nullptr;
 
-    if (flight->plannedDepartureAirport.isEmpty()) { // departure airport not filled
+    if (flight->flightPlan().departureAirport().isEmpty()) { // departure airport not filled
         Airport ap = m_airportDb->nearest(flight->position());
         AirportObject* o = airportObject(ap);
         qreal d = nmDistance(flight->position(), o->position());
@@ -309,11 +308,11 @@ void ServerTracker::discoverFlightAirportsImpl(Pilot* flight)
     }
 
     if (!dep) {
-        dep = airportObject(flight->plannedDepartureAirport);
+        dep = airportObject(flight->flightPlan().departureAirport());
     }
     
     if (!dest) {
-        dest = airportObject(flight->plannedDestinationAirport);
+        dest = airportObject(flight->flightPlan().destinationAirport());
     }
     
     flight->setDeparture(dep);

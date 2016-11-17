@@ -226,11 +226,11 @@ void Pilot::setPlannedTas(int plannedTas)
     }
 }
 
-void Pilot::setRoute(const QString& route)
+void Pilot::setFlightPlan(FlightPlan flightPlan)
 {
-    if (m_route != route) {
-        m_route = route;
-        emit routeChanged(m_route);
+    if (m_flightPlan != flightPlan) {
+        m_flightPlan = flightPlan;
+        emit flightPlanChanged(m_flightPlan);
     }
 }
 
@@ -305,7 +305,7 @@ void Pilot::RouteParserTask::run()
     QList<LonLat> nodes;
     nodes.append(m_pilot->departure()->position());
 
-    NatParser np(m_pilot->route());
+    NatParser np(m_pilot->flightPlan().route());
     if (np.natFound())
         nodes.append(np.waypoints());
 
