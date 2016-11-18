@@ -458,12 +458,22 @@
         <translation>Abgehende Flüge: %1</translation>
     </message>
     <message>
-        <location filename="../widgets/widgetsprivate.cpp" line="54"/>
+        <location filename="../widgets/widgetsprivate.cpp" line="57"/>
+        <source>from %1</source>
+        <translation>von %1</translation>
+    </message>
+    <message>
+        <location filename="../widgets/widgetsprivate.cpp" line="59"/>
+        <source>to %1</source>
+        <translation>nach %1</translation>
+    </message>
+    <message>
+        <location filename="../widgets/widgetsprivate.cpp" line="61"/>
         <source>Ground speed: %1 knots</source>
         <translation>Geschwindigkeit über Grund: %1 Knoten</translation>
     </message>
     <message>
-        <location filename="../widgets/widgetsprivate.cpp" line="55"/>
+        <location filename="../widgets/widgetsprivate.cpp" line="62"/>
         <source>Altitude: %1 feet</source>
         <translation>Höhe: %1 Fuß</translation>
     </message>
@@ -665,28 +675,28 @@
 <context>
     <name>Vatsinator::Widgets::FlightDetailsWindow</name>
     <message>
-        <location filename="../widgets/flightdetailswindow.cpp" line="229"/>
-        <location filename="../widgets/flightdetailswindow.cpp" line="281"/>
+        <location filename="../widgets/flightdetailswindow.cpp" line="245"/>
+        <location filename="../widgets/flightdetailswindow.cpp" line="297"/>
         <source>%1 knots</source>
         <translation>%1 Knoten</translation>
     </message>
     <message>
-        <location filename="../widgets/flightdetailswindow.cpp" line="239"/>
+        <location filename="../widgets/flightdetailswindow.cpp" line="255"/>
         <source>%1 feet</source>
         <translation>%1 Fuß</translation>
     </message>
     <message>
-        <location filename="../widgets/flightdetailswindow.cpp" line="251"/>
+        <location filename="../widgets/flightdetailswindow.cpp" line="267"/>
         <source>departing</source>
         <translation>im Abflug</translation>
     </message>
     <message>
-        <location filename="../widgets/flightdetailswindow.cpp" line="255"/>
+        <location filename="../widgets/flightdetailswindow.cpp" line="271"/>
         <source>airborne</source>
         <translation>im Flug</translation>
     </message>
     <message>
-        <location filename="../widgets/flightdetailswindow.cpp" line="259"/>
+        <location filename="../widgets/flightdetailswindow.cpp" line="275"/>
         <source>arrived</source>
         <translation>angekommen</translation>
     </message>
