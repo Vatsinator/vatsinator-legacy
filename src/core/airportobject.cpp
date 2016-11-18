@@ -28,18 +28,18 @@ namespace Vatsinator { namespace Core {
 AirportObject::AirportObject(const Airport& airport, ServerTracker* server) :
     ClientList(server),
     m_airport(airport),
-    m_valid(true),
+    m_known(true),
     m_server(server){}
 
 AirportObject::AirportObject(const QString& icao, ServerTracker* server) :
     ClientList(server),
     m_airport(Airport(icao)),
-    m_valid(false),
+    m_known(false),
     m_server(server) {}
 
 QString AirportObject::representativeName() const
 {
-    if (isValid())
+    if (isKnownAirport())
         return icao() % QStringLiteral(" ") % city();
     else
         return icao();

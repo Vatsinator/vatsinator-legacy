@@ -98,12 +98,9 @@ class __VtrCoreApi__ AirportObject : public ClientList {
     Q_PROPERTY(int outboundFlightsCount READ outboundFlightsCount)
     
     /**
-     * Specifies whether the airport is valid or not.
-     * If the value of this property is false, it means that there is no
-     * matching airport in the database and therefore no data for it is
-     * available.
+     * Specifies whether the airport is known to the Vatsinator database or not.
      */
-    Q_PROPERTY(bool valid READ isValid CONSTANT)
+    Q_PROPERTY(bool known READ isKnownAirport CONSTANT)
     
 public:
     /**
@@ -130,7 +127,7 @@ public:
     QString name() const { return m_airport.name(); }
     QPointF position() const { return QPointF(m_airport.position()); }
     int altitude() const { return m_airport.altitude(); }
-    bool isValid() const { return m_valid; }
+    bool isKnownAirport() const { return m_known; }
     
     /**
      * Gets representative name, i.e. ICAO code + city if the airport
@@ -153,7 +150,7 @@ public:
 
 private:
     Airport m_airport;
-    bool m_valid;
+    bool m_known;
     ServerTracker* m_server;
 
 }; /** @} */

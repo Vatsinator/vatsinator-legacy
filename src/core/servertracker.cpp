@@ -34,16 +34,10 @@ using namespace Vatsinator::Core;
 
 namespace Vatsinator { namespace Core {
 
-/* Maximum distance from aircraft to the airport when aircraft is not airborne (in nm) */
-constexpr qreal MaxAircraftToAirport = 2.0;
-
 /* Maximum distance from ATC position to the airport it controls */
 constexpr qreal MaxAtcToAirport = 0.5;
 
-/* Below this ground speeed (in knots) flight will be considered departing/arrived */
-constexpr int MinimumGroundSpeed = 50;
-
-/* The ServerTracker stores some internal values in Pilots' dynamic properties. */
+/* The ServerTracker stores some internal values in Client' dynamic properties. */
 constexpr auto AirportsValidKey = "airportObjectsValid";
 constexpr auto UpdateNoKey = "serverTrackerUpdateNo";
 
@@ -176,6 +170,8 @@ void ServerTracker::markOfflineClients()
 
 void ServerTracker::addFlightImpl(Pilot* flight)
 {
+    connect(flight, &Pilot::flightPlanChanged, this, &ServerTracker::invalidateAirports);
+    connect(flight, &Pilot::flightPlanChanged, this, &ServerTracker::maintainClient);
     connect(flight, &Client::positionChanged, this, &ServerTracker::maintainClient);
     maintainFlightImpl(flight);
     
@@ -189,38 +185,20 @@ void ServerTracker::addAtcImpl(Atc* atc)
 
 void ServerTracker::maintainFlightImpl(Pilot* flight)
 {
-    // airport database empty, always airborne
-    if (m_airportDb->isEmpty()) {
-        flight->setFlightPhase(Pilot::Airborne);
-        return;
-    }
-    
     // departure or destination airports not set, find them
-    if (!airportObjectsValid(flight)) {
-        discoverFlightAirportsImpl(flight);
-        AirportObject* a = flight->departure();
-        Q_ASSERT(a);
-        a->add(flight);
-        
-        a = flight->destination();
-        Q_ASSERT(a);
-        a->add(flight);
-    }
-    
-    // determine flight phase
-    if (flight->groundSpeed() < MinimumGroundSpeed) {
-        qreal d = nmDistance(flight->position(), flight->departure()->position());
-        if (d < MaxAircraftToAirport) {
-            flight->setFlightPhase(Pilot::Departing);
-        } else {
-            d = nmDistance(flight->position(), flight->destination()->position());
-            if (d < MaxAircraftToAirport)
-                flight->setFlightPhase(Pilot::Arrived);
-            else
-                flight->setFlightPhase(Pilot::Airborne);
+    if (flight->departure() == nullptr || flight->destination() == nullptr) {
+        AirportObject *dep, *dest;
+        std::tie(dep, dest) = findAirports(flight);
+
+        if (dep) {
+            flight->setDeparture(dep);
+            dep->add(flight);
         }
-    } else {
-        flight->setFlightPhase(Pilot::Airborne);
+
+        if (dest) {
+            flight->setDestination(dest);
+            dest->add(flight);
+        }
     }
 }
 
@@ -291,33 +269,30 @@ void ServerTracker::maintainAtcImpl(Atc* atc)
     }
 }
 
-void ServerTracker::discoverFlightAirportsImpl(Pilot* flight)
+std::tuple<AirportObject*, AirportObject*> ServerTracker::findAirports(const Pilot* flight)
 {
-    AirportObject *dep = nullptr, *dest = nullptr;
+    AirportObject* dep = nullptr;
+    AirportObject* dest = nullptr;
 
     if (flight->flightPlan().departureAirport().isEmpty()) { // departure airport not filled
         Airport ap = m_airportDb->nearest(flight->position());
         AirportObject* o = airportObject(ap);
         qreal d = nmDistance(flight->position(), o->position());
-        if (d < MaxAircraftToAirport) {
+        if (d < Pilot::MaximumDistanceFromAirpoirt()) {
             qDebug("Flight %s is at airport %s (nearest one)",
                    qPrintable(flight->callsign()), qPrintable(o->icao()));
 
             dep = o;
         }
-    }
-
-    if (!dep) {
+    } else {
         dep = airportObject(flight->flightPlan().departureAirport());
     }
-    
-    if (!dest) {
+
+    if (!flight->flightPlan().destinationAirport().isEmpty()) {
         dest = airportObject(flight->flightPlan().destinationAirport());
     }
-    
-    flight->setDeparture(dep);
-    flight->setDestination(dest);
-    setAirportObjectsValid(flight, true);
+
+    return std::make_tuple(dep, dest);
 }
 
 AirportObject* ServerTracker::airportObject(const Airport& ap)
@@ -409,21 +384,24 @@ void ServerTracker::invalidateAirports()
     
     if (Pilot* flight = qobject_cast<Pilot*>(sender())) {
         AirportObject* a = flight->departure();
-        Q_ASSERT(a);
-        a->remove(flight);
+        if (a)
+            a->remove(flight);
         
         a = flight->destination();
-        Q_ASSERT(a);
-        a->remove(flight);
+        if (a)
+            a->remove(flight);
+
+        flight->setDeparture(nullptr);
+        flight->setDestination(nullptr);
     } else if (Atc* atc = qobject_cast<Atc*>(sender())) {
         AirportObject* a = atc->airport();
         if (a)
             a->remove(flight);
+
+        setAirportObjectsValid(atc, false);
     } else {
         Q_UNREACHABLE();
     }
-    
-    setAirportObjectsValid(client, false);
 }
 
 void ServerTracker::maintainClient()

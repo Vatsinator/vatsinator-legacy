@@ -55,8 +55,8 @@ QVariant FlightListModel::data(const QModelIndex& index, int role) const
             switch (index.column()) {
                 case 0: return m_flights.at(index.row())->callsign();
                 case 1: return m_flights.at(index.row())->realName();
-                case 2: return m_flights.at(index.row())->departure()->icao();
-                case 3: return m_flights.at(index.row())->destination()->icao();
+                case 2: return m_flights.at(index.row())->departure() ? m_flights.at(index.row())->departure()->icao() : QString();
+                case 3: return m_flights.at(index.row())->destination() ? m_flights.at(index.row())->destination()->icao() : QString();
                 case 4: return m_flights.at(index.row())->aircraft();
                 default: return QVariant();
             }
@@ -111,7 +111,7 @@ QHash<int, QByteArray> FlightListModel::roleNames() const
 }
 
 template<typename Pred>
-static FlightListModel* fromClientList(const Core::ClientList* clients, QObject* parent, Pred pred)
+static FlightListModel* fromClientList(const ClientList* clients, QObject* parent, Pred pred)
 {
     FlightListModel* m = new FlightListModel(parent);
     auto adder = [m, pred](const Client* client) {
@@ -128,7 +128,7 @@ static FlightListModel* fromClientList(const Core::ClientList* clients, QObject*
     return m;
 }
 
-FlightListModel* FlightListModel::inbound(const Core::AirportObject* airport, QObject* parent)
+FlightListModel* FlightListModel::inbound(const AirportObject* airport, QObject* parent)
 {
     auto pred = [airport](const Client* client) {
         if (const Pilot* flight = qobject_cast<const Pilot*>(client))

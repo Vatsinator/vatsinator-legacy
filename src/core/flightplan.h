@@ -42,22 +42,68 @@ public:
      */
     FlightPlan();
 
+    /**
+     * Creates a FlightPlan that is the copy of \c other.
+     */
     FlightPlan(const FlightPlan& other);
 
+    /**
+     * Destroys this FlightPlan instance.
+     */
     virtual ~FlightPlan();
 
+    /**
+     * Assigns \c other to this FlightPlan instance and returns reference
+     * to it.
+     */
     FlightPlan& operator=(const FlightPlan& other);
 
+    /**
+     * Compares this FlightPlan with \c other.
+     * \return \c true if \c other exactly equals \c this.
+     */
     bool operator==(const FlightPlan& other) const;
+
+    /**
+     * Compares this FlightPlan with \c other.
+     * \return \c true if at least one property of \c other is different than
+     * \c this.
+     */
     bool operator!=(const FlightPlan& other) const;
 
+    /**
+     * Returns \c true if the flight plan is empty (i.e. not filled).
+     */
     bool isEmpty() const;
 
+    /**
+     * Returns the flight route, as filled in the flight plan.
+     */
     QString route() const;
+
+    /**
+     * Sets the flight route to the given value.
+     */
     void setRoute(const QString& route);
+
+    /**
+     * Returns the departure airport ICAO code, as filled in the flight plan.
+     */
     QString departureAirport() const;
+
+    /**
+     * Sets the departure airport ICAO code to the given value.
+     */
     void setDepartureAirpoirt(const QString& departureAirpoirt);
+
+    /**
+     * Returns the destination airpoirt ICAO code, as filled in the flight plan.
+     */
     QString destinationAirport() const;
+
+    /**
+     * Sets the destination airport ICAO code to the given value.
+     */
     void setDestinationAirport(const QString& destinationAirport);
 
 private:

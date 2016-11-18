@@ -202,9 +202,9 @@ private:
     void maintainAtcImpl(Atc* atc);
     
     /**
-     * Updates Pilot's airport pointers.
+     * Find (departure, destination) airports pair.
      */
-    void discoverFlightAirportsImpl(Pilot* flight);
+    std::tuple<AirportObject*, AirportObject*> findAirports(const Pilot* flight);
     
     /**
      * Finds the airport object for the given Airport.

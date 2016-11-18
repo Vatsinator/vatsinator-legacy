@@ -268,6 +268,30 @@ public:
     void setFlightPlan(FlightPlan flightPlan);
     const Airline& airline() const { return m_airline; }
     void setAirline(const Airline& airline);
+
+    /**
+     * Minimum ground speed (in knots) at which the flight is considered
+     * airborne.
+     */
+    static constexpr int MinimumAirborneGroundSpeed() { return 50; }
+
+    /**
+     * Maximum distance from the departure/destination airport, in nautical
+     * miles.
+     */
+    static constexpr qreal MaximumDistanceFromAirpoirt() { return 2.0; }
+
+protected slots:
+    /**
+     * Connected to \ref groundSpeedChanged(), \ref departureChanged() and
+     * \ref destinationChanged(); updates the \ref flightPhase property.
+     */
+    virtual void rediscoverFlightPhase();
+
+    /**
+     * Clears route parser status.
+     */
+    void resetNodes();
     
 private:
     void calculateEta() const;

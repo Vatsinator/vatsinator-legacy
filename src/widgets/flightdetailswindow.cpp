@@ -159,40 +159,56 @@ void FlightDetailsWindow::updateRealName(QString realName)
 
 void FlightDetailsWindow::updateDeparture(AirportObject* departure)
 {
-    ui->departure->setText(departure->icao());
-    ui->departureCity->setText(departure->city());
-    
-    if (departure->isValid()) {
-        QString text = QStringLiteral("%1 %2").arg(departure->icao(), departure->name());
-        if (!departure->name().contains(departure->city()))
-            text.append(" - ").append(departure->city());
-        
-        ui->departureAirport->setText(text);
+    if (departure) {
+        ui->departure->setText(departure->icao());
+        ui->departureCity->setText(departure->city());
+
+        if (departure->isKnownAirport()) {
+            QString text = QStringLiteral("%1 %2").arg(departure->icao(), departure->name());
+            if (!departure->name().contains(departure->city()))
+                text.append(" - ").append(departure->city());
+
+            ui->departureAirport->setText(text);
+        } else {
+            ui->departureAirport->setText(departure->icao());
+        }
+
+        ui->departureAirport->setProperty(AirportObjectKey, QVariant::fromValue(departure));
+        ui->departureAirport->setEnabled(departure->isKnownAirport());
     } else {
-        ui->departureAirport->setText(departure->icao());
+        ui->departure->setText(QString());
+        ui->departureCity->setText(QString());
+        ui->departureAirport->setText(QString());
+        ui->departureAirport->setProperty(AirportObjectKey, QVariant::fromValue<AirportObject*>(nullptr));
+        ui->departureAirport->setEnabled(false);
     }
-    
-    ui->departureAirport->setProperty(AirportObjectKey, QVariant::fromValue(departure));
-    ui->departureAirport->setEnabled(departure->isValid());
 }
 
 void FlightDetailsWindow::updateDestination(AirportObject* destination)
 {
-    ui->destination->setText(destination->icao());
-    ui->destinationCity->setText(destination->city());
-    
-    if (destination->isValid()) {
-        QString text = QStringLiteral("%1 %2").arg(destination->icao(), destination->name());
-        if (!destination->name().contains(destination->city()))
-            text.append(" - ").append(destination->city());
-        
-        ui->destinationAirport->setText(text);
+    if (destination) {
+        ui->destination->setText(destination->icao());
+        ui->destinationCity->setText(destination->city());
+
+        if (destination->isKnownAirport()) {
+            QString text = QStringLiteral("%1 %2").arg(destination->icao(), destination->name());
+            if (!destination->name().contains(destination->city()))
+                text.append(" - ").append(destination->city());
+
+            ui->destinationAirport->setText(text);
+        } else {
+            ui->destinationAirport->setText(destination->icao());
+        }
+
+        ui->destinationAirport->setProperty(AirportObjectKey, QVariant::fromValue(destination));
+        ui->destinationAirport->setEnabled(destination->isKnownAirport());
     } else {
-        ui->destinationAirport->setText(destination->icao());
+        ui->destination->setText(QString());
+        ui->destinationCity->setText(QString());
+        ui->destinationAirport->setText(QString());
+        ui->destinationAirport->setProperty(AirportObjectKey, QVariant::fromValue<AirportObject*>(nullptr));
+        ui->destinationAirport->setEnabled(false);
     }
-    
-    ui->destinationAirport->setProperty(AirportObjectKey, QVariant::fromValue(destination));
-    ui->destinationAirport->setEnabled(destination->isValid());
 }
 
 void FlightDetailsWindow::updateStd(QTime std)

@@ -141,7 +141,7 @@ void Atc::updateDescription()
     if (fir()) {
         setDescription(fir()->name());
     } else if (airport()) {
-        if (airport()->isValid()) {
+        if (airport()->isKnownAirport()) {
             QString ap;
             if (airport()->name() != airport()->city()) {
                 ap = airport()->city() % "/" % airport()->name();

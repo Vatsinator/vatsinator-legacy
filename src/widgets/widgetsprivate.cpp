@@ -50,7 +50,14 @@ QString makeToolTip(const MapItem* item)
         auto pilot = flightItem->pilot();
         
         QString desc = QStringLiteral("%1 (%2)").arg(pilot->realName(), pilot->aircraft());
-        QString fromto = pilot->departure()->representativeName() % QStringLiteral(" &raquo; ") % pilot->destination()->representativeName();
+        QString fromto;
+        if (pilot->departure() && pilot->destination())
+            fromto = pilot->departure()->representativeName() % QStringLiteral(" &raquo; ") % pilot->destination()->representativeName();
+        else if (pilot->departure())
+            fromto = qApp->translate("MapWidget", "from %1").arg(pilot->departure()->representativeName());
+        else if (pilot->destination())
+            fromto = qApp->translate("MapWidget", "to %1").arg(pilot->destination()->representativeName());
+
         QString gs = qApp->translate("MapWidget", "Ground speed: %1 knots").arg(QString::number(pilot->groundSpeed()));
         QString alt = qApp->translate("MapWidget", "Altitude: %1 feet").arg(QString::number(pilot->altitude()));
         

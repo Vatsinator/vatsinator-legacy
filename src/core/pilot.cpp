@@ -45,6 +45,12 @@ Pilot::Pilot(quint32 pid, ServerTracker* server) :
         m_etaCalculated = false;
         emit etaChanged();
     });
+
+    connect(this, &Pilot::groundSpeedChanged, this, &Pilot::rediscoverFlightPhase);
+    connect(this, &Pilot::departureChanged, this, &Pilot::rediscoverFlightPhase);
+    connect(this, &Pilot::destinationChanged, this, &Pilot::rediscoverFlightPhase);
+    connect(this, &Client::positionChanged, this, &Pilot::resetNodes);
+    connect(this, &Pilot::flightPlanChanged, this, &Pilot::resetNodes);
 }
 
 Pilot::~Pilot() {}
@@ -60,12 +66,12 @@ QList<LonLat> Pilot::nodes(NodeSelection selection) const
             QThreadPool::globalInstance()->start(task);
         }
 
-        if (selection.testFlag(DepartureToPilot) && departure()->isValid())
+        if (selection.testFlag(DepartureToPilot) && departure() && departure()->isKnownAirport())
             nodes.append(departure()->position());
 
         nodes.append(position());
 
-        if (selection.testFlag(PilotToDestination) && destination()->isValid())
+        if (selection.testFlag(PilotToDestination) && destination() && destination()->isKnownAirport())
             nodes.append(destination()->position());
     } else {
         if (selection.testFlag(DepartureToPilot))
@@ -242,13 +248,43 @@ void Pilot::setAirline(const Airline& airline)
     }
 }
 
+void Pilot::rediscoverFlightPhase()
+{
+    if (groundSpeed() < MinimumAirborneGroundSpeed()) {
+        // first check whether is departing or not
+        if (departure() && departure()->isKnownAirport()) {
+            qreal d = nmDistance(position(), departure()->position());
+            if (d < MaximumDistanceFromAirpoirt()) {
+                setFlightPhase(Departing);
+                return;
+            }
+        }
+
+        // second, check for destination airpoirt
+        if (destination() && destination()->isKnownAirport()) {
+            qreal d = nmDistance(position(), destination()->position());
+            if (d < MaximumDistanceFromAirpoirt()) {
+                setFlightPhase(Arrived);
+                return;
+            }
+        }
+    }
+
+    setFlightPhase(Airborne);
+}
+
+void Pilot::resetNodes()
+{
+    m_routeParserStatus = 0;
+}
+
 void Pilot::calculateEta() const
 {
     if (flightPhase() == Departing) {
         m_eta = m_sta;
     } else if (flightPhase() == Arrived) {
         m_eta = QDateTime::currentDateTimeUtc().time();
-    } else if (destination()->isValid()) {
+    } else if (destination() && destination()->isKnownAirport()) {
         qreal dist = nmDistance(position(), m_destination->position());
         int secs = static_cast<int>((dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0);
         m_eta = QDateTime::currentDateTimeUtc().time().addSecs(secs);
@@ -266,7 +302,7 @@ void Pilot::calculateProgress() const
     } else if (flightPhase() == Arrived) {
         m_progress = 100;
     } else {
-        if (!departure()->position().isNull() && !destination()->position().isNull()) {
+        if (departure() && destination() && departure()->isKnownAirport() && destination()->isKnownAirport()) {
             qreal total = nmDistance(departure()->position(), destination()->position());
             qreal left = nmDistance(position(), destination()->position());
             m_progress = static_cast<int>(100.0 - (100.0 * left / total));
@@ -297,7 +333,9 @@ void Pilot::setNodes(QList<LonLat> nodes)
 
 void Pilot::RouteParserTask::run()
 {
-    if (!m_pilot->departure()->isValid() || !m_pilot->destination()->isValid())
+    if (!m_pilot->departure() || !m_pilot->destination() ||
+            !m_pilot->departure()->isKnownAirport() ||
+            !m_pilot->destination()->isKnownAirport())
         return;
 
     qDebug() << "Parsing route for" << m_pilot->callsign();
