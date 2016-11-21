@@ -164,6 +164,7 @@ VatsimDataDocument VatsimDataReader::parse(const QByteArray& data)
         }
     });
     
+    m_document = document;
     return document;
 }
 

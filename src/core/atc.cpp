@@ -26,6 +26,7 @@ Atc::Atc(quint32 pid, ServerTracker* server) :
     Client(pid, server)
 {
     connect(this, &Atc::airportChanged, &Atc::updateDescription);
+    connect(this, &Atc::firChanged, this, &Atc::updateDescription);
 }
 
 Atc::~Atc() {}

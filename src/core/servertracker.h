@@ -172,6 +172,11 @@ public slots:
      * Refreshes VATSIM data immediately.
      */
     void refreshData();
+
+    /**
+     * Reads the data document.
+     */
+    void readData(VatsimDataDocument data);
     
 private:
     /**
@@ -197,11 +202,6 @@ private:
     void maintainFlightImpl(Pilot* flight);
     
     /**
-     * Atc-specific actions.
-     */
-    void maintainAtcImpl(Atc* atc);
-    
-    /**
      * Find (departure, destination) airports pair.
      */
     std::tuple<AirportObject*, AirportObject*> findAirports(const Pilot* flight);
@@ -220,16 +220,6 @@ private:
      * Finds the FIR object for the given ICAO code.
      */
     FirObject* firObject(const QString& icao);
-    
-    /**
-     * Returns true if airport objects for the given client are valid.
-     */
-    bool airportObjectsValid(const Client* client) const;
-    
-    /**
-     * Sets whether the airport objects for the given client are valid or not.
-     */
-    void setAirportObjectsValid(Client* client, bool valid);
     
 private slots:
     /**
@@ -256,14 +246,10 @@ private slots:
      */
     void readStatus(VatsimStatusDocument status);
     
-    /**
-     * Reads the data document.
-     */
-    void readData(VatsimDataDocument data);
-    
 private:
     QMap<QString, Client*> m_clients;
     VatsimStatusDocument m_status;
+    bool m_isTracking = false;
     int m_updateNo = 0;
     AirlineListReader* m_airlines;
     AirportListReader* m_airportDb;

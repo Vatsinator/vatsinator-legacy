@@ -92,15 +92,15 @@ public:
      * Describes the ATC position.
      */
     enum Facility {
-        Atis = 0x1,
-        Del = 0x2,
-        Gnd = 0x4,
-        Twr = 0x8,
-        App = 0x10,
-        Dep = 0x20,
-        Ctr = 0x40,
-        Fss = 0x80,
-        Obs = 0x100
+        Atis = 0x1  /**< ATIS */,
+        Del = 0x2   /**< Delivery */,
+        Gnd = 0x4   /**< Ground */,
+        Twr = 0x8   /**< Tower */,
+        App = 0x10  /**< Approach */,
+        Dep = 0x20  /**< Departure */,
+        Ctr = 0x40  /**< Control */,
+        Fss = 0x80  /**< Control */,
+        Obs = 0x100 /**< Observer */
     };
     Q_DECLARE_FLAGS(Facilities, Facility)
     

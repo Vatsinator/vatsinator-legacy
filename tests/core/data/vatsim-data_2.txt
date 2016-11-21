@@ -1,0 +1,34 @@
+; scenario for test case
+;
+; Sections are:
+; !GENERAL contains general settings
+; !CLIENTS contains informations about all connected clients
+; !PREFILE contains informations about all prefiled flight plans
+; !SERVERS contains a list of all FSD running servers to which clients can connect
+; !VOICE SERVERS contains a list of all running voice servers that clients can use
+;
+; Data formats of various sections are:
+; !GENERAL section -         VERSION is this data format version
+;                            RELOAD  is time in minutes this file will be updated
+;                            UPDATE is the last date and time this file has been updated. Format is yyyymmddhhnnss
+;                            ATIS ALLOW MIN is time in minutes to wait before allowing manual Atis refresh by way of web page interface
+;                            CONNECTED CLIENTS is the number of clients currently connected
+; !CLIENTS section -         callsign:cid:realname:clienttype:frequency:latitude:longitude:altitude:groundspeed:planned_aircraft:planned_tascruise:planned_depairport:planned_altitude:planned_destairport:server:protrevision:rating:transponder:facilitytype:visualrange:planned_revision:planned_flighttype:planned_deptime:planned_actdeptime:planned_hrsenroute:planned_minenroute:planned_hrsfuel:planned_minfuel:planned_altairport:planned_remarks:planned_route:planned_depairport_lat:planned_depairport_lon:planned_destairport_lat:planned_destairport_lon:atis_message:time_last_atis_received:time_logon:heading:QNH_iHg:QNH_Mb:
+; !PREFILE section -         callsign:cid:realname:clienttype:frequency:latitude:longitude:altitude:groundspeed:planned_aircraft:planned_tascruise:planned_depairport:planned_altitude:planned_destairport:server:protrevision:rating:transponder:facilitytype:visualrange:planned_revision:planned_flighttype:planned_deptime:planned_actdeptime:planned_hrsenroute:planned_minenroute:planned_hrsfuel:planned_minfuel:planned_altairport:planned_remarks:planned_route:planned_depairport_lat:planned_depairport_lon:planned_destairport_lat:planned_destairport_lon:atis_message:time_last_atis_received:time_logon:heading:QNH_iHg:QNH_Mb:
+; !SERVERS section -         ident:hostname_or_IP:location:name:clients_connection_allowed:
+; !VOICE SERVERS section -   hostname_or_IP:location:name:clients_connection_allowed:type_of_voice_server:
+;
+; Field separator is : character
+;
+;
+!GENERAL:
+VERSION = 8
+RELOAD = 2
+UPDATE = 20161118173355
+ATIS ALLOW MIN = 5
+CONNECTED CLIENTS = 0
+;
+;
+!CLIENTS:
+;
+;

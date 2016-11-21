@@ -1,0 +1,37 @@
+; scenario for test case
+;
+; Sections are:
+; !GENERAL contains general settings
+; !CLIENTS contains informations about all connected clients
+; !PREFILE contains informations about all prefiled flight plans
+; !SERVERS contains a list of all FSD running servers to which clients can connect
+; !VOICE SERVERS contains a list of all running voice servers that clients can use
+;
+; Data formats of various sections are:
+; !GENERAL section -         VERSION is this data format version
+;                            RELOAD  is time in minutes this file will be updated
+;                            UPDATE is the last date and time this file has been updated. Format is yyyymmddhhnnss
+;                            ATIS ALLOW MIN is time in minutes to wait before allowing manual Atis refresh by way of web page interface
+;                            CONNECTED CLIENTS is the number of clients currently connected
+; !CLIENTS section -         callsign:cid:realname:clienttype:frequency:latitude:longitude:altitude:groundspeed:planned_aircraft:planned_tascruise:planned_depairport:planned_altitude:planned_destairport:server:protrevision:rating:transponder:facilitytype:visualrange:planned_revision:planned_flighttype:planned_deptime:planned_actdeptime:planned_hrsenroute:planned_minenroute:planned_hrsfuel:planned_minfuel:planned_altairport:planned_remarks:planned_route:planned_depairport_lat:planned_depairport_lon:planned_destairport_lat:planned_destairport_lon:atis_message:time_last_atis_received:time_logon:heading:QNH_iHg:QNH_Mb:
+; !PREFILE section -         callsign:cid:realname:clienttype:frequency:latitude:longitude:altitude:groundspeed:planned_aircraft:planned_tascruise:planned_depairport:planned_altitude:planned_destairport:server:protrevision:rating:transponder:facilitytype:visualrange:planned_revision:planned_flighttype:planned_deptime:planned_actdeptime:planned_hrsenroute:planned_minenroute:planned_hrsfuel:planned_minfuel:planned_altairport:planned_remarks:planned_route:planned_depairport_lat:planned_depairport_lon:planned_destairport_lat:planned_destairport_lon:atis_message:time_last_atis_received:time_logon:heading:QNH_iHg:QNH_Mb:
+; !SERVERS section -         ident:hostname_or_IP:location:name:clients_connection_allowed:
+; !VOICE SERVERS section -   hostname_or_IP:location:name:clients_connection_allowed:type_of_voice_server:
+;
+; Field separator is : character
+;
+;
+!GENERAL:
+VERSION = 8
+RELOAD = 2
+UPDATE = 20161118173355
+ATIS ALLOW MIN = 5
+CONNECTED CLIENTS = 3
+;
+;
+!CLIENTS:
+BAW123:1234567:John Smith EGLL:PILOT::51.472707:-0.420932:82:0::::::UAE:100:1:2000:::1:::::::::::0:0:0:0:::20161118163022:290:30.279:1025:
+BAW105:1284852:Jakob Thomsen EKCH:PILOT::42.15923:35.35994:37319:477:H/B772/Q:473:EGLL:37000:OMDB:GERMANY:100:1:2000:::2:I:800:800:6:39:7:59:OMAL:+VFPS+/V/PBN/A1B1C1D1L1O1S2 DOF/161121 REG/GYMMT EET/EBUR0014 EDVV0034 EDUU0035 LOVV0111 LHCC0130 LRBB0153 LBSR0242 LTBB0254 LTAA0256 OIIX0415 OMAE0612 OPR/BAW TALT/EGVA RMK/TCAS SIMBRIEF:DET UL6 DVR UL9 KONAN UL607 AMASI UM149 DETEV UL603 BESNI STEIN MOPUG LAMIT P981 TOSVI L5 VEVIN L601 DINRO/K0880F370 UDROS/N0473F370 KARDE UL851 ERZ UW94 ARI UP146 SIBVU UL125 TBZ/N0476F390 Z1 PEKAM UP574 ROTAL W152 NABEX W141 KIS ORSAR B416 DESDI DESD9B:0:0:0:0:::20161121073937:101:30.238:1023:
+AAL495:1369057:Adinan Moraes SBGR:PILOT::39.55629:-80.23651:38162:365::0::::CANADA:100:1:1200::::::::::::::::::::20161121114115:286:30.086:1018:
+;
+;

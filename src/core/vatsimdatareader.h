@@ -72,6 +72,8 @@ public:
      * document is downloaded and parsed successfully.
      */
     void read(const QList<QUrl>& urlChain);
+
+    VatsimDataDocument document() const { return m_document; }
     
 private:
     VatsimDataDocument parse(const QByteArray& data);
@@ -81,6 +83,7 @@ private slots:
     void readAnotherOneFromChain();
     
 private:
+    VatsimDataDocument m_document;
     FileDownloader* m_downloader;
     QList<QUrl> m_urls;
     

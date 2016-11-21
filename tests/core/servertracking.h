@@ -20,7 +20,7 @@
 #ifndef SERVERTRACKING_H
 #define SERVERTRACKING_H
 
-#include <servertracker.h>
+#include <core/servertracker.h>
 #include <QObject>
 
 class ServerTracking : public QObject {
@@ -33,10 +33,12 @@ private slots:
     void init();
     void cleanup();
 
-    void findClient();
+    void iteration_0();
+    void iteration_1();
     
 private:
     Vatsinator::Core::ServerTracker* m_serverTracker;
+    int m_iteration = 0;
 };
 
 #endif // SERVERTRACKING_H

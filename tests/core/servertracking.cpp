@@ -19,10 +19,9 @@
 
 #include "servertracking.h"
 #include <core/pilot.h>
+#include <core/vatsimdatareader.h>
 #include <QtTest>
 
-constexpr quint32 Pid1 = 17161514;
-constexpr quint32 Pid2 = 16151412;
 
 using namespace Vatsinator::Core;
 
@@ -30,6 +29,8 @@ QTEST_MAIN(ServerTracking)
 
 void ServerTracking::initTestCase()
 {
+    QVERIFY(QFile(QFINDTESTDATA("data/vatsim-data_1.txt")).exists());
+
     m_serverTracker = new ServerTracker;
 }
 
@@ -40,7 +41,11 @@ void ServerTracking::cleanupTestCase()
 
 void ServerTracking::init()
 {
-    // Called before each testfunction is executed
+    QString fileName = QStringLiteral("data/vatsim-data_%1.txt").arg(++m_iteration);
+
+    VatsimDataReader reader;
+    reader.read(QUrl::fromLocalFile(QFINDTESTDATA(fileName)));
+    m_serverTracker->readData(reader.document());
 }
 
 void ServerTracking::cleanup()
@@ -48,11 +53,44 @@ void ServerTracking::cleanup()
     
 }
 
-void ServerTracking::findClient()
+void ServerTracking::iteration_0()
 {
-    Pilot* p1 = new Pilot(Pid1, m_serverTracker);
-    p1->setCallsign("p1");
-    p1->setPosition(LonLat(51.4775, -0.461389));
-    m_serverTracker->addClient(p1);
-    QVERIFY(m_serverTracker->findClient("p1") == p1);
+    QCOMPARE(m_serverTracker->clientCount(), 3);
+
+    // BAW123 has no flight plan and is parked at Heathrow
+    Pilot* baw123 = qobject_cast<Pilot*>(m_serverTracker->findClient("BAW123"));
+    QVERIFY(baw123);
+
+    // BAW123 is at EGLL, should be recognized
+    QCOMPARE(baw123->flightPlan().departureAirport(), QString());
+    QVERIFY(baw123->departure());
+    QCOMPARE(baw123->departure()->icao(), QStringLiteral("EGLL"));
+
+    // flight plan is not filled, destination airport invalid
+    QCOMPARE(baw123->flightPlan().destinationAirport(), QString());
+    QCOMPARE(baw123->destination(), static_cast<AirportObject*>(nullptr));
+
+    QCOMPARE(baw123->flightPhase(), Pilot::Departing);
+    QCOMPARE(baw123->progress(), 0);
+
+    // BAW105 has complete flight plan filled and is airborne
+    Pilot* baw105 = qobject_cast<Pilot*>(m_serverTracker->findClient("BAW105"));
+    QVERIFY(baw105);
+    QVERIFY(baw105->departure());
+    QCOMPARE(baw105->departure()->icao(), QStringLiteral("EGLL"));
+    QVERIFY(baw105->destination());
+    QCOMPARE(baw105->destination()->icao(), QStringLiteral("OMDB"));
+    QCOMPARE(baw105->flightPhase(), Pilot::Airborne);
+
+    // AAL495 has no flight plan and is airborne (possible only on VATSIM :) )
+    Pilot* aal495 = qobject_cast<Pilot*>(m_serverTracker->findClient("AAL495"));
+    QVERIFY(aal495);
+    QCOMPARE(aal495->departure(), static_cast<AirportObject*>(nullptr));
+    QCOMPARE(aal495->destination(), static_cast<AirportObject*>(nullptr));
+    QCOMPARE(aal495->flightPhase(), Pilot::Airborne);
+}
+
+void ServerTracking::iteration_1()
+{
+    QCOMPARE(m_serverTracker->clientCount(), 0);
 }
