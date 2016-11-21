@@ -126,6 +126,8 @@ void AtcDetailsWindow::updateAirport(AirportObject* airport)
     else
         //: not applicable
         ui->airport->setText(tr("N/A"));
+
+    ui->airport->setDisabled(airport == nullptr);
 }
 
 void AtcDetailsWindow::updateServer(QString server)

@@ -140,12 +140,12 @@ class __VtrCoreApi__ Pilot : public Client {
     /**
      * The filled flight plan.
      */
-    Q_PROPERTY(Vatsinator::Core::FlightPlan flightPlan READ flightPlan WRITE setFlightPlan NOTIFY flightPlanChanged)
+    Q_PROPERTY(FlightPlan flightPlan READ flightPlan WRITE setFlightPlan NOTIFY flightPlanChanged)
     
     /**
      * The airline that is operating this flight.
      */
-    Q_PROPERTY(Vatsinator::Core::Airline airline READ airline WRITE setAirline NOTIFY airlineChanged)
+    Q_PROPERTY(Airline airline READ airline WRITE setAirline NOTIFY airlineChanged)
     
 public:
     /**
