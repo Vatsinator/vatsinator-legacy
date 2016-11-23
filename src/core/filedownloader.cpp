@@ -80,8 +80,9 @@ void FileDownloader::finish()
     
     if (reply->error()) {
         if (m_retries >= m_maxRetries) {
-            qCritical("FileDownloader: error downloading file: %s",
-                     qPrintable(reply->errorString()));
+            qCritical("FileDownloader: error downloading file %s: %s",
+                      qPrintable(reply->request().url().toString()),
+                      qPrintable(reply->errorString()));
             emit error(tr("Error downloading file: %1").arg(reply->errorString()), reply->url());
         } else {
             start(reply->request());

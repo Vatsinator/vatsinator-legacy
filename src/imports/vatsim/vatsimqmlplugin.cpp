@@ -38,7 +38,7 @@ static QObject* vatsim_singletontype_provider(QQmlEngine* engine, QJSEngine* scr
     Q_UNUSED(scriptEngine);
     
     ServerTracker* serverTracker = new ServerTracker;
-    serverTracker->trackServer(QUrl("https://status.vatsim.net/status.txt"));
+    serverTracker->trackServer(QUrl("http://status.vatsim.net/status.txt"));
     
     QObject::connect(qApp, &QGuiApplication::applicationStateChanged, [serverTracker](Qt::ApplicationState state) {
         serverTracker->setUpdatesEnabled(state == Qt::ApplicationActive);    

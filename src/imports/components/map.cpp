@@ -78,7 +78,12 @@ Map::~Map()
 void Map::paint(QPainter* painter)
 {
 //    m_renderer->paint(painter);
-    m_renderer->paint(painter->device());
+    if (painter->isActive()) {
+        QPaintDevice* device = painter->device();
+        painter->end();
+
+        m_renderer->paint(device);
+    }
 }
 
 void Map::setServerTracker(Core::ServerTracker* serverTracker)

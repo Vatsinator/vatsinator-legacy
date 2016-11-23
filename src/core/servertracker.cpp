@@ -149,7 +149,10 @@ void ServerTracker::setUpdatesEnabled(bool updatesEnabled)
 
 void ServerTracker::refreshData()
 {
-    fetchData();
+    if (m_isTracking)
+        fetchData();
+    else
+        qWarning("ServerTracker: unable to refresh in non-tracking mode");
 }
 
 void ServerTracker::markOfflineClients()

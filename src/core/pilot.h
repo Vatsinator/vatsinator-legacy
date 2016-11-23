@@ -44,7 +44,6 @@ class __VtrCoreApi__ Pilot : public Client {
     Q_ENUMS(FlightRules)
     Q_ENUMS(FlightPhase)
     
-    friend class ServerTracker;
     class RouteParserTask;
     
     /**

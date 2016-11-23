@@ -41,9 +41,9 @@ class __VtrCoreApi__ Atc : public Client {
     Q_OBJECT
     Q_ENUMS(Facility)
     Q_ENUMS(Rating)
-    
-    friend class ClientData;
-    friend class ServerTracker;
+
+    friend class ClientData; // for icao field
+    friend class ServerTracker; // for icao field
     
     /**
      * Stores ATC rating.
