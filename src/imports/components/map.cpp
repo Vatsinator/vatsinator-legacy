@@ -83,6 +83,8 @@ void Map::paint(QPainter* painter)
         painter->end();
 
         m_renderer->paint(device);
+
+//        painter->begin(device);
     }
 }
 

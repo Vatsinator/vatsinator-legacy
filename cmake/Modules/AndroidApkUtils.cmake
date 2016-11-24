@@ -111,7 +111,8 @@ endfunction ()
 # plugins and builds the apk package.
 #
 # This function requries the ANDROID_MANIFEST property of the given target to
-# define the path to the AndroidManifest.xml file.
+# define the path to the AndroidManifest.xml file. The android_generate_manifest
+# target sets the property automatically.
 #
 # The RESOURCES is a list of directories to be copied into res/ subfolder in
 # the apk structure.
@@ -179,19 +180,20 @@ function (android_deploy_apk target)
         file (COPY ${_arg_SOURCES} DESTINATION ${package_location}/src)
     endif ()
     
+    # generate build.xml, depends only on AndroidManifest.xml
     add_custom_command (
         OUTPUT ${package_location}/build.xml
-        DEPENDS ${target} ${package_location} ${manifest_file}
+        DEPENDS ${manifest_file}
         COMMAND ${CMAKE_COMMAND} -E copy ${manifest_file} ${package_location}
         COMMAND ${ANDROID_BIN} update project --target android-${ANDROID_NATIVE_API_LEVEL} --name ${CMAKE_PROJECT_NAME} --path ${package_location}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkFiles
     )
     
     if (_arg_PATHS)
-        set (paths ${_arg_PATHS})
+        set (paths ${_arg_PATHS}) # used in AndroidApkUtilsConfig
     endif ()
     
-    set (qt_generate_libs_xml 1)
+    set (qt_generate_libs_xml 1) # used in AndroidApkUtilsConfig
     if (NOT "${_arg_QT_GENERATE_LIBS_XML}" STREQUAL "")
         if ("${_arg_QT_GENERATE_LIBS_XML}" MATCHES "^[01]$")
             set (qt_generate_libs_xml ${_arg_QT_GENERATE_LIBS_XML})
@@ -199,10 +201,10 @@ function (android_deploy_apk target)
     endif ()
     
     if (_arg_QT_QML_MODULES)
-        set (qt_qml_modules ${_arg_QT_QML_MODULES})
+        set (qt_qml_modules ${_arg_QT_QML_MODULES}) # used in AndroidApkUtilsConfig
     endif ()
     
-    set (qt_plugins ${_android_musthave_plugins})
+    set (qt_plugins ${_android_musthave_plugins}) # used in AndroidApkUtilsConfig
     if (_arg_QT_PLUGINS)
         foreach (p ${_arg_QT_PLUGINS})
             list (APPEND qt_plugins ${p})
@@ -219,14 +221,14 @@ function (android_deploy_apk target)
             get_target_property (p_location ${p} LOCATION)
             cmake_policy (POP)
             
-            list (APPEND plugins ${p_location})
+            list (APPEND plugins ${p_location}) # used in AndroidApkUtilsConfig
         endforeach ()
     endif ()
     
-    set (qt_jars ${_android_musthave_jars})
+    set (qt_jars ${_android_musthave_jars}) # used in AndroidApkUtilsConfig
     list (REMOVE_DUPLICATES qt_jars)
     
-    set (assets_prefix "--Added-by-AndroidApkUtils--")
+    set (assets_prefix "--Added-by-AndroidApkUtils--") # used in AndroidApkUtilsConfig
     if (_arg_ASSETS_PREFIX)
         set (assets_prefix ${_arg_ASSETS_PREFIX})
     endif ()
@@ -237,6 +239,7 @@ function (android_deploy_apk target)
             get_target_property (p_qmldir ${p} QMLDIR_FILE)
             get_target_property (p_files ${p} FILES)
             get_target_property (p_prefix ${p} PLUGIN_PREFIX)
+            get_filename_component (p_path ${p_qmldir} DIRECTORY)
             
             cmake_policy (PUSH)
             cmake_policy (SET CMP0026 OLD)
@@ -257,6 +260,11 @@ function (android_deploy_apk target)
             if (p_files)
                 set (qml_plugins_data "${qml_plugins_data}
                     set (${p}_files \"${p_files}\")")
+
+                # add to list of all qml files so that apk is dependent on them
+                foreach (f ${p_files})
+                    list (APPEND all_files ${p_path}/${f})
+                endforeach ()
             endif()
             
             if (p_prefix)
@@ -269,36 +277,40 @@ function (android_deploy_apk target)
         endforeach ()
     endif ()
     
+    # used in AndroidApkUtilsConfig
     get_target_property (keystore ${target} KEYSTORE)
     get_target_property (keystore_alias ${target} KEYSTORE_ALIAS)
     get_target_property (keystore_password ${target} KEYSTORE_PASSWORD)
     
     _android_generate_config(${target})
     configure_file (${_android_apkutils_dir}/AndroidApkUtilsDeploy.cmake ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake COPYONLY)
-    
-    add_custom_target (apk ALL
-        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        DEPENDS ${package_location}/build.xml
-    )
-    
-    if (_arg_QML_PLUGINS)
-        foreach (p ${_arg_QML_PLUGINS})
-            add_dependencies (apk ${p})
-        endforeach ()
-    endif ()
-    
+
     string (TOLOWER ${CMAKE_PROJECT_NAME} app_name)
     if (keystore AND keystore_alias AND keystore_password)
         set (package_file_name ${app_name}-release.apk)
     else ()
         set (package_file_name ${app_name}-debug.apk)
     endif ()
+
+    # builds the apk itself
+    add_custom_command (
+        OUTPUT ${package_file_name} # eg. fooapp-debug.apk
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/AndroidApkUtilsDeploy.cmake
+        DEPENDS
+            ${package_location}/build.xml   # when build.xml changes
+            ${_arg_QML_PLUGINS}             # when any of the qml plugins is rebuilt
+            ${all_files}                    # i.e. when qml file is changed
+            ${target}                       # when the application is rebuilt
+    )
+    
+    add_custom_target (apk
+        DEPENDS ${package_file_name}
+    )
     
     add_custom_target (apk_install
         DEPENDS apk
         COMMAND ${ADB_BIN} install -r ${package_file_name}
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
     
     get_target_property (package_name ${target} ANDROID_PACKAGE_NAME)
@@ -306,7 +318,7 @@ function (android_deploy_apk target)
     
     if (package_name AND package_activity)
         add_custom_target (apk_run
-            DEPENDS apk_install
+            DEPENDS apk
             COMMAND ${ADB_BIN} shell am start -n ${package_name}/${package_activity}
         )
     endif ()

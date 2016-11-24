@@ -360,7 +360,7 @@ if (EXISTS ${package_location}/ant.properties)
 endif ()
 
 if (${ant_result} EQUAL 0)
-    file (COPY ${ant_output_file} DESTINATION ${binary_root})
+    file (COPY ${ant_output_file} DESTINATION ${binary_current})
     message ("${pkg_fname} done.")
 else ()
     message (FATAL_ERROR "Failed building APK package; see ant logs in ${ant_log_file}")

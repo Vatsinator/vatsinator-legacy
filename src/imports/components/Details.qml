@@ -33,6 +33,8 @@ import QtQuick.Controls.Material 2.0
  * 
  * The Details component displays two lines: the \ref value
  * and the \ref name of the property.
+ *
+ * \todo merge with TwoLineListItem
  */
 Item {
     id: root
