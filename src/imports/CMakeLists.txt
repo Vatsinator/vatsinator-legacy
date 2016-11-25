@@ -41,6 +41,15 @@ include_directories (${Qt5AndroidExtras_INCLUDE_DIRS})
 add_definitions (-DQT_PLUGIN)
 add_definitions (-DQT_SHARED)
 
-add_subdirectory (components)
-add_subdirectory (nativeutils)
-add_subdirectory (vatsim)
+set (qml_plugins
+    components
+    nativeutils
+    vatsim
+)
+
+foreach (p ${qml_plugins})
+    add_subdirectory (${p})
+    list (APPEND qml_dirs "${CMAKE_CURRENT_SOURCE_DIR}/${p}")
+endforeach ()
+
+set (QML_IMPORT_PATH "${qml_dirs}" CACHE STRING "QtCreator extra qml imports")

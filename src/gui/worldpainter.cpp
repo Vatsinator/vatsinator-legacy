@@ -18,6 +18,7 @@
  */
 
 #include "worldpainter.h"
+#include <QtGui>
 
 using namespace Vatsinator::Core;
 
@@ -32,7 +33,8 @@ void WorldPainter::drawPixmap(const LonLat& center, const QPixmap& pixmap)
     bool visible;
     QPoint mapped = m_transform.map(center, &visible);
     if (visible) {
-        QPainter::drawPixmap(mapped.x() - pixmap.width() / 2, mapped.y() - pixmap.height() / 2, pixmap);
+        QSize size = pixmap.size() / qApp->primaryScreen()->devicePixelRatio();
+        QPainter::drawPixmap(mapped.x() - size.width() / 2, mapped.y() - size.height() / 2, pixmap);
     }
 }
 

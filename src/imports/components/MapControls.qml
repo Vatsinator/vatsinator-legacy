@@ -56,10 +56,10 @@ MultiPointTouchArea {
     maximumTouchPoints: 2
     
     onUpdated: {
-        if (touchPoints.length == 1) {
+        if (touchPoints.length === 1) {
             var tp = touchPoints[0];
             root.positionUpdated(tp.x - tp.previousX, tp.y - tp.previousY)
-        } else if (touchPoints.length == 2) {
+        } else if (touchPoints.length === 2) {
             var tp1 = touchPoints[0];
             var tp2 = touchPoints[1];
             
@@ -81,9 +81,9 @@ MultiPointTouchArea {
     }
     
     onReleased: {
-        if (touchPoints.length == 1) {
+        if (touchPoints.length === 1) {
             var tp = touchPoints[0];
-            if (tp.startX == tp.x && tp.startY == tp.y)
+            if (tp.startX === tp.x && tp.startY === tp.y)
                 root.clicked(tp.x, tp.y);
         }
     }

@@ -299,6 +299,7 @@ function (android_deploy_apk target)
         DEPENDS
             ${package_location}/build.xml   # when build.xml changes
             ${_arg_QML_PLUGINS}             # when any of the qml plugins is rebuilt
+            ${_arg_PLUGINS}                 # when any of the application plugins is rebuilt
             ${all_files}                    # i.e. when qml file is changed
             ${target}                       # when the application is rebuilt
     )

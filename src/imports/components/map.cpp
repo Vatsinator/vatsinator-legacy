@@ -77,15 +77,12 @@ Map::~Map()
 
 void Map::paint(QPainter* painter)
 {
-//    m_renderer->paint(painter);
-    if (painter->isActive()) {
-        QPaintDevice* device = painter->device();
-        painter->end();
+    QSize size(width(), height());
+    QImage img(size * qApp->primaryScreen()->devicePixelRatio(), QImage::Format_ARGB32_Premultiplied);
+    img.setDevicePixelRatio(qApp->primaryScreen()->devicePixelRatio());
+    m_renderer->paint(&img);
 
-        m_renderer->paint(device);
-
-//        painter->begin(device);
-    }
+    painter->drawImage(QRect(QPoint(0, 0), size), img, img.rect());
 }
 
 void Map::setServerTracker(Core::ServerTracker* serverTracker)

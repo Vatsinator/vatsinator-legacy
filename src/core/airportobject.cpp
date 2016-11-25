@@ -40,7 +40,7 @@ AirportObject::AirportObject(const QString& icao, ServerTracker* server) :
 QString AirportObject::representativeName() const
 {
     if (isKnownAirport())
-        return icao() % QStringLiteral(" ") % city();
+        return QStringLiteral("%1 %2").arg(icao(), city());
     else
         return icao();
 }

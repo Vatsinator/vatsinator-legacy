@@ -51,7 +51,7 @@ QSize AirportItem::size() const
         prepareIcon();
 
     Q_ASSERT(!m_icon.isNull());
-    return m_icon.size();
+    return m_icon.size() / qApp->primaryScreen()->devicePixelRatio();
 }
 
 void AirportItem::draw(WorldPainter* painter, MapItem::DrawFlags flags) const

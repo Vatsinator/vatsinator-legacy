@@ -51,10 +51,10 @@ Page {
     
     function flightDescription(flight)
     {
-        if (flight.departure == root.airport)
-            return flight.destination.valid ? qsTr("to %1").arg(flight.destination.representativeName()) : "";
-        else if (flight.destination == root.airport)
-            return flight.departure.valid ? qsTr("from %1").arg(flight.departure.representativeName()) : "";
+        if (flight.departure === root.airport)
+            return flight.destination.known ? qsTr("to %1").arg(flight.destination.representativeName()) : "";
+        else if (flight.destination === root.airport)
+            return flight.departure.known ? qsTr("from %1").arg(flight.departure.representativeName()) : "";
         else
             return flight.departure.icao + " -> " + flight.destination.icao
     }
@@ -157,7 +157,7 @@ Page {
     }
     
     footer: ToolBar {
-        height: Screen.orientation == Qt.PortraitOrientation ? 48 : 0
+        height: Screen.orientation === Qt.PortraitOrientation ? 48 : 0
     }
     
     SwipeView {

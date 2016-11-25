@@ -14,6 +14,7 @@ set (nativeutils_HEADERS
 add_library (nativeutilsplugin MODULE
     ${nativeutils_SOURCES}
     ${nativeutils_HEADERS}
+    qmldir
 )
 
 target_link_libraries (nativeutilsplugin Qt5::Qml Qt5::Quick Qt5::AndroidExtras vtrcore)

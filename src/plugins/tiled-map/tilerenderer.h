@@ -48,6 +48,7 @@ public slots:
     
 private:
     quint32 zoomLevel(const Vatsinator::Gui::WorldTransform& transform);
+    void markDirty();
     
 private slots:
     void render();
@@ -57,6 +58,7 @@ private:
     QSize m_viewport;
     qreal m_zoom;
     QTimer* m_timer;
+    bool m_changed = false;
     TileManager* m_manager;
     
 }; /** @} */

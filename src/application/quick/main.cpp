@@ -25,8 +25,6 @@
 
 int main(int argc, char** argv)
 {
-//     qputenv("QSG_VISUALIZE", "overdraw");
-    
     QCoreApplication::setApplicationName(QStringLiteral("Vatsinator"));
     QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
     QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
@@ -38,8 +36,9 @@ int main(int argc, char** argv)
     QGuiApplication app(argc, argv);
     
     QTranslator tr;
-    if (tr.load(QLocale(), QStringLiteral("vatsinator"), "_", QStringLiteral("assets:/translations")))
+    if (tr.load(QLocale(), QStringLiteral("vatsinator"), "_", QStringLiteral("assets:/translations"))) {
         app.installTranslator(&tr);
+    }
     
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

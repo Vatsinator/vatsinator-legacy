@@ -44,7 +44,12 @@ ListView {
     
     /** type:function Returns a flight line; the default value returns departure and destination airports' ICAO codes. */
     property var flightSecondaryText: function(flight) {
-        return flight.departure.icao + " -> " + flight.destination.icao;
+        if (flight.departure !== null && flight.destination !== null)
+            return flight.departure.icao + " -> " + flight.destination.icao;
+        else if (flight.departure !== null)
+            return qsTr("from %1").arg(flight.departure.icao);
+        else if (flight.destination !== null)
+            return qsTr("to %1").arg(flight.destination.icao);
     }
     
     /**
@@ -65,9 +70,9 @@ ListView {
      */
     function clientTypeToString(type)
     {
-        if (type == "ATC")
+        if (type === "ATC")
             return qsTr("ATCs");
-        else if (type == "PILOT")
+        else if (type === "PILOT")
             return qsTr("Flights");
         else
             return "";

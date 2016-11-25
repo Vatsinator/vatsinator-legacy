@@ -104,8 +104,7 @@ void FlightItem::prepareModel() const
     t.rotate(static_cast<qreal>(m_pilot->heading()));
     QPixmap orig = scene()->pixmapProvider()->pixmapForModel(m_pilot->aircraft());
     m_model = orig.transformed(t, Qt::SmoothTransformation);
-
-    dropShadow(&m_model);
+//    dropShadow(&m_model);
     
     if (m_model.devicePixelRatio() != orig.devicePixelRatio()) // qt bug?
         m_model.setDevicePixelRatio(orig.devicePixelRatio());

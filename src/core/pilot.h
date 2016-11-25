@@ -119,12 +119,12 @@ class __VtrCoreApi__ Pilot : public Client {
     /**
      * Departure airport.
      */
-    Q_PROPERTY(AirportObject* departure READ departure WRITE setDeparture NOTIFY departureChanged)
+    Q_PROPERTY(Vatsinator::Core::AirportObject* departure READ departure WRITE setDeparture NOTIFY departureChanged)
     
     /**
      * Destination airport.
      */
-    Q_PROPERTY(AirportObject* destination READ destination WRITE setDestination NOTIFY destinationChanged)
+    Q_PROPERTY(Vatsinator::Core::AirportObject* destination READ destination WRITE setDestination NOTIFY destinationChanged)
     
     /**
      * Cruise altitude, as filled in the flight plan.

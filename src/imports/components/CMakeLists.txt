@@ -21,6 +21,7 @@ add_library (componentsplugin MODULE
     ${components_SOURCES}
     ${components_HEADERS}
     ${components_FILES}
+    qmldir
     resources/icons.qrc
 )
 

@@ -11,6 +11,7 @@ set (vatsim_HEADERS
 add_library (vatsimplugin MODULE
     ${vatsim_SOURCES}
     ${vatsim_HEADERS}
+    qmldir
 )
 
 target_link_libraries (vatsimplugin Qt5::Qml Qt5::Quick vtrcore vtrmisc)
