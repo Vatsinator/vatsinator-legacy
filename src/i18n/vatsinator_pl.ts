@@ -175,12 +175,22 @@
 <context>
     <name>ClientListView</name>
     <message>
-        <location filename="../imports/components/ClientListView.qml" line="69"/>
+        <location filename="../imports/components/ClientListView.qml" line="50"/>
+        <source>from %1</source>
+        <translation>z %1</translation>
+    </message>
+    <message>
+        <location filename="../imports/components/ClientListView.qml" line="52"/>
+        <source>to %1</source>
+        <translation>do %1</translation>
+    </message>
+    <message>
+        <location filename="../imports/components/ClientListView.qml" line="74"/>
         <source>ATCs</source>
         <translation>ATC</translation>
     </message>
     <message>
-        <location filename="../imports/components/ClientListView.qml" line="71"/>
+        <location filename="../imports/components/ClientListView.qml" line="76"/>
         <source>Flights</source>
         <translation>Loty</translation>
     </message>
@@ -190,7 +200,7 @@
     <message>
         <location filename="../widgets/clientlistwindow.ui" line="14"/>
         <source>Clients</source>
-        <translation type="unfinished"/>
+        <translation>Klienci</translation>
     </message>
     <message>
         <location filename="../widgets/clientlistwindow.ui" line="24"/>
@@ -547,7 +557,7 @@
 <context>
     <name>Vatsinator::Core::FileDownloader</name>
     <message>
-        <location filename="../core/filedownloader.cpp" line="85"/>
+        <location filename="../core/filedownloader.cpp" line="86"/>
         <source>Error downloading file: %1</source>
         <translation>Błąd pobierania pliku: %1</translation>
     </message>
@@ -802,7 +812,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="59"/>
         <source>He&amp;lp</source>
-        <translation type="unfinished"/>
+        <translation>Pomoc</translation>
     </message>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="65"/>
@@ -852,7 +862,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="121"/>
         <source>Clients...</source>
-        <translation type="unfinished"/>
+        <translation>Klienci...</translation>
     </message>
 </context>
 </TS>

@@ -175,12 +175,22 @@
 <context>
     <name>ClientListView</name>
     <message>
-        <location filename="../imports/components/ClientListView.qml" line="69"/>
+        <location filename="../imports/components/ClientListView.qml" line="50"/>
+        <source>from %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../imports/components/ClientListView.qml" line="52"/>
+        <source>to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../imports/components/ClientListView.qml" line="74"/>
         <source>ATCs</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../imports/components/ClientListView.qml" line="71"/>
+        <location filename="../imports/components/ClientListView.qml" line="76"/>
         <source>Flights</source>
         <translation>航班</translation>
     </message>
@@ -547,7 +557,7 @@
 <context>
     <name>Vatsinator::Core::FileDownloader</name>
     <message>
-        <location filename="../core/filedownloader.cpp" line="85"/>
+        <location filename="../core/filedownloader.cpp" line="86"/>
         <source>Error downloading file: %1</source>
         <translation>不能下载文件: %1</translation>
     </message>
