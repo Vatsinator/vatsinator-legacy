@@ -41,7 +41,7 @@ TileRenderer::TileRenderer(QObject* parent) :
     m_manager(new TileManager(this))
 {
     connect(m_timer, &QTimer::timeout, this, &TileRenderer::render);
-    m_timer->start(1000);
+    m_timer->start(300);
 }
 
 void TileRenderer::updateViewport(QSize viewport)

@@ -11,7 +11,11 @@ set (vatsinator_QUICK_QMLS
     main.qml
 )
 
-add_library (vatsinator SHARED main.cpp qml.qrc ${vatsinator_QUICK_QMLS})
+set (vatsinator_JAVA_SRCS
+    android/java/org/eu/vatsinator/VatsinatorActivity.java
+)
+
+add_library (vatsinator SHARED main.cpp qml.qrc ${vatsinator_QUICK_QMLS} ${vatsinator_JAVA_SRCS})
 target_link_libraries (vatsinator
     Qt5::Quick
     Qt5::Xml

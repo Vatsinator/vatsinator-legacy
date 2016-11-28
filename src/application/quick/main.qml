@@ -10,9 +10,9 @@ ApplicationWindow {
     
     title: "Vatsinator"
     visible: true
-    
-    width: 360
-    height: 640
+
+    width: 480
+    height: 620
     
     StackView {
         id: stackView

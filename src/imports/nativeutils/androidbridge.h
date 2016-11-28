@@ -37,6 +37,11 @@ namespace Vatsinator { namespace Imports {
  */
 class AndroidBridge : public QObject {
     Q_OBJECT
+
+    /**
+     * Height, in pixels, of the status bar.
+     */
+    Q_PROPERTY(int statusBarHeight READ statusBarHeight CONSTANT)
     
     /**
      * Height, in pixels, of the navigation bar.
@@ -52,15 +57,18 @@ signals:
 public:
     explicit AndroidBridge(QObject* parent = nullptr);
     
+    int statusBarHeight() const { return m_statusBarHeight; }
     int navigationBarHeight() const { return m_navigationBarHeight; }
     
 private:
+    void fetchStatusBarHeight();
     void fetchNavigationBarHeight();
     
 private slots:
     void onScreenOrientationChanged();
     
 private:
+    int m_statusBarHeight;
     int m_navigationBarHeight = 0;
     
 }; /** @} */

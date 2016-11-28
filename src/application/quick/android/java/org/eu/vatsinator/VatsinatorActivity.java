@@ -25,6 +25,21 @@ import android.content.res.Resources;
 public class VatsinatorActivity extends org.qtproject.qt5.android.bindings.QtActivity
 {
     /**
+     * http://stackoverflow.com/questions/3407256/height-of-status-bar-in-android
+     */
+    public int getStatusBarHeight()
+    {
+        Context context = (Context) this;
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return resources.getDimensionPixelSize(resourceId);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * http://stackoverflow.com/questions/20264268/how-to-get-height-and-width-of-navigation-bar-programmatically
      */
     public int getNavigationBarHeight()

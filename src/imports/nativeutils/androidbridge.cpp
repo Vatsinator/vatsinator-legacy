@@ -27,8 +27,32 @@ namespace Vatsinator { namespace Imports {
 AndroidBridge::AndroidBridge(QObject* parent) :
     QObject(parent)
 {
+    fetchStatusBarHeight();
+
     onScreenOrientationChanged();
     connect(qApp->primaryScreen(), &QScreen::orientationChanged, this, &AndroidBridge::onScreenOrientationChanged);
+}
+
+void AndroidBridge::fetchStatusBarHeight()
+{
+    QAndroidJniObject activity = QtAndroid::androidActivity();
+    if (!activity.isValid()) {
+        qWarning("No activity at this time; status bar height could not be fetched");
+        return;
+    }
+
+    /* public int getStatusBarHeight() */
+    jint h = activity.callMethod<jint>("getStatusBarHeight", "()I");
+
+    QAndroidJniEnvironment env;
+    if (env->ExceptionCheck()) {
+        qWarning("Could not get the navigation bar height; the exception follows...");
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        return;
+    }
+
+    m_navigationBarHeight = static_cast<int>(h);
 }
 
 void AndroidBridge::fetchNavigationBarHeight()

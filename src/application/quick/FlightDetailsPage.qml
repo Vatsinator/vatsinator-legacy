@@ -36,7 +36,8 @@ Page {
     header: ToolBar {
         id: toolbar
         
-        height: 24 + 56 + 48
+        /* status bar + app bar + tab bar */
+        height: 24 + (Screen.primaryOrientation === Qt.PortraitOrientation ? 56 : 48) + 48
         
         GridLayout {
             columns: 2
@@ -131,7 +132,7 @@ Page {
     }
     
     footer: ToolBar {
-        height: Screen.orientation === Qt.PortraitOrientation ? 48 : 0
+        height: Screen.primaryOrientation === Qt.PortraitOrientation ? 48 : 0
     }
     
     SwipeView {
