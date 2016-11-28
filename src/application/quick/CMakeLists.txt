@@ -62,7 +62,6 @@ android_deploy_apk(vatsinator
         QtQuick/Window.2
     QML_PLUGINS
         componentsplugin
-        nativeutilsplugin
         vatsimplugin
     QT_PLUGINS
         imageformats/libqsvg.so

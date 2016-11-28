@@ -43,7 +43,6 @@ add_definitions (-DQT_SHARED)
 
 set (qml_plugins
     components
-    nativeutils
     vatsim
 )
 
