@@ -72,7 +72,7 @@ private:
     QString matchModel(const QString& modelString) const;
     QImage modelColorized(const QImage& image, const QColor& color) const;
     
-    QScopedPointer<ModelMatcher> m_defaultModelMatcher;
+    ModelMatcher* m_defaultModelMatcher;
     const ModelMatcher* m_modelMatcher = nullptr;
     
 }; /** @} */

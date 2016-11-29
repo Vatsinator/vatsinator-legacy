@@ -20,11 +20,25 @@
 #include "modelmatcher.h"
 #include <QtCore>
 
+using namespace Vatsinator::Core;
+
 namespace Vatsinator { namespace Gui {
 
-ModelMatcher::ModelMatcher() {}
+ModelMatcher::ModelMatcher(QObject *parent) : QObject(parent) {}
 
 ModelMatcher::~ModelMatcher() {}
+
+void ModelMatcher::setResourceFile(ResourceFile *resourceFile)
+{
+    m_resourceFile = resourceFile;
+    m_resourceFile->setParent(this);
+    if (resourceFile->isRead())
+        readMappingFile();
+
+    connect(resourceFile, &ResourceFile::fileRead, this, &ModelMatcher::readMappingFile);
+
+    emit resourceFileChanged(resourceFile);
+}
 
 void ModelMatcher::readFromJson(const QJsonDocument& json)
 {    
@@ -62,6 +76,13 @@ QString ModelMatcher::match(const QString& modelString) const
 QString ModelMatcher::defaultModel() const
 {
     return QStringLiteral("B737");
+}
+
+void ModelMatcher::readMappingFile()
+{
+    QJsonDocument document = QJsonDocument::fromJson(m_resourceFile->data());
+    readFromJson(document);
+
 }
 
 }} /* namespace Vatsinator::Gui */

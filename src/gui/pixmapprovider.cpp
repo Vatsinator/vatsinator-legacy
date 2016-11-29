@@ -44,7 +44,7 @@ QString generalizedDensity()
 
 PixmapProvider::PixmapProvider(QObject* parent) :
     QObject(parent),
-    m_defaultModelMatcher(new ModelMatcher) {}
+    m_defaultModelMatcher(new ModelMatcher(this)) {}
 
 PixmapProvider::~PixmapProvider() {}
 
@@ -173,7 +173,6 @@ QPixmap PixmapProvider::airportLabelBackground(const QFont& font) const
 
 void PixmapProvider::setModelMatcher(const ModelMatcher* modelMatcher)
 {
-    delete m_modelMatcher;
     m_modelMatcher = modelMatcher;
 }
 

@@ -73,9 +73,8 @@ VatsinatorWindow::VatsinatorWindow() :
     m_server->trackServer(QUrl("https://status.vatsim.net/status.txt"));
     
     ModelMatcher* modelMatcher = new ModelMatcher;
-    ResourceFile* modelFile = new ResourceFile("data/model.json", this);
-    QJsonDocument document = QJsonDocument::fromJson(modelFile->data());
-    modelMatcher->readFromJson(document);
+    ResourceFile* modelFile = new ResourceFile("data/model.json");
+    modelMatcher->setResourceFile(modelFile);
     ui->map->renderer()->scene()->setModelMatcher(modelMatcher);
     
     m_mapInfo = new MapInfoWidget;

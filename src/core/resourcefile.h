@@ -37,16 +37,28 @@ class __VtrCoreApi__ ResourceFile : public FileReader {
     
     /**
      * Stores name of the file.
+     * This is the default property.
      */
-    Q_PROPERTY(QString name MEMBER m_name)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+
+    Q_CLASSINFO("DefaultProperty", "name")
+
+signals:
+    void nameChanged(const QString& name);
 
 public:
+    explicit ResourceFile(QObject* parent = nullptr);
     explicit ResourceFile(const QString& name, QObject* parent = nullptr);
+
+    virtual ~ResourceFile();
     
     /**
      * Returns the file contents.
      */
     const QByteArray& data() const { return m_data; }
+
+    const QString& name() const { return m_name; }
+    void setName(const QString& name);
     
 protected:
     /**
@@ -63,5 +75,7 @@ private:
 }; /** @} */
 
 }} /* namespace Vatsinator::Core */
+
+Q_DECLARE_METATYPE(Vatsinator::Core::ResourceFile*)
 
 #endif // CORE_RESOURCEFILE_H

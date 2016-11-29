@@ -120,8 +120,9 @@ public:
     
     /**
      * Sets the working model matcher instance.
+     * \note MapScene takes ownership over \c modelMatcher.
      */
-    void setModelMatcher(const ModelMatcher* modelMatcher);
+    void setModelMatcher(ModelMatcher* modelMatcher);
     
     /**
      * Gives access to the PixmapProvider instance.
@@ -135,8 +136,11 @@ public:
     
     /**
      * Gives access to the currently running model matcher instance.
+     * @{
      */
     const ModelMatcher* modelMatcher() const { return m_modelMatcher; }
+    ModelMatcher* modelMatcher() { return m_modelMatcher; }
+    /** @} */
 
     const Core::Pilot* trackedFlight() const { return m_trackedFlight; }
     void setTrackedFlight(const Core::Pilot* trackedFlight);
@@ -177,7 +181,7 @@ private slots:
 private:
     QScopedPointer<MapScenePrivate> d;
     PixmapProvider* m_pixmapProvider = nullptr;
-    const ModelMatcher* m_modelMatcher = nullptr;
+    ModelMatcher* m_modelMatcher = nullptr;
     const Core::Pilot* m_trackedFlight = nullptr;
     
 }; /** @} */

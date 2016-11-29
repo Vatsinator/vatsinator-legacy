@@ -289,9 +289,13 @@ QList<const MapItem *> MapScene::nearest(int n, const LonLat &point) const
     return d->nearest(n, point);
 }
 
-void MapScene::setModelMatcher(const ModelMatcher* modelMatcher)
+void MapScene::setModelMatcher(ModelMatcher* modelMatcher)
 {
+    if (m_modelMatcher)
+        m_modelMatcher->deleteLater();
+
     m_modelMatcher = modelMatcher;
+    m_modelMatcher->setParent(this);
     m_pixmapProvider->setModelMatcher(m_modelMatcher);
 }
 

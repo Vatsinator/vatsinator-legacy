@@ -21,6 +21,7 @@
 #include "flightprogress.h"
 #include "map.h"
 #include "gui/mapscene.h"
+#include "gui/modelmatcher.h"
 #include <QtQml>
 
 using namespace Vatsinator::Gui;
@@ -33,6 +34,7 @@ void ComponentsQmlPlugin::registerTypes(const char* uri)
     
     qmlRegisterType<FlightProgress>(uri, 1, 0, "FlightProgress");
     qmlRegisterType<Map>(uri, 1, 0, "Map");
+    qmlRegisterType<ModelMatcher>(uri, 1, 0, "ModelMatcher");
 }
 
 }} /* namespace Vatsinator::Imports */

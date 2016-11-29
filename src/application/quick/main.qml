@@ -46,21 +46,21 @@ ApplicationWindow {
                     id: map
                     anchors.fill: parent
                     
-                    serverTracker: ServerTracker
+                    serverTracker: VatsimServerTracker
+                    modelMatcher: ModelMatcher {
+                        resourceFile: ResourceFile { name: "data/model.json" }
+                    }
                     controls: controls
                     
                     onFlightSelected: {
-                        console.log(item.pilot.callsign + " clicked");
                         stackView.push(flightDetailsPage.createObject(stackView, { "flight": item.pilot }));
                     }
                     
                     onAirportSelected: {
-                        console.log(item.airport.icao + " clicked");
                         stackView.push(airportDetailsPage.createObject(stackView, { "airport": item.airport }));
                     }
                     
                     onFirSelected: {
-                        console.log(item.fir.icao + " clicked");
                         stackView.push(firDetailsPage.createObject(stackView, { "fir": item.fir }));
                     }
                 }

@@ -21,10 +21,11 @@
 #define IMPORTS_MAP_H
 
 #include "core/lonlat.h"
+#include "core/servertracker.h"
 #include "gui/mapitem.h"
 #include "gui/maprenderer.h"
 #include "gui/mapscene.h"
-#include "core/servertracker.h"
+#include "gui/modelmatcher.h"
 #include <QQuickPaintedItem>
 
 namespace Vatsinator { namespace Gui { class ModelMatcher; }}
@@ -49,13 +50,10 @@ class Map : public QQuickPaintedItem {
                WRITE setServerTracker NOTIFY serverTrackerChanged)
     
     /**
-     * File containing model mappings.
-     * The default value uses \ref Vatsinator::Core::ResourceFile to keep
-     * the mappings in-sync with Vatsinator repo.
+     * The model matcher instance.
      */
-    Q_PROPERTY(QString modelMappingsFile READ modelMappingsFile
-               WRITE setModelMappingsFile NOTIFY modelMappingsFileChanged
-               RESET resetModelMappingsFile)
+    Q_PROPERTY(Vatsinator::Gui::ModelMatcher* modelMatcher READ modelMatcher
+               WRITE setModelMatcher NOTIFY modelMatcherChanged)
     
     /**
      * Instance of an item that makes it possible to move & zoom the map.
@@ -102,7 +100,7 @@ signals:
     void firSelected(QVariant item);
     
     void serverTrackerChanged(Core::ServerTracker* serverTracker);
-    void modelMappingsFileChanged(const QString& modelMappingsFile);
+    void modelMatcherChanged(Gui::ModelMatcher* modelMatcher);
     void controlsChanged(QQuickItem* controls);
     
 public:
@@ -133,9 +131,9 @@ public:
     const Core::ServerTracker* serverTracker() const { return m_serverTracker; }
     void setServerTracker(Core::ServerTracker* serverTracker);
     
-    const QString& modelMappingsFile() const { return m_modelMappingsFile; }
-    void setModelMappingsFile(const QString& modelMappingsFile);
-    void resetModelMappingsFile();
+    Gui::ModelMatcher* modelMatcher() { return m_scene->modelMatcher(); }
+    const Gui::ModelMatcher* modelMatcher() const { return m_scene->modelMatcher(); }
+    void setModelMatcher(Gui::ModelMatcher* modelMatcher);
     
     QQuickItem* controls() { return m_controls; }
     const QQuickItem* controls() const { return m_controls; }
@@ -175,9 +173,7 @@ private:
     Gui::MapRenderer* m_renderer = nullptr;
     Gui::MapItem* m_selectedItem = nullptr;
     Gui::MapScene* m_scene = nullptr;
-    Gui::ModelMatcher* m_modelMatcher = nullptr;
     Core::ServerTracker* m_serverTracker = nullptr;
-    QString m_modelMappingsFile;
     QQuickItem* m_controls = nullptr;
     
 }; /** @} */

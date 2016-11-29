@@ -21,6 +21,7 @@
 #include "modelfactory.h"
 #include "core/resourcefile.h"
 #include "core/pilot.h"
+#include "core/resourcefile.h"
 #include "core/servertracker.h"
 #include "misc/clientlistmodel.h"
 #include "misc/notamlistmodel.h"
@@ -62,11 +63,13 @@ void VatsimQmlPlugin::registerTypes(const char* uri)
 //     qmlRegisterUncreatableType<Client>(uri, 1, 0, "Client", "Client instances can be created only internally");
     qmlRegisterUncreatableType<Pilot>(uri, 1, 0, "Pilot", "Pilot instances can be created only internally");
     
-    qmlRegisterSingletonType<ServerTracker>(uri, 1, 0, "ServerTracker", &vatsim_singletontype_provider);
+    qmlRegisterSingletonType<ServerTracker>(uri, 1, 0, "VatsimServerTracker", &vatsim_singletontype_provider);
     qmlRegisterSingletonType<ModelFactory>(uri, 1, 0, "ModelFactory", &modelfactory_singletontype_provider);
     
     qmlRegisterType<ClientListModel>(uri, 1, 0, "ClientListModel");
     qmlRegisterType<NotamListModel>(uri, 1, 0, "NotamListModel");
+
+    qmlRegisterType<ResourceFile>(uri, 1, 0, "ResourceFile");
 }
 
 }} /* namespace Vatsinator::Imports */

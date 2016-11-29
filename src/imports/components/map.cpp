@@ -53,8 +53,8 @@ Map::Map(QQuickItem* parent) :
     connect(m_renderer, &MapRenderer::updated, this, &QQuickItem::update);
     
     m_renderer->setScene(m_scene);
-    resetModelMappingsFile();
     
+    // TODO Selected plugin from options
     MapDrawer* drawer = nullptr;
     auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<MapDrawer*>());
     if (plugins.length() > 0)
@@ -69,14 +69,11 @@ Map::Map(QQuickItem* parent) :
     connect(this, &QQuickItem::windowChanged, this, &Map::updateViewport);
 }
 
-Map::~Map()
-{
-    if (m_modelMatcher)
-        delete m_modelMatcher;
-}
+Map::~Map() {}
 
 void Map::paint(QPainter* painter)
 {
+    // TODO Optimize, use Scene Graph maybe?
     QSize size(width(), height());
     QImage img(size * qApp->primaryScreen()->devicePixelRatio(), QImage::Format_ARGB32_Premultiplied);
     img.setDevicePixelRatio(qApp->primaryScreen()->devicePixelRatio());
@@ -85,42 +82,17 @@ void Map::paint(QPainter* painter)
     painter->drawImage(QRect(QPoint(0, 0), size), img, img.rect());
 }
 
-void Map::setServerTracker(Core::ServerTracker* serverTracker)
+void Map::setServerTracker(ServerTracker* serverTracker)
 {
     m_serverTracker = serverTracker;
     m_scene->track(serverTracker);
     emit serverTrackerChanged(m_serverTracker);
 }
 
-void Map::setModelMappingsFile(const QString& modelMappingsFile)
+void Map::setModelMatcher(ModelMatcher *modelMatcher)
 {
-    if (modelMappingsFile != m_modelMappingsFile) {
-        m_modelMappingsFile = modelMappingsFile;
-        
-//         ModelMatcher* mm = new ModelMatcher;
-        /* TODO Implement this shit */
-    }
-}
-
-void Map::resetModelMappingsFile()
-{
-    ResourceFile* mmFile = new ResourceFile("data/model.json", this);
-    ModelMatcher* mm = new ModelMatcher;
-    QJsonDocument document= QJsonDocument::fromJson(mmFile->data());
-    mm->readFromJson(document);
-    
-    connect(mmFile, &ResourceFile::fileRead, [mmFile, mm]() {
-        QJsonDocument document = QJsonDocument::fromJson(mmFile->data());
-        mm->readFromJson(document);
-    });
-    
-    m_scene->setModelMatcher(mm);
-    
-    if (m_modelMatcher)
-        delete m_modelMatcher;
-    
-    m_modelMatcher = mm;
-    m_modelMappingsFile = QString();
+    m_scene->setModelMatcher(modelMatcher);
+    emit modelMatcherChanged(modelMatcher);
 }
 
 void Map::setControls(QQuickItem* controls)
