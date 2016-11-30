@@ -304,7 +304,7 @@ function (android_deploy_apk target)
             ${target}                       # when the application is rebuilt
     )
     
-    add_custom_target (apk
+    add_custom_target (apk ALL
         DEPENDS ${package_file_name}
     )
     

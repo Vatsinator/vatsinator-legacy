@@ -47,9 +47,19 @@ signals:
     void nameChanged(const QString& name);
 
 public:
+    /**
+     * Creates an empty \c ResourceFile instance.
+     */
     explicit ResourceFile(QObject* parent = nullptr);
+
+    /**
+     * Creates a \c ResourceFile that immediately reads the specified file.
+     */
     explicit ResourceFile(const QString& name, QObject* parent = nullptr);
 
+    /**
+     * Destroys this \c ResourceFile instance.
+     */
     virtual ~ResourceFile();
     
     /**

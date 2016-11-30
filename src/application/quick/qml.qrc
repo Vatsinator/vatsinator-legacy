@@ -6,6 +6,11 @@
         <file>FlightDetailsPage.qml</file>
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>AirportNodeDetails.qml</file>
+    </qresource>
+    <qresource prefix="/icons/action">
+        <file alias="ic_face_black.svg">resources/ic_face_black_24px.svg</file>
+        <file alias="ic_language_black.svg">resources/ic_language_black_24px.svg</file>
+        <file alias="ic_schedule_black.svg">resources/ic_schedule_black_24px.svg</file>
     </qresource>
 </RCC>
-

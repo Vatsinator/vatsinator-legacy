@@ -4,6 +4,7 @@ include_directories (${Qt5Quick_INCLUDE_DIRS})
 find_package (Qt5Xml REQUIRED)
 
 set (vatsinator_QUICK_QMLS
+    AirportNodeDetails.qml
     AirportDetailsPage.qml
     AtcDetailsPage.qml
     FirDetailsPage.qml

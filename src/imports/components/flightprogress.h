@@ -27,12 +27,28 @@ namespace Vatsinator { namespace Imports {
 /**
  * \ingroup Imports
  * @{
+ *
+ * \code{.qml}
+ * import org.eu.vatsinator.Components
+ * \endcode
  * 
+ * The \c FlightProgress item shows flight progress.
  */
 class FlightProgress : public QQuickPaintedItem {
     Q_OBJECT
     
+    /**
+     * The \c progress property must contain value in range [0..100], where
+     * 0 means the flight has not yet departed and 100 means the aircraft arrived
+     * to its destination.
+     *
+     * \sa Vatsinator::Core::Pilot::progress.
+     */
     Q_PROPERTY(int progress READ progress WRITE setProgress NOTIFY progressChanged)
+
+    /**
+     * Holds the color of the line and the airplane.
+     */
     Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
     
 signals:
@@ -60,6 +76,9 @@ public:
     
     const QColor& color() const { return m_color; }
     void setColor(const QColor& color);
+
+private slots:
+    void clearCache();
     
 private:
     int m_progress;

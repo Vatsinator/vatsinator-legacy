@@ -36,6 +36,11 @@ class FlightPlanData;
  * The FlightPlan class groups all flight plan related values.
  */
 class __VtrCoreApi__ FlightPlan {
+    Q_GADGET
+
+    Q_PROPERTY(bool empty READ isEmpty)
+    Q_PROPERTY(QString route READ route WRITE setRoute)
+
 public:
     /**
      * Creates an invalid FlightPlan instance.

@@ -40,10 +40,11 @@ Page {
         height: 24 + (Screen.primaryOrientation === Qt.PortraitOrientation ? 56 : 48) + 48
         
         GridLayout {
+            anchors.fill: parent
+
             columns: 2
             columnSpacing: 0
             rowSpacing: 0
-            anchors.fill: parent
             
             Item {
                 Layout.preferredHeight: 24
@@ -162,18 +163,11 @@ Page {
                         spacing: 16
                         
                         Item { Layout.preferredWidth: 8 }
-                        
-                        Label {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                            font.pixelSize: 20
-                            color: "#212121"
-                            
-                            text: flight.departure.icao
-                            
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: root.airportClicked(flight.departure)
-                            }
+
+                        AirportNodeDetails {
+                            airport: flight.departure
+                            time: flight.atd
+                            onAirportClicked: root.airportClicked
                         }
                         
                         FlightProgress {
@@ -182,26 +176,19 @@ Page {
                             progress: flight.progress
                             color: Material.accent
                         }
-                        
-                        Label {
-                            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                            font.pixelSize: 20
-                            color: "#212121"
-                            
-                            text: flight.destination.icao
-                            
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: root.airportClicked(flight.destination)
-                            }
+
+                        AirportNodeDetails {
+                            airport: flight.destination
+                            time: flight.eta
+                            onAirportClicked: root.airportClicked
                         }
-                        
+
                         Item { Layout.preferredWidth: 8 }
                     }
                     
                     Details {
                         name: qsTr("Flight rules")
-                        value: flight.flightRules == Pilot.Ifr ? "IFR" : "VFR"
+                        value: flight.flightRules === Pilot.Ifr ? "IFR" : "VFR"
                         iconSource: "qrc:/icons/action/assignment_black.svg"
                     }
                     
@@ -216,10 +203,30 @@ Page {
                         value: flight.plannedTas
                         iconSource: "qrc:/icons/content/forward.svg"
                     }
-                    
+
+                    RowLayout {
+
+                        Item {
+                            Layout.minimumWidth: 72 - parent.spacing
+                        }
+
+                        Button {
+                            text: qsTr("ROUTE")
+                            highlighted: true
+
+                            Layout.minimumWidth: 88
+                        }
+
+                        Button {
+                            text: qsTr("REMARKS")
+
+                            Layout.minimumWidth: 88
+                        }
+                    }
+
                     CheckBox {
                         leftPadding: 72
-                        
+
                         checked: false
                         text: qsTr("Track this flight")
                     }
@@ -249,16 +256,19 @@ Page {
                     Details {
                         name: qsTr("Pilot")
                         value: flight.realName + " (" + flight.pid + ")"
+                        iconSource: "qrc:/icons/action/ic_face_black.svg"
                     }
                     
                     Details {
                         name: qsTr("Server")
                         value: flight.serverName
+                        iconSource: "qrc:/icons/action/ic_language_black.svg"
                     }
                     
                     Details {
                         name: qsTr("Online from")
                         value: flight.onlineFrom
+                        iconSource: "qrc:/icons/action/ic_schedule_black.svg"
                     }
                 }
             }

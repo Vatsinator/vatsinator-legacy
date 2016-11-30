@@ -48,6 +48,10 @@ FlightProgress::FlightProgress(QQuickItem* parent) :
     setAntialiasing(true);
     
     setImplicitHeight(24 * qApp->primaryScreen()->devicePixelRatio());
+
+    connect(this, &FlightProgress::progressChanged, this, &QQuickItem::update);
+    connect(this, &FlightProgress::colorChanged, this, &FlightProgress::clearCache);
+    connect(this, &FlightProgress::colorChanged, this, &QQuickItem::update);
 }
 
 FlightProgress::~FlightProgress() {}
@@ -66,9 +70,10 @@ void FlightProgress::paint(QPainter* painter)
     
     int dim = height() / 2;
     QPoint p1(0, dim);
-    QPoint p2(width() * progress() * 0.01, dim);
+    int offset = px.width() / 2;
+    QPoint p2(qBound(offset,  static_cast<int>(width() * progress() * 0.01), static_cast<int>(width()) - offset), dim);
     QPoint p3(width(), dim);
-    QPoint offset(px.width() / qApp->primaryScreen()->devicePixelRatio() / 2 + 1, 0);
+    QPoint margin(px.width() / qApp->primaryScreen()->devicePixelRatio() / 2 + 1, 0);
     
     painter->save();
     painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -76,12 +81,12 @@ void FlightProgress::paint(QPainter* painter)
     painter->setPen(color());
     
     if (progress() > 5)
-        painter->drawLine(p1, p2 - offset);
+        painter->drawLine(p1, p2 - margin);
     
     QColor lighter = color();
     lighter.setAlpha(50);
     painter->setPen(lighter);
-    painter->drawLine(p2 + offset, p3);
+    painter->drawLine(p2 + margin, p3);
     
     QRect rect = px.rect();
     rect.setSize(rect.size() / qApp->primaryScreen()->devicePixelRatio());
@@ -104,8 +109,12 @@ void FlightProgress::setColor(const QColor& color)
     if (m_color != color) {
         m_color = color;
         emit colorChanged(m_color);
-        update();
     }
+}
+
+void FlightProgress::clearCache()
+{
+    QPixmapCache::remove(QStringLiteral("flightmark_colorized"));
 }
 
 }} /* namespace Vatsinator::Imports */

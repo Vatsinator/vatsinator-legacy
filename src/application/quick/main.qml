@@ -12,7 +12,7 @@ ApplicationWindow {
     visible: true
 
     width: 480
-    height: 620
+    height: 640
     
     StackView {
         id: stackView
