@@ -40,7 +40,7 @@ public:
      * Creates the new \c NatParser instance that will try to find NAT
      * in the \c filledRoute.
      */
-    NatParser(const QString& filledRoute);
+    explicit NatParser(const QString& filledRoute);
 
     /**
      * Destroys this \c NatParser instance.

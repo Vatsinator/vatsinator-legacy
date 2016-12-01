@@ -59,7 +59,7 @@ public:
     /**
      * The default constructor, passes \c parent to the \c QQuickItem.
      */
-    FlightProgress(QQuickItem* parent = nullptr);
+    explicit FlightProgress(QQuickItem* parent = nullptr);
     
     /**
      * Destroys the \c FlightProgress instance.

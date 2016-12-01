@@ -24,12 +24,12 @@ namespace Vatsinator { namespace Core {
 
 class AtcBookingData : public QSharedData {
 public:
-    AtcBookingData(const QString& callsign) : callsign(callsign) {}
+    explicit AtcBookingData(const QString& callsign) : callsign(callsign) {}
     AtcBookingData() = default;
     
     QString callsign;
     QString realName;
-    bool isTrainingSession;
+    bool isTrainingSession = false;
     QDate bookedDay;
     QTime timeFrom;
     QTime timeTo;

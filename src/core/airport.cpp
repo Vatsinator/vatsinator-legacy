@@ -24,7 +24,7 @@ namespace Vatsinator { namespace Core {
 class AirportData : public QSharedData {
 public:
     AirportData() = default;
-    AirportData(const QString& icao) : icao(icao), altitude(0) {}
+    explicit AirportData(const QString& icao) : icao(icao), altitude(0) {}
     
     QString icao;
     QString iata;

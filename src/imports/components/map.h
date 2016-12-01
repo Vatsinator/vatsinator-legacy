@@ -107,7 +107,7 @@ public:
     /**
      * Default constructor, passes \c parent to the \c QQuickItem.
      */
-    Map(QQuickItem* parent = nullptr);
+    explicit Map(QQuickItem* parent = nullptr);
     
     /**
      * Destructor.

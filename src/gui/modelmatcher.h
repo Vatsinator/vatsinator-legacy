@@ -55,7 +55,7 @@ public:
     /**
      * Creates a new ModelMatcher instance.
      */
-    ModelMatcher(QObject* parent = nullptr);
+    explicit ModelMatcher(QObject* parent = nullptr);
     
     /**
      * Destroys the ModelMatcher instance.
@@ -89,7 +89,7 @@ private slots:
     void readMappingFile();
     
 private:
-    Core::ResourceFile* m_resourceFile;
+    Core::ResourceFile* m_resourceFile = nullptr;
     QMap<QString, QString> m_mappings;
     
 }; /** @} */

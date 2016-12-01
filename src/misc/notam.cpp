@@ -25,7 +25,7 @@ namespace Vatsinator { namespace Misc {
 class NotamData : public QSharedData {
 public:
     NotamData() = default;
-    NotamData(const QString& ident) : ident(ident) {}
+    explicit NotamData(const QString& ident) : ident(ident) {}
     
     QString ident;
     QString icao;
@@ -34,8 +34,8 @@ public:
     QDateTime from;
     QDateTime to;
     QString diurnal;
-    Notam::CFlag cflag;
-    Notam::Type type;
+    Notam::CFlag cflag = Notam::None;
+    Notam::Type type = Notam::New;
 };
 
 Notam::Notam() : d(new NotamData) {}

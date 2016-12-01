@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Gui {
  */
 class __VtrGuiApi__ WorldViewport {
 public:
-    WorldViewport(const QRectF& screen);
+    explicit WorldViewport(const QRectF& screen);
 
     const QList<QRectF>& rectangles() const { return m_rectangles; }
 

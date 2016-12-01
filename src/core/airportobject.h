@@ -79,6 +79,7 @@ class __VtrCoreApi__ AirportObject : public ClientList {
     
     /**
      * Stores the position of the airport.
+     * \todo Why not to use LonLat here?
      */
     Q_PROPERTY(QPointF position READ position CONSTANT)
     

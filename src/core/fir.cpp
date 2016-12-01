@@ -25,12 +25,12 @@ namespace Vatsinator { namespace Core {
 class FirData : public QSharedData {
 public:
     FirData() = default;
-    FirData(const QString& icao) : icao(icao) {}
+    explicit FirData(const QString& icao) : icao(icao) {}
     
     QString icao;
     QString name;
     QString country;
-    bool oceanic;
+    bool oceanic = false;
     LonLat labelPosition;
     QList<Fir::Boundaries> boundaries;
 };

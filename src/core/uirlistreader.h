@@ -39,7 +39,7 @@ class __VtrCoreApi__ UirListReader : public ResourceFile {
 public:
     using UirData = std::tuple<QString, QString, QList<QString>>; /**< ICAO, name and list of FIRs's ICAO codes */
 
-    UirListReader(QObject* parent = nullptr);
+    explicit UirListReader(QObject* parent = nullptr);
 
     std::pair<bool, UirData> find(const QString& icao);
 

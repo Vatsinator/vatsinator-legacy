@@ -26,7 +26,7 @@ namespace Vatsinator { namespace Core {
 
 class Pilot::RouteParserTask : public QRunnable {
 public:
-    RouteParserTask(Pilot* pilot) : m_pilot(pilot) {}
+    explicit RouteParserTask(Pilot* pilot) : m_pilot(pilot) {}
     void run() override;
 
 private:

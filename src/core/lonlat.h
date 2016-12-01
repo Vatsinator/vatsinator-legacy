@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Core {
  */
 class __VtrCoreApi__ LonLat : public QPointF {
 
-public:    
+public:
     /**
      * The default constructor creates point (0.0, 0.0).
      */
@@ -44,7 +44,7 @@ public:
     /**
      * Creates new LonLat from the given point.
      */
-    LonLat(const QPoint& point);
+    explicit LonLat(const QPoint& point);
     
     /**
      * Creates new LonLat from the given point.

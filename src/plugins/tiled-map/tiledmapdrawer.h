@@ -46,7 +46,7 @@ public:
      * Creates a new TiledMapDrawer instance, passes \c parent to the QObject's
      * constructor.
      */
-    TiledMapDrawer(QObject* parent = nullptr);
+    explicit TiledMapDrawer(QObject* parent = nullptr);
 
     /**
      * Destroys this TiledMapDrawer instance.
@@ -67,7 +67,7 @@ private slots:
     void updateMap(QRectF coords, QPixmap map);
     
 private:
-    TileRenderer* m_tileRenderer;
+    TileRenderer* m_tileRenderer = nullptr;
     Vatsinator::Gui::MapRenderer* m_renderer;
     
     QPixmap m_map;

@@ -9,7 +9,6 @@ set (core_SOURCES
     airportobject.cpp
     aliaslistreader.cpp
     atc.cpp
-    atcbooking.cpp
     client.cpp
     clientdata.cpp
     clientlist.cpp
@@ -45,7 +44,6 @@ set (core_HEADERS
     airportobject.h
     aliaslistreader.h
     atc.h
-    atcbooking.h
     client.h
     clientdata.h
     clientlist.h

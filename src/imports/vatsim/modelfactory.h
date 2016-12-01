@@ -39,7 +39,7 @@ class ModelFactory : public QObject {
     Q_OBJECT
 
 public:
-    ModelFactory(QObject* parent = nullptr);
+    explicit ModelFactory(QObject* parent = nullptr);
     virtual ~ModelFactory();
     
     /**

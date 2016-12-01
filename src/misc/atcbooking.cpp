@@ -25,14 +25,14 @@ namespace Vatsinator { namespace Misc {
 class AtcBookingData : public QSharedData {
 public:
     AtcBookingData() = default;
-    AtcBookingData(const QString& callsign) : callsign(callsign) {}
+    explicit AtcBookingData(const QString& callsign) : callsign(callsign) {}
     
     QString callsign;
     QString realName;
     QDate bookedDay;
     QTime timeFrom;
     QTime timeTo;
-    bool isTrainingSession;
+    bool isTrainingSession = false;
 };
 
 AtcBooking::AtcBooking() : d(new AtcBookingData) {}

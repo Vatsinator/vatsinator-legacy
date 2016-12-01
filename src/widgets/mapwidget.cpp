@@ -52,9 +52,9 @@ public:
     void setLastClick(const QPoint& lastClick) { m_lastClick = lastClick; }
     
 private:
-    QPoint m_widgetPosition;
-    bool m_down;
-    QPoint m_lastClick;
+    QPoint m_widgetPosition = QPoint();
+    bool m_down = false;
+    QPoint m_lastClick = QPoint();
 };
 
 

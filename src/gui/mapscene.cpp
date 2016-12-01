@@ -73,7 +73,7 @@ class MapScenePrivate {
     using AreaMap = spatial::idle_box_multimap<4, QRectF, AreaPointer, spatial::accessor_less<QRectFBoxAccessor, QRectF>>;
     
 public:
-    MapScenePrivate(MapScene* scene) : m_scene(scene), m_tmaListReader(new TmaListReader) {}
+    explicit MapScenePrivate(MapScene* scene) : m_scene(scene), m_tmaListReader(new TmaListReader) {}
 
     const MapItem* itemForFlight(const Pilot* flight)
     {
