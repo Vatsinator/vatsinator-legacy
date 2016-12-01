@@ -21,6 +21,7 @@ script:
     - export CC=gcc-5
     - cmake -DCMAKE_PREFIX_PATH=/opt/qt56/lib/cmake .
     - make VERBOSE=1
+    - make
 
 os:
     - linux
