@@ -239,88 +239,98 @@
 <context>
     <name>FlightDetailsPage</name>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="109"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="111"/>
         <source>FLIGHT PLAN</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="118"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="120"/>
         <source>PILOT</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="127"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="129"/>
         <source>DETAILS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="202"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="190"/>
         <source>Flight rules</source>
         <translation>Κανόνες πτήσης</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="208"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="196"/>
         <source>Cruise altitude</source>
         <translation> Αυτόματο υψόμετρο</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="214"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="202"/>
         <source>Planned TAS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="223"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="214"/>
+        <source>ROUTE</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="221"/>
+        <source>REMARKS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="231"/>
         <source>Track this flight</source>
         <translation>Παρακολούθηση αυτής της πτήσης</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="249"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="257"/>
         <source>Pilot</source>
         <translation>Πιλότος</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="254"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="263"/>
         <source>Server</source>
         <translation>Διακομιστής</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="259"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="269"/>
         <source>Online from</source>
         <translation>Απευθείας σύνδεση από</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="286"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="297"/>
         <source>Squawk</source>
         <translation>Squawk</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="291"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="302"/>
         <source>Ground speed</source>
         <translation>Ταχύτητα εδάφους</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="292"/>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="297"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="303"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="308"/>
         <source>%1 knots</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="318"/>
         <source>%1 feet</source>
         <translation>%1 πόδια</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="296"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
         <source>True Air Speed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="301"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="312"/>
         <source>Heading</source>
         <translation>Επικεφαλίδα</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="306"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="317"/>
         <source>Altitude</source>
         <translation>Υψόμετρο</translation>
     </message>
