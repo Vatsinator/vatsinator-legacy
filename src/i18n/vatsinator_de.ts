@@ -271,12 +271,12 @@
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="214"/>
         <source>ROUTE</source>
-        <translation type="unfinished"/>
+        <translation>ROUTE</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="221"/>
         <source>REMARKS</source>
-        <translation type="unfinished"/>
+        <translation>BEMERKUNGEN</translation>
     </message>
     <message>
         <location filename="../application/quick/FlightDetailsPage.qml" line="231"/>
