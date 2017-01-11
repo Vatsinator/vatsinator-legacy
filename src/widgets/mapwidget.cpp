@@ -261,7 +261,8 @@ QMenu* MapWidget::makeMenu(const QPoint &pos)
         menu->addAction(tr("Airport details"),
                         std::bind(&MapWidget::airportDetailsRequested, this, airportItem->airport()));
         //: %1 is the airport ICAO code
-        menu->addAction(tr("%1 METAR").arg(airportItem->airport()->icao())); // TODO triggered
+        menu->addAction(tr("%1 METAR").arg(airportItem->airport()->icao()),
+                        std::bind(&MapWidget::metarRequested, this, airportItem->airport()->icao()));
         
         auto staff = airportItem->airport()->clients<Atc>();
         if (!staff.isEmpty()) {

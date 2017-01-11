@@ -45,6 +45,12 @@ MetarWindow::MetarWindow(MetarManager* metars, QWidget *parent) :
 
 MetarWindow::~MetarWindow() {}
 
+void MetarWindow::show(const QString& icaoSearch)
+{
+    QWidget::show();
+    ui->metarSearch->setText(icaoSearch.toUpper());
+}
+
 void MetarWindow::showEvent(QShowEvent* event)
 {
     Q_UNUSED(event);

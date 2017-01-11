@@ -55,6 +55,7 @@ private slots:
     void showSettingsWindow();
     void setMapDrawerPlugin(const QVariant& name);
     void showMetarWindow();
+    void showMetarWindow(const QString& icaoSearch);
     void showClientListWindow();
 
 private:

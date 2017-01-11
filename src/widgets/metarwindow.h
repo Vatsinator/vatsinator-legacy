@@ -52,6 +52,11 @@ public:
      */
     virtual ~MetarWindow();
 
+    using QWidget::show;
+
+public slots:
+    void show(const QString& icaoSearch);
+
 protected:
     /**
      * \copydoc QWidget::showEvent()

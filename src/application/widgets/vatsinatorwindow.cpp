@@ -56,9 +56,10 @@ VatsinatorWindow::VatsinatorWindow() :
     connect(ui->map, &MapWidget::flightDetailsRequested, this, &VatsinatorWindow::showFlightDetails);
     connect(ui->map, &MapWidget::atcDetailsRequested, this, &VatsinatorWindow::showAtcDetails);
     connect(ui->map, &MapWidget::firDetailsRequested, this, &VatsinatorWindow::showFirDetails);
+    connect(ui->map, &MapWidget::metarRequested, this, qOverload<const QString&>(&VatsinatorWindow::showMetarWindow));
     connect(ui->actionSettings, &QAction::triggered, this, &VatsinatorWindow::showSettingsWindow);
     connect(ui->actionRefresh, &QAction::triggered, m_server, &ServerTracker::refreshData);
-    connect(ui->actionMetars, &QAction::triggered, this, &VatsinatorWindow::showMetarWindow);
+    connect(ui->actionMetars, &QAction::triggered, this, qOverload<>(&VatsinatorWindow::showMetarWindow));
     connect(ui->actionClients, &QAction::triggered, this, &VatsinatorWindow::showClientListWindow);
     connect(ui->actionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
     
@@ -234,6 +235,17 @@ void VatsinatorWindow::showMetarWindow()
 
     Q_ASSERT(m_metars);
     m_metars->show();
+}
+
+void VatsinatorWindow::showMetarWindow(const QString& icaoSearch)
+{
+    if (!m_metars) {
+        m_metars = new MetarWindow(m_server->metarManager());
+        connect(qApp, &QCoreApplication::aboutToQuit, m_metars, &QObject::deleteLater);
+    }
+
+    Q_ASSERT(m_metars);
+    m_metars->show(icaoSearch);
 }
 
 void VatsinatorWindow::showClientListWindow()

@@ -77,6 +77,11 @@ signals:
      */
     void firDetailsRequested(const Core::FirObject* fir);
 
+    /**
+     * Emitted when user requested a weather report.
+     */
+    void metarRequested(QString icao);
+
 public:
     /**
      * The default constructor passes \c parent to the QWidget.
