@@ -215,12 +215,16 @@ Page {
                             highlighted: true
 
                             Layout.minimumWidth: 88
+
+                            onClicked: routePopup.open()
                         }
 
                         Button {
                             text: qsTr("REMARKS")
 
                             Layout.minimumWidth: 88
+
+                            onClicked: remarksPopup.open()
                         }
                     }
 
@@ -319,6 +323,45 @@ Page {
                     }
                 }
             }
+        }
+    }
+
+    Popup {
+        id: routePopup
+        modal: true
+        focus: true
+
+        x: (parent.width - width) / 2
+        y: parent.height / 6
+
+        width: 280
+        height: routeLabel.implicitHeight
+
+        Label {
+            id: routeLabel
+            width: 280
+            wrapMode: Text.WordWrap
+            text: flight.flightPlan.route
+        }
+    }
+
+    Popup {
+        id: remarksPopup
+        modal: true
+        focus: true
+
+        x: (parent.width - width) / 2
+        y: parent.height / 6
+
+        width: 280
+        height: remarksLabel.implicitHeight
+
+        Label {
+            id: remarksLabel
+
+            width: 280
+            wrapMode: text.WordWrap
+            text: flight.remarks
         }
     }
 }
