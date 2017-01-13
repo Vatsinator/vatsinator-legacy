@@ -274,63 +274,63 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="221"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="223"/>
         <source>REMARKS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="231"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="235"/>
         <source>Track this flight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="257"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="261"/>
         <source>Pilot</source>
         <translation>Pilota</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="263"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="267"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="269"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="273"/>
         <source>Online from</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="297"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="301"/>
         <source>Squawk</source>
         <translation>Squawk</translation>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="302"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="306"/>
         <source>Ground speed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="303"/>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="308"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="312"/>
         <source>%1 knots</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="318"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="322"/>
         <source>%1 feet</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="307"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="311"/>
         <source>True Air Speed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="312"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="316"/>
         <source>Heading</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/quick/FlightDetailsPage.qml" line="317"/>
+        <location filename="../application/quick/FlightDetailsPage.qml" line="321"/>
         <source>Altitude</source>
         <translation type="unfinished"/>
     </message>
@@ -763,8 +763,8 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="269"/>
-        <location filename="../widgets/mapwidget.cpp" line="297"/>
+        <location filename="../widgets/mapwidget.cpp" line="270"/>
+        <location filename="../widgets/mapwidget.cpp" line="298"/>
         <source>Controllers</source>
         <extracomment>a.k.a. ATC
 ----------
@@ -772,37 +772,37 @@ a.k.a. ATC</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="275"/>
+        <location filename="../widgets/mapwidget.cpp" line="276"/>
         <source>Flight details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="278"/>
+        <location filename="../widgets/mapwidget.cpp" line="279"/>
         <source>Track this flight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="291"/>
+        <location filename="../widgets/mapwidget.cpp" line="292"/>
         <source>FIR details</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="302"/>
+        <location filename="../widgets/mapwidget.cpp" line="303"/>
         <source>Nearby</source>
         <translation>Vicino</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="320"/>
+        <location filename="../widgets/mapwidget.cpp" line="321"/>
         <source>Airports</source>
         <translation>Aereoporti</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="327"/>
+        <location filename="../widgets/mapwidget.cpp" line="328"/>
         <source>Flights</source>
         <translation>Voli</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="334"/>
+        <location filename="../widgets/mapwidget.cpp" line="335"/>
         <source>FIRs</source>
         <translation type="unfinished"/>
     </message>
