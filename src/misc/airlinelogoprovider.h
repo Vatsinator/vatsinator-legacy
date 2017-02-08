@@ -33,13 +33,8 @@ namespace Vatsinator { namespace Misc {
  *
  * The interface for airline logo providers.
  */
-class __VtrMiscApi__ AirlineLogoProvider {
+class AirlineLogoProvider {
 public:
-    /**
-     * Default constructor.
-     */
-    AirlineLogoProvider() {}
-
     /**
      * Retrieves logo for the \c airline.
      */

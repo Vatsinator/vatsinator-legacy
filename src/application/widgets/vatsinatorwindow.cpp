@@ -56,10 +56,10 @@ VatsinatorWindow::VatsinatorWindow() :
     connect(ui->map, &MapWidget::flightDetailsRequested, this, &VatsinatorWindow::showFlightDetails);
     connect(ui->map, &MapWidget::atcDetailsRequested, this, &VatsinatorWindow::showAtcDetails);
     connect(ui->map, &MapWidget::firDetailsRequested, this, &VatsinatorWindow::showFirDetails);
-    connect(ui->map, &MapWidget::metarRequested, this, qOverload<const QString&>(&VatsinatorWindow::showMetarWindow));
+    connect(ui->map, &MapWidget::metarRequested, this, QOverload<const QString&>::of(&VatsinatorWindow::showMetarWindow));
     connect(ui->actionSettings, &QAction::triggered, this, &VatsinatorWindow::showSettingsWindow);
     connect(ui->actionRefresh, &QAction::triggered, m_server, &ServerTracker::refreshData);
-    connect(ui->actionMetars, &QAction::triggered, this, qOverload<>(&VatsinatorWindow::showMetarWindow));
+    connect(ui->actionMetars, &QAction::triggered, this, QOverload<>::of(&VatsinatorWindow::showMetarWindow));
     connect(ui->actionClients, &QAction::triggered, this, &VatsinatorWindow::showClientListWindow);
     connect(ui->actionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
     

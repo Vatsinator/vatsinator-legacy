@@ -33,13 +33,8 @@ namespace Vatsinator { namespace Misc {
  * 
  * The NotamProvider is an interface for services that provide NOTAMs.
  */
-class __VtrMiscApi__ NotamProvider {
+class NotamProvider {
 public:
-    /**
-     * Default constructor.
-     */
-    NotamProvider() {}
-
     /**
      * Retrieves all NOTAMs for the given ICAO code.
      */

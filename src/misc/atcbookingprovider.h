@@ -33,13 +33,8 @@ namespace Vatsinator { namespace Misc {
  *
  * An interface for booking provider.
  */
-class __VtrMiscApi__ AtcBookingProvider {
+class AtcBookingProvider {
 public:
-    /**
-     * Default constructor.
-     */
-    AtcBookingProvider() {}
-    
     /**
      * Retrieves all bookings for the given ICAO code.
      */
