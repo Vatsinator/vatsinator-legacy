@@ -1,0 +1,23 @@
+version: '1.0.{build}'
+
+environment:
+    QTCMAKEPATH: C:\Qt\5.7\msvc2015_64\lib\cmake
+    OPENSSLPATH: C:\OpenSSL-Win64\bin
+
+configuration:
+    - Release
+
+build:
+    project: ALL_BUILD.vcxproj
+
+# scripts to run before build
+before_build:
+    - echo Running cmake...
+    - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=%QTCMAKEPATH% -DLIBEAY_LOCATION=%OPENSSLPATH%\libeay32.dll -DSSLEAY_LOCATION=%OPENSSLPATH%\ssleay32.dll
+
+after_build:
+    - cmake --build . --target package --config %configuration%
+
+artifacts:
+    - path: VatsinatorSetup*.exe
+

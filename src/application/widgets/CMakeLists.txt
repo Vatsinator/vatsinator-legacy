@@ -49,12 +49,12 @@ if (APPLE OR WIN32)
 
     if (WIN32)
         # find OpenSSL libraries to deploy
-        find_library (LIBEAY_LOCATION NAMES libeay32.dll)
+        find_library (LIBEAY_LOCATION NAMES libeay32)
         if (LIBEAY_LOCATION)
             list (APPEND vatsinator_3RDPARTY_LIBS ${LIBEAY_LOCATION})
         endif ()
         
-        find_library (SSLEAY_LOCATION NAMES ssleay32.dll)
+        find_library (SSLEAY_LOCATION NAMES ssleay32)
         if (SSLEAY_LOCATION)
             list (APPEND vatsinator_3RDPARTY_LIBS ${SSLEAY_LOCATION})
         endif ()
