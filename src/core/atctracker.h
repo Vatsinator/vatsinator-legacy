@@ -1,5 +1,5 @@
 /*
- * flighttracker.h
+ * atctracker.h
  * Copyright (C) 2017  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,11 +17,11 @@
  *
  */
 
-#ifndef FLIGHTTRACKER_H
-#define FLIGHTTRACKER_H
+#ifndef ATCTRACKER_H
+#define ATCTRACKER_H
 
+#include "atc.h"
 #include "coreexport.h"
-#include "pilot.h"
 #include <QObject>
 
 namespace Vatsinator { namespace Core {
@@ -29,40 +29,26 @@ namespace Vatsinator { namespace Core {
 /**
  * \ingroup Core
  * @{
- *
- * The FlightTracker class handles flight changes logic.
  */
-class __VtrCoreApi__ FlightTracker : public QObject {
+class __VtrCoreApi__ AtcTracker : public QObject {
     Q_OBJECT
 
-    /**
-     * The \c flight property keeps the tracked pilot.
-     */
-    Q_PROPERTY(Vatsinator::Core::Pilot* flight READ flight CONSTANT)
+    Q_PROPERTY(Vatsinator::Core::Atc* atc READ atc CONSTANT)
 
 public:
-    /**
-     * Creates a new \c FlightTracker instance that tracks the specified
-     * \c flight.
-     */
-    explicit FlightTracker(Pilot* flight, QObject* parent = nullptr);
+    explicit AtcTracker(Atc* atc, QObject* parent = nullptr);
 
-    Pilot* flight() { return m_flight; }
-    const Pilot* flight() const { return m_flight; }
+    Atc* atc() { return m_atc; }
+    const Atc* atc() const { return m_atc; }
 
 private:
-    std::tuple<AirportObject*, AirportObject*> findAirports();
-
-private slots:
     void initialize();
-    void update();
-    void invalidateAirports();
 
 private:
-    Pilot* m_flight;
+    Atc* m_atc;
 
 }; /** @} */
 
 }} /* namespace Vatsinator::Core */
 
-#endif // FLIGHTTRACKER_H
+#endif // ATCTRACKER_H

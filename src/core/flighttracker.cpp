@@ -18,14 +18,88 @@
  */
 
 #include "flighttracker.h"
+#include "airportlistreader.h"
+#include "airlinelistreader.h"
+#include "servertracker.h"
+#include "geo.h"
 
 namespace Vatsinator { namespace Core {
 
-FlightTracker::FlightTracker(Pilot* flight, QObject *parent) :]
+FlightTracker::FlightTracker(Pilot* flight, QObject* parent) :
     QObject(parent),
     m_flight(flight)
 {
     connect(m_flight, &QObject::destroyed, this, &QObject::deleteLater);
+    connect(m_flight, &Pilot::flightPlanChanged, this, &FlightTracker::invalidateAirports);
+    connect(m_flight, &Pilot::flightPlanChanged, this, &FlightTracker::update);
+    connect(m_flight, &Pilot::positionChanged, this, &FlightTracker::update);
+
+    initialize();
+}
+
+std::tuple<AirportObject*, AirportObject*> FlightTracker::findAirports()
+{
+    AirportObject* dep = nullptr;
+    AirportObject* dest = nullptr;
+    if (flight()->flightPlan().departureAirport().isEmpty()) { // departure airport not filled
+        Airport ap = flight()->server()->airports()->nearest(flight()->position());
+        AirportObject* o = flight()->server()->airportObject(ap);
+        qreal d = nmDistance(flight()->position(), o->position());
+        if (d < Pilot::MaximumDistanceFromAirpoirt()) {
+            qDebug("Flight %s is at airport %s (nearest one)",
+                   qPrintable(flight()->callsign()), qPrintable(o->icao()));
+
+            dep = o;
+        }
+    } else {
+        dep = flight()->server()->airportObject(flight()->flightPlan().departureAirport());
+    }
+
+    if (!flight()->flightPlan().destinationAirport().isEmpty()) {
+        dest = flight()->server()->airportObject(flight()->flightPlan().destinationAirport());
+    }
+
+    return std::make_tuple(dep, dest);
+}
+
+void FlightTracker::initialize()
+{
+    flight()->setAirline(flight()->server()->airlines()->findByIcao(flight()->callsign().left(3)));
+
+    update();
+}
+
+void FlightTracker::update()
+{
+    // departure or destination airports not set, find them
+    if (flight()->departure() == nullptr || flight()->destination() == nullptr) {
+        AirportObject *dep, *dest;
+        std::tie(dep, dest) = findAirports();
+
+        if (dep) {
+            flight()->setDeparture(dep);
+            dep->add(flight());
+        }
+
+        if (dest) {
+            flight()->setDestination(dest);
+            dest->add(flight());
+        }
+    }
+}
+
+void FlightTracker::invalidateAirports()
+{
+    AirportObject* a = flight()->departure();
+    if (a)
+        a->remove(flight());
+
+    a = flight()->destination();
+    if (a)
+        a->remove(flight());
+
+    flight()->setDeparture(nullptr);
+    flight()->setDestination(nullptr);
 }
 
 }} /* namespace Vatsinator::Core */

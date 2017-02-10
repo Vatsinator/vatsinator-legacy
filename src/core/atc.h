@@ -29,7 +29,7 @@
 namespace Vatsinator { namespace Core {
 
 class ClientData;
-class ServerTracker;
+class AtcTracker;
 
 /**
  * \ingroup Core
@@ -43,7 +43,7 @@ class __VtrCoreApi__ Atc : public Client {
     Q_ENUMS(Rating)
 
     friend class ClientData; // for icao field
-    friend class ServerTracker; // for icao field
+    friend class AtcTracker; // for icao field
     
     /**
      * Stores ATC rating.

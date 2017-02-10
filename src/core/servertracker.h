@@ -58,14 +58,29 @@ class __VtrCoreApi__ ServerTracker : public QObject {
     Q_PROPERTY(bool updatesEnabled READ updatesEnabled WRITE setUpdatesEnabled NOTIFY updatesEnabledChanged)
     
     /**
-     * The \c MetarManager instance.
-     */
-    Q_PROPERTY(Vatsinator::Core::MetarManager* metarManager READ metarManager CONSTANT)
-    
-    /**
      * The \c lastUpdate property keeps date and time VATSIM data was updated.
      */
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY dataFileDownloadFinished)
+
+    /**
+     * The \c AirportListReader instance.
+     */
+    Q_PROPERTY(Vatsinator::Core::AirportListReader* airports READ airports CONSTANT)
+
+    /**
+     * The \c AirlineListReader instance.
+     */
+    Q_PROPERTY(Vatsinator::Core::AirlineListReader* airlines READ airlines CONSTANT)
+
+    /**
+     * The \c UirListReader instsance.
+     */
+    Q_PROPERTY(Vatsinator::Core::UirListReader* uirs READ uirs CONSTANT)
+
+    /**
+     * The \c MetarManager instance.
+     */
+    Q_PROPERTY(Vatsinator::Core::MetarManager* metarManager READ metarManager CONSTANT)
     
 signals:
     /**
@@ -132,6 +147,21 @@ public:
     /** @} */
 
     /**
+     * Finds the airport object for the given Airport.
+     */
+    AirportObject* airportObject(const Airport& ap);
+
+    /**
+     * Finds the airport object for the given ICAO code.
+     */
+    AirportObject* airportObject(const QString& icao);
+
+    /**
+     * Finds the FIR object for the given ICAO code.
+     */
+    FirObject* firObject(const QString& icao);
+
+    /**
      * Returns a list of connected clients.
      */
     QList<Client*> clients() const;
@@ -163,6 +193,12 @@ public:
     
     bool updatesEnabled() const { return m_updatesEnabled; }
     void setUpdatesEnabled(bool updatesEnabled);
+    AirportListReader* airports() { return m_airports; }
+    const AirportListReader* airports() const { return m_airports; }
+    AirlineListReader* airlines() { return m_airlines; }
+    const AirlineListReader* airlines() const { return m_airlines; }
+    UirListReader* uirs() { return m_uirs; }
+    const UirListReader* uirs() const { return m_uirs; }
     MetarManager* metarManager() { return m_metarManager; }
     const MetarManager* metarManager() const { return m_metarManager; }
     const QDateTime& lastUpdate() const { return m_lastUpdate; }
@@ -186,60 +222,11 @@ private:
      */
     void markOfflineClients();
     
-    /**
-     * Does flight-specific actions when adding a client.
-     */
-    void addFlightImpl(Pilot* flight);
-    
-    /**
-     * Does atc-specific actions when adding a client.
-     */
-    void addAtcImpl(Atc* atc);
-    
-    /**
-     * Flight-specific actions to maintain a client.
-     */
-    void maintainFlightImpl(Pilot* flight);
-    
-    /**
-     * Find (departure, destination) airports pair.
-     */
-    std::tuple<AirportObject*, AirportObject*> findAirports(const Pilot* flight);
-    
-    /**
-     * Finds the airport object for the given Airport.
-     */
-    AirportObject* airportObject(const Airport& ap);
-    
-    /**
-     * Finds the airport object for the given ICAO code.
-     */
-    AirportObject* airportObject(const QString& icao);
-    
-    /**
-     * Finds the FIR object for the given ICAO code.
-     */
-    FirObject* firObject(const QString& icao);
-    
 private slots:
     /**
      * Picks a random data server URL and start downloading the data file.
      */
     void fetchData();
-    
-    /**
-     * Removes any airport bindings from the sender client
-     * instance in order to have it re-discovered.
-     */
-    void invalidateAirports();
-    
-    /**
-     * Performs the client periodics checks:
-     * * if the client wents offline, removes it;
-     * * if the clinet is a pilot, checks whether its airport matches
-     *      are up-to-date.
-     */
-    void maintainClient();
     
     /**
      * Reads the status.txt document.
@@ -252,11 +239,11 @@ private:
     bool m_isTracking = false;
     int m_updateNo = 0;
     AirlineListReader* m_airlines;
-    AirportListReader* m_airportDb;
+    AirportListReader* m_airports;
     FirListReader* m_firDb;
-    UirListReader* m_uirDb;
+    UirListReader* m_uirs;
     AliasListReader* m_aliases;
-    QMap<QString, AirportObject*> m_airports;
+    QMap<QString, AirportObject*> m_airportObjects;
     QMap<QString, FirObject*> m_firs;
     QTimer m_timer;
     bool m_updatesEnabled = true;

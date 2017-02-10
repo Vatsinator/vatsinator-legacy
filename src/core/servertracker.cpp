@@ -22,7 +22,9 @@
 #include "airportlistreader.h"
 #include "aliaslistreader.h"
 #include "atc.h"
+#include "atctracker.h"
 #include "firlistreader.h"
+#include "flighttracker.h"
 #include "geo.h"
 #include "resourcefile.h"
 #include "uirlistreader.h"
@@ -34,9 +36,6 @@ using namespace Vatsinator::Core;
 
 namespace Vatsinator { namespace Core {
 
-/* Maximum distance from ATC position to the airport it controls */
-constexpr qreal MaxAtcToAirport = 0.5;
-
 /* The ServerTracker stores some internal values in Client' dynamic properties. */
 constexpr auto UpdateNoKey = "serverTrackerUpdateNo";
 
@@ -44,9 +43,9 @@ constexpr auto UpdateNoKey = "serverTrackerUpdateNo";
 ServerTracker::ServerTracker(QObject* parent) :
     QObject(parent),
     m_airlines(new AirlineListReader(this)),
-    m_airportDb(new AirportListReader(this)),
+    m_airports(new AirportListReader(this)),
     m_firDb(new FirListReader(this)),
-    m_uirDb(new UirListReader(this)),
+    m_uirs(new UirListReader(this)),
     m_aliases(new AliasListReader(this)),
     m_metarManager(new MetarManager(this))
 {
@@ -55,7 +54,7 @@ ServerTracker::ServerTracker(QObject* parent) :
     for (auto f: m_firDb->firs())
         m_firs.insertMulti(f.icao(), new FirObject(f, this));
 
-    m_airports.insert(QString(), new AirportObject(QString(), this));
+    m_airportObjects.insert(QString(), new AirportObject(QString(), this));
 }
 
 void ServerTracker::addClient(Client* client)
@@ -70,9 +69,9 @@ void ServerTracker::addClient(Client* client)
     m_clients.insert(client->callsign(), client);
     
     if (Pilot* p = qobject_cast<Pilot*>(client)) {
-        addFlightImpl(p);
+        new FlightTracker(p, this);
     } else if (Atc* a = qobject_cast<Atc*>(client)) {
-        addAtcImpl(a);
+        new AtcTracker(a, this);
     }
     
     emit clientAdded(client);
@@ -171,159 +170,41 @@ void ServerTracker::markOfflineClients()
     });
 }
 
-void ServerTracker::addFlightImpl(Pilot* flight)
-{
-    connect(flight, &Pilot::flightPlanChanged, this, &ServerTracker::invalidateAirports);
-    connect(flight, &Pilot::flightPlanChanged, this, &ServerTracker::maintainClient);
-    connect(flight, &Client::positionChanged, this, &ServerTracker::maintainClient);
-    maintainFlightImpl(flight);
-    
-    flight->setAirline(m_airlines->findByIcao(flight->callsign().left(3)));
-}
-
-void ServerTracker::addAtcImpl(Atc* atc)
-{
-    switch (atc->facility()) {
-        case Atc::Atis:
-        case Atc::Del:
-        case Atc::Gnd:
-        case Atc::Twr:
-        case Atc::Dep:
-        case Atc::App: {
-            AirportObject* a = nullptr;
-            if (atc->icao.isEmpty()) {
-                Airport ap = m_airportDb->nearest(atc->position());
-                if (nmDistance(atc->position(), ap.position()) < MaxAtcToAirport) {
-                    a = airportObject(ap);
-                    atc->icao = a->icao();
-                } else {
-                    qFatal("No airport for ATC (%s)", qPrintable(atc->callsign()));
-                }
-            } else {
-                a = airportObject(atc->icao);
-            }
-
-            atc->setAirport(a);
-            a->add(atc);
-            atc->setFir(nullptr);
-            break;
-        }
-
-        case Atc::Ctr:
-        case Atc::Fss: {
-            Q_ASSERT(!atc->icao.isEmpty());
-            if (FirObject* f = firObject(atc->icao)) {
-                f->add(atc);
-                atc->setFir(f);
-            } else {
-                bool found;
-                UirListReader::UirData uir;
-                std::tie(found, uir) = m_uirDb->find(atc->icao);
-                if (found) {
-                    atc->setDescription(std::get<1>(uir));
-                    atc->setIsUir(true);
-
-                    for (const QString& icao: std::get<2>(uir)) {
-                        FirObject* f = firObject(icao);
-                        if (f)
-                            f->add(atc);
-                    }
-                } else {
-                    qWarning("No FIR for ATC (%s)", qPrintable(atc->callsign()));
-                }
-            }
-
-            atc->setAirport(nullptr);
-            break;
-        }
-
-        case Atc::Obs:
-            atc->setAirport(nullptr);
-            atc->setFir(nullptr);
-            break;
-    }
-}
-
-void ServerTracker::maintainFlightImpl(Pilot* flight)
-{
-    // departure or destination airports not set, find them
-    if (flight->departure() == nullptr || flight->destination() == nullptr) {
-        AirportObject *dep, *dest;
-        std::tie(dep, dest) = findAirports(flight);
-
-        if (dep) {
-            flight->setDeparture(dep);
-            dep->add(flight);
-        }
-
-        if (dest) {
-            flight->setDestination(dest);
-            dest->add(flight);
-        }
-    }
-}
-
-std::tuple<AirportObject*, AirportObject*> ServerTracker::findAirports(const Pilot* flight)
-{
-    AirportObject* dep = nullptr;
-    AirportObject* dest = nullptr;
-
-    if (flight->flightPlan().departureAirport().isEmpty()) { // departure airport not filled
-        Airport ap = m_airportDb->nearest(flight->position());
-        AirportObject* o = airportObject(ap);
-        qreal d = nmDistance(flight->position(), o->position());
-        if (d < Pilot::MaximumDistanceFromAirpoirt()) {
-            qDebug("Flight %s is at airport %s (nearest one)",
-                   qPrintable(flight->callsign()), qPrintable(o->icao()));
-
-            dep = o;
-        }
-    } else {
-        dep = airportObject(flight->flightPlan().departureAirport());
-    }
-
-    if (!flight->flightPlan().destinationAirport().isEmpty()) {
-        dest = airportObject(flight->flightPlan().destinationAirport());
-    }
-
-    return std::make_tuple(dep, dest);
-}
-
 AirportObject* ServerTracker::airportObject(const Airport& ap)
 {
     Q_ASSERT(ap.isValid());
     
-    if (!m_airports.contains(ap.icao())) {
+    if (!m_airportObjects.contains(ap.icao())) {
         AirportObject* a = new AirportObject(ap, this);
-        m_airports.insert(ap.icao(), a);
+        m_airportObjects.insert(ap.icao(), a);
         emit airportAdded(a);
     }
     
-    return m_airports.value(ap.icao());
+    return m_airportObjects.value(ap.icao());
 }
 
 AirportObject* ServerTracker::airportObject(const QString& icao)
 {
     if (icao.isEmpty())
-        return m_airports[icao];
+        return m_airportObjects[icao];
 
-    Airport ap = m_airportDb->findByIcao(icao);
+    Airport ap = m_airports->findByIcao(icao);
     if (ap.isValid())
         return airportObject(ap);
     
     auto aliases = m_aliases->aliases(icao);
     for (auto alias: aliases) {
-        ap = m_airportDb->findByIcao(alias);
+        ap = m_airports->findByIcao(alias);
         if (ap.isValid()) {
             return airportObject(ap);
         }
     }
     
-    if (!m_airports.contains(icao))
-        m_airports.insert(icao, new AirportObject(icao, this));
+    if (!m_airportObjects.contains(icao))
+        m_airportObjects.insert(icao, new AirportObject(icao, this));
     
-    Q_ASSERT(m_airports.contains(icao));
-    return m_airports[icao];
+    Q_ASSERT(m_airportObjects.contains(icao));
+    return m_airportObjects[icao];
 }
 
 FirObject* ServerTracker::firObject(const QString& icao)
@@ -354,39 +235,6 @@ void ServerTracker::fetchData()
     connect(reader, &VatsimDataReader::dataRead, this, &ServerTracker::readData);
     reader->read(dataUrl);
     emit dataFileDownloadStarted();
-}
-
-void ServerTracker::invalidateAirports()
-{
-    Client* client = qobject_cast<Client*>(sender());
-    Q_ASSERT(client);
-    
-    if (Pilot* flight = qobject_cast<Pilot*>(sender())) {
-        AirportObject* a = flight->departure();
-        if (a)
-            a->remove(flight);
-        
-        a = flight->destination();
-        if (a)
-            a->remove(flight);
-
-        flight->setDeparture(nullptr);
-        flight->setDestination(nullptr);
-    } else {
-        // no use for ATC
-        Q_UNREACHABLE();
-    }
-}
-
-void ServerTracker::maintainClient()
-{
-    Client* client = qobject_cast<Client*>(sender());
-    Q_ASSERT(client);
-    Q_ASSERT(m_clients.contains(client->callsign()));
-    
-    if (Pilot* flight = qobject_cast<Pilot*>(client)) {
-        maintainFlightImpl(flight);
-    }
 }
 
 void ServerTracker::readStatus(VatsimStatusDocument status)

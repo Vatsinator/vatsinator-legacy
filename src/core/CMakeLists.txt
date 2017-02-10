@@ -9,6 +9,7 @@ set (core_SOURCES
     airportobject.cpp
     aliaslistreader.cpp
     atc.cpp
+    atctracker.cpp
     client.cpp
     clientdata.cpp
     clientlist.cpp
@@ -18,6 +19,7 @@ set (core_SOURCES
     firlistreader.cpp
     firobject.cpp
     flightplan.cpp
+    flighttracker.cpp
     geo.cpp
     lonlat.cpp
     metar.cpp
@@ -44,6 +46,7 @@ set (core_HEADERS
     airportobject.h
     aliaslistreader.h
     atc.h
+    atctracker.h
     client.h
     clientdata.h
     clientlist.h
@@ -53,6 +56,7 @@ set (core_HEADERS
     firlistreader.h
     firobject.h
     flightplan.h
+    flighttracker.h
     geo.h
     lonlat.h
     metar.h
