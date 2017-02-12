@@ -34,19 +34,30 @@ int main(int argc, char** argv)
     qsrand(QTime::currentTime().msec());
     
     QApplication app(argc, argv);
-    QTranslator *tr;
+    QList<QTranslator*> translators;
 
-    auto loadTranslation = [&tr, &app](const QString& language) {
+    auto loadTranslation = [&translators](const QString& language) {
         qDebug() << "Switching language to" << language;
 
         QLocale locale(language);
         QLocale::setDefault(locale);
 
-        app.removeTranslator(tr);
+        std::for_each(translators.begin(), translators.end(),
+                      std::bind(&QCoreApplication::removeTranslator, std::placeholders::_1));
 
-        tr = new QTranslator(&app);
-        if (tr->load(locale, QStringLiteral("vatsinator"), "_", QStringLiteral(VATSINATOR_PREFIX "translations")))
-            app.installTranslator(tr);
+        static QList<QString> prefixes = {
+            QStringLiteral("qt"), QStringLiteral("qtbase"),
+            QStringLiteral("vatsinator")
+        };
+
+        for (const QString& prefix: qAsConst(prefixes)) {
+            QTranslator* tr = new QTranslator(qApp);
+            if (tr->load(locale, prefix, "_", QStringLiteral(VATSINATOR_PREFIX "translations"))) {
+                qDebug() << "Loaded translation:" << prefix << locale;
+                QCoreApplication::installTranslator(tr);
+                translators << tr;
+            }
+        }
     };
     
     Option* language = new Option("misc/language", "en", &app);
