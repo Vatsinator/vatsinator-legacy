@@ -24,11 +24,11 @@
 
 using namespace Vatsinator::Misc;
 
-const QPixmap NullTile = []() {
-    QPixmap px(256, 256);
-    px.fill(QColor(232, 232, 232));
+const QImage NullTile = []() {
+    QImage image(QSize(256, 256), QImage::Format_ARGB32_Premultiplied);
+    image.fill(QColor(232, 232, 232));
     
-    QPainter p(&px);
+    QPainter p(&image);
     QPen pen(QColor(226, 226, 226));
     p.setPen(pen);
     
@@ -38,7 +38,7 @@ const QPixmap NullTile = []() {
     for (int i = 8; i < 256; i += 16)
         p.drawLine(0, i, 256, i);
     
-    return px;
+    return image;
 }();
 
 /* Type of tiles: light_nolabels/dark_nolabels */
@@ -49,6 +49,8 @@ constexpr auto TileType = "light_nolabels";
  * TileRenderer is to run it on a separate thread.
  */
 static QThreadStorage<QCache<QString, QPixmap>> pixmapCache;
+
+static QCache<QString, QImage> tileCache; /**< Stores loaded tiles */
 
 
 Tile::Tile(quint32 x, quint32 y, quint32 zoom) :
@@ -79,10 +81,10 @@ QRectF Tile::coords() const
     return m_coords;
 }
 
-QPixmap Tile::pixmap() const
+QImage Tile::image() const
 {
-    if (pixmapCache.localData().contains(cacheKey()))
-        return *(pixmapCache.localData().object(cacheKey()));
+    if (tileCache.contains(cacheKey()))
+        return *(tileCache.object(cacheKey()));
     else
         return load();
 }
@@ -120,15 +122,15 @@ QString Tile::cachePath() const
         QString::number(y()));
 }
 
-QPixmap Tile::load() const
+QImage Tile::load() const
 {
     QString path = cachePath();
     
     if (FileCache::exists(path)) {
-        QPixmap* px = new QPixmap(FileCache::path(path));
-        if (!px->isNull()) {
-            pixmapCache.localData().insert(cacheKey(), px);
-            return *px;
+        QImage* img = new  QImage(FileCache::path(path));
+        if (!img->isNull()) {
+            tileCache.insert(cacheKey(), img);
+            return *img;
         }
     }
     

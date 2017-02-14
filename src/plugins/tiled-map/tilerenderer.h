@@ -40,25 +40,13 @@ signals:
     
 public:
     explicit TileRenderer(QObject* parent = nullptr);
-    
-public slots:
-    void updateViewport(QSize viewport);
-    void updateCenter(Vatsinator::Core::LonLat center);
-    void updateZoom(qreal zoom);
+
+    QImage render(const QSize& viewport, const Vatsinator::Core::LonLat& center, qreal zoom);
     
 private:
     quint32 zoomLevel(const Vatsinator::Gui::WorldTransform& transform);
-    void markDirty();
     
-private slots:
-    void render();
-    
-private:    
-    Vatsinator::Core::LonLat m_center;
-    QSize m_viewport;
-    qreal m_zoom;
-    QTimer* m_timer;
-    bool m_changed = false;
+private:
     TileManager* m_manager;
     
 }; /** @} */

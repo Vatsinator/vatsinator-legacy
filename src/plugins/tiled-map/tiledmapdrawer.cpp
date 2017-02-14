@@ -29,41 +29,20 @@ TiledMapDrawer::TiledMapDrawer(QObject* parent) :
     QObject(parent),
     m_tileRenderer(new TileRenderer) {}
 
-TiledMapDrawer::~TiledMapDrawer()
-{
-    QThread* t = m_tileRenderer->thread();
-    t->quit();
-    t->wait();
-    
-    delete t;
-}
+TiledMapDrawer::~TiledMapDrawer() {}
 
 void TiledMapDrawer::initialize(MapRenderer* renderer)
 {
     m_renderer = renderer;
-
-    QThread* t = new QThread;
-    m_tileRenderer->moveToThread(t);
-    
-    connect(m_tileRenderer, &TileRenderer::mapRendered, this, &TiledMapDrawer::updateMap);
-    connect(m_tileRenderer, &TileRenderer::mapRendered, renderer, &MapRenderer::updated);
-    connect(renderer, &MapRenderer::viewportChanged, m_tileRenderer, &TileRenderer::updateViewport);
-    connect(renderer, &MapRenderer::centerChanged, m_tileRenderer, &TileRenderer::updateCenter);
-    connect(renderer, &MapRenderer::zoomChanged, m_tileRenderer, &TileRenderer::updateZoom);
-    t->start();
-    
-    QMetaObject::invokeMethod(m_tileRenderer, "updateViewport", Q_ARG(QSize, renderer->viewport()));
-    QMetaObject::invokeMethod(m_tileRenderer, "updateCenter", Q_ARG(Vatsinator::Core::LonLat, renderer->center()));
-    QMetaObject::invokeMethod(m_tileRenderer, "updateZoom", Q_ARG(qreal, renderer->zoom()));
 }
 
 void TiledMapDrawer::draw(WorldPainter* painter)
 {
-    painter->drawPixmap(m_coords, m_map);
-}
+//    QElapsedTimer timer;
+//    timer.start();
 
-void TiledMapDrawer::updateMap(QRectF coords, QPixmap map)
-{
-    m_map = map;
-    m_coords = coords;
+    QImage world = m_tileRenderer->render(m_renderer->viewport(), m_renderer->center(), m_renderer->zoom());
+//    qDebug() << "Render 1 took" << timer.elapsed() << "milliseconds";
+
+    painter->drawImage(QPoint(0, 0), world);
 }

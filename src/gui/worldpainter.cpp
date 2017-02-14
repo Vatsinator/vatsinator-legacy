@@ -25,8 +25,18 @@ using namespace Vatsinator::Core;
 namespace Vatsinator { namespace Gui {
 
 WorldPainter::WorldPainter(const WorldTransform& transform, QPaintDevice* device) :
-        QPainter(device),
-        m_transform(transform) {}
+    QPainter(device),
+    m_transform(transform) {}
+
+void WorldPainter::drawImage(const QRectF& rectangle, const QImage& image)
+{
+    QPainter::drawImage(m_transform.map(rectangle), image);
+}
+
+void WorldPainter::drawImage(const QRectF& rectangle, const QImage& image, const QRect& source)
+{
+    QPainter::drawImage(m_transform.map(rectangle), image, source);
+}
 
 void WorldPainter::drawPixmap(const LonLat& center, const QPixmap& pixmap)
 {

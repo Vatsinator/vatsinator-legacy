@@ -37,29 +37,38 @@ namespace {
 
 TileRenderer::TileRenderer(QObject* parent) :
     QObject(parent),
-    m_timer(new QTimer(this)),
     m_manager(new TileManager(this))
 {
-    connect(m_timer, &QTimer::timeout, this, &TileRenderer::render);
-    m_timer->start(300);
 }
 
-void TileRenderer::updateViewport(QSize viewport)
+QImage TileRenderer::render(const QSize& viewport, const LonLat& center, qreal zoom)
 {
-    m_viewport = viewport;
-    markDirty();
-}
+    const qreal dpr = qApp->primaryScreen()->devicePixelRatio();
+    WorldTransform transform(viewport * dpr, center, zoom);
 
-void TileRenderer::updateCenter(LonLat center)
-{
-    m_center = center;
-    markDirty();
-}
+    QImage image(transform.viewport(), QImage::Format_ARGB32_Premultiplied);
+    image.fill(Qt::white);
 
-void TileRenderer::updateZoom(qreal zoom)
-{
-    m_zoom = zoom;
-    markDirty();
+    WorldPainter p(transform, &image);
+//    p.setRenderHint(QPainter::SmoothPixmapTransform);
+
+    QList<Tile> tiles;
+    quint32 level = zoomLevel(transform);
+    WorldViewport worldViewport(transform.worldViewport());
+    for (const QRectF& rect: qAsConst(worldViewport.rectangles()))
+        tiles.append(m_manager->tiles(rect, level));
+
+    for (const Tile& tile: qAsConst(tiles)) {
+        QRect source;
+        QImage img = m_manager->tileRendered(tile, &source);
+
+        if (!img.isNull())
+            p.drawImage(tile.coords(), img, source);
+    }
+
+    p.end();
+    image.setDevicePixelRatio(dpr);
+    return image;
 }
 
 quint32 TileRenderer::zoomLevel(const WorldTransform& transform)
@@ -78,44 +87,4 @@ quint32 TileRenderer::zoomLevel(const WorldTransform& transform)
 
     int zoom = qCeil(log2Impl(K * (qFastCos(qDegreesToRadians(p1.latitude())) / nmPerPix)));
     return qBound(1, zoom, 18);
-}
-
-void TileRenderer::markDirty()
-{
-    m_changed = true;
-}
-
-void TileRenderer::render()
-{
-    if (!m_changed)
-        return;
-
-    const qreal dpr = qApp->primaryScreen()->devicePixelRatio();
-    WorldTransform transform(m_viewport * dpr, m_center, m_zoom);
-
-    QPixmap px(transform.viewport());
-    px.fill(Qt::white);
-    WorldPainter p(transform, &px);
-    p.setRenderHint(QPainter::SmoothPixmapTransform);
-
-    quint32 zoom = zoomLevel(transform);
-    QList<Tile> tiles;
-    WorldViewport viewport(transform.worldViewport());
-    for (auto rect: viewport.rectangles())
-        tiles.append(m_manager->tiles(rect, zoom));
-
-    for (auto tile: tiles) {
-        QRect source;
-        QPixmap px = m_manager->pixmap(tile, &source);
-        
-        if (!px.isNull())
-            p.drawPixmap(tile.coords(), px, source);
-    }
-
-    p.end();
-
-    px.setDevicePixelRatio(dpr);
-    QRectF screen(transform.map(QPoint(0, 0)), transform.map(QPoint(transform.viewport().width(), transform.viewport().height())));
-    emit mapRendered(screen, px);
-    m_changed = false;
 }

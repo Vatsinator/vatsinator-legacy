@@ -63,7 +63,7 @@ public:
     /**
      * Gets the pixmap of the provided tile.
      */
-    QPixmap pixmap(const Tile& tile, QRect* source, int levelsLeft = 5);
+    QImage tileRendered(const Tile& tile, QRect* source, int levelsLeft = 5);
     
     /**
      * Calculate global coordinates for the given tile.

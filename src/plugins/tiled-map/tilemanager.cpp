@@ -90,29 +90,29 @@ Tile TileManager::tile(quint32 x, quint32 y, quint32 zoom)
     return tile;
 }
 
-QPixmap TileManager::pixmap(const Tile& tile, QRect* source, int levelsLeft)
+QImage TileManager::tileRendered(const Tile& tile, QRect* source, int levelsLeft)
 {
     Q_ASSERT(source);
-    
+
     if (tile.isCached() || levelsLeft == 0 || tile.zoom() <= 1) {
-        QPixmap px = tile.pixmap();
-        *source = px.rect();
-        return px;
+        const QImage image = tile.image();
+        *source = image.rect();
+        return image;
     } else {
         /**
          * Pixmap not yet fetched, find a parent one and return it.
          */
         Tile parentTile = this->tile(tile.x() / 2, tile.y() / 2, tile.zoom() - 1);
-        QPixmap px = this->pixmap(parentTile, source, levelsLeft - 1);
+        QImage image = this->tileRendered(parentTile, source, levelsLeft - 1);
         source->setWidth(source->width() / 2);
         if (tile.x() % 2 == 1)
             source->moveLeft(source->left() + source->width());
-        
+
         source->setHeight(source->height() / 2);
         if (tile.y() % 2 == 1)
             source->moveTop(source->top() + source->height());
-        
-        return px;
+
+        return image;
     }
 }
 

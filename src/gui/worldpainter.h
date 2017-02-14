@@ -41,6 +41,9 @@ public:
      */
     explicit WorldPainter(const WorldTransform& transform, QPaintDevice *device);
 
+    void drawImage(const QRectF& rectangle, const QImage& image);
+    void drawImage(const QRectF& rectangle, const QImage& image, const QRect& source);
+
     /**
      * Draws a pixmap at the given position.
      *
@@ -96,6 +99,8 @@ public:
      * Returns transform used by this painter.
      */
     const WorldTransform& transform() const { return m_transform; }
+
+    using QPainter::drawImage;
 
 private:
     WorldTransform m_transform;

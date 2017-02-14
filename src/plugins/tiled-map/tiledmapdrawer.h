@@ -63,15 +63,9 @@ public:
      */
     void draw(Vatsinator::Gui::WorldPainter* painter) override;
     
-private slots:
-    void updateMap(QRectF coords, QPixmap map);
-    
 private:
     TileRenderer* m_tileRenderer = nullptr;
     Vatsinator::Gui::MapRenderer* m_renderer;
-    
-    QPixmap m_map;
-    QRectF m_coords; /**< Area that is covered by rendered map, global coordinates */
     
 };
 
