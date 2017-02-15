@@ -70,8 +70,8 @@ QList<Tile> TileManager::tiles(QRectF rect, quint32 zoom)
     auto bottomRight = ::tileCoords(rect.bottomRight(), zoom);
 
     QList<Tile> tiles;
-    for (qint32 x = topLeft.first; x <= bottomRight.first; ++x) {
-        for (qint32 y = topLeft.second; y <= bottomRight.second; ++y) {
+    for (qint32 y = topLeft.second; y <= bottomRight.second; ++y) {
+        for (qint32 x = topLeft.first; x <= bottomRight.first; ++x) {
 //            if (y >= 0 && y < qPow(2, zoom))
                 tiles.append(tile(x, y, zoom));
         }

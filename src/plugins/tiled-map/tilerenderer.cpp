@@ -37,33 +37,66 @@ namespace {
 
 class TileRenderer::TileRenderJob : public QRunnable {
 public:
-    explicit TileRenderJob(TileManager* manager, const QList<Tile>& tiles, QImage* image) :
-        m_manager(manager), m_tiles(tiles), m_image(image) {}
+    explicit TileRenderJob(TileManager* manager, QList<Tile> tiles) :
+        m_manager(manager),
+        m_tiles(tiles),
+        m_rows(static_cast<int>(tiles.last().y() - tiles.first().y()) + 1),
+        m_columns(tiles.size() / m_rows),
+        m_image(256 * m_columns, 256 * m_rows, QImage::Format_ARGB32_Premultiplied) {}
 
     void run() override {
-        int xOffset = 0;
+        const int TileSize = 256;
+
+        /* how many tile rows is the job rendering */
+//        int rows = static_cast<int>(m_tiles.last().y() - m_tiles.first().y()) + 1;
+
+        /* how many tile columns */
+//        int columns = m_tiles.size() / rows;
+
+        /* the surface to render tiles onto */
+//        m_image = QImage(TileSize * columns, TileSize * rows, QImage::Format_ARGB32_Premultiplied);
+
+        quint32 lastY = m_tiles.first().y();
+
+        /* data offsets */
+        size_t xOffset = 0, yOffset = 0;
+
         for (const Tile& tile: qAsConst(m_tiles)) {
+            if (tile.y() > lastY) { // we are rendering a new row
+                yOffset += TileSize;
+                lastY = tile.y();
+                xOffset = 0;
+            }
+
             QRect source;
             QImage img = m_manager->tileRendered(tile, &source);
-            Q_ASSERT(img.format() == m_image->format());
+            Q_ASSERT(img.height() == TileSize);
+            Q_ASSERT(img.width() == TileSize);
+            Q_ASSERT(img.format() == m_image.format());
 
             if (!img.isNull()) {
-                int height = img.height();
-                for (int i = 0; i < height; ++i) {
+                for (int i = 0; i < img.height(); ++i) {
                     QRgb* origLine = reinterpret_cast<QRgb*>(img.scanLine(i));
-                    QRgb* destLine = reinterpret_cast<QRgb*>(m_image->scanLine(i));
-                    memcpy(destLine + xOffset, origLine, img.bytesPerLine());
+                    QRgb* destLine = reinterpret_cast<QRgb*>(m_image.scanLine(i + yOffset));
+                    memcpy(destLine + xOffset, origLine, static_cast<size_t>(img.bytesPerLine()));
                 }
 
-                xOffset += img.bytesPerLine();
+                xOffset += static_cast<size_t>(img.bytesPerLine()) / sizeof(QRgb);
             }
         }
+
+        m_coords = QRectF(m_tiles.first().coords().topLeft(), m_tiles.last().coords().bottomRight());
     }
+
+    const QImage& image() const { return m_image; }
+    const QRectF& coords() const { return m_coords; }
 
 private:
     TileManager* m_manager;
-    const QList<Tile>& m_tiles;
-    QImage* m_image;
+    QList<Tile> m_tiles;
+    int m_rows, m_columns;
+    QImage m_image;
+    QRectF m_coords;
 
 };
 
@@ -82,40 +115,58 @@ QImage TileRenderer::render(const QSize& viewport, const LonLat& center, qreal z
     QImage image(transform.viewport(), QImage::Format_ARGB32_Premultiplied);
     image.fill(Qt::white);
 
-//    WorldPainter p(transform, &image);
-//    p.setRenderHint(QPainter::SmoothPixmapTransform);
-
     QList<Tile> tiles;
     quint32 level = zoomLevel(transform);
     WorldViewport worldViewport(transform.worldViewport());
 
-    QElapsedTimer timer;
-    timer.start();
-
     for (const QRectF& rect: qAsConst(worldViewport.rectangles()))
         tiles.append(m_manager->tiles(rect, level));
 
-    QList<Tile> tilesPicked;
-    quint32 y = tiles.first().y() + 1;
-    for (const Tile& tile: qAsConst(tiles)) {
-        if (tile.y() == y)
-            tilesPicked.append(tile);
+    QList<TileRenderJob*> jobs;
+    int n = m_threadPool->maxThreadCount();
+    int rows = qAbs(static_cast<int>(tiles.first().y()) - static_cast<int>(tiles.last().y())) + 1;
+    quint32 y = tiles.first().y();
+
+    for (int i = 0; i < n; ++i) {
+        quint32 rowsToRender = static_cast<quint32>(qCeil(static_cast<qreal>(rows) / (n - i)));
+        rows -= rowsToRender;
+
+        if (rowsToRender == 0)
+            continue;
+
+        TileRenderJob* job = new TileRenderJob(m_manager, selectRows(tiles, y, y + rowsToRender));
+        job->setAutoDelete(false);
+        jobs.append(job);
+        m_threadPool->start(job);
+
+        y += rowsToRender;
     }
-
-    qDebug() << "Picking tiles:" << timer.elapsed() << "ms";
-    timer.restart();
-
-    TileRenderJob* job = new TileRenderJob(m_manager, tilesPicked, &image);
-    m_threadPool->start(job);
 
     m_threadPool->waitForDone();
 
-//    p.end();
+    WorldPainter p(transform, &image);
+    for (TileRenderJob* job: jobs) {
+        p.drawImage(job->coords(), job->image());
+//        delete job;
+    }
+    p.end();
+
+    for (TileRenderJob* job: jobs)
+        delete job;
+
     image.setDevicePixelRatio(dpr);
-
-    qDebug() << "Drawing tiles:" << timer.elapsed() << "ms";
-
     return image;
+}
+
+QList<Tile> TileRenderer::selectRows(const QList<Tile>& tiles, quint32 from, quint32 to)
+{
+    QList<Tile> tilesPicked;
+    for (const Tile& tile: qAsConst(tiles)) {
+        if (tile.y() >= from && tile.y() < to)
+            tilesPicked.append(tile);
+    }
+
+    return tilesPicked;
 }
 
 quint32 TileRenderer::zoomLevel(const WorldTransform& transform)

@@ -44,13 +44,8 @@ const QImage NullTile = []() {
 /* Type of tiles: light_nolabels/dark_nolabels */
 constexpr auto TileType = "light_nolabels";
 
-
-/* We cannot use the QPixmapCache here, as the whole purpose of using
- * TileRenderer is to run it on a separate thread.
- */
-static QThreadStorage<QCache<QString, QPixmap>> pixmapCache;
-
-static QCache<QString, QImage> tileCache; /**< Stores loaded tiles */
+static QHash<QString, QImage> tileCache; /**< Stores loaded tiles */
+static QReadWriteLock tileCacheLock;
 
 
 Tile::Tile(quint32 x, quint32 y, quint32 zoom) :
@@ -83,8 +78,9 @@ QRectF Tile::coords() const
 
 QImage Tile::image() const
 {
+    QReadLocker(std::addressof(tileCacheLock));
     if (tileCache.contains(cacheKey()))
-        return *(tileCache.object(cacheKey()));
+        return tileCache.value(cacheKey());
     else
         return load();
 }
@@ -127,10 +123,12 @@ QImage Tile::load() const
     QString path = cachePath();
     
     if (FileCache::exists(path)) {
-        QImage* img = new QImage(QImage(FileCache::path(path)).convertToFormat(QImage::Format_ARGB32_Premultiplied));
-        if (!img->isNull()) {
+        QImage img = QImage(FileCache::path(path)).convertToFormat(QImage::Format_ARGB32_Premultiplied);
+        if (!img.isNull()) {
+            tileCacheLock.lockForWrite();
             tileCache.insert(cacheKey(), img);
-            return *img;
+            tileCacheLock.unlock();
+            return img;
         }
     }
     

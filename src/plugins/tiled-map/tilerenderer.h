@@ -28,6 +28,7 @@
 namespace Vatsinator { namespace Gui { class WorldTransform; }}
 class TileManager;
 class QThreadPool;
+class Tile;
 
 /**
  * \ingroup Tiled-mad-drawer
@@ -46,6 +47,7 @@ public:
     QImage render(const QSize& viewport, const Vatsinator::Core::LonLat& center, qreal zoom);
     
 private:
+    QList<Tile> selectRows(const QList<Tile>& tiles, quint32 from, quint32 to);
     quint32 zoomLevel(const Vatsinator::Gui::WorldTransform& transform);
     
 private:
