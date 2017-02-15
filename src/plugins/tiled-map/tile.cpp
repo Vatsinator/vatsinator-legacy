@@ -127,7 +127,7 @@ QImage Tile::load() const
     QString path = cachePath();
     
     if (FileCache::exists(path)) {
-        QImage* img = new  QImage(FileCache::path(path));
+        QImage* img = new QImage(QImage(FileCache::path(path)).convertToFormat(QImage::Format_ARGB32_Premultiplied));
         if (!img->isNull()) {
             tileCache.insert(cacheKey(), img);
             return *img;

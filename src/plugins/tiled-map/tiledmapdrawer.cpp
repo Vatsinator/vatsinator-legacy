@@ -38,11 +38,11 @@ void TiledMapDrawer::initialize(MapRenderer* renderer)
 
 void TiledMapDrawer::draw(WorldPainter* painter)
 {
-//    QElapsedTimer timer;
-//    timer.start();
+    QElapsedTimer timer;
+    timer.start();
 
     QImage world = m_tileRenderer->render(m_renderer->viewport(), m_renderer->center(), m_renderer->zoom());
-//    qDebug() << "Render 1 took" << timer.elapsed() << "milliseconds";
+    qDebug() << "Render:" << timer.elapsed() << "ms";
 
     painter->drawImage(QPoint(0, 0), world);
 }

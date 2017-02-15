@@ -35,9 +35,42 @@ namespace {
     
 }
 
+class TileRenderer::TileRenderJob : public QRunnable {
+public:
+    explicit TileRenderJob(TileManager* manager, const QList<Tile>& tiles, QImage* image) :
+        m_manager(manager), m_tiles(tiles), m_image(image) {}
+
+    void run() override {
+        int xOffset = 0;
+        for (const Tile& tile: qAsConst(m_tiles)) {
+            QRect source;
+            QImage img = m_manager->tileRendered(tile, &source);
+            Q_ASSERT(img.format() == m_image->format());
+
+            if (!img.isNull()) {
+                int height = img.height();
+                for (int i = 0; i < height; ++i) {
+                    QRgb* origLine = reinterpret_cast<QRgb*>(img.scanLine(i));
+                    QRgb* destLine = reinterpret_cast<QRgb*>(m_image->scanLine(i));
+                    memcpy(destLine + xOffset, origLine, img.bytesPerLine());
+                }
+
+                xOffset += img.bytesPerLine();
+            }
+        }
+    }
+
+private:
+    TileManager* m_manager;
+    const QList<Tile>& m_tiles;
+    QImage* m_image;
+
+};
+
 TileRenderer::TileRenderer(QObject* parent) :
     QObject(parent),
-    m_manager(new TileManager(this))
+    m_manager(new TileManager(this)),
+    m_threadPool(new QThreadPool(this))
 {
 }
 
@@ -49,25 +82,39 @@ QImage TileRenderer::render(const QSize& viewport, const LonLat& center, qreal z
     QImage image(transform.viewport(), QImage::Format_ARGB32_Premultiplied);
     image.fill(Qt::white);
 
-    WorldPainter p(transform, &image);
+//    WorldPainter p(transform, &image);
 //    p.setRenderHint(QPainter::SmoothPixmapTransform);
 
     QList<Tile> tiles;
     quint32 level = zoomLevel(transform);
     WorldViewport worldViewport(transform.worldViewport());
+
+    QElapsedTimer timer;
+    timer.start();
+
     for (const QRectF& rect: qAsConst(worldViewport.rectangles()))
         tiles.append(m_manager->tiles(rect, level));
 
+    QList<Tile> tilesPicked;
+    quint32 y = tiles.first().y() + 1;
     for (const Tile& tile: qAsConst(tiles)) {
-        QRect source;
-        QImage img = m_manager->tileRendered(tile, &source);
-
-        if (!img.isNull())
-            p.drawImage(tile.coords(), img, source);
+        if (tile.y() == y)
+            tilesPicked.append(tile);
     }
 
-    p.end();
+    qDebug() << "Picking tiles:" << timer.elapsed() << "ms";
+    timer.restart();
+
+    TileRenderJob* job = new TileRenderJob(m_manager, tilesPicked, &image);
+    m_threadPool->start(job);
+
+    m_threadPool->waitForDone();
+
+//    p.end();
     image.setDevicePixelRatio(dpr);
+
+    qDebug() << "Drawing tiles:" << timer.elapsed() << "ms";
+
     return image;
 }
 

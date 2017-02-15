@@ -27,6 +27,7 @@
 
 namespace Vatsinator { namespace Gui { class WorldTransform; }}
 class TileManager;
+class QThreadPool;
 
 /**
  * \ingroup Tiled-mad-drawer
@@ -34,6 +35,7 @@ class TileManager;
  */
 class TileRenderer : public QObject {
     Q_OBJECT
+    class TileRenderJob;
     
 signals:
     void mapRendered(QRectF coords, QPixmap map);
@@ -48,6 +50,7 @@ private:
     
 private:
     TileManager* m_manager;
+    QThreadPool* m_threadPool;
     
 }; /** @} */
 
