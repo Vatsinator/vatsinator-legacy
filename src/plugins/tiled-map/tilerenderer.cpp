@@ -39,23 +39,21 @@ class TileRenderer::TileRenderJob : public QRunnable {
 public:
     explicit TileRenderJob(TileManager* manager, QList<Tile> tiles) :
         m_manager(manager),
-        m_tiles(tiles),
-        m_rows(static_cast<int>(tiles.last().y() - tiles.first().y()) + 1),
-        m_columns(tiles.size() / m_rows),
-        m_image(256 * m_columns, 256 * m_rows, QImage::Format_ARGB32_Premultiplied) {}
+        m_tiles(tiles) {}
 
     void run() override {
         const int TileSize = 256;
 
         /* how many tile rows is the job rendering */
-//        int rows = static_cast<int>(m_tiles.last().y() - m_tiles.first().y()) + 1;
+        int rows = static_cast<int>(m_tiles.last().y() - m_tiles.first().y()) + 1;
 
         /* how many tile columns */
-//        int columns = m_tiles.size() / rows;
+        int columns = m_tiles.size() / rows;
 
         /* the surface to render tiles onto */
-//        m_image = QImage(TileSize * columns, TileSize * rows, QImage::Format_ARGB32_Premultiplied);
+        QImage image(TileSize * columns, TileSize * rows, QImage::Format_ARGB32_Premultiplied);
 
+        /* helps tracking new rows */
         quint32 lastY = m_tiles.first().y();
 
         /* data offsets */
@@ -69,22 +67,28 @@ public:
             }
 
             QRect source;
-            QImage img = m_manager->tileRendered(tile, &source);
-            Q_ASSERT(img.height() == TileSize);
-            Q_ASSERT(img.width() == TileSize);
-            Q_ASSERT(img.format() == m_image.format());
+            QImage tileImg = m_manager->tileRendered(tile, &source);
+            Q_ASSERT(tileImg.height() == TileSize);
+            Q_ASSERT(tileImg.width() == TileSize);
+            Q_ASSERT(tileImg.format() == image.format());
 
-            if (!img.isNull()) {
-                for (int i = 0; i < img.height(); ++i) {
-                    QRgb* origLine = reinterpret_cast<QRgb*>(img.scanLine(i));
-                    QRgb* destLine = reinterpret_cast<QRgb*>(m_image.scanLine(i + yOffset));
-                    memcpy(destLine + xOffset, origLine, static_cast<size_t>(img.bytesPerLine()));
+            if (!tileImg.isNull()) {
+                if (source != tileImg.rect()) {
+                    QImage tmp = tileImg.copy(source);
+                    tileImg = tmp.scaled(TileSize, TileSize);
                 }
 
-                xOffset += static_cast<size_t>(img.bytesPerLine()) / sizeof(QRgb);
+                for (int i = 0; i < tileImg.height(); ++i) {
+                    QRgb* origLine = reinterpret_cast<QRgb*>(tileImg.scanLine(i));
+                    QRgb* destLine = reinterpret_cast<QRgb*>(image.scanLine(i + yOffset));
+                    memcpy(destLine + xOffset, origLine, static_cast<size_t>(tileImg.bytesPerLine()));
+                }
+
+                xOffset += static_cast<size_t>(tileImg.bytesPerLine()) / sizeof(QRgb);
             }
         }
 
+        m_image = image;
         m_coords = QRectF(m_tiles.first().coords().topLeft(), m_tiles.last().coords().bottomRight());
     }
 
@@ -94,7 +98,6 @@ public:
 private:
     TileManager* m_manager;
     QList<Tile> m_tiles;
-    int m_rows, m_columns;
     QImage m_image;
     QRectF m_coords;
 
@@ -147,12 +150,9 @@ QImage TileRenderer::render(const QSize& viewport, const LonLat& center, qreal z
     WorldPainter p(transform, &image);
     for (TileRenderJob* job: jobs) {
         p.drawImage(job->coords(), job->image());
-//        delete job;
+        delete job;
     }
     p.end();
-
-    for (TileRenderJob* job: jobs)
-        delete job;
 
     image.setDevicePixelRatio(dpr);
     return image;
