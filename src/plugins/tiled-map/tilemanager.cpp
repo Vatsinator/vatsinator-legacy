@@ -90,7 +90,20 @@ Tile TileManager::tile(quint32 x, quint32 y, quint32 zoom)
     return tile;
 }
 
-QImage TileManager::tileRendered(const Tile& tile, QRect* source, int levelsLeft)
+QImage TileManager::tileRendered(const Tile& tile)
+{
+    QRect source;
+    QImage img = tileRenderedImpl(tile, &source);
+
+    if (source != img.rect()) {
+        QImage tmp = img.copy(source);
+        img = tmp.scaled(Tile::tileWidth(), Tile::tileHeight());
+    }
+
+    return img;
+}
+
+QImage TileManager::tileRenderedImpl(const Tile& tile, QRect* source, int levelsLeft)
 {
     Q_ASSERT(source);
 
@@ -103,7 +116,7 @@ QImage TileManager::tileRendered(const Tile& tile, QRect* source, int levelsLeft
          * Pixmap not yet fetched, find a parent one and return it.
          */
         Tile parentTile = this->tile(tile.x() / 2, tile.y() / 2, tile.zoom() - 1);
-        QImage image = this->tileRendered(parentTile, source, levelsLeft - 1);
+        QImage image = this->tileRenderedImpl(parentTile, source, levelsLeft - 1);
         source->setWidth(source->width() / 2);
         if (tile.x() % 2 == 1)
             source->moveLeft(source->left() + source->width());

@@ -41,7 +41,14 @@ public:
      */
     explicit WorldPainter(const WorldTransform& transform, QPaintDevice *device);
 
+    /**
+     * Draws the given \c image into the given \c rectangle.
+     */
     void drawImage(const QRectF& rectangle, const QImage& image);
+
+    /**
+     * Draws the \c source portion of the given \c image into the given \c rectangle.
+     */
     void drawImage(const QRectF& rectangle, const QImage& image, const QRect& source);
 
     /**

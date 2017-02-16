@@ -66,26 +66,18 @@ public:
                 xOffset = 0;
             }
 
-            QRect source;
-            QImage tileImg = m_manager->tileRendered(tile, &source);
+            QImage tileImg = m_manager->tileRendered(tile);
             Q_ASSERT(tileImg.height() == TileSize);
             Q_ASSERT(tileImg.width() == TileSize);
             Q_ASSERT(tileImg.format() == image.format());
 
-            if (!tileImg.isNull()) {
-                if (source != tileImg.rect()) {
-                    QImage tmp = tileImg.copy(source);
-                    tileImg = tmp.scaled(TileSize, TileSize);
-                }
-
-                for (int i = 0; i < tileImg.height(); ++i) {
-                    QRgb* origLine = reinterpret_cast<QRgb*>(tileImg.scanLine(i));
-                    QRgb* destLine = reinterpret_cast<QRgb*>(image.scanLine(i + yOffset));
-                    memcpy(destLine + xOffset, origLine, static_cast<size_t>(tileImg.bytesPerLine()));
-                }
-
-                xOffset += static_cast<size_t>(tileImg.bytesPerLine()) / sizeof(QRgb);
+            for (int i = 0; i < tileImg.height(); ++i) {
+                QRgb* origLine = reinterpret_cast<QRgb*>(tileImg.scanLine(i));
+                QRgb* destLine = reinterpret_cast<QRgb*>(image.scanLine(i + yOffset));
+                memcpy(destLine + xOffset, origLine, static_cast<size_t>(tileImg.bytesPerLine()));
             }
+
+            xOffset += static_cast<size_t>(tileImg.bytesPerLine()) / sizeof(QRgb);
         }
 
         m_image = image;
@@ -106,9 +98,7 @@ private:
 TileRenderer::TileRenderer(QObject* parent) :
     QObject(parent),
     m_manager(new TileManager(this)),
-    m_threadPool(new QThreadPool(this))
-{
-}
+    m_threadPool(new QThreadPool(this)) {}
 
 QImage TileRenderer::render(const QSize& viewport, const LonLat& center, qreal zoom)
 {

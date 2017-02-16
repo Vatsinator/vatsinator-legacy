@@ -32,7 +32,6 @@ class TileManager;
  * @{
  */
 class Tile {
-    
     friend class TileManager;
     
 public:
@@ -65,6 +64,9 @@ public:
     quint32 zoom() const { return m_zoom; }
     
     const QString& cacheKey() const { return m_cacheKey; }
+
+    static constexpr int tileWidth() { return 256; }
+    static constexpr int tileHeight() { return 256; }
     
 private:
     QString cachePath() const;
