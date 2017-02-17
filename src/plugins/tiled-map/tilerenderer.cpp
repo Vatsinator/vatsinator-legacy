@@ -140,6 +140,7 @@ QImage TileRenderer::render(const QSize& viewport, const LonLat& center, qreal z
     WorldPainter p(transform, &image);
     for (TileRenderJob* job: jobs) {
         p.drawImage(job->coords(), job->image());
+//        p.drawRect(job->coords());
         delete job;
     }
     p.end();

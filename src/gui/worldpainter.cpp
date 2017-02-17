@@ -75,6 +75,11 @@ void WorldPainter::drawPolyline(const QList<LonLat>& coords)
     QPainter::drawPolyline(points.constData(), points.count());
 }
 
+void WorldPainter::drawRect(const QRectF& rect)
+{
+    QPainter::drawRect(m_transform.map(rect));
+}
+
 void WorldPainter::drawLine(const LonLat& p1, const LonLat& p2)
 {
     QPoint m1 = m_transform.map(p1);

@@ -93,6 +93,11 @@ public:
     void drawPolyline(const QList<Core::LonLat>& coords);
 
     /**
+     *
+     */
+    void drawRect(const QRectF &rect);
+
+    /**
      * Draws a line from \c p1 to \c p2.
      */
     void drawLine(const Core::LonLat& p1, const Core::LonLat& p2);
