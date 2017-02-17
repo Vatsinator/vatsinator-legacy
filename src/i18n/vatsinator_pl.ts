@@ -671,7 +671,7 @@
         <location filename="../widgets/airportdetailswindow.cpp" line="99"/>
         <location filename="../widgets/airportdetailswindow.cpp" line="119"/>
         <source>%n foot(s)</source>
-        <translation><numerusform>%n stopa</numerusform><numerusform>%n stopy</numerusform><numerusform>%n stóp</numerusform></translation>
+        <translation><numerusform>%n stopa</numerusform><numerusform>%n stopy</numerusform><numerusform>%n stóp</numerusform><numerusform>%n stóp</numerusform></translation>
     </message>
 </context>
 <context>
@@ -731,22 +731,22 @@
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="102"/>
         <source>%n client(s)</source>
-        <translation><numerusform>%n klient</numerusform><numerusform>%n klientów</numerusform><numerusform>%n klientów</numerusform></translation>
+        <translation><numerusform>%n klient</numerusform><numerusform>%n klientów</numerusform><numerusform>%n klientów</numerusform><numerusform>%n klientów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="103"/>
         <source>%n pilot(s)</source>
-        <translation><numerusform>%n pilot</numerusform><numerusform>%n pilotów</numerusform><numerusform>%n pilotów</numerusform></translation>
+        <translation><numerusform>%n pilot</numerusform><numerusform>%n pilotów</numerusform><numerusform>%n pilotów</numerusform><numerusform>%n pilotów</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="104"/>
         <source>%n ATC(s)</source>
-        <translation><numerusform>%n ATC</numerusform><numerusform>%n ATC</numerusform><numerusform>%n ATC</numerusform></translation>
+        <translation><numerusform>%n ATC</numerusform><numerusform>%n ATC</numerusform><numerusform>%n ATC</numerusform><numerusform>%n ATC</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="105"/>
         <source>%n observer(s)</source>
-        <translation><numerusform>%n obserwator</numerusform><numerusform>%n obserwatorów</numerusform><numerusform>%n obserwatorów</numerusform></translation>
+        <translation><numerusform>%n obserwator</numerusform><numerusform>%n obserwatorów</numerusform><numerusform>%n obserwatorów</numerusform><numerusform>%n obserwatorów</numerusform></translation>
     </message>
 </context>
 <context>
