@@ -42,8 +42,6 @@ public:
         m_tiles(tiles) {}
 
     void run() override {
-        const int TileSize = 256;
-
         /* how many tile rows is the job rendering */
         int rows = static_cast<int>(m_tiles.last().y() - m_tiles.first().y()) + 1;
 
@@ -51,7 +49,7 @@ public:
         int columns = m_tiles.size() / rows;
 
         /* the surface to render tiles onto */
-        QImage image(TileSize * columns, TileSize * rows, QImage::Format_ARGB32_Premultiplied);
+        QImage image(Tile::tileWidth() * columns, Tile::tileHeight() * rows, QImage::Format_ARGB32_Premultiplied);
 
         /* helps tracking new rows */
         quint32 lastY = m_tiles.first().y();
@@ -61,14 +59,14 @@ public:
 
         for (const Tile& tile: qAsConst(m_tiles)) {
             if (tile.y() > lastY) { // we are rendering a new row
-                yOffset += TileSize;
+                yOffset += Tile::tileHeight();
                 lastY = tile.y();
                 xOffset = 0;
             }
 
             QImage tileImg = m_manager->tileRendered(tile);
-            Q_ASSERT(tileImg.height() == TileSize);
-            Q_ASSERT(tileImg.width() == TileSize);
+            Q_ASSERT(tileImg.height() == Tile::tileHeight());
+            Q_ASSERT(tileImg.width() == Tile::tileWidth());
             Q_ASSERT(tileImg.format() == image.format());
 
             for (int i = 0; i < tileImg.height(); ++i) {
