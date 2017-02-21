@@ -51,18 +51,14 @@ public:
         /* the surface to render tiles onto */
         QImage image(Tile::tileWidth() * columns, Tile::tileHeight() * rows, QImage::Format_ARGB32_Premultiplied);
 
-        /* helps tracking new rows */
-        quint32 lastY = m_tiles.first().y();
-
-        /* data offsets */
-        size_t xOffset = 0, yOffset = 0;
+        /* helps tracking offset */
+        quint32 firstY = m_tiles.first().y();
+        quint32 firstX = m_tiles.first().x();
+//        quint32 maxX = std::max(m_tiles.first(), m_tiles.last(), [](auto a, auto b) { return a.x() < b.x(); }).x();
 
         for (const Tile& tile: qAsConst(m_tiles)) {
-            if (tile.y() > lastY) { // we are rendering a new row
-                yOffset += Tile::tileHeight();
-                lastY = tile.y();
-                xOffset = 0;
-            }
+            int yOffset = static_cast<int>(tile.y() - firstY) * Tile::tileHeight();
+            int xOffset = static_cast<int>(tile.x() - firstX) * Tile::tileWidth();
 
             QImage tileImg = m_manager->tileRendered(tile);
             Q_ASSERT(tileImg.height() == Tile::tileHeight());
@@ -74,8 +70,6 @@ public:
                 QRgb* destLine = reinterpret_cast<QRgb*>(image.scanLine(i + yOffset));
                 memcpy(destLine + xOffset, origLine, static_cast<size_t>(tileImg.bytesPerLine()));
             }
-
-            xOffset += static_cast<size_t>(tileImg.bytesPerLine()) / sizeof(QRgb);
         }
 
         m_image = image;
