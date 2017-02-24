@@ -16,7 +16,7 @@ set (vatsinator_SRCS
     
     resources/icons.qrc
 
-    $<$<BOOL:${APPLE}>:cocoautils.mm>
+    $<$<PLATFORM_ID:Darwin>:cocoautils.mm>
 )
 
 set (vatsinator_UIS
@@ -37,8 +37,8 @@ add_executable (vatsinator MACOSX_BUNDLE WIN32 ${vatsinator_SRCS} ${vatsinator_U
 target_link_libraries (vatsinator
     vtrwidgets
     Qt5::Widgets
-    $<$<BOOL:${APPLE}>:Qt5::MacExtras>
-    $<$<BOOL:${APPLE}>:${COCOA_LIBRARY}>
+    $<$<PLATFORM_ID:Darwin>:Qt5::MacExtras>
+    $<$<PLATFORM_ID:Darwin>:${COCOA_LIBRARY}>
 )
 
 if (APPLE)
