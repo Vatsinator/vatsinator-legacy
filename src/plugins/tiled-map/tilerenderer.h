@@ -27,6 +27,8 @@
 
 namespace Vatsinator { namespace Gui { class WorldTransform; }}
 class TileManager;
+class QThreadPool;
+class Tile;
 
 /**
  * \ingroup Tiled-mad-drawer
@@ -34,32 +36,23 @@ class TileManager;
  */
 class TileRenderer : public QObject {
     Q_OBJECT
+    class TileRenderJob;
     
 signals:
     void mapRendered(QRectF coords, QPixmap map);
     
 public:
     explicit TileRenderer(QObject* parent = nullptr);
-    
-public slots:
-    void updateViewport(QSize viewport);
-    void updateCenter(Vatsinator::Core::LonLat center);
-    void updateZoom(qreal zoom);
+
+    QImage render(const QSize& viewport, const Vatsinator::Core::LonLat& center, qreal zoom);
     
 private:
+    QList<Tile> selectRows(const QList<Tile>& tiles, quint32 from, quint32 to);
     quint32 zoomLevel(const Vatsinator::Gui::WorldTransform& transform);
-    void markDirty();
     
-private slots:
-    void render();
-    
-private:    
-    Vatsinator::Core::LonLat m_center;
-    QSize m_viewport;
-    qreal m_zoom;
-    QTimer* m_timer;
-    bool m_changed = false;
+private:
     TileManager* m_manager;
+    QThreadPool* m_threadPool;
     
 }; /** @} */
 

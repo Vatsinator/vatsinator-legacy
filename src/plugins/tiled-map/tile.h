@@ -32,7 +32,6 @@ class TileManager;
  * @{
  */
 class Tile {
-    
     friend class TileManager;
     
 public:
@@ -44,11 +43,11 @@ public:
      * Gets the tile's rectangle global coords.
      */
     QRectF coords() const;
-    
+
     /**
-     * Gets the tile's pixmap.
+     * Gets the tile's image.
      */
-    QPixmap pixmap() const;
+    QImage image() const;
     
     /**
      * Returns \c true if the tile is already downloaded.
@@ -65,10 +64,13 @@ public:
     quint32 zoom() const { return m_zoom; }
     
     const QString& cacheKey() const { return m_cacheKey; }
+
+    static constexpr int tileWidth() { return 256; }
+    static constexpr int tileHeight() { return 256; }
     
 private:
     QString cachePath() const;
-    QPixmap load() const;
+    QImage load() const;
     
     quint32 m_x = 0;
     quint32 m_y = 0;
