@@ -1,4 +1,4 @@
-find_package (Qt5Core 5.6 REQUIRED)
+find_package (Qt5Core 5.7 REQUIRED)
 find_package (Qt5Network REQUIRED)
 
 set (core_SOURCES
@@ -87,9 +87,9 @@ target_link_libraries (vtrcore Qt5::Core Qt5::Network)
 set_target_properties (vtrcore PROPERTIES CXX_VISIBILITY_PRESET hidden)
 install (TARGETS vtrcore
     EXPORT vtrcore
-    RUNTIME DESTINATION bin CONFIGURATIONS Debug Release
-    LIBRARY DESTINATION lib/vatsinator CONFIGURATIONS Debug
-    ARCHIVE DESTINATION lib CONFIGURATIONS Debug
+    RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}
+    LIBRARY DESTINATION ${vatsinator_LIBRARY_TARGET_DIR}
+    ARCHIVE DESTINATION ${vatsinator_ARCHIVE_TARGET_DIR} CONFIGURATIONS Debug
 )
 
 add_subdirectory (resources)

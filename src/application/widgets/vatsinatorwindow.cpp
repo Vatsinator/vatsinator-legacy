@@ -35,6 +35,10 @@
 #include <widgets/flightdetailswindow.h>
 #include <QtWidgets>
 
+#ifdef Q_OS_MAC
+# include "cocoautils.h"
+#endif
+
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Gui;
 using namespace Vatsinator::Widgets;
@@ -51,6 +55,14 @@ VatsinatorWindow::VatsinatorWindow() :
     m_server(new ServerTracker(this))
 {
     ui->setupUi(this);
+
+#ifdef Q_OS_MAC
+    /* On Mac set main manu name to "Menu" in order not to have two
+       "Vatsinators" on the menubar. */
+    ui->menuVatsinator->setTitle(tr("&Menu"));
+
+    enableTransparentTitleBar(reinterpret_cast<NSView*>(window()->winId()));
+#endif
     
     connect(ui->map, &MapWidget::airportDetailsRequested, this, &VatsinatorWindow::showAirportDetails);
     connect(ui->map, &MapWidget::flightDetailsRequested, this, &VatsinatorWindow::showFlightDetails);

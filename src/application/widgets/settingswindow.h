@@ -40,6 +40,10 @@ protected:
 
 private:
     void fillLanguages();
+
+#ifdef Q_OS_MACOS
+    void macosFixup();
+#endif
     
 private slots:
     void handleButton(QAbstractButton* button);

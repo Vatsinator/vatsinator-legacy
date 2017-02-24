@@ -111,7 +111,7 @@ QHash<int, QByteArray> FlightListModel::roleNames() const
 }
 
 template<typename Pred>
-static FlightListModel* fromClientList(const ClientList* clients, QObject* parent, Pred pred)
+FlightListModel* fromClientList(const ClientList* clients, QObject* parent, Pred pred)
 {
     FlightListModel* m = new FlightListModel(parent);
     auto adder = [m, pred](const Client* client) {

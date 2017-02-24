@@ -42,12 +42,12 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuVatsinator">
     <property name="title">
-     <string>&amp;Vatsinator</string>
+     <string notr="true">&amp;Vatsinator</string>
     </property>
     <addaction name="actionMetars"/>
     <addaction name="actionClients"/>
@@ -71,10 +71,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionRefresh">
-   <property name="icon">
-    <iconset theme="view-refresh">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
    <property name="text">
     <string>&amp;Refresh</string>
    </property>
@@ -83,10 +79,6 @@
    </property>
   </action>
   <action name="actionQuit">
-   <property name="icon">
-    <iconset theme="application-exit">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
