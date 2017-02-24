@@ -15,9 +15,11 @@ set (vatsinator_SRCS
     vatsinatorwindow.cpp
     
     resources/icons.qrc
-
-    $<$<PLATFORM_ID:Darwin>:cocoautils.mm>
 )
+
+if (APPLE)
+    list (APPEND vatsinator_SRCS cocoautils.mm)
+endif ()
 
 set (vatsinator_UIS
     settingswindow.ui
