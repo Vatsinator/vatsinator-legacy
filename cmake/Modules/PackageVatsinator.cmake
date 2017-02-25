@@ -21,7 +21,7 @@ if (WIN32)
     set (CPACK_NSIS_MUI_FINISHPAGE_RUN "vatsinator.exe")
     set (CPACK_NSIS_MENU_LINKS "http://vatsinator.eu.org/" "Vatsinator Homepage")
     set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-        CreateShortCut \\\"$DESKTOP\\\\Vatsinator.lnk\\\" \\\"$INSTDIR\\\\bin\\\\vatsinator.exe\\\"
+        CreateShortCut \\\"$DESKTOP\\\\Vatsinator.lnk\\\" \\\"$INSTDIR\\\\vatsinator.exe\\\"
     ")
     set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
         Delete \\\"$DESKTOP\\\\Vatsinator.lnk\\\"
