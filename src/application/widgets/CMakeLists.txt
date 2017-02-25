@@ -77,8 +77,6 @@ if (APPLE OR WIN32)
     get_platform_qpa_plugin (QT_QPA_PLUGIN)
 
     if (WIN32)
-        include (GetPrerequisites)
-
         # find OpenSSL libraries to deploy
         find_path (LIBEAY_LOCATION
             NAMES libeay32.dll
@@ -86,9 +84,6 @@ if (APPLE OR WIN32)
             PATH_SUFFIXES bin)
         if (LIBEAY_LOCATION)
             list (APPEND vatsinator_3RDPARTY_LIBS ${LIBEAY_LOCATION}/libeay32.dll)
-
-            get_prerequisites (${LIBEAY_LOCATION}/libeay32.dll libeay_preqs 1 1 ${CMAKE_CURRENT_BINARY_DIR} ${LIBEAY_LOCATION})
-            message ("PREQS ${libeay_preqs}")
         endif ()
         
         find_path (SSLEAY_LOCATION
@@ -99,7 +94,7 @@ if (APPLE OR WIN32)
             list (APPEND vatsinator_3RDPARTY_LIBS ${SSLEAY_LOCATION}/ssleay32.dll)
         endif ()
 
-        message ("${vatsinator_3RDPARTY_LIBS}")
+        install (FILES ${vatsinator_3RDPARTY_LIBS} DESTINATION ${vatsinator_BINARY_TARGET_DIR})
 
         cmake_policy (PUSH)
         cmake_policy (SET CMP0026 OLD)
