@@ -54,17 +54,8 @@ void PluginFinder::locatePlugins()
 #if defined(Q_OS_MACOS)
     // relative to the executable in the bundle
     locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../PlugIns"));
-#endif
-
-    // debug builds
-#ifndef QT_NO_DEBUG
-# if defined(Q_CC_MSVC)
-    locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../plugins/Debug"));
-# endif
-
-# if defined(Q_OS_MACOS)
+    // build tree
     locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../../../plugins"));
-# endif
 #endif
     
 #ifdef Q_OS_ANDROID

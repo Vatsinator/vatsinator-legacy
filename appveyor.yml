@@ -13,7 +13,7 @@ build:
 # scripts to run before build
 before_build:
     - echo Running cmake...
-    - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=%QTCMAKEPATH% -DLIBEAY_LOCATION=%OPENSSLPATH%\libeay32.dll -DSSLEAY_LOCATION=%OPENSSLPATH%\ssleay32.dll
+    - cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH=%QTCMAKEPATH%
 
 after_build:
     - cmake --build . --target package --config %configuration%

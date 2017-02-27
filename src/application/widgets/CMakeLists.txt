@@ -1,4 +1,4 @@
-find_package (Qt5 COMPONENTS Core Network Gui Widgets)
+find_package (Qt5 REQUIRED Core Network Gui Widgets)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 if (APPLE)
@@ -78,15 +78,23 @@ if (APPLE OR WIN32)
 
     if (WIN32)
         # find OpenSSL libraries to deploy
-        find_library (LIBEAY_LOCATION NAMES libeay32)
+        find_path (LIBEAY_LOCATION
+            NAMES libeay32.dll
+            HINTS "C:/OpenSSL-Win64"
+            PATH_SUFFIXES bin)
         if (LIBEAY_LOCATION)
-            list (APPEND vatsinator_3RDPARTY_LIBS ${LIBEAY_LOCATION})
+            list (APPEND vatsinator_3RDPARTY_LIBS ${LIBEAY_LOCATION}/libeay32.dll)
         endif ()
         
-        find_library (SSLEAY_LOCATION NAMES ssleay32)
+        find_path (SSLEAY_LOCATION
+            NAMES ssleay32.dll
+            HINTS "C:/OpenSSL-Win64"
+            PATH_SUFFIXES bin)
         if (SSLEAY_LOCATION)
-            list (APPEND vatsinator_3RDPARTY_LIBS ${SSLEAY_LOCATION})
+            list (APPEND vatsinator_3RDPARTY_LIBS ${SSLEAY_LOCATION}/ssleay32.dll)
         endif ()
+
+        install (FILES ${vatsinator_3RDPARTY_LIBS} DESTINATION ${vatsinator_BINARY_TARGET_DIR})
 
         cmake_policy (PUSH)
         cmake_policy (SET CMP0026 OLD)
@@ -114,7 +122,7 @@ if (APPLE OR WIN32)
     install_qt5_executable ("${vatsinator_EXECUTABLE}"
         "${QT_QPA_PLUGIN}"
         "${vatsinator_LIBS};${vatsinator_3RDPARTY_LIBS}"
-        "${QT_INSTALL_LIBS};${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+        "${QT_INSTALL_LIBS};${QT_INSTALL_BINS};${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
     )
 endif ()
 
@@ -144,15 +152,9 @@ endif ()
 
 if (APPLE)
     set (install_i18n_dir "Resources/translations")
-elseif (WIN32)
-    set (install_i18n_dir "../translations")
-else ()
-    set (install_i18n_dir "translations")
-endif ()
-
-if (APPLE)
     set (install_plugins_dir "PlugIns")
 else ()
+    set (install_i18n_dir "translations")
     set (install_plugins_dir "plugins")
 endif ()
 
