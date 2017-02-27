@@ -62,6 +62,9 @@ MapWidget::MapWidget(QWidget* parent) :
     QWidget(parent),
     m_mouse(new MouseHelper)
 {
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    setAttribute(Qt::WA_TouchPadAcceptSingleTouchEvents);
+    grabGesture (Qt::PinchGesture);
     setMouseTracking(true);
 }
 
@@ -132,15 +135,10 @@ void MapWidget::resizeEvent(QResizeEvent* event)
 void MapWidget::wheelEvent(QWheelEvent* event)
 {   
     if (renderer()) {
-        QPoint numPixels = event->pixelDelta();
-        int steps;
-        
-        if (!numPixels.isNull())
-            steps = numPixels.y() / 15;
-        else
-            steps = event->angleDelta().y() / 120;
-        
-        renderer()->zoomTo(m_renderer->zoom() * qPow(2, steps));
+        if (event->phase() == Qt::NoScrollPhase || event->phase() == Qt::ScrollUpdate) {
+            int steps = event->angleDelta().y() / 120;
+            renderer()->zoomTo(m_renderer->zoom() * qPow(2, steps));
+        }
         event->accept();
     } else {
         event->ignore();

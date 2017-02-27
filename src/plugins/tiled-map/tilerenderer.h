@@ -25,7 +25,10 @@
 #include <QPixmap>
 #include <QRectF>
 
-namespace Vatsinator { namespace Gui { class WorldTransform; }}
+namespace Vatsinator { namespace Gui {
+    class WorldTransform;
+    class WorldPainter;
+}}
 class TileManager;
 class QThreadPool;
 class Tile;
@@ -44,7 +47,7 @@ signals:
 public:
     explicit TileRenderer(QObject* parent = nullptr);
 
-    QImage render(const QSize& viewport, const Vatsinator::Core::LonLat& center, qreal zoom);
+    void render(Vatsinator::Gui::WorldPainter* painter);
     
 private:
     QList<Tile> selectRows(const QList<Tile>& tiles, quint32 from, quint32 to);

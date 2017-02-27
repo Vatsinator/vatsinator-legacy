@@ -38,6 +38,5 @@ void TiledMapDrawer::initialize(MapRenderer* renderer)
 
 void TiledMapDrawer::draw(WorldPainter* painter)
 {
-    QImage world = m_tileRenderer->render(m_renderer->viewport(), m_renderer->center(), m_renderer->zoom());
-    painter->drawImage(QPoint(0, 0), world);
+    m_tileRenderer->render(painter);
 }

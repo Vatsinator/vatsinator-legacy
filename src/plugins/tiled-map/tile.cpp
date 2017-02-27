@@ -25,7 +25,7 @@
 using namespace Vatsinator::Misc;
 
 const QImage NullTile = []() {
-    QImage image(QSize(256, 256), QImage::Format_ARGB32_Premultiplied);
+    QImage image(QSize(256, 256), QImage::Format_RGB32);
     image.fill(QColor(232, 232, 232));
     
     QPainter p(&image);
@@ -123,7 +123,7 @@ QImage Tile::load() const
     QString path = cachePath();
     
     if (FileCache::exists(path)) {
-        QImage img = QImage(FileCache::path(path)).convertToFormat(QImage::Format_ARGB32_Premultiplied);
+        QImage img = QImage(FileCache::path(path)).convertToFormat(QImage::Format_RGB32);
         if (!img.isNull()) {
             tileCacheLock.lockForWrite();
             tileCache.insert(cacheKey(), img);
