@@ -76,8 +76,8 @@ private:
     quint32 m_y = 0;
     quint32 m_zoom = 0;
     
-    mutable QRectF m_coords;
     mutable bool m_coordsCalculated = false;
+    mutable QRectF m_coords;
     
     QString m_cacheKey;
     

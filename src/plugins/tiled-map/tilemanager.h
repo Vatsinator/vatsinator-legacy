@@ -53,7 +53,7 @@ public:
      * Returns list of tiles that are inside the given rectangle,
      * for the given zoom.
      */
-    QList<Tile> tiles(QRectF rect, quint32 zoom);
+    QList<Tile> tiles(QRectF rect, quint32 zoom, const QList<Tile>& exclude);
     
     /**
      * Returns the tile under the provided coordinates.

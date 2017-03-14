@@ -83,7 +83,7 @@ VatsinatorWindow::VatsinatorWindow() :
     ui->map->renderer()->setScene(new MapScene(this));
     
     ui->map->renderer()->scene()->track(m_server);
-    m_server->trackServer(QUrl("https://status.vatsim.net/status.txt"));
+    m_server->trackServer(QUrl("http://status.vatsim.net/status.txt"));
     
     ModelMatcher* modelMatcher = new ModelMatcher;
     ResourceFile* modelFile = new ResourceFile("data/model.json");

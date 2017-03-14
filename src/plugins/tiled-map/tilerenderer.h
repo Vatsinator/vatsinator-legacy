@@ -41,9 +41,6 @@ class TileRenderer : public QObject {
     Q_OBJECT
     class TileRenderJob;
     
-signals:
-    void mapRendered(QRectF coords, QPixmap map);
-    
 public:
     explicit TileRenderer(QObject* parent = nullptr);
 

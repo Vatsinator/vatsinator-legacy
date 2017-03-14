@@ -49,7 +49,7 @@ static QReadWriteLock tileCacheLock;
 
 
 Tile::Tile(quint32 x, quint32 y, quint32 zoom) :
-    m_x(x), m_y(y), m_zoom(zoom)
+    m_x(x % static_cast<quint32>(qPow(2, zoom))), m_y(y), m_zoom(zoom)
 {
     m_cacheKey = QStringLiteral("tiled-map/tiles/%1/%2/%3/%4").arg(
         TileType,
@@ -62,8 +62,8 @@ Tile::Tile(const Tile& other) :
     m_x(other.m_x),
     m_y(other.m_y),
     m_zoom(other.m_zoom),
-    m_coords(other.m_coords),
     m_coordsCalculated(other.m_coordsCalculated),
+    m_coords(other.m_coords),
     m_cacheKey(other.m_cacheKey) {}
 
 QRectF Tile::coords() const

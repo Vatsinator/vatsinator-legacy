@@ -45,11 +45,7 @@ QObject* PluginFinder::pluginByName(const QString& name)
 
 void PluginFinder::locatePlugins()
 {
-    QStringList locations = { QCoreApplication::applicationDirPath() };
-
-#if defined(Q_CC_MSVC)
-    locations.append(QCoreApplication::applicationDirPath() % "/plugins");
-#endif
+    QStringList locations = { QCoreApplication::applicationDirPath() % "/plugins" };
 
 #if defined(Q_OS_MACOS)
     // relative to the executable in the bundle
@@ -57,7 +53,7 @@ void PluginFinder::locatePlugins()
     // build tree
     locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../../../plugins"));
 #endif
-    
+
 #ifdef Q_OS_ANDROID
     /* This is a hacky way, but I couldn't find a better one */
     QDir dir(QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).first());

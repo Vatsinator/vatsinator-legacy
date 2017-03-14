@@ -57,11 +57,11 @@ public:
         /* helps tracking offset */
         quint32 firstY = m_tiles.first().y();
         quint32 firstX = m_tiles.first().x();
-//        quint32 maxX = std::max(m_tiles.first(), m_tiles.last(), [](auto a, auto b) { return a.x() < b.x(); }).x();
+        quint32 maxX = std::max_element(m_tiles.begin(), m_tiles.end(), [](auto a, auto b) { return a.x() < b.x(); })->x() + 1;
 
         for (const Tile& tile: qAsConst(m_tiles)) {
             int yOffset = static_cast<int>(tile.y() - firstY) * Tile::tileHeight();
-            int xOffset = static_cast<int>(tile.x() - firstX) * Tile::tileWidth();
+            int xOffset = static_cast<int>((tile.x() - firstX + maxX) % maxX) * Tile::tileWidth();
 
             QImage tileImg = m_manager->tileRendered(tile);
             Q_ASSERT(tileImg.height() == Tile::tileHeight());
@@ -76,6 +76,7 @@ public:
         }
 
         QRectF coords = QRectF(m_tiles.first().coords().topLeft(), m_tiles.last().coords().bottomRight());
+
         m_painterMutex->lock();
         m_painter->drawImage(coords, image);
         m_painterMutex->unlock();
@@ -100,7 +101,7 @@ void TileRenderer::render(WorldPainter *painter)
     WorldViewport worldViewport(painter->transform().worldViewport());
 
     for (const QRectF& rect: qAsConst(worldViewport.rectangles()))
-        tiles.append(m_manager->tiles(rect, level));
+        tiles.append(m_manager->tiles(rect, level, tiles));
 
     QList<TileRenderJob*> jobs;
     int n = m_threadPool->maxThreadCount();

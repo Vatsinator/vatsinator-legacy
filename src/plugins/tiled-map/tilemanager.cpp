@@ -37,7 +37,7 @@ QPair<qint32, qint32> tileCoords(const LonLat& lonLat, quint32 zoom)
     qreal n = qPow(2.0, static_cast<qreal>(zoom));
     qint32 x = qFloor((lonLat.longitude() + 180.0) / 360.0 * n);
     qreal latRad = qDegreesToRadians(qBound(-90.0, lonLat.latitude(), 90.0));
-    qint32 y = qFloor((1.0 - qLn(qTan(latRad) + (1.0 / qCos(latRad))) / M_PI) / 2.0 * n);
+    qint32 y = qFloor((1.0 - qLn(qTan(latRad) + (1.0 / qFastCos(latRad))) / M_PI) / 2.0 * n);
     
     return qMakePair(x, y);
 }
@@ -57,7 +57,7 @@ TileManager::TileManager(QObject* parent) :
 
 TileManager::~TileManager() {}
 
-QList<Tile> TileManager::tiles(QRectF rect, quint32 zoom)
+QList<Tile> TileManager::tiles(QRectF rect, quint32 zoom, const QList<Tile>& exclude)
 {
     if (m_lastZoom != zoom)
         m_lastZoom = zoom;
@@ -72,8 +72,11 @@ QList<Tile> TileManager::tiles(QRectF rect, quint32 zoom)
     QList<Tile> tiles;
     for (qint32 y = topLeft.second; y <= bottomRight.second; ++y) {
         for (qint32 x = topLeft.first; x <= bottomRight.first; ++x) {
-            if (y >= 0 && y < qPow(2, zoom))
-                tiles.append(tile(x, y, zoom));
+            if (y >= 0 && y < qPow(2, zoom)) {
+                Tile t = tile(x, y, zoom);
+                if (!exclude.contains(t))
+                    tiles.append(t);
+            }
         }
     }
     
