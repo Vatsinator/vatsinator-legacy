@@ -25,6 +25,7 @@ endfunction ()
 
 add_subdirectory (euroute-notams)
 add_subdirectory (idl-drawer)
+add_subdirectory (marble-map)
 add_subdirectory (tiled-map)
 add_subdirectory (travelpayouts-airline-logos)
 add_subdirectory (vatbook-atc-bookings)

@@ -22,6 +22,8 @@
 
 #include "coreexport.h"
 #include <QObject>
+#include <QJsonObject>
+#include <QList>
 #include <QMap>
 
 namespace Vatsinator { namespace Core {
@@ -42,7 +44,13 @@ public:
     /**
      * Returns list of plugins that implement the given interface ID.
      */
+    [[deprecated]]
     static QList<QObject*> pluginsForIid(const QString& iid);
+
+    /**
+     * Returns list of plugins that implement the given IID.
+     */
+    static QList<QString> pluginNamesForIid(const QString& iid);
     
     /**
      * Returns a plugin for the given class name.
@@ -60,11 +68,14 @@ private:
      */
     void readPlugin(const QString& fileName);
     
+    QList<QString> pluginNamesForIidImpl(const QString& iid);
     QList<QObject*> pluginsForIidImpl(const QString& iid);
     QObject* pluginByNameImpl(const QString& name);
     QObject* getPlugin(const QString& fileName);
     bool loadPlugin(const QString& fileName);
     
+    using PluginInfo = std::tuple<QString, QString, QJsonObject>; /**< className, IID, MetaData */
+    QList<PluginInfo> m_plugins;
     QMap<QString, QString> m_pluginsByIid; /**< IID <-> file name */
     QMap<QString, QString> m_pluginsByName; /**< class name <-> file name */
     QMap<QString, QObject*> m_instances; /**< file name <-> instance */

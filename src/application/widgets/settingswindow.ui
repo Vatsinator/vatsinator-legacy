@@ -16,6 +16,9 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1">
     <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
      <widget class="QWidget" name="miscallenous">
       <layout class="QGridLayout" name="gridLayout_2">
        <property name="leftMargin">
@@ -141,7 +144,7 @@
        <item row="0" column="2">
         <widget class="QRadioButton" name="metarSourceVatsim">
          <property name="text">
-          <string>VA&amp;TSIM</string>
+          <string>&amp;VATSIM</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -184,6 +187,59 @@
           <size>
            <width>0</width>
            <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page">
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>91</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Map type:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QComboBox" name="mapTypes"/>
+       </item>
+       <item row="0" column="3">
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>91</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="2">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>127</height>
           </size>
          </property>
         </spacer>
@@ -241,6 +297,15 @@
       <property name="icon">
        <iconset resource="resources/icons.qrc">
         <normaloff>:/icons/preferences-network.png</normaloff>:/icons/preferences-network.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Plugins</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/icons.qrc">
+        <normaloff>:/icons/preferences-plugins.png</normaloff>:/icons/preferences-plugins.png</iconset>
       </property>
      </item>
     </widget>

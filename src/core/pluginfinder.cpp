@@ -36,6 +36,13 @@ QList<QObject*> PluginFinder::pluginsForIid(const QString& iid)
     return instance->pluginsForIidImpl(iid);
 }
 
+QList<QString> PluginFinder::pluginNamesForIid(const QString& iid)
+{
+    PluginFinder* instance = qApp->property(PluginFinderPropKey).value<PluginFinder*>();
+    Q_ASSERT(instance);
+    return instance->pluginNamesForIidImpl(iid);
+}
+
 QObject* PluginFinder::pluginByName(const QString& name)
 {
     PluginFinder* instance = qApp->property(PluginFinderPropKey).value<PluginFinder*>();
@@ -87,10 +94,28 @@ void PluginFinder::readPlugin(const QString& fileName)
         
         QString className = metaData["className"].toString();
         m_pluginsByName.insert(className, fileName);
+
+        m_plugins.append(std::make_tuple(className, iid, metaData));
+
+        qDebug() << metaData;
         
         qDebug("Plugin found in %s (%s implements %s)", qPrintable(fileName),
                qPrintable(className), qPrintable(iid));
     }
+}
+
+QList<QString> PluginFinder::pluginNamesForIidImpl(const QString& iid)
+{
+    QList<QString> ret;
+    for (const auto& plugin: qAsConst(m_plugins)) {
+        QString pIid = std::get<1>(plugin);
+        if (pIid == iid) {
+            QString name = std::get<0>(plugin);
+            ret.append(name);
+        }
+    }
+
+    return ret;
 }
 
 QList<QObject*> PluginFinder::pluginsForIidImpl(const QString& iid)

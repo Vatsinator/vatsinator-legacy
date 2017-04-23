@@ -20,6 +20,8 @@
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
 #include "core/option.h"
+#include "core/pluginfinder.h"
+#include "gui/mapdrawer.h"
 #include "config.h"
 #include <QtWidgets>
 #include <functional>
@@ -29,6 +31,7 @@
 #endif
 
 using namespace Vatsinator::Core;
+using namespace Vatsinator::Gui;
 
 SettingsWindow::SettingsWindow(QWidget* parent) :
     QWidget(parent),
@@ -36,6 +39,7 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     fillLanguages();
+    fillPlugins();
     
 #ifdef Q_OS_MACOS
     // adjust the window so it looks native on MacOS
@@ -106,6 +110,12 @@ void SettingsWindow::fillLanguages()
         QString lang = QLocale::languageToString(QLocale(locale).language());
         ui->language->addItem(lang, locale);
     }
+}
+
+void SettingsWindow::fillPlugins()
+{
+    QStringList mapPlugins = PluginFinder::pluginNamesForIid(qobject_interface_iid<MapDrawer*>());
+    ui->mapTypes->addItems(mapPlugins);
 }
 
 #ifdef Q_OS_MACOS
