@@ -1,6 +1,7 @@
 find_package (Qt5Core REQUIRED)
 include (CMakeFindDependencyMacro)
 find_package (Marble REQUIRED)
+
 add_library (marblemapdrawer MODULE
     marblemapdrawer.cpp
     marblemapdrawerplugin.cpp
