@@ -4,11 +4,13 @@ find_package (Qt5Gui REQUIRED)
 
 add_library (tiledmapdrawer MODULE
     tiledmapdrawer.h
+    tiledmapdrawerplugin.h
     tilemanager.h
     tile.h
     tilerenderer.h
     
     tiledmapdrawer.cpp
+    tiledmapdrawerplugin.cpp
     tilemanager.cpp
     tile.cpp
     tilerenderer.cpp

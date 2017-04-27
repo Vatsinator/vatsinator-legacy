@@ -25,18 +25,23 @@
 
 using namespace Vatsinator::Gui;
 
-TiledMapDrawer::TiledMapDrawer(QObject* parent) :
-    QObject(parent),
-    m_tileRenderer(new TileRenderer) {}
+namespace TiledMapDrawer {
 
-TiledMapDrawer::~TiledMapDrawer() {}
-
-void TiledMapDrawer::initialize(MapRenderer* renderer)
+TiledMapDrawer::TiledMapDrawer(MapRenderer* renderer) :
+    m_tileRenderer(new TileRenderer),
+    m_renderer(renderer)
 {
-    m_renderer = renderer;
+
+}
+
+TiledMapDrawer::~TiledMapDrawer()
+{
+
 }
 
 void TiledMapDrawer::draw(WorldPainter* painter)
 {
     m_tileRenderer->render(painter);
 }
+
+} /* namespace TiledMapDrawer */

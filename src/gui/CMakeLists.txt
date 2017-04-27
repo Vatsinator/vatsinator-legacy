@@ -29,6 +29,7 @@ set (gui_HEADERS
     maparea.h
     mapdrawable.h
     mapdrawer.h
+    mapdrawerplugin.h
     mapitem.h
     maprenderer.h
     mapscene.h

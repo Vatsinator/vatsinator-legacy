@@ -103,9 +103,6 @@ public:
     
     /**
      * Sets the MapDrawer implementation.
-     * 
-     * MapRenderer takes ownership over \c drawer. If another drawer was set
-     * before, it will be deleted.
      */
     void setMapDrawer(MapDrawer* drawer);
 

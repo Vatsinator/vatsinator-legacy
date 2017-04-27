@@ -27,13 +27,12 @@
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Gui;
 
-namespace {
-    
-    qreal Log2 = 0.6931471805599453094172321214581765680755001343602552;
-    
-    qreal log2Impl(int x) { return std::log(x) / Log2; }
-    
+namespace {    
+qreal Log2 = 0.6931471805599453094172321214581765680755001343602552;
+qreal log2Impl(int x) { return std::log(x) / Log2; }
 }
+
+namespace TiledMapDrawer {
 
 class TileRenderer::TileRenderJob : public QRunnable {
 public:
@@ -155,3 +154,5 @@ quint32 TileRenderer::zoomLevel(const WorldTransform& transform)
     int zoom = qCeil(log2Impl(K * (qFastCos(qDegreesToRadians(p1.latitude())) / nmPerPix)));
     return qBound(1, zoom, 18);
 }
+
+} /* namespace TiledMapDrawer */

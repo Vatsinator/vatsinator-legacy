@@ -47,6 +47,7 @@ constexpr auto TileType = "light_nolabels";
 static QHash<QString, QImage> tileCache; /**< Stores loaded tiles */
 static QReadWriteLock tileCacheLock;
 
+namespace TiledMapDrawer {
 
 Tile::Tile(quint32 x, quint32 y, quint32 zoom) :
     m_x(x % static_cast<quint32>(qPow(2, zoom))), m_y(y), m_zoom(zoom)
@@ -134,3 +135,5 @@ QImage Tile::load() const
     
     return NullTile;
 }
+
+} /* namespace TiledMapDrawer */

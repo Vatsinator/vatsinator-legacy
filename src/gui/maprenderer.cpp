@@ -59,11 +59,8 @@ void MapRenderer::setMapDrawer(MapDrawer* drawer)
 {
     if (m_mapDrawer)
         delete m_mapDrawer;
-    
+
     m_mapDrawer = drawer;
-    if (m_mapDrawer) {
-        m_mapDrawer->initialize(this);
-    }
 }
 
 void MapRenderer::attachMapAddon(MapAddon* addon)

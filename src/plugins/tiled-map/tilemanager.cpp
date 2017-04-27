@@ -44,6 +44,8 @@ QPair<qint32, qint32> tileCoords(const LonLat& lonLat, quint32 zoom)
 
 }
 
+namespace TiledMapDrawer {
+
 TileManager::TileManager(QObject* parent) :
     QObject(parent)
 {
@@ -221,3 +223,5 @@ void TileManager::tileError(QString error, QUrl url)
 {
     qWarning("Error downloading %s (%s)", qPrintable(url.toString()), qPrintable(error));
 }
+
+} /* namespace TiledMapDrawer */

@@ -21,7 +21,7 @@
 #include "ui_settingswindow.h"
 #include "core/option.h"
 #include "core/pluginfinder.h"
-#include "gui/mapdrawer.h"
+#include "gui/mapdrawerplugin.h"
 #include "config.h"
 #include <QtWidgets>
 #include <functional>
@@ -53,7 +53,7 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
     
     Option* language = new Option("misc/language", this);
     /* Track the QComboBox's currentData property, but there is no notifier signal for it */
-    connect(ui->language, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [language, this](int index) {
+    connect(ui->language, QOverload<int>::of(&QComboBox::currentIndexChanged), [language, this](int index) {
         QString locale = this->ui->language->itemData(index).toString();
         language->setValue(locale);
     });
@@ -61,10 +61,19 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
     QString locale = language->value().toString();
     int index = ui->language->findData(locale);
     ui->language->setCurrentIndex(index);
+
+    Option* mapPlugin = new Option("plugins/map_drawer", this);
+    connect(ui->mapTypes, QOverload<int>::of(&QComboBox::currentIndexChanged), [mapPlugin, this](int index) {
+        QString pluginName = this->ui->mapTypes->itemData(index).toString();
+        mapPlugin->setValue(pluginName);
+    });
+
+    QString pluginName = mapPlugin->value().toString();
+    index = ui->mapTypes->findData(pluginName);
+    ui->mapTypes->setCurrentIndex(index);
     
-    m_options << statistics << language;
+    m_options << statistics << language << mapPlugin;
     
-    // doesn't work on Linux, I know
     setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
 }
 
@@ -88,7 +97,7 @@ void SettingsWindow::changeEvent(QEvent* event)
         ui->retranslateUi(this);
         event->accept();
 
-#ifdef Q_IS_MACOS
+#ifdef Q_OS_MACOS
         ui->stackedWidget->currentWidget()->adjustSize();
         ui->stackedWidget->adjustSize();
         adjustSize();
@@ -114,8 +123,13 @@ void SettingsWindow::fillLanguages()
 
 void SettingsWindow::fillPlugins()
 {
-    QStringList mapPlugins = PluginFinder::pluginNamesForIid(qobject_interface_iid<MapDrawer*>());
-    ui->mapTypes->addItems(mapPlugins);
+    QStringList mapPlugins = PluginFinder::pluginsForIid(qobject_interface_iid<MapDrawerPlugin*>());
+    for (const QString& p: qAsConst(mapPlugins)) {
+        QJsonObject metaData = PluginFinder::pluginMetaData(p);
+        QString pluginName = metaData.contains("name") ? metaData.value("name").toString() : p;
+
+        ui->mapTypes->addItem(pluginName, p);
+    }
 }
 
 #ifdef Q_OS_MACOS

@@ -26,7 +26,7 @@
 #include <core/resourcefile.h>
 #include <core/servertracker.h>
 #include <gui/mapaddon.h>
-#include <gui/mapdrawer.h>
+#include <gui/mapdrawerplugin.h>
 #include <gui/mapscene.h>
 #include <gui/maprenderer.h>
 #include <widgets/airportdetailswindow.h>
@@ -46,7 +46,7 @@ using namespace Vatsinator::Widgets;
 /**
  * The default MapDrawer plugin.
  */
-constexpr auto MapDrawerDefaultPlugin = "TiledMapDrawer";
+constexpr auto MapDrawerDefaultPlugin = "TiledMapDrawerPlugin";
 
 
 VatsinatorWindow::VatsinatorWindow() :
@@ -122,7 +122,7 @@ void VatsinatorWindow::showEvent(QShowEvent* event)
 
         auto addons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
         for (auto a: addons) {
-            ui->map->renderer()->attachMapAddon(qobject_cast<MapAddon*>(a));
+            ui->map->renderer()->attachMapAddon(qobject_cast<MapAddon*>(PluginFinder::plugin(a)));
         }
     }
 
@@ -234,8 +234,10 @@ void VatsinatorWindow::showSettingsWindow()
 
 void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 {
-    MapDrawer* drawer = qobject_cast<MapDrawer*>(PluginFinder::pluginByName(name.toString()));
+    MapDrawerPlugin* plugin = qobject_cast<MapDrawerPlugin*>(PluginFinder::plugin(name.toString()));
+    MapDrawer* drawer = plugin->create(ui->map->renderer());
     ui->map->renderer()->setMapDrawer(drawer);
+    ui->map->update();
 }
 
 void VatsinatorWindow::showMetarWindow()

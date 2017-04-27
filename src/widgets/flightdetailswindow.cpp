@@ -311,7 +311,7 @@ void FlightDetailsWindow::updateAirline(const Airline& airline)
 {
     auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AirlineLogoProvider*>());
     if (plugins.length() > 0) {
-        AirlineLogoProvider* p = qobject_cast<AirlineLogoProvider*>(plugins.first());
+        AirlineLogoProvider* p = qobject_cast<AirlineLogoProvider*>(PluginFinder::plugin(plugins.first()));
         Q_ASSERT(p);
         
         const AirlineLogoReply* reply = p->fetchLogo(airline, ui->airline->size());

@@ -21,32 +21,22 @@
 #define TILEDMAPDRAWER_H
 
 #include "gui/mapdrawer.h"
-#include <QObject>
+#include "gui/maprenderer.h"
+
+namespace TiledMapDrawer {
 
 class TileRenderer;
 
 /**
- * \defgroup Tiled-mad-drawer
+ * \ingroup Tiled-map-drawer
  * @{
- *
- * A tile-based world map drawer plugin for Vatsinator.
  */
-
-/**
- * The TiledMapDrawer is an implementation of MapDrawer that uses map tiles
- * to draw the world.
- */
-class TiledMapDrawer : public QObject, public Vatsinator::Gui::MapDrawer {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrgui.MapDrawer" FILE "tiledmapdrawer.json")
-    Q_INTERFACES(Vatsinator::Gui::MapDrawer)
-
+class TiledMapDrawer : public Vatsinator::Gui::MapDrawer {
 public:
     /**
-     * Creates a new TiledMapDrawer instance, passes \c parent to the QObject's
-     * constructor.
+     * Creates a new TiledMapDrawer instance.
      */
-    explicit TiledMapDrawer(QObject* parent = nullptr);
+    explicit TiledMapDrawer(Vatsinator::Gui::MapRenderer* renderer);
 
     /**
      * Destroys this TiledMapDrawer instance.
@@ -54,21 +44,16 @@ public:
     virtual ~TiledMapDrawer();
     
     /**
-     * \copydoc Vatsinator::Gui::MapDrawer::initialize()
-     */
-    void initialize(Vatsinator::Gui::MapRenderer* renderer) override;
-    
-    /**
      * \copydoc Vatsinator::Gui::MapDrawer::draw()
      */
     void draw(Vatsinator::Gui::WorldPainter* painter) override;
     
 private:
-    TileRenderer* m_tileRenderer = nullptr;
+    QScopedPointer<TileRenderer> m_tileRenderer;
     Vatsinator::Gui::MapRenderer* m_renderer;
     
-};
+}; /** @} */
 
-/** @} */
+} /* namespace TiledMapDrawer */
 
 #endif // TILEDMAPDRAWER_H

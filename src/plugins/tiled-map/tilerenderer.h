@@ -25,16 +25,18 @@
 #include <QPixmap>
 #include <QRectF>
 
-namespace Vatsinator { namespace Gui {
-    class WorldTransform;
-    class WorldPainter;
-}}
-class TileManager;
+namespace Vatsinator { namespace Gui { class WorldTransform; }}
+namespace Vatsinator { namespace Gui { class WorldPainter; }}
+
 class QThreadPool;
+
+namespace TiledMapDrawer {
+
+class TileManager;
 class Tile;
 
 /**
- * \ingroup Tiled-mad-drawer
+ * \ingroup Tiled-map-drawer
  * @{
  */
 class TileRenderer : public QObject {
@@ -55,5 +57,7 @@ private:
     QThreadPool* m_threadPool;
     
 }; /** @} */
+
+} /* namespace TiledMapDrawer */
 
 #endif // TILERENDERER_H

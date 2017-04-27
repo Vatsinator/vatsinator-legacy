@@ -30,10 +30,12 @@
 #include <QScopedPointer>
 #include <QSet>
 
+namespace TiledMapDrawer {
+
 struct TileCoords;
 
 /**
- * \ingroup Tiled-mad-drawer
+ * \ingroup Tiled-map-drawer
  * @{
  */
 class TileManager : public QObject {
@@ -88,5 +90,7 @@ private:
     QSet<Tile> m_downloading;
     
 }; /** @} */
+
+} /* namespace TiledMapDrawer */
 
 #endif // TILEMANAGER_H
