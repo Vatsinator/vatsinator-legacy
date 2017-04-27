@@ -26,41 +26,38 @@
 #include <QRectF>
 
 namespace Vatsinator { namespace Gui { class WorldTransform; }}
+namespace Vatsinator { namespace Gui { class WorldPainter; }}
+
+class QThreadPool;
+
+namespace TiledMapDrawer {
+
 class TileManager;
+class Tile;
 
 /**
- * \ingroup Tiled-mad-drawer
+ * \ingroup Tiled-map-drawer
  * @{
  */
 class TileRenderer : public QObject {
     Q_OBJECT
-    
-signals:
-    void mapRendered(QRectF coords, QPixmap map);
+    class TileRenderJob;
     
 public:
     explicit TileRenderer(QObject* parent = nullptr);
-    
-public slots:
-    void updateViewport(QSize viewport);
-    void updateCenter(Vatsinator::Core::LonLat center);
-    void updateZoom(qreal zoom);
+
+    void render(Vatsinator::Gui::WorldPainter* painter);
     
 private:
+    QList<Tile> selectRows(const QList<Tile>& tiles, quint32 from, quint32 to);
     quint32 zoomLevel(const Vatsinator::Gui::WorldTransform& transform);
-    void markDirty();
     
-private slots:
-    void render();
-    
-private:    
-    Vatsinator::Core::LonLat m_center;
-    QSize m_viewport;
-    qreal m_zoom;
-    QTimer* m_timer;
-    bool m_changed = false;
+private:
     TileManager* m_manager;
+    QThreadPool* m_threadPool;
     
 }; /** @} */
+
+} /* namespace TiledMapDrawer */
 
 #endif // TILERENDERER_H

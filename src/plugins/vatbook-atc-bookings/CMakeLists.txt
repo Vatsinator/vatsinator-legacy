@@ -11,6 +11,4 @@ add_library (vatbookatcbookingprovider MODULE
 target_compile_definitions (vatbookatcbookingprovider PRIVATE -DQT_PLUGIN -DQT_SHARED)
 target_link_libraries (vatbookatcbookingprovider vtrmisc)
 
-if (NOT ANDROID)
-    install (TARGETS vatbookatcbookingprovider DESTINATION ${vatsinator_RESOURCES_TARGET_DIR}/plugins)
-endif ()
+vatsinator_add_plugin (vatbookatcbookingprovider)

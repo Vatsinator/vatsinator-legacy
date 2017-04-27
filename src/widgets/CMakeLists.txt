@@ -49,7 +49,7 @@ target_link_libraries (vtrwidgets vtrgui vtrmisc Qt5::Widgets)
 set_target_properties (vtrwidgets PROPERTIES CXX_VISIBILITY_PRESET hidden)
 install (TARGETS vtrwidgets
     EXPORT vtrwidgets
-    RUNTIME DESTINATION bin CONFIGURATIONS Debug Release
-    LIBRARY DESTINATION lib/vatsinator CONFIGURATIONS Debug
-    ARCHIVE DESTINATION lib CONFIGURATIONS Debug
+    RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}
+    LIBRARY DESTINATION ${vatsinator_LIBRARY_TARGET_DIR}
+    ARCHIVE DESTINATION ${vatsinator_ARCHIVE_TARGET_DIR} CONFIGURATIONS Debug
 )

@@ -11,12 +11,47 @@ set (vatsinator_MODULES
     plugins
 )
 
+
+# set up platform-specific modules
 if (WIN32 OR APPLE OR LINUX)
     set (BUILD_WIDGETS 1)
     list (APPEND vatsinator_MODULES widgets)
 elseif (ANDROID)
     set (BUILD_QML 1)
     list (APPEND vatsinator_MODULES imports)
+endif ()
+
+# set up platform-specific installation paths
+if (LINUX)
+    # prefix-dependent, e.g. /usr/share/vatsinator/translations
+    set (vatsinator_RESOURCES_TARGET_DIR "share/vatsinator")
+    # prefix-dependent, e.g. /usr/share/bin/vatsinator
+    set (vatsinator_BINARY_TARGET_DIR "bin")
+    # prefix-dependent, e.g. /usr/share/lib/vatsinator/libvtrcore.so
+    set (vatsinator_LIBRARY_TARGET_DIR "lib/vatsinator")
+    # prefix-dependent, not used on Linux
+    set (vatsinator_ARCHIVE_TARGET_DIR "lib")
+elseif (WIN32)
+    # location-independent, C:\Program Files\Vatsinator\translations
+    set (vatsinator_RESOURCES_TARGET_DIR ".")
+    # location-independent, C:\Program Files\Vatsinator\vatsinator.exe
+    set (vatsinator_BINARY_TARGET_DIR ".")
+    # location-independent, C:\Program Files\Vatsinator\vtrcore.dll
+    set (vatsinator_LIBRARY_TARGET_DIR ".")
+    # # location-independent, build/Debug/lib/vtrcore.lib
+    set (vatsinator_ARCHIVE_TARGET_DIR "lib")
+elseif (APPLE)
+    # inside the bundle, e.g. vatsinator.app/Contents/Resources/translations
+    set (vatsinator_RESOURCES_TARGET_DIR "vatsinator.app/Contents/Resources")
+    # inside the bundle, e.g. vatsinator.app/Contents/MacOS/vatsinator
+    set (vatsinator_BINARY_TARGET_DIR "vatsinator.app/Contents/MacOS")
+    # linside the bundle, e.g. vatsinator.app/Contents/MacOS/libvtrcore.dylib
+    set (vatsinator_LIBRARY_TARGET_DIR "vatsinator.app/Contents/MacOS")
+    # not used on Linux
+    set (vatsinator_ARCHIVE_TARGET_DIR "lib")
+elseif (ANDROID)
+    # in the assets, e.g. assets:/translations
+    set (vatsinator_RESOURCES_TARGET_DIR "assets")
 endif ()
 
 foreach (module ${vatsinator_MODULES})

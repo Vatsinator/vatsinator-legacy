@@ -85,7 +85,7 @@ QRect WorldTransform::map(const QRectF& rect, bool* visible) const
             v = false;
         } else {
             right = right2;
-            left += m_mapped360;
+//            left += m_mapped360;
         }
     } else if (left > viewport().width()) {
         int left2 = left - m_mapped360;
@@ -93,7 +93,7 @@ QRect WorldTransform::map(const QRectF& rect, bool* visible) const
             v = false;
         } else {
             left = left2;
-            right -= m_mapped360;
+//            right -= m_mapped360;
         }
     }
 

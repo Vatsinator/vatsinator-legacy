@@ -37,12 +37,14 @@ QPair<qint32, qint32> tileCoords(const LonLat& lonLat, quint32 zoom)
     qreal n = qPow(2.0, static_cast<qreal>(zoom));
     qint32 x = qFloor((lonLat.longitude() + 180.0) / 360.0 * n);
     qreal latRad = qDegreesToRadians(qBound(-90.0, lonLat.latitude(), 90.0));
-    qint32 y = qFloor((1.0 - qLn(qTan(latRad) + (1.0 / qCos(latRad))) / M_PI) / 2.0 * n);
+    qint32 y = qFloor((1.0 - qLn(qTan(latRad) + (1.0 / qFastCos(latRad))) / M_PI) / 2.0 * n);
     
     return qMakePair(x, y);
 }
 
 }
+
+namespace TiledMapDrawer {
 
 TileManager::TileManager(QObject* parent) :
     QObject(parent)
@@ -57,7 +59,7 @@ TileManager::TileManager(QObject* parent) :
 
 TileManager::~TileManager() {}
 
-QList<Tile> TileManager::tiles(QRectF rect, quint32 zoom)
+QList<Tile> TileManager::tiles(QRectF rect, quint32 zoom, const QList<Tile>& exclude)
 {
     if (m_lastZoom != zoom)
         m_lastZoom = zoom;
@@ -70,10 +72,13 @@ QList<Tile> TileManager::tiles(QRectF rect, quint32 zoom)
     auto bottomRight = ::tileCoords(rect.bottomRight(), zoom);
 
     QList<Tile> tiles;
-    for (qint32 x = topLeft.first; x <= bottomRight.first; ++x) {
-        for (qint32 y = topLeft.second; y <= bottomRight.second; ++y) {
-//            if (y >= 0 && y < qPow(2, zoom))
-                tiles.append(tile(x, y, zoom));
+    for (qint32 y = topLeft.second; y <= bottomRight.second; ++y) {
+        for (qint32 x = topLeft.first; x <= bottomRight.first; ++x) {
+            if (y >= 0 && y < qPow(2, zoom)) {
+                Tile t = tile(x, y, zoom);
+                if (!exclude.contains(t))
+                    tiles.append(t);
+            }
         }
     }
     
@@ -90,29 +95,42 @@ Tile TileManager::tile(quint32 x, quint32 y, quint32 zoom)
     return tile;
 }
 
-QPixmap TileManager::pixmap(const Tile& tile, QRect* source, int levelsLeft)
+QImage TileManager::tileRendered(const Tile& tile)
+{
+    QRect source;
+    QImage img = tileRenderedImpl(tile, &source);
+
+    if (source != img.rect()) {
+        QImage tmp = img.copy(source);
+        img = tmp.scaled(Tile::tileWidth(), Tile::tileHeight());
+    }
+
+    return img;
+}
+
+QImage TileManager::tileRenderedImpl(const Tile& tile, QRect* source, int levelsLeft)
 {
     Q_ASSERT(source);
-    
+
     if (tile.isCached() || levelsLeft == 0 || tile.zoom() <= 1) {
-        QPixmap px = tile.pixmap();
-        *source = px.rect();
-        return px;
+        const QImage image = tile.image();
+        *source = image.rect();
+        return image;
     } else {
         /**
          * Pixmap not yet fetched, find a parent one and return it.
          */
         Tile parentTile = this->tile(tile.x() / 2, tile.y() / 2, tile.zoom() - 1);
-        QPixmap px = this->pixmap(parentTile, source, levelsLeft - 1);
+        QImage image = this->tileRenderedImpl(parentTile, source, levelsLeft - 1);
         source->setWidth(source->width() / 2);
         if (tile.x() % 2 == 1)
             source->moveLeft(source->left() + source->width());
-        
+
         source->setHeight(source->height() / 2);
         if (tile.y() % 2 == 1)
             source->moveTop(source->top() + source->height());
-        
-        return px;
+
+        return image;
     }
 }
 
@@ -205,3 +223,5 @@ void TileManager::tileError(QString error, QUrl url)
 {
     qWarning("Error downloading %s (%s)", qPrintable(url.toString()), qPrintable(error));
 }
+
+} /* namespace TiledMapDrawer */

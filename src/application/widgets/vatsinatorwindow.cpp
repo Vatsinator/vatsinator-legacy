@@ -26,7 +26,7 @@
 #include <core/resourcefile.h>
 #include <core/servertracker.h>
 #include <gui/mapaddon.h>
-#include <gui/mapdrawer.h>
+#include <gui/mapdrawerplugin.h>
 #include <gui/mapscene.h>
 #include <gui/maprenderer.h>
 #include <widgets/airportdetailswindow.h>
@@ -35,6 +35,10 @@
 #include <widgets/flightdetailswindow.h>
 #include <QtWidgets>
 
+#ifdef Q_OS_MAC
+# include "cocoautils.h"
+#endif
+
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Gui;
 using namespace Vatsinator::Widgets;
@@ -42,7 +46,7 @@ using namespace Vatsinator::Widgets;
 /**
  * The default MapDrawer plugin.
  */
-constexpr auto MapDrawerDefaultPlugin = "TiledMapDrawer";
+constexpr auto MapDrawerDefaultPlugin = "TiledMapDrawerPlugin";
 
 
 VatsinatorWindow::VatsinatorWindow() :
@@ -51,6 +55,14 @@ VatsinatorWindow::VatsinatorWindow() :
     m_server(new ServerTracker(this))
 {
     ui->setupUi(this);
+
+#ifdef Q_OS_MAC
+    /* On Mac set main manu name to "Menu" in order not to have two
+       "Vatsinators" on the menubar. */
+    ui->menuVatsinator->setTitle(tr("&Menu"));
+
+    enableTransparentTitleBar(reinterpret_cast<NSView*>(window()->winId()));
+#endif
     
     connect(ui->map, &MapWidget::airportDetailsRequested, this, &VatsinatorWindow::showAirportDetails);
     connect(ui->map, &MapWidget::flightDetailsRequested, this, &VatsinatorWindow::showFlightDetails);
@@ -71,7 +83,7 @@ VatsinatorWindow::VatsinatorWindow() :
     ui->map->renderer()->setScene(new MapScene(this));
     
     ui->map->renderer()->scene()->track(m_server);
-    m_server->trackServer(QUrl("https://status.vatsim.net/status.txt"));
+    m_server->trackServer(QUrl("http://status.vatsim.net/status.txt"));
     
     ModelMatcher* modelMatcher = new ModelMatcher;
     ResourceFile* modelFile = new ResourceFile("data/model.json");
@@ -110,7 +122,7 @@ void VatsinatorWindow::showEvent(QShowEvent* event)
 
         auto addons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
         for (auto a: addons) {
-            ui->map->renderer()->attachMapAddon(qobject_cast<MapAddon*>(a));
+            ui->map->renderer()->attachMapAddon(qobject_cast<MapAddon*>(PluginFinder::plugin(a)));
         }
     }
 
@@ -222,8 +234,10 @@ void VatsinatorWindow::showSettingsWindow()
 
 void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 {
-    MapDrawer* drawer = qobject_cast<MapDrawer*>(PluginFinder::pluginByName(name.toString()));
+    MapDrawerPlugin* plugin = qobject_cast<MapDrawerPlugin*>(PluginFinder::plugin(name.toString()));
+    MapDrawer* drawer = plugin->create(ui->map->renderer());
     ui->map->renderer()->setMapDrawer(drawer);
+    ui->map->update();
 }
 
 void VatsinatorWindow::showMetarWindow()

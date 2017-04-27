@@ -160,7 +160,7 @@ void AirportDetailsWindow::updateNotams()
     } else {
         auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<NotamProvider*>());
         if (plugins.length() > 0) {
-            NotamProvider* p = qobject_cast<NotamProvider*>(plugins.first());
+            NotamProvider* p = qobject_cast<NotamProvider*>(PluginFinder::plugin(plugins.first()));
             Q_ASSERT(p);
             
             const NotamReply* nr = p->fetchNotams(m_airport->icao());
@@ -188,7 +188,7 @@ void AirportDetailsWindow::updateBookings()
     } else {
         auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AtcBookingProvider*>());
         if (plugins.length() > 0) {
-            AtcBookingProvider* p = qobject_cast<AtcBookingProvider*>(plugins.first());
+            AtcBookingProvider* p = qobject_cast<AtcBookingProvider*>(PluginFinder::plugin(plugins.first()));
             Q_ASSERT(p);
             
             const AtcBookingReply* r = p->fetchBookings(m_airport->icao());

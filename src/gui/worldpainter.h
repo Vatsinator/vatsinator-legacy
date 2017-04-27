@@ -42,6 +42,16 @@ public:
     explicit WorldPainter(const WorldTransform& transform, QPaintDevice *device);
 
     /**
+     * Draws the given \c image into the given \c rectangle.
+     */
+    void drawImage(const QRectF& rectangle, const QImage& image);
+
+    /**
+     * Draws the \c source portion of the given \c image into the given \c rectangle.
+     */
+    void drawImage(const QRectF& rectangle, const QImage& image, const QRect& source);
+
+    /**
      * Draws a pixmap at the given position.
      *
      * The \c pixmap is places with its center located at the given \c center
@@ -83,6 +93,11 @@ public:
     void drawPolyline(const QList<Core::LonLat>& coords);
 
     /**
+     *
+     */
+    void drawRect(const QRectF &rect);
+
+    /**
      * Draws a line from \c p1 to \c p2.
      */
     void drawLine(const Core::LonLat& p1, const Core::LonLat& p2);
@@ -96,6 +111,8 @@ public:
      * Returns transform used by this painter.
      */
     const WorldTransform& transform() const { return m_transform; }
+
+    using QPainter::drawImage;
 
 private:
     WorldTransform m_transform;

@@ -1,0 +1,3 @@
+[Paths]
+Translations = ${install_i18n_dir}
+Plugins = ${install_plugins_dir}

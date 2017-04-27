@@ -27,45 +27,6 @@ using namespace Vatsinator::Core;
 
 namespace Vatsinator { namespace Gui {
 
-/**
- * Splits the given \c screen to a valid transforms.
- */
-//QList<WorldTransform> splitScreenToTransforms(const QSize& viewport,
-//                                              const LonLat& offset,
-//                                              qreal scale,
-//                                              const QRectF& screen)
-//{
-//    QList<WorldTransform> list;
-//    qreal it = screen.left();
-//    do {
-//        qreal tmp = it;
-//        qreal mod = std::fmod((it + 180.0), 360.0);
-//        if (mod < 0)
-//            mod = 360.0 + mod;
-        
-//        qreal ax = mod - 180.0;
-//        qreal bx = qMin(it - mod + 360.0, screen.right());
-//        it = bx;
-        
-//        mod = std::fmod((bx + 180.0), 360.0);
-//        if (mod < 0)
-//            mod = 360.0 + mod;
-        
-//        bx = mod - 180.0;
-//        if (bx <= -180.0)
-//            bx += 360.0;
-        
-//        QRectF trScreen(QPointF(ax, screen.top()), QPointF(bx, screen.bottom()));
-//        LonLat trOffset = offset;
-//        qreal m = qRound((it + tmp) / 2 / 360.0) * -360.0;
-//        trOffset.setX(trOffset.x() + m);
-        
-//        list << WorldTransform(viewport, trOffset, scale, trScreen);
-//    } while (it < screen.right());
-    
-//    return list;
-//}
-
 MapRenderer::MapRenderer(QObject* parent) :
     QObject(parent)
 {
@@ -98,11 +59,8 @@ void MapRenderer::setMapDrawer(MapDrawer* drawer)
 {
     if (m_mapDrawer)
         delete m_mapDrawer;
-    
+
     m_mapDrawer = drawer;
-    if (m_mapDrawer) {
-        m_mapDrawer->initialize(this);
-    }
 }
 
 void MapRenderer::attachMapAddon(MapAddon* addon)
@@ -184,7 +142,7 @@ void MapRenderer::paint(QPaintDevice* device, const QSet<const MapItem*>& select
         qWarning("No scene set! Cannot render without a scene. Did you forget to call MapRenderer::setScene()?");
         return;
     }
-    
+
     MapItem::DrawFlags flags = m_defaultDrawFlags;
     auto transform = this->transform();
     WorldPainter painter(transform, device);
@@ -202,15 +160,15 @@ void MapRenderer::paint(QPaintDevice* device, const QSet<const MapItem*>& select
 
     // Draw areas, they are below items
     QList<const MapArea*> areas;
-    for (const QRectF& rect: viewport.rectangles())
+    for (const QRectF& rect: qAsConst(viewport.rectangles()))
         areas.append(scene()->areasInRect(rect));
 
-    for (auto a: areas)
+    for (const MapArea* a: areas)
         a->draw(&painter, flags);
     
     // Pick all items that are on the screen
     QList<const MapItem*> items;
-    for (const QRectF& rect: viewport.rectangles())
+    for (const QRectF& rect: qAsConst(viewport.rectangles()))
         items.append(scene()->itemsInRect(rect));
 
     // Sort all items
@@ -218,7 +176,7 @@ void MapRenderer::paint(QPaintDevice* device, const QSet<const MapItem*>& select
         return a->z() < b->z();
     });
 
-    for (auto item: items)
+    for (const MapItem* item: items)
         item->draw(&painter, selectedItems.contains(item) ? (flags | MapItem::DrawSelected) : flags);
 
     for (MapAddon* addon: this->m_addons)

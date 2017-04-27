@@ -22,52 +22,53 @@
 
 #include "coreexport.h"
 #include <QObject>
+#include <QJsonObject>
+#include <QList>
 #include <QMap>
 
 namespace Vatsinator { namespace Core {
+
+class PluginFinderHelper;
 
 /**
  * \ingroup Core
  * @{
  */
-class __VtrCoreApi__ PluginFinder : public QObject {
-    Q_OBJECT
+class __VtrCoreApi__ PluginFinder {
+    friend class PluginFinderHelper;
 
 public:
     /**
-     * \internal
+     * Returns list of plugins that implement the given IID.
+     * Each string is a unique class name of a plugin.
      */
-    explicit PluginFinder(QObject* parent = nullptr);
-    
+    static QList<QString> pluginsForIid(const QString& iid);
+
     /**
-     * Returns list of plugins that implement the given interface ID.
+     * Returns MetaData of the given plugin.
      */
-    static QList<QObject*> pluginsForIid(const QString& iid);
+    static QJsonObject pluginMetaData(const QString& className);
     
     /**
      * Returns a plugin for the given class name.
      */
-    static QObject* pluginByName(const QString& name);
+    static QObject* plugin(const QString& className);
+
+    PluginFinder() = delete;
     
 private:
-    /**
-     * Locates all the plugins.
-     */
-    void locatePlugins();
+    static void readPlugin(const QString& fileName);
+    static bool loadPlugin(const QString& fileName);
     
-    /**
-     * Reads the plugin's metadata.
-     */
-    void readPlugin(const QString& fileName);
-    
-    QList<QObject*> pluginsForIidImpl(const QString& iid);
-    QObject* pluginByNameImpl(const QString& name);
-    QObject* getPlugin(const QString& fileName);
-    bool loadPlugin(const QString& fileName);
-    
-    QMap<QString, QString> m_pluginsByIid; /**< IID <-> file name */
-    QMap<QString, QString> m_pluginsByName; /**< class name <-> file name */
-    QMap<QString, QObject*> m_instances; /**< file name <-> instance */
+    struct PluginData {
+        QString className;
+        QString fileName;
+        QString iid;
+        QJsonObject metaData;
+    };
+
+    static QList<PluginData> m_plugins;
+    static QMap<QString, QObject*> m_loadedPlugins; /**< fileName <-> instance */
 
 }; /** @} */
 

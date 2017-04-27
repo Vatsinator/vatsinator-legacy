@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
         for (const QString& prefix: qAsConst(prefixes)) {
             QTranslator* tr = new QTranslator(qApp);
-            if (tr->load(locale, prefix, "_", QStringLiteral(VATSINATOR_PREFIX "translations"))) {
+            if (tr->load(locale, prefix, "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
                 qDebug() << "Loaded translation:" << prefix << locale;
                 QCoreApplication::installTranslator(tr);
                 translators << tr;

@@ -20,58 +20,73 @@
 #include "pluginfinder.h"
 #include <QtCore>
 
-auto PluginFinderPropKey = "pluginFinderInstance";
-
 namespace Vatsinator { namespace Core {
 
-PluginFinder::PluginFinder(QObject* parent) : QObject(parent)
-{
-    locatePlugins();
-}
-
-QList<QObject*> PluginFinder::pluginsForIid(const QString& iid)
-{
-    PluginFinder* instance = qApp->property(PluginFinderPropKey).value<PluginFinder*>();
-    Q_ASSERT(instance);
-    return instance->pluginsForIidImpl(iid);
-}
-
-QObject* PluginFinder::pluginByName(const QString& name)
-{
-    PluginFinder* instance = qApp->property(PluginFinderPropKey).value<PluginFinder*>();
-    Q_ASSERT(instance);
-    return instance->pluginByNameImpl(name);
-}
-
-void PluginFinder::locatePlugins()
-{
-    QStringList locations = { QCoreApplication::applicationDirPath() % "/plugins" };
+class __VtrCoreHide__ PluginFinderHelper {
+public:
+    void locatePlugins() {
+        QStringList locations = { QCoreApplication::applicationDirPath() % "/plugins" };
 
 #ifdef Q_OS_WIN32
-    locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../plugins"));
+# warning "Add plugin locations for Win32"
 #endif
 
-#if defined(Q_CC_MSVC) && !defined(QT_NO_DEBUG)
-    locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../plugins/Debug"));
+#ifdef Q_OS_MACOS
+# warning "Add plugin locations for macOS"
 #endif
-    
+
 #ifdef Q_OS_ANDROID
-    /* This is a hacky way, but I couldn't find better */
-    QDir dir(QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).first());
-    dir.cdUp();
-    locations.append(dir.absolutePath() % "/qt-reserved-files/plugins");
+        /* This is a hacky way, but I couldn't find better */
+        QDir dir(QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).first());
+        dir.cdUp();
+        locations.append(dir.absolutePath() % "/qt-reserved-files/plugins");
 #endif
-    
-    std::for_each(locations.begin(), locations.end(), [this](auto path) {
-        QDir dir(path);
-        QStringList files = dir.entryList(QDir::Files);
-        std::for_each(files.begin(), files.end(), [this, &dir](auto file) {
-            this->readPlugin(dir.absoluteFilePath(file));
-        });
-    });
+
+        for (const QString& loc: qAsConst(locations)) {
+            QDir dir(loc);
+            QStringList files = dir.entryList(QDir::Files);
+            for (const QString& file: qAsConst(files))
+                PluginFinder::readPlugin(dir.absoluteFilePath(file));
+        }
+    }
+};
+
+QList<QString> PluginFinder::pluginsForIid(const QString& iid)
+{
+    QList<QString> names;
+    for (const PluginData& p: qAsConst(m_plugins)) {
+        if (p.iid == iid)
+            names.append(p.className);
+    }
+
+    return names;
 }
 
-void PluginFinder::readPlugin(const QString& fileName)
+QJsonObject PluginFinder::pluginMetaData(const QString& className)
+{
+    auto it = std::find_if(m_plugins.begin(), m_plugins.end(), [&className](auto it) {
+        return it.className == className;
+    });
+
+    return it->metaData;
+}
+
+QObject* PluginFinder::plugin(const QString& className)
+{
+    auto it = std::find_if(m_plugins.begin(), m_plugins.end(), [&className](auto it) {
+        return it.className == className;
+    });
+
+    if (!m_loadedPlugins.contains(it->fileName)) {
+        bool result = loadPlugin(it->fileName);
+        if (!result)
+            return nullptr;
+    }
+
+    return m_loadedPlugins.value(it->fileName);
+}
+
+void PluginFinder::readPlugin(const QString &fileName)
 {
     if (QLibrary::isLibrary(fileName)) {
         QPluginLoader loader(fileName);
@@ -80,52 +95,19 @@ void PluginFinder::readPlugin(const QString& fileName)
             qWarning("Error loading %s: IID is undefined", qPrintable(fileName));
             return;
         }
-        
+
         QString iid = metaData["IID"].toString();
-        m_pluginsByIid.insertMulti(iid, fileName);
-        
-        QString className = metaData["className"].toString();
-        m_pluginsByName.insert(className, fileName);
-        
+        QString name = metaData["className"].toString();
+        QJsonObject metaData2 = metaData["MetaData"].toObject();
+
         qDebug("Plugin found in %s (%s implements %s)", qPrintable(fileName),
-               qPrintable(className), qPrintable(iid));
+               qPrintable(name), qPrintable(iid));
+
+        m_plugins.append({name, fileName, iid, metaData2});
     }
 }
 
-QList<QObject*> PluginFinder::pluginsForIidImpl(const QString& iid)
-{
-    QList<QObject*> plugins;
-    auto fileNames = m_pluginsByIid.values(iid);
-    std::for_each(fileNames.begin(), fileNames.end(), [this, &plugins](auto fileName) {
-        plugins.append(this->getPlugin(fileName));
-    });
-    
-    return plugins;
-}
-
-QObject* PluginFinder::pluginByNameImpl(const QString& name)
-{
-    QString fileName = m_pluginsByName.value(name);
-    if (fileName.isEmpty()) {
-        qWarning("Failed loading %s: no such plugin", qPrintable(name));
-        return nullptr;
-    }
-    
-    return getPlugin(fileName);
-}
-
-QObject* PluginFinder::getPlugin(const QString& fileName)
-{
-    if (!m_instances.contains(fileName)) {
-        bool result = this->loadPlugin(fileName);
-        if (!result)
-            return nullptr;
-    }
-    
-    return m_instances.value(fileName);
-}
-
-bool PluginFinder::loadPlugin(const QString& fileName)
+bool PluginFinder::loadPlugin(const QString &fileName)
 {
     QPluginLoader loader(fileName);
     QObject* instance = loader.instance();
@@ -133,20 +115,21 @@ bool PluginFinder::loadPlugin(const QString& fileName)
         qWarning("Error loading %s (error message: %s)", qPrintable(fileName), qPrintable(loader.errorString()));
         return false;
     } else {
-        m_instances.insert(fileName, instance);
+        m_loadedPlugins.insert(fileName, instance);
         qDebug("Loaded %s (%s)", qPrintable(fileName), qPrintable(instance->metaObject()->className()));
         return true;
     }
 }
+
+QList<PluginFinder::PluginData> PluginFinder::m_plugins;
+QMap<QString, QObject*> PluginFinder::m_loadedPlugins;
 
 }} /* namespace Vatsinator::Core */
 
 
 static void initialize()
 {
-    using namespace Vatsinator::Core;
-    
-    PluginFinder* pf = new PluginFinder(qApp);
-    qApp->setProperty(PluginFinderPropKey, QVariant::fromValue(pf));
+    Vatsinator::Core::PluginFinderHelper p;
+    p.locatePlugins();
 }
 Q_COREAPP_STARTUP_FUNCTION(initialize)

@@ -40,6 +40,28 @@ foreach (file ${translation_sources})
         add_qt_qm_file (qt_qms "qt" "${language_code}")
         add_qt_qm_file (qt_qms "qtbase" "${language_code}")
     endif ()
+
+    list (APPEND vatsinator_LANGUAGES ${language_code})
 endforeach ()
 
 install (FILES ${qt_qms} DESTINATION ${vatsinator_RESOURCES_TARGET_DIR}/translations)
+
+if (APPLE)
+    foreach (lang ${vatsinator_LANGUAGES})
+        add_custom_command (
+            TARGET i18n POST_BUILD
+            COMMAND mkdir ARGS -p
+                ${CMAKE_BINARY_DIR}/vatsinator.resources/${lang}.lproj
+            COMMENT "Enabling MacOS menu translations for ${lang}..."
+        )
+
+        configure_file (
+            ${CMAKE_CURRENT_SOURCE_DIR}/locversion.plist.in
+            ${CMAKE_BINARY_DIR}/vatsinator.resources/${lang}.lproj/locversion.plist
+        )
+
+        install (FILES "${CMAKE_BINARY_DIR}/vatsinator.resources/${lang}.lproj/locversion.plist"
+            DESTINATION ${vatsinator_RESOURCES_TARGET_DIR}/${lang}.lproj
+        )
+    endforeach ()
+endif ()

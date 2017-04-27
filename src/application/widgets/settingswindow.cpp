@@ -20,11 +20,18 @@
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
 #include "core/option.h"
+#include "core/pluginfinder.h"
+#include "gui/mapdrawerplugin.h"
 #include "config.h"
 #include <QtWidgets>
 #include <functional>
 
+#ifdef Q_OS_MACOS
+# include <QtMacExtras/QtMacExtras>
+#endif
+
 using namespace Vatsinator::Core;
+using namespace Vatsinator::Gui;
 
 SettingsWindow::SettingsWindow(QWidget* parent) :
     QWidget(parent),
@@ -32,7 +39,13 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     fillLanguages();
+    fillPlugins();
     
+#ifdef Q_OS_MACOS
+    // adjust the window so it looks native on MacOS
+    macosFixup();
+#endif
+
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &SettingsWindow::handleButton);
     
     Option* statistics = new Option("misc/statistics", this);
@@ -40,7 +53,7 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
     
     Option* language = new Option("misc/language", this);
     /* Track the QComboBox's currentData property, but there is no notifier signal for it */
-    connect(ui->language, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [language, this](int index) {
+    connect(ui->language, QOverload<int>::of(&QComboBox::currentIndexChanged), [language, this](int index) {
         QString locale = this->ui->language->itemData(index).toString();
         language->setValue(locale);
     });
@@ -48,10 +61,19 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
     QString locale = language->value().toString();
     int index = ui->language->findData(locale);
     ui->language->setCurrentIndex(index);
+
+    Option* mapPlugin = new Option("plugins/map_drawer", this);
+    connect(ui->mapTypes, QOverload<int>::of(&QComboBox::currentIndexChanged), [mapPlugin, this](int index) {
+        QString pluginName = this->ui->mapTypes->itemData(index).toString();
+        mapPlugin->setValue(pluginName);
+    });
+
+    QString pluginName = mapPlugin->value().toString();
+    index = ui->mapTypes->findData(pluginName);
+    ui->mapTypes->setCurrentIndex(index);
     
-    m_options << statistics << language;
+    m_options << statistics << language << mapPlugin;
     
-    // doesn't work on Linux, I know
     setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
 }
 
@@ -64,7 +86,7 @@ void SettingsWindow::showEvent(QShowEvent* event)
     setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, this->size(),
                                     QDesktopWidget().screenGeometry(QApplication::activeWindow())));
     
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
     std::for_each(m_options.begin(), m_options.end(), std::bind(&Option::setBlocked, std::placeholders::_1, true));
 #endif
 }
@@ -74,6 +96,12 @@ void SettingsWindow::changeEvent(QEvent* event)
     if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
         event->accept();
+
+#ifdef Q_OS_MACOS
+        ui->stackedWidget->currentWidget()->adjustSize();
+        ui->stackedWidget->adjustSize();
+        adjustSize();
+#endif
     } else {
         event->ignore();
     }
@@ -81,7 +109,7 @@ void SettingsWindow::changeEvent(QEvent* event)
 
 void SettingsWindow::fillLanguages()
 {
-    QDir dir(QString(VATSINATOR_PREFIX "translations"));
+    QDir dir(QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     QStringList trs = dir.entryList({ "vatsinator_*.qm" });
     for (auto tr: trs) {
         QString locale = tr;
@@ -92,6 +120,77 @@ void SettingsWindow::fillLanguages()
         ui->language->addItem(lang, locale);
     }
 }
+
+void SettingsWindow::fillPlugins()
+{
+    QStringList mapPlugins = PluginFinder::pluginsForIid(qobject_interface_iid<MapDrawerPlugin*>());
+    for (const QString& p: qAsConst(mapPlugins)) {
+        QJsonObject metaData = PluginFinder::pluginMetaData(p);
+        QString pluginName = metaData.contains("name") ? metaData.value("name").toString() : p;
+
+        ui->mapTypes->addItem(pluginName, p);
+    }
+}
+
+#ifdef Q_OS_MACOS
+void SettingsWindow::macosFixup()
+{
+    setMinimumWidth(400);
+
+    QMacToolBar* macTb = new QMacToolBar(this);
+    QSignalMapper* mapper = new QSignalMapper(this);
+    connect(mapper, qOverload<int>(&QSignalMapper::mapped), ui->stackedWidget, &QStackedWidget::setCurrentIndex);
+
+    auto adjustSizeToWidgetNo = [this](int n) {
+        for (int i = 0; i < ui->stackedWidget->count(); ++i) {
+            QWidget* w = ui->stackedWidget->widget(i);
+            QSizePolicy::Policy policy = i == n ? QSizePolicy::Preferred : QSizePolicy::Ignored;
+            w->setSizePolicy(policy, policy);
+            w->adjustSize();
+        }
+
+        ui->stackedWidget->adjustSize();
+        adjustSize();
+    };
+
+    connect(mapper, qOverload<int>(&QSignalMapper::mapped), [macTb, adjustSizeToWidgetNo, this](int i) {
+        QMacToolBarItem* item = macTb->items().at(i);
+        setWindowTitle(item->text());
+
+        adjustSizeToWidgetNo(i);
+    });
+
+    for (int i = 0; i < ui->listWidget->count(); ++i) {
+        QListWidgetItem* item = ui->listWidget->item(i);
+        QMacToolBarItem* mtbi = macTb->addItem(item->icon(), item->text());
+        mtbi->setSelectable(true);
+        connect(mtbi, &QMacToolBarItem::activated, mapper, qOverload<>(&QSignalMapper::map));
+        mapper->setMapping(mtbi, i);
+
+        QWidget* page = ui->stackedWidget->widget(i);
+        page->setContentsMargins(0, 0, 0, 0);
+        page->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
+
+    setWindowTitle(macTb->items().at(0)->text());
+    setWindowIcon(QIcon());
+    setContentsMargins(0, 0, 0, 0);
+
+    ui->gridLayout->removeWidget(ui->listWidget);
+    ui->listWidget->setVisible(false);
+    ui->gridLayout->removeWidget(ui->buttonBox);
+    ui->buttonBox->setVisible(false);
+
+    adjustSizeToWidgetNo(0);
+
+    window()->winId();
+    macTb->attachToWindow(window()->windowHandle());
+
+    QFont font = ui->statsLabel->font();
+    font.setPointSize(font.pointSize() - 1);
+    ui->statsLabel->setFont(font);
+}
+#endif
 
 void SettingsWindow::handleButton(QAbstractButton* button)
 {

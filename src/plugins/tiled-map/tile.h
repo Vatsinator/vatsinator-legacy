@@ -20,19 +20,21 @@
 #ifndef TILE_H
 #define TILE_H
 
+#include <QHash>
 #include <QPixmap>
 #include <QRectF>
 #include <QUrl>
 #include <QString>
 
+namespace TiledMapDrawer {
+
 class TileManager;
 
 /**
- * \ingroup Tiled-mad-drawer
+ * \ingroup Tiled-map-drawer
  * @{
  */
 class Tile {
-    
     friend class TileManager;
     
 public:
@@ -44,11 +46,11 @@ public:
      * Gets the tile's rectangle global coords.
      */
     QRectF coords() const;
-    
+
     /**
-     * Gets the tile's pixmap.
+     * Gets the tile's image.
      */
-    QPixmap pixmap() const;
+    QImage image() const;
     
     /**
      * Returns \c true if the tile is already downloaded.
@@ -65,32 +67,37 @@ public:
     quint32 zoom() const { return m_zoom; }
     
     const QString& cacheKey() const { return m_cacheKey; }
+
+    static constexpr int tileWidth() { return 256; }
+    static constexpr int tileHeight() { return 256; }
     
 private:
     QString cachePath() const;
-    QPixmap load() const;
+    QImage load() const;
     
     quint32 m_x = 0;
     quint32 m_y = 0;
     quint32 m_zoom = 0;
     
-    mutable QRectF m_coords;
     mutable bool m_coordsCalculated = false;
+    mutable QRectF m_coords;
     
     QString m_cacheKey;
     
 }; /** @} */
 
-inline bool operator==(const Tile& a, const Tile& b)
+inline bool operator==(const TiledMapDrawer::Tile& a, const TiledMapDrawer::Tile& b)
 {
     return a.zoom() == b.zoom() && a.x() == b.x() && a.y() == b.y();
 }
 
-inline uint qHash(const Tile& key, uint seed)
+inline uint qHash(const TiledMapDrawer::Tile& key, uint seed)
 {
-    return qHash(key.x(), seed) ^ qHash(key.y(), seed) ^ qHash(key.zoom(), seed);
+    return ::qHash(key.x(), seed) ^ ::qHash(key.y(), seed) ^ ::qHash(key.zoom(), seed);
 }
 
-Q_DECLARE_METATYPE(Tile)
+} /* namespace TiledMapDrawer */
+
+Q_DECLARE_METATYPE(TiledMapDrawer::Tile)
 
 #endif // TILE_H

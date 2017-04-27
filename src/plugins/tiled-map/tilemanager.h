@@ -30,10 +30,12 @@
 #include <QScopedPointer>
 #include <QSet>
 
+namespace TiledMapDrawer {
+
 struct TileCoords;
 
 /**
- * \ingroup Tiled-mad-drawer
+ * \ingroup Tiled-map-drawer
  * @{
  */
 class TileManager : public QObject {
@@ -53,17 +55,17 @@ public:
      * Returns list of tiles that are inside the given rectangle,
      * for the given zoom.
      */
-    QList<Tile> tiles(QRectF rect, quint32 zoom);
+    QList<Tile> tiles(QRectF rect, quint32 zoom, const QList<Tile>& exclude);
     
     /**
      * Returns the tile under the provided coordinates.
      */
     Tile tile(quint32 x, quint32 y, quint32 zoom);
-    
+
     /**
-     * Gets the pixmap of the provided tile.
+     * Gets the rendered image of the given tile.
      */
-    QPixmap pixmap(const Tile& tile, QRect* source, int levelsLeft = 5);
+    QImage tileRendered(const Tile& tile);
     
     /**
      * Calculate global coordinates for the given tile.
@@ -71,6 +73,7 @@ public:
     static QRectF tileCoords(quint64 x, quint64 y, quint64 zoom);
     
 private:
+    QImage tileRenderedImpl(const Tile& tile, QRect* source, int levelsLeft = 5);
     QList<Vatsinator::Core::FileDownloader*> freeDownloaders();
     
 private slots:
@@ -87,5 +90,7 @@ private:
     QSet<Tile> m_downloading;
     
 }; /** @} */
+
+} /* namespace TiledMapDrawer */
 
 #endif // TILEMANAGER_H
