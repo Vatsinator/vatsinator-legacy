@@ -28,7 +28,7 @@ public:
         QStringList locations = { QCoreApplication::applicationDirPath() % "/plugins" };
 
 #ifdef Q_OS_WIN32
-# warning "Add plugin locations for Win32"
+# pragma message ("Add plugin locations for Win32")
 #endif
 
 #ifdef Q_OS_MACOS
