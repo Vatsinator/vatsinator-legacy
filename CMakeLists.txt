@@ -1,5 +1,5 @@
 project (vatsinator)
-cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.7)
 
 # Automatically link Qt executables to qtmain target on Windows
 if (POLICY CMP0020)
@@ -9,6 +9,10 @@ endif ()
 # Double colon in target name means ALIAS or IMPORTED target.
 if (POLICY CMP0028)
     cmake_policy (SET CMP0028 NEW)
+endif ()
+
+if (CMAKE_SYSTEM_NAME MATCHES "Android")
+    set (ANDROID 1)
 endif ()
 
 if (UNIX AND NOT APPLE AND NOT MINGW AND NOT ANDROID)
@@ -99,7 +103,7 @@ else ()
 endif ()
 
 if (ANDROID)
-    message (STATUS " * platform: Android ABI: ${ANDROID_ABI}")
+    message (STATUS " * platform: Android ABI: ${CMAKE_ANDROID_ARCH_ABI}")
 endif ()
 
 if (BUILD_TESTING)

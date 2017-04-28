@@ -52,6 +52,10 @@ elseif (APPLE)
 elseif (ANDROID)
     # in the assets, e.g. assets:/translations
     set (vatsinator_RESOURCES_TARGET_DIR "assets")
+
+    set (vatsinator_LIBRARY_TARGET_DIR "libs/${CMAKE_ANDROID_ARCH_ABI}")
+    set (vatsinator_BINARY_TARGET_DIR "bin")
+    set (vatsinator_ARCHIVE_TARGET_DIR "lib")
 endif ()
 
 foreach (module ${vatsinator_MODULES})
