@@ -78,6 +78,11 @@ QObject* PluginFinder::plugin(const QString& className)
         return it.className == className;
     });
 
+    if (it == m_plugins.end()) {
+        qWarning("Plugin \"%s\" not found", qPrintable(className));
+        return nullptr;
+    }
+
     if (!m_loadedPlugins.contains(it->fileName)) {
         bool result = loadPlugin(it->fileName);
         if (!result)

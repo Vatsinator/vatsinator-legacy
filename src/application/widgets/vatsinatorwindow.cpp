@@ -235,9 +235,15 @@ void VatsinatorWindow::showSettingsWindow()
 void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 {
     MapDrawerPlugin* plugin = qobject_cast<MapDrawerPlugin*>(PluginFinder::plugin(name.toString()));
-    MapDrawer* drawer = plugin->create(ui->map->renderer());
-    ui->map->renderer()->setMapDrawer(drawer);
-    ui->map->update();
+    if (plugin) {
+        MapDrawer* drawer = plugin->create(ui->map->renderer());
+        ui->map->renderer()->setMapDrawer(drawer);
+        ui->map->update();
+    } else { // restore to default
+        Option* o = new Option("plugins/map_drawer", QString(MapDrawerDefaultPlugin), this);
+        o->setValue(QString(MapDrawerDefaultPlugin));
+        o->deleteLater();
+    }
 }
 
 void VatsinatorWindow::showMetarWindow()
