@@ -11,7 +11,6 @@ if (WIN32)
     
     set (CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}Setup-${vatsinator_VERSION}")
     set (CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_NAME}")
-    set (CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}\\\\dist\\\\install.bmp")
     
     set (CPACK_NSIS_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
     set (CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_NAME}")
@@ -19,7 +18,7 @@ if (WIN32)
     set (CPACK_NSIS_URL_INFO_ABOUT "http://vatsinator.eu.org/")
     set (CPACK_NSIS_CONTACT "michal@garapich.pl")
     set (CPACK_NSIS_MUI_FINISHPAGE_RUN "vatsinator.exe")
-    set (CPACK_NSIS_MENU_LINKS "http://vatsinator.eu.org/" "Vatsinator Homepage")
+    set (CPACK_NSIS_MENU_LINKS "http://vatsinator.eu.org/" "${CPACK_PACKAGE_NAME} Homepage")
     set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
         CreateShortCut \\\"$DESKTOP\\\\Vatsinator.lnk\\\" \\\"$INSTDIR\\\\vatsinator.exe\\\"
     ")
@@ -30,8 +29,8 @@ elseif (APPLE)
     set (CPACK_GENERATOR "DragNDrop")
 
     set (CPACK_DMG_FORMAT "UDZO")
-    set (CPACK_DMG_VOLUME_NAME "Vatsinator")
-    set (CPACK_PACKAGE_FILE_NAME "Vatsinator-${vatsinator_VERSION}")
+    set (CPACK_DMG_VOLUME_NAME "${CPACK_PACKAGE_NAME}")
+    set (CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${vatsinator_VERSION}")
 endif ()
 
 include (CPack)
