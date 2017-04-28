@@ -21,7 +21,7 @@
 #include "gui/airportitem.h"
 #include "gui/firitem.h"
 #include "gui/flightitem.h"
-#include "gui/mapdrawer.h"
+#include "gui/mapdrawerplugin.h"
 #include "gui/modelmatcher.h"
 #include "core/resourcefile.h"
 #include "core/pluginfinder.h"
@@ -55,12 +55,13 @@ Map::Map(QQuickItem* parent) :
     m_renderer->setScene(m_scene);
     
     // TODO Selected plugin from options
-    MapDrawer* drawer = nullptr;
-    auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<MapDrawer*>());
+    MapDrawerPlugin* mapPlugin = nullptr;
+    auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<MapDrawerPlugin*>());
     if (plugins.length() > 0)
-        drawer = qobject_cast<MapDrawer*>(plugins.first());
+        mapPlugin = qobject_cast<MapDrawerPlugin*>(PluginFinder::plugin(plugins.first()));
     
-    m_renderer->setMapDrawer(drawer);
+    if (mapPlugin)
+        m_renderer->setMapDrawer(mapPlugin->create(m_renderer));
     
     connect(qApp, &QGuiApplication::aboutToQuit, this, &Map::saveMapState);
     connect(qApp, &QGuiApplication::applicationStateChanged, this, &Map::handleAppStateChanged);

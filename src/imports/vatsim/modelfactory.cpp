@@ -52,7 +52,7 @@ NotamListModel* ModelFactory::notams(QVariant object)
     
     auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<NotamProvider*>());
     if (plugins.length() > 0) {
-        provider = qobject_cast<NotamProvider*>(plugins.first());
+        provider = qobject_cast<NotamProvider*>(PluginFinder::plugin(plugins.first()));
         Q_ASSERT(provider);
     } else {
         return nullptr;
