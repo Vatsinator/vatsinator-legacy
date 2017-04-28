@@ -42,11 +42,11 @@ elseif (WIN32)
     set (vatsinator_ARCHIVE_TARGET_DIR "lib")
 elseif (APPLE)
     # inside the bundle, e.g. vatsinator.app/Contents/Resources/translations
-    set (vatsinator_RESOURCES_TARGET_DIR "Contents/Resources")
+    set (vatsinator_RESOURCES_TARGET_DIR "${PROJECT_NAME}.app/Contents/Resources")
     # inside the bundle, e.g. vatsinator.app/Contents/MacOS/vatsinator
-    set (vatsinator_BINARY_TARGET_DIR "Contents/MacOS")
+    set (vatsinator_BINARY_TARGET_DIR "${PROJECT_NAME}.app/Contents/MacOS")
     # linside the bundle, e.g. vatsinator.app/Contents/MacOS/libvtrcore.dylib
-    set (vatsinator_LIBRARY_TARGET_DIR "Contents/MacOS")
+    set (vatsinator_LIBRARY_TARGET_DIR "${PROJECT_NAME}.app/Contents/MacOS")
     # not used on macOS
     set (vatsinator_ARCHIVE_TARGET_DIR "lib")
 elseif (ANDROID)

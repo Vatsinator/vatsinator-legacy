@@ -32,7 +32,8 @@ public:
 #endif
 
 #ifdef Q_OS_MACOS
-# warning "Add plugin locations for macOS"
+        locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../PlugIns"));
+        locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../../../plugins"));
 #endif
 
 #ifdef Q_OS_ANDROID

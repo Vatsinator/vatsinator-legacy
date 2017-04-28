@@ -25,7 +25,7 @@ set (vatsinator_UIS
 add_executable (vatsinator MACOSX_BUNDLE WIN32 ${vatsinator_SRCS} ${vatsinator_UIS})
 
 if (APPLE)
-    target_sources (vatsinator cocoautils.mm)
+    target_sources (vatsinator PUBLIC cocoautils.mm)
 endif ()
 
 # application icon for Windows
@@ -34,7 +34,7 @@ if (WIN32)
     string (REGEX REPLACE "-.*" "" vatsinator_VERSION_WINDRES ${vatsinator_VERSION_WINDRES})
     configure_file (${CMAKE_CURRENT_SOURCE_DIR}/dist/vatsinator.rc.in ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.rc)
     configure_file (${CMAKE_CURRENT_SOURCE_DIR}/dist/vatsinator.ico ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.ico COPYONLY)
-    target_sources (vatsinator ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.rc)
+    target_sources (vatsinator PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/vatsinator.rc)
 endif ()
 
 target_link_libraries (vatsinator
@@ -45,7 +45,7 @@ target_link_libraries (vatsinator
 )
 
 if (APPLE)
-    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/dist/vatsinator.icns DESTINATION Contents/Resources)
+    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/dist/vatsinator.icns DESTINATION ${PROJECT_NAME}.app/Contents/Resources)
     set_target_properties (vatsinator PROPERTIES
         MACOSX_BUNDLE_ICON_FILE "vatsinator.icns"
         MACOSX_BUNDLE_BUNDLE_NAME "Vatsinator"
@@ -166,8 +166,11 @@ endif ()
 
 set (CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/dist/vatsinator.ico")
 set (CPACK_NSIS_MUI_UNIICON "${CMAKE_CURRENT_SOURCE_DIR}/dist/uninstall.ico")
-set (CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}\\\\dist\\\\install.bmp")
 set (CPACK_DMG_DS_STORE "${CMAKE_CURRENT_SOURCE_DIR}/dist/DS_STORE")
 set (CPACK_DMG_BACKGROUND_IMAGE "${CMAKE_CURRENT_SOURCE_DIR}/dist/dmg-background.png")
+
+if (WIN32)
+    set (CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}\\\\dist\\\\install.bmp")
+endif ()
 
 include (PackageVatsinator)
