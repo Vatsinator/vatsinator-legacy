@@ -14,10 +14,12 @@
                   android:label="@ANDROID_APP_NAME@"
                   android:screenOrientation="unspecified"
                   android:launchMode="singleTop">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
             <meta-data android:name="android.app.lib_name" android:value="@ANDROID_APP_LIB@"/>
             <meta-data android:name="android.app.qt_sources_resource_id" android:resource="@array/qt_sources"/>
             <meta-data android:name="android.app.repository" android:value="default"/>
@@ -31,7 +33,7 @@
             <meta-data android:name="android.app.use_local_qt_libs" android:value="@QT_BUNDLE_LOCAL_QT_LIBS@"/>
             <meta-data android:name="android.app.libs_prefix" android:value="/data/local/tmp/qt/"/>
             <meta-data android:name="android.app.load_local_libs" android:value="plugins/platforms/android/libqtforandroid.so"/>
-            <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid.jar:jar/QtAndroidAccessibility.jar:jar/QtAndroid-bundled.jar:jar/QtAndroidAccessibility-bundled.jar"/>
+            <meta-data android:name="android.app.load_local_jars" android:value="jar/QtAndroid-bundled.jar:jar/QtAndroidAccessibility-bundled.jar"/>
             <meta-data android:name="android.app.static_init_classes" android:value=""/>
             <!--  Messages maps -->
             <meta-data android:value="@string/ministro_not_found_msg" android:name="android.app.ministro_not_found_msg"/>
@@ -52,10 +54,23 @@
                           signal is sent! -->
             <meta-data android:name="android.app.background_running" android:value="false"/>
             <!-- Background running -->
+
+            <!-- auto screen scale factor -->
+            <meta-data android:name="android.app.auto_screen_scale_factor" android:value="false"/>
+            <!-- auto screen scale factor -->
+
+            <!-- extract android style -->
+            <!-- available android:values :
+                * full - useful QWidget & Quick Controls 1 apps
+                * minimal - useful for Quick Controls 2 apps, it is much faster than "full"
+                * none - useful for apps that don't use any of the above Qt modules
+                -->
+            <meta-data android:name="android.app.extract_android_style" android:value="minimal"/>
+            <!-- extract android style -->
         </activity>
     </application>
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="21"/>
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="19"/>
     <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
 @ANDROID_PERMISSIONS@

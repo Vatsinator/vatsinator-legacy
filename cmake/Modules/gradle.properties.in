@@ -1,0 +1,4 @@
+androidBuildToolsVersion=${androidBuildToolsVersion}
+androidCompileSdkVersion=${androidCompileSdkVersion}
+buildDir=build
+qt5AndroidDir=${qt5AndroidDir}

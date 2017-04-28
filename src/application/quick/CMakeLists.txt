@@ -2,6 +2,7 @@ find_package (Qt5Quick 5.7 REQUIRED) # 5.7 for QtQuick.Controls.2
 include_directories (${Qt5Quick_INCLUDE_DIRS})
 
 find_package (Qt5Xml REQUIRED)
+find_package (OpenSSL)
 
 set (vatsinator_QUICK_QMLS
     AirportNodeDetails.qml
@@ -23,7 +24,7 @@ target_link_libraries (vatsinator
     vtrgui
 )
 add_dependencies (vatsinator i18n)
-install (TARGETS vatsinator DESTINATION libs/${ANDROID_ABI})
+install (TARGETS vatsinator DESTINATION libs/${CMAKE_ANDROID_ARCH_ABI})
 
 include (AndroidApkUtils)
 
@@ -69,4 +70,7 @@ android_deploy_apk(vatsinator
     PLUGINS
         euroutenotamprovider
         tiledmapdrawer
+    EXTRA_LIBS
+        ${OPENSSL_CRYPTO_LIBRARY}
+        ${OPENSSL_SSL_LIBRARY}
 )
