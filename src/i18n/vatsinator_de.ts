@@ -519,47 +519,57 @@
         <translation>Vatsinator - Einstellungen</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="45"/>
+        <location filename="../application/widgets/settingswindow.ui" line="147"/>
+        <source>&amp;VATSIM</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../application/widgets/settingswindow.ui" line="214"/>
+        <source>Map type:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../application/widgets/settingswindow.ui" line="286"/>
         <source>Miscallenous</source>
         <translation>Verschiedenes</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="54"/>
+        <location filename="../application/widgets/settingswindow.ui" line="295"/>
         <source>Network</source>
         <translation>Netzwerk</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="80"/>
+        <location filename="../application/widgets/settingswindow.ui" line="304"/>
+        <source>Plugins</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../application/widgets/settingswindow.ui" line="49"/>
         <source>Language:</source>
         <translation>Sprache:</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="116"/>
+        <location filename="../application/widgets/settingswindow.ui" line="85"/>
         <source>If enabled, some data (such as operating system, time of application usage, warnings and errors) will be sent to Vatsinator servers.</source>
         <translation>Wenn aktiviert, werden einige Daten (wie z.B. Betriebssystem, Zeit der Anwendungsnutzung, Warnungen und Fehler) an die Vatsinator-Server gesendet werden.</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="129"/>
+        <location filename="../application/widgets/settingswindow.ui" line="98"/>
         <source>Send anonymous statistics</source>
         <translation>Anonyme Statistiken senden</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="139"/>
+        <location filename="../application/widgets/settingswindow.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Learn more about Vatsinator privacy policy&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://vatsinator.eu.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#539fa3;&quot;&gt;Erfahren Sie mehr über die Vatsinator-Datenschutzerklärung&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="153"/>
-        <source>VA&amp;TSIM</source>
-        <translation>VA&amp;TSIM</translation>
-    </message>
-    <message>
-        <location filename="../application/widgets/settingswindow.ui" line="163"/>
+        <location filename="../application/widgets/settingswindow.ui" line="170"/>
         <source>NOAA</source>
         <translation>NOAA</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="183"/>
+        <location filename="../application/widgets/settingswindow.ui" line="177"/>
         <source>METAR source:</source>
         <translation>METAR-Quelle:</translation>
     </message>
@@ -752,19 +762,19 @@
 <context>
     <name>Vatsinator::Widgets::MapWidget</name>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="261"/>
+        <location filename="../widgets/mapwidget.cpp" line="259"/>
         <source>Airport details</source>
         <translation>Flughafendetails</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="264"/>
+        <location filename="../widgets/mapwidget.cpp" line="262"/>
         <source>%1 METAR</source>
         <extracomment>%1 is the airport ICAO code</extracomment>
         <translation>%1 METAR</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="270"/>
-        <location filename="../widgets/mapwidget.cpp" line="298"/>
+        <location filename="../widgets/mapwidget.cpp" line="268"/>
+        <location filename="../widgets/mapwidget.cpp" line="296"/>
         <source>Controllers</source>
         <extracomment>a.k.a. ATC
 ----------
@@ -772,37 +782,37 @@ a.k.a. ATC</extracomment>
         <translation>Fluglotsen</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="276"/>
+        <location filename="../widgets/mapwidget.cpp" line="274"/>
         <source>Flight details</source>
         <translation>Flugdetails</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="279"/>
+        <location filename="../widgets/mapwidget.cpp" line="277"/>
         <source>Track this flight</source>
         <translation>Diesen Flug verfolgen</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="292"/>
+        <location filename="../widgets/mapwidget.cpp" line="290"/>
         <source>FIR details</source>
         <translation>FIR-Details</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="303"/>
+        <location filename="../widgets/mapwidget.cpp" line="301"/>
         <source>Nearby</source>
         <translation>In der Nähe</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="321"/>
+        <location filename="../widgets/mapwidget.cpp" line="319"/>
         <source>Airports</source>
         <translation>Flughäfen</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="328"/>
+        <location filename="../widgets/mapwidget.cpp" line="326"/>
         <source>Flights</source>
         <translation>Flüge</translation>
     </message>
     <message>
-        <location filename="../widgets/mapwidget.cpp" line="335"/>
+        <location filename="../widgets/mapwidget.cpp" line="333"/>
         <source>FIRs</source>
         <translation>FIRs</translation>
     </message>
@@ -815,11 +825,6 @@ a.k.a. ATC</extracomment>
         <translation>Vatsinator</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="50"/>
-        <source>&amp;Vatsinator</source>
-        <translation>&amp;Vatsinator</translation>
-    </message>
-    <message>
         <location filename="../application/widgets/vatsinatorwindow.ui" line="59"/>
         <source>He&amp;lp</source>
         <translation>Hi&amp;lfe</translation>
@@ -830,49 +835,54 @@ a.k.a. ATC</extracomment>
         <translation>Einstellun&amp;gen</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="79"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="75"/>
         <source>&amp;Refresh</source>
         <translation>Aktualisie&amp;ren</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="82"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="78"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="91"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="83"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="94"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="86"/>
         <source>Ctrl+Q</source>
         <translation>Strg+Q</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="103"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="95"/>
         <source>&amp;About</source>
         <translation>&amp;Über</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="108"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="100"/>
         <source>&amp;Settings</source>
         <translation>Ein&amp;stellungen</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="113"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="105"/>
         <source>&amp;METARs...</source>
         <translation>&amp;METARs...</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="116"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="108"/>
         <source>Ctrl+M</source>
         <translation>Strg+M</translation>
     </message>
     <message>
-        <location filename="../application/widgets/vatsinatorwindow.ui" line="121"/>
+        <location filename="../application/widgets/vatsinatorwindow.ui" line="113"/>
         <source>Clients...</source>
         <translation>Clients...</translation>
+    </message>
+    <message>
+        <location filename="../application/widgets/vatsinatorwindow.cpp" line="62"/>
+        <source>&amp;Menu</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
