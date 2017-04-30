@@ -20,9 +20,9 @@
 #ifndef MISC_ATCBOOKINGLISTMODEL_H
 #define MISC_ATCBOOKINGLISTMODEL_H
 
-#include "miscexport.h"
 #include "misc/atcbooking.h"
-#include <QAbstractListModel>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Misc {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Misc {
  *
  * A model for keeping \ref AtcBooking instances.
  */
-class __VtrMiscApi__ AtcBookingListModel : public QAbstractListModel {
+class VTRMISC_EXPORT AtcBookingListModel : public QAbstractListModel {
     Q_OBJECT
     
 public:

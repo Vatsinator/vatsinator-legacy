@@ -20,10 +20,10 @@
 #ifndef MISC_FLIGHTLISTMODEL_H
 #define MISC_FLIGHTLISTMODEL_H
 
-#include "miscexport.h"
 #include "core/airportobject.h"
 #include "core/firobject.h"
-#include <QAbstractListModel>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Core { class Pilot; }}
 
@@ -37,9 +37,8 @@ namespace Vatsinator { namespace Misc {
  * When created using either \ref inbound() or \ref outbound methods, it
  * updates automatically.
  */
-class __VtrMiscApi__ FlightListModel : public QAbstractListModel {
+class VTRMISC_EXPORT FlightListModel : public QAbstractListModel {
     Q_OBJECT
-    template<typename Pred> friend FlightListModel* fromClientList(const Core::ClientList*, QObject*, Pred);
     
 public:    
     /**
@@ -116,6 +115,8 @@ private slots:
     void remove(QObject* obj);
     
 private:
+    template<typename Pred> friend FlightListModel* fromClientList(const Core::ClientList*, QObject*, Pred);
+
     QList<const Core::Pilot*> m_flights;
 
 }; /** @} */

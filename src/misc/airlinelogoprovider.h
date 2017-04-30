@@ -20,10 +20,9 @@
 #ifndef MISC_AIRLINELOGOPROVIDER_H
 #define MISC_AIRLINELOGOPROVIDER_H
 
-#include "miscexport.h"
 #include "misc/airlinelogoreply.h"
-#include <QString>
-#include <QtPlugin>
+#include <QtCore/QString>
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Misc {
 

@@ -20,10 +20,10 @@
 #ifndef MISC_ATCLISTMODEL_H
 #define MISC_ATCLISTMODEL_H
 
-#include "miscexport.h"
 #include "core/airportobject.h"
 #include "core/firobject.h"
-#include <QAbstractListModel>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Core { class Atc; }}
 
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Misc {
  * 
  * The AtcListModel class stores list of ATCs in a model.
  */
-class __VtrMiscApi__ AtcListModel : public QAbstractListModel {
+class VTRMISC_EXPORT AtcListModel : public QAbstractListModel {
     Q_OBJECT
 
 public:

@@ -20,10 +20,10 @@
 #ifndef WIDGETS_METARWINDOW_H
 #define WIDGETS_METARWINDOW_H
 
-#include "widgetsexport.h"
 #include "core/metarmanager.h"
-#include <QWidget>
-#include <QPointer>
+#include "widgets/vtrwidgets_export.h"
+#include <QtWidgets/QWidget>
+#include <QtCore/QPointer>
 
 namespace Ui { class MetarWindow; }
 
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Widgets {
  *
  * The MetarWindow displays list of all METAR weather reports.
  */
-class __VtrWidgetsApi__ MetarWindow : public QWidget {
+class VTRWIDGETS_EXPORT MetarWindow : public QWidget {
     Q_OBJECT
 
 public:

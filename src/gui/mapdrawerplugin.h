@@ -22,7 +22,6 @@
 #define GUI_MAPDRAWERPLUGIN_H
 
 #include "gui/maprenderer.h"
-#include "gui/vtrgui_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Gui {

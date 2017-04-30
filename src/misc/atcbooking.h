@@ -20,11 +20,11 @@
 #ifndef MISC_ATCBOOKING_H
 #define MISC_ATCBOOKING_H
 
-#include "miscexport.h"
-#include <QDate>
-#include <QTime>
-#include <QSharedDataPointer>
-#include <QString>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QDate>
+#include <QtCore/QTime>
+#include <QtCore/QSharedDataPointer>
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Misc {
 
@@ -36,7 +36,7 @@ class AtcBookingData;
  * 
  * The AtcBooking class represents a single booking entry for an ATC.
  */
-class __VtrMiscApi__ AtcBooking {
+class VTRMISC_EXPORT AtcBooking {
 public:
     /**
      * Creates an empty AtcBooking instance.

@@ -20,10 +20,10 @@
 #ifndef CORE_NOTAM_H
 #define CORE_NOTAM_H
 
-#include "miscexport.h"
-#include <QDateTime>
-#include <QSharedData>
-#include <QString>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QDateTime>
+#include <QtCore/QSharedData>
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Misc {
 
@@ -35,7 +35,7 @@ class NotamData;
  *
  * The Notam class represents a single NOTAM notice.
  */
-class __VtrMiscApi__ Notam {
+class VTRMISC_EXPORT Notam {
 
 public:
     /**

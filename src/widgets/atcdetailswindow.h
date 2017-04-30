@@ -20,11 +20,11 @@
 #ifndef WIDGETS_ATCDETAILSWINDOW_H
 #define WIDGETS_ATCDETAILSWINDOW_H
 
-#include "widgetsexport.h"
 #include "core/atc.h"
-#include <QPointer>
-#include <QScopedPointer>
-#include <QWidget>
+#include "widgets/vtrwidgets_export.h"
+#include <QtCore/QPointer>
+#include <QtCore/QScopedPointer>
+#include <QtWidgets/QWidget>
 
 namespace Ui { class AtcDetailsWindow; }
 
@@ -36,7 +36,7 @@ namespace Vatsinator { namespace Widgets {
  * 
  * A window for displaying ATC's details.
  */
-class __VtrWidgetsApi__ AtcDetailsWindow : public QWidget {
+class VTRWIDGETS_EXPORT AtcDetailsWindow : public QWidget {
     Q_OBJECT
     
     /**

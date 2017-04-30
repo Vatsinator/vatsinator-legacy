@@ -20,10 +20,10 @@
 #ifndef WIDGETS_FLIGHTPROGRESSWIDGET_H
 #define WIDGETS_FLIGHTPROGRESSWIDGET_H
 
-#include "widgetsexport.h"
 #include "core/pilot.h"
-#include <QPointer>
-#include <QProgressBar>
+#include "widgets/vtrwidgets_export.h"
+#include <QtCore/QPointer>
+#include <QtWidgets/QProgressBar>
 
 namespace Vatsinator { namespace Widgets {
 
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Widgets {
  * The FlightProgressWidget represents flight progress in a nice, graphical
  * form.
  */
-class __VtrWidgetsApi__ FlightProgressWidget : public QProgressBar {
+class VTRWIDGETS_EXPORT FlightProgressWidget : public QProgressBar {
     Q_OBJECT
     
     /**

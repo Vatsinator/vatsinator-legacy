@@ -20,9 +20,9 @@
 #ifndef MISC_METARLISTMODEL_H
 #define MISC_METARLISTMODEL_H
 
-#include "miscexport.h"
 #include "core/metar.h"
-#include <QAbstractListModel>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Misc {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Misc {
  *
  * The MetarListModel represents a list of METARs in a model.
  */
-class __VtrMiscApi__ MetarListModel : public QAbstractListModel {
+class VTRMISC_EXPORT MetarListModel : public QAbstractListModel {
     Q_OBJECT
 
 public:

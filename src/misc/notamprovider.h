@@ -20,10 +20,9 @@
 #ifndef MISC_NOTAMPROVIDER_H
 #define MISC_NOTAMPROVIDER_H
 
-#include "miscexport.h"
 #include "misc/notamreply.h"
-#include <QString>
-#include <QtPlugin>
+#include <QtCore/QString>
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Misc {
 

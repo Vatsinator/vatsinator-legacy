@@ -20,10 +20,10 @@
 #ifndef WIDGETS_FIRDETAILSWINDOW_H
 #define WIDGETS_FIRDETAILSWINDOW_H
 
-#include "widgetsexport.h"
 #include "core/firobject.h"
-#include <QWidget>
-#include <QScopedPointer>
+#include "widgets/vtrwidgets_export.h"
+#include <QtWidgets/QWidget>
+#include <QtCore/QScopedPointer>
 
 namespace Ui { class FirDetailsWindow; }
 
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Widgets {
  * 
  * A window for displaying FIR's details.
  */
-class __VtrWidgetsApi__ FirDetailsWindow : public QWidget {
+class VTRWIDGETS_EXPORT FirDetailsWindow : public QWidget {
     Q_OBJECT
     
     Q_PROPERTY(const Vatsinator::Core::FirObject* fir READ fir WRITE setFir)

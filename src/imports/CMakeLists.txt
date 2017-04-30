@@ -32,11 +32,7 @@ function (vatsinator_add_qml_plugin target plugin_dir)
     endif ()
 endfunction ()
 
-find_package (Qt5Quick REQUIRED)
-include_directories(${Qt5Quick_INCLUDE_DIRS})
-
-find_package (Qt5AndroidExtras REQUIRED)
-include_directories (${Qt5AndroidExtras_INCLUDE_DIRS})
+find_package (Qt5 5.7 REQUIRED COMPONENTS Quick AndroidExtras)
 
 add_definitions (-DQT_PLUGIN)
 add_definitions (-DQT_SHARED)

@@ -55,6 +55,7 @@ public:
     Q_INVOKABLE Vatsinator::Misc::NotamListModel* notams(QVariant object);
     
 }; /** @} */
+
 }} /* namespace Vatsinator::Imports */
 
 #endif // IMPORTS_MODELFACTORY_H

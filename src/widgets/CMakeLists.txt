@@ -1,9 +1,4 @@
-find_package (Qt5Core REQUIRED)
-find_package (Qt5Network REQUIRED)
-find_package (Qt5Gui REQUIRED)
-find_package (Qt5Widgets REQUIRED)
-
-include_directories (${CMAKE_CURRENT_BINARY_DIR})
+find_package (Qt5 5.7 REQUIRED COMPONENTS Core Network Gui Widgets)
 
 set (widgets_SOURCES
     airportdetailswindow.cpp
@@ -31,7 +26,6 @@ set (widgets_HEADERS
     metarwindow.h
     
     widgets.h
-    widgetsexport.h
     widgetsprivate.h
 )
 
@@ -47,6 +41,10 @@ set (widgets_UIS
 add_library (vtrwidgets SHARED ${widgets_SOURCES} ${widgets_HEADERS} ${widgets_UIS})
 target_link_libraries (vtrwidgets vtrgui vtrmisc Qt5::Widgets)
 set_target_properties (vtrwidgets PROPERTIES CXX_VISIBILITY_PRESET hidden)
+
+include (GenerateExportHeader)
+generate_export_header(vtrwidgets)
+
 install (TARGETS vtrwidgets
     EXPORT vtrwidgets
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}

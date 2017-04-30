@@ -20,9 +20,9 @@
 #ifndef MISC_NOTAMLISTMODEL_H
 #define MISC_NOTAMLISTMODEL_H
 
-#include "miscexport.h"
 #include "misc/notam.h"
-#include <QAbstractListModel>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Misc {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Misc {
  * 
  * The NotamListModel represents a list of NOTAMs in a model.
  */
-class __VtrMiscApi__ NotamListModel : public QAbstractListModel {
+class VTRMISC_EXPORT NotamListModel : public QAbstractListModel {
     Q_OBJECT
 
 public:

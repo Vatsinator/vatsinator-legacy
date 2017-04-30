@@ -20,10 +20,10 @@
 #ifndef MISC_CLIENTLISTMODEL_H
 #define MISC_CLIENTLISTMODEL_H
 
-#include "miscexport.h"
 #include "core/airportobject.h"
 #include "core/firobject.h"
-#include <QAbstractListModel>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Core { class Client; }}
 
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Misc {
  * 
  * The ClientListModel class stores \c Client instances.
  */
-class __VtrMiscApi__ ClientListModel : public QAbstractListModel {
+class VTRMISC_EXPORT ClientListModel : public QAbstractListModel {
     Q_OBJECT
 
 public:

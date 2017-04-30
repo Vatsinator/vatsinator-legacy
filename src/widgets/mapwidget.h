@@ -20,18 +20,15 @@
 #ifndef WIDGETS_MAPWIDGET_H
 #define WIDGETS_MAPWIDGET_H
 
-#include "widgetsexport.h"
+#include "core/airportobject.h"
+#include "core/atc.h"
+#include "core/firobject.h"
+#include "core/pilot.h"
 #include "gui/maprenderer.h"
-#include <QMenu>
-#include <QWidget>
-#include <QScopedPointer>
-
-namespace Vatsinator { namespace Core {
-    class Atc;
-    class AirportObject;
-    class FirObject;
-    class Pilot;
-}}
+#include "widgets/vtrwidgets_export.h"
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QWidget>
+#include <QtCore/QScopedPointer>
 
 namespace Vatsinator { namespace Widgets {
 
@@ -43,7 +40,7 @@ class MouseHelper;
  * 
  * The MapWidget encapsulates \c MapRenderer into a QWidget. 
  */
-class __VtrWidgetsApi__ MapWidget : public QWidget {
+class VTRWIDGETS_EXPORT MapWidget : public QWidget {
     Q_OBJECT
     
     /**

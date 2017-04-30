@@ -20,10 +20,9 @@
 #ifndef MISC_ATCBOOKINGPROVIDER_H
 #define MISC_ATCBOOKINGPROVIDER_H
 
-#include "miscexport.h"
 #include "misc/atcbookingreply.h"
-#include <QString>
-#include <QtPlugin>
+#include <QtCore/QString>
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Misc {
 

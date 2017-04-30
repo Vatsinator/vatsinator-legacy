@@ -20,9 +20,9 @@
 #ifndef MISC_ATCBOOKINGREPLY_H
 #define MISC_ATCBOOKINGREPLY_H
 
-#include "miscexport.h"
 #include "misc/atcbooking.h"
-#include <QObject>
+#include "misc/vtrmisc_export.h"
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Misc {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Misc {
  * 
  * A reply for AtcBooking request.
  */
-class __VtrMiscApi__ AtcBookingReply : public QObject {
+class VTRMISC_EXPORT AtcBookingReply : public QObject {
     Q_OBJECT
     
     /**

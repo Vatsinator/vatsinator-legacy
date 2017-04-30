@@ -1,6 +1,4 @@
-find_package (Qt5Core REQUIRED)
-find_package (Qt5Network REQUIRED)
-find_package (Qt5Gui REQUIRED)
+find_package (Qt5 5.7 REQUIRED COMPONENTS Core Network Gui)
 
 set (misc_SOURCES
     airlinelogoreply.cpp
@@ -35,13 +33,16 @@ set (misc_HEADERS
     notamreply.h
     
     misc.h
-    miscexport.h
     roles.h
 )
 
 add_library (vtrmisc SHARED ${misc_SOURCES} ${misc_HEADERS})
 target_link_libraries (vtrmisc vtrcore Qt5::Gui)
 set_target_properties (vtrmisc PROPERTIES CXX_VISIBILITY_PRESET hidden)
+
+include (GenerateExportHeader)
+generate_export_header(vtrmisc)
+
 install (TARGETS vtrmisc
     EXPORT vtrmisc
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}

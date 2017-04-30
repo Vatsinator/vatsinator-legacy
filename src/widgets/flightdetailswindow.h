@@ -20,10 +20,10 @@
 #ifndef WIDGETS_FLIGHTDETAILSWINDOW_H
 #define WIDGETS_FLIGHTDETAILSWINDOW_H
 
-#include "widgetsexport.h"
 #include "core/pilot.h"
-#include <QPointer>
-#include <QWidget>
+#include "widgets/vtrwidgets_export.h"
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
 
 namespace Ui { class FlightDetailsWindow; }
 
@@ -36,7 +36,7 @@ namespace Vatsinator { namespace Widgets {
  * The FlightDetailsWindow provides an easy and simple way to display all flight
  * details in a nice window.
  */
-class __VtrWidgetsApi__ FlightDetailsWindow : public QWidget {
+class VTRWIDGETS_EXPORT FlightDetailsWindow : public QWidget {
     Q_OBJECT
     
     /**
