@@ -22,7 +22,7 @@
 
 namespace Vatsinator { namespace Core {
 
-class __VtrCoreHide__ PluginFinderHelper {
+class VTRCORE_NO_EXPORT PluginFinderHelper {
 public:
     void locatePlugins() {
         QStringList locations = { QCoreApplication::applicationDirPath() % "/plugins" };

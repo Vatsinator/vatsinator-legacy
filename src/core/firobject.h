@@ -20,11 +20,11 @@
 #ifndef CORE_FIROBJECT_H
 #define CORE_FIROBJECT_H
 
-#include "clientlist.h"
-#include "coreexport.h"
-#include "fir.h"
-#include <QMetaType>
-#include <QObject>
+#include "core/clientlist.h"
+#include "core/fir.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
 
@@ -36,7 +36,7 @@ class AirportObject;
  * 
  * An client-aggregator for FIRs.
  */
-class __VtrCoreApi__ FirObject : public ClientList {
+class VTRCORE_EXPORT FirObject : public ClientList {
     Q_OBJECT
     
     /**

@@ -20,10 +20,10 @@
 #ifndef GUI_FIRAREA_H
 #define GUI_FIRAREA_H
 
-#include "guiexport.h"
-#include "maparea.h"
 #include "core/firobject.h"
 #include "core/lonlat.h"
+#include "gui/maparea.h"
+#include "gui/vtrgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * The \c FirArea draws FIRs on the map.
  */
-class __VtrGuiApi__ FirArea : public MapArea {
+class VTRGUI_EXPORT FirArea : public MapArea {
     Q_OBJECT
 
 public:

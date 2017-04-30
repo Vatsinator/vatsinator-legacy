@@ -20,11 +20,11 @@
 #ifndef CORE_ATC_H
 #define CORE_ATC_H
 
-#include "airportobject.h"
-#include "client.h"
-#include "coreexport.h"
-#include "firobject.h"
-#include <QString>
+#include "core/airportobject.h"
+#include "core/client.h"
+#include "core/firobject.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Core {
 
@@ -37,7 +37,7 @@ class AtcTracker;
  *
  * The Atc class represents a single ATC.
  */
-class __VtrCoreApi__ Atc : public Client {
+class VTRCORE_EXPORT Atc : public Client {
     Q_OBJECT
     Q_ENUMS(Facility)
     Q_ENUMS(Rating)

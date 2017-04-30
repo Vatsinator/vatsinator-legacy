@@ -20,11 +20,11 @@
 #ifndef CORE_VATSIMDATAREADER_H
 #define CORE_VATSIMDATAREADER_H
 
-#include "filedownloader.h"
-#include "coreexport.h"
-#include "vatsimdatadocument.h"
-#include <QObject>
-#include <QUrl>
+#include "core/filedownloader.h"
+#include "core/vatsimdatadocument.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
 
 namespace Vatsinator { namespace Core {
 
@@ -37,7 +37,7 @@ namespace Vatsinator { namespace Core {
  * 
  * \sa VatsimDataDocument, VatsimStatusDocument and VatsimStatusReader.
  */
-class __VtrCoreApi__ VatsimDataReader : public QObject {
+class VTRCORE_EXPORT VatsimDataReader : public QObject {
     Q_OBJECT
     
 signals:

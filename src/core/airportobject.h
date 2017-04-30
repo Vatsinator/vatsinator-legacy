@@ -20,13 +20,13 @@
 #ifndef CORE_AIRPORTOBJECT_H
 #define CORE_AIRPORTOBJECT_H
 
-#include "airport.h"
-#include "clientlist.h"
-#include "coreexport.h"
-#include <QMetaType>
-#include <QObject>
-#include <QSet>
-#include <QSharedPointer>
+#include "core/airport.h"
+#include "core/clientlist.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QObject>
+#include <QtCore/QSet>
+#include <QtCore/QSharedPointer>
 
 namespace Vatsinator { namespace Core {
 
@@ -44,7 +44,7 @@ class ServerTracker;
  * 
  * \sa Airport and AirportListReader.
  */
-class __VtrCoreApi__ AirportObject : public ClientList {
+class VTRCORE_EXPORT AirportObject : public ClientList {
     Q_OBJECT
     
     /**

@@ -11,10 +11,6 @@ if (POLICY CMP0028)
     cmake_policy (SET CMP0028 NEW)
 endif ()
 
-if (CMAKE_SYSTEM_NAME MATCHES "Android")
-    set (ANDROID 1)
-endif ()
-
 if (UNIX AND NOT APPLE AND NOT MINGW AND NOT ANDROID)
     set (LINUX 1)
 endif ()

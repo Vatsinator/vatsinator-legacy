@@ -20,9 +20,9 @@
 #ifndef CORE_FIRLISTREADER_H
 #define CORE_FIRLISTREADER_H
 
-#include "coreexport.h"
-#include "fir.h"
-#include "resourcefile.h"
+#include "core/fir.h"
+#include "core/resourcefile.h"
+#include "core/vtrcore_export.h"
 
 namespace Vatsinator { namespace Core {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  *
  * The reader for FIR list.
  */
-class __VtrCoreApi__ FirListReader : public ResourceFile {
+class VTRCORE_EXPORT FirListReader : public ResourceFile {
     Q_OBJECT
 
 public:

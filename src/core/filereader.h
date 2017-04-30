@@ -20,9 +20,9 @@
 #ifndef CORE_FILEREADER_H
 #define CORE_FILEREADER_H
 
-#include "coreexport.h"
-#include <QObject>
-#include <QUrl>
+#include "core/vtrcore_export.h"
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
 
 namespace Vatsinator { namespace Core {
 
@@ -36,7 +36,7 @@ class FileDownloader;
  * by Vatsinator. The file can be local (i.e. installed with the application)
  * as well as remote (downloaded from the internet and updated when needed).
  */
-class __VtrCoreApi__ FileReader : public QObject {
+class VTRCORE_EXPORT FileReader : public QObject {
     Q_OBJECT
     
     Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)

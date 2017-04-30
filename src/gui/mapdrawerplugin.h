@@ -21,16 +21,21 @@
 #ifndef GUI_MAPDRAWERPLUGIN_H
 #define GUI_MAPDRAWERPLUGIN_H
 
-#include "mapdrawer.h"
-#include "maprenderer.h"
-#include <QtPlugin>
+#include "gui/maprenderer.h"
+#include "gui/vtrgui_export.h"
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Gui {
 
-class MapDrawerPlugin {
+/**
+ * \ingroup Gui
+ * @{
+ */
+class VTRGUI_EXPORT MapDrawerPlugin {
 public:
     virtual MapDrawer* create(MapRenderer* renderer) = 0;
-};
+
+}; /** @} */
 
 }} /* namespace Vatsinator::Gui */
 

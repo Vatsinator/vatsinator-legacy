@@ -20,10 +20,10 @@
 #ifndef CORE_CLIENTLIST_H
 #define CORE_CLIENTLIST_H
 
-#include "client.h"
-#include "coreexport.h"
-#include <QObject>
-#include <QSet>
+#include "core/client.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QObject>
+#include <QtCore/QSet>
 #include <type_traits>
 
 namespace Vatsinator { namespace Core {
@@ -36,7 +36,7 @@ namespace Vatsinator { namespace Core {
  * in a very simple way - when a client goes offline, it is automatically
  * removed.
  */
-class __VtrCoreApi__ ClientList : public QObject {
+class VTRCORE_EXPORT ClientList : public QObject {
     Q_OBJECT
 
 signals:

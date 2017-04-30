@@ -20,9 +20,9 @@
 #ifndef ATCTRACKER_H
 #define ATCTRACKER_H
 
-#include "atc.h"
-#include "coreexport.h"
-#include <QObject>
+#include "core/atc.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
 
@@ -30,7 +30,7 @@ namespace Vatsinator { namespace Core {
  * \ingroup Core
  * @{
  */
-class __VtrCoreApi__ AtcTracker : public QObject {
+class VTRCORE_NO_EXPORT AtcTracker : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(Vatsinator::Core::Atc* atc READ atc CONSTANT)

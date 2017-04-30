@@ -20,10 +20,10 @@
 #ifndef CORE_METARMANAGER_H
 #define CORE_METARMANAGER_H
 
-#include "coreexport.h"
-#include "metar.h"
-#include <QObject>
-#include <QUrl>
+#include "core/vtrcore_export.h"
+#include "core/metar.h"
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
 
 namespace Vatsinator { namespace Core {
 
@@ -35,7 +35,7 @@ class FileDownloader;
  *
  * The MetarManager keeps list of all METARs.
  */
-class __VtrCoreApi__ MetarManager : public QObject {
+class VTRCORE_EXPORT MetarManager : public QObject {
     Q_OBJECT
     
 signals:

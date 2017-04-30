@@ -20,10 +20,10 @@
 #ifndef CORE_OPTION_H
 #define CORE_OPTION_H
 
-#include "coreexport.h"
-#include <QObject>
-#include <QMetaProperty>
-#include <QVariant>
+#include "core/vtrcore_export.h"
+#include <QtCore/QObject>
+#include <QtCore/QMetaProperty>
+#include <QtCore/QVariant>
 
 namespace Vatsinator { namespace Core {
 
@@ -48,7 +48,7 @@ class OptionPrivate;
  *                                    // triggered for "option" variable as well
  * \endcode
  */
-class __VtrCoreApi__ Option : public QObject {
+class VTRCORE_EXPORT Option : public QObject {
     Q_OBJECT
     friend class OptionPrivate;
     

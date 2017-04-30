@@ -20,9 +20,9 @@
 #ifndef GUI_AIRPORTITEM_H
 #define GUI_AIRPORTITEM_H
 
-#include "guiexport.h"
 #include "core/airportobject.h"
 #include "gui/mapitem.h"
+#include "gui/vtrgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * The \c AirportItem represents a single airport on the map.
  */
-class __VtrGuiApi__ AirportItem : public MapItem {
+class VTRGUI_EXPORT AirportItem : public MapItem {
     Q_OBJECT
     
     /**

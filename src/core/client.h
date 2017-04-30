@@ -20,12 +20,12 @@
 #ifndef CORE_CLIENT_H
 #define CORE_CLIENT_H
 
-#include "coreexport.h"
-#include "lonlat.h"
-#include <QDateTime>
-#include <QString>
-#include <QStringList>
-#include <QObject>
+#include "core/lonlat.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QDateTime>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
 
@@ -37,7 +37,7 @@ class ServerTracker;
  * 
  * The Client is a base class for all clients.
  */
-class __VtrCoreApi__ Client : public QObject {
+class VTRCORE_EXPORT Client : public QObject {
     Q_OBJECT
     Q_ENUMS(State)
     

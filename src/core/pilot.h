@@ -20,13 +20,13 @@
 #ifndef CORE_PILOT_H
 #define CORE_PILOT_H
 
-#include "airline.h"
-#include "airportobject.h"
-#include "client.h"
-#include "coreexport.h"
-#include "flightplan.h"
-#include <QMetaType>
-#include <QString>
+#include "core/airline.h"
+#include "core/airportobject.h"
+#include "core/client.h"
+#include "core/flightplan.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Core {
 
@@ -39,7 +39,7 @@ class ServerTracker;
  *
  * The Pilot class represents a single flight.
  */
-class __VtrCoreApi__ Pilot : public Client {
+class VTRCORE_EXPORT Pilot : public Client {
     Q_OBJECT
     Q_ENUMS(FlightRules)
     Q_ENUMS(FlightPhase)

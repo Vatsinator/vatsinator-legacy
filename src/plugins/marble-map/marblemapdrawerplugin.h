@@ -9,7 +9,7 @@
  * A world map drawer that uses Marble.
  */
 
-namespace MarbleMapDrawer {
+namespace MarbleMap {
 
 class MarbleMapDrawerPlugin : public QObject, public Vatsinator::Gui::MapDrawerPlugin {
     Q_OBJECT

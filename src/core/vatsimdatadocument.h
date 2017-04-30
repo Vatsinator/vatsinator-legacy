@@ -20,12 +20,12 @@
 #ifndef CORE_VATSIMDATADOCUMENT_H
 #define CORE_VATSIMDATADOCUMENT_H
 
-#include "clientdata.h"
-#include "coreexport.h"
-#include <QDateTime>
-#include <QList>
-#include <QMetaType>
-#include <QSharedDataPointer>
+#include "core/clientdata.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QDateTime>
+#include <QtCore/QList>
+#include <QtCore/QMetaType>
+#include <QtCore/QSharedDataPointer>
 
 namespace Vatsinator { namespace Core {
 
@@ -37,7 +37,7 @@ class VatsimDataDocumentData;
  * 
  * The VatsimDataDocument class 
  */
-class __VtrCoreApi__ VatsimDataDocument {
+class VTRCORE_EXPORT VatsimDataDocument {
 public:
     /**
      * Creates an empty (and invalid) document.

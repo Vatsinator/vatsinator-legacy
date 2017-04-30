@@ -20,11 +20,11 @@
 #ifndef CORE_AIRPORTLISTREADER_H
 #define CORE_AIRPORTLISTREADER_H
 
-#include "airport.h"
-#include "coreexport.h"
-#include "lonlat.h"
-#include "resourcefile.h"
-#include <QScopedPointer>
+#include "core/airport.h"
+#include "core/lonlat.h"
+#include "core/resourcefile.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QScopedPointer>
 
 namespace Vatsinator { namespace Core {
 
@@ -36,7 +36,7 @@ class AirportListReaderPrivate;
  *
  * A reader for airport list.
  */
-class __VtrCoreApi__ AirportListReader : public ResourceFile {
+class VTRCORE_EXPORT AirportListReader : public ResourceFile {
     Q_OBJECT
 
 public:

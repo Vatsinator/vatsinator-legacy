@@ -20,19 +20,19 @@
 #ifndef CORE_SERVERTRACKER_H
 #define CORE_SERVERTRACKER_H
 
-#include "airportobject.h"
-#include "client.h"
-#include "coreexport.h"
-#include "firobject.h"
-#include "pilot.h"
-#include "metarmanager.h"
-#include "vatsimdatadocument.h"
-#include "vatsimstatusdocument.h"
-#include <QMap>
-#include <QList>
-#include <QObject>
-#include <QUrl>
-#include <QTimer>
+#include "core/airportobject.h"
+#include "core/client.h"
+#include "core/firobject.h"
+#include "core/pilot.h"
+#include "core/metarmanager.h"
+#include "core/vatsimdatadocument.h"
+#include "core/vatsimstatusdocument.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QMap>
+#include <QtCore/QList>
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
+#include <QtCore/QTimer>
 
 namespace Vatsinator { namespace Core {
 
@@ -48,7 +48,7 @@ class UirListReader;
  * 
  * The ServerTracker class tracks connected clients.
  */
-class __VtrCoreApi__ ServerTracker : public QObject {
+class VTRCORE_EXPORT ServerTracker : public QObject {
     Q_OBJECT
     
     /**

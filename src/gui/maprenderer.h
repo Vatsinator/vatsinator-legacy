@@ -20,20 +20,20 @@
 #ifndef GUI_MAPRENDERER_H
 #define GUI_MAPRENDERER_H
 
-#include "guiexport.h"
-#include "mapaddon.h"
-#include "mapitem.h"
-#include "worldtransform.h"
 #include "core/lonlat.h"
 #include "core/pilot.h"
-#include <QAbstractAnimation>
-#include <QMap>
-#include <QMetaObject>
-#include <QObject>
-#include <QPaintDevice>
-#include <QPointer>
-#include <QSet>
-#include <QSize>
+#include "gui/mapaddon.h"
+#include "gui/mapitem.h"
+#include "gui/worldtransform.h"
+#include "gui/vtrgui_export.h"
+#include <QtCore/QAbstractAnimation>
+#include <QtCore/QMap>
+#include <QtCore/QMetaObject>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QSet>
+#include <QtCore/QSize>
+#include <QtGui/QPaintDevice>
 
 namespace Vatsinator { namespace Gui {
 
@@ -48,7 +48,7 @@ class MapScene;
  *
  * \sa MapScene.
  */
-class __VtrGuiApi__ MapRenderer : public QObject {
+class VTRGUI_EXPORT MapRenderer : public QObject {
     Q_OBJECT
     
     /**
@@ -176,8 +176,6 @@ private:
     QPointer<QAbstractAnimation> m_animation;
     QMetaObject::Connection m_flightTracking; /**< A connection for tracking the flight */
     QList<MapAddon*> m_addons;
-    
-
     
 }; /** @} */
 

@@ -1,7 +1,7 @@
 #include "marblemapdrawerplugin.h"
 #include "marblemapdrawer.h"
 
-namespace MarbleMapDrawer {
+namespace MarbleMap {
 
 MarbleMapDrawerPlugin::MarbleMapDrawerPlugin(QObject *parent) : QObject(parent)
 {

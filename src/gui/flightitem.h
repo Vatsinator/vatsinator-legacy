@@ -20,10 +20,10 @@
 #ifndef GUI_FLIGHTITEM_H
 #define GUI_FLIGHTITEM_H
 
-#include "guiexport.h"
-#include "mapitem.h"
+#include "gui/mapitem.h"
 #include "core/pilot.h"
-#include <QPixmap>
+#include "gui/vtrgui_export.h"
+#include <QtGui/QPixmap>
 
 namespace Vatsinator { namespace Gui {
 
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * The \c FlightItem draws a single flight on the map.
  */
-class __VtrGuiApi__ FlightItem : public MapItem {
+class VTRGUI_EXPORT FlightItem : public MapItem {
     Q_OBJECT
     
     /**

@@ -20,9 +20,9 @@
 #ifndef GUI_MAPITEM_H
 #define GUI_MAPITEM_H
 
-#include "guiexport.h"
-#include "mapdrawable.h"
 #include "core/lonlat.h"
+#include "gui/mapdrawable.h"
+#include "gui/vtrgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -37,7 +37,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * To show areas on the map, look for \c MapArea class.
  */
-class __VtrGuiApi__ MapItem : public MapDrawable {
+class VTRGUI_EXPORT MapItem : public MapDrawable {
     Q_OBJECT
 
 public:

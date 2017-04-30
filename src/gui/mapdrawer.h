@@ -20,8 +20,8 @@
 #ifndef GUI_MAPDRAWER_H
 #define GUI_MAPDRAWER_H
 
-#include "guiexport.h"
 #include "gui/worldpainter.h"
+#include "gui/vtrgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -31,13 +31,13 @@ namespace Vatsinator { namespace Gui {
  * 
  * MapDrawer is an interface for drawing the world map.
  */
-class __VtrGuiApi__ MapDrawer {
+class VTRGUI_EXPORT MapDrawer {
 public:
     /**
      * Draws the map onto the painter.
      */
     virtual void draw(WorldPainter* painter) = 0;
-    
+
     virtual ~MapDrawer() = default;
     
 }; /** @} */

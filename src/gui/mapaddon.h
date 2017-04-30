@@ -20,11 +20,11 @@
 #ifndef GUI_MAPADDON_H
 #define GUI_MAPADDON_H
 
-#include "guiexport.h"
 #include "gui/worldpainter.h"
 #include "gui/worldtransform.h"
-#include <QtPlugin>
-#include <QPainter>
+#include "gui/vtrgui_export.h"
+#include <QtCore/QObject>
+#include <QtGui/QPainter>
 
 namespace Vatsinator { namespace Gui {
 
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Gui {
  *
  * An interface for any map addon.
  */
-class __VtrGuiApi__ MapAddon {
+class VTRGUI_EXPORT MapAddon {
 public:
     /**
      * This method is called just before all the map items (airports,

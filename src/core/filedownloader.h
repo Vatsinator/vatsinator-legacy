@@ -20,11 +20,11 @@
 #ifndef CORE_FILEDOWNLOADER_H
 #define CORE_FILEDOWNLOADER_H
 
-#include "coreexport.h"
-#include <QByteArray>
-#include <QNetworkReply>
-#include <QObject>
-#include <QUrl>
+#include "core/vtrcore_export.h"
+#include <QtCore/QByteArray>
+#include <QtCore/QObject>
+#include <QtCore/QUrl>
+#include <QtNetwork/QNetworkReply>
 
 namespace Vatsinator { namespace Core {
 
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Core {
  * The FileDownloader class is a convenience class that simplfies
  * downloading files from the internet.
  */
-class __VtrCoreApi__ FileDownloader : public QObject {
+class VTRCORE_EXPORT FileDownloader : public QObject {
     Q_OBJECT
     
 signals:

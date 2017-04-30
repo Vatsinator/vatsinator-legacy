@@ -20,13 +20,13 @@
 #ifndef GUI_MODELMATCHER_H
 #define GUI_MODELMATCHER_H
 
-#include "guiexport.h"
 #include "core/resourcefile.h"
-#include <QObject>
-#include <QJsonDocument>
-#include <QMap>
-#include <QMetaType>
-#include <QString>
+#include "gui/vtrgui_export.h"
+#include <QtCore/QObject>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QMap>
+#include <QtCore/QMetaType>
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Gui {
 
@@ -37,7 +37,7 @@ namespace Vatsinator { namespace Gui {
  * The ModelMatcher class handles matching aircrafts filed in the flight plan
  * to the actual aircraft models.
  */
-class __VtrGuiApi__ ModelMatcher : public QObject {
+class VTRGUI_EXPORT ModelMatcher : public QObject {
     Q_OBJECT
 
     /**

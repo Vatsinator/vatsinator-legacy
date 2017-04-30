@@ -20,9 +20,9 @@
 #ifndef GUI_WORLDVIEWPORT_H
 #define GUI_WORLDVIEWPORT_H
 
-#include "guiexport.h"
-#include <QRectF>
-#include <QList>
+#include "gui/vtrgui_export.h"
+#include <QtCore/QRectF>
+#include <QtCore/QList>
 
 namespace Vatsinator { namespace Gui {
 
@@ -30,7 +30,7 @@ namespace Vatsinator { namespace Gui {
  * \ingroup Gui
  * @{
  */
-class __VtrGuiApi__ WorldViewport {
+class VTRGUI_EXPORT WorldViewport {
 public:
     explicit WorldViewport(const QRectF& screen);
 

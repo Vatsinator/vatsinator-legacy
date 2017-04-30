@@ -1,5 +1,4 @@
-find_package (Qt5Core 5.7 REQUIRED)
-find_package (Qt5Network REQUIRED)
+find_package (Qt5 5.7 REQUIRED COMPONENTS Core Network)
 
 set (core_SOURCES
     airline.cpp
@@ -75,7 +74,6 @@ set (core_HEADERS
     vatsimstatusreader.h
     
     core.h
-    coreexport.h
 )
 
 set (core_PRIVATE_HEADERS
@@ -85,6 +83,10 @@ set (core_PRIVATE_HEADERS
 add_library (vtrcore SHARED ${core_SOURCES} ${core_HEADERS} ${core_PRIVATE_HEADERS})
 target_link_libraries (vtrcore Qt5::Core Qt5::Network)
 set_target_properties (vtrcore PROPERTIES CXX_VISIBILITY_PRESET hidden)
+
+include (GenerateExportHeader)
+generate_export_header(vtrcore)
+
 install (TARGETS vtrcore
     EXPORT vtrcore
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}

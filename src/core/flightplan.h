@@ -20,10 +20,10 @@
 #ifndef CORE_FLIGHTPLAN_H
 #define CORE_FLIGHTPLAN_H
 
-#include "coreexport.h"
-#include <QMetaType>
-#include <QSharedData>
-#include <QString>
+#include "core/vtrcore_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QSharedData>
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Core {
 
@@ -35,7 +35,7 @@ class FlightPlanData;
  *
  * The FlightPlan class groups all flight plan related values.
  */
-class __VtrCoreApi__ FlightPlan {
+class VTRCORE_EXPORT FlightPlan {
     Q_GADGET
 
     Q_PROPERTY(bool empty READ isEmpty)

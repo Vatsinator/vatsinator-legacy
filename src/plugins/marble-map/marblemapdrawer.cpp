@@ -2,15 +2,14 @@
 #include "marble/GeoPainter.h"
 #include "marble/MarbleMap.h"
 
-using namespace Marble;
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Gui;
 
-namespace MarbleMapDrawer {
+namespace MarbleMap {
 
 MarbleMapDrawer::MarbleMapDrawer(MapRenderer *renderer, QObject *parent) :
     QObject(parent),
-    m_marbleMap(new MarbleMap)
+    m_marbleMap(new Marble::MarbleMap)
 {
     m_marbleMap->setMapThemeId("earth/openstreetmap/openstreetmap.dgml");
     m_marbleMap->setProjection(Marble::Projection::Mercator);
@@ -35,7 +34,7 @@ void MarbleMapDrawer::draw(WorldPainter* painter)
     QImage image(painter->transform().viewport(), QImage::Format_RGB32);
     image.fill(Qt::transparent);
 
-    GeoPainter geoPainter(&image, m_marbleMap->viewport(), MapQuality::NormalQuality);
+    Marble::GeoPainter geoPainter(&image, m_marbleMap->viewport(), Marble::MapQuality::NormalQuality);
     m_marbleMap->paint(geoPainter, image.rect());
 
     painter->drawImage(painter->viewport(), image);

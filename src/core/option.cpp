@@ -22,7 +22,7 @@
 
 namespace Vatsinator { namespace Core {
 
-class __VtrCoreHide__ OptionPrivate {
+class VTRCORE_NO_EXPORT OptionPrivate {
 public:
     bool readSaved(QString key, Option* instance)
     {

@@ -1,6 +1,4 @@
-find_package (Qt5Core REQUIRED)
-find_package (Qt5Network REQUIRED)
-find_package (Qt5Gui REQUIRED)
+find_package (Qt5 5.7 REQUIRED COMPONENTS Core Gui Network)
 
 set (gui_SOURCES
     airportitem.cpp
@@ -41,7 +39,6 @@ set (gui_HEADERS
     worldviewport.h
     
     gui.h
-    guiexport.h
 )
 
 set (gui_QRCS
@@ -51,6 +48,10 @@ set (gui_QRCS
 add_library (vtrgui SHARED ${gui_SOURCES} ${gui_HEADERS} ${gui_QRCS})
 target_link_libraries (vtrgui vtrcore Qt5::Gui)
 set_target_properties (vtrgui PROPERTIES CXX_VISIBILITY_PRESET hidden)
+
+include (GenerateExportHeader)
+generate_export_header(vtrgui)
+
 install (TARGETS vtrgui
     EXPORT vtrgui
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}

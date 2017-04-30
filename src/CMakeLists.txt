@@ -69,12 +69,12 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
 set (CMAKE_AUTOMOC ON)
 set (CMAKE_AUTOUIC ON)
 set (CMAKE_AUTORCC ON)
+set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-include_directories (${CMAKE_CURRENT_BINARY_DIR})
+include_directories (${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
 foreach (module ${vatsinator_MODULES})
     add_subdirectory (${module})

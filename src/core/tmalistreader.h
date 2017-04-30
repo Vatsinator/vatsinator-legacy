@@ -20,11 +20,11 @@
 #ifndef CORE_TMALISTREADER_H
 #define CORE_TMALISTREADER_H
 
-#include "coreexport.h"
 #include "core/lonlat.h"
 #include "core/resourcefile.h"
-#include <QList>
-#include <QMap>
+#include "core/vtrcore_export.h"
+#include <QtCore/QList>
+#include <QtCore/QMap>
 
 namespace Vatsinator { namespace Core {
 
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Core {
  *
  * A reader for TMA list.
  */
-class __VtrCoreApi__ TmaListReader : public ResourceFile {
+class VTRCORE_EXPORT TmaListReader : public ResourceFile {
     Q_OBJECT
     
 public:

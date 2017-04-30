@@ -20,14 +20,14 @@
 #ifndef GUI_WORLDTRANSFORM_H
 #define GUI_WORLDTRANSFORM_H
 
-#include "guiexport.h"
 #include "core/lonlat.h"
 #include "gui/worldviewport.h"
-#include <QPoint>
-#include <QPointF>
-#include <QRectF>
-#include <QSize>
-#include <QVector>
+#include "gui/vtrgui_export.h"
+#include <QtCore/QPoint>
+#include <QtCore/QPointF>
+#include <QtCore/QRectF>
+#include <QtCore/QSize>
+#include <QtCore/QVector>
 
 namespace Vatsinator { namespace Gui {
 
@@ -39,7 +39,7 @@ namespace Vatsinator { namespace Gui {
  * global coordinate system (longitude/latitude) and widget one, used
  * by the QPainter.
  */
-class __VtrGuiApi__ WorldTransform {
+class VTRGUI_EXPORT WorldTransform {
 public:
     /**
      * The constructor that takes the \c viewport size, the mapping \c offset

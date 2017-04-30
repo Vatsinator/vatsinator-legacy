@@ -20,9 +20,9 @@
 #ifndef CORE_UIRLISTREADER_H
 #define CORE_UIRLISTREADER_H
 
-#include "coreexport.h"
 #include "core/resourcefile.h"
-#include <QMap>
+#include "core/vtrcore_export.h"
+#include <QtCore/QMap>
 #include <tuple>
 
 namespace Vatsinator { namespace Core {
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Core {
  *
  * A reader for the Upper FIR list.
  */
-class __VtrCoreApi__ UirListReader : public ResourceFile {
+class VTRCORE_EXPORT UirListReader : public ResourceFile {
     Q_OBJECT
 
 public:

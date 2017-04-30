@@ -20,11 +20,11 @@
 #ifndef CORE_AIRPORT_H
 #define CORE_AIRPORT_H
 
-#include "coreexport.h"
-#include "lonlat.h"
-#include <QMetaType>
-#include <QSharedData>
-#include <QString>
+#include "core/lonlat.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QSharedData>
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Core {
 
@@ -39,7 +39,7 @@ class AirportData;
  * The airport contains basic information, such as ICAO code, position,
  * name, city and country it belongs to.
  */
-class __VtrCoreApi__ Airport {
+class VTRCORE_EXPORT Airport {
 
 public:
     /**

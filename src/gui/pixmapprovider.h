@@ -20,9 +20,9 @@
 #ifndef GUI_PIXMAPPROVIDER_H
 #define GUI_PIXMAPPROVIDER_H
 
-#include "guiexport.h"
-#include <QObject>
-#include <QPixmap>
+#include "gui/vtrgui_export.h"
+#include <QtCore/QObject>
+#include <QtGui/QPixmap>
 
 namespace Vatsinator { namespace Gui {
 
@@ -36,9 +36,8 @@ class ModelMatcher;
  * The PixmapProvider class is respoinsble for generating and storing
  * pixmaps that all map items can re-use.
  */
-class __VtrGuiApi__ PixmapProvider : public QObject {
+class VTRGUI_EXPORT PixmapProvider : public QObject {
     Q_OBJECT
-    friend class MapScene;
     
 public:
     explicit PixmapProvider(QObject* parent = nullptr);
@@ -69,6 +68,8 @@ protected:
     void setModelMatcher(const ModelMatcher* modelMatcher);
     
 private:
+    friend class MapScene;
+
     QString matchModel(const QString& modelString) const;
     QImage modelColorized(const QImage& image, const QColor& color) const;
     

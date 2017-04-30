@@ -20,8 +20,8 @@
 #ifndef CORE_RESOURCEFILE_H
 #define CORE_RESOURCEFILE_H
 
-#include "coreexport.h"
-#include "filereader.h"
+#include "core/filereader.h"
+#include "core/vtrcore_export.h"
 
 namespace Vatsinator { namespace Core {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  * The ResourceFile class represents one of Vatsinator's manifest-controlled
  * files.
  */
-class __VtrCoreApi__ ResourceFile : public FileReader {
+class VTRCORE_EXPORT ResourceFile : public FileReader {
     Q_OBJECT
     
     /**

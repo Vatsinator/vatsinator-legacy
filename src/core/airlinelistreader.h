@@ -21,8 +21,8 @@
 #define CORE_AIRLINELISTREADER_H
 
 #include "airline.h"
-#include "coreexport.h"
 #include "resourcefile.h"
+#include "vtrcore_export.h"
 #include <QMap>
 
 namespace Vatsinator { namespace Core {
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Core {
  *
  * A reader for airlines.
  */
-class __VtrCoreApi__ AirlineListReader : public ResourceFile {
+class VTRCORE_EXPORT AirlineListReader : public ResourceFile {
     Q_OBJECT
     
 public:

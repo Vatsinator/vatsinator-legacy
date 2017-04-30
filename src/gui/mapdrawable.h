@@ -20,11 +20,11 @@
 #ifndef GUI_MAPDRAWABLE_H
 #define GUI_MAPDRAWABLE_H
 
-#include "guiexport.h"
 #include "gui/worldpainter.h"
-#include <QMetaType>
-#include <QObject>
-#include <QPainter>
+#include "gui/vtrgui_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QObject>
+#include <QtGui/QPainter>
 
 namespace Vatsinator { namespace Gui {
 
@@ -37,7 +37,7 @@ class MapScene;
  * The \c MapDrawable is a base class for everything that can be rendered
  * on the map.
  */
-class __VtrGuiApi__ MapDrawable : public QObject {
+class VTRGUI_EXPORT MapDrawable : public QObject {
     Q_OBJECT
     Q_ENUMS(DrawFlag)
     

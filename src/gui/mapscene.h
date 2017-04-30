@@ -20,14 +20,14 @@
 #ifndef GUI_MAPSCENE_H
 #define GUI_MAPSCENE_H
 
-#include "guiexport.h"
-#include "maparea.h"
-#include "mapitem.h"
-#include "modelmatcher.h"
 #include "core/pilot.h"
 #include "core/servertracker.h"
-#include <QObject>
-#include <QRectF>
+#include "gui/maparea.h"
+#include "gui/mapitem.h"
+#include "gui/modelmatcher.h"
+#include "gui/vtrgui_export.h"
+#include <QtCore/QObject>
+#include <QtCore/QRectF>
 
 namespace Vatsinator { namespace Gui {
 
@@ -45,7 +45,7 @@ class PixmapProvider;
  * 
  * \sa ServerTracker and MapRenderer.
  */
-class __VtrGuiApi__ MapScene : public QObject {
+class VTRGUI_EXPORT MapScene : public QObject {
     Q_OBJECT
 
     /**

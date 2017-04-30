@@ -8,7 +8,7 @@
 
 namespace Marble { class MarbleMap; }
 
-namespace MarbleMapDrawer {
+namespace MarbleMap {
 
 class MarbleMapDrawer : public QObject, public Vatsinator::Gui::MapDrawer {
     Q_OBJECT

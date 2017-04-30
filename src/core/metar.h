@@ -20,10 +20,10 @@
 #ifndef CORE_METAR_H
 #define CORE_METAR_H
 
-#include "coreexport.h"
-#include <QMetaType>
-#include <QSharedData>
-#include <QString>
+#include "core/vtrcore_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QSharedData>
+#include <QtCore/QString>
 
 namespace Vatsinator { namespace Core {
 
@@ -35,7 +35,7 @@ class MetarData;
  *
  * The Metar class encapsulates a single METAR report.
  */
-class __VtrCoreApi__ Metar {
+class VTRCORE_EXPORT Metar {
 
 public:
     Metar();

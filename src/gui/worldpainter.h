@@ -20,10 +20,10 @@
 #ifndef GUI_WORLDPAINTER_H
 #define GUI_WORLDPAINTER_H
 
-#include "guiexport.h"
 #include "core/lonlat.h"
 #include "gui/worldtransform.h"
-#include <QPainter>
+#include "gui/vtrgui_export.h"
+#include <QtGui/QPainter>
 
 namespace Vatsinator { namespace Gui {
 
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Gui {
  * The WorldPainter class extens QPainter functionalities so that it is easy
  * to draw anything in geographic coordinate system.
  */
-class __VtrGuiApi__ WorldPainter : public QPainter {
+class VTRGUI_EXPORT WorldPainter : public QPainter {
 public:
     /**
      * Constructs a WorldPainter that paints on the given \c device.

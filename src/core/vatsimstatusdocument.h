@@ -20,11 +20,11 @@
 #ifndef CORE_VATSIMSTATUSDOCUMENT_H
 #define CORE_VATSIMSTATUSDOCUMENT_H
 
-#include "coreexport.h"
-#include <QList>
-#include <QMetaType>
-#include <QUrl>
-#include <QSharedDataPointer>
+#include "core/vtrcore_export.h"
+#include <QtCore/QList>
+#include <QtCore/QMetaType>
+#include <QtCore/QUrl>
+#include <QtCore/QSharedDataPointer>
 
 namespace Vatsinator { namespace Core {
 
@@ -39,7 +39,7 @@ class VatsimStatusDocumentData;
  * 
  * \sa VatsimStatusReader.
  */
-class __VtrCoreApi__ VatsimStatusDocument {
+class VTRCORE_EXPORT VatsimStatusDocument {
 public:
     /**
      * Creates an empty and invalid document.

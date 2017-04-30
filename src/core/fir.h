@@ -20,11 +20,11 @@
 #ifndef CORE_FIR_H
 #define CORE_FIR_H
 
-#include "coreexport.h"
-#include "lonlat.h"
-#include <QMetaType>
-#include <QSharedData>
-#include <QVector>
+#include "core/lonlat.h"
+#include "core/vtrcore_export.h"
+#include <QtCore/QMetaType>
+#include <QtCore/QSharedData>
+#include <QtCore/QVector>
 
 namespace Vatsinator { namespace Core {
 
@@ -36,7 +36,7 @@ class FirData;
  * 
  * The \c Fir class represents a single FIR (Flight Information Region).
  */
-class __VtrCoreApi__ Fir {
+class VTRCORE_EXPORT Fir {
 
 public:
     /* List of points that make the boundaries of the FIR. */

@@ -20,11 +20,11 @@
 #ifndef CORE_PLUGINFINDER_H
 #define CORE_PLUGINFINDER_H
 
-#include "coreexport.h"
-#include <QObject>
-#include <QJsonObject>
-#include <QList>
-#include <QMap>
+#include "core/vtrcore_export.h"
+#include <QtCore/QObject>
+#include <QtCore/QJsonObject>
+#include <QtCore/QList>
+#include <QtCore/QMap>
 
 namespace Vatsinator { namespace Core {
 
@@ -34,7 +34,7 @@ class PluginFinderHelper;
  * \ingroup Core
  * @{
  */
-class __VtrCoreApi__ PluginFinder {
+class VTRCORE_EXPORT PluginFinder {
     friend class PluginFinderHelper;
 
 public:
