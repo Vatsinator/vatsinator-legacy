@@ -31,7 +31,7 @@ namespace Vatsinator { namespace Gui {
  * \ingroup Gui
  * @{
  */
-class VTRGUI_EXPORT MapDrawerPlugin {
+class MapDrawerPlugin {
 public:
     virtual MapDrawer* create(MapRenderer* renderer) = 0;
 
