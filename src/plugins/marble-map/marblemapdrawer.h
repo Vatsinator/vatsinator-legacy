@@ -22,9 +22,11 @@ public:
 private slots:
     void setMarbleCenter(const Vatsinator::Core::LonLat& center);
     void setMarbleSize(const QSize& size);
+    void setMarbleZoom(qreal zoom);
 
 private:
-    QScopedPointer<Marble::MarbleMap> m_marbleMap;
+    const Vatsinator::Gui::MapRenderer* m_renderer;
+    Marble::MarbleMap* m_marbleMap;
 
 };
 
