@@ -521,12 +521,12 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="147"/>
         <source>&amp;VATSIM</source>
-        <translation type="unfinished"/>
+        <translation>&amp;VATSIM</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="214"/>
         <source>Map type:</source>
-        <translation type="unfinished"/>
+        <translation>Kartentyp:</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="286"/>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="304"/>
         <source>Plugins</source>
-        <translation type="unfinished"/>
+        <translation>Zusatzmodul</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="49"/>
@@ -882,7 +882,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.cpp" line="62"/>
         <source>&amp;Menu</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Menü</translation>
     </message>
 </context>
 </TS>

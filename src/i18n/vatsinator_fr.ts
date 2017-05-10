@@ -526,7 +526,7 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="214"/>
         <source>Map type:</source>
-        <translation type="unfinished"/>
+        <translation>Type de carte:</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="286"/>
@@ -882,7 +882,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.cpp" line="62"/>
         <source>&amp;Menu</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Menu</translation>
     </message>
 </context>
 </TS>

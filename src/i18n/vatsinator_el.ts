@@ -882,7 +882,7 @@ a.k.a. ATC</extracomment>
     <message>
         <location filename="../application/widgets/vatsinatorwindow.cpp" line="62"/>
         <source>&amp;Menu</source>
-        <translation type="unfinished"/>
+        <translation>Μενού</translation>
     </message>
 </context>
 </TS>
