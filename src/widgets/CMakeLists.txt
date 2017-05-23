@@ -7,6 +7,8 @@ set (widgets_SOURCES
     firdetailswindow.cpp
     flightdetailswindow.cpp
     flightprogresswidget.cpp
+    plugingroupboxwidget.cpp
+    pluginwidget.cpp
     mapinfowidget.cpp
     mapwidget.cpp
     metarwindow.cpp
@@ -21,6 +23,8 @@ set (widgets_HEADERS
     firdetailswindow.h
     flightdetailswindow.h
     flightprogresswidget.h
+    plugingroupboxwidget.h
+    pluginwidget.h
     mapinfowidget.h
     mapwidget.h
     metarwindow.h
@@ -35,6 +39,7 @@ set (widgets_UIS
     clientlistwindow.ui
     firdetailswindow.ui
     flightdetailswindow.ui
+    pluginwidget.ui
     metarwindow.ui
 )
 

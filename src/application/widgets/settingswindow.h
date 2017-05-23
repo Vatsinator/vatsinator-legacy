@@ -48,10 +48,13 @@ private:
     
 private slots:
     void handleButton(QAbstractButton* button);
+    void handlePluginToggled();
     
 private:
     QScopedPointer<Ui::SettingsWindow> ui;
     QList<Vatsinator::Core::Option*> m_options;
+    Vatsinator::Core::Option* m_mapAddons;
+
 };
 
 #endif // SETTINGSWINDOW_H

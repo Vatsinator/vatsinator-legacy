@@ -22,6 +22,7 @@
 #include "core/option.h"
 #include "core/pluginfinder.h"
 #include "gui/mapdrawerplugin.h"
+#include "widgets/pluginwidget.h"
 #include "config.h"
 #include <QtWidgets>
 #include <functional>
@@ -32,6 +33,7 @@
 
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Gui;
+using namespace Vatsinator::Widgets;
 
 SettingsWindow::SettingsWindow(QWidget* parent) :
     QWidget(parent),
@@ -63,16 +65,11 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
     ui->language->setCurrentIndex(index);
 
     Option* mapPlugin = new Option("plugins/map_drawer", this);
-    connect(ui->mapTypes, QOverload<int>::of(&QComboBox::currentIndexChanged), [mapPlugin, this](int index) {
-        QString pluginName = this->ui->mapTypes->itemData(index).toString();
-        mapPlugin->setValue(pluginName);
-    });
+    mapPlugin->track(ui->mapDrawers, "selectedPlugin");
 
-    QString pluginName = mapPlugin->value().toString();
-    index = ui->mapTypes->findData(pluginName);
-    ui->mapTypes->setCurrentIndex(index);
+    m_mapAddons = new Option("plugins/map_addons", this);
     
-    m_options << statistics << language << mapPlugin;
+    m_options << statistics << language << mapPlugin << m_mapAddons;
     
     setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
 }
@@ -124,12 +121,45 @@ void SettingsWindow::fillLanguages()
 void SettingsWindow::fillPlugins()
 {
     QStringList mapPlugins = PluginFinder::pluginsForIid(qobject_interface_iid<MapDrawerPlugin*>());
+
     for (const QString& p: qAsConst(mapPlugins)) {
         QJsonObject metaData = PluginFinder::pluginMetaData(p);
         QString pluginName = metaData.contains("name") ? metaData.value("name").toString() : p;
 
-        ui->mapTypes->addItem(pluginName, p);
+        PluginWidget* pw = new PluginWidget(p);
+        pw->setPluginName(pluginName);
+
+        if (metaData.contains("description")) {
+            pw->setPluginDescription(metaData.value("description").toString());
+        }
+
+        ui->mapDrawers->addPluginWidget(pw);
     }
+
+    QVBoxLayout* layout = new QVBoxLayout;
+    QStringList mapAddons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
+
+    QScopedPointer<Option> mapAddonsOption(new Option("plugins/map_addons", this));
+    QStringList enabledMapAddons = mapAddonsOption->value().toStringList();
+
+    for (const QString& p: qAsConst(mapAddons)) {
+        QJsonObject metaData = PluginFinder::pluginMetaData(p);
+        QString pluginName = metaData.contains("name") ? metaData.value("name").toString() : p;
+
+        PluginWidget* pw = new PluginWidget(p);
+        pw->setPluginName(pluginName);
+
+        if (metaData.contains("description")) {
+            pw->setPluginDescription(metaData.value("description").toString());
+        }
+
+        pw->setEnabled(enabledMapAddons.contains(p));
+        layout->addWidget(pw);
+
+        connect(pw, &PluginWidget::toggled, this, &SettingsWindow::handlePluginToggled);
+    }
+
+    ui->mapAddons->setLayout(layout);
 }
 
 #ifdef Q_OS_MACOS
@@ -205,4 +235,21 @@ void SettingsWindow::handleButton(QAbstractButton* button)
         // TODO Revert
         close();
     }
+}
+
+void SettingsWindow::handlePluginToggled()
+{
+    PluginWidget* pw = qobject_cast<PluginWidget*>(sender());
+    Q_ASSERT(pw);
+
+    QStringList enabledMapAddons = m_mapAddons->value().toStringList();
+
+    if (!pw->isEnabled())
+        enabledMapAddons.removeAll(pw->pluginId());
+    else
+        enabledMapAddons.append(pw->pluginId());
+
+    qDebug() << enabledMapAddons;
+
+    m_mapAddons->setValue(QVariant::fromValue(enabledMapAddons));
 }

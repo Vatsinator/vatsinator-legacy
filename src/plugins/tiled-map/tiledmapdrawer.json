@@ -1,4 +1,5 @@
 {
     "author": "Vatsinator Team",
-    "name": "Tiled Map"
+    "name": "Tiled Map",
+    "description": "Renders map using small images downloaded from the internet."
 }

@@ -130,6 +130,8 @@ void Option::track(QObject* target, const char* propertyName)
         bool c = connect(target, property.notifySignal(), this, callback);
         Q_ASSERT(c);
         Q_UNUSED(c);
+    } else {
+        qWarning("%s::%s: no notify signal", target->metaObject()->className(), property.name());
     }
     
     m_trackedProperty = property;
@@ -177,7 +179,8 @@ void Option::onExternalValueChanged()
 {
     Q_ASSERT(sender());
     QVariant v = m_trackedProperty.read(sender());
-    optionGlobal->optionChanged(key(), v);
+//    optionGlobal->optionChanged(key(), v);
+    setValue(v);
 }
 
 }} /* namespace Vatsinator::Core */

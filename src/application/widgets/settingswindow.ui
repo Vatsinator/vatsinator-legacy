@@ -195,54 +195,22 @@
      </widget>
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="0" column="0" colspan="2">
+        <widget class="Vatsinator::Widgets::PluginGroupBoxWidget" name="mapDrawers">
+         <property name="title">
+          <string>Map type</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>91</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Map type:</string>
+         <property name="exclusive" stdset="0">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QComboBox" name="mapTypes"/>
-       </item>
-       <item row="0" column="3">
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="1" column="0" colspan="2">
+        <widget class="QGroupBox" name="mapAddons">
+         <property name="title">
+          <string>Map add-ons</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>91</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="2">
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>127</height>
-          </size>
-         </property>
-        </spacer>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -312,6 +280,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Vatsinator::Widgets::PluginGroupBoxWidget</class>
+   <extends>QGroupBox</extends>
+   <header>widgets/plugingroupboxwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources/icons.qrc"/>
  </resources>
