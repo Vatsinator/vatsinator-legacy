@@ -65,7 +65,13 @@ void MapRenderer::setMapDrawer(MapDrawer* drawer)
 
 void MapRenderer::attachMapAddon(MapAddon* addon)
 {
-    m_addons.append(addon);
+    if (!m_addons.contains(addon))
+        m_addons.append(addon);
+}
+
+void MapRenderer::removeMapAddon(MapAddon* addon)
+{
+    m_addons.removeAll(addon);
 }
 
 void MapRenderer::moveTo(const LonLat& target)

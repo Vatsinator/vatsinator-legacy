@@ -136,6 +136,9 @@ void SettingsWindow::fillPlugins()
         ui->mapDrawers->addPluginWidget(pw);
     }
 
+    if (mapPlugins.size() <= 1)
+        ui->mapDrawers->setEnabled(false);
+
     QVBoxLayout* layout = new QVBoxLayout;
     QStringList mapAddons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
 
@@ -248,8 +251,6 @@ void SettingsWindow::handlePluginToggled()
         enabledMapAddons.removeAll(pw->pluginId());
     else
         enabledMapAddons.append(pw->pluginId());
-
-    qDebug() << enabledMapAddons;
 
     m_mapAddons->setValue(QVariant::fromValue(enabledMapAddons));
 }

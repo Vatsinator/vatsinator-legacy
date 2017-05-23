@@ -67,11 +67,11 @@ bool PluginWidget::isExclusive() const
 
 void PluginWidget::setExclusive(bool exclusive)
 {
-    if (m_exclusive != exclusive) {
+//    if (m_exclusive != exclusive) {
         m_exclusive = exclusive;
-        ui->pluginEnabledCheckbox->setVisible(!isExclusive());
-        ui->pluginEnabledRadio->setVisible(isExclusive());
-    }
+        ui->pluginEnabledCheckbox->setVisible(!m_exclusive);
+        ui->pluginEnabledRadio->setVisible(m_exclusive);
+//    }
 }
 
 QRadioButton *PluginWidget::radioButton()

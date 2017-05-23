@@ -108,8 +108,15 @@ public:
 
     /**
      * Adds the addon to the rendering pipeline.
+     * If the addon was already added, this method does nothing.
      */
     void attachMapAddon(MapAddon* addon);
+
+    /**
+     * Removes the addon from the rendering pipeline.
+     * If the addon is not on the pipeline, this method does nothing.
+     */
+    void removeMapAddon(MapAddon* addon);
     
     /**
      * Moves the \c center of the map to the given point asynchronously.

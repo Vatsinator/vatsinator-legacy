@@ -54,6 +54,7 @@ private slots:
     void updateMapInfo();
     void showSettingsWindow();
     void setMapDrawerPlugin(const QVariant& name);
+    void updateMapAddons(const QVariant& addons);
     void showMetarWindow();
     void showMetarWindow(const QString& icaoSearch);
     void showClientListWindow();

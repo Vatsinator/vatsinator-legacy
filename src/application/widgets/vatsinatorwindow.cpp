@@ -120,13 +120,12 @@ void VatsinatorWindow::showEvent(QShowEvent* event)
         connect(mapDrawerPlugin, &Option::valueChanged, this, &VatsinatorWindow::setMapDrawerPlugin);
         setMapDrawerPlugin(mapDrawerPlugin->value());
 
-        auto addons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
-        for (auto a: addons) {
-            ui->map->renderer()->attachMapAddon(qobject_cast<MapAddon*>(PluginFinder::plugin(a)));
-        }
-    }
+        Option* mapAddons = new Option("plugins/map_addons", this);
+        connect(mapAddons, &Option::valueChanged, this, &VatsinatorWindow::updateMapAddons);
+        updateMapAddons(mapAddons->value());
 
-    event->accept();
+        event->accept();
+    }
 }
 
 void VatsinatorWindow::closeEvent(QCloseEvent* event)
@@ -244,6 +243,21 @@ void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
         o->setValue(QString(MapDrawerDefaultPlugin));
         o->deleteLater();
     }
+}
+
+void VatsinatorWindow::updateMapAddons(const QVariant& addons)
+{
+    QStringList enabledAddons = addons.toStringList();
+    auto availableAddons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
+    for (auto a: availableAddons) {
+        MapAddon* instance = qobject_cast<MapAddon*>(PluginFinder::plugin(a));
+        if (enabledAddons.contains(a))
+            ui->map->renderer()->attachMapAddon(instance);
+        else
+            ui->map->renderer()->removeMapAddon(instance);
+    }
+
+    ui->map->update();
 }
 
 void VatsinatorWindow::showMetarWindow()
