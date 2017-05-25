@@ -106,7 +106,10 @@ void SettingsWindow::changeEvent(QEvent* event)
 
 void SettingsWindow::fillLanguages()
 {
-    QDir dir(QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    QDir dir(QStringLiteral(VATSINATOR_I18N_PATH));
+    if (!dir.exists()) {
+        dir = QDir(QStringLiteral(VATSINATOR_PREFIX "translations"));
+    }
     QStringList trs = dir.entryList({ "vatsinator_*.qm" });
     for (auto tr: trs) {
         QString locale = tr;

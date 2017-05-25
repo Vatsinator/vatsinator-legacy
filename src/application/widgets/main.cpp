@@ -45,18 +45,17 @@ int main(int argc, char** argv)
         std::for_each(translators.begin(), translators.end(),
                       std::bind(&QCoreApplication::removeTranslator, std::placeholders::_1));
 
-        static QList<QString> prefixes = {
-            QStringLiteral("qt"), QStringLiteral("qtbase"),
-            QStringLiteral("vatsinator")
-        };
+        QTranslator* qttr = new QTranslator(qApp);
+        if (qttr->load(locale, QStringLiteral("qt"), "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+            QCoreApplication::installTranslator(qttr);
+            translators.append(qttr);
+        }
 
-        for (const QString& prefix: qAsConst(prefixes)) {
-            QTranslator* tr = new QTranslator(qApp);
-            if (tr->load(locale, prefix, "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
-                qDebug() << "Loaded translation:" << prefix << locale;
-                QCoreApplication::installTranslator(tr);
-                translators << tr;
-            }
+        QTranslator* vatsinatortr = new QTranslator(qApp);
+        if (vatsinatortr->load(locale, QStringLiteral("vatsinator"), "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))
+                || vatsinatortr->load(locale, QStringLiteral("vatsinator"), "_", QStringLiteral(VATSINATOR_I18N_PATH))) {
+            QCoreApplication::installTranslator(vatsinatortr);
+            translators.append(vatsinatortr);
         }
     };
     
