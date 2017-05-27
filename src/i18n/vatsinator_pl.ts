@@ -524,22 +524,17 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="214"/>
-        <source>Map type:</source>
-        <translation>Rodzaj mapy:</translation>
-    </message>
-    <message>
-        <location filename="../application/widgets/settingswindow.ui" line="286"/>
+        <location filename="../application/widgets/settingswindow.ui" line="254"/>
         <source>Miscallenous</source>
         <translation>Różne</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="295"/>
+        <location filename="../application/widgets/settingswindow.ui" line="263"/>
         <source>Network</source>
         <translation>Sieć</translation>
     </message>
     <message>
-        <location filename="../application/widgets/settingswindow.ui" line="304"/>
+        <location filename="../application/widgets/settingswindow.ui" line="272"/>
         <source>Plugins</source>
         <translation type="unfinished"/>
     </message>
@@ -572,6 +567,16 @@
         <location filename="../application/widgets/settingswindow.ui" line="177"/>
         <source>METAR source:</source>
         <translation>Źródło METAR:</translation>
+    </message>
+    <message>
+        <location filename="../application/widgets/settingswindow.ui" line="201"/>
+        <source>Map type</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../application/widgets/settingswindow.ui" line="211"/>
+        <source>Map add-ons</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -815,6 +820,14 @@ a.k.a. ATC</extracomment>
         <location filename="../widgets/mapwidget.cpp" line="333"/>
         <source>FIRs</source>
         <translation>FIR</translation>
+    </message>
+</context>
+<context>
+    <name>Vatsinator::Widgets::PluginWidget</name>
+    <message>
+        <location filename="../core/pluginwidget.ui" line="16"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
