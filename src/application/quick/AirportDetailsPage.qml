@@ -157,7 +157,7 @@ Page {
     }
     
     footer: ToolBar {
-        height: Screen.orientation === Qt.PortraitOrientation ? 48 : 0
+        height: Screen.orientation === Qt.PortraitOrientation ? deviceInfo.navigationBarHeight : 0
     }
     
     SwipeView {

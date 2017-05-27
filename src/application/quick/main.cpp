@@ -17,6 +17,7 @@
 */
 
 #include "config.h"
+#include "deviceinfo.h"
 #include <gui/maprenderer.h>
 #include <gui/mapscene.h>
 #include <core/servertracker.h>
@@ -41,6 +42,10 @@ int main(int argc, char** argv)
     }
     
     QQmlApplicationEngine engine;
+
+    DeviceInfo deviceInfo;
+    engine.rootContext()->setContextProperty("deviceInfo", &deviceInfo);
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     return app.exec();
 }

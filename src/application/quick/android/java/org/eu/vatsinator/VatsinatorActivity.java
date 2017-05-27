@@ -19,7 +19,15 @@
 
 package org.eu.vatsinator;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 public class VatsinatorActivity extends org.qtproject.qt5.android.bindings.QtActivity
 {
-
+    public int getNavigationBarHeight() {
+        Context context = (Context) this;
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        return resourceId > 0 ? (int) resources.getDimension(resourceId) : 0;
+    }
 }

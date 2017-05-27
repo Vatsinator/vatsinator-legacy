@@ -1,7 +1,6 @@
-find_package (Qt5Quick 5.7 REQUIRED) # 5.7 for QtQuick.Controls.2
+find_package (Qt5 5.7 REQUIRED COMPONENTS Quick Xml AndroidExtras)
 include_directories (${Qt5Quick_INCLUDE_DIRS})
 
-find_package (Qt5Xml REQUIRED)
 find_package (OpenSSL)
 
 set (vatsinator_QUICK_QMLS
@@ -17,10 +16,20 @@ set (vatsinator_JAVA_SRCS
     android/java/org/eu/vatsinator/VatsinatorActivity.java
 )
 
-add_library (vatsinator SHARED main.cpp qml.qrc ${vatsinator_QUICK_QMLS} ${vatsinator_JAVA_SRCS})
+add_library (vatsinator SHARED
+    deviceinfo.cpp
+    deviceinfo.h
+
+    main.cpp
+    qml.qrc
+
+    ${vatsinator_QUICK_QMLS}
+    ${vatsinator_JAVA_SRCS}
+)
 target_link_libraries (vatsinator
     Qt5::Quick
     Qt5::Xml
+    Qt5::AndroidExtras
     vtrgui
 )
 add_dependencies (vatsinator i18n)
