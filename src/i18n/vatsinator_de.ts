@@ -571,7 +571,7 @@
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="201"/>
         <source>Map type</source>
-        <translation type="unfinished"/>
+        <translation>Kartentyp</translation>
     </message>
     <message>
         <location filename="../application/widgets/settingswindow.ui" line="211"/>
