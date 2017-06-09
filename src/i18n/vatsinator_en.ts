@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en" sourcelanguage="en_GB">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" sourcelanguage="en_GB" version="2.0">
 <context>
     <name>AboutWindow</name>
     <message>
@@ -688,10 +686,7 @@
         <location filename="../widgets/airportdetailswindow.cpp" line="99"/>
         <location filename="../widgets/airportdetailswindow.cpp" line="119"/>
         <source>%n foot(s)</source>
-        <translation>
-            <numerusform>%n foot(s)</numerusform>
-            <numerusform>%n foot(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n foot(s)</numerusform><numerusform>%n foot(s)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -751,34 +746,22 @@
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="102"/>
         <source>%n client(s)</source>
-        <translation>
-            <numerusform>%n client(s)</numerusform>
-            <numerusform>%n client(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n client(s)</numerusform><numerusform>%n client(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="103"/>
         <source>%n pilot(s)</source>
-        <translation>
-            <numerusform>%n pilot(s)</numerusform>
-            <numerusform>%n pilot(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n pilot(s)</numerusform><numerusform>%n pilot(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="104"/>
         <source>%n ATC(s)</source>
-        <translation>
-            <numerusform>%n ATC(s)</numerusform>
-            <numerusform>%n ATC(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n ATC(s)</numerusform><numerusform>%n ATC(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../widgets/mapinfowidget.cpp" line="105"/>
         <source>%n observer(s)</source>
-        <translation>
-            <numerusform>%n observer(s)</numerusform>
-            <numerusform>%n observer(s)</numerusform>
-        </translation>
+        <translation><numerusform>%n observer(s)</numerusform><numerusform>%n observer(s)</numerusform></translation>
     </message>
 </context>
 <context>
