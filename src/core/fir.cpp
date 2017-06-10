@@ -22,89 +22,46 @@
 
 namespace Vatsinator { namespace Core {
 
-class FirData : public QSharedData {
-public:
-    FirData() = default;
-    explicit FirData(const QString& icao) : icao(icao) {}
-    
-    QString icao;
-    QString name;
-    QString country;
-    bool oceanic = false;
-    LonLat labelPosition;
-    QList<Fir::Boundaries> boundaries;
-};
-
-Fir::Fir() :
-    d(new FirData) {}
-
-Fir::Fir(const QString& icao) :
-    d(new FirData(icao)) {}
-
-Fir::Fir(const Fir& other) :
-    d(other.d) {}
-
-Fir::~Fir() {}
-
-Fir& Fir::operator=(const Fir& other)
-{
-    d = other.d;
-    return *this;
-}
-
-QString Fir::icao() const
-{
-    return d->icao;
-}
-
-QString Fir::name() const
-{
-    return d->name;
-}
+Fir::Fir(const QString &icao, QObject *parent) :
+    ClientList(parent),
+    m_icao(icao) {}
 
 void Fir::setName(const QString& name)
 {
-    d->name = name;
-}
-
-QString Fir::country() const
-{
-    return d->country;
+    if (m_name != name) {
+        m_name = name;
+        emit nameChanged(m_name);
+    }
 }
 
 void Fir::setCountry(const QString& country)
 {
-    d->country = country;
-}
-
-bool Fir::isOceanic() const
-{
-    return d->oceanic;
+    if (m_country != country) {
+        m_country = country;
+        emit countryChanged(country);
+    }
 }
 
 void Fir::setOceanic(bool oceanic)
 {
-    d->oceanic = oceanic;
-}
-
-LonLat Fir::labelPosition() const
-{
-    return d->labelPosition;
+    if (m_oceanic != oceanic) {
+        m_oceanic = oceanic;
+        emit oceanicChanged(m_oceanic);
+    }
 }
 
 void Fir::setLabelPosition(const LonLat& labelPosition)
 {
-    d->labelPosition = labelPosition;
-}
-
-QList<Fir::Boundaries> Fir::boundaries() const
-{
-    return d->boundaries;
+    if (m_labelPosition != labelPosition) {
+        m_labelPosition = labelPosition;
+        emit labelPositionChanged(m_labelPosition);
+    }
 }
 
 void Fir::setBoundaries(const QList<Fir::Boundaries>& boundaries)
 {
-    d->boundaries = boundaries;
+    m_boundaries = boundaries;
+    emit boundariesChanged(m_boundaries);
 }
 
 }} /* namespace Vatsinator::Core */

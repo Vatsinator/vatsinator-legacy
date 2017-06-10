@@ -20,7 +20,7 @@
 #ifndef WIDGETS_AIRPORTDETAILSWINDOW_H
 #define WIDGETS_AIRPORTDETAILSWINDOW_H
 
-#include "core/airportobject.h"
+#include "core/airport.h"
 #include "widgets/vtrwidgets_export.h"
 #include <QtCore/QScopedPointer>
 #include <QtWidgets/QWidget>
@@ -42,7 +42,7 @@ class VTRWIDGETS_EXPORT AirportDetailsWindow : public QWidget {
      * The \c airport property keeps the airport of which details
      * are displayed in the window.
      */
-    Q_PROPERTY(const Vatsinator::Core::AirportObject* airport READ airport WRITE setAirport)
+    Q_PROPERTY(const Vatsinator::Core::Airport* airport READ airport WRITE setAirport)
     
 signals:
     /**
@@ -68,8 +68,8 @@ public:
      */
     virtual ~AirportDetailsWindow();
     
-    const Core::AirportObject* airport() const { return m_airport; }
-    void setAirport(const Core::AirportObject* airport);
+    const Core::Airport* airport() const { return m_airport; }
+    void setAirport(const Core::Airport* airport);
 
 protected:
     /**
@@ -95,7 +95,7 @@ private slots:
     
 private:
     QScopedPointer<Ui::AirportDetailsWindow> ui;
-    const Core::AirportObject* m_airport = nullptr;
+    const Core::Airport* m_airport = nullptr;
     QMetaObject::Connection m_connection;
 
 }; /** @} */

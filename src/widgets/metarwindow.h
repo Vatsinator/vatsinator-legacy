@@ -20,7 +20,7 @@
 #ifndef WIDGETS_METARWINDOW_H
 #define WIDGETS_METARWINDOW_H
 
-#include "core/metarmanager.h"
+#include "core/servertracker.h"
 #include "widgets/vtrwidgets_export.h"
 #include <QtWidgets/QWidget>
 #include <QtCore/QPointer>
@@ -39,13 +39,7 @@ class VTRWIDGETS_EXPORT MetarWindow : public QWidget {
     Q_OBJECT
 
 public:
-    /**
-     * Creates a new MetarWindow instance.
-     *
-     * \param metars The \ref Vatsinator::Core::MetarManager instance that contains list of METARs.
-     * \param parent Passed to QObject's constructor.
-     */
-    explicit MetarWindow(Vatsinator::Core::MetarManager* metars, QWidget* parent = nullptr);
+    explicit MetarWindow(Vatsinator::Core::ServerTracker* server, QWidget* parent = nullptr);
 
     /**
      * Destroys this \c MetarWindow.
@@ -64,12 +58,11 @@ protected:
     void showEvent(QShowEvent* event) override;
 
 private slots:
-    void updateMetars();
     void queryChanged();
 
 private:
     QScopedPointer<Ui::MetarWindow> ui;
-    QPointer<Vatsinator::Core::MetarManager> m_metars;
+
 };
 
 }} /* namespace Vatsinator::Widgets */

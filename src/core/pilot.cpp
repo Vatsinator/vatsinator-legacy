@@ -66,12 +66,12 @@ QList<LonLat> Pilot::nodes(NodeSelection selection) const
             QThreadPool::globalInstance()->start(task);
         }
 
-        if (selection.testFlag(DepartureToPilot) && departure() && departure()->isKnownAirport())
+        if (selection.testFlag(DepartureToPilot) && departure() && !departure()->position().isNull())
             nodes.append(departure()->position());
 
         nodes.append(position());
 
-        if (selection.testFlag(PilotToDestination) && destination() && destination()->isKnownAirport())
+        if (selection.testFlag(PilotToDestination) && destination() && !destination()->position().isNull())
             nodes.append(destination()->position());
     } else {
         if (selection.testFlag(DepartureToPilot))
@@ -200,19 +200,31 @@ void Pilot::setFlightPhase(Pilot::FlightPhase flightPhase)
     }
 }
 
-void Pilot::setDeparture(AirportObject* departure)
+void Pilot::setDeparture(Airport* departure)
 {
     if (m_departure != departure) {
+        if (m_departure)
+            m_departure->remove(this);
+
         m_departure = departure;
-        emit departureChanged(departure);
+        emit departureChanged(m_departure);
+
+        if (m_departure)
+            m_departure->add(this);
     }
 }
 
-void Pilot::setDestination(AirportObject* destination)
+void Pilot::setDestination(Airport* destination)
 {
     if (m_destination != destination) {
+        if (m_destination)
+            m_destination->remove(this);
+
         m_destination = destination;
         emit destinationChanged(destination);
+
+        if (m_destination)
+            m_destination->add(this);
     }
 }
 
@@ -252,7 +264,7 @@ void Pilot::rediscoverFlightPhase()
 {
     if (groundSpeed() < MinimumAirborneGroundSpeed()) {
         // first check whether is departing or not
-        if (departure() && departure()->isKnownAirport()) {
+        if (departure() && !departure()->position().isNull()) {
             qreal d = nmDistance(position(), departure()->position());
             if (d < MaximumDistanceFromAirpoirt()) {
                 setFlightPhase(Departing);
@@ -261,7 +273,7 @@ void Pilot::rediscoverFlightPhase()
         }
 
         // second, check for destination airpoirt
-        if (destination() && destination()->isKnownAirport()) {
+        if (destination() && !destination()->position().isNull()) {
             qreal d = nmDistance(position(), destination()->position());
             if (d < MaximumDistanceFromAirpoirt()) {
                 setFlightPhase(Arrived);
@@ -284,7 +296,7 @@ void Pilot::calculateEta() const
         m_eta = m_sta;
     } else if (flightPhase() == Arrived) {
         m_eta = QDateTime::currentDateTimeUtc().time();
-    } else if (destination() && destination()->isKnownAirport()) {
+    } else if (destination() && !destination()->position().isNull()) {
         qreal dist = nmDistance(position(), m_destination->position());
         int secs = static_cast<int>((dist / static_cast<qreal>(groundSpeed())) * 60.0 * 60.0);
         m_eta = QDateTime::currentDateTimeUtc().time().addSecs(secs);
@@ -302,7 +314,7 @@ void Pilot::calculateProgress() const
     } else if (flightPhase() == Arrived) {
         m_progress = 100;
     } else {
-        if (departure() && destination() && departure()->isKnownAirport() && destination()->isKnownAirport()) {
+        if (departure() && destination() && !departure()->position().isNull() && !destination()->position().isNull()) {
             qreal total = nmDistance(departure()->position(), destination()->position());
             qreal left = nmDistance(position(), destination()->position());
             m_progress = static_cast<int>(100.0 - (100.0 * left / total));
@@ -334,8 +346,8 @@ void Pilot::setNodes(QList<LonLat> nodes)
 void Pilot::RouteParserTask::run()
 {
     if (!m_pilot->departure() || !m_pilot->destination() ||
-            !m_pilot->departure()->isKnownAirport() ||
-            !m_pilot->destination()->isKnownAirport())
+            m_pilot->departure()->position().isNull() ||
+            m_pilot->destination()->position().isNull())
         return;
 
     qDebug() << "Parsing route for" << m_pilot->callsign();

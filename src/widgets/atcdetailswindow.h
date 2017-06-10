@@ -79,7 +79,7 @@ private slots:
     void updateRealName(QString realName);
     void updateFrequency(QString frequency);
     void updateRating(Core::Atc::Rating rating);
-    void updateAirport(Core::AirportObject* airport);
+    void updateAirport(Core::Airport* airport);
     void updateServer(QString server);
     void updateOnlineFrom(QDateTime onlineFrom);
     void updateAtis(QString atis);

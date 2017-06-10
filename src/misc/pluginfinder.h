@@ -17,63 +17,65 @@
  * 
  */
 
-#ifndef CORE_PLUGINFINDER_H
-#define CORE_PLUGINFINDER_H
+#ifndef MISC_PLUGINFINDER_H
+#define MISC_PLUGINFINDER_H
 
-#include "core/vtrcore_export.h"
+#include "misc/vtrmisc_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QJsonObject>
 #include <QtCore/QList>
 #include <QtCore/QMap>
 
-namespace Vatsinator { namespace Core {
-
-class PluginFinderHelper;
+namespace Vatsinator { namespace Misc {
 
 /**
  * \ingroup Core
  * @{
  */
-class VTRCORE_EXPORT PluginFinder {
+class VTRMISC_EXPORT PluginFinder {
     friend class PluginFinderHelper;
 
 public:
+    explicit PluginFinder(const QString& directory);
+
+    explicit PluginFinder(const QStringList& directories);
+
     /**
      * Returns list of plugins that implement the given IID.
-     * Each string is a unique class name of a plugin.
+     * Each string is a unique id of a plugin.
      */
-    static QList<QString> pluginsForIid(const QString& iid);
+    QList<QString> pluginsForIid(const QString& iid);
 
     /**
      * Returns MetaData of the given plugin.
      */
-    static QJsonObject pluginMetaData(const QString& className);
+    QJsonObject pluginMetaData(const QString& id);
     
     /**
-     * Returns a plugin for the given class name.
+     * Returns a plugin instance for the given plugin id.
      */
-    static QObject* plugin(const QString& className);
-
-    PluginFinder() = delete;
+    QObject* plugin(const QString& id);
     
 private:
-    static void readPlugin(const QString& fileName);
-    static bool loadPlugin(const QString& fileName);
+    void locatePlugins(const QStringList& directories);
+    void readPlugin(const QString& fileName);
+    bool loadPlugin(const QString& fileName);
     
     struct PluginData {
         QString className;
+        QString id;
         QString fileName;
         QString iid;
         QJsonObject metaData;
     };
 
-    static QList<PluginData> m_plugins;
-    static QMap<QString, QObject*> m_loadedPlugins; /**< fileName <-> instance */
+    QList<PluginData> m_plugins;
+    QMap<QString, QObject*> m_loadedPlugins; /**< fileName <-> instance */
 
 }; /** @} */
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */
 
-Q_DECLARE_METATYPE(Vatsinator::Core::PluginFinder*)
+Q_DECLARE_METATYPE(Vatsinator::Misc::PluginFinder*)
 
-#endif // CORE_PLUGINFINDER_H
+#endif // MISC_PLUGINFINDER_H

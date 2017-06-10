@@ -1,6 +1,4 @@
-find_package (Qt5Core REQUIRED)
-find_package (Qt5Network REQUIRED)
-find_package (Qt5Gui REQUIRED)
+find_package (Qt5 REQUIRED COMPONENTS Core Network Gui)
 
 add_library (vatbookatcbookingprovider MODULE
     vatbookatcbookingprovider.h

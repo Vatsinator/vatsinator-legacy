@@ -20,7 +20,7 @@
 #ifndef GUI_FIRAREA_H
 #define GUI_FIRAREA_H
 
-#include "core/firobject.h"
+#include "core/fir.h"
 #include "core/lonlat.h"
 #include "gui/maparea.h"
 #include "gui/vtrgui_export.h"
@@ -40,7 +40,7 @@ public:
     /**
      * Creates new FirArea. Passes \c scene and \c parent to \c MapArea.
      */
-    explicit FirArea(Core::FirObject* fir, Core::Fir::Boundaries boundaries,
+    explicit FirArea(Core::Fir* fir, Core::Fir::Boundaries boundaries,
                      MapScene* scene, QObject* parent = nullptr);
     
     /**
@@ -58,8 +58,8 @@ public:
      */
     virtual void draw(WorldPainter* painter, DrawFlags flags) const override;
     
-    const Core::FirObject* fir() const { return m_fir; }
-    Core::FirObject* fir() { return m_fir; }
+    const Core::Fir* fir() const { return m_fir; }
+    Core::Fir* fir() { return m_fir; }
     
 private slots:
     /**
@@ -68,7 +68,7 @@ private slots:
     void refreshStatus();
     
 private:
-    Core::FirObject* m_fir;
+    Core::Fir* m_fir;
     mutable QRectF m_boundingRect;
     QVector<Core::LonLat> m_polygon;
     QVector<Core::LonLat> m_boundary;

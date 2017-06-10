@@ -28,7 +28,7 @@ using namespace Vatsinator::Core;
 
 namespace Vatsinator { namespace Gui {
 
-AirportItem::AirportItem(AirportObject* airport, MapScene* scene, QObject* parent) :
+AirportItem::AirportItem(Airport *airport, MapScene* scene, QObject* parent) :
     MapItem(scene, parent),
     m_airport(airport)
 {

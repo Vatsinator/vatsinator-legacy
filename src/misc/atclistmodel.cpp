@@ -98,17 +98,17 @@ QHash<int, QByteArray> AtcListModel::roleNames() const
     return roles;
 }
 
-AtcListModel* AtcListModel::staff(const AirportObject* airport, QObject* parent)
+AtcListModel* AtcListModel::staff(const Airport* airport, QObject* parent)
 {
     return staffImpl(airport, parent);
 }
 
-AtcListModel* AtcListModel::staff(const FirObject* fir, QObject* parent)
+AtcListModel* AtcListModel::staff(const Fir* fir, QObject* parent)
 {
     return staffImpl(fir, parent);
 }
 
-AtcListModel*AtcListModel::all(const ServerTracker* server, QObject* parent)
+AtcListModel* AtcListModel::all(const ServerTracker* server, QObject* parent)
 {
     AtcListModel* m = new AtcListModel(parent);
     if (server) {
@@ -117,9 +117,9 @@ AtcListModel*AtcListModel::all(const ServerTracker* server, QObject* parent)
                 m->add(atc);
         };
 
-        auto clients = server->clients();
+        auto clients = server->clients()->asList();
         std::for_each(clients.constBegin(), clients.constEnd(), adder);
-        auto conn = connect(server, &ServerTracker::clientAdded, adder);
+        auto conn = connect(server->clients(), &ClientModel::added, adder);
         connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
     }
 

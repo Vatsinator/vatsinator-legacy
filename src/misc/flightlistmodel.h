@@ -20,8 +20,8 @@
 #ifndef MISC_FLIGHTLISTMODEL_H
 #define MISC_FLIGHTLISTMODEL_H
 
-#include "core/airportobject.h"
-#include "core/firobject.h"
+#include "core/airport.h"
+#include "core/fir.h"
 #include "misc/vtrmisc_export.h"
 #include <QtCore/QAbstractListModel>
 
@@ -80,20 +80,20 @@ public:
     /**
      * Creates a new model that tracks inbound flights of the given \c airport.
      */
-    static FlightListModel* inbound(const Core::AirportObject* airport,
+    static FlightListModel* inbound(const Core::Airport* airport,
                                     QObject* parent = nullptr);
     
     /**
      * Creates a new model that tracks outbound flights of the given \c airport.
      */
-    static FlightListModel* outbound(const Core::AirportObject* airport,
+    static FlightListModel* outbound(const Core::Airport* airport,
                                      QObject* parent = nullptr);
     
     /**
      * Creates a new model that tracks inbount and outbound flights of the 
      * given \c fir.
      */
-    static FlightListModel* around(const Core::FirObject* fir,
+    static FlightListModel* around(const Core::Fir* fir,
                                    QObject* parent = nullptr);
 
     /**

@@ -20,7 +20,7 @@
 #include "modelmatcher.h"
 #include <QtCore>
 
-using namespace Vatsinator::Core;
+using namespace Vatsinator::Misc;
 
 namespace Vatsinator { namespace Gui {
 

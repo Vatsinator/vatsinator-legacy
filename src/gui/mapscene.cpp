@@ -18,7 +18,6 @@
  */
 
 #include "mapscene.h"
-#include "core/tmalistreader.h"
 #include "gui/airportitem.h"
 #include "gui/firarea.h"
 #include "gui/firitem.h"
@@ -69,7 +68,7 @@ class MapScenePrivate {
     using AreaMap = spatial::idle_box_multimap<4, QRectF, AreaPointer, spatial::accessor_less<QRectFBoxAccessor, QRectF>>;
     
 public:
-    explicit MapScenePrivate(MapScene* scene) : m_scene(scene), m_tmaListReader(new TmaListReader) {}
+    explicit MapScenePrivate(MapScene* scene) : m_scene(scene) {}
 
     const MapItem* itemForFlight(const Pilot* flight)
     {
@@ -113,27 +112,27 @@ public:
         addFlight(ptr->pilot());
     }
     
-    void addAirport(const AirportObject* airport)
+    void addAirport(const Airport* airport)
     {
-        ItemPointer item(new AirportItem(const_cast<AirportObject*>(airport),
+        ItemPointer item(new AirportItem(const_cast<Airport*>(airport),
                                          m_scene),
                          &QObject::deleteLater);
         m_items.insert(std::make_pair(item->position(), item));
         
-        AreaPointer area(new TmaArea(const_cast<AirportObject*>(airport),
-                                     m_tmaListReader->coords(airport->icao()),
-                                     m_scene),
-                         &QObject::deleteLater);
-        m_areas.insert(std::make_pair(area->boundingRect(), area));
+//        AreaPointer area(new TmaArea(const_cast<Airport*>(airport),
+//                                     m_tmaListReader->coords(airport->icao()),
+//                                     m_scene),
+//                         &QObject::deleteLater);
+//        m_areas.insert(std::make_pair(area->boundingRect(), area));
     }
     
-    void addFir(const FirObject* fir)
+    void addFir(const Fir* fir)
     {
-        ItemPointer item(new FirItem(const_cast<FirObject*>(fir), m_scene), &QObject::deleteLater);
+        ItemPointer item(new FirItem(const_cast<Fir*>(fir), m_scene), &QObject::deleteLater);
         m_items.insert(std::make_pair(item->position(), item));
         
         for (const Fir::Boundaries& boundary: fir->boundaries()) {
-            AreaPointer area(new FirArea(const_cast<FirObject*>(fir), boundary, m_scene), &QObject::deleteLater);
+            AreaPointer area(new FirArea(const_cast<Fir*>(fir), boundary, m_scene), &QObject::deleteLater);
             m_areas.insert(std::make_pair(area->boundingRect(), area));
         }
     }
@@ -226,7 +225,7 @@ private:
     ItemMap m_items;
     AreaMap m_areas;
     QMap<const Pilot*, ItemMap::iterator> m_itemMapping;
-    QScopedPointer<TmaListReader> m_tmaListReader;
+//    QScopedPointer<TmaListReader> m_tmaListReader;
     
 };
 
@@ -241,12 +240,12 @@ MapScene::~MapScene() {}
 
 void MapScene::track(ServerTracker* serverTracker)
 {
-    connect(serverTracker, &ServerTracker::clientAdded, this, &MapScene::trackClient);
-    connect(serverTracker, &ServerTracker::airportAdded, this, &MapScene::addAirport);
+    connect(serverTracker->clients(), &ClientModel::added, this, &MapScene::trackClient);
+//    connect(serverTracker, &ServerTracker::airportAdded, this, &MapScene::addAirport);
     
-    auto firs = serverTracker->firObjects();
-    for (auto f: firs)
-        d->addFir(f);
+//    auto firs = serverTracker->firObjects();
+//    for (auto f: firs)
+//        d->addFir(f);
 }
 
 QList<const MapItem*> MapScene::itemsInRect(const QRectF& rect) const
@@ -323,7 +322,7 @@ void MapScene::removeFlight(const Pilot* flight)
     emit updated();
 }
 
-void MapScene::addAirport(const AirportObject* airport)
+void MapScene::addAirport(const Airport* airport)
 {
     d->addAirport(airport);
 }

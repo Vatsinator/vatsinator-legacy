@@ -18,11 +18,10 @@
  */
 
 #include "vatbookatcbookingprovider.h"
-#include "core/filedownloader.h"
+#include <misc/filedownloader.h>
 #include <QtCore>
 #include <functional>
 
-using namespace Vatsinator::Core;
 using namespace Vatsinator::Misc;
 
 namespace {

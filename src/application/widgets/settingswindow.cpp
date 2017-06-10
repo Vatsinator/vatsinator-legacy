@@ -19,11 +19,11 @@
 
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
-#include "core/option.h"
-#include "core/pluginfinder.h"
-#include "gui/mapdrawerplugin.h"
-#include "widgets/pluginwidget.h"
 #include "config.h"
+#include <gui/mapdrawerplugin.h>
+#include <misc/option.h>
+#include <misc/pluginfinder.h>
+#include <widgets/pluginwidget.h>
 #include <QtWidgets>
 #include <functional>
 
@@ -33,6 +33,7 @@
 
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Gui;
+using namespace Vatsinator::Misc;
 using namespace Vatsinator::Widgets;
 
 SettingsWindow::SettingsWindow(QWidget* parent) :
@@ -123,10 +124,11 @@ void SettingsWindow::fillLanguages()
 
 void SettingsWindow::fillPlugins()
 {
-    QStringList mapPlugins = PluginFinder::pluginsForIid(qobject_interface_iid<MapDrawerPlugin*>());
+    PluginFinder* pf = qApp->property("pluginFinder").value<PluginFinder*>();
+    QStringList mapPlugins = pf->pluginsForIid(qobject_interface_iid<MapDrawerPlugin*>());
 
     for (const QString& p: qAsConst(mapPlugins)) {
-        QJsonObject metaData = PluginFinder::pluginMetaData(p);
+        QJsonObject metaData = pf->pluginMetaData(p);
         QString pluginName = metaData.contains("name") ? metaData.value("name").toString() : p;
 
         PluginWidget* pw = new PluginWidget(p);
@@ -143,13 +145,13 @@ void SettingsWindow::fillPlugins()
         ui->mapDrawers->setEnabled(false);
 
     QVBoxLayout* layout = new QVBoxLayout;
-    QStringList mapAddons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
+    QStringList mapAddons = pf->pluginsForIid(qobject_interface_iid<MapAddon*>());
 
     QScopedPointer<Option> mapAddonsOption(new Option("plugins/map_addons", this));
     QStringList enabledMapAddons = mapAddonsOption->value().toStringList();
 
     for (const QString& p: qAsConst(mapAddons)) {
-        QJsonObject metaData = PluginFinder::pluginMetaData(p);
+        QJsonObject metaData = pf->pluginMetaData(p);
         QString pluginName = metaData.contains("name") ? metaData.value("name").toString() : p;
 
         PluginWidget* pw = new PluginWidget(p);

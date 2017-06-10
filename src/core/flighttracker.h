@@ -51,11 +51,11 @@ public:
     const Pilot* flight() const { return m_flight; }
 
 private:
-    std::tuple<AirportObject*, AirportObject*> findAirports();
+    std::tuple<Airport*, Airport*> findAirports();
 
 private slots:
-    void initialize();
     void update();
+    void updateAirline();
     void invalidateAirports();
 
 private:

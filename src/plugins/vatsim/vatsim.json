@@ -1,0 +1,7 @@
+{
+    "id": "org.eu.vatsinator.plugin.vasim",
+    "dependencies": [
+        "org.eu.vatsinator.plugin.vatsinatordatabase"
+    ],
+    "author": "Vatsinator Team"
+}

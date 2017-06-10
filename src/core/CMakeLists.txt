@@ -2,76 +2,46 @@ find_package (Qt5 5.7 REQUIRED COMPONENTS Core Network)
 
 set (core_SOURCES
     airline.cpp
-    airlinelistreader.cpp
     airport.cpp
-    airportlistreader.cpp
-    airportobject.cpp
-    aliaslistreader.cpp
+    airportmodel.cpp
     atc.cpp
     atctracker.cpp
     client.cpp
-    clientdata.cpp
     clientlist.cpp
-    filedownloader.cpp
-    filereader.cpp
+    clientmodel.cpp
     fir.cpp
-    firlistreader.cpp
-    firobject.cpp
+    firmodel.cpp
     flightplan.cpp
     flighttracker.cpp
     geo.cpp
     lonlat.cpp
     metar.cpp
-    metarmanager.cpp
+    metarlistmodel.cpp
     natparser.cpp
-    option.cpp
     pilot.cpp
-    pluginfinder.cpp
-    resourcefile.cpp
     servertracker.cpp
-    tmalistreader.cpp
-    uirlistreader.cpp
-    vatsimdatadocument.cpp
-    vatsimdatareader.cpp
-    vatsimstatusdocument.cpp
-    vatsimstatusreader.cpp
 )
 
 set (core_HEADERS
     airline.h
-    airlinelistreader.h
     airport.h
-    airportlistreader.h
-    airportobject.h
-    aliaslistreader.h
+    airportmodel.h
     atc.h
     atctracker.h
     client.h
-    clientdata.h
     clientlist.h
-    filedownloader.h
-    filereader.h
+    clientmodel.h
     fir.h
-    firlistreader.h
-    firobject.h
+    firmodel.h
     flightplan.h
     flighttracker.h
     geo.h
     lonlat.h
     metar.h
-    metarmanager.h
+    metarlistmodel.h
     natparser.h
-    option.h
     pilot.h
-    pluginfinder.h
-    resourcefile.h
     servertracker.h
-    tmalistreader.h
-    uirlistreader.h
-    vatsimdatadocument.h
-    vatsimdatareader.h
-    vatsimstatusdocument.h
-    vatsimstatusreader.h
     
     core.h
 )

@@ -28,6 +28,8 @@ add_subdirectory (idl-drawer)
 add_subdirectory (tiled-map)
 add_subdirectory (travelpayouts-airline-logos)
 add_subdirectory (vatbook-atc-bookings)
+add_subdirectory (vatsinator-database)
+add_subdirectory (vatsim)
 
 include (CMakeFindDependencyMacro)
 find_package (Marble QUIET)

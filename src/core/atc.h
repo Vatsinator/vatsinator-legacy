@@ -20,9 +20,9 @@
 #ifndef CORE_ATC_H
 #define CORE_ATC_H
 
-#include "core/airportobject.h"
+#include "core/airport.h"
 #include "core/client.h"
-#include "core/firobject.h"
+#include "core/fir.h"
 #include "core/vtrcore_export.h"
 #include <QtCore/QString>
 
@@ -74,13 +74,13 @@ class VTRCORE_EXPORT Atc : public Client {
      * The airport this ATC is at. If the ATC is not bound to any airport (i.e.
      * its \c facility is \c Ctr or \c Fss), value of this property is \c nullptr.
      */
-    Q_PROPERTY(AirportObject* airport READ airport WRITE setAirport NOTIFY airportChanged)
+    Q_PROPERTY(Vatsinator::Core::Airport* airport READ airport WRITE setAirport NOTIFY airportChanged)
     
     /**
      * The FIR this ATC is bound to. Value of this property is not \c nullptr only
      * if the \c facility is \c Ctr or \c Fss.
      */
-    Q_PROPERTY(FirObject* fir READ fir WRITE setFir NOTIFY firChanged)
+    Q_PROPERTY(Vatsinator::Core::Fir* fir READ fir WRITE setFir NOTIFY firChanged)
 
     /**
      * Specifies whether this ATC controls UIR (Upper FIR).
@@ -123,8 +123,8 @@ signals:
     void atisChanged(const QString& atis);
     void facilityChanged(Facility facility);
     void descriptionChanged(const QString& description);
-    void airportChanged(AirportObject* airport);
-    void firChanged(FirObject* fir);
+    void airportChanged(Airport* airport);
+    void firChanged(Fir* fir);
 
 public:
     explicit Atc(quint32 pid, ServerTracker* server);
@@ -140,10 +140,10 @@ public:
     void setFacility(Facility facility);
     const QString& description() const { return m_description; }
     void setDescription(const QString& description);
-    AirportObject* airport() const { return m_airport; }
-    void setAirport(AirportObject* airport);
-    FirObject* fir() const { return m_fir; }
-    void setFir(FirObject* fir);
+    Airport* airport() const { return m_airport; }
+    void setAirport(Airport* airport);
+    Fir* fir() const { return m_fir; }
+    void setFir(Fir* fir);
     bool isUir() const { return m_uir; }
     void setIsUir(bool isUir);
     
@@ -172,8 +172,8 @@ private:
     QString m_atis;
     Facility m_facility;
     QString m_description;
-    AirportObject* m_airport = nullptr;
-    FirObject* m_fir = nullptr;
+    Airport* m_airport = nullptr;
+    Fir* m_fir = nullptr;
     bool m_uir = false;
 
 }; /** @} */

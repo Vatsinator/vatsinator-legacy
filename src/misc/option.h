@@ -17,15 +17,15 @@
  * 
  */
 
-#ifndef CORE_OPTION_H
-#define CORE_OPTION_H
+#ifndef MISC_OPTION_H
+#define MISC_OPTION_H
 
-#include "core/vtrcore_export.h"
+#include "misc/vtrmisc_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QVariant>
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
 class OptionPrivate;
 
@@ -48,7 +48,7 @@ class OptionPrivate;
  *                                    // triggered for "option" variable as well
  * \endcode
  */
-class VTRCORE_EXPORT Option : public QObject {
+class VTRMISC_EXPORT Option : public QObject {
     Q_OBJECT
     friend class OptionPrivate;
     
@@ -135,6 +135,6 @@ private:
 
 }; /** @} */
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */
 
-#endif // CORE_OPTION_H
+#endif // MISC_OPTION_H

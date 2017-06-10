@@ -20,76 +20,78 @@
 #include "pluginfinder.h"
 #include <QtCore>
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
-class VTRCORE_NO_EXPORT PluginFinderHelper {
-public:
-    void locatePlugins() {
-        QStringList locations = { QCoreApplication::applicationDirPath() % "/plugins" };
+PluginFinder::PluginFinder(const QString &directory) :
+    PluginFinder(QStringList({ directory }))
+{
 
-#ifdef Q_OS_WIN32
-# pragma message ("Add plugin locations for Win32")
-#endif
+}
 
-#ifdef Q_OS_MACOS
-        locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../PlugIns"));
-        locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../../../plugins"));
-#endif
-
-#ifdef Q_OS_ANDROID
-        /* This is a hacky way, but I couldn't find better */
-        QDir dir(QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).first());
-        dir.cdUp();
-        locations.append(dir.absolutePath() % "/qt-reserved-files/plugins");
-#endif
-
-        for (const QString& loc: qAsConst(locations)) {
-            QDir dir(loc);
-            QStringList files = dir.entryList(QDir::Files);
-            for (const QString& file: qAsConst(files))
-                PluginFinder::readPlugin(dir.absoluteFilePath(file));
-        }
-    }
-};
+PluginFinder::PluginFinder(const QStringList &directories)
+{
+    locatePlugins(directories);
+}
 
 QList<QString> PluginFinder::pluginsForIid(const QString& iid)
 {
     QList<QString> names;
     for (const PluginData& p: qAsConst(m_plugins)) {
         if (p.iid == iid)
-            names.append(p.className);
+            names.append(p.id);
     }
 
     return names;
 }
 
-QJsonObject PluginFinder::pluginMetaData(const QString& className)
+QJsonObject PluginFinder::pluginMetaData(const QString& id)
 {
-    auto it = std::find_if(m_plugins.begin(), m_plugins.end(), [&className](auto it) {
-        return it.className == className;
+    auto it = std::find_if(m_plugins.begin(), m_plugins.end(), [&id](auto it) {
+        return it.id == id;
     });
 
     return it->metaData;
 }
 
-QObject* PluginFinder::plugin(const QString& className)
+QObject* PluginFinder::plugin(const QString& id)
 {
-    auto it = std::find_if(m_plugins.begin(), m_plugins.end(), [&className](auto it) {
-        return it.className == className;
+    auto it = std::find_if(m_plugins.begin(), m_plugins.end(), [&id](auto it) {
+        return it.id == id;
     });
 
     if (it == m_plugins.end()) {
-        qWarning("Plugin \"%s\" not found", qPrintable(className));
+        qWarning("Plugin \"%s\" not found", qPrintable(id));
         return nullptr;
     }
 
     if (!m_loadedPlugins.contains(it->fileName)) {
+        if (it->metaData.value("dependencies").isArray()) {
+            QJsonArray deps = it->metaData.value("dependencies").toArray();
+            for (const QJsonValue& val: qAsConst(deps)) {
+                QObject* d = this->plugin(val.toString());
+                if (!d) {
+                    qWarning("Failed loading %s (failed loading dependency: %s)", qPrintable(it->id), qPrintable(val.toString()));
+                    return nullptr;
+                }
+            }
+        }
+
         bool result = loadPlugin(it->fileName);
         if (!result)
             return nullptr;
     }
 
     return m_loadedPlugins.value(it->fileName);
+}
+
+void PluginFinder::locatePlugins(const QStringList& directories)
+{
+    for (const QString& loc: qAsConst(directories)) {
+        QDir dir(loc);
+        QStringList files = dir.entryList(QDir::Files);
+        for (const QString& file: qAsConst(files))
+            readPlugin(dir.absoluteFilePath(file));
+    }
 }
 
 void PluginFinder::readPlugin(const QString &fileName)
@@ -127,15 +129,4 @@ bool PluginFinder::loadPlugin(const QString &fileName)
     }
 }
 
-QList<PluginFinder::PluginData> PluginFinder::m_plugins;
-QMap<QString, QObject*> PluginFinder::m_loadedPlugins;
-
-}} /* namespace Vatsinator::Core */
-
-
-static void initialize()
-{
-    Vatsinator::Core::PluginFinderHelper p;
-    p.locatePlugins();
-}
-Q_COREAPP_STARTUP_FUNCTION(initialize)
+}} /* namespace Vatsinator::Misc */

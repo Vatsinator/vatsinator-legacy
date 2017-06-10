@@ -20,8 +20,8 @@
 #ifndef MISC_ATCLISTMODEL_H
 #define MISC_ATCLISTMODEL_H
 
-#include "core/airportobject.h"
-#include "core/firobject.h"
+#include "core/airport.h"
+#include "core/fir.h"
 #include "misc/vtrmisc_export.h"
 #include <QtCore/QAbstractListModel>
 
@@ -78,13 +78,13 @@ public:
     /**
      * Creates a new model that tracks all ATCs of the given \c airport.
      */
-    static AtcListModel* staff(const Core::AirportObject* airport,
+    static AtcListModel* staff(const Core::Airport* airport,
                                QObject* parent = nullptr);
     
     /**
      * Creates a new model that tracks all ATCs of the given \c fir.
      */
-    static AtcListModel* staff(const Core::FirObject* fir,
+    static AtcListModel* staff(const Core::Fir* fir,
                                QObject* parent = nullptr);
 
     /**

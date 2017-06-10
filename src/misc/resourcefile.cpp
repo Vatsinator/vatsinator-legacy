@@ -45,7 +45,7 @@ QStringList filesInSourcePath(const QString& fileName)
 
 }
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
 ResourceFile::ResourceFile(QObject *parent) : FileReader(parent) {}
 
@@ -97,4 +97,4 @@ void ResourceFile::addLocalPath()
     read(localPath);
 }
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */

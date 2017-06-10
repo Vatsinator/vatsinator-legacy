@@ -20,6 +20,7 @@
 #ifndef WIDGETS_FLIGHTDETAILSWINDOW_H
 #define WIDGETS_FLIGHTDETAILSWINDOW_H
 
+#include "core/airport.h"
 #include "core/pilot.h"
 #include "widgets/vtrwidgets_export.h"
 #include <QtCore/QPointer>
@@ -48,7 +49,7 @@ signals:
     /**
      * Emitted when user cliks the airport button.
      */
-    void airportDetailsRequested(Core::AirportObject* airport);
+    void airportDetailsRequested(Core::Airport* airport);
     
     /**
      * Emitted when user wants to show the airport on the map.
@@ -91,8 +92,8 @@ private:
 private slots:
     void updateCallsign(QString callsign);
     void updateRealName(QString realName);
-    void updateDeparture(Core::AirportObject* departure);
-    void updateDestination(Core::AirportObject* destination);
+    void updateDeparture(Core::Airport* departure);
+    void updateDestination(Core::Airport* destination);
     void updateStd(QTime std);
     void updateSta(QTime sta);
     void updateAtd(QTime atd);

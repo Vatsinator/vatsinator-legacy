@@ -21,8 +21,8 @@
 #define TILEMANAGER_H
 
 #include "tile.h"
-#include <core/filedownloader.h>
 #include <core/lonlat.h>
+#include <misc/filedownloader.h>
 #include <QHash>
 #include <QObject>
 #include <QRectF>
@@ -74,16 +74,16 @@ public:
     
 private:
     QImage tileRenderedImpl(const Tile& tile, QRect* source, int levelsLeft = 5);
-    QList<Vatsinator::Core::FileDownloader*> freeDownloaders();
+    QList<Vatsinator::Misc::FileDownloader*> freeDownloaders();
     
 private slots:
     void triggerDownloaders();
-    void fetchNextTile(Vatsinator::Core::FileDownloader* downloader);
+    void fetchNextTile(Vatsinator::Misc::FileDownloader* downloader);
     void tileFetched(QUrl url);
     void tileError(QString error, QUrl url);
     
 private:
-    QList<Vatsinator::Core::FileDownloader*> m_downloaders;
+    QList<Vatsinator::Misc::FileDownloader*> m_downloaders;
     quint32 m_lastZoom = 0;
     Vatsinator::Core::LonLat m_lastCenter;
     QSet<Tile> m_tiles;

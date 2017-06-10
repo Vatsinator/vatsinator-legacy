@@ -20,7 +20,7 @@
 #ifndef GUI_MODELMATCHER_H
 #define GUI_MODELMATCHER_H
 
-#include "core/resourcefile.h"
+#include "misc/resourcefile.h"
 #include "gui/vtrgui_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QJsonDocument>
@@ -45,11 +45,11 @@ class VTRGUI_EXPORT ModelMatcher : public QObject {
      * The \c ModelMatcher takes ownership over assigned \c ResourceFile
      * instances.
      */
-    Q_PROPERTY(Vatsinator::Core::ResourceFile* resourceFile READ resourceFile
+    Q_PROPERTY(Vatsinator::Misc::ResourceFile* resourceFile READ resourceFile
                WRITE setResourceFile NOTIFY resourceFileChanged)
 
 signals:
-    void resourceFileChanged(Core::ResourceFile* resourceFile);
+    void resourceFileChanged(Misc::ResourceFile* resourceFile);
 
 public:
     /**
@@ -62,9 +62,9 @@ public:
      */
     virtual ~ModelMatcher();
 
-    Core::ResourceFile* resourceFile() { return m_resourceFile; }
-    const Core::ResourceFile* resourceFile() const { return m_resourceFile; }
-    void setResourceFile(Core::ResourceFile* resourceFile);
+    Misc::ResourceFile* resourceFile() { return m_resourceFile; }
+    const Misc::ResourceFile* resourceFile() const { return m_resourceFile; }
+    void setResourceFile(Misc::ResourceFile* resourceFile);
     
     /**
      * Matches the given model. If no model could be matched, returns
@@ -89,7 +89,7 @@ private slots:
     void readMappingFile();
     
 private:
-    Core::ResourceFile* m_resourceFile = nullptr;
+    Misc::ResourceFile* m_resourceFile = nullptr;
     QMap<QString, QString> m_mappings;
     
 }; /** @} */

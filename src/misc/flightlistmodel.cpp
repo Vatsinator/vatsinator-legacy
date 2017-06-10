@@ -128,7 +128,7 @@ FlightListModel* fromClientList(const ClientList* clients, QObject* parent, Pred
     return m;
 }
 
-FlightListModel* FlightListModel::inbound(const AirportObject* airport, QObject* parent)
+FlightListModel* FlightListModel::inbound(const Airport* airport, QObject* parent)
 {
     auto pred = [airport](const Client* client) {
         if (const Pilot* flight = qobject_cast<const Pilot*>(client))
@@ -140,7 +140,7 @@ FlightListModel* FlightListModel::inbound(const AirportObject* airport, QObject*
     return fromClientList(airport, parent, pred);
 }
 
-FlightListModel* FlightListModel::outbound(const AirportObject* airport, QObject* parent)
+FlightListModel* FlightListModel::outbound(const Airport* airport, QObject* parent)
 {
     auto pred = [airport](const Client* client) {
         if (const Pilot* flight = qobject_cast<const Pilot*>(client))
@@ -152,7 +152,7 @@ FlightListModel* FlightListModel::outbound(const AirportObject* airport, QObject
     return fromClientList(airport, parent, pred);
 }
 
-FlightListModel* FlightListModel::around(const FirObject* fir, QObject* parent)
+FlightListModel* FlightListModel::around(const Fir *fir, QObject* parent)
 {
     auto pred = [](const Client* client) {
         return qobject_cast<const Pilot*>(client);
@@ -171,9 +171,9 @@ FlightListModel*FlightListModel::all(const ServerTracker* server, QObject* paren
                 m->add(c);
         };
 
-        auto clients = server->clients();
+        auto clients = server->clients()->asList();
         std::for_each(clients.constBegin(), clients.constEnd(), adder);
-        auto conn = connect(server, &ServerTracker::clientAdded, adder);
+        auto conn = connect(server->clients(), &ClientModel::added, adder);
         connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
     }
 

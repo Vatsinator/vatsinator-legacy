@@ -8,11 +8,15 @@ set (misc_SOURCES
     atclistmodel.cpp
     clientlistmodel.cpp
     filecache.cpp
+    filedownloader.cpp
+    filereader.cpp
     flightlistmodel.cpp
-    metarlistmodel.cpp
     notam.cpp
     notamlistmodel.cpp
     notamreply.cpp
+    option.cpp
+    pluginfinder.cpp
+    resourcefile.cpp
 )
 
 set (misc_HEADERS
@@ -25,12 +29,16 @@ set (misc_HEADERS
     atclistmodel.h
     clientlistmodel.h
     filecache.h
+    filedownloader.h
+    filereader.h
     flightlistmodel.h
-    metarlistmodel.h
     notam.h
     notamlistmodel.h
     notamprovider.h
     notamreply.h
+    option.h
+    pluginfinder.h
+    resourcefile.h
     
     misc.h
     roles.h

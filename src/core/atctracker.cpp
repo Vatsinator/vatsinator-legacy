@@ -18,10 +18,9 @@
  */
 
 #include "atctracker.h"
-#include "airportlistreader.h"
+#include "airportmodel.h"
 #include "geo.h"
 #include "servertracker.h"
-#include "uirlistreader.h"
 
 namespace Vatsinator { namespace Core {
 
@@ -34,7 +33,6 @@ AtcTracker::AtcTracker(Atc* atc, QObject* parent) :
     m_atc(atc)
 {
     connect(m_atc, &QObject::destroyed, this, &QObject::deleteLater);
-
     initialize();
 }
 
@@ -47,21 +45,19 @@ void AtcTracker::initialize()
         case Atc::Twr:
         case Atc::Dep:
         case Atc::App: {
-            AirportObject* a = nullptr;
+            Airport* ap = nullptr;
             if (atc()->icao.isEmpty()) {
-                Airport ap = atc()->server()->airports()->nearest(atc()->position());
-                if (nmDistance(atc()->position(), ap.position()) < MaxAtcToAirport) {
-                    a = atc()->server()->airportObject(ap);
-                    atc()->icao = a->icao();
+                ap = atc()->server()->airports()->nearest(atc()->position());
+                if (nmDistance(atc()->position(), ap->position()) < MaxAtcToAirport) {
+                    atc()->icao = ap->icao();
                 } else {
                     qFatal("No airport for ATC (%s)", qPrintable(atc()->callsign()));
                 }
             } else {
-                a = atc()->server()->airportObject(atc()->icao);
+                ap = atc()->server()->airports()->findByIcao(atc()->icao);
             }
 
-            atc()->setAirport(a);
-            a->add(atc());
+            atc()->setAirport(ap);
             atc()->setFir(nullptr);
             break;
         }
@@ -69,25 +65,27 @@ void AtcTracker::initialize()
         case Atc::Ctr:
         case Atc::Fss: {
             Q_ASSERT(!atc()->icao.isEmpty());
-            if (FirObject* f = atc()->server()->firObject(atc()->icao)) {
-                f->add(atc());
+            if (Fir* f = atc()->server()->firs()->findByIcao(atc()->icao)) {
                 atc()->setFir(f);
-            } else {
-                bool found;
-                UirListReader::UirData uir;
-                std::tie(found, uir) = atc()->server()->uirs()->find(atc()->icao);
-                if (found) {
-                    atc()->setDescription(std::get<1>(uir));
-                    atc()->setIsUir(true);
+//                atc()->setFir(f);
+//            } else {
+//                bool found;
+//                UirListReader::UirData uir;
+//                std::tie(found, uir) = atc()->server()->context()->uirs()->find(atc()->icao);
+//                if (found) {
+//                    atc()->setDescription(std::get<1>(uir));
+//                    atc()->setIsUir(true);
 
-                    for (const QString& icao: std::get<2>(uir)) {
-                        FirObject* f = atc()->server()->firObject(icao);
-                        if (f)
-                            f->add(atc());
-                    }
-                } else {
-                    qWarning("No FIR for ATC (%s)", qPrintable(atc()->callsign()));
-                }
+//                    for (const QString& icao: std::get<2>(uir)) {
+//                        FirObject* f = atc()->server()->firObject(icao);
+//                        if (f)
+//                            f->add(atc());
+//                    }
+//                } else {
+//                    qWarning("No FIR for ATC (%s)", qPrintable(atc()->callsign()));
+//                }
+            } else {
+                qWarning("No FIR for ATC (%s)", qPrintable(atc()->callsign()));
             }
 
             atc()->setAirport(nullptr);

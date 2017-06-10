@@ -21,7 +21,7 @@
 #include "filedownloader.h"
 #include <QtCore>
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
 FileReader::FileReader(QObject* parent) : QObject(parent)
 {
@@ -76,4 +76,4 @@ void FileReader::downloadFinished(QUrl url)
     // TODO
 }
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */

@@ -18,11 +18,10 @@
  */
 
 #include "euroutenotamprovider.h"
-#include "core/filedownloader.h"
+#include "misc/filedownloader.h"
 #include "misc/filecache.h"
 #include <QtCore>
 
-using namespace Vatsinator::Core;
 using namespace Vatsinator::Misc;
 
 namespace {

@@ -71,19 +71,31 @@ void Atc::setDescription(const QString& description)
     }
 }
 
-void Atc::setAirport(AirportObject* airport)
+void Atc::setAirport(Airport* airport)
 {
     if (m_airport != airport) {
+        if (m_airport)
+            m_airport->remove(this);
+
         m_airport = airport;
         emit airportChanged(airport);
+
+        if (m_airport)
+            m_airport->add(this);
     }
 }
 
-void Atc::setFir(FirObject* fir)
+void Atc::setFir(Fir* fir)
 {
     if (m_fir != fir) {
+        if (m_fir)
+            m_fir->remove(this);
+
         m_fir = fir;
         emit firChanged(fir);
+
+        if (m_fir)
+            m_fir->add(this);
     }
 }
 
@@ -142,7 +154,7 @@ void Atc::updateDescription()
     if (fir()) {
         setDescription(fir()->name());
     } else if (airport()) {
-        if (airport()->isKnownAirport()) {
+        if (!airport()->name().isEmpty()) {
             QString ap;
             if (airport()->name() != airport()->city()) {
                 ap = airport()->city() % "/" % airport()->name();

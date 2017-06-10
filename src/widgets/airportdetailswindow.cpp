@@ -20,8 +20,7 @@
 #include "airportdetailswindow.h"
 #include "ui_airportdetailswindow.h"
 #include "widgetsprivate.h"
-#include "core/metarmanager.h"
-#include "core/pluginfinder.h"
+#include "core/metar.h"
 #include "core/servertracker.h"
 #include "misc/atcbookinglistmodel.h"
 #include "misc/atcbookingprovider.h"
@@ -29,6 +28,7 @@
 #include "misc/flightlistmodel.h"
 #include "misc/notamlistmodel.h"
 #include "misc/notamprovider.h"
+#include "misc/pluginfinder.h"
 #include "misc/roles.h"
 #include <QtWidgets>
 
@@ -60,7 +60,7 @@ AirportDetailsWindow::AirportDetailsWindow(QWidget* parent) :
 
 AirportDetailsWindow::~AirportDetailsWindow() {}
 
-void AirportDetailsWindow::setAirport(const AirportObject* airport)
+void AirportDetailsWindow::setAirport(const Airport* airport)
 {
     if (m_airport)
         disconnect(m_airport);
@@ -102,8 +102,8 @@ void AirportDetailsWindow::setAirport(const AirportObject* airport)
     updateNotams();
     updateBookings();
     
-    if (!m_connection)
-        m_connection = connect(airport->server()->metarManager(), &MetarManager::updated, this, &AirportDetailsWindow::updateMetar);
+//    if (!m_connection)
+//        m_connection = connect(airport->server()->metarManager(), &MetarManager::updated, this, &AirportDetailsWindow::updateMetar);
 }
 
 void AirportDetailsWindow::showEvent(QShowEvent* event)
@@ -143,68 +143,68 @@ void AirportDetailsWindow::updateMetar()
     if (!airport())
         return;
     
-    Metar m = airport()->server()->metarManager()->find(airport()->icao());
-    QFontMetrics metrics(ui->metar->font());
-    int width = ui->metar->width() - 2;
-    QString clipped = metrics.elidedText(m.metar(), Qt::ElideRight, width);
-    ui->metar->setText(clipped);
-    ui->metar->setToolTip(m.metar());
+//    Metar m = airport()->server()->metarManager()->find(airport()->icao());
+//    QFontMetrics metrics(ui->metar->font());
+//    int width = ui->metar->width() - 2;
+//    QString clipped = metrics.elidedText(m.metar(), Qt::ElideRight, width);
+//    ui->metar->setText(clipped);
+//    ui->metar->setToolTip(m.metar());
 }
 
 void AirportDetailsWindow::updateNotams()
 {
-    NotamListModel* m = nullptr;
+//    NotamListModel* m = nullptr;
     
-    if (NotamReply* nr = qobject_cast<NotamReply*>(sender())) {
-        m = new NotamListModel(nr->notams(), this);
-    } else {
-        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<NotamProvider*>());
-        if (plugins.length() > 0) {
-            NotamProvider* p = qobject_cast<NotamProvider*>(PluginFinder::plugin(plugins.first()));
-            Q_ASSERT(p);
+//    if (NotamReply* nr = qobject_cast<NotamReply*>(sender())) {
+//        m = new NotamListModel(nr->notams(), this);
+//    } else {
+//        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<NotamProvider*>());
+//        if (plugins.length() > 0) {
+//            NotamProvider* p = qobject_cast<NotamProvider*>(PluginFinder::plugin(plugins.first()));
+//            Q_ASSERT(p);
             
-            const NotamReply* nr = p->fetchNotams(m_airport->icao());
-            if (nr->isFinished())
-                m = new NotamListModel(nr->notams(), this);
-            else
-                connect(nr, &NotamReply::finished, this, &AirportDetailsWindow::updateNotams);
-        } else {
-            ui->notamTab->setEnabled(false);
-        }
-    }
+//            const NotamReply* nr = p->fetchNotams(m_airport->icao());
+//            if (nr->isFinished())
+//                m = new NotamListModel(nr->notams(), this);
+//            else
+//                connect(nr, &NotamReply::finished, this, &AirportDetailsWindow::updateNotams);
+//        } else {
+//            ui->notamTab->setEnabled(false);
+//        }
+//    }
     
-    if (ui->notams->model())
-        ui->notams->model()->deleteLater();
+//    if (ui->notams->model())
+//        ui->notams->model()->deleteLater();
     
-    ui->notams->setModel(m);
+//    ui->notams->setModel(m);
 }
 
 void AirportDetailsWindow::updateBookings()
 {
-    AtcBookingListModel* m = nullptr;
+//    AtcBookingListModel* m = nullptr;
     
-    if (AtcBookingReply* br = qobject_cast<AtcBookingReply*>(sender())) {
-        m = new AtcBookingListModel(br->bookings(), this);
-    } else {
-        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AtcBookingProvider*>());
-        if (plugins.length() > 0) {
-            AtcBookingProvider* p = qobject_cast<AtcBookingProvider*>(PluginFinder::plugin(plugins.first()));
-            Q_ASSERT(p);
+//    if (AtcBookingReply* br = qobject_cast<AtcBookingReply*>(sender())) {
+//        m = new AtcBookingListModel(br->bookings(), this);
+//    } else {
+//        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AtcBookingProvider*>());
+//        if (plugins.length() > 0) {
+//            AtcBookingProvider* p = qobject_cast<AtcBookingProvider*>(PluginFinder::plugin(plugins.first()));
+//            Q_ASSERT(p);
             
-            const AtcBookingReply* r = p->fetchBookings(m_airport->icao());
-            if (r->isFinished())
-                m = new AtcBookingListModel(r->bookings(), this);
-            else
-                connect(r, &AtcBookingReply::finished, this, &AirportDetailsWindow::updateBookings);
-        } else {
-            ui->bookingTab->setEnabled(false);
-        }
-    }
+//            const AtcBookingReply* r = p->fetchBookings(m_airport->icao());
+//            if (r->isFinished())
+//                m = new AtcBookingListModel(r->bookings(), this);
+//            else
+//                connect(r, &AtcBookingReply::finished, this, &AirportDetailsWindow::updateBookings);
+//        } else {
+//            ui->bookingTab->setEnabled(false);
+//        }
+//    }
     
-    if (ui->bookings->model())
-        ui->bookings->model()->deleteLater();
+//    if (ui->bookings->model())
+//        ui->bookings->model()->deleteLater();
     
-    ui->bookings->setModel(m);
+//    ui->bookings->setModel(m);
 }
 
 }} /* namespace Vatsinator::Widgets */

@@ -20,7 +20,7 @@
 #include "firdetailswindow.h"
 #include "ui_firdetailswindow.h"
 #include "widgetsprivate.h"
-#include "core/pluginfinder.h"
+#include "misc/pluginfinder.h"
 #include "misc/atcbookinglistmodel.h"
 #include "misc/atcbookingprovider.h"
 #include "misc/atclistmodel.h"
@@ -55,7 +55,7 @@ FirDetailsWindow::FirDetailsWindow(QWidget* parent) :
 
 FirDetailsWindow::~FirDetailsWindow() {}
 
-void FirDetailsWindow::setFir(const Core::FirObject* fir)
+void FirDetailsWindow::setFir(const Fir *fir)
 {
     if (m_fir)
         disconnect(m_fir);
@@ -99,57 +99,57 @@ void FirDetailsWindow::showDetails(const QModelIndex& index)
 
 void FirDetailsWindow::updateNotams()
 {
-    NotamListModel* m = nullptr;
+//    NotamListModel* m = nullptr;
     
-    if (NotamReply* nr = qobject_cast<NotamReply*>(sender())) {
-        m = new NotamListModel(nr->notams(), this);
-    } else {
-        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<NotamProvider*>());
-        if (plugins.length() > 0) {
-            NotamProvider* p = qobject_cast<NotamProvider*>(PluginFinder::plugin(plugins.first()));
-            Q_ASSERT(p);
+//    if (NotamReply* nr = qobject_cast<NotamReply*>(sender())) {
+//        m = new NotamListModel(nr->notams(), this);
+//    } else {
+//        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<NotamProvider*>());
+//        if (plugins.length() > 0) {
+//            NotamProvider* p = qobject_cast<NotamProvider*>(PluginFinder::plugin(plugins.first()));
+//            Q_ASSERT(p);
             
-            const NotamReply* nr = p->fetchNotams(m_fir->icao());
-            if (nr->isFinished()) {
-                m = new NotamListModel(nr->notams(), this);
-            } else {
-                connect(nr, &NotamReply::finished, this, &FirDetailsWindow::updateNotams);
-            }
-        }
-    }
+//            const NotamReply* nr = p->fetchNotams(m_fir->icao());
+//            if (nr->isFinished()) {
+//                m = new NotamListModel(nr->notams(), this);
+//            } else {
+//                connect(nr, &NotamReply::finished, this, &FirDetailsWindow::updateNotams);
+//            }
+//        }
+//    }
     
-    if (ui->notams->model())
-        ui->notams->model()->deleteLater();
+//    if (ui->notams->model())
+//        ui->notams->model()->deleteLater();
     
-    ui->notams->setModel(m);
+//    ui->notams->setModel(m);
 }
 
 void FirDetailsWindow::updateBookings()
 {
-     AtcBookingListModel* m = nullptr;
+//     AtcBookingListModel* m = nullptr;
     
-    if (AtcBookingReply* br = qobject_cast<AtcBookingReply*>(sender())) {
-        m = new AtcBookingListModel(br->bookings(), this);
-    } else {
-        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AtcBookingProvider*>());
-        if (plugins.length() > 0) {
-            AtcBookingProvider* p = qobject_cast<AtcBookingProvider*>(PluginFinder::plugin(plugins.first()));
-            Q_ASSERT(p);
+//    if (AtcBookingReply* br = qobject_cast<AtcBookingReply*>(sender())) {
+//        m = new AtcBookingListModel(br->bookings(), this);
+//    } else {
+//        auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AtcBookingProvider*>());
+//        if (plugins.length() > 0) {
+//            AtcBookingProvider* p = qobject_cast<AtcBookingProvider*>(PluginFinder::plugin(plugins.first()));
+//            Q_ASSERT(p);
             
-            const AtcBookingReply* r = p->fetchBookings(m_fir->icao());
-            if (r->isFinished())
-                m = new AtcBookingListModel(r->bookings(), this);
-            else
-                connect(r, &AtcBookingReply::finished, this, &FirDetailsWindow::updateBookings);
-        } else {
-            ui->bookingTab->setEnabled(false);
-        }
-    }
+//            const AtcBookingReply* r = p->fetchBookings(m_fir->icao());
+//            if (r->isFinished())
+//                m = new AtcBookingListModel(r->bookings(), this);
+//            else
+//                connect(r, &AtcBookingReply::finished, this, &FirDetailsWindow::updateBookings);
+//        } else {
+//            ui->bookingTab->setEnabled(false);
+//        }
+//    }
     
-    if (ui->bookings->model())
-        ui->bookings->model()->deleteLater();
+//    if (ui->bookings->model())
+//        ui->bookings->model()->deleteLater();
     
-    ui->bookings->setModel(m);
+//    ui->bookings->setModel(m);
 }
 
 }} /* namespace Vatsinator::Widgets */

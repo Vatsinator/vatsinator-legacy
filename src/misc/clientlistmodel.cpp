@@ -81,6 +81,8 @@ QVariant ClientListModel::data(const QModelIndex& index, int role) const
                         return QStringLiteral("ATC");
                     } else if (qobject_cast<const Pilot*>(m_clients.at(index.row()))) {
                         return QStringLiteral("PILOT");
+                    } else {
+                        Q_UNREACHABLE();
                     }
                 
                 default: return QVariant();
@@ -97,6 +99,8 @@ QVariant ClientListModel::data(const QModelIndex& index, int role) const
                 return QStringLiteral("ATC");
             } else if (qobject_cast<const Pilot*>(m_clients.at(index.row()))) {
                 return QStringLiteral("PILOT");
+            } else {
+                Q_UNREACHABLE();
             }
         
         case InstanceRole:
@@ -160,7 +164,7 @@ QHash<int, QByteArray> ClientListModel::roleNames() const
     return roles;
 }
 
-ClientListModel* ClientListModel::clients(const AirportObject* airport, QObject* parent)
+ClientListModel* ClientListModel::clients(const Airport* airport, QObject* parent)
 {
     ClientListModel* m = new ClientListModel(parent);
     
@@ -168,14 +172,14 @@ ClientListModel* ClientListModel::clients(const AirportObject* airport, QObject*
         auto adder = std::bind(&ClientListModel::add, m, std::placeholders::_1);
         
         std::for_each(airport->asSet().constBegin(), airport->asSet().constEnd(), adder);
-        auto conn = connect(airport, &AirportObject::clientAdded, adder);
+        auto conn = connect(airport, &Airport::clientAdded, adder);
         connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
     }
     
     return m;
 }
 
-ClientListModel* ClientListModel::clients(const FirObject* fir, QObject* parent)
+ClientListModel* ClientListModel::clients(const Fir *fir, QObject* parent)
 {
     ClientListModel* m = new ClientListModel(parent);
     
@@ -183,7 +187,7 @@ ClientListModel* ClientListModel::clients(const FirObject* fir, QObject* parent)
         auto adder = std::bind(&ClientListModel::add, m, std::placeholders::_1);
         
         std::for_each(fir->asSet().constBegin(), fir->asSet().constEnd(), adder);
-        auto conn = connect(fir, &FirObject::clientAdded, adder);
+        auto conn = connect(fir, &Fir::clientAdded, adder);
         connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
     }
     
@@ -200,9 +204,9 @@ ClientListModel*ClientListModel::pilots(const ServerTracker* server, QObject* pa
                 m->add(c);
         };
 
-        auto clients = server->clients();
+        auto clients = server->clients()->asList();
         std::for_each(clients.constBegin(), clients.constEnd(), adder);
-        auto conn = connect(server, &ServerTracker::clientAdded, adder);
+        auto conn = connect(server->clients(), &ClientModel::added, adder);
         connect(m, &QObject::destroyed, [conn]() { QObject::disconnect(conn); });
     }
 

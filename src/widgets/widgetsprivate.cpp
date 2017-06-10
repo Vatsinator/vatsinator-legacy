@@ -19,7 +19,7 @@
 
 #include "widgetsprivate.h"
 #include "core/atc.h"
-#include "core/airportobject.h"
+#include "core/airport.h"
 #include "gui/airportitem.h"
 #include "gui/firitem.h"
 #include "gui/flightitem.h"
@@ -35,14 +35,14 @@ QString makeToolTip(const MapItem* item)
     QString text;
     
     if (const AirportItem* airportItem = qobject_cast<const AirportItem*>(item)) {
-        const AirportObject* ap = airportItem->airport();
+        const Airport* ap = airportItem->airport();
         QString desc = QStringLiteral("%1 %2, %3").arg(ap->icao(), ap->name(), ap->city());
         
-        int n = ap->inboundFlightsCount();
-        if (n)
+        int n = ap->inboundFlightCount();
+        if (n > 0)
             desc = desc % QStringLiteral("<br />") % qApp->translate("MapWidget", "Inbound flights: %1").arg(QString::number(n));
-        n = ap->outboundFlightsCount();
-        if (n)
+        n = ap->outboundFlightCount();
+        if (n > 0)
             desc = desc % QStringLiteral("<br />") % qApp->translate("MapWidget", "Outbound flights: %1").arg(QString::number(n));
         
         text = desc;

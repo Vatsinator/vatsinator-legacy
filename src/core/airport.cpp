@@ -17,110 +17,111 @@
 */
 
 #include "airport.h"
+#include "pilot.h"
 #include <QtCore>
 
 namespace Vatsinator { namespace Core {
 
-class AirportData : public QSharedData {
-public:
-    AirportData() = default;
-    explicit AirportData(const QString& icao) : icao(icao), altitude(0) {}
-    
-    QString icao;
-    QString iata;
-    QString city;
-    QString country;
-    QString name;
-    LonLat position;
-    int altitude;
-};
-
-
-Airport::Airport():
-    d(new AirportData) {}
-
-Airport::Airport(const QString& icao) :
-    d(new AirportData(icao)) {} // TODO Validate ICAO code
-
-Airport::Airport(const Airport& other) :
-    d(other.d) {}
-
-Airport::~Airport() {}
-
-Airport& Airport::operator=(const Airport& other)
+Airport::Airport(const QString &icao, QObject *parent) : ClientList(parent), m_icao(icao)
 {
-    d = other.d;
-    return *this;
+
 }
 
-QString Airport::icao() const
+void Airport::setIcao(const QString &icao)
 {
-    return d->icao;
+    if (m_icao != icao) {
+        m_icao = icao;
+        emit icaoChanged(m_icao);
+    }
 }
 
-QString Airport::iata() const
+void Airport::setIata(const QString &iata)
 {
-    return d->iata;
+    if (m_iata != iata) {
+        m_iata = iata;
+        emit iataChanged(m_iata);
+    }
 }
 
-void Airport::setIata(const QString& iata)
+void Airport::setCity(const QString &city)
 {
-    d->iata = iata;
+    if (m_city != city) {
+        m_city = city;
+        emit cityChanged(m_city);
+    }
 }
 
-QString Airport::city() const
+void Airport::setCountry(const QString &country)
 {
-    return d->city;
+    if (m_country != country) {
+        m_country = country;
+        emit countryChanged(m_country);
+    }
 }
 
-void Airport::setCity(const QString& city)
+void Airport::setName(const QString &name)
 {
-    d->city = city;
+    if (m_name != name) {
+        m_name = name;
+        emit nameChanged(m_name);
+    }
 }
 
-QString Airport::country() const
+void Airport::setPosition(const LonLat &position)
 {
-    return d->country;
-}
-
-void Airport::setCountry(const QString& country)
-{
-    d->country = country;
-}
-
-QString Airport::name() const
-{
-    return d->name;
-}
-
-void Airport::setName(const QString& name)
-{
-    d->name = name;
-}
-
-LonLat Airport::position() const
-{
-    return d->position;
-}
-
-void Airport::setPosition(const LonLat& position)
-{
-    d->position = position;
-}
-
-int Airport::altitude() const
-{
-    return d->altitude;
+    if (m_position != position) {
+        m_position = position;
+        emit positionChanged(m_position);
+    }
 }
 
 void Airport::setAltitude(int altitude)
 {
-    d->altitude = altitude;
+    if (m_altitude != altitude) {
+        m_altitude = altitude;
+        emit altitudeChanged(m_altitude);
+    }
 }
 
-bool Airport::isValid() const
+QList<const Pilot *> Airport::outboundFlights() const
 {
-    return !d->icao.isEmpty();
+    auto flights = clients<Pilot>();
+    flights.erase(std::remove_if(flights.begin(), flights.end(), [this](auto it) {
+        return it->departure() != this;
+    }), flights.end());
+
+    return flights;
+}
+
+int Airport::outboundFlightCount() const
+{
+    auto flights = clients<Pilot>();
+    return std::count_if(flights.constBegin(), flights.constEnd(), [this](auto it) {
+        return it->departure() == this;
+    });
+}
+
+QList<const Pilot *> Airport::inboundFlights() const
+{
+    auto flights = clients<Pilot>();
+    flights.erase(std::remove_if(flights.begin(), flights.end(), [this](auto it) {
+        return it->destination() != this;
+    }), flights.end());
+
+    return flights;
+}
+
+int Airport::inboundFlightCount() const
+{
+    auto flights = clients<Pilot>();
+    return std::count_if(flights.constBegin(), flights.constEnd(), [this](auto it) {
+        return it->destination() == this;
+    });
+}
+
+QString Airport::representativeName() const
+{
+    return city().isEmpty() ? icao() : QStringLiteral("%1 %2").arg(icao(), city());
 }
 
 }} /* namespace Vatsinator::Core */

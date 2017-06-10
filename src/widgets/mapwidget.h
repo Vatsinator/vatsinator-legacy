@@ -20,9 +20,9 @@
 #ifndef WIDGETS_MAPWIDGET_H
 #define WIDGETS_MAPWIDGET_H
 
-#include "core/airportobject.h"
+#include "core/airport.h"
 #include "core/atc.h"
-#include "core/firobject.h"
+#include "core/fir.h"
 #include "core/pilot.h"
 #include "gui/maprenderer.h"
 #include "widgets/vtrwidgets_export.h"
@@ -57,7 +57,7 @@ signals:
     /**
      * Emitted when user requested airport details.
      */
-    void airportDetailsRequested(const Core::AirportObject* airport);
+    void airportDetailsRequested(const Core::Airport* airport);
     
     /**
      * Emitted when user requested ATC details.
@@ -72,7 +72,7 @@ signals:
     /**
      * Emitted when user requested FIR details.
      */
-    void firDetailsRequested(const Core::FirObject* fir);
+    void firDetailsRequested(const Core::Fir* fir);
 
     /**
      * Emitted when user requested a weather report.

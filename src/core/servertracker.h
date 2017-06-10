@@ -20,235 +20,64 @@
 #ifndef CORE_SERVERTRACKER_H
 #define CORE_SERVERTRACKER_H
 
-#include "core/airportobject.h"
-#include "core/client.h"
-#include "core/firobject.h"
-#include "core/pilot.h"
-#include "core/metarmanager.h"
-#include "core/vatsimdatadocument.h"
-#include "core/vatsimstatusdocument.h"
+#include "core/airportmodel.h"
+#include "core/clientmodel.h"
+#include "core/firmodel.h"
+#include "core/metarlistmodel.h"
 #include "core/vtrcore_export.h"
-#include <QtCore/QMap>
-#include <QtCore/QList>
 #include <QtCore/QObject>
-#include <QtCore/QUrl>
-#include <QtCore/QTimer>
 
 namespace Vatsinator { namespace Core {
-
-class AirlineListReader;
-class AirportListReader;
-class AliasListReader;
-class FirListReader;
-class UirListReader;
 
 /**
  * \ingroup Core
  * @{
  * 
- * The ServerTracker class tracks connected clients.
+ * The ServerTracker abstract class represents data provided by a VATSIM-like
+ * server.
+ *
+ *
  */
 class VTRCORE_EXPORT ServerTracker : public QObject {
     Q_OBJECT
-    
-    /**
-     * The \c updatesEnabled property specifies whether this \c ServerTracker
-     * instance is allowed to VATSIM data updates.
-     */
-    Q_PROPERTY(bool updatesEnabled READ updatesEnabled WRITE setUpdatesEnabled NOTIFY updatesEnabledChanged)
-    
-    /**
-     * The \c lastUpdate property keeps date and time VATSIM data was updated.
-     */
-    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate NOTIFY dataFileDownloadFinished)
 
-    /**
-     * The \c AirportListReader instance.
-     */
-    Q_PROPERTY(Vatsinator::Core::AirportListReader* airports READ airports CONSTANT)
+    Q_PROPERTY(ClientModel* clients READ clients NOTIFY clientModelChanged)
+    Q_PROPERTY(AirportModel* airports READ airports NOTIFY airportModelChanged)
+    Q_PROPERTY(FirModel* firs READ firs NOTIFY firModelChanged)
+    Q_PROPERTY(MetarListModel* metars READ metars NOTIFY metarModelChanged)
 
-    /**
-     * The \c AirlineListReader instance.
-     */
-    Q_PROPERTY(Vatsinator::Core::AirlineListReader* airlines READ airlines CONSTANT)
-
-    /**
-     * The \c UirListReader instsance.
-     */
-    Q_PROPERTY(Vatsinator::Core::UirListReader* uirs READ uirs CONSTANT)
-
-    /**
-     * The \c MetarManager instance.
-     */
-    Q_PROPERTY(Vatsinator::Core::MetarManager* metarManager READ metarManager CONSTANT)
-    
 signals:
-    /**
-     * Emitted when a new client is added to this \c ServerTracker instance
-     * and therefore tracked.
-     */
-    void clientAdded(Client* client);
-    
-    /**
-     * Emitted when the airport object is added to the server.
-     */
-    void airportAdded(AirportObject* airport);
-    
-    /**
-     * Emitted when the data file starts being downloaded.
-     */
-    void dataFileDownloadStarted();
-    
-    /**
-     * Emitted when the data file is downloaded and successfully parsed.
-     */
-    void dataFileDownloadFinished();
-    
-    void updatesEnabledChanged(bool updatesEnabled);
+    void clientModelChanged(ClientModel* newModel);
+    void airportModelChanged(AirportModel* newModel);
+    void firModelChanged(FirModel* newModel);
+    void metarModelChanged(MetarListModel* newModel);
 
 public:
-    /**
-     * Creates a new ServerTracker instance. Passes \c parent to
-     * the QObject's constructor.
-     */
-    explicit ServerTracker(QObject* parent = nullptr);
-    
-    /**
-     * Starts tracking the client.
-     * 
-     * The server tracker takes ownership of the \c client. When the client
-     * wents offline, it is deleted shortly aferwards. It is therefore adviced
-     * against keeping the pointer after the client logs off.
-     * 
-     * \note You usually do not need to call this function manually.
-     * \note The ServerTracker takes ownership of \c client.
-     * 
-     * \param client The client to be tracked.
-     * \sa trackServer().
-     */
-    void addClient(Client* client);
-    
-    /**
-     * Starts tracking the given server.
-     * 
-     * The \c statusUrl must be an URL of the status.txt that makes
-     * the entry point for the \c ServerTracker.
-     */
-    void trackServer(const QUrl& statusUrl);
-    
-    /**
-     * Looks for the client under the provided callsign.
-     * 
-     * \return Client with the specified callsign or \c nullptr if not found.
-     * @{
-     */
-    Client* findClient(const QString& callsign);
-    const Client* findClient(const QString& callsign) const;
-    /** @} */
+    ServerTracker(QObject* parent = nullptr);
 
-    /**
-     * Finds the airport object for the given Airport.
-     */
-    AirportObject* airportObject(const Airport& ap);
+    ClientModel* clients() { return m_clients; }
+    const ClientModel* clients() const { return m_clients; }
 
-    /**
-     * Finds the airport object for the given ICAO code.
-     */
-    AirportObject* airportObject(const QString& icao);
+    AirportModel* airports() { return m_airports; }
+    const AirportModel* airports() const { return m_airports; }
 
-    /**
-     * Finds the FIR object for the given ICAO code.
-     */
-    FirObject* firObject(const QString& icao);
+    FirModel* firs() { return m_firs; }
+    const FirModel* firs() const { return m_firs; }
 
-    /**
-     * Returns a list of connected clients.
-     */
-    QList<Client*> clients() const;
-    
-    /**
-     * Gives access to all FIR objects.
-     */
-    QList<FirObject*> firObjects();
-    
-    /**
-     * Counts connected clients.
-     */
-    int clientCount() const;
-    
-    /**
-     * Counts flights.
-     */
-    int pilotCount() const;
-    
-    /**
-     * Counts ATCs.
-     */
-    int atcCount() const;
-    
-    /**
-     * Counts observers.
-     */
-    int observerCount();
-    
-    bool updatesEnabled() const { return m_updatesEnabled; }
-    void setUpdatesEnabled(bool updatesEnabled);
-    AirportListReader* airports() { return m_airports; }
-    const AirportListReader* airports() const { return m_airports; }
-    AirlineListReader* airlines() { return m_airlines; }
-    const AirlineListReader* airlines() const { return m_airlines; }
-    UirListReader* uirs() { return m_uirs; }
-    const UirListReader* uirs() const { return m_uirs; }
-    MetarManager* metarManager() { return m_metarManager; }
-    const MetarManager* metarManager() const { return m_metarManager; }
-    const QDateTime& lastUpdate() const { return m_lastUpdate; }
-    
-public slots:
-    /**
-     * Refreshes VATSIM data immediately.
-     */
-    void refreshData();
+    MetarListModel* metars() { return m_metars; }
+    const MetarListModel* metars() const { return m_metars; }
 
-    /**
-     * Reads the data document.
-     */
-    void readData(VatsimDataDocument data);
-    
+protected:
+    void setClientModel(ClientModel* clients);
+    void setAirportModel(AirportModel* airports);
+    void setFirModel(FirModel* firs);
+    void setMetarModel(MetarListModel* metars);
+
 private:
-    /**
-     * Checks if every client has the correct update number. The update number
-     * is incremented with every data update. If the client has old update
-     * number, it means that he went offline.
-     */
-    void markOfflineClients();
-    
-private slots:
-    /**
-     * Picks a random data server URL and start downloading the data file.
-     */
-    void fetchData();
-    
-    /**
-     * Reads the status.txt document.
-     */
-    void readStatus(VatsimStatusDocument status);
-    
-private:
-    QMap<QString, Client*> m_clients;
-    VatsimStatusDocument m_status;
-    bool m_isTracking = false;
-    int m_updateNo = 0;
-    AirlineListReader* m_airlines;
-    AirportListReader* m_airports;
-    FirListReader* m_firDb;
-    UirListReader* m_uirs;
-    AliasListReader* m_aliases;
-    QMap<QString, AirportObject*> m_airportObjects;
-    QMap<QString, FirObject*> m_firs;
-    QTimer m_timer;
-    bool m_updatesEnabled = true;
-    QDateTime m_lastUpdate;
-    MetarManager* m_metarManager;
+    ClientModel* m_clients;
+    AirportModel* m_airports;
+    FirModel* m_firs;
+    MetarListModel* m_metars;
     
 }; /** @} */
 

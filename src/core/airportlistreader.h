@@ -54,13 +54,13 @@ public:
     /**
      * Finds the airport that is closes to the specified \c point.
      */
-    Airport nearest(const LonLat& point) const;
+    Airport* nearest(const LonLat& point) const;
     
     /**
      * Finds the airport based on the given ICAO code. Returns an empty airport
      * if there are no matches.
      */
-    Airport findByIcao(const QString& icao) const;
+    Airport* findByIcao(const QString& icao) const;
     
     /**
      * Returns \c true if the airport database has no airports.

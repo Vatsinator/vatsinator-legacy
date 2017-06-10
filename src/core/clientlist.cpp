@@ -58,6 +58,8 @@ int ClientList::count() const
 
 void ClientList::removeClient(QObject* obj)
 {
+    // this is actually safe as long as we don't call
+    // any methods on the obj
     remove(reinterpret_cast<const Client*>(obj));
 }
 

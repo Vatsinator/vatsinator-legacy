@@ -20,7 +20,6 @@
 #include "airportlistreader.h"
 #include <spatial/point_multimap.hpp>
 #include <spatial/neighbor_iterator.hpp>
-
 #include <QtCore>
 
 namespace Vatsinator { namespace Core {
@@ -38,22 +37,22 @@ class AirportListReaderPrivate {
         }
     };
     
-    using ItemMap = spatial::point_multimap<2, LonLat, Airport, spatial::accessor_less<LonLatPointAccessor, LonLat>>;
+    using ItemMap = spatial::point_multimap<2, LonLat, Airport*, spatial::accessor_less<LonLatPointAccessor, LonLat>>;
     
 public:
-    Airport nearest(const LonLat& p) const
+    Airport* nearest(const LonLat& p) const
     {
         auto it = spatial::neighbor_cbegin(m_airports, p);
-        return it == m_airports.end() ? Airport() : it->second;
+        return it == m_airports.end() ? nullptr : it->second;
     }
     
-    Airport findByIcao(const QString& icao) const
+    Airport* findByIcao(const QString& icao) const
     {
         auto it = std::find_if(m_airports.begin(), m_airports.end(), [&icao](auto it) {
-           return it.second.icao() == icao; 
+           return it.second->icao() == icao;
         });
         
-        return it == m_airports.end() ? Airport() : it->second;
+        return it == m_airports.end() ? nullptr : it->second;
     }
     
     bool isEmpty() const
@@ -71,22 +70,27 @@ public:
         m_airports.clear();
     }
     
-    void fromJson(const QJsonArray& json)
+    void fromJson(const QJsonArray& json, QObject* parent)
     {
         for (auto it: json) {
             QJsonObject o = it.toObject();
-            Airport a(o.value("icao").toString());
-            a.setIata(o.value("iata").toString());
-            a.setCity(o.value("city").toString());
-            a.setCountry(o.value("country").toString());
-            a.setName(o.value("name").toString());
+            QJsonValue icao = o.value("icao");
+            if (!icao.isString()) {
+                qWarning("ICAO code must be string");
+                continue;
+            }
+
+            Airport* a = new Airport(icao.toString(), parent);
+            a->setIata(o.value("iata").toString());
+            a->setCity(o.value("city").toString());
+            a->setCountry(o.value("country").toString());
+            a->setName(o.value("name").toString());
             qreal lon = o.value("longitude").toDouble();
             qreal lat = o.value("latitude").toDouble();
-            LonLat position(lon, lat);
-            a.setPosition(position);
-            a.setAltitude(o.value("altitude").toInt());
+            a->setPosition(LonLat(lon, lat));
+            a->setAltitude(o.value("altitude").toInt());
             
-            m_airports.insert(std::make_pair(a.position(), a));
+            m_airports.insert(std::make_pair(a->position(), a));
         }
     }
     
@@ -96,14 +100,14 @@ public:
         
         for (auto it: m_airports) {
             QJsonObject object;
-            object.insert(QStringLiteral("icao"), it.second.icao());
-            object.insert(QStringLiteral("iata"), it.second.iata());
-            object.insert(QStringLiteral("city"), it.second.city());
-            object.insert(QStringLiteral("country"), it.second.country());
-            object.insert(QStringLiteral("name"), it.second.name());
-            object.insert(QStringLiteral("longitude"), it.second.position().longitude());
-            object.insert(QStringLiteral("latitude"), it.second.position().latitude());
-            object.insert(QStringLiteral("altitude"), it.second.altitude());
+            object.insert(QStringLiteral("icao"), it.second->icao());
+            object.insert(QStringLiteral("iata"), it.second->iata());
+            object.insert(QStringLiteral("city"), it.second->city());
+            object.insert(QStringLiteral("country"), it.second->country());
+            object.insert(QStringLiteral("name"), it.second->name());
+            object.insert(QStringLiteral("longitude"), it.second->position().longitude());
+            object.insert(QStringLiteral("latitude"), it.second->position().latitude());
+            object.insert(QStringLiteral("altitude"), it.second->altitude());
             
             array.append(object);
         }
@@ -126,12 +130,12 @@ AirportListReader::AirportListReader(QObject* parent) :
 
 AirportListReader::~AirportListReader() {}
 
-Airport AirportListReader::nearest(const LonLat& point) const
+Airport* AirportListReader::nearest(const LonLat& point) const
 {
     return d->nearest(point);
 }
 
-Airport AirportListReader::findByIcao(const QString& icao) const
+Airport *AirportListReader::findByIcao(const QString& icao) const
 {
     return d->findByIcao(icao);
 }
@@ -147,7 +151,7 @@ void AirportListReader::readData()
     Q_ASSERT(document.isArray());
     QJsonArray array = document.array();
     d->clear();
-    d->fromJson(array);
+    d->fromJson(array, this);
     
     qDebug("AirportListReader: read %i airports", d->size());
 }

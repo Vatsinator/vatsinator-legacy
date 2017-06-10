@@ -20,7 +20,7 @@
 #ifndef WIDGETS_FIRDETAILSWINDOW_H
 #define WIDGETS_FIRDETAILSWINDOW_H
 
-#include "core/firobject.h"
+#include "core/fir.h"
 #include "widgets/vtrwidgets_export.h"
 #include <QtWidgets/QWidget>
 #include <QtCore/QScopedPointer>
@@ -38,7 +38,7 @@ namespace Vatsinator { namespace Widgets {
 class VTRWIDGETS_EXPORT FirDetailsWindow : public QWidget {
     Q_OBJECT
     
-    Q_PROPERTY(const Vatsinator::Core::FirObject* fir READ fir WRITE setFir)
+    Q_PROPERTY(const Vatsinator::Core::Fir* fir READ fir WRITE setFir)
     
 signals:
     /**
@@ -52,8 +52,8 @@ public:
     
     virtual ~FirDetailsWindow();
     
-    const Core::FirObject* fir() const { return m_fir; }
-    void setFir(const Core::FirObject* fir);
+    const Core::Fir* fir() const { return m_fir; }
+    void setFir(const Core::Fir* fir);
     
 protected:
     /**
@@ -68,7 +68,7 @@ private slots:
 
 private:
     QScopedPointer<Ui::FirDetailsWindow> ui;
-    const Core::FirObject* m_fir = nullptr;
+    const Core::Fir* m_fir = nullptr;
     
 }; /** @} */
 

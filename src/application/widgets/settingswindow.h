@@ -23,7 +23,7 @@
 #include <QWidget>
 #include <QScopedPointer>
 
-namespace Vatsinator { namespace Core { class Option; }}
+namespace Vatsinator { namespace Misc { class Option; }}
 namespace Ui { class SettingsWindow; }
 class QAbstractButton;
 
@@ -52,8 +52,8 @@ private slots:
     
 private:
     QScopedPointer<Ui::SettingsWindow> ui;
-    QList<Vatsinator::Core::Option*> m_options;
-    Vatsinator::Core::Option* m_mapAddons;
+    QList<Vatsinator::Misc::Option*> m_options;
+    Vatsinator::Misc::Option* m_mapAddons;
 
 };
 

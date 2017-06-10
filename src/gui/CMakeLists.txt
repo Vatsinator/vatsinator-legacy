@@ -46,7 +46,7 @@ set (gui_QRCS
 )
 
 add_library (vtrgui SHARED ${gui_SOURCES} ${gui_HEADERS} ${gui_QRCS})
-target_link_libraries (vtrgui vtrcore Qt5::Gui)
+target_link_libraries (vtrgui vtrmisc Qt5::Gui)
 set_target_properties (vtrgui PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 include (GenerateExportHeader)

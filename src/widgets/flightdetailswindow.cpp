@@ -20,9 +20,9 @@
 #include "flightdetailswindow.h"
 #include "ui_flightdetailswindow.h"
 #include "widgetsprivate.h"
-#include "core/pluginfinder.h"
 #include "misc/airlinelogoprovider.h"
 #include "misc/airlinelogoreply.h"
+#include "misc/pluginfinder.h"
 
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Misc;
@@ -157,13 +157,13 @@ void FlightDetailsWindow::updateRealName(QString realName)
     ui->realName->setText(QStringLiteral("%1 (%2)").arg(realName, QString::number(m_flight->pid())));
 }
 
-void FlightDetailsWindow::updateDeparture(AirportObject* departure)
+void FlightDetailsWindow::updateDeparture(Airport* departure)
 {
     if (departure) {
         ui->departure->setText(departure->icao());
         ui->departureCity->setText(departure->city());
 
-        if (departure->isKnownAirport()) {
+        if (!departure->name().isEmpty()) {
             QString text = QStringLiteral("%1 %2").arg(departure->icao(), departure->name());
             if (!departure->name().contains(departure->city()))
                 text.append(" - ").append(departure->city());
@@ -174,23 +174,23 @@ void FlightDetailsWindow::updateDeparture(AirportObject* departure)
         }
 
         ui->departureAirport->setProperty(AirportObjectKey, QVariant::fromValue(departure));
-        ui->departureAirport->setEnabled(departure->isKnownAirport());
+//        ui->departureAirport->setEnabled(departure->isKnownAirport());
     } else {
         ui->departure->setText(QString());
         ui->departureCity->setText(QString());
         ui->departureAirport->setText(QString());
-        ui->departureAirport->setProperty(AirportObjectKey, QVariant::fromValue<AirportObject*>(nullptr));
+        ui->departureAirport->setProperty(AirportObjectKey, QVariant::fromValue<Airport*>(nullptr));
         ui->departureAirport->setEnabled(false);
     }
 }
 
-void FlightDetailsWindow::updateDestination(AirportObject* destination)
+void FlightDetailsWindow::updateDestination(Airport* destination)
 {
     if (destination) {
         ui->destination->setText(destination->icao());
         ui->destinationCity->setText(destination->city());
 
-        if (destination->isKnownAirport()) {
+        if (!destination->name().isEmpty()) {
             QString text = QStringLiteral("%1 %2").arg(destination->icao(), destination->name());
             if (!destination->name().contains(destination->city()))
                 text.append(" - ").append(destination->city());
@@ -201,12 +201,12 @@ void FlightDetailsWindow::updateDestination(AirportObject* destination)
         }
 
         ui->destinationAirport->setProperty(AirportObjectKey, QVariant::fromValue(destination));
-        ui->destinationAirport->setEnabled(destination->isKnownAirport());
+//        ui->destinationAirport->setEnabled(destination->isKnownAirport());
     } else {
         ui->destination->setText(QString());
         ui->destinationCity->setText(QString());
         ui->destinationAirport->setText(QString());
-        ui->destinationAirport->setProperty(AirportObjectKey, QVariant::fromValue<AirportObject*>(nullptr));
+        ui->destinationAirport->setProperty(AirportObjectKey, QVariant::fromValue<Airport*>(nullptr));
         ui->destinationAirport->setEnabled(false);
     }
 }
@@ -309,26 +309,26 @@ void FlightDetailsWindow::updateRemarks(QString remarks)
 
 void FlightDetailsWindow::updateAirline(const Airline& airline)
 {
-    auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AirlineLogoProvider*>());
-    if (plugins.length() > 0) {
-        AirlineLogoProvider* p = qobject_cast<AirlineLogoProvider*>(PluginFinder::plugin(plugins.first()));
-        Q_ASSERT(p);
+//    auto plugins = PluginFinder::pluginsForIid(qobject_interface_iid<AirlineLogoProvider*>());
+//    if (plugins.length() > 0) {
+//        AirlineLogoProvider* p = qobject_cast<AirlineLogoProvider*>(PluginFinder::plugin(plugins.first()));
+//        Q_ASSERT(p);
         
-        const AirlineLogoReply* reply = p->fetchLogo(airline, ui->airline->size());
-        if (reply->isFinished()) {
-            ui->airline->setPixmap(reply->logo());
-            ui->airline->setToolTip(airline.name());
-        } else {
-            ui->airline->setText(airline.name());
-            connect(reply, &AirlineLogoReply::finished, this, &FlightDetailsWindow::airlineLogoUpdated);
-        }
-    } else {
-        if (airline.name().isEmpty()) {
-            ui->airline->setVisible(false);
-        } else {
-            ui->airline->setText(airline.name());
-        }
-    }
+//        const AirlineLogoReply* reply = p->fetchLogo(airline, ui->airline->size());
+//        if (reply->isFinished()) {
+//            ui->airline->setPixmap(reply->logo());
+//            ui->airline->setToolTip(airline.name());
+//        } else {
+//            ui->airline->setText(airline.name());
+//            connect(reply, &AirlineLogoReply::finished, this, &FlightDetailsWindow::airlineLogoUpdated);
+//        }
+//    } else {
+//        if (airline.name().isEmpty()) {
+//            ui->airline->setVisible(false);
+//        } else {
+//            ui->airline->setText(airline.name());
+//        }
+//    }
 }
 
 void FlightDetailsWindow::airlineLogoUpdated()
@@ -349,7 +349,7 @@ void FlightDetailsWindow::handleAirportButton()
     Q_ASSERT(pb);
     QVariant value = pb->property(AirportObjectKey);
     if (value.isValid()) {
-        AirportObject* ap = value.value<AirportObject*>();
+        Airport* ap = value.value<Airport*>();
         Q_ASSERT(ap);
         emit airportDetailsRequested(ap);
     }

@@ -160,7 +160,7 @@ public slots:
     /**
      * Starts tracking the provided airport.
      */
-    void addAirport(const Core::AirportObject* airport);
+    void addAirport(const Core::Airport* airport);
     
 private slots:
     /**

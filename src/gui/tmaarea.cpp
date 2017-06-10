@@ -24,7 +24,7 @@ using namespace Vatsinator::Core;
 
 namespace Vatsinator { namespace Gui {
 
-TmaArea::TmaArea(Core::AirportObject* airport, QList<LonLat> boundary, MapScene* scene, QObject* parent) :
+TmaArea::TmaArea(Core::Airport* airport, QList<LonLat> boundary, MapScene* scene, QObject* parent) :
     MapArea(scene, parent),
     m_airport(airport),
     m_boundingRect(QPointF(0.0, 0.0), QSizeF(2.0, -2.0)),

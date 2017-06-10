@@ -19,11 +19,9 @@
 
 #include "metarlistmodel.h"
 
-using namespace Vatsinator::Core;
+namespace Vatsinator { namespace Core {
 
-namespace Vatsinator { namespace Misc {
-
-MetarListModel::MetarListModel(const QList<Core::Metar>& metars, QObject* parent) :
+MetarListModel::MetarListModel(const QList<Metar>& metars, QObject* parent) :
     QAbstractListModel(parent),
     m_metars(metars) {}
 
@@ -51,4 +49,4 @@ QVariant MetarListModel::data(const QModelIndex& index, int role) const
     }
 }
 
-}} /* namespace Vatsinator::Misc */
+}} /* namespace Vatsinator::Core */

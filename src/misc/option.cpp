@@ -20,9 +20,9 @@
 #include "option.h"
 #include <QtCore>
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
-class VTRCORE_NO_EXPORT OptionPrivate {
+class VTRMISC_NO_EXPORT OptionPrivate {
 public:
     bool readSaved(QString key, Option* instance)
     {
@@ -90,7 +90,7 @@ private:
     QSettings m_settings;
     QMultiMap<QString, Option*> m_options;
 };
-Q_GLOBAL_STATIC(Vatsinator::Core::OptionPrivate, optionGlobal)
+Q_GLOBAL_STATIC(Vatsinator::Misc::OptionPrivate, optionGlobal)
 
 
 Option::Option(const QString& key, QObject* parent) :
@@ -183,4 +183,4 @@ void Option::onExternalValueChanged()
     setValue(v);
 }
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */

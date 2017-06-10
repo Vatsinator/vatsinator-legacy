@@ -20,15 +20,14 @@
 #ifndef CORE_AIRPORT_H
 #define CORE_AIRPORT_H
 
+#include "core/clientlist.h"
 #include "core/lonlat.h"
 #include "core/vtrcore_export.h"
-#include <QtCore/QMetaType>
-#include <QtCore/QSharedData>
-#include <QtCore/QString>
+#include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
 
-class AirportData;
+class Pilot;
 
 /**
  * \ingroup Core
@@ -39,114 +38,69 @@ class AirportData;
  * The airport contains basic information, such as ICAO code, position,
  * name, city and country it belongs to.
  */
-class VTRCORE_EXPORT Airport {
+class VTRCORE_EXPORT Airport : public ClientList {
+    Q_OBJECT
+
+    Q_PROPERTY(QString icao READ icao WRITE setIcao NOTIFY icaoChanged)
+    Q_PROPERTY(QString iata READ iata WRITE setIata NOTIFY iataChanged)
+    Q_PROPERTY(QString city READ city WRITE setCity NOTIFY cityChanged)
+    Q_PROPERTY(QString country READ country WRITE setCountry NOTIFY countryChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(Vatsinator::Core::LonLat position READ position WRITE setPosition NOTIFY positionChanged)
+    Q_PROPERTY(int altitude READ altitude WRITE setAltitude NOTIFY altitudeChanged)
+
+signals:
+    void icaoChanged(QString icao);
+    void iataChanged(QString iata);
+    void cityChanged(QString city);
+    void countryChanged(QString country);
+    void nameChanged(QString name);
+    void positionChanged(LonLat position);
+    void altitudeChanged(int altitude);
 
 public:
-    /**
-     * Creates an invalid airport.
-     */
-    Airport();
-    
-    /**
-     * Creates the Airport instance that has the
-     * given ICAO.
-     */
-    explicit Airport(const QString& icao);
-    
-    /**
-     * Constructs a copy of \c other.
-     */
-    Airport(const Airport& other);
-    
-    /**
-     * Destroys the airport instance.
-     */
-    virtual ~Airport();
-    
-    /**
-     * Assigns \c other to this airport.
-     */
-    Airport& operator=(const Airport& other);
-    
-    /**
-     * Returns the ICAO code of this airport.
-     */
-    QString icao() const;
-    
-    /**
-     * Returns the IATA code of this airport.
-     */
-    QString iata() const;
-    
-    /**
-     * Sets the IATA code to the new value.
-     */
+    explicit Airport(const QString& icao, QObject* parent = nullptr);
+
+    const QString& icao() const { return m_icao; }
+    void setIcao(const QString& icao);
+
+    const QString& iata() const { return m_iata; }
     void setIata(const QString& iata);
-    
-    /**
-     * Returns city of the airport's location.
-     */
-    QString city() const;
-    
-    /**
-     * Sets the airport's city to the new value.
-     */
+
+    const QString& city() const { return m_city; }
     void setCity(const QString& city);
-    
-    /**
-     * Returns country the airport belongs to.
-     */
-    QString country() const;
-    
-    /**
-     * Sets the airport's country to the new value.
-     */
+
+    const QString& country() const { return m_country; }
     void setCountry(const QString& country);
-    
-    /**
-     * Returns the official name of the airport.
-     */
-    QString name() const;
-    
-    /**
-     * Sets the official airport's name to the new value.
-     */
+
+    const QString& name() const { return m_name; }
     void setName(const QString& name);
-    
-    /**
-     * Returns the airport's position.
-     */
-    LonLat position() const;
-    
-    /**
-     * Sets the airport's position to the new value.
-     */
+
+    const LonLat& position() const { return m_position; }
     void setPosition(const LonLat& position);
-    
-    /**
-     * Returns the airport's altitude.
-     */
-    int altitude() const;
-    
-    /**
-     * Sets the airport's altitude to the new value.
-     */
+
+    int altitude() const { return m_altitude; }
     void setAltitude(int altitude);
-    
-    /**
-     * Specifies whether the airport is a valid one or not.
-     */
-    bool isValid() const;
-    
+
+    QList<const Pilot*> outboundFlights() const;
+    int outboundFlightCount() const;
+
+    QList<const Pilot*> inboundFlights() const;
+    int inboundFlightCount() const;
+
+    Q_INVOKABLE QString representativeName() const;
+
 private:
-    QSharedDataPointer<AirportData> d;
+    QString m_icao;
+    QString m_iata;
+    QString m_city;
+    QString m_country;
+    QString m_name;
+    LonLat m_position;
+    int m_altitude;
     
 }; /** @} */
 
 }} /* namespace Vatsinator::Core */
-
-Q_DECLARE_METATYPE(Vatsinator::Core::Airport)
-Q_DECLARE_TYPEINFO(Vatsinator::Core::Airport, Q_MOVABLE_TYPE);
-
 
 #endif // CORE_AIRPORT_H

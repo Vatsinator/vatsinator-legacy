@@ -18,32 +18,29 @@
 
 #include "vatsinatorwindow.h"
 #include "config.h"
-#include "core/option.h"
+#include <misc/option.h>
+#include <misc/pluginfinder.h>
 #include <QtWidgets>
 
-using namespace Vatsinator::Core;
+using namespace Vatsinator::Misc;
 
-int main(int argc, char** argv)
+// loaded translators
+static QList<QTranslator*> translators;
+
+
+static void initTranslations(QApplication* app)
 {
-    QCoreApplication::setApplicationName(QStringLiteral("Vatsinator"));
-    QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
-    QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
-    QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    
-    qsrand(QTime::currentTime().msec());
-    
-    QApplication app(argc, argv);
-    QList<QTranslator*> translators;
+    auto loadTranslation = [](const QVariant& language) {
+        Q_ASSERT(language.canConvert<QString>());
+        qDebug() << "Switching language to" << language.toString();
 
-    auto loadTranslation = [&translators](const QString& language) {
-        qDebug() << "Switching language to" << language;
-
-        QLocale locale(language);
+        QLocale locale(language.toString());
         QLocale::setDefault(locale);
 
         std::for_each(translators.begin(), translators.end(),
                       std::bind(&QCoreApplication::removeTranslator, std::placeholders::_1));
+
+        translators.clear();
 
         QTranslator* qttr = new QTranslator(qApp);
         if (qttr->load(locale, QStringLiteral("qt"), "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
@@ -58,14 +55,47 @@ int main(int argc, char** argv)
             translators.append(vatsinatortr);
         }
     };
-    
-    Option* language = new Option("misc/language", "en", &app);
-    QObject::connect(language, &Option::valueChanged, [loadTranslation](const QVariant& value) {
-        QString language = value.toString();
-        loadTranslation(language);
-    });
 
-    loadTranslation(language->value().toString());
+    Option* language = new Option("misc/language", "en", app);
+    QObject::connect(language, &Option::valueChanged, loadTranslation);
+    loadTranslation(language->value());
+}
+
+static void initPluginFinder(QApplication* app)
+{
+    // fill list of directories where plugins may be found
+    QStringList directories = { QCoreApplication::applicationDirPath() % "/plugins" };
+
+#ifdef Q_OS_MACOS
+    locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../PlugIns"));
+    locations.append(QDir::cleanPath(QCoreApplication::applicationDirPath() % "/../../../plugins"));
+#endif
+
+#ifdef Q_OS_ANDROID
+    /* This is a hacky way, but I couldn't find better */
+    QDir dir(QStandardPaths::standardLocations(QStandardPaths::DesktopLocation).first());
+    dir.cdUp();
+    locations.append(dir.absolutePath() % "/qt-reserved-files/plugins");
+#endif
+
+    PluginFinder* pf = new PluginFinder(directories);
+    QObject::connect(app, &QGuiApplication::aboutToQuit, [pf]() { delete pf; });
+    app->setProperty("pluginFinder", QVariant::fromValue<PluginFinder*>(pf));
+}
+
+int main(int argc, char** argv)
+{
+    QCoreApplication::setApplicationName(QStringLiteral("Vatsinator"));
+    QCoreApplication::setOrganizationName(QStringLiteral("VatsinatorTeam"));
+    QCoreApplication::setApplicationVersion(QStringLiteral(VATSINATOR_VERSION));
+    QCoreApplication::setOrganizationDomain(QStringLiteral("org.eu.vatsinator"));
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    
+    qsrand(QTime::currentTime().msec());
+    
+    QApplication app(argc, argv);
+    initPluginFinder(&app);
+    initTranslations(&app);
     
     app.setWindowIcon(QIcon(QStringLiteral(":/icons/vatsinator.png")));
     VatsinatorWindow w;

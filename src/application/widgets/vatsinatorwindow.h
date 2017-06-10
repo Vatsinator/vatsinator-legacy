@@ -20,7 +20,7 @@
 #ifndef VATSINATORWINDOW_H
 #define VATSINATORWINDOW_H
 
-#include <core/airportobject.h>
+#include <core/airport.h>
 #include <core/atc.h>
 #include <core/pilot.h>
 #include <core/servertracker.h>
@@ -46,10 +46,10 @@ protected:
     void changeEvent(QEvent* event) override;
     
 private slots:
-    void showAirportDetails(const Vatsinator::Core::AirportObject* airport);
+    void showAirportDetails(const Vatsinator::Core::Airport* airport);
     void showFlightDetails(const Vatsinator::Core::Pilot* pilot);
     void showAtcDetails(const Vatsinator::Core::Atc* atc);
-    void showFirDetails(const Vatsinator::Core::FirObject* fir);
+    void showFirDetails(const Vatsinator::Core::Fir* fir);
     void showClientDetails(const QString& callsign);
     void updateMapInfo();
     void showSettingsWindow();

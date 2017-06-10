@@ -20,15 +20,11 @@
 #ifndef CORE_FIR_H
 #define CORE_FIR_H
 
+#include "core/clientlist.h"
 #include "core/lonlat.h"
 #include "core/vtrcore_export.h"
-#include <QtCore/QMetaType>
-#include <QtCore/QSharedData>
-#include <QtCore/QVector>
 
 namespace Vatsinator { namespace Core {
-
-class FirData;
 
 /**
  * \ingroup Core
@@ -36,46 +32,41 @@ class FirData;
  * 
  * The \c Fir class represents a single FIR (Flight Information Region).
  */
-class VTRCORE_EXPORT Fir {
+class VTRCORE_EXPORT Fir : public ClientList {
+    Q_OBJECT
+
+    Q_PROPERTY(QString icao READ icao CONSTANT)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString country READ country WRITE setCountry NOTIFY countryChanged)
+    Q_PROPERTY(bool oceanic READ isOceanic WRITE setOceanic NOTIFY oceanicChanged)
+    Q_PROPERTY(Vatsinator::Core::LonLat labelPosition READ labelPosition WRITE setLabelPosition NOTIFY labelPositionChanged)
 
 public:
     /* List of points that make the boundaries of the FIR. */
     using Boundaries = QList<LonLat>;
-    
+
+signals:
+    void nameChanged(QString name);
+    void countryChanged(QString country);
+    void oceanicChanged(bool oceanic);
+    void labelPositionChanged(LonLat labelPosition);
+    void boundariesChanged(const QList<Boundaries>& boundaries);
+
+public:
     /**
      * Creates an empty FIR.
      */
-    Fir();
-    
-    /**
-     * Creates a new Fir with the given ICAO code.
-     */
-    explicit Fir(const QString& icao);
-    
-    /**
-     * Creates a copy of \c other.
-     */
-    Fir(const Fir& other);
-    
-    /**
-     * Destroys the Fir.
-     */
-    virtual ~Fir();
-    
-    /**
-     * Assigns \c other to this Fir.
-     */
-    Fir& operator =(const Fir& other);
+    Fir(const QString& icao, QObject* parent = nullptr);
     
     /**
      * Returns the ICAO code of this FIR.
      */
-    QString icao() const;
+    const QString& icao() const { return m_icao; }
     
     /**
      * Returns the name of this FIR.
      */
-    QString name() const;
+    const QString& name() const { return m_name; }
     
     /**
      * Sets the name of this FIR to the new value.
@@ -85,7 +76,7 @@ public:
     /**
      * Returns the country of this FIR.
      */
-    QString country() const;
+    const QString& country() const { return m_country; }
     
     /**
      * Sets the country of this FIR to the new value.
@@ -95,7 +86,7 @@ public:
     /**
      * Specifies whether the FIR is oceanic or not.
      */
-    bool isOceanic() const;
+    bool isOceanic() const { return m_oceanic; }
     
     /**
      * Sets the FIR's oceanic property to the new value.
@@ -105,7 +96,7 @@ public:
     /**
      * Returns label position of the given FIR.
      */
-    LonLat labelPosition() const;
+    LonLat labelPosition() const { return m_labelPosition; }
     
     /**
      * Sets the label position to the given value.
@@ -117,7 +108,7 @@ public:
      * Usually, the FIR consists of only one polygon, but in case of the
      * cross-IDL FIRs (like NZZO), it may contain more.
      */
-    QList<Boundaries> boundaries() const;
+    const QList<Boundaries>& boundaries() const { return m_boundaries; }
     
     /**
      * Sets the FIR boundaries to the given value.
@@ -125,13 +116,15 @@ public:
     void setBoundaries(const QList<Boundaries>& boundaries);
     
 private:
-    QSharedDataPointer<FirData> d;
+    QString m_icao;
+    QString m_name;
+    QString m_country;
+    bool m_oceanic;
+    LonLat m_labelPosition;
+    QList<Boundaries> m_boundaries;
     
 }; /** @} */
 
 }} /* namespace Vatsinator::Core */
-
-Q_DECLARE_METATYPE(Vatsinator::Core::Fir)
-Q_DECLARE_TYPEINFO(Vatsinator::Core::Fir, Q_MOVABLE_TYPE);
 
 #endif // CORE_FIR_H

@@ -17,13 +17,13 @@
  * 
  */
 
-#ifndef CORE_RESOURCEFILE_H
-#define CORE_RESOURCEFILE_H
+#ifndef MISC_RESOURCEFILE_H
+#define MISC_RESOURCEFILE_H
 
-#include "core/filereader.h"
-#include "core/vtrcore_export.h"
+#include "misc/filereader.h"
+#include "misc/vtrmisc_export.h"
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
 /**
  * \ingroup Core
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  * The ResourceFile class represents one of Vatsinator's manifest-controlled
  * files.
  */
-class VTRCORE_EXPORT ResourceFile : public FileReader {
+class VTRMISC_EXPORT ResourceFile : public FileReader {
     Q_OBJECT
     
     /**
@@ -84,8 +84,8 @@ private:
     
 }; /** @} */
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */
 
-Q_DECLARE_METATYPE(Vatsinator::Core::ResourceFile*)
+Q_DECLARE_METATYPE(Vatsinator::Misc::ResourceFile*)
 
-#endif // CORE_RESOURCEFILE_H
+#endif // MISC_RESOURCEFILE_H

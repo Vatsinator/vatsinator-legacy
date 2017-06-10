@@ -119,7 +119,7 @@ void AtcDetailsWindow::updateRating(Atc::Rating rating)
     ui->rating->setText(Atc::ratingStr(rating));
 }
 
-void AtcDetailsWindow::updateAirport(AirportObject* airport)
+void AtcDetailsWindow::updateAirport(Airport *airport)
 {
     if (airport)
         ui->airport->setText(airport->representativeName());

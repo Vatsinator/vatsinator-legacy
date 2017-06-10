@@ -18,8 +18,6 @@
  */
 
 #include "flighttracker.h"
-#include "airportlistreader.h"
-#include "airlinelistreader.h"
 #include "servertracker.h"
 #include "geo.h"
 
@@ -33,71 +31,58 @@ FlightTracker::FlightTracker(Pilot* flight, QObject* parent) :
     connect(m_flight, &Pilot::flightPlanChanged, this, &FlightTracker::invalidateAirports);
     connect(m_flight, &Pilot::flightPlanChanged, this, &FlightTracker::update);
     connect(m_flight, &Pilot::positionChanged, this, &FlightTracker::update);
+    connect(m_flight, &Pilot::callsignChanged, this, &FlightTracker::updateAirline);
 
-    initialize();
+    updateAirline();
+    update();
 }
 
-std::tuple<AirportObject*, AirportObject*> FlightTracker::findAirports()
+std::tuple<Airport*, Airport*> FlightTracker::findAirports()
 {
-    AirportObject* dep = nullptr;
-    AirportObject* dest = nullptr;
+    Airport* dep = nullptr;
+    Airport* dest = nullptr;
     if (flight()->flightPlan().departureAirport().isEmpty()) { // departure airport not filled
-        Airport ap = flight()->server()->airports()->nearest(flight()->position());
-        AirportObject* o = flight()->server()->airportObject(ap);
-        qreal d = nmDistance(flight()->position(), o->position());
+        Airport* ap = flight()->server()->airports()->nearest(flight()->position());
+        qreal d = nmDistance(flight()->position(), ap->position());
         if (d < Pilot::MaximumDistanceFromAirpoirt()) {
             qDebug("Flight %s is at airport %s (nearest one)",
-                   qPrintable(flight()->callsign()), qPrintable(o->icao()));
+                   qPrintable(flight()->callsign()), qPrintable(ap->icao()));
 
-            dep = o;
+            dep = ap;
         }
     } else {
-        dep = flight()->server()->airportObject(flight()->flightPlan().departureAirport());
+        dep = flight()->server()->airports()->findByIcao(flight()->flightPlan().departureAirport());
     }
 
     if (!flight()->flightPlan().destinationAirport().isEmpty()) {
-        dest = flight()->server()->airportObject(flight()->flightPlan().destinationAirport());
+        dest = flight()->server()->airports()->findByIcao(flight()->flightPlan().destinationAirport());
     }
 
     return std::make_tuple(dep, dest);
-}
-
-void FlightTracker::initialize()
-{
-    flight()->setAirline(flight()->server()->airlines()->findByIcao(flight()->callsign().left(3)));
-
-    update();
 }
 
 void FlightTracker::update()
 {
     // departure or destination airports not set, find them
     if (flight()->departure() == nullptr || flight()->destination() == nullptr) {
-        AirportObject *dep, *dest;
+        Airport *dep, *dest;
         std::tie(dep, dest) = findAirports();
 
-        if (dep) {
+        if (dep)
             flight()->setDeparture(dep);
-            dep->add(flight());
-        }
 
-        if (dest) {
+        if (dest)
             flight()->setDestination(dest);
-            dest->add(flight());
-        }
     }
+}
+
+void FlightTracker::updateAirline()
+{
+//    flight()->setAirline(flight()->server()->airlines()->findByIcao(flight()->callsign().left(3)));
 }
 
 void FlightTracker::invalidateAirports()
 {
-    AirportObject* a = flight()->departure();
-    if (a)
-        a->remove(flight());
-
-    a = flight()->destination();
-    if (a)
-        a->remove(flight());
-
     flight()->setDeparture(nullptr);
     flight()->setDestination(nullptr);
 }

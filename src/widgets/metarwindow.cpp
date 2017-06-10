@@ -20,27 +20,26 @@
 #include "metarwindow.h"
 #include "ui_metarwindow.h"
 #include "widgetsprivate.h"
-#include "misc/metarlistmodel.h"
 #include <QtCore>
 
 using namespace Vatsinator::Core;
-using namespace Vatsinator::Misc;
 
 namespace Vatsinator { namespace Widgets {
 
-MetarWindow::MetarWindow(MetarManager* metars, QWidget *parent) :
+MetarWindow::MetarWindow(ServerTracker *server, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::MetarWindow),
-    m_metars(metars)
+    ui(new Ui::MetarWindow)
 {
     ui->setupUi(this);
 
-    connect(m_metars, &MetarManager::updated, this, &MetarWindow::updateMetars);
     connect(ui->metarSearch, &QLineEdit::textChanged, this, &MetarWindow::queryChanged);
 
     QSortFilterProxyModel* model = new QSortFilterProxyModel(this);
     ui->metars->setModel(model);
     model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+
+    connect(server, &ServerTracker::metarModelChanged, model, &QSortFilterProxyModel::setSourceModel);
+    model->setSourceModel(server->metars());
 }
 
 MetarWindow::~MetarWindow() {}
@@ -55,18 +54,6 @@ void MetarWindow::showEvent(QShowEvent* event)
 {
     Q_UNUSED(event);
     fixupGeometry(this);
-    updateMetars();
-}
-
-void MetarWindow::updateMetars()
-{
-    QSortFilterProxyModel* model = qobject_cast<QSortFilterProxyModel*>(ui->metars->model());
-    Q_ASSERT(model);
-
-    if (model->sourceModel())
-        model->sourceModel()->deleteLater();
-
-    model->setSourceModel(new MetarListModel(m_metars->metars()));
 }
 
 void MetarWindow::queryChanged()

@@ -21,7 +21,7 @@
 #define CORE_PILOT_H
 
 #include "core/airline.h"
-#include "core/airportobject.h"
+#include "core/airport.h"
 #include "core/client.h"
 #include "core/flightplan.h"
 #include "core/vtrcore_export.h"
@@ -119,12 +119,12 @@ class VTRCORE_EXPORT Pilot : public Client {
     /**
      * Departure airport.
      */
-    Q_PROPERTY(Vatsinator::Core::AirportObject* departure READ departure WRITE setDeparture NOTIFY departureChanged)
+    Q_PROPERTY(Vatsinator::Core::Airport* departure READ departure WRITE setDeparture NOTIFY departureChanged)
     
     /**
      * Destination airport.
      */
-    Q_PROPERTY(Vatsinator::Core::AirportObject* destination READ destination WRITE setDestination NOTIFY destinationChanged)
+    Q_PROPERTY(Vatsinator::Core::Airport* destination READ destination WRITE setDestination NOTIFY destinationChanged)
     
     /**
      * Cruise altitude, as filled in the flight plan.
@@ -193,8 +193,8 @@ signals:
     void headingChanged(int heading);
     void flightRulesChanged(FlightRules flightRules);
     void flightPhaseChanged(FlightPhase flightPhase);
-    void departureChanged(AirportObject* departure);
-    void destinationChanged(AirportObject* destination);
+    void departureChanged(Airport* departure);
+    void destinationChanged(Airport* destination);
     void cruiseAltitudeChanged(const QString& cruiseAltitude);
     void plannedTasChanged(int plannedTas);
     void flightPlanChanged(const FlightPlan& flightPlan);
@@ -255,10 +255,10 @@ public:
     void setFlightRules(FlightRules flightRules);
     FlightPhase flightPhase() const { return m_flightPhase; }
     void setFlightPhase(FlightPhase flightPhase);
-    AirportObject* departure() const { return m_departure; }
-    void setDeparture(AirportObject* departure);
-    AirportObject* destination() const { return m_destination; }
-    void setDestination(AirportObject* destination);
+    Airport* departure() const { return m_departure; }
+    void setDeparture(Airport* departure);
+    Airport* destination() const { return m_destination; }
+    void setDestination(Airport* destination);
     const QString& cruiseAltitude() const { return m_cruiseAltitude; }
     void setCruiseAltitude(const QString& cruiseAltitude);
     int plannedTas() const { return m_plannedTas; }
@@ -312,8 +312,8 @@ private:
     int m_heading = 0;
     FlightRules m_flightRules = Vfr;
     FlightPhase m_flightPhase = Departing;
-    AirportObject* m_departure = nullptr;
-    AirportObject* m_destination = nullptr;
+    Airport* m_departure = nullptr;
+    Airport* m_destination = nullptr;
     QString m_cruiseAltitude;
     int m_plannedTas;
     FlightPlan m_flightPlan;

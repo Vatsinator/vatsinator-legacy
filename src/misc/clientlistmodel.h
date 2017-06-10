@@ -20,8 +20,8 @@
 #ifndef MISC_CLIENTLISTMODEL_H
 #define MISC_CLIENTLISTMODEL_H
 
-#include "core/airportobject.h"
-#include "core/firobject.h"
+#include "core/airport.h"
+#include "core/fir.h"
 #include "misc/vtrmisc_export.h"
 #include <QtCore/QAbstractListModel>
 
@@ -83,13 +83,13 @@ public:
     /**
      * Creates a new model that tracks all clients of the given \c airport.
      */
-    static ClientListModel* clients(const Core::AirportObject* airport,
+    static ClientListModel* clients(const Core::Airport* airport,
                                     QObject* parent = nullptr);
 
     /**
      * Creates a new model that tracks all clients of the given \c fir.
      */
-    static ClientListModel* clients(const Core::FirObject* fir,
+    static ClientListModel* clients(const Core::Fir* fir,
                                     QObject* parent = nullptr);
 
     /**

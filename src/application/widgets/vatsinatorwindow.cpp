@@ -21,9 +21,9 @@
 #include "ui_vatsinatorwindow.h"
 #include "aboutwindow.h"
 #include "settingswindow.h"
-#include <core/option.h>
-#include <core/pluginfinder.h>
-#include <core/resourcefile.h>
+#include <misc/option.h>
+#include <misc/pluginfinder.h>
+#include <misc/resourcefile.h>
 #include <core/servertracker.h>
 #include <gui/mapaddon.h>
 #include <gui/mapdrawerplugin.h>
@@ -41,6 +41,7 @@
 
 using namespace Vatsinator::Core;
 using namespace Vatsinator::Gui;
+using namespace Vatsinator::Misc;
 using namespace Vatsinator::Widgets;
 
 /**
@@ -51,8 +52,7 @@ constexpr auto MapDrawerDefaultPlugin = "TiledMapDrawerPlugin";
 
 VatsinatorWindow::VatsinatorWindow() :
     QMainWindow(nullptr),
-    ui(new Ui::VatsinatorWindow),
-    m_server(new ServerTracker(this))
+    ui(new Ui::VatsinatorWindow)
 {
     ui->setupUi(this);
 
@@ -70,7 +70,7 @@ VatsinatorWindow::VatsinatorWindow() :
     connect(ui->map, &MapWidget::firDetailsRequested, this, &VatsinatorWindow::showFirDetails);
     connect(ui->map, &MapWidget::metarRequested, this, QOverload<const QString&>::of(&VatsinatorWindow::showMetarWindow));
     connect(ui->actionSettings, &QAction::triggered, this, &VatsinatorWindow::showSettingsWindow);
-    connect(ui->actionRefresh, &QAction::triggered, m_server, &ServerTracker::refreshData);
+//    connect(ui->actionRefresh, &QAction::triggered, m_server, &ServerTracker::refreshData);
     connect(ui->actionMetars, &QAction::triggered, this, QOverload<>::of(&VatsinatorWindow::showMetarWindow));
     connect(ui->actionClients, &QAction::triggered, this, &VatsinatorWindow::showClientListWindow);
     connect(ui->actionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
@@ -82,16 +82,13 @@ VatsinatorWindow::VatsinatorWindow() :
     ui->map->setRenderer(new MapRenderer(this));
     ui->map->renderer()->setScene(new MapScene(this));
     
-    ui->map->renderer()->scene()->track(m_server);
-    m_server->trackServer(QUrl("http://status.vatsim.net/status.txt"));
-    
     ModelMatcher* modelMatcher = new ModelMatcher;
     ResourceFile* modelFile = new ResourceFile("data/model.json");
     modelMatcher->setResourceFile(modelFile);
     ui->map->renderer()->scene()->setModelMatcher(modelMatcher);
     
     m_mapInfo = new MapInfoWidget;
-    connect(m_server, &ServerTracker::dataFileDownloadFinished, this, &VatsinatorWindow::updateMapInfo);
+//    connect(m_server, &ServerTracker::dataFileDownloadFinished, this, &VatsinatorWindow::updateMapInfo);
     
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addItem(new QSpacerItem(0, 20));
@@ -150,7 +147,7 @@ void VatsinatorWindow::changeEvent(QEvent* event)
     }
 }
 
-void VatsinatorWindow::showAirportDetails(const AirportObject* airport)
+void VatsinatorWindow::showAirportDetails(const Airport *airport)
 {
     AirportDetailsWindow* w = new AirportDetailsWindow();
     connect(w, &AirportDetailsWindow::clientDetailsRequested, this, &VatsinatorWindow::showClientDetails);
@@ -189,7 +186,7 @@ void VatsinatorWindow::showAtcDetails(const Atc* atc)
     w->show();
 }
 
-void VatsinatorWindow::showFirDetails(const FirObject* fir)
+void VatsinatorWindow::showFirDetails(const Fir *fir)
 {
     FirDetailsWindow* w = new FirDetailsWindow();
     connect(w, &FirDetailsWindow::clientDetailsRequested, this, &VatsinatorWindow::showClientDetails);
@@ -200,7 +197,7 @@ void VatsinatorWindow::showFirDetails(const FirObject* fir)
 
 void VatsinatorWindow::showClientDetails(const QString& callsign)
 {
-    const Client* client = m_server->findClient(callsign);
+    const Client* client = m_server->clients()->find(callsign);
     Q_ASSERT(client);
     
     if (const Pilot* pilot = qobject_cast<const Pilot*>(client))
@@ -213,11 +210,11 @@ void VatsinatorWindow::showClientDetails(const QString& callsign)
 
 void VatsinatorWindow::updateMapInfo()
 {
-    m_mapInfo->setClients(m_server->clientCount());
-    m_mapInfo->setPilots(m_server->pilotCount());
-    m_mapInfo->setAtcs(m_server->atcCount());
-    m_mapInfo->setObservers(m_server->observerCount());
-    m_mapInfo->setUpdated(m_server->lastUpdate());
+//    m_mapInfo->setClients(m_server->clientCount());
+//    m_mapInfo->setPilots(m_server->pilotCount());
+//    m_mapInfo->setAtcs(m_server->atcCount());
+//    m_mapInfo->setObservers(m_server->observerCount());
+//    m_mapInfo->setUpdated(m_server->lastUpdate());
 }
 
 void VatsinatorWindow::showSettingsWindow()
@@ -233,7 +230,8 @@ void VatsinatorWindow::showSettingsWindow()
 
 void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 {
-    MapDrawerPlugin* plugin = qobject_cast<MapDrawerPlugin*>(PluginFinder::plugin(name.toString()));
+    PluginFinder* pf = qApp->property("pluginFinder").value<PluginFinder*>();
+    MapDrawerPlugin* plugin = qobject_cast<MapDrawerPlugin*>(pf->plugin(name.toString()));
     if (plugin) {
         MapDrawer* drawer = plugin->create(ui->map->renderer());
         ui->map->renderer()->setMapDrawer(drawer);
@@ -247,10 +245,11 @@ void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 
 void VatsinatorWindow::updateMapAddons(const QVariant& addons)
 {
+    PluginFinder* pf = qApp->property("pluginFinder").value<PluginFinder*>();
     QStringList enabledAddons = addons.toStringList();
-    auto availableAddons = PluginFinder::pluginsForIid(qobject_interface_iid<MapAddon*>());
+    auto availableAddons = pf->pluginsForIid(qobject_interface_iid<MapAddon*>());
     for (auto a: availableAddons) {
-        MapAddon* instance = qobject_cast<MapAddon*>(PluginFinder::plugin(a));
+        MapAddon* instance = qobject_cast<MapAddon*>(pf->plugin(a));
         if (enabledAddons.contains(a))
             ui->map->renderer()->attachMapAddon(instance);
         else
@@ -263,7 +262,7 @@ void VatsinatorWindow::updateMapAddons(const QVariant& addons)
 void VatsinatorWindow::showMetarWindow()
 {
     if (!m_metars) {
-        m_metars = new MetarWindow(m_server->metarManager());
+        m_metars = new MetarWindow(m_server);
         connect(qApp, &QCoreApplication::aboutToQuit, m_metars, &QObject::deleteLater);
     }
 
@@ -274,7 +273,7 @@ void VatsinatorWindow::showMetarWindow()
 void VatsinatorWindow::showMetarWindow(const QString& icaoSearch)
 {
     if (!m_metars) {
-        m_metars = new MetarWindow(m_server->metarManager());
+        m_metars = new MetarWindow(m_server);
         connect(qApp, &QCoreApplication::aboutToQuit, m_metars, &QObject::deleteLater);
     }
 

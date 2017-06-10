@@ -20,7 +20,7 @@
 #ifndef GUI_TMAAREA_H
 #define GUI_TMAAREA_H
 
-#include "core/airportobject.h"
+#include "core/airport.h"
 #include "gui/maparea.h"
 #include "gui/vtrgui_export.h"
 
@@ -44,7 +44,7 @@ public:
      *  is empty, a default circle is drawn instead.
      * \param scene The parent \c MapScene instance.
      */
-    explicit TmaArea(Core::AirportObject* airport, QList<Core::LonLat> boundary, MapScene* scene,
+    explicit TmaArea(Core::Airport* airport, QList<Core::LonLat> boundary, MapScene* scene,
                      QObject* parent = nullptr);
     
     /**
@@ -66,7 +66,7 @@ private slots:
     void refreshVisible();
     
 private:
-    Core::AirportObject* m_airport;
+    Core::Airport* m_airport;
     QRectF m_boundingRect;
     bool m_visible;
     QList<Core::LonLat> m_boundary;

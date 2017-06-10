@@ -20,7 +20,7 @@
 #ifndef GUI_AIRPORTITEM_H
 #define GUI_AIRPORTITEM_H
 
-#include "core/airportobject.h"
+#include "core/airport.h"
 #include "gui/mapitem.h"
 #include "gui/vtrgui_export.h"
 
@@ -38,13 +38,13 @@ class VTRGUI_EXPORT AirportItem : public MapItem {
     /**
      * The \c airport property keeps the airport that is being tracked.
      */
-    Q_PROPERTY(Vatsinator::Core::AirportObject* airport READ airport CONSTANT)
+    Q_PROPERTY(Vatsinator::Core::Airport* airport READ airport CONSTANT)
 
 public:
     /**
      * Creates a new AirportItem.
      */
-    explicit AirportItem(Core::AirportObject* airport, MapScene* scene,
+    explicit AirportItem(Core::Airport* airport, MapScene* scene,
                          QObject* parent = nullptr);
     
     /**
@@ -75,8 +75,8 @@ public:
     /**
      * Gives access to the airport object.
      */
-    const Core::AirportObject* airport() const { return m_airport; }
-    Core::AirportObject* airport() { return m_airport; }
+    const Core::Airport* airport() const { return m_airport; }
+    Core::Airport* airport() { return m_airport; }
     
     AirportItem() = delete;
     
@@ -91,7 +91,7 @@ private slots:
     void removeIcon();
     
 private:
-    Core::AirportObject* m_airport;
+    Core::Airport* m_airport;
     mutable QPixmap m_icon;
     mutable QPixmap m_label;
     

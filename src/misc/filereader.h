@@ -17,26 +17,26 @@
  * 
  */
 
-#ifndef CORE_FILEREADER_H
-#define CORE_FILEREADER_H
+#ifndef MISC_FILEREADER_H
+#define MISC_FILEREADER_H
 
-#include "core/vtrcore_export.h"
+#include "misc/vtrmisc_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
 class FileDownloader;
 
 /**
- * \ingroup Core
+ * \ingroup Misc
  * @{
  *
  * The FileReader class is a base class for every data file that is used
  * by Vatsinator. The file can be local (i.e. installed with the application)
  * as well as remote (downloaded from the internet and updated when needed).
  */
-class VTRCORE_EXPORT FileReader : public QObject {
+class VTRMISC_EXPORT FileReader : public QObject {
     Q_OBJECT
     
     Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)
@@ -94,6 +94,6 @@ private:
     
 }; /** @} */
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */
 
-#endif // CORE_FILEREADER_H
+#endif // MISC_FILEREADER_H

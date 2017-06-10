@@ -27,7 +27,7 @@ using namespace Vatsinator::Core;
 
 namespace Vatsinator { namespace Gui {
 
-FirItem::FirItem(FirObject* fir, MapScene* scene, QObject* parent) :
+FirItem::FirItem(Fir* fir, MapScene* scene, QObject* parent) :
     MapItem(scene, parent),
     m_fir(fir)
 {

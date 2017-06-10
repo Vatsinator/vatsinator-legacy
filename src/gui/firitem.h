@@ -20,7 +20,7 @@
 #ifndef GUI_FIRITEM_H
 #define GUI_FIRITEM_H
 
-#include "core/firobject.h"
+#include "core/fir.h"
 #include "gui/mapitem.h"
 #include "gui/vtrgui_export.h"
 
@@ -38,10 +38,10 @@ class VTRGUI_EXPORT FirItem : public MapItem {
     /**
      * The \c fir property keeps the FIR of which label is being drawn.
      */
-    Q_PROPERTY(Vatsinator::Core::FirObject* fir READ fir CONSTANT)
+    Q_PROPERTY(Vatsinator::Core::Fir* fir READ fir CONSTANT)
     
 public:
-    explicit FirItem(Core::FirObject* fir, MapScene* scene,
+    explicit FirItem(Core::Fir* fir, MapScene* scene,
                      QObject* parent = nullptr);
     
     /**
@@ -69,8 +69,8 @@ public:
      */
     int z() const override;
     
-    const Core::FirObject* fir() const { return m_fir; }
-    Core::FirObject* fir() { return m_fir; }
+    const Core::Fir* fir() const { return m_fir; }
+    Core::Fir* fir() { return m_fir; }
     
     FirItem() = delete;
     
@@ -81,7 +81,7 @@ private slots:
     void removeLabel();
     
 private:
-    Core::FirObject* m_fir;
+    Core::Fir* m_fir;
     mutable QPixmap m_label;
     QFont m_font;
 

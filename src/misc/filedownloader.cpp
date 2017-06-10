@@ -23,7 +23,7 @@
 
 static QThreadStorage<QNetworkAccessManager*> networkAccessManagers;
 
-namespace Vatsinator { namespace Core {
+namespace Vatsinator { namespace Misc {
 
 FileDownloader::FileDownloader(QObject* parent) :
     QObject(parent) {}
@@ -94,4 +94,4 @@ void FileDownloader::finish()
     }
 }
 
-}} /* namespace Vatsinator::Core */
+}} /* namespace Vatsinator::Misc */
