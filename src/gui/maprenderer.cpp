@@ -191,8 +191,6 @@ void MapRenderer::paint(QPaintDevice* device, const QSet<const MapItem*>& select
 
 void MapRenderer::invalidateTransform()
 {
-//    WorldTransform transform = this->transform();
-//    QRectF screen(transform.map(QPoint(0, 0)), transform.map(QPoint(viewport().width(), viewport().height())));
     m_transformValid = false;
 }
 
@@ -203,7 +201,6 @@ void MapRenderer::handleFlightTracked(const Pilot* flight)
 
     if (flight) {
         m_flightTracking = connect(flight, &Pilot::positionChanged, this, &MapRenderer::moveTo);
-//        setCenter(flight->position());
         moveTo(flight->position());
     }
 }

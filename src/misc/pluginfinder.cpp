@@ -105,13 +105,17 @@ void PluginFinder::readPlugin(const QString &fileName)
         }
 
         QString iid = metaData["IID"].toString();
-        QString name = metaData["className"].toString();
+        QString className = metaData["className"].toString();
         QJsonObject metaData2 = metaData["MetaData"].toObject();
 
-        qDebug("Plugin found in %s (%s implements %s)", qPrintable(fileName),
-               qPrintable(name), qPrintable(iid));
+        QJsonValue id = metaData2.value("id");
+        if (id.isUndefined()) {
+            qWarning("Error loading %s: id is undefined", qPrintable(fileName));
+            return;
+        }
 
-        m_plugins.append({name, fileName, iid, metaData2});
+        qDebug("Plugin %s found in %s", qPrintable(id.toString()), qPrintable(fileName));
+        m_plugins.append({className, id.toString(), fileName, iid, metaData2});
     }
 }
 

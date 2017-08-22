@@ -47,7 +47,7 @@ using namespace Vatsinator::Widgets;
 /**
  * The default MapDrawer plugin.
  */
-constexpr auto MapDrawerDefaultPlugin = "TiledMapDrawerPlugin";
+constexpr auto MapDrawerDefaultPlugin = "org.eu.vatsinator.plugin.mapdrawers.tiled";
 
 
 VatsinatorWindow::VatsinatorWindow() :
@@ -80,12 +80,21 @@ VatsinatorWindow::VatsinatorWindow() :
     connect(ui->actionAbout, &QAction::triggered, about, &QWidget::show);
     
     ui->map->setRenderer(new MapRenderer(this));
-    ui->map->renderer()->setScene(new MapScene(this));
+
+    MapScene* scene = new MapScene(this);
+    ServerTracker* server;
+
+    PluginFinder* pf = qApp->property("pluginFinder").value<PluginFinder*>();
+    Q_CHECK_TR(pf);
+//    * plugin = qobject_cast<MapDrawerPlugin*>(pf->plugin(name.toString()));
+
+    scene->track(server);
+    ui->map->renderer()->setScene(scene);
     
-    ModelMatcher* modelMatcher = new ModelMatcher;
-    ResourceFile* modelFile = new ResourceFile("data/model.json");
-    modelMatcher->setResourceFile(modelFile);
-    ui->map->renderer()->scene()->setModelMatcher(modelMatcher);
+//    ModelMatcher* modelMatcher = new ModelMatcher;
+//    ResourceFile* modelFile = new ResourceFile("data/model.json");
+//    modelMatcher->setResourceFile(modelFile);
+//    ui->map->renderer()->scene()->setModelMatcher(modelMatcher);
     
     m_mapInfo = new MapInfoWidget;
 //    connect(m_server, &ServerTracker::dataFileDownloadFinished, this, &VatsinatorWindow::updateMapInfo);
@@ -231,6 +240,7 @@ void VatsinatorWindow::showSettingsWindow()
 void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 {
     PluginFinder* pf = qApp->property("pluginFinder").value<PluginFinder*>();
+    Q_CHECK_TR(pf);
     MapDrawerPlugin* plugin = qobject_cast<MapDrawerPlugin*>(pf->plugin(name.toString()));
     if (plugin) {
         MapDrawer* drawer = plugin->create(ui->map->renderer());

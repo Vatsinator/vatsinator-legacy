@@ -1,4 +1,5 @@
 {
+    "id": "org.eu.vatsinator.plugin.mapdrawers.tiled",
     "author": "Vatsinator Team",
     "name": "Tiled Map",
     "description": "Renders map using small images downloaded from the internet."
