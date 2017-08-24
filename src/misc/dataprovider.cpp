@@ -1,6 +1,6 @@
 /*
- * servertrackerprovider.h
- * Copyright (C) 2017  Michał Garapich <michal@garapich.pl>
+ * dataprovider.cpp
+ * Copyright (C) 2017 Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,23 +17,13 @@
  *
  */
 
-#ifndef MISC_SERVERTRACKERPROVIDER_H
-#define MISC_SERVERTRACKERPROVIDER_H
-
-#include "core/servertracker.h"
-#include <QtCore/QObject>
+#include "dataprovider.h"
 
 namespace Vatsinator { namespace Misc {
 
-class ServerTrackerProvider {
+DataProvider::DataProvider(QObject *parent) : QObject(parent)
+{
 
-public:
-    virtual Vatsinator::Core::ServerTracker* serverTracker() = 0;
-
-};
+}
 
 }} /* namespace Vatsinator::Misc */
-
-Q_DECLARE_INTERFACE(Vatsinator::Misc::ServerTrackerProvider, "org.eu.vatsinator.vtrmisc.ServerTrackerProvider")
-
-#endif // MISC_SERVERTRACKERPROVIDER_H

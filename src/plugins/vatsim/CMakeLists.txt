@@ -2,7 +2,10 @@ find_package (Qt5 REQUIRED COMPONENTS Core Network)
 
 add_library (vatsim MODULE
     servertracker.h
+    servertrackerprovider.h
+
     servertracker.cpp
+    servertrackerprovider.cpp
 
     vatsim.json
 )

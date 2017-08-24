@@ -124,7 +124,7 @@ bool PluginFinder::loadPlugin(const QString &fileName)
     QPluginLoader loader(fileName);
     QObject* instance = loader.instance();
     if (!instance) {
-        qWarning("Error loading %s (error message: %s)", qPrintable(fileName), qPrintable(loader.errorString()));
+        qWarning("Error loading %s: %s", qPrintable(fileName), qPrintable(loader.errorString()));
         return false;
     } else {
         m_loadedPlugins.insert(fileName, instance);

@@ -24,6 +24,7 @@
 #include <misc/option.h>
 #include <misc/pluginfinder.h>
 #include <misc/resourcefile.h>
+#include <misc/servertrackerprovider.h>
 #include <core/servertracker.h>
 #include <gui/mapaddon.h>
 #include <gui/mapdrawerplugin.h>
@@ -82,13 +83,13 @@ VatsinatorWindow::VatsinatorWindow() :
     ui->map->setRenderer(new MapRenderer(this));
 
     MapScene* scene = new MapScene(this);
-    ServerTracker* server;
 
     PluginFinder* pf = qApp->property("pluginFinder").value<PluginFinder*>();
-    Q_CHECK_TR(pf);
-//    * plugin = qobject_cast<MapDrawerPlugin*>(pf->plugin(name.toString()));
+    Q_CHECK_PTR(pf);
+    ServerTrackerProvider* plugin = qobject_cast<ServerTrackerProvider*>(pf->plugin("org.eu.vatsinator.plugin.vatsim"));
+    if (plugin)
+        scene->track(plugin->serverTracker());
 
-    scene->track(server);
     ui->map->renderer()->setScene(scene);
     
 //    ModelMatcher* modelMatcher = new ModelMatcher;
@@ -240,7 +241,7 @@ void VatsinatorWindow::showSettingsWindow()
 void VatsinatorWindow::setMapDrawerPlugin(const QVariant& name)
 {
     PluginFinder* pf = qApp->property("pluginFinder").value<PluginFinder*>();
-    Q_CHECK_TR(pf);
+    Q_CHECK_PTR(pf);
     MapDrawerPlugin* plugin = qobject_cast<MapDrawerPlugin*>(pf->plugin(name.toString()));
     if (plugin) {
         MapDrawer* drawer = plugin->create(ui->map->renderer());

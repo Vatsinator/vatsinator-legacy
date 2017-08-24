@@ -1,5 +1,5 @@
 {
-    "id": "org.eu.vatsinator.plugin.vasim",
+    "id": "org.eu.vatsinator.plugin.vatsim",
     "dependencies": [
         "org.eu.vatsinator.plugin.vatsinatordatabase"
     ],

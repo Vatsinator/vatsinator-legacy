@@ -3,11 +3,12 @@
 
 #include "core/airportmodel.h"
 #include "core/firmodel.h"
+#include "misc/vtrmisc_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Misc {
 
-class DataProvider : public QObject {
+class VTRMISC_EXPORT  DataProvider : public QObject {
     Q_OBJECT
 
 signals:
@@ -15,7 +16,7 @@ signals:
     void firModelChanged(Core::FirModel* newModel);
 
 public:
-    DataProvider(QObject* parent = nullptr) : QObject(parent) {}
+    DataProvider(QObject* parent = nullptr);
 
     virtual Core::AirportModel* airports() = 0;
     virtual Core::FirModel* firs() = 0;

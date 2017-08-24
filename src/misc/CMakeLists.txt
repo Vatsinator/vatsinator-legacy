@@ -7,6 +7,7 @@ set (misc_SOURCES
     atcbookingreply.cpp
     atclistmodel.cpp
     clientlistmodel.cpp
+    dataprovider.cpp
     filecache.cpp
     filedownloader.cpp
     filereader.cpp
@@ -28,6 +29,7 @@ set (misc_HEADERS
     atcbookingreply.h
     atclistmodel.h
     clientlistmodel.h
+    dataprovider.h
     filecache.h
     filedownloader.h
     filereader.h
@@ -39,6 +41,7 @@ set (misc_HEADERS
     option.h
     pluginfinder.h
     resourcefile.h
+    servertrackerprovider.h
     
     misc.h
     roles.h

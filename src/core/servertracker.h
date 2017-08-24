@@ -74,10 +74,10 @@ protected:
     void setMetarModel(MetarListModel* metars);
 
 private:
-    ClientModel* m_clients;
-    AirportModel* m_airports;
-    FirModel* m_firs;
-    MetarListModel* m_metars;
+    ClientModel* m_clients = nullptr;
+    AirportModel* m_airports = nullptr;
+    FirModel* m_firs = nullptr;
+    MetarListModel* m_metars = nullptr;
     
 }; /** @} */
 

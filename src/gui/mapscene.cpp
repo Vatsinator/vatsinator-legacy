@@ -240,12 +240,24 @@ MapScene::~MapScene() {}
 
 void MapScene::track(ServerTracker* serverTracker)
 {
-    connect(serverTracker->clients(), &ClientModel::added, this, &MapScene::trackClient);
+    if (serverTracker) {
+        auto trackClients = [this](ClientModel* model)  {
+            QObject::disconnect(m_clientModelConnection);
+
+            if (model) {
+                m_clientModelConnection = connect(model, &ClientModel::added, this, &MapScene::trackClient);
+            }
+        };
+
+        connect(serverTracker, &ServerTracker::clientModelChanged, trackClients);
+        trackClients(serverTracker->clients());
+
 //    connect(serverTracker, &ServerTracker::airportAdded, this, &MapScene::addAirport);
     
 //    auto firs = serverTracker->firObjects();
 //    for (auto f: firs)
 //        d->addFir(f);
+    }
 }
 
 QList<const MapItem*> MapScene::itemsInRect(const QRectF& rect) const

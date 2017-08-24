@@ -1,7 +1,7 @@
 #ifndef DATAPROVIDER_H
 #define DATAPROVIDER_H
 
-#include "misc/dataprovider.h"
+#include <misc/dataprovider.h>
 #include <QtCore/QObject>
 
 namespace VatsinatorDatabase {

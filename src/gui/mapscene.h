@@ -183,6 +183,7 @@ private:
     PixmapProvider* m_pixmapProvider = nullptr;
     ModelMatcher* m_modelMatcher = nullptr;
     const Core::Pilot* m_trackedFlight = nullptr;
+    QMetaObject::Connection m_clientModelConnection;
     
 }; /** @} */
 
