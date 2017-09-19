@@ -43,6 +43,6 @@ public:
 
 }} /* namespace Vatsinator::Misc */
 
-Q_DECLARE_INTERFACE(Vatsinator::Misc::NotamProvider, "org.eu.vatsinator.vtrmisc.NotamProvider")
+Q_DECLARE_INTERFACE(Vatsinator::Misc::NotamProvider, "org.eu.vatsinator.v8rmisc.NotamProvider")
 
 #endif // MISC_NOTAMPROVIDER_H

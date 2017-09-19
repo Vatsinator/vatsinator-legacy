@@ -13,7 +13,7 @@ namespace TiledMapDrawer {
 
 class TiledMapDrawerPlugin : public QObject, public Vatsinator::Gui::MapDrawerPlugin {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrgui.MapDrawerPlugin" FILE "tiledmapdrawer.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rgui.MapDrawerPlugin" FILE "tiledmapdrawer.json")
     Q_INTERFACES(Vatsinator::Gui::MapDrawerPlugin)
 
 public:

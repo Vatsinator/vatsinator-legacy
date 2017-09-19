@@ -20,7 +20,7 @@
 #ifndef CORE_FLIGHTPLAN_H
 #define CORE_FLIGHTPLAN_H
 
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QMetaType>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
@@ -35,7 +35,7 @@ class FlightPlanData;
  *
  * The FlightPlan class groups all flight plan related values.
  */
-class VTRCORE_EXPORT FlightPlan {
+class V8RCORE_EXPORT FlightPlan {
     Q_GADGET
 
     Q_PROPERTY(bool empty READ isEmpty)

@@ -23,7 +23,7 @@
 #include "core/fir.h"
 #include "core/lonlat.h"
 #include "gui/maparea.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * The \c FirArea draws FIRs on the map.
  */
-class VTRGUI_EXPORT FirArea : public MapArea {
+class V8RGUI_EXPORT FirArea : public MapArea {
     Q_OBJECT
 
 public:

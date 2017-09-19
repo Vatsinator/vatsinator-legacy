@@ -9,6 +9,6 @@ add_library (travelpayoutsairlinelogoprovider MODULE
 )
 
 target_compile_definitions (travelpayoutsairlinelogoprovider PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (travelpayoutsairlinelogoprovider vtrmisc)
+target_link_libraries (travelpayoutsairlinelogoprovider v8rmisc)
 
 vatsinator_add_plugin (travelpayoutsairlinelogoprovider)

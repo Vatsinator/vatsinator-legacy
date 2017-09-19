@@ -25,7 +25,7 @@
 #include "gui/maparea.h"
 #include "gui/mapitem.h"
 #include "gui/modelmatcher.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QRectF>
 
@@ -45,7 +45,7 @@ class PixmapProvider;
  * 
  * \sa ServerTracker and MapRenderer.
  */
-class VTRGUI_EXPORT MapScene : public QObject {
+class V8RGUI_EXPORT MapScene : public QObject {
     Q_OBJECT
 
     /**

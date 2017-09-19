@@ -24,7 +24,7 @@
 #include "core/clientmodel.h"
 #include "core/firmodel.h"
 #include "core/metarlistmodel.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
@@ -38,7 +38,7 @@ namespace Vatsinator { namespace Core {
  *
  *
  */
-class VTRCORE_EXPORT ServerTracker : public QObject {
+class V8RCORE_EXPORT ServerTracker : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(ClientModel* clients READ clients NOTIFY clientModelChanged)

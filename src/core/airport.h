@@ -22,7 +22,7 @@
 
 #include "core/clientlist.h"
 #include "core/lonlat.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
@@ -38,7 +38,7 @@ class Pilot;
  * The airport contains basic information, such as ICAO code, position,
  * name, city and country it belongs to.
  */
-class VTRCORE_EXPORT Airport : public ClientList {
+class V8RCORE_EXPORT Airport : public ClientList {
     Q_OBJECT
 
     Q_PROPERTY(QString icao READ icao WRITE setIcao NOTIFY icaoChanged)

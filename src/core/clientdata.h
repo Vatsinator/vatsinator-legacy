@@ -21,7 +21,7 @@
 #define CORE_CLIENTDATA_H
 
 #include "core/client.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QSharedDataPointer>
 
 namespace Vatsinator { namespace Core {
@@ -37,7 +37,7 @@ class ClientDataData; // stupid name, I know
  * The ClientData is a container class for a raw client data
  * that is extracted from the VATSIM's data file.
  */
-class VTRCORE_EXPORT ClientData {
+class V8RCORE_EXPORT ClientData {
 public:
     /**
      * Creates and empty (and invalid) instance.

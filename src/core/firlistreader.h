@@ -22,7 +22,7 @@
 
 #include "core/fir.h"
 #include "core/resourcefile.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 
 namespace Vatsinator { namespace Core {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  *
  * The reader for FIR list.
  */
-class VTRCORE_EXPORT FirListReader : public ResourceFile {
+class V8RCORE_EXPORT FirListReader : public ResourceFile {
     Q_OBJECT
 
 public:

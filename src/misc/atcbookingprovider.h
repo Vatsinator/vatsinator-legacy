@@ -43,6 +43,6 @@ public:
 
 }} /* namespace Vatsinator::Misc */
 
-Q_DECLARE_INTERFACE(Vatsinator::Misc::AtcBookingProvider, "org.eu.vatsinator.vtrmisc.AtcBookingProvider")
+Q_DECLARE_INTERFACE(Vatsinator::Misc::AtcBookingProvider, "org.eu.vatsinator.v8rmisc.AtcBookingProvider")
 
 #endif // MISC_ATCBOOKINGPROVIDER_H

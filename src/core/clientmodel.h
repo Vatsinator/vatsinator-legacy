@@ -2,13 +2,13 @@
 #define CORE_CLIENTMODEL_H
 
 #include "core/client.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
 
-class VTRCORE_EXPORT ClientModel : public QObject {
+class V8RCORE_EXPORT ClientModel : public QObject {
     Q_OBJECT
 
 signals:

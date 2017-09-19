@@ -21,7 +21,7 @@
 #define FLIGHTTRACKER_H
 
 #include "core/pilot.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  *
  * The FlightTracker class handles flight changes logic.
  */
-class VTRCORE_NO_EXPORT FlightTracker : public QObject {
+class V8RCORE_NO_EXPORT FlightTracker : public QObject {
     Q_OBJECT
 
     /**

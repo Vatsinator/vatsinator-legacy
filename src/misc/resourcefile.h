@@ -21,7 +21,7 @@
 #define MISC_RESOURCEFILE_H
 
 #include "misc/filereader.h"
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 
 namespace Vatsinator { namespace Misc {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Misc {
  * The ResourceFile class represents one of Vatsinator's manifest-controlled
  * files.
  */
-class VTRMISC_EXPORT ResourceFile : public FileReader {
+class V8RMISC_EXPORT ResourceFile : public FileReader {
     Q_OBJECT
     
     /**

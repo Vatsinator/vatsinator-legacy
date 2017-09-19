@@ -9,6 +9,6 @@ add_library (euroutenotamprovider MODULE
 )
 
 target_compile_definitions (euroutenotamprovider PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (euroutenotamprovider vtrmisc)
+target_link_libraries (euroutenotamprovider v8rmisc)
 
 vatsinator_add_plugin (euroutenotamprovider)

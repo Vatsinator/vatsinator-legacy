@@ -22,7 +22,7 @@
 
 #include "core/airport.h"
 #include "core/fir.h"
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Core { class Pilot; }}
@@ -37,7 +37,7 @@ namespace Vatsinator { namespace Misc {
  * When created using either \ref inbound() or \ref outbound methods, it
  * updates automatically.
  */
-class VTRMISC_EXPORT FlightListModel : public QAbstractListModel {
+class V8RMISC_EXPORT FlightListModel : public QAbstractListModel {
     Q_OBJECT
     
 public:    

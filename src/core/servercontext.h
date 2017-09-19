@@ -5,12 +5,12 @@
 #include "core/airportlistreader.h"
 #include "core/firlistreader.h"
 #include "core/uirlistreader.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
 
-class VTRCORE_EXPORT ServerContext : public QObject {
+class V8RCORE_EXPORT ServerContext : public QObject {
     Q_OBJECT
 
 public:

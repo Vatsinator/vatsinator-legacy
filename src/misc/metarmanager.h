@@ -20,7 +20,7 @@
 #ifndef CORE_METARMANAGER_H
 #define CORE_METARMANAGER_H
 
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include "core/metar.h"
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
@@ -35,7 +35,7 @@ class FileDownloader;
  *
  * The MetarManager keeps list of all METARs.
  */
-class VTRCORE_EXPORT MetarManager : public QObject {
+class V8RCORE_EXPORT MetarManager : public QObject {
     Q_OBJECT
     
 signals:

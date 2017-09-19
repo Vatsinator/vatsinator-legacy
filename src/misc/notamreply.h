@@ -21,7 +21,7 @@
 #define MISC_NOTAMREPLY_H
 
 #include "misc/notam.h"
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Misc {
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Misc {
  * The NotamReply class represents a response to a NOTAM request and is used
  * by \ref NotamProvider implementations.
  */
-class VTRMISC_EXPORT NotamReply : public QObject {
+class V8RMISC_EXPORT NotamReply : public QObject {
     Q_OBJECT
     
     /**

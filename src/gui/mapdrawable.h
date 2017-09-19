@@ -21,7 +21,7 @@
 #define GUI_MAPDRAWABLE_H
 
 #include "gui/worldpainter.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtCore/QMetaType>
 #include <QtCore/QObject>
 #include <QtGui/QPainter>
@@ -37,7 +37,7 @@ class MapScene;
  * The \c MapDrawable is a base class for everything that can be rendered
  * on the map.
  */
-class VTRGUI_EXPORT MapDrawable : public QObject {
+class V8RGUI_EXPORT MapDrawable : public QObject {
     Q_OBJECT
     Q_ENUMS(DrawFlag)
     

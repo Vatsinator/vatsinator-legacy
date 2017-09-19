@@ -20,7 +20,7 @@
 #ifndef MISC_ATCBOOKING_H
 #define MISC_ATCBOOKING_H
 
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QDate>
 #include <QtCore/QTime>
 #include <QtCore/QSharedDataPointer>
@@ -36,7 +36,7 @@ class AtcBookingData;
  * 
  * The AtcBooking class represents a single booking entry for an ATC.
  */
-class VTRMISC_EXPORT AtcBooking {
+class V8RMISC_EXPORT AtcBooking {
 public:
     /**
      * Creates an empty AtcBooking instance.

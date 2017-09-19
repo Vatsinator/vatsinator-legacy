@@ -47,15 +47,15 @@ set (misc_HEADERS
     roles.h
 )
 
-add_library (vtrmisc SHARED ${misc_SOURCES} ${misc_HEADERS})
-target_link_libraries (vtrmisc vtrcore Qt5::Gui)
-set_target_properties (vtrmisc PROPERTIES CXX_VISIBILITY_PRESET hidden)
+add_library (v8rmisc SHARED ${misc_SOURCES} ${misc_HEADERS})
+target_link_libraries (v8rmisc v8rcore Qt5::Gui)
+set_target_properties (v8rmisc PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 include (GenerateExportHeader)
-generate_export_header(vtrmisc)
+generate_export_header(v8rmisc)
 
-install (TARGETS vtrmisc
-    EXPORT vtrmisc
+install (TARGETS v8rmisc
+    EXPORT v8rmisc
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}
     LIBRARY DESTINATION ${vatsinator_LIBRARY_TARGET_DIR}
     ARCHIVE DESTINATION ${vatsinator_ARCHIVE_TARGET_DIR} CONFIGURATIONS Debug

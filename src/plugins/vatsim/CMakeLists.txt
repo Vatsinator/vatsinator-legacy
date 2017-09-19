@@ -11,6 +11,6 @@ add_library (vatsim MODULE
 )
 
 target_compile_definitions (vatsim PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (vatsim vtrcore)
+target_link_libraries (vatsim v8rcore)
 
 vatsinator_add_plugin (vatsim)

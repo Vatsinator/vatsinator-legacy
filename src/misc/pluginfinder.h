@@ -20,7 +20,7 @@
 #ifndef MISC_PLUGINFINDER_H
 #define MISC_PLUGINFINDER_H
 
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QJsonObject>
 #include <QtCore/QList>
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Misc {
  * \ingroup Core
  * @{
  */
-class VTRMISC_EXPORT PluginFinder {
+class V8RMISC_EXPORT PluginFinder {
     friend class PluginFinderHelper;
 
 public:

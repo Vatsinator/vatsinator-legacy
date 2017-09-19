@@ -35,7 +35,7 @@
  */
 class VatbookAtcBookingProvider : public QObject, public Vatsinator::Misc::AtcBookingProvider {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrmisc.AtcBookingProvider" FILE "vatbookatcbookingprovider.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rmisc.AtcBookingProvider" FILE "vatbookatcbookingprovider.json")
     Q_INTERFACES(Vatsinator::Misc::AtcBookingProvider)
 
 public:

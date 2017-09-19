@@ -22,7 +22,7 @@
 
 #include "core/airport.h"
 #include "core/pilot.h"
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
@@ -37,7 +37,7 @@ namespace Vatsinator { namespace Widgets {
  * The FlightDetailsWindow provides an easy and simple way to display all flight
  * details in a nice window.
  */
-class VTRWIDGETS_EXPORT FlightDetailsWindow : public QWidget {
+class V8RWIDGETS_EXPORT FlightDetailsWindow : public QWidget {
     Q_OBJECT
     
     /**

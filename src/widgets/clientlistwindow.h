@@ -21,7 +21,7 @@
 #define WIDGETS_CLIENTLISTWINDOW_H
 
 #include "core/servertracker.h"
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtCore/QModelIndex>
 #include <QtCore/QScopedPointer>
 #include <QtWidgets/QWidget>
@@ -38,7 +38,7 @@ namespace Vatsinator { namespace Widgets {
  *
  * Pilots and ATCs are shown in separate tabs.
  */
-class VTRWIDGETS_EXPORT ClientListWindow : public QWidget {
+class V8RWIDGETS_EXPORT ClientListWindow : public QWidget {
     Q_OBJECT
 
 signals:

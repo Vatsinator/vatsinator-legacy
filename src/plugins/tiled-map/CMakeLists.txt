@@ -19,6 +19,6 @@ add_library (tiledmapdrawer MODULE
 )
 
 target_compile_definitions (tiledmapdrawer PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (tiledmapdrawer vtrgui vtrmisc)
+target_link_libraries (tiledmapdrawer v8rgui v8rmisc)
 
 vatsinator_add_plugin (tiledmapdrawer)

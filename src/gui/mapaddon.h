@@ -22,7 +22,7 @@
 
 #include "gui/worldpainter.h"
 #include "gui/worldtransform.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtCore/QObject>
 #include <QtGui/QPainter>
 
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Gui {
  *
  * An interface for any map addon.
  */
-class VTRGUI_EXPORT MapAddon {
+class V8RGUI_EXPORT MapAddon {
 public:
     /**
      * This method is called just before all the map items (airports,
@@ -51,6 +51,6 @@ public:
 
 }} /* namespace Vatsinator::Gui */
 
-Q_DECLARE_INTERFACE(Vatsinator::Gui::MapAddon, "org.eu.vatsinator.vtrgui.MapAddon")
+Q_DECLARE_INTERFACE(Vatsinator::Gui::MapAddon, "org.eu.vatsinator.v8rgui.MapAddon")
 
 #endif // GUI_MAPADDON_H

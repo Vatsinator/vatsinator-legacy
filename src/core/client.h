@@ -21,7 +21,7 @@
 #define CORE_CLIENT_H
 
 #include "core/lonlat.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -37,7 +37,7 @@ class ServerTracker;
  * 
  * The Client is a base class for all clients.
  */
-class VTRCORE_EXPORT Client : public QObject {
+class V8RCORE_EXPORT Client : public QObject {
     Q_OBJECT
     Q_ENUMS(State)
     

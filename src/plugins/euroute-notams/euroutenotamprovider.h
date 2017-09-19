@@ -40,7 +40,7 @@
  */
 class EurouteNotamProvider : public QObject, public Vatsinator::Misc::NotamProvider {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrmisc.NotamProvider" FILE "euroutenotamprovider.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rmisc.NotamProvider" FILE "euroutenotamprovider.json")
     Q_INTERFACES(Vatsinator::Misc::NotamProvider)
 
 public:

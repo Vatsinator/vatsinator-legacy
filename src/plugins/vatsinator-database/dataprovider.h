@@ -8,7 +8,7 @@ namespace VatsinatorDatabase {
 
 class DataProvider : public Vatsinator::Misc::DataProvider {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrmisc.DataProvider" FILE "vatsinatordatabase.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rmisc.DataProvider" FILE "vatsinatordatabase.json")
     Q_INTERFACES(Vatsinator::Misc::DataProvider)
 
 public:

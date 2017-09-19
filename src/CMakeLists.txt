@@ -27,7 +27,7 @@ if (LINUX)
     set (vatsinator_RESOURCES_TARGET_DIR "share/vatsinator")
     # prefix-dependent, e.g. /usr/share/bin/vatsinator
     set (vatsinator_BINARY_TARGET_DIR "bin")
-    # prefix-dependent, e.g. /usr/share/lib/vatsinator/libvtrcore.so
+    # prefix-dependent, e.g. /usr/share/lib/vatsinator/libv8rcore.so
     set (vatsinator_LIBRARY_TARGET_DIR "lib/vatsinator")
     # prefix-dependent, not used on Linux
     set (vatsinator_ARCHIVE_TARGET_DIR "lib")
@@ -36,16 +36,16 @@ elseif (WIN32)
     set (vatsinator_RESOURCES_TARGET_DIR ".")
     # location-independent, C:\Program Files\Vatsinator\vatsinator.exe
     set (vatsinator_BINARY_TARGET_DIR ".")
-    # location-independent, C:\Program Files\Vatsinator\vtrcore.dll
+    # location-independent, C:\Program Files\Vatsinator\v8rcore.dll
     set (vatsinator_LIBRARY_TARGET_DIR ".")
-    # location-independent, build/Debug/lib/vtrcore.lib
+    # location-independent, build/Debug/lib/v8rcore.lib
     set (vatsinator_ARCHIVE_TARGET_DIR "lib")
 elseif (APPLE)
     # inside the bundle, e.g. vatsinator.app/Contents/Resources/translations
     set (vatsinator_RESOURCES_TARGET_DIR "${PROJECT_NAME}.app/Contents/Resources")
     # inside the bundle, e.g. vatsinator.app/Contents/MacOS/vatsinator
     set (vatsinator_BINARY_TARGET_DIR "${PROJECT_NAME}.app/Contents/MacOS")
-    # linside the bundle, e.g. vatsinator.app/Contents/MacOS/libvtrcore.dylib
+    # linside the bundle, e.g. vatsinator.app/Contents/MacOS/libv8rcore.dylib
     set (vatsinator_LIBRARY_TARGET_DIR "${PROJECT_NAME}.app/Contents/MacOS")
     # not used on macOS
     set (vatsinator_ARCHIVE_TARGET_DIR "lib")

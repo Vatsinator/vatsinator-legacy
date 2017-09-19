@@ -21,7 +21,7 @@
 #define WIDGETS_METARWINDOW_H
 
 #include "core/servertracker.h"
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtWidgets/QWidget>
 #include <QtCore/QPointer>
 
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Widgets {
  *
  * The MetarWindow displays list of all METAR weather reports.
  */
-class VTRWIDGETS_EXPORT MetarWindow : public QWidget {
+class V8RWIDGETS_EXPORT MetarWindow : public QWidget {
     Q_OBJECT
 
 public:

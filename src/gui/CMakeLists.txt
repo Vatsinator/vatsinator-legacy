@@ -45,15 +45,15 @@ set (gui_QRCS
     resources/pixmaps.qrc
 )
 
-add_library (vtrgui SHARED ${gui_SOURCES} ${gui_HEADERS} ${gui_QRCS})
-target_link_libraries (vtrgui vtrmisc Qt5::Gui)
-set_target_properties (vtrgui PROPERTIES CXX_VISIBILITY_PRESET hidden)
+add_library (v8rgui SHARED ${gui_SOURCES} ${gui_HEADERS} ${gui_QRCS})
+target_link_libraries (v8rgui v8rmisc Qt5::Gui)
+set_target_properties (v8rgui PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 include (GenerateExportHeader)
-generate_export_header(vtrgui)
+generate_export_header(v8rgui)
 
-install (TARGETS vtrgui
-    EXPORT vtrgui
+install (TARGETS v8rgui
+    EXPORT v8rgui
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}
     LIBRARY DESTINATION ${vatsinator_LIBRARY_TARGET_DIR}
     ARCHIVE DESTINATION ${vatsinator_ARCHIVE_TARGET_DIR} CONFIGURATIONS Debug

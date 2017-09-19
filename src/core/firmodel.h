@@ -2,13 +2,13 @@
 #define FIRMODEL_H
 
 #include "core/fir.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Core {
 
-class VTRCORE_EXPORT FirModel : public QObject {
+class V8RCORE_EXPORT FirModel : public QObject {
     Q_OBJECT
 
 public:

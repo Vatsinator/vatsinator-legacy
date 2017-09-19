@@ -20,7 +20,7 @@
 #ifndef CORE_AIRLINE_H
 #define CORE_AIRLINE_H
 
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QMetaType>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
@@ -35,7 +35,7 @@ class AirlineData;
  *
  * The Airline class represents a single airline.
  */
-class VTRCORE_EXPORT Airline {
+class V8RCORE_EXPORT Airline {
 
 public:
     /**
@@ -101,12 +101,12 @@ private:
 /**
  * \relates Airline
  */
-VTRCORE_EXPORT bool operator==(const Airline& a, const Airline& b);
+V8RCORE_EXPORT bool operator==(const Airline& a, const Airline& b);
 
 /**
  * \relates Airline
  */
-VTRCORE_EXPORT bool operator!=(const Airline& a, const Airline& b);
+V8RCORE_EXPORT bool operator!=(const Airline& a, const Airline& b);
 
 }} /* namespace Vatsinator::Core */
 

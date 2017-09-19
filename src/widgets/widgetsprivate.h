@@ -21,7 +21,7 @@
 #define WIDGETSPRIVATE_H
 
 #include "gui/mapitem.h"
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtWidgets/QMenu>
 #include <QtCore/QString>
 
@@ -31,13 +31,13 @@ namespace Vatsinator { namespace Widgets {
  * \internal
  * Produces tooltip text for the provided map item.
  */
-QString VTRWIDGETS_NO_EXPORT makeToolTip(const Vatsinator::Gui::MapItem* item);
+QString V8RWIDGETS_NO_EXPORT makeToolTip(const Vatsinator::Gui::MapItem* item);
 
 /**
  * \internal
  * Positions the window in the middle of the main window.
  */
-void VTRWIDGETS_NO_EXPORT fixupGeometry(QWidget* window);
+void V8RWIDGETS_NO_EXPORT fixupGeometry(QWidget* window);
 
 }} /* namespace Vatsinator::Widgets */
 

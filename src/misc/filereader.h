@@ -20,7 +20,7 @@
 #ifndef MISC_FILEREADER_H
 #define MISC_FILEREADER_H
 
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
 
@@ -36,7 +36,7 @@ class FileDownloader;
  * by Vatsinator. The file can be local (i.e. installed with the application)
  * as well as remote (downloaded from the internet and updated when needed).
  */
-class VTRMISC_EXPORT FileReader : public QObject {
+class V8RMISC_EXPORT FileReader : public QObject {
     Q_OBJECT
     
     Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)

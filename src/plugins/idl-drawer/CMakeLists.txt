@@ -9,6 +9,6 @@ add_library (idldrawer MODULE
 )
 
 target_compile_definitions (idldrawer PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (idldrawer vtrgui)
+target_link_libraries (idldrawer v8rgui)
 
 vatsinator_add_plugin (idldrawer)

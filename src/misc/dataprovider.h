@@ -3,12 +3,12 @@
 
 #include "core/airportmodel.h"
 #include "core/firmodel.h"
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QObject>
 
 namespace Vatsinator { namespace Misc {
 
-class VTRMISC_EXPORT  DataProvider : public QObject {
+class V8RMISC_EXPORT DataProvider : public QObject {
     Q_OBJECT
 
 signals:
@@ -25,6 +25,6 @@ public:
 
 }} /* namespace Vatsinator::Misc */
 
-Q_DECLARE_INTERFACE(Vatsinator::Misc::DataProvider, "org.eu.vatsinator.vtrmisc.DataProvider")
+Q_DECLARE_INTERFACE(Vatsinator::Misc::DataProvider, "org.eu.vatsinator.v8rmisc.DataProvider")
 
 #endif // MISC_DATAPROVIDER_H

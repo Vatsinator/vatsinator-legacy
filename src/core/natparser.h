@@ -21,7 +21,7 @@
 #define CORE_NATPARSER_H
 
 #include "core/lonlat.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QString>
 #include <QtCore/QList>
 
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Core {
  * The NatParser class is responsible for finding a NAT (North Atlantic
  * Route) in the route filled by a pilot.
  */
-class VTRCORE_EXPORT NatParser {
+class V8RCORE_EXPORT NatParser {
 public:
     /**
      * Creates the new \c NatParser instance that will try to find NAT

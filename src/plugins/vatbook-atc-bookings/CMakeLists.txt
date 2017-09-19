@@ -7,6 +7,6 @@ add_library (vatbookatcbookingprovider MODULE
 )
 
 target_compile_definitions (vatbookatcbookingprovider PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (vatbookatcbookingprovider vtrmisc)
+target_link_libraries (vatbookatcbookingprovider v8rmisc)
 
 vatsinator_add_plugin (vatbookatcbookingprovider)

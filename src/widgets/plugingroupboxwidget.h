@@ -2,7 +2,7 @@
 #define PLUGINGROUPBOXWIDGET_H
 
 #include "widgets/pluginwidget.h"
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtCore/QScopedPointer>
 #include <QtWidgets/QGroupBox>
 
@@ -14,7 +14,7 @@ namespace Vatsinator { namespace Widgets {
  * \ingroup Widgets
  * @{
  */
-class VTRWIDGETS_EXPORT PluginGroupBoxWidget : public QGroupBox {
+class V8RWIDGETS_EXPORT PluginGroupBoxWidget : public QGroupBox {
     Q_OBJECT
 
     Q_PROPERTY(QString selectedPlugin READ selectedPlugin WRITE setSelectedPlugin NOTIFY selectedPluginChanged)

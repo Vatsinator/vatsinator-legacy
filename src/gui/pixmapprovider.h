@@ -20,7 +20,7 @@
 #ifndef GUI_PIXMAPPROVIDER_H
 #define GUI_PIXMAPPROVIDER_H
 
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
@@ -36,7 +36,7 @@ class ModelMatcher;
  * The PixmapProvider class is respoinsble for generating and storing
  * pixmaps that all map items can re-use.
  */
-class VTRGUI_EXPORT PixmapProvider : public QObject {
+class V8RGUI_EXPORT PixmapProvider : public QObject {
     Q_OBJECT
     
 public:

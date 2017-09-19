@@ -8,7 +8,7 @@ namespace Vatsim {
 
 class ServerTrackerProvider : public QObject, public Vatsinator::Misc::ServerTrackerProvider {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrmisc.ServerTrackerProvider" FILE "vatsim.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rmisc.ServerTrackerProvider" FILE "vatsim.json")
     Q_INTERFACES(Vatsinator::Misc::ServerTrackerProvider)
 
 public:

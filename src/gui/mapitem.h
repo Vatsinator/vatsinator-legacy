@@ -22,7 +22,7 @@
 
 #include "core/lonlat.h"
 #include "gui/mapdrawable.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -37,7 +37,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * To show areas on the map, look for \c MapArea class.
  */
-class VTRGUI_EXPORT MapItem : public MapDrawable {
+class V8RGUI_EXPORT MapItem : public MapDrawable {
     Q_OBJECT
 
 public:

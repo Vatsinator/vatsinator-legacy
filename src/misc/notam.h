@@ -20,7 +20,7 @@
 #ifndef CORE_NOTAM_H
 #define CORE_NOTAM_H
 
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QDateTime>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
@@ -35,7 +35,7 @@ class NotamData;
  *
  * The Notam class represents a single NOTAM notice.
  */
-class VTRMISC_EXPORT Notam {
+class V8RMISC_EXPORT Notam {
 
 public:
     /**

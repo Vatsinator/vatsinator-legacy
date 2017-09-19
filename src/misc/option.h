@@ -20,7 +20,7 @@
 #ifndef MISC_OPTION_H
 #define MISC_OPTION_H
 
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QVariant>
@@ -48,7 +48,7 @@ class OptionPrivate;
  *                                    // triggered for "option" variable as well
  * \endcode
  */
-class VTRMISC_EXPORT Option : public QObject {
+class V8RMISC_EXPORT Option : public QObject {
     Q_OBJECT
     friend class OptionPrivate;
     

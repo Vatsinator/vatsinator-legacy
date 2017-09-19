@@ -22,7 +22,7 @@
 
 #include "core/clientlist.h"
 #include "core/lonlat.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 
 namespace Vatsinator { namespace Core {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  * 
  * The \c Fir class represents a single FIR (Flight Information Region).
  */
-class VTRCORE_EXPORT Fir : public ClientList {
+class V8RCORE_EXPORT Fir : public ClientList {
     Q_OBJECT
 
     Q_PROPERTY(QString icao READ icao CONSTANT)

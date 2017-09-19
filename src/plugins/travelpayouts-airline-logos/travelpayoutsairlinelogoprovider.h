@@ -35,7 +35,7 @@
  */
 class TravelpayoutsAirlineLogoProvider : public QObject, public Vatsinator::Misc::AirlineLogoProvider {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrmisc.AirlineLogoProvider" FILE "travelpayoutsairlinelogoprovider.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rmisc.AirlineLogoProvider" FILE "travelpayoutsairlinelogoprovider.json")
     Q_INTERFACES(Vatsinator::Misc::AirlineLogoProvider)
 
 public:

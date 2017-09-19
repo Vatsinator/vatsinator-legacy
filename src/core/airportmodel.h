@@ -3,7 +3,7 @@
 
 #include "core/airport.h"
 #include "core/lonlat.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
@@ -11,7 +11,7 @@ namespace Vatsinator { namespace Core {
 
 class AirportModelPrivate;
 
-class VTRCORE_EXPORT AirportModel : public QObject {
+class V8RCORE_EXPORT AirportModel : public QObject {
     Q_OBJECT
 
 public:

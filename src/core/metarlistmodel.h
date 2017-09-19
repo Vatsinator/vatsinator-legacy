@@ -21,7 +21,7 @@
 #define CORE_METARLISTMODEL_H
 
 #include "core/metar.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Core {
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  *
  * The MetarListModel represents a list of METARs in a model.
  */
-class VTRCORE_EXPORT MetarListModel : public QAbstractListModel {
+class V8RCORE_EXPORT MetarListModel : public QAbstractListModel {
     Q_OBJECT
 
 public:

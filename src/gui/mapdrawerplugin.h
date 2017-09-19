@@ -38,6 +38,6 @@ public:
 
 }} /* namespace Vatsinator::Gui */
 
-Q_DECLARE_INTERFACE(Vatsinator::Gui::MapDrawerPlugin, "org.eu.vatsinator.vtrgui.MapDrawerPlugin")
+Q_DECLARE_INTERFACE(Vatsinator::Gui::MapDrawerPlugin, "org.eu.vatsinator.v8rgui.MapDrawerPlugin")
 
 #endif // GUI_MAPDRAWERPLUGIN_H

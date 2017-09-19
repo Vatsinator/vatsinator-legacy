@@ -43,15 +43,15 @@ set (widgets_UIS
     metarwindow.ui
 )
 
-add_library (vtrwidgets SHARED ${widgets_SOURCES} ${widgets_HEADERS} ${widgets_UIS})
-target_link_libraries (vtrwidgets vtrgui vtrmisc Qt5::Widgets)
-set_target_properties (vtrwidgets PROPERTIES CXX_VISIBILITY_PRESET hidden)
+add_library (v8rwidgets SHARED ${widgets_SOURCES} ${widgets_HEADERS} ${widgets_UIS})
+target_link_libraries (v8rwidgets v8rgui v8rmisc Qt5::Widgets)
+set_target_properties (v8rwidgets PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 include (GenerateExportHeader)
-generate_export_header(vtrwidgets)
+generate_export_header(v8rwidgets)
 
-install (TARGETS vtrwidgets
-    EXPORT vtrwidgets
+install (TARGETS v8rwidgets
+    EXPORT v8rwidgets
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}
     LIBRARY DESTINATION ${vatsinator_LIBRARY_TARGET_DIR}
     ARCHIVE DESTINATION ${vatsinator_ARCHIVE_TARGET_DIR} CONFIGURATIONS Debug

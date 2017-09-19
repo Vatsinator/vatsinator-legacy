@@ -22,7 +22,7 @@
 
 #include "airline.h"
 #include "resourcefile.h"
-#include "vtrcore_export.h"
+#include "v8rcore_export.h"
 #include <QMap>
 
 namespace Vatsinator { namespace Core {
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Core {
  *
  * A reader for airlines.
  */
-class VTRCORE_EXPORT AirlineListReader : public ResourceFile {
+class V8RCORE_EXPORT AirlineListReader : public ResourceFile {
     Q_OBJECT
     
 public:

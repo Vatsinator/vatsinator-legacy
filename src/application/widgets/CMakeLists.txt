@@ -38,7 +38,7 @@ if (WIN32)
 endif ()
 
 target_link_libraries (vatsinator
-    vtrwidgets
+    v8rwidgets
     Qt5::Widgets
     $<$<PLATFORM_ID:Darwin>:Qt5::MacExtras>
     $<$<PLATFORM_ID:Darwin>:${COCOA_LIBRARY}>

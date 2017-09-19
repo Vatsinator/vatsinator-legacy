@@ -21,7 +21,7 @@
 #define CORE_VATSIMDATADOCUMENT_H
 
 #include "core/clientdata.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QDateTime>
 #include <QtCore/QList>
 #include <QtCore/QMetaType>
@@ -37,7 +37,7 @@ class VatsimDataDocumentData;
  * 
  * The VatsimDataDocument class 
  */
-class VTRCORE_EXPORT VatsimDataDocument {
+class V8RCORE_EXPORT VatsimDataDocument {
 public:
     /**
      * Creates an empty (and invalid) document.

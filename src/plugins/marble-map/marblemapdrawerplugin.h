@@ -13,7 +13,7 @@ namespace MarbleMap {
 
 class MarbleMapDrawerPlugin : public QObject, public Vatsinator::Gui::MapDrawerPlugin {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrgui.MapDrawerPlugin" FILE "marblemapdrawer.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rgui.MapDrawerPlugin" FILE "marblemapdrawer.json")
     Q_INTERFACES(Vatsinator::Gui::MapDrawerPlugin)
 
 public:

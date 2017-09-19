@@ -21,7 +21,7 @@
 #define MISC_AIRLINELOGOREPLY_H
 
 #include "core/airline.h"
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Misc {
  * The AirlineLogoReply class represents a response for airline logo request
  * made to a \ref AirlineLogoProvider implementation instance.
  */
-class VTRMISC_EXPORT AirlineLogoReply : public QObject {
+class V8RMISC_EXPORT AirlineLogoReply : public QObject {
     Q_OBJECT
 
     /**

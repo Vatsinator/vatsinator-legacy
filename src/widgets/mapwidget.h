@@ -25,7 +25,7 @@
 #include "core/fir.h"
 #include "core/pilot.h"
 #include "gui/maprenderer.h"
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QWidget>
 #include <QtCore/QScopedPointer>
@@ -40,7 +40,7 @@ class MouseHelper;
  * 
  * The MapWidget encapsulates \c MapRenderer into a QWidget. 
  */
-class VTRWIDGETS_EXPORT MapWidget : public QWidget {
+class V8RWIDGETS_EXPORT MapWidget : public QWidget {
     Q_OBJECT
     
     /**

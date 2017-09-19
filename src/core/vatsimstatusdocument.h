@@ -20,7 +20,7 @@
 #ifndef CORE_VATSIMSTATUSDOCUMENT_H
 #define CORE_VATSIMSTATUSDOCUMENT_H
 
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QList>
 #include <QtCore/QMetaType>
 #include <QtCore/QUrl>
@@ -39,7 +39,7 @@ class VatsimStatusDocumentData;
  * 
  * \sa VatsimStatusReader.
  */
-class VTRCORE_EXPORT VatsimStatusDocument {
+class V8RCORE_EXPORT VatsimStatusDocument {
 public:
     /**
      * Creates an empty and invalid document.

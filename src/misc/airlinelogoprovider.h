@@ -44,6 +44,6 @@ public:
 
 }} /* namespace Vatsinator::Misc */
 
-Q_DECLARE_INTERFACE(Vatsinator::Misc::AirlineLogoProvider, "org.eu.vatsinator.vtrmisc.AirlineLogoProvider")
+Q_DECLARE_INTERFACE(Vatsinator::Misc::AirlineLogoProvider, "org.eu.vatsinator.v8rmisc.AirlineLogoProvider")
 
 #endif // MISC_AIRLINELOGOPROVIDER_H

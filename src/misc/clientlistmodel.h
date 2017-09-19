@@ -22,7 +22,7 @@
 
 #include "core/airport.h"
 #include "core/fir.h"
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QAbstractListModel>
 
 namespace Vatsinator { namespace Core { class Client; }}
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Misc {
  * 
  * The ClientListModel class stores \c Client instances.
  */
-class VTRMISC_EXPORT ClientListModel : public QAbstractListModel {
+class V8RMISC_EXPORT ClientListModel : public QAbstractListModel {
     Q_OBJECT
 
 public:

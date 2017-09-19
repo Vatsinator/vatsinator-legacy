@@ -25,7 +25,7 @@
 #include "gui/mapaddon.h"
 #include "gui/mapitem.h"
 #include "gui/worldtransform.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtCore/QAbstractAnimation>
 #include <QtCore/QMap>
 #include <QtCore/QMetaObject>
@@ -48,7 +48,7 @@ class MapScene;
  *
  * \sa MapScene.
  */
-class VTRGUI_EXPORT MapRenderer : public QObject {
+class V8RGUI_EXPORT MapRenderer : public QObject {
     Q_OBJECT
     
     /**

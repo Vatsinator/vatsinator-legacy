@@ -20,7 +20,7 @@
 #ifndef WIDGETS_MAPINFOWIDGET_H
 #define WIDGETS_MAPINFOWIDGET_H
 
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtCore/QDateTime>
 #include <QtCore/QScopedPointer>
 #include <QtWidgets/QWidget>
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Widgets {
  * \ingroup Widgets
  * @{
  */
-class VTRWIDGETS_EXPORT MapInfoWidget : public QWidget {
+class V8RWIDGETS_EXPORT MapInfoWidget : public QWidget {
     Q_OBJECT
 
     Q_PROPERTY(QDateTime updated READ updated WRITE setUpdated)

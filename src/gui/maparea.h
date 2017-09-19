@@ -21,7 +21,7 @@
 #define GUI_MAPAREA_H
 
 #include "gui/mapdrawable.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtCore/QRectF>
 
 namespace Vatsinator { namespace Gui {
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Gui {
  * The \c MapArea class is a base for all map objects that are represented
  * as areas - for example FIRs or approach areas around airports.
  */
-class VTRGUI_EXPORT MapArea : public MapDrawable {
+class V8RGUI_EXPORT MapArea : public MapDrawable {
     Q_OBJECT
 
 public:

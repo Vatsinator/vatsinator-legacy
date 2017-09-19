@@ -34,6 +34,6 @@ public:
 
 }} /* namespace Vatsinator::Misc */
 
-Q_DECLARE_INTERFACE(Vatsinator::Misc::ServerTrackerProvider, "org.eu.vatsinator.vtrmisc.ServerTrackerProvider")
+Q_DECLARE_INTERFACE(Vatsinator::Misc::ServerTrackerProvider, "org.eu.vatsinator.v8rmisc.ServerTrackerProvider")
 
 #endif // MISC_SERVERTRACKERPROVIDER_H

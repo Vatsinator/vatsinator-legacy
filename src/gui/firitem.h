@@ -22,7 +22,7 @@
 
 #include "core/fir.h"
 #include "gui/mapitem.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * The \c FirItem represents a FIR label.
  */
-class VTRGUI_EXPORT FirItem : public MapItem {
+class V8RGUI_EXPORT FirItem : public MapItem {
     Q_OBJECT
     
     /**

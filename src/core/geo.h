@@ -21,7 +21,7 @@
 #define CORE_GEO_H
 
 #include "core/lonlat.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QtGlobal>
 
 namespace Vatsinator { namespace Core {
@@ -31,7 +31,7 @@ namespace Vatsinator { namespace Core {
  * 
  * Returns distance between the two points, in nautical miles.
  */
-qreal VTRCORE_EXPORT nmDistance(const LonLat& a, const LonLat& b);
+qreal V8RCORE_EXPORT nmDistance(const LonLat& a, const LonLat& b);
 
 }} /* namespace Vatsinator::Core */
 

@@ -20,7 +20,7 @@
 #ifndef MISC_FILECACHE_H
 #define MISC_FILECACHE_H
 
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QString>
 
 namespace Vatsinator { namespace Misc {
@@ -31,7 +31,7 @@ namespace Vatsinator { namespace Misc {
  * 
  * The FileCache class makes it easy to keep files cached.
  */
-class VTRMISC_EXPORT FileCache {
+class V8RMISC_EXPORT FileCache {
 public:
     /**
      * Verifies whether the given file exists in the cache already or not.

@@ -1,7 +1,7 @@
 #ifndef WIDGETS_PLUGINWIDGET_H
 #define WIDGETS_PLUGINWIDGET_H
 
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QWidget>
 
 class QRadioButton;
@@ -22,7 +22,7 @@ class PluginGroupBoxWidget;
  *
  * \sa PluginGroupBoxWidget.
  */
-class VTRWIDGETS_EXPORT PluginWidget : public QWidget {
+class V8RWIDGETS_EXPORT PluginWidget : public QWidget {
     Q_OBJECT
 
     /**

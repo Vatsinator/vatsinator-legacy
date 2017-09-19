@@ -22,7 +22,7 @@
 
 #include "gui/mapitem.h"
 #include "core/pilot.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtGui/QPixmap>
 
 namespace Vatsinator { namespace Gui {
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * The \c FlightItem draws a single flight on the map.
  */
-class VTRGUI_EXPORT FlightItem : public MapItem {
+class V8RGUI_EXPORT FlightItem : public MapItem {
     Q_OBJECT
     
     /**

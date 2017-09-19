@@ -22,7 +22,7 @@
 
 namespace Vatsinator { namespace Misc {
 
-class VTRMISC_NO_EXPORT OptionPrivate {
+class V8RMISC_NO_EXPORT OptionPrivate {
 public:
     bool readSaved(QString key, Option* instance)
     {

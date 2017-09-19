@@ -22,7 +22,7 @@
 
 #include "core/lonlat.h"
 #include "gui/worldviewport.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtCore/QPoint>
 #include <QtCore/QPointF>
 #include <QtCore/QRectF>
@@ -39,7 +39,7 @@ namespace Vatsinator { namespace Gui {
  * global coordinate system (longitude/latitude) and widget one, used
  * by the QPainter.
  */
-class VTRGUI_EXPORT WorldTransform {
+class V8RGUI_EXPORT WorldTransform {
 public:
     /**
      * The constructor that takes the \c viewport size, the mapping \c offset

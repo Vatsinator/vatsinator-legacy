@@ -22,7 +22,7 @@
 
 #include "core/lonlat.h"
 #include "gui/worldtransform.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 #include <QtGui/QPainter>
 
 namespace Vatsinator { namespace Gui {
@@ -34,7 +34,7 @@ namespace Vatsinator { namespace Gui {
  * The WorldPainter class extens QPainter functionalities so that it is easy
  * to draw anything in geographic coordinate system.
  */
-class VTRGUI_EXPORT WorldPainter : public QPainter {
+class V8RGUI_EXPORT WorldPainter : public QPainter {
 public:
     /**
      * Constructs a WorldPainter that paints on the given \c device.

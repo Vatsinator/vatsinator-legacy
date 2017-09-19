@@ -22,7 +22,7 @@
 
 #include "core/airport.h"
 #include "gui/maparea.h"
-#include "gui/vtrgui_export.h"
+#include "gui/v8rgui_export.h"
 
 namespace Vatsinator { namespace Gui {
 
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Gui {
  * 
  * Handles drawing TMAs.
  */
-class VTRGUI_EXPORT TmaArea : public MapArea {
+class V8RGUI_EXPORT TmaArea : public MapArea {
     Q_OBJECT
 
 public:

@@ -36,7 +36,7 @@
  */
 class IdlDrawer : public QObject, public Vatsinator::Gui::MapAddon {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.vtrgui.MapAddon" FILE "idldrawer.json")
+    Q_PLUGIN_METADATA(IID "org.eu.vatsinator.v8rgui.MapAddon" FILE "idldrawer.json")
     Q_INTERFACES(Vatsinator::Gui::MapAddon)
 
 public:

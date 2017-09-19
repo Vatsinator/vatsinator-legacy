@@ -20,7 +20,7 @@
 #ifndef MISC_FILEDOWNLOADER_H
 #define MISC_FILEDOWNLOADER_H
 
-#include "misc/vtrmisc_export.h"
+#include "misc/v8rmisc_export.h"
 #include <QtCore/QByteArray>
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Misc {
  * The FileDownloader class is a convenience class that simplfies
  * downloading files from the internet.
  */
-class VTRMISC_EXPORT FileDownloader : public QObject {
+class V8RMISC_EXPORT FileDownloader : public QObject {
     Q_OBJECT
     
 signals:

@@ -50,15 +50,15 @@ set (core_PRIVATE_HEADERS
 
 )
 
-add_library (vtrcore SHARED ${core_SOURCES} ${core_HEADERS} ${core_PRIVATE_HEADERS})
-target_link_libraries (vtrcore Qt5::Core Qt5::Network)
-set_target_properties (vtrcore PROPERTIES CXX_VISIBILITY_PRESET hidden)
+add_library (v8rcore SHARED ${core_SOURCES} ${core_HEADERS} ${core_PRIVATE_HEADERS})
+target_link_libraries (v8rcore Qt5::Core Qt5::Network)
+set_target_properties (v8rcore PROPERTIES CXX_VISIBILITY_PRESET hidden)
 
 include (GenerateExportHeader)
-generate_export_header(vtrcore)
+generate_export_header(v8rcore)
 
-install (TARGETS vtrcore
-    EXPORT vtrcore
+install (TARGETS v8rcore
+    EXPORT v8rcore
     RUNTIME DESTINATION ${vatsinator_BINARY_TARGET_DIR}
     LIBRARY DESTINATION ${vatsinator_LIBRARY_TARGET_DIR}
     ARCHIVE DESTINATION ${vatsinator_ARCHIVE_TARGET_DIR} CONFIGURATIONS Debug

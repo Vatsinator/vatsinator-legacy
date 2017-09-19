@@ -21,7 +21,7 @@
 #define WIDGETS_AIRPORTDETAILSWINDOW_H
 
 #include "core/airport.h"
-#include "widgets/vtrwidgets_export.h"
+#include "widgets/v8rwidgets_export.h"
 #include <QtCore/QScopedPointer>
 #include <QtWidgets/QWidget>
 
@@ -35,7 +35,7 @@ namespace Vatsinator { namespace Widgets {
  * 
  * A window for displaying airport details.
  */
-class VTRWIDGETS_EXPORT AirportDetailsWindow : public QWidget {
+class V8RWIDGETS_EXPORT AirportDetailsWindow : public QWidget {
     Q_OBJECT
     
     /**

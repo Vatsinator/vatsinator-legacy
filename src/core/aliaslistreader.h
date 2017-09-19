@@ -21,7 +21,7 @@
 #define CORE_ALIASLISTREADER_H
 
 #include "core/resourcefile.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QMap>
 
 namespace Vatsinator { namespace Core {
@@ -32,7 +32,7 @@ namespace Vatsinator { namespace Core {
  *
  * The reader for list of aliases.
  */
-class VTRCORE_EXPORT AliasListReader : public ResourceFile {
+class V8RCORE_EXPORT AliasListReader : public ResourceFile {
     Q_OBJECT
 
 public:

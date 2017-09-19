@@ -20,7 +20,7 @@
 #ifndef CORE_LONLAT_H
 #define CORE_LONLAT_H
 
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QPointF>
 #include <QtCore/QMetaType>
 
@@ -33,7 +33,7 @@ namespace Vatsinator { namespace Core {
  * The LonLat class is a wrapper around QPointF to provide convenient
  * handling global coordinates - latitude and longitude.
  */
-class VTRCORE_EXPORT LonLat : public QPointF {
+class V8RCORE_EXPORT LonLat : public QPointF {
 
 public:
     /**
@@ -90,7 +90,7 @@ public:
 
 Q_DECLARE_METATYPE(Vatsinator::Core::LonLat)
 
-VTRCORE_EXPORT QDataStream& operator<<(QDataStream& stream, const Vatsinator::Core::LonLat& lonlat);
-VTRCORE_EXPORT QDataStream& operator>>(QDataStream& stream, Vatsinator::Core::LonLat& lonlat);
+V8RCORE_EXPORT QDataStream& operator<<(QDataStream& stream, const Vatsinator::Core::LonLat& lonlat);
+V8RCORE_EXPORT QDataStream& operator>>(QDataStream& stream, Vatsinator::Core::LonLat& lonlat);
 
 #endif // CORE_LONLAT_H

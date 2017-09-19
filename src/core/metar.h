@@ -20,7 +20,7 @@
 #ifndef CORE_METAR_H
 #define CORE_METAR_H
 
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QMetaType>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
@@ -35,7 +35,7 @@ class MetarData;
  *
  * The Metar class encapsulates a single METAR report.
  */
-class VTRCORE_EXPORT Metar {
+class V8RCORE_EXPORT Metar {
 
 public:
     Metar();

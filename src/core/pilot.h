@@ -24,7 +24,7 @@
 #include "core/airport.h"
 #include "core/client.h"
 #include "core/flightplan.h"
-#include "core/vtrcore_export.h"
+#include "core/v8rcore_export.h"
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
@@ -39,7 +39,7 @@ class ServerTracker;
  *
  * The Pilot class represents a single flight.
  */
-class VTRCORE_EXPORT Pilot : public Client {
+class V8RCORE_EXPORT Pilot : public Client {
     Q_OBJECT
     Q_ENUMS(FlightRules)
     Q_ENUMS(FlightPhase)

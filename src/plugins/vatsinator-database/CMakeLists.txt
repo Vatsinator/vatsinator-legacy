@@ -9,7 +9,7 @@ add_library (vatsinatordatabase MODULE
 )
 
 target_compile_definitions (vatsinatordatabase PRIVATE -DQT_PLUGIN -DQT_SHARED)
-target_link_libraries (vatsinatordatabase vtrmisc)
+target_link_libraries (vatsinatordatabase v8rmisc)
 
 vatsinator_add_plugin (vatsinatordatabase)
 
